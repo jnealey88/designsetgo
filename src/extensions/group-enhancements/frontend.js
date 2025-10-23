@@ -1,26 +1,58 @@
 /**
  * Group Block Enhancements - Frontend
  *
- * Handles dynamic overlay rendering on the frontend
+ * Handles dynamic overlay rendering and clickable groups
  *
  * @package DesignSetGo
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-	// Find all Group blocks with overlay
-	const groupsWithOverlay = document.querySelectorAll('.has-dsg-overlay');
+	// Handle clickable groups
+	const clickableGroups = document.querySelectorAll('.dsg-clickable');
 
-	groupsWithOverlay.forEach((group) => {
-		const overlayColor = group.getAttribute('data-overlay-color');
-		const overlayOpacity = group.getAttribute('data-overlay-opacity');
+	clickableGroups.forEach((group) => {
+		const linkUrl = group.getAttribute('data-link-url');
+		const linkTarget = group.getAttribute('data-link-target');
+		const linkRel = group.getAttribute('data-link-rel');
 
-		if (overlayColor) {
-			// Convert opacity from 0-100 to 0-1
-			const opacityValue = overlayOpacity ? overlayOpacity / 100 : 0.5;
+		if (linkUrl) {
+			// Make the entire group clickable
+			group.style.cursor = 'pointer';
 
-			// Set CSS custom properties
-			group.style.setProperty('--dsg-overlay-color', overlayColor);
-			group.style.setProperty('--dsg-overlay-opacity', opacityValue);
+			// Handle click event
+			group.addEventListener('click', function (e) {
+				// Don't navigate if clicking on an interactive element
+				const target = e.target;
+				const isInteractive =
+					target.tagName === 'A' ||
+					target.tagName === 'BUTTON' ||
+					target.tagName === 'INPUT' ||
+					target.tagName === 'TEXTAREA' ||
+					target.tagName === 'SELECT' ||
+					target.closest('a') ||
+					target.closest('button');
+
+				if (!isInteractive) {
+					// Build rel attribute
+					let relValue = linkRel || '';
+					if (linkTarget === '_blank') {
+						// Add noopener noreferrer for security when opening in new tab
+						relValue = relValue
+							? `${relValue} noopener noreferrer`
+							: 'noopener noreferrer';
+					}
+
+					// Navigate to URL
+					if (linkTarget === '_blank') {
+						const newWindow = window.open(linkUrl, '_blank');
+						if (newWindow && relValue) {
+							newWindow.opener = null;
+						}
+					} else {
+						window.location.href = linkUrl;
+					}
+				}
+			});
 		}
 	});
 });

@@ -130,14 +130,14 @@ class Plugin {
 	 */
 	public function register_block_category( $categories ) {
 		return array_merge(
-			$categories,
 			array(
 				array(
 					'slug'  => 'designsetgo',
 					'title' => __( 'DesignSetGo', 'designsetgo' ),
 					'icon'  => 'layout',
 				),
-			)
+			),
+			$categories
 		);
 	}
 }

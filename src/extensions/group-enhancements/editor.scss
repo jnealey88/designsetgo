@@ -4,6 +4,91 @@
  * @package DesignSetGo
  */
 
+// Show overlay in editor
+.has-dsg-overlay {
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1;
+		pointer-events: none;
+		// Black overlay at 75% opacity
+		background: rgba(0, 0, 0, 0.75);
+	}
+
+	// Ensure content appears above overlay
+	> .wp-block-group__inner-container,
+	> * {
+		position: relative;
+		z-index: 2;
+	}
+
+	// Colors are set programmatically in JavaScript when overlay is enabled
+	// No CSS color rules needed here - JS handles setting/clearing colors
+}
+
+// Make overlay color picker full width in the Color section
+// Our overlay gets added in a separate ToolsPanel component which appears below Text/Background
+// Target it by looking for a ToolsPanel that appears after the main color block
+.color-block-support-panel__inner-wrapper {
+	// Second ToolsPanel (our overlay) should be full width
+	> .components-tools-panel:nth-child(2) {
+		grid-column: 1 / -1 !important;
+
+		.block-editor-tools-panel-color-gradient-settings__item {
+			grid-column: 1 / -1 !important;
+		}
+	}
+}
+.components-grid.components-tools-panel.block-editor-panel-color-gradient-settings {
+	grid-column: 1 / -1 !important;
+	padding: 0px !important;
+	border-top: 0px !important;
+}
+.color-block-support-panel__inner-wrapper>:not(.block-editor-tools-panel-color-gradient-settings__item) {
+	margin-top: 0px !important;
+}
+
+/**
+ * Visual indicator for clickable groups
+ */
+.dsg-clickable {
+	cursor: pointer;
+	position: relative;
+
+	// Add subtle hover effect in editor
+	&:hover {
+		outline: 2px dashed var(--wp-admin-theme-color, #007cba);
+		outline-offset: 2px;
+	}
+
+	// Show link icon indicator in top-right corner
+	&::after {
+		content: '\f504'; // WordPress dashicon for external link
+		font-family: dashicons;
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		background: var(--wp-admin-theme-color, #007cba);
+		color: white;
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 14px;
+		z-index: 10;
+		pointer-events: none;
+		opacity: 0.8;
+	}
+}
+
 /**
  * Hide WordPress's default column count control when grid is active.
  * Our responsive grid columns provide a better experience.

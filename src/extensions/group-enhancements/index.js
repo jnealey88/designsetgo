@@ -1,19 +1,29 @@
 /**
- * Group Block Enhancements
+ * Group Block Enhancements v2
  *
- * Extends the core Group block with DesignSetGo features:
- * - Flexbox/Grid layout controls
+ * Works WITH WordPress's native Group block layout system
+ * instead of creating duplicate controls.
+ *
+ * WordPress Group block already has:
+ * - Layout toolbar (Flow, Flex Row, Flex Column, Grid)
+ * - Layout panel in sidebar with justify/align controls
+ *
+ * We ADD:
+ * - Grid column controls
+ * - Advanced flexbox options
  * - Responsive visibility
- * - Animation settings
+ * - Animation settings (future)
  *
  * @package DesignSetGo
  */
 
 import { addFilter } from '@wordpress/hooks';
-import { InspectorControls, InspectorAdvancedControls, __experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown, __experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, ToggleControl, RangeControl } from '@wordpress/components';
+import { InspectorControls } from '@wordpress/block-editor';
+import { PanelBody, RangeControl, ToggleControl, TextControl, ExternalLink } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createHigherOrderComponent } from '@wordpress/compose';
+import { useEffect } from '@wordpress/element';
+import { select, dispatch } from '@wordpress/data';
 import classnames from 'classnames';
 
 /**
@@ -31,26 +41,20 @@ addFilter(
 			...settings,
 			attributes: {
 				...settings.attributes,
-				dsgLayoutType: {
-					type: 'string',
-					default: 'default',
-				},
-				dsgFlexDirection: {
-					type: 'string',
-					default: 'row',
-				},
-				dsgJustifyContent: {
-					type: 'string',
-					default: 'flex-start',
-				},
-				dsgAlignItems: {
-					type: 'string',
-					default: 'stretch',
-				},
+				// Grid enhancements
 				dsgGridColumns: {
 					type: 'number',
 					default: 3,
 				},
+				dsgGridColumnsTablet: {
+					type: 'number',
+					default: 2,
+				},
+				dsgGridColumnsMobile: {
+					type: 'number',
+					default: 1,
+				},
+				// Responsive visibility
 				dsgHideOnDesktop: {
 					type: 'boolean',
 					default: false,
@@ -63,16 +67,23 @@ addFilter(
 					type: 'boolean',
 					default: false,
 				},
-				// Overlay color attributes
-				dsgOverlayColor: {
-					type: 'string',
+				// Overlay toggle
+				dsgEnableOverlay: {
+					type: 'boolean',
+					default: false,
 				},
-				dsgCustomOverlayColor: {
+				// Link/URL attributes
+				dsgLinkUrl: {
 					type: 'string',
+					default: '',
 				},
-				dsgOverlayOpacity: {
-					type: 'number',
-					default: 50,
+				dsgLinkTarget: {
+					type: 'boolean',
+					default: false,
+				},
+				dsgLinkRel: {
+					type: 'string',
+					default: '',
 				},
 			},
 		};
@@ -81,216 +92,244 @@ addFilter(
 
 /**
  * Add DesignSetGo controls to Group block.
+ * Only shows relevant controls based on WordPress's native layout choice.
  */
 const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
-		const { name, attributes, setAttributes } = props;
+		const { name, attributes, setAttributes, clientId } = props;
 
 		if (name !== 'core/group') {
 			return <BlockEdit {...props} />;
 		}
 
 		const {
-			dsgLayoutType,
-			dsgFlexDirection,
-			dsgJustifyContent,
-			dsgAlignItems,
+			layout,
 			dsgGridColumns,
+			dsgGridColumnsTablet,
+			dsgGridColumnsMobile,
 			dsgHideOnDesktop,
 			dsgHideOnTablet,
 			dsgHideOnMobile,
-			dsgOverlayColor,
-			dsgCustomOverlayColor,
-			dsgOverlayOpacity,
+			dsgEnableOverlay,
+			dsgLinkUrl,
+			dsgLinkTarget,
+			dsgLinkRel,
 		} = attributes;
 
-		// Get color settings for the color picker
-		const colorGradientSettings = useMultipleOriginColorsAndGradients();
+		// Check if WordPress layout is set to grid
+		const isGridLayout = layout?.type === 'grid';
+
+		// Ensure background image has proper defaults (50% 50% position)
+		useEffect(() => {
+			const bgImage = attributes.style?.background?.backgroundImage;
+			const bgPosition = attributes.style?.background?.backgroundPosition;
+
+			// If background image exists but position isn't set, default to center
+			if (bgImage && !bgPosition) {
+				setAttributes({
+					style: {
+						...attributes.style,
+						background: {
+							...attributes.style.background,
+							backgroundPosition: '50% 50%',
+						},
+					},
+				});
+			}
+		}, [attributes.style?.background?.backgroundImage]);
+
+		// Set colors when overlay is enabled, clear when disabled
+		useEffect(() => {
+			const innerBlocks = select('core/block-editor').getBlocks(clientId);
+
+			if (dsgEnableOverlay) {
+				// ENABLE: Set white text and white/black buttons
+				const setColors = (blocks) => {
+					blocks.forEach((block) => {
+						const blockId = block.clientId;
+
+						// Set button colors: white background, black text
+						if (block.name === 'core/button') {
+							dispatch('core/block-editor').updateBlockAttributes(blockId, {
+								backgroundColor: 'white',
+								textColor: 'black',
+								style: {
+									...block.attributes.style,
+									color: {
+										...block.attributes.style?.color,
+										background: '#ffffff',
+										text: '#000000',
+									},
+								},
+							});
+						}
+
+						// Set text colors: white text
+						if (
+							block.name === 'core/heading' ||
+							block.name === 'core/paragraph' ||
+							block.name === 'core/list' ||
+							block.name === 'core/list-item'
+						) {
+							dispatch('core/block-editor').updateBlockAttributes(blockId, {
+								textColor: 'white',
+								style: {
+									...block.attributes.style,
+									color: {
+										...block.attributes.style?.color,
+										text: '#ffffff',
+									},
+								},
+							});
+						}
+
+						// Recurse into nested blocks
+						if (block.innerBlocks && block.innerBlocks.length > 0) {
+							setColors(block.innerBlocks);
+						}
+					});
+				};
+
+				setColors(innerBlocks);
+			} else {
+				// DISABLE: Clear all white text and white/black button colors
+				const clearColors = (blocks) => {
+					blocks.forEach((block) => {
+						const blockId = block.clientId;
+						const attrs = block.attributes;
+
+						// Clear button colors if they're white background + black text
+						if (block.name === 'core/button') {
+							const hasWhiteButton =
+								(attrs.backgroundColor === 'white' || attrs.style?.color?.background === '#ffffff') &&
+								(attrs.textColor === 'black' || attrs.style?.color?.text === '#000000');
+
+							if (hasWhiteButton) {
+								const newStyle = { ...attrs.style };
+								if (newStyle.color) {
+									delete newStyle.color.background;
+									delete newStyle.color.text;
+									if (Object.keys(newStyle.color).length === 0) {
+										delete newStyle.color;
+									}
+								}
+
+								dispatch('core/block-editor').updateBlockAttributes(blockId, {
+									backgroundColor: undefined,
+									textColor: undefined,
+									style: Object.keys(newStyle).length > 0 ? newStyle : undefined,
+								});
+							}
+						}
+
+						// Clear text colors if they're white
+						if (
+							block.name === 'core/heading' ||
+							block.name === 'core/paragraph' ||
+							block.name === 'core/list' ||
+							block.name === 'core/list-item'
+						) {
+							const hasWhiteText =
+								attrs.textColor === 'white' || attrs.style?.color?.text === '#ffffff';
+
+							if (hasWhiteText) {
+								const newStyle = { ...attrs.style };
+								if (newStyle.color) {
+									delete newStyle.color.text;
+									if (Object.keys(newStyle.color).length === 0) {
+										delete newStyle.color;
+									}
+								}
+
+								dispatch('core/block-editor').updateBlockAttributes(blockId, {
+									textColor: undefined,
+									style: Object.keys(newStyle).length > 0 ? newStyle : undefined,
+								});
+							}
+						}
+
+						// Recurse into nested blocks
+						if (block.innerBlocks && block.innerBlocks.length > 0) {
+							clearColors(block.innerBlocks);
+						}
+					});
+				};
+
+				clearColors(innerBlocks);
+			}
+		}, [dsgEnableOverlay, clientId]);
 
 		return (
 			<>
 				<BlockEdit {...props} />
 				<InspectorControls>
-					<PanelBody
-						title={__('DesignSetGo Layout', 'designsetgo')}
-						initialOpen={false}
-					>
-						<SelectControl
-							label={__('Layout Type', 'designsetgo')}
-							value={dsgLayoutType}
-							options={[
-								{
-									label: __('Default', 'designsetgo'),
-									value: 'default',
-								},
-								{
-									label: __('Flexbox', 'designsetgo'),
-									value: 'flex',
-								},
-								{
-									label: __('Grid', 'designsetgo'),
-									value: 'grid',
-								},
-								{
-									label: __('Auto Grid', 'designsetgo'),
-									value: 'auto-grid',
-								},
-							]}
-							onChange={(value) =>
-								setAttributes({ dsgLayoutType: value })
-							}
-						/>
-
-						{dsgLayoutType === 'flex' && (
-							<>
-								<SelectControl
-									label={__('Direction', 'designsetgo')}
-									value={dsgFlexDirection}
-									options={[
-										{
-											label: __('Row', 'designsetgo'),
-											value: 'row',
-										},
-										{
-											label: __(
-												'Row Reverse',
-												'designsetgo'
-											),
-											value: 'row-reverse',
-										},
-										{
-											label: __('Column', 'designsetgo'),
-											value: 'column',
-										},
-										{
-											label: __(
-												'Column Reverse',
-												'designsetgo'
-											),
-											value: 'column-reverse',
-										},
-									]}
-									onChange={(value) =>
-										setAttributes({
-											dsgFlexDirection: value,
-										})
-									}
-								/>
-
-								<SelectControl
-									label={__(
-										'Justify Content',
-										'designsetgo'
-									)}
-									value={dsgJustifyContent}
-									options={[
-										{
-											label: __('Start', 'designsetgo'),
-											value: 'flex-start',
-										},
-										{
-											label: __('Center', 'designsetgo'),
-											value: 'center',
-										},
-										{
-											label: __('End', 'designsetgo'),
-											value: 'flex-end',
-										},
-										{
-											label: __(
-												'Space Between',
-												'designsetgo'
-											),
-											value: 'space-between',
-										},
-										{
-											label: __(
-												'Space Around',
-												'designsetgo'
-											),
-											value: 'space-around',
-										},
-										{
-											label: __(
-												'Space Evenly',
-												'designsetgo'
-											),
-											value: 'space-evenly',
-										},
-									]}
-									onChange={(value) =>
-										setAttributes({
-											dsgJustifyContent: value,
-										})
-									}
-								/>
-
-								<SelectControl
-									label={__('Align Items', 'designsetgo')}
-									value={dsgAlignItems}
-									options={[
-										{
-											label: __('Start', 'designsetgo'),
-											value: 'flex-start',
-										},
-										{
-											label: __('Center', 'designsetgo'),
-											value: 'center',
-										},
-										{
-											label: __('End', 'designsetgo'),
-											value: 'flex-end',
-										},
-										{
-											label: __('Stretch', 'designsetgo'),
-											value: 'stretch',
-										},
-										{
-											label: __('Baseline', 'designsetgo'),
-											value: 'baseline',
-										},
-									]}
-									onChange={(value) =>
-										setAttributes({ dsgAlignItems: value })
-									}
-								/>
-							</>
-						)}
-
-						{dsgLayoutType === 'grid' && (
-							<SelectControl
-								label={__(
-									'Columns (Desktop)',
+					{/* Only show grid controls if WordPress layout is grid */}
+					{isGridLayout && (
+						<PanelBody
+							title={__('Grid Columns', 'designsetgo')}
+							initialOpen={true}
+						>
+							<p className="components-base-control__help">
+								{__(
+									'Customize column count per device. WordPress grid layout must be active.',
 									'designsetgo'
 								)}
+							</p>
+							<RangeControl
+								label={__('Desktop Columns', 'designsetgo')}
 								value={dsgGridColumns}
-								options={[
-									{ label: '1', value: 1 },
-									{ label: '2', value: 2 },
-									{ label: '3', value: 3 },
-									{ label: '4', value: 4 },
-									{ label: '5', value: 5 },
-									{ label: '6', value: 6 },
-								]}
+								onChange={(value) =>
+									setAttributes({ dsgGridColumns: value })
+								}
+								min={1}
+								max={6}
+								help={__('Number of columns on desktop screens', 'designsetgo')}
+							/>
+							<RangeControl
+								label={__('Tablet Columns', 'designsetgo')}
+								value={dsgGridColumnsTablet}
 								onChange={(value) =>
 									setAttributes({
-										dsgGridColumns: parseInt(value),
+										dsgGridColumnsTablet: value,
 									})
 								}
+								min={1}
+								max={4}
+								help={__('Number of columns on tablet screens', 'designsetgo')}
 							/>
-						)}
-					</PanelBody>
+							<RangeControl
+								label={__('Mobile Columns', 'designsetgo')}
+								value={dsgGridColumnsMobile}
+								onChange={(value) =>
+									setAttributes({
+										dsgGridColumnsMobile: value,
+									})
+								}
+								min={1}
+								max={2}
+								help={__('Number of columns on mobile screens', 'designsetgo')}
+							/>
+						</PanelBody>
+					)}
 
+					{/* Responsive visibility - always available */}
 					<PanelBody
-						title={__('DesignSetGo Responsive', 'designsetgo')}
+						title={__('Responsive Visibility', 'designsetgo')}
 						initialOpen={false}
 					>
+						<p className="components-base-control__help">
+							{__(
+								'Hide this block on specific devices.',
+								'designsetgo'
+							)}
+						</p>
 						<ToggleControl
 							label={__('Hide on Desktop', 'designsetgo')}
 							checked={dsgHideOnDesktop}
 							onChange={(value) =>
 								setAttributes({ dsgHideOnDesktop: value })
 							}
+							help={__('Hide on screens wider than 1024px', 'designsetgo')}
 						/>
 						<ToggleControl
 							label={__('Hide on Tablet', 'designsetgo')}
@@ -298,6 +337,7 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 							onChange={(value) =>
 								setAttributes({ dsgHideOnTablet: value })
 							}
+							help={__('Hide on screens 768px - 1023px', 'designsetgo')}
 						/>
 						<ToggleControl
 							label={__('Hide on Mobile', 'designsetgo')}
@@ -305,50 +345,78 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 							onChange={(value) =>
 								setAttributes({ dsgHideOnMobile: value })
 							}
+							help={__('Hide on screens smaller than 768px', 'designsetgo')}
 						/>
 					</PanelBody>
 
+					{/* Link/URL controls - make entire group clickable */}
 					<PanelBody
-						title={__('Overlay Color', 'designsetgo')}
+						title={__('Link Settings', 'designsetgo')}
 						initialOpen={false}
 					>
 						<p className="components-base-control__help">
 							{__(
-								'Add an overlay color on top of the background image, similar to the Cover block.',
+								'Make the entire group block clickable. Perfect for card designs.',
 								'designsetgo'
 							)}
 						</p>
-						<ColorGradientSettingsDropdown
-							settings={[
-								{
-									label: __('Overlay Color', 'designsetgo'),
-									colorValue: dsgCustomOverlayColor,
-									onColorChange: (value) => {
-										setAttributes({
-											dsgCustomOverlayColor: value,
-											dsgOverlayColor: undefined,
-										});
-									},
-								},
-							]}
-							panelId={props.clientId}
-							{...colorGradientSettings}
+						<TextControl
+							label={__('URL', 'designsetgo')}
+							value={dsgLinkUrl}
+							onChange={(value) =>
+								setAttributes({ dsgLinkUrl: value })
+							}
+							placeholder="https://example.com"
+							help={__('Enter the destination URL', 'designsetgo')}
 						/>
-						{(dsgOverlayColor || dsgCustomOverlayColor) && (
-							<RangeControl
-								label={__('Overlay Opacity', 'designsetgo')}
-								value={dsgOverlayOpacity}
-								onChange={(value) =>
-									setAttributes({ dsgOverlayOpacity: value })
-								}
-								min={0}
-								max={100}
-								step={5}
-								help={__('Adjust the opacity of the overlay color (0 = transparent, 100 = opaque)', 'designsetgo')}
-							/>
+						{dsgLinkUrl && (
+							<>
+								<ToggleControl
+									label={__('Open in new tab', 'designsetgo')}
+									checked={dsgLinkTarget}
+									onChange={(value) =>
+										setAttributes({ dsgLinkTarget: value })
+									}
+									help={__('Open link in a new browser tab', 'designsetgo')}
+								/>
+								<TextControl
+									label={__('Link Rel', 'designsetgo')}
+									value={dsgLinkRel}
+									onChange={(value) =>
+										setAttributes({ dsgLinkRel: value })
+									}
+									placeholder="nofollow noopener"
+									help={__('Add rel attribute (e.g., nofollow, sponsored)', 'designsetgo')}
+								/>
+								<div style={{ marginTop: '16px' }}>
+									<ExternalLink href={dsgLinkUrl}>
+										{__('Preview link', 'designsetgo')}
+									</ExternalLink>
+								</div>
+							</>
 						)}
 					</PanelBody>
+
 				</InspectorControls>
+
+				{/* Overlay toggle - only show if background image is set */}
+				{attributes.style?.background?.backgroundImage && (
+					<InspectorControls>
+						<PanelBody
+							title={__('Background Overlay', 'designsetgo')}
+							initialOpen={false}
+						>
+							<ToggleControl
+								label={__('Enable Dark Overlay', 'designsetgo')}
+								checked={dsgEnableOverlay}
+								onChange={(value) =>
+									setAttributes({ dsgEnableOverlay: value })
+								}
+								help={__('Add a dark overlay (75% opacity) over the background image', 'designsetgo')}
+							/>
+						</PanelBody>
+					</InspectorControls>
+				)}
 			</>
 		);
 	};
@@ -361,34 +429,45 @@ addFilter(
 );
 
 /**
- * Add custom classes to Group block in editor.
+ * Add custom classes to Group block wrapper.
  */
 const withDesignSetGoClasses = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
-		const { name, attributes } = props;
+		const { name, attributes, clientId } = props;
 
 		if (name !== 'core/group') {
 			return <BlockListBlock {...props} />;
 		}
 
 		const {
-			dsgLayoutType,
+			layout,
+			dsgGridColumns,
+			dsgGridColumnsTablet,
+			dsgGridColumnsMobile,
 			dsgHideOnDesktop,
 			dsgHideOnTablet,
 			dsgHideOnMobile,
-			dsgOverlayColor,
-			dsgCustomOverlayColor,
-			dsgOverlayOpacity,
+			dsgEnableOverlay,
+			dsgLinkUrl,
 		} = attributes;
 
-		const hasOverlay = dsgOverlayColor || dsgCustomOverlayColor;
-
 		const classes = classnames({
-			[`dsg-layout-${dsgLayoutType}`]: dsgLayoutType !== 'default',
+			// Add responsive visibility classes
 			'dsg-hide-desktop': dsgHideOnDesktop,
 			'dsg-hide-tablet': dsgHideOnTablet,
 			'dsg-hide-mobile': dsgHideOnMobile,
-			'has-dsg-overlay': hasOverlay,
+			// Add grid column classes if grid layout
+			'dsg-grid-enhanced': layout?.type === 'grid',
+			[`dsg-grid-cols-${dsgGridColumns}`]:
+				layout?.type === 'grid' && dsgGridColumns,
+			[`dsg-grid-cols-tablet-${dsgGridColumnsTablet}`]:
+				layout?.type === 'grid' && dsgGridColumnsTablet,
+			[`dsg-grid-cols-mobile-${dsgGridColumnsMobile}`]:
+				layout?.type === 'grid' && dsgGridColumnsMobile,
+			// Add overlay class
+			'has-dsg-overlay': dsgEnableOverlay,
+			// Add clickable class
+			'dsg-clickable': dsgLinkUrl,
 		});
 
 		return <BlockListBlock {...props} className={classes} />;
@@ -398,7 +477,8 @@ const withDesignSetGoClasses = createHigherOrderComponent((BlockListBlock) => {
 addFilter(
 	'editor.BlockListBlock',
 	'designsetgo/group-classes',
-	withDesignSetGoClasses
+	withDesignSetGoClasses,
+	20
 );
 
 /**
@@ -413,65 +493,49 @@ addFilter(
 		}
 
 		const {
-			dsgLayoutType,
-			dsgFlexDirection,
-			dsgJustifyContent,
-			dsgAlignItems,
+			layout,
 			dsgGridColumns,
+			dsgGridColumnsTablet,
+			dsgGridColumnsMobile,
 			dsgHideOnDesktop,
 			dsgHideOnTablet,
 			dsgHideOnMobile,
-			dsgOverlayColor,
-			dsgCustomOverlayColor,
-			dsgOverlayOpacity,
+			dsgEnableOverlay,
+			dsgLinkUrl,
+			dsgLinkTarget,
+			dsgLinkRel,
 		} = attributes;
-
-		const hasOverlay = dsgOverlayColor || dsgCustomOverlayColor;
 
 		// Add classes
 		const classes = classnames(extraProps.className, {
-			[`dsg-layout-${dsgLayoutType}`]: dsgLayoutType !== 'default',
 			'dsg-hide-desktop': dsgHideOnDesktop,
 			'dsg-hide-tablet': dsgHideOnTablet,
 			'dsg-hide-mobile': dsgHideOnMobile,
-			'has-dsg-overlay': hasOverlay,
+			'dsg-grid-enhanced': layout?.type === 'grid',
+			[`dsg-grid-cols-${dsgGridColumns}`]:
+				layout?.type === 'grid' && dsgGridColumns,
+			[`dsg-grid-cols-tablet-${dsgGridColumnsTablet}`]:
+				layout?.type === 'grid' && dsgGridColumnsTablet,
+			[`dsg-grid-cols-mobile-${dsgGridColumnsMobile}`]:
+				layout?.type === 'grid' && dsgGridColumnsMobile,
+			'has-dsg-overlay': dsgEnableOverlay,
+			'dsg-clickable': dsgLinkUrl,
 		});
 
-		// Add inline styles
-		let style = extraProps.style || {};
-
-		if (dsgLayoutType === 'flex') {
-			style = {
-				...style,
-				display: 'flex',
-				flexDirection: dsgFlexDirection,
-				justifyContent: dsgJustifyContent,
-				alignItems: dsgAlignItems,
-			};
-		} else if (dsgLayoutType === 'grid') {
-			style = {
-				...style,
-				display: 'grid',
-				gridTemplateColumns: `repeat(${dsgGridColumns}, 1fr)`,
-			};
-		} else if (dsgLayoutType === 'auto-grid') {
-			style = {
-				...style,
-				display: 'grid',
-				gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-			};
-		}
-
-		// Add overlay data attributes for frontend rendering
-		if (hasOverlay) {
-			extraProps['data-overlay-color'] = dsgCustomOverlayColor || dsgOverlayColor;
-			extraProps['data-overlay-opacity'] = dsgOverlayOpacity;
+		// Add link data attributes for frontend rendering
+		if (dsgLinkUrl) {
+			extraProps['data-link-url'] = dsgLinkUrl;
+			if (dsgLinkTarget) {
+				extraProps['data-link-target'] = '_blank';
+			}
+			if (dsgLinkRel) {
+				extraProps['data-link-rel'] = dsgLinkRel;
+			}
 		}
 
 		return {
 			...extraProps,
 			className: classes,
-			style,
 		};
 	}
 );

@@ -1,30 +1,46 @@
----
-description: Build and deploy the Airo Blocks plugin to Local WP site
----
+Prepare the plugin for deployment to WordPress.org.
 
-Build the WordPress plugin and deploy it to the Local WP test site by:
+1. **Run production build**
+   - Execute `npm run build`
+   - Verify build completes without errors
 
-1. Remove any existing build artifacts
-2. Create a clean zip file of the plugin (excluding unnecessary files like node_modules, .git, etc.)
-3. Remove the old plugin version from `/Users/jnealey/Local Sites/template-styles/app/public/wp-content/plugins/airo-blocks` if it exists
-4. Extract the new plugin zip to the plugins directory
-5. Confirm the deployment was successful
+2. **Update version numbers**
+   - Ask user for new version number (e.g., "1.2.0")
+   - Update `package.json` version
+   - Update `designsetgo.php` header "Version:" field
+   - Update `designsetgo.php` DESIGNSETGO_VERSION constant
+   - Update `readme.txt` "Stable tag:" field
+   - Update changelog in `readme.txt`
 
-Important files to exclude from the zip:
-- node_modules/
-- .git/
-- .gitignore
-- .editorconfig
-- .eslintrc.js
-- .prettierrc
-- .stylelintrc.json
-- .wp-env.json
-- composer.json
-- phpcs.xml
-- phpstan.neon
-- package-lock.json
-- DEV-PHASE-1.md
-- PRD.md
-- README.md (or include if you want)
+3. **Run security audit**
+   - Execute `/security-audit` command
+   - Address any critical or high severity issues
 
-The plugin should be ready to activate in WordPress after deployment.
+4. **Run tests and lint**
+   - Execute `npm test` to ensure all tests pass
+   - Execute `npm run lint:js` and `npm run lint:css`
+   - Fix any issues found
+
+5. **Create deployment package**
+   - Create a clean zip file excluding:
+     - `.git/`
+     - `node_modules/`
+     - `src/` (only include `build/`)
+     - `.github/`
+     - `.claude/`
+     - `*.log`
+     - `.env*`
+     - Development config files
+   - Name zip: `designsetgo.[version].zip`
+
+6. **Pre-deployment checklist**
+   - All tests passing?
+   - No console errors in browser?
+   - Works with latest WordPress version?
+   - Works with latest Gutenberg plugin?
+   - Tested with common themes?
+   - Security audit clean?
+   - Changelog updated?
+   - Screenshots current?
+
+Provide summary of deployment package and next steps for WordPress.org SVN upload.

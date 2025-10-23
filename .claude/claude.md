@@ -96,20 +96,61 @@ attributes: {
 ```
 src/extensions/
 └── group-enhancements/
-    ├── index-v2.js      ← Filters to extend Group block
-    └── styles-v2.scss   ← Responsive CSS enhancements
+    ├── index.js         ← Filters to extend Group block
+    ├── styles.scss      ← Frontend styles
+    ├── editor.scss      ← Editor-only styles
+    └── frontend.js      ← Frontend JavaScript
 ```
 
 ### Variations
 ```
 src/variations/
 └── group-variations/
-    └── index-v2.js      ← Pre-built layouts using WordPress layout
+    └── index.js         ← Pre-built layouts using WordPress layout
 ```
 
-### Current Implementation
-- `index-v2.js` = Works WITH WordPress layout system (use this!)
-- `index.js` = Old approach that conflicts (deprecated)
+## File Versioning Guidelines
+
+**IMPORTANT: Do NOT create versioned file names (e.g., index-v2.js, styles-v2.scss)**
+
+### Why?
+- Clutters the codebase with old/duplicate files
+- Makes it unclear which version is active
+- Requires updating imports when versions change
+- Creates maintenance confusion
+
+### ✅ DO:
+```
+src/extensions/group-enhancements/
+├── index.js
+└── styles.scss
+```
+
+### ❌ DON'T:
+```
+src/extensions/group-enhancements/
+├── index.js        ← Which one is used?
+├── index-v2.js     ← Confusing!
+├── styles.scss
+└── styles-v2.scss
+```
+
+### How to Handle Rewrites:
+1. **Use Git for version history** - Git is our version control system
+2. **Delete old file, create new** - Don't keep both versions
+3. **If testing new approach:**
+   - Create a feature branch
+   - OR use a descriptive name like `index-experimental.js`
+   - Once stable, replace the main file and delete the experimental one
+
+### Git is Your Version Control:
+```bash
+# See previous versions
+git log -- src/extensions/group-enhancements/index.js
+
+# Restore old version if needed
+git checkout <commit-hash> -- src/extensions/group-enhancements/index.js
+```
 
 ## Block Extension Pattern
 

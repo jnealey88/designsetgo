@@ -1,10 +1,13 @@
 /**
- * Group Block Enhancements Styles
+ * Group Block Enhancements Styles v2
+ *
+ * Works WITH WordPress's native layout system.
+ * WordPress handles display: grid/flex, we just enhance it.
  *
  * @package DesignSetGo
  */
 
-// Overlay Color
+// Overlay - simple black overlay at 75% opacity
 .has-dsg-overlay {
 	position: relative;
 
@@ -17,8 +20,8 @@
 		bottom: 0;
 		z-index: 1;
 		pointer-events: none;
-		background-color: var(--dsg-overlay-color, rgba(0, 0, 0, 0.5));
-		opacity: var(--dsg-overlay-opacity, 0.5);
+		// Black overlay at 75% opacity
+		background-color: rgba(0, 0, 0, 0.75);
 	}
 
 	// Ensure content appears above overlay
@@ -27,68 +30,67 @@
 		position: relative;
 		z-index: 2;
 	}
+
+	// Colors are set programmatically in JavaScript when overlay is enabled
+	// No CSS color rules needed here - JS handles setting/clearing colors
 }
 
-// Flexbox Layout
-.dsg-layout-flex {
-	// Target both the wrapper and inner container
-	&,
-	& > .wp-block-group__inner-container {
-		display: flex !important;
+// Grid column enhancements
+// WordPress sets display: grid, we control column count
+.dsg-grid-enhanced {
+	// Desktop columns
+	&.dsg-grid-cols-1 {
+		grid-template-columns: repeat(1, 1fr) !important;
 	}
 
-	// Ensure inline styles are applied
-	& > .wp-block-group__inner-container {
-		flex-direction: inherit;
-		justify-content: inherit;
-		align-items: inherit;
-		gap: inherit;
-		width: 100%;
-	}
-}
-
-// Grid Layout
-.dsg-layout-grid {
-	// Target both the wrapper and inner container
-	&,
-	& > .wp-block-group__inner-container {
-		display: grid !important;
+	&.dsg-grid-cols-2 {
+		grid-template-columns: repeat(2, 1fr) !important;
 	}
 
-	& > .wp-block-group__inner-container {
-		grid-template-columns: inherit;
-		gap: inherit;
-		width: 100%;
+	&.dsg-grid-cols-3 {
+		grid-template-columns: repeat(3, 1fr) !important;
 	}
 
-	// Responsive grid adjustments
-	@media (max-width: 1024px) {
-		&,
-		& > .wp-block-group__inner-container {
-			grid-template-columns: repeat(2, 1fr) !important;
-		}
+	&.dsg-grid-cols-4 {
+		grid-template-columns: repeat(4, 1fr) !important;
 	}
 
-	@media (max-width: 768px) {
-		&,
-		& > .wp-block-group__inner-container {
+	&.dsg-grid-cols-5 {
+		grid-template-columns: repeat(5, 1fr) !important;
+	}
+
+	&.dsg-grid-cols-6 {
+		grid-template-columns: repeat(6, 1fr) !important;
+	}
+
+	// Tablet columns
+	@media (min-width: 768px) and (max-width: 1023px) {
+		&.dsg-grid-cols-tablet-1 {
 			grid-template-columns: repeat(1, 1fr) !important;
 		}
-	}
-}
 
-// Auto Grid Layout
-.dsg-layout-auto-grid {
-	// Target both the wrapper and inner container
-	&,
-	& > .wp-block-group__inner-container {
-		display: grid !important;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+		&.dsg-grid-cols-tablet-2 {
+			grid-template-columns: repeat(2, 1fr) !important;
+		}
+
+		&.dsg-grid-cols-tablet-3 {
+			grid-template-columns: repeat(3, 1fr) !important;
+		}
+
+		&.dsg-grid-cols-tablet-4 {
+			grid-template-columns: repeat(4, 1fr) !important;
+		}
 	}
 
-	& > .wp-block-group__inner-container {
-		gap: inherit;
-		width: 100%;
+	// Mobile columns
+	@media (max-width: 767px) {
+		&.dsg-grid-cols-mobile-1 {
+			grid-template-columns: repeat(1, 1fr) !important;
+		}
+
+		&.dsg-grid-cols-mobile-2 {
+			grid-template-columns: repeat(2, 1fr) !important;
+		}
 	}
 }
 
@@ -108,5 +110,20 @@
 .dsg-hide-mobile {
 	@media (max-width: 767px) {
 		display: none !important;
+	}
+}
+
+// Clickable groups
+.dsg-clickable {
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	}
+
+	&:active {
+		transform: translateY(0);
 	}
 }
