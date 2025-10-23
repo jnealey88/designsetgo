@@ -10,8 +10,8 @@
  */
 
 import { addFilter } from '@wordpress/hooks';
-import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import { InspectorControls, InspectorAdvancedControls, __experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown, __experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients } from '@wordpress/block-editor';
+import { PanelBody, SelectControl, ToggleControl, RangeControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import classnames from 'classnames';
@@ -63,6 +63,17 @@ addFilter(
 					type: 'boolean',
 					default: false,
 				},
+				// Overlay color attributes
+				dsgOverlayColor: {
+					type: 'string',
+				},
+				dsgCustomOverlayColor: {
+					type: 'string',
+				},
+				dsgOverlayOpacity: {
+					type: 'number',
+					default: 50,
+				},
 			},
 		};
 	}
@@ -88,7 +99,13 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 			dsgHideOnDesktop,
 			dsgHideOnTablet,
 			dsgHideOnMobile,
+			dsgOverlayColor,
+			dsgCustomOverlayColor,
+			dsgOverlayOpacity,
 		} = attributes;
+
+		// Get color settings for the color picker
+		const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 		return (
 			<>
