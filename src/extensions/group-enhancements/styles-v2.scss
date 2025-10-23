@@ -1,0 +1,86 @@
+/**
+ * Group Block Enhancements Styles v2
+ *
+ * Works WITH WordPress's native layout system.
+ * WordPress handles display: grid/flex, we just enhance it.
+ *
+ * @package DesignSetGo
+ */
+
+// Grid column enhancements
+// WordPress sets display: grid, we control column count
+.dsg-grid-enhanced {
+	// Desktop columns
+	&.dsg-grid-cols-1 {
+		grid-template-columns: repeat(1, 1fr) !important;
+	}
+
+	&.dsg-grid-cols-2 {
+		grid-template-columns: repeat(2, 1fr) !important;
+	}
+
+	&.dsg-grid-cols-3 {
+		grid-template-columns: repeat(3, 1fr) !important;
+	}
+
+	&.dsg-grid-cols-4 {
+		grid-template-columns: repeat(4, 1fr) !important;
+	}
+
+	&.dsg-grid-cols-5 {
+		grid-template-columns: repeat(5, 1fr) !important;
+	}
+
+	&.dsg-grid-cols-6 {
+		grid-template-columns: repeat(6, 1fr) !important;
+	}
+
+	// Tablet columns
+	@media (min-width: 768px) and (max-width: 1023px) {
+		&.dsg-grid-cols-tablet-1 {
+			grid-template-columns: repeat(1, 1fr) !important;
+		}
+
+		&.dsg-grid-cols-tablet-2 {
+			grid-template-columns: repeat(2, 1fr) !important;
+		}
+
+		&.dsg-grid-cols-tablet-3 {
+			grid-template-columns: repeat(3, 1fr) !important;
+		}
+
+		&.dsg-grid-cols-tablet-4 {
+			grid-template-columns: repeat(4, 1fr) !important;
+		}
+	}
+
+	// Mobile columns
+	@media (max-width: 767px) {
+		&.dsg-grid-cols-mobile-1 {
+			grid-template-columns: repeat(1, 1fr) !important;
+		}
+
+		&.dsg-grid-cols-mobile-2 {
+			grid-template-columns: repeat(2, 1fr) !important;
+		}
+	}
+}
+
+// Responsive visibility
+.dsg-hide-desktop {
+	@media (min-width: 1024px) {
+		display: none !important;
+	}
+}
+
+.dsg-hide-tablet {
+	@media (min-width: 768px) and (max-width: 1023px) {
+		display: none !important;
+	}
+}
+
+.dsg-hide-mobile {
+	@media (max-width: 767px) {
+		display: none !important;
+	}
+}

@@ -11,11 +11,13 @@ import './styles/editor.scss';
 import './styles/style.scss';
 
 // Block Enhancements - Extend core blocks with new features
-import './extensions/group-enhancements';
-import './extensions/group-enhancements/styles.scss';
+// v2: Works WITH WordPress native layout controls instead of against them
+import './extensions/group-enhancements/index-v2';
+import './extensions/group-enhancements/styles-v2.scss';
 
 // Block Variations - Pre-configured layouts
-import './variations/group-variations';
+// v2: Uses WordPress layout attribute (type: flex/grid)
+import './variations/group-variations/index-v2';
 
 // Global Extensions
 import './extensions/animation';
