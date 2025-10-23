@@ -1,0 +1,44 @@
+/**
+ * Utility Classes
+ *
+ * @package DesignSetGo
+ */
+
+// Responsive visibility
+.dsg-hide-desktop {
+	@include desktop-up {
+		display: none !important;
+	}
+}
+
+.dsg-hide-tablet {
+	@include tablet {
+		display: none !important;
+	}
+}
+
+.dsg-hide-mobile {
+	@include mobile-only {
+		display: none !important;
+	}
+}
+
+// Accessibility
+.dsg-sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+// Clearfix
+.dsg-clearfix::after {
+	content: '';
+	display: table;
+	clear: both;
+}

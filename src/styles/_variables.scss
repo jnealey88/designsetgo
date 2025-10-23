@@ -1,0 +1,26 @@
+/**
+ * Variables
+ *
+ * @package DesignSetGo
+ */
+
+// Breakpoints
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-desktop: 1280px;
+
+// Z-index layers
+$z-index-base: 1;
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+
+// Animation timing
+$animation-duration-fast: 200ms;
+$animation-duration-normal: 300ms;
+$animation-duration-slow: 500ms;
+$animation-easing: ease-in-out;

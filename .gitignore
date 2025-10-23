@@ -1,20 +1,22 @@
+# WordPress
+.wordpress-org/
+
 # Dependencies
-node_modules/
-vendor/
+/node_modules
+/vendor
 
 # Build output
-build/
-dist/
-
-# WordPress environment
-.wp-env/
+/build
 
 # IDE
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+# OS
 .DS_Store
+Thumbs.db
 
 # Logs
 *.log
@@ -22,25 +24,24 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Testing
-coverage/
-.nyc_output/
-phpunit.xml
-
-# Environment files
+# Environment
 .env
 .env.local
-.env.*.local
+.wp-env.override.json
 
-# Package files
-*.zip
-!assets/.wordpress-org/*.zip
+# Testing
+/coverage
 
 # Temporary files
 *.tmp
-*.temp
-.cache/
+*.swp
+*.swo
+*~
 
-# OS files
-Thumbs.db
-.DS_Store
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# WordPress environment
+/.wp-env

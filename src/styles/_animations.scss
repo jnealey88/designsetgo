@@ -1,0 +1,159 @@
+/**
+ * Animations
+ *
+ * @package DesignSetGo
+ */
+
+// Respect user preference for reduced motion
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+// Entrance Animations
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeInDown {
+	from {
+		opacity: 0;
+		transform: translateY(-30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeInLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes fadeInRight {
+	from {
+		opacity: 0;
+		transform: translateX(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes zoomIn {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes slideUp {
+	from {
+		transform: translateY(100%);
+	}
+	to {
+		transform: translateY(0);
+	}
+}
+
+@keyframes bounceIn {
+	0%,
+	20%,
+	40%,
+	60%,
+	80%,
+	to {
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+	}
+	0% {
+		opacity: 0;
+		transform: scale3d(0.3, 0.3, 0.3);
+	}
+	20% {
+		transform: scale3d(1.1, 1.1, 1.1);
+	}
+	40% {
+		transform: scale3d(0.9, 0.9, 0.9);
+	}
+	60% {
+		opacity: 1;
+		transform: scale3d(1.03, 1.03, 1.03);
+	}
+	80% {
+		transform: scale3d(0.97, 0.97, 0.97);
+	}
+	to {
+		opacity: 1;
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+// Animation Classes
+.dsg-animate {
+	animation-fill-mode: both;
+
+	&.dsg-animate-fadeIn {
+		animation-name: fadeIn;
+	}
+
+	&.dsg-animate-fadeInUp {
+		animation-name: fadeInUp;
+	}
+
+	&.dsg-animate-fadeInDown {
+		animation-name: fadeInDown;
+	}
+
+	&.dsg-animate-fadeInLeft {
+		animation-name: fadeInLeft;
+	}
+
+	&.dsg-animate-fadeInRight {
+		animation-name: fadeInRight;
+	}
+
+	&.dsg-animate-zoomIn {
+		animation-name: zoomIn;
+	}
+
+	&.dsg-animate-slideUp {
+		animation-name: slideUp;
+	}
+
+	&.dsg-animate-bounceIn {
+		animation-name: bounceIn;
+	}
+}

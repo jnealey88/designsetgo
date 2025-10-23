@@ -1,0 +1,71 @@
+/**
+ * Mixins
+ *
+ * @package DesignSetGo
+ */
+
+// Media Queries
+@mixin mobile {
+	@media (max-width: #{$breakpoint-mobile - 1px}) {
+		@content;
+	}
+}
+
+@mixin tablet {
+	@media (min-width: #{$breakpoint-mobile}) and (max-width: #{$breakpoint-tablet - 1px}) {
+		@content;
+	}
+}
+
+@mixin desktop {
+	@media (min-width: #{$breakpoint-tablet}) {
+		@content;
+	}
+}
+
+@mixin mobile-only {
+	@media (max-width: #{$breakpoint-mobile - 1px}) {
+		@content;
+	}
+}
+
+@mixin tablet-up {
+	@media (min-width: #{$breakpoint-mobile}) {
+		@content;
+	}
+}
+
+@mixin desktop-up {
+	@media (min-width: #{$breakpoint-tablet}) {
+		@content;
+	}
+}
+
+// Flexbox helpers
+@mixin flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@mixin flex-between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+// Typography
+@mixin heading-reset {
+	margin: 0;
+	padding: 0;
+	font-weight: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+// Transitions
+@mixin transition($properties...) {
+	transition-property: $properties;
+	transition-duration: $animation-duration-normal;
+	transition-timing-function: $animation-easing;
+}

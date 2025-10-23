@@ -9,23 +9,24 @@
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Technical Stack](#technical-stack)
-3. [Project Structure](#project-structure)
-4. [Development Environment Setup](#development-environment-setup)
-5. [Architecture](#architecture)
-6. [Block Specifications](#block-specifications)
-7. [Shared Components](#shared-components)
-8. [Global Styles System](#global-styles-system)
-9. [Pattern Library](#pattern-library)
-10. [Animation System](#animation-system)
-11. [Responsive System](#responsive-system)
-12. [Development Workflow](#development-workflow)
-13. [Code Standards](#code-standards)
-14. [Testing Strategy](#testing-strategy)
-15. [Performance Budget](#performance-budget)
-16. [Sprint Breakdown](#sprint-breakdown)
-17. [Dependencies](#dependencies)
-18. [Deployment](#deployment)
+2. [FSE Integration Philosophy](#fse-integration-philosophy)
+3. [Technical Stack](#technical-stack)
+4. [Project Structure](#project-structure)
+5. [Development Environment Setup](#development-environment-setup)
+6. [Architecture](#architecture)
+7. [Block Specifications](#block-specifications)
+8. [Shared Components](#shared-components)
+9. [Global Styles System](#global-styles-system)
+10. [Pattern Library](#pattern-library)
+11. [Animation System](#animation-system)
+12. [Responsive System](#responsive-system)
+13. [Development Workflow](#development-workflow)
+14. [Code Standards](#code-standards)
+15. [Testing Strategy](#testing-strategy)
+16. [Performance Budget](#performance-budget)
+17. [Sprint Breakdown](#sprint-breakdown)
+18. [Dependencies](#dependencies)
+19. [Deployment](#deployment)
 
 ---
 
@@ -33,13 +34,16 @@
 
 ### Phase 1 Goals
 
-**Primary Objective:** Launch a production-ready MVP with 12 essential blocks that demonstrate clear value over core Gutenberg blocks and establish the foundation for future development.
+**Primary Objective:** Launch a production-ready, 100% free open-source MVP with 15 essential blocks that demonstrate clear value over core Gutenberg blocks and establish the foundation for future development.
+
+**License:** GPL v2 or later (WordPress compatible)
 
 **Success Criteria:**
-- All 12 MVP blocks functional and polished
-- Global styles system operational
-- Skip for now 20+ patterns available
-- Performance targets met
+- All 15 MVP blocks functional and polished
+- FSE-compatible (leverages WordPress Block Supports API)
+- theme.json integration for global styles
+- 20+ patterns available
+- Performance targets met (<100KB total)
 - Accessibility compliance (WCAG 2.1 AA)
 - Zero critical bugs
 - WordPress.org ready
@@ -47,22 +51,150 @@
 ### Scope
 
 **In Scope:**
-- 12 core blocks (Container, Advanced Heading, Button, Hero, Feature Cards, Icon, Testimonial, Pricing Table, Team Member, CTA, Divider, Spacer)
-- Global styles interface
+- 15 core blocks (Container, Advanced Heading, Button, Hero, Feature Cards, Icon, Testimonial, Pricing Table, Team Member, CTA, Divider, Spacer, **Tabs, Accordion, Counter**)
+- FSE-native global styles (theme.json integration)
+- WordPress Block Supports API integration
 - Basic animation system
 - Responsive controls
-- Skip for now 20+ pre-built patterns
+- 20+ pre-built patterns
 - Documentation site
 - WordPress.org submission
-- Leverage open source as much as possible
+- Open source community setup (GitHub, contributing guidelines)
 
-**Out of Scope (Phase 2+):**
-- Advanced animation system (parallax, scroll-triggered)
-- Dynamic content
-- WooCommerce integration
-- Theme builder
-- Premium features
-- Additional advanced blocks
+**Out of Scope (Phase 2):**
+- Advanced animation system (parallax, scroll-triggered) - **Will be free in Phase 2**
+- Dynamic content - **Will be free in Phase 2**
+- WooCommerce integration - **Will be free in Phase 2**
+- Theme builder - **Will be free in Phase 3**
+- Additional advanced blocks - **Will be free in Phase 2**
+
+---
+
+## FSE Integration Philosophy
+
+### Why FSE-First Matters
+
+Airo Blocks is built **FSE-first**, meaning we leverage WordPress's Full Site Editing capabilities wherever possible instead of building custom solutions.
+
+**Benefits:**
+1. **Theme Compatibility** - Blocks inherit theme styles automatically
+2. **Reduced Code** - Less custom CSS and controls to maintain
+3. **Better Performance** - WordPress optimizes CSS generation
+4. **Future-Proof** - Aligned with WordPress core direction
+5. **Consistent UX** - Familiar controls for WordPress users
+6. **Accessibility** - WordPress handles contrast and accessibility
+
+### Core FSE Features We Leverage
+
+#### 1. **Block Supports API**
+
+Use WordPress's native `supports` in `block.json` instead of custom attributes:
+
+```json
+{
+  "supports": {
+    "color": {
+      "background": true,
+      "text": true,
+      "gradients": true,
+      "link": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "fontFamily": true,
+      "fontWeight": true
+    },
+    "layout": {
+      "default": { "type": "constrained" },
+      "allowEditing": true
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    }
+  }
+}
+```
+
+#### 2. **theme.json Integration**
+
+Instead of custom global styles storage in `wp_options`, extend `theme.json`:
+
+```php
+// Extend theme.json settings
+add_filter('wp_theme_json_data_theme', function($theme_json) {
+    $new_data = [
+        'settings' => [
+            'blocks' => [
+                'airo-blocks/container' => [
+                    'color' => [
+                        'palette' => [
+                            ['slug' => 'primary', 'color' => '#2563eb', 'name' => 'Primary'],
+                            // etc
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ];
+    return $theme_json->update_with($new_data);
+});
+```
+
+#### 3. **WordPress Color Palette & Presets**
+
+Use preset slugs instead of hex values:
+
+```html
+<!-- Instead of custom colors -->
+<div style="background-color: #2563eb;">
+
+<!-- Use WordPress presets -->
+<div class="has-primary-background-color has-background">
+```
+
+#### 4. **WordPress Spacing Scale**
+
+Use WordPress spacing units:
+
+```css
+.wp-block-airo-blocks-container {
+  padding: var(--wp--preset--spacing--50);
+  margin: var(--wp--preset--spacing--60);
+}
+```
+
+### What We Still Build Custom
+
+While we leverage FSE, some features require custom implementation:
+
+**Custom Features:**
+- Advanced animations (WordPress doesn't have this yet)
+- Shape dividers (visual enhancement)
+- Advanced hover effects
+- Icon library integration
+- Pattern-specific features
+
+**Rule of Thumb:** If WordPress core has it or is building it → use theirs. If it's a unique value-add → build custom.
+
+### FSE-First Development Checklist
+
+For every block, ask:
+
+- [ ] Can we use Block Supports API instead of custom attributes?
+- [ ] Can we use theme.json presets instead of custom values?
+- [ ] Can we use WordPress Layout API instead of custom flex/grid?
+- [ ] Can we use `<PanelColorSettings>` instead of custom color picker?
+- [ ] Can we use `<FontSizePicker>` with theme presets?
+- [ ] Are we following WordPress CSS custom property naming conventions?
 
 ---
 
@@ -1735,88 +1867,162 @@ All these should follow similar patterns to the examples above.
 
 ## Global Styles System
 
-### Architecture
+### FSE-First Architecture
 
-The global styles system allows users to define site-wide design tokens that cascade to all blocks.
+**IMPORTANT:** Airo Blocks leverages WordPress's native theme.json system instead of custom wp_options storage. This ensures:
+- Better theme compatibility
+- WordPress handles CSS generation
+- Users familiar with FSE get consistent experience
+- Future-proof as WordPress evolves
 
-### Data Storage
+### theme.json Integration
 
-```php
-// Stored in wp_options
-$global_styles = [
-    'colors' => [
-        'primary' => '#2563eb',
-        'secondary' => '#7c3aed',
-        'accent' => '#f59e0b',
-        'success' => '#10b981',
-        'warning' => '#ef4444',
-        'neutral-100' => '#f3f4f6',
-        'neutral-500' => '#6b7280',
-        'neutral-900' => '#111827',
-    ],
-    'typography' => [
-        'headingFont' => 'Inter',
-        'bodyFont' => 'System',
-        'fontScale' => 1.25,
-        'h1Size' => '48px',
-        'h2Size' => '40px',
-        'h3Size' => '32px',
-        'h4Size' => '24px',
-        'h5Size' => '20px',
-        'h6Size' => '16px',
-        'bodySize' => '16px',
-        'lineHeight' => 1.6,
-    ],
-    'spacing' => [
-        'unit' => 'rem',
-        'scale' => [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8],
-    ],
-    'borderRadius' => [
-        'none' => '0',
-        'sm' => '0.25rem',
-        'md' => '0.5rem',
-        'lg' => '1rem',
-        'full' => '9999px',
-    ],
-    'shadows' => [
-        'sm' => '0 1px 3px rgba(0,0,0,0.1)',
-        'md' => '0 4px 6px rgba(0,0,0,0.1)',
-        'lg' => '0 10px 25px rgba(0,0,0,0.1)',
-        'xl' => '0 20px 40px rgba(0,0,0,0.1)',
-    ],
-];
-```
-
-### CSS Custom Properties Generation
+Instead of storing in wp_options, we extend the active theme's theme.json:
 
 ```php
 // includes/admin/class-global-styles.php
 class Global_Styles {
-    public function generate_css() {
-        $styles = get_option('airo_blocks_global_styles', []);
 
-        $css = ':root {';
-
-        // Colors
-        foreach ($styles['colors'] as $name => $value) {
-            $css .= "--ab-color-{$name}: {$value};";
-        }
-
-        // Typography
-        foreach ($styles['typography'] as $name => $value) {
-            $css .= "--ab-typography-{$name}: {$value};";
-        }
-
-        // ... spacing, borders, shadows
-
-        $css .= '}';
-
-        return $css;
+    public function __construct() {
+        add_filter('wp_theme_json_data_theme', [$this, 'extend_theme_json']);
     }
 
-    public function enqueue_global_styles() {
-        wp_add_inline_style('airo-blocks-style', $this->generate_css());
+    /**
+     * Extend theme.json with Airo Blocks presets
+     */
+    public function extend_theme_json($theme_json) {
+        $airo_settings = [
+            'version' => 2,
+            'settings' => [
+                'color' => [
+                    'palette' => [
+                        [
+                            'slug' => 'airo-primary',
+                            'color' => '#2563eb',
+                            'name' => __('Airo Primary', 'airo-blocks')
+                        ],
+                        [
+                            'slug' => 'airo-secondary',
+                            'color' => '#7c3aed',
+                            'name' => __('Airo Secondary', 'airo-blocks')
+                        ],
+                        [
+                            'slug' => 'airo-accent',
+                            'color' => '#f59e0b',
+                            'name' => __('Airo Accent', 'airo-blocks')
+                        ],
+                    ],
+                    'gradients' => [
+                        [
+                            'slug' => 'airo-primary-to-secondary',
+                            'gradient' => 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)',
+                            'name' => __('Primary to Secondary', 'airo-blocks')
+                        ],
+                    ],
+                ],
+                'spacing' => [
+                    'spacingScale' => [
+                        'steps' => 0,
+                    ],
+                    'spacingSizes' => [
+                        [
+                            'slug' => 'xs',
+                            'size' => '0.5rem',
+                            'name' => __('Extra Small', 'airo-blocks')
+                        ],
+                        [
+                            'slug' => 'sm',
+                            'size' => '1rem',
+                            'name' => __('Small', 'airo-blocks')
+                        ],
+                        [
+                            'slug' => 'md',
+                            'size' => '1.5rem',
+                            'name' => __('Medium', 'airo-blocks')
+                        ],
+                        [
+                            'slug' => 'lg',
+                            'size' => '2rem',
+                            'name' => __('Large', 'airo-blocks')
+                        ],
+                        [
+                            'slug' => 'xl',
+                            'size' => '3rem',
+                            'name' => __('Extra Large', 'airo-blocks')
+                        ],
+                    ],
+                ],
+                'typography' => [
+                    'fontFamilies' => [
+                        [
+                            'slug' => 'system',
+                            'fontFamily' => '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
+                            'name' => __('System Font', 'airo-blocks')
+                        ],
+                    ],
+                    'fontSizes' => [
+                        [
+                            'slug' => 'small',
+                            'size' => '14px',
+                            'name' => __('Small', 'airo-blocks')
+                        ],
+                        [
+                            'slug' => 'medium',
+                            'size' => '16px',
+                            'name' => __('Medium', 'airo-blocks')
+                        ],
+                        [
+                            'slug' => 'large',
+                            'size' => '24px',
+                            'name' => __('Large', 'airo-blocks')
+                        ],
+                        [
+                            'slug' => 'x-large',
+                            'size' => '32px',
+                            'name' => __('Extra Large', 'airo-blocks')
+                        ],
+                    ],
+                ],
+                // Block-specific settings
+                'blocks' => [
+                    'airo-blocks/container' => [
+                        'color' => [
+                            'palette' => [
+                                // Block-specific colors if needed
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        return $theme_json->update_with($airo_settings);
     }
+}
+```
+
+### CSS Output (WordPress Handles This)
+
+WordPress automatically generates CSS custom properties:
+
+```css
+/* WordPress generates these automatically */
+:root {
+    --wp--preset--color--airo-primary: #2563eb;
+    --wp--preset--color--airo-secondary: #7c3aed;
+    --wp--preset--spacing--xs: 0.5rem;
+    --wp--preset--spacing--sm: 1rem;
+    --wp--preset--font-size--small: 14px;
+    /* etc */
+}
+
+/* WordPress also generates utility classes */
+.has-airo-primary-color {
+    color: var(--wp--preset--color--airo-primary) !important;
+}
+
+.has-airo-primary-background-color {
+    background-color: var(--wp--preset--color--airo-primary) !important;
 }
 ```
 

@@ -1,0 +1,18 @@
+/**
+ * Editor Styles
+ *
+ * Styles that only apply in the block editor.
+ *
+ * @package DesignSetGo
+ */
+
+@import 'variables';
+@import 'mixins';
+
+// Editor-specific styles
+.editor-styles-wrapper {
+	.dsg-block-wrapper {
+		// Add visual indicators for blocks in the editor
+		position: relative;
+	}
+}
