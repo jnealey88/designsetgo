@@ -1,7 +1,7 @@
 /**
  * Export all utilities
  *
- * @package DesignSetGo
+ * @package
  */
 
 export * from './breakpoints';

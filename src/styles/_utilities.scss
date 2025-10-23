@@ -6,18 +6,21 @@
 
 // Responsive visibility
 .dsg-hide-desktop {
+
 	@include desktop-up {
 		display: none !important;
 	}
 }
 
 .dsg-hide-tablet {
+
 	@include tablet {
 		display: none !important;
 	}
 }
 
 .dsg-hide-mobile {
+
 	@include mobile-only {
 		display: none !important;
 	}

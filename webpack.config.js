@@ -3,7 +3,7 @@
  *
  * Custom configuration to build both blocks AND extensions.
  *
- * @package DesignSetGo
+ * @package
  */
 
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');

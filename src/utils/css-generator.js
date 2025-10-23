@@ -1,7 +1,7 @@
 /**
  * CSS Generation Utilities
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { breakpoints } from './breakpoints';

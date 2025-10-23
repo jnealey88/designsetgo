@@ -1,7 +1,20 @@
 {
-	"extends": "@wordpress/stylelint-config",
+	"extends": "@wordpress/stylelint-config/scss",
 	"rules": {
 		"no-descending-specificity": null,
-		"selector-class-pattern": "^dsg-[a-z0-9-]+$"
+		"selector-class-pattern": [
+			"^(dsg-[a-z0-9-]+|wp-[a-z0-9_-]+|block-editor-[a-z0-9_-]+|components-[a-z0-9_-]+|color-block-[a-z0-9_-]+|is-[a-z0-9-]+|has-[a-z0-9-]+|editor-styles-[a-z0-9-]+)$",
+			{
+				"resolveNestedSelectors": true
+			}
+		],
+		"color-named": [
+			"never",
+			{
+				"ignore": ["inside-function"]
+			}
+		],
+		"at-rule-no-unknown": null,
+		"scss/at-rule-no-unknown": true
 	}
 }

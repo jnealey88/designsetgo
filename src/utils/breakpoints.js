@@ -1,7 +1,7 @@
 /**
  * Breakpoint utilities
  *
- * @package DesignSetGo
+ * @package
  */
 
 export const breakpoints = {
