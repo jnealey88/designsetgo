@@ -1,0 +1,54 @@
+/**
+ * Group Block Enhancements - Editor Only Styles
+ *
+ * @package DesignSetGo
+ */
+
+/**
+ * Hide WordPress's default column count control when grid is active.
+ * Our responsive grid columns provide a better experience.
+ *
+ * Targets the "Columns" number input in the Layout panel.
+ */
+.block-editor-block-inspector {
+	// When a Group block with grid layout is selected
+	.wp-block-group.dsg-grid-enhanced {
+		// This targets the parent, but the actual hiding happens via the selector below
+	}
+}
+
+// Hide the Columns control in the Layout panel when our enhanced grid is active
+// This only affects Group blocks, not other blocks with column controls
+.block-editor-block-inspector__advanced
+	.components-panel__body
+	.block-editor-hooks__layout-controls {
+	// Hide the column count control
+	// WordPress shows this as "Columns" with a number input
+	.components-base-control:has(
+			input[type='number'][aria-label*='Columns' i]
+		) {
+		// Only hide when a dsg-grid-enhanced block is selected
+		.wp-block-group.is-selected.dsg-grid-enhanced ~ * & {
+			display: none !important;
+		}
+	}
+}
+
+// Alternative: Use a CSS class to hide it globally when grid is enhanced
+// This is more reliable but less specific
+body:has(.wp-block-group.is-selected.dsg-grid-enhanced) {
+	.block-editor-block-inspector
+		.block-editor-hooks__layout-controls
+		.components-base-control:has(
+			input[type='number'][aria-label*='Columns' i]
+		) {
+		display: none !important;
+	}
+
+	// Also hide the minimum column width control for consistency
+	.block-editor-block-inspector
+		.block-editor-hooks__layout-controls
+		.components-base-control:has(input[aria-label*='Minimum column width' i]) {
+		display: none !important;
+	}
+}

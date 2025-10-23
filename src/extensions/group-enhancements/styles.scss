@@ -4,6 +4,31 @@
  * @package DesignSetGo
  */
 
+// Overlay Color
+.has-dsg-overlay {
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1;
+		pointer-events: none;
+		background-color: var(--dsg-overlay-color, rgba(0, 0, 0, 0.5));
+		opacity: var(--dsg-overlay-opacity, 0.5);
+	}
+
+	// Ensure content appears above overlay
+	> .wp-block-group__inner-container,
+	> * {
+		position: relative;
+		z-index: 2;
+	}
+}
+
 // Flexbox Layout
 .dsg-layout-flex {
 	// Target both the wrapper and inner container

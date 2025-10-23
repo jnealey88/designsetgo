@@ -14,6 +14,7 @@ import './styles/style.scss';
 // v2: Works WITH WordPress native layout controls instead of against them
 import './extensions/group-enhancements/index-v2';
 import './extensions/group-enhancements/styles-v2.scss';
+import './extensions/group-enhancements/editor.scss';
 
 // Block Variations - Pre-configured layouts
 // v2: Uses WordPress layout attribute (type: flex/grid)

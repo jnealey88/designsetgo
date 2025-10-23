@@ -18,7 +18,7 @@
  */
 
 import { addFilter } from '@wordpress/hooks';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, __experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown, __experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients } from '@wordpress/block-editor';
 import { PanelBody, RangeControl, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createHigherOrderComponent } from '@wordpress/compose';
@@ -65,6 +65,17 @@ addFilter(
 					type: 'boolean',
 					default: false,
 				},
+				// Overlay color attributes
+				dsgOverlayColor: {
+					type: 'string',
+				},
+				dsgCustomOverlayColor: {
+					type: 'string',
+				},
+				dsgOverlayOpacity: {
+					type: 'number',
+					default: 50,
+				},
 			},
 		};
 	}
@@ -90,10 +101,16 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 			dsgHideOnDesktop,
 			dsgHideOnTablet,
 			dsgHideOnMobile,
+			dsgOverlayColor,
+			dsgCustomOverlayColor,
+			dsgOverlayOpacity,
 		} = attributes;
 
 		// Check if WordPress layout is set to grid
 		const isGridLayout = layout?.type === 'grid';
+
+		// Get color settings for the color picker
+		const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 		return (
 			<>
@@ -184,6 +201,48 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 							help={__('Hide on screens smaller than 768px', 'designsetgo')}
 						/>
 					</PanelBody>
+
+					{/* Overlay color - always available */}
+					<PanelBody
+						title={__('Overlay Color', 'designsetgo')}
+						initialOpen={false}
+					>
+						<p className="components-base-control__help">
+							{__(
+								'Add an overlay color on top of the background image, similar to the Cover block.',
+								'designsetgo'
+							)}
+						</p>
+						<ColorGradientSettingsDropdown
+							settings={[
+								{
+									label: __('Overlay Color', 'designsetgo'),
+									colorValue: dsgCustomOverlayColor,
+									onColorChange: (value) => {
+										setAttributes({
+											dsgCustomOverlayColor: value,
+											dsgOverlayColor: undefined,
+										});
+									},
+								},
+							]}
+							panelId={props.clientId}
+							{...colorGradientSettings}
+						/>
+						{(dsgOverlayColor || dsgCustomOverlayColor) && (
+							<RangeControl
+								label={__('Overlay Opacity', 'designsetgo')}
+								value={dsgOverlayOpacity}
+								onChange={(value) =>
+									setAttributes({ dsgOverlayOpacity: value })
+								}
+								min={0}
+								max={100}
+								step={5}
+								help={__('Adjust the opacity of the overlay color (0 = transparent, 100 = opaque)', 'designsetgo')}
+							/>
+						)}
+					</PanelBody>
 				</InspectorControls>
 			</>
 		);
@@ -215,7 +274,11 @@ const withDesignSetGoClasses = createHigherOrderComponent((BlockListBlock) => {
 			dsgHideOnDesktop,
 			dsgHideOnTablet,
 			dsgHideOnMobile,
+			dsgOverlayColor,
+			dsgCustomOverlayColor,
 		} = attributes;
+
+		const hasOverlay = dsgOverlayColor || dsgCustomOverlayColor;
 
 		const classes = classnames({
 			// Add responsive visibility classes
@@ -230,6 +293,8 @@ const withDesignSetGoClasses = createHigherOrderComponent((BlockListBlock) => {
 				layout?.type === 'grid' && dsgGridColumnsTablet,
 			[`dsg-grid-cols-mobile-${dsgGridColumnsMobile}`]:
 				layout?.type === 'grid' && dsgGridColumnsMobile,
+			// Add overlay class
+			'has-dsg-overlay': hasOverlay,
 		});
 
 		return <BlockListBlock {...props} className={classes} />;
@@ -261,7 +326,12 @@ addFilter(
 			dsgHideOnDesktop,
 			dsgHideOnTablet,
 			dsgHideOnMobile,
+			dsgOverlayColor,
+			dsgCustomOverlayColor,
+			dsgOverlayOpacity,
 		} = attributes;
+
+		const hasOverlay = dsgOverlayColor || dsgCustomOverlayColor;
 
 		// Add classes
 		const classes = classnames(extraProps.className, {
@@ -275,7 +345,14 @@ addFilter(
 				layout?.type === 'grid' && dsgGridColumnsTablet,
 			[`dsg-grid-cols-mobile-${dsgGridColumnsMobile}`]:
 				layout?.type === 'grid' && dsgGridColumnsMobile,
+			'has-dsg-overlay': hasOverlay,
 		});
+
+		// Add overlay data attributes for frontend rendering
+		if (hasOverlay) {
+			extraProps['data-overlay-color'] = dsgCustomOverlayColor || dsgOverlayColor;
+			extraProps['data-overlay-opacity'] = dsgOverlayOpacity;
+		}
 
 		return {
 			...extraProps,

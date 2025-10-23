@@ -99,6 +99,15 @@ class Assets {
 			DESIGNSETGO_VERSION,
 			true
 		);
+
+		// Enqueue Group block overlay handler for frontend.
+		wp_enqueue_script(
+			'designsetgo-group-overlay',
+			DESIGNSETGO_URL . 'src/extensions/group-enhancements/frontend.js',
+			array(),
+			DESIGNSETGO_VERSION,
+			true
+		);
 	}
 
 	/**

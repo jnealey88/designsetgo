@@ -307,6 +307,47 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 							}
 						/>
 					</PanelBody>
+
+					<PanelBody
+						title={__('Overlay Color', 'designsetgo')}
+						initialOpen={false}
+					>
+						<p className="components-base-control__help">
+							{__(
+								'Add an overlay color on top of the background image, similar to the Cover block.',
+								'designsetgo'
+							)}
+						</p>
+						<ColorGradientSettingsDropdown
+							settings={[
+								{
+									label: __('Overlay Color', 'designsetgo'),
+									colorValue: dsgCustomOverlayColor,
+									onColorChange: (value) => {
+										setAttributes({
+											dsgCustomOverlayColor: value,
+											dsgOverlayColor: undefined,
+										});
+									},
+								},
+							]}
+							panelId={props.clientId}
+							{...colorGradientSettings}
+						/>
+						{(dsgOverlayColor || dsgCustomOverlayColor) && (
+							<RangeControl
+								label={__('Overlay Opacity', 'designsetgo')}
+								value={dsgOverlayOpacity}
+								onChange={(value) =>
+									setAttributes({ dsgOverlayOpacity: value })
+								}
+								min={0}
+								max={100}
+								step={5}
+								help={__('Adjust the opacity of the overlay color (0 = transparent, 100 = opaque)', 'designsetgo')}
+							/>
+						)}
+					</PanelBody>
 				</InspectorControls>
 			</>
 		);
@@ -335,13 +376,19 @@ const withDesignSetGoClasses = createHigherOrderComponent((BlockListBlock) => {
 			dsgHideOnDesktop,
 			dsgHideOnTablet,
 			dsgHideOnMobile,
+			dsgOverlayColor,
+			dsgCustomOverlayColor,
+			dsgOverlayOpacity,
 		} = attributes;
+
+		const hasOverlay = dsgOverlayColor || dsgCustomOverlayColor;
 
 		const classes = classnames({
 			[`dsg-layout-${dsgLayoutType}`]: dsgLayoutType !== 'default',
 			'dsg-hide-desktop': dsgHideOnDesktop,
 			'dsg-hide-tablet': dsgHideOnTablet,
 			'dsg-hide-mobile': dsgHideOnMobile,
+			'has-dsg-overlay': hasOverlay,
 		});
 
 		return <BlockListBlock {...props} className={classes} />;
@@ -374,7 +421,12 @@ addFilter(
 			dsgHideOnDesktop,
 			dsgHideOnTablet,
 			dsgHideOnMobile,
+			dsgOverlayColor,
+			dsgCustomOverlayColor,
+			dsgOverlayOpacity,
 		} = attributes;
+
+		const hasOverlay = dsgOverlayColor || dsgCustomOverlayColor;
 
 		// Add classes
 		const classes = classnames(extraProps.className, {
@@ -382,6 +434,7 @@ addFilter(
 			'dsg-hide-desktop': dsgHideOnDesktop,
 			'dsg-hide-tablet': dsgHideOnTablet,
 			'dsg-hide-mobile': dsgHideOnMobile,
+			'has-dsg-overlay': hasOverlay,
 		});
 
 		// Add inline styles
@@ -407,6 +460,12 @@ addFilter(
 				display: 'grid',
 				gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
 			};
+		}
+
+		// Add overlay data attributes for frontend rendering
+		if (hasOverlay) {
+			extraProps['data-overlay-color'] = dsgCustomOverlayColor || dsgOverlayColor;
+			extraProps['data-overlay-opacity'] = dsgOverlayOpacity;
 		}
 
 		return {
