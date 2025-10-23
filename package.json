@@ -57,5 +57,10 @@
     "page-builder",
     "design",
     "visual-builder"
-  ]
+  ],
+  "overrides": {
+    "@babel/runtime": "^7.26.10",
+    "webpack-dev-server": "^5.2.2",
+    "glob": "^10.0.0"
+  }
 }

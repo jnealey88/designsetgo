@@ -50,61 +50,31 @@ class Assets {
 
 	/**
 	 * Enqueue editor assets.
+	 *
+	 * Note: Individual block assets are loaded automatically via block.json.
+	 * This method is for global editor assets only.
 	 */
 	public function enqueue_editor_assets() {
-		// Main editor script.
-		$asset_file = include DESIGNSETGO_PATH . 'build/index.asset.php';
-
-		wp_enqueue_script(
-			'designsetgo-editor',
-			DESIGNSETGO_URL . 'build/index.js',
-			$asset_file['dependencies'],
-			$asset_file['version'],
-			true
-		);
-
-		// Pass data to JavaScript.
-		wp_localize_script(
-			'designsetgo-editor',
-			'designSetGoData',
-			array(
-				'pluginUrl' => DESIGNSETGO_URL,
-				'version'   => DESIGNSETGO_VERSION,
-			)
-		);
-
-		// Editor styles.
-		wp_enqueue_style(
-			'designsetgo-editor',
-			DESIGNSETGO_URL . 'build/index.css',
-			array( 'wp-edit-blocks' ),
-			$asset_file['version']
-		);
+		// Block-specific assets are handled by block.json registration.
+		// Add any global editor assets here if needed in the future.
 	}
 
 	/**
 	 * Enqueue frontend assets.
 	 */
 	public function enqueue_frontend_assets() {
-		// Only enqueue if blocks are used.
-		$this->used_blocks = array_unique( $this->used_blocks );
+		// Block-specific frontend styles are handled by block.json.
+		// Only load global assets here.
 
-		if ( empty( $this->used_blocks ) ) {
+		// Check if any DesignSetGo blocks are on the page.
+		if ( ! has_block( 'designsetgo/container' ) ) {
 			return;
 		}
 
-		// Main frontend style.
-		wp_enqueue_style(
-			'designsetgo-blocks',
-			DESIGNSETGO_URL . 'build/style-index.css',
-			array(),
-			DESIGNSETGO_VERSION
-		);
-
-		// Animation script (if any blocks use animations).
+		// Enqueue animation script for frontend animations.
 		wp_enqueue_script(
 			'designsetgo-animations',
-			DESIGNSETGO_URL . 'build/animations.js',
+			DESIGNSETGO_URL . 'src/extensions/animation/index.js',
 			array(),
 			DESIGNSETGO_VERSION,
 			true

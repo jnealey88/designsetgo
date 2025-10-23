@@ -114,15 +114,12 @@ class Plugin {
 
 	/**
 	 * Enqueue editor assets.
+	 *
+	 * Note: Block-specific assets are loaded automatically via block.json.
 	 */
 	public function editor_assets() {
-		// Editor-specific CSS.
-		wp_enqueue_style(
-			'designsetgo-editor',
-			DESIGNSETGO_URL . 'build/editor.css',
-			array(),
-			DESIGNSETGO_VERSION
-		);
+		// Block-specific editor styles are handled by block.json.
+		// Add any global editor assets here if needed.
 	}
 
 	/**
