@@ -1,0 +1,61 @@
+{
+  "name": "airo-blocks",
+  "version": "1.0.0",
+  "description": "Modern Gutenberg block library bridging the gap between core WordPress blocks and advanced page builders",
+  "author": "Airo Blocks",
+  "license": "GPL-2.0-or-later",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "wp-scripts start",
+    "build": "wp-scripts build",
+    "check-engines": "wp-scripts check-engines",
+    "check-licenses": "wp-scripts check-licenses",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:php": "composer run-script lint",
+    "packages-update": "wp-scripts packages-update",
+    "plugin-zip": "wp-scripts plugin-zip",
+    "test:e2e": "wp-scripts test-e2e",
+    "test:unit": "wp-scripts test-unit-js",
+    "test:php": "composer run-script test"
+  },
+  "devDependencies": {
+    "@wordpress/e2e-test-utils": "^10.0.0",
+    "@wordpress/env": "^9.0.0",
+    "@wordpress/scripts": "^27.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.0.0"
+  },
+  "dependencies": {
+    "@wordpress/block-editor": "^13.0.0",
+    "@wordpress/blocks": "^13.0.0",
+    "@wordpress/components": "^27.0.0",
+    "@wordpress/data": "^10.0.0",
+    "@wordpress/element": "^6.0.0",
+    "@wordpress/i18n": "^5.0.0",
+    "@wordpress/icons": "^10.0.0",
+    "classnames": "^2.3.2"
+  },
+  "lint-staged": {
+    "*.js": [
+      "wp-scripts lint-js --fix",
+      "wp-scripts format"
+    ],
+    "*.scss": [
+      "wp-scripts lint-style --fix"
+    ],
+    "*.php": [
+      "composer run-script lint"
+    ]
+  },
+  "keywords": [
+    "gutenberg",
+    "blocks",
+    "wordpress",
+    "page-builder",
+    "design",
+    "visual-builder"
+  ]
+}
