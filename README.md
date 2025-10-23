@@ -48,6 +48,8 @@ npm start
 
 # Build for production
 npm run build
+npm run build 2>&1
+
 
 # Lint JavaScript
 npm run lint:js

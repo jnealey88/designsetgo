@@ -52,11 +52,30 @@ class Assets {
 	 * Enqueue editor assets.
 	 *
 	 * Note: Individual block assets are loaded automatically via block.json.
-	 * This method is for global editor assets only.
+	 * This method is for global editor assets (extensions, variations, etc.).
 	 */
 	public function enqueue_editor_assets() {
-		// Block-specific assets are handled by block.json registration.
-		// Add any global editor assets here if needed in the future.
+		// Load block extensions and variations.
+		$asset_file = include DESIGNSETGO_PATH . 'build/index.asset.php';
+
+		if ( ! $asset_file ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'designsetgo-extensions',
+			DESIGNSETGO_URL . 'build/index.js',
+			$asset_file['dependencies'],
+			$asset_file['version'],
+			true
+		);
+
+		wp_enqueue_style(
+			'designsetgo-extensions',
+			DESIGNSETGO_URL . 'build/index.css',
+			array( 'wp-edit-blocks' ),
+			$asset_file['version']
+		);
 	}
 
 	/**
@@ -64,12 +83,13 @@ class Assets {
 	 */
 	public function enqueue_frontend_assets() {
 		// Block-specific frontend styles are handled by block.json.
-		// Only load global assets here.
-
-		// Check if any DesignSetGo blocks are on the page.
-		if ( ! has_block( 'designsetgo/container' ) ) {
-			return;
-		}
+		// Load global frontend styles for extensions.
+		wp_enqueue_style(
+			'designsetgo-frontend',
+			DESIGNSETGO_URL . 'build/style-index.css',
+			array(),
+			DESIGNSETGO_VERSION
+		);
 
 		// Enqueue animation script for frontend animations.
 		wp_enqueue_script(
