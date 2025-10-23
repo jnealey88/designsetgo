@@ -28,8 +28,8 @@ class Loader {
 	 * Register all blocks.
 	 */
 	public function register_blocks() {
-		// Get all block directories.
-		$blocks_dir = DESIGNSETGO_PATH . 'src/blocks/';
+		// Get all block directories from build folder.
+		$blocks_dir = DESIGNSETGO_PATH . 'build/blocks/';
 
 		if ( ! file_exists( $blocks_dir ) ) {
 			return;
