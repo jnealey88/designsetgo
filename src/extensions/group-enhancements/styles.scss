@@ -4,14 +4,66 @@
  * @package DesignSetGo
  */
 
-// Responsive grid adjustments
+// Flexbox Layout
+.dsg-layout-flex {
+	// Target both the wrapper and inner container
+	&,
+	& > .wp-block-group__inner-container {
+		display: flex !important;
+	}
+
+	// Ensure inline styles are applied
+	& > .wp-block-group__inner-container {
+		flex-direction: inherit;
+		justify-content: inherit;
+		align-items: inherit;
+		gap: inherit;
+		width: 100%;
+	}
+}
+
+// Grid Layout
 .dsg-layout-grid {
+	// Target both the wrapper and inner container
+	&,
+	& > .wp-block-group__inner-container {
+		display: grid !important;
+	}
+
+	& > .wp-block-group__inner-container {
+		grid-template-columns: inherit;
+		gap: inherit;
+		width: 100%;
+	}
+
+	// Responsive grid adjustments
 	@media (max-width: 1024px) {
-		grid-template-columns: repeat(2, 1fr) !important;
+		&,
+		& > .wp-block-group__inner-container {
+			grid-template-columns: repeat(2, 1fr) !important;
+		}
 	}
 
 	@media (max-width: 768px) {
-		grid-template-columns: repeat(1, 1fr) !important;
+		&,
+		& > .wp-block-group__inner-container {
+			grid-template-columns: repeat(1, 1fr) !important;
+		}
+	}
+}
+
+// Auto Grid Layout
+.dsg-layout-auto-grid {
+	// Target both the wrapper and inner container
+	&,
+	& > .wp-block-group__inner-container {
+		display: grid !important;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+	}
+
+	& > .wp-block-group__inner-container {
+		gap: inherit;
+		width: 100%;
 	}
 }
 

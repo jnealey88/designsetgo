@@ -74,13 +74,22 @@ registerBlockVariation('core/group', {
 		style: {
 			spacing: {
 				blockGap: '2rem',
+				padding: {
+					top: '2rem',
+					bottom: '2rem',
+				},
 			},
 		},
 	},
 	innerBlocks: [
 		[
 			'core/group',
-			{},
+			{
+				style: {
+					spacing: { padding: '1.5rem', blockGap: '1rem' },
+					border: { width: '1px', style: 'solid', color: '#e5e7eb' },
+				},
+			},
 			[
 				['core/heading', { level: 3, placeholder: __('Feature 1', 'designsetgo') }],
 				['core/paragraph', { placeholder: __('Description...', 'designsetgo') }],
@@ -88,7 +97,12 @@ registerBlockVariation('core/group', {
 		],
 		[
 			'core/group',
-			{},
+			{
+				style: {
+					spacing: { padding: '1.5rem', blockGap: '1rem' },
+					border: { width: '1px', style: 'solid', color: '#e5e7eb' },
+				},
+			},
 			[
 				['core/heading', { level: 3, placeholder: __('Feature 2', 'designsetgo') }],
 				['core/paragraph', { placeholder: __('Description...', 'designsetgo') }],
@@ -96,7 +110,12 @@ registerBlockVariation('core/group', {
 		],
 		[
 			'core/group',
-			{},
+			{
+				style: {
+					spacing: { padding: '1.5rem', blockGap: '1rem' },
+					border: { width: '1px', style: 'solid', color: '#e5e7eb' },
+				},
+			},
 			[
 				['core/heading', { level: 3, placeholder: __('Feature 3', 'designsetgo') }],
 				['core/paragraph', { placeholder: __('Description...', 'designsetgo') }],
@@ -119,17 +138,22 @@ registerBlockVariation('core/group', {
 		dsgLayoutType: 'flex',
 		dsgFlexDirection: 'row',
 		dsgAlignItems: 'center',
+		dsgJustifyContent: 'space-between',
 		style: {
 			spacing: {
 				blockGap: '3rem',
+				padding: {
+					top: '2rem',
+					bottom: '2rem',
+				},
 			},
 		},
 	},
 	innerBlocks: [
-		['core/image', { placeholder: __('Add image...', 'designsetgo') }],
+		['core/image', { width: '400px' }],
 		[
 			'core/group',
-			{},
+			{ style: { spacing: { blockGap: '1rem' } } },
 			[
 				['core/heading', { placeholder: __('Heading', 'designsetgo') }],
 				['core/paragraph', { placeholder: __('Content...', 'designsetgo') }],
