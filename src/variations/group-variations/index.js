@@ -1,8 +1,8 @@
 /**
- * Group Block Variations v2
+ * Group Block Variations
  *
- * Uses WordPress's NATIVE layout system instead of custom attributes.
- * Works with the toolbar layout switcher.
+ * Pre-configured layouts using WordPress's native layout system.
+ * Works seamlessly with the toolbar layout switcher.
  *
  * @package DesignSetGo
  */
@@ -49,7 +49,7 @@ registerBlockVariation('core/group', {
 			'core/paragraph',
 			{
 				align: 'center',
-				placeholder: __('Hero description goes here...', 'designsetgo'),
+				placeholder: __('Hero description goes here…', 'designsetgo'),
 			},
 		],
 		[
@@ -68,7 +68,10 @@ registerBlockVariation('core/group', {
 registerBlockVariation('core/group', {
 	name: 'designsetgo-responsive-grid',
 	title: __('Responsive Grid', 'designsetgo'),
-	description: __('Responsive grid with tablet and mobile breakpoints', 'designsetgo'),
+	description: __(
+		'Responsive grid with tablet and mobile breakpoints',
+		'designsetgo'
+	),
 	category: 'designsetgo',
 	icon: 'grid-view',
 	attributes: {
@@ -111,7 +114,7 @@ registerBlockVariation('core/group', {
 				[
 					'core/paragraph',
 					{
-						placeholder: __('Description...', 'designsetgo'),
+						placeholder: __('Description…', 'designsetgo'),
 					},
 				],
 			],
@@ -134,7 +137,7 @@ registerBlockVariation('core/group', {
 				[
 					'core/paragraph',
 					{
-						placeholder: __('Description...', 'designsetgo'),
+						placeholder: __('Description…', 'designsetgo'),
 					},
 				],
 			],
@@ -157,7 +160,7 @@ registerBlockVariation('core/group', {
 				[
 					'core/paragraph',
 					{
-						placeholder: __('Description...', 'designsetgo'),
+						placeholder: __('Description…', 'designsetgo'),
 					},
 				],
 			],
@@ -165,4 +168,3 @@ registerBlockVariation('core/group', {
 	],
 	scope: ['inserter'],
 });
-

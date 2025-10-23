@@ -65,6 +65,7 @@
 
 	// Tablet columns
 	@media (min-width: 768px) and (max-width: 1023px) {
+
 		&.dsg-grid-cols-tablet-1 {
 			grid-template-columns: repeat(1, 1fr) !important;
 		}
@@ -84,6 +85,7 @@
 
 	// Mobile columns
 	@media (max-width: 767px) {
+
 		&.dsg-grid-cols-mobile-1 {
 			grid-template-columns: repeat(1, 1fr) !important;
 		}
@@ -96,18 +98,21 @@
 
 // Responsive visibility
 .dsg-hide-desktop {
+
 	@media (min-width: 1024px) {
 		display: none !important;
 	}
 }
 
 .dsg-hide-tablet {
+
 	@media (min-width: 768px) and (max-width: 1023px) {
 		display: none !important;
 	}
 }
 
 .dsg-hide-mobile {
+
 	@media (max-width: 767px) {
 		display: none !important;
 	}

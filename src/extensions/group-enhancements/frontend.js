@@ -3,7 +3,7 @@
  *
  * Handles dynamic overlay rendering and clickable groups
  *
- * @package DesignSetGo
+ * @package
  */
 
 document.addEventListener('DOMContentLoaded', function () {

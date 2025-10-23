@@ -1,5 +1,5 @@
 /**
- * Group Block Enhancements v2
+ * Group Block Enhancements
  *
  * Works WITH WordPress's native Group block layout system
  * instead of creating duplicate controls.
@@ -9,17 +9,30 @@
  * - Layout panel in sidebar with justify/align controls
  *
  * We ADD:
- * - Grid column controls
- * - Advanced flexbox options
- * - Responsive visibility
- * - Animation settings (future)
+ * - Grid column controls (responsive)
+ * - Responsive visibility controls
+ * - Background overlay toggle
+ * - Clickable group functionality
  *
  * @package DesignSetGo
  */
 
+// Import styles for this extension
+import './styles.scss';
+import './editor.scss';
+
+// Import frontend JavaScript
+import './frontend.js';
+
 import { addFilter } from '@wordpress/hooks';
 import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, RangeControl, ToggleControl, TextControl, ExternalLink } from '@wordpress/components';
+import {
+	PanelBody,
+	RangeControl,
+	ToggleControl,
+	TextControl,
+	ExternalLink,
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useEffect } from '@wordpress/element';
@@ -136,7 +149,11 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 					},
 				});
 			}
-		}, [attributes.style?.background?.backgroundImage]);
+		}, [
+			attributes.style?.background?.backgroundImage,
+			attributes.style,
+			setAttributes,
+		]);
 
 		// Set colors when overlay is enabled, clear when disabled
 		useEffect(() => {
@@ -150,18 +167,21 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 
 						// Set button colors: white background, black text
 						if (block.name === 'core/button') {
-							dispatch('core/block-editor').updateBlockAttributes(blockId, {
-								backgroundColor: 'white',
-								textColor: 'black',
-								style: {
-									...block.attributes.style,
-									color: {
-										...block.attributes.style?.color,
-										background: '#ffffff',
-										text: '#000000',
+							dispatch('core/block-editor').updateBlockAttributes(
+								blockId,
+								{
+									backgroundColor: 'white',
+									textColor: 'black',
+									style: {
+										...block.attributes.style,
+										color: {
+											...block.attributes.style?.color,
+											background: '#ffffff',
+											text: '#000000',
+										},
 									},
-								},
-							});
+								}
+							);
 						}
 
 						// Set text colors: white text
@@ -171,16 +191,19 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 							block.name === 'core/list' ||
 							block.name === 'core/list-item'
 						) {
-							dispatch('core/block-editor').updateBlockAttributes(blockId, {
-								textColor: 'white',
-								style: {
-									...block.attributes.style,
-									color: {
-										...block.attributes.style?.color,
-										text: '#ffffff',
+							dispatch('core/block-editor').updateBlockAttributes(
+								blockId,
+								{
+									textColor: 'white',
+									style: {
+										...block.attributes.style,
+										color: {
+											...block.attributes.style?.color,
+											text: '#ffffff',
+										},
 									},
-								},
-							});
+								}
+							);
 						}
 
 						// Recurse into nested blocks
@@ -201,23 +224,33 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 						// Clear button colors if they're white background + black text
 						if (block.name === 'core/button') {
 							const hasWhiteButton =
-								(attrs.backgroundColor === 'white' || attrs.style?.color?.background === '#ffffff') &&
-								(attrs.textColor === 'black' || attrs.style?.color?.text === '#000000');
+								(attrs.backgroundColor === 'white' ||
+									attrs.style?.color?.background ===
+										'#ffffff') &&
+								(attrs.textColor === 'black' ||
+									attrs.style?.color?.text === '#000000');
 
 							if (hasWhiteButton) {
 								const newStyle = { ...attrs.style };
 								if (newStyle.color) {
 									delete newStyle.color.background;
 									delete newStyle.color.text;
-									if (Object.keys(newStyle.color).length === 0) {
+									if (
+										Object.keys(newStyle.color).length === 0
+									) {
 										delete newStyle.color;
 									}
 								}
 
-								dispatch('core/block-editor').updateBlockAttributes(blockId, {
+								dispatch(
+									'core/block-editor'
+								).updateBlockAttributes(blockId, {
 									backgroundColor: undefined,
 									textColor: undefined,
-									style: Object.keys(newStyle).length > 0 ? newStyle : undefined,
+									style:
+										Object.keys(newStyle).length > 0
+											? newStyle
+											: undefined,
 								});
 							}
 						}
@@ -230,20 +263,28 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 							block.name === 'core/list-item'
 						) {
 							const hasWhiteText =
-								attrs.textColor === 'white' || attrs.style?.color?.text === '#ffffff';
+								attrs.textColor === 'white' ||
+								attrs.style?.color?.text === '#ffffff';
 
 							if (hasWhiteText) {
 								const newStyle = { ...attrs.style };
 								if (newStyle.color) {
 									delete newStyle.color.text;
-									if (Object.keys(newStyle.color).length === 0) {
+									if (
+										Object.keys(newStyle.color).length === 0
+									) {
 										delete newStyle.color;
 									}
 								}
 
-								dispatch('core/block-editor').updateBlockAttributes(blockId, {
+								dispatch(
+									'core/block-editor'
+								).updateBlockAttributes(blockId, {
 									textColor: undefined,
-									style: Object.keys(newStyle).length > 0 ? newStyle : undefined,
+									style:
+										Object.keys(newStyle).length > 0
+											? newStyle
+											: undefined,
 								});
 							}
 						}
@@ -283,7 +324,10 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 								}
 								min={1}
 								max={6}
-								help={__('Number of columns on desktop screens', 'designsetgo')}
+								help={__(
+									'Number of columns on desktop screens',
+									'designsetgo'
+								)}
 							/>
 							<RangeControl
 								label={__('Tablet Columns', 'designsetgo')}
@@ -295,7 +339,10 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 								}
 								min={1}
 								max={4}
-								help={__('Number of columns on tablet screens', 'designsetgo')}
+								help={__(
+									'Number of columns on tablet screens',
+									'designsetgo'
+								)}
 							/>
 							<RangeControl
 								label={__('Mobile Columns', 'designsetgo')}
@@ -307,7 +354,10 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 								}
 								min={1}
 								max={2}
-								help={__('Number of columns on mobile screens', 'designsetgo')}
+								help={__(
+									'Number of columns on mobile screens',
+									'designsetgo'
+								)}
 							/>
 						</PanelBody>
 					)}
@@ -329,7 +379,10 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 							onChange={(value) =>
 								setAttributes({ dsgHideOnDesktop: value })
 							}
-							help={__('Hide on screens wider than 1024px', 'designsetgo')}
+							help={__(
+								'Hide on screens wider than 1024px',
+								'designsetgo'
+							)}
 						/>
 						<ToggleControl
 							label={__('Hide on Tablet', 'designsetgo')}
@@ -337,7 +390,10 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 							onChange={(value) =>
 								setAttributes({ dsgHideOnTablet: value })
 							}
-							help={__('Hide on screens 768px - 1023px', 'designsetgo')}
+							help={__(
+								'Hide on screens 768px - 1023px',
+								'designsetgo'
+							)}
 						/>
 						<ToggleControl
 							label={__('Hide on Mobile', 'designsetgo')}
@@ -345,7 +401,10 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 							onChange={(value) =>
 								setAttributes({ dsgHideOnMobile: value })
 							}
-							help={__('Hide on screens smaller than 768px', 'designsetgo')}
+							help={__(
+								'Hide on screens smaller than 768px',
+								'designsetgo'
+							)}
 						/>
 					</PanelBody>
 
@@ -367,7 +426,10 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 								setAttributes({ dsgLinkUrl: value })
 							}
 							placeholder="https://example.com"
-							help={__('Enter the destination URL', 'designsetgo')}
+							help={__(
+								'Enter the destination URL',
+								'designsetgo'
+							)}
 						/>
 						{dsgLinkUrl && (
 							<>
@@ -377,7 +439,10 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 									onChange={(value) =>
 										setAttributes({ dsgLinkTarget: value })
 									}
-									help={__('Open link in a new browser tab', 'designsetgo')}
+									help={__(
+										'Open link in a new browser tab',
+										'designsetgo'
+									)}
 								/>
 								<TextControl
 									label={__('Link Rel', 'designsetgo')}
@@ -386,7 +451,10 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 										setAttributes({ dsgLinkRel: value })
 									}
 									placeholder="nofollow noopener"
-									help={__('Add rel attribute (e.g., nofollow, sponsored)', 'designsetgo')}
+									help={__(
+										'Add rel attribute (e.g., nofollow, sponsored)',
+										'designsetgo'
+									)}
 								/>
 								<div style={{ marginTop: '16px' }}>
 									<ExternalLink href={dsgLinkUrl}>
@@ -396,7 +464,6 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 							</>
 						)}
 					</PanelBody>
-
 				</InspectorControls>
 
 				{/* Overlay toggle - only show if background image is set */}
@@ -412,7 +479,10 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 								onChange={(value) =>
 									setAttributes({ dsgEnableOverlay: value })
 								}
-								help={__('Add a dark overlay (75% opacity) over the background image', 'designsetgo')}
+								help={__(
+									'Add a dark overlay (75% opacity) over the background image',
+									'designsetgo'
+								)}
 							/>
 						</PanelBody>
 					</InspectorControls>
@@ -433,7 +503,7 @@ addFilter(
  */
 const withDesignSetGoClasses = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
-		const { name, attributes, clientId } = props;
+		const { name, attributes } = props;
 
 		if (name !== 'core/group') {
 			return <BlockListBlock {...props} />;

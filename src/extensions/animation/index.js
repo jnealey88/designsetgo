@@ -1,12 +1,23 @@
 /**
- * Animation Extension
+ * Animation Extension - Frontend Only
  *
- * Handles animation functionality for blocks.
+ * Handles simple load-based animations for blocks.
+ *
+ * NOTE: This is a placeholder for future animation functionality.
+ * Currently only supports data attributes added manually:
+ * - data-dsg-animation: Animation type
+ * - data-dsg-animation-duration: Duration in milliseconds (default: 500)
+ * - data-dsg-animation-delay: Delay in milliseconds (default: 0)
+ * - data-dsg-animation-easing: Timing function (default: ease-in-out)
+ *
+ * TODO: Add block editor controls for animation settings
+ * TODO: Add scroll-triggered animations
+ * TODO: Add animation presets (fade, slide, etc.)
  *
  * @package DesignSetGo
  */
 
-// Simple load-based animations for Phase 1.
+// Simple load-based animations
 document.addEventListener('DOMContentLoaded', () => {
 	const animatedElements = document.querySelectorAll('[data-dsg-animation]');
 
@@ -16,12 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		const delay = element.dataset.dsgAnimationDelay || '0';
 		const easing = element.dataset.dsgAnimationEasing || 'ease-in-out';
 
-		// Apply styles.
+		// Apply animation styles
 		element.style.animationDuration = `${duration}ms`;
 		element.style.animationDelay = `${delay}ms`;
 		element.style.animationTimingFunction = easing;
 
-		// Add animation class.
+		// Add animation classes
 		element.classList.add('dsg-animate', `dsg-animate-${animation}`);
 	});
 });

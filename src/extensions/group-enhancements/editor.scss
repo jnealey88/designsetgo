@@ -45,13 +45,15 @@
 		}
 	}
 }
+
 .components-grid.components-tools-panel.block-editor-panel-color-gradient-settings {
 	grid-column: 1 / -1 !important;
-	padding: 0px !important;
-	border-top: 0px !important;
+	padding: 0 !important;
+	border-top: 0 !important;
 }
+
 .color-block-support-panel__inner-wrapper>:not(.block-editor-tools-panel-color-gradient-settings__item) {
-	margin-top: 0px !important;
+	margin-top: 0 !important;
 }
 
 /**
@@ -70,12 +72,12 @@
 	// Show link icon indicator in top-right corner
 	&::after {
 		content: '\f504'; // WordPress dashicon for external link
-		font-family: dashicons;
+		font-family: dashicons, sans-serif;
 		position: absolute;
 		top: 8px;
 		right: 8px;
 		background: var(--wp-admin-theme-color, #007cba);
-		color: white;
+		color: #fff;
 		width: 24px;
 		height: 24px;
 		border-radius: 50%;
@@ -122,6 +124,7 @@
 // Alternative: Use a CSS class to hide it globally when grid is enhanced
 // This is more reliable but less specific
 body:has(.wp-block-group.is-selected.dsg-grid-enhanced) {
+
 	.block-editor-block-inspector
 		.block-editor-hooks__layout-controls
 		.components-base-control:has(
