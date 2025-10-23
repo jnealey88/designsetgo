@@ -1,0 +1,35 @@
+/**
+ * Group Block Enhancements Styles
+ *
+ * @package DesignSetGo
+ */
+
+// Responsive grid adjustments
+.dsg-layout-grid {
+	@media (max-width: 1024px) {
+		grid-template-columns: repeat(2, 1fr) !important;
+	}
+
+	@media (max-width: 768px) {
+		grid-template-columns: repeat(1, 1fr) !important;
+	}
+}
+
+// Responsive visibility
+.dsg-hide-desktop {
+	@media (min-width: 1024px) {
+		display: none !important;
+	}
+}
+
+.dsg-hide-tablet {
+	@media (min-width: 768px) and (max-width: 1023px) {
+		display: none !important;
+	}
+}
+
+.dsg-hide-mobile {
+	@media (max-width: 767px) {
+		display: none !important;
+	}
+}
