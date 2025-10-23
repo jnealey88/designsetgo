@@ -18,7 +18,8 @@
     "plugin-zip": "wp-scripts plugin-zip",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js",
-    "test:php": "composer run-script test"
+    "test:php": "composer run-script test",
+    "security:audit": "npm audit && npm run check-licenses"
   },
   "devDependencies": {
     "@wordpress/e2e-test-utils": "^11.0.0",

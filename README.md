@@ -61,6 +61,9 @@ npm run format
 # Run tests
 npm run test:unit
 npm run test:e2e
+
+# Security audit (check for vulnerabilities and license compliance)
+npm run security:audit
 ```
 
 ### WordPress Environment Setup
