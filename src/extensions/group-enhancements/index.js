@@ -25,17 +25,19 @@ import './editor.scss';
 import './frontend.js';
 
 import { addFilter } from '@wordpress/hooks';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	RangeControl,
 	ToggleControl,
 	TextControl,
 	ExternalLink,
+	ToolbarGroup,
+	ToolbarButton,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import { select, dispatch } from '@wordpress/data';
 import classnames from 'classnames';
 
@@ -131,6 +133,32 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 
 		// Check if WordPress layout is set to grid
 		const isGridLayout = layout?.type === 'grid';
+
+		// Sync WordPress columnCount with our dsgGridColumns (desktop)
+		// When WordPress column changes, update ours
+		useEffect(() => {
+			if (isGridLayout) {
+				const wpColumnCount = layout?.columnCount;
+				if (wpColumnCount && wpColumnCount !== dsgGridColumns) {
+					setAttributes({ dsgGridColumns: wpColumnCount });
+				}
+			}
+		}, [isGridLayout, layout?.columnCount]);
+
+		// When our desktop column changes, update WordPress
+		useEffect(() => {
+			if (isGridLayout && dsgGridColumns) {
+				const wpColumnCount = layout?.columnCount;
+				if (dsgGridColumns !== wpColumnCount) {
+					setAttributes({
+						layout: {
+							...layout,
+							columnCount: dsgGridColumns,
+						},
+					});
+				}
+			}
+		}, [dsgGridColumns]);
 
 		// Ensure background image has proper defaults (50% 50% position)
 		useEffect(() => {
@@ -303,6 +331,21 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 		return (
 			<>
 				<BlockEdit {...props} />
+
+				{/* Add overlay toggle to block toolbar when background image exists */}
+				{attributes.style?.background?.backgroundImage && (
+					<BlockControls>
+						<ToolbarGroup>
+							<ToolbarButton
+								icon="cover-image"
+								label={__('Background Overlay', 'designsetgo')}
+								isActive={dsgEnableOverlay}
+								onClick={() => setAttributes({ dsgEnableOverlay: !dsgEnableOverlay })}
+							/>
+						</ToolbarGroup>
+					</BlockControls>
+				)}
+
 				<InspectorControls>
 					{/* Only show grid controls if WordPress layout is grid */}
 					{isGridLayout && (
@@ -323,9 +366,9 @@ const withDesignSetGoControls = createHigherOrderComponent((BlockEdit) => {
 									setAttributes({ dsgGridColumns: value })
 								}
 								min={1}
-								max={6}
+								max={16}
 								help={__(
-									'Number of columns on desktop screens',
+									'Number of columns on desktop screens (synced with WordPress grid)',
 									'designsetgo'
 								)}
 							/>

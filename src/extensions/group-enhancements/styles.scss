@@ -38,29 +38,11 @@
 // Grid column enhancements
 // WordPress sets display: grid, we control column count
 .dsg-grid-enhanced {
-	// Desktop columns
-	&.dsg-grid-cols-1 {
-		grid-template-columns: repeat(1, 1fr) !important;
-	}
-
-	&.dsg-grid-cols-2 {
-		grid-template-columns: repeat(2, 1fr) !important;
-	}
-
-	&.dsg-grid-cols-3 {
-		grid-template-columns: repeat(3, 1fr) !important;
-	}
-
-	&.dsg-grid-cols-4 {
-		grid-template-columns: repeat(4, 1fr) !important;
-	}
-
-	&.dsg-grid-cols-5 {
-		grid-template-columns: repeat(5, 1fr) !important;
-	}
-
-	&.dsg-grid-cols-6 {
-		grid-template-columns: repeat(6, 1fr) !important;
+	// Desktop columns (1-16 to match WordPress)
+	@for $i from 1 through 16 {
+		&.dsg-grid-cols-#{$i} {
+			grid-template-columns: repeat($i, 1fr) !important;
+		}
 	}
 
 	// Tablet columns
