@@ -1,0 +1,55 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/tab",
+	"version": "1.0.0",
+	"title": "Tab",
+	"category": "designsetgo",
+	"description": "Individual tab panel within a Tabs block.",
+	"keywords": ["tab", "panel"],
+	"textdomain": "designsetgo",
+	"parent": ["designsetgo/tabs"],
+	"attributes": {
+		"uniqueId": {
+			"type": "string",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"default": "Tab"
+		},
+		"icon": {
+			"type": "string",
+			"default": ""
+		},
+		"iconPosition": {
+			"type": "string",
+			"default": "left",
+			"enum": ["left", "right", "top"]
+		},
+		"anchor": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"usesContext": [
+		"designsetgo/tabs/activeTab",
+		"designsetgo/tabs/orientation",
+		"designsetgo/tabs/tabStyle"
+	],
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"spacing": {
+			"margin": false,
+			"padding": true
+		},
+		"color": {
+			"background": true,
+			"text": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}

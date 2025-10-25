@@ -1,0 +1,97 @@
+/**
+ * Accordion Item Block - Editor Styles
+ * Import frontend styles + editor-specific overrides
+ */
+
+// Import all frontend styles so they appear in editor
+@import './style.scss';
+
+// Editor-specific overrides and enhancements
+.editor-styles-wrapper,
+.block-editor-block-list__layout {
+	.dsg-accordion-item {
+		// Editor-specific spacing between items
+		&:not(:last-child) {
+			margin-bottom: var(--wp--preset--spacing--20, 0.5rem);
+		}
+
+		// Show panel in editor even when "closed" for easier editing
+		.dsg-accordion-item__panel {
+			// Always show in editor (override hidden state)
+			display: block !important;
+			height: auto !important;
+			opacity: 1 !important;
+
+			// Add visual indicator in editor
+			.dsg-accordion-item__content {
+				// Subtle border in editor to show content area
+				border-left: 2px solid var(--wp--preset--color--primary, rgba(37, 99, 235, 0.2));
+				margin-left: var(--wp--preset--spacing--40, 1.5rem);
+				padding-left: var(--wp--preset--spacing--30, 1rem);
+			}
+		}
+
+		// Editor visual feedback when selected
+		&.is-selected {
+			> .dsg-accordion-item__header {
+				.dsg-accordion-item__trigger {
+					outline: 2px solid var(--wp--admin-theme-color, #007cba);
+					outline-offset: 2px;
+					box-shadow: 0 0 0 4px rgba(0, 124, 186, 0.1);
+				}
+			}
+		}
+
+		// Make trigger editable in editor
+		.dsg-accordion-item__trigger {
+			// Prevent trigger from being clickable in editor
+			pointer-events: none;
+
+			// But allow title to be editable
+			.dsg-accordion-item__title {
+				pointer-events: auto;
+				cursor: text;
+			}
+
+			// Don't show hover effects in editor
+			&:hover {
+				background-color: transparent;
+			}
+		}
+
+		// Visual feedback for open/closed state in editor
+		&.dsg-accordion-item--open {
+			.dsg-accordion-item__header {
+				// Add indicator that this will be open on frontend
+				&::after {
+					content: 'Open by default';
+					position: absolute;
+					right: 3rem;
+					top: 50%;
+					transform: translateY(-50%);
+					font-size: 0.75rem;
+					color: var(--wp--preset--color--primary, #007cba);
+					background: rgba(0, 124, 186, 0.1);
+					padding: 0.25rem 0.5rem;
+					border-radius: 4px;
+					pointer-events: none;
+				}
+			}
+		}
+
+		&.dsg-accordion-item--closed {
+			.dsg-accordion-item__header {
+				opacity: 0.8;
+			}
+		}
+	}
+}
+
+// Block preview (inserter)
+.block-editor-block-preview__content {
+	.dsg-accordion-item {
+		.dsg-accordion-item__panel {
+			display: block !important;
+		}
+	}
+}

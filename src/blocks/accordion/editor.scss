@@ -1,0 +1,81 @@
+/**
+ * Accordion Block - Editor Styles
+ * Import frontend styles + editor-specific overrides
+ */
+
+// Import all frontend styles so they appear in editor
+@import './style.scss';
+
+// Editor-specific overrides and enhancements
+.editor-styles-wrapper,
+.block-editor-block-list__layout {
+	.dsg-accordion {
+		// Editor visual aids for container
+		position: relative;
+
+		// Add subtle border in editor to show container bounds
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			border: 1px dashed rgba(0, 124, 186, 0.2);
+			pointer-events: none;
+			border-radius: var(--dsg-accordion-border-radius);
+		}
+
+		// When selected, show more prominent border
+		&.is-selected {
+			&::before {
+				border-color: var(--wp--admin-theme-color, #007cba);
+				border-style: solid;
+				border-width: 2px;
+			}
+		}
+
+		// Visual aids for settings
+		&.dsg-accordion--border-between {
+			// Already has borders, less prominent container border
+			&::before {
+				opacity: 0.5;
+			}
+		}
+
+		&.dsg-accordion--multiple {
+			// Visual indicator for multiple mode
+			&::after {
+				content: 'Multiple panels can open';
+				position: absolute;
+				top: -1.5rem;
+				left: 0;
+				font-size: 0.75rem;
+				color: var(--wp--preset--color--primary, #007cba);
+				background: rgba(0, 124, 186, 0.1);
+				padding: 0.25rem 0.5rem;
+				border-radius: 4px;
+				pointer-events: none;
+			}
+		}
+
+		// Better spacing for inner blocks in editor
+		.dsg-accordion__items {
+			> .block-editor-inner-blocks > .block-editor-block-list__layout {
+				// Remove default WordPress inner blocks spacing
+				padding: 0;
+			}
+		}
+	}
+}
+
+// Block preview (inserter/pattern library)
+.block-editor-block-preview__content {
+	.dsg-accordion {
+		// Remove visual aids in preview
+		&::before,
+		&::after {
+			display: none;
+		}
+	}
+}

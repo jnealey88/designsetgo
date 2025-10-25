@@ -1,0 +1,357 @@
+/**
+ * Tabs Block - Frontend Styles
+ */
+
+.dsg-tabs {
+	position: relative;
+
+	// CSS custom properties for easy customization
+	--dsg-tabs-gap: 8px;
+	--dsg-tab-padding: var(--wp--preset--spacing--md, 1rem);
+	--dsg-tab-bg: var(--wp--preset--color--base, #ffffff);
+	--dsg-tab-color: var(--wp--preset--color--contrast, #000000);
+	--dsg-tab-bg-active: var(--wp--preset--color--accent-2, #2563eb);
+	--dsg-tab-color-active: var(--wp--preset--color--base, #ffffff);
+	--dsg-tab-border-color: var(--wp--preset--color--accent-2, #2563eb);
+	--dsg-tab-border-radius: var(--wp--custom--designsetgo--border-radius--small, 0.25rem);
+
+	/**
+	 * Tab Navigation
+	 */
+	.dsg-tabs__nav {
+		display: flex;
+		gap: var(--dsg-tabs-gap);
+		margin-bottom: var(--wp--preset--spacing--md, 1.5rem);
+		border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+	}
+
+	/**
+	 * Individual Tab Buttons
+	 */
+	.dsg-tabs__tab {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: var(--dsg-tab-padding);
+		background: transparent;
+		border: none;
+		color: var(--dsg-tab-color);
+		font-family: inherit;
+		font-size: inherit;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		position: relative;
+		white-space: nowrap;
+
+		&:hover {
+			color: var(--dsg-tab-bg-active);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--dsg-tab-border-color);
+			outline-offset: 2px;
+			border-radius: var(--dsg-tab-border-radius);
+		}
+
+		&.is-active {
+			color: var(--dsg-tab-bg-active);
+			font-weight: 600;
+		}
+
+		.dsg-tabs__tab-icon {
+			display: inline-flex;
+			align-items: center;
+		}
+
+		.dsg-tabs__tab-icon-top {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-bottom: 0.25rem;
+		}
+	}
+
+	/**
+	 * Tab Panels Container
+	 */
+	.dsg-tabs__panels {
+		position: relative;
+	}
+
+	/**
+	 * Individual Tab Panel
+	 */
+	.dsg-tab {
+		display: none;
+
+		&.is-active {
+			display: block;
+		}
+
+		&[hidden] {
+			display: none;
+		}
+	}
+
+	/**
+	 * Orientation: Horizontal (Default)
+	 */
+	&.dsg-tabs--horizontal {
+		.dsg-tabs__nav {
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+
+		// Alignment options
+		&.dsg-tabs--align-left .dsg-tabs__nav {
+			justify-content: flex-start;
+		}
+
+		&.dsg-tabs--align-center .dsg-tabs__nav {
+			justify-content: center;
+		}
+
+		&.dsg-tabs--align-right .dsg-tabs__nav {
+			justify-content: flex-end;
+		}
+
+		&.dsg-tabs--align-justified .dsg-tabs__nav {
+			.dsg-tabs__tab {
+				flex: 1;
+				justify-content: center;
+			}
+		}
+	}
+
+	/**
+	 * Orientation: Vertical
+	 */
+	&.dsg-tabs--vertical {
+		display: flex;
+		gap: var(--wp--preset--spacing--md, 1.5rem);
+
+		.dsg-tabs__nav {
+			flex-direction: column;
+			border-bottom: none;
+			border-right: 2px solid rgba(0, 0, 0, 0.1);
+			margin-bottom: 0;
+			padding-right: var(--wp--preset--spacing--md, 1.5rem);
+			min-width: 200px;
+		}
+
+		.dsg-tabs__panels {
+			flex: 1;
+		}
+	}
+
+	/**
+	 * Tab Style: Default
+	 */
+	&.dsg-tabs--default {
+		.dsg-tabs__tab {
+			border-bottom: 3px solid transparent;
+			margin-bottom: -2px;
+
+			&.is-active {
+				border-bottom-color: var(--dsg-tab-border-color);
+			}
+		}
+	}
+
+	/**
+	 * Tab Style: Pills
+	 */
+	&.dsg-tabs--pills {
+		.dsg-tabs__nav {
+			border-bottom: none;
+		}
+
+		.dsg-tabs__tab {
+			background: rgba(0, 0, 0, 0.05);
+			border-radius: var(--dsg-tab-border-radius);
+
+			&:hover {
+				background: rgba(0, 0, 0, 0.1);
+			}
+
+			&.is-active {
+				background: var(--dsg-tab-bg-active);
+				color: var(--dsg-tab-color-active);
+			}
+		}
+	}
+
+	/**
+	 * Tab Style: Underline
+	 */
+	&.dsg-tabs--underline {
+		.dsg-tabs__tab {
+			padding-bottom: calc(var(--dsg-tab-padding) + 0.5rem);
+			border-bottom: 2px solid transparent;
+			margin-bottom: -2px;
+
+			&.is-active {
+				border-bottom-color: var(--dsg-tab-border-color);
+			}
+		}
+	}
+
+	/**
+	 * Tab Style: Minimal
+	 */
+	&.dsg-tabs--minimal {
+		.dsg-tabs__nav {
+			border-bottom: none;
+		}
+
+		.dsg-tabs__tab {
+			padding: 0.5rem 1rem;
+
+			&.is-active {
+				background: rgba(0, 0, 0, 0.03);
+			}
+		}
+	}
+
+	/**
+	 * Mobile: Accordion Mode
+	 */
+	&.dsg-tabs--accordion {
+		.dsg-tabs__nav {
+			display: none;
+		}
+
+		.dsg-tab {
+			display: block;
+			border: 1px solid rgba(0, 0, 0, 0.1);
+			border-radius: var(--dsg-tab-border-radius);
+			margin-bottom: 0.5rem;
+
+			.dsg-tab__accordion-header {
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: var(--dsg-tab-padding);
+				background: rgba(0, 0, 0, 0.02);
+				border: none;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+				font-family: inherit;
+				font-size: inherit;
+				font-weight: 600;
+				cursor: pointer;
+				text-align: left;
+
+				&::after {
+					content: '\25BC'; // Down arrow
+					font-size: 0.75em;
+					transition: transform 0.2s ease;
+				}
+
+				&[aria-expanded='true']::after {
+					transform: rotate(180deg);
+				}
+
+				&:hover {
+					background: rgba(0, 0, 0, 0.05);
+				}
+			}
+
+			.dsg-tab__content {
+				padding: var(--dsg-tab-padding);
+			}
+
+			&:not(.is-active) {
+				.dsg-tab__content {
+					display: none;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Mobile: Dropdown Mode
+	 */
+	&.dsg-tabs--dropdown {
+		.dsg-tabs__nav {
+			// Dropdown implementation
+		}
+	}
+
+	/**
+	 * Mobile Breakpoint
+	 */
+	&.is-mobile {
+		// Mobile-specific overrides
+	}
+}
+
+/**
+ * Animation: Fade In
+ */
+@keyframes dsg-tab-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.dsg-tab.is-active {
+	animation: dsg-tab-fade-in 0.3s ease;
+}
+
+/**
+ * Accessibility: Reduced Motion
+ */
+@media (prefers-reduced-motion: reduce) {
+	.dsg-tabs__tab,
+	.dsg-tab {
+		transition: none;
+		animation: none;
+	}
+}
+
+/**
+ * Responsive: Mobile
+ */
+@media (max-width: 767px) {
+	.dsg-tabs {
+		// Default to accordion on mobile
+		&:not([data-mobile-mode='tabs']) {
+			.dsg-tabs__nav {
+				overflow-x: auto;
+				scrollbar-width: thin;
+
+				&::-webkit-scrollbar {
+					height: 6px;
+				}
+
+				&::-webkit-scrollbar-track {
+					background: rgba(0, 0, 0, 0.05);
+				}
+
+				&::-webkit-scrollbar-thumb {
+					background: rgba(0, 0, 0, 0.2);
+					border-radius: 3px;
+				}
+			}
+		}
+	}
+
+	.dsg-tabs--vertical {
+		flex-direction: column;
+
+		.dsg-tabs__nav {
+			border-right: none;
+			border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+			padding-right: 0;
+			margin-bottom: var(--wp--preset--spacing--md, 1.5rem);
+			min-width: 0;
+		}
+	}
+}

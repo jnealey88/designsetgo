@@ -1,0 +1,150 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/accordion",
+	"version": "1.0.0",
+	"title": "Accordion",
+	"category": "designsetgo",
+	"description": "Create accessible accordion sections with customizable icons and behavior for FAQs and content organization.",
+	"keywords": ["accordion", "faq", "collapsible", "toggle", "expand"],
+	"textdomain": "designsetgo",
+	"attributes": {
+		"allowMultipleOpen": {
+			"type": "boolean",
+			"default": false
+		},
+		"initiallyOpen": {
+			"type": "string",
+			"default": "first",
+			"enum": ["none", "first", "all"]
+		},
+		"iconStyle": {
+			"type": "string",
+			"default": "chevron",
+			"enum": ["chevron", "plus-minus", "caret", "none"]
+		},
+		"iconPosition": {
+			"type": "string",
+			"default": "right",
+			"enum": ["left", "right"]
+		},
+		"borderBetween": {
+			"type": "boolean",
+			"default": true
+		},
+		"openBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"openTextColor": {
+			"type": "string",
+			"default": ""
+		},
+		"hoverBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"hoverTextColor": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"providesContext": {
+		"designsetgo/accordion/allowMultipleOpen": "allowMultipleOpen",
+		"designsetgo/accordion/iconStyle": "iconStyle",
+		"designsetgo/accordion/iconPosition": "iconPosition",
+		"designsetgo/accordion/openBackgroundColor": "openBackgroundColor",
+		"designsetgo/accordion/openTextColor": "openTextColor",
+		"designsetgo/accordion/hoverBackgroundColor": "hoverBackgroundColor",
+		"designsetgo/accordion/hoverTextColor": "hoverTextColor"
+	},
+	"supports": {
+		"anchor": true,
+		"align": ["wide", "full"],
+		"html": false,
+		"inserter": true,
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"padding": true,
+				"blockGap": true
+			}
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true,
+				"lineHeight": true,
+				"fontWeight": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"color": true,
+				"radius": true,
+				"style": true,
+				"width": true
+			}
+		}
+	},
+	"example": {
+		"attributes": {
+			"allowMultipleOpen": false,
+			"initiallyOpen": "first"
+		},
+		"innerBlocks": [
+			{
+				"name": "designsetgo/accordion-item",
+				"attributes": {
+					"title": "What is an accordion?",
+					"isOpen": true
+				},
+				"innerBlocks": [
+					{
+						"name": "core/paragraph",
+						"attributes": {
+							"content": "An accordion is a vertically stacked list of items that can be expanded or collapsed to show or hide content."
+						}
+					}
+				]
+			},
+			{
+				"name": "designsetgo/accordion-item",
+				"attributes": {
+					"title": "How do I use this block?",
+					"isOpen": false
+				},
+				"innerBlocks": [
+					{
+						"name": "core/paragraph",
+						"attributes": {
+							"content": "Add accordion items and customize the title. You can add any content inside each item using the block editor."
+						}
+					}
+				]
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.css",
+	"style": "file:./style.css",
+	"viewScript": "file:./frontend.js"
+}

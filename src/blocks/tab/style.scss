@@ -1,0 +1,12 @@
+/**
+ * Tab Block - Frontend Styles
+ */
+
+.dsg-tab {
+	.dsg-tab__content {
+		// Content spacing
+		> * + * {
+			margin-top: var(--wp--preset--spacing--sm, 1rem);
+		}
+	}
+}

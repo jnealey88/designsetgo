@@ -1,0 +1,126 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/tabs",
+	"version": "1.0.0",
+	"title": "Tabs",
+	"category": "designsetgo",
+	"description": "Create tabbed content with icons, deep linking, and responsive accordion mode.",
+	"keywords": ["tabs", "tabbed", "accordion", "toggle"],
+	"textdomain": "designsetgo",
+	"attributes": {
+		"uniqueId": {
+			"type": "string",
+			"default": ""
+		},
+		"orientation": {
+			"type": "string",
+			"default": "horizontal",
+			"enum": ["horizontal", "vertical"]
+		},
+		"activeTab": {
+			"type": "number",
+			"default": 0
+		},
+		"alignment": {
+			"type": "string",
+			"default": "left",
+			"enum": ["left", "center", "right", "justified"]
+		},
+		"mobileBreakpoint": {
+			"type": "number",
+			"default": 768
+		},
+		"mobileMode": {
+			"type": "string",
+			"default": "accordion",
+			"enum": ["accordion", "dropdown", "tabs"]
+		},
+		"enableDeepLinking": {
+			"type": "boolean",
+			"default": false
+		},
+		"gap": {
+			"type": "string",
+			"default": "8px"
+		},
+		"tabStyle": {
+			"type": "string",
+			"default": "default",
+			"enum": ["default", "pills", "underline", "minimal"]
+		}
+	},
+	"providesContext": {
+		"designsetgo/tabs/activeTab": "activeTab",
+		"designsetgo/tabs/orientation": "orientation",
+		"designsetgo/tabs/tabStyle": "tabStyle"
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide", "full"],
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": true
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		}
+	},
+	"example": {
+		"attributes": {
+			"orientation": "horizontal",
+			"alignment": "left"
+		},
+		"innerBlocks": [
+			{
+				"name": "designsetgo/tab",
+				"attributes": {
+					"title": "First Tab",
+					"icon": ""
+				},
+				"innerBlocks": [
+					{
+						"name": "core/paragraph",
+						"attributes": {
+							"content": "Content for the first tab."
+						}
+					}
+				]
+			},
+			{
+				"name": "designsetgo/tab",
+				"attributes": {
+					"title": "Second Tab",
+					"icon": ""
+				},
+				"innerBlocks": [
+					{
+						"name": "core/paragraph",
+						"attributes": {
+							"content": "Content for the second tab."
+						}
+					}
+				]
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}

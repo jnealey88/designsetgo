@@ -1,0 +1,86 @@
+/**
+ * Tab Block - Editor Styles
+ */
+
+.dsg-tab {
+	position: relative;
+	min-height: 100px;
+
+	// Inactive tab notice - modern design
+	.dsg-tab__inactive-notice {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+		padding: 3rem 2rem;
+		background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+		border: 2px dashed rgba(37, 99, 235, 0.3);
+		border-radius: 12px;
+		text-align: center;
+		color: rgba(0, 0, 0, 0.7);
+		font-size: 0.9rem;
+		transition: all 0.2s ease;
+		cursor: pointer;
+
+		svg {
+			color: var(--wp--preset--color--accent-2, #2563eb);
+			opacity: 0.6;
+		}
+
+		span {
+			font-weight: 500;
+		}
+
+		&:hover {
+			background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%);
+			border-color: rgba(37, 99, 235, 0.5);
+
+			svg {
+				opacity: 1;
+			}
+		}
+	}
+
+	// Content area styling
+	.dsg-tab__content {
+		min-height: 100px;
+
+		// Empty state - show helpful message
+		&:empty::before {
+			content: 'Click the + button below to add content to this tab';
+			display: block;
+			padding: 2rem;
+			text-align: center;
+			color: rgba(0, 0, 0, 0.4);
+			font-size: 0.875rem;
+			font-style: italic;
+			background: rgba(0, 0, 0, 0.02);
+			border: 1px dashed rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+		}
+	}
+
+	// Hide inactive tabs completely
+	&.is-inactive {
+		display: none !important;
+	}
+
+	&:not(.is-active) {
+		display: none !important;
+	}
+
+	// Active tab styling - clean and minimal
+	&.is-active {
+		.dsg-tab__content {
+			// Ensure InnerBlocks appender is visible and styled
+			.block-editor-block-list__layout {
+				min-height: 100px;
+			}
+
+			.block-list-appender {
+				margin-top: 1rem;
+			}
+		}
+	}
+}

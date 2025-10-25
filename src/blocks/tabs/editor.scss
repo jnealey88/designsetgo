@@ -1,0 +1,198 @@
+/**
+ * Tabs Block - Editor Styles
+ */
+
+.dsg-tabs {
+	// Tab Navigation - Clean, simple styling
+	.dsg-tabs__nav {
+		display: flex;
+		gap: 8px;
+		margin-bottom: var(--wp--preset--spacing--lg, 1.5rem);
+		padding: 0;
+		border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+	}
+
+	.dsg-tabs__tab {
+		// Reset default button styles
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		background: none;
+		border: none;
+		border-bottom: 3px solid transparent;
+		padding: 0.75rem 1.25rem;
+		margin: 0;
+		margin-bottom: -2px;
+		font-family: inherit;
+		font-size: inherit;
+		color: inherit;
+		cursor: pointer;
+		white-space: nowrap;
+
+		// Ensure clickable in editor
+		pointer-events: auto;
+		position: relative;
+		font-weight: 500;
+		transition: all 0.2s ease;
+
+		// Remove default focus outline, add custom
+		&:focus {
+			outline: 2px solid var(--wp--preset--color--accent-2, #2563eb);
+			outline-offset: 2px;
+		}
+
+		// Subtle hover effect
+		&:hover:not(.is-active) {
+			color: var(--wp--preset--color--accent-2, #2563eb);
+		}
+
+		// Active state - simple underline like frontend
+		&.is-active {
+			color: var(--wp--preset--color--accent-2, #2563eb);
+			border-bottom-color: var(--wp--preset--color--accent-2, #2563eb);
+			font-weight: 600;
+		}
+	}
+
+	// Panels container - minimal, like frontend
+	.dsg-tabs__panels {
+		position: relative;
+	}
+
+	/**
+	 * Orientation: Horizontal (Default)
+	 */
+	&.dsg-tabs--horizontal {
+		.dsg-tabs__nav {
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+
+		// Alignment options
+		&.dsg-tabs--align-left .dsg-tabs__nav {
+			justify-content: flex-start;
+		}
+
+		&.dsg-tabs--align-center .dsg-tabs__nav {
+			justify-content: center;
+		}
+
+		&.dsg-tabs--align-right .dsg-tabs__nav {
+			justify-content: flex-end;
+		}
+
+		&.dsg-tabs--align-justified .dsg-tabs__nav {
+			.dsg-tabs__tab {
+				flex: 1;
+				justify-content: center;
+			}
+		}
+	}
+
+	/**
+	 * Orientation: Vertical
+	 */
+	&.dsg-tabs--vertical {
+		display: flex;
+		gap: var(--wp--preset--spacing--md, 1.5rem);
+
+		.dsg-tabs__nav {
+			flex-direction: column;
+			border-bottom: none;
+			border-right: 2px solid rgba(0, 0, 0, 0.1);
+			margin-bottom: 0;
+			padding-right: var(--wp--preset--spacing--md, 1.5rem);
+			min-width: 200px;
+		}
+
+		.dsg-tabs__panels {
+			flex: 1;
+		}
+
+		.dsg-tabs__tab {
+			justify-content: flex-start;
+			margin-bottom: 0;
+			border-bottom: none;
+			border-right: 3px solid transparent;
+			margin-right: calc(var(--wp--preset--spacing--md, 1.5rem) * -1);
+			padding-right: var(--wp--preset--spacing--md, 1.5rem);
+
+			&.is-active {
+				border-right-color: var(--wp--preset--color--accent-2, #2563eb);
+			}
+		}
+	}
+
+	/**
+	 * Tab Style: Default
+	 */
+	&.dsg-tabs--default {
+		.dsg-tabs__tab {
+			border-bottom: 3px solid transparent;
+			margin-bottom: -2px;
+
+			&.is-active {
+				border-bottom-color: var(--wp--preset--color--accent-2, #2563eb);
+			}
+		}
+	}
+
+	/**
+	 * Tab Style: Pills
+	 */
+	&.dsg-tabs--pills {
+		.dsg-tabs__nav {
+			border-bottom: none;
+		}
+
+		.dsg-tabs__tab {
+			border-radius: 6px;
+			border-bottom: none;
+			margin-bottom: 0;
+			background: rgba(0, 0, 0, 0.05);
+
+			&:hover {
+				background: rgba(0, 0, 0, 0.1);
+			}
+
+			&.is-active {
+				background: var(--wp--preset--color--accent-2, #2563eb);
+				color: white;
+			}
+		}
+	}
+
+	/**
+	 * Tab Style: Underline
+	 */
+	&.dsg-tabs--underline {
+		.dsg-tabs__tab {
+			padding-bottom: calc(var(--dsg-tab-padding, 1rem) + 0.5rem);
+			border-bottom: 2px solid transparent;
+			margin-bottom: -2px;
+
+			&.is-active {
+				border-bottom-color: var(--wp--preset--color--accent-2, #2563eb);
+			}
+		}
+	}
+
+	/**
+	 * Tab Style: Minimal
+	 */
+	&.dsg-tabs--minimal {
+		.dsg-tabs__nav {
+			border-bottom: none;
+		}
+
+		.dsg-tabs__tab {
+			padding: 0.5rem 1rem;
+			border-bottom: none;
+			margin-bottom: 0;
+
+			&.is-active {
+				background: rgba(0, 0, 0, 0.03);
+			}
+		}
+	}
+}
