@@ -12,8 +12,10 @@ const path = require('path');
 module.exports = {
 	...defaultConfig,
 	entry: {
-		// Main entry point for extensions and variations
+		// Main entry point for extensions and variations (editor)
 		index: path.resolve(process.cwd(), 'src', 'index.js'),
+		// Frontend entry point for frontend-only scripts
+		frontend: path.resolve(process.cwd(), 'src', 'frontend.js'),
 		// Block-specific entries are auto-detected by @wordpress/scripts
 		...defaultConfig.entry,
 	},

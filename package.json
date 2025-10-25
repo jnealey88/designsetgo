@@ -16,17 +16,32 @@
     "lint:php": "composer run-script lint",
     "packages-update": "wp-scripts packages-update",
     "plugin-zip": "wp-scripts plugin-zip",
-    "test:e2e": "wp-scripts test-e2e",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:e2e:firefox": "playwright test --project=firefox",
+    "test:e2e:webkit": "playwright test --project=webkit",
+    "test:e2e:mobile": "playwright test --project=mobile-chrome --project=mobile-safari",
+    "test:e2e:report": "playwright show-report",
     "test:unit": "wp-scripts test-unit-js",
     "test:php": "composer run-script test",
+    "test:install": "playwright install --with-deps",
+    "wp-env": "wp-env",
+    "wp-env:start": "wp-env start",
+    "wp-env:stop": "wp-env stop",
+    "wp-env:clean": "wp-env clean",
     "security:audit": "npm audit && npm run check-licenses"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.1",
     "@wordpress/e2e-test-utils": "^11.0.0",
     "@wordpress/env": "^10.0.0",
     "@wordpress/scripts": "^30.0.0",
     "husky": "^9.0.0",
     "lint-staged": "^15.0.0",
+    "playwright": "^1.56.1",
     "prettier": "^3.0.0"
   },
   "dependencies": {
@@ -37,7 +52,8 @@
     "@wordpress/element": "^6.0.0",
     "@wordpress/i18n": "^5.0.0",
     "@wordpress/icons": "^10.0.0",
-    "classnames": "^2.3.2"
+    "classnames": "^2.3.2",
+    "countup.js": "^2.9.0"
   },
   "lint-staged": {
     "*.js": [
