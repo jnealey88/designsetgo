@@ -14,7 +14,7 @@
  * TODO: Add scroll-triggered animations
  * TODO: Add animation presets (fade, slide, etc.)
  *
- * @package DesignSetGo
+ * @package
  */
 
 // Simple load-based animations

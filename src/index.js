@@ -1,24 +1,49 @@
 /**
- * DesignSetGo - Block Extensions & Enhancements
+ * DesignSetGo Blocks - Modern Gutenberg Block Library
  *
- * Extends WordPress core blocks with additional features
- * rather than creating custom blocks from scratch.
+ * Primary Architecture: Custom blocks with full React control
+ * Secondary: Minimal extensions for simple enhancements
  *
  * Architecture:
- * - Extensions: Enhance core blocks with new functionality
- * - Variations: Pre-configured layouts using core blocks
+ * - Blocks: Custom blocks (95% of codebase)
+ * - Extensions: Light enhancements to core blocks (5%)
+ * - Variations: Pre-configured layouts
  * - Styles: Global styles and utilities
  *
- * @package DesignSetGo
+ * @package DesignSetGo Blocks
+ * @version 2.0
  */
 
 // Global styles (variables, mixins, utilities)
 import './styles/editor.scss';
 import './styles/style.scss';
 
-// Block Extensions - Each extension is self-contained
-import './extensions/group-enhancements';
-import './extensions/animation';
+// ===== CUSTOM BLOCKS (Primary Architecture) =====
+// Full React control, proper video backgrounds, state management
+import './blocks/container';
+import './blocks/container/style.scss';
+import './blocks/container/editor.scss';
 
-// Block Variations - Pre-configured layouts
-import './variations/group-variations';
+// Tabs block (parent/child relationship)
+import './blocks/tabs';
+import './blocks/tab';
+
+// Accordion block (parent/child relationship)
+import './blocks/accordion';
+import './blocks/accordion/style.scss';
+import './blocks/accordion/editor.scss';
+import './blocks/accordion-item';
+import './blocks/accordion-item/style.scss';
+import './blocks/accordion-item/editor.scss';
+
+// Counter Group block (parent/child relationship)
+import './blocks/counter-group';
+import './blocks/counter-group/style.scss';
+import './blocks/counter-group/editor.scss';
+import './blocks/counter';
+import './blocks/counter/style.scss';
+import './blocks/counter/editor.scss';
+
+// ===== EXTENSIONS (Minimal Use Only) =====
+// Only for genuinely simple enhancements (≤3 controls, no DOM restructuring)
+import './extensions/animation';
