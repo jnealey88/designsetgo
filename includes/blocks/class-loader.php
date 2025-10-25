@@ -22,6 +22,7 @@ class Loader {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_blocks' ) );
+		add_action( 'init', array( $this, 'register_block_styles' ) );
 	}
 
 	/**
@@ -45,6 +46,54 @@ class Loader {
 				register_block_type( $block_dir );
 			}
 		}
+	}
+
+	/**
+	 * Register block style variations.
+	 *
+	 * These appear in the Site Editor under Styles → Blocks → [Block Name]
+	 */
+	public function register_block_styles() {
+		// Container Block Style Variations.
+		register_block_style(
+			'designsetgo/container',
+			array(
+				'name'  => 'card',
+				'label' => __( 'Card', 'designsetgo' ),
+			)
+		);
+
+		register_block_style(
+			'designsetgo/container',
+			array(
+				'name'  => 'elevated',
+				'label' => __( 'Elevated', 'designsetgo' ),
+			)
+		);
+
+		register_block_style(
+			'designsetgo/container',
+			array(
+				'name'  => 'bordered',
+				'label' => __( 'Bordered', 'designsetgo' ),
+			)
+		);
+
+		register_block_style(
+			'designsetgo/container',
+			array(
+				'name'  => 'gradient',
+				'label' => __( 'Gradient', 'designsetgo' ),
+			)
+		);
+
+		register_block_style(
+			'designsetgo/container',
+			array(
+				'name'  => 'glass',
+				'label' => __( 'Glass (Glassmorphism)', 'designsetgo' ),
+			)
+		);
 	}
 
 	/**

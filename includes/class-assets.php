@@ -56,9 +56,21 @@ class Assets {
 	 */
 	public function enqueue_editor_assets() {
 		// Load block extensions and variations.
-		$asset_file = include DESIGNSETGO_PATH . 'build/index.asset.php';
+		$asset_file_path = DESIGNSETGO_PATH . 'build/index.asset.php';
 
-		if ( ! $asset_file ) {
+		if ( ! file_exists( $asset_file_path ) || ! is_readable( $asset_file_path ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'DesignSetGo: Editor asset file not found. Run `npm run build`.' );
+			}
+			return;
+		}
+
+		$asset_file = include $asset_file_path;
+
+		if ( ! is_array( $asset_file ) || ! isset( $asset_file['dependencies'] ) || ! isset( $asset_file['version'] ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'DesignSetGo: Invalid editor asset file format.' );
+			}
 			return;
 		}
 
@@ -82,30 +94,77 @@ class Assets {
 	 * Enqueue frontend assets.
 	 */
 	public function enqueue_frontend_assets() {
+		// Check if any DesignSetGo blocks or enhanced blocks are used.
+		// Note: has_block() requires post content, so we check in the_content filter.
+		// For now, check if we've tracked any blocks during rendering.
+		// If no blocks are tracked yet, enqueue conditionally based on has_block().
+		$should_enqueue = false;
+
+		// Check for DesignSetGo blocks.
+		if ( has_block( 'designsetgo/container' ) || has_block( 'designsetgo/tabs' ) ) {
+			$should_enqueue = true;
+		}
+
+		// Check for core blocks that we enhance (Group block with extensions).
+		if ( has_block( 'core/group' ) ) {
+			$should_enqueue = true;
+		}
+
+		// If no blocks detected via has_block() but we're on singular content, enqueue anyway.
+		// This handles edge cases where blocks are loaded dynamically.
+		if ( ! $should_enqueue && is_singular() ) {
+			// Check if post content contains our block namespaces.
+			global $post;
+			if ( $post && (
+				strpos( $post->post_content, 'wp:designsetgo/' ) !== false ||
+				strpos( $post->post_content, 'dsg-' ) !== false
+			) ) {
+				$should_enqueue = true;
+			}
+		}
+
+		// If no blocks are used, skip loading assets.
+		if ( ! $should_enqueue ) {
+			return;
+		}
+
+		// Enqueue Dashicons for tab icons.
+		wp_enqueue_style( 'dashicons' );
+
 		// Block-specific frontend styles are handled by block.json.
 		// Load global frontend styles for extensions.
 		wp_enqueue_style(
 			'designsetgo-frontend',
 			DESIGNSETGO_URL . 'build/style-index.css',
-			array(),
+			array( 'dashicons' ),
 			DESIGNSETGO_VERSION
 		);
 
-		// Enqueue animation script for frontend animations.
-		wp_enqueue_script(
-			'designsetgo-animations',
-			DESIGNSETGO_URL . 'src/extensions/animation/index.js',
-			array(),
-			DESIGNSETGO_VERSION,
-			true
-		);
+		// Load frontend scripts from build directory.
+		$frontend_asset_path = DESIGNSETGO_PATH . 'build/frontend.asset.php';
 
-		// Enqueue Group block overlay handler for frontend.
+		if ( ! file_exists( $frontend_asset_path ) || ! is_readable( $frontend_asset_path ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'DesignSetGo: Frontend asset file not found. Run `npm run build`.' );
+			}
+			return;
+		}
+
+		$frontend_asset = include $frontend_asset_path;
+
+		if ( ! is_array( $frontend_asset ) || ! isset( $frontend_asset['dependencies'] ) || ! isset( $frontend_asset['version'] ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'DesignSetGo: Invalid frontend asset file format.' );
+			}
+			return;
+		}
+
+		// Enqueue bundled frontend scripts (animations, group enhancements, etc.).
 		wp_enqueue_script(
-			'designsetgo-group-overlay',
-			DESIGNSETGO_URL . 'src/extensions/group-enhancements/frontend.js',
-			array(),
-			DESIGNSETGO_VERSION,
+			'designsetgo-frontend',
+			DESIGNSETGO_URL . 'build/frontend.js',
+			$frontend_asset['dependencies'],
+			$frontend_asset['version'],
 			true
 		);
 	}

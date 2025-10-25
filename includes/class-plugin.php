@@ -125,10 +125,11 @@ class Plugin {
 	/**
 	 * Register DesignSetGo block category.
 	 *
-	 * @param array $categories Block categories.
+	 * @param array    $categories Block categories.
+	 * @param \WP_Post $post       Current post object (unused).
 	 * @return array Modified categories.
 	 */
-	public function register_block_category( $categories ) {
+	public function register_block_category( $categories, $post = null ) {
 		return array_merge(
 			array(
 				array(
