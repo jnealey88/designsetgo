@@ -1,16 +1,16 @@
-# Missing Blocks Research - Airo Blocks
+# Missing Blocks Research - DesignSetGo Blocks
 
 **Date:** October 23, 2025
-**Purpose:** Identify gaps in WordPress block ecosystem and opportunities for Airo Blocks
+**Purpose:** Identify gaps in WordPress block ecosystem and opportunities for DesignSetGo Blocks
 **Status:** Research & Analysis
 
 ---
 
 ## Executive Summary
 
-This research identifies critical gaps in the WordPress block ecosystem that Airo Blocks will address. Based on official WordPress proposals, community feedback, and competitive analysis, we've identified **15 high-priority blocks** that are missing or inadequate in WordPress core.
+This research identifies critical gaps in the WordPress block ecosystem that DesignSetGo Blocks will address. Based on official WordPress proposals, community feedback, and competitive analysis, we've identified **15 high-priority blocks** that are missing or inadequate in WordPress core.
 
-**Key Finding:** Most competitors charge $69-129/year for these features. Airo Blocks will offer them **100% free**, creating massive competitive advantage.
+**Key Finding:** Most competitors charge $69-129/year for these features. DesignSetGo Blocks will offer them **100% free**, creating massive competitive advantage.
 
 ---
 
@@ -146,7 +146,7 @@ Modern navigation patterns require mega menu functionality, which currently nece
 
 Beyond individual blocks, the community has identified **responsive spacing controls** as "the number one fail of current WordPress core". Every major block page builder includes the ability to control spacing (margin, padding) on different device screen sizes, but this fundamental feature is completely missing from core Gutenberg. This limitation significantly hampers responsive design capabilities.​​
 
-**Airo Blocks Solution:**
+**DesignSetGo Blocks Solution:**
 - **Status: PHASE 1 - All blocks include responsive controls**
 - Device-specific spacing (desktop, tablet, mobile)
 - Device-specific typography
@@ -168,8 +168,8 @@ The shift to block themes has created unique challenges. Theme authors who previ
 **Justin Tadlock (prominent theme developer) quote:**
 > "There have been many moments in the last three years where I'd have 95% of the work done, speeding toward the finish line of a block theme project. Then I'd smash into a brick wall. Quite often that wall was a missing design component".​
 
-**Opportunity for Airo Blocks:**
-- Theme developers can recommend Airo Blocks as the "missing piece"
+**Opportunity for DesignSetGo Blocks:**
+- Theme developers can recommend DesignSetGo Blocks as the "missing piece"
 - FSE-first approach ensures perfect theme compatibility
 - Free = no barrier to recommendation
 - Potential partnerships with theme developers
@@ -180,7 +180,7 @@ The shift to block themes has created unique challenges. Theme authors who previ
 
 Beyond missing blocks, developers struggle with core block extensibility. The community has identified that you cannot easily modify markup in the Editor without triggering block validation errors, making it difficult to extend existing core blocks with additional features like custom icons or attributes.​
 
-**Airo Blocks Solution:**
+**DesignSetGo Blocks Solution:**
 - Build from scratch with extensibility in mind
 - Provide hooks and filters for developers
 - Open source = community can extend
@@ -194,10 +194,10 @@ To address the tension between keeping WordPress lean and providing necessary fu
 
 The WordPress.com implementation already includes additional blocks through Jetpack, acknowledging that core blocks alone are insufficient for most users' needs.​
 
-**What This Means for Airo Blocks:**
+**What This Means for DesignSetGo Blocks:**
 - WordPress acknowledges core blocks are insufficient
 - Core/Canonical blocks may take years to implement
-- Airo Blocks fills the gap NOW
+- DesignSetGo Blocks fills the gap NOW
 - Being free and open-source aligns with WordPress philosophy
 - Could become the "de facto standard" block library
 
@@ -263,11 +263,11 @@ Based on user demand and competitive analysis:
 - **Otter Pro:** $69/year (many features locked)
 - **GenerateBlocks Pro:** $49/year (minimal features)
 
-**Airo Blocks:** $0 forever ✅
+**DesignSetGo Blocks:** $0 forever ✅
 
 ### Feature Comparison
 
-| Feature | Core WP | Competitors | Airo Blocks |
+| Feature | Core WP | Competitors | DesignSetGo Blocks |
 |---------|---------|-------------|-------------|
 | Tabs | ❌ | 💰 Pro | ✅ Free |
 | Accordion | ⚠️ Basic | ✅ Free | ✅ Free+ |
@@ -343,8 +343,228 @@ Based on user demand and competitive analysis:
 
 ---
 
+## WordPress Block Editor Technical Best Practices ⚙️
+
+### Critical Finding: Editor Styling Anti-Patterns
+
+**Date:** October 24, 2025
+**Issue:** Container block styles apply on frontend but not in editor
+**Root Cause:** Using WordPress anti-patterns for block development
+
+#### ❌ **Anti-Pattern 1: DOM Manipulation with useEffect**
+
+**What We Were Doing (WRONG):**
+```javascript
+useEffect(() => {
+  const container = document.querySelector(`[data-block="${clientId}"]`);
+  const inner = container.querySelector('.dsg-container__inner');
+
+  // Manual style manipulation
+  inner.style.display = 'grid';
+  inner.style.gridTemplateColumns = `repeat(${gridColumns}, 1fr)`;
+}, [layoutType, gridColumns]);
+```
+
+**Why This Fails:**
+- WordPress block editor uses iframes in modern versions
+- DOM queries may run before elements are rendered
+- Race conditions between React rendering and useEffect execution
+- Doesn't match WordPress's declarative architecture
+- The block wrapper might not exist when useEffect runs
+- **Result:** Styles inconsistently apply or don't apply at all in editor
+
+**WordPress Best Practice:**
+> "The save function should be a pure and stateless function that depends only on the attributes used to invoke it and shouldn't use any APIs such as useState or useEffect." - [WordPress Block Editor Handbook](https://developer.wordpress.org/block-editor/)
+
+#### ❌ **Anti-Pattern 2: Plain `<InnerBlocks />` Instead of `useInnerBlocksProps`**
+
+**What We Were Doing (WRONG):**
+```javascript
+<div className="dsg-container__inner" style={{ position: 'relative', zIndex: 2 }}>
+  <InnerBlocks />
+</div>
+```
+
+**Why This Breaks Layouts:**
+- WordPress adds wrapper divs (`block-editor-inner-blocks`, `block-editor-block-list__layout`) around plain `<InnerBlocks />`
+- These wrapper divs **break CSS Grid and Flexbox layouts** because styles apply to the wrong element
+- Editor markup doesn't match frontend markup
+- Block appender and inserter may not work correctly
+
+**WordPress Community Insight:**
+> "When using plain `<InnerBlocks />`, additional wrapper divs break flexbox and CSS Grid layouts. Use `useInnerBlocksProps` hooks that core blocks employ. This will allow your block markup to match the frontend without the editor wrapping things in additional tags." - [WordPress StackExchange](https://wordpress.stackexchange.com/questions/390696/innerblocks-breaks-flexbox-and-css-grid-styles)
+
+#### ✅ **Correct Pattern: Declarative Styles with `useInnerBlocksProps`**
+
+**How WordPress Core Blocks Do It:**
+```javascript
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+
+export default function ContainerEdit({ attributes }) {
+  const { layoutType, constrainWidth, contentWidth, gridColumns, gap } = attributes;
+
+  // 1. Calculate styles declaratively (NO useEffect, NO DOM queries)
+  const innerStyles = {};
+
+  if (layoutType === 'grid') {
+    innerStyles.display = 'grid';
+    innerStyles.gridTemplateColumns = `repeat(${gridColumns}, 1fr)`;
+    innerStyles.gap = gap;
+  } else if (layoutType === 'flex') {
+    innerStyles.display = 'flex';
+    innerStyles.flexDirection = 'row';
+    innerStyles.flexWrap = 'wrap';
+    innerStyles.gap = gap;
+  } else {
+    innerStyles.display = 'flex';
+    innerStyles.flexDirection = 'column';
+    innerStyles.gap = gap;
+  }
+
+  if (constrainWidth) {
+    innerStyles.maxWidth = contentWidth;
+    innerStyles.marginLeft = 'auto';
+    innerStyles.marginRight = 'auto';
+  }
+
+  // 2. Apply to block wrapper
+  const blockProps = useBlockProps({
+    className: 'dsg-container',
+  });
+
+  // 3. Apply to inner blocks wrapper (KEY: No wrapper div, props spread directly)
+  const innerBlocksProps = useInnerBlocksProps(
+    {
+      className: 'dsg-container__inner',
+      style: innerStyles, // Styles applied declaratively
+    },
+    {
+      orientation: layoutType === 'flex' ? 'horizontal' : undefined,
+    }
+  );
+
+  // 4. Single div with spread props (NO wrapper div)
+  return (
+    <>
+      <BlockControls>...</BlockControls>
+      <InspectorControls>...</InspectorControls>
+
+      <div {...blockProps}>
+        {videoUrl && <div className="dsg-video-background">...</div>}
+        {enableOverlay && <div className="dsg-overlay">...</div>}
+
+        {/* NO wrapper div - spread props directly */}
+        <div {...innerBlocksProps} />
+      </div>
+    </>
+  );
+}
+```
+
+**Save Function (Must Match Editor):**
+```javascript
+export default function ContainerSave({ attributes }) {
+  // Same style calculation as edit.js
+  const innerStyles = { /* ... */ };
+
+  const blockProps = useBlockProps.save({
+    className: 'dsg-container',
+  });
+
+  // Use .save() variant for consistency
+  const innerBlocksProps = useInnerBlocksProps.save({
+    className: 'dsg-container__inner',
+    style: innerStyles,
+  });
+
+  return (
+    <div {...blockProps}>
+      {enableOverlay && <div className="dsg-overlay">...</div>}
+      <div {...innerBlocksProps} />
+    </div>
+  );
+}
+```
+
+#### Key Benefits of Correct Pattern
+
+1. **Immediate Application**: Styles apply instantly in editor, no delay
+2. **Editor/Frontend Parity**: What you see in editor matches frontend exactly
+3. **No Timing Issues**: Declarative = no race conditions
+4. **WordPress-Native**: Uses official WordPress APIs
+5. **Future-Proof**: Won't break with WordPress updates
+6. **Better Performance**: No DOM queries or useEffect overhead
+
+#### Responsive Grid Best Practice
+
+**Option A: CSS Custom Properties (Recommended)**
+```javascript
+const innerBlocksProps = useInnerBlocksProps({
+  className: 'dsg-container__inner',
+  style: {
+    '--dsg-cols-desktop': gridColumns,
+    '--dsg-cols-tablet': gridColumnsTablet,
+    '--dsg-cols-mobile': gridColumnsMobile,
+    '--dsg-gap': gap,
+    display: 'grid',
+  }
+});
+```
+
+```scss
+.dsg-container__inner {
+  grid-template-columns: repeat(var(--dsg-cols-desktop), 1fr);
+  gap: var(--dsg-gap);
+
+  @media (max-width: 1023px) {
+    grid-template-columns: repeat(var(--dsg-cols-tablet), 1fr);
+  }
+
+  @media (max-width: 767px) {
+    grid-template-columns: repeat(var(--dsg-cols-mobile), 1fr);
+  }
+}
+```
+
+**Benefits:**
+- CSS handles responsive logic
+- No JavaScript needed on frontend
+- Cleaner, more maintainable
+- Better performance
+
+#### When to Use Inline Styles vs CSS Classes
+
+**WordPress Best Practice:**
+- **Inline Styles**: User-controlled dynamic values (colors, spacing, custom widths)
+- **CSS Classes**: Static design patterns, responsive behavior, theme variations
+
+**Our Container Block:**
+- Layout type, columns, gap, content width → **Inline styles** (user-controlled)
+- Responsive visibility, video indicators, style variations → **CSS classes**
+
+#### Resources
+
+- [useInnerBlocksProps Tutorial](https://dlxplugins.com/tutorials/how-to-use-useinnerblocksprops-in-nested-blocks/)
+- [InnerBlocks breaks flexbox/grid - WordPress StackExchange](https://wordpress.stackexchange.com/questions/390696/innerblocks-breaks-flexbox-and-css-grid-styles)
+- [WordPress Block Wrapper Documentation](https://developer.wordpress.org/block-editor/getting-started/fundamentals/block-wrapper/)
+- [WordPress Styles Guide](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/applying-styles-with-stylesheets/)
+
+#### Implementation Status
+
+- **Container Block**: Needs refactoring to use `useInnerBlocksProps` pattern
+- **All Future Blocks**: Will use this pattern from the start
+- **Technical Debt**: Remove all `useEffect` DOM manipulation code
+
+#### Key Takeaway
+
+**Stop using imperative DOM manipulation. Start using declarative WordPress block hooks.**
+
+This is the #1 issue causing editor/frontend inconsistencies in WordPress block development. Every core WordPress block uses `useBlockProps` and `useInnerBlocksProps` - we should too.
+
+---
+
 **Document Maintained By:** Development Team
-**Last Updated:** October 23, 2025
+**Last Updated:** October 24, 2025
 **Next Review:** Phase 1 Sprint Planning
 
 ---
@@ -353,4 +573,4 @@ Based on user demand and competitive analysis:
 
 WordPress has acknowledged that core blocks are insufficient. Theme developers are frustrated. Users are demanding better tools. Competitors are charging $69-129/year for solutions.
 
-**Airo Blocks' opportunity:** Deliver ALL these features for FREE, with better FSE integration, and become the community-standard block library that WordPress should have built.
+**DesignSetGo Blocks' opportunity:** Deliver ALL these features for FREE, with better FSE integration, and become the community-standard block library that WordPress should have built.
