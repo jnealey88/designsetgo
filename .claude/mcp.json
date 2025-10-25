@@ -1,0 +1,15 @@
+{
+	"mcpServers": {
+		"playwright": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@executeautomation/playwright-mcp-server"
+			],
+			"env": {
+				"PLAYWRIGHT_CONFIG": "playwright.config.js",
+				"PLAYWRIGHT_BASE_URL": "http://localhost:8888"
+			}
+		}
+	}
+}
