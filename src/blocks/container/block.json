@@ -1,0 +1,185 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/container",
+	"version": "1.0.0",
+	"title": "Container",
+	"category": "designsetgo",
+	"description": "Advanced layout container with video backgrounds, responsive grids, and visual effects.",
+	"keywords": ["container", "layout", "grid", "video", "background"],
+	"textdomain": "designsetgo",
+	"attributes": {
+		"layoutType": {
+			"type": "string",
+			"default": "stack"
+		},
+		"constrainWidth": {
+			"type": "boolean",
+			"default": true
+		},
+		"contentWidth": {
+			"type": "string",
+			"default": "800px"
+		},
+		"gridColumns": {
+			"type": "number",
+			"default": 3
+		},
+		"gridColumnsTablet": {
+			"type": "number",
+			"default": 2
+		},
+		"gridColumnsMobile": {
+			"type": "number",
+			"default": 1
+		},
+		"gap": {
+			"type": "string",
+			"default": "24px"
+		},
+		"videoUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"videoPoster": {
+			"type": "string",
+			"default": ""
+		},
+		"videoAutoplay": {
+			"type": "boolean",
+			"default": true
+		},
+		"videoLoop": {
+			"type": "boolean",
+			"default": true
+		},
+		"videoMuted": {
+			"type": "boolean",
+			"default": true
+		},
+		"hideOnDesktop": {
+			"type": "boolean",
+			"default": false
+		},
+		"hideOnTablet": {
+			"type": "boolean",
+			"default": false
+		},
+		"hideOnMobile": {
+			"type": "boolean",
+			"default": false
+		},
+		"enableOverlay": {
+			"type": "boolean",
+			"default": false
+		},
+		"overlayColor": {
+			"type": "string",
+			"default": "rgba(0, 0, 0, 0.5)"
+		},
+		"linkUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"linkTarget": {
+			"type": "string",
+			"default": "_self"
+		},
+		"linkRel": {
+			"type": "string",
+			"default": ""
+		},
+		"textAlign": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"align": ["wide", "full"],
+		"html": false,
+		"inserter": true,
+		"layout": false,
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"padding": true
+			}
+		},
+		"dimensions": {
+			"minHeight": true,
+			"__experimentalDefaultControls": {
+				"minHeight": false
+			}
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"background": {
+			"backgroundImage": true,
+			"backgroundSize": true,
+			"__experimentalDefaultControls": {
+				"backgroundImage": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"shadow": true,
+		"position": {
+			"sticky": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"color": true,
+				"radius": true,
+				"style": true,
+				"width": true
+			}
+		}
+	},
+	"example": {
+		"attributes": {
+			"layout": {
+				"type": "flex",
+				"orientation": "vertical"
+			},
+			"gridColumns": 1
+		},
+		"innerBlocks": [
+			{
+				"name": "core/heading",
+				"attributes": {
+					"level": 2,
+					"content": "Container Block"
+				}
+			},
+			{
+				"name": "core/paragraph",
+				"attributes": {
+					"content": "Add content here with flexible layouts, video backgrounds, and responsive grids."
+				}
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.css",
+	"style": "file:./style.css",
+	"viewScript": "file:./frontend.js"
+}
