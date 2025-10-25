@@ -37,13 +37,20 @@ class Loader {
 			'dsg-team'         => __( 'DesignSetGo: Team', 'designsetgo' ),
 			'dsg-cta'          => __( 'DesignSetGo: Call to Action', 'designsetgo' ),
 			'dsg-content'      => __( 'DesignSetGo: Content', 'designsetgo' ),
+			'dsg-faq'          => __( 'DesignSetGo: FAQ', 'designsetgo' ),
 		);
 
+		// Get pattern categories registry.
+		$registry = \WP_Block_Pattern_Categories_Registry::get_instance();
+
 		foreach ( $categories as $slug => $label ) {
-			register_block_pattern_category(
-				$slug,
-				array( 'label' => $label )
-			);
+			// Only register if not already registered.
+			if ( ! $registry->is_registered( $slug ) ) {
+				register_block_pattern_category(
+					$slug,
+					array( 'label' => $label )
+				);
+			}
 		}
 	}
 
@@ -57,16 +64,44 @@ class Loader {
 			return;
 		}
 
-		// Get all pattern files from subdirectories.
-		$pattern_files = glob( $patterns_dir . '*/*.php' );
+		// Only scan expected/allowed pattern categories.
+		$allowed_categories = array( 'hero', 'features', 'pricing', 'testimonials', 'team', 'cta', 'content', 'faq' );
 
-		foreach ( $pattern_files as $file ) {
-			$pattern = require $file;
+		foreach ( $allowed_categories as $category ) {
+			$category_dir = $patterns_dir . $category . '/';
 
-			if ( is_array( $pattern ) && isset( $pattern['content'] ) ) {
-				$slug = 'designsetgo/' . basename( dirname( $file ) ) . '/' . basename( $file, '.php' );
+			// Skip if category directory doesn't exist.
+			if ( ! is_dir( $category_dir ) ) {
+				continue;
+			}
 
-				register_block_pattern( $slug, $pattern );
+			// Get pattern files from this specific category.
+			$pattern_files = glob( $category_dir . '*.php' );
+
+			if ( ! $pattern_files ) {
+				continue;
+			}
+
+			foreach ( $pattern_files as $file ) {
+				// Security: Verify file is within expected directory (prevent directory traversal).
+				$real_file = realpath( $file );
+				$real_dir  = realpath( $patterns_dir );
+
+				if ( ! $real_file || ! $real_dir || strpos( $real_file, $real_dir ) !== 0 ) {
+					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						error_log( sprintf( 'DesignSetGo: Skipped invalid pattern file path: %s', $file ) );
+					}
+					continue;
+				}
+
+				// Load pattern file.
+				$pattern = require $real_file;
+
+				// Validate pattern structure.
+				if ( is_array( $pattern ) && isset( $pattern['content'] ) ) {
+					$slug = 'designsetgo/' . sanitize_key( $category ) . '/' . sanitize_key( basename( $file, '.php' ) );
+					register_block_pattern( $slug, $pattern );
+				}
 			}
 		}
 	}
