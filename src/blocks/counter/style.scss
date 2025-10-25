@@ -1,0 +1,110 @@
+/**
+ * Counter Block - Frontend Styles
+ *
+ * Individual counter item with icon, number, and label
+ */
+
+.dsg-counter {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 1.5rem;
+	box-sizing: border-box;
+
+	// Icon
+	&__icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 1rem;
+		color: var(--wp--preset--color--primary, currentColor);
+
+		svg {
+			width: 48px;
+			height: 48px;
+			max-width: 100%;
+			height: auto;
+		}
+
+		&--top {
+			margin-bottom: 1rem;
+		}
+
+		&--left {
+			margin-right: 1rem;
+			margin-bottom: 0;
+		}
+
+		&--right {
+			margin-left: 1rem;
+			margin-bottom: 0;
+		}
+	}
+
+	// Content wrapper (number + optional side icons)
+	&__content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+
+		&.icon-left,
+		&.icon-right {
+			flex-direction: row;
+		}
+	}
+
+	// Number
+	&__number {
+		font-size: 3rem;
+		font-weight: bold;
+		line-height: 1.2;
+		color: var(--wp--preset--color--contrast, currentColor);
+		margin: 0;
+		transition: color 0.3s ease;
+
+		.dsg-counter__value {
+			font-variant-numeric: tabular-nums;
+		}
+	}
+
+	// Label
+	&__label {
+		font-size: 1rem;
+		color: var(--wp--preset--color--contrast-2, currentColor);
+		margin-top: 0.5rem;
+		margin-bottom: 0;
+		line-height: 1.5;
+		transition: color 0.3s ease;
+	}
+
+	// Hover state
+	&:hover {
+		.dsg-counter__number {
+			color: var(--wp--preset--color--primary, currentColor);
+		}
+	}
+
+	// Accessibility: Respect prefers-reduced-motion
+	@media (prefers-reduced-motion: reduce) {
+		.dsg-counter__number,
+		.dsg-counter__label {
+			transition: none;
+		}
+	}
+
+	// Responsive: Smaller number on mobile
+	@media (max-width: 767px) {
+		padding: 1rem;
+
+		&__number {
+			font-size: 2.5rem;
+		}
+
+		&__icon svg {
+			width: 36px;
+			height: 36px;
+		}
+	}
+}

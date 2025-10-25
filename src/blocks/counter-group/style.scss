@@ -1,0 +1,48 @@
+/**
+ * Counter Group Block - Frontend Styles
+ *
+ * Responsive grid layout using CSS custom properties
+ */
+
+.dsg-counter-group {
+	width: 100%;
+	box-sizing: border-box;
+
+	&__inner {
+		display: grid;
+		grid-template-columns: repeat(var(--dsg-counter-columns-desktop, 3), 1fr);
+		gap: var(--dsg-counter-gap, 32px);
+		width: 100%;
+		box-sizing: border-box;
+
+		// Alignment classes
+		&.align-left {
+			justify-items: start;
+			text-align: left;
+		}
+
+		&.align-center {
+			justify-items: center;
+			text-align: center;
+		}
+
+		&.align-right {
+			justify-items: end;
+			text-align: right;
+		}
+	}
+
+	// Tablet breakpoint (768px - 1023px)
+	@media (max-width: 1023px) {
+		.dsg-counter-group__inner {
+			grid-template-columns: repeat(var(--dsg-counter-columns-tablet, 2), 1fr);
+		}
+	}
+
+	// Mobile breakpoint (<768px)
+	@media (max-width: 767px) {
+		.dsg-counter-group__inner {
+			grid-template-columns: repeat(var(--dsg-counter-columns-mobile, 1), 1fr);
+		}
+	}
+}

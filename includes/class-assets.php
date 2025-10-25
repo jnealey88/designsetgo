@@ -55,6 +55,9 @@ class Assets {
 	 * This method is for global editor assets (extensions, variations, etc.).
 	 */
 	public function enqueue_editor_assets() {
+		// Enqueue Dashicons for icon block and tab icons.
+		wp_enqueue_style( 'dashicons' );
+
 		// Load block extensions and variations.
 		$asset_file_path = DESIGNSETGO_PATH . 'build/index.asset.php';
 
@@ -85,7 +88,7 @@ class Assets {
 		wp_enqueue_style(
 			'designsetgo-extensions',
 			DESIGNSETGO_URL . 'build/index.css',
-			array( 'wp-edit-blocks' ),
+			array( 'wp-edit-blocks', 'dashicons' ),
 			$asset_file['version']
 		);
 	}
@@ -101,7 +104,7 @@ class Assets {
 		$should_enqueue = false;
 
 		// Check for DesignSetGo blocks.
-		if ( has_block( 'designsetgo/container' ) || has_block( 'designsetgo/tabs' ) ) {
+		if ( has_block( 'designsetgo/container' ) || has_block( 'designsetgo/tabs' ) || has_block( 'designsetgo/icon' ) ) {
 			$should_enqueue = true;
 		}
 

@@ -1,0 +1,67 @@
+/**
+ * Counter Group Block - Editor Styles
+ *
+ * Editor-specific styles (matches frontend for WYSIWYG)
+ */
+
+.dsg-counter-group {
+	width: 100%;
+	box-sizing: border-box;
+
+	&__inner {
+		display: grid;
+		grid-template-columns: repeat(var(--dsg-counter-columns-desktop, 3), 1fr);
+		gap: var(--dsg-counter-gap, 32px);
+		width: 100%;
+		box-sizing: border-box;
+
+		// Alignment classes
+		&.align-left {
+			justify-items: start;
+			text-align: left;
+		}
+
+		&.align-center {
+			justify-items: center;
+			text-align: center;
+		}
+
+		&.align-right {
+			justify-items: end;
+			text-align: right;
+		}
+	}
+
+	// Editor-specific styles to improve UX
+	.block-editor-block-list__layout {
+		// Ensure inner blocks respect grid layout
+		display: contents;
+	}
+
+	// Selected state
+	&.is-selected {
+		outline: 1px solid var(--wp-admin-theme-color, #007cba);
+		outline-offset: 2px;
+	}
+
+	// Placeholder state (no inner blocks yet)
+	.block-editor-inner-blocks.block-editor-block-list__layout:empty::before {
+		content: attr(data-placeholder);
+		color: #757575;
+		font-style: italic;
+	}
+
+	// Tablet breakpoint (768px - 1023px)
+	@media (max-width: 1023px) {
+		.dsg-counter-group__inner {
+			grid-template-columns: repeat(var(--dsg-counter-columns-tablet, 2), 1fr);
+		}
+	}
+
+	// Mobile breakpoint (<768px)
+	@media (max-width: 767px) {
+		.dsg-counter-group__inner {
+			grid-template-columns: repeat(var(--dsg-counter-columns-mobile, 1), 1fr);
+		}
+	}
+}

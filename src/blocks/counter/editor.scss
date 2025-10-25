@@ -1,0 +1,29 @@
+/**
+ * Counter Block - Editor Styles
+ *
+ * Editor-specific styles (matches frontend for WYSIWYG)
+ */
+
+.dsg-counter {
+	// Editor-specific styles to improve UX
+	position: relative;
+
+	// Selected state
+	&.is-selected {
+		outline: 1px solid var(--wp-admin-theme-color, #007cba);
+		outline-offset: 2px;
+		border-radius: 4px;
+	}
+
+	// Hover state in editor
+	&.is-hovered {
+		outline: 1px dashed var(--wp-admin-theme-color, #007cba);
+		outline-offset: 2px;
+		border-radius: 4px;
+	}
+
+	// Editor-only: Show counter value in a more editable format
+	.block-editor-rich-text__editable {
+		display: inline;
+	}
+}

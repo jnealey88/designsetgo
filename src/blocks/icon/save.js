@@ -18,18 +18,32 @@ export default function IconSave({ attributes }) {
 		linkRel,
 	} = attributes;
 
-	// Block wrapper props
-	const blockProps = useBlockProps.save({
+	// Get block props with WordPress styles
+	const blockPropsRaw = useBlockProps.save({
 		className: 'dsg-icon',
 	});
+
+	// Extract background color from WordPress
+	const backgroundColor = blockPropsRaw.style?.backgroundColor;
+
+	// Remove background from outer wrapper (we'll apply it to inner wrapper)
+	const blockProps = {
+		...blockPropsRaw,
+		style: {
+			...blockPropsRaw.style,
+			background: 'transparent',
+			backgroundColor: undefined,
+		},
+	};
 
 	// Icon wrapper classes
 	const iconClasses = `dsg-icon__wrapper shape-${shape}`;
 
-	// Icon wrapper styles
+	// Icon wrapper styles - apply background color to wrapper instead of outer div
 	const iconWrapperStyle = {
 		fontSize: `${iconSize}px`,
 		padding: shape !== 'none' ? `${shapePadding}px` : undefined,
+		backgroundColor: shape !== 'none' ? backgroundColor : undefined,
 	};
 
 	// Icon styles
