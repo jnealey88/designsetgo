@@ -1,29 +1,31 @@
-# Airo Blocks - Product Requirements Document
+# DesignSetGo Blocks - Product Requirements Document
 
-**Version:** 1.0
-**Date:** October 23, 2025
-**Status:** Draft for Review
-**Product:** Airo Blocks - Modern Gutenberg Block Library
+**Version:** 2.0
+**Date:** October 24, 2025
+**Status:** Architecture Approved - Ready for Development
+**Product:** DesignSetGo Blocks - Modern Gutenberg Block Library
+**Architecture:** Custom Block Approach (Primary) + Minimal Extensions
 
 ---
 
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)
-2. [Market Analysis](#market-analysis)
-3. [Competitive Analysis](#competitive-analysis)
-4. [Product Vision & Strategy](#product-vision--strategy)
-5. [User Personas](#user-personas)
-6. [Core Problems & Solutions](#core-problems--solutions)
-7. [Product Scope](#product-scope)
-8. [Feature Requirements](#feature-requirements)
-9. [Block Library Analysis](#block-library-analysis)
-10. [Unique Value Propositions](#unique-value-propositions)
-11. [Success Metrics](#success-metrics)
-12. [Product Roadmap](#product-roadmap)
-13. [Go-to-Market Strategy](#go-to-market-strategy)
-14. [Open Source & Sustainability](#open-source--sustainability)
-15. [Risk Analysis](#risk-analysis)
+2. [Technical Architecture](#technical-architecture)
+3. [Market Analysis](#market-analysis)
+4. [Competitive Analysis](#competitive-analysis)
+5. [Product Vision & Strategy](#product-vision--strategy)
+6. [User Personas](#user-personas)
+7. [Core Problems & Solutions](#core-problems--solutions)
+8. [Product Scope](#product-scope)
+9. [Feature Requirements](#feature-requirements)
+10. [Block Library Analysis](#block-library-analysis)
+11. [Unique Value Propositions](#unique-value-propositions)
+12. [Success Metrics](#success-metrics)
+13. [Product Roadmap](#product-roadmap)
+14. [Go-to-Market Strategy](#go-to-market-strategy)
+15. [Open Source & Sustainability](#open-source--sustainability)
+16. [Risk Analysis](#risk-analysis)
 
 ---
 
@@ -31,7 +33,7 @@
 
 ### Product Overview
 
-Airo Blocks is a **100% free, open-source** Gutenberg block library that bridges the gap between native WordPress blocks and advanced page builders like Elementor. The product targets WordPress users who prefer the native block editor but need more sophisticated design capabilities without the performance overhead or cost of traditional page builders.
+DesignSetGo Blocks is a **100% free, open-source** Gutenberg block library that bridges the gap between native WordPress blocks and advanced page builders like Elementor. The product targets WordPress users who prefer the native block editor but need more sophisticated design capabilities without the performance overhead or cost of traditional page builders.
 
 **License:** GPL v2 or later (WordPress compatible)
 **Philosophy:** Community-driven, performance-first, design-forward
@@ -60,6 +62,606 @@ Airo Blocks is a **100% free, open-source** Gutenberg block library that bridges
 **Phase 2 (6 months post-MVP):** Add 10-15 advanced blocks (all free)
 **Phase 3 (12 months):** Dynamic content, WooCommerce integration, theme builder (all free)
 **Phase 4 (18+ months):** Community features, ecosystem, integrations
+
+---
+
+## Technical Architecture
+
+**Version:** 2.0
+**Last Updated:** October 24, 2025
+**Decision Status:** ✅ **Custom Block Approach Approved**
+
+### Architecture Decision: Custom Blocks First
+
+After evaluating extension-based vs. custom block approaches, we've decided to build DesignSetGo Blocks using **custom blocks as the primary architecture** with minimal extensions for simple enhancements only.
+
+#### Decision Rationale
+
+**Why Custom Blocks:**
+
+1. **Product Alignment:** We're building a "block library" not an "extension plugin"
+2. **Feature Requirements:** 13/15 Phase 1 blocks require custom implementations (tabs, accordion, counter, hero, testimonials, etc.)
+3. **Full Control:** Complex features (video backgrounds, animations, state management) need complete rendering control
+4. **Future-Proof:** Phase 2/3 features (timeline, before/after slider, dynamic content) all require custom blocks
+5. **Better UX:** React component patterns are cleaner than DOM manipulation hacks
+6. **Maintainability:** Custom blocks are more stable and easier to maintain than fragile filter-based extensions
+7. **Performance:** Can optimize bundle splitting, lazy loading, and conditional loading per block
+
+**Why Not Extensions:**
+
+1. **DOM Limitations:** Can't reliably inject complex elements (video backgrounds, nested components)
+2. **React Lifecycle Issues:** Fighting against React's rendering cycle with DOM manipulation
+3. **Breaking Changes:** WordPress updates can break filter-based approaches
+4. **State Management:** Limited ability to manage complex component state
+5. **Development Speed:** Custom blocks are actually faster for complex features
+
+---
+
+### Technical Architecture Overview
+
+```
+airo-blocks/
+├── src/
+│   ├── blocks/                    ← PRIMARY: Custom Blocks (95% of codebase)
+│   │   ├── container/            ← Replaces extended core/group
+│   │   │   ├── index.js         ← Block registration
+│   │   │   ├── edit.js          ← React edit component (full control)
+│   │   │   ├── save.js          ← Save function (clean HTML output)
+│   │   │   ├── style.scss       ← Frontend styles
+│   │   │   ├── editor.scss      ← Editor-only styles
+│   │   │   └── attributes.js    ← Block attributes schema
+│   │   ├── advanced-heading/
+│   │   ├── button/
+│   │   ├── hero/
+│   │   ├── feature-cards/
+│   │   ├── tabs/               ← Complex state management
+│   │   ├── accordion/
+│   │   ├── counter/            ← Animation with Intersection Observer
+│   │   ├── testimonial/
+│   │   ├── pricing/
+│   │   ├── team-member/
+│   │   ├── icon/
+│   │   ├── cta/
+│   │   ├── divider/
+│   │   └── spacer/
+│   │
+│   ├── extensions/              ← SECONDARY: Light enhancements (5% of codebase)
+│   │   ├── core-responsive/    ← Responsive visibility for core blocks
+│   │   ├── heading-effects/    ← Text gradients, shadows (CSS only)
+│   │   └── button-icons/       ← Add icons to core buttons (simple)
+│   │
+│   ├── components/             ← Shared React components
+│   │   ├── MediaUpload/
+│   │   ├── IconPicker/
+│   │   ├── ColorPicker/
+│   │   ├── ResponsiveControl/
+│   │   ├── AnimationControl/
+│   │   └── GlobalStylesContext/
+│   │
+│   ├── hooks/                  ← Custom React hooks
+│   │   ├── useResponsive.js
+│   │   ├── useAnimation.js
+│   │   ├── useGlobalStyles.js
+│   │   └── useMediaQuery.js
+│   │
+│   ├── utils/                  ← Utility functions
+│   │   ├── classnames.js
+│   │   ├── breakpoints.js
+│   │   ├── css-generator.js
+│   │   └── sanitize.js
+│   │
+│   ├── styles/                 ← Global styles
+│   │   ├── global.scss        ← CSS variables, resets
+│   │   ├── animations.scss    ← Animation keyframes
+│   │   └── utilities.scss     ← Utility classes
+│   │
+│   ├── patterns/               ← Block patterns
+│   │   ├── hero/
+│   │   ├── features/
+│   │   ├── pricing/
+│   │   └── testimonials/
+│   │
+│   └── index.js               ← Main entry point
+│
+├── includes/                   ← PHP backend
+│   ├── class-airo-blocks.php  ← Main plugin class
+│   ├── class-global-styles.php
+│   ├── class-block-assets.php
+│   └── class-patterns.php
+│
+├── build/                      ← Compiled assets (webpack output)
+├── languages/                  ← Translations
+└── tests/                      ← Unit and E2E tests
+```
+
+---
+
+### Block Development Pattern
+
+#### Custom Block Structure (Standard Pattern)
+
+Every custom block follows this pattern:
+
+```javascript
+// src/blocks/container/index.js
+import { registerBlockType } from '@wordpress/blocks';
+import edit from './edit';
+import save from './save';
+import metadata from './block.json';
+
+registerBlockType(metadata.name, {
+    ...metadata,
+    edit,
+    save,
+});
+```
+
+```json
+// block.json
+{
+    "apiVersion": 3,
+    "name": "airo/container",
+    "title": "Container",
+    "category": "airo-blocks",
+    "attributes": {
+        "videoUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "videoPoster": {
+            "type": "string",
+            "default": ""
+        },
+        "gridColumns": {
+            "type": "number",
+            "default": 3
+        }
+        // ... more attributes
+    },
+    "supports": {
+        "anchor": true,
+        "align": ["wide", "full"],
+        "spacing": true,
+        "color": true
+    }
+}
+```
+
+```jsx
+// edit.js - Full React Control
+export default function ContainerEdit({ attributes, setAttributes }) {
+    const { videoUrl, videoPoster, gridColumns } = attributes;
+
+    return (
+        <div className="airo-container">
+            {/* Video background with full React control */}
+            {videoUrl && (
+                <div className="airo-video-background">
+                    <video
+                        src={videoUrl}
+                        poster={videoPoster}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                    />
+                </div>
+            )}
+
+            {/* Content */}
+            <InnerBlocks />
+        </div>
+    );
+}
+```
+
+```jsx
+// save.js - Clean HTML Output
+export default function ContainerSave({ attributes }) {
+    const { videoUrl, videoPoster, gridColumns } = attributes;
+
+    return (
+        <div
+            className="airo-container"
+            data-video-url={videoUrl}
+            data-video-poster={videoPoster}
+            data-grid-columns={gridColumns}
+        >
+            <InnerBlocks.Content />
+        </div>
+    );
+}
+```
+
+**Frontend JavaScript** (separate file, lazy-loaded):
+```javascript
+// Loaded only when block is on page
+document.addEventListener('DOMContentLoaded', () => {
+    const containers = document.querySelectorAll('.airo-container');
+
+    containers.forEach(container => {
+        const videoUrl = container.dataset.videoUrl;
+
+        if (videoUrl) {
+            // Inject video element
+            // Use Intersection Observer for lazy loading
+            // Full control over frontend rendering
+        }
+    });
+});
+```
+
+---
+
+### Extension Pattern (Minimal Use Only)
+
+Extensions are ONLY used for genuinely simple enhancements that:
+- Add ≤3 controls
+- Don't require DOM restructuring
+- Are pure CSS or simple data attributes
+- Don't need state management
+
+```javascript
+// src/extensions/heading-effects/index.js
+import { addFilter } from '@wordpress/hooks';
+
+// Add text gradient attribute
+addFilter(
+    'blocks.registerBlockType',
+    'airo/heading-gradient',
+    (settings, name) => {
+        if (name !== 'core/heading') return settings;
+
+        return {
+            ...settings,
+            attributes: {
+                ...settings.attributes,
+                textGradient: {
+                    type: 'string',
+                    default: ''
+                }
+            }
+        };
+    }
+);
+
+// Add gradient control in sidebar
+addFilter(
+    'editor.BlockEdit',
+    'airo/heading-gradient-control',
+    createHigherOrderComponent((BlockEdit) => (props) => {
+        if (props.name !== 'core/heading') {
+            return <BlockEdit {...props} />;
+        }
+
+        return (
+            <>
+                <BlockEdit {...props} />
+                <InspectorControls>
+                    <PanelBody title="Text Gradient">
+                        <GradientPicker
+                            value={props.attributes.textGradient}
+                            onChange={(value) =>
+                                props.setAttributes({ textGradient: value })
+                            }
+                        />
+                    </PanelBody>
+                </InspectorControls>
+            </>
+        );
+    })
+);
+
+// Apply gradient as inline style (simple, CSS-only)
+addFilter(
+    'blocks.getSaveContent.extraProps',
+    'airo/heading-gradient-save',
+    (props, blockType, attributes) => {
+        if (blockType.name !== 'core/heading') return props;
+
+        if (attributes.textGradient) {
+            props.style = {
+                ...props.style,
+                background: attributes.textGradient,
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                color: 'transparent'
+            };
+        }
+
+        return props;
+    }
+);
+```
+
+**Decision Rule:**
+- If feature needs video, complex state, or DOM restructuring → **Custom Block**
+- If feature is just CSS or simple data → **Extension** (maybe)
+- When in doubt → **Custom Block**
+
+---
+
+### Graceful Degradation Strategy
+
+**Problem:** Users might deactivate plugin. What happens to their content?
+
+**Solution:** All blocks save clean, semantic HTML that works without the plugin:
+
+```html
+<!-- airo/container saves as: -->
+<div class="airo-container"
+     data-video-url="https://example.com/video.mp4"
+     data-grid-columns="3">
+    <div class="wp-block-group__inner-container">
+        <!-- User's content here - fully preserved -->
+        <h2>Heading stays</h2>
+        <p>Paragraph stays</p>
+    </div>
+</div>
+```
+
+**If plugin deactivated:**
+- ✅ Content remains (no data loss)
+- ✅ InnerBlocks fully functional
+- ✅ Basic layout preserved (div with classes)
+- ❌ Enhanced features lost (video background, animations, grid)
+- ❌ Blocks appear as "Invalid" in editor (expected, can recover)
+
+**Recovery:** User can reinstall plugin and all blocks work again.
+
+**Better than extensions:** With extensions, we'd lose control over saved output.
+
+---
+
+### Performance Architecture
+
+#### Bundle Splitting Strategy
+
+```javascript
+// webpack.config.js
+module.exports = {
+    entry: {
+        // Editor bundle (loaded in admin only)
+        'editor': './src/index.js',
+
+        // Frontend bundle (per-block lazy loading)
+        'container-frontend': './src/blocks/container/frontend.js',
+        'tabs-frontend': './src/blocks/tabs/frontend.js',
+        'accordion-frontend': './src/blocks/accordion/frontend.js',
+        // ... separate bundles per block
+    },
+
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                // Shared dependencies in separate bundle
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    }
+};
+```
+
+#### Conditional Loading
+
+```php
+// includes/class-block-assets.php
+public function enqueue_block_assets() {
+    // Parse post content
+    $blocks = parse_blocks(get_the_content());
+    $used_blocks = $this->get_used_blocks($blocks);
+
+    // Only load CSS/JS for blocks actually on page
+    foreach ($used_blocks as $block_name) {
+        $script_handle = "airo-{$block_name}-frontend";
+
+        wp_enqueue_script(
+            $script_handle,
+            AIRO_BLOCKS_URL . "build/{$block_name}-frontend.js",
+            ['wp-dom-ready'],
+            AIRO_BLOCKS_VERSION,
+            true
+        );
+    }
+}
+```
+
+**Performance Budget:**
+- Editor bundle: <150KB (one-time load in admin)
+- Frontend per-block: <10KB average
+- Total page (10 blocks): <100KB
+- No jQuery dependency
+- Tree-shaking removes unused code
+
+---
+
+### Migration Path from DesignSetGo
+
+**Current State:** DesignSetGo uses extension approach for Group block
+
+**Migration Plan:**
+
+**Phase 1 (Week 1-2): Build airo/container**
+- Create custom `airo/container` block
+- Migrate all Group enhancements:
+  - Grid columns (responsive)
+  - Visibility controls
+  - Overlay toggle
+  - Clickable groups
+  - Shape dividers
+  - Video backgrounds (properly implemented)
+
+**Phase 2 (Week 3): Create Migration Tool**
+```php
+// Convert core/group with dsg-* classes to airo/container
+function airo_migrate_designsetgo_blocks($content) {
+    // Find core/group blocks with dsg- attributes
+    // Convert to airo/container
+    // Preserve all user content
+    // Return updated content
+}
+```
+
+**Phase 3 (Week 4): User Communication**
+- Migration guide in documentation
+- Admin notice in DesignSetGo users
+- Automated migration tool (one-click)
+- Video tutorial showing migration
+
+**Phase 4 (Week 5+): Deprecation**
+- DesignSetGo marked as "legacy"
+- Redirect users to DesignSetGo Blocks
+- Maintain DesignSetGo for 6 months (bug fixes only)
+- Full sunset after 6 months
+
+---
+
+### Technology Stack
+
+**Frontend:**
+- React 18+ (WordPress's bundled version)
+- @wordpress/blocks
+- @wordpress/components
+- @wordpress/block-editor
+- @wordpress/compose
+- @wordpress/data
+- Vanilla JavaScript for frontend (no jQuery)
+
+**Build Tools:**
+- @wordpress/scripts (webpack, babel, eslint)
+- Sass for styling
+- PostCSS for autoprefixing
+- Webpack for module bundling
+
+**Backend:**
+- PHP 7.4+ (WordPress 6.0+ requirement)
+- WordPress Core APIs (no external dependencies)
+- REST API for dynamic features
+
+**Testing:**
+- @wordpress/e2e-test-utils (E2E testing)
+- Jest for unit tests
+- Playwright for browser testing
+
+**Performance:**
+- Intersection Observer API (lazy loading)
+- CSS containment for performance
+- Will-change for animations
+- Passive event listeners
+
+---
+
+### Development Workflow
+
+**Block Development Process:**
+
+1. **Create block folder**
+   ```bash
+   mkdir src/blocks/my-block
+   cd src/blocks/my-block
+   ```
+
+2. **Generate boilerplate**
+   ```bash
+   npx @wordpress/create-block --template @airo/block-template
+   ```
+
+3. **Implement edit.js** (React component with full control)
+
+4. **Implement save.js** (Clean HTML output)
+
+5. **Add styles** (editor.scss, style.scss)
+
+6. **Add frontend JS** (if needed, frontend.js)
+
+7. **Test in editor and frontend**
+
+8. **Performance audit** (bundle size, Lighthouse)
+
+9. **Accessibility audit** (keyboard, screen reader)
+
+10. **Documentation** (README, code comments)
+
+**Quality Gates:**
+- ✅ Bundle size <10KB per block
+- ✅ Lighthouse score 90+
+- ✅ WCAG 2.1 AA compliant
+- ✅ Works in latest 2 WordPress versions
+- ✅ Unit tests pass
+- ✅ E2E tests pass
+
+---
+
+### Extension Development (Minimal)
+
+**When to Build an Extension:**
+1. Feature is truly simple (≤3 controls)
+2. No DOM restructuring needed
+3. Pure CSS or data attributes
+4. Enhances core block meaningfully
+
+**Extension Checklist:**
+- [ ] Can it be done without React component?
+- [ ] Is it stable against WordPress updates?
+- [ ] Does it add genuine value?
+- [ ] Is it better than a custom block?
+
+**If any answer is "no" → Build a custom block instead**
+
+---
+
+### Decision Matrix Reference
+
+For every feature request, use this matrix:
+
+| Criteria | Extension | Custom Block |
+|----------|-----------|--------------|
+| **Complexity** | ≤3 controls | Any complexity |
+| **DOM Changes** | None | Any changes |
+| **State Management** | None | Any state needed |
+| **Video/Media** | ❌ No | ✅ Yes |
+| **Interactions** | Simple hover/click | Complex (tabs, accordion) |
+| **Animations** | CSS only | JavaScript animations |
+| **Performance** | Minimal overhead | Can optimize per-block |
+| **Maintenance** | Can break on WP updates | Stable, independent |
+| **User Experience** | Limited | Full control |
+
+**Examples:**
+- Text gradient effect → Extension (CSS only)
+- Video background → Custom Block (DOM + media)
+- Button with icon → Extension (simple addition)
+- Tabs → Custom Block (state management)
+- Responsive visibility → Extension (CSS classes)
+- Counter animation → Custom Block (Intersection Observer)
+
+---
+
+### Architecture Benefits
+
+**For Development Team:**
+- ✅ Clear patterns to follow
+- ✅ React best practices
+- ✅ Easier testing
+- ✅ Better code organization
+- ✅ Faster feature development
+
+**For Users:**
+- ✅ Better performance
+- ✅ More reliable features
+- ✅ Smoother user experience
+- ✅ Graceful degradation
+- ✅ Future-proof content
+
+**For Product:**
+- ✅ Competitive advantage (better than extension-based competitors)
+- ✅ Easier to maintain
+- ✅ Scales to Phase 2/3 features
+- ✅ Enables advanced features (theme builder, dynamic content)
+- ✅ Better positioning as "block library" not "extension plugin"
 
 ---
 
@@ -225,7 +827,7 @@ From analysis of WordPress forums, Reddit, Facebook groups:
 
 ### Competitive Matrix
 
-| Feature | Core Gutenberg | CoBlocks | Stackable | Otter | Kadence | **Airo Blocks** |
+| Feature | Core Gutenberg | CoBlocks | Stackable | Otter | Kadence | **DesignSetGo Blocks** |
 |---------|---------------|----------|-----------|-------|---------|-----------------|
 | **100% Free** | ✅ | ✅ | ❌ ($99/yr) | ❌ ($69/yr) | ❌ ($129/yr) | **✅ Forever** |
 | **Design Quality** | 2/5 | 2/5 | 5/5 | 3/5 | 3/5 | **5/5** |
@@ -348,7 +950,7 @@ To create the most beloved block library for WordPress by focusing on:
 - Maintenance overhead with page builders
 - Premium plugin costs add up across multiple client sites
 
-**Needs from Airo Blocks:**
+**Needs from DesignSetGo Blocks:**
 - Professional-looking blocks out of box
 - Fast, clean code
 - Easy client handoff
@@ -390,7 +992,7 @@ To create the most beloved block library for WordPress by focusing on:
 - Training new team members on complex tools
 - Client sites getting hacked due to plugin bloat
 
-**Needs from Airo Blocks:**
+**Needs from DesignSetGo Blocks:**
 - Consistent, predictable blocks
 - Developer-friendly (hooks, filters)
 - Open source (can customize/contribute)
@@ -434,7 +1036,7 @@ To create the most beloved block library for WordPress by focusing on:
 - Technical troubleshooting eats into content time
 - Budget constraints
 
-**Needs from Airo Blocks:**
+**Needs from DesignSetGo Blocks:**
 - Beautiful, pre-styled blocks
 - Templates/patterns to start from
 - No technical knowledge required
@@ -476,7 +1078,7 @@ To create the most beloved block library for WordPress by focusing on:
 - Competitors have better sites
 - WordPress feels complicated
 
-**Needs from Airo Blocks:**
+**Needs from DesignSetGo Blocks:**
 - Templates for common business pages
 - Obvious, clear controls
 - Mobile-friendly automatically
@@ -530,7 +1132,7 @@ Users hit a "design ceiling" with core Gutenberg blocks where they can't achieve
 - Premium themes (expensive, not flexible)
 - Multiple block plugins (inconsistent UX)
 
-**Airo Blocks Solution:**
+**DesignSetGo Blocks Solution:**
 - **Advanced styling controls** built into every block
 - **Pre-styled variants** (5+ design styles per block)
 - **Global design system** (consistent aesthetics across blocks)
@@ -557,7 +1159,7 @@ Existing block libraries and page builders sacrifice performance for features, l
 - Sacrifice speed for features (use page builders)
 - Complex optimization (caching, CDN, optimization plugins)
 
-**Airo Blocks Solution:**
+**DesignSetGo Blocks Solution:**
 - **Conditional loading:** Only load CSS/JS for blocks on page
 - **Performance budget:** <100KB total, <10KB per block
 - **No jQuery:** Pure vanilla JS
@@ -565,7 +1167,7 @@ Existing block libraries and page builders sacrifice performance for features, l
 - **Built-in lazy loading:** Images, videos, heavy content
 - **Regular performance audits:** Automated testing
 
-**Success Metric:** 90+ Lighthouse scores on sites using 10+ Airo blocks
+**Success Metric:** 90+ Lighthouse scores on sites using 10+ DesignSetGo Blocks
 
 ---
 
@@ -584,7 +1186,7 @@ Creating truly responsive designs in Gutenberg requires extensive CSS knowledge.
 - Separate mobile layouts (time-consuming)
 - Hope for the best (poor UX)
 
-**Airo Blocks Solution:**
+**DesignSetGo Blocks Solution:**
 - **Device-specific controls:** Desktop, tablet, mobile for all sizing/spacing
 - **Visual device preview** in editor
 - **Responsive visibility:** Hide/show per device
@@ -610,7 +1212,7 @@ Modern websites use animations and microinteractions to delight users. Core Gute
 - Page builder animation modules (performance hit)
 - No animations (feels dated)
 
-**Airo Blocks Solution:**
+**DesignSetGo Blocks Solution:**
 - **Entrance animations:** 10+ options (fade, slide, zoom, etc.)
 - **Scroll-triggered animations** (Phase 2)
 - **Hover effects:** Built into relevant blocks
@@ -636,7 +1238,7 @@ Users want to start with professional templates but Gutenberg pattern library is
 - Theme patterns (variable quality)
 - Import from demos (time-consuming)
 
-**Airo Blocks Solution:**
+**DesignSetGo Blocks Solution:**
 - **20+ high-quality patterns** (Phase 1)
 - **Pattern categories:** Hero, Features, Pricing, Testimonials, etc.
 - **One-click import:** Add and customize
@@ -1107,7 +1709,7 @@ Integrated icon library with 500+ icons, searchable and categorized. Used across
 - Customizable after insert
 - Preview images (screenshots)
 - Mobile-friendly by default
-- Use Airo blocks exclusively (no core blocks mixed in)
+- Use DesignSetGo Blocks exclusively (no core blocks mixed in)
 
 ---
 
@@ -1304,7 +1906,7 @@ Higher score = higher priority
 | Elementor | 4.2s | 850KB |
 | Stackable | 2.8s | 320KB |
 | Kadence | 2.1s | 180KB |
-| **Airo Blocks** | **<2.0s** | **<100KB** |
+| **DesignSetGo Blocks** | **<2.0s** | **<100KB** |
 
 **Competitive Advantage:**
 - Kadence is close on performance, but we match it with better design
@@ -1460,7 +2062,7 @@ User can still override per-block if needed
 - **vs. Kadence ($129/year):** Same features, better design, 100% free
 - **vs. Otter ($69/year):** Better UX, better performance, 100% free
 - **vs. Elementor ($59-999/year):** Better performance, no lock-in, 100% free
-- **Airo Blocks:** Best block library, zero cost, forever
+- **DesignSetGo Blocks:** Best block library, zero cost, forever
 
 ---
 
@@ -1470,7 +2072,7 @@ User can still override per-block if needed
 
 **Active Blocks Used per Site per Month**
 
-**Definition:** Average number of Airo blocks actively used on sites with the plugin installed, measured monthly.
+**Definition:** Average number of DesignSetGo Blocks actively used on sites with the plugin installed, measured monthly.
 
 **Why This Metric:**
 - Measures actual utility (not just installs)
@@ -1775,7 +2377,7 @@ User can still override per-block if needed
    - Designer communities
 
 2. **Content Marketing:**
-   - Blog: "Why we're building Airo Blocks"
+   - Blog: "Why we're building DesignSetGo Blocks"
    - Comparison: "Airo vs Stackable vs Kadence"
    - Tutorial: "Building a landing page in 10 minutes"
 
@@ -1802,7 +2404,7 @@ User can still override per-block if needed
 **Day 1 (Monday):**
 - Submit to WordPress.org (already approved)
 - Product Hunt launch (aim for Product of the Day)
-- Blog post: "Introducing Airo Blocks"
+- Blog post: "Introducing DesignSetGo Blocks"
 - Email list announcement
 - Twitter thread
 - Reddit posts (r/WordPress)
@@ -1811,7 +2413,7 @@ User can still override per-block if needed
 - Product Hunt engagement (respond to comments)
 - WP Tavern outreach (press release)
 - Post in WordPress Facebook groups (50+ groups)
-- YouTube tutorial #1: "Getting Started with Airo Blocks"
+- YouTube tutorial #1: "Getting Started with DesignSetGo Blocks"
 
 **Day 3 (Wednesday):**
 - Continue Product Hunt engagement
@@ -1825,7 +2427,7 @@ User can still override per-block if needed
 - Designer communities: Designer News, Sidebar.io
 
 **Day 5 (Friday):**
-- Blog post: "Airo Blocks vs Page Builders: Performance Comparison"
+- Blog post: "DesignSetGo Blocks vs Page Builders: Performance Comparison"
 - Compile Week 1 stats (installs, ratings, feedback)
 - Thank you post on all channels
 
@@ -1847,7 +2449,7 @@ User can still override per-block if needed
    - 10 popular WordPress themes (integration/bundle)
 
 3. **Community Building:**
-   - Start Facebook group: "Airo Blocks Community"
+   - Start Facebook group: "DesignSetGo Blocks Community"
    - Discord server (consider)
    - Respond to all support threads <24hrs
 
@@ -1912,7 +2514,7 @@ User can still override per-block if needed
    - Limited to first 500 customers
 
 2. **Public Launch** (Week 2):
-   - Blog post: "Introducing Airo Blocks Pro"
+   - Blog post: "Introducing DesignSetGo Blocks Pro"
    - Product Hunt (again)
    - Comparison chart (Free vs Pro)
    - Case studies showing Pro features
@@ -1966,7 +2568,7 @@ User can still override per-block if needed
 
 ### Philosophy
 
-Airo Blocks is a **100% free, open-source project** licensed under GPL v2 or later. We believe that powerful design tools should be accessible to everyone, regardless of budget.
+DesignSetGo Blocks is a **100% free, open-source project** licensed under GPL v2 or later. We believe that powerful design tools should be accessible to everyone, regardless of budget.
 
 **Core Principles:**
 1. **100% Free** - All features, all blocks, always free
@@ -2012,7 +2614,7 @@ Airo Blocks is a **100% free, open-source project** licensed under GPL v2 or lat
 
 ### Sustainability Model
 
-We're committed to keeping Airo Blocks free forever while maintaining sustainability through:
+We're committed to keeping DesignSetGo Blocks free forever while maintaining sustainability through:
 
 #### 1. **GitHub Sponsors** (Primary)
 - Individual sponsors: $5-50/month
@@ -2028,7 +2630,7 @@ We're committed to keeping Airo Blocks free forever while maintaining sustainabi
 
 #### 3. **Partnerships** (Non-restrictive)
 - WordPress hosting companies (SiteGround, Kinsta, etc.)
-- Theme developers (bundling Airo Blocks)
+- Theme developers (bundling DesignSetGo Blocks)
 - WordPress agencies (co-marketing)
 - No influence on features or roadmap
 
@@ -2351,8 +2953,17 @@ We're committed to keeping Airo Blocks free forever while maintaining sustainabi
 
 ### Version History
 
-- **v1.0** (Oct 23, 2025): Initial PRD
-- Future updates will be tracked here
+- **v1.0** (Oct 23, 2025): Initial PRD - Product scope, market analysis, competitive landscape
+- **v2.0** (Oct 24, 2025): **Architecture Decision** - Added comprehensive Technical Architecture section
+  - ✅ Custom Block Approach approved as primary architecture
+  - ✅ Detailed block development patterns and standards
+  - ✅ Extension pattern defined for minimal use cases
+  - ✅ Performance architecture (bundle splitting, conditional loading)
+  - ✅ Migration path from DesignSetGo (extension-based) to DesignSetGo Blocks (custom blocks)
+  - ✅ Graceful degradation strategy
+  - ✅ Development workflow and quality gates
+  - ✅ Decision matrix for future features
+  - 📝 Status changed to "Architecture Approved - Ready for Development"
 
 ---
 

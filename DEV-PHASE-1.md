@@ -1,4 +1,4 @@
-# Airo Blocks - Phase 1 MVP Development Documentation
+# DesignSetGo Blocks - Phase 1 MVP Development Documentation
 
 **Version:** 1.0
 **Target Timeline:** 16 weeks (4 months)
@@ -74,7 +74,7 @@
 
 ### Why FSE-First Matters
 
-Airo Blocks is built **FSE-first**, meaning we leverage WordPress's Full Site Editing capabilities wherever possible instead of building custom solutions.
+DesignSetGo Blocks is built **FSE-first**, meaning we leverage WordPress's Full Site Editing capabilities wherever possible instead of building custom solutions.
 
 **Benefits:**
 1. **Theme Compatibility** - Blocks inherit theme styles automatically
@@ -1869,7 +1869,7 @@ All these should follow similar patterns to the examples above.
 
 ### FSE-First Architecture
 
-**IMPORTANT:** Airo Blocks leverages WordPress's native theme.json system instead of custom wp_options storage. This ensures:
+**IMPORTANT:** DesignSetGo Blocks leverages WordPress's native theme.json system instead of custom wp_options storage. This ensures:
 - Better theme compatibility
 - WordPress handles CSS generation
 - Users familiar with FSE get consistent experience
@@ -1888,7 +1888,7 @@ class Global_Styles {
     }
 
     /**
-     * Extend theme.json with Airo Blocks presets
+     * Extend theme.json with DesignSetGo Blocks presets
      */
     public function extend_theme_json($theme_json) {
         $airo_settings = [
@@ -2569,8 +2569,8 @@ npm run plugin-zip
 ```xml
 <!-- phpcs.xml -->
 <?xml version="1.0"?>
-<ruleset name="Airo Blocks">
-    <description>Airo Blocks Coding Standards</description>
+<ruleset name="DesignSetGo Blocks">
+    <description>DesignSetGo Blocks Coding Standards</description>
 
     <file>./airo-blocks.php</file>
     <file>./includes</file>
@@ -3422,7 +3422,7 @@ svn ci -m "Tagging version 1.0.0" --username your-username
 
 ## Conclusion
 
-This development document provides a comprehensive roadmap for building the Airo Blocks MVP (Phase 1). The 16-week timeline is ambitious but achievable with a dedicated team and proper execution.
+This development document provides a comprehensive roadmap for building the DesignSetGo Blocks MVP (Phase 1). The 16-week timeline is ambitious but achievable with a dedicated team and proper execution.
 
 ### Key Success Factors
 
