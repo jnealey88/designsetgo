@@ -1,0 +1,105 @@
+/**
+ * Icon Block - Frontend Styles
+ *
+ * Dashicon display with optional shapes and links
+ */
+
+.dsg-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent; // Don't apply background to outer wrapper
+
+	// When WordPress adds background color, transfer it to shape wrapper
+	&.has-background {
+		background: transparent !important; // Remove from parent
+	}
+
+	// Link wrapper
+	&__link {
+		display: inline-flex;
+		text-decoration: none;
+		color: inherit;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+
+		&:hover {
+			transform: scale(1.1);
+			opacity: 0.8;
+		}
+
+		&:focus {
+			outline: 2px solid var(--wp--preset--color--primary, #007cba);
+			outline-offset: 4px;
+			border-radius: 4px;
+		}
+	}
+
+	// Icon wrapper
+	&__wrapper {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 1;
+		color: currentColor;
+		transition: background-color 0.2s ease, color 0.2s ease;
+		width: fit-content;
+
+		.dashicons {
+			display: block;
+			width: 1em;
+			height: 1em;
+			font-size: inherit;
+			line-height: 1;
+			transition: transform 0.2s ease;
+		}
+
+		// Ensure shapes are square (1:1 aspect ratio)
+		&.shape-circle,
+		&.shape-square,
+		&.shape-rounded {
+			aspect-ratio: 1;
+		}
+
+		// Shape variants
+		&.shape-circle {
+			border-radius: 50%;
+		}
+
+		&.shape-square {
+			border-radius: 0;
+		}
+
+		&.shape-rounded {
+			border-radius: 8px;
+		}
+	}
+
+	// Alignment variants
+	&.alignleft {
+		margin-right: 1em;
+	}
+
+	&.alignright {
+		margin-left: 1em;
+	}
+
+	&.aligncenter {
+		display: flex;
+		justify-content: center;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	// Accessibility: Respect prefers-reduced-motion
+	@media (prefers-reduced-motion: reduce) {
+		&__link,
+		&__wrapper,
+		.dashicons {
+			transition: none;
+		}
+
+		&__link:hover {
+			transform: none;
+		}
+	}
+}

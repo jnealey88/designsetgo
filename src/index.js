@@ -44,6 +44,11 @@ import './blocks/counter';
 import './blocks/counter/style.scss';
 import './blocks/counter/editor.scss';
 
+// Icon block (standalone)
+import './blocks/icon';
+import './blocks/icon/style.scss';
+import './blocks/icon/editor.scss';
+
 // ===== EXTENSIONS (Minimal Use Only) =====
 // Only for genuinely simple enhancements (≤3 controls, no DOM restructuring)
 import './extensions/animation';

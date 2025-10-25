@@ -1,0 +1,83 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/icon",
+	"version": "1.0.0",
+	"title": "Icon",
+	"category": "designsetgo",
+	"description": "Display an icon from WordPress Dashicons library with customizable styling.",
+	"keywords": ["icon", "dashicon", "symbol", "graphic"],
+	"textdomain": "designsetgo",
+	"supports": {
+		"anchor": true,
+		"align": ["left", "center", "right", "wide", "full"],
+		"html": false,
+		"inserter": true,
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"margin": false,
+				"padding": false
+			}
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"__experimentalDefaultControls": {
+				"background": false,
+				"text": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"radius": true
+			}
+		}
+	},
+	"attributes": {
+		"icon": {
+			"type": "string",
+			"default": "star-filled"
+		},
+		"iconSize": {
+			"type": "number",
+			"default": 48
+		},
+		"rotation": {
+			"type": "number",
+			"default": 0
+		},
+		"shape": {
+			"type": "string",
+			"default": "none",
+			"enum": ["none", "circle", "square", "rounded"]
+		},
+		"shapePadding": {
+			"type": "number",
+			"default": 16
+		},
+		"linkUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"linkTarget": {
+			"type": "string",
+			"default": "_self"
+		},
+		"linkRel": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"example": {
+		"attributes": {
+			"icon": "star-filled",
+			"iconSize": 64
+		}
+	}
+}
