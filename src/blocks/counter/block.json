@@ -113,5 +113,15 @@
 		"designsetgo/counterGroup/useGrouping",
 		"designsetgo/counterGroup/separator",
 		"designsetgo/counterGroup/decimal"
-	]
+	],
+	"example": {
+		"attributes": {
+			"endValue": 1250,
+			"suffix": "+",
+			"label": "Happy Clients",
+			"showIcon": true,
+			"icon": "star",
+			"iconPosition": "top"
+		}
+	}
 }
