@@ -33,8 +33,9 @@
 	}
 
 	// Editor-specific styles to improve UX
-	.block-editor-block-list__layout {
-		// Ensure inner blocks respect grid layout
+	// WordPress wraps inner blocks in .block-editor-block-list__layout
+	// We need to make it transparent so grid applies to the actual counter blocks
+	&__inner > .block-editor-block-list__layout {
 		display: contents;
 	}
 
@@ -53,14 +54,14 @@
 
 	// Tablet breakpoint (768px - 1023px)
 	@media (max-width: 1023px) {
-		.dsg-counter-group__inner {
+		&__inner {
 			grid-template-columns: repeat(var(--dsg-counter-columns-tablet, 2), 1fr);
 		}
 	}
 
 	// Mobile breakpoint (<768px)
 	@media (max-width: 767px) {
-		.dsg-counter-group__inner {
+		&__inner {
 			grid-template-columns: repeat(var(--dsg-counter-columns-mobile, 1), 1fr);
 		}
 	}

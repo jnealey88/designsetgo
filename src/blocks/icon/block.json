@@ -5,8 +5,8 @@
 	"version": "1.0.0",
 	"title": "Icon",
 	"category": "designsetgo",
-	"description": "Display an icon from WordPress Dashicons library with customizable styling.",
-	"keywords": ["icon", "dashicon", "symbol", "graphic"],
+	"description": "Display an inline SVG icon with customizable styling.",
+	"keywords": ["icon", "svg", "symbol", "graphic"],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
@@ -18,14 +18,14 @@
 			"padding": true,
 			"__experimentalDefaultControls": {
 				"margin": false,
-				"padding": false
+				"padding": true
 			}
 		},
 		"color": {
 			"background": true,
 			"text": true,
 			"__experimentalDefaultControls": {
-				"background": false,
+				"background": true,
 				"text": true
 			}
 		},
@@ -42,7 +42,7 @@
 	"attributes": {
 		"icon": {
 			"type": "string",
-			"default": "star-filled"
+			"default": "star"
 		},
 		"iconSize": {
 			"type": "number",
@@ -51,15 +51,6 @@
 		"rotation": {
 			"type": "number",
 			"default": 0
-		},
-		"shape": {
-			"type": "string",
-			"default": "none",
-			"enum": ["none", "circle", "square", "rounded"]
-		},
-		"shapePadding": {
-			"type": "number",
-			"default": 16
 		},
 		"linkUrl": {
 			"type": "string",
@@ -76,7 +67,7 @@
 	},
 	"example": {
 		"attributes": {
-			"icon": "star-filled",
+			"icon": "star",
 			"iconSize": 64
 		}
 	}

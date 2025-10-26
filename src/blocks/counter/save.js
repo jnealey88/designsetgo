@@ -80,9 +80,7 @@ export default function CounterSave({ attributes, context }) {
 				{/* Number - Will be animated by frontend JavaScript */}
 				<div className="dsg-counter__number">
 					{/* Initial value (0 or startValue), will be animated to endValue */}
-					{prefix || ''}
 					<span className="dsg-counter__value">{startValue}</span>
-					{suffix || ''}
 				</div>
 
 				{/* Icon (if enabled and position is right) */}

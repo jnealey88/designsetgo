@@ -1,64 +1,36 @@
 /**
  * Icon Block - Save Component
  *
- * Renders the icon on the frontend
+ * Renders inline SVG icon on the frontend
  */
 
 import { useBlockProps } from '@wordpress/block-editor';
+import { getIcon } from './utils/svg-icons';
 
 export default function IconSave({ attributes }) {
-	const {
-		icon,
-		iconSize,
-		rotation,
-		shape,
-		shapePadding,
-		linkUrl,
-		linkTarget,
-		linkRel,
-	} = attributes;
+	const { icon, iconSize, rotation, linkUrl, linkTarget, linkRel } =
+		attributes;
 
-	// Get block props with WordPress styles
-	const blockPropsRaw = useBlockProps.save({
+	const blockProps = useBlockProps.save({
 		className: 'dsg-icon',
+		style: {
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
 	});
 
-	// Extract background color from WordPress
-	const backgroundColor = blockPropsRaw.style?.backgroundColor;
-
-	// Remove background from outer wrapper (we'll apply it to inner wrapper)
-	const blockProps = {
-		...blockPropsRaw,
-		style: {
-			...blockPropsRaw.style,
-			background: 'transparent',
-			backgroundColor: undefined,
-		},
-	};
-
-	// Icon wrapper classes
-	const iconClasses = `dsg-icon__wrapper shape-${shape}`;
-
-	// Icon wrapper styles - apply background color to wrapper instead of outer div
+	// Icon wrapper styles
 	const iconWrapperStyle = {
-		fontSize: `${iconSize}px`,
-		padding: shape !== 'none' ? `${shapePadding}px` : undefined,
-		backgroundColor: shape !== 'none' ? backgroundColor : undefined,
-	};
-
-	// Icon styles
-	const iconStyle = {
+		width: `${iconSize}px`,
+		height: `${iconSize}px`,
+		display: 'inline-flex',
+		alignItems: 'center',
+		justifyContent: 'center',
 		transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined,
 	};
 
-	const iconElement = (
-		<div className={iconClasses} style={iconWrapperStyle}>
-			<span
-				className={`dashicons dashicons-${icon}`}
-				style={iconStyle}
-			/>
-		</div>
-	);
+	const iconElement = <div style={iconWrapperStyle}>{getIcon(icon)}</div>;
 
 	return (
 		<div {...blockProps}>
@@ -66,8 +38,11 @@ export default function IconSave({ attributes }) {
 				<a
 					href={linkUrl}
 					target={linkTarget}
-					rel={linkTarget === '_blank' ? linkRel || 'noopener noreferrer' : undefined}
-					className="dsg-icon__link"
+					rel={
+						linkTarget === '_blank'
+							? linkRel || 'noopener noreferrer'
+							: linkRel || undefined
+					}
 				>
 					{iconElement}
 				</a>

@@ -28,9 +28,10 @@ export default function CounterGroupSave({ attributes }) {
 	const blockProps = useBlockProps.save({
 		className: 'dsg-counter-group',
 		style: {
-			'--dsg-counter-columns-desktop': columns,
-			'--dsg-counter-columns-tablet': columnsTablet,
-			'--dsg-counter-columns-mobile': columnsMobile,
+			// Cast to string to prevent React from adding "px" suffix
+			'--dsg-counter-columns-desktop': String(columns),
+			'--dsg-counter-columns-tablet': String(columnsTablet),
+			'--dsg-counter-columns-mobile': String(columnsMobile),
 			'--dsg-counter-gap': gap,
 		},
 		// Data attributes for frontend JavaScript
