@@ -7,6 +7,7 @@ export default function AccordionSave({ attributes }) {
 		iconStyle,
 		iconPosition,
 		borderBetween,
+		itemGap,
 		openBackgroundColor,
 		openTextColor,
 		hoverBackgroundColor,
@@ -26,18 +27,19 @@ export default function AccordionSave({ attributes }) {
 		'dsg-accordion--border-between': borderBetween,
 	});
 
-	// Apply colors as CSS custom properties that will cascade to accordion items
-	const colorStyles = {
+	// Apply colors and gap as CSS custom properties that will cascade to accordion items
+	const customStyles = {
 		'--dsg-accordion-open-bg': openBackgroundColor,
 		'--dsg-accordion-open-text': openTextColor,
 		'--dsg-accordion-hover-bg': effectiveHoverBg,
 		'--dsg-accordion-hover-text': effectiveHoverText,
+		'--dsg-accordion-gap': itemGap,
 	};
 
 	// Use .save() variant for save function
 	const blockProps = useBlockProps.save({
 		className: accordionClasses,
-		style: colorStyles,
+		style: customStyles,
 		'data-allow-multiple': allowMultipleOpen,
 		'data-icon-style': iconStyle,
 	});

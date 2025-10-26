@@ -6,7 +6,7 @@
 	// Tab Navigation - Clean, simple styling
 	.dsg-tabs__nav {
 		display: flex;
-		gap: 8px;
+		gap: var(--dsg-tabs-gap, 8px);
 		margin-bottom: var(--wp--preset--spacing--lg, 1.5rem);
 		padding: 0;
 		border-bottom: 2px solid rgba(0, 0, 0, 0.1);

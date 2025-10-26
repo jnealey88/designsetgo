@@ -9,6 +9,7 @@ import {
 	PanelBody,
 	ToggleControl,
 	SelectControl,
+	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
 
@@ -19,6 +20,7 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 		iconStyle,
 		iconPosition,
 		borderBetween,
+		itemGap,
 		openBackgroundColor,
 		openTextColor,
 		hoverBackgroundColor,
@@ -38,18 +40,19 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 		'dsg-accordion--border-between': borderBetween,
 	});
 
-	// Apply colors as CSS custom properties that will cascade to accordion items
-	const colorStyles = {
+	// Apply colors and gap as CSS custom properties that will cascade to accordion items
+	const customStyles = {
 		'--dsg-accordion-open-bg': openBackgroundColor,
 		'--dsg-accordion-open-text': openTextColor,
 		'--dsg-accordion-hover-bg': effectiveHoverBg,
 		'--dsg-accordion-hover-text': effectiveHoverText,
+		'--dsg-accordion-gap': itemGap,
 	};
 
 	// Block wrapper props
 	const blockProps = useBlockProps({
 		className: accordionClasses,
-		style: colorStyles,
+		style: customStyles,
 	});
 
 	// Inner blocks configuration - ONLY allow accordion-item children
@@ -141,7 +144,27 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 						label={__('Border Between Items', 'designsetgo')}
 						checked={borderBetween}
 						onChange={(value) => setAttributes({ borderBetween: value })}
+						help={
+							borderBetween
+								? __('Items have borders between them with no gap', 'designsetgo')
+								: __('Items are separated with spacing', 'designsetgo')
+						}
 					/>
+
+					{!borderBetween && (
+						<UnitControl
+							label={__('Gap Between Items', 'designsetgo')}
+							value={itemGap}
+							onChange={(value) => setAttributes({ itemGap: value || '0.5rem' })}
+							units={[
+								{ value: 'px', label: 'px', default: 8 },
+								{ value: 'rem', label: 'rem', default: 0.5 },
+								{ value: 'em', label: 'em', default: 0.5 },
+							]}
+							min={0}
+							max={100}
+						/>
+					)}
 				</PanelBody>
 			</InspectorControls>
 

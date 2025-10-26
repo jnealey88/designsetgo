@@ -37,6 +37,27 @@
 		"designsetgo/tabs/orientation",
 		"designsetgo/tabs/tabStyle"
 	],
+	"example": {
+		"attributes": {
+			"title": "Tab Panel",
+			"icon": ""
+		},
+		"innerBlocks": [
+			{
+				"name": "core/heading",
+				"attributes": {
+					"level": 3,
+					"content": "Tab Content"
+				}
+			},
+			{
+				"name": "core/paragraph",
+				"attributes": {
+					"content": "This is the content for this tab panel. You can add any blocks here including text, images, buttons, and more."
+				}
+			}
+		]
+	},
 	"supports": {
 		"html": false,
 		"reusable": false,

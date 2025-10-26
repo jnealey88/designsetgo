@@ -32,6 +32,20 @@
 		"designsetgo/accordion/hoverBackgroundColor",
 		"designsetgo/accordion/hoverTextColor"
 	],
+	"example": {
+		"attributes": {
+			"title": "Frequently Asked Question",
+			"isOpen": false
+		},
+		"innerBlocks": [
+			{
+				"name": "core/paragraph",
+				"attributes": {
+					"content": "This is the answer to the frequently asked question. It can contain any block content including text, images, lists, and more."
+				}
+			}
+		]
+	},
 	"supports": {
 		"html": false,
 		"reusable": false,
