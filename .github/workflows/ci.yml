@@ -58,9 +58,13 @@ jobs:
       - name: Check PHP syntax
         run: |
           echo "Checking PHP syntax..."
-          find . -name "*.php" -not -path "./node_modules/*" -not -path "./vendor/*" -exec php -l {} \; | grep -v "No syntax errors"
-          if [ $? -eq 0 ]; then
-            echo "❌ PHP syntax errors found"
+          set +e  # Temporarily disable exit on error
+          errors=$(find . -name "*.php" -not -path "./node_modules/*" -not -path "./vendor/*" -not -path "./.wp-env/*" -exec php -l {} \; 2>&1 | grep -v "No syntax errors")
+          set -e  # Re-enable exit on error
+
+          if [ -n "$errors" ]; then
+            echo "❌ PHP syntax errors found:"
+            echo "$errors"
             exit 1
           fi
           echo "✅ No PHP syntax errors"
