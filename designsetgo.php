@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       DesignSetGo
- * Plugin URI:        https://designsetgo.com
+ * Plugin URI:        https://designsetgoblocks.com
  * Description:       Modern Gutenberg block library bridging the gap between core WordPress blocks and advanced page builders. Design made easy, fast, and beautiful.
  * Version:           1.0.0
  * Requires at least: 6.0

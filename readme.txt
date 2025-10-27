@@ -1,6 +1,6 @@
 === DesignSetGo ===
 Contributors: justinnealey
-Donate link: https://designsetgo.com/donate
+Donate link: https://designsetgoblocks.com/donate
 Tags: blocks, gutenberg, page builder, design, visual builder, layout, container, tabs, accordion
 Requires at least: 6.0
 Tested up to: 6.7
@@ -179,7 +179,7 @@ The free version is fully functional with all features included. We may offer pr
 
 = How do I get support? =
 
-- Check the [documentation](https://designsetgo.com/docs/)
+- Check the [documentation](https://designsetgoblocks.com/docs/)
 - Visit the [support forum](https://wordpress.org/support/plugin/designsetgo/)
 - Report bugs on [GitHub](https://github.com/designsetgo/designsetgo)
 
@@ -260,10 +260,10 @@ DesignSetGo is 100% privacy-friendly and GDPR compliant.
 
 Need help? We're here for you:
 
-* [Documentation](https://designsetgo.com/docs/)
+* [Documentation](https://designsetgoblocks.com/docs/)
 * [Support Forum](https://wordpress.org/support/plugin/designsetgo/)
 * [GitHub Issues](https://github.com/designsetgo/designsetgo/issues)
-* [Email Support](mailto:support@designsetgo.com)
+* [Email Support](mailto:support@designsetgoblocks.com)
 
 == Contributing ==
 
