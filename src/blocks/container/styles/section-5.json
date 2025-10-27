@@ -113,6 +113,41 @@
 			}
 		},
 		"elements": {
+			"heading": {
+				"color": {
+					"text": "currentColor"
+				}
+			},
+			"h1": {
+				"color": {
+					"text": "currentColor"
+				}
+			},
+			"h2": {
+				"color": {
+					"text": "currentColor"
+				}
+			},
+			"h3": {
+				"color": {
+					"text": "currentColor"
+				}
+			},
+			"h4": {
+				"color": {
+					"text": "currentColor"
+				}
+			},
+			"h5": {
+				"color": {
+					"text": "currentColor"
+				}
+			},
+			"h6": {
+				"color": {
+					"text": "currentColor"
+				}
+			},
 			"button": {
 				"color": {
 					"background": "var:preset|color|base",
