@@ -130,15 +130,12 @@ class Plugin {
 	 * @return array Modified categories.
 	 */
 	public function register_block_category( $categories, $post = null ) {
-		return array_merge(
-			array(
-				array(
-					'slug'  => 'designsetgo',
-					'title' => __( 'DesignSetGo', 'designsetgo' ),
-					'icon'  => 'layout',
-				),
-			),
-			$categories
+		$categories[] = array(
+			'slug'  => 'designsetgo',
+			'title' => __( 'DesignSetGo', 'designsetgo' ),
+			'icon'  => 'layout',
 		);
+
+		return $categories;
 	}
 }

@@ -31,6 +31,10 @@ class Assets {
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
 		add_filter( 'render_block', array( $this, 'track_block_usage' ), 10, 2 );
+
+		// Clear block detection cache when post is saved.
+		add_action( 'save_post', array( $this, 'clear_block_cache' ) );
+		add_action( 'deleted_post', array( $this, 'clear_block_cache' ) );
 	}
 
 	/**
@@ -55,7 +59,9 @@ class Assets {
 	 * This method is for global editor assets (extensions, variations, etc.).
 	 */
 	public function enqueue_editor_assets() {
-		// Enqueue Dashicons for icon block and tab icons.
+		// Enqueue Dashicons for tab icons.
+		// Note: WordPress automatically loads Dashicons in the admin, but we enqueue
+		// explicitly to ensure it's available for our tab icon picker.
 		wp_enqueue_style( 'dashicons' );
 
 		// Load block extensions and variations.
@@ -94,44 +100,101 @@ class Assets {
 	}
 
 	/**
-	 * Enqueue frontend assets.
+	 * Check if any DesignSetGo blocks are used (with caching).
+	 *
+	 * Uses transient caching to avoid repeated content parsing.
+	 * Cache is automatically cleared on post save/delete.
+	 *
+	 * @return bool True if DesignSetGo blocks are present.
 	 */
-	public function enqueue_frontend_assets() {
-		// Check if any DesignSetGo blocks or enhanced blocks are used.
-		// Note: has_block() requires post content, so we check in the_content filter.
-		// For now, check if we've tracked any blocks during rendering.
-		// If no blocks are tracked yet, enqueue conditionally based on has_block().
-		$should_enqueue = false;
-
-		// Check for DesignSetGo blocks.
-		if ( has_block( 'designsetgo/container' ) || has_block( 'designsetgo/tabs' ) || has_block( 'designsetgo/icon' ) ) {
-			$should_enqueue = true;
+	private function has_designsetgo_blocks() {
+		// Not on singular content - can't reliably detect.
+		if ( ! is_singular() ) {
+			return false;
 		}
 
-		// Check for core blocks that we enhance (Group block with extensions).
-		if ( has_block( 'core/group' ) ) {
-			$should_enqueue = true;
+		$post_id = get_the_ID();
+		if ( ! $post_id ) {
+			return false;
 		}
 
-		// If no blocks detected via has_block() but we're on singular content, enqueue anyway.
-		// This handles edge cases where blocks are loaded dynamically.
-		if ( ! $should_enqueue && is_singular() ) {
-			// Check if post content contains our block namespaces.
-			global $post;
-			if ( $post && (
-				strpos( $post->post_content, 'wp:designsetgo/' ) !== false ||
-				strpos( $post->post_content, 'dsg-' ) !== false
-			) ) {
-				$should_enqueue = true;
+		// Check transient cache first.
+		$cache_key = 'dsg_has_blocks_' . $post_id;
+		$cached    = get_transient( $cache_key );
+
+		if ( false !== $cached ) {
+			return (bool) $cached;
+		}
+
+		$has_blocks = false;
+
+		// Method 1: Check has_blocks() first (fastest).
+		if ( ! has_blocks() ) {
+			set_transient( $cache_key, 0, HOUR_IN_SECONDS );
+			return false;
+		}
+
+		// Method 2: Single content check for all our patterns.
+		global $post;
+		if ( ! $post || empty( $post->post_content ) ) {
+			set_transient( $cache_key, 0, HOUR_IN_SECONDS );
+			return false;
+		}
+
+		$content = $post->post_content;
+
+		// Check for DesignSetGo blocks (single check for namespace).
+		if ( strpos( $content, 'wp:designsetgo/' ) !== false ) {
+			$has_blocks = true;
+		}
+
+		// Check for core blocks with our enhancements.
+		if ( ! $has_blocks && strpos( $content, 'wp:core/group' ) !== false ) {
+			// Only load if group has our enhancements (dsg- classes or animations).
+			if ( strpos( $content, 'dsg-' ) !== false ||
+				strpos( $content, 'data-dsg-animation' ) !== false ||
+				strpos( $content, 'has-dsg-animation' ) !== false ) {
+				$has_blocks = true;
 			}
 		}
 
-		// If no blocks are used, skip loading assets.
-		if ( ! $should_enqueue ) {
+		// Check for animations applied to any block.
+		if ( ! $has_blocks && (
+			strpos( $content, 'data-dsg-animation-enabled' ) !== false ||
+			strpos( $content, 'has-dsg-animation' ) !== false
+		) ) {
+			$has_blocks = true;
+		}
+
+		// Cache result for 1 hour.
+		set_transient( $cache_key, (int) $has_blocks, HOUR_IN_SECONDS );
+
+		return $has_blocks;
+	}
+
+	/**
+	 * Clear block detection cache for a post.
+	 *
+	 * Called automatically when a post is saved or deleted.
+	 *
+	 * @param int $post_id Post ID.
+	 */
+	public function clear_block_cache( $post_id ) {
+		delete_transient( 'dsg_has_blocks_' . $post_id );
+	}
+
+	/**
+	 * Enqueue frontend assets.
+	 */
+	public function enqueue_frontend_assets() {
+		// Use optimized cached block detection.
+		if ( ! $this->has_designsetgo_blocks() ) {
 			return;
 		}
 
-		// Enqueue Dashicons for tab icons.
+		// Enqueue Dashicons for tab icons on frontend.
+		// Note: Dashicons is typically only loaded in admin, so we enqueue it here
+		// to ensure tab icons display correctly on the frontend.
 		wp_enqueue_style( 'dashicons' );
 
 		// Block-specific frontend styles are handled by block.json.

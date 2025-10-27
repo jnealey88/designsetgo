@@ -20,8 +20,11 @@ import './blocks/accordion/frontend.js';
 // Counter Group block - animated counting with CountUp.js
 import './blocks/counter-group/frontend.js';
 
+// Progress Bar block - scroll-triggered animations
+import './blocks/progress-bar/frontend.js';
+
 // ===== EXTENSIONS FRONTEND =====
-// Import animation scripts
-import './extensions/animation/index.js';
+// Block animations - scroll-triggered, hover, click animations
+import './extensions/block-animations/frontend.js';
 
 // Additional frontend scripts can be imported here

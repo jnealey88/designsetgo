@@ -16,7 +16,7 @@
 
 // Global styles (variables, mixins, utilities)
 import './styles/editor.scss';
-import './styles/style.scss';
+// Note: Frontend styles are in src/style.scss (auto-compiled to build/style-index.css)
 
 // ===== CUSTOM BLOCKS (Primary Architecture) =====
 // Full React control, proper video backgrounds, state management
@@ -49,6 +49,11 @@ import './blocks/icon';
 import './blocks/icon/style.scss';
 import './blocks/icon/editor.scss';
 
-// ===== EXTENSIONS (Minimal Use Only) =====
-// Only for genuinely simple enhancements (≤3 controls, no DOM restructuring)
-import './extensions/animation';
+// Progress Bar block (standalone)
+import './blocks/progress-bar';
+import './blocks/progress-bar/style.scss';
+import './blocks/progress-bar/editor.scss';
+
+// ===== EXTENSIONS =====
+// Block animations - adds entrance/exit animations to all blocks
+import './extensions/block-animations';
