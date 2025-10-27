@@ -18,6 +18,7 @@ import {
 	SelectControl,
 	ToggleControl,
 	TextControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 

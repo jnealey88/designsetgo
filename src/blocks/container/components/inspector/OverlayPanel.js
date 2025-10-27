@@ -9,6 +9,7 @@
 
 import { __ } from '@wordpress/i18n';
 import { PanelBody, ToggleControl } from '@wordpress/components';
+// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 import { __experimentalPanelColorGradientSettings as PanelColorGradientSettings } from '@wordpress/block-editor';
 
 /**

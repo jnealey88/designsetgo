@@ -3,12 +3,14 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	ToggleControl,
 	SelectControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import classnames from 'classnames';

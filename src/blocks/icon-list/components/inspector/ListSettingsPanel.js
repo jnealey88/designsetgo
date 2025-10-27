@@ -11,6 +11,7 @@ import {
 	PanelBody,
 	SelectControl,
 	RangeControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { PanelColorSettings } from '@wordpress/block-editor';
