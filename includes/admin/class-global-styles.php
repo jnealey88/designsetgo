@@ -22,7 +22,8 @@ class Global_Styles {
 	 */
 	public function __construct() {
 		add_filter( 'wp_theme_json_data_theme', array( $this, 'extend_theme_json' ) );
-		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
+		// Temporarily disabled - no settings page needed at this time.
+		// add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 	}
 

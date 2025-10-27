@@ -13,7 +13,7 @@ Modern Gutenberg block library bridging the gap between core WordPress blocks an
 
 == Description ==
 
-DesignSetGo is a comprehensive collection of modern Gutenberg blocks designed to help you create stunning websites without the complexity of traditional page builders. Built with WordPress best practices, full FSE support, and exceptional performance.
+DesignSetGo is a comprehensive collection of modern Gutenberg blocks designed to help you create stunning websites without the complexity of traditional page builders. Built using the same patterns as WordPress core blocks (Group, Columns, Cover), DesignSetGo provides full FSE support, exceptional performance, and guaranteed editor/frontend parity.
 
 = Key Features =
 
@@ -33,10 +33,13 @@ DesignSetGo is a comprehensive collection of modern Gutenberg blocks designed to
 **Why Choose DesignSetGo?**
 
 ✓ **Performance First** - Lightweight bundles, optimized code, no jQuery
+✓ **WordPress Core Patterns** - Built using the same patterns as WordPress core blocks
+✓ **Editor/Frontend Parity** - What you see in the editor matches the frontend exactly
 ✓ **FSE Compatible** - Works seamlessly with Full Site Editing and Site Editor
 ✓ **Theme Integration** - Respects theme.json colors, spacing, and typography
 ✓ **Accessibility** - WCAG 2.1 AA compliant with full keyboard navigation
 ✓ **Mobile Responsive** - All blocks are mobile-first and fully responsive
+✓ **Progressive Enhancement** - Core functionality works even without JavaScript
 ✓ **No Vendor Lock-in** - Uses standard WordPress patterns, easy to migrate
 
 = Block List =
@@ -95,10 +98,12 @@ DesignSetGo is a comprehensive collection of modern Gutenberg blocks designed to
 
 = Built With WordPress Standards =
 
-* Uses official WordPress APIs and hooks
-* Follows WordPress Coding Standards
-* Full internationalization (i18n) support
-* Comprehensive documentation
+* Uses official WordPress APIs (useBlockProps, useInnerBlocksProps, Block Context)
+* Follows WordPress Coding Standards and best practices
+* Same development patterns as WordPress core blocks (Group, Columns, Cover)
+* Declarative styling - no DOM manipulation or timing issues
+* Full internationalization (i18n) support with translation-ready strings
+* Comprehensive JSDoc documentation throughout codebase
 * Regular updates and support
 
 = Perfect For =
@@ -155,11 +160,14 @@ DesignSetGo is designed to work with any modern WordPress theme. It respects you
 = Will this slow down my site? =
 
 No! DesignSetGo is built for performance:
-- Editor bundle: < 100 KB
-- Frontend bundle: < 20 KB
-- CSS bundle: < 30 KB
-- No jQuery dependency
+- Editor bundle: < 100 KB (continuously optimized)
+- Frontend bundle: < 20 KB per block
+- CSS bundle: < 30 KB total
+- No jQuery dependency (saves 150 KB)
 - Optimized animations using CSS and Intersection Observer
+- Progressive enhancement - core layouts work without JavaScript
+- Declarative styles apply instantly (no render delays)
+- Code-split per block - only loads what you use
 
 = Can I use these blocks with the Classic Editor? =
 
@@ -178,6 +186,10 @@ The free version is fully functional with all features included. We may offer pr
 = Does this work with WooCommerce? =
 
 Yes! You can use DesignSetGo blocks on any WooCommerce page, including product pages, shop pages, and custom layouts.
+
+= Does the editor match the frontend exactly? =
+
+Yes! DesignSetGo uses WordPress core patterns (useBlockProps, useInnerBlocksProps) to ensure 100% editor/frontend parity. What you see in the editor is exactly what appears on your live site. No surprises, no mismatches, no "why does it look different" moments.
 
 = Can I translate this plugin? =
 
@@ -213,6 +225,11 @@ DesignSetGo is built using WordPress standards and shouldn't conflict with well-
 * WCAG 2.1 AA accessibility compliance
 * Complete internationalization (i18n)
 * Comprehensive documentation
+* Built with WordPress core patterns (useBlockProps, useInnerBlocksProps)
+* Editor/frontend parity - WYSIWYG reliability
+* Progressive enhancement - works without JavaScript
+* Optimized performance with declarative styling
+* Code-split architecture for minimal bundle sizes
 
 == Upgrade Notice ==
 
