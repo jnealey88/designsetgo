@@ -103,7 +103,14 @@
 		"align": ["wide", "full"],
 		"html": false,
 		"inserter": true,
-		"layout": false,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": true,
+			"allowEditing": false,
+			"default": {
+				"type": "constrained"
+			}
+		},
 		"spacing": {
 			"margin": true,
 			"padding": true,

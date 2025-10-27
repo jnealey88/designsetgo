@@ -1,0 +1,33 @@
+/**
+ * Pill Block Editor Styles
+ */
+
+.dsg-pill {
+	// Make editing area clear
+	min-height: 40px;
+	display: flex;
+	align-items: center;
+
+	// Alignment options in editor
+	&.has-text-align-left {
+		justify-content: flex-start;
+	}
+
+	&.has-text-align-center {
+		justify-content: center;
+	}
+
+	&.has-text-align-right {
+		justify-content: flex-end;
+	}
+}
+
+.dsg-pill__content {
+	// Cursor indication for editing
+	cursor: text;
+
+	// Placeholder styling
+	&[data-rich-text-placeholder]::before {
+		opacity: 0.6;
+	}
+}

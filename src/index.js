@@ -62,6 +62,11 @@ import './blocks/progress-bar';
 import './blocks/progress-bar/style.scss';
 import './blocks/progress-bar/editor.scss';
 
+// Pill block (standalone)
+import './blocks/pill';
+import './blocks/pill/style.scss';
+import './blocks/pill/editor.scss';
+
 // ===== EXTENSIONS =====
 // Block animations - adds entrance/exit animations to all blocks
 import './extensions/block-animations';

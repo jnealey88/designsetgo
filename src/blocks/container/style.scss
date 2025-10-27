@@ -12,6 +12,15 @@
 	width: 100%;
 	box-sizing: border-box;
 
+	// Force headings and other elements to inherit parent text color
+	// This ensures manually set text colors on the container apply to all children
+	// WordPress themes often override heading colors, so we need !important
+	&[style*="color"] {
+		h1, h2, h3, h4, h5, h6, p, a, li, span, strong, em {
+			color: inherit !important;
+		}
+	}
+
 	// AGGRESSIVE FULL-WIDTH
 	// This is how Elementor/Bricks do it - no fighting with WordPress variables
 	&.alignfull {
@@ -147,4 +156,18 @@
 		// Desktop: uses --dsg-grid-cols-desktop (already applied in inline styles)
 		// No override needed, inline style handles this
 	}
+}
+
+/**
+ * Layout-Constrained Margin Rules
+ * Matches WordPress Group block behavior for proper vertical spacing
+ * Applied when layout support is enabled (type: constrained)
+ */
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :first-child {
+	margin-block-start: 0;
+}
+
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > * {
+	margin-block-start: 1.2rem;
+	margin-block-end: 0;
 }

@@ -1,0 +1,45 @@
+/**
+ * Pill Block Frontend Styles
+ */
+
+.dsg-pill {
+	// Container alignment
+	display: block;
+
+	// Alignment options
+	&.has-text-align-left {
+		text-align: left;
+	}
+
+	&.has-text-align-center {
+		text-align: center;
+	}
+
+	&.has-text-align-right {
+		text-align: right;
+	}
+}
+
+.dsg-pill__content {
+	// Inline-block so background wraps tightly around text
+	display: inline-block;
+
+	// Pill shape (fully rounded corners) - fallback if not set via supports
+	border-radius: 999px;
+
+	// Smooth transitions for interactive states
+	transition: all 0.2s ease-in-out;
+
+	// Ensure text doesn't break awkwardly
+	white-space: nowrap;
+
+	// Defaults (will be overridden by WordPress supports)
+	&:not([class*="has-"]) {
+		padding: 0.5em 1em;
+		background-color: var(--wp--preset--color--primary, #2563eb);
+		color: var(--wp--preset--color--base, #ffffff);
+		font-size: 0.875em;
+		font-weight: 500;
+		line-height: 1.5;
+	}
+}
