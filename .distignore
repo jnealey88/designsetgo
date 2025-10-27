@@ -1,0 +1,105 @@
+# .distignore - Files to exclude from wp-scripts plugin-zip
+
+# Development files
+.git
+.github
+.gitignore
+.gitattributes
+
+# Node and dependencies
+node_modules
+package-lock.json
+.npm
+.npmrc
+
+# Build source files (only include /build/)
+src
+
+# Testing
+tests
+playwright-report
+test-results
+.playwright
+playwright.config.js
+phpunit.xml
+.phpunit.result.cache
+
+# WordPress environment
+.wp-env.json
+wordpress
+
+# Documentation (development)
+docs/*.md
+CLAUDE.md
+PRD.md
+DEVELOPMENT-STATUS.md
+REFACTORING-*.md
+MAINTAINABILITY-*.md
+CODE-AUDIT-REPORT.md
+SECURITY-REVIEW.md
+DEV-PHASE-*.md
+CONTROL-REORGANIZATION.md
+WORDPRESS-ORG-SUBMISSION-CHECKLIST.md
+SUBMISSION-TODO.md
+
+# Keep only user-facing README
+README.md
+
+# Backup files
+*.backup
+*.bak
+*.sql
+*.db
+
+# IDE and editor files
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+
+# Linting and formatting
+.eslintrc.js
+.eslintignore
+.stylelintrc.json
+.prettierrc
+.prettierignore
+.editorconfig
+
+# Composer (dev dependencies)
+composer.json
+composer.lock
+vendor/bin
+vendor/phpstan
+vendor/phpunit
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+Thumbs.db
+.DS_Store
+*.swp
+*.swo
+
+# Temporary files
+tmp
+temp
+.cache
+
+# Husky (git hooks)
+.husky
+
+# Asset source files (keep only optimized assets)
+assets-src
+
+# Backup of edited files
+*.js.backup
+*.php.backup
+
+# Build scripts
+webpack.config.js
+tsconfig.json
