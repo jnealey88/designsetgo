@@ -21,9 +21,17 @@
 		}
 	}
 
+	// When icon has custom color set via inline style, preserve it
+	// This prevents section style variations from overriding manually set icon colors
+	&__icon[style*="color:"] {
+		// Force inline color to take precedence over inherited colors from section styles
+		color: var(--icon-color, currentColor) !important;
+	}
+
 	&__content {
 		flex: 1;
 		min-width: 0; // Prevent flex item overflow
+		width: 100%; // Ensure content fills available space
 	}
 
 	&__title {
