@@ -34,7 +34,11 @@ export default function Save({ attributes }) {
 		// ✅ SECURITY: Sanitized icon data for frontend JS
 		...(icon && {
 			'data-icon': sanitizeIconSlug(icon),
-			'data-icon-position': ['left', 'right', 'top'].includes(iconPosition) ? iconPosition : 'left',
+			'data-icon-position': ['left', 'right', 'top'].includes(
+				iconPosition
+			)
+				? iconPosition
+				: 'left',
 		}),
 	});
 

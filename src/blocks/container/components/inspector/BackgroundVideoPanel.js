@@ -7,27 +7,20 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import {
-	PanelBody,
-	Button,
-	ToggleControl,
-} from '@wordpress/components';
-import {
-	MediaUpload,
-	MediaUploadCheck,
-} from '@wordpress/block-editor';
+import { PanelBody, Button, ToggleControl } from '@wordpress/components';
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 
 /**
  * Background Video Panel - Controls for video background.
  *
  * Allows selecting a video, poster image, and playback options (autoplay, loop, muted).
  *
- * @param {Object} props - Component props
- * @param {string} props.videoUrl - Video URL
- * @param {string} props.videoPoster - Poster image URL
- * @param {boolean} props.videoAutoplay - Whether video autoplays
- * @param {boolean} props.videoLoop - Whether video loops
- * @param {boolean} props.videoMuted - Whether video is muted
+ * @param {Object}   props               - Component props
+ * @param {string}   props.videoUrl      - Video URL
+ * @param {string}   props.videoPoster   - Poster image URL
+ * @param {boolean}  props.videoAutoplay - Whether video autoplays
+ * @param {boolean}  props.videoLoop     - Whether video loops
+ * @param {boolean}  props.videoMuted    - Whether video is muted
  * @param {Function} props.setAttributes - Function to update block attributes
  * @return {JSX.Element} Background Video Panel component
  */
@@ -107,13 +100,21 @@ export const BackgroundVideoPanel = ({
 										}}
 									>
 										{videoPoster
-											? __('Replace Poster', 'designsetgo')
-											: __('Select Poster', 'designsetgo')}
+											? __(
+													'Replace Poster',
+													'designsetgo'
+												)
+											: __(
+													'Select Poster',
+													'designsetgo'
+												)}
 									</Button>
 									{videoPoster && (
 										<Button
 											onClick={() =>
-												setAttributes({ videoPoster: '' })
+												setAttributes({
+													videoPoster: '',
+												})
 											}
 											variant="tertiary"
 											isDestructive
@@ -145,7 +146,9 @@ export const BackgroundVideoPanel = ({
 					<ToggleControl
 						label={__('Loop', 'designsetgo')}
 						checked={videoLoop}
-						onChange={(value) => setAttributes({ videoLoop: value })}
+						onChange={(value) =>
+							setAttributes({ videoLoop: value })
+						}
 						help={__(
 							'Restart video when it reaches the end',
 							'designsetgo'
@@ -155,7 +158,9 @@ export const BackgroundVideoPanel = ({
 					<ToggleControl
 						label={__('Muted', 'designsetgo')}
 						checked={videoMuted}
-						onChange={(value) => setAttributes({ videoMuted: value })}
+						onChange={(value) =>
+							setAttributes({ videoMuted: value })
+						}
 						help={__(
 							'Mute video audio (required for autoplay on most browsers)',
 							'designsetgo'

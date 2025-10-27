@@ -93,23 +93,15 @@ const ICON_CATEGORIES = {
 	},
 	ui: {
 		label: __('UI Elements', 'designsetgo'),
-		icons: [
-			'home',
-			'bookmark',
-			'link',
-			'folder',
-			'file',
-			'code',
-			'shield',
-		],
+		icons: ['home', 'bookmark', 'link', 'folder', 'file', 'code', 'shield'],
 	},
 };
 
 /**
  * IconPicker Component
  *
- * @param {Object} props
- * @param {string} props.value - Currently selected icon name
+ * @param {Object}   props
+ * @param {string}   props.value    - Currently selected icon name
  * @param {Function} props.onChange - Callback when icon is selected
  */
 export const IconPicker = ({ value, onChange }) => {
@@ -175,25 +167,29 @@ export const IconPicker = ({ value, onChange }) => {
 						<SearchControl
 							value={searchTerm}
 							onChange={setSearchTerm}
-							placeholder={__('Search icons...', 'designsetgo')}
+							placeholder={__('Search icons…', 'designsetgo')}
 						/>
 
 						{/* Category Tabs */}
 						{!searchTerm && (
 							<div className="dsg-icon-picker__categories">
-								{Object.keys(ICON_CATEGORIES).map((categoryKey) => (
-									<Button
-										key={categoryKey}
-										className={`dsg-icon-picker__category ${
-											activeCategory === categoryKey
-												? 'is-active'
-												: ''
-										}`}
-										onClick={() => setActiveCategory(categoryKey)}
-									>
-										{ICON_CATEGORIES[categoryKey].label}
-									</Button>
-								))}
+								{Object.keys(ICON_CATEGORIES).map(
+									(categoryKey) => (
+										<Button
+											key={categoryKey}
+											className={`dsg-icon-picker__category ${
+												activeCategory === categoryKey
+													? 'is-active'
+													: ''
+											}`}
+											onClick={() =>
+												setActiveCategory(categoryKey)
+											}
+										>
+											{ICON_CATEGORIES[categoryKey].label}
+										</Button>
+									)
+								)}
 							</div>
 						)}
 
@@ -204,7 +200,9 @@ export const IconPicker = ({ value, onChange }) => {
 									<Button
 										key={iconName}
 										className={`dsg-icon-picker__icon ${
-											value === iconName ? 'is-selected' : ''
+											value === iconName
+												? 'is-selected'
+												: ''
 										}`}
 										onClick={() => {
 											onChange(iconName);
@@ -212,10 +210,10 @@ export const IconPicker = ({ value, onChange }) => {
 											setSearchTerm('');
 										}}
 										aria-label={iconName}
-										title={iconName
-											.charAt(0)
-											.toUpperCase() +
-											iconName.slice(1).replace(/-/g, ' ')}
+										title={
+											iconName.charAt(0).toUpperCase() +
+											iconName.slice(1).replace(/-/g, ' ')
+										}
 									>
 										<span
 											style={{

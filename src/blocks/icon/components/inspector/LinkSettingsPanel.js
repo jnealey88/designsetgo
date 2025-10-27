@@ -21,10 +21,10 @@ import { link } from '@wordpress/icons';
  * Allows adding a link to the icon, setting target (same/new tab),
  * and configuring rel attribute for security.
  *
- * @param {Object} props - Component props
- * @param {string} props.linkUrl - Link URL
- * @param {string} props.linkTarget - Link target (_self or _blank)
- * @param {string} props.linkRel - Link rel attribute
+ * @param {Object}   props               - Component props
+ * @param {string}   props.linkUrl       - Link URL
+ * @param {string}   props.linkTarget    - Link target (_self or _blank)
+ * @param {string}   props.linkRel       - Link rel attribute
  * @param {Function} props.setAttributes - Function to update block attributes
  * @return {JSX.Element} Link Settings Panel component
  */
@@ -66,9 +66,7 @@ export const LinkSettingsPanel = ({
 					<TextControl
 						label={__('URL', 'designsetgo')}
 						value={linkUrl}
-						onChange={(value) =>
-							setAttributes({ linkUrl: value })
-						}
+						onChange={(value) => setAttributes({ linkUrl: value })}
 						placeholder="https://"
 					/>
 					<SelectControl

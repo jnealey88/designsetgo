@@ -16,7 +16,9 @@ const {
 } = require('./helpers/wordpress');
 
 test.describe('Container Block - Content Width Investigation', () => {
-	test('inspect content width rendering in editor and frontend', async ({ page }) => {
+	test('inspect content width rendering in editor and frontend', async ({
+		page,
+	}) => {
 		console.log('\n=== STARTING CONTAINER CONTENT WIDTH INSPECTION ===\n');
 
 		// Create a new post
@@ -36,7 +38,9 @@ test.describe('Container Block - Content Width Investigation', () => {
 		console.log('2. Adding nested blocks...');
 		await page.keyboard.type('Test Heading');
 		await page.keyboard.press('Enter');
-		await page.keyboard.type('This is a test paragraph to see if content width is working correctly.');
+		await page.keyboard.type(
+			'This is a test paragraph to see if content width is working correctly.'
+		);
 
 		// Select the container block again
 		await selectBlock(page, 'designsetgo/container');
@@ -48,14 +52,18 @@ test.describe('Container Block - Content Width Investigation', () => {
 		console.log('3. Enabling "Inner blocks use content width"...');
 
 		// Click on "Inner blocks" panel
-		const innerBlocksPanel = page.locator('button:has-text("Inner blocks")');
+		const innerBlocksPanel = page.locator(
+			'button:has-text("Inner blocks")'
+		);
 		if (await innerBlocksPanel.isVisible()) {
 			await innerBlocksPanel.click();
 			await page.waitForTimeout(500);
 		}
 
 		// Find and enable the toggle
-		const contentWidthToggle = page.locator('input[aria-label*="Inner blocks use content width"]');
+		const contentWidthToggle = page.locator(
+			'input[aria-label*="Inner blocks use content width"]'
+		);
 		await contentWidthToggle.check();
 		await page.waitForTimeout(1000);
 
@@ -63,10 +71,14 @@ test.describe('Container Block - Content Width Investigation', () => {
 		console.log('\n=== EDITOR INSPECTION ===');
 
 		// Find the container block
-		const containerBlock = page.locator('[data-type="designsetgo/container"]').first();
+		const containerBlock = page
+			.locator('[data-type="designsetgo/container"]')
+			.first();
 
 		// Find the inner wrapper + container
-		const innerWrapper = containerBlock.locator('.dsg-container__inner-wrapper');
+		const innerWrapper = containerBlock.locator(
+			'.dsg-container__inner-wrapper'
+		);
 		const innerContainer = containerBlock.locator('.dsg-container__inner');
 
 		// Get computed styles
@@ -85,19 +97,29 @@ test.describe('Container Block - Content Width Investigation', () => {
 		});
 
 		// Get inline styles
-		const innerWrapperInlineStyle = await innerWrapper.getAttribute('style');
+		const innerWrapperInlineStyle =
+			await innerWrapper.getAttribute('style');
 
 		console.log('Inner Wrapper Bounding Box:', innerWrapperBox);
 		console.log('Inner Wrapper Computed Styles:', innerWrapperStyles);
 		console.log('Inner Wrapper Inline Styles:', innerWrapperInlineStyle);
 
 		// Get the actual HTML structure
-		const containerHTML = await containerBlock.evaluate((el) => el.outerHTML);
-		console.log('\nContainer Block HTML (first 1000 chars):\n', containerHTML.substring(0, 1000));
+		const containerHTML = await containerBlock.evaluate(
+			(el) => el.outerHTML
+		);
+		console.log(
+			'\nContainer Block HTML (first 1000 chars):\n',
+			containerHTML.substring(0, 1000)
+		);
 
 		// Check if the inner container has the expected inline styles
-		const hasMaxWidth = innerWrapperInlineStyle && innerWrapperInlineStyle.includes('max-width');
-		const hasMarginAuto = innerWrapperInlineStyle && innerWrapperInlineStyle.includes('margin-left: auto');
+		const hasMaxWidth =
+			innerWrapperInlineStyle &&
+			innerWrapperInlineStyle.includes('max-width');
+		const hasMarginAuto =
+			innerWrapperInlineStyle &&
+			innerWrapperInlineStyle.includes('margin-left: auto');
 
 		console.log('\nEditor Style Checks:');
 		console.log('- Has max-width inline style:', hasMaxWidth);
@@ -106,7 +128,7 @@ test.describe('Container Block - Content Width Investigation', () => {
 		// Take screenshot of editor
 		await page.screenshot({
 			path: 'artifacts/test-results/container-content-width-editor.png',
-			fullPage: true
+			fullPage: true,
 		});
 		console.log('\nScreenshot saved: container-content-width-editor.png');
 
@@ -116,7 +138,9 @@ test.describe('Container Block - Content Width Investigation', () => {
 		await publishPost(page);
 
 		// Get the frontend URL
-		const previewButton = page.locator('.edit-post-header-preview__button-external');
+		const previewButton = page.locator(
+			'.edit-post-header-preview__button-external'
+		);
 		const frontendUrl = await previewButton.getAttribute('href');
 		console.log('Frontend URL:', frontendUrl);
 
@@ -130,11 +154,15 @@ test.describe('Container Block - Content Width Investigation', () => {
 
 		// Find the container block on frontend
 		const frontendContainer = page.locator('.dsg-container').first();
-		const frontendInnerWrapper = frontendContainer.locator('.dsg-container__inner-wrapper');
-		const frontendInnerContainer = frontendContainer.locator('.dsg-container__inner');
+		const frontendInnerWrapper = frontendContainer.locator(
+			'.dsg-container__inner-wrapper'
+		);
+		const frontendInnerContainer = frontendContainer.locator(
+			'.dsg-container__inner'
+		);
 
 		// Check if it exists
-		const wrapperExists = await frontendInnerWrapper.count() > 0;
+		const wrapperExists = (await frontendInnerWrapper.count()) > 0;
 		console.log('Inner wrapper exists on frontend:', wrapperExists);
 
 		if (wrapperExists) {
@@ -155,19 +183,35 @@ test.describe('Container Block - Content Width Investigation', () => {
 			});
 
 			// Get inline styles on frontend
-			const frontendInlineStyle = await frontendInnerWrapper.getAttribute('style');
+			const frontendInlineStyle =
+				await frontendInnerWrapper.getAttribute('style');
 
 			console.log('Frontend Inner Wrapper Bounding Box:', frontendBox);
-			console.log('Frontend Inner Wrapper Computed Styles:', frontendStyles);
-			console.log('Frontend Inner Wrapper Inline Styles:', frontendInlineStyle);
+			console.log(
+				'Frontend Inner Wrapper Computed Styles:',
+				frontendStyles
+			);
+			console.log(
+				'Frontend Inner Wrapper Inline Styles:',
+				frontendInlineStyle
+			);
 
 			// Get the HTML structure on frontend
-			const frontendHTML = await frontendContainer.evaluate((el) => el.outerHTML);
-			console.log('\nFrontend Container Block HTML (first 1000 chars):\n', frontendHTML.substring(0, 1000));
+			const frontendHTML = await frontendContainer.evaluate(
+				(el) => el.outerHTML
+			);
+			console.log(
+				'\nFrontend Container Block HTML (first 1000 chars):\n',
+				frontendHTML.substring(0, 1000)
+			);
 
 			// Check if the inline styles are present on frontend
-			const frontendHasMaxWidth = frontendInlineStyle && frontendInlineStyle.includes('max-width');
-			const frontendHasMarginAuto = frontendInlineStyle && frontendInlineStyle.includes('margin-left: auto');
+			const frontendHasMaxWidth =
+				frontendInlineStyle &&
+				frontendInlineStyle.includes('max-width');
+			const frontendHasMarginAuto =
+				frontendInlineStyle &&
+				frontendInlineStyle.includes('margin-left: auto');
 
 			console.log('\nFrontend Style Checks:');
 			console.log('- Has max-width inline style:', frontendHasMaxWidth);
@@ -175,8 +219,12 @@ test.describe('Container Block - Content Width Investigation', () => {
 
 			// Check for CSS rules that might override
 			const overridingRules = await page.evaluate(() => {
-				const innerWrapper = document.querySelector('.dsg-container__inner-wrapper');
-				if (!innerWrapper) return [];
+				const innerWrapper = document.querySelector(
+					'.dsg-container__inner-wrapper'
+				);
+				if (!innerWrapper) {
+					return [];
+				}
 
 				const allRules = [];
 				for (const sheet of document.styleSheets) {
@@ -194,8 +242,12 @@ test.describe('Container Block - Content Width Investigation', () => {
 									};
 
 									// Only include if it has relevant properties
-									if (relevantProps.maxWidth || relevantProps.width ||
-										relevantProps.marginLeft || relevantProps.marginRight) {
+									if (
+										relevantProps.maxWidth ||
+										relevantProps.width ||
+										relevantProps.marginLeft ||
+										relevantProps.marginRight
+									) {
 										allRules.push(relevantProps);
 									}
 								}
@@ -213,7 +265,9 @@ test.describe('Container Block - Content Width Investigation', () => {
 
 			// Get the actual rendered width
 			const actualWidth = frontendBox?.width;
-			const viewportWidth = await page.viewportSize().then(v => v.width);
+			const viewportWidth = await page
+				.viewportSize()
+				.then((v) => v.width);
 			console.log('\nWidth Analysis:');
 			console.log('- Viewport width:', viewportWidth);
 			console.log('- Actual rendered width:', actualWidth);
@@ -224,7 +278,7 @@ test.describe('Container Block - Content Width Investigation', () => {
 		// Take screenshot of frontend
 		await page.screenshot({
 			path: 'artifacts/test-results/container-content-width-frontend.png',
-			fullPage: true
+			fullPage: true,
 		});
 		console.log('\nScreenshot saved: container-content-width-frontend.png');
 
@@ -234,17 +288,34 @@ test.describe('Container Block - Content Width Investigation', () => {
 		// These will fail if the feature is broken, helping us identify the issue
 
 		// Editor should have inline styles
-		expect(hasMaxWidth, 'Editor: Inner wrapper should have max-width inline style').toBeTruthy();
-		expect(hasMarginAuto, 'Editor: Inner wrapper should have margin-left: auto inline style').toBeTruthy();
+		expect(
+			hasMaxWidth,
+			'Editor: Inner wrapper should have max-width inline style'
+		).toBeTruthy();
+		expect(
+			hasMarginAuto,
+			'Editor: Inner wrapper should have margin-left: auto inline style'
+		).toBeTruthy();
 
 		// Frontend should have inline styles
 		if (wrapperExists) {
-			const frontendInlineStyle = await frontendInnerWrapper.getAttribute('style');
-			const frontendHasMaxWidth = frontendInlineStyle && frontendInlineStyle.includes('max-width');
-			const frontendHasMarginAuto = frontendInlineStyle && frontendInlineStyle.includes('margin-left: auto');
+			const frontendInlineStyle =
+				await frontendInnerWrapper.getAttribute('style');
+			const frontendHasMaxWidth =
+				frontendInlineStyle &&
+				frontendInlineStyle.includes('max-width');
+			const frontendHasMarginAuto =
+				frontendInlineStyle &&
+				frontendInlineStyle.includes('margin-left: auto');
 
-			expect(frontendHasMaxWidth, 'Frontend: Inner wrapper should have max-width inline style').toBeTruthy();
-			expect(frontendHasMarginAuto, 'Frontend: Inner wrapper should have margin-left: auto inline style').toBeTruthy();
+			expect(
+				frontendHasMaxWidth,
+				'Frontend: Inner wrapper should have max-width inline style'
+			).toBeTruthy();
+			expect(
+				frontendHasMarginAuto,
+				'Frontend: Inner wrapper should have margin-left: auto inline style'
+			).toBeTruthy();
 		}
 	});
 });

@@ -10,7 +10,9 @@
  * Initialize progress bars with scroll animations
  */
 function initProgressBars() {
-	const progressBars = document.querySelectorAll('.dsg-progress-bar--animate');
+	const progressBars = document.querySelectorAll(
+		'.dsg-progress-bar--animate'
+	);
 
 	if (!progressBars.length) {
 		return;
@@ -27,15 +29,19 @@ function initProgressBars() {
 		entries.forEach((entry) => {
 			if (entry.isIntersecting) {
 				const progressBar = entry.target;
-				const fill = progressBar.querySelector('.dsg-progress-bar__fill');
+				const fill = progressBar.querySelector(
+					'.dsg-progress-bar__fill'
+				);
 
 				if (!fill) {
 					return;
 				}
 
 				// Get target percentage from data attribute
-				const targetPercentage = progressBar.getAttribute('data-percentage');
-				const duration = progressBar.getAttribute('data-duration') || 1.5;
+				const targetPercentage =
+					progressBar.getAttribute('data-percentage');
+				const duration =
+					progressBar.getAttribute('data-duration') || 1.5;
 
 				if (targetPercentage) {
 					// Animate to target percentage

@@ -67,7 +67,9 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 					'designsetgo/accordion-item',
 					{
 						title: __('Accordion Item 1', 'designsetgo'),
-						isOpen: initiallyOpen === 'first' || initiallyOpen === 'all',
+						isOpen:
+							initiallyOpen === 'first' ||
+							initiallyOpen === 'all',
 					},
 				],
 				[
@@ -90,11 +92,19 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 						label={__('Allow Multiple Open', 'designsetgo')}
 						help={
 							allowMultipleOpen
-								? __('Multiple panels can be open at once', 'designsetgo')
-								: __('Only one panel can be open at a time', 'designsetgo')
+								? __(
+										'Multiple panels can be open at once',
+										'designsetgo'
+									)
+								: __(
+										'Only one panel can be open at a time',
+										'designsetgo'
+									)
 						}
 						checked={allowMultipleOpen}
-						onChange={(value) => setAttributes({ allowMultipleOpen: value })}
+						onChange={(value) =>
+							setAttributes({ allowMultipleOpen: value })
+						}
 					/>
 
 					<SelectControl
@@ -102,10 +112,18 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 						value={initiallyOpen}
 						options={[
 							{ label: __('None', 'designsetgo'), value: 'none' },
-							{ label: __('First Item', 'designsetgo'), value: 'first' },
-							{ label: __('All Items', 'designsetgo'), value: 'all' },
+							{
+								label: __('First Item', 'designsetgo'),
+								value: 'first',
+							},
+							{
+								label: __('All Items', 'designsetgo'),
+								value: 'all',
+							},
 						]}
-						onChange={(value) => setAttributes({ initiallyOpen: value })}
+						onChange={(value) =>
+							setAttributes({ initiallyOpen: value })
+						}
 						help={__(
 							'Which panels should be open when the page loads',
 							'designsetgo'
@@ -113,17 +131,31 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Icon Settings', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Icon Settings', 'designsetgo')}
+					initialOpen={false}
+				>
 					<SelectControl
 						label={__('Icon Style', 'designsetgo')}
 						value={iconStyle}
 						options={[
-							{ label: __('Chevron', 'designsetgo'), value: 'chevron' },
-							{ label: __('Plus/Minus', 'designsetgo'), value: 'plus-minus' },
-							{ label: __('Caret', 'designsetgo'), value: 'caret' },
+							{
+								label: __('Chevron', 'designsetgo'),
+								value: 'chevron',
+							},
+							{
+								label: __('Plus/Minus', 'designsetgo'),
+								value: 'plus-minus',
+							},
+							{
+								label: __('Caret', 'designsetgo'),
+								value: 'caret',
+							},
 							{ label: __('None', 'designsetgo'), value: 'none' },
 						]}
-						onChange={(value) => setAttributes({ iconStyle: value })}
+						onChange={(value) =>
+							setAttributes({ iconStyle: value })
+						}
 					/>
 
 					{iconStyle !== 'none' && (
@@ -131,23 +163,42 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 							label={__('Icon Position', 'designsetgo')}
 							value={iconPosition}
 							options={[
-								{ label: __('Left', 'designsetgo'), value: 'left' },
-								{ label: __('Right', 'designsetgo'), value: 'right' },
+								{
+									label: __('Left', 'designsetgo'),
+									value: 'left',
+								},
+								{
+									label: __('Right', 'designsetgo'),
+									value: 'right',
+								},
 							]}
-							onChange={(value) => setAttributes({ iconPosition: value })}
+							onChange={(value) =>
+								setAttributes({ iconPosition: value })
+							}
 						/>
 					)}
 				</PanelBody>
 
-				<PanelBody title={__('Style Settings', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Style Settings', 'designsetgo')}
+					initialOpen={false}
+				>
 					<ToggleControl
 						label={__('Border Between Items', 'designsetgo')}
 						checked={borderBetween}
-						onChange={(value) => setAttributes({ borderBetween: value })}
+						onChange={(value) =>
+							setAttributes({ borderBetween: value })
+						}
 						help={
 							borderBetween
-								? __('Items have borders between them with no gap', 'designsetgo')
-								: __('Items are separated with spacing', 'designsetgo')
+								? __(
+										'Items have borders between them with no gap',
+										'designsetgo'
+									)
+								: __(
+										'Items are separated with spacing',
+										'designsetgo'
+									)
 						}
 					/>
 
@@ -155,7 +206,9 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 						<UnitControl
 							label={__('Gap Between Items', 'designsetgo')}
 							value={itemGap}
-							onChange={(value) => setAttributes({ itemGap: value || '0.5rem' })}
+							onChange={(value) =>
+								setAttributes({ itemGap: value || '0.5rem' })
+							}
 							units={[
 								{ value: 'px', label: 'px', default: 8 },
 								{ value: 'rem', label: 'rem', default: 0.5 },
@@ -175,19 +228,27 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 					settings={[
 						{
 							colorValue: openBackgroundColor,
-							onColorChange: (value) => setAttributes({ openBackgroundColor: value }),
+							onColorChange: (value) =>
+								setAttributes({ openBackgroundColor: value }),
 							label: __('Background', 'designsetgo'),
 						},
 						{
 							colorValue: openTextColor,
-							onColorChange: (value) => setAttributes({ openTextColor: value }),
+							onColorChange: (value) =>
+								setAttributes({ openTextColor: value }),
 							label: __('Text', 'designsetgo'),
 						},
 					]}
 					__experimentalIsRenderedInSidebar
 				>
-					<p className="components-base-control__help" style={{ marginTop: '10px', fontSize: '12px' }}>
-						{__('Colors applied to all accordion items when open.', 'designsetgo')}
+					<p
+						className="components-base-control__help"
+						style={{ marginTop: '10px', fontSize: '12px' }}
+					>
+						{__(
+							'Colors applied to all accordion items when open.',
+							'designsetgo'
+						)}
 					</p>
 				</PanelColorGradientSettings>
 
@@ -197,23 +258,34 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 					settings={[
 						{
 							colorValue: hoverBackgroundColor,
-							onColorChange: (value) => setAttributes({ hoverBackgroundColor: value }),
+							onColorChange: (value) =>
+								setAttributes({ hoverBackgroundColor: value }),
 							label: __('Background', 'designsetgo'),
 							clearable: true,
 						},
 						{
 							colorValue: hoverTextColor,
-							onColorChange: (value) => setAttributes({ hoverTextColor: value }),
+							onColorChange: (value) =>
+								setAttributes({ hoverTextColor: value }),
 							label: __('Text', 'designsetgo'),
 							clearable: true,
 						},
 					]}
 					__experimentalIsRenderedInSidebar
 				>
-					<p className="components-base-control__help" style={{ marginTop: '10px', fontSize: '12px' }}>
+					<p
+						className="components-base-control__help"
+						style={{ marginTop: '10px', fontSize: '12px' }}
+					>
 						{!hoverBackgroundColor && !hoverTextColor
-							? __('⚡ Hover colors mirror open state by default. Set custom colors to override.', 'designsetgo')
-							: __('Custom hover colors set. Clear to use open state colors.', 'designsetgo')}
+							? __(
+									'⚡ Hover colors mirror open state by default. Set custom colors to override.',
+									'designsetgo'
+								)
+							: __(
+									'Custom hover colors set. Clear to use open state colors.',
+									'designsetgo'
+								)}
 					</p>
 				</PanelColorGradientSettings>
 			</InspectorControls>

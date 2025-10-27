@@ -12,15 +12,22 @@ import { PanelBody, SelectControl } from '@wordpress/components';
 /**
  * Text Settings Panel Component
  *
- * @param {Object} props - Component props
- * @param {string} props.titleTag - Current title HTML tag
- * @param {string} props.descriptionTag - Current description HTML tag
- * @param {Function} props.setAttributes - Function to update attributes
+ * @param {Object}   props                - Component props
+ * @param {string}   props.titleTag       - Current title HTML tag
+ * @param {string}   props.descriptionTag - Current description HTML tag
+ * @param {Function} props.setAttributes  - Function to update attributes
  * @return {JSX.Element} Text Settings Panel component
  */
-export const TextSettingsPanel = ({ titleTag, descriptionTag, setAttributes }) => {
+export const TextSettingsPanel = ({
+	titleTag,
+	descriptionTag,
+	setAttributes,
+}) => {
 	return (
-		<PanelBody title={__('Text Settings', 'designsetgo')} initialOpen={false}>
+		<PanelBody
+			title={__('Text Settings', 'designsetgo')}
+			initialOpen={false}
+		>
 			<SelectControl
 				label={__('Title Tag', 'designsetgo')}
 				value={titleTag}

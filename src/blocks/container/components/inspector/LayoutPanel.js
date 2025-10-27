@@ -8,14 +8,20 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { PanelBody, Tooltip } from '@wordpress/components';
-import { __experimentalToggleGroupControl as ToggleGroupControl, __experimentalToggleGroupControlOption as ToggleGroupControlOption } from '@wordpress/components';
+import {
+	PanelBody,
+	Tooltip,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+} from '@wordpress/components';
 
 /**
  * Layout Panel - Controls for layout type selection.
  *
- * @param {Object} props - Component props
- * @param {string} props.layoutType - Current layout type ('stack', 'grid', 'flex')
+ * @param {Object}   props               - Component props
+ * @param {string}   props.layoutType    - Current layout type ('stack', 'grid', 'flex')
  * @param {Function} props.setAttributes - Function to update block attributes
  * @return {JSX.Element} Layout Panel component
  */

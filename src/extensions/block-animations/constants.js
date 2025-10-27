@@ -3,7 +3,7 @@
  *
  * Animation presets and configuration for entrance/exit animations
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 

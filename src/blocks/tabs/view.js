@@ -13,7 +13,8 @@
 			this.nav = element.querySelector('.dsg-tabs__nav');
 			this.panels = element.querySelectorAll('.dsg-tab');
 			this.activeTab = parseInt(element.dataset.activeTab) || 0;
-			this.mobileBreakpoint = parseInt(element.dataset.mobileBreakpoint) || 768;
+			this.mobileBreakpoint =
+				parseInt(element.dataset.mobileBreakpoint) || 768;
 			this.mobileMode = element.dataset.mobileMode || 'accordion';
 			this.enableDeepLinking = element.dataset.deepLinking === 'true';
 
@@ -58,7 +59,9 @@
 		}
 
 		buildNavigation() {
-			if (!this.nav || this.panels.length === 0) return;
+			if (!this.nav || this.panels.length === 0) {
+				return;
+			}
 
 			// Clear existing navigation
 			this.nav.innerHTML = '';
@@ -66,7 +69,10 @@
 			// Build tab buttons from panels
 			this.panels.forEach((panel, index) => {
 				const tabId = panel.id.replace('panel-', 'tab-');
-				const title = panel.getAttribute('aria-label') || this.getTabTitle(panel) || `Tab ${index + 1}`;
+				const title =
+					panel.getAttribute('aria-label') ||
+					this.getTabTitle(panel) ||
+					`Tab ${index + 1}`;
 				const icon = panel.dataset.icon;
 				const iconPosition = panel.dataset.iconPosition || 'left';
 
@@ -75,9 +81,15 @@
 				button.id = tabId;
 				button.setAttribute('type', 'button');
 				button.setAttribute('role', 'tab');
-				button.setAttribute('aria-selected', index === this.activeTab ? 'true' : 'false');
+				button.setAttribute(
+					'aria-selected',
+					index === this.activeTab ? 'true' : 'false'
+				);
 				button.setAttribute('aria-controls', panel.id);
-				button.setAttribute('tabindex', index === this.activeTab ? '0' : '-1');
+				button.setAttribute(
+					'tabindex',
+					index === this.activeTab ? '0' : '-1'
+				);
 				button.dataset.tabIndex = index;
 
 				// Add icon if present (✅ SECURITY: Using createElement, not innerHTML)
@@ -106,8 +118,12 @@
 				}
 
 				// Event listeners
-				button.addEventListener('click', () => this.setActiveTab(index));
-				button.addEventListener('keydown', (e) => this.handleKeyboard(e, index));
+				button.addEventListener('click', () =>
+					this.setActiveTab(index)
+				);
+				button.addEventListener('keydown', (e) =>
+					this.handleKeyboard(e, index)
+				);
 
 				this.nav.appendChild(button);
 			});
@@ -116,7 +132,9 @@
 		getTabTitle(panel) {
 			// Try to get title from data attribute or panel content
 			const contentDiv = panel.querySelector('.dsg-tab__content');
-			if (!contentDiv) return null;
+			if (!contentDiv) {
+				return null;
+			}
 
 			// Look for heading in first few elements
 			const heading = contentDiv.querySelector('h1, h2, h3, h4, h5, h6');
@@ -124,7 +142,9 @@
 		}
 
 		setActiveTab(index, updateURL = true) {
-			if (index < 0 || index >= this.panels.length) return;
+			if (index < 0 || index >= this.panels.length) {
+				return;
+			}
 
 			this.activeTab = index;
 
@@ -162,24 +182,38 @@
 
 		handleKeyboard(e, currentIndex) {
 			let newIndex = currentIndex;
-			const orientation = this.element.classList.contains('dsg-tabs--vertical') ? 'vertical' : 'horizontal';
+			const orientation = this.element.classList.contains(
+				'dsg-tabs--vertical'
+			)
+				? 'vertical'
+				: 'horizontal';
 
 			if (orientation === 'horizontal') {
 				if (e.key === 'ArrowLeft') {
-					newIndex = currentIndex > 0 ? currentIndex - 1 : this.panels.length - 1;
+					newIndex =
+						currentIndex > 0
+							? currentIndex - 1
+							: this.panels.length - 1;
 					e.preventDefault();
 				} else if (e.key === 'ArrowRight') {
-					newIndex = currentIndex < this.panels.length - 1 ? currentIndex + 1 : 0;
+					newIndex =
+						currentIndex < this.panels.length - 1
+							? currentIndex + 1
+							: 0;
 					e.preventDefault();
 				}
-			} else {
-				if (e.key === 'ArrowUp') {
-					newIndex = currentIndex > 0 ? currentIndex - 1 : this.panels.length - 1;
-					e.preventDefault();
-				} else if (e.key === 'ArrowDown') {
-					newIndex = currentIndex < this.panels.length - 1 ? currentIndex + 1 : 0;
-					e.preventDefault();
-				}
+			} else if (e.key === 'ArrowUp') {
+				newIndex =
+					currentIndex > 0
+						? currentIndex - 1
+						: this.panels.length - 1;
+				e.preventDefault();
+			} else if (e.key === 'ArrowDown') {
+				newIndex =
+					currentIndex < this.panels.length - 1
+						? currentIndex + 1
+						: 0;
+				e.preventDefault();
 			}
 
 			if (e.key === 'Home') {
@@ -258,7 +292,10 @@
 					header = document.createElement('button');
 					header.className = 'dsg-tab__accordion-header';
 					header.setAttribute('type', 'button');
-					header.setAttribute('aria-expanded', index === this.activeTab ? 'true' : 'false');
+					header.setAttribute(
+						'aria-expanded',
+						index === this.activeTab ? 'true' : 'false'
+					);
 
 					const title = this.getTabTitle(panel) || `Tab ${index + 1}`;
 					header.textContent = title;
@@ -270,7 +307,10 @@
 					panel.insertBefore(header, panel.firstChild);
 				}
 
-				header.setAttribute('aria-expanded', index === this.activeTab ? 'true' : 'false');
+				header.setAttribute(
+					'aria-expanded',
+					index === this.activeTab ? 'true' : 'false'
+				);
 			});
 		}
 
@@ -286,7 +326,10 @@
 		}
 
 		restoreTabsMode() {
-			this.element.classList.remove('dsg-tabs--accordion', 'dsg-tabs--dropdown');
+			this.element.classList.remove(
+				'dsg-tabs--accordion',
+				'dsg-tabs--dropdown'
+			);
 
 			// Show tab navigation
 			if (this.nav) {
@@ -295,7 +338,9 @@
 
 			// Remove accordion headers
 			this.panels.forEach((panel) => {
-				const header = panel.querySelector('.dsg-tab__accordion-header');
+				const header = panel.querySelector(
+					'.dsg-tab__accordion-header'
+				);
 				if (header) {
 					header.remove();
 				}

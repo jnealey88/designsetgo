@@ -1,7 +1,7 @@
 /**
  * Shared Constants for DesignSetGo Blocks
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 

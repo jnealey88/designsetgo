@@ -3,7 +3,7 @@
  *
  * Handles responsive visibility and utilities.
  *
- * @package DesignSetGo
+ * @package
  */
 
 // Placeholder for responsive utilities.

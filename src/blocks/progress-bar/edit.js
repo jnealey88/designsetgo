@@ -7,7 +7,11 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, InspectorControls, PanelColorSettings } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InspectorControls,
+	PanelColorSettings,
+} from '@wordpress/block-editor';
 import {
 	PanelBody,
 	RangeControl,
@@ -22,8 +26,8 @@ import {
 /**
  * Edit component for Progress Bar block
  *
- * @param {Object} props - Component props
- * @param {Object} props.attributes - Block attributes
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
  * @return {JSX.Element} Edit component
  */
@@ -53,7 +57,7 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 		height: '100%',
 		backgroundColor: barColor || '#2563eb',
 		transition: `width ${animationDuration}s ease-out`,
-		borderRadius: borderRadius,
+		borderRadius,
 	};
 
 	// Add striped background if enabled
@@ -66,9 +70,9 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 	// Build bar container styles
 	const barContainerStyles = {
 		width: '100%',
-		height: height,
+		height,
 		backgroundColor: barBackgroundColor || '#e5e7eb',
-		borderRadius: borderRadius,
+		borderRadius,
 		overflow: 'hidden',
 		position: 'relative',
 	};
@@ -94,20 +98,31 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 		<>
 			<InspectorControls>
 				{/* Progress Settings */}
-				<PanelBody title={__('Progress Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Progress Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<RangeControl
 						label={__('Percentage', 'designsetgo')}
 						value={percentage}
-						onChange={(value) => setAttributes({ percentage: value })}
+						onChange={(value) =>
+							setAttributes({ percentage: value })
+						}
 						min={0}
 						max={100}
 						step={1}
-						help={__('Set the progress percentage (0-100)', 'designsetgo')}
+						help={__(
+							'Set the progress percentage (0–100)',
+							'designsetgo'
+						)}
 					/>
 				</PanelBody>
 
 				{/* Appearance Settings */}
-				<PanelBody title={__('Appearance', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Appearance', 'designsetgo')}
+					initialOpen={false}
+				>
 					<UnitControl
 						label={__('Bar Height', 'designsetgo')}
 						value={height}
@@ -122,7 +137,9 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 					<UnitControl
 						label={__('Border Radius', 'designsetgo')}
 						value={borderRadius}
-						onChange={(value) => setAttributes({ borderRadius: value })}
+						onChange={(value) =>
+							setAttributes({ borderRadius: value })
+						}
 						units={[
 							{ value: 'px', label: 'px' },
 							{ value: 'em', label: 'em' },
@@ -136,8 +153,14 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 						onChange={(value) => setAttributes({ barStyle: value })}
 						isBlock
 					>
-						<ToggleGroupControlOption value="solid" label={__('Solid', 'designsetgo')} />
-						<ToggleGroupControlOption value="striped" label={__('Striped', 'designsetgo')} />
+						<ToggleGroupControlOption
+							value="solid"
+							label={__('Solid', 'designsetgo')}
+						/>
+						<ToggleGroupControlOption
+							value="striped"
+							label={__('Striped', 'designsetgo')}
+						/>
 						<ToggleGroupControlOption
 							value="striped-animated"
 							label={__('Animated', 'designsetgo')}
@@ -152,38 +175,52 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 					colorSettings={[
 						{
 							value: barColor,
-							onChange: (value) => setAttributes({ barColor: value }),
+							onChange: (value) =>
+								setAttributes({ barColor: value }),
 							label: __('Bar Color', 'designsetgo'),
 						},
 						{
 							value: barBackgroundColor,
-							onChange: (value) => setAttributes({ barBackgroundColor: value }),
+							onChange: (value) =>
+								setAttributes({ barBackgroundColor: value }),
 							label: __('Background Color', 'designsetgo'),
 						},
 					]}
 				/>
 
 				{/* Label Settings */}
-				<PanelBody title={__('Label Settings', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Label Settings', 'designsetgo')}
+					initialOpen={false}
+				>
 					<ToggleControl
 						label={__('Show Label', 'designsetgo')}
 						checked={showLabel}
-						onChange={(value) => setAttributes({ showLabel: value })}
+						onChange={(value) =>
+							setAttributes({ showLabel: value })
+						}
 					/>
 
 					{showLabel && (
 						<TextControl
 							label={__('Label Text', 'designsetgo')}
 							value={labelText}
-							onChange={(value) => setAttributes({ labelText: value })}
-							placeholder={__('e.g., Project Progress', 'designsetgo')}
+							onChange={(value) =>
+								setAttributes({ labelText: value })
+							}
+							placeholder={__(
+								'e.g., Project Progress',
+								'designsetgo'
+							)}
 						/>
 					)}
 
 					<ToggleControl
 						label={__('Show Percentage', 'designsetgo')}
 						checked={showPercentage}
-						onChange={(value) => setAttributes({ showPercentage: value })}
+						onChange={(value) =>
+							setAttributes({ showPercentage: value })
+						}
 					/>
 
 					{(showLabel || showPercentage) && (
@@ -191,39 +228,66 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 							label={__('Label Position', 'designsetgo')}
 							value={labelPosition}
 							options={[
-								{ label: __('Above Bar', 'designsetgo'), value: 'top' },
-								{ label: __('Inside Bar', 'designsetgo'), value: 'inside' },
-								{ label: __('Below Bar', 'designsetgo'), value: 'bottom' },
+								{
+									label: __('Above Bar', 'designsetgo'),
+									value: 'top',
+								},
+								{
+									label: __('Inside Bar', 'designsetgo'),
+									value: 'inside',
+								},
+								{
+									label: __('Below Bar', 'designsetgo'),
+									value: 'bottom',
+								},
 							]}
-							onChange={(value) => setAttributes({ labelPosition: value })}
+							onChange={(value) =>
+								setAttributes({ labelPosition: value })
+							}
 						/>
 					)}
 				</PanelBody>
 
 				{/* Animation Settings */}
-				<PanelBody title={__('Animation', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Animation', 'designsetgo')}
+					initialOpen={false}
+				>
 					<ToggleControl
 						label={__('Animate on Scroll', 'designsetgo')}
 						checked={animateOnScroll}
-						onChange={(value) => setAttributes({ animateOnScroll: value })}
-						help={__('Animate the bar when it enters the viewport', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ animateOnScroll: value })
+						}
+						help={__(
+							'Animate the bar when it enters the viewport',
+							'designsetgo'
+						)}
 					/>
 
 					<RangeControl
 						label={__('Animation Duration', 'designsetgo')}
 						value={animationDuration}
-						onChange={(value) => setAttributes({ animationDuration: value })}
+						onChange={(value) =>
+							setAttributes({ animationDuration: value })
+						}
 						min={0.5}
 						max={5}
 						step={0.1}
 						help={__('Duration in seconds', 'designsetgo')}
 					/>
 
-					{(barStyle === 'striped' || barStyle === 'striped-animated') && (
+					{(barStyle === 'striped' ||
+						barStyle === 'striped-animated') && (
 						<ToggleControl
 							label={__('Animate Stripes', 'designsetgo')}
-							checked={stripedAnimation || barStyle === 'striped-animated'}
-							onChange={(value) => setAttributes({ stripedAnimation: value })}
+							checked={
+								stripedAnimation ||
+								barStyle === 'striped-animated'
+							}
+							onChange={(value) =>
+								setAttributes({ stripedAnimation: value })
+							}
 							disabled={barStyle === 'striped-animated'}
 						/>
 					)}
@@ -239,7 +303,10 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 				)}
 
 				{/* Progress Bar */}
-				<div className="dsg-progress-bar__container" style={barContainerStyles}>
+				<div
+					className="dsg-progress-bar__container"
+					style={barContainerStyles}
+				>
 					<div
 						className={`dsg-progress-bar__fill ${
 							barStyle === 'striped-animated' || stripedAnimation
@@ -249,20 +316,22 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 						style={barFillStyles}
 					>
 						{/* Label Inside */}
-						{(showLabel || showPercentage) && labelPosition === 'inside' && (
-							<div className="dsg-progress-bar__label dsg-progress-bar__label--inside">
-								{displayText}
-							</div>
-						)}
+						{(showLabel || showPercentage) &&
+							labelPosition === 'inside' && (
+								<div className="dsg-progress-bar__label dsg-progress-bar__label--inside">
+									{displayText}
+								</div>
+							)}
 					</div>
 				</div>
 
 				{/* Label Below */}
-				{(showLabel || showPercentage) && labelPosition === 'bottom' && (
-					<div className="dsg-progress-bar__label dsg-progress-bar__label--bottom">
-						{displayText}
-					</div>
-				)}
+				{(showLabel || showPercentage) &&
+					labelPosition === 'bottom' && (
+						<div className="dsg-progress-bar__label dsg-progress-bar__label--bottom">
+							{displayText}
+						</div>
+					)}
 			</div>
 		</>
 	);

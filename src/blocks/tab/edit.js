@@ -5,8 +5,17 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, InspectorControls, useInnerBlocksProps } from '@wordpress/block-editor';
-import { PanelBody, TextControl, SelectControl, Dashicon } from '@wordpress/components';
+import {
+	useBlockProps,
+	InspectorControls,
+	useInnerBlocksProps,
+} from '@wordpress/block-editor';
+import {
+	PanelBody,
+	TextControl,
+	SelectControl,
+	Dashicon,
+} from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
 
 // Common icon options for tab navigation
@@ -40,7 +49,7 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 		if (!uniqueId) {
 			setAttributes({ uniqueId: clientId.substring(0, 8) });
 		}
-	}, []);
+	}, [uniqueId, clientId, setAttributes]);
 
 	// Generate anchor from title if not set
 	useEffect(() => {
@@ -51,11 +60,14 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 				.replace(/(^-|-$)/g, '');
 			setAttributes({ anchor });
 		}
-	}, [title]);
+	}, [title, attributes.anchor, setAttributes]);
 
 	// Get this tab's index from parent
-	const tabIndex = wp.data.select('core/block-editor')
-		.getBlockOrder(wp.data.select('core/block-editor').getBlockRootClientId(clientId))
+	const tabIndex = wp.data
+		.select('core/block-editor')
+		.getBlockOrder(
+			wp.data.select('core/block-editor').getBlockRootClientId(clientId)
+		)
 		.indexOf(clientId);
 
 	const isActive = tabIndex === activeTab;
@@ -79,7 +91,9 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 		},
 		{
 			templateLock: false,
-			renderAppender: isActive ? wp.blockEditor.InnerBlocks.ButtonBlockAppender : false,
+			renderAppender: isActive
+				? wp.blockEditor.InnerBlocks.ButtonBlockAppender
+				: false,
 		}
 	);
 
@@ -88,19 +102,30 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title={__('Tab Settings', 'designsetgo')} initialOpen={true}>
+					<PanelBody
+						title={__('Tab Settings', 'designsetgo')}
+						initialOpen={true}
+					>
 						<TextControl
 							label={__('Tab Title', 'designsetgo')}
 							value={title}
-							onChange={(value) => setAttributes({ title: value })}
-							help={__('The title shown in the tab navigation', 'designsetgo')}
+							onChange={(value) =>
+								setAttributes({ title: value })
+							}
+							help={__(
+								'The title shown in the tab navigation',
+								'designsetgo'
+							)}
 						/>
 
 						<TextControl
 							label={__('Icon', 'designsetgo')}
 							value={icon}
 							onChange={(value) => setAttributes({ icon: value })}
-							help={__('Font Awesome icon name (e.g., "star")', 'designsetgo')}
+							help={__(
+								'Font Awesome icon name (e.g., "star")',
+								'designsetgo'
+							)}
 						/>
 
 						{icon && (
@@ -108,31 +133,60 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 								label={__('Icon Position', 'designsetgo')}
 								value={iconPosition}
 								options={[
-									{ label: __('Left', 'designsetgo'), value: 'left' },
-									{ label: __('Right', 'designsetgo'), value: 'right' },
-									{ label: __('Top', 'designsetgo'), value: 'top' },
+									{
+										label: __('Left', 'designsetgo'),
+										value: 'left',
+									},
+									{
+										label: __('Right', 'designsetgo'),
+										value: 'right',
+									},
+									{
+										label: __('Top', 'designsetgo'),
+										value: 'top',
+									},
 								]}
-								onChange={(value) => setAttributes({ iconPosition: value })}
+								onChange={(value) =>
+									setAttributes({ iconPosition: value })
+								}
 							/>
 						)}
 
 						<TextControl
 							label={__('Anchor (URL Hash)', 'designsetgo')}
 							value={attributes.anchor}
-							onChange={(value) => setAttributes({ anchor: value })}
-							help={__('URL-friendly identifier for deep linking', 'designsetgo')}
+							onChange={(value) =>
+								setAttributes({ anchor: value })
+							}
+							help={__(
+								'URL-friendly identifier for deep linking',
+								'designsetgo'
+							)}
 						/>
 					</PanelBody>
 				</InspectorControls>
 
 				<div {...blockProps}>
 					<div className="dsg-tab__inactive-notice">
-						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-							<circle cx="12" cy="12" r="10"/>
-							<line x1="12" y1="8" x2="12" y2="12"/>
-							<line x1="12" y1="16" x2="12.01" y2="16"/>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+						>
+							<circle cx="12" cy="12" r="10" />
+							<line x1="12" y1="8" x2="12" y2="12" />
+							<line x1="12" y1="16" x2="12.01" y2="16" />
 						</svg>
-						<span>{__('Click the tab above to edit its content', 'designsetgo')}</span>
+						<span>
+							{__(
+								'Click the tab above to edit its content',
+								'designsetgo'
+							)}
+						</span>
 					</div>
 				</div>
 			</>
@@ -142,12 +196,18 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Tab Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Tab Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<TextControl
 						label={__('Tab Title', 'designsetgo')}
 						value={title}
 						onChange={(value) => setAttributes({ title: value })}
-						help={__('The title shown in the tab navigation', 'designsetgo')}
+						help={__(
+							'The title shown in the tab navigation',
+							'designsetgo'
+						)}
 					/>
 
 					<SelectControl
@@ -155,11 +215,24 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 						value={icon}
 						options={ICON_OPTIONS}
 						onChange={(value) => setAttributes({ icon: value })}
-						help={__('Choose an icon to display with the tab', 'designsetgo')}
+						help={__(
+							'Choose an icon to display with the tab',
+							'designsetgo'
+						)}
 					/>
 
 					{icon && (
-						<div style={{ marginBottom: '16px', padding: '12px', background: '#f0f0f0', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+						<div
+							style={{
+								marginBottom: '16px',
+								padding: '12px',
+								background: '#f0f0f0',
+								borderRadius: '4px',
+								display: 'flex',
+								alignItems: 'center',
+								gap: '8px',
+							}}
+						>
 							<Dashicon icon={icon} size={24} />
 							<span style={{ fontSize: '14px', color: '#555' }}>
 								{__('Icon preview', 'designsetgo')}
@@ -172,11 +245,22 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 							label={__('Icon Position', 'designsetgo')}
 							value={iconPosition}
 							options={[
-								{ label: __('Left', 'designsetgo'), value: 'left' },
-								{ label: __('Right', 'designsetgo'), value: 'right' },
-								{ label: __('Top', 'designsetgo'), value: 'top' },
+								{
+									label: __('Left', 'designsetgo'),
+									value: 'left',
+								},
+								{
+									label: __('Right', 'designsetgo'),
+									value: 'right',
+								},
+								{
+									label: __('Top', 'designsetgo'),
+									value: 'top',
+								},
 							]}
-							onChange={(value) => setAttributes({ iconPosition: value })}
+							onChange={(value) =>
+								setAttributes({ iconPosition: value })
+							}
 						/>
 					)}
 
@@ -184,7 +268,10 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 						label={__('Anchor (URL Hash)', 'designsetgo')}
 						value={attributes.anchor}
 						onChange={(value) => setAttributes({ anchor: value })}
-						help={__('URL-friendly identifier for deep linking', 'designsetgo')}
+						help={__(
+							'URL-friendly identifier for deep linking',
+							'designsetgo'
+						)}
 					/>
 				</PanelBody>
 			</InspectorControls>

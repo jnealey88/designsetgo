@@ -23,8 +23,8 @@ import { IconPicker } from './components/IconPicker';
 /**
  * Edit component
  *
- * @param {Object} props - Component props
- * @param {Object} props.attributes - Block attributes
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
  * @return {JSX.Element} Edit component
  */
@@ -98,9 +98,7 @@ export default function IconEdit({ attributes, setAttributes }) {
 							onChange={(value) =>
 								setAttributes({
 									linkTarget: value ? '_blank' : '_self',
-									linkRel: value
-										? 'noopener noreferrer'
-										: '',
+									linkRel: value ? 'noopener noreferrer' : '',
 								})
 							}
 						/>

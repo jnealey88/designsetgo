@@ -13,11 +13,11 @@ import { PanelBody, RangeControl } from '@wordpress/components';
 /**
  * Grid Span Panel - Controls column span for nested containers in grid layouts.
  *
- * @param {Object} props - Component props
- * @param {boolean} props.parentIsGrid - Whether parent container is using grid layout
- * @param {number} props.parentGridColumns - Number of columns in parent grid
- * @param {number} props.gridColumnSpan - Current column span value
- * @param {Function} props.setAttributes - Function to update block attributes
+ * @param {Object}   props                   - Component props
+ * @param {boolean}  props.parentIsGrid      - Whether parent container is using grid layout
+ * @param {number}   props.parentGridColumns - Number of columns in parent grid
+ * @param {number}   props.gridColumnSpan    - Current column span value
+ * @param {Function} props.setAttributes     - Function to update block attributes
  * @return {JSX.Element|null} Grid Span Panel component or null if not in grid context
  */
 export const GridSpanPanel = ({

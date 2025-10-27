@@ -16,10 +16,7 @@ import {
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
-import {
-	ALL_ICONS,
-	MAX_DISPLAYED_ICONS,
-} from '../../utils/dashicons-library';
+import { ALL_ICONS, MAX_DISPLAYED_ICONS } from '../../utils/dashicons-library';
 
 /**
  * Icon Settings Panel - Controls for icon selection and appearance.
@@ -27,10 +24,10 @@ import {
  * Allows selecting an icon from Dashicons library with search,
  * adjusting icon size, and setting rotation.
  *
- * @param {Object} props - Component props
- * @param {string} props.icon - Current icon name
- * @param {number} props.iconSize - Icon size in pixels
- * @param {number} props.rotation - Rotation in degrees
+ * @param {Object}   props               - Component props
+ * @param {string}   props.icon          - Current icon name
+ * @param {number}   props.iconSize      - Icon size in pixels
+ * @param {number}   props.rotation      - Rotation in degrees
  * @param {Function} props.setAttributes - Function to update block attributes
  * @return {JSX.Element} Icon Settings Panel component
  */
@@ -68,7 +65,7 @@ export const IconSettingsPanel = ({
 					<SearchControl
 						value={iconSearch}
 						onChange={setIconSearch}
-						placeholder={__('Search icons...', 'designsetgo')}
+						placeholder={__('Search icons…', 'designsetgo')}
 					/>
 					<div className="dsg-icon-picker__grid">
 						{(filteredIcons || ALL_ICONS)

@@ -1,0 +1,17 @@
+# Build output
+build/
+
+# Node modules
+node_modules/
+
+# WordPress environment
+.wp-env/
+
+# Test artifacts
+artifacts/
+
+# Debug/inspection scripts
+inspect-container.js
+
+# Vendor
+vendor/

@@ -3,7 +3,7 @@
  *
  * Adds entrance and exit animations to all WordPress blocks
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 

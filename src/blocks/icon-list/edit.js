@@ -7,28 +7,48 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, useInnerBlocksProps, InspectorControls } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	useInnerBlocksProps,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import { ListSettingsPanel } from './components/inspector/ListSettingsPanel';
 
 /**
  * Icon List Edit Component
  *
- * @param {Object} props - Component props
- * @param {Object} props.attributes - Block attributes
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
  * @return {JSX.Element} Icon List edit component
  */
 export default function IconListEdit({ attributes, setAttributes }) {
-	const { layout, iconSize, iconColor, gap, iconPosition, columns, alignment } = attributes;
+	const {
+		layout,
+		iconSize,
+		iconColor,
+		gap,
+		iconPosition,
+		columns,
+		alignment,
+	} = attributes;
 
 	// Calculate container styles declaratively
 	const containerStyles = {
 		display: layout === 'grid' ? 'grid' : 'flex',
 		flexDirection: layout === 'vertical' ? 'column' : undefined,
-		gridTemplateColumns: layout === 'grid' ? `repeat(${columns}, 1fr)` : undefined,
-		gap: gap,
+		gridTemplateColumns:
+			layout === 'grid' ? `repeat(${columns}, 1fr)` : undefined,
+		gap,
 		// Apply alignment only for vertical layout
-		alignItems: layout === 'vertical' ? (alignment === 'center' ? 'center' : alignment === 'right' ? 'flex-end' : 'flex-start') : undefined,
+		alignItems:
+			layout === 'vertical'
+				? alignment === 'center'
+					? 'center'
+					: alignment === 'right'
+						? 'flex-end'
+						: 'flex-start'
+				: undefined,
 	};
 
 	// Get block wrapper props
@@ -45,9 +65,18 @@ export default function IconListEdit({ attributes, setAttributes }) {
 		{
 			allowedBlocks: ['designsetgo/icon-list-item'],
 			template: [
-				['designsetgo/icon-list-item', { icon: 'check', title: __('First item', 'designsetgo') }],
-				['designsetgo/icon-list-item', { icon: 'check', title: __('Second item', 'designsetgo') }],
-				['designsetgo/icon-list-item', { icon: 'check', title: __('Third item', 'designsetgo') }],
+				[
+					'designsetgo/icon-list-item',
+					{ icon: 'check', title: __('First item', 'designsetgo') },
+				],
+				[
+					'designsetgo/icon-list-item',
+					{ icon: 'check', title: __('Second item', 'designsetgo') },
+				],
+				[
+					'designsetgo/icon-list-item',
+					{ icon: 'check', title: __('Third item', 'designsetgo') },
+				],
 			],
 			orientation: layout === 'vertical' ? 'vertical' : undefined,
 		}

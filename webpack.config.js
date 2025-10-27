@@ -32,7 +32,9 @@ module.exports = {
 					from: 'src/blocks/*/styles/*.json',
 					to: ({ absoluteFilename }) => {
 						// Extract block name and filename from the absolute path
-						const match = absoluteFilename.match(/blocks\/([^/]+)\/styles\/(.+)$/);
+						const match = absoluteFilename.match(
+							/blocks\/([^/]+)\/styles\/(.+)$/
+						);
 						if (match) {
 							return `blocks/${match[1]}/styles/${match[2]}`;
 						}

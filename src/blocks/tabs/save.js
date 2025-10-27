@@ -35,7 +35,9 @@ export default function Save({ attributes }) {
 			...(tabColor && { '--dsg-tab-color': tabColor }),
 			...(tabBackgroundColor && { '--dsg-tab-bg': tabBackgroundColor }),
 			...(activeTabColor && { '--dsg-tab-color-active': activeTabColor }),
-			...(activeTabBackgroundColor && { '--dsg-tab-bg-active': activeTabBackgroundColor }),
+			...(activeTabBackgroundColor && {
+				'--dsg-tab-bg-active': activeTabBackgroundColor,
+			}),
 			...(tabBorderColor && { '--dsg-tab-border-color': tabBorderColor }),
 		},
 	});

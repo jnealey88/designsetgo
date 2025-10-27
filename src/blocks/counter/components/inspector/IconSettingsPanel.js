@@ -12,10 +12,10 @@ import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
 /**
  * Icon Settings Panel - Controls for counter icon.
  *
- * @param {Object} props - Component props
- * @param {boolean} props.showIcon - Whether to show icon
- * @param {string} props.icon - Icon type (star, trophy, heart, etc.)
- * @param {string} props.iconPosition - Icon position (top, left, right)
+ * @param {Object}   props               - Component props
+ * @param {boolean}  props.showIcon      - Whether to show icon
+ * @param {string}   props.icon          - Icon type (star, trophy, heart, etc.)
+ * @param {string}   props.iconPosition  - Icon position (top, left, right)
  * @param {Function} props.setAttributes - Function to update block attributes
  * @return {JSX.Element} Icon Settings Panel component
  */
@@ -26,7 +26,10 @@ export const IconSettingsPanel = ({
 	setAttributes,
 }) => {
 	return (
-		<PanelBody title={__('Icon Settings', 'designsetgo')} initialOpen={false}>
+		<PanelBody
+			title={__('Icon Settings', 'designsetgo')}
+			initialOpen={false}
+		>
 			<ToggleControl
 				label={__('Show Icon', 'designsetgo')}
 				checked={showIcon}
@@ -45,13 +48,34 @@ export const IconSettingsPanel = ({
 						value={icon}
 						options={[
 							{ label: __('Star', 'designsetgo'), value: 'star' },
-							{ label: __('Trophy', 'designsetgo'), value: 'trophy' },
-							{ label: __('Heart', 'designsetgo'), value: 'heart' },
-							{ label: __('Check', 'designsetgo'), value: 'check' },
-							{ label: __('Dollar', 'designsetgo'), value: 'dollar' },
-							{ label: __('Users', 'designsetgo'), value: 'users' },
-							{ label: __('Chart', 'designsetgo'), value: 'chart' },
-							{ label: __('Rocket', 'designsetgo'), value: 'rocket' },
+							{
+								label: __('Trophy', 'designsetgo'),
+								value: 'trophy',
+							},
+							{
+								label: __('Heart', 'designsetgo'),
+								value: 'heart',
+							},
+							{
+								label: __('Check', 'designsetgo'),
+								value: 'check',
+							},
+							{
+								label: __('Dollar', 'designsetgo'),
+								value: 'dollar',
+							},
+							{
+								label: __('Users', 'designsetgo'),
+								value: 'users',
+							},
+							{
+								label: __('Chart', 'designsetgo'),
+								value: 'chart',
+							},
+							{
+								label: __('Rocket', 'designsetgo'),
+								value: 'rocket',
+							},
 						]}
 						onChange={(value) => setAttributes({ icon: value })}
 					/>
@@ -62,9 +86,14 @@ export const IconSettingsPanel = ({
 						options={[
 							{ label: __('Top', 'designsetgo'), value: 'top' },
 							{ label: __('Left', 'designsetgo'), value: 'left' },
-							{ label: __('Right', 'designsetgo'), value: 'right' },
+							{
+								label: __('Right', 'designsetgo'),
+								value: 'right',
+							},
 						]}
-						onChange={(value) => setAttributes({ iconPosition: value })}
+						onChange={(value) =>
+							setAttributes({ iconPosition: value })
+						}
 					/>
 				</>
 			)}

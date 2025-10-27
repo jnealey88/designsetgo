@@ -9,10 +9,10 @@
 /**
  * Calculate icon wrapper styles
  *
- * @param {Object} options - Style options
- * @param {number} options.iconSize - Icon size in pixels
- * @param {string} options.shape - Background shape (none, circle, square, rounded)
- * @param {number} options.shapePadding - Shape padding in pixels
+ * @param {Object} options                 - Style options
+ * @param {number} options.iconSize        - Icon size in pixels
+ * @param {string} options.shape           - Background shape (none, circle, square, rounded)
+ * @param {number} options.shapePadding    - Shape padding in pixels
  * @param {string} options.backgroundColor - Background color or gradient from WordPress
  * @return {Object} Icon wrapper styles
  */
@@ -39,7 +39,7 @@ export const calculateIconWrapperStyle = ({
 /**
  * Calculate icon element styles
  *
- * @param {Object} options - Style options
+ * @param {Object} options          - Style options
  * @param {number} options.rotation - Rotation in degrees (0, 90, 180, 270)
  * @return {Object} Icon element styles
  */

@@ -17,10 +17,10 @@ import {
 /**
  * Link Settings Panel Component
  *
- * @param {Object} props - Component props
- * @param {string} props.linkUrl - Link URL
- * @param {string} props.linkTarget - Link target (_self or _blank)
- * @param {string} props.linkRel - Link rel attribute
+ * @param {Object}   props               - Component props
+ * @param {string}   props.linkUrl       - Link URL
+ * @param {string}   props.linkTarget    - Link target (_self or _blank)
+ * @param {string}   props.linkRel       - Link rel attribute
  * @param {Function} props.setAttributes - Function to update attributes
  * @return {JSX.Element} Link Settings Panel component
  */
@@ -31,7 +31,10 @@ export const LinkSettingsPanel = ({
 	setAttributes,
 }) => {
 	return (
-		<PanelBody title={__('Link Settings', 'designsetgo')} initialOpen={false}>
+		<PanelBody
+			title={__('Link Settings', 'designsetgo')}
+			initialOpen={false}
+		>
 			<TextControl
 				label={__('URL', 'designsetgo')}
 				value={linkUrl}
@@ -60,7 +63,10 @@ export const LinkSettingsPanel = ({
 							{ label: __('None', 'designsetgo'), value: '' },
 							{ label: 'noopener', value: 'noopener' },
 							{ label: 'noreferrer', value: 'noreferrer' },
-							{ label: 'noopener noreferrer', value: 'noopener noreferrer' },
+							{
+								label: 'noopener noreferrer',
+								value: 'noopener noreferrer',
+							},
 							{ label: 'nofollow', value: 'nofollow' },
 						]}
 						onChange={(value) => setAttributes({ linkRel: value })}

@@ -23,7 +23,11 @@ registerBlockType(metadata.name, {
 	...metadata,
 	icon: {
 		src: (
-			<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+			<svg
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="currentColor"
+			>
 				<path d="M20 11H4c-1.1 0-2 .9-2 2s.9 2 2 2h16c1.1 0 2-.9 2-2s-.9-2-2-2z" />
 				<path d="M4 12h10v2H4z" fillOpacity="0.6" />
 			</svg>

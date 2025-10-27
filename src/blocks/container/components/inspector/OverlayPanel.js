@@ -17,11 +17,11 @@ import { __experimentalPanelColorGradientSettings as PanelColorGradientSettings 
  * Adds a color overlay over the background for better text contrast.
  * Only displays when video background or background image is present.
  *
- * @param {Object} props - Component props
- * @param {string} props.videoUrl - Video URL (if present)
- * @param {Object} props.style - Block style object (may contain backgroundImage)
- * @param {boolean} props.enableOverlay - Whether overlay is enabled
- * @param {string} props.overlayColor - Overlay color (supports rgba)
+ * @param {Object}   props               - Component props
+ * @param {string}   props.videoUrl      - Video URL (if present)
+ * @param {Object}   props.style         - Block style object (may contain backgroundImage)
+ * @param {boolean}  props.enableOverlay - Whether overlay is enabled
+ * @param {string}   props.overlayColor  - Overlay color (supports rgba)
  * @param {Function} props.setAttributes - Function to update block attributes
  * @return {JSX.Element|null} Overlay Panel component or null if no background
  */
@@ -61,7 +61,8 @@ export const OverlayPanel = ({
 								colorValue: overlayColor,
 								onColorChange: (value) =>
 									setAttributes({
-										overlayColor: value || 'rgba(0, 0, 0, 0.5)',
+										overlayColor:
+											value || 'rgba(0, 0, 0, 0.5)',
 									}),
 								label: __('Overlay Color', 'designsetgo'),
 								enableAlpha: true,

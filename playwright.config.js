@@ -9,11 +9,11 @@ const { defineConfig, devices } = require('@playwright/test');
 const path = require('path');
 
 // Set up artifacts path
-process.env.WP_ARTIFACTS_PATH = process.env.WP_ARTIFACTS_PATH || path.join(process.cwd(), 'artifacts');
-process.env.STORAGE_STATE_PATH = process.env.STORAGE_STATE_PATH || path.join(
-	process.env.WP_ARTIFACTS_PATH,
-	'storage-states/admin.json'
-);
+process.env.WP_ARTIFACTS_PATH =
+	process.env.WP_ARTIFACTS_PATH || path.join(process.cwd(), 'artifacts');
+process.env.STORAGE_STATE_PATH =
+	process.env.STORAGE_STATE_PATH ||
+	path.join(process.env.WP_ARTIFACTS_PATH, 'storage-states/admin.json');
 
 // WordPress environment URL (default wp-env port is 8888)
 const WP_BASE_URL = process.env.WP_BASE_URL || 'http://localhost:8888';
@@ -44,9 +44,7 @@ module.exports = defineConfig({
 	workers: process.env.CI ? 1 : 2,
 
 	// Reporter configuration
-	reporter: process.env.CI
-		? [['github'], ['html']]
-		: [['html'], ['list']],
+	reporter: process.env.CI ? [['github'], ['html']] : [['html'], ['list']],
 
 	// Shared settings for all projects
 	use: {

@@ -13,8 +13,8 @@ import { IconPicker } from '../../../icon/components/IconPicker';
 /**
  * Icon Picker Panel Component
  *
- * @param {Object} props - Component props
- * @param {string} props.icon - Currently selected icon
+ * @param {Object}   props               - Component props
+ * @param {string}   props.icon          - Currently selected icon
  * @param {Function} props.setAttributes - Function to update attributes
  * @return {JSX.Element} Icon Picker Panel component
  */

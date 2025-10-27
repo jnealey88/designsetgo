@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Check for reduced motion preference
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersReducedMotion = window.matchMedia(
+	'(prefers-reduced-motion: reduce)'
+).matches;
 
 // Animation duration (matches CSS transition)
 const ANIMATION_DURATION = prefersReducedMotion ? 0 : 350;
@@ -18,17 +20,21 @@ function initAccordions() {
 	const accordions = document.querySelectorAll('.dsg-accordion');
 
 	accordions.forEach((accordion) => {
-		const allowMultiple = accordion.getAttribute('data-allow-multiple') === 'true';
+		const allowMultiple =
+			accordion.getAttribute('data-allow-multiple') === 'true';
 		const items = accordion.querySelectorAll('.dsg-accordion-item');
 
 		items.forEach((item) => {
 			const trigger = item.querySelector('.dsg-accordion-item__trigger');
 			const panel = item.querySelector('.dsg-accordion-item__panel');
 
-			if (!trigger || !panel) return;
+			if (!trigger || !panel) {
+				return;
+			}
 
 			// Set initial state based on data attribute
-			const initiallyOpen = item.getAttribute('data-initially-open') === 'true';
+			const initiallyOpen =
+				item.getAttribute('data-initially-open') === 'true';
 			if (initiallyOpen) {
 				openPanel(item, panel, false); // No animation on initial load
 			} else {
@@ -38,7 +44,9 @@ function initAccordions() {
 			// Click handler
 			trigger.addEventListener('click', (e) => {
 				e.preventDefault();
-				const isOpen = item.classList.contains('dsg-accordion-item--open');
+				const isOpen = item.classList.contains(
+					'dsg-accordion-item--open'
+				);
 
 				if (isOpen) {
 					// Close this panel
@@ -66,7 +74,9 @@ function initAccordions() {
 					e.preventDefault();
 					const prevItem = getPreviousItem(item, items);
 					if (prevItem) {
-						prevItem.querySelector('.dsg-accordion-item__trigger')?.focus();
+						prevItem
+							.querySelector('.dsg-accordion-item__trigger')
+							?.focus();
 					}
 				}
 
@@ -75,20 +85,26 @@ function initAccordions() {
 					e.preventDefault();
 					const nextItem = getNextItem(item, items);
 					if (nextItem) {
-						nextItem.querySelector('.dsg-accordion-item__trigger')?.focus();
+						nextItem
+							.querySelector('.dsg-accordion-item__trigger')
+							?.focus();
 					}
 				}
 
 				// Home - focus first item
 				if (e.key === 'Home') {
 					e.preventDefault();
-					items[0]?.querySelector('.dsg-accordion-item__trigger')?.focus();
+					items[0]
+						?.querySelector('.dsg-accordion-item__trigger')
+						?.focus();
 				}
 
 				// End - focus last item
 				if (e.key === 'End') {
 					e.preventDefault();
-					items[items.length - 1]?.querySelector('.dsg-accordion-item__trigger')?.focus();
+					items[items.length - 1]
+						?.querySelector('.dsg-accordion-item__trigger')
+						?.focus();
 				}
 			});
 		});
@@ -214,5 +230,7 @@ function getPreviousItem(currentItem, allItems) {
 function getNextItem(currentItem, allItems) {
 	const itemsArray = Array.from(allItems);
 	const currentIndex = itemsArray.indexOf(currentItem);
-	return currentIndex < itemsArray.length - 1 ? itemsArray[currentIndex + 1] : null;
+	return currentIndex < itemsArray.length - 1
+		? itemsArray[currentIndex + 1]
+		: null;
 }

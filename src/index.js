@@ -10,7 +10,7 @@
  * - Variations: Pre-configured layouts
  * - Styles: Global styles and utilities
  *
- * @package DesignSetGo Blocks
+ * @package
  * @version 2.0
  */
 

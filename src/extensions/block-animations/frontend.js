@@ -3,7 +3,7 @@
  *
  * Handles animation triggers and execution on the frontend
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 
@@ -11,7 +11,9 @@
  * Initialize animations on page load
  */
 document.addEventListener('DOMContentLoaded', () => {
-	const animatedElements = document.querySelectorAll('[data-dsg-animation-enabled="true"]');
+	const animatedElements = document.querySelectorAll(
+		'[data-dsg-animation-enabled="true"]'
+	);
 
 	if (!animatedElements.length) {
 		return;
@@ -69,7 +71,9 @@ function animateOnLoad(element) {
 function animateOnScroll(element) {
 	const offset = parseInt(element.dataset.dsgAnimationOffset) || 100;
 	const once = element.dataset.dsgAnimationOnce === 'true';
-	const hasExitAnimation = element.dataset.dsgExitAnimation && element.dataset.dsgExitAnimation !== '';
+	const hasExitAnimation =
+		element.dataset.dsgExitAnimation &&
+		element.dataset.dsgExitAnimation !== '';
 	const duration = parseInt(element.dataset.dsgAnimationDuration) || 600;
 	let hasAnimated = false;
 	let isAnimating = false;
@@ -86,8 +90,12 @@ function animateOnScroll(element) {
 			entries.forEach((entry) => {
 				const currentRatio = entry.intersectionRatio;
 				const isEntering = entry.isIntersecting && !wasIntersecting;
-				const isFullyVisible = entry.isIntersecting && currentRatio > 0.8;
-				const isStartingToLeave = wasIntersecting && currentRatio < previousRatio && currentRatio < 0.8;
+				const isFullyVisible =
+					entry.isIntersecting && currentRatio > 0.8;
+				const isStartingToLeave =
+					wasIntersecting &&
+					currentRatio < previousRatio &&
+					currentRatio < 0.8;
 
 				if (isEntering) {
 					// Element is entering viewport - play entrance animation
@@ -116,7 +124,12 @@ function animateOnScroll(element) {
 					if (once && !hasExitAnimation) {
 						observer.unobserve(element);
 					}
-				} else if (isStartingToLeave && hasExitAnimation && shouldRepeat && hasAnimated) {
+				} else if (
+					isStartingToLeave &&
+					hasExitAnimation &&
+					shouldRepeat &&
+					hasAnimated
+				) {
 					// Element is starting to leave viewport (80% visible threshold)
 					// Play exit animation early so user sees it
 					if (!isAnimating) {
@@ -136,7 +149,11 @@ function animateOnScroll(element) {
 							animationTimeout = null;
 						}, duration);
 					}
-				} else if (!entry.isIntersecting && wasIntersecting && !hasExitAnimation) {
+				} else if (
+					!entry.isIntersecting &&
+					wasIntersecting &&
+					!hasExitAnimation
+				) {
 					// Element left viewport and no exit animation - just clean up
 					element.classList.remove('dsg-entrance-active');
 				}
@@ -161,7 +178,9 @@ function animateOnScroll(element) {
  */
 function animateOnHover(element) {
 	const duration = parseInt(element.dataset.dsgAnimationDuration) || 600;
-	const hasExitAnimation = element.dataset.dsgExitAnimation && element.dataset.dsgExitAnimation !== '';
+	const hasExitAnimation =
+		element.dataset.dsgExitAnimation &&
+		element.dataset.dsgExitAnimation !== '';
 	let isAnimating = false;
 
 	element.addEventListener('mouseenter', () => {

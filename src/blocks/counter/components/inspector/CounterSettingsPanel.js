@@ -12,12 +12,12 @@ import { PanelBody, RangeControl, TextControl } from '@wordpress/components';
 /**
  * Counter Settings Panel - Controls for counter number configuration.
  *
- * @param {Object} props - Component props
- * @param {number} props.startValue - Start value for animation
- * @param {number} props.endValue - End value (final display number)
- * @param {number} props.decimals - Number of decimal places (0-3)
- * @param {string} props.prefix - Text before number (e.g., '$', '€')
- * @param {string} props.suffix - Text after number (e.g., '+', '%', 'K')
+ * @param {Object}   props               - Component props
+ * @param {number}   props.startValue    - Start value for animation
+ * @param {number}   props.endValue      - End value (final display number)
+ * @param {number}   props.decimals      - Number of decimal places (0-3)
+ * @param {string}   props.prefix        - Text before number (e.g., '$', '€')
+ * @param {string}   props.suffix        - Text after number (e.g., '+', '%', 'K')
  * @param {Function} props.setAttributes - Function to update block attributes
  * @return {JSX.Element} Counter Settings Panel component
  */
@@ -30,7 +30,10 @@ export const CounterSettingsPanel = ({
 	setAttributes,
 }) => {
 	return (
-		<PanelBody title={__('Counter Settings', 'designsetgo')} initialOpen={true}>
+		<PanelBody
+			title={__('Counter Settings', 'designsetgo')}
+			initialOpen={true}
+		>
 			<RangeControl
 				label={__('Start Value', 'designsetgo')}
 				value={startValue}
@@ -72,7 +75,10 @@ export const CounterSettingsPanel = ({
 				value={suffix}
 				onChange={(value) => setAttributes({ suffix: value })}
 				placeholder="+"
-				help={__('Text after number (e.g., "+", "%", "K")', 'designsetgo')}
+				help={__(
+					'Text after number (e.g., "+", "%", "K")',
+					'designsetgo'
+				)}
 			/>
 		</PanelBody>
 	);

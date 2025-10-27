@@ -55,7 +55,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		if (!uniqueId) {
 			setAttributes({ uniqueId: clientId.substring(0, 8) });
 		}
-	}, []);
+	}, [uniqueId, clientId, setAttributes]);
 
 	// Get inner blocks (tabs)
 	const { innerBlocks } = useSelect(
@@ -93,14 +93,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				newIndex = index < innerBlocks.length - 1 ? index + 1 : 0;
 				e.preventDefault();
 			}
-		} else {
-			if (e.key === 'ArrowUp') {
-				newIndex = index > 0 ? index - 1 : innerBlocks.length - 1;
-				e.preventDefault();
-			} else if (e.key === 'ArrowDown') {
-				newIndex = index < innerBlocks.length - 1 ? index + 1 : 0;
-				e.preventDefault();
-			}
+		} else if (e.key === 'ArrowUp') {
+			newIndex = index > 0 ? index - 1 : innerBlocks.length - 1;
+			e.preventDefault();
+		} else if (e.key === 'ArrowDown') {
+			newIndex = index < innerBlocks.length - 1 ? index + 1 : 0;
+			e.preventDefault();
 		}
 
 		if (e.key === 'Home') {
@@ -138,7 +136,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			...(tabColor && { '--dsg-tab-color': tabColor }),
 			...(tabBackgroundColor && { '--dsg-tab-bg': tabBackgroundColor }),
 			...(activeTabColor && { '--dsg-tab-color-active': activeTabColor }),
-			...(activeTabBackgroundColor && { '--dsg-tab-bg-active': activeTabBackgroundColor }),
+			...(activeTabBackgroundColor && {
+				'--dsg-tab-bg-active': activeTabBackgroundColor,
+			}),
 			...(tabBorderColor && { '--dsg-tab-border-color': tabBorderColor }),
 		},
 	});
@@ -158,25 +158,48 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Tab Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Tab Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<SelectControl
 						label={__('Orientation', 'designsetgo')}
 						value={orientation}
 						options={[
-							{ label: __('Horizontal', 'designsetgo'), value: 'horizontal' },
-							{ label: __('Vertical', 'designsetgo'), value: 'vertical' },
+							{
+								label: __('Horizontal', 'designsetgo'),
+								value: 'horizontal',
+							},
+							{
+								label: __('Vertical', 'designsetgo'),
+								value: 'vertical',
+							},
 						]}
-						onChange={(value) => setAttributes({ orientation: value })}
+						onChange={(value) =>
+							setAttributes({ orientation: value })
+						}
 					/>
 
 					<SelectControl
 						label={__('Tab Style', 'designsetgo')}
 						value={tabStyle}
 						options={[
-							{ label: __('Default', 'designsetgo'), value: 'default' },
-							{ label: __('Pills', 'designsetgo'), value: 'pills' },
-							{ label: __('Underline', 'designsetgo'), value: 'underline' },
-							{ label: __('Minimal', 'designsetgo'), value: 'minimal' },
+							{
+								label: __('Default', 'designsetgo'),
+								value: 'default',
+							},
+							{
+								label: __('Pills', 'designsetgo'),
+								value: 'pills',
+							},
+							{
+								label: __('Underline', 'designsetgo'),
+								value: 'underline',
+							},
+							{
+								label: __('Minimal', 'designsetgo'),
+								value: 'minimal',
+							},
 						]}
 						onChange={(value) => setAttributes({ tabStyle: value })}
 					/>
@@ -186,19 +209,35 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							label={__('Alignment', 'designsetgo')}
 							value={alignment}
 							options={[
-								{ label: __('Left', 'designsetgo'), value: 'left' },
-								{ label: __('Center', 'designsetgo'), value: 'center' },
-								{ label: __('Right', 'designsetgo'), value: 'right' },
-								{ label: __('Justified', 'designsetgo'), value: 'justified' },
+								{
+									label: __('Left', 'designsetgo'),
+									value: 'left',
+								},
+								{
+									label: __('Center', 'designsetgo'),
+									value: 'center',
+								},
+								{
+									label: __('Right', 'designsetgo'),
+									value: 'right',
+								},
+								{
+									label: __('Justified', 'designsetgo'),
+									value: 'justified',
+								},
 							]}
-							onChange={(value) => setAttributes({ alignment: value })}
+							onChange={(value) =>
+								setAttributes({ alignment: value })
+							}
 						/>
 					)}
 
 					<RangeControl
 						label={__('Gap Between Tabs', 'designsetgo')}
 						value={parseInt(gap)}
-						onChange={(value) => setAttributes({ gap: `${value}px` })}
+						onChange={(value) =>
+							setAttributes({ gap: `${value}px` })
+						}
 						min={0}
 						max={40}
 						step={1}
@@ -211,60 +250,91 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					colorSettings={[
 						{
 							value: tabColor,
-							onChange: (value) => setAttributes({ tabColor: value }),
+							onChange: (value) =>
+								setAttributes({ tabColor: value }),
 							label: __('Tab Text', 'designsetgo'),
 						},
 						{
 							value: tabBackgroundColor,
-							onChange: (value) => setAttributes({ tabBackgroundColor: value }),
+							onChange: (value) =>
+								setAttributes({ tabBackgroundColor: value }),
 							label: __('Tab Background', 'designsetgo'),
 						},
 						{
 							value: activeTabColor,
-							onChange: (value) => setAttributes({ activeTabColor: value }),
+							onChange: (value) =>
+								setAttributes({ activeTabColor: value }),
 							label: __('Active Tab Text', 'designsetgo'),
 						},
 						{
 							value: activeTabBackgroundColor,
-							onChange: (value) => setAttributes({ activeTabBackgroundColor: value }),
+							onChange: (value) =>
+								setAttributes({
+									activeTabBackgroundColor: value,
+								}),
 							label: __('Active Tab Background', 'designsetgo'),
 						},
 						{
 							value: tabBorderColor,
-							onChange: (value) => setAttributes({ tabBorderColor: value }),
+							onChange: (value) =>
+								setAttributes({ tabBorderColor: value }),
 							label: __('Tab Border', 'designsetgo'),
 						},
 					]}
 				/>
 
-				<PanelBody title={__('Mobile Settings', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Mobile Settings', 'designsetgo')}
+					initialOpen={false}
+				>
 					<RangeControl
 						label={__('Mobile Breakpoint (px)', 'designsetgo')}
 						value={mobileBreakpoint}
-						onChange={(value) => setAttributes({ mobileBreakpoint: value })}
+						onChange={(value) =>
+							setAttributes({ mobileBreakpoint: value })
+						}
 						min={320}
 						max={1024}
 						step={1}
-						help={__('Screen width below which mobile mode activates', 'designsetgo')}
+						help={__(
+							'Screen width below which mobile mode activates',
+							'designsetgo'
+						)}
 					/>
 
 					<SelectControl
 						label={__('Mobile Mode', 'designsetgo')}
 						value={mobileMode}
 						options={[
-							{ label: __('Accordion', 'designsetgo'), value: 'accordion' },
-							{ label: __('Dropdown', 'designsetgo'), value: 'dropdown' },
-							{ label: __('Tabs (Scrollable)', 'designsetgo'), value: 'tabs' },
+							{
+								label: __('Accordion', 'designsetgo'),
+								value: 'accordion',
+							},
+							{
+								label: __('Dropdown', 'designsetgo'),
+								value: 'dropdown',
+							},
+							{
+								label: __('Tabs (Scrollable)', 'designsetgo'),
+								value: 'tabs',
+							},
 						]}
-						onChange={(value) => setAttributes({ mobileMode: value })}
+						onChange={(value) =>
+							setAttributes({ mobileMode: value })
+						}
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Advanced', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Advanced', 'designsetgo')}
+					initialOpen={false}
+				>
 					<ToggleControl
 						label={__('Enable Deep Linking', 'designsetgo')}
 						checked={enableDeepLinking}
-						onChange={(value) => setAttributes({ enableDeepLinking: value })}
+						onChange={(value) =>
+							setAttributes({ enableDeepLinking: value })
+						}
 						help={__(
 							'Allow tabs to be accessed via URL hash (e.g., #tab-name)',
 							'designsetgo'
@@ -275,9 +345,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 			<div {...blockProps}>
 				{/* Tab Navigation */}
-				<div className="dsg-tabs__nav" role="tablist" aria-label={__('Tabs', 'designsetgo')}>
+				<div
+					className="dsg-tabs__nav"
+					role="tablist"
+					aria-label={__('Tabs', 'designsetgo')}
+				>
 					{innerBlocks.map((block, index) => {
-						const { title, icon, iconPosition, uniqueId: tabId } = block.attributes;
+						const {
+							title,
+							icon,
+							iconPosition,
+							uniqueId: tabId,
+						} = block.attributes;
 						const isActive = index === activeTab;
 
 						return (
@@ -307,7 +386,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									</span>
 								)}
 
-								<span className="dsg-tabs__tab-title">{title || `Tab ${index + 1}`}</span>
+								<span className="dsg-tabs__tab-title">
+									{title || `Tab ${index + 1}`}
+								</span>
 
 								{icon && iconPosition === 'right' && (
 									<span className="dsg-tabs__tab-icon">

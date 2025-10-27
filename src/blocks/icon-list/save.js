@@ -11,7 +11,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 /**
  * Icon List Save Component
  *
- * @param {Object} props - Component props
+ * @param {Object} props            - Component props
  * @param {Object} props.attributes - Block attributes
  * @return {JSX.Element} Icon List save component
  */
@@ -22,10 +22,18 @@ export default function IconListSave({ attributes }) {
 	const containerStyles = {
 		display: layout === 'grid' ? 'grid' : 'flex',
 		flexDirection: layout === 'vertical' ? 'column' : undefined,
-		gridTemplateColumns: layout === 'grid' ? `repeat(${columns}, 1fr)` : undefined,
-		gap: gap,
+		gridTemplateColumns:
+			layout === 'grid' ? `repeat(${columns}, 1fr)` : undefined,
+		gap,
 		// Apply alignment only for vertical layout
-		alignItems: layout === 'vertical' ? (alignment === 'center' ? 'center' : alignment === 'right' ? 'flex-end' : 'flex-start') : undefined,
+		alignItems:
+			layout === 'vertical'
+				? alignment === 'center'
+					? 'center'
+					: alignment === 'right'
+						? 'flex-end'
+						: 'flex-start'
+				: undefined,
 	};
 
 	// Get block wrapper props

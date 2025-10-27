@@ -12,13 +12,22 @@ import { getIcon } from '../icon/utils/svg-icons';
 /**
  * Icon List Item Save Component
  *
- * @param {Object} props - Component props
+ * @param {Object} props            - Component props
  * @param {Object} props.attributes - Block attributes
- * @param {Object} props.context - Block context from parent
+ * @param {Object} props.context    - Block context from parent
  * @return {JSX.Element} Icon List Item save component
  */
 export default function IconListItemSave({ attributes, context = {} }) {
-	const { icon, title, titleTag, description, descriptionTag, linkUrl, linkTarget, linkRel } = attributes;
+	const {
+		icon,
+		title,
+		titleTag,
+		description,
+		descriptionTag,
+		linkUrl,
+		linkTarget,
+		linkRel,
+	} = attributes;
 
 	// Get settings from parent via context with safe defaults
 	const iconSize = context['designsetgo/iconList/iconSize'] || 32;
@@ -42,7 +51,10 @@ export default function IconListItemSave({ attributes, context = {} }) {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		color: iconColor || undefined,
+		...(iconColor && {
+			color: iconColor,
+			'--dsg-icon-color': iconColor,
+		}),
 	};
 
 	// Get block wrapper props
@@ -59,7 +71,7 @@ export default function IconListItemSave({ attributes, context = {} }) {
 				href: linkUrl,
 				target: linkTarget,
 				rel: linkRel || undefined,
-		  }
+			}
 		: blockProps;
 
 	return (

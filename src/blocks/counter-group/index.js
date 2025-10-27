@@ -29,6 +29,9 @@ import './style.scss';
 
 /**
  * Edit component
+ * @param root0
+ * @param root0.attributes
+ * @param root0.setAttributes
  */
 function CounterGroupEdit({ attributes, setAttributes }) {
 	const {
@@ -116,7 +119,9 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 					<RangeControl
 						label={__('Columns (Tablet)', 'designsetgo')}
 						value={columnsTablet}
-						onChange={(value) => setAttributes({ columnsTablet: value })}
+						onChange={(value) =>
+							setAttributes({ columnsTablet: value })
+						}
 						min={1}
 						max={columns}
 						help={__('768px - 1023px', 'designsetgo')}
@@ -125,7 +130,9 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 					<RangeControl
 						label={__('Columns (Mobile)', 'designsetgo')}
 						value={columnsMobile}
-						onChange={(value) => setAttributes({ columnsMobile: value })}
+						onChange={(value) =>
+							setAttributes({ columnsMobile: value })
+						}
 						min={1}
 						max={columnsTablet}
 						help={__('<768px', 'designsetgo')}
@@ -147,10 +154,18 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 						value={alignContent}
 						options={[
 							{ label: __('Left', 'designsetgo'), value: 'left' },
-							{ label: __('Center', 'designsetgo'), value: 'center' },
-							{ label: __('Right', 'designsetgo'), value: 'right' },
+							{
+								label: __('Center', 'designsetgo'),
+								value: 'center',
+							},
+							{
+								label: __('Right', 'designsetgo'),
+								value: 'right',
+							},
 						]}
-						onChange={(value) => setAttributes({ alignContent: value })}
+						onChange={(value) =>
+							setAttributes({ alignContent: value })
+						}
 					/>
 				</PanelBody>
 
@@ -160,35 +175,62 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 					initialOpen={false}
 				>
 					<RangeControl
-						label={__('Animation Duration (seconds)', 'designsetgo')}
+						label={__(
+							'Animation Duration (seconds)',
+							'designsetgo'
+						)}
 						value={animationDuration}
-						onChange={(value) => setAttributes({ animationDuration: value })}
+						onChange={(value) =>
+							setAttributes({ animationDuration: value })
+						}
 						min={0.5}
 						max={5}
 						step={0.1}
-						help={__('How long the count animation takes', 'designsetgo')}
+						help={__(
+							'How long the count animation takes',
+							'designsetgo'
+						)}
 					/>
 
 					<RangeControl
 						label={__('Animation Delay (seconds)', 'designsetgo')}
 						value={animationDelay}
-						onChange={(value) => setAttributes({ animationDelay: value })}
+						onChange={(value) =>
+							setAttributes({ animationDelay: value })
+						}
 						min={0}
 						max={2}
 						step={0.1}
-						help={__('Delay before animation starts', 'designsetgo')}
+						help={__(
+							'Delay before animation starts',
+							'designsetgo'
+						)}
 					/>
 
 					<SelectControl
 						label={__('Easing Function', 'designsetgo')}
 						value={animationEasing}
 						options={[
-							{ label: __('Ease Out Quad', 'designsetgo'), value: 'easeOutQuad' },
-							{ label: __('Ease Out Cubic', 'designsetgo'), value: 'easeOutCubic' },
-							{ label: __('Ease In Out', 'designsetgo'), value: 'easeInOutQuad' },
-							{ label: __('Linear', 'designsetgo'), value: 'linear' },
+							{
+								label: __('Ease Out Quad', 'designsetgo'),
+								value: 'easeOutQuad',
+							},
+							{
+								label: __('Ease Out Cubic', 'designsetgo'),
+								value: 'easeOutCubic',
+							},
+							{
+								label: __('Ease In Out', 'designsetgo'),
+								value: 'easeInOutQuad',
+							},
+							{
+								label: __('Linear', 'designsetgo'),
+								value: 'linear',
+							},
 						]}
-						onChange={(value) => setAttributes({ animationEasing: value })}
+						onChange={(value) =>
+							setAttributes({ animationEasing: value })
+						}
 						help={__('Animation timing curve', 'designsetgo')}
 					/>
 				</PanelBody>
@@ -201,16 +243,26 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 					<ToggleControl
 						label={__('Use Thousands Separator', 'designsetgo')}
 						checked={useGrouping}
-						onChange={(value) => setAttributes({ useGrouping: value })}
-						help={__('Format numbers like "1,000" or "1000"', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ useGrouping: value })
+						}
+						help={__(
+							'Format numbers like "1,000" or "1000"',
+							'designsetgo'
+						)}
 					/>
 
 					{useGrouping && (
 						<TextControl
 							label={__('Thousands Separator', 'designsetgo')}
 							value={separator}
-							onChange={(value) => setAttributes({ separator: value })}
-							help={__('Character for thousands (e.g., "," or ".")', 'designsetgo')}
+							onChange={(value) =>
+								setAttributes({ separator: value })
+							}
+							help={__(
+								'Character for thousands (e.g., "," or ".")',
+								'designsetgo'
+							)}
 						/>
 					)}
 
@@ -218,7 +270,10 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 						label={__('Decimal Point', 'designsetgo')}
 						value={decimal}
 						onChange={(value) => setAttributes({ decimal: value })}
-						help={__('Character for decimals (e.g., "." or ",")', 'designsetgo')}
+						help={__(
+							'Character for decimals (e.g., "." or ",")',
+							'designsetgo'
+						)}
 					/>
 				</PanelBody>
 			</InspectorControls>
@@ -237,7 +292,11 @@ registerBlockType(metadata.name, {
 	...metadata,
 	icon: {
 		src: (
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 24 24"
+				fill="currentColor"
+			>
 				<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z" />
 			</svg>
 		),

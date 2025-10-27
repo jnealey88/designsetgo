@@ -7,7 +7,12 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { PanelBody, ToggleControl, RangeControl, SelectControl } from '@wordpress/components';
+import {
+	PanelBody,
+	ToggleControl,
+	RangeControl,
+	SelectControl,
+} from '@wordpress/components';
 
 /**
  * Animation Panel - Controls for animation override.
@@ -15,13 +20,13 @@ import { PanelBody, ToggleControl, RangeControl, SelectControl } from '@wordpres
  * Allows this counter to use custom animation settings instead of inheriting
  * from the parent Counter Group block.
  *
- * @param {Object} props - Component props
- * @param {boolean} props.overrideAnimation - Whether to override parent animation
- * @param {number} props.customDuration - Custom animation duration (seconds)
- * @param {number} props.customDelay - Custom animation delay (seconds)
- * @param {string} props.customEasing - Custom easing function
- * @param {Object} props.context - Block context from parent
- * @param {Function} props.setAttributes - Function to update block attributes
+ * @param {Object}   props                   - Component props
+ * @param {boolean}  props.overrideAnimation - Whether to override parent animation
+ * @param {number}   props.customDuration    - Custom animation duration (seconds)
+ * @param {number}   props.customDelay       - Custom animation delay (seconds)
+ * @param {string}   props.customEasing      - Custom easing function
+ * @param {Object}   props.context           - Block context from parent
+ * @param {Function} props.setAttributes     - Function to update block attributes
  * @return {JSX.Element} Animation Panel component
  */
 export const AnimationPanel = ({
@@ -33,9 +38,12 @@ export const AnimationPanel = ({
 	setAttributes,
 }) => {
 	// Get parent settings from context (with fallback defaults)
-	const parentDuration = context?.['designsetgo/counterGroup/animationDuration'] || 2;
-	const parentDelay = context?.['designsetgo/counterGroup/animationDelay'] || 0;
-	const parentEasing = context?.['designsetgo/counterGroup/animationEasing'] || 'easeOutQuad';
+	const parentDuration =
+		context?.['designsetgo/counterGroup/animationDuration'] || 2;
+	const parentDelay =
+		context?.['designsetgo/counterGroup/animationDelay'] || 0;
+	const parentEasing =
+		context?.['designsetgo/counterGroup/animationEasing'] || 'easeOutQuad';
 
 	return (
 		<PanelBody
@@ -45,7 +53,9 @@ export const AnimationPanel = ({
 			<ToggleControl
 				label={__('Override Parent Animation', 'designsetgo')}
 				checked={overrideAnimation}
-				onChange={(value) => setAttributes({ overrideAnimation: value })}
+				onChange={(value) =>
+					setAttributes({ overrideAnimation: value })
+				}
 				help={__(
 					'Use custom animation settings instead of parent settings',
 					'designsetgo'
@@ -55,23 +65,36 @@ export const AnimationPanel = ({
 			{overrideAnimation && (
 				<>
 					<RangeControl
-						label={__('Animation Duration (seconds)', 'designsetgo')}
+						label={__(
+							'Animation Duration (seconds)',
+							'designsetgo'
+						)}
 						value={customDuration}
-						onChange={(value) => setAttributes({ customDuration: value })}
+						onChange={(value) =>
+							setAttributes({ customDuration: value })
+						}
 						min={0.5}
 						max={5}
 						step={0.1}
-						help={__('How long the counting animation takes', 'designsetgo')}
+						help={__(
+							'How long the counting animation takes',
+							'designsetgo'
+						)}
 					/>
 
 					<RangeControl
 						label={__('Animation Delay (seconds)', 'designsetgo')}
 						value={customDelay}
-						onChange={(value) => setAttributes({ customDelay: value })}
+						onChange={(value) =>
+							setAttributes({ customDelay: value })
+						}
 						min={0}
 						max={2}
 						step={0.1}
-						help={__('Delay before animation starts', 'designsetgo')}
+						help={__(
+							'Delay before animation starts',
+							'designsetgo'
+						)}
 					/>
 
 					<SelectControl
@@ -90,9 +113,14 @@ export const AnimationPanel = ({
 								label: __('Ease In Out', 'designsetgo'),
 								value: 'easeInOutQuad',
 							},
-							{ label: __('Linear', 'designsetgo'), value: 'linear' },
+							{
+								label: __('Linear', 'designsetgo'),
+								value: 'linear',
+							},
 						]}
-						onChange={(value) => setAttributes({ customEasing: value })}
+						onChange={(value) =>
+							setAttributes({ customEasing: value })
+						}
 					/>
 				</>
 			)}
@@ -107,7 +135,9 @@ export const AnimationPanel = ({
 					}}
 				>
 					<p style={{ margin: 0, fontSize: '12px', color: '#666' }}>
-						<strong>{__('Using parent settings:', 'designsetgo')}</strong>
+						<strong>
+							{__('Using parent settings:', 'designsetgo')}
+						</strong>
 						<br />
 						{__('Duration:', 'designsetgo')} {parentDuration}s
 						<br />

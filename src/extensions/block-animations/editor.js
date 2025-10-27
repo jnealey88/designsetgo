@@ -3,7 +3,7 @@
  *
  * Adds animation controls and classes to blocks in the editor
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 
@@ -49,11 +49,8 @@ const withAnimationControls = createHigherOrderComponent((BlockEdit) => {
 const withAnimationClasses = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, name } = props;
-		const {
-			dsgAnimationEnabled,
-			dsgEntranceAnimation,
-			dsgExitAnimation,
-		} = attributes;
+		const { dsgAnimationEnabled, dsgEntranceAnimation, dsgExitAnimation } =
+			attributes;
 
 		// Skip if animations not enabled or block not supported
 		if (
@@ -77,17 +74,15 @@ const withAnimationClasses = createHigherOrderComponent((BlockListBlock) => {
 			}
 		}
 
-		return (
-			<BlockListBlock
-				{...props}
-				className={className.trim()}
-			/>
-		);
+		return <BlockListBlock {...props} className={className.trim()} />;
 	};
 }, 'withAnimationClasses');
 
 /**
  * Add animation data attributes to save props
+ * @param extraProps
+ * @param blockType
+ * @param attributes
  */
 function addAnimationSaveProps(extraProps, blockType, attributes) {
 	const {

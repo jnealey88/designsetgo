@@ -11,7 +11,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Save component for Progress Bar block
  *
- * @param {Object} props - Component props
+ * @param {Object} props            - Component props
  * @param {Object} props.attributes - Block attributes
  * @return {JSX.Element} Save component
  */
@@ -41,7 +41,7 @@ export default function ProgressBarSave({ attributes }) {
 		height: '100%',
 		backgroundColor: barColor || '#2563eb',
 		transition: `width ${animationDuration}s ease-out`,
-		borderRadius: borderRadius,
+		borderRadius,
 	};
 
 	// Add striped background if enabled
@@ -54,9 +54,9 @@ export default function ProgressBarSave({ attributes }) {
 	// Build bar container styles (same as edit.js)
 	const barContainerStyles = {
 		width: '100%',
-		height: height,
+		height,
 		backgroundColor: barBackgroundColor || '#e5e7eb',
-		borderRadius: borderRadius,
+		borderRadius,
 		overflow: 'hidden',
 		position: 'relative',
 	};
@@ -90,7 +90,10 @@ export default function ProgressBarSave({ attributes }) {
 			)}
 
 			{/* Progress Bar */}
-			<div className="dsg-progress-bar__container" style={barContainerStyles}>
+			<div
+				className="dsg-progress-bar__container"
+				style={barContainerStyles}
+			>
 				<div
 					className={`dsg-progress-bar__fill ${
 						barStyle === 'striped-animated' || stripedAnimation

@@ -3,13 +3,19 @@
  *
  * Adds animation icon to block toolbar for quick access
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 
 import { __ } from '@wordpress/i18n';
 import { BlockControls } from '@wordpress/block-editor';
-import { ToolbarGroup, ToolbarButton, Dropdown, MenuGroup, MenuItem } from '@wordpress/components';
+import {
+	ToolbarGroup,
+	ToolbarButton,
+	Dropdown,
+	MenuGroup,
+	MenuItem,
+} from '@wordpress/components';
 import { Icon } from '@wordpress/icons';
 import { ANIMATION_TYPES } from '../constants';
 
@@ -23,18 +29,15 @@ const AnimationIcon = () => (
 		width="24"
 		height="24"
 	>
-		<path
-			d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"
-			fill="currentColor"
-		/>
+		<path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" fill="currentColor" />
 	</svg>
 );
 
 /**
  * Animation Toolbar Component
  *
- * @param {Object} props Component props
- * @param {Object} props.attributes Block attributes
+ * @param {Object}   props               Component props
+ * @param {Object}   props.attributes    Block attributes
  * @param {Function} props.setAttributes Function to update attributes
  * @return {JSX.Element|null} Toolbar component
  */
@@ -58,11 +61,14 @@ export default function AnimationToolbar({ attributes, setAttributes }) {
 						/>
 					)}
 					renderContent={() => (
-						<MenuGroup label={__('Quick Animations', 'designsetgo')}>
+						<MenuGroup
+							label={__('Quick Animations', 'designsetgo')}
+						>
 							<MenuItem
 								onClick={() =>
 									setAttributes({
-										dsgAnimationEnabled: !dsgAnimationEnabled,
+										dsgAnimationEnabled:
+											!dsgAnimationEnabled,
 									})
 								}
 								isSelected={!dsgAnimationEnabled}
@@ -70,24 +76,28 @@ export default function AnimationToolbar({ attributes, setAttributes }) {
 								{__('None', 'designsetgo')}
 							</MenuItem>
 
-							{ANIMATION_TYPES.entrance.slice(0, 5).map((animation) => (
-								<MenuItem
-									key={animation.value}
-									onClick={() =>
-										setAttributes({
-											dsgAnimationEnabled: true,
-											dsgEntranceAnimation: animation.value,
-											dsgAnimationTrigger: 'scroll',
-										})
-									}
-									isSelected={
-										dsgAnimationEnabled &&
-										dsgEntranceAnimation === animation.value
-									}
-								>
-									{animation.label}
-								</MenuItem>
-							))}
+							{ANIMATION_TYPES.entrance
+								.slice(0, 5)
+								.map((animation) => (
+									<MenuItem
+										key={animation.value}
+										onClick={() =>
+											setAttributes({
+												dsgAnimationEnabled: true,
+												dsgEntranceAnimation:
+													animation.value,
+												dsgAnimationTrigger: 'scroll',
+											})
+										}
+										isSelected={
+											dsgAnimationEnabled &&
+											dsgEntranceAnimation ===
+												animation.value
+										}
+									>
+										{animation.label}
+									</MenuItem>
+								))}
 						</MenuGroup>
 					)}
 				/>

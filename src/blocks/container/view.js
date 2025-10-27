@@ -147,7 +147,10 @@ function loadVideoBackground(container) {
 	// Ensure content stays above video
 	const children = Array.from(container.children);
 	children.forEach((child) => {
-		if (child !== videoContainer && !child.classList.contains('dsg-overlay')) {
+		if (
+			child !== videoContainer &&
+			!child.classList.contains('dsg-overlay')
+		) {
 			child.style.position = 'relative';
 			child.style.zIndex = '2';
 		}

@@ -20,14 +20,19 @@ import { TextSettingsPanel } from './components/inspector/TextSettingsPanel';
 /**
  * Icon List Item Edit Component
  *
- * @param {Object} props - Component props
- * @param {Object} props.attributes - Block attributes
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
- * @param {Object} props.context - Block context from parent
+ * @param {Object}   props.context       - Block context from parent
  * @return {JSX.Element} Icon List Item edit component
  */
-export default function IconListItemEdit({ attributes, setAttributes, context }) {
-	const { icon, title, titleTag, description, descriptionTag, linkUrl } = attributes;
+export default function IconListItemEdit({
+	attributes,
+	setAttributes,
+	context,
+}) {
+	const { icon, title, titleTag, description, descriptionTag, linkUrl } =
+		attributes;
 
 	// Get settings from parent via context
 	const iconSize = context['designsetgo/iconList/iconSize'] || 32;
@@ -51,7 +56,10 @@ export default function IconListItemEdit({ attributes, setAttributes, context })
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		color: iconColor || undefined,
+		...(iconColor && {
+			color: iconColor,
+			'--dsg-icon-color': iconColor,
+		}),
 	};
 
 	// Get block wrapper props
@@ -78,7 +86,10 @@ export default function IconListItemEdit({ attributes, setAttributes, context })
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="dsg-icon-list-item__icon" style={iconWrapperStyles}>
+				<div
+					className="dsg-icon-list-item__icon"
+					style={iconWrapperStyles}
+				>
 					{getIcon(icon)}
 				</div>
 
@@ -88,7 +99,7 @@ export default function IconListItemEdit({ attributes, setAttributes, context })
 						className="dsg-icon-list-item__title"
 						value={title}
 						onChange={(value) => setAttributes({ title: value })}
-						placeholder={__('List item title...', 'designsetgo')}
+						placeholder={__('List item title…', 'designsetgo')}
 						allowedFormats={['core/bold', 'core/italic']}
 					/>
 
@@ -96,16 +107,23 @@ export default function IconListItemEdit({ attributes, setAttributes, context })
 						tagName={descriptionTag}
 						className="dsg-icon-list-item__description"
 						value={description}
-						onChange={(value) => setAttributes({ description: value })}
-						placeholder={__('Add description (optional)...', 'designsetgo')}
-						allowedFormats={['core/bold', 'core/italic', 'core/link']}
+						onChange={(value) =>
+							setAttributes({ description: value })
+						}
+						placeholder={__(
+							'Add description (optional)…',
+							'designsetgo'
+						)}
+						allowedFormats={[
+							'core/bold',
+							'core/italic',
+							'core/link',
+						]}
 					/>
 				</div>
 
 				{linkUrl && (
-					<div className="dsg-icon-list-item__link-indicator">
-						🔗
-					</div>
+					<div className="dsg-icon-list-item__link-indicator">🔗</div>
 				)}
 			</div>
 		</>

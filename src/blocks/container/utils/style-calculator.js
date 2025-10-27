@@ -48,14 +48,14 @@ const convertPresetToCSSVar = (value) => {
  * - Applies to flex and grid layouts via CSS gap property
  * - Converts WordPress preset notation to CSS custom properties
  *
- * @param {Object} attributes - Block attributes
- * @param {string} attributes.layoutType - Layout type ('stack', 'grid', 'flex')
- * @param {boolean} attributes.constrainWidth - Whether to constrain content width
- * @param {string} attributes.contentWidth - Maximum content width (e.g., '1200px')
- * @param {number} attributes.gridColumns - Number of grid columns (desktop)
- * @param {number} attributes.gridColumnsTablet - Number of grid columns (tablet)
- * @param {number} attributes.gridColumnsMobile - Number of grid columns (mobile)
- * @param {Object} attributes.style - WordPress-managed styles
+ * @param {Object}  attributes                   - Block attributes
+ * @param {string}  attributes.layoutType        - Layout type ('stack', 'grid', 'flex')
+ * @param {boolean} attributes.constrainWidth    - Whether to constrain content width
+ * @param {string}  attributes.contentWidth      - Maximum content width (e.g., '1200px')
+ * @param {number}  attributes.gridColumns       - Number of grid columns (desktop)
+ * @param {number}  attributes.gridColumnsTablet - Number of grid columns (tablet)
+ * @param {number}  attributes.gridColumnsMobile - Number of grid columns (mobile)
+ * @param {Object}  attributes.style             - WordPress-managed styles
  * @return {Object} React style object for inner container
  */
 export const calculateInnerStyles = (attributes) => {
@@ -123,14 +123,14 @@ export const calculateInnerStyles = (attributes) => {
 /**
  * Calculate container wrapper classes.
  *
- * @param {Object} attributes - Block attributes
- * @param {string} attributes.videoUrl - Video background URL
+ * @param {Object}  attributes               - Block attributes
+ * @param {string}  attributes.videoUrl      - Video background URL
  * @param {boolean} attributes.enableOverlay - Whether overlay is enabled
  * @param {boolean} attributes.hideOnDesktop - Hide on desktop
- * @param {boolean} attributes.hideOnTablet - Hide on tablet
- * @param {boolean} attributes.hideOnMobile - Hide on mobile
- * @param {string} attributes.linkUrl - Link URL for clickable container
- * @param {string} attributes.textAlign - Text alignment
+ * @param {boolean} attributes.hideOnTablet  - Hide on tablet
+ * @param {boolean} attributes.hideOnMobile  - Hide on mobile
+ * @param {string}  attributes.linkUrl       - Link URL for clickable container
+ * @param {string}  attributes.textAlign     - Text alignment
  * @return {string} className string for container wrapper
  */
 export const calculateContainerClasses = (attributes) => {
@@ -158,8 +158,8 @@ export const calculateContainerClasses = (attributes) => {
 /**
  * Calculate container wrapper styles.
  *
- * @param {Object} attributes - Block attributes
- * @param {string} attributes.textAlign - Text alignment
+ * @param {Object} attributes                - Block attributes
+ * @param {string} attributes.textAlign      - Text alignment
  * @param {number} attributes.gridColumnSpan - Grid column span for nested containers
  * @return {Object} React style object for container wrapper
  */

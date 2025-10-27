@@ -42,7 +42,9 @@ test.describe('Group Block - Responsive Grid', () => {
 
 		// Set desktop columns to 3
 		await page.click('text=Grid Columns');
-		const desktopInput = page.locator('input[aria-label*="Desktop"]').first();
+		const desktopInput = page
+			.locator('input[aria-label*="Desktop"]')
+			.first();
 		await desktopInput.fill('3');
 
 		// Set tablet columns to 2
@@ -54,14 +56,20 @@ test.describe('Group Block - Responsive Grid', () => {
 		await mobileInput.fill('1');
 
 		// Verify classes are applied
-		const hasGridClass = await blockHasClass(page, 'core/group', 'dsg-grid-cols-3');
+		const hasGridClass = await blockHasClass(
+			page,
+			'core/group',
+			'dsg-grid-cols-3'
+		);
 		expect(hasGridClass).toBeTruthy();
 
 		// Save the post
 		await savePost(page);
 	});
 
-	test('should hide WordPress column controls when DSG grid is active', async ({ page }) => {
+	test('should hide WordPress column controls when DSG grid is active', async ({
+		page,
+	}) => {
 		// Create a new post
 		await createNewPost(page, 'post');
 
@@ -79,11 +87,15 @@ test.describe('Group Block - Responsive Grid', () => {
 
 		// Enable DSG grid by setting columns
 		await page.click('text=Grid Columns');
-		const desktopInput = page.locator('input[aria-label*="Desktop"]').first();
+		const desktopInput = page
+			.locator('input[aria-label*="Desktop"]')
+			.first();
 		await desktopInput.fill('3');
 
 		// WordPress column control should be hidden
-		const wpColumnControl = page.locator('.block-editor-hooks__layout-controls input[aria-label*="Columns" i]');
+		const wpColumnControl = page.locator(
+			'.block-editor-hooks__layout-controls input[aria-label*="Columns" i]'
+		);
 		await expect(wpColumnControl).toBeHidden();
 	});
 });
@@ -110,11 +122,17 @@ test.describe('Group Block - Responsive Visibility', () => {
 		await visibilityPanel.click();
 
 		// Hide on mobile
-		const hideOnMobile = page.locator('input[aria-label*="Hide on mobile"]');
+		const hideOnMobile = page.locator(
+			'input[aria-label*="Hide on mobile"]'
+		);
 		await hideOnMobile.check();
 
 		// Verify class is applied
-		const hasMobileHiddenClass = await blockHasClass(page, 'core/group', 'dsg-hide-mobile');
+		const hasMobileHiddenClass = await blockHasClass(
+			page,
+			'core/group',
+			'dsg-hide-mobile'
+		);
 		expect(hasMobileHiddenClass).toBeTruthy();
 
 		// Save the post
@@ -142,8 +160,16 @@ test.describe('Group Block - Responsive Visibility', () => {
 		await page.check('input[aria-label*="Hide on mobile"]');
 
 		// Verify both classes are applied
-		const hasTabletHidden = await blockHasClass(page, 'core/group', 'dsg-hide-tablet');
-		const hasMobileHidden = await blockHasClass(page, 'core/group', 'dsg-hide-mobile');
+		const hasTabletHidden = await blockHasClass(
+			page,
+			'core/group',
+			'dsg-hide-tablet'
+		);
+		const hasMobileHidden = await blockHasClass(
+			page,
+			'core/group',
+			'dsg-hide-mobile'
+		);
 
 		expect(hasTabletHidden).toBeTruthy();
 		expect(hasMobileHidden).toBeTruthy();
@@ -172,7 +198,9 @@ test.describe('Group Block - Clickable with Link', () => {
 		await linkPanel.click();
 
 		// Enable clickable group
-		const enableClick = page.locator('input[aria-label*="Make group clickable"]');
+		const enableClick = page.locator(
+			'input[aria-label*="Make group clickable"]'
+		);
 		await enableClick.check();
 
 		// Enter a URL
@@ -180,7 +208,9 @@ test.describe('Group Block - Clickable with Link', () => {
 		await urlInput.fill('https://example.com');
 
 		// Set to open in new tab
-		const newTabCheckbox = page.locator('input[aria-label*="Open in new tab"]');
+		const newTabCheckbox = page.locator(
+			'input[aria-label*="Open in new tab"]'
+		);
 		await newTabCheckbox.check();
 
 		// Save the post
@@ -190,19 +220,24 @@ test.describe('Group Block - Clickable with Link', () => {
 		await publishPost(page);
 
 		// Get frontend URL
-		const previewUrl = await page.locator('.edit-post-header-preview__button-external').getAttribute('href');
+		const previewUrl = await page
+			.locator('.edit-post-header-preview__button-external')
+			.getAttribute('href');
 
 		// Visit the frontend
 		await page.goto(previewUrl);
 
 		// Verify the group has the link attributes
-		const clickableGroup = page.locator('.wp-block-group.dsg-clickable-group');
+		const clickableGroup = page.locator(
+			'.wp-block-group.dsg-clickable-group'
+		);
 		await expect(clickableGroup).toBeVisible();
 
 		const linkUrl = await clickableGroup.getAttribute('data-link-url');
 		expect(linkUrl).toBe('https://example.com');
 
-		const linkTarget = await clickableGroup.getAttribute('data-link-target');
+		const linkTarget =
+			await clickableGroup.getAttribute('data-link-target');
 		expect(linkTarget).toBe('_blank');
 	});
 });
@@ -229,11 +264,17 @@ test.describe('Group Block - Overlay', () => {
 		await overlayPanel.click();
 
 		// Enable overlay
-		const enableOverlay = page.locator('input[aria-label*="Enable overlay"]');
+		const enableOverlay = page.locator(
+			'input[aria-label*="Enable overlay"]'
+		);
 		await enableOverlay.check();
 
 		// Verify class is applied
-		const hasOverlayClass = await blockHasClass(page, 'core/group', 'has-dsg-overlay');
+		const hasOverlayClass = await blockHasClass(
+			page,
+			'core/group',
+			'has-dsg-overlay'
+		);
 		expect(hasOverlayClass).toBeTruthy();
 
 		// Save the post
@@ -264,7 +305,9 @@ test.describe('Group Block - Overlay', () => {
 		await publishPost(page);
 
 		// Get frontend URL
-		const previewUrl = await page.locator('.edit-post-header-preview__button-external').getAttribute('href');
+		const previewUrl = await page
+			.locator('.edit-post-header-preview__button-external')
+			.getAttribute('href');
 
 		// Visit the frontend
 		await page.goto(previewUrl);
@@ -274,7 +317,9 @@ test.describe('Group Block - Overlay', () => {
 		await expect(overlayGroup).toBeVisible();
 
 		const textElement = overlayGroup.locator('p').first();
-		const color = await textElement.evaluate((el) => window.getComputedStyle(el).color);
+		const color = await textElement.evaluate(
+			(el) => window.getComputedStyle(el).color
+		);
 
 		// White color is rgb(255, 255, 255)
 		expect(color).toContain('255');
@@ -282,7 +327,10 @@ test.describe('Group Block - Overlay', () => {
 });
 
 test.describe('Group Block - Frontend Behavior', () => {
-	test('should apply responsive visibility classes on frontend', async ({ page, context }) => {
+	test('should apply responsive visibility classes on frontend', async ({
+		page,
+		context,
+	}) => {
 		// Create a new post
 		await createNewPost(page, 'post');
 
@@ -302,7 +350,9 @@ test.describe('Group Block - Frontend Behavior', () => {
 		await publishPost(page);
 
 		// Get frontend URL
-		const previewUrl = await page.locator('.edit-post-header-preview__button-external').getAttribute('href');
+		const previewUrl = await page
+			.locator('.edit-post-header-preview__button-external')
+			.getAttribute('href');
 
 		// Visit on desktop (default viewport)
 		await page.goto(previewUrl);
@@ -315,7 +365,9 @@ test.describe('Group Block - Frontend Behavior', () => {
 		await mobilePage.goto(previewUrl);
 
 		// Group should be hidden on mobile
-		const mobileGroup = mobilePage.locator('.wp-block-group.dsg-hide-mobile');
+		const mobileGroup = mobilePage.locator(
+			'.wp-block-group.dsg-hide-mobile'
+		);
 		await expect(mobileGroup).toBeHidden();
 
 		await mobilePage.close();

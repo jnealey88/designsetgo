@@ -22,7 +22,12 @@ const PlusMinusIcon = ({ isOpen }) => (
 			<path d="M4 8h8v1H4z" />
 		) : (
 			<>
-				<path d="M8 4v8M4 8h8" stroke="currentColor" strokeWidth="1" fill="none" />
+				<path
+					d="M8 4v8M4 8h8"
+					stroke="currentColor"
+					strokeWidth="1"
+					fill="none"
+				/>
 			</>
 		)}
 	</svg>
@@ -34,12 +39,17 @@ const CaretIcon = () => (
 	</svg>
 );
 
-export default function AccordionItemEdit({ attributes, setAttributes, context }) {
+export default function AccordionItemEdit({
+	attributes,
+	setAttributes,
+	context,
+}) {
 	const { title, isOpen, uniqueId } = attributes;
 
 	// Get context from parent accordion
 	const iconStyle = context['designsetgo/accordion/iconStyle'] || 'chevron';
-	const iconPosition = context['designsetgo/accordion/iconPosition'] || 'right';
+	const iconPosition =
+		context['designsetgo/accordion/iconPosition'] || 'right';
 
 	// Generate unique ID for accessibility
 	useEffect(() => {
@@ -70,7 +80,7 @@ export default function AccordionItemEdit({ attributes, setAttributes, context }
 				[
 					'core/paragraph',
 					{
-						placeholder: __('Add content...', 'designsetgo'),
+						placeholder: __('Add content…', 'designsetgo'),
 					},
 				],
 			],
@@ -79,7 +89,9 @@ export default function AccordionItemEdit({ attributes, setAttributes, context }
 
 	// Render the appropriate icon
 	const renderIcon = () => {
-		if (iconStyle === 'none') return null;
+		if (iconStyle === 'none') {
+			return null;
+		}
 
 		let IconComponent;
 		switch (iconStyle) {
@@ -108,13 +120,22 @@ export default function AccordionItemEdit({ attributes, setAttributes, context }
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Item Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Item Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<ToggleControl
 						label={__('Open by Default', 'designsetgo')}
 						help={
 							isOpen
-								? __('This panel will be open when the page loads', 'designsetgo')
-								: __('This panel will be closed when the page loads', 'designsetgo')
+								? __(
+										'This panel will be open when the page loads',
+										'designsetgo'
+									)
+								: __(
+										'This panel will be closed when the page loads',
+										'designsetgo'
+									)
 						}
 						checked={isOpen}
 						onChange={(value) => setAttributes({ isOpen: value })}
@@ -127,8 +148,10 @@ export default function AccordionItemEdit({ attributes, setAttributes, context }
 					<button
 						type="button"
 						className={classnames('dsg-accordion-item__trigger', {
-							'dsg-accordion-item__trigger--icon-left': iconPosition === 'left',
-							'dsg-accordion-item__trigger--icon-right': iconPosition === 'right',
+							'dsg-accordion-item__trigger--icon-left':
+								iconPosition === 'left',
+							'dsg-accordion-item__trigger--icon-right':
+								iconPosition === 'right',
 						})}
 						onClick={toggleOpen}
 						aria-expanded={isOpen}
@@ -138,8 +161,13 @@ export default function AccordionItemEdit({ attributes, setAttributes, context }
 							tagName="span"
 							className="dsg-accordion-item__title"
 							value={title}
-							onChange={(value) => setAttributes({ title: value })}
-							placeholder={__('Accordion Item Title', 'designsetgo')}
+							onChange={(value) =>
+								setAttributes({ title: value })
+							}
+							placeholder={__(
+								'Accordion Item Title',
+								'designsetgo'
+							)}
 							allowedFormats={['core/bold', 'core/italic']}
 						/>
 						{iconPosition === 'right' && renderIcon()}

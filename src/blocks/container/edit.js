@@ -21,10 +21,10 @@ import {
 	MediaUpload,
 	MediaUploadCheck,
 	AlignmentControl,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { store as blockEditorStore } from '@wordpress/block-editor';
 import { useEffect } from '@wordpress/element';
 
 // Extracted Inspector Panel Components
@@ -47,9 +47,9 @@ import {
 /**
  * Container Edit Component
  *
- * @param {Object} props - Component props
- * @param {Object} props.attributes - Block attributes
- * @param {string} props.clientId - Block client ID
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
+ * @param {string}   props.clientId      - Block client ID
  * @param {Function} props.setAttributes - Function to update attributes
  * @return {JSX.Element} Container block edit component
  */
@@ -78,7 +78,8 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 			const parent = parentClientId ? getBlock(parentClientId) : null;
 
 			const isParentContainer = parent?.name === 'designsetgo/container';
-			const isParentGrid = isParentContainer && parent?.attributes?.layoutType === 'grid';
+			const isParentGrid =
+				isParentContainer && parent?.attributes?.layoutType === 'grid';
 
 			return {
 				parentBlock: parent,
@@ -97,7 +98,7 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 		if (hasParentContainer && attributes.constrainWidth) {
 			setAttributes({ constrainWidth: false });
 		}
-	}, [hasParentContainer]); // Only run when parent container status changes
+	}, [hasParentContainer, attributes.constrainWidth, setAttributes]); // Only run when parent container status changes
 
 	// ========================================
 	// Calculate styles declaratively using extracted utility
@@ -164,11 +165,11 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 											? __(
 													'Replace Video Background',
 													'designsetgo'
-											  )
+												)
 											: __(
 													'Add Video Background',
 													'designsetgo'
-											  )
+												)
 									}
 									onClick={open}
 									isPressed={!!videoUrl}
@@ -205,24 +206,29 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 								});
 							}}
 							allowedTypes={['image']}
-							value={attributes.style?.background?.backgroundImage?.url}
+							value={
+								attributes.style?.background?.backgroundImage
+									?.url
+							}
 							render={({ open }) => (
 								<ToolbarButton
 									icon="format-image"
 									label={
-										attributes.style?.background?.backgroundImage
+										attributes.style?.background
+											?.backgroundImage
 											? __(
 													'Replace Background Image',
 													'designsetgo'
-											  )
+												)
 											: __(
 													'Add Background Image',
 													'designsetgo'
-											  )
+												)
 									}
 									onClick={open}
 									isPressed={
-										!!attributes.style?.background?.backgroundImage
+										!!attributes.style?.background
+											?.backgroundImage
 									}
 								/>
 							)}
@@ -244,7 +250,8 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 				</ToolbarGroup>
 
 				{/* Overlay Toggle */}
-				{(videoUrl || attributes.style?.background?.backgroundImage) && (
+				{(videoUrl ||
+					attributes.style?.background?.backgroundImage) && (
 					<ToolbarGroup>
 						<ToolbarButton
 							icon="admin-appearance"

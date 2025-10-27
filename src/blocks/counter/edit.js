@@ -26,10 +26,10 @@ import { getIconSvg } from './utils/icon-library';
 /**
  * Counter Edit Component
  *
- * @param {Object} props - Component props
- * @param {Object} props.attributes - Block attributes
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
- * @param {Object} props.context - Block context from parent Counter Group
+ * @param {Object}   props.context       - Block context from parent Counter Group
  * @return {JSX.Element} Counter block edit component
  */
 export default function CounterEdit({ attributes, setAttributes, context }) {
@@ -51,8 +51,10 @@ export default function CounterEdit({ attributes, setAttributes, context }) {
 	} = attributes;
 
 	// Get formatting settings from parent Counter Group context (with fallback defaults)
-	const parentUseGrouping = context?.['designsetgo/counterGroup/useGrouping'] ?? true;
-	const parentSeparator = context?.['designsetgo/counterGroup/separator'] || ',';
+	const parentUseGrouping =
+		context?.['designsetgo/counterGroup/useGrouping'] ?? true;
+	const parentSeparator =
+		context?.['designsetgo/counterGroup/separator'] || ',';
 	const parentDecimal = context?.['designsetgo/counterGroup/decimal'] || '.';
 
 	// Generate unique ID on mount (acceptable use of useEffect for ID generation)
@@ -97,7 +99,10 @@ export default function CounterEdit({ attributes, setAttributes, context }) {
 					setAttributes={setAttributes}
 				/>
 
-				<LabelSettingsPanel label={label} setAttributes={setAttributes} />
+				<LabelSettingsPanel
+					label={label}
+					setAttributes={setAttributes}
+				/>
 
 				<IconSettingsPanel
 					showIcon={showIcon}

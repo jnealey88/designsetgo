@@ -3,7 +3,7 @@
  *
  * Panel component for configuring block animations
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 
@@ -25,8 +25,8 @@ import {
 /**
  * Animation Settings Panel
  *
- * @param {Object} props Component props
- * @param {Object} props.attributes Block attributes
+ * @param {Object}   props               Component props
+ * @param {Object}   props.attributes    Block attributes
  * @param {Function} props.setAttributes Function to update attributes
  * @return {JSX.Element} Animation panel component
  */
@@ -73,10 +73,7 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 						onChange={(value) =>
 							setAttributes({ dsgEntranceAnimation: value })
 						}
-						help={__(
-							'Animation when block appears',
-							'designsetgo'
-						)}
+						help={__('Animation when block appears', 'designsetgo')}
 					/>
 
 					<SelectControl
@@ -92,7 +89,7 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 							if (value && dsgAnimationTrigger === 'scroll') {
 								setAttributes({
 									dsgExitAnimation: value,
-									dsgAnimationOnce: false
+									dsgAnimationOnce: false,
 								});
 							} else {
 								setAttributes({ dsgExitAnimation: value });
@@ -151,7 +148,10 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 					{dsgAnimationTrigger === 'scroll' && (
 						<>
 							<RangeControl
-								label={__('Viewport Offset (px)', 'designsetgo')}
+								label={__(
+									'Viewport Offset (px)',
+									'designsetgo'
+								)}
 								value={dsgAnimationOffset}
 								onChange={(value) =>
 									setAttributes({ dsgAnimationOffset: value })
@@ -186,11 +186,11 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 										? __(
 												'Disabled when exit animation is set',
 												'designsetgo'
-										  )
+											)
 										: __(
 												'Only animate the first time block enters viewport',
 												'designsetgo'
-										  )
+											)
 								}
 							/>
 						</>

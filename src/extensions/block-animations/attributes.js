@@ -3,7 +3,7 @@
  *
  * Adds animation attributes to all WordPress blocks
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 
@@ -14,7 +14,7 @@ import { DEFAULT_ANIMATION_SETTINGS } from './constants';
  * Add animation attributes to all blocks
  *
  * @param {Object} settings Block settings
- * @param {string} name Block name
+ * @param {string} name     Block name
  * @return {Object} Modified settings
  */
 function addAnimationAttributes(settings, name) {

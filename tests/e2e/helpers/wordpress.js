@@ -7,14 +7,16 @@
 /**
  * Create a new post in the block editor
  *
- * @param {import('@playwright/test').Page} page - Playwright page object
- * @param {string} postType - Post type (post, page, etc.)
+ * @param {import('@playwright/test').Page} page     - Playwright page object
+ * @param {string}                          postType - Post type (post, page, etc.)
  */
 async function createNewPost(page, postType = 'post') {
 	await page.goto(`/wp-admin/post-new.php?post_type=${postType}`);
 
 	// Wait for editor to load
-	await page.waitForSelector('.block-editor-writing-flow', { timeout: 30000 });
+	await page.waitForSelector('.block-editor-writing-flow', {
+		timeout: 30000,
+	});
 
 	// Close welcome guide if it appears
 	const welcomeGuide = page.locator('.edit-post-welcome-guide');
@@ -23,7 +25,9 @@ async function createNewPost(page, postType = 'post') {
 	}
 
 	// Close any other modal dialogs
-	const closeButtons = page.locator('.components-modal__screen-overlay button[aria-label="Close"]');
+	const closeButtons = page.locator(
+		'.components-modal__screen-overlay button[aria-label="Close"]'
+	);
 	const count = await closeButtons.count();
 	for (let i = 0; i < count; i++) {
 		await closeButtons.nth(i).click();
@@ -33,8 +37,8 @@ async function createNewPost(page, postType = 'post') {
 /**
  * Insert a block by name
  *
- * @param {import('@playwright/test').Page} page - Playwright page object
- * @param {string} blockName - Block name (e.g., 'core/paragraph', 'core/group')
+ * @param {import('@playwright/test').Page} page      - Playwright page object
+ * @param {string}                          blockName - Block name (e.g., 'core/paragraph', 'core/group')
  */
 async function insertBlock(page, blockName) {
 	// Click the block inserter
@@ -50,7 +54,9 @@ async function insertBlock(page, blockName) {
 	await page.waitForTimeout(500);
 
 	// Click the first result
-	await page.click(`.block-editor-block-types-list__item[data-id="${blockName}"]`);
+	await page.click(
+		`.block-editor-block-types-list__item[data-id="${blockName}"]`
+	);
 
 	// Wait for block to be inserted
 	await page.waitForTimeout(500);
@@ -80,10 +86,14 @@ async function openBlockSettings(page) {
  */
 async function savePost(page) {
 	// Click save button
-	await page.click('.editor-post-publish-button__button, .editor-post-save-draft');
+	await page.click(
+		'.editor-post-publish-button__button, .editor-post-save-draft'
+	);
 
 	// Wait for save to complete
-	await page.waitForSelector('.editor-post-saved-state.is-saved', { timeout: 30000 });
+	await page.waitForSelector('.editor-post-saved-state.is-saved', {
+		timeout: 30000,
+	});
 }
 
 /**
@@ -109,17 +119,21 @@ async function publishPost(page) {
  * Get the frontend URL of the current post
  *
  * @param {import('@playwright/test').Page} page - Playwright page object
- * @returns {Promise<string>} Frontend URL
+ * @return {Promise<string>} Frontend URL
  */
 async function getFrontendUrl(page) {
 	// Wait for post to be saved/published
-	await page.waitForSelector('.editor-post-saved-state.is-saved, .editor-post-publish-panel__postpublish');
+	await page.waitForSelector(
+		'.editor-post-saved-state.is-saved, .editor-post-publish-panel__postpublish'
+	);
 
 	// Get the preview link
 	const previewButton = page.locator('.editor-post-preview__button-resize');
 	await previewButton.click();
 
-	const previewLink = page.locator('.edit-post-header-preview__grouping-external a');
+	const previewLink = page.locator(
+		'.edit-post-header-preview__grouping-external a'
+	);
 	const href = await previewLink.getAttribute('href');
 
 	return href;
@@ -128,9 +142,9 @@ async function getFrontendUrl(page) {
 /**
  * Select a block by its data-type attribute
  *
- * @param {import('@playwright/test').Page} page - Playwright page object
- * @param {string} blockType - Block type (e.g., 'core/group')
- * @param {number} index - Index of the block (0-based)
+ * @param {import('@playwright/test').Page} page      - Playwright page object
+ * @param {string}                          blockType - Block type (e.g., 'core/group')
+ * @param {number}                          index     - Index of the block (0-based)
  */
 async function selectBlock(page, blockType, index = 0) {
 	const blocks = page.locator(`[data-type="${blockType}"]`);
@@ -140,11 +154,11 @@ async function selectBlock(page, blockType, index = 0) {
 /**
  * Check if a block has a specific class
  *
- * @param {import('@playwright/test').Page} page - Playwright page object
- * @param {string} blockType - Block type (e.g., 'core/group')
- * @param {string} className - Class name to check
- * @param {number} index - Index of the block (0-based)
- * @returns {Promise<boolean>}
+ * @param {import('@playwright/test').Page} page      - Playwright page object
+ * @param {string}                          blockType - Block type (e.g., 'core/group')
+ * @param {string}                          className - Class name to check
+ * @param {number}                          index     - Index of the block (0-based)
+ * @return {Promise<boolean>}
  */
 async function blockHasClass(page, blockType, className, index = 0) {
 	const block = page.locator(`[data-type="${blockType}"]`).nth(index);

@@ -30,7 +30,9 @@ function initCounterAnimations() {
 	}
 
 	// Check if user prefers reduced motion
-	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const prefersReducedMotion = window.matchMedia(
+		'(prefers-reduced-motion: reduce)'
+	).matches;
 
 	// If user prefers reduced motion, show final values immediately
 	if (prefersReducedMotion) {
@@ -103,13 +105,13 @@ function animateCounter(counter) {
 	const options = {
 		startVal: startValue,
 		decimalPlaces: decimals,
-		duration: duration,
+		duration,
 		useEasing: true,
-		useGrouping: useGrouping,
-		separator: separator,
-		decimal: decimal,
-		prefix: prefix,
-		suffix: suffix,
+		useGrouping,
+		separator,
+		decimal,
+		prefix,
+		suffix,
 		enableScrollSpy: false, // We're using our own Intersection Observer
 		scrollSpyOnce: true,
 	};
@@ -188,7 +190,9 @@ function getEasingFunction(name) {
 		},
 		easeInOutQuad: (t, b, c, d) => {
 			t /= d / 2;
-			if (t < 1) return (c / 2) * t * t + b;
+			if (t < 1) {
+				return (c / 2) * t * t + b;
+			}
 			t--;
 			return (-c / 2) * (t * (t - 2) - 1) + b;
 		},

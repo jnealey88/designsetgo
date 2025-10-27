@@ -13,19 +13,21 @@
 		// Size and color applied via inline styles
 		flex-shrink: 0;
 
+		// Use CSS custom property if set, otherwise inherit from parent
+		// This prevents section style variations from overriding manually set icon colors
+		color: var(--dsg-icon-color, inherit);
+
+		// When custom property is set, force it to take precedence
+		&[style*="--dsg-icon-color"] {
+			color: var(--dsg-icon-color) !important;
+		}
+
 		svg {
 			width: 100%;
 			height: 100%;
 			display: block;
 			fill: currentColor; // Ensure SVG inherits color from wrapper
 		}
-	}
-
-	// When icon has custom color set via inline style, preserve it
-	// This prevents section style variations from overriding manually set icon colors
-	&__icon[style*="color:"] {
-		// Force inline color to take precedence over inherited colors from section styles
-		color: var(--icon-color, currentColor) !important;
 	}
 
 	&__content {

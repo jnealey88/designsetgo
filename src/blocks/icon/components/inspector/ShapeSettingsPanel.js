@@ -15,17 +15,13 @@ import { PanelBody, SelectControl, RangeControl } from '@wordpress/components';
  * Allows selecting a background shape (none, circle, square, rounded)
  * and adjusting padding when a shape is selected.
  *
- * @param {Object} props - Component props
- * @param {string} props.shape - Background shape
- * @param {number} props.shapePadding - Shape padding in pixels
+ * @param {Object}   props               - Component props
+ * @param {string}   props.shape         - Background shape
+ * @param {number}   props.shapePadding  - Shape padding in pixels
  * @param {Function} props.setAttributes - Function to update block attributes
  * @return {JSX.Element} Shape Settings Panel component
  */
-export const ShapeSettingsPanel = ({
-	shape,
-	shapePadding,
-	setAttributes,
-}) => {
+export const ShapeSettingsPanel = ({ shape, shapePadding, setAttributes }) => {
 	return (
 		<PanelBody
 			title={__('Shape & Background', 'designsetgo')}
