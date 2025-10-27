@@ -15,7 +15,7 @@ Currently supported versions with security updates:
 
 Instead, please report them via:
 
-1. **Email**: [Your email address] (recommended)
+1. **Email**: justin@nealey.pro (recommended)
 2. **GitHub Security Advisory**: Use the "Security" tab → "Report a vulnerability"
 
 ### What to Include
