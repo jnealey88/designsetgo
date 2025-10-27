@@ -12,11 +12,17 @@
 	width: 100%;
 	box-sizing: border-box;
 
-	// Force headings and other elements to inherit parent text color
-	// This ensures manually set text colors on the container apply to all children
+	// Force headings and text elements to inherit parent text color
+	// This ensures manually set text colors on the container apply to children
 	// WordPress themes often override heading colors, so we need !important
+	// Note: Excludes buttons (.wp-block-button, .wp-element-button) to preserve theme/FSE styles
 	&[style*="color"] {
-		h1, h2, h3, h4, h5, h6, p, a, li, span, strong, em {
+		h1, h2, h3, h4, h5, h6, p, li, span, strong, em {
+			color: inherit !important;
+		}
+
+		// Links inherit color, but NOT if they're buttons
+		a:not(.wp-block-button__link):not(.wp-element-button) {
 			color: inherit !important;
 		}
 	}
