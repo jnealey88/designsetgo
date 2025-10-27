@@ -35,9 +35,10 @@ registerBlockType(metadata.name, {
 	},
 	edit,
 	save,
-	// Set default padding and blockGap using WordPress spacing presets
+	// Set default styles using WordPress spacing presets
 	// Padding Top/Bottom: lg, Left/Right: xs
 	// Block Gap (spacing between inner blocks): md
+	// Border Radius: 0 (no rounding by default)
 	attributes: {
 		...metadata.attributes,
 		style: {
@@ -51,6 +52,9 @@ registerBlockType(metadata.name, {
 						right: 'var:preset|spacing|xs',
 					},
 					blockGap: 'var:preset|spacing|md',
+				},
+				border: {
+					radius: '0px',
 				},
 			},
 		},
