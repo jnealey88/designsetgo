@@ -137,6 +137,7 @@ function openPanel(item, panel, animate = true, scrollIntoView = false) {
 
 	// Animate height
 	panel.style.height = '0px';
+	// eslint-disable-next-line no-undef
 	requestAnimationFrame(() => {
 		panel.style.height = `${contentHeight}px`;
 
@@ -179,6 +180,7 @@ function closePanel(item, panel, animate = true) {
 	panel.style.height = `${currentHeight}px`;
 
 	// Force reflow
+	// eslint-disable-next-line no-undef
 	requestAnimationFrame(() => {
 		panel.style.height = '0px';
 

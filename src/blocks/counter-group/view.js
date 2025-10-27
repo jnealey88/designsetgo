@@ -131,8 +131,7 @@ function animateCounter(counter) {
 			countUp.start();
 		}, delay * 1000);
 	} else {
-		console.error('CountUp error:', countUp.error);
-		// Fallback: show final value
+		// CountUp initialization failed, show final value as fallback
 		showFinalValue(counter);
 	}
 }

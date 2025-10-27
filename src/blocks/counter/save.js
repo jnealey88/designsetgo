@@ -104,7 +104,9 @@ export default function CounterSave({ attributes, context }) {
 
 /**
  * Get SVG for icon (same as edit.js for editor/frontend parity)
- * @param iconName
+ *
+ * @param {string} iconName - Name of the icon to render
+ * @return {JSX.Element} SVG icon element
  */
 function getIconSvg(iconName) {
 	const icons = {

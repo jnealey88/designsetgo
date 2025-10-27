@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function animateOnLoad(element) {
 	// Trigger entrance animation immediately on page load
+	// eslint-disable-next-line no-undef
 	requestAnimationFrame(() => {
 		element.classList.add('dsg-entrance-active');
 	});
@@ -85,6 +86,7 @@ function animateOnScroll(element) {
 	const shouldRepeat = hasExitAnimation || !once;
 
 	// Create intersection observer with multiple thresholds for smooth detection
+	// eslint-disable-next-line no-undef
 	const observer = new IntersectionObserver(
 		(entries) => {
 			entries.forEach((entry) => {

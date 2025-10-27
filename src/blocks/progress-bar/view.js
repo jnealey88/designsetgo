@@ -25,6 +25,7 @@ function initProgressBars() {
 		threshold: 0.1, // Trigger when 10% of element is visible
 	};
 
+	// eslint-disable-next-line no-undef
 	const observer = new IntersectionObserver((entries) => {
 		entries.forEach((entry) => {
 			if (entry.isIntersecting) {

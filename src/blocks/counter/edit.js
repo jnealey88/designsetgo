@@ -9,7 +9,6 @@
  * @since 1.0.0
  */
 
-import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { useEffect } from '@wordpress/element';
 

@@ -33,6 +33,18 @@ export default function IconListEdit({ attributes, setAttributes }) {
 		alignment,
 	} = attributes;
 
+	// Calculate alignment value to avoid nested ternary
+	let alignItemsValue;
+	if (layout === 'vertical') {
+		if (alignment === 'center') {
+			alignItemsValue = 'center';
+		} else if (alignment === 'right') {
+			alignItemsValue = 'flex-end';
+		} else {
+			alignItemsValue = 'flex-start';
+		}
+	}
+
 	// Calculate container styles declaratively
 	const containerStyles = {
 		display: layout === 'grid' ? 'grid' : 'flex',
@@ -40,15 +52,7 @@ export default function IconListEdit({ attributes, setAttributes }) {
 		gridTemplateColumns:
 			layout === 'grid' ? `repeat(${columns}, 1fr)` : undefined,
 		gap,
-		// Apply alignment only for vertical layout
-		alignItems:
-			layout === 'vertical'
-				? alignment === 'center'
-					? 'center'
-					: alignment === 'right'
-						? 'flex-end'
-						: 'flex-start'
-				: undefined,
+		alignItems: alignItemsValue,
 	};
 
 	// Get block wrapper props

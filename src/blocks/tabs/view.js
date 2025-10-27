@@ -168,6 +168,7 @@
 			if (this.enableDeepLinking && updateURL) {
 				const panel = this.panels[index];
 				if (panel.id) {
+					// eslint-disable-next-line no-undef
 					history.replaceState(null, null, `#${panel.id}`);
 				}
 			}

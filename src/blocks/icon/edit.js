@@ -29,8 +29,7 @@ import { IconPicker } from './components/IconPicker';
  * @return {JSX.Element} Edit component
  */
 export default function IconEdit({ attributes, setAttributes }) {
-	const { icon, iconSize, rotation, linkUrl, linkTarget, linkRel } =
-		attributes;
+	const { icon, iconSize, rotation, linkUrl, linkTarget } = attributes;
 
 	const blockProps = useBlockProps({
 		className: 'dsg-icon',

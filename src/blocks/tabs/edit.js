@@ -17,8 +17,6 @@ import {
 	SelectControl,
 	ToggleControl,
 	RangeControl,
-	Button,
-	ButtonGroup,
 	Dashicon,
 } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
