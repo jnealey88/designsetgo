@@ -3,6 +3,8 @@
  */
 
 .dsg-tabs {
+	padding: 0; // Default to no padding
+
 	// Tab Navigation - Clean, simple styling
 	.dsg-tabs__nav {
 		display: flex;
@@ -54,7 +56,7 @@
 		}
 	}
 
-	// Panels container - minimal, like frontend
+	// Panels container - no typography overrides
 	.dsg-tabs__panels {
 		position: relative;
 	}

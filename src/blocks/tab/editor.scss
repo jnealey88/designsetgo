@@ -42,11 +42,9 @@
 		}
 	}
 
-	// Content area styling
+	// Content area styling - let WordPress handle natural spacing
 	.dsg-tab__content {
-		min-height: 100px;
-
-		// Empty state - show helpful message
+		// Empty state - show helpful message (only when truly empty)
 		&:empty::before {
 			content: 'Click the + button below to add content to this tab';
 			display: block;
@@ -73,11 +71,7 @@
 	// Active tab styling - clean and minimal
 	&.is-active {
 		.dsg-tab__content {
-			// Ensure InnerBlocks appender is visible and styled
-			.block-editor-block-list__layout {
-				min-height: 100px;
-			}
-
+			// Style InnerBlocks appender
 			.block-list-appender {
 				margin-top: 1rem;
 			}

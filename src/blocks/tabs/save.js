@@ -17,6 +17,11 @@ export default function Save({ attributes }) {
 		enableDeepLinking,
 		gap,
 		tabStyle,
+		tabColor,
+		tabBackgroundColor,
+		activeTabColor,
+		activeTabBackgroundColor,
+		tabBorderColor,
 	} = attributes;
 
 	const blockProps = useBlockProps.save({
@@ -27,6 +32,11 @@ export default function Save({ attributes }) {
 		'data-deep-linking': enableDeepLinking ? 'true' : 'false',
 		style: {
 			'--dsg-tabs-gap': gap,
+			...(tabColor && { '--dsg-tab-color': tabColor }),
+			...(tabBackgroundColor && { '--dsg-tab-bg': tabBackgroundColor }),
+			...(activeTabColor && { '--dsg-tab-color-active': activeTabColor }),
+			...(activeTabBackgroundColor && { '--dsg-tab-bg-active': activeTabBackgroundColor }),
+			...(tabBorderColor && { '--dsg-tab-border-color': tabBorderColor }),
 		},
 	});
 

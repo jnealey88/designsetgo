@@ -3,10 +3,6 @@
  */
 
 .dsg-tab {
-	.dsg-tab__content {
-		// Content spacing
-		> * + * {
-			margin-top: var(--wp--preset--spacing--sm, 1rem);
-		}
-	}
+	// Let WordPress handle natural block spacing and typography
+	// No custom overrides - child blocks inherit from theme/body naturally
 }

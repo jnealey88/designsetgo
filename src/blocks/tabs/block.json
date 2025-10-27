@@ -6,7 +6,12 @@
 	"title": "Tabs",
 	"category": "designsetgo",
 	"description": "Create tabbed content with icons, deep linking, and responsive accordion mode.",
-	"keywords": ["tabs", "tabbed", "accordion", "toggle"],
+	"keywords": [
+		"tabs",
+		"tabbed",
+		"accordion",
+		"toggle"
+	],
 	"textdomain": "designsetgo",
 	"attributes": {
 		"uniqueId": {
@@ -16,7 +21,10 @@
 		"orientation": {
 			"type": "string",
 			"default": "horizontal",
-			"enum": ["horizontal", "vertical"]
+			"enum": [
+				"horizontal",
+				"vertical"
+			]
 		},
 		"activeTab": {
 			"type": "number",
@@ -25,7 +33,12 @@
 		"alignment": {
 			"type": "string",
 			"default": "left",
-			"enum": ["left", "center", "right", "justified"]
+			"enum": [
+				"left",
+				"center",
+				"right",
+				"justified"
+			]
 		},
 		"mobileBreakpoint": {
 			"type": "number",
@@ -34,7 +47,11 @@
 		"mobileMode": {
 			"type": "string",
 			"default": "accordion",
-			"enum": ["accordion", "dropdown", "tabs"]
+			"enum": [
+				"accordion",
+				"dropdown",
+				"tabs"
+			]
 		},
 		"enableDeepLinking": {
 			"type": "boolean",
@@ -47,7 +64,48 @@
 		"tabStyle": {
 			"type": "string",
 			"default": "default",
-			"enum": ["default", "pills", "underline", "minimal"]
+			"enum": [
+				"default",
+				"pills",
+				"underline",
+				"minimal"
+			]
+		},
+		"tabColor": {
+			"type": "string",
+			"default": ""
+		},
+		"tabBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"activeTabColor": {
+			"type": "string",
+			"default": ""
+		},
+		"activeTabBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"tabBorderColor": {
+			"type": "string",
+			"default": ""
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"spacing": {
+					"padding": {
+						"top": "0",
+						"right": "0",
+						"bottom": "0",
+						"left": "0"
+					}
+				},
+				"typography": {
+					"fontSize": "var:preset|font-size|large"
+				}
+			}
 		}
 	},
 	"providesContext": {
@@ -58,22 +116,36 @@
 	"supports": {
 		"html": false,
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"spacing": {
 			"margin": true,
 			"padding": true,
-			"blockGap": true
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"padding": false,
+				"blockGap": false
+			}
 		},
 		"color": {
 			"background": true,
 			"text": true,
-			"link": true
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": false,
+				"text": false
+			}
 		},
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
 			"__experimentalFontFamily": true,
-			"__experimentalFontWeight": true
+			"__experimentalFontWeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
 		},
 		"__experimentalBorder": {
 			"color": true,

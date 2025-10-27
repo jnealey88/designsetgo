@@ -11,3 +11,12 @@
 @import 'animations';
 @import 'utilities';
 @import 'block-variations';
+
+// Block animations extension (frontend)
+@import '../extensions/block-animations/animations';
+
+// Custom blocks (frontend)
+@import '../blocks/accordion/style';
+@import '../blocks/accordion-item/style';
+@import '../blocks/tabs/style';
+@import '../blocks/tab/style';

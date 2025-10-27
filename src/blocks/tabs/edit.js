@@ -10,6 +10,7 @@ import {
 	InspectorControls,
 	useInnerBlocksProps,
 	store as blockEditorStore,
+	PanelColorSettings,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -20,7 +21,7 @@ import {
 	ButtonGroup,
 	Dashicon,
 } from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 
 const ALLOWED_BLOCKS = ['designsetgo/tab'];
@@ -42,6 +43,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		enableDeepLinking,
 		gap,
 		tabStyle,
+		tabColor,
+		tabBackgroundColor,
+		activeTabColor,
+		activeTabBackgroundColor,
+		tabBorderColor,
 	} = attributes;
 
 	// Generate unique ID on mount
@@ -62,9 +68,17 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		[clientId]
 	);
 
-	// Handle tab click
+	// Get dispatch actions for selecting blocks
+	const { selectBlock } = useDispatch(blockEditorStore);
+
+	// Handle tab click - set active tab and select the Tab block to show its settings
 	const handleTabClick = (index) => {
 		setAttributes({ activeTab: index });
+
+		// Select the corresponding Tab block so its settings appear in sidebar
+		if (innerBlocks[index]) {
+			selectBlock(innerBlocks[index].clientId);
+		}
 	};
 
 	// Handle keyboard navigation
@@ -99,6 +113,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 		if (newIndex !== index) {
 			setAttributes({ activeTab: newIndex });
+
+			// Select the corresponding Tab block so its settings appear in sidebar
+			if (innerBlocks[newIndex]) {
+				selectBlock(innerBlocks[newIndex].clientId);
+			}
+
 			// Focus the new tab
 			setTimeout(() => {
 				const tabButton = document.querySelector(
@@ -115,6 +135,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		className: `dsg-tabs dsg-tabs-${uniqueId} dsg-tabs--${orientation} dsg-tabs--${tabStyle} dsg-tabs--align-${alignment}`,
 		style: {
 			'--dsg-tabs-gap': gap,
+			...(tabColor && { '--dsg-tab-color': tabColor }),
+			...(tabBackgroundColor && { '--dsg-tab-bg': tabBackgroundColor }),
+			...(activeTabColor && { '--dsg-tab-color-active': activeTabColor }),
+			...(activeTabBackgroundColor && { '--dsg-tab-bg-active': activeTabBackgroundColor }),
+			...(tabBorderColor && { '--dsg-tab-border-color': tabBorderColor }),
 		},
 	});
 
@@ -179,6 +204,38 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						step={1}
 					/>
 				</PanelBody>
+
+				<PanelColorSettings
+					title={__('Tab Colors', 'designsetgo')}
+					initialOpen={false}
+					colorSettings={[
+						{
+							value: tabColor,
+							onChange: (value) => setAttributes({ tabColor: value }),
+							label: __('Tab Text', 'designsetgo'),
+						},
+						{
+							value: tabBackgroundColor,
+							onChange: (value) => setAttributes({ tabBackgroundColor: value }),
+							label: __('Tab Background', 'designsetgo'),
+						},
+						{
+							value: activeTabColor,
+							onChange: (value) => setAttributes({ activeTabColor: value }),
+							label: __('Active Tab Text', 'designsetgo'),
+						},
+						{
+							value: activeTabBackgroundColor,
+							onChange: (value) => setAttributes({ activeTabBackgroundColor: value }),
+							label: __('Active Tab Background', 'designsetgo'),
+						},
+						{
+							value: tabBorderColor,
+							onChange: (value) => setAttributes({ tabBorderColor: value }),
+							label: __('Tab Border', 'designsetgo'),
+						},
+					]}
+				/>
 
 				<PanelBody title={__('Mobile Settings', 'designsetgo')} initialOpen={false}>
 					<RangeControl

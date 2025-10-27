@@ -30,6 +30,19 @@
 		"anchor": {
 			"type": "string",
 			"default": ""
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"spacing": {
+					"padding": {
+						"top": "0",
+						"right": "0",
+						"bottom": "0",
+						"left": "0"
+					}
+				}
+			}
 		}
 	},
 	"usesContext": [
@@ -63,11 +76,19 @@
 		"reusable": false,
 		"spacing": {
 			"margin": false,
-			"padding": true
+			"padding": true,
+			"blockGap": true
 		},
 		"color": {
 			"background": true,
-			"text": true
+			"text": true,
+			"link": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true
 		}
 	},
 	"editorScript": "file:./index.js",

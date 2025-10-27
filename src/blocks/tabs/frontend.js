@@ -20,6 +20,26 @@
 			this.init();
 		}
 
+		/**
+		 * Create a Dashicon element securely (no innerHTML)
+		 *
+		 * @param {string} iconSlug - Sanitized dashicon slug
+		 * @return {HTMLElement} Dashicon span element
+		 */
+		createDashicon(iconSlug) {
+			const iconWrapper = document.createElement('span');
+			iconWrapper.className = 'dsg-tabs__tab-icon';
+
+			const dashicon = document.createElement('span');
+			// Icon slug is already sanitized in save.js, but validate again
+			// Only allow: lowercase letters, numbers, hyphens
+			const safeIcon = iconSlug.replace(/[^a-z0-9\-]/g, '');
+			dashicon.className = `dashicons dashicons-${safeIcon}`;
+
+			iconWrapper.appendChild(dashicon);
+			return iconWrapper;
+		}
+
 		init() {
 			// Build tab navigation from panels
 			this.buildNavigation();
@@ -53,26 +73,24 @@
 				const button = document.createElement('button');
 				button.className = 'dsg-tabs__tab';
 				button.id = tabId;
+				button.setAttribute('type', 'button');
 				button.setAttribute('role', 'tab');
 				button.setAttribute('aria-selected', index === this.activeTab ? 'true' : 'false');
 				button.setAttribute('aria-controls', panel.id);
 				button.setAttribute('tabindex', index === this.activeTab ? '0' : '-1');
 				button.dataset.tabIndex = index;
 
-				// Add icon if present
+				// Add icon if present (✅ SECURITY: Using createElement, not innerHTML)
 				if (icon) {
 					button.classList.add('has-icon', `icon-${iconPosition}`);
 
 					if (iconPosition === 'top') {
-						const iconTopSpan = document.createElement('span');
-						iconTopSpan.className = 'dsg-tabs__tab-icon-top';
-						iconTopSpan.innerHTML = `<span class="dashicons dashicons-${icon}"></span>`;
-						button.appendChild(iconTopSpan);
+						const iconTopWrapper = document.createElement('span');
+						iconTopWrapper.className = 'dsg-tabs__tab-icon-top';
+						iconTopWrapper.appendChild(this.createDashicon(icon));
+						button.appendChild(iconTopWrapper);
 					} else if (iconPosition === 'left') {
-						const iconSpan = document.createElement('span');
-						iconSpan.className = 'dsg-tabs__tab-icon';
-						iconSpan.innerHTML = `<span class="dashicons dashicons-${icon}"></span>`;
-						button.appendChild(iconSpan);
+						button.appendChild(this.createDashicon(icon));
 					}
 				}
 
@@ -82,12 +100,9 @@
 				titleSpan.textContent = title;
 				button.appendChild(titleSpan);
 
-				// Add right icon if needed
+				// Add right icon if needed (✅ SECURITY: Using createElement, not innerHTML)
 				if (icon && iconPosition === 'right') {
-					const iconSpan = document.createElement('span');
-					iconSpan.className = 'dsg-tabs__tab-icon';
-					iconSpan.innerHTML = `<span class="dashicons dashicons-${icon}"></span>`;
-					button.appendChild(iconSpan);
+					button.appendChild(this.createDashicon(icon));
 				}
 
 				// Event listeners

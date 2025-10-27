@@ -4,6 +4,7 @@
 
 .dsg-tabs {
 	position: relative;
+	padding: 0; // Default to no padding
 
 	// CSS custom properties for easy customization
 	--dsg-tabs-gap: 8px;
@@ -74,6 +75,7 @@
 
 	/**
 	 * Tab Panels Container
+	 * No typography - let child blocks inherit from body/theme naturally
 	 */
 	.dsg-tabs__panels {
 		position: relative;
