@@ -29,9 +29,11 @@ import './style.scss';
 
 /**
  * Edit component
- * @param root0
- * @param root0.attributes
- * @param root0.setAttributes
+ *
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
+ * @param {Function} props.setAttributes - Function to update attributes
+ * @return {JSX.Element} Counter Group edit component
  */
 function CounterGroupEdit({ attributes, setAttributes }) {
 	const {

@@ -158,7 +158,7 @@ async function selectBlock(page, blockType, index = 0) {
  * @param {string}                          blockType - Block type (e.g., 'core/group')
  * @param {string}                          className - Class name to check
  * @param {number}                          index     - Index of the block (0-based)
- * @return {Promise<boolean>}
+ * @return {Promise<boolean>} True if the block has the class, false otherwise
  */
 async function blockHasClass(page, blockType, className, index = 0) {
 	const block = page.locator(`[data-type="${blockType}"]`).nth(index);
