@@ -246,9 +246,9 @@
 
 			// Listen for hash changes
 			window.addEventListener('hashchange', () => {
-				const hash = window.location.hash.substring(1);
-				if (hash) {
-					const panel = this.element.querySelector(`#${hash}`);
+				const newHash = window.location.hash.substring(1);
+				if (newHash) {
+					const panel = this.element.querySelector(`#${newHash}`);
 					if (panel) {
 						const index = Array.from(this.panels).indexOf(panel);
 						if (index !== -1) {

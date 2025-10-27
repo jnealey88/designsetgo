@@ -92,8 +92,6 @@ function animateOnScroll(element) {
 			entries.forEach((entry) => {
 				const currentRatio = entry.intersectionRatio;
 				const isEntering = entry.isIntersecting && !wasIntersecting;
-				const isFullyVisible =
-					entry.isIntersecting && currentRatio > 0.8;
 				const isStartingToLeave =
 					wasIntersecting &&
 					currentRatio < previousRatio &&

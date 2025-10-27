@@ -13,5 +13,10 @@ artifacts/
 # Debug/inspection scripts
 inspect-container.js
 
+# E2E test files (playwright tests with console statements for debugging)
+tests/e2e/**/*.spec.js
+tests/e2e/**/*.setup.js
+tests/e2e/**/*.teardown.js
+
 # Vendor
 vendor/

@@ -80,9 +80,11 @@ const withAnimationClasses = createHigherOrderComponent((BlockListBlock) => {
 
 /**
  * Add animation data attributes to save props
- * @param extraProps
- * @param blockType
- * @param attributes
+ *
+ * @param {Object} extraProps - Extra props to add to the block
+ * @param {Object} blockType  - Block type object
+ * @param {Object} attributes - Block attributes
+ * @return {Object} Modified extra props with animation data attributes
  */
 function addAnimationSaveProps(extraProps, blockType, attributes) {
 	const {

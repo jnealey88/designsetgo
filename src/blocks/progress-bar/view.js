@@ -41,8 +41,6 @@ function initProgressBars() {
 				// Get target percentage from data attribute
 				const targetPercentage =
 					progressBar.getAttribute('data-percentage');
-				const duration =
-					progressBar.getAttribute('data-duration') || 1.5;
 
 				if (targetPercentage) {
 					// Animate to target percentage
