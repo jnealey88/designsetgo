@@ -4,9 +4,11 @@
 # Dependencies
 /node_modules
 /vendor
+composer.lock
 
 # Build output
 /build
+/*.zip
 
 # IDE
 .vscode/
@@ -36,12 +38,21 @@ yarn-error.log*
 /blob-report
 /playwright/.cache
 /artifacts
+.phpunit.result.cache
+phpunit.xml.cache
 
 # Temporary files
 *.tmp
 *.swp
 *.swo
 *~
+.cache
+
+# Lint caches
+.eslintcache
+.stylelintcache
+.phpcs.xml
+.php-cs-fixer.cache
 
 # Package managers
 package-lock.json

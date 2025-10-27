@@ -43,18 +43,44 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 - **WordPress**: 6.4+
 - **npm**: 8+ (or pnpm/yarn)
 
-### Installation
+### Getting Started
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/yourusername/designsetgo.git
 cd designsetgo
 
-# Install dependencies
+# 2. Install dependencies
 npm install
 
-# Build the plugin
-npm run build
+# 3. Start WordPress environment
+npx wp-env start
+# This starts a local WordPress at http://localhost:8888
+# Login: admin / password
+
+# 4. Start development (in a new terminal)
+npm start
+# This watches files and rebuilds automatically
+```
+
+**That's it!** The plugin is now active in your local WordPress. Visit [http://localhost:8888/wp-admin](http://localhost:8888/wp-admin) and start creating with DesignSetGo blocks.
+
+### WordPress Environment
+
+```bash
+# Start WordPress
+npx wp-env start
+
+# Stop WordPress
+npx wp-env stop
+
+# Reset WordPress (clean install)
+npx wp-env clean all
+
+# Access:
+# - Frontend: http://localhost:8888
+# - Admin: http://localhost:8888/wp-admin (admin/password)
+# - Database: http://localhost:8889 (phpMyAdmin - root/password)
 ```
 
 ### Development Workflow
@@ -66,7 +92,7 @@ npm start
 # Build for production
 npm run build
 
-# Lint and fix code
+# Code Quality
 npm run lint:js          # Lint JavaScript
 npm run lint:css         # Lint SCSS/CSS
 npm run lint:php         # Lint PHP (requires Composer)
@@ -84,26 +110,6 @@ npm run security:audit   # Check for vulnerabilities and license issues
 
 # Create plugin ZIP for distribution
 npm run plugin-zip
-```
-
-### WordPress Environment Setup
-
-```bash
-# Start local WordPress environment (wp-env)
-npm run wp-env:start
-# or: npx wp-env start
-
-# Access WordPress
-# URL: http://localhost:8888
-# Admin: http://localhost:8888/wp-admin
-# Username: admin
-# Password: password
-
-# Stop environment
-npm run wp-env:stop
-
-# Clean environment (remove all data)
-npm run wp-env:clean
 ```
 
 ## Current Features
