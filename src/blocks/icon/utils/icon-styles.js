@@ -13,7 +13,7 @@
  * @param {number} options.iconSize - Icon size in pixels
  * @param {string} options.shape - Background shape (none, circle, square, rounded)
  * @param {number} options.shapePadding - Shape padding in pixels
- * @param {string} options.backgroundColor - Background color from WordPress
+ * @param {string} options.backgroundColor - Background color or gradient from WordPress
  * @return {Object} Icon wrapper styles
  */
 export const calculateIconWrapperStyle = ({
@@ -28,7 +28,9 @@ export const calculateIconWrapperStyle = ({
 
 	if (shape !== 'none') {
 		styles.padding = `${shapePadding}px`;
-		styles.backgroundColor = backgroundColor;
+		if (backgroundColor) {
+			styles.background = backgroundColor;
+		}
 	}
 
 	return styles;

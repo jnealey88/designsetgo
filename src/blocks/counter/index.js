@@ -12,6 +12,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import save from './save';
 import metadata from './block.json';
+import { ICON_COLOR } from '../shared/constants';
 
 import './editor.scss';
 import './style.scss';
@@ -47,7 +48,7 @@ registerBlockType(metadata.name, {
 				</text>
 			</svg>
 		),
-		foreground: '#2563eb',
+		foreground: ICON_COLOR,
 	},
 	edit,
 	save,

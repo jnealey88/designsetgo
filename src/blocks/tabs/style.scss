@@ -200,6 +200,25 @@
 	}
 
 	/**
+	 * Vertical + Underline: Remove right border
+	 */
+	&.dsg-tabs--vertical.dsg-tabs--underline {
+		.dsg-tabs__nav {
+			border-right: none;
+		}
+
+		.dsg-tabs__tab {
+			border-right: none !important;
+			border-bottom: 2px solid transparent;
+			margin-right: 0;
+
+			&.is-active {
+				border-bottom-color: var(--dsg-tab-border-color);
+			}
+		}
+	}
+
+	/**
 	 * Tab Style: Minimal
 	 */
 	&.dsg-tabs--minimal {

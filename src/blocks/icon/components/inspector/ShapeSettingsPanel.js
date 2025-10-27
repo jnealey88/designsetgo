@@ -28,7 +28,7 @@ export const ShapeSettingsPanel = ({
 }) => {
 	return (
 		<PanelBody
-			title={__('Shape Settings', 'designsetgo')}
+			title={__('Shape & Background', 'designsetgo')}
 			initialOpen={false}
 		>
 			<SelectControl
@@ -38,22 +38,48 @@ export const ShapeSettingsPanel = ({
 					{ label: __('None', 'designsetgo'), value: 'none' },
 					{ label: __('Circle', 'designsetgo'), value: 'circle' },
 					{ label: __('Square', 'designsetgo'), value: 'square' },
-					{ label: __('Rounded', 'designsetgo'), value: 'rounded' },
+					{
+						label: __('Rounded Square', 'designsetgo'),
+						value: 'rounded',
+					},
 				]}
 				onChange={(value) => setAttributes({ shape: value })}
+				help={
+					shape === 'none'
+						? __(
+								'Select a shape to add a background behind the icon.',
+								'designsetgo'
+							)
+						: __(
+								'The background color is set in the "Color" panel below.',
+								'designsetgo'
+							)
+				}
 			/>
 
 			{shape !== 'none' && (
-				<RangeControl
-					label={__('Shape Padding', 'designsetgo')}
-					value={shapePadding}
-					onChange={(value) =>
-						setAttributes({ shapePadding: value })
-					}
-					min={0}
-					max={64}
-					step={2}
-				/>
+				<>
+					<RangeControl
+						label={__('Padding', 'designsetgo')}
+						value={shapePadding}
+						onChange={(value) =>
+							setAttributes({ shapePadding: value })
+						}
+						min={0}
+						max={64}
+						step={2}
+						help={__(
+							'Space between the icon and the shape edge.',
+							'designsetgo'
+						)}
+					/>
+					<p className="components-base-control__help">
+						{__(
+							'💡 Tip: Set the background color using the "Color" panel, and adjust border radius using the "Border" panel.',
+							'designsetgo'
+						)}
+					</p>
+				</>
 			)}
 		</PanelBody>
 	);
