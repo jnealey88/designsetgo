@@ -1,0 +1,440 @@
+/**
+ * Block Animations - CSS Animations
+ *
+ * Entrance and exit animation keyframes and styles
+ *
+ * @package DesignSetGo
+ * @since 1.0.0
+ */
+
+// Base animation class - only hide on frontend, not in editor
+body:not(.block-editor-page):not(.wp-admin) {
+	.has-dsg-animation {
+		// Will be animated by JavaScript
+		// Hide elements until entrance animation is triggered
+		&:not(.dsg-entrance-active):not(.dsg-exit-active) {
+			opacity: 0;
+		}
+
+		// Apply animation settings when active
+		&.dsg-entrance-active,
+		&.dsg-exit-active {
+			animation-fill-mode: both;
+		}
+	}
+}
+
+// ============================================
+// ENTRANCE ANIMATIONS
+// ============================================
+
+// Fade In
+@keyframes dsgFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+// Fade In Up
+@keyframes dsgFadeInUp {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 40px, 0);
+	}
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+// Fade In Down
+@keyframes dsgFadeInDown {
+	from {
+		opacity: 0;
+		transform: translate3d(0, -40px, 0);
+	}
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+// Fade In Left
+@keyframes dsgFadeInLeft {
+	from {
+		opacity: 0;
+		transform: translate3d(-40px, 0, 0);
+	}
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+// Fade In Right
+@keyframes dsgFadeInRight {
+	from {
+		opacity: 0;
+		transform: translate3d(40px, 0, 0);
+	}
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+// Slide In Up
+@keyframes dsgSlideInUp {
+	from {
+		transform: translate3d(0, 100%, 0);
+		visibility: visible;
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+// Slide In Down
+@keyframes dsgSlideInDown {
+	from {
+		transform: translate3d(0, -100%, 0);
+		visibility: visible;
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+// Slide In Left
+@keyframes dsgSlideInLeft {
+	from {
+		transform: translate3d(-100%, 0, 0);
+		visibility: visible;
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+// Slide In Right
+@keyframes dsgSlideInRight {
+	from {
+		transform: translate3d(100%, 0, 0);
+		visibility: visible;
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+// Zoom In
+@keyframes dsgZoomIn {
+	from {
+		opacity: 0;
+		transform: scale3d(0.3, 0.3, 0.3);
+	}
+	50% {
+		opacity: 1;
+	}
+}
+
+// Bounce In
+@keyframes dsgBounceIn {
+	from,
+	20%,
+	40%,
+	60%,
+	80%,
+	to {
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+	}
+	0% {
+		opacity: 0;
+		transform: scale3d(0.3, 0.3, 0.3);
+	}
+	20% {
+		transform: scale3d(1.1, 1.1, 1.1);
+	}
+	40% {
+		transform: scale3d(0.9, 0.9, 0.9);
+	}
+	60% {
+		opacity: 1;
+		transform: scale3d(1.03, 1.03, 1.03);
+	}
+	80% {
+		transform: scale3d(0.97, 0.97, 0.97);
+	}
+	to {
+		opacity: 1;
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+// Flip In X
+@keyframes dsgFlipInX {
+	from {
+		transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+		animation-timing-function: ease-in;
+		opacity: 0;
+	}
+	40% {
+		transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+		animation-timing-function: ease-in;
+	}
+	60% {
+		transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+		opacity: 1;
+	}
+	80% {
+		transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+	}
+	to {
+		transform: perspective(400px);
+	}
+}
+
+// Flip In Y
+@keyframes dsgFlipInY {
+	from {
+		transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+		animation-timing-function: ease-in;
+		opacity: 0;
+	}
+	40% {
+		transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
+		animation-timing-function: ease-in;
+	}
+	60% {
+		transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+		opacity: 1;
+	}
+	80% {
+		transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
+	}
+	to {
+		transform: perspective(400px);
+	}
+}
+
+// ============================================
+// EXIT ANIMATIONS
+// ============================================
+
+// Fade Out
+@keyframes dsgFadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+// Fade Out Up
+@keyframes dsgFadeOutUp {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+		transform: translate3d(0, -40px, 0);
+	}
+}
+
+// Fade Out Down
+@keyframes dsgFadeOutDown {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+		transform: translate3d(0, 40px, 0);
+	}
+}
+
+// Fade Out Left
+@keyframes dsgFadeOutLeft {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+		transform: translate3d(-40px, 0, 0);
+	}
+}
+
+// Fade Out Right
+@keyframes dsgFadeOutRight {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+		transform: translate3d(40px, 0, 0);
+	}
+}
+
+// Slide Out Up
+@keyframes dsgSlideOutUp {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		visibility: hidden;
+		transform: translate3d(0, -100%, 0);
+	}
+}
+
+// Slide Out Down
+@keyframes dsgSlideOutDown {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		visibility: hidden;
+		transform: translate3d(0, 100%, 0);
+	}
+}
+
+// Slide Out Left
+@keyframes dsgSlideOutLeft {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		visibility: hidden;
+		transform: translate3d(-100%, 0, 0);
+	}
+}
+
+// Slide Out Right
+@keyframes dsgSlideOutRight {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		visibility: hidden;
+		transform: translate3d(100%, 0, 0);
+	}
+}
+
+// Zoom Out
+@keyframes dsgZoomOut {
+	from {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+		transform: scale3d(0.3, 0.3, 0.3);
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+// Bounce Out
+@keyframes dsgBounceOut {
+	20% {
+		transform: scale3d(0.9, 0.9, 0.9);
+	}
+	50%,
+	55% {
+		opacity: 1;
+		transform: scale3d(1.1, 1.1, 1.1);
+	}
+	to {
+		opacity: 0;
+		transform: scale3d(0.3, 0.3, 0.3);
+	}
+}
+
+// ============================================
+// ANIMATION CLASSES
+// ============================================
+
+// Apply animation name to active blocks (frontend only)
+body:not(.block-editor-page):not(.wp-admin) {
+	// Entrance animations
+	.dsg-entrance-active {
+		&.dsg-animation-fadeIn {
+			animation-name: dsgFadeIn;
+		}
+		&.dsg-animation-fadeInUp {
+			animation-name: dsgFadeInUp;
+		}
+		&.dsg-animation-fadeInDown {
+			animation-name: dsgFadeInDown;
+		}
+		&.dsg-animation-fadeInLeft {
+			animation-name: dsgFadeInLeft;
+		}
+		&.dsg-animation-fadeInRight {
+			animation-name: dsgFadeInRight;
+		}
+		&.dsg-animation-slideInUp {
+			animation-name: dsgSlideInUp;
+		}
+		&.dsg-animation-slideInDown {
+			animation-name: dsgSlideInDown;
+		}
+		&.dsg-animation-slideInLeft {
+			animation-name: dsgSlideInLeft;
+		}
+		&.dsg-animation-slideInRight {
+			animation-name: dsgSlideInRight;
+		}
+		&.dsg-animation-zoomIn {
+			animation-name: dsgZoomIn;
+		}
+		&.dsg-animation-bounceIn {
+			animation-name: dsgBounceIn;
+		}
+		&.dsg-animation-flipInX {
+			animation-name: dsgFlipInX;
+		}
+		&.dsg-animation-flipInY {
+			animation-name: dsgFlipInY;
+		}
+	}
+
+	// Exit animations
+	.dsg-exit-active {
+		&.dsg-animation-exit-fadeOut {
+			animation-name: dsgFadeOut;
+		}
+		&.dsg-animation-exit-fadeOutUp {
+			animation-name: dsgFadeOutUp;
+		}
+		&.dsg-animation-exit-fadeOutDown {
+			animation-name: dsgFadeOutDown;
+		}
+		&.dsg-animation-exit-fadeOutLeft {
+			animation-name: dsgFadeOutLeft;
+		}
+		&.dsg-animation-exit-fadeOutRight {
+			animation-name: dsgFadeOutRight;
+		}
+		&.dsg-animation-exit-slideOutUp {
+			animation-name: dsgSlideOutUp;
+		}
+		&.dsg-animation-exit-slideOutDown {
+			animation-name: dsgSlideOutDown;
+		}
+		&.dsg-animation-exit-slideOutLeft {
+			animation-name: dsgSlideOutLeft;
+		}
+		&.dsg-animation-exit-slideOutRight {
+			animation-name: dsgSlideOutRight;
+		}
+		&.dsg-animation-exit-zoomOut {
+			animation-name: dsgZoomOut;
+		}
+		&.dsg-animation-exit-bounceOut {
+			animation-name: dsgBounceOut;
+		}
+	}
+}

@@ -1,0 +1,83 @@
+/**
+ * Progress Bar Block - Frontend Styles
+ *
+ * @since 1.0.0
+ */
+
+.dsg-progress-bar {
+	// Block container
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	// Progress bar container
+	&__container {
+		position: relative;
+		display: flex;
+		align-items: center;
+	}
+
+	// Progress bar fill
+	&__fill {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		padding: 0 0.5rem;
+
+		// Animated stripes
+		&--animated {
+			animation: dsg-progress-stripes 1s linear infinite;
+		}
+	}
+
+	// Label styles
+	&__label {
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		font-weight: 500;
+
+		// Label positions
+		&--top,
+		&--bottom {
+			color: currentColor;
+		}
+
+		&--top {
+			margin-bottom: 0.25rem;
+		}
+
+		&--bottom {
+			margin-top: 0.25rem;
+		}
+
+		&--inside {
+			color: #ffffff;
+			font-weight: 600;
+			white-space: nowrap;
+			padding-right: 0.5rem;
+		}
+	}
+
+	// Hide inside label if bar is too narrow
+	&__fill[style*="width: 0%"],
+	&__fill[style*="width: 1%"],
+	&__fill[style*="width: 2%"],
+	&__fill[style*="width: 3%"],
+	&__fill[style*="width: 4%"],
+	&__fill[style*="width: 5%"] {
+		.dsg-progress-bar__label--inside {
+			display: none;
+		}
+	}
+}
+
+// Striped animation keyframes
+@keyframes dsg-progress-stripes {
+	0% {
+		background-position: 1rem 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+}

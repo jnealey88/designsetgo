@@ -1,0 +1,27 @@
+/**
+ * Progress Bar Block - Editor Styles
+ *
+ * @since 1.0.0
+ */
+
+.dsg-progress-bar {
+	// Editor-specific styles
+	.block-editor-block-list__layout & {
+		// Ensure proper spacing in editor
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	// Show pointer cursor in editor to indicate interactivity
+	&__container {
+		cursor: default;
+	}
+
+	// Make labels more visible in editor
+	&__label {
+		&--inside {
+			// Ensure inside labels are always visible in editor
+			min-width: fit-content;
+		}
+	}
+}
