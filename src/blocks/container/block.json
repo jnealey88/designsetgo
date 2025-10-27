@@ -33,9 +33,13 @@
 			"type": "number",
 			"default": 1
 		},
+		"gridColumnSpan": {
+			"type": "number",
+			"default": 1
+		},
 		"gap": {
 			"type": "string",
-			"default": "24px"
+			"default": "0"
 		},
 		"videoUrl": {
 			"type": "string",
@@ -103,8 +107,10 @@
 		"spacing": {
 			"margin": true,
 			"padding": true,
+			"blockGap": true,
 			"__experimentalDefaultControls": {
-				"padding": true
+				"padding": true,
+				"blockGap": true
 			}
 		},
 		"dimensions": {

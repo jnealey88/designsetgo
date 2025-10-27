@@ -15,16 +15,17 @@ import classnames from 'classnames';
  * WordPress best practice: Declarative style calculation (no useEffect or DOM manipulation).
  * All styles are calculated from attributes and applied via React props.
  *
+ * Note: Block spacing (gap) is handled by WordPress's native blockGap support.
+ *
  * @param {Object} attributes - Block attributes
  * @param {string} attributes.layoutType - Layout type ('stack', 'grid', 'flex')
  * @param {boolean} attributes.constrainWidth - Whether to constrain content width
  * @param {string} attributes.contentWidth - Maximum content width (e.g., '1200px')
  * @param {number} attributes.gridColumns - Number of grid columns (desktop)
- * @param {string} attributes.gap - Gap between items
  * @return {Object} React style object for inner container
  */
 export const calculateInnerStyles = (attributes) => {
-	const { layoutType, constrainWidth, contentWidth, gridColumns, gap } = attributes;
+	const { layoutType, constrainWidth, contentWidth, gridColumns } = attributes;
 
 	const styles = {
 		position: 'relative',
@@ -32,20 +33,18 @@ export const calculateInnerStyles = (attributes) => {
 	};
 
 	// Apply layout based on type
+	// Gap is handled by WordPress's native blockGap support (spacing.blockGap in block.json)
 	if (layoutType === 'grid') {
 		styles.display = 'grid';
 		styles.gridTemplateColumns = `repeat(${gridColumns}, 1fr)`;
-		styles.gap = gap;
 	} else if (layoutType === 'flex') {
 		styles.display = 'flex';
 		styles.flexDirection = 'row';
 		styles.flexWrap = 'wrap';
-		styles.gap = gap;
 	} else {
 		// Stack (default)
 		styles.display = 'flex';
 		styles.flexDirection = 'column';
-		styles.gap = gap;
 	}
 
 	// Apply width constraint if enabled (works for ALL layouts)
@@ -98,13 +97,21 @@ export const calculateContainerClasses = (attributes) => {
  *
  * @param {Object} attributes - Block attributes
  * @param {string} attributes.textAlign - Text alignment
+ * @param {number} attributes.gridColumnSpan - Grid column span for nested containers
  * @return {Object} React style object for container wrapper
  */
 export const calculateContainerStyles = (attributes) => {
-	const { textAlign } = attributes;
+	const { textAlign, gridColumnSpan } = attributes;
 
-	return {
+	const styles = {
 		position: 'relative',
 		...(textAlign && { textAlign }),
 	};
+
+	// Apply grid column span when set (browsers ignore if parent isn't grid)
+	if (gridColumnSpan && gridColumnSpan > 1) {
+		styles.gridColumn = `span ${gridColumnSpan}`;
+	}
+
+	return styles;
 };

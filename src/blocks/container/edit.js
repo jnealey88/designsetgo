@@ -23,10 +23,14 @@ import {
 	AlignmentControl,
 } from '@wordpress/block-editor';
 import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import { store as blockEditorStore } from '@wordpress/block-editor';
+import { useEffect } from '@wordpress/element';
 
 // Extracted Inspector Panel Components
 import { LayoutPanel } from './components/inspector/LayoutPanel';
 import { GridPanel } from './components/inspector/GridPanel';
+import { GridSpanPanel } from './components/inspector/GridSpanPanel';
 import { ContentWidthPanel } from './components/inspector/ContentWidthPanel';
 import { BackgroundVideoPanel } from './components/inspector/BackgroundVideoPanel';
 import { OverlayPanel } from './components/inspector/OverlayPanel';
@@ -45,10 +49,11 @@ import {
  *
  * @param {Object} props - Component props
  * @param {Object} props.attributes - Block attributes
+ * @param {string} props.clientId - Block client ID
  * @param {Function} props.setAttributes - Function to update attributes
  * @return {JSX.Element} Container block edit component
  */
-export default function ContainerEdit({ attributes, setAttributes }) {
+export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	// Destructure attributes needed for immediate use
 	const {
 		layoutType,
@@ -61,6 +66,38 @@ export default function ContainerEdit({ attributes, setAttributes }) {
 		overlayColor,
 		textAlign,
 	} = attributes;
+
+	// ========================================
+	// Detect parent block for nested container context
+	// ========================================
+	const { parentBlock, hasParentContainer, parentIsGrid } = useSelect(
+		(select) => {
+			const { getBlockParents, getBlock } = select(blockEditorStore);
+			const parentClientIds = getBlockParents(clientId);
+			const parentClientId = parentClientIds[parentClientIds.length - 1];
+			const parent = parentClientId ? getBlock(parentClientId) : null;
+
+			const isParentContainer = parent?.name === 'designsetgo/container';
+			const isParentGrid = isParentContainer && parent?.attributes?.layoutType === 'grid';
+
+			return {
+				parentBlock: parent,
+				hasParentContainer: isParentContainer,
+				parentIsGrid: isParentGrid,
+			};
+		},
+		[clientId]
+	);
+
+	// ========================================
+	// Auto-disable constrainWidth for nested containers
+	// Parent container handles width, so nested containers shouldn't constrain again
+	// ========================================
+	useEffect(() => {
+		if (hasParentContainer && attributes.constrainWidth) {
+			setAttributes({ constrainWidth: false });
+		}
+	}, [hasParentContainer]); // Only run when parent container status changes
 
 	// ========================================
 	// Calculate styles declaratively using extracted utility
@@ -224,7 +261,6 @@ export default function ContainerEdit({ attributes, setAttributes }) {
 			<InspectorControls>
 				<LayoutPanel
 					layoutType={layoutType}
-					gap={attributes.gap}
 					setAttributes={setAttributes}
 				/>
 
@@ -233,6 +269,13 @@ export default function ContainerEdit({ attributes, setAttributes }) {
 					gridColumns={attributes.gridColumns}
 					gridColumnsTablet={attributes.gridColumnsTablet}
 					gridColumnsMobile={attributes.gridColumnsMobile}
+					setAttributes={setAttributes}
+				/>
+
+				<GridSpanPanel
+					parentIsGrid={parentIsGrid}
+					parentGridColumns={parentBlock?.attributes?.gridColumns}
+					gridColumnSpan={attributes.gridColumnSpan}
 					setAttributes={setAttributes}
 				/>
 
