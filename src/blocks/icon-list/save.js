@@ -38,11 +38,13 @@ export default function IconListSave({ attributes }) {
 			layout === 'grid' ? `repeat(${columns}, 1fr)` : undefined,
 		gap,
 		alignItems: alignItemsValue,
+		width: '100%', // Ensure container fills available space
 	};
 
 	// Get block wrapper props
 	const blockProps = useBlockProps.save({
 		className: `dsg-icon-list dsg-icon-list--${layout}`,
+		style: { width: '100%' }, // Ensure block fills parent width
 	});
 
 	// Get inner blocks props

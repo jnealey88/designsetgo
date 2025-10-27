@@ -26,6 +26,7 @@ DesignSetGo is a comprehensive collection of modern Gutenberg blocks designed to
 * **Counter Block** - Animated counting statistics with icons and formatters
 * **Icon Block** - 500+ icons with customizable shapes and animations
 * **Progress Bar Block** - Animated progress indicators with multiple styles
+* **Pill Block** - Badge/tag-style text with rounded backgrounds
 
 **Global Features**
 * **Block Animations** - Add entrance and exit animations to ANY WordPress block with scroll, hover, click, or load triggers
@@ -87,7 +88,16 @@ DesignSetGo is a comprehensive collection of modern Gutenberg blocks designed to
    - Scroll-triggered animations
    - Custom colors
 
-7. **Block Animations** - Universal animation system for ALL blocks:
+7. **Pill** - Badge/tag-style text with:
+   - Inline text with rounded background
+   - Background wraps tightly around content
+   - Full color customization (background, text, gradients)
+   - Typography controls (font size, weight, spacing)
+   - Border and border radius controls
+   - Text alignment options
+   - Default small font size
+
+8. **Block Animations** - Universal animation system for ALL blocks:
    - 13 entrance animations (Fade In, Slide In, Zoom In, Bounce In, Flip In, etc.)
    - 11 exit animations (Fade Out, Slide Out, Zoom Out, Bounce Out, etc.)
    - 4 trigger types (Scroll, Load, Hover, Click)

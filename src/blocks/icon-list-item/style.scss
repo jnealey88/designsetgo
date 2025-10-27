@@ -109,4 +109,10 @@
 	&--icon-left {
 		// Default styles
 	}
+
+	&--icon-right {
+		.dsg-icon-list-item__content {
+			width: 100%;
+		}
+	}
 }

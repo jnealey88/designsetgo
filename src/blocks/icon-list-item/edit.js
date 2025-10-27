@@ -44,8 +44,9 @@ export default function IconListItemEdit({
 		display: 'flex',
 		flexDirection: iconPosition === 'top' ? 'column' : 'row',
 		alignItems: iconPosition === 'top' ? 'center' : 'flex-start',
-		textAlign: iconPosition === 'top' ? 'center' : 'left',
+		textAlign: iconPosition === 'top' ? 'center' : iconPosition === 'right' ? 'right' : 'left',
 		gap: iconPosition === 'top' ? '12px' : '16px',
+		...(iconPosition === 'right' && { flexDirection: 'row-reverse' }),
 	};
 
 	// Calculate icon wrapper styles

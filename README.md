@@ -10,7 +10,7 @@ Modern Gutenberg block library bridging the gap between core WordPress blocks an
 - ✅ Project foundation and architecture complete
 - ✅ Build system configured (webpack + @wordpress/scripts)
 - ✅ PHP plugin architecture implemented
-- ✅ 11 custom blocks with FSE integration
+- ✅ 12 custom blocks with FSE integration
 - ✅ Block extensions (Responsive, Animations)
 - ✅ Global styles system (theme.json integration)
 - ✅ Animation system with 8+ entrance animations
@@ -25,7 +25,7 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 
 | Category | Features |
 |----------|----------|
-| **Blocks** | 11 custom blocks (Container, Accordion, Tabs, Counter, Icon, Progress Bar, etc.) |
+| **Blocks** | 12 custom blocks (Container, Accordion, Tabs, Counter, Icon, Progress Bar, Pill, etc.) |
 | **Extensions** | Responsive visibility, entrance animations for any block |
 | **Patterns** | Pre-designed layouts (Hero, CTA, Features, FAQ) |
 | **FSE Ready** | Full Site Editing compatible, theme.json integration |
@@ -114,7 +114,7 @@ npm run plugin-zip
 
 ## Current Features
 
-### 11 Custom Blocks
+### 12 Custom Blocks
 
 #### Layout & Structure
 **Container Block** - Advanced layout container with responsive controls
@@ -164,6 +164,15 @@ npm run plugin-zip
 - Custom icon per item
 - Flexible styling
 - Individual item control (Icon List Item block)
+
+**Pill** - Badge/tag-style text
+- Inline text with rounded background
+- Background wraps tightly around content
+- Full color customization (background, text, gradients)
+- Typography controls (font size, weight, spacing)
+- Border and border radius controls
+- Text alignment options
+- Default small font size
 
 ### Block Extensions
 
@@ -247,7 +256,7 @@ designsetgo/
 ## Roadmap
 
 ### ✅ Completed (Phase 1)
-- 11 core custom blocks (Container, Accordion, Tabs, Counter, Icon, Progress Bar, etc.)
+- 12 core custom blocks (Container, Accordion, Tabs, Counter, Icon, Progress Bar, Pill, etc.)
 - Block extensions (Responsive, Animations)
 - Global styles integration
 - Animation system (8+ entrance animations)
@@ -349,6 +358,7 @@ Blocks are organized in the WordPress block inserter:
 - Counter / Counter Group
 - Icon / Icon List / Icon List Item
 - Progress Bar
+- Pill
 
 **Extensions** - Available for all blocks
 - Responsive visibility toggles (Block Settings → DesignSetGo)

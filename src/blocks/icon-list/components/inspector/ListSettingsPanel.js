@@ -107,6 +107,7 @@ export const ListSettingsPanel = ({
 					value={iconPosition}
 					options={[
 						{ label: __('Left', 'designsetgo'), value: 'left' },
+						{ label: __('Right', 'designsetgo'), value: 'right' },
 						{ label: __('Top', 'designsetgo'), value: 'top' },
 					]}
 					onChange={(value) => setAttributes({ iconPosition: value })}
