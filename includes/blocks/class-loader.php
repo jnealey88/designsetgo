@@ -52,52 +52,17 @@ class Loader {
 	 * Register block style variations.
 	 *
 	 * These appear in the Site Editor under Styles → Blocks → [Block Name]
-	 * Registers both JSON-based style variations and simple CSS class-based styles.
+	 * All styles are now JSON-based (WordPress 6.7+ theme.json format) and
+	 * auto-discovered from the block's /styles/ directory.
+	 *
+	 * Container block styles include:
+	 * - section-1 through section-5: Color scheme variations
+	 * - card, elevated, bordered, gradient, glass: Visual style variations
 	 */
 	public function register_block_styles() {
 		// Register JSON-based block style variations from the /styles/ directory.
+		// This will auto-discover all *.json files in build/blocks/*/styles/ directories
 		$this->register_json_block_styles();
-
-		// Container Block Style Variations (CSS class-based).
-		register_block_style(
-			'designsetgo/container',
-			array(
-				'name'  => 'card',
-				'label' => __( 'Card', 'designsetgo' ),
-			)
-		);
-
-		register_block_style(
-			'designsetgo/container',
-			array(
-				'name'  => 'elevated',
-				'label' => __( 'Elevated', 'designsetgo' ),
-			)
-		);
-
-		register_block_style(
-			'designsetgo/container',
-			array(
-				'name'  => 'bordered',
-				'label' => __( 'Bordered', 'designsetgo' ),
-			)
-		);
-
-		register_block_style(
-			'designsetgo/container',
-			array(
-				'name'  => 'gradient',
-				'label' => __( 'Gradient', 'designsetgo' ),
-			)
-		);
-
-		register_block_style(
-			'designsetgo/container',
-			array(
-				'name'  => 'glass',
-				'label' => __( 'Glass (Glassmorphism)', 'designsetgo' ),
-			)
-		);
 	}
 
 	/**

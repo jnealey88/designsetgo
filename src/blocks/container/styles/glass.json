@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.7/theme.json",
+	"version": 3,
+	"slug": "glass",
+	"title": "Glass (Glassmorphism)",
+	"blockTypes": [
+		"designsetgo/container"
+	],
+	"styles": {
+		"color": {
+			"background": "rgba(255, 255, 255, 0.1)"
+		},
+		"border": {
+			"color": "rgba(255, 255, 255, 0.2)",
+			"style": "solid",
+			"width": "1px",
+			"radius": "var:preset|spacing|30"
+		},
+		"shadow": "var:preset|shadow|natural",
+		"spacing": {
+			"padding": {
+				"top": "var:preset|spacing|lg",
+				"bottom": "var:preset|spacing|lg",
+				"left": "var:preset|spacing|lg",
+				"right": "var:preset|spacing|lg"
+			}
+		},
+		"css": "backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);"
+	}
+}

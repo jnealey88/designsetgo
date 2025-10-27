@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.7/theme.json",
+	"version": 3,
+	"slug": "bordered",
+	"title": "Bordered",
+	"blockTypes": [
+		"designsetgo/container"
+	],
+	"styles": {
+		"color": {
+			"background": "transparent"
+		},
+		"border": {
+			"color": "var:preset|color|accent-2",
+			"style": "solid",
+			"width": "2px",
+			"radius": "var:preset|spacing|20"
+		},
+		"spacing": {
+			"padding": {
+				"top": "var:preset|spacing|lg",
+				"bottom": "var:preset|spacing|lg",
+				"left": "var:preset|spacing|lg",
+				"right": "var:preset|spacing|lg"
+			}
+		}
+	}
+}
