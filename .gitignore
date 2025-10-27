@@ -18,7 +18,9 @@ composer.lock
 
 # OS
 .DS_Store
+._*
 Thumbs.db
+ehthumbs.db
 
 # Logs
 *.log
@@ -63,5 +65,10 @@ pnpm-lock.yaml
 /.wp-env
 /wordpress
 
+# Git hooks
+.husky/_
+
 # Backup files
 *.backup
+*.bak
+*.old
