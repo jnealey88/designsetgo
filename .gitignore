@@ -56,8 +56,8 @@ phpunit.xml.cache
 .phpcs.xml
 .php-cs-fixer.cache
 
-# Package managers
-package-lock.json
+# Package managers (keep package-lock.json for CI/CD reproducibility)
+# package-lock.json should be committed for most projects
 yarn.lock
 pnpm-lock.yaml
 
