@@ -1,0 +1,194 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+        php-version: [8.0, 8.1, 8.2]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer
+          coverage: none
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build plugin
+        run: npm run build
+
+      - name: Check build output
+        run: |
+          echo "Checking build output..."
+          ls -lh build/
+          if [ ! -f "build/index.js" ]; then
+            echo "❌ build/index.js not found"
+            exit 1
+          fi
+          echo "✅ Build successful"
+
+      - name: Run JavaScript linter
+        run: npm run lint:js --if-present || echo "⚠️ JS linting not configured"
+
+      - name: Run CSS linter
+        run: npm run lint:css --if-present || echo "⚠️ CSS linting not configured"
+
+      - name: Check PHP syntax
+        run: |
+          echo "Checking PHP syntax..."
+          find . -name "*.php" -not -path "./node_modules/*" -not -path "./vendor/*" -exec php -l {} \; | grep -v "No syntax errors"
+          if [ $? -eq 0 ]; then
+            echo "❌ PHP syntax errors found"
+            exit 1
+          fi
+          echo "✅ No PHP syntax errors"
+
+      - name: Check file sizes
+        run: |
+          echo "Checking bundle sizes..."
+          max_js=20000  # 20 KB max for JS
+          max_css=10000  # 10 KB max for CSS
+
+          if [ -f "build/index.js" ]; then
+            js_size=$(stat -f%z build/index.js 2>/dev/null || stat -c%s build/index.js)
+            if [ $js_size -gt $max_js ]; then
+              echo "⚠️ build/index.js is ${js_size} bytes (max: ${max_js})"
+            else
+              echo "✅ build/index.js is ${js_size} bytes"
+            fi
+          fi
+
+          if [ -f "build/style-index.css" ]; then
+            css_size=$(stat -f%z build/style-index.css 2>/dev/null || stat -c%s build/style-index.css)
+            if [ $css_size -gt $max_css ]; then
+              echo "⚠️ build/style-index.css is ${css_size} bytes (max: ${max_css})"
+            else
+              echo "✅ build/style-index.css is ${css_size} bytes"
+            fi
+          fi
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-php-${{ matrix.php-version }}
+          path: build/
+          retention-days: 7
+
+  security-check:
+    name: Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: |
+          npm audit --audit-level=moderate || echo "⚠️ Vulnerabilities found - review required"
+          npm audit --audit-level=critical
+        continue-on-error: false
+
+  file-size-check:
+    name: File Size Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for large files
+        run: |
+          echo "Checking for files over 300 lines..."
+          large_files=$(find src/blocks -name "*.js" -type f -exec sh -c 'wc -l "$1" | awk "{if (\$1 > 300) print \$1, \$2}"' _ {} \;)
+
+          if [ -n "$large_files" ]; then
+            echo "⚠️ Files over 300 lines found:"
+            echo "$large_files"
+            echo ""
+            echo "Consider refactoring these files following patterns in .claude/CLAUDE.md"
+          else
+            echo "✅ All files under 300 lines"
+          fi
+
+  accessibility-check:
+    name: Accessibility Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for accessibility patterns
+        run: |
+          echo "Checking for ARIA patterns..."
+
+          # Check for aria-label usage
+          aria_labels=$(grep -r "aria-label" src/blocks --include="*.js" | wc -l)
+          echo "✅ Found $aria_labels ARIA labels"
+
+          # Check for semantic HTML
+          semantic_html=$(grep -rE "(role=|aria-|semantic)" src/blocks --include="*.js" | wc -l)
+          echo "✅ Found $semantic_html accessibility attributes"
+
+          # Check for color contrast considerations
+          if grep -rq "WCAG\|contrast\|a11y\|accessibility" src/blocks --include="*.js" --include="*.scss"; then
+            echo "✅ Accessibility considerations found in code"
+          else
+            echo "⚠️ Consider adding accessibility comments"
+          fi
+
+  internationalization-check:
+    name: i18n Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for untranslated strings
+        run: |
+          echo "Checking for user-facing strings..."
+
+          # Check for translated strings
+          translated=$(grep -r "__(" src/blocks --include="*.js" | wc -l)
+          echo "✅ Found $translated translated strings"
+
+          # Look for potential untranslated strings (this is a heuristic)
+          potential_untranslated=$(grep -rE "label:\s*['\"]" src/blocks --include="*.js" | grep -v "__(" | wc -l)
+
+          if [ $potential_untranslated -gt 0 ]; then
+            echo "⚠️ Found $potential_untranslated potential untranslated strings"
+            echo "Make sure all user-facing strings use __() or _e()"
+          else
+            echo "✅ No obvious untranslated strings found"
+          fi

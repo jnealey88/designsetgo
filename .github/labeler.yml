@@ -1,0 +1,88 @@
+# Automatically label PRs based on changed files
+
+# Blocks
+'blocks':
+  - changed-files:
+    - any-glob-to-any-file: 'src/blocks/**/*'
+
+# Container block
+'block: container':
+  - changed-files:
+    - any-glob-to-any-file: 'src/blocks/container/**/*'
+
+# Counter block
+'block: counter':
+  - changed-files:
+    - any-glob-to-any-file: 'src/blocks/counter/**/*'
+
+# Icon block
+'block: icon':
+  - changed-files:
+    - any-glob-to-any-file: 'src/blocks/icon/**/*'
+
+# Icon List block
+'block: icon-list':
+  - changed-files:
+    - any-glob-to-any-file: 'src/blocks/icon-list/**/*'
+
+# Extensions
+'extensions':
+  - changed-files:
+    - any-glob-to-any-file: 'src/extensions/**/*'
+
+# Documentation
+'documentation':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.md'
+      - 'docs/**/*'
+
+# Configuration
+'configuration':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'webpack.config.js'
+      - '.wp-env.json'
+      - 'composer.json'
+
+# PHP
+'php':
+  - changed-files:
+    - any-glob-to-any-file: '**/*.php'
+
+# JavaScript
+'javascript':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.js'
+      - '**/*.jsx'
+
+# Styles
+'styles':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.scss'
+      - '**/*.css'
+
+# Security
+'security':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'includes/security/**/*'
+      - '.github/SECURITY.md'
+
+# CI/CD
+'ci/cd':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/workflows/**/*'
+      - '.github/actions/**/*'
+
+# Needs review
+'needs-review':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'includes/security/**/*'
+      - 'designsetgo.php'

@@ -1,0 +1,16 @@
+# CODEOWNERS - Define who can approve pull requests
+# Learn more: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global owner (you) - all files require your approval by default
+* @jnealey
+
+# Critical files - only you can approve
+/includes/security/** @jnealey
+/designsetgo.php @jnealey
+/composer.json @jnealey
+/package.json @jnealey
+/.github/** @jnealey
+
+# You can add trusted contributors for specific areas:
+# /src/blocks/** @jnealey @trusted-contributor
+# /docs/** @jnealey @documentation-team
