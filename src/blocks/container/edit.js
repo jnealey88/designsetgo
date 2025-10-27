@@ -109,6 +109,9 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 
 	// ========================================
 	// Block wrapper props
+	// IMPORTANT: useBlockProps() automatically handles attributes.style
+	// We just need to pass our custom styles via the style prop
+	// WordPress will merge them correctly
 	// ========================================
 	const blockProps = useBlockProps({
 		className: containerClasses,

@@ -1,0 +1,23 @@
+/**
+ * Frontend Styles
+ *
+ * Styles that apply on the frontend.
+ *
+ * @package DesignSetGo
+ */
+
+@import './styles/variables';
+@import './styles/mixins';
+@import './styles/animations';
+@import './styles/utilities';
+@import './styles/block-variations';
+
+// Block animations extension (frontend)
+@import './extensions/block-animations/animations';
+
+// Custom blocks (frontend)
+@import './blocks/accordion/style';
+@import './blocks/accordion-item/style';
+@import './blocks/container/style';
+@import './blocks/tabs/style';
+@import './blocks/tab/style';

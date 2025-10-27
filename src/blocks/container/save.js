@@ -8,77 +8,44 @@
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import classnames from 'classnames';
+
+// Import style calculator utilities (must match edit.js for consistency)
+import {
+	calculateInnerStyles,
+	calculateContainerClasses,
+	calculateContainerStyles,
+} from './utils/style-calculator';
 
 export default function ContainerSave({ attributes }) {
 	const {
-		layoutType,
-		constrainWidth,
-		contentWidth,
-		gridColumns,
-		gap,
 		videoUrl,
 		videoPoster,
 		videoAutoplay,
 		videoLoop,
 		videoMuted,
-		hideOnDesktop,
-		hideOnTablet,
-		hideOnMobile,
 		enableOverlay,
 		overlayColor,
 		linkUrl,
 		linkTarget,
 		linkRel,
-		textAlign,
 	} = attributes;
 
 	// ========================================
-	// Calculate inner blocks styles declaratively
-	// (MUST match edit.js for editor/frontend parity)
+	// Calculate styles using utilities (MUST match edit.js for editor/frontend parity)
 	// ========================================
-	const innerStyles = {
-		position: 'relative',
-		zIndex: 2,
-	};
-
-	// Apply layout based on type
-	if (layoutType === 'grid') {
-		innerStyles.display = 'grid';
-		innerStyles.gridTemplateColumns = `repeat(${gridColumns}, 1fr)`;
-		innerStyles.gap = gap;
-	} else if (layoutType === 'flex') {
-		innerStyles.display = 'flex';
-		innerStyles.flexDirection = 'row';
-		innerStyles.flexWrap = 'wrap';
-		innerStyles.gap = gap;
-	} else {
-		// Stack (default)
-		innerStyles.display = 'flex';
-		innerStyles.flexDirection = 'column';
-		innerStyles.gap = gap;
-	}
-
-	// Apply width constraint if enabled (works for ALL layouts)
-	if (constrainWidth) {
-		innerStyles.maxWidth = contentWidth;
-		innerStyles.marginLeft = 'auto';
-		innerStyles.marginRight = 'auto';
-	}
+	const innerStyles = calculateInnerStyles(attributes);
+	const containerClasses = calculateContainerClasses(attributes);
+	const containerStyles = calculateContainerStyles(attributes);
 
 	// ========================================
 	// Block wrapper props
+	// IMPORTANT: useBlockProps.save() automatically handles attributes.style
+	// We just need to pass our custom styles via the style prop
+	// WordPress will merge them correctly
 	// ========================================
 	const blockProps = useBlockProps.save({
-		className: classnames('dsg-container', {
-			'has-video-background': videoUrl,
-			'has-dsg-overlay': enableOverlay,
-			'dsg-hide-desktop': hideOnDesktop,
-			'dsg-hide-tablet': hideOnTablet,
-			'dsg-hide-mobile': hideOnMobile,
-			'is-clickable': linkUrl,
-			[`has-text-align-${textAlign}`]: textAlign,
-		}),
+		className: containerClasses,
+		style: containerStyles,
 		// Data attributes ONLY for frontend JavaScript features
 		...(videoUrl && {
 			'data-video-url': videoUrl,

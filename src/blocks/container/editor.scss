@@ -89,6 +89,7 @@
  * - Layouts are applied via inline styles from useInnerBlocksProps
  * - No data-attribute selectors needed
  * - Editor styles only for block appender and basic reset
+ * - Responsive grid columns handled by frontend CSS media queries
  */
 .dsg-container__inner {
 	width: 100%;
@@ -104,4 +105,8 @@
 		min-width: 0;
 		box-sizing: border-box;
 	}
+
+	// Note: Responsive grid behavior (mobile/tablet column adjustments)
+	// is handled in style.scss with media queries. Editor shows desktop layout
+	// by default. Use WordPress's device preview to test responsive behavior.
 }

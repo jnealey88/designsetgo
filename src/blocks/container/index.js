@@ -9,6 +9,11 @@ import { __ } from '@wordpress/i18n';
 import edit from './edit';
 import save from './save';
 import metadata from './block.json';
+import { ICON_COLOR } from '../shared/constants';
+
+// Import block styles
+import './editor.scss';
+import './style.scss';
 
 // Register the block
 registerBlockType(metadata.name, {
@@ -27,12 +32,13 @@ registerBlockType(metadata.name, {
 				<line x1="15" y1="3" x2="15" y2="21" />
 			</svg>
 		),
-		foreground: '#2563eb',
+		foreground: ICON_COLOR,
 	},
 	edit,
 	save,
-	// Set default padding using WordPress spacing presets
-	// Top/Bottom: lg, Left/Right: xs
+	// Set default padding and blockGap using WordPress spacing presets
+	// Padding Top/Bottom: lg, Left/Right: xs
+	// Block Gap (spacing between inner blocks): md
 	attributes: {
 		...metadata.attributes,
 		style: {
@@ -45,6 +51,7 @@ registerBlockType(metadata.name, {
 						left: 'var:preset|spacing|xs',
 						right: 'var:preset|spacing|xs',
 					},
+					blockGap: 'var:preset|spacing|md',
 				},
 			},
 		},

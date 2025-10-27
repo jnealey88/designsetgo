@@ -103,8 +103,8 @@
 }
 
 /**
- * Inner container - Layout applied via JavaScript
- * CSS just ensures it's ready for JS to work
+ * Inner container - Responsive grid layout
+ * Uses CSS custom properties set via inline styles for responsive columns
  */
 .dsg-container__inner {
 	width: 100%;
@@ -120,5 +120,31 @@
 	&[style*="flex"] > * {
 		min-width: 0; // Prevent flex/grid blowout
 		box-sizing: border-box;
+	}
+
+	// Responsive grid columns using CSS custom properties
+	// Desktop: uses --dsg-grid-cols-desktop (default, already in inline styles)
+	// Tablet: switches to --dsg-grid-cols-tablet
+	// Mobile: switches to --dsg-grid-cols-mobile
+
+	@media (max-width: 767px) {
+		// Mobile: 1 column by default
+		&[style*="display: grid"],
+		&[style*="display:grid"] {
+			grid-template-columns: repeat(var(--dsg-grid-cols-mobile, 1), 1fr) !important;
+		}
+	}
+
+	@media (min-width: 768px) and (max-width: 1023px) {
+		// Tablet: 2 columns by default
+		&[style*="display: grid"],
+		&[style*="display:grid"] {
+			grid-template-columns: repeat(var(--dsg-grid-cols-tablet, 2), 1fr) !important;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		// Desktop: uses --dsg-grid-cols-desktop (already applied in inline styles)
+		// No override needed, inline style handles this
 	}
 }
