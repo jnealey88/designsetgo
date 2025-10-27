@@ -1,0 +1,46 @@
+/**
+ * Icon List Item Block - Editor Styles
+ *
+ * @since 1.0.0
+ */
+
+.wp-block-designsetgo-icon-list-item {
+	// Show selection outline
+	&.is-selected {
+		outline: 1px solid var(--wp-admin-theme-color, #007cba);
+		outline-offset: 2px;
+	}
+
+	// Link indicator more visible in editor
+	.dsg-icon-list-item__link-indicator {
+		opacity: 0.6;
+		background: rgba(0, 0, 0, 0.05);
+		padding: 2px 6px;
+		border-radius: 4px;
+	}
+
+	// Reset margins to match frontend
+	.dsg-icon-list-item__title {
+		margin-block-start: 0;
+		margin-block-end: 0.25em;
+		margin: 0 0 0.25em 0;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.dsg-icon-list-item__description {
+		margin-block-start: 0;
+		margin-block-end: 0;
+		margin: 0;
+	}
+
+	// Placeholder styling
+	.dsg-icon-list-item__title,
+	.dsg-icon-list-item__description {
+		&.is-empty::before {
+			opacity: 0.5;
+		}
+	}
+}

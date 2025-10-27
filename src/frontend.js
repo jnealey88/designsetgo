@@ -9,19 +9,19 @@
 
 // ===== CUSTOM BLOCKS FRONTEND =====
 // Container block - video backgrounds, clickable containers
-import './blocks/container/frontend.js';
+import './blocks/container/view.js';
 
 // Tabs block - tab switching, keyboard navigation, deep linking
-import './blocks/tabs/frontend.js';
+import './blocks/tabs/view.js';
 
 // Accordion block - panel interactions, smooth animations
-import './blocks/accordion/frontend.js';
+import './blocks/accordion/view.js';
 
 // Counter Group block - animated counting with CountUp.js
-import './blocks/counter-group/frontend.js';
+import './blocks/counter-group/view.js';
 
 // Progress Bar block - scroll-triggered animations
-import './blocks/progress-bar/frontend.js';
+import './blocks/progress-bar/view.js';
 
 // ===== EXTENSIONS FRONTEND =====
 // Block animations - scroll-triggered, hover, click animations

@@ -8,7 +8,6 @@
 	"description": "Display progress or statistics with an animated bar",
 	"keywords": ["progress", "bar", "stat", "percentage", "meter"],
 	"textdomain": "designsetgo",
-	"viewScript": "file:./frontend.js",
 	"supports": {
 		"anchor": true,
 		"align": ["wide", "full"],

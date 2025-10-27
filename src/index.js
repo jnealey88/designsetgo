@@ -49,6 +49,14 @@ import './blocks/icon';
 import './blocks/icon/style.scss';
 import './blocks/icon/editor.scss';
 
+// Icon List block (parent/child relationship)
+import './blocks/icon-list';
+import './blocks/icon-list/style.scss';
+import './blocks/icon-list/editor.scss';
+import './blocks/icon-list-item';
+import './blocks/icon-list-item/style.scss';
+import './blocks/icon-list-item/editor.scss';
+
 // Progress Bar block (standalone)
 import './blocks/progress-bar';
 import './blocks/progress-bar/style.scss';

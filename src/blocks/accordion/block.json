@@ -149,6 +149,5 @@
 	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./editor.css",
-	"style": "file:./style.css",
-	"viewScript": "file:./frontend.js"
+	"style": "file:./style.css"
 }

@@ -50,3 +50,7 @@ pnpm-lock.yaml
 
 # WordPress environment
 /.wp-env
+/wordpress
+
+# Backup files
+*.backup

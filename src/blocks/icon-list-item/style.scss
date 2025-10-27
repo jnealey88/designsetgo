@@ -1,0 +1,102 @@
+/**
+ * Icon List Item Block - Frontend Styles
+ *
+ * @since 1.0.0
+ */
+
+.dsg-icon-list-item {
+	// Layout styles applied via inline styles (display, flex-direction, gap)
+	position: relative;
+	transition: opacity 0.2s ease;
+
+	&__icon {
+		// Size and color applied via inline styles
+		flex-shrink: 0;
+
+		svg {
+			width: 100%;
+			height: 100%;
+			display: block;
+			fill: currentColor; // Ensure SVG inherits color from wrapper
+		}
+	}
+
+	&__content {
+		flex: 1;
+		min-width: 0; // Prevent flex item overflow
+	}
+
+	&__title {
+		font-weight: 600;
+		font-size: 1.1em;
+		line-height: 1.4;
+		margin-block-start: 0; // Remove default heading top margin
+		margin-block-end: 0.25em;
+
+		&:last-child {
+			margin-block-end: 0;
+		}
+
+		// Remove default margins for all possible tags
+		margin: 0 0 0.25em 0;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&__description {
+		font-size: 0.95em;
+		line-height: 1.6;
+		opacity: 0.9;
+		margin-block-start: 0; // Remove default top margin
+		margin-block-end: 0;
+
+		// Remove default margins for all possible tags
+		margin: 0;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	// Link indicator
+	&__link-indicator {
+		position: absolute;
+		top: 4px;
+		right: 4px;
+		font-size: 12px;
+		opacity: 0.3;
+	}
+
+	// When item is a link
+	&[href] {
+		text-decoration: none;
+		color: inherit;
+		cursor: pointer;
+
+		&:hover {
+			opacity: 0.8;
+
+			.dsg-icon-list-item__icon {
+				transform: scale(1.05);
+			}
+		}
+
+		&:focus {
+			outline: 2px solid var(--wp--preset--color--primary, #2563eb);
+			outline-offset: 2px;
+		}
+	}
+
+	// Icon position variations
+	&--icon-top {
+		.dsg-icon-list-item__content {
+			width: 100%;
+		}
+	}
+
+	&--icon-left {
+		// Default styles
+	}
+}

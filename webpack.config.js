@@ -9,6 +9,7 @@
 
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	...defaultConfig,
@@ -22,6 +23,25 @@ module.exports = {
 		// Block-specific entries are auto-detected by @wordpress/scripts
 		...defaultConfig.entry,
 	},
+	plugins: [
+		...defaultConfig.plugins,
+		// Copy block style variations to build directory
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: 'src/blocks/*/styles/*.json',
+					to: ({ absoluteFilename }) => {
+						// Extract block name and filename from the absolute path
+						const match = absoluteFilename.match(/blocks\/([^/]+)\/styles\/(.+)$/);
+						if (match) {
+							return `blocks/${match[1]}/styles/${match[2]}`;
+						}
+						return 'blocks/[name][ext]';
+					},
+				},
+			],
+		}),
+	],
 	optimization: {
 		...defaultConfig.optimization,
 		// Enable code splitting for better caching

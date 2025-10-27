@@ -1,0 +1,30 @@
+/**
+ * Icon List Block - Frontend Styles
+ *
+ * @since 1.0.0
+ */
+
+.dsg-icon-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	&__items {
+		// Styles applied via inline styles (display, gap, grid-template-columns)
+		// This ensures editor and frontend match exactly
+	}
+
+	// Vertical layout
+	&--vertical {
+		.dsg-icon-list__items {
+			// flex-direction: column applied via inline styles
+		}
+	}
+
+	// Grid layout
+	&--grid {
+		.dsg-icon-list__items {
+			// display: grid and grid-template-columns applied via inline styles
+		}
+	}
+}
