@@ -25,8 +25,9 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
+import { arrowUp } from '@wordpress/icons';
 
 // Extracted Inspector Panel Components
 import { LayoutPanel } from './components/inspector/LayoutPanel';
@@ -76,9 +77,14 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	const [contentSize] = useSettings('layout.contentSize');
 
 	// ========================================
+	// Get dispatch function to select blocks
+	// ========================================
+	const { selectBlock } = useDispatch(blockEditorStore);
+
+	// ========================================
 	// Detect parent block for nested container context
 	// ========================================
-	const { parentBlock, hasParentContainer, parentIsGrid, parentIsFlex } =
+	const { parentBlock, hasParentContainer, parentIsGrid, parentIsFlex, parentClientId } =
 		useSelect(
 			(select) => {
 				const { getBlockParents, getBlock } = select(blockEditorStore);
@@ -98,6 +104,7 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 
 				return {
 					parentBlock: parent,
+					parentClientId,
 					hasParentContainer: isParentContainer,
 					parentIsGrid: isParentGrid,
 					parentIsFlex: isParentFlex,
@@ -216,6 +223,15 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 			     BLOCK TOOLBAR
 			    ======================================== */}
 			<BlockControls group="block">
+				{/* Select Parent Block */}
+				{parentClientId && (
+					<ToolbarButton
+						icon={arrowUp}
+						label={__('Select parent block', 'designsetgo')}
+						onClick={() => selectBlock(parentClientId)}
+					/>
+				)}
+
 				{/* Text Alignment */}
 				<AlignmentControl
 					value={textAlign}

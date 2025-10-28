@@ -132,15 +132,8 @@
 		}
 	}
 
-	// Grid alignment fix (Editor) - applies to ALL grids
-	// See style.scss for full explanation
-	&[style*="display: grid"],
-	&[style*="display:grid"] {
-		> .dsg-container:first-child,
-		> .wp-block-designsetgo-container:first-child {
-			margin-block-start: var(--wp--preset--spacing--md) !important;
-		}
-	}
+	// Note: Grid alignment fix (first-child margin) is NOT needed in editor
+	// Only applied on frontend (see style.scss) where WordPress margin rules differ
 }
 
 /**

@@ -136,10 +136,12 @@
 		"spacing": {
 			"margin": true,
 			"padding": true,
-			"blockGap": true,
+			"blockGap": {
+				"__experimentalDefault": "0"
+			},
 			"__experimentalDefaultControls": {
 				"padding": true,
-				"blockGap": true
+				"blockGap": false
 			}
 		},
 		"dimensions": {
