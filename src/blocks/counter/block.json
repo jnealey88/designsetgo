@@ -104,6 +104,10 @@
 		"customEasing": {
 			"type": "string",
 			"default": "easeOutQuad"
+		},
+		"hoverColor": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"usesContext": [
@@ -112,7 +116,8 @@
 		"designsetgo/counterGroup/animationEasing",
 		"designsetgo/counterGroup/useGrouping",
 		"designsetgo/counterGroup/separator",
-		"designsetgo/counterGroup/decimal"
+		"designsetgo/counterGroup/decimal",
+		"designsetgo/counterGroup/hoverColor"
 	],
 	"example": {
 		"attributes": {

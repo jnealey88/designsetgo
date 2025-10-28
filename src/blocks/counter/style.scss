@@ -18,7 +18,9 @@
 		align-items: center;
 		justify-content: center;
 		margin-bottom: 1rem;
-		color: var(--wp--preset--color--primary, currentColor);
+		// Inherit color from parent or use currentColor as fallback
+		color: currentColor;
+		opacity: 0.9;
 
 		svg {
 			width: 48px;
@@ -57,10 +59,12 @@
 
 	// Number
 	&__number {
-		font-size: 3rem;
+		// Use em units to scale with parent font-size (WordPress typography controls)
+		font-size: 3em;
 		font-weight: bold;
 		line-height: 1.2;
-		color: var(--wp--preset--color--contrast, currentColor);
+		// Inherit color from parent (WordPress color controls apply to parent)
+		color: inherit;
 		margin: 0;
 		transition: color 0.3s ease;
 
@@ -71,18 +75,28 @@
 
 	// Label
 	&__label {
-		font-size: 1rem;
-		color: var(--wp--preset--color--contrast-2, currentColor);
+		// Use em units to scale with parent font-size
+		font-size: 1em;
+		// Use opacity for visual hierarchy while respecting parent color
+		opacity: 0.8;
 		margin-top: 0.5rem;
 		margin-bottom: 0;
 		line-height: 1.5;
-		transition: color 0.3s ease;
+		transition: color 0.3s ease, opacity 0.3s ease;
 	}
 
 	// Hover state
 	&:hover {
 		.dsg-counter__number {
-			color: var(--wp--preset--color--primary, currentColor);
+			// Priority: custom color > parent color > theme accent-2 > current color
+			color: var(
+				--dsg-counter-hover-color,
+				var(--wp--preset--color--accent-2, currentColor)
+			);
+		}
+
+		.dsg-counter__label {
+			opacity: 1;
 		}
 	}
 
@@ -99,7 +113,8 @@
 		padding: 1rem;
 
 		&__number {
-			font-size: 2.5rem;
+			// Scale down proportionally on mobile
+			font-size: 2.5em;
 		}
 
 		&__icon svg {

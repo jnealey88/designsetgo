@@ -24,6 +24,7 @@ export default function CounterSave({ attributes, context }) {
 		customDuration,
 		customDelay,
 		customEasing,
+		hoverColor,
 	} = attributes;
 
 	// Get settings from parent Counter Group context (with fallback defaults)
@@ -38,11 +39,16 @@ export default function CounterSave({ attributes, context }) {
 	const parentSeparator =
 		context?.['designsetgo/counterGroup/separator'] || ',';
 	const parentDecimal = context?.['designsetgo/counterGroup/decimal'] || '.';
+	const parentHoverColor =
+		context?.['designsetgo/counterGroup/hoverColor'] || '';
 
 	// Determine active animation settings
 	const activeDuration = overrideAnimation ? customDuration : parentDuration;
 	const activeDelay = overrideAnimation ? customDelay : parentDelay;
 	const activeEasing = overrideAnimation ? customEasing : parentEasing;
+
+	// Determine effective hover color: individual override > parent
+	const effectiveHoverColor = hoverColor || parentHoverColor;
 
 	// Block wrapper props
 	const blockProps = useBlockProps.save({
@@ -50,6 +56,10 @@ export default function CounterSave({ attributes, context }) {
 		id: uniqueId,
 		style: {
 			textAlign: 'center',
+			// Apply effective hover color as CSS custom property
+			...(effectiveHoverColor && {
+				'--dsg-counter-hover-color': effectiveHoverColor,
+			}),
 		},
 		// Data attributes for frontend JavaScript
 		'data-start-value': startValue,

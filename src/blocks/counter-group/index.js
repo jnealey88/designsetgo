@@ -11,6 +11,9 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	PanelColorSettings,
+	// WordPress 6.5+ - useSettings (plural) replaces useSetting (singular)
+	useSettings,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -49,7 +52,11 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 		useGrouping,
 		separator,
 		decimal,
+		hoverColor,
 	} = attributes;
+
+	// Get theme color palette (WordPress 6.5+ - useSettings returns array)
+	const [colorSettings] = useSettings('color.palette');
 
 	// Block wrapper props
 	const blockProps = useBlockProps({
@@ -279,6 +286,28 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 						)}
 					/>
 				</PanelBody>
+
+				{/* Hover Color Settings */}
+				<PanelColorSettings
+					title={__('Hover Color', 'designsetgo')}
+					colorSettings={[
+						{
+							value: hoverColor,
+							onChange: (value) =>
+								setAttributes({ hoverColor: value || '' }),
+							label: __('Number Hover Color', 'designsetgo'),
+							colors: colorSettings,
+						},
+					]}
+					initialOpen={false}
+				>
+					<p className="components-base-control__help">
+						{__(
+							'Color for counter numbers on hover. Individual counters can override this. Leave empty to use default accent color.',
+							'designsetgo'
+						)}
+					</p>
+				</PanelColorSettings>
 			</InspectorControls>
 
 			<div {...blockProps}>

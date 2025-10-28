@@ -1,0 +1,44 @@
+/**
+ * Icon Button Block - Editor Styles
+ *
+ * @since 1.0.0
+ */
+
+// Import frontend styles
+@import './style.scss';
+
+.dsg-icon-button {
+	// Editor-specific styles
+
+	.dsg-icon-button__wrapper {
+		// Make wrapper visually appear as a button in the editor
+		position: relative;
+
+		// Add editor-only indicator for non-link buttons
+		&:not(a)::after {
+			content: '🔗';
+			position: absolute;
+			top: -8px;
+			right: -8px;
+			font-size: 12px;
+			opacity: 0.3;
+			display: none;
+		}
+	}
+
+	// Show link indicator when button is selected and has no URL
+	&.is-selected .dsg-icon-button__wrapper:not(a)::after {
+		display: block;
+	}
+
+	// RichText input styling
+	.dsg-icon-button__text {
+		// Ensure text input doesn't have unwanted margins
+		margin: 0;
+		padding: 0;
+
+		&[data-rich-text-placeholder]::before {
+			opacity: 0.6;
+		}
+	}
+}

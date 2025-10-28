@@ -30,8 +30,11 @@
 			}
 		},
 		"typography": {
-			"fontSize": false,
-			"lineHeight": false
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
 		}
 	},
 	"attributes": {
@@ -78,6 +81,10 @@
 		"decimal": {
 			"type": "string",
 			"default": "."
+		},
+		"hoverColor": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"providesContext": {
@@ -86,7 +93,8 @@
 		"designsetgo/counterGroup/animationEasing": "animationEasing",
 		"designsetgo/counterGroup/useGrouping": "useGrouping",
 		"designsetgo/counterGroup/separator": "separator",
-		"designsetgo/counterGroup/decimal": "decimal"
+		"designsetgo/counterGroup/decimal": "decimal",
+		"designsetgo/counterGroup/hoverColor": "hoverColor"
 	},
 	"example": {
 		"innerBlocks": [

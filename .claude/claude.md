@@ -24,9 +24,16 @@ Before implementing ANY feature, ask: "Does WordPress already provide this?"
 - `useInnerBlocksProps.save()` - For inner blocks in save functions
 
 **Settings (Get Theme/WordPress Defaults)**:
-- `useSetting('layout.contentSize')` - Get theme's content width
-- `useSetting('spacing.units')` - Get available spacing units
-- `useSetting('color.palette')` - Get theme colors
+- `useSettings('layout.contentSize')` - Get theme's content width (WordPress 6.5+)
+- `useSettings('spacing.units')` - Get available spacing units (WordPress 6.5+)
+- `useSettings('color.palette')` - Get theme colors (WordPress 6.5+)
+
+**Important**: WordPress 6.5+ uses `useSettings` (plural) instead of deprecated `useSetting` (singular). The new API returns an array:
+```javascript
+// WordPress 6.5+
+const [colorPalette] = useSettings('color.palette');
+const [contentSize, spacingUnits] = useSettings('layout.contentSize', 'spacing.units');
+```
 
 **Why These Matter**: These hooks integrate your blocks with WordPress's layout system, theme.json settings, and block editor features. Using them means less custom code and better compatibility.
 
@@ -429,8 +436,8 @@ Before releasing a block, test FSE compatibility:
 
 **Issue 4: Theme colors not available**
 ```javascript
-// Use useSetting hook
-const themeColors = useSetting('color.palette');
+// Use useSettings hook (WordPress 6.5+)
+const [themeColors] = useSettings('color.palette');
 ```
 
 #### Key Takeaways
@@ -473,6 +480,153 @@ const themeColors = useSetting('color.palette');
 ```
 
 **Why `!important`**: Must override theme styles to ensure readability. Accessibility > CSS specificity rules.
+
+### Use WordPress Native Color Controls
+**Learning**: Always use WordPress's built-in color controls (`PanelColorSettings`) instead of custom color pickers.
+
+**Why Native Controls**:
+- **Familiar UX**: Users already know how WordPress color controls work
+- **Theme Integration**: Automatically shows theme colors and custom palette
+- **Consistent UI**: Matches WordPress design system
+- **Less Code**: No need to build custom color picker components
+
+**Pattern - Parent-Child Color Inheritance**:
+
+When you want a parent block to provide a default color that child blocks can override:
+
+```javascript
+// Parent Block (Counter Group) - edit.js
+import { PanelColorSettings, useSettings } from '@wordpress/block-editor';
+
+function ParentEdit({ attributes, setAttributes }) {
+  const { hoverColor } = attributes;
+  // WordPress 6.5+ - useSettings returns array
+  const [colorSettings] = useSettings('color.palette');
+
+  return (
+    <>
+      <InspectorControls>
+        <PanelColorSettings
+          title={__('Hover Color', 'designsetgo')}
+          colorSettings={[
+            {
+              value: hoverColor,
+              onChange: (value) => setAttributes({ hoverColor: value || '' }),
+              label: __('Number Hover Color', 'designsetgo'),
+              colors: colorSettings,
+            },
+          ]}
+          initialOpen={false}
+        >
+          <p className="components-base-control__help">
+            {__('Color for counter numbers on hover. Individual counters can override this.', 'designsetgo')}
+          </p>
+        </PanelColorSettings>
+      </InspectorControls>
+    </>
+  );
+}
+
+// Parent Block - block.json (context passing)
+{
+  "attributes": {
+    "hoverColor": { "type": "string", "default": "" }
+  },
+  "providesContext": {
+    "namespace/parentBlock/hoverColor": "hoverColor"
+  }
+}
+
+// Child Block - block.json (receive context)
+{
+  "attributes": {
+    "hoverColor": { "type": "string", "default": "" }
+  },
+  "usesContext": ["namespace/parentBlock/hoverColor"]
+}
+
+// Child Block - edit.js (use parent color with override)
+function ChildEdit({ attributes, setAttributes, context }) {
+  const { hoverColor } = attributes;
+  // WordPress 6.5+ - useSettings returns array
+  const [colorSettings] = useSettings('color.palette');
+
+  // Get parent hover color from context
+  const parentHoverColor = context?.['namespace/parentBlock/hoverColor'] || '';
+
+  // Get theme accent-2 color as default
+  const themeColors = colorSettings?.theme || [];
+  const accent2Color = themeColors.find((color) => color.slug === 'accent-2');
+  const defaultHoverColor = accent2Color?.color || '';
+
+  // Priority: individual override > parent > theme accent-2
+  const effectiveHoverColor = hoverColor || parentHoverColor || defaultHoverColor;
+
+  const blockProps = useBlockProps({
+    style: {
+      // Apply as CSS custom property
+      ...(effectiveHoverColor && { '--hover-color': effectiveHoverColor }),
+    },
+  });
+
+  return (
+    <>
+      <InspectorControls>
+        <PanelColorSettings
+          title={__('Hover Color', 'designsetgo')}
+          colorSettings={[
+            {
+              value: hoverColor,
+              onChange: (value) => setAttributes({ hoverColor: value || '' }),
+              label: __('Number Hover Color', 'designsetgo'),
+              colors: colorSettings,
+            },
+          ]}
+          initialOpen={false}
+        >
+          <p className="components-base-control__help">
+            {parentHoverColor
+              ? __('Override parent group hover color. Leave empty to use group setting.', 'designsetgo')
+              : __('Color for element on hover. Leave empty to use theme accent color.', 'designsetgo')}
+          </p>
+        </PanelColorSettings>
+      </InspectorControls>
+      <div {...blockProps}>...</div>
+    </>
+  );
+}
+```
+
+**CSS Pattern - Fallback Chain**:
+
+```scss
+.block {
+  &:hover {
+    .element {
+      // Priority: custom color > parent color > theme accent-2 > current color
+      color: var(
+        --hover-color,
+        var(--wp--preset--color--accent-2, currentColor)
+      );
+    }
+  }
+}
+```
+
+**Key Principles**:
+1. **Use `PanelColorSettings`** - Never build custom color pickers
+2. **Pass via context** - Use `providesContext` and `usesContext` in block.json
+3. **CSS custom properties** - Apply colors as `--custom-property` in inline styles
+4. **Fallback chain** - CSS `var()` with multiple fallbacks (custom > parent > theme > default)
+5. **Theme integration** - Always include theme colors via `useSettings('color.palette')` (WordPress 6.5+)
+6. **Clear help text** - Explain override behavior and defaults
+
+**Benefits**:
+- Users get familiar WordPress color UI
+- Theme colors automatically available
+- Parent-child inheritance works seamlessly
+- Individual blocks can override parent settings
+- Graceful fallbacks to theme defaults
 
 ## Technical Patterns
 

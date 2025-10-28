@@ -67,6 +67,11 @@ import './blocks/pill';
 import './blocks/pill/style.scss';
 import './blocks/pill/editor.scss';
 
+// Icon Button block (standalone)
+import './blocks/icon-button';
+import './blocks/icon-button/style.scss';
+import './blocks/icon-button/editor.scss';
+
 // ===== EXTENSIONS =====
 // Block animations - adds entrance/exit animations to all blocks
 import './extensions/block-animations';

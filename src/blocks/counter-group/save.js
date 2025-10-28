@@ -22,6 +22,7 @@ export default function CounterGroupSave({ attributes }) {
 		useGrouping,
 		separator,
 		decimal,
+		hoverColor,
 	} = attributes;
 
 	// Block wrapper props with CSS custom properties

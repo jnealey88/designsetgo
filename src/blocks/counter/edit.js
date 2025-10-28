@@ -9,7 +9,14 @@
  * @since 1.0.0
  */
 
-import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
+import {
+	useBlockProps,
+	InspectorControls,
+	PanelColorSettings,
+	// WordPress 6.5+ - useSettings (plural) replaces useSetting (singular)
+	useSettings,
+} from '@wordpress/block-editor';
 import { useEffect } from '@wordpress/element';
 
 // Extracted Inspector Panel Components
@@ -47,7 +54,11 @@ export default function CounterEdit({ attributes, setAttributes, context }) {
 		customDuration,
 		customDelay,
 		customEasing,
+		hoverColor,
 	} = attributes;
+
+	// Get theme color palette (WordPress 6.5+ - useSettings returns array)
+	const [colorSettings] = useSettings('color.palette');
 
 	// Get formatting settings from parent Counter Group context (with fallback defaults)
 	const parentUseGrouping =
@@ -55,6 +66,17 @@ export default function CounterEdit({ attributes, setAttributes, context }) {
 	const parentSeparator =
 		context?.['designsetgo/counterGroup/separator'] || ',';
 	const parentDecimal = context?.['designsetgo/counterGroup/decimal'] || '.';
+	const parentHoverColor =
+		context?.['designsetgo/counterGroup/hoverColor'] || '';
+
+	// Get theme accent-2 color as default
+	const themeColors = colorSettings?.theme || [];
+	const accent2Color = themeColors.find((color) => color.slug === 'accent-2');
+	const defaultHoverColor = accent2Color?.color || '';
+
+	// Determine effective hover color: individual override > parent > theme accent-2
+	const effectiveHoverColor =
+		hoverColor || parentHoverColor || defaultHoverColor;
 
 	// Generate unique ID on mount (acceptable use of useEffect for ID generation)
 	useEffect(() => {
@@ -80,6 +102,10 @@ export default function CounterEdit({ attributes, setAttributes, context }) {
 		className: 'dsg-counter',
 		style: {
 			textAlign: 'center',
+			// Apply effective hover color as CSS custom property
+			...(effectiveHoverColor && {
+				'--dsg-counter-hover-color': effectiveHoverColor,
+			}),
 		},
 	});
 
@@ -118,6 +144,32 @@ export default function CounterEdit({ attributes, setAttributes, context }) {
 					context={context}
 					setAttributes={setAttributes}
 				/>
+
+				<PanelColorSettings
+					title={__('Hover Color', 'designsetgo')}
+					colorSettings={[
+						{
+							value: hoverColor,
+							onChange: (value) =>
+								setAttributes({ hoverColor: value || '' }),
+							label: __('Number Hover Color', 'designsetgo'),
+							colors: colorSettings,
+						},
+					]}
+					initialOpen={false}
+				>
+					<p className="components-base-control__help">
+						{parentHoverColor
+							? __(
+									'Override parent group hover color. Leave empty to use group setting.',
+									'designsetgo'
+							  )
+							: __(
+									'Color for counter number on hover. Leave empty to use theme accent color.',
+									'designsetgo'
+							  )}
+					</p>
+				</PanelColorSettings>
 			</InspectorControls>
 
 			{/* ========================================
