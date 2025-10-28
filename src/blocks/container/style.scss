@@ -205,6 +205,16 @@
  * CRITICAL: Uses :where() for zero specificity to allow WordPress's natural
  * cascade and blockGap system to work properly. DO NOT use higher specificity
  * or !important - it breaks WordPress's layout system.
+ *
+ * WordPress's Constrained Layout Pattern:
+ * - Container can be any width (full, wide, or constrained)
+ * - Content blocks (headings, paragraphs) are centered and constrained to
+ *   --wp--style--global--content-size (e.g., 1140px) for readable line lengths
+ * - Text within blocks follows text-align setting (left, center, right)
+ * - This ensures optimal typography even in full-width containers
+ *
+ * DO NOT override WordPress's horizontal centering (.is-layout-constrained > :where(...))
+ * It's there for good typographic reasons and matches Group block behavior.
  */
 
 // First child should have no top margin
@@ -221,21 +231,4 @@
 // Last child should have no bottom margin
 :root :where(.wp-block-designsetgo-container.is-layout-constrained) > :last-child {
 	margin-block-end: 0;
-}
-
-/**
- * Override WordPress's auto-centering behavior for constrained layouts
- *
- * WordPress applies this rule to .is-layout-constrained:
- *   margin-left: auto !important;
- *   margin-right: auto !important;
- *   max-width: var(--wp--style--global--content-size);
- *
- * We want the vertical margins from .is-layout-constrained but NOT the
- * auto-centering. This override restores normal horizontal layout.
- */
-.wp-block-designsetgo-container.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
-	margin-left: 0 !important;
-	margin-right: 0 !important;
-	max-width: none !important;
 }
