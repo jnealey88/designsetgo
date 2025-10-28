@@ -231,27 +231,27 @@ designsetgo/
 
 ## Documentation
 
-### User Guides
-- [How to Use DesignSetGo](docs/HOW-TO-USE.md) - Getting started guide
-- [Finding Your Blocks](docs/FINDING-YOUR-BLOCKS.md) - Locating blocks in the editor
-- [Troubleshooting](docs/TROUBLESHOOTING.md) - Common issues and solutions
-- [Testing Guide](docs/TESTING.md) - How to test the plugin
+📚 **[Visit the DesignSetGo Wiki](https://github.com/jnealey88/designsetgo/wiki)** for complete documentation.
 
-### Developer Documentation
-- [Claude Code Learnings](.claude/CLAUDE.md) - Development insights and patterns ⭐
-- [Block Development Best Practices (Comprehensive)](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) - 2,500+ line reference guide
-- [Best Practices Summary](docs/BEST-PRACTICES-SUMMARY.md) - Quick reference for daily development
-- [WordPress Block Editor Best Practices](docs/WORDPRESS-BLOCK-EDITOR-BEST-PRACTICES.md)
-- [Extension vs Custom Blocks](docs/EXTENSION-VS-CUSTOM-BLOCKS.md) - When to use each approach
-- [Block Extension Strategy](docs/BLOCK-EXTENSION-STRATEGY.md)
-- [Working with WordPress Layouts](docs/WORKING-WITH-WORDPRESS-LAYOUTS.md)
+### Quick Links
 
-### Design & Planning
-- [Design System](docs/DESIGN-SYSTEM.md) - Color, spacing, typography tokens
-- [Design System (TT5)](docs/DESIGN-SYSTEM-TT5.md) - Twenty Twenty-Five integration
-- [Missing Blocks Research](docs/MISSING-BLOCKS-RESEARCH.md) - Market research
-- [Next Blocks](docs/NEXT-BLOCKS.md) - Roadmap for future blocks
-- [Implementation Plans](docs/COUNTER-STATS-BLOCK-IMPLEMENTATION-PLAN.md) - Detailed feature specs
+**Getting Started**:
+- [Quick Start Guide](https://github.com/jnealey88/designsetgo/wiki/Quick-Start) - Get up and running in 5 minutes
+- [Installation](https://github.com/jnealey88/designsetgo/wiki/Installation) - All installation methods
+- [Troubleshooting](https://github.com/jnealey88/designsetgo/wiki/Troubleshooting) - Common issues
+
+**Block Guides**:
+- [Container Block](https://github.com/jnealey88/designsetgo/wiki/Container-Block) - Layouts, grids, video backgrounds
+- [Tabs](https://github.com/jnealey88/designsetgo/wiki/Tabs-Block), [Accordion](https://github.com/jnealey88/designsetgo/wiki/Accordion-Block), [Counter](https://github.com/jnealey88/designsetgo/wiki/Counter-Block), [Icon](https://github.com/jnealey88/designsetgo/wiki/Icon-Block), [Progress Bar](https://github.com/jnealey88/designsetgo/wiki/Progress-Bar), [Pill](https://github.com/jnealey88/designsetgo/wiki/Pill-Block)
+
+**For Developers**:
+- [Development Guide](https://github.com/jnealey88/designsetgo/wiki/Development-Guide) - Complete reference
+- [Best Practices](https://github.com/jnealey88/designsetgo/wiki/Best-Practices) - WordPress block patterns
+- [Architecture Guide](https://github.com/jnealey88/designsetgo/wiki/Architecture-Guide) - Custom blocks vs extensions
+- [Testing Guide](https://github.com/jnealey88/designsetgo/wiki/Testing-Guide) - E2E and unit testing
+- [API Reference](https://github.com/jnealey88/designsetgo/wiki/API-Reference) - PHP and JavaScript APIs
+
+> **Note**: This repository's `/docs/` folder contains development documentation. User-facing docs are in the [Wiki](https://github.com/jnealey88/designsetgo/wiki).
 
 ## Roadmap
 
