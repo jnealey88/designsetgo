@@ -204,7 +204,8 @@
 		align-items: stretch !important;
 
 		// Ensure child containers and blocks stretch to fill grid cell
-		> * {
+		// Exclude block appender to prevent overlay issues
+		> *:not(.block-list-appender):not(.block-editor-block-list__layout) {
 			height: 100%;
 			display: flex;
 			flex-direction: column;
