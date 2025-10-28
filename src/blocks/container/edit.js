@@ -21,6 +21,7 @@ import {
 	MediaUpload,
 	MediaUploadCheck,
 	AlignmentControl,
+	useSettings,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
@@ -69,6 +70,11 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	} = attributes;
 
 	// ========================================
+	// Get theme's contentSize from theme.json (WordPress 6.5+)
+	// ========================================
+	const [contentSize] = useSettings('layout.contentSize');
+
+	// ========================================
 	// Detect parent block for nested container context
 	// ========================================
 	const { parentBlock, hasParentContainer, parentIsGrid, parentIsFlex } =
@@ -110,10 +116,28 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	}, [hasParentContainer, attributes.constrainWidth, setAttributes]); // Only run when parent container status changes
 
 	// ========================================
+	// Auto-populate contentWidth with theme's contentSize when enabled
+	// This ensures editor and frontend use the same value
+	// ========================================
+	useEffect(() => {
+		// Only auto-populate if:
+		// 1. constrainWidth is enabled
+		// 2. user hasn't specified a custom width (contentWidth is empty)
+		// 3. theme provides a contentSize
+		if (
+			attributes.constrainWidth &&
+			!attributes.contentWidth &&
+			contentSize
+		) {
+			setAttributes({ contentWidth: contentSize });
+		}
+	}, [attributes.constrainWidth, attributes.contentWidth, contentSize, setAttributes]);
+
+	// ========================================
 	// Calculate styles declaratively using extracted utility
 	// (WordPress best practice: NO useEffect, NO DOM manipulation)
 	// ========================================
-	const innerStyles = calculateInnerStyles(attributes);
+	const innerStyles = calculateInnerStyles(attributes, contentSize);
 	const containerClasses = calculateContainerClasses(attributes);
 	const containerStyles = calculateContainerStyles(attributes, parentIsFlex);
 
@@ -132,8 +156,9 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	// Inner blocks props (WordPress best practice)
 	// Replaces plain <InnerBlocks /> to fix layout issues
 	//
-	// IMPORTANT: We override WordPress's layout classes with our own
-	// to prevent is-layout-constrained from interfering with our flex/grid layouts
+	// NOTE: WordPress adds .is-layout-constrained automatically.
+	// We keep it for stack layouts (default) to get proper margins,
+	// but remove it for flex/grid layouts where it would interfere.
 	// ========================================
 	const innerBlocksProps = useInnerBlocksProps(
 		{
@@ -146,17 +171,29 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 		}
 	);
 
-	// Remove WordPress's layout classes and add our own
-	// This is necessary because WordPress adds is-layout-constrained by default
-	// which interferes with our custom flex/grid layouts
+	// Remove WordPress's layout classes ONLY for flex/grid layouts
+	// For stack layout (default), keep .is-layout-constrained so WordPress's
+	// margin rules work correctly (matching Group block behavior)
+	const shouldRemoveLayoutClasses = layoutType === 'flex' || layoutType === 'grid';
+
 	const cleanedClassName = (innerBlocksProps.className || '')
 		.split(' ')
 		.filter(
-			(cls) =>
-				!cls.includes('is-layout-') &&
-				!cls.includes('has-global-padding') &&
-				!cls.includes('wp-block-') &&
-				!cls.includes('wp-container-')
+			(cls) => {
+				// Always remove WordPress container classes (wp-block-, wp-container-)
+				if (cls.includes('wp-block-') || cls.includes('wp-container-')) {
+					return false;
+				}
+
+				// Remove layout classes ONLY for flex/grid layouts
+				// Keep them for stack layout (is-layout-constrained needed for margins)
+				if (shouldRemoveLayoutClasses) {
+					return !cls.includes('is-layout-') && !cls.includes('has-global-padding');
+				}
+
+				// For stack layout, keep all WordPress layout classes
+				return true;
+			}
 		)
 		.join(' ');
 
@@ -332,6 +369,7 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 				<ContentWidthPanel
 					constrainWidth={attributes.constrainWidth}
 					contentWidth={attributes.contentWidth}
+					themeContentSize={contentSize}
 					setAttributes={setAttributes}
 				/>
 

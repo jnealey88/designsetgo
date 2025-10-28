@@ -112,15 +112,11 @@
 }
 
 /**
- * Layout-Constrained Margin Rules (Editor Context)
- * Matches WordPress Group block behavior EXACTLY for proper vertical spacing
- * Applied when layout support is enabled (type: constrained)
+ * Layout-Constrained Margin Rules (Editor)
+ * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
  *
- * CRITICAL: Uses :where() for zero specificity to allow WordPress's natural
- * cascade and blockGap system to work properly in the editor.
- *
- * Note: These rules are duplicated from style.scss because the block editor
- * iframe context sometimes requires explicit editor styles.
+ * Uses :where() for zero specificity to allow WordPress's natural
+ * cascade and blockGap system to work properly.
  */
 
 // First child should have no top margin

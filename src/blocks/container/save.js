@@ -18,6 +18,7 @@ import {
 
 export default function ContainerSave({ attributes }) {
 	const {
+		layoutType,
 		videoUrl,
 		videoPoster,
 		videoAutoplay,
@@ -67,23 +68,35 @@ export default function ContainerSave({ attributes }) {
 
 	// ========================================
 	// Inner blocks props (WordPress best practice)
-	// Remove WordPress's layout classes that interfere with our custom layouts
+	// Remove WordPress's layout classes ONLY for flex/grid layouts
+	// For stack layout (default), keep .is-layout-constrained so WordPress's
+	// margin rules work correctly (matching Group block behavior)
 	// ========================================
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: 'dsg-container__inner',
 		style: innerStyles,
 	});
 
-	// Clean up WordPress's auto-generated layout classes
-	// These interfere with our custom flex/grid layouts
+	const shouldRemoveLayoutClasses = layoutType === 'flex' || layoutType === 'grid';
+
 	const cleanedClassName = (innerBlocksProps.className || '')
 		.split(' ')
 		.filter(
-			(cls) =>
-				!cls.includes('is-layout-') &&
-				!cls.includes('has-global-padding') &&
-				!cls.includes('wp-block-') &&
-				!cls.includes('wp-container-')
+			(cls) => {
+				// Always remove WordPress container classes (wp-block-, wp-container-)
+				if (cls.includes('wp-block-') || cls.includes('wp-container-')) {
+					return false;
+				}
+
+				// Remove layout classes ONLY for flex/grid layouts
+				// Keep them for stack layout (is-layout-constrained needed for margins)
+				if (shouldRemoveLayoutClasses) {
+					return !cls.includes('is-layout-') && !cls.includes('has-global-padding');
+				}
+
+				// For stack layout, keep all WordPress layout classes
+				return true;
+			}
 		)
 		.join(' ');
 

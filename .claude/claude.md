@@ -2060,28 +2060,91 @@ After implementing WordPress best practices:
 
 **Prevention**: Always update both source file AND import file.
 
-### 2. Custom Block Asset Dependencies
+### 2. Only Updating style.scss Without editor.scss (or Vice Versa)
+**Mistake**: Making styling changes to `style.scss` but forgetting to update `editor.scss`, or only updating editor styles without updating frontend styles.
+
+**Result**:
+- If only `style.scss` updated: Works on frontend, broken in editor
+- If only `editor.scss` updated: Works in editor, broken on frontend
+- Users see different appearance in editor vs published page
+- Creates confusion and trust issues with the block editor
+
+**Real-World Examples**:
+1. **Icon background colors**: Added `background: 'inherit'` to icon wrapper in edit.js and save.js, updated style.scss with `.dsg-icon__wrapper` styles, but forgot editor.scss → Background colors showed on frontend but not in editor
+2. **Container margin rules**: Added `:where()` pattern to style.scss for layout-constrained margins, but forgot editor.scss → Margins worked on frontend but not in editor
+
+**Prevention**:
+- **ALWAYS edit BOTH files** when making style changes that affect block appearance
+- Use comments to indicate styles duplicated across files: `// CRITICAL: Must be duplicated from style.scss for editor/frontend parity`
+- After making changes, ask yourself: "Does this style need to appear in the editor AND on the frontend?"
+- Test in both editor AND frontend before considering the task complete
+- Consider this checklist:
+  - [ ] Updated style.scss (frontend)
+  - [ ] Updated editor.scss (editor)
+  - [ ] Built plugin (`npx wp-scripts build`)
+  - [ ] Tested in editor
+  - [ ] Tested on frontend
+  - [ ] Verified editor matches frontend
+
+**Pattern - Duplicating Critical Styles**:
+```scss
+// src/blocks/my-block/style.scss (Frontend)
+.my-block {
+  &__wrapper {
+    display: inline-flex;
+    align-items: center;
+    background-color: inherit; // User's color choice
+    border-radius: inherit;
+  }
+}
+
+// src/blocks/my-block/editor.scss (Editor)
+// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+.my-block {
+  &__wrapper {
+    display: inline-flex;
+    align-items: center;
+    background-color: inherit; // User's color choice
+    border-radius: inherit;
+  }
+}
+```
+
+**When Duplication is Required**:
+- User-visible styles (colors, backgrounds, borders, spacing)
+- Layout patterns (flex, grid, alignment)
+- Shape variants (circles, rounded corners, etc.)
+- Typography that affects appearance
+- Any style that impacts the visual design users are creating
+
+**When Duplication is NOT Required**:
+- Editor-only indicators (selected state, hover outlines, "Video Background" labels)
+- Block appender styles
+- Editor-specific positioning/sizing helpers
+- Debugging aids
+
+### 3. Custom Block Asset Dependencies
 **Mistake**: Creating `block.json` for custom block without ensuring build process compiles it.
 
 **Result**: 500 error - WordPress looks for `index.asset.php` that doesn't exist.
 
 **Prevention**: If using custom blocks, verify build output in `build/blocks/*/` directory.
 
-### 3. Assuming CSS Specificity Works
+### 4. Assuming CSS Specificity Works
 **Mistake**: Expecting your styles to override theme without `!important`.
 
 **Result**: Styles work in isolation but fail with real themes.
 
 **Prevention**: Test with popular themes (Twenty Twenty-Four, etc.), use `!important` when necessary for user-chosen features.
 
-### 4. Not Testing Frontend
+### 5. Not Testing Frontend
 **Mistake**: Only testing in block editor, assuming frontend works.
 
 **Result**: Frontend broken, user discovers after deploy.
 
 **Prevention**: ALWAYS test both editor AND frontend before considering feature complete.
 
-### 5. Not Using WordPress Block Hooks
+### 6. Not Using WordPress Block Hooks
 **Mistake**: Using plain `<InnerBlocks />` instead of `useInnerBlocksProps()`.
 
 **Result**:

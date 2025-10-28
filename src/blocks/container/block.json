@@ -25,7 +25,7 @@
 		},
 		"contentWidth": {
 			"type": "string",
-			"default": "800px"
+			"default": ""
 		},
 		"gridColumns": {
 			"type": "number",
@@ -118,10 +118,7 @@
 	},
 	"supports": {
 		"anchor": true,
-		"align": [
-			"wide",
-			"full"
-		],
+		"align": ["wide", "full"],
 		"html": false,
 		"inserter": true,
 		"layout": {

@@ -12,6 +12,9 @@
 	width: fit-content;
 	min-width: 48px; // Ensure block is always visible in editor
 	min-height: 48px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 
 	// Selected state
 	&.is-selected {
@@ -25,5 +28,54 @@
 		outline: 1px dashed var(--wp-admin-theme-color, #007cba);
 		outline-offset: 2px;
 		border-radius: 4px;
+	}
+
+	// Icon wrapper - matches frontend (style.scss)
+	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+	&__wrapper {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 1;
+		color: currentColor;
+		transition: background-color 0.2s ease, color 0.2s ease;
+		width: fit-content;
+
+		.dashicons {
+			display: block;
+			width: 1em;
+			height: 1em;
+			font-size: inherit;
+			line-height: 1;
+			transition: transform 0.2s ease;
+		}
+
+		// Ensure shapes are square (1:1 aspect ratio)
+		&.shape-circle,
+		&.shape-square,
+		&.shape-rounded {
+			aspect-ratio: 1;
+		}
+
+		// Shape variants
+		&.shape-circle {
+			border-radius: 50%;
+		}
+
+		&.shape-square {
+			border-radius: 0;
+		}
+
+		&.shape-rounded {
+			border-radius: 8px;
+		}
+	}
+
+	// Accessibility: Respect prefers-reduced-motion (editor context)
+	@media (prefers-reduced-motion: reduce) {
+		&__wrapper,
+		.dashicons {
+			transition: none;
+		}
 	}
 }

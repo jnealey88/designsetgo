@@ -6,7 +6,7 @@
  * @since 1.0.0
  */
 
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { PanelBody, ToggleControl, TextControl } from '@wordpress/components';
 
 /**
@@ -14,15 +14,17 @@ import { PanelBody, ToggleControl, TextControl } from '@wordpress/components';
  *
  * When enabled, centers content with a maximum width. Works with all layout types.
  *
- * @param {Object}   props                - Component props
- * @param {boolean}  props.constrainWidth - Whether to constrain content width
- * @param {string}   props.contentWidth   - Maximum content width (e.g., '1200px', '60rem')
- * @param {Function} props.setAttributes  - Function to update block attributes
+ * @param {Object}   props                 - Component props
+ * @param {boolean}  props.constrainWidth  - Whether to constrain content width
+ * @param {string}   props.contentWidth    - Maximum content width (e.g., '1200px', '60rem')
+ * @param {string}   props.themeContentSize - Theme's content size from theme.json
+ * @param {Function} props.setAttributes   - Function to update block attributes
  * @return {JSX.Element} Content Width Panel component
  */
 export const ContentWidthPanel = ({
 	constrainWidth,
 	contentWidth,
+	themeContentSize,
 	setAttributes,
 }) => {
 	return (
@@ -50,10 +52,25 @@ export const ContentWidthPanel = ({
 					label={__('Max Width', 'designsetgo')}
 					value={contentWidth}
 					onChange={(value) => setAttributes({ contentWidth: value })}
-					help={__(
-						'Maximum content width (e.g., 800px, 60rem)',
-						'designsetgo'
-					)}
+					placeholder={
+						themeContentSize ||
+						__('e.g., 800px, 60rem', 'designsetgo')
+					}
+					help={
+						themeContentSize
+							? sprintf(
+									/* translators: %s: theme's content width */
+									__(
+										'Leave empty to use theme default (%s)',
+										'designsetgo'
+									),
+									themeContentSize
+								)
+							: __(
+									'Maximum content width (e.g., 800px, 60rem)',
+									'designsetgo'
+								)
+					}
 					__next40pxDefaultSize
 					__nextHasNoMarginBottom
 				/>

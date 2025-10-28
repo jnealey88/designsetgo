@@ -48,6 +48,11 @@ const convertPresetToCSSVar = (value) => {
  * - Applies to flex and grid layouts via CSS gap property
  * - Converts WordPress preset notation to CSS custom properties
  *
+ * Content Width:
+ * - Uses user's custom contentWidth if specified
+ * - Falls back to theme's contentSize from theme.json if available
+ * - Defaults to '800px' if neither is specified
+ *
  * @param {Object}  attributes                   - Block attributes
  * @param {string}  attributes.layoutType        - Layout type ('stack', 'grid', 'flex')
  * @param {boolean} attributes.constrainWidth    - Whether to constrain content width
@@ -56,9 +61,10 @@ const convertPresetToCSSVar = (value) => {
  * @param {number}  attributes.gridColumnsTablet - Number of grid columns (tablet)
  * @param {number}  attributes.gridColumnsMobile - Number of grid columns (mobile)
  * @param {Object}  attributes.style             - WordPress-managed styles
+ * @param {string}  themeContentSize             - Theme's content size from theme.json (optional)
  * @return {Object} React style object for inner container
  */
-export const calculateInnerStyles = (attributes) => {
+export const calculateInnerStyles = (attributes, themeContentSize = null) => {
 	const {
 		layoutType,
 		constrainWidth,
@@ -132,7 +138,9 @@ export const calculateInnerStyles = (attributes) => {
 
 	// Apply width constraint if enabled (works for ALL layouts)
 	if (constrainWidth) {
-		styles.maxWidth = contentWidth;
+		// Use user's custom width, or theme's contentSize, or fallback to 800px
+		const effectiveWidth = contentWidth || themeContentSize || '800px';
+		styles.maxWidth = effectiveWidth;
 		styles.marginLeft = 'auto';
 		styles.marginRight = 'auto';
 	}

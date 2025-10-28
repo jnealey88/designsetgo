@@ -12,21 +12,6 @@
 	width: 100%;
 	box-sizing: border-box;
 
-	// Force headings and text elements to inherit parent text color
-	// This ensures manually set text colors on the container apply to children
-	// WordPress themes often override heading colors, so we need !important
-	// Note: Excludes buttons (.wp-block-button, .wp-element-button) to preserve theme/FSE styles
-	&[style*="color"] {
-		h1, h2, h3, h4, h5, h6, p, li, span, strong, em {
-			color: inherit !important;
-		}
-
-		// Links inherit color, but NOT if they're buttons
-		a:not(.wp-block-button__link):not(.wp-element-button) {
-			color: inherit !important;
-		}
-	}
-
 	// AGGRESSIVE FULL-WIDTH
 	// This is how Elementor/Bricks do it - no fighting with WordPress variables
 	&.alignfull {
@@ -137,18 +122,8 @@
 		box-sizing: border-box;
 	}
 
-	// Override WordPress's layout constrained classes when we have custom flex layout
-	// WordPress adds is-layout-constrained which can interfere with flex justification
-	&.is-layout-constrained[style*="display: flex"],
-	&.is-layout-constrained[style*="display:flex"] {
-		// Remove WordPress's layout constraints for flex layouts
-		max-width: none !important;
-		margin-left: 0 !important;
-		margin-right: 0 !important;
-
-		// Explicitly set width for flex container
-		width: 100% !important;
-	}
+	// Note: .is-layout-constrained is only applied to stack layouts
+	// Flex/grid layouts have this class removed to prevent WordPress layout interference
 
 	// Flex layout: ensure justify-content is respected
 	&[style*="flex"][style*="justify-content"] {
