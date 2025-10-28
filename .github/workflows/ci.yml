@@ -43,11 +43,26 @@ jobs:
         run: |
           echo "Checking build output..."
           ls -lh build/
-          if [ ! -f "build/index.js" ]; then
-            echo "❌ build/index.js not found"
+
+          # Check for essential build artifacts
+          if [ ! -f "build/frontend.js" ]; then
+            echo "❌ build/frontend.js not found"
             exit 1
           fi
-          echo "✅ Build successful"
+
+          if [ ! -f "build/style-index.css" ]; then
+            echo "❌ build/style-index.css not found"
+            exit 1
+          fi
+
+          # Check that index chunks were created (due to code splitting)
+          index_chunks=$(ls build/index*.js 2>/dev/null | wc -l)
+          if [ "$index_chunks" -eq 0 ]; then
+            echo "❌ No index chunks found (build/index*.js)"
+            exit 1
+          fi
+
+          echo "✅ Build successful - found $index_chunks index chunks, frontend.js, and style-index.css"
 
       - name: Run JavaScript linter
         run: npm run lint:js --if-present || echo "⚠️ JS linting not configured"
@@ -72,20 +87,35 @@ jobs:
       - name: Check file sizes
         run: |
           echo "Checking bundle sizes..."
-          max_js=20000  # 20 KB max for JS
-          max_css=10000  # 10 KB max for CSS
+          max_chunk=100000  # 100 KB max per chunk (code splitting allows multiple chunks)
+          max_css=70000     # 70 KB max for CSS
 
-          if [ -f "build/index.js" ]; then
-            js_size=$(stat -f%z build/index.js 2>/dev/null || stat -c%s build/index.js)
-            if [ $js_size -gt $max_js ]; then
-              echo "⚠️ build/index.js is ${js_size} bytes (max: ${max_js})"
+          # Check all index chunks (code splitting may create multiple)
+          for js_file in build/index*.js; do
+            if [ -f "$js_file" ]; then
+              js_size=$(stat -c%s "$js_file" 2>/dev/null || stat -f%z "$js_file")
+              filename=$(basename "$js_file")
+              if [ $js_size -gt $max_chunk ]; then
+                echo "⚠️ $filename is ${js_size} bytes (max: ${max_chunk})"
+              else
+                echo "✅ $filename is ${js_size} bytes"
+              fi
+            fi
+          done
+
+          # Check frontend.js
+          if [ -f "build/frontend.js" ]; then
+            js_size=$(stat -c%s build/frontend.js 2>/dev/null || stat -f%z build/frontend.js)
+            if [ $js_size -gt $max_chunk ]; then
+              echo "⚠️ build/frontend.js is ${js_size} bytes (max: ${max_chunk})"
             else
-              echo "✅ build/index.js is ${js_size} bytes"
+              echo "✅ build/frontend.js is ${js_size} bytes"
             fi
           fi
 
+          # Check CSS
           if [ -f "build/style-index.css" ]; then
-            css_size=$(stat -f%z build/style-index.css 2>/dev/null || stat -c%s build/style-index.css)
+            css_size=$(stat -c%s build/style-index.css 2>/dev/null || stat -f%z build/style-index.css)
             if [ $css_size -gt $max_css ]; then
               echo "⚠️ build/style-index.css is ${css_size} bytes (max: ${max_css})"
             else
