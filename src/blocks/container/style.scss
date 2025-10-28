@@ -217,22 +217,15 @@
 				min-height: 100%;
 			}
 		}
-
-		// WordPress sets margin 0 on ALL grid items, but items 2+ get margin from other rules
-		// This causes first grid item to appear higher than others
-		// Solution: Add margin directly to first child container element
-		> .dsg-container:first-child,
-		> .wp-block-designsetgo-container:first-child {
-			margin-block-start: var(--wp--preset--spacing--md) !important;
-		}
 	}
 
-	// Also apply for grids without stretch (for consistency)
+	// Grid alignment fix - applies to ALL grids (with or without stretch)
+	// WordPress sets margin 0 on ALL grid items via .wp-container-XXX > * rule
+	// But subsequent items get margin from other WordPress rules (> * + * pattern)
+	// This causes first grid item to appear higher than others
+	// Solution: Add margin directly to first child container element
 	&[style*="display: grid"],
 	&[style*="display:grid"] {
-		// WordPress sets margin 0 on ALL grid items, but items 2+ get margin from other rules
-		// This causes first grid item to appear higher than others
-		// Solution: Add margin directly to first child container element
 		> .dsg-container:first-child,
 		> .wp-block-designsetgo-container:first-child {
 			margin-block-start: var(--wp--preset--spacing--md) !important;
