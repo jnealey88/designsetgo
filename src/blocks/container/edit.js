@@ -59,6 +59,7 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	// Destructure attributes needed for immediate use
 	const {
 		layoutType,
+		constrainWidth,
 		videoUrl,
 		videoPoster,
 		videoAutoplay,
