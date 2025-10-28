@@ -224,31 +224,26 @@
 
 /**
  * Layout-Constrained Margin Rules
- * Matches WordPress Group block behavior for proper vertical spacing
+ * Matches WordPress Group block behavior EXACTLY for proper vertical spacing
  * Applied when layout support is enabled (type: constrained)
  *
- * Note: We target all elements including headings with increased specificity
- * to override browser default heading margins (h1-h6 get 0.67em by default)
+ * CRITICAL: Uses :where() for zero specificity to allow WordPress's natural
+ * cascade and blockGap system to work properly. DO NOT use higher specificity
+ * or !important - it breaks WordPress's layout system.
  */
 
 // First child should have no top margin
-.wp-block-designsetgo-container.is-layout-constrained > :first-child {
-	margin-block-start: 0 !important;
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :first-child {
+	margin-block-start: 0;
 }
 
 // All children get consistent vertical spacing
-.wp-block-designsetgo-container.is-layout-constrained > * {
-	margin-block-start: 1.2rem !important;
-	margin-block-end: 0 !important;
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > * {
+	margin-block-start: 1.2rem;
+	margin-block-end: 0;
 }
 
-// Specifically target headings to override browser defaults
-.wp-block-designsetgo-container.is-layout-constrained > :is(h1, h2, h3, h4, h5, h6) {
-	margin-block-start: 1.2rem !important;
-	margin-block-end: 0 !important;
-}
-
-// First heading should have no top margin
-.wp-block-designsetgo-container.is-layout-constrained > :is(h1, h2, h3, h4, h5, h6):first-child {
-	margin-block-start: 0 !important;
+// Last child should have no bottom margin
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :last-child {
+	margin-block-end: 0;
 }

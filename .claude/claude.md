@@ -1899,6 +1899,158 @@ After implementing WordPress best practices:
 
 ---
 
+### Critical: Using `:where()` for Layout-Constrained Blocks
+
+**Date**: October 28, 2025
+**Discovery**: Container block heading margins weren't following layout settings like Group blocks do
+**Root Cause**: Using high-specificity selectors instead of WordPress's zero-specificity pattern
+
+---
+
+#### ❌ Anti-Pattern: High Specificity with `!important`
+
+**What We Initially Did (WRONG)**:
+```scss
+// Container block style.scss - ANTI-PATTERN
+.wp-block-designsetgo-container.is-layout-constrained > :first-child {
+  margin-block-start: 0 !important;
+}
+
+.wp-block-designsetgo-container.is-layout-constrained > * {
+  margin-block-start: 1.2rem !important;
+  margin-block-end: 0 !important;
+}
+```
+
+**Why This Fails**:
+- 🚫 **Fights WordPress**: High specificity overrides WordPress's natural cascade
+- 💥 **Breaks blockGap**: WordPress's spacing system can't function properly
+- 🎯 **Inconsistent**: Doesn't match Group block behavior
+- 🔨 **Requires `!important`**: A sign you're fighting the system, not working with it
+
+**User Insight**:
+> "This doesn't happen in a group block but does in our container. Group blocks use `:root :where(.is-layout-constrained)` with zero specificity. We should try to leverage this."
+
+---
+
+#### ✅ Correct Pattern: Zero Specificity with `:where()`
+
+**How WordPress Group Blocks Do It**:
+```scss
+/**
+ * Layout-Constrained Margin Rules
+ * Matches WordPress Group block behavior EXACTLY for proper vertical spacing
+ * Applied when layout support is enabled (type: constrained)
+ *
+ * CRITICAL: Uses :where() for zero specificity to allow WordPress's natural
+ * cascade and blockGap system to work properly. DO NOT use higher specificity
+ * or !important - it breaks WordPress's layout system.
+ */
+
+// First child should have no top margin
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :first-child {
+  margin-block-start: 0;
+}
+
+// All children get consistent vertical spacing
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > * {
+  margin-block-start: 1.2rem;
+  margin-block-end: 0;
+}
+
+// Last child should have no bottom margin
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :last-child {
+  margin-block-end: 0;
+}
+```
+
+**Why This Works**:
+- ✅ **Zero Specificity**: `:where()` has 0-0-0 specificity, allowing WordPress's cascade to work
+- ✅ **Matches Core**: Exact same pattern as `core/group` block
+- ✅ **blockGap Support**: WordPress's spacing system functions correctly
+- ✅ **No `!important`**: Works with WordPress, not against it
+- ✅ **Theme Compatible**: Themes can override if needed
+
+---
+
+#### Understanding `:where()` Specificity
+
+**CSS Specificity Comparison**:
+```scss
+// Specificity: 0-0-0 (zero specificity)
+:where(.block.is-layout-constrained) > * {
+  margin-block-start: 1.2rem;
+}
+
+// Specificity: 0-2-0 (class selectors)
+.block.is-layout-constrained > * {
+  margin-block-start: 1.2rem;
+}
+
+// Specificity: 0-2-0 + !important (nuclear option)
+.block.is-layout-constrained > * {
+  margin-block-start: 1.2rem !important;
+}
+```
+
+**Why Zero Specificity Matters**:
+- WordPress applies blockGap spacing via theme.json with normal specificity
+- Your block's rules need to be *defaults*, not *overrides*
+- `:where()` provides defaults that can be naturally overridden
+- High specificity or `!important` prevents WordPress's spacing from working
+
+---
+
+#### When to Use `:where()` Pattern
+
+**Use this pattern for**:
+1. ✅ Layout-constrained spacing rules (margin-block)
+2. ✅ Default typography styles that themes should override
+3. ✅ Any rule where WordPress or themes need control
+4. ✅ BlockGap and spacing system integration
+
+**Don't use for**:
+1. ❌ User-chosen features (those CAN use `!important` for accessibility)
+2. ❌ Critical accessibility overrides (e.g., white text on dark overlay)
+3. ❌ Block-specific styles that shouldn't be overridden
+
+---
+
+#### Real-World Impact
+
+**Before (High Specificity)**:
+- Headings had unwanted margins: `margin-block-start: 0.67em; margin-block-end: 0.67em`
+- Paragraphs had browser defaults: `margin-block-start: 1em; margin-block-end: 1em`
+- BlockGap settings in theme.json didn't work
+- Container blocks behaved differently from Group blocks
+
+**After (Zero Specificity with `:where()`)**:
+- First child has no top margin
+- All children have consistent 1.2rem vertical spacing
+- Last child has no bottom margin
+- BlockGap settings work correctly
+- Container blocks match Group block behavior exactly
+
+---
+
+#### Key Takeaways
+
+1. **Match WordPress Core Patterns**: When in doubt, copy how core blocks do it
+2. **Zero Specificity for Layout**: Use `:where()` for margin/padding/spacing rules
+3. **Let WordPress Control Spacing**: Don't fight the blockGap system
+4. **Test with Group Blocks**: Your block should behave like Group blocks for layout
+5. **Avoid `!important` for Layout**: Save it for accessibility overrides only
+
+---
+
+#### Resources
+
+- [CSS :where() MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/CSS/:where)
+- [WordPress blockGap Support](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/#spacing)
+- [Group Block Source Code](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/group)
+
+---
+
 ## Common Pitfalls
 
 ### 1. Forgetting Frontend Imports

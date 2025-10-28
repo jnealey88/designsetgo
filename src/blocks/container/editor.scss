@@ -110,3 +110,31 @@
 	// is handled in style.scss with media queries. Editor shows desktop layout
 	// by default. Use WordPress's device preview to test responsive behavior.
 }
+
+/**
+ * Layout-Constrained Margin Rules (Editor Context)
+ * Matches WordPress Group block behavior EXACTLY for proper vertical spacing
+ * Applied when layout support is enabled (type: constrained)
+ *
+ * CRITICAL: Uses :where() for zero specificity to allow WordPress's natural
+ * cascade and blockGap system to work properly in the editor.
+ *
+ * Note: These rules are duplicated from style.scss because the block editor
+ * iframe context sometimes requires explicit editor styles.
+ */
+
+// First child should have no top margin
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :first-child {
+	margin-block-start: 0;
+}
+
+// All children get consistent vertical spacing
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > * {
+	margin-block-start: 1.2rem;
+	margin-block-end: 0;
+}
+
+// Last child should have no bottom margin
+:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :last-child {
+	margin-block-end: 0;
+}
