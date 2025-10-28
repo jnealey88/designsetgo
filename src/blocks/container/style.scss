@@ -218,34 +218,24 @@
 			}
 		}
 
-		// WordPress uses > * + * selector which applies margin to all DIRECT children EXCEPT first
-		// This causes first grid item (container) to be higher than others
-		// Solution: Add same margin to first child container's content to align with siblings
+		// WordPress sets margin 0 on ALL grid items, but items 2+ get margin from other rules
+		// This causes first grid item to appear higher than others
+		// Solution: Add margin directly to first child container element
 		> .dsg-container:first-child,
 		> .wp-block-designsetgo-container:first-child {
-			// Target the inner wrapper which has the wp-container-XXX class that WordPress styles
-			> .dsg-container__inner {
-				> * {
-					margin-block-start: var(--wp--preset--spacing--md) !important;
-				}
-			}
+			margin-block-start: var(--wp--preset--spacing--md) !important;
 		}
 	}
 
 	// Also apply for grids without stretch (for consistency)
 	&[style*="display: grid"],
 	&[style*="display:grid"] {
-		// WordPress uses > * + * selector which applies margin to all DIRECT children EXCEPT first
-		// This causes first grid item (container) to be higher than others
-		// Solution: Add same margin to first child container to align with siblings
+		// WordPress sets margin 0 on ALL grid items, but items 2+ get margin from other rules
+		// This causes first grid item to appear higher than others
+		// Solution: Add margin directly to first child container element
 		> .dsg-container:first-child,
 		> .wp-block-designsetgo-container:first-child {
-			// Target the inner wrapper which has the wp-container-XXX class that WordPress styles
-			> .dsg-container__inner {
-				> * {
-					margin-block-start: var(--wp--preset--spacing--md) !important;
-				}
-			}
+			margin-block-start: var(--wp--preset--spacing--md) !important;
 		}
 	}
 }
