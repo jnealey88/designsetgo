@@ -218,14 +218,14 @@
 			}
 		}
 
-		// WordPress uses > * + * selector which applies margin to all children EXCEPT first
-		// This causes first grid item to be higher than others
-		// Solution: Add same margin to first child to align everything
-		// Structure: grid > .dsg-container > .dsg-container__inner > :first-child
-		> .dsg-container,
-		> .wp-block-designsetgo-container {
+		// WordPress uses > * + * selector which applies margin to all DIRECT children EXCEPT first
+		// This causes first grid item (container) to be higher than others
+		// Solution: Add same margin to first child container's content to align with siblings
+		> .dsg-container:first-child,
+		> .wp-block-designsetgo-container:first-child {
+			// Target the inner wrapper which has the wp-container-XXX class that WordPress styles
 			> .dsg-container__inner {
-				> :first-child {
+				> * {
 					margin-block-start: var(--wp--preset--spacing--md) !important;
 				}
 			}
@@ -235,14 +235,14 @@
 	// Also apply for grids without stretch (for consistency)
 	&[style*="display: grid"],
 	&[style*="display:grid"] {
-		// WordPress uses > * + * selector which applies margin to all children EXCEPT first
-		// This causes first grid item to be higher than others
-		// Solution: Add same margin to first child to align everything
-		// Structure: grid > .dsg-container > .dsg-container__inner > :first-child
-		> .dsg-container,
-		> .wp-block-designsetgo-container {
+		// WordPress uses > * + * selector which applies margin to all DIRECT children EXCEPT first
+		// This causes first grid item (container) to be higher than others
+		// Solution: Add same margin to first child container to align with siblings
+		> .dsg-container:first-child,
+		> .wp-block-designsetgo-container:first-child {
+			// Target the inner wrapper which has the wp-container-XXX class that WordPress styles
 			> .dsg-container__inner {
-				> :first-child {
+				> * {
 					margin-block-start: var(--wp--preset--spacing--md) !important;
 				}
 			}

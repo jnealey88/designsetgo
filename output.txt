@@ -1,0 +1,149 @@
+<main class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="margin-top:var(--wp--preset--spacing--60)" id="wp--skip-link--target">
+	
+	<div class="wp-block-group alignfull has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
+		
+		<h1 class="wp-block-post-title">DesignSetGo</h1>
+		<div class="entry-content alignfull wp-block-post-content has-global-padding is-layout-constrained wp-block-post-content-is-layout-constrained">
+<div class="wp-block-designsetgo-container alignfull dsg-container" style="border-radius:0px;padding-top:var(--wp--preset--spacing--xxl);padding-right:var(--wp--preset--spacing--xs);padding-bottom:var(--wp--preset--spacing--xxl);padding-left:var(--wp--preset--spacing--xs);position:relative"><div class="dsg-container__inner has-global-padding is-layout-constrained wp-container-designsetgo-container-is-layout-7e736cf0 wp-block-designsetgo-container-is-layout-constrained" style="position:relative;z-index:2;display:flex;flex-direction:column;gap:var(--wp--preset--spacing--md);max-width:1140px;margin-left:auto;margin-right:auto" data-constrain-width="true">
+<h2 class="wp-block-heading has-text-align-center">Why Choose DesignSetGo?</h2>
+
+
+
+<p class="has-text-align-center">Built with WordPress best practices and exceptional performance in mind </p>
+
+
+
+<div class="wp-block-designsetgo-container dsg-container" style="border-radius:0px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;position:relative"><div class="dsg-container__inner has-global-padding is-layout-constrained wp-container-designsetgo-container-is-layout-adacfdbe wp-block-designsetgo-container-is-layout-constrained" style="position:relative;z-index:2;display:grid;--dsg-grid-cols-desktop:3;--dsg-grid-cols-tablet:2;--dsg-grid-cols-mobile:1;grid-template-columns:repeat(var(--dsg-grid-cols-desktop), 1fr);align-items:stretch;gap:var(--wp--preset--spacing--md)">
+<div class="wp-block-designsetgo-container dsg-container is-style-bordered has-border-color has-accent-1-border-color is-style-bordered--2" style="border-radius:8px;padding-top:var(--wp--preset--spacing--lg);padding-right:var(--wp--preset--spacing--sm);padding-bottom:var(--wp--preset--spacing--lg);padding-left:var(--wp--preset--spacing--sm);position:relative"><div class="dsg-container__inner has-global-padding is-layout-constrained wp-container-designsetgo-container-is-layout-d7acf85c wp-block-designsetgo-container-is-layout-constrained" style="position:relative;z-index:2;display:flex;flex-direction:column;gap:var(--wp--preset--spacing--md)" data-constrain-width="false">
+<div class="wp-block-designsetgo-icon dsg-icon has-accent-1-background-color has-background" style="border-radius:8px;padding-top:var(--wp--preset--spacing--xxs);padding-right:var(--wp--preset--spacing--xxs);padding-bottom:var(--wp--preset--spacing--xxs);padding-left:var(--wp--preset--spacing--xxs);display:flex;align-items:center;justify-content:center"><div class="dsg-icon__wrapper" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;background:inherit;border-radius:inherit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9.19 6.35c-2.04 2.29-3.44 5.58-3.57 5.89L2 10.69l4.05-4.05c.47-.47 1.15-.68 1.81-.55l1.33 1.33zM11.17 17s3.74-1.55 5.89-3.7c5.4-5.4 4.5-9.62 4.21-10.57-.95-.3-5.17-1.19-10.57 4.21C8.55 9.09 7 12.83 7 12.83L11.17 17zm3.77-8.66c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0zM2 20.5l2.5-1c.74-.3 1.5-.3 2.24 0 .74.3.74.3 1.48 0 .74-.3 1.5-.3 2.24 0l.04.02c.73.29 1.5.29 2.23 0 .74-.3 1.5-.3 2.24 0 .74.3.74.3 1.48 0 .74-.3 1.5-.3 2.24 0L22 20.5v1l-2.5-1c-.74-.3-1.5-.3-2.24 0-.74.3-.74.3-1.48 0-.74-.3-1.5-.3-2.24 0l-.04.02c-.73.29-1.5.29-2.23 0-.74-.3-1.5-.3-2.24 0-.74.3-.74.3-1.48 0-.74-.3-1.5-.3-2.24 0L2 21.5v-1z"></path></svg></div></div>
+
+
+
+<h3 class="wp-block-heading has-text-align-left">Performance First</h3>
+
+
+
+<p>Lightweight bundles, optimized code, no jQuery. Your site stays fast.afsadfsdfsad</p>
+
+
+
+<p>asdfasdfd</p>
+</div></div>
+
+
+
+<div class="wp-block-designsetgo-container dsg-container is-style-bordered has-border-color has-accent-1-border-color is-style-bordered--3" style="border-radius:8px;padding-top:var(--wp--preset--spacing--lg);padding-right:var(--wp--preset--spacing--sm);padding-bottom:0;padding-left:var(--wp--preset--spacing--sm);position:relative"><div class="dsg-container__inner has-global-padding is-layout-constrained wp-container-designsetgo-container-is-layout-270ecbf9 wp-block-designsetgo-container-is-layout-constrained" style="position:relative;z-index:2;display:flex;flex-direction:column;gap:var(--wp--preset--spacing--md)" data-constrain-width="false">
+<div class="wp-block-designsetgo-icon dsg-icon has-accent-1-background-color has-background" style="border-radius:8px;padding-top:var(--wp--preset--spacing--xxs);padding-right:var(--wp--preset--spacing--xxs);padding-bottom:var(--wp--preset--spacing--xxs);padding-left:var(--wp--preset--spacing--xxs);display:flex;align-items:center;justify-content:center"><div class="dsg-icon__wrapper" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;background:inherit;border-radius:inherit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"></path></svg></div></div>
+
+
+
+<h3 class="wp-block-heading">FSE Compatible</h3>
+
+
+
+<p>Works seamlessly with Full Site Editing and the Site Editor.</p>
+
+
+
+<p>dfasdfds</p>
+
+
+
+<p>afdsaf</p>
+
+
+
+<p>adfasdfas</p>
+</div></div>
+
+
+
+<div class="wp-block-designsetgo-container dsg-container is-style-bordered has-border-color has-accent-1-border-color has-large-font-size is-style-bordered--4" style="border-radius:8px;padding-top:var(--wp--preset--spacing--lg);padding-right:var(--wp--preset--spacing--lg);padding-bottom:var(--wp--preset--spacing--lg);padding-left:var(--wp--preset--spacing--lg);position:relative"><div class="dsg-container__inner has-global-padding is-layout-constrained wp-container-designsetgo-container-is-layout-82b6e7d9 wp-block-designsetgo-container-is-layout-constrained" style="position:relative;z-index:2;display:flex;flex-direction:column;gap:var(--wp--preset--spacing--md)" data-constrain-width="false">
+<div class="wp-block-designsetgo-icon dsg-icon has-accent-1-background-color has-background" style="border-radius:8px;padding-top:var(--wp--preset--spacing--xxs);padding-right:var(--wp--preset--spacing--xxs);padding-bottom:var(--wp--preset--spacing--xxs);padding-left:var(--wp--preset--spacing--xxs);display:flex;align-items:center;justify-content:center"><div class="dsg-icon__wrapper" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;background:inherit;border-radius:inherit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path></svg></div></div>
+
+
+
+<h3 class="wp-block-heading has-text-align-left">Accessibility Built-in</h3>
+
+
+
+<p>WCAG 2.1 AA compliant with full keyboard navigation support.</p>
+</div></div>
+
+
+
+<div class="wp-block-designsetgo-container dsg-container is-style-bordered has-border-color has-accent-1-border-color is-style-bordered--5" style="border-radius:8px;padding-top:var(--wp--preset--spacing--lg);padding-right:var(--wp--preset--spacing--sm);padding-bottom:0;padding-left:var(--wp--preset--spacing--sm);position:relative"><div class="dsg-container__inner has-global-padding is-layout-constrained wp-container-designsetgo-container-is-layout-270ecbf9 wp-block-designsetgo-container-is-layout-constrained" style="position:relative;z-index:2;display:flex;flex-direction:column;gap:var(--wp--preset--spacing--md)" data-constrain-width="false">
+<div class="wp-block-designsetgo-icon dsg-icon has-accent-1-background-color has-background" style="border-radius:8px;padding-top:var(--wp--preset--spacing--xxs);padding-right:var(--wp--preset--spacing--xxs);padding-bottom:var(--wp--preset--spacing--xxs);padding-left:var(--wp--preset--spacing--xxs);display:flex;align-items:center;justify-content:center"><div class="dsg-icon__wrapper" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;background:inherit;border-radius:inherit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg></div></div>
+
+
+
+<h3 class="wp-block-heading">Mobile Responsive</h3>
+
+
+
+<p>All blocks are mobile-first and fully responsive out of the box.</p>
+</div></div>
+
+
+
+<div class="wp-block-designsetgo-container dsg-container is-style-bordered has-border-color has-accent-1-border-color is-style-bordered--6" style="border-radius:8px;padding-top:var(--wp--preset--spacing--lg);padding-right:var(--wp--preset--spacing--sm);padding-bottom:0;padding-left:var(--wp--preset--spacing--sm);position:relative"><div class="dsg-container__inner has-global-padding is-layout-constrained wp-container-designsetgo-container-is-layout-270ecbf9 wp-block-designsetgo-container-is-layout-constrained" style="position:relative;z-index:2;display:flex;flex-direction:column;gap:var(--wp--preset--spacing--md)" data-constrain-width="false">
+<div class="wp-block-designsetgo-icon dsg-icon has-accent-1-background-color has-background" style="border-radius:8px;padding-top:var(--wp--preset--spacing--xxs);padding-right:var(--wp--preset--spacing--xxs);padding-bottom:var(--wp--preset--spacing--xxs);padding-left:var(--wp--preset--spacing--xxs);display:flex;align-items:center;justify-content:center"><div class="dsg-icon__wrapper" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;background:inherit;border-radius:inherit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></div></div>
+
+
+
+<h3 class="wp-block-heading">No Vendor Lock-in</h3>
+
+
+
+<p>Uses standard WordPress patterns. Easy to migrate anytime.</p>
+</div></div>
+
+
+
+<div class="wp-block-designsetgo-container dsg-container is-style-bordered has-border-color has-accent-1-border-color is-style-bordered--7" style="border-radius:8px;padding-top:var(--wp--preset--spacing--lg);padding-right:var(--wp--preset--spacing--sm);padding-bottom:0;padding-left:var(--wp--preset--spacing--sm);position:relative"><div class="dsg-container__inner has-global-padding is-layout-constrained wp-container-designsetgo-container-is-layout-270ecbf9 wp-block-designsetgo-container-is-layout-constrained" style="position:relative;z-index:2;display:flex;flex-direction:column;gap:var(--wp--preset--spacing--md)" data-constrain-width="false">
+<div class="wp-block-designsetgo-icon dsg-icon has-accent-1-background-color has-background" style="border-radius:8px;padding-top:var(--wp--preset--spacing--xxs);padding-right:var(--wp--preset--spacing--xxs);padding-bottom:var(--wp--preset--spacing--xxs);padding-left:var(--wp--preset--spacing--xxs);display:flex;align-items:center;justify-content:center"><div class="dsg-icon__wrapper" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;background:inherit;border-radius:inherit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94L14.4 2.81c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"></path></svg></div></div>
+
+
+
+<h3 class="wp-block-heading">Theme Integration</h3>
+
+
+
+<p>Respects theme.json colors, spacing, and typography settings.</p>
+
+
+
+<div class="wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex"></div>
+</div></div>
+</div></div>
+</div></div>
+
+
+
+<div class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained">
+<p>dfdfa</p>
+
+
+
+<p>dfdfa</p>
+
+
+
+<p>dfdfa</p>
+
+
+
+<h2 class="wp-block-heading">ddafdsa</h2>
+
+
+
+<div class="wp-block-designsetgo-icon-button alignright dsg-icon-button has-border-color has-accent-2-border-color has-accent-4-color has-accent-2-background-color has-text-color has-background has-link-color has-medium-font-size wp-elements-23ebac2c3ec3fc8dd3daa65a368868a8" style="border-radius:8px;display:inline-block"><div class="dsg-icon-button__wrapper" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row"><span class="dsg-icon-button__icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path></svg></span><span class="dsg-icon-button__text">Download Free</span></div></div>
+</div>
+
+
+
+<div class="wp-block-designsetgo-container dsg-container has-global-padding is-layout-constrained wp-block-designsetgo-container-is-layout-constrained" style="border-radius:0px;padding-top:var(--wp--preset--spacing--lg);padding-right:var(--wp--preset--spacing--xs);padding-bottom:var(--wp--preset--spacing--lg);padding-left:var(--wp--preset--spacing--xs);position:relative"><div class="dsg-container__inner" style="position:relative;z-index:2;display:flex;flex-direction:column;gap:var(--wp--preset--spacing--md);max-width:1140px;margin-left:auto;margin-right:auto" data-constrain-width="true"></div></div>
+</div>
+	</div>
+	
+</main>

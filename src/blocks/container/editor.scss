@@ -131,13 +131,12 @@
 			}
 		}
 
-		// WordPress uses > * + * selector which applies margin to all children EXCEPT first
-		// Solution: Add same margin to first child to align everything (see style.scss)
-		// Structure: grid > .dsg-container > .dsg-container__inner > :first-child
-		> .dsg-container,
-		> .wp-block-designsetgo-container {
+		// WordPress uses > * + * selector which applies margin to all DIRECT children EXCEPT first
+		// Solution: Add same margin to first child container's content to align with siblings
+		> .dsg-container:first-child,
+		> .wp-block-designsetgo-container:first-child {
 			> .dsg-container__inner {
-				> :first-child {
+				> * {
 					margin-block-start: var(--wp--preset--spacing--md) !important;
 				}
 			}
@@ -147,12 +146,11 @@
 	// Also apply for grids without stretch (for consistency)
 	&[style*="display: grid"],
 	&[style*="display:grid"] {
-		// WordPress uses > * + * selector - add margin to first child to align with others
-		// Structure: grid > .dsg-container > .dsg-container__inner > :first-child
-		> .dsg-container,
-		> .wp-block-designsetgo-container {
+		// WordPress uses > * + * selector - add margin to first child container's content
+		> .dsg-container:first-child,
+		> .wp-block-designsetgo-container:first-child {
 			> .dsg-container__inner {
-				> :first-child {
+				> * {
 					margin-block-start: var(--wp--preset--spacing--md) !important;
 				}
 			}
