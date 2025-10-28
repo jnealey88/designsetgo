@@ -109,6 +109,27 @@
 	// Note: Responsive grid behavior (mobile/tablet column adjustments)
 	// is handled in style.scss with media queries. Editor shows desktop layout
 	// by default. Use WordPress's device preview to test responsive behavior.
+
+	// Grid item height matching (Editor)
+	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+	&[style*="display: grid"][style*="align-items: stretch"],
+	&[style*="display:grid"][style*="align-items:stretch"] {
+		align-items: stretch !important;
+
+		// Ensure child containers and blocks stretch to fill grid cell
+		> * {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+
+			// Nested containers should also stretch
+			&.dsg-container,
+			&.wp-block-group,
+			&.wp-block-cover {
+				min-height: 100%;
+			}
+		}
+	}
 }
 
 /**

@@ -43,6 +43,10 @@
 			"type": "number",
 			"default": 1
 		},
+		"gridStretchItems": {
+			"type": "boolean",
+			"default": true
+		},
 		"gap": {
 			"type": "string",
 			"default": "0"

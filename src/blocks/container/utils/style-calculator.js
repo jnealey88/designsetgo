@@ -72,6 +72,7 @@ export const calculateInnerStyles = (attributes, themeContentSize = null) => {
 		gridColumns,
 		gridColumnsTablet,
 		gridColumnsMobile,
+		gridStretchItems,
 		style,
 	} = attributes;
 
@@ -94,6 +95,10 @@ export const calculateInnerStyles = (attributes, themeContentSize = null) => {
 		styles['--dsg-grid-cols-mobile'] = String(gridColumnsMobile);
 		// Default to desktop columns, overridden by media queries
 		styles.gridTemplateColumns = `repeat(var(--dsg-grid-cols-desktop), 1fr)`;
+		// Apply align-items: stretch for equal height grid items (default: true)
+		if (gridStretchItems !== false) {
+			styles.alignItems = 'stretch';
+		}
 		// Apply gap for grid layout
 		if (gapValue) {
 			styles.gap = gapValue;

@@ -62,11 +62,15 @@
 	}
 
 	// Ensure proper color inheritance from WordPress color controls
-	&[style*="background"] .dsg-icon-button__wrapper {
+	&[style*="background-color"] .dsg-icon-button__wrapper,
+	&[style*="background-image"] .dsg-icon-button__wrapper {
 		background: inherit !important;
 	}
 
-	&[style*="color"]:not([style*="background"]) .dsg-icon-button__wrapper {
+	// Transfer inline text color to wrapper
+	// Note: We check for " color:" or ";color:" to avoid matching "background-color"
+	&[style*=" color:"] .dsg-icon-button__wrapper,
+	&[style*=";color:"] .dsg-icon-button__wrapper {
 		color: inherit !important;
 	}
 

@@ -8,7 +8,7 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { PanelBody, RangeControl } from '@wordpress/components';
+import { PanelBody, RangeControl, ToggleControl } from '@wordpress/components';
 
 /**
  * Grid Panel - Responsive grid column controls.
@@ -21,6 +21,7 @@ import { PanelBody, RangeControl } from '@wordpress/components';
  * @param {number}   props.gridColumns       - Desktop columns (1-6)
  * @param {number}   props.gridColumnsTablet - Tablet columns (1-6)
  * @param {number}   props.gridColumnsMobile - Mobile columns (1-2)
+ * @param {boolean}  props.gridStretchItems  - Whether grid items should stretch to match height
  * @param {Function} props.setAttributes     - Function to update block attributes
  * @return {JSX.Element|null} Grid Panel component or null if not grid layout
  */
@@ -29,6 +30,7 @@ export const GridPanel = ({
 	gridColumns,
 	gridColumnsTablet,
 	gridColumnsMobile,
+	gridStretchItems,
 	setAttributes,
 }) => {
 	// Only show when layout is grid
@@ -120,6 +122,19 @@ export const GridPanel = ({
 					'designsetgo'
 				)}
 				__next40pxDefaultSize
+				__nextHasNoMarginBottom
+			/>
+
+			<ToggleControl
+				label={__('Match Item Heights', 'designsetgo')}
+				checked={gridStretchItems}
+				onChange={(value) =>
+					setAttributes({ gridStretchItems: value })
+				}
+				help={__(
+					'Make all grid items in a row match the height of the tallest item. Perfect for card layouts.',
+					'designsetgo'
+				)}
 				__nextHasNoMarginBottom
 			/>
 		</PanelBody>

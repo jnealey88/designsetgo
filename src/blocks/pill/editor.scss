@@ -69,7 +69,10 @@
 		background-color: inherit !important;
 	}
 
-	&[style*="color"]:not([style*="background-color"]) .dsg-pill__content {
+	// Transfer inline text color to inner content
+	// Note: We check for " color:" with space to avoid matching "background-color"
+	&[style*=" color:"] .dsg-pill__content,
+	&[style*=";color:"] .dsg-pill__content {
 		color: inherit !important;
 	}
 }

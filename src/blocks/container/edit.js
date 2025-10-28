@@ -355,6 +355,7 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 					gridColumns={attributes.gridColumns}
 					gridColumnsTablet={attributes.gridColumnsTablet}
 					gridColumnsMobile={attributes.gridColumnsMobile}
+					gridStretchItems={attributes.gridStretchItems}
 					setAttributes={setAttributes}
 				/>
 
