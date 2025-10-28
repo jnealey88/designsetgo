@@ -217,6 +217,30 @@
 				min-height: 100%;
 			}
 		}
+
+		// CRITICAL: Override WordPress's auto-generated margin rules for grid items
+		// WordPress generates :root :where(.wp-block-designsetgo-container-is-layout-constrained) > *
+		// which adds margins to content inside child containers, creating misalignment
+		// We need to remove these margins for containers that are direct children of grids
+		> .dsg-container,
+		> .wp-block-designsetgo-container {
+			// Override WordPress's layout margins for child containers in grids
+			> * {
+				margin-block-start: 0 !important;
+			}
+		}
+	}
+
+	// Also apply for grids without stretch (for consistency)
+	&[style*="display: grid"],
+	&[style*="display:grid"] {
+		// Override WordPress's layout margins for child containers in grids
+		> .dsg-container,
+		> .wp-block-designsetgo-container {
+			> * {
+				margin-block-start: 0 !important;
+			}
+		}
 	}
 }
 

@@ -130,6 +130,26 @@
 				min-height: 100%;
 			}
 		}
+
+		// CRITICAL: Override WordPress's auto-generated margin rules for grid items
+		// (See style.scss for full explanation)
+		> .dsg-container,
+		> .wp-block-designsetgo-container {
+			> * {
+				margin-block-start: 0 !important;
+			}
+		}
+	}
+
+	// Also apply for grids without stretch (for consistency)
+	&[style*="display: grid"],
+	&[style*="display:grid"] {
+		> .dsg-container,
+		> .wp-block-designsetgo-container {
+			> * {
+				margin-block-start: 0 !important;
+			}
+		}
 	}
 }
 
