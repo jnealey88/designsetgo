@@ -6,9 +6,14 @@
 	"title": "Tab",
 	"category": "designsetgo",
 	"description": "Individual tab panel within a Tabs block.",
-	"keywords": ["tab", "panel"],
+	"keywords": [
+		"tab",
+		"panel"
+	],
 	"textdomain": "designsetgo",
-	"parent": ["designsetgo/tabs"],
+	"parent": [
+		"designsetgo/tabs"
+	],
 	"attributes": {
 		"uniqueId": {
 			"type": "string",
@@ -25,7 +30,11 @@
 		"iconPosition": {
 			"type": "string",
 			"default": "left",
-			"enum": ["left", "right", "top"]
+			"enum": [
+				"left",
+				"right",
+				"top"
+			]
 		},
 		"anchor": {
 			"type": "string",
@@ -92,6 +101,6 @@
 		}
 	},
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./editor.scss",
-	"style": "file:./style.scss"
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }

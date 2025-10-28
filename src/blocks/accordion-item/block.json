@@ -5,9 +5,16 @@
 	"version": "1.0.0",
 	"title": "Accordion Item",
 	"category": "designsetgo",
-	"parent": ["designsetgo/accordion"],
+	"parent": [
+		"designsetgo/accordion"
+	],
 	"description": "An individual collapsible item within an accordion.",
-	"keywords": ["accordion", "item", "panel", "section"],
+	"keywords": [
+		"accordion",
+		"item",
+		"panel",
+		"section"
+	],
 	"textdomain": "designsetgo",
 	"attributes": {
 		"title": {
@@ -87,6 +94,6 @@
 		}
 	},
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./editor.css",
-	"style": "file:./style.css"
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }

@@ -6,9 +6,15 @@
 	"title": "Counter",
 	"category": "designsetgo",
 	"description": "Individual counter item with animated number",
-	"keywords": ["counter", "stat", "number"],
+	"keywords": [
+		"counter",
+		"stat",
+		"number"
+	],
 	"textdomain": "designsetgo",
-	"parent": ["designsetgo/counter-group"],
+	"parent": [
+		"designsetgo/counter-group"
+	],
 	"supports": {
 		"anchor": false,
 		"html": false,
@@ -128,5 +134,8 @@
 			"icon": "star",
 			"iconPosition": "top"
 		}
-	}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }

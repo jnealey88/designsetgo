@@ -6,11 +6,20 @@
 	"title": "Icon List",
 	"category": "designsetgo",
 	"description": "Create a list of items with icons, titles, and descriptions.",
-	"keywords": ["icon", "list", "features", "benefits", "services"],
+	"keywords": [
+		"icon",
+		"list",
+		"features",
+		"benefits",
+		"services"
+	],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"__experimentalTextAlign": true,
 		"html": false,
 		"inserter": true,
@@ -120,6 +129,6 @@
 		]
 	},
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./editor.css",
-	"style": "file:./style.css"
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }

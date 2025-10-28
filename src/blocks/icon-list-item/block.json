@@ -6,8 +6,14 @@
 	"title": "Icon List Item",
 	"category": "designsetgo",
 	"description": "A single item in an icon list with icon, title, and description.",
-	"keywords": ["icon", "list item", "feature"],
-	"parent": ["designsetgo/icon-list"],
+	"keywords": [
+		"icon",
+		"list item",
+		"feature"
+	],
+	"parent": [
+		"designsetgo/icon-list"
+	],
 	"textdomain": "designsetgo",
 	"supports": {
 		"html": false,
@@ -60,6 +66,6 @@
 		}
 	},
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./editor.css",
-	"style": "file:./style.css"
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }

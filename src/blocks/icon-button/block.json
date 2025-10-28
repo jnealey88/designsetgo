@@ -6,7 +6,13 @@
 	"title": "Icon Button",
 	"category": "designsetgo",
 	"description": "A button with optional icon at the start or end.",
-	"keywords": ["button", "icon", "link", "call to action", "cta"],
+	"keywords": [
+		"button",
+		"icon",
+		"link",
+		"call to action",
+		"cta"
+	],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
@@ -98,6 +104,6 @@
 		}
 	},
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./editor.css",
-	"style": "file:./style.css"
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }

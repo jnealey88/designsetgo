@@ -6,7 +6,13 @@
 	"title": "Container",
 	"category": "designsetgo",
 	"description": "Advanced layout container with video backgrounds, responsive grids, and visual effects.",
-	"keywords": ["container", "layout", "grid", "video", "background"],
+	"keywords": [
+		"container",
+		"layout",
+		"grid",
+		"video",
+		"background"
+	],
 	"textdomain": "designsetgo",
 	"attributes": {
 		"layoutType": {
@@ -100,7 +106,10 @@
 	},
 	"supports": {
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"inserter": true,
 		"layout": {
@@ -192,6 +201,6 @@
 		]
 	},
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./editor.css",
-	"style": "file:./style.css"
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }

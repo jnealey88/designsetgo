@@ -6,7 +6,13 @@
 	"title": "Accordion",
 	"category": "designsetgo",
 	"description": "Create accessible accordion sections with customizable icons and behavior for FAQs and content organization.",
-	"keywords": ["accordion", "faq", "collapsible", "toggle", "expand"],
+	"keywords": [
+		"accordion",
+		"faq",
+		"collapsible",
+		"toggle",
+		"expand"
+	],
 	"textdomain": "designsetgo",
 	"attributes": {
 		"allowMultipleOpen": {
@@ -16,17 +22,29 @@
 		"initiallyOpen": {
 			"type": "string",
 			"default": "first",
-			"enum": ["none", "first", "all"]
+			"enum": [
+				"none",
+				"first",
+				"all"
+			]
 		},
 		"iconStyle": {
 			"type": "string",
 			"default": "chevron",
-			"enum": ["chevron", "plus-minus", "caret", "none"]
+			"enum": [
+				"chevron",
+				"plus-minus",
+				"caret",
+				"none"
+			]
 		},
 		"iconPosition": {
 			"type": "string",
 			"default": "right",
-			"enum": ["left", "right"]
+			"enum": [
+				"left",
+				"right"
+			]
 		},
 		"borderBetween": {
 			"type": "boolean",
@@ -64,7 +82,10 @@
 	},
 	"supports": {
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"inserter": true,
 		"spacing": {
@@ -148,6 +169,6 @@
 		]
 	},
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./editor.css",
-	"style": "file:./style.css"
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }

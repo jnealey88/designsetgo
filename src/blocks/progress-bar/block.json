@@ -6,11 +6,20 @@
 	"title": "Progress Bar",
 	"category": "designsetgo",
 	"description": "Display progress or statistics with an animated bar",
-	"keywords": ["progress", "bar", "stat", "percentage", "meter"],
+	"keywords": [
+		"progress",
+		"bar",
+		"stat",
+		"percentage",
+		"meter"
+	],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"inserter": true,
 		"spacing": {
@@ -109,5 +118,8 @@
 			"showPercentage": true,
 			"barStyle": "solid"
 		}
-	}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }

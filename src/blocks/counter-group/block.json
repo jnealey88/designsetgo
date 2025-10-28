@@ -6,11 +6,20 @@
 	"title": "Counter Group",
 	"category": "designsetgo",
 	"description": "Display animated statistics and numbers that count up on scroll",
-	"keywords": ["counter", "stats", "statistics", "numbers", "animated"],
+	"keywords": [
+		"counter",
+		"stats",
+		"statistics",
+		"numbers",
+		"animated"
+	],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"inserter": true,
 		"spacing": {
@@ -125,5 +134,8 @@
 				}
 			}
 		]
-	}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }

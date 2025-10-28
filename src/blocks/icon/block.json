@@ -6,11 +6,22 @@
 	"title": "Icon",
 	"category": "designsetgo",
 	"description": "Display an inline SVG icon with customizable styling.",
-	"keywords": ["icon", "svg", "symbol", "graphic"],
+	"keywords": [
+		"icon",
+		"svg",
+		"symbol",
+		"graphic"
+	],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
-		"align": ["left", "center", "right", "wide", "full"],
+		"align": [
+			"left",
+			"center",
+			"right",
+			"wide",
+			"full"
+		],
 		"html": false,
 		"inserter": true,
 		"spacing": {
@@ -70,5 +81,8 @@
 			"icon": "star",
 			"iconSize": 64
 		}
-	}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
 }
