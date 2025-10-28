@@ -221,11 +221,13 @@
 		// WordPress uses > * + * selector which applies margin to all children EXCEPT first
 		// This causes first grid item to be higher than others
 		// Solution: Add same margin to first child to align everything
+		// Structure: grid > .dsg-container > .dsg-container__inner > :first-child
 		> .dsg-container,
-		> .wp-block-designsetgo-container,
-		> [class*="wp-container-"] {
-			> :first-child {
-				margin-block-start: var(--wp--preset--spacing--md) !important;
+		> .wp-block-designsetgo-container {
+			> .dsg-container__inner {
+				> :first-child {
+					margin-block-start: var(--wp--preset--spacing--md) !important;
+				}
 			}
 		}
 	}
@@ -236,11 +238,13 @@
 		// WordPress uses > * + * selector which applies margin to all children EXCEPT first
 		// This causes first grid item to be higher than others
 		// Solution: Add same margin to first child to align everything
+		// Structure: grid > .dsg-container > .dsg-container__inner > :first-child
 		> .dsg-container,
-		> .wp-block-designsetgo-container,
-		> [class*="wp-container-"] {
-			> :first-child {
-				margin-block-start: var(--wp--preset--spacing--md) !important;
+		> .wp-block-designsetgo-container {
+			> .dsg-container__inner {
+				> :first-child {
+					margin-block-start: var(--wp--preset--spacing--md) !important;
+				}
 			}
 		}
 	}
