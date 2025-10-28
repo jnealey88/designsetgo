@@ -224,8 +224,10 @@
 		// 2. > * + * (adjacent siblings - all except first)
 		// 3. > :first-child (first child specifically)
 		// We need to override all of these for containers that are direct children of grids
+		// Target both block class and WordPress's auto-generated container classes
 		> .dsg-container,
-		> .wp-block-designsetgo-container {
+		> .wp-block-designsetgo-container,
+		> [class*="wp-container-"] {
 			> * {
 				margin-block-start: 0 !important;
 				margin-block-end: 0 !important;
@@ -248,8 +250,10 @@
 		// 1. > * (all children)
 		// 2. > * + * (adjacent siblings - all except first)
 		// 3. > :first-child (first child specifically)
+		// Target both block class and WordPress's auto-generated container classes
 		> .dsg-container,
-		> .wp-block-designsetgo-container {
+		> .wp-block-designsetgo-container,
+		> [class*="wp-container-"] {
 			> * {
 				margin-block-start: 0 !important;
 				margin-block-end: 0 !important;
