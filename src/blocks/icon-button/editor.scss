@@ -5,7 +5,7 @@
  */
 
 // Import frontend styles
-@import './style.scss';
+@use './style.scss' as *;
 
 .dsg-icon-button {
 	// Editor-specific styles

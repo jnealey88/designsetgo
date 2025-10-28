@@ -6,21 +6,22 @@
  * @package DesignSetGo
  */
 
-@import './styles/variables';
-@import './styles/mixins';
-@import './styles/animations';
-@import './styles/utilities';
-@import './styles/block-variations';
+// Core utilities (loaded into global namespace with 'as *')
+@use './styles/variables' as *;
+@use './styles/mixins' as *;
+@use './styles/animations';
+@use './styles/utilities';
+@use './styles/block-variations';
 
 // Block animations extension (frontend)
-@import './extensions/block-animations/animations';
+@use './extensions/block-animations/animations' as block-animations;
 
 // Custom blocks (frontend)
-@import './blocks/accordion/style';
-@import './blocks/accordion-item/style';
-@import './blocks/container/style';
-@import './blocks/tabs/style';
-@import './blocks/tab/style';
-@import './blocks/icon-list/style';
-@import './blocks/icon-list-item/style';
-@import './blocks/pill/style';
+@use './blocks/accordion/style' as accordion;
+@use './blocks/accordion-item/style' as accordion-item;
+@use './blocks/container/style' as container;
+@use './blocks/tabs/style' as tabs;
+@use './blocks/tab/style' as tab;
+@use './blocks/icon-list/style' as icon-list;
+@use './blocks/icon-list-item/style' as icon-list-item;
+@use './blocks/pill/style' as pill;

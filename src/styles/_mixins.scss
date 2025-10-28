@@ -4,6 +4,8 @@
  * @package DesignSetGo
  */
 
+@use 'variables' as *;
+
 // Media Queries
 @mixin mobile {
 

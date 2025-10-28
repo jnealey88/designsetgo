@@ -4,7 +4,7 @@
  * Editor-specific styles and icon picker
  */
 
-@import './components/icon-picker';
+@use './components/icon-picker';
 
 .dsg-icon {
 	// Editor-specific styles to improve UX

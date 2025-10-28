@@ -4,7 +4,7 @@
  */
 
 // Import all frontend styles so they appear in editor
-@import './style.scss';
+@use './style.scss' as *;
 
 // Editor-specific overrides and enhancements
 .editor-styles-wrapper,
