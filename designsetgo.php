@@ -7,6 +7,7 @@
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            DesignSetGo
+ * Author URI:        https://designsetgoblocks.com
  * License:           GPL-2.0-or-later
  * Text Domain:       designsetgo
  * Domain Path:       /languages
