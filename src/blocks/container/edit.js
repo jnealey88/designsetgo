@@ -159,11 +159,18 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	// NOTE: WordPress adds .is-layout-constrained automatically.
 	// We keep it for stack layouts (default) to get proper margins,
 	// but remove it for flex/grid layouts where it would interfere.
+	//
+	// data-constrain-width attribute:
+	// - Controls whether WordPress's horizontal centering should apply
+	// - When "false", CSS overrides centering to allow full-width content
+	// - When "true" or missing, WordPress's default centering works
 	// ========================================
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: 'dsg-container__inner',
 			style: innerStyles,
+			// Add data attribute for CSS to conditionally override centering
+			...(layoutType === 'stack' && { 'data-constrain-width': String(constrainWidth) }),
 		},
 		{
 			// Orientation hint for flex layouts

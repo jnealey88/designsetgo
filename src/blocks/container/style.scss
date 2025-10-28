@@ -212,9 +212,6 @@
  *   --wp--style--global--content-size (e.g., 1140px) for readable line lengths
  * - Text within blocks follows text-align setting (left, center, right)
  * - This ensures optimal typography even in full-width containers
- *
- * DO NOT override WordPress's horizontal centering (.is-layout-constrained > :where(...))
- * It's there for good typographic reasons and matches Group block behavior.
  */
 
 // First child should have no top margin
@@ -231,4 +228,27 @@
 // Last child should have no bottom margin
 :root :where(.wp-block-designsetgo-container.is-layout-constrained) > :last-child {
 	margin-block-end: 0;
+}
+
+/**
+ * Constrained Layout Width Control
+ *
+ * We want WordPress's vertical margins but need to conditionally control
+ * horizontal centering based on user's "Constrain Width" setting.
+ *
+ * When constrainWidth is enabled (default):
+ * - Let WordPress center and constrain content (good for readability)
+ * - Uses theme's --wp--style--global--content-size (e.g., 1140px)
+ *
+ * When constrainWidth is disabled:
+ * - Override WordPress's centering to allow full-width content
+ * - User wants content to span the entire container width
+ * - Still keep the vertical margin behavior
+ *
+ * Note: We use data-constrain-width attribute applied by calculateInnerStyles utility
+ */
+.dsg-container__inner.is-layout-constrained[data-constrain-width="false"] > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	max-width: none !important;
 }

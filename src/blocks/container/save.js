@@ -71,10 +71,17 @@ export default function ContainerSave({ attributes }) {
 	// Remove WordPress's layout classes ONLY for flex/grid layouts
 	// For stack layout (default), keep .is-layout-constrained so WordPress's
 	// margin rules work correctly (matching Group block behavior)
+	//
+	// data-constrain-width attribute:
+	// - Controls whether WordPress's horizontal centering should apply
+	// - When "false", CSS overrides centering to allow full-width content
+	// - When "true" or missing, WordPress's default centering works
 	// ========================================
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: 'dsg-container__inner',
 		style: innerStyles,
+		// Add data attribute for CSS to conditionally override centering
+		...(layoutType === 'stack' && { 'data-constrain-width': String(attributes.constrainWidth) }),
 	});
 
 	const shouldRemoveLayoutClasses = layoutType === 'flex' || layoutType === 'grid';

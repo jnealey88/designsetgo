@@ -136,3 +136,15 @@
 :root :where(.wp-block-designsetgo-container.is-layout-constrained) > :last-child {
 	margin-block-end: 0;
 }
+
+/**
+ * Constrained Layout Width Control (Editor)
+ * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+ *
+ * See style.scss for full explanation.
+ */
+.dsg-container__inner.is-layout-constrained[data-constrain-width="false"] > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	max-width: none !important;
+}
