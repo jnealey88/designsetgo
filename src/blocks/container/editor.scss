@@ -131,22 +131,13 @@
 			}
 		}
 
-		// CRITICAL: Override WordPress's auto-generated margin rules for grid items
-		// (See style.scss for full explanation)
-		// Target both block class and WordPress's auto-generated container classes
+		// WordPress uses > * + * selector which applies margin to all children EXCEPT first
+		// Solution: Add same margin to first child to align everything (see style.scss)
 		> .dsg-container,
 		> .wp-block-designsetgo-container,
 		> [class*="wp-container-"] {
-			> * {
-				margin-block-start: 0 !important;
-				margin-block-end: 0 !important;
-			}
-			> * + * {
-				margin-block-start: 0 !important;
-				margin-block-end: 0 !important;
-			}
 			> :first-child {
-				margin-block-start: 0 !important;
+				margin-block-start: var(--wp--preset--spacing--md) !important;
 			}
 		}
 	}
@@ -154,20 +145,12 @@
 	// Also apply for grids without stretch (for consistency)
 	&[style*="display: grid"],
 	&[style*="display:grid"] {
-		// Target both block class and WordPress's auto-generated container classes
+		// WordPress uses > * + * selector - add margin to first child to align with others
 		> .dsg-container,
 		> .wp-block-designsetgo-container,
 		> [class*="wp-container-"] {
-			> * {
-				margin-block-start: 0 !important;
-				margin-block-end: 0 !important;
-			}
-			> * + * {
-				margin-block-start: 0 !important;
-				margin-block-end: 0 !important;
-			}
 			> :first-child {
-				margin-block-start: 0 !important;
+				margin-block-start: var(--wp--preset--spacing--md) !important;
 			}
 		}
 	}
