@@ -10,6 +10,10 @@ import edit from './edit';
 import save from './save';
 import metadata from './block.json';
 
+// Import styles
+import './editor.scss';
+import './style.scss';
+
 /**
  * Register Icon List Item Block
  */
