@@ -60,6 +60,7 @@ export const AnimationPanel = ({
 					'Use custom animation settings instead of parent settings',
 					'designsetgo'
 				)}
+				__nextHasNoMarginBottom
 			/>
 
 			{overrideAnimation && (
@@ -80,6 +81,8 @@ export const AnimationPanel = ({
 							'How long the counting animation takes',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<RangeControl
@@ -95,6 +98,8 @@ export const AnimationPanel = ({
 							'Delay before animation starts',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -121,6 +126,8 @@ export const AnimationPanel = ({
 						onChange={(value) =>
 							setAttributes({ customEasing: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</>
 			)}

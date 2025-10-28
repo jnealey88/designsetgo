@@ -41,6 +41,8 @@ export const CounterSettingsPanel = ({
 				min={0}
 				max={endValue}
 				help={__('Number to count from', 'designsetgo')}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			<TextControl
@@ -51,6 +53,8 @@ export const CounterSettingsPanel = ({
 					setAttributes({ endValue: parseFloat(value) || 0 })
 				}
 				help={__('Final number to display', 'designsetgo')}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			<RangeControl
@@ -60,6 +64,8 @@ export const CounterSettingsPanel = ({
 				min={0}
 				max={3}
 				help={__('Number of decimal places', 'designsetgo')}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			<TextControl
@@ -68,6 +74,8 @@ export const CounterSettingsPanel = ({
 				onChange={(value) => setAttributes({ prefix: value })}
 				placeholder="$"
 				help={__('Text before number (e.g., "$", "€")', 'designsetgo')}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			<TextControl
@@ -79,6 +87,8 @@ export const CounterSettingsPanel = ({
 					'Text after number (e.g., "+", "%", "K")',
 					'designsetgo'
 				)}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 		</PanelBody>
 	);

@@ -40,6 +40,7 @@ export const VisibilityPanel = ({
 					'Hide this container on desktop screens (>1024px)',
 					'designsetgo'
 				)}
+				__nextHasNoMarginBottom
 			/>
 
 			<ToggleControl
@@ -50,6 +51,7 @@ export const VisibilityPanel = ({
 					'Hide this container on tablet screens (768px-1023px)',
 					'designsetgo'
 				)}
+				__nextHasNoMarginBottom
 			/>
 
 			<ToggleControl
@@ -60,6 +62,7 @@ export const VisibilityPanel = ({
 					'Hide this container on mobile screens (<768px)',
 					'designsetgo'
 				)}
+				__nextHasNoMarginBottom
 			/>
 		</PanelBody>
 	);

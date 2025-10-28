@@ -124,6 +124,8 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 						min={1}
 						max={6}
 						help={__('>1024px', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<RangeControl
@@ -135,6 +137,8 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 						min={1}
 						max={columns}
 						help={__('768px - 1023px', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<RangeControl
@@ -146,6 +150,8 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 						min={1}
 						max={columnsTablet}
 						help={__('<768px', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<UnitControl
@@ -157,6 +163,8 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 							{ value: 'rem', label: 'rem' },
 							{ value: 'em', label: 'em' },
 						]}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -176,6 +184,8 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 						onChange={(value) =>
 							setAttributes({ alignContent: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
@@ -200,6 +210,8 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 							'How long the count animation takes',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<RangeControl
@@ -215,6 +227,8 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 							'Delay before animation starts',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -242,6 +256,8 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 							setAttributes({ animationEasing: value })
 						}
 						help={__('Animation timing curve', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
@@ -260,6 +276,7 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 							'Format numbers like "1,000" or "1000"',
 							'designsetgo'
 						)}
+						__nextHasNoMarginBottom
 					/>
 
 					{useGrouping && (
@@ -273,6 +290,8 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 								'Character for thousands (e.g., "," or ".")',
 								'designsetgo'
 							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					)}
 
@@ -284,6 +303,8 @@ function CounterGroupEdit({ attributes, setAttributes }) {
 							'Character for decimals (e.g., "." or ",")',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 

@@ -107,6 +107,7 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 						onChange={(value) =>
 							setAttributes({ allowMultipleOpen: value })
 						}
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -130,6 +131,8 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 							'Which panels should be open when the page loads',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
@@ -158,6 +161,8 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 						onChange={(value) =>
 							setAttributes({ iconStyle: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					{iconStyle !== 'none' && (
@@ -177,6 +182,8 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 							onChange={(value) =>
 								setAttributes({ iconPosition: value })
 							}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					)}
 				</PanelBody>
@@ -202,6 +209,7 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 										'designsetgo'
 									)
 						}
+						__nextHasNoMarginBottom
 					/>
 
 					{!borderBetween && (
@@ -218,6 +226,8 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 							]}
 							min={0}
 							max={100}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					)}
 				</PanelBody>

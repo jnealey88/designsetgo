@@ -141,6 +141,7 @@ export const BackgroundVideoPanel = ({
 							'Automatically play video when page loads',
 							'designsetgo'
 						)}
+						__nextHasNoMarginBottom
 					/>
 
 					<ToggleControl
@@ -153,6 +154,7 @@ export const BackgroundVideoPanel = ({
 							'Restart video when it reaches the end',
 							'designsetgo'
 						)}
+						__nextHasNoMarginBottom
 					/>
 
 					<ToggleControl
@@ -165,6 +167,7 @@ export const BackgroundVideoPanel = ({
 							'Mute video audio (required for autoplay on most browsers)',
 							'designsetgo'
 						)}
+						__nextHasNoMarginBottom
 					/>
 				</>
 			)}

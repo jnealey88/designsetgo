@@ -116,6 +116,8 @@ export const IconSettingsPanel = ({
 				min={16}
 				max={200}
 				step={2}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			<ToggleGroupControl

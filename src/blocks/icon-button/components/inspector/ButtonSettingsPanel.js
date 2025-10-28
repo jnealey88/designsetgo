@@ -58,6 +58,8 @@ export const ButtonSettingsPanel = ({
 					onChange={(value) => setAttributes({ url: value })}
 					placeholder="https://"
 					help={__('Enter the link URL', 'designsetgo')}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 
 				<ToggleControl
@@ -69,6 +71,7 @@ export const ButtonSettingsPanel = ({
 							rel: value ? 'noopener noreferrer' : '',
 						})
 					}
+					__nextHasNoMarginBottom
 				/>
 
 				{linkTarget === '_blank' && (
@@ -80,6 +83,8 @@ export const ButtonSettingsPanel = ({
 							'Rel attribute for security (default: noopener noreferrer)',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				)}
 			</PanelBody>
@@ -95,6 +100,8 @@ export const ButtonSettingsPanel = ({
 					]}
 					onChange={(value) => setAttributes({ iconPosition: value })}
 					help={__('Position of icon relative to text', 'designsetgo')}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 
 				{iconPosition !== 'none' && (
@@ -111,6 +118,8 @@ export const ButtonSettingsPanel = ({
 							min={12}
 							max={48}
 							help={__('Icon size in pixels', 'designsetgo')}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 
 						<UnitControl
@@ -123,6 +132,8 @@ export const ButtonSettingsPanel = ({
 								{ value: 'rem', label: 'rem' },
 							]}
 							help={__('Space between icon and text', 'designsetgo')}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					</>
 				)}
@@ -140,6 +151,8 @@ export const ButtonSettingsPanel = ({
 					]}
 					onChange={(value) => setAttributes({ width: value })}
 					help={__('Button width', 'designsetgo')}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 			</PanelBody>
 		</>

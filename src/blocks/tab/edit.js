@@ -116,6 +116,8 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 								'The title shown in the tab navigation',
 								'designsetgo'
 							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 
 						<TextControl
@@ -126,6 +128,8 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 								'Font Awesome icon name (e.g., "star")',
 								'designsetgo'
 							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 
 						{icon && (
@@ -149,6 +153,8 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 								onChange={(value) =>
 									setAttributes({ iconPosition: value })
 								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
 							/>
 						)}
 
@@ -162,6 +168,8 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 								'URL-friendly identifier for deep linking',
 								'designsetgo'
 							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					</PanelBody>
 				</InspectorControls>
@@ -208,6 +216,8 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 							'The title shown in the tab navigation',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -219,6 +229,8 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 							'Choose an icon to display with the tab',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					{icon && (
@@ -261,6 +273,8 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 							onChange={(value) =>
 								setAttributes({ iconPosition: value })
 							}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					)}
 
@@ -272,6 +286,8 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 							'URL-friendly identifier for deep linking',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 			</InspectorControls>

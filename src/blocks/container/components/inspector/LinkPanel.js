@@ -33,6 +33,8 @@ export const LinkPanel = ({ linkUrl, linkTarget, setAttributes }) => {
 				onChange={(value) => setAttributes({ linkUrl: value })}
 				placeholder="https://example.com"
 				help={__('Make entire container clickable', 'designsetgo')}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			{linkUrl && (
@@ -50,6 +52,8 @@ export const LinkPanel = ({ linkUrl, linkTarget, setAttributes }) => {
 						},
 					]}
 					onChange={(value) => setAttributes({ linkTarget: value })}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 			)}
 		</PanelBody>

@@ -80,6 +80,8 @@ export const GridPanel = ({
 					'Number of columns on desktop screens (>1024px)',
 					'designsetgo'
 				)}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			<RangeControl
@@ -101,6 +103,8 @@ export const GridPanel = ({
 					'Number of columns on tablet screens (768px-1023px)',
 					'designsetgo'
 				)}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			<RangeControl
@@ -115,6 +119,8 @@ export const GridPanel = ({
 					'Number of columns on mobile screens (<768px)',
 					'designsetgo'
 				)}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 		</PanelBody>
 	);

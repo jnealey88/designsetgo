@@ -46,6 +46,8 @@ export const GridSpanPanel = ({
 					'How many columns this container should span in the parent grid.',
 					'designsetgo'
 				)}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 		</PanelBody>
 	);

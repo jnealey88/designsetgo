@@ -42,6 +42,7 @@ export const ContentWidthPanel = ({
 							)
 						: __('Content uses full width', 'designsetgo')
 				}
+				__nextHasNoMarginBottom
 			/>
 
 			{constrainWidth && (
@@ -53,6 +54,8 @@ export const ContentWidthPanel = ({
 						'Maximum content width (e.g., 800px, 60rem)',
 						'designsetgo'
 					)}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 			)}
 		</PanelBody>

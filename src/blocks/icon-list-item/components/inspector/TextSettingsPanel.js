@@ -42,6 +42,8 @@ export const TextSettingsPanel = ({
 				]}
 				onChange={(value) => setAttributes({ titleTag: value })}
 				help={__('HTML element for the title', 'designsetgo')}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			<SelectControl
@@ -54,6 +56,8 @@ export const TextSettingsPanel = ({
 				]}
 				onChange={(value) => setAttributes({ descriptionTag: value })}
 				help={__('HTML element for the description', 'designsetgo')}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 		</PanelBody>
 	);

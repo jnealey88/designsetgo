@@ -176,6 +176,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						onChange={(value) =>
 							setAttributes({ orientation: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -200,6 +202,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							},
 						]}
 						onChange={(value) => setAttributes({ tabStyle: value })}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					{orientation === 'horizontal' && (
@@ -227,6 +231,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							onChange={(value) =>
 								setAttributes({ alignment: value })
 							}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					)}
 
@@ -239,6 +245,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						min={0}
 						max={40}
 						step={1}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
@@ -298,6 +306,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							'Screen width below which mobile mode activates',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -320,6 +330,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						onChange={(value) =>
 							setAttributes({ mobileMode: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
@@ -337,6 +349,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							'Allow tabs to be accessed via URL hash (e.g., #tab-name)',
 							'designsetgo'
 						)}
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 			</InspectorControls>

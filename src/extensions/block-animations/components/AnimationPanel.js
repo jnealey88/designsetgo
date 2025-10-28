@@ -59,6 +59,7 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 					'Add entrance and exit animations to this block',
 					'designsetgo'
 				)}
+				__nextHasNoMarginBottom
 			/>
 
 			{dsgAnimationEnabled && (
@@ -74,6 +75,8 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 							setAttributes({ dsgEntranceAnimation: value })
 						}
 						help={__('Animation when block appears', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -99,6 +102,8 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 							'Animation when block disappears',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -108,6 +113,8 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 						onChange={(value) =>
 							setAttributes({ dsgAnimationTrigger: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -119,6 +126,8 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 								dsgAnimationDuration: parseInt(value, 10),
 							})
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<RangeControl
@@ -134,6 +143,8 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 							'Delay before animation starts',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -143,6 +154,8 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 						onChange={(value) =>
 							setAttributes({ dsgAnimationEasing: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					{dsgAnimationTrigger === 'scroll' && (
@@ -163,6 +176,8 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 									'Distance from viewport to trigger animation',
 									'designsetgo'
 								)}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
 							/>
 
 							{dsgExitAnimation && (
@@ -192,6 +207,7 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 												'designsetgo'
 											)
 								}
+								__nextHasNoMarginBottom
 							/>
 						</>
 					)}

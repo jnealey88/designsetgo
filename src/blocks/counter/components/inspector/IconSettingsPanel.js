@@ -39,6 +39,7 @@ export const IconSettingsPanel = ({
 						? __('Icon is displayed', 'designsetgo')
 						: __('No icon displayed', 'designsetgo')
 				}
+				__nextHasNoMarginBottom
 			/>
 
 			{showIcon && (
@@ -78,6 +79,8 @@ export const IconSettingsPanel = ({
 							},
 						]}
 						onChange={(value) => setAttributes({ icon: value })}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -94,6 +97,8 @@ export const IconSettingsPanel = ({
 						onChange={(value) =>
 							setAttributes({ iconPosition: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</>
 			)}

@@ -66,6 +66,8 @@ export default function IconEdit({ attributes, setAttributes }) {
 						onChange={(value) => setAttributes({ iconSize: value })}
 						min={16}
 						max={200}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 					<ToggleGroupControl
 						label={__('Rotation', 'designsetgo')}
@@ -91,6 +93,8 @@ export default function IconEdit({ attributes, setAttributes }) {
 						value={linkUrl}
 						onChange={(value) => setAttributes({ linkUrl: value })}
 						placeholder="https://example.com"
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 					{linkUrl && (
 						<ToggleControl
@@ -102,6 +106,7 @@ export default function IconEdit({ attributes, setAttributes }) {
 									linkRel: value ? 'noopener noreferrer' : '',
 								})
 							}
+							__nextHasNoMarginBottom
 						/>
 					)}
 				</PanelBody>

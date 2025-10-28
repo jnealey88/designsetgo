@@ -41,6 +41,8 @@ export const LinkSettingsPanel = ({
 				onChange={(value) => setAttributes({ linkUrl: value })}
 				placeholder="https://"
 				help={__('Make the entire list item clickable', 'designsetgo')}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			{linkUrl && (
@@ -54,6 +56,7 @@ export const LinkSettingsPanel = ({
 								linkRel: value ? 'noopener noreferrer' : '',
 							})
 						}
+						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
@@ -70,6 +73,8 @@ export const LinkSettingsPanel = ({
 							{ label: 'nofollow', value: 'nofollow' },
 						]}
 						onChange={(value) => setAttributes({ linkRel: value })}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</>
 			)}

@@ -139,6 +139,7 @@ export default function AccordionItemEdit({
 						}
 						checked={isOpen}
 						onChange={(value) => setAttributes({ isOpen: value })}
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 			</InspectorControls>

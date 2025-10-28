@@ -51,6 +51,7 @@ export const OverlayPanel = ({
 					'Add a color overlay over the background for better text contrast',
 					'designsetgo'
 				)}
+				__nextHasNoMarginBottom
 			/>
 
 			{enableOverlay && (

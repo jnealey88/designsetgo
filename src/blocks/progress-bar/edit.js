@@ -118,6 +118,8 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 							'Set the progress percentage (0–100)',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
@@ -135,6 +137,8 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 							{ value: 'em', label: 'em' },
 							{ value: 'rem', label: 'rem' },
 						]}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<UnitControl
@@ -148,6 +152,8 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 							{ value: 'em', label: 'em' },
 							{ value: '%', label: '%' },
 						]}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					<ToggleGroupControl
@@ -202,6 +208,7 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 						onChange={(value) =>
 							setAttributes({ showLabel: value })
 						}
+						__nextHasNoMarginBottom
 					/>
 
 					{showLabel && (
@@ -215,6 +222,8 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 								'e.g., Project Progress',
 								'designsetgo'
 							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					)}
 
@@ -224,6 +233,7 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 						onChange={(value) =>
 							setAttributes({ showPercentage: value })
 						}
+						__nextHasNoMarginBottom
 					/>
 
 					{(showLabel || showPercentage) && (
@@ -247,6 +257,8 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 							onChange={(value) =>
 								setAttributes({ labelPosition: value })
 							}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					)}
 				</PanelBody>
@@ -266,6 +278,7 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 							'Animate the bar when it enters the viewport',
 							'designsetgo'
 						)}
+						__nextHasNoMarginBottom
 					/>
 
 					<RangeControl
@@ -278,6 +291,8 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 						max={5}
 						step={0.1}
 						help={__('Duration in seconds', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
 					{(barStyle === 'striped' ||
@@ -292,6 +307,7 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 								setAttributes({ stripedAnimation: value })
 							}
 							disabled={barStyle === 'striped-animated'}
+							__nextHasNoMarginBottom
 						/>
 					)}
 				</PanelBody>

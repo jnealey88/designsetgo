@@ -51,6 +51,8 @@ export const ShapeSettingsPanel = ({ shape, shapePadding, setAttributes }) => {
 								'designsetgo'
 							)
 				}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 
 			{shape !== 'none' && (
@@ -68,6 +70,8 @@ export const ShapeSettingsPanel = ({ shape, shapePadding, setAttributes }) => {
 							'Space between the icon and the shape edge.',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 					<p className="components-base-control__help">
 						{__(

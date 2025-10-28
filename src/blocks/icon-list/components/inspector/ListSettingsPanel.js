@@ -61,6 +61,8 @@ export const ListSettingsPanel = ({
 						'Choose how list items are arranged',
 						'designsetgo'
 					)}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 
 				{layout === 'vertical' && (
@@ -85,6 +87,8 @@ export const ListSettingsPanel = ({
 							'Align list items horizontally',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				)}
 
@@ -99,6 +103,8 @@ export const ListSettingsPanel = ({
 							'Number of columns in grid layout',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				)}
 
@@ -111,6 +117,8 @@ export const ListSettingsPanel = ({
 						{ label: __('Top', 'designsetgo'), value: 'top' },
 					]}
 					onChange={(value) => setAttributes({ iconPosition: value })}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 
 				<RangeControl
@@ -120,6 +128,8 @@ export const ListSettingsPanel = ({
 					min={16}
 					max={128}
 					help={__('Default icon size for all items', 'designsetgo')}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 
 				<UnitControl
@@ -132,6 +142,8 @@ export const ListSettingsPanel = ({
 						{ value: 'rem', label: 'rem' },
 					]}
 					help={__('Space between list items', 'designsetgo')}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 			</PanelBody>
 

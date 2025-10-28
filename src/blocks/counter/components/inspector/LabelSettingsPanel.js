@@ -29,6 +29,8 @@ export const LabelSettingsPanel = ({ label, setAttributes }) => {
 				onChange={(value) => setAttributes({ label: value })}
 				placeholder={__('Enter label…', 'designsetgo')}
 				help={__('Description text below counter', 'designsetgo')}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 		</PanelBody>
 	);

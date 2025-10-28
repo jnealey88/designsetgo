@@ -33,6 +33,8 @@ export const LayoutPanel = ({ layoutType, setAttributes }) => {
 				value={layoutType}
 				onChange={(value) => setAttributes({ layoutType: value })}
 				isBlock
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			>
 				<Tooltip text={__('Stack (Vertical)', 'designsetgo')}>
 					<ToggleGroupControlOption

@@ -68,6 +68,8 @@ export const LinkSettingsPanel = ({
 						value={linkUrl}
 						onChange={(value) => setAttributes({ linkUrl: value })}
 						placeholder="https://"
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 					<SelectControl
 						label={__('Open in', 'designsetgo')}
@@ -85,6 +87,8 @@ export const LinkSettingsPanel = ({
 						onChange={(value) =>
 							setAttributes({ linkTarget: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 					{linkTarget === '_blank' && (
 						<TextControl
@@ -97,6 +101,8 @@ export const LinkSettingsPanel = ({
 								'Recommended: "noopener noreferrer"',
 								'designsetgo'
 							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					)}
 				</div>
