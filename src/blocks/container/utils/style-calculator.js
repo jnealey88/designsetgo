@@ -96,6 +96,26 @@ export const calculateInnerStyles = (attributes) => {
 		styles.display = 'flex';
 		styles.flexDirection = 'row';
 		styles.flexWrap = 'wrap';
+
+		// Apply flex justification (horizontal alignment)
+		const { flexJustify = 'flex-start', flexAlign = 'flex-start' } =
+			attributes;
+		if (flexJustify === 'stretch') {
+			// For stretch, we don't use justify-content
+			// Instead, child items will grow to fill space
+			// But only if vertical alignment isn't also stretch
+			if (flexAlign !== 'stretch') {
+				// Apply horizontal stretch via CSS (handled in style.scss)
+				styles.alignItems = flexAlign; // Apply vertical alignment
+			} else {
+				// Both horizontal and vertical stretch
+				styles.alignItems = 'stretch';
+			}
+		} else {
+			styles.justifyContent = flexJustify;
+			styles.alignItems = flexAlign; // Apply vertical alignment
+		}
+
 		// Apply gap for flex layout
 		if (gapValue) {
 			styles.gap = gapValue;
@@ -158,13 +178,15 @@ export const calculateContainerClasses = (attributes) => {
 /**
  * Calculate container wrapper styles.
  *
- * @param {Object} attributes                - Block attributes
- * @param {string} attributes.textAlign      - Text alignment
- * @param {number} attributes.gridColumnSpan - Grid column span for nested containers
+ * @param {Object}  attributes                - Block attributes
+ * @param {string}  attributes.textAlign      - Text alignment
+ * @param {number}  attributes.gridColumnSpan - Grid column span for nested containers
+ * @param {string}  attributes.flexItemWidth  - Width when inside flex parent
+ * @param {boolean} hasParentFlex             - Whether parent is a flex container (optional)
  * @return {Object} React style object for container wrapper
  */
-export const calculateContainerStyles = (attributes) => {
-	const { textAlign, gridColumnSpan } = attributes;
+export const calculateContainerStyles = (attributes, hasParentFlex = false) => {
+	const { textAlign, gridColumnSpan, flexItemWidth } = attributes;
 
 	const styles = {
 		position: 'relative',
@@ -174,6 +196,14 @@ export const calculateContainerStyles = (attributes) => {
 	// Apply grid column span when set (browsers ignore if parent isn't grid)
 	if (gridColumnSpan && gridColumnSpan > 1) {
 		styles.gridColumn = `span ${gridColumnSpan}`;
+	}
+
+	// Apply flex item width when inside a flex parent
+	if (hasParentFlex && flexItemWidth) {
+		styles.width = flexItemWidth;
+		// Prevent flex item from growing/shrinking
+		styles.flexShrink = 0;
+		styles.flexGrow = 0;
 	}
 
 	return styles;

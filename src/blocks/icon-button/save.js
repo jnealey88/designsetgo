@@ -62,7 +62,10 @@ export default function IconButtonSave({ attributes }) {
 				style: buttonStyles,
 				href: url,
 				target: linkTarget,
-				rel: linkTarget === '_blank' ? (rel || 'noopener noreferrer') : rel || undefined,
+				rel:
+					linkTarget === '_blank'
+						? rel || 'noopener noreferrer'
+						: rel || undefined,
 			}
 		: {
 				className: 'dsg-icon-button__wrapper',
@@ -73,7 +76,10 @@ export default function IconButtonSave({ attributes }) {
 		<div {...blockProps}>
 			<ButtonWrapper {...wrapperProps}>
 				{iconPosition !== 'none' && icon && (
-					<span className="dsg-icon-button__icon" style={iconWrapperStyles}>
+					<span
+						className="dsg-icon-button__icon"
+						style={iconWrapperStyles}
+					>
 						{getIcon(icon)}
 					</span>
 				)}

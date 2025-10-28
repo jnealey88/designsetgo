@@ -137,6 +137,64 @@
 		box-sizing: border-box;
 	}
 
+	// Override WordPress's layout constrained classes when we have custom flex layout
+	// WordPress adds is-layout-constrained which can interfere with flex justification
+	&.is-layout-constrained[style*="display: flex"],
+	&.is-layout-constrained[style*="display:flex"] {
+		// Remove WordPress's layout constraints for flex layouts
+		max-width: none !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+
+		// Explicitly set width for flex container
+		width: 100% !important;
+	}
+
+	// Flex layout: ensure justify-content is respected
+	&[style*="flex"][style*="justify-content"] {
+		// Force justify-content from inline styles to be respected
+		// WordPress's layout system might try to override this
+		&[style*="justify-content: center"],
+		&[style*="justify-content:center"] {
+			justify-content: center !important;
+		}
+		&[style*="justify-content: flex-end"],
+		&[style*="justify-content:flex-end"] {
+			justify-content: flex-end !important;
+		}
+		&[style*="justify-content: space-around"],
+		&[style*="justify-content:space-around"] {
+			justify-content: space-around !important;
+		}
+		&[style*="justify-content: space-between"],
+		&[style*="justify-content:space-between"] {
+			justify-content: space-between !important;
+		}
+	}
+
+	// Flex layout: ensure align-items is respected
+	&[style*="flex"][style*="align-items"] {
+		// Force align-items from inline styles to be respected
+		&[style*="align-items: center"],
+		&[style*="align-items:center"] {
+			align-items: center !important;
+		}
+		&[style*="align-items: flex-end"],
+		&[style*="align-items:flex-end"] {
+			align-items: flex-end !important;
+		}
+		&[style*="align-items: flex-start"],
+		&[style*="align-items:flex-start"] {
+			align-items: flex-start !important;
+		}
+	}
+
+	// Flex stretch mode - make child items grow to fill space
+	// Applied when flex layout has alignItems: stretch
+	&[style*="align-items: stretch"] > * {
+		flex: 1 1 0%;
+	}
+
 	// Responsive grid columns using CSS custom properties
 	// Desktop: uses --dsg-grid-cols-desktop (default, already in inline styles)
 	// Tablet: switches to --dsg-grid-cols-tablet
@@ -168,12 +226,29 @@
  * Layout-Constrained Margin Rules
  * Matches WordPress Group block behavior for proper vertical spacing
  * Applied when layout support is enabled (type: constrained)
+ *
+ * Note: We target all elements including headings with increased specificity
+ * to override browser default heading margins (h1-h6 get 0.67em by default)
  */
-:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :first-child {
-	margin-block-start: 0;
+
+// First child should have no top margin
+.wp-block-designsetgo-container.is-layout-constrained > :first-child {
+	margin-block-start: 0 !important;
 }
 
-:root :where(.wp-block-designsetgo-container.is-layout-constrained) > * {
-	margin-block-start: 1.2rem;
-	margin-block-end: 0;
+// All children get consistent vertical spacing
+.wp-block-designsetgo-container.is-layout-constrained > * {
+	margin-block-start: 1.2rem !important;
+	margin-block-end: 0 !important;
+}
+
+// Specifically target headings to override browser defaults
+.wp-block-designsetgo-container.is-layout-constrained > :is(h1, h2, h3, h4, h5, h6) {
+	margin-block-start: 1.2rem !important;
+	margin-block-end: 0 !important;
+}
+
+// First heading should have no top margin
+.wp-block-designsetgo-container.is-layout-constrained > :is(h1, h2, h3, h4, h5, h6):first-child {
+	margin-block-start: 0 !important;
 }

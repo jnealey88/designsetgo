@@ -8,12 +8,8 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	background: transparent; // Don't apply background to outer wrapper
-
-	// When WordPress adds background color, transfer it to shape wrapper
-	&.has-background {
-		background: transparent !important; // Remove from parent
-	}
+	// Background color will be inherited by child .dsg-icon__wrapper
+	// No need to force transparent here
 
 	// Link wrapper
 	&__link {

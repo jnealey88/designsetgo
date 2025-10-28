@@ -28,7 +28,7 @@ class Assets {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_editor_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
 		add_filter( 'render_block', array( $this, 'track_block_usage' ), 10, 2 );
 
@@ -57,8 +57,14 @@ class Assets {
 	 *
 	 * Note: Individual block assets are loaded automatically via block.json.
 	 * This method is for global editor assets (extensions, variations, etc.).
+	 * Uses enqueue_block_assets hook to properly work with block editor iframe.
 	 */
 	public function enqueue_editor_assets() {
+		// Only run in editor context.
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		// Enqueue Dashicons for tab icons.
 		// Note: WordPress automatically loads Dashicons in the admin, but we enqueue
 		// explicitly to ensure it's available for our tab icon picker.

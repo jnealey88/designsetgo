@@ -47,6 +47,18 @@
 			"type": "string",
 			"default": "0"
 		},
+		"flexJustify": {
+			"type": "string",
+			"default": "flex-start"
+		},
+		"flexAlign": {
+			"type": "string",
+			"default": "flex-start"
+		},
+		"flexItemWidth": {
+			"type": "string",
+			"default": ""
+		},
 		"videoUrl": {
 			"type": "string",
 			"default": ""
@@ -169,10 +181,10 @@
 			"style": true,
 			"width": true,
 			"__experimentalDefaultControls": {
-				"color": false,
-				"radius": false,
-				"style": false,
-				"width": false
+				"color": true,
+				"radius": true,
+				"style": true,
+				"width": true
 			}
 		}
 	},

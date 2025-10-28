@@ -13,11 +13,16 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const glob = require('glob');
 
 // Auto-detect all blocks with index.js files
-const blockEntries = glob.sync('./src/blocks/*/index.js').reduce((entries, file) => {
-	const blockName = file.match(/\/blocks\/([^/]+)\/index\.js$/)[1];
-	entries[`blocks/${blockName}/index`] = path.resolve(process.cwd(), file);
-	return entries;
-}, {});
+const blockEntries = glob
+	.sync('./src/blocks/*/index.js')
+	.reduce((entries, file) => {
+		const blockName = file.match(/\/blocks\/([^/]+)\/index\.js$/)[1];
+		entries[`blocks/${blockName}/index`] = path.resolve(
+			process.cwd(),
+			file
+		);
+		return entries;
+	}, {});
 
 module.exports = {
 	...defaultConfig,

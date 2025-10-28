@@ -32,10 +32,14 @@ export default function ContainerSave({ attributes }) {
 
 	// ========================================
 	// Calculate styles using utilities (MUST match edit.js for editor/frontend parity)
+	// Note: We can't detect parent context in save function, but flexItemWidth
+	// will only take effect if parent is actually a flex container.
 	// ========================================
 	const innerStyles = calculateInnerStyles(attributes);
 	const containerClasses = calculateContainerClasses(attributes);
-	const containerStyles = calculateContainerStyles(attributes);
+	// Pass true for hasParentFlex to always apply flexItemWidth if set
+	// The browser will use it only when parent is actually flex
+	const containerStyles = calculateContainerStyles(attributes, true);
 
 	// ========================================
 	// Block wrapper props
@@ -63,11 +67,30 @@ export default function ContainerSave({ attributes }) {
 
 	// ========================================
 	// Inner blocks props (WordPress best practice)
+	// Remove WordPress's layout classes that interfere with our custom layouts
 	// ========================================
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: 'dsg-container__inner',
 		style: innerStyles,
 	});
+
+	// Clean up WordPress's auto-generated layout classes
+	// These interfere with our custom flex/grid layouts
+	const cleanedClassName = (innerBlocksProps.className || '')
+		.split(' ')
+		.filter(
+			(cls) =>
+				!cls.includes('is-layout-') &&
+				!cls.includes('has-global-padding') &&
+				!cls.includes('wp-block-') &&
+				!cls.includes('wp-container-')
+		)
+		.join(' ');
+
+	const finalInnerBlocksProps = {
+		...innerBlocksProps,
+		className: cleanedClassName,
+	};
 
 	return (
 		<div {...blockProps}>
@@ -89,7 +112,7 @@ export default function ContainerSave({ attributes }) {
 			)}
 
 			{/* Inner Blocks - WordPress best practice: NO wrapper div, spread props directly */}
-			<div {...innerBlocksProps} />
+			<div {...finalInnerBlocksProps} />
 		</div>
 	);
 }

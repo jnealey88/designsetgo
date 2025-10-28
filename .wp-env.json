@@ -1,13 +1,25 @@
 {
-	"core": "WordPress/WordPress#6.4",
-	"phpVersion": "8.0",
+	"core": "WordPress/WordPress#6.8",
+	"phpVersion": "8.3",
 	"plugins": [
-		".",
-		"https://downloads.wordpress.org/plugin/gutenberg.latest-stable.zip"
+		"."
 	],
 	"themes": [
-		"https://downloads.wordpress.org/theme/twentytwentyfour.zip"
+		"https://downloads.wordpress.org/theme/twentytwentyfour.zip",
+		"https://downloads.wordpress.org/theme/twentytwentyfive.zip"
 	],
+	"mappings": {},
+	"env": {
+		"development": {
+			"themes": [
+				"https://downloads.wordpress.org/theme/twentytwentyfour.zip",
+				"https://downloads.wordpress.org/theme/twentytwentyfive.zip"
+			]
+		}
+	},
+	"lifecycleScripts": {
+		"afterStart": "npx wp-env run cli wp theme activate twentytwentyfive"
+	},
 	"port": 8888,
 	"testsPort": 8889,
 	"config": {

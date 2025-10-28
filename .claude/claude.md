@@ -727,6 +727,146 @@ if (linkTarget === '_blank') {
 }
 ```
 
+### Future-Proof WordPress Components
+**Critical**: Always add future-proof props to WordPress components to avoid deprecation warnings and prepare for upcoming WordPress versions.
+
+**Problem**: WordPress 6.7+ deprecated old size and margin defaults for form components. Without future-proof props, console shows warnings:
+- "36px default size for wp.components.{Component} is deprecated since version 6.8"
+- "Bottom margin styles for wp.components.{Component} is deprecated since version 6.7"
+
+**Solution**: Add these two props to ALL instances of these components:
+
+**Affected Components**:
+- `SelectControl`
+- `RangeControl`
+- `UnitControl`
+- `ToggleGroupControl`
+- `TextControl`
+
+**Required Props**:
+```javascript
+<RangeControl
+  label={__('My Setting', 'designsetgo')}
+  value={myValue}
+  onChange={(value) => setAttributes({ myValue: value })}
+  min={1}
+  max={10}
+  __next40pxDefaultSize        // ← Future-proof size
+  __nextHasNoMarginBottom      // ← Future-proof margin
+/>
+```
+
+**Why This Matters**:
+- Eliminates deprecation warnings in console (cleaner developer experience)
+- Prepares codebase for WordPress 7.0+ when old defaults are removed
+- Adopts new WordPress component sizing standards early
+- Prevents future breaking changes
+
+**When to Add**:
+- **All new blocks**: Add these props from day one
+- **Existing blocks**: Add during any component updates or refactoring
+- **Component libraries**: Update all instances systematically
+
+**Real-World Impact**:
+- Updated 80 component instances across 22 files in DesignSetGo
+- Eliminated 14+ deprecation warnings from console
+- Future-proofed plugin for WordPress 7.0+ compatibility
+
+### Proper Asset Enqueuing for Block Editor
+**Critical**: Use correct WordPress hooks for enqueuing block editor assets to avoid iframe warnings.
+
+**Problem**: Using `enqueue_block_editor_assets` hook causes warning:
+```
+designsetgo-extensions-css was added to the iframe incorrectly.
+Please use block.json or enqueue_block_assets to add styles to the iframe.
+```
+
+**Root Cause**: WordPress 5.8+ uses iframe for block editor. The `enqueue_block_editor_assets` hook runs before iframe is ready, causing assets to load in wrong context.
+
+**Wrong Approach**:
+```php
+// ❌ BAD - Assets don't load correctly in iframe
+add_action('enqueue_block_editor_assets', array($this, 'enqueue_editor_assets'));
+```
+
+**Correct Approach**:
+```php
+// ✅ GOOD - Works correctly with block editor iframe
+add_action('enqueue_block_assets', array($this, 'enqueue_editor_assets'));
+
+public function enqueue_editor_assets() {
+    // Guard: Only run in editor context
+    if (!is_admin()) {
+        return;
+    }
+
+    // Enqueue scripts/styles...
+}
+```
+
+**Why This Works**:
+- `enqueue_block_assets` hook runs in BOTH editor and frontend contexts
+- Guard with `is_admin()` to run only in editor
+- Assets load correctly in block editor iframe
+- No console warnings about incorrect asset loading
+
+**Key Differences**:
+
+| Hook | Context | Iframe Support | Best For |
+|------|---------|----------------|----------|
+| `enqueue_block_editor_assets` | Editor only | ❌ Old pattern | Deprecated |
+| `enqueue_block_assets` + `is_admin()` guard | Both (guarded) | ✅ Correct | **Use this** |
+| `wp_enqueue_scripts` | Frontend only | N/A | Frontend assets |
+
+**Pattern for Assets Class**:
+```php
+class Assets {
+    public function __construct() {
+        // Editor assets (extensions, variations)
+        add_action('enqueue_block_assets', array($this, 'enqueue_editor_assets'));
+
+        // Frontend assets (only when blocks present)
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
+    }
+
+    public function enqueue_editor_assets() {
+        // Guard: Editor only
+        if (!is_admin()) {
+            return;
+        }
+
+        // Load editor scripts/styles
+        wp_enqueue_style('designsetgo-extensions', ...);
+        wp_enqueue_script('designsetgo-extensions', ...);
+    }
+
+    public function enqueue_frontend_assets() {
+        // Only load if blocks are used
+        if (!$this->has_designsetgo_blocks()) {
+            return;
+        }
+
+        // Load frontend scripts/styles
+        wp_enqueue_style('designsetgo-frontend', ...);
+        wp_enqueue_script('designsetgo-frontend', ...);
+    }
+}
+```
+
+**Benefits**:
+- No iframe warnings in console
+- Proper asset loading in block editor
+- Works with WordPress 5.8+ iframe architecture
+- Follows WordPress best practices
+
+**When to Use**:
+- Block extensions (filters that modify core blocks)
+- Block variations
+- Global editor styles/scripts
+- Any editor-only customizations
+
+**Note**: Individual block assets should still use `block.json` `editorScript`, `editorStyle`, `script`, and `style` properties for automatic loading.
+
 ## WordPress-Specific Learnings
 
 ### Block Category Ordering

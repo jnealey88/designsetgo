@@ -163,11 +163,11 @@ export default function CounterEdit({ attributes, setAttributes, context }) {
 							? __(
 									'Override parent group hover color. Leave empty to use group setting.',
 									'designsetgo'
-							  )
+								)
 							: __(
 									'Color for counter number on hover. Leave empty to use theme accent color.',
 									'designsetgo'
-							  )}
+								)}
 					</p>
 				</PanelColorSettings>
 			</InspectorControls>

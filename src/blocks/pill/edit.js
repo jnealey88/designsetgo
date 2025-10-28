@@ -6,7 +6,7 @@ import {
 	useBlockProps,
 	RichText,
 	BlockControls,
-	AlignmentToolbar
+	AlignmentToolbar,
 } from '@wordpress/block-editor';
 
 export default function PillEdit({ attributes, setAttributes }) {
@@ -62,7 +62,9 @@ export default function PillEdit({ attributes, setAttributes }) {
 			<BlockControls>
 				<AlignmentToolbar
 					value={alignment}
-					onChange={(newAlignment) => setAttributes({ alignment: newAlignment || 'none' })}
+					onChange={(newAlignment) =>
+						setAttributes({ alignment: newAlignment || 'none' })
+					}
 				/>
 			</BlockControls>
 
@@ -71,8 +73,10 @@ export default function PillEdit({ attributes, setAttributes }) {
 					tagName="span"
 					className="dsg-pill__content"
 					value={content}
-					onChange={(newContent) => setAttributes({ content: newContent })}
-					placeholder={__('Add pill text...', 'designsetgo')}
+					onChange={(newContent) =>
+						setAttributes({ content: newContent })
+					}
+					placeholder={__('Add pill text…', 'designsetgo')}
 					allowedFormats={['core/bold', 'core/italic']}
 					style={innerStyle}
 				/>

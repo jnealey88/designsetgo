@@ -39,12 +39,23 @@ export default function IconListItemEdit({
 	const iconColor = context['designsetgo/iconList/iconColor'] || '';
 	const iconPosition = context['designsetgo/iconList/iconPosition'] || 'left';
 
+	// Calculate text alignment based on icon position
+	const getTextAlign = () => {
+		if (iconPosition === 'top') {
+			return 'center';
+		}
+		if (iconPosition === 'right') {
+			return 'right';
+		}
+		return 'left';
+	};
+
 	// Calculate item layout styles
 	const itemStyles = {
 		display: 'flex',
 		flexDirection: iconPosition === 'top' ? 'column' : 'row',
 		alignItems: iconPosition === 'top' ? 'center' : 'flex-start',
-		textAlign: iconPosition === 'top' ? 'center' : iconPosition === 'right' ? 'right' : 'left',
+		textAlign: getTextAlign(),
 		gap: iconPosition === 'top' ? '12px' : '16px',
 		...(iconPosition === 'right' && { flexDirection: 'row-reverse' }),
 	};

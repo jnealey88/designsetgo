@@ -11,8 +11,6 @@ import {
 	useBlockProps,
 	InspectorControls,
 	RichText,
-	BlockControls,
-	AlignmentToolbar,
 } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
 import { ButtonSettingsPanel } from './components/inspector/ButtonSettingsPanel';

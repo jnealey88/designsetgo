@@ -31,6 +31,7 @@ import { useEffect } from '@wordpress/element';
 import { LayoutPanel } from './components/inspector/LayoutPanel';
 import { GridPanel } from './components/inspector/GridPanel';
 import { GridSpanPanel } from './components/inspector/GridSpanPanel';
+import { FlexPanel } from './components/inspector/FlexPanel';
 import { ContentWidthPanel } from './components/inspector/ContentWidthPanel';
 import { BackgroundVideoPanel } from './components/inspector/BackgroundVideoPanel';
 import { OverlayPanel } from './components/inspector/OverlayPanel';
@@ -70,25 +71,33 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	// ========================================
 	// Detect parent block for nested container context
 	// ========================================
-	const { parentBlock, hasParentContainer, parentIsGrid } = useSelect(
-		(select) => {
-			const { getBlockParents, getBlock } = select(blockEditorStore);
-			const parentClientIds = getBlockParents(clientId);
-			const parentClientId = parentClientIds[parentClientIds.length - 1];
-			const parent = parentClientId ? getBlock(parentClientId) : null;
+	const { parentBlock, hasParentContainer, parentIsGrid, parentIsFlex } =
+		useSelect(
+			(select) => {
+				const { getBlockParents, getBlock } = select(blockEditorStore);
+				const parentClientIds = getBlockParents(clientId);
+				const parentClientId =
+					parentClientIds[parentClientIds.length - 1];
+				const parent = parentClientId ? getBlock(parentClientId) : null;
 
-			const isParentContainer = parent?.name === 'designsetgo/container';
-			const isParentGrid =
-				isParentContainer && parent?.attributes?.layoutType === 'grid';
+				const isParentContainer =
+					parent?.name === 'designsetgo/container';
+				const isParentGrid =
+					isParentContainer &&
+					parent?.attributes?.layoutType === 'grid';
+				const isParentFlex =
+					isParentContainer &&
+					parent?.attributes?.layoutType === 'flex';
 
-			return {
-				parentBlock: parent,
-				hasParentContainer: isParentContainer,
-				parentIsGrid: isParentGrid,
-			};
-		},
-		[clientId]
-	);
+				return {
+					parentBlock: parent,
+					hasParentContainer: isParentContainer,
+					parentIsGrid: isParentGrid,
+					parentIsFlex: isParentFlex,
+				};
+			},
+			[clientId]
+		);
 
 	// ========================================
 	// Auto-disable constrainWidth for nested containers
@@ -106,7 +115,7 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	// ========================================
 	const innerStyles = calculateInnerStyles(attributes);
 	const containerClasses = calculateContainerClasses(attributes);
-	const containerStyles = calculateContainerStyles(attributes);
+	const containerStyles = calculateContainerStyles(attributes, parentIsFlex);
 
 	// ========================================
 	// Block wrapper props
@@ -122,6 +131,9 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	// ========================================
 	// Inner blocks props (WordPress best practice)
 	// Replaces plain <InnerBlocks /> to fix layout issues
+	//
+	// IMPORTANT: We override WordPress's layout classes with our own
+	// to prevent is-layout-constrained from interfering with our flex/grid layouts
 	// ========================================
 	const innerBlocksProps = useInnerBlocksProps(
 		{
@@ -133,6 +145,25 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 			orientation: layoutType === 'flex' ? 'horizontal' : undefined,
 		}
 	);
+
+	// Remove WordPress's layout classes and add our own
+	// This is necessary because WordPress adds is-layout-constrained by default
+	// which interferes with our custom flex/grid layouts
+	const cleanedClassName = (innerBlocksProps.className || '')
+		.split(' ')
+		.filter(
+			(cls) =>
+				!cls.includes('is-layout-') &&
+				!cls.includes('has-global-padding') &&
+				!cls.includes('wp-block-') &&
+				!cls.includes('wp-container-')
+		)
+		.join(' ');
+
+	const finalInnerBlocksProps = {
+		...innerBlocksProps,
+		className: cleanedClassName,
+	};
 
 	return (
 		<>
@@ -289,6 +320,15 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 					setAttributes={setAttributes}
 				/>
 
+				<FlexPanel
+					layoutType={layoutType}
+					flexJustify={attributes.flexJustify}
+					flexAlign={attributes.flexAlign}
+					flexItemWidth={attributes.flexItemWidth}
+					hasParentFlex={parentIsFlex}
+					setAttributes={setAttributes}
+				/>
+
 				<ContentWidthPanel
 					constrainWidth={attributes.constrainWidth}
 					contentWidth={attributes.contentWidth}
@@ -395,7 +435,7 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 				)}
 
 				{/* Inner Blocks - WordPress best practice: NO wrapper div, spread props directly */}
-				<div {...innerBlocksProps} />
+				<div {...finalInnerBlocksProps} />
 			</div>
 		</>
 	);

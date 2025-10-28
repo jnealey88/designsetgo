@@ -28,9 +28,16 @@ export default function IconSave({ attributes }) {
 		alignItems: 'center',
 		justifyContent: 'center',
 		transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined,
+		// Inherit background from parent (applied by WordPress color controls)
+		background: 'inherit',
+		borderRadius: 'inherit',
 	};
 
-	const iconElement = <div style={iconWrapperStyle}>{getIcon(icon)}</div>;
+	const iconElement = (
+		<div className="dsg-icon__wrapper" style={iconWrapperStyle}>
+			{getIcon(icon)}
+		</div>
+	);
 
 	return (
 		<div {...blockProps}>

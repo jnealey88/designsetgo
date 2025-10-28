@@ -16,11 +16,6 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
-import {
-	URLInput,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalLinkControl as LinkControl,
-} from '@wordpress/block-editor';
 import { IconPicker } from '../../../icon/components/IconPicker';
 
 /**
@@ -51,7 +46,10 @@ export const ButtonSettingsPanel = ({
 }) => {
 	return (
 		<>
-			<PanelBody title={__('Link Settings', 'designsetgo')} initialOpen={true}>
+			<PanelBody
+				title={__('Link Settings', 'designsetgo')}
+				initialOpen={true}
+			>
 				<TextControl
 					label={__('URL', 'designsetgo')}
 					value={url}
@@ -89,7 +87,10 @@ export const ButtonSettingsPanel = ({
 				)}
 			</PanelBody>
 
-			<PanelBody title={__('Icon Settings', 'designsetgo')} initialOpen={true}>
+			<PanelBody
+				title={__('Icon Settings', 'designsetgo')}
+				initialOpen={true}
+			>
 				<SelectControl
 					label={__('Icon Position', 'designsetgo')}
 					value={iconPosition}
@@ -99,7 +100,10 @@ export const ButtonSettingsPanel = ({
 						{ label: __('None', 'designsetgo'), value: 'none' },
 					]}
 					onChange={(value) => setAttributes({ iconPosition: value })}
-					help={__('Position of icon relative to text', 'designsetgo')}
+					help={__(
+						'Position of icon relative to text',
+						'designsetgo'
+					)}
 					__next40pxDefaultSize
 					__nextHasNoMarginBottom
 				/>
@@ -114,7 +118,9 @@ export const ButtonSettingsPanel = ({
 						<RangeControl
 							label={__('Icon Size', 'designsetgo')}
 							value={iconSize}
-							onChange={(value) => setAttributes({ iconSize: value })}
+							onChange={(value) =>
+								setAttributes({ iconSize: value })
+							}
 							min={12}
 							max={48}
 							help={__('Icon size in pixels', 'designsetgo')}
@@ -125,13 +131,18 @@ export const ButtonSettingsPanel = ({
 						<UnitControl
 							label={__('Icon Gap', 'designsetgo')}
 							value={iconGap}
-							onChange={(value) => setAttributes({ iconGap: value })}
+							onChange={(value) =>
+								setAttributes({ iconGap: value })
+							}
 							units={[
 								{ value: 'px', label: 'px' },
 								{ value: 'em', label: 'em' },
 								{ value: 'rem', label: 'rem' },
 							]}
-							help={__('Space between icon and text', 'designsetgo')}
+							help={__(
+								'Space between icon and text',
+								'designsetgo'
+							)}
 							__next40pxDefaultSize
 							__nextHasNoMarginBottom
 						/>
@@ -145,7 +156,10 @@ export const ButtonSettingsPanel = ({
 					value={width}
 					options={[
 						{ label: __('Auto', 'designsetgo'), value: 'auto' },
-						{ label: __('Full Width', 'designsetgo'), value: '100%' },
+						{
+							label: __('Full Width', 'designsetgo'),
+							value: '100%',
+						},
 						{ label: __('50%', 'designsetgo'), value: '50%' },
 						{ label: __('25%', 'designsetgo'), value: '25%' },
 					]}
