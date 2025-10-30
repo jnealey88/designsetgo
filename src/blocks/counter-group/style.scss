@@ -7,6 +7,9 @@
 .dsg-counter-group {
 	width: 100%;
 	box-sizing: border-box;
+	// Default text color that child Counter blocks will inherit
+	// WordPress applies inline style when user chooses a color, which takes precedence
+	color: var(--wp--preset--color--contrast);
 
 	&__inner {
 		display: grid;

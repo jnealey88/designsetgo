@@ -1,0 +1,23 @@
+/**
+ * Stack Container Block - Editor Styles
+ *
+ * Editor-only styles for the Stack Container block.
+ *
+ * @package DesignSetGo
+ */
+
+.dsg-stack {
+	// Visual indicator in editor
+	position: relative;
+
+	// Ensure proper spacing
+	&__inner {
+		width: 100%;
+	}
+
+	// Show outline when selected (editor-only)
+	&.is-selected {
+		outline: 1px dashed rgba(37, 99, 235, 0.3);
+		outline-offset: -1px;
+	}
+}

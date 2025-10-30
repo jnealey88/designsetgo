@@ -36,22 +36,6 @@
 			"type": "string",
 			"default": "star"
 		},
-		"title": {
-			"type": "string",
-			"default": ""
-		},
-		"titleTag": {
-			"type": "string",
-			"default": "h3"
-		},
-		"description": {
-			"type": "string",
-			"default": ""
-		},
-		"descriptionTag": {
-			"type": "string",
-			"default": "p"
-		},
 		"linkUrl": {
 			"type": "string",
 			"default": ""

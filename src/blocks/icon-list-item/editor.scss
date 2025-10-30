@@ -19,6 +19,35 @@
 		border-radius: 4px;
 	}
 
+	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+	// Remove margins from all blocks in content area (InnerBlocks)
+	.dsg-icon-list-item__content {
+		// Remove margins from all blocks in content area
+		// This prevents excessive spacing since icon list item has its own gap setting
+		> * {
+			margin-block-start: 0;
+			margin-block-end: 0;
+		}
+
+		// Remove margins from headings
+		h1, h2, h3, h4, h5, h6 {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		// Remove margins from paragraphs
+		p {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		// Remove margins from lists
+		ul, ol {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+	}
+
 	// Reset margins to match frontend
 	.dsg-icon-list-item__title {
 		margin-block-start: 0;

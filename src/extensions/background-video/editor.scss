@@ -1,0 +1,35 @@
+/**
+ * Background Video Extension - Editor Styles
+ *
+ * Editor-only styles for blocks with background videos.
+ *
+ * @package DesignSetGo
+ */
+
+.dsg-has-video-background {
+	position: relative;
+
+	// Visual indicator in editor
+	&::after {
+		content: 'Video Background';
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		background: rgba(37, 99, 235, 0.9);
+		color: white;
+		padding: 4px 8px;
+		border-radius: 4px;
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	// Ensure video doesn't interfere with editing
+	.dsg-video-background-editor {
+		pointer-events: none;
+		user-select: none;
+	}
+}

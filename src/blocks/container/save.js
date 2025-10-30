@@ -33,14 +33,15 @@ export default function ContainerSave({ attributes }) {
 
 	// ========================================
 	// Calculate styles using utilities (MUST match edit.js for editor/frontend parity)
-	// Note: We can't detect parent context in save function, but flexItemWidth
-	// will only take effect if parent is actually a flex container.
+	// Note: We can't detect parent context in save function, but CSS properties
+	// like flexItemWidth will only take effect if parent is actually a flex container.
+	// Vertical alignment in grids is handled via CSS classes (.is-vertically-aligned-*).
 	// ========================================
 	const innerStyles = calculateInnerStyles(attributes);
 	const containerClasses = calculateContainerClasses(attributes);
-	// Pass true for hasParentFlex to always apply flexItemWidth if set
-	// The browser will use it only when parent is actually flex
-	const containerStyles = calculateContainerStyles(attributes, true);
+	// Pass true for both hasParentFlex and hasParentGrid to always apply styles
+	// The browser will use them only when parent is actually flex/grid
+	const containerStyles = calculateContainerStyles(attributes, true, true);
 
 	// ========================================
 	// Block wrapper props
@@ -68,49 +69,14 @@ export default function ContainerSave({ attributes }) {
 
 	// ========================================
 	// Inner blocks props (WordPress best practice)
-	// Remove WordPress's layout classes ONLY for flex/grid layouts
-	// For stack layout (default), keep .is-layout-constrained so WordPress's
-	// margin rules work correctly (matching Group block behavior)
-	//
-	// data-constrain-width attribute:
-	// - Controls whether WordPress's horizontal centering should apply
-	// - When "false", CSS overrides centering to allow full-width content
-	// - When "true" or missing, WordPress's default centering works
+	// KEEP .is-layout-constrained for ALL layouts
+	// This allows WordPress to apply content-size constraints to child blocks
+	// (e.g., max-width: var(--wp--style--global--content-size) on headings/paragraphs)
 	// ========================================
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: 'dsg-container__inner',
 		style: innerStyles,
-		// Add data attribute for CSS to conditionally override centering
-		...(layoutType === 'stack' && { 'data-constrain-width': String(attributes.constrainWidth) }),
 	});
-
-	const shouldRemoveLayoutClasses = layoutType === 'flex' || layoutType === 'grid';
-
-	const cleanedClassName = (innerBlocksProps.className || '')
-		.split(' ')
-		.filter(
-			(cls) => {
-				// Always remove WordPress container classes (wp-block-, wp-container-)
-				if (cls.includes('wp-block-') || cls.includes('wp-container-')) {
-					return false;
-				}
-
-				// Remove layout classes ONLY for flex/grid layouts
-				// Keep them for stack layout (is-layout-constrained needed for margins)
-				if (shouldRemoveLayoutClasses) {
-					return !cls.includes('is-layout-') && !cls.includes('has-global-padding');
-				}
-
-				// For stack layout, keep all WordPress layout classes
-				return true;
-			}
-		)
-		.join(' ');
-
-	const finalInnerBlocksProps = {
-		...innerBlocksProps,
-		className: cleanedClassName,
-	};
 
 	return (
 		<div {...blockProps}>
@@ -132,7 +98,7 @@ export default function ContainerSave({ attributes }) {
 			)}
 
 			{/* Inner Blocks - WordPress best practice: NO wrapper div, spread props directly */}
-			<div {...finalInnerBlocksProps} />
+			<div {...innerBlocksProps} />
 		</div>
 	);
 }

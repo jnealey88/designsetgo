@@ -27,4 +27,10 @@ import './blocks/progress-bar/view.js';
 // Block animations - scroll-triggered, hover, click animations
 import './extensions/block-animations/frontend.js';
 
+// Background video - video background initialization
+import './extensions/background-video/frontend.js';
+
+// Overlay - overlay initialization
+import './extensions/overlay/frontend.js';
+
 // Additional frontend scripts can be imported here

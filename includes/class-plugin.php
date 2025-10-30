@@ -53,6 +53,13 @@ class Plugin {
 	public $global_styles;
 
 	/**
+	 * Custom CSS Renderer instance.
+	 *
+	 * @var Custom_CSS_Renderer
+	 */
+	public $custom_css_renderer;
+
+	/**
 	 * Returns the instance.
 	 *
 	 * @return Plugin
@@ -80,6 +87,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-loader.php';
 		require_once DESIGNSETGO_PATH . 'includes/patterns/class-loader.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-global-styles.php';
+		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/helpers.php';
 	}
 
@@ -88,10 +96,11 @@ class Plugin {
 	 */
 	private function init() {
 		// Initialize components.
-		$this->assets        = new Assets();
-		$this->blocks        = new Blocks\Loader();
-		$this->patterns      = new Patterns\Loader();
-		$this->global_styles = new Admin\Global_Styles();
+		$this->assets              = new Assets();
+		$this->blocks              = new Blocks\Loader();
+		$this->patterns            = new Patterns\Loader();
+		$this->global_styles       = new Admin\Global_Styles();
+		$this->custom_css_renderer = new Custom_CSS_Renderer();
 
 		// Hook into WordPress.
 		add_action( 'init', array( $this, 'load_textdomain' ) );

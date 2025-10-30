@@ -1,16 +1,18 @@
 /**
  * Container Block - Frontend Styles
  *
- * Layout Engine Approach (following PLAN.md):
- * - Aggressive CSS that takes full control
- * - No reliance on WordPress layout system
- * - JavaScript applies layouts, CSS ensures they work
+ * WordPress-First Approach:
+ * - Trust WordPress's layout system
+ * - Work with WordPress classes, not against them
+ * - Only override when necessary for specific features
  */
 
 .dsg-container {
 	position: relative;
 	width: 100%;
 	box-sizing: border-box;
+	// Default padding (can be overridden by user-chosen padding via WordPress controls)
+	padding: 16px;
 
 	// AGGRESSIVE FULL-WIDTH
 	// This is how Elementor/Bricks do it - no fighting with WordPress variables
@@ -91,6 +93,15 @@
 		}
 	}
 
+	// Flex mobile stacking - stack items vertically on mobile
+	&.dsg-flex-mobile-stack {
+		@media (max-width: 767px) {
+			.dsg-container__inner {
+				flex-direction: column !important;
+			}
+		}
+	}
+
 	// Clickable container
 	&.is-clickable {
 		cursor: pointer;
@@ -110,11 +121,6 @@
 	width: 100%;
 	box-sizing: border-box;
 
-	// Reset any WordPress layout styles that might interfere
-	> * {
-		max-width: none !important;
-	}
-
 	// Ensure grid/flex children behave properly
 	&[style*="grid"] > *,
 	&[style*="flex"] > * {
@@ -125,49 +131,13 @@
 	// Note: .is-layout-constrained is only applied to stack layouts
 	// Flex/grid layouts have this class removed to prevent WordPress layout interference
 
-	// Flex layout: ensure justify-content is respected
-	&[style*="flex"][style*="justify-content"] {
-		// Force justify-content from inline styles to be respected
-		// WordPress's layout system might try to override this
-		&[style*="justify-content: center"],
-		&[style*="justify-content:center"] {
-			justify-content: center !important;
-		}
-		&[style*="justify-content: flex-end"],
-		&[style*="justify-content:flex-end"] {
-			justify-content: flex-end !important;
-		}
-		&[style*="justify-content: space-around"],
-		&[style*="justify-content:space-around"] {
-			justify-content: space-around !important;
-		}
-		&[style*="justify-content: space-between"],
-		&[style*="justify-content:space-between"] {
-			justify-content: space-between !important;
-		}
-	}
-
-	// Flex layout: ensure align-items is respected
-	&[style*="flex"][style*="align-items"] {
-		// Force align-items from inline styles to be respected
-		&[style*="align-items: center"],
-		&[style*="align-items:center"] {
-			align-items: center !important;
-		}
-		&[style*="align-items: flex-end"],
-		&[style*="align-items:flex-end"] {
-			align-items: flex-end !important;
-		}
-		&[style*="align-items: flex-start"],
-		&[style*="align-items:flex-start"] {
-			align-items: flex-start !important;
-		}
-	}
-
 	// Flex stretch mode - make child items grow to fill space
 	// Applied when flex layout has alignItems: stretch
-	&[style*="align-items: stretch"] > * {
-		flex: 1 1 0%;
+	&[style*="align-items: stretch"],
+	&[style*="align-items:stretch"] {
+		> * {
+			flex: 1 1 0%;
+		}
 	}
 
 	// Responsive grid columns using CSS custom properties
@@ -205,7 +175,8 @@
 
 		// Ensure child containers and blocks stretch to fill grid cell
 		// Exclude block appender to prevent overlay issues
-		> *:not(.block-list-appender):not(.block-editor-block-list__layout) {
+		// EXCEPTION: Don't force height on items with explicit vertical alignment
+		> *:not(.block-list-appender):not(.block-editor-block-list__layout):not(.is-vertically-aligned-top):not(.is-vertically-aligned-center):not(.is-vertically-aligned-bottom) {
 			height: 100%;
 			display: flex;
 			flex-direction: column;
@@ -219,16 +190,16 @@
 		}
 	}
 
-	// Grid alignment fix - applies to ALL grids (with or without stretch)
-	// WordPress sets margin 0 on ALL grid items via .wp-container-XXX > * rule
-	// But subsequent items get margin from other WordPress rules (> * + * pattern)
-	// This causes first grid item to appear higher than others
-	// Solution: Add margin directly to first child container element
+}
+
+// Grid items should have NO margins - gap property handles all spacing
+// This is especially critical for first-child to prevent misalignment
+.dsg-container__inner {
 	&[style*="display: grid"],
 	&[style*="display:grid"] {
-		> .dsg-container:first-child,
-		> .wp-block-designsetgo-container:first-child {
-			margin-block-start: var(--wp--preset--spacing--md) !important;
+		> * {
+			margin-block-start: 0;
+			margin-block-end: 0;
 		}
 	}
 }
@@ -236,7 +207,7 @@
 /**
  * Layout-Constrained Margin Rules
  * Matches WordPress Group block behavior EXACTLY for proper vertical spacing
- * Applied when layout support is enabled (type: constrained)
+ * Applied ONLY to stack layouts (default flow layout)
  *
  * CRITICAL: Uses :where() for zero specificity to allow WordPress's natural
  * cascade and blockGap system to work properly. DO NOT use higher specificity
@@ -248,43 +219,116 @@
  *   --wp--style--global--content-size (e.g., 1140px) for readable line lengths
  * - Text within blocks follows text-align setting (left, center, right)
  * - This ensures optimal typography even in full-width containers
+ *
+ * NOTE: We target .dsg-container__inner (inner wrapper) not .wp-block-designsetgo-container (outer)
+ * because that's where WordPress applies .is-layout-constrained class for inner blocks.
  */
 
 // First child should have no top margin
-:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :first-child {
+:root :where(.dsg-container__inner.is-layout-constrained) > :first-child {
 	margin-block-start: 0;
 }
 
 // All children get consistent vertical spacing
-:root :where(.wp-block-designsetgo-container.is-layout-constrained) > * {
+:root :where(.dsg-container__inner.is-layout-constrained) > * {
 	margin-block-start: 1.2rem;
 	margin-block-end: 0;
 }
 
 // Last child should have no bottom margin
-:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :last-child {
+:root :where(.dsg-container__inner.is-layout-constrained) > :last-child {
 	margin-block-end: 0;
 }
 
 /**
- * Constrained Layout Width Control
+ * Override WordPress-Generated Margin Rules for Flex and Grid Layouts
  *
- * We want WordPress's vertical margins but need to conditionally control
- * horizontal centering based on user's "Constrain Width" setting.
+ * Problem:
+ * - WordPress generates .wp-container-* classes with margin-block-start rules
+ * - These apply vertical spacing even when we're using CSS Grid or Flexbox
+ * - For flex/grid, we use the `gap` property for spacing, not margins
+ * - WordPress's margin rules conflict with our gap-based spacing
+ * - WordPress adds .is-layout-constrained via PHP on frontend (can't strip via JS)
  *
- * When constrainWidth is enabled (default):
- * - Let WordPress center and constrain content (good for readability)
- * - Uses theme's --wp--style--global--content-size (e.g., 1140px)
+ * Solution:
+ * - Reset vertical margins for flex and grid inner containers
+ * - Let gap property (applied via inline styles) handle ALL spacing
+ * - Only stack layouts use WordPress's margin-based spacing system
  *
- * When constrainWidth is disabled:
- * - Override WordPress's centering to allow full-width content
- * - User wants content to span the entire container width
- * - Still keep the vertical margin behavior
- *
- * Note: We use data-constrain-width attribute applied by calculateInnerStyles utility
+ * CRITICAL: NO !important here - this allows user-chosen margins (inline styles)
+ * to take precedence while still overriding WordPress's auto-generated layout margins.
+ * Specificity: User inline styles (1-0-0-0) > Our rule (0-2-1) > WordPress :where() (0-0-2)
  */
-.dsg-container__inner.is-layout-constrained[data-constrain-width="false"] > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
-	margin-left: 0 !important;
-	margin-right: 0 !important;
+.dsg-container__inner[style*="display: flex"],
+.dsg-container__inner[style*="display:flex"],
+.dsg-container__inner[style*="display: grid"],
+.dsg-container__inner[style*="display:grid"] {
+	> * {
+		margin-block-start: 0;
+		margin-block-end: 0;
+	}
+}
+
+/**
+ * Additional Override for .is-layout-constrained on Flex/Grid Containers
+ *
+ * WordPress adds .is-layout-constrained class via PHP rendering on the frontend,
+ * even for flex/grid layouts. This rule provides higher specificity to override
+ * the constrained layout margins when combined with flex/grid display.
+ *
+ * We use a normal class selector (not :where()) for higher specificity than
+ * WordPress's :where() rules, but still allow user inline styles to win.
+ */
+.dsg-container__inner.is-layout-constrained[style*="display: flex"],
+.dsg-container__inner.is-layout-constrained[style*="display:flex"],
+.dsg-container__inner.is-layout-constrained[style*="display: grid"],
+.dsg-container__inner.is-layout-constrained[style*="display:grid"] {
+	> * {
+		margin-block-start: 0;
+		margin-block-end: 0;
+	}
+}
+
+/**
+ * Content-Size Constraint Control for Different Layouts
+ *
+ * WordPress's .is-layout-constrained applies max-width to ALL direct children.
+ * This is correct for stack layouts (headings, paragraphs should be constrained).
+ * But for flex/grid layouts, children should size naturally according to flex/grid rules.
+ *
+ * Solution:
+ * 1. For stack layouts: Keep max-width but remove auto-centering (so text-align works)
+ * 2. For flex/grid layouts: Remove max-width entirely (flex/grid controls sizing)
+ */
+
+/* Stack layouts: Keep content-size constraint, remove auto-centering */
+:root :where(.dsg-container__inner.is-layout-constrained:not([style*="display: flex"]):not([style*="display:flex"]):not([style*="display: grid"]):not([style*="display:grid"])) > * {
+	margin-inline: 0;
+}
+
+/* Flex/Grid layouts: Remove content-size constraint entirely */
+.dsg-container__inner.is-layout-constrained[style*="display: flex"] > *,
+.dsg-container__inner.is-layout-constrained[style*="display:flex"] > *,
+.dsg-container__inner.is-layout-constrained[style*="display: grid"] > *,
+.dsg-container__inner.is-layout-constrained[style*="display:grid"] > * {
 	max-width: none !important;
+	margin-inline: 0 !important;
+}
+
+/**
+ * Vertical Alignment for Grid Items
+ *
+ * Following WordPress Column block pattern - uses CSS classes instead of inline styles.
+ * Applied when container is nested in a grid layout parent.
+ */
+.dsg-container.is-vertically-aligned-top {
+	align-self: start;
+}
+
+.dsg-container.is-vertically-aligned-center {
+	align-self: center;
+}
+
+.dsg-container.is-vertically-aligned-bottom {
+	align-self: end;
 }

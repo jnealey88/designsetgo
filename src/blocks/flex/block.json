@@ -1,0 +1,126 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/flex",
+	"version": "1.0.0",
+	"title": "Flex Container",
+	"category": "designsetgo",
+	"description": "Flexible horizontal or vertical layouts with wrapping. Perfect for button groups, hero sections, and responsive card layouts.",
+	"keywords": ["flex", "flexbox", "horizontal", "row", "layout", "container"],
+	"textdomain": "designsetgo",
+	"supports": {
+		"anchor": true,
+		"align": ["wide", "full"],
+		"html": false,
+		"inserter": true,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"allowEditing": false,
+			"default": {
+				"type": "flex",
+				"orientation": "horizontal"
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": false,
+			"__experimentalDefaultControls": {
+				"padding": true
+			}
+		},
+		"dimensions": {
+			"minHeight": true
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"background": {
+			"backgroundImage": true,
+			"backgroundSize": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"shadow": true,
+		"position": {
+			"sticky": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"color": true,
+				"radius": true,
+				"style": true,
+				"width": true
+			}
+		}
+	},
+	"attributes": {
+		"direction": {
+			"type": "string",
+			"default": "row"
+		},
+		"wrap": {
+			"type": "boolean",
+			"default": true
+		},
+		"justifyContent": {
+			"type": "string",
+			"default": "flex-start"
+		},
+		"alignItems": {
+			"type": "string",
+			"default": "center"
+		},
+		"gap": {
+			"type": "string",
+			"default": "var(--wp--preset--spacing--50)"
+		},
+		"mobileStack": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"example": {
+		"attributes": {
+			"direction": "row",
+			"wrap": true,
+			"justifyContent": "center",
+			"alignItems": "center",
+			"gap": "var(--wp--preset--spacing--50)"
+		},
+		"innerBlocks": [
+			{
+				"name": "core/button",
+				"attributes": {
+					"text": "Primary Button"
+				}
+			},
+			{
+				"name": "core/button",
+				"attributes": {
+					"text": "Secondary Button"
+				}
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}

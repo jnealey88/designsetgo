@@ -106,7 +106,8 @@ export const calculateInnerStyles = (attributes, themeContentSize = null) => {
 	} else if (layoutType === 'flex') {
 		styles.display = 'flex';
 		styles.flexDirection = 'row';
-		styles.flexWrap = 'wrap';
+		// Apply wrap setting from attributes
+		styles.flexWrap = attributes.flexWrap || 'wrap';
 
 		// Apply flex justification (horizontal alignment)
 		const { flexJustify = 'flex-start', flexAlign = 'flex-start' } =
@@ -156,14 +157,16 @@ export const calculateInnerStyles = (attributes, themeContentSize = null) => {
 /**
  * Calculate container wrapper classes.
  *
- * @param {Object}  attributes               - Block attributes
- * @param {string}  attributes.videoUrl      - Video background URL
- * @param {boolean} attributes.enableOverlay - Whether overlay is enabled
- * @param {boolean} attributes.hideOnDesktop - Hide on desktop
- * @param {boolean} attributes.hideOnTablet  - Hide on tablet
- * @param {boolean} attributes.hideOnMobile  - Hide on mobile
- * @param {string}  attributes.linkUrl       - Link URL for clickable container
- * @param {string}  attributes.textAlign     - Text alignment
+ * @param {Object}  attributes                - Block attributes
+ * @param {string}  attributes.videoUrl       - Video background URL
+ * @param {boolean} attributes.enableOverlay  - Whether overlay is enabled
+ * @param {boolean} attributes.hideOnDesktop  - Hide on desktop
+ * @param {boolean} attributes.hideOnTablet   - Hide on tablet
+ * @param {boolean} attributes.hideOnMobile   - Hide on mobile
+ * @param {string}  attributes.linkUrl        - Link URL for clickable container
+ * @param {string}  attributes.textAlign      - Text alignment
+ * @param {string}  attributes.layoutType     - Layout type ('stack', 'grid', 'flex')
+ * @param {boolean} attributes.flexMobileStack - Whether to stack flex items on mobile
  * @return {string} className string for container wrapper
  */
 export const calculateContainerClasses = (attributes) => {
@@ -175,6 +178,9 @@ export const calculateContainerClasses = (attributes) => {
 		hideOnMobile,
 		linkUrl,
 		textAlign,
+		layoutType,
+		flexMobileStack,
+		verticalAlign,
 	} = attributes;
 
 	return classnames('dsg-container', {
@@ -184,7 +190,9 @@ export const calculateContainerClasses = (attributes) => {
 		'dsg-hide-tablet': hideOnTablet,
 		'dsg-hide-mobile': hideOnMobile,
 		'is-clickable': linkUrl,
+		'dsg-flex-mobile-stack': layoutType === 'flex' && flexMobileStack,
 		[`has-text-align-${textAlign}`]: textAlign,
+		[`is-vertically-aligned-${verticalAlign}`]: verticalAlign,
 	});
 };
 
@@ -196,10 +204,16 @@ export const calculateContainerClasses = (attributes) => {
  * @param {number}  attributes.gridColumnSpan - Grid column span for nested containers
  * @param {string}  attributes.flexItemWidth  - Width when inside flex parent
  * @param {boolean} hasParentFlex             - Whether parent is a flex container (optional)
+ * @param {boolean} hasParentGrid             - Whether parent is a grid container (optional)
  * @return {Object} React style object for container wrapper
  */
-export const calculateContainerStyles = (attributes, hasParentFlex = false) => {
-	const { textAlign, gridColumnSpan, flexItemWidth } = attributes;
+export const calculateContainerStyles = (
+	attributes,
+	hasParentFlex = false,
+	hasParentGrid = false
+) => {
+	const { textAlign, gridColumnSpan, flexItemWidth } =
+		attributes;
 
 	const styles = {
 		position: 'relative',
@@ -210,6 +224,9 @@ export const calculateContainerStyles = (attributes, hasParentFlex = false) => {
 	if (gridColumnSpan && gridColumnSpan > 1) {
 		styles.gridColumn = `span ${gridColumnSpan}`;
 	}
+
+	// Note: Vertical alignment in grid is handled by CSS class (.is-vertically-aligned-*)
+	// instead of inline styles. This matches WordPress Column block pattern.
 
 	// Apply flex item width when inside a flex parent
 	if (hasParentFlex && flexItemWidth) {

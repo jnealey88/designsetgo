@@ -1,12 +1,12 @@
 /**
  * Icon List Item Block - Save Component
  *
- * Renders the frontend output for a single icon list item.
+ * Renders the frontend output for a single icon list item with flexible content area.
  *
  * @since 1.0.0
  */
 
-import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
 
 /**
@@ -18,16 +18,7 @@ import { getIcon } from '../icon/utils/svg-icons';
  * @return {JSX.Element} Icon List Item save component
  */
 export default function IconListItemSave({ attributes, context = {} }) {
-	const {
-		icon,
-		title,
-		titleTag,
-		description,
-		descriptionTag,
-		linkUrl,
-		linkTarget,
-		linkRel,
-	} = attributes;
+	const { icon, linkUrl, linkTarget, linkRel } = attributes;
 
 	// Get settings from parent via context with safe defaults
 	const iconSize = context['designsetgo/iconList/iconSize'] || 32;
@@ -50,7 +41,6 @@ export default function IconListItemSave({ attributes, context = {} }) {
 		display: 'flex',
 		flexDirection: iconPosition === 'top' ? 'column' : 'row',
 		alignItems: iconPosition === 'top' ? 'center' : 'flex-start',
-		textAlign: getTextAlign(),
 		gap: iconPosition === 'top' ? '12px' : '16px',
 		...(iconPosition === 'right' && { flexDirection: 'row-reverse' }),
 	};
@@ -75,6 +65,14 @@ export default function IconListItemSave({ attributes, context = {} }) {
 		style: itemStyles,
 	});
 
+	// Configure inner blocks props
+	const innerBlocksProps = useInnerBlocksProps.save({
+		className: 'dsg-icon-list-item__content',
+		style: {
+			textAlign: getTextAlign(),
+		},
+	});
+
 	// Wrap in link if URL is provided
 	const ItemWrapper = linkUrl ? 'a' : 'div';
 	const wrapperProps = linkUrl
@@ -92,23 +90,7 @@ export default function IconListItemSave({ attributes, context = {} }) {
 				{getIcon(icon)}
 			</div>
 
-			<div className="dsg-icon-list-item__content">
-				{title && (
-					<RichText.Content
-						tagName={titleTag}
-						className="dsg-icon-list-item__title"
-						value={title}
-					/>
-				)}
-
-				{description && (
-					<RichText.Content
-						tagName={descriptionTag}
-						className="dsg-icon-list-item__description"
-						value={description}
-					/>
-				)}
-			</div>
+			<div {...innerBlocksProps} />
 		</ItemWrapper>
 	);
 }

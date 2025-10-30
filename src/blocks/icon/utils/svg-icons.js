@@ -776,6 +776,61 @@ export const SVG_ICONS = {
 			<path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
 		</svg>
 	),
+	// DesignSetGo Custom Block Icons
+	container: (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 10h5v2H6zm0 4h5v2H6zm7-4h5v6h-5z" />
+		</svg>
+	),
+	pill: (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path d="M8.5 4C5.46 4 3 6.46 3 9.5S5.46 15 8.5 15h7c3.04 0 5.5-2.46 5.5-5.5S18.54 4 15.5 4h-7zm0 9C6.57 13 5 11.43 5 9.5S6.57 6 8.5 6h7c1.93 0 3.5 1.57 3.5 3.5S17.43 13 15.5 13h-7z" />
+		</svg>
+	),
+	accordion: (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path d="M3 4h18v3H3V4zm0 6h18v3H3v-3zm0 6h18v3H3v-3zm16-8l-4 4-4-4h8zm0 6l-4 4-4-4h8z" />
+		</svg>
+	),
+	tabs: (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM3 19V9h18v10H3zm5-14h4v2H8V5zm6 0h4v2h-4V5z" />
+		</svg>
+	),
+	counter: (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.5 13.5h-2v2h-3v-2h-2v-3h2v-2h3v2h2v3zM13.5 6v3h-3V6h3z" />
+		</svg>
+	),
+	'progress-bar': (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path d="M20 6H4c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 10H4V8h16v8zM6 10h8v4H6z" />
+		</svg>
+	),
 };
 
 /**

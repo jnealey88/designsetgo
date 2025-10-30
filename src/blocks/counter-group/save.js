@@ -22,6 +22,7 @@ export default function CounterGroupSave({ attributes }) {
 		useGrouping,
 		separator,
 		decimal,
+		hoverColor,
 	} = attributes;
 
 	// Block wrapper props with CSS custom properties
@@ -33,6 +34,8 @@ export default function CounterGroupSave({ attributes }) {
 			'--dsg-counter-columns-tablet': String(columnsTablet),
 			'--dsg-counter-columns-mobile': String(columnsMobile),
 			'--dsg-counter-gap': gap,
+			// Apply hover color for child Counter blocks to inherit
+			...(hoverColor && { '--dsg-counter-hover-color': hoverColor }),
 		},
 		// Data attributes for frontend JavaScript
 		'data-animation-duration': animationDuration,

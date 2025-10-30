@@ -1,0 +1,35 @@
+/**
+ * Background Video Extension - Frontend Styles
+ *
+ * Frontend styles for blocks with background videos.
+ *
+ * @package DesignSetGo
+ */
+
+.dsg-has-video-background {
+	position: relative;
+	overflow: hidden;
+
+	.dsg-video-background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 0;
+		overflow: hidden;
+		pointer-events: none;
+
+		video {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	// Ensure content is above video
+	> *:not(.dsg-video-background) {
+		position: relative;
+		z-index: 2;
+	}
+}

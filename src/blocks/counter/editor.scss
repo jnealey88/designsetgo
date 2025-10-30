@@ -5,6 +5,12 @@
  */
 
 .dsg-counter {
+	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+	// Inherit color from parent Counter Group by default
+	// WordPress applies inline style when user chooses a color on individual counter, which takes precedence
+	// Falls back to theme contrast color if no parent color is set
+	color: inherit;
+
 	// Editor-specific styles to improve UX
 	position: relative;
 
@@ -25,5 +31,21 @@
 	// Editor-only: Show counter value in a more editable format
 	.block-editor-rich-text__editable {
 		display: inline;
+	}
+
+	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+	// Number color - inherits from wrapper
+	&__number {
+		color: currentColor;
+	}
+
+	// Hover state - must match frontend
+	&:hover {
+		.dsg-counter__number {
+			color: var(
+				--dsg-counter-hover-color,
+				var(--wp--preset--color--accent-2, currentColor)
+			);
+		}
 	}
 }

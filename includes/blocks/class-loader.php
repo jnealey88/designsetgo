@@ -23,6 +23,7 @@ class Loader {
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_action( 'init', array( $this, 'register_block_styles' ) );
+		add_filter( 'render_block', array( $this, 'remove_layout_classes_from_flex_grid' ), 10, 2 );
 	}
 
 	/**
@@ -141,6 +142,58 @@ class Loader {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Remove WordPress layout classes from flex/grid containers.
+	 *
+	 * WordPress automatically adds .is-layout-constrained and .wp-container-* classes
+	 * to all inner blocks, which applies margin-based spacing. For flex/grid layouts,
+	 * we use gap-based spacing instead, so we need to strip these classes.
+	 *
+	 * This filter runs on the rendered HTML output to remove these classes when
+	 * the container is using display: flex or display: grid.
+	 *
+	 * @param string $block_content The rendered block content.
+	 * @param array  $block         The block data.
+	 * @return string Modified block content.
+	 */
+	public function remove_layout_classes_from_flex_grid( $block_content, $block ) {
+		// Only process our container block.
+		if ( 'designsetgo/container' !== $block['blockName'] ) {
+			return $block_content;
+		}
+
+		// Check if the block uses flex or grid layout by looking at the style attribute.
+		// We need to find the .dsg-container__inner element and check its inline styles.
+		if ( preg_match( '/<div[^>]*class="[^"]*dsg-container__inner[^"]*"[^>]*style="[^"]*display:\s*(flex|grid)/', $block_content ) ) {
+			// Remove WordPress layout classes from .dsg-container__inner elements.
+			// Pattern: Find class attribute containing dsg-container__inner and remove layout classes.
+			$block_content = preg_replace_callback(
+				'/(<div[^>]*)(class="[^"]*dsg-container__inner[^"]*")([^>]*>)/i',
+				function( $matches ) {
+					$before = $matches[1];
+					$class_attr = $matches[2];
+					$after = $matches[3];
+
+					// Remove WordPress layout classes one by one.
+					$class_attr = preg_replace( '/\s+is-layout-constrained/', '', $class_attr );
+					$class_attr = preg_replace( '/\s+has-global-padding/', '', $class_attr );
+					$class_attr = preg_replace( '/\s+wp-container-[a-zA-Z0-9-]+/', '', $class_attr );
+					$class_attr = preg_replace( '/\s+wp-block-designsetgo-container-is-layout-[a-zA-Z0-9-]+/', '', $class_attr );
+
+					// Clean up extra spaces and empty class names.
+					$class_attr = preg_replace( '/\s+/', ' ', $class_attr );
+					$class_attr = preg_replace( '/class="\s*/', 'class="', $class_attr );
+					$class_attr = preg_replace( '/\s*"/', '"', $class_attr );
+
+					return $before . $class_attr . $after;
+				},
+				$block_content
+			);
+		}
+
+		return $block_content;
 	}
 
 	/**

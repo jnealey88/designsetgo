@@ -11,26 +11,31 @@ import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
 	SelectControl,
+	ToggleControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 
 /**
- * Flex Panel - Controls for flex layout justification, alignment, and nested container width.
+ * Flex Panel - Controls for flex layout justification, alignment, wrapping, and nested container width.
  *
- * @param {Object}   props               - Component props
- * @param {string}   props.layoutType    - Current layout type ('stack', 'grid', 'flex')
- * @param {string}   props.flexJustify   - Flex justification value (horizontal)
- * @param {string}   props.flexAlign     - Flex alignment value (vertical)
- * @param {string}   props.flexItemWidth - Width for nested containers in flex parent
- * @param {boolean}  props.hasParentFlex - Whether parent is a flex horizontal container
- * @param {Function} props.setAttributes - Function to update block attributes
+ * @param {Object}   props                - Component props
+ * @param {string}   props.layoutType     - Current layout type ('stack', 'grid', 'flex')
+ * @param {string}   props.flexJustify    - Flex justification value (horizontal)
+ * @param {string}   props.flexAlign      - Flex alignment value (vertical)
+ * @param {string}   props.flexWrap       - Flex wrap value ('wrap' or 'nowrap')
+ * @param {boolean}  props.flexMobileStack - Whether to stack items on mobile
+ * @param {string}   props.flexItemWidth  - Width for nested containers in flex parent
+ * @param {boolean}  props.hasParentFlex  - Whether parent is a flex horizontal container
+ * @param {Function} props.setAttributes  - Function to update block attributes
  * @return {JSX.Element} Flex Panel component
  */
 export const FlexPanel = ({
 	layoutType,
 	flexJustify,
 	flexAlign,
+	flexWrap,
+	flexMobileStack,
 	flexItemWidth,
 	hasParentFlex,
 	setAttributes,
@@ -124,6 +129,43 @@ export const FlexPanel = ({
 						__nextHasNoMarginBottom
 						help={__(
 							'Control how items are aligned vertically.',
+							'designsetgo'
+						)}
+					/>
+
+					<SelectControl
+						label={__('Wrap', 'designsetgo')}
+						value={flexWrap}
+						options={[
+							{
+								label: __('Wrap (Multi-line)', 'designsetgo'),
+								value: 'wrap',
+							},
+							{
+								label: __('No Wrap (Single line)', 'designsetgo'),
+								value: 'nowrap',
+							},
+						]}
+						onChange={(value) =>
+							setAttributes({ flexWrap: value })
+						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						help={__(
+							'Allow items to wrap to new lines or force single line.',
+							'designsetgo'
+						)}
+					/>
+
+					<ToggleControl
+						label={__('Stack on Mobile', 'designsetgo')}
+						checked={flexMobileStack}
+						onChange={(value) =>
+							setAttributes({ flexMobileStack: value })
+						}
+						__nextHasNoMarginBottom
+						help={__(
+							'Stack items vertically on mobile devices for better readability.',
 							'designsetgo'
 						)}
 					/>

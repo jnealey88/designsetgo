@@ -11,6 +11,10 @@
 	justify-content: center;
 	padding: 1.5rem;
 	box-sizing: border-box;
+	// Inherit color from parent Counter Group by default
+	// WordPress applies inline style when user chooses a color on individual counter, which takes precedence
+	// Falls back to theme contrast color if no parent color is set
+	color: inherit;
 
 	// Icon
 	&__icon {
@@ -63,8 +67,10 @@
 		font-size: 3em;
 		font-weight: bold;
 		line-height: 1.2;
-		// Inherit color from parent (WordPress color controls apply to parent)
-		color: inherit;
+		// Inherit from .dsg-counter wrapper, which has theme contrast color as default
+		// If user sets color via WordPress panel, inline style on wrapper takes precedence
+		// This prevents inheriting from grandparent containers (like Container blocks)
+		color: currentColor;
 		margin: 0;
 		transition: color 0.3s ease;
 
@@ -88,7 +94,9 @@
 	// Hover state
 	&:hover {
 		.dsg-counter__number {
-			// Priority: custom color > parent color > theme accent-2 > current color
+			// Priority: custom hover color > theme accent-2 > counter's text color (currentColor)
+			// If user sets hover color via panel, it's applied as CSS custom property
+			// Otherwise falls back to theme accent color, then counter's own text color
 			color: var(
 				--dsg-counter-hover-color,
 				var(--wp--preset--color--accent-2, currentColor)

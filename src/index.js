@@ -18,8 +18,31 @@
 import './styles/editor.scss';
 // Note: Frontend styles are in src/style.scss (auto-compiled to build/style-index.css)
 
+// ===== EXTENSIONS (Must load BEFORE blocks) =====
+// Block animations - adds entrance/exit animations to all blocks
+import './extensions/block-animations';
+
+// Max width - adds max-width control to all blocks
+import './extensions/max-width';
+
+// Custom CSS - adds custom CSS control to all blocks
+import './extensions/custom-css';
+
+// Background Video - adds background video to all blocks
+import './extensions/background-video';
+
+// Overlay - adds color overlay to all blocks
+import './extensions/overlay';
+
 // ===== CUSTOM BLOCKS (Primary Architecture) =====
 // Full React control, proper video backgrounds, state management
+
+// Container blocks (new specialized blocks)
+import './blocks/stack';
+import './blocks/flex';
+import './blocks/grid';
+
+// Legacy container block (deprecated, use Stack/Flex/Grid instead)
 import './blocks/container';
 import './blocks/container/style.scss';
 import './blocks/container/editor.scss';
@@ -71,7 +94,3 @@ import './blocks/pill/editor.scss';
 import './blocks/icon-button';
 import './blocks/icon-button/style.scss';
 import './blocks/icon-button/editor.scss';
-
-// ===== EXTENSIONS =====
-// Block animations - adds entrance/exit animations to all blocks
-import './extensions/block-animations';

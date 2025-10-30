@@ -1,0 +1,34 @@
+/**
+ * Max Width Extension - Frontend Styles
+ *
+ * Applies max-width to blocks when the dsg-has-max-width class is present.
+ * Uses !important to override WordPress layout system and theme/block styles.
+ *
+ * High specificity is needed to override WordPress core rules like:
+ * .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull))
+ */
+
+// Use attribute selector for higher specificity than WordPress's :where() selector
+// The [data-dsg-max-width] attribute contains the actual max-width value
+[data-dsg-max-width] {
+	// Apply the max-width from the data attribute using CSS custom property fallback pattern
+	// We set this via inline styles since CSS can't read data attributes for values
+	max-width: var(--dsg-max-width) !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+// Higher specificity version for nested contexts (like Container inner elements)
+.dsg-has-max-width[data-dsg-max-width] {
+	max-width: var(--dsg-max-width) !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+// Override Container block's aggressive full-width styles when max-width is set
+.dsg-container.alignfull[data-dsg-max-width],
+.dsg-container__inner[data-dsg-max-width] {
+	max-width: var(--dsg-max-width) !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}

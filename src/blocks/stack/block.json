@@ -1,0 +1,109 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/stack",
+	"version": "1.0.0",
+	"title": "Stack Container",
+	"category": "designsetgo",
+	"description": "Simple vertical stacking container with consistent gaps. Perfect for sections, content areas, and vertical layouts.",
+	"keywords": ["stack", "vertical", "layout", "container", "section"],
+	"textdomain": "designsetgo",
+	"supports": {
+		"anchor": true,
+		"align": ["wide", "full"],
+		"html": false,
+		"inserter": true,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"allowEditing": false,
+			"default": {
+				"type": "flex",
+				"orientation": "vertical"
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": false,
+			"__experimentalDefaultControls": {
+				"padding": true
+			}
+		},
+		"dimensions": {
+			"minHeight": true
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"background": {
+			"backgroundImage": true,
+			"backgroundSize": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"shadow": true,
+		"position": {
+			"sticky": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"color": true,
+				"radius": true,
+				"style": true,
+				"width": true
+			}
+		}
+	},
+	"attributes": {
+		"gap": {
+			"type": "string",
+			"default": "var(--wp--preset--spacing--50)"
+		},
+		"align": {
+			"type": "string"
+		},
+		"textAlign": {
+			"type": "string"
+		}
+	},
+	"example": {
+		"attributes": {
+			"gap": "var(--wp--preset--spacing--50)"
+		},
+		"innerBlocks": [
+			{
+				"name": "core/heading",
+				"attributes": {
+					"level": 2,
+					"content": "Stack Container"
+				}
+			},
+			{
+				"name": "core/paragraph",
+				"attributes": {
+					"content": "Simple vertical stacking with consistent gaps between elements. Perfect for sections and content areas."
+				}
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}

@@ -7,6 +7,10 @@
 .dsg-counter-group {
 	width: 100%;
 	box-sizing: border-box;
+	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+	// Default text color that child Counter blocks will inherit
+	// WordPress applies inline style when user chooses a color, which takes precedence
+	color: var(--wp--preset--color--contrast);
 
 	&__inner {
 		display: grid;
@@ -39,10 +43,22 @@
 		display: contents;
 	}
 
-	// Selected state
-	&.is-selected {
-		outline: 1px solid var(--wp-admin-theme-color, #007cba);
-		outline-offset: 2px;
+	// Make the grid container clickable in gap areas
+	// This allows users to click between counter items to select the counter-group
+	&__inner {
+		pointer-events: auto;
+		min-height: 50px; // Ensure there's a clickable area even with few items
+
+		// Add a subtle visual indicator when the counter-group is selected
+		.is-selected > & {
+			outline: 1px solid var(--wp-admin-theme-color, #007cba);
+			outline-offset: 2px;
+		}
+	}
+
+	// Counter blocks should also be clickable for individual selection
+	.wp-block-designsetgo-counter {
+		pointer-events: auto;
 	}
 
 	// Placeholder state (no inner blocks yet)

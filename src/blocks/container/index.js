@@ -35,6 +35,38 @@ registerBlockType(metadata.name, {
 	},
 	edit,
 	save,
+	// Migration: Handle old gridAlignSelf attribute
+	deprecated: [
+		{
+			attributes: {
+				...metadata.attributes,
+				gridAlignSelf: {
+					type: 'string',
+				},
+			},
+			migrate(attributes) {
+				// Migrate gridAlignSelf to verticalAlign
+				const { gridAlignSelf, ...rest } = attributes;
+
+				// Map old values to new values
+				let verticalAlign = '';
+				if (gridAlignSelf === 'start' || gridAlignSelf === 'flex-start') {
+					verticalAlign = 'top';
+				} else if (gridAlignSelf === 'center') {
+					verticalAlign = 'center';
+				} else if (gridAlignSelf === 'end' || gridAlignSelf === 'flex-end') {
+					verticalAlign = 'bottom';
+				}
+				// 'stretch' maps to empty string (default)
+
+				return {
+					...rest,
+					verticalAlign,
+				};
+			},
+			save,
+		},
+	],
 	// Set default styles using WordPress spacing presets
 	// Padding Top/Bottom: lg, Left/Right: xs
 	// Block Gap (spacing between inner blocks): md

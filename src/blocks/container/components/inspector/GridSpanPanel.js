@@ -1,8 +1,8 @@
 /**
  * Container Block - Grid Span Panel Component
  *
- * Provides controls for setting column span when nested in a parent grid container.
- * Only displays when parent container uses grid layout.
+ * Provides controls for column span when nested in a parent grid container.
+ * Vertical alignment is handled via BlockVerticalAlignmentToolbar in BlockControls.
  *
  * @since 1.0.0
  */

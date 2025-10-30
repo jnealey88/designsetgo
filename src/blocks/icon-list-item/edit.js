@@ -1,7 +1,8 @@
 /**
  * Icon List Item Block - Edit Component
  *
- * Child block that displays a single list item with icon, title, and description.
+ * Child block that displays a single list item with icon and flexible content area.
+ * Users can add any blocks in the content area. Default template includes an h4 heading.
  *
  * @since 1.0.0
  */
@@ -9,13 +10,12 @@
 import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
+	useInnerBlocksProps,
 	InspectorControls,
-	RichText,
 } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
 import { IconPickerPanel } from './components/inspector/IconPickerPanel';
 import { LinkSettingsPanel } from './components/inspector/LinkSettingsPanel';
-import { TextSettingsPanel } from './components/inspector/TextSettingsPanel';
 
 /**
  * Icon List Item Edit Component
@@ -31,8 +31,7 @@ export default function IconListItemEdit({
 	setAttributes,
 	context,
 }) {
-	const { icon, title, titleTag, description, descriptionTag, linkUrl } =
-		attributes;
+	const { icon, linkUrl } = attributes;
 
 	// Get settings from parent via context
 	const iconSize = context['designsetgo/iconList/iconSize'] || 32;
@@ -55,7 +54,6 @@ export default function IconListItemEdit({
 		display: 'flex',
 		flexDirection: iconPosition === 'top' ? 'column' : 'row',
 		alignItems: iconPosition === 'top' ? 'center' : 'flex-start',
-		textAlign: getTextAlign(),
 		gap: iconPosition === 'top' ? '12px' : '16px',
 		...(iconPosition === 'right' && { flexDirection: 'row-reverse' }),
 	};
@@ -80,15 +78,32 @@ export default function IconListItemEdit({
 		style: itemStyles,
 	});
 
+	// Configure inner blocks with h4 heading as default template
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'dsg-icon-list-item__content',
+			style: {
+				textAlign: getTextAlign(),
+			},
+		},
+		{
+			template: [
+				[
+					'core/heading',
+					{
+						level: 4,
+						placeholder: __('List item title…', 'designsetgo'),
+					},
+				],
+			],
+			templateLock: false, // Allow adding/removing blocks
+		}
+	);
+
 	return (
 		<>
 			<InspectorControls>
 				<IconPickerPanel icon={icon} setAttributes={setAttributes} />
-				<TextSettingsPanel
-					titleTag={titleTag}
-					descriptionTag={descriptionTag}
-					setAttributes={setAttributes}
-				/>
 				<LinkSettingsPanel
 					linkUrl={linkUrl}
 					linkTarget={attributes.linkTarget}
@@ -105,34 +120,7 @@ export default function IconListItemEdit({
 					{getIcon(icon)}
 				</div>
 
-				<div className="dsg-icon-list-item__content">
-					<RichText
-						tagName={titleTag}
-						className="dsg-icon-list-item__title"
-						value={title}
-						onChange={(value) => setAttributes({ title: value })}
-						placeholder={__('List item title…', 'designsetgo')}
-						allowedFormats={['core/bold', 'core/italic']}
-					/>
-
-					<RichText
-						tagName={descriptionTag}
-						className="dsg-icon-list-item__description"
-						value={description}
-						onChange={(value) =>
-							setAttributes({ description: value })
-						}
-						placeholder={__(
-							'Add description (optional)…',
-							'designsetgo'
-						)}
-						allowedFormats={[
-							'core/bold',
-							'core/italic',
-							'core/link',
-						]}
-					/>
-				</div>
+				<div {...innerBlocksProps} />
 
 				{linkUrl && (
 					<div className="dsg-icon-list-item__link-indicator">🔗</div>

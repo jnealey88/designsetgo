@@ -18,6 +18,7 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 	BlockControls,
+	BlockVerticalAlignmentToolbar,
 	MediaUpload,
 	MediaUploadCheck,
 	AlignmentControl,
@@ -34,7 +35,7 @@ import { LayoutPanel } from './components/inspector/LayoutPanel';
 import { GridPanel } from './components/inspector/GridPanel';
 import { GridSpanPanel } from './components/inspector/GridSpanPanel';
 import { FlexPanel } from './components/inspector/FlexPanel';
-import { ContentWidthPanel } from './components/inspector/ContentWidthPanel';
+// Note: ContentWidthPanel removed - now handled by max-width extension (unified Width panel)
 import { BackgroundVideoPanel } from './components/inspector/BackgroundVideoPanel';
 import { OverlayPanel } from './components/inspector/OverlayPanel';
 import { LinkPanel } from './components/inspector/LinkPanel';
@@ -147,7 +148,11 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 	// ========================================
 	const innerStyles = calculateInnerStyles(attributes, contentSize);
 	const containerClasses = calculateContainerClasses(attributes);
-	const containerStyles = calculateContainerStyles(attributes, parentIsFlex);
+	const containerStyles = calculateContainerStyles(
+		attributes,
+		parentIsFlex,
+		parentIsGrid
+	);
 
 	// ========================================
 	// Block wrapper props
@@ -162,60 +167,20 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 
 	// ========================================
 	// Inner blocks props (WordPress best practice)
-	// Replaces plain <InnerBlocks /> to fix layout issues
-	//
-	// NOTE: WordPress adds .is-layout-constrained automatically.
-	// We keep it for stack layouts (default) to get proper margins,
-	// but remove it for flex/grid layouts where it would interfere.
-	//
-	// data-constrain-width attribute:
-	// - Controls whether WordPress's horizontal centering should apply
-	// - When "false", CSS overrides centering to allow full-width content
-	// - When "true" or missing, WordPress's default centering works
+	// KEEP .is-layout-constrained for ALL layouts
+	// This allows WordPress to apply content-size constraints to child blocks
+	// (e.g., max-width: var(--wp--style--global--content-size) on headings/paragraphs)
 	// ========================================
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: 'dsg-container__inner',
 			style: innerStyles,
-			// Add data attribute for CSS to conditionally override centering
-			...(layoutType === 'stack' && { 'data-constrain-width': String(constrainWidth) }),
 		},
 		{
 			// Orientation hint for flex layouts
 			orientation: layoutType === 'flex' ? 'horizontal' : undefined,
 		}
 	);
-
-	// Remove WordPress's layout classes ONLY for flex/grid layouts
-	// For stack layout (default), keep .is-layout-constrained so WordPress's
-	// margin rules work correctly (matching Group block behavior)
-	const shouldRemoveLayoutClasses = layoutType === 'flex' || layoutType === 'grid';
-
-	const cleanedClassName = (innerBlocksProps.className || '')
-		.split(' ')
-		.filter(
-			(cls) => {
-				// Always remove WordPress container classes (wp-block-, wp-container-)
-				if (cls.includes('wp-block-') || cls.includes('wp-container-')) {
-					return false;
-				}
-
-				// Remove layout classes ONLY for flex/grid layouts
-				// Keep them for stack layout (is-layout-constrained needed for margins)
-				if (shouldRemoveLayoutClasses) {
-					return !cls.includes('is-layout-') && !cls.includes('has-global-padding');
-				}
-
-				// For stack layout, keep all WordPress layout classes
-				return true;
-			}
-		)
-		.join(' ');
-
-	const finalInnerBlocksProps = {
-		...innerBlocksProps,
-		className: cleanedClassName,
-	};
 
 	return (
 		<>
@@ -239,6 +204,14 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 						setAttributes({ textAlign: nextAlign });
 					}}
 				/>
+
+			{/* Vertical Alignment (Grid Items Only) */}
+			{parentIsGrid && (
+				<BlockVerticalAlignmentToolbar
+					onChange={(value) => setAttributes({ verticalAlign: value })}
+					value={attributes.verticalAlign}
+				/>
+			)}
 
 				{/* Video Background */}
 				<ToolbarGroup>
@@ -386,17 +359,14 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 					layoutType={layoutType}
 					flexJustify={attributes.flexJustify}
 					flexAlign={attributes.flexAlign}
+					flexWrap={attributes.flexWrap}
+					flexMobileStack={attributes.flexMobileStack}
 					flexItemWidth={attributes.flexItemWidth}
 					hasParentFlex={parentIsFlex}
 					setAttributes={setAttributes}
 				/>
 
-				<ContentWidthPanel
-					constrainWidth={attributes.constrainWidth}
-					contentWidth={attributes.contentWidth}
-					themeContentSize={contentSize}
-					setAttributes={setAttributes}
-				/>
+				{/* Width panel now handled by max-width extension (unified Width panel) */}
 
 				<LinkPanel
 					linkUrl={attributes.linkUrl}
@@ -498,7 +468,7 @@ export default function ContainerEdit({ attributes, setAttributes, clientId }) {
 				)}
 
 				{/* Inner Blocks - WordPress best practice: NO wrapper div, spread props directly */}
-				<div {...finalInnerBlocksProps} />
+				<div {...innerBlocksProps} />
 			</div>
 		</>
 	);

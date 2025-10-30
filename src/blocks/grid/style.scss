@@ -1,0 +1,64 @@
+/**
+ * Grid Container Block - Frontend Styles
+ *
+ * Frontend styles for the Grid Container block with responsive columns.
+ *
+ * @package DesignSetGo
+ */
+
+.dsg-grid {
+	// Ensure proper sizing
+	box-sizing: border-box;
+
+	&__inner {
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	// Responsive column classes
+	// Desktop columns are set via inline styles (default)
+	// Tablet and mobile columns use media queries
+
+	// Tablet breakpoint (≤ 1024px)
+	@media (max-width: 1024px) {
+		@for $i from 1 through 12 {
+			&.dsg-grid-cols-tablet-#{$i} .dsg-grid__inner {
+				grid-template-columns: repeat(#{$i}, 1fr) !important;
+			}
+		}
+	}
+
+	// Mobile breakpoint (≤ 767px)
+	@media (max-width: 767px) {
+		@for $i from 1 through 12 {
+			&.dsg-grid-cols-mobile-#{$i} .dsg-grid__inner {
+				grid-template-columns: repeat(#{$i}, 1fr) !important;
+			}
+		}
+	}
+}
+
+/**
+ * Layout-Constrained Margin Rules
+ * Matches WordPress Group block behavior for proper spacing
+ * Applied when layout support is enabled (type: constrained)
+ *
+ * CRITICAL: Uses :where() for zero specificity to allow WordPress's natural
+ * cascade and blockGap system to work properly.
+ */
+
+// First child should have no top margin
+:root :where(.dsg-grid__inner.is-layout-constrained) > :first-child {
+	margin-block-start: 0;
+}
+
+// All children get consistent spacing
+:root :where(.dsg-grid__inner.is-layout-constrained) > * {
+	margin-block-start: 0;
+	margin-block-end: 0;
+}
+
+// Last child should have no bottom margin
+:root :where(.dsg-grid__inner.is-layout-constrained) > :last-child {
+	margin-block-end: 0;
+}

@@ -24,6 +24,18 @@ const blockEntries = glob
 		return entries;
 	}, {});
 
+// Auto-detect all blocks with view.js files (frontend scripts)
+const viewEntries = glob
+	.sync('./src/blocks/*/view.js')
+	.reduce((entries, file) => {
+		const blockName = file.match(/\/blocks\/([^/]+)\/view\.js$/)[1];
+		entries[`blocks/${blockName}/view`] = path.resolve(
+			process.cwd(),
+			file
+		);
+		return entries;
+	}, {});
+
 module.exports = {
 	...defaultConfig,
 	entry: {
@@ -35,6 +47,8 @@ module.exports = {
 		frontend: path.resolve(process.cwd(), 'src', 'frontend.js'),
 		// Block-specific entries (auto-detected from src/blocks/*/index.js)
 		...blockEntries,
+		// Block-specific view scripts (auto-detected from src/blocks/*/view.js)
+		...viewEntries,
 	},
 	plugins: [
 		...defaultConfig.plugins,
@@ -59,50 +73,9 @@ module.exports = {
 	],
 	optimization: {
 		...defaultConfig.optimization,
-		// Enable code splitting ONLY for the main 'index' entry point
-		// Do NOT split individual blocks - WordPress needs them at specific paths
-		splitChunks: {
-			chunks: (chunk) => {
-				// Only apply code splitting to the main 'index' chunk
-				// Block entry points must remain intact (e.g., blocks/container/index.js)
-				return chunk.name === 'index';
-			},
-			minSize: 20000, // Only split chunks larger than 20KB
-			maxSize: 70000, // Try to keep chunks under 70KB
-			minChunks: 1,
-			maxAsyncRequests: 30, // Allow more async requests for better splitting
-			maxInitialRequests: 30, // Allow more initial requests
-			cacheGroups: {
-				// Extract WordPress packages into separate chunk
-				wpPackages: {
-					test: /[\\/]node_modules[\\/]@wordpress[\\/]/,
-					name: 'wp-packages',
-					priority: 20,
-					reuseExistingChunk: true,
-				},
-				// Extract other vendor (node_modules) code
-				vendor: {
-					test: /[\\/]node_modules[\\/](?!@wordpress[\\/])/,
-					name: 'vendors',
-					priority: 10,
-					reuseExistingChunk: true,
-				},
-				// Extract icon libraries into separate chunk (lazy loaded)
-				iconLibraries: {
-					test: /[\\/]src[\\/]blocks[\\/].*[\\/]utils[\\/](svg-icons|icon-library|dashicons-library)\.js$/,
-					name: 'icon-libraries',
-					priority: 15,
-					reuseExistingChunk: true,
-				},
-				// Extract common code used across multiple blocks
-				common: {
-					minChunks: 2,
-					priority: 5,
-					reuseExistingChunk: true,
-					enforce: true,
-				},
-			},
-		},
+		// Disable code splitting to ensure single index.js file for WordPress compatibility
+		// WordPress expects build/index.js and build/index.asset.php at predictable paths
+		splitChunks: false,
 		// Enable tree shaking in production
 		usedExports: true,
 		// Minimize bundle size in production

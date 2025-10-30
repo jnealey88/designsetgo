@@ -1,0 +1,185 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/grid",
+	"version": "1.0.0",
+	"title": "Grid Container",
+	"category": "designsetgo",
+	"description": "Responsive multi-column grid layouts. Perfect for feature grids, product listings, team members, and card layouts.",
+	"keywords": ["grid", "columns", "layout", "container", "responsive"],
+	"textdomain": "designsetgo",
+	"supports": {
+		"anchor": true,
+		"align": ["wide", "full"],
+		"html": false,
+		"inserter": true,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"allowEditing": false,
+			"default": {
+				"type": "grid"
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": false,
+			"__experimentalDefaultControls": {
+				"padding": true
+			}
+		},
+		"dimensions": {
+			"minHeight": true
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"background": {
+			"backgroundImage": true,
+			"backgroundSize": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"shadow": true,
+		"position": {
+			"sticky": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"color": true,
+				"radius": true,
+				"style": true,
+				"width": true
+			}
+		}
+	},
+	"attributes": {
+		"desktopColumns": {
+			"type": "number",
+			"default": 3
+		},
+		"tabletColumns": {
+			"type": "number",
+			"default": 2
+		},
+		"mobileColumns": {
+			"type": "number",
+			"default": 1
+		},
+		"gap": {
+			"type": "string",
+			"default": "var(--wp--preset--spacing--50)"
+		},
+		"rowGap": {
+			"type": "string",
+			"default": ""
+		},
+		"columnGap": {
+			"type": "string",
+			"default": ""
+		},
+		"alignItems": {
+			"type": "string",
+			"default": "start"
+		}
+	},
+	"example": {
+		"attributes": {
+			"desktopColumns": 3,
+			"tabletColumns": 2,
+			"mobileColumns": 1,
+			"gap": "var(--wp--preset--spacing--50)"
+		},
+		"innerBlocks": [
+			{
+				"name": "core/group",
+				"attributes": {
+					"style": {
+						"spacing": {
+							"padding": "1rem"
+						},
+						"border": {
+							"width": "1px",
+							"style": "solid"
+						}
+					}
+				},
+				"innerBlocks": [
+					{
+						"name": "core/heading",
+						"attributes": {
+							"level": 3,
+							"content": "Feature 1"
+						}
+					}
+				]
+			},
+			{
+				"name": "core/group",
+				"attributes": {
+					"style": {
+						"spacing": {
+							"padding": "1rem"
+						},
+						"border": {
+							"width": "1px",
+							"style": "solid"
+						}
+					}
+				},
+				"innerBlocks": [
+					{
+						"name": "core/heading",
+						"attributes": {
+							"level": 3,
+							"content": "Feature 2"
+						}
+					}
+				]
+			},
+			{
+				"name": "core/group",
+				"attributes": {
+					"style": {
+						"spacing": {
+							"padding": "1rem"
+						},
+						"border": {
+							"width": "1px",
+							"style": "solid"
+						}
+					}
+				},
+				"innerBlocks": [
+					{
+						"name": "core/heading",
+						"attributes": {
+							"level": 3,
+							"content": "Feature 3"
+						}
+					}
+				]
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}

@@ -1,0 +1,59 @@
+/**
+ * Grid Container Block - Save Component
+ *
+ * Saves the block content with declarative styles.
+ *
+ * @since 1.0.0
+ */
+
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+
+/**
+ * Grid Container Save Component
+ *
+ * @param {Object} props            Component props
+ * @param {Object} props.attributes Block attributes
+ * @return {JSX.Element} Save component
+ */
+export default function GridSave({ attributes }) {
+	const {
+		desktopColumns,
+		tabletColumns,
+		mobileColumns,
+		gap,
+		rowGap,
+		columnGap,
+		alignItems,
+	} = attributes;
+
+	// Calculate effective gaps (must match edit.js)
+	const effectiveRowGap = rowGap || gap || 'var(--wp--preset--spacing--50)';
+	const effectiveColumnGap =
+		columnGap || gap || 'var(--wp--preset--spacing--50)';
+
+	// Calculate inner styles declaratively (must match edit.js)
+	const innerStyles = {
+		display: 'grid',
+		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
+		rowGap: effectiveRowGap,
+		columnGap: effectiveColumnGap,
+		alignItems: alignItems || 'start',
+	};
+
+	// Block wrapper props with responsive column classes
+	const blockProps = useBlockProps.save({
+		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
+	});
+
+	// Inner blocks props with declarative styles
+	const innerBlocksProps = useInnerBlocksProps.save({
+		className: 'dsg-grid__inner',
+		style: innerStyles,
+	});
+
+	return (
+		<div {...blockProps}>
+			<div {...innerBlocksProps} />
+		</div>
+	);
+}

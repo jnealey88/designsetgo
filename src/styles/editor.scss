@@ -9,11 +9,25 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
+// Extension Editor Styles (must be after variables/mixins but before other rules)
+@use '../extensions/background-video/editor' as background-video;
+@use '../extensions/overlay/editor' as overlay;
+
 // Editor-specific styles
 .editor-styles-wrapper {
 
 	.dsg-block-wrapper {
 		// Add visual indicators for blocks in the editor
 		position: relative;
+	}
+}
+
+// Custom CSS Extension - Textarea Styling
+.dsg-custom-css-textarea {
+	textarea {
+		font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+		font-size: 13px;
+		line-height: 1.6;
+		tab-size: 2;
 	}
 }
