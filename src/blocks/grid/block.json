@@ -13,20 +13,14 @@
 		"align": ["wide", "full"],
 		"html": false,
 		"inserter": true,
-		"layout": {
-			"allowSwitching": false,
-			"allowInheriting": false,
-			"allowEditing": false,
-			"default": {
-				"type": "grid"
-			}
-		},
+		"layout": false,
 		"spacing": {
 			"margin": true,
 			"padding": true,
-			"blockGap": false,
+			"blockGap": true,
 			"__experimentalDefaultControls": {
-				"padding": true
+				"padding": true,
+				"blockGap": true
 			}
 		},
 		"dimensions": {
@@ -83,10 +77,6 @@
 			"type": "number",
 			"default": 1
 		},
-		"gap": {
-			"type": "string",
-			"default": "var(--wp--preset--spacing--50)"
-		},
 		"rowGap": {
 			"type": "string",
 			"default": ""
@@ -112,8 +102,7 @@
 		"attributes": {
 			"desktopColumns": 3,
 			"tabletColumns": 2,
-			"mobileColumns": 1,
-			"gap": "var(--wp--preset--spacing--50)"
+			"mobileColumns": 1
 		},
 		"innerBlocks": [
 			{

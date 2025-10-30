@@ -20,7 +20,6 @@ export default function GridSave({ attributes }) {
 		desktopColumns,
 		tabletColumns,
 		mobileColumns,
-		gap,
 		rowGap,
 		columnGap,
 		alignItems,
@@ -33,9 +32,9 @@ export default function GridSave({ attributes }) {
 	const effectiveContentWidth = contentWidth || '1200px';
 
 	// Calculate effective gaps (must match edit.js)
-	const effectiveRowGap = rowGap || gap || 'var(--wp--preset--spacing--50)';
-	const effectiveColumnGap =
-		columnGap || gap || 'var(--wp--preset--spacing--50)';
+	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
+	const effectiveRowGap = rowGap || 'var(--wp--preset--spacing--50)';
+	const effectiveColumnGap = columnGap || 'var(--wp--preset--spacing--50)';
 
 	// Calculate inner styles declaratively (must match edit.js)
 	const innerStyles = {

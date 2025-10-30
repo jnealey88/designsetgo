@@ -10,19 +10,18 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
-	InspectorControls,
 	BlockControls,
-	AlignmentToolbar,
 	useSetting,
 } from '@wordpress/block-editor';
 import {
-	PanelBody,
-	ToggleControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalUseCustomUnits as useCustomUnits,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalUnitControl as UnitControl,
+	ToolbarGroup,
+	ToolbarButton,
 } from '@wordpress/components';
+import {
+	alignLeft,
+	alignCenter,
+	alignRight,
+} from '@wordpress/icons';
 
 /**
  * Stack Container Edit Component
@@ -33,23 +32,20 @@ import {
  * @return {JSX.Element} Edit component
  */
 export default function StackEdit({ attributes, setAttributes }) {
-	const { gap, textAlign, constrainWidth, contentWidth } = attributes;
+	const { alignItems, constrainWidth, contentWidth } = attributes;
 
-	// Get spacing units and content size from theme
-	const units = useCustomUnits({
-		availableUnits: useSetting('spacing.units') || ['px', 'em', 'rem', 'vh', 'vw'],
-	});
+	// Get theme content size
 	const themeContentWidth = useSetting('layout.contentSize');
 
 	// Calculate effective content width
 	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
 	// Calculate inner styles declaratively
+	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
 	const innerStyles = {
 		display: 'flex',
 		flexDirection: 'column',
-		gap: gap || 'var(--wp--preset--spacing--50)',
-		...(textAlign && { textAlign }),
+		alignItems: alignItems || 'flex-start',
 		...(constrainWidth && {
 			maxWidth: effectiveContentWidth,
 			marginLeft: 'auto',
@@ -77,64 +73,27 @@ export default function StackEdit({ attributes, setAttributes }) {
 	return (
 		<>
 			<BlockControls>
-				<AlignmentToolbar
-					value={textAlign}
-					onChange={(value) => setAttributes({ textAlign: value })}
-				/>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={alignLeft}
+						label={__('Align items left', 'designsetgo')}
+						isPressed={alignItems === 'flex-start'}
+						onClick={() => setAttributes({ alignItems: 'flex-start' })}
+					/>
+					<ToolbarButton
+						icon={alignCenter}
+						label={__('Align items center', 'designsetgo')}
+						isPressed={alignItems === 'center'}
+						onClick={() => setAttributes({ alignItems: 'center' })}
+					/>
+					<ToolbarButton
+						icon={alignRight}
+						label={__('Align items right', 'designsetgo')}
+						isPressed={alignItems === 'flex-end'}
+						onClick={() => setAttributes({ alignItems: 'flex-end' })}
+					/>
+				</ToolbarGroup>
 			</BlockControls>
-
-			<InspectorControls>
-				<PanelBody
-					title={__('Stack Settings', 'designsetgo')}
-					initialOpen={true}
-				>
-					<UnitControl
-						label={__('Gap', 'designsetgo')}
-						value={gap}
-						onChange={(value) => setAttributes({ gap: value })}
-						units={units}
-						isResetValueOnUnitChange
-						__unstableInputWidth="80px"
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-				</PanelBody>
-
-				<PanelBody
-					title={__('Width', 'designsetgo')}
-					initialOpen={false}
-				>
-					<ToggleControl
-						label={__('Constrain Width', 'designsetgo')}
-						checked={constrainWidth}
-						onChange={(value) => setAttributes({ constrainWidth: value })}
-						help={
-							constrainWidth
-								? __('Content is constrained to max width', 'designsetgo')
-								: __('Content uses full container width', 'designsetgo')
-						}
-						__nextHasNoMarginBottom
-					/>
-
-					{constrainWidth && (
-						<UnitControl
-							label={__('Content Width', 'designsetgo')}
-							value={contentWidth}
-							onChange={(value) => setAttributes({ contentWidth: value })}
-							units={units}
-							placeholder={themeContentWidth || '1200px'}
-							help={__(
-								`Leave empty to use theme default (${themeContentWidth || '1200px'})`,
-								'designsetgo'
-							)}
-							isResetValueOnUnitChange
-							__unstableInputWidth="80px"
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
-						/>
-					)}
-				</PanelBody>
-			</InspectorControls>
 
 			<div {...blockProps}>
 				<div {...innerBlocksProps} />

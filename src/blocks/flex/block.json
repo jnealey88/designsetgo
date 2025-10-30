@@ -25,9 +25,10 @@
 		"spacing": {
 			"margin": true,
 			"padding": true,
-			"blockGap": false,
+			"blockGap": true,
 			"__experimentalDefaultControls": {
-				"padding": true
+				"padding": true,
+				"blockGap": true
 			}
 		},
 		"dimensions": {
@@ -88,10 +89,6 @@
 			"type": "string",
 			"default": "center"
 		},
-		"gap": {
-			"type": "string",
-			"default": "var(--wp--preset--spacing--50)"
-		},
 		"mobileStack": {
 			"type": "boolean",
 			"default": false
@@ -110,8 +107,7 @@
 			"direction": "row",
 			"wrap": true,
 			"justifyContent": "center",
-			"alignItems": "center",
-			"gap": "var(--wp--preset--spacing--50)"
+			"alignItems": "center"
 		},
 		"innerBlocks": [
 			{

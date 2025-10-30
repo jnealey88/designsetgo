@@ -17,10 +17,6 @@ import {
 	PanelBody,
 	ToggleControl,
 	SelectControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalUseCustomUnits as useCustomUnits,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 
 /**
@@ -37,29 +33,25 @@ export default function FlexEdit({ attributes, setAttributes }) {
 		wrap,
 		justifyContent,
 		alignItems,
-		gap,
 		mobileStack,
 		constrainWidth,
 		contentWidth,
 	} = attributes;
 
-	// Get spacing units and content size from theme
-	const units = useCustomUnits({
-		availableUnits: useSetting('spacing.units') || ['px', 'em', 'rem', 'vh', 'vw'],
-	});
+	// Get content size from theme
 	const themeContentWidth = useSetting('layout.contentSize');
 
 	// Calculate effective content width
 	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
 	// Calculate inner styles declaratively
+	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
 	const innerStyles = {
 		display: 'flex',
 		flexDirection: direction || 'row',
 		flexWrap: wrap ? 'wrap' : 'nowrap',
 		justifyContent: justifyContent || 'flex-start',
 		alignItems: alignItems || 'center',
-		gap: gap || 'var(--wp--preset--spacing--50)',
 		...(constrainWidth && {
 			maxWidth: effectiveContentWidth,
 			marginLeft: 'auto',
@@ -148,17 +140,6 @@ export default function FlexEdit({ attributes, setAttributes }) {
 						__nextHasNoMarginBottom
 					/>
 
-					<UnitControl
-						label={__('Gap', 'designsetgo')}
-						value={gap}
-						onChange={(value) => setAttributes({ gap: value })}
-						units={units}
-						isResetValueOnUnitChange
-						__unstableInputWidth="80px"
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-
 					<ToggleControl
 						label={__('Stack on Mobile', 'designsetgo')}
 						checked={mobileStack}
@@ -170,41 +151,6 @@ export default function FlexEdit({ attributes, setAttributes }) {
 						}
 						__nextHasNoMarginBottom
 					/>
-				</PanelBody>
-
-				<PanelBody
-					title={__('Width', 'designsetgo')}
-					initialOpen={false}
-				>
-					<ToggleControl
-						label={__('Constrain Width', 'designsetgo')}
-						checked={constrainWidth}
-						onChange={(value) => setAttributes({ constrainWidth: value })}
-						help={
-							constrainWidth
-								? __('Content is constrained to max width', 'designsetgo')
-								: __('Content uses full container width', 'designsetgo')
-						}
-						__nextHasNoMarginBottom
-					/>
-
-					{constrainWidth && (
-						<UnitControl
-							label={__('Content Width', 'designsetgo')}
-							value={contentWidth}
-							onChange={(value) => setAttributes({ contentWidth: value })}
-							units={units}
-							placeholder={themeContentWidth || '1200px'}
-							help={__(
-								`Leave empty to use theme default (${themeContentWidth || '1200px'})`,
-								'designsetgo'
-							)}
-							isResetValueOnUnitChange
-							__unstableInputWidth="80px"
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
-						/>
-					)}
 				</PanelBody>
 			</InspectorControls>
 

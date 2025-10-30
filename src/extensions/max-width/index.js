@@ -13,7 +13,7 @@ import './style.scss';
 import { __, sprintf } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { InspectorControls, useSettings } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl, TextControl, __experimentalUnitControl as UnitControl } from '@wordpress/components';
+import { PanelBody, ToggleControl, __experimentalUnitControl as UnitControl, __experimentalUseCustomUnits as useCustomUnits } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useEffect } from '@wordpress/element';
 
@@ -75,11 +75,20 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 			return <BlockEdit {...props} />;
 		}
 
-		// Check if this is a Container block
-		const isContainerBlock = name === 'designsetgo/container';
+		// Check if this is a Container block (legacy or new Stack/Flex/Grid)
+		const isContainerBlock = [
+			'designsetgo/container',
+			'designsetgo/stack',
+			'designsetgo/flex',
+			'designsetgo/grid',
+		].includes(name);
 
-		// Get theme content size for Container blocks
+		// Get theme content size and spacing units for Container blocks
 		const [themeContentSize] = useSettings('layout.contentSize');
+		const [spacingUnits] = useSettings('spacing.units');
+		const units = useCustomUnits({
+			availableUnits: spacingUnits || ['px', 'em', 'rem', 'vh', 'vw', '%'],
+		});
 
 		return (
 			<>
@@ -89,28 +98,6 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 						title={__('Width', 'designsetgo')}
 						initialOpen={false}
 					>
-						{/* Max width - Shows for ALL blocks */}
-						<UnitControl
-							label={__('Max width', 'designsetgo')}
-							value={dsgMaxWidth || ''}
-							onChange={(value) =>
-								setAttributes({ dsgMaxWidth: value || '' })
-							}
-							units={[
-								{ value: 'px', label: 'px', default: 0 },
-								{ value: '%', label: '%', default: 100 },
-								{ value: 'em', label: 'em', default: 0 },
-								{ value: 'rem', label: 'rem', default: 0 },
-								{ value: 'vw', label: 'vw', default: 100 },
-							]}
-							help={__(
-								'Maximum width for this block. Leave empty for no constraint.',
-								'designsetgo'
-							)}
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
-						/>
-
 						{/* Constrain Width - Shows ONLY for Container blocks */}
 						{isContainerBlock && (
 							<>
@@ -132,37 +119,42 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 								/>
 
 								{constrainWidth && (
-									<TextControl
+									<UnitControl
 										label={__('Content Width', 'designsetgo')}
 										value={contentWidth}
 										onChange={(value) =>
-											setAttributes({ contentWidth: value })
+											setAttributes({ contentWidth: value || '' })
 										}
-										placeholder={
-											themeContentSize ||
-											__('e.g., 800px, 60rem', 'designsetgo')
-										}
-										help={
-											themeContentSize
-												? sprintf(
-														/* translators: %s: theme's content width */
-														__(
-															'Leave empty to use theme default (%s)',
-															'designsetgo'
-														),
-														themeContentSize
-													)
-												: __(
-														'Maximum content width (e.g., 800px, 60rem)',
-														'designsetgo'
-													)
-										}
+										units={units}
+										placeholder={themeContentSize || '1200px'}
+										help={__(
+											`Leave empty to use theme default (${themeContentSize || '1200px'})`,
+											'designsetgo'
+										)}
+										isResetValueOnUnitChange
+										__unstableInputWidth="80px"
 										__next40pxDefaultSize
 										__nextHasNoMarginBottom
 									/>
 								)}
 							</>
 						)}
+
+						{/* Max width - Shows for ALL blocks */}
+						<UnitControl
+							label={__('Max width', 'designsetgo')}
+							value={dsgMaxWidth || ''}
+							onChange={(value) =>
+								setAttributes({ dsgMaxWidth: value || '' })
+							}
+							units={units}
+							help={__(
+								'Maximum width for this block. Leave empty for no constraint.',
+								'designsetgo'
+							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
 					</PanelBody>
 				</InspectorControls>
 			</>

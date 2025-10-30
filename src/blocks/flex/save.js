@@ -21,7 +21,6 @@ export default function FlexSave({ attributes }) {
 		wrap,
 		justifyContent,
 		alignItems,
-		gap,
 		mobileStack,
 		constrainWidth,
 		contentWidth,
@@ -32,13 +31,13 @@ export default function FlexSave({ attributes }) {
 	const effectiveContentWidth = contentWidth || '1200px';
 
 	// Calculate inner styles declaratively (must match edit.js)
+	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
 	const innerStyles = {
 		display: 'flex',
 		flexDirection: direction || 'row',
 		flexWrap: wrap ? 'wrap' : 'nowrap',
 		justifyContent: justifyContent || 'flex-start',
 		alignItems: alignItems || 'center',
-		gap: gap || 'var(--wp--preset--spacing--50)',
 		...(constrainWidth && {
 			maxWidth: effectiveContentWidth,
 			marginLeft: 'auto',

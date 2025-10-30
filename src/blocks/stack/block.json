@@ -25,9 +25,10 @@
 		"spacing": {
 			"margin": true,
 			"padding": true,
-			"blockGap": false,
+			"blockGap": true,
 			"__experimentalDefaultControls": {
-				"padding": true
+				"padding": true,
+				"blockGap": true
 			}
 		},
 		"dimensions": {
@@ -72,15 +73,15 @@
 		}
 	},
 	"attributes": {
-		"gap": {
-			"type": "string",
-			"default": "var(--wp--preset--spacing--50)"
-		},
 		"align": {
 			"type": "string"
 		},
 		"textAlign": {
 			"type": "string"
+		},
+		"alignItems": {
+			"type": "string",
+			"default": "flex-start"
 		},
 		"constrainWidth": {
 			"type": "boolean",

@@ -23,8 +23,6 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToolsPanelItem as ToolsPanelItem,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalUseCustomUnits as useCustomUnits,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
@@ -42,7 +40,6 @@ export default function GridEdit({ attributes, setAttributes }) {
 		desktopColumns,
 		tabletColumns,
 		mobileColumns,
-		gap,
 		rowGap,
 		columnGap,
 		alignItems,
@@ -54,20 +51,25 @@ export default function GridEdit({ attributes, setAttributes }) {
 		!!(rowGap || columnGap)
 	);
 
-	// Get spacing sizes, units, and content size from theme
+	// Get spacing sizes and content size from theme
 	const spacingSizes = useSetting('spacing.spacingSizes');
-	const units = useCustomUnits({
-		availableUnits: useSetting('spacing.units') || ['px', 'em', 'rem', 'vh', 'vw'],
-	});
 	const themeContentWidth = useSetting('layout.contentSize');
 
 	// Calculate effective content width
 	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
+	// Units for UnitControl components (still used in Gap Settings)
+	const units = [
+		{ value: 'px', label: 'px' },
+		{ value: 'em', label: 'em' },
+		{ value: 'rem', label: 'rem' },
+		{ value: '%', label: '%' },
+	];
+
 	// Calculate effective gaps
-	const effectiveRowGap = rowGap || gap || 'var(--wp--preset--spacing--50)';
-	const effectiveColumnGap =
-		columnGap || gap || 'var(--wp--preset--spacing--50)';
+	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
+	const effectiveRowGap = rowGap || 'var(--wp--preset--spacing--50)';
+	const effectiveColumnGap = columnGap || 'var(--wp--preset--spacing--50)';
 
 	// Calculate inner styles declaratively with responsive columns
 	const innerStyles = {
@@ -190,30 +192,17 @@ export default function GridEdit({ attributes, setAttributes }) {
 						onChange={(value) => {
 							setUseCustomGaps(value);
 							if (!value) {
-								// Reset to unified gap
+								// Reset to WordPress blockGap
 								setAttributes({ rowGap: '', columnGap: '' });
 							}
 						}}
 						help={
 							useCustomGaps
 								? __('Using separate row and column gaps', 'designsetgo')
-								: __('Using unified gap for both rows and columns', 'designsetgo')
+								: __('Using WordPress blockGap (configure in Spacing panel)', 'designsetgo')
 						}
 						__nextHasNoMarginBottom
 					/>
-
-					{!useCustomGaps && (
-						<UnitControl
-							label={__('Gap', 'designsetgo')}
-							value={gap}
-							onChange={(value) => setAttributes({ gap: value })}
-							units={units}
-							isResetValueOnUnitChange
-							__unstableInputWidth="80px"
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
-						/>
-					)}
 
 					{useCustomGaps && (
 						<>
@@ -239,41 +228,6 @@ export default function GridEdit({ attributes, setAttributes }) {
 								__nextHasNoMarginBottom
 							/>
 						</>
-					)}
-				</PanelBody>
-
-				<PanelBody
-					title={__('Width', 'designsetgo')}
-					initialOpen={false}
-				>
-					<ToggleControl
-						label={__('Constrain Width', 'designsetgo')}
-						checked={constrainWidth}
-						onChange={(value) => setAttributes({ constrainWidth: value })}
-						help={
-							constrainWidth
-								? __('Content is constrained to max width', 'designsetgo')
-								: __('Content uses full container width', 'designsetgo')
-						}
-						__nextHasNoMarginBottom
-					/>
-
-					{constrainWidth && (
-						<UnitControl
-							label={__('Content Width', 'designsetgo')}
-							value={contentWidth}
-							onChange={(value) => setAttributes({ contentWidth: value })}
-							units={units}
-							placeholder={themeContentWidth || '1200px'}
-							help={__(
-								`Leave empty to use theme default (${themeContentWidth || '1200px'})`,
-								'designsetgo'
-							)}
-							isResetValueOnUnitChange
-							__unstableInputWidth="80px"
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
-						/>
 					)}
 				</PanelBody>
 			</InspectorControls>

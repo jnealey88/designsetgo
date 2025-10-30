@@ -1,7 +1,7 @@
 /**
  * Stack Container Block - Transforms
  *
- * Allows transforming to/from Flex and Grid containers.
+ * Allows transforming to/from Flex, Grid, and legacy Container blocks.
  *
  * @since 1.0.0
  */
@@ -15,9 +15,10 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/stack',
 					{
-						gap: attributes.gap,
+						alignItems: 'flex-start',
 						constrainWidth: attributes.constrainWidth,
 						contentWidth: attributes.contentWidth,
+						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
 					},
 					innerBlocks
 				);
@@ -30,9 +31,30 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/stack',
 					{
-						gap: attributes.gap,
+						alignItems: 'flex-start',
 						constrainWidth: attributes.constrainWidth,
 						contentWidth: attributes.contentWidth,
+						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
+					},
+					innerBlocks
+				);
+			},
+		},
+		{
+			type: 'block',
+			blocks: ['designsetgo/container'],
+			isMatch: (attributes) => {
+				// Only allow transforming stack layout type
+				return attributes.layoutType === 'stack';
+			},
+			transform: (attributes, innerBlocks) => {
+				return wp.blocks.createBlock(
+					'designsetgo/stack',
+					{
+						alignItems: 'flex-start',
+						constrainWidth: attributes.constrainWidth,
+						contentWidth: attributes.contentWidth,
+						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
 					},
 					innerBlocks
 				);
@@ -47,7 +69,6 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/flex',
 					{
-						gap: attributes.gap,
 						constrainWidth: attributes.constrainWidth,
 						contentWidth: attributes.contentWidth,
 						direction: 'row',
@@ -55,6 +76,7 @@ const transforms = {
 						justifyContent: 'flex-start',
 						alignItems: 'center',
 						mobileStack: false,
+						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
 					},
 					innerBlocks
 				);
@@ -67,7 +89,6 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/grid',
 					{
-						gap: attributes.gap,
 						rowGap: '',
 						columnGap: '',
 						constrainWidth: attributes.constrainWidth,
@@ -76,6 +97,7 @@ const transforms = {
 						tabletColumns: 2,
 						mobileColumns: 1,
 						alignItems: 'start',
+						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
 					},
 					innerBlocks
 				);
