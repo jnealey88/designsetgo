@@ -81,6 +81,14 @@
 		},
 		"textAlign": {
 			"type": "string"
+		},
+		"constrainWidth": {
+			"type": "boolean",
+			"default": false
+		},
+		"contentWidth": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"example": {

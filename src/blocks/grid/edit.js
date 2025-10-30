@@ -46,17 +46,23 @@ export default function GridEdit({ attributes, setAttributes }) {
 		rowGap,
 		columnGap,
 		alignItems,
+		constrainWidth,
+		contentWidth,
 	} = attributes;
 
 	const [useCustomGaps, setUseCustomGaps] = useState(
 		!!(rowGap || columnGap)
 	);
 
-	// Get spacing sizes and units from theme
+	// Get spacing sizes, units, and content size from theme
 	const spacingSizes = useSetting('spacing.spacingSizes');
 	const units = useCustomUnits({
 		availableUnits: useSetting('spacing.units') || ['px', 'em', 'rem', 'vh', 'vw'],
 	});
+	const themeContentWidth = useSetting('layout.contentSize');
+
+	// Calculate effective content width
+	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
 	// Calculate effective gaps
 	const effectiveRowGap = rowGap || gap || 'var(--wp--preset--spacing--50)';
@@ -70,6 +76,11 @@ export default function GridEdit({ attributes, setAttributes }) {
 		rowGap: effectiveRowGap,
 		columnGap: effectiveColumnGap,
 		alignItems: alignItems || 'start',
+		...(constrainWidth && {
+			maxWidth: effectiveContentWidth,
+			marginLeft: 'auto',
+			marginRight: 'auto',
+		}),
 	};
 
 	// Block wrapper props with responsive column classes
@@ -228,6 +239,41 @@ export default function GridEdit({ attributes, setAttributes }) {
 								__nextHasNoMarginBottom
 							/>
 						</>
+					)}
+				</PanelBody>
+
+				<PanelBody
+					title={__('Width', 'designsetgo')}
+					initialOpen={false}
+				>
+					<ToggleControl
+						label={__('Constrain Width', 'designsetgo')}
+						checked={constrainWidth}
+						onChange={(value) => setAttributes({ constrainWidth: value })}
+						help={
+							constrainWidth
+								? __('Content is constrained to max width', 'designsetgo')
+								: __('Content uses full container width', 'designsetgo')
+						}
+						__nextHasNoMarginBottom
+					/>
+
+					{constrainWidth && (
+						<UnitControl
+							label={__('Content Width', 'designsetgo')}
+							value={contentWidth}
+							onChange={(value) => setAttributes({ contentWidth: value })}
+							units={units}
+							placeholder={themeContentWidth || '1200px'}
+							help={__(
+								`Leave empty to use theme default (${themeContentWidth || '1200px'})`,
+								'designsetgo'
+							)}
+							isResetValueOnUnitChange
+							__unstableInputWidth="80px"
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
 					)}
 				</PanelBody>
 			</InspectorControls>

@@ -39,12 +39,18 @@ export default function FlexEdit({ attributes, setAttributes }) {
 		alignItems,
 		gap,
 		mobileStack,
+		constrainWidth,
+		contentWidth,
 	} = attributes;
 
-	// Get spacing units from theme
+	// Get spacing units and content size from theme
 	const units = useCustomUnits({
 		availableUnits: useSetting('spacing.units') || ['px', 'em', 'rem', 'vh', 'vw'],
 	});
+	const themeContentWidth = useSetting('layout.contentSize');
+
+	// Calculate effective content width
+	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
 	// Calculate inner styles declaratively
 	const innerStyles = {
@@ -54,6 +60,11 @@ export default function FlexEdit({ attributes, setAttributes }) {
 		justifyContent: justifyContent || 'flex-start',
 		alignItems: alignItems || 'center',
 		gap: gap || 'var(--wp--preset--spacing--50)',
+		...(constrainWidth && {
+			maxWidth: effectiveContentWidth,
+			marginLeft: 'auto',
+			marginRight: 'auto',
+		}),
 	};
 
 	// Block wrapper props
@@ -159,6 +170,41 @@ export default function FlexEdit({ attributes, setAttributes }) {
 						}
 						__nextHasNoMarginBottom
 					/>
+				</PanelBody>
+
+				<PanelBody
+					title={__('Width', 'designsetgo')}
+					initialOpen={false}
+				>
+					<ToggleControl
+						label={__('Constrain Width', 'designsetgo')}
+						checked={constrainWidth}
+						onChange={(value) => setAttributes({ constrainWidth: value })}
+						help={
+							constrainWidth
+								? __('Content is constrained to max width', 'designsetgo')
+								: __('Content uses full container width', 'designsetgo')
+						}
+						__nextHasNoMarginBottom
+					/>
+
+					{constrainWidth && (
+						<UnitControl
+							label={__('Content Width', 'designsetgo')}
+							value={contentWidth}
+							onChange={(value) => setAttributes({ contentWidth: value })}
+							units={units}
+							placeholder={themeContentWidth || '1200px'}
+							help={__(
+								`Leave empty to use theme default (${themeContentWidth || '1200px'})`,
+								'designsetgo'
+							)}
+							isResetValueOnUnitChange
+							__unstableInputWidth="80px"
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
+					)}
 				</PanelBody>
 			</InspectorControls>
 

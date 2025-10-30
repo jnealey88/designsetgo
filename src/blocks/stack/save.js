@@ -16,7 +16,11 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  * @return {JSX.Element} Save component
  */
 export default function StackSave({ attributes }) {
-	const { gap, textAlign } = attributes;
+	const { gap, textAlign, constrainWidth, contentWidth } = attributes;
+
+	// Calculate effective content width (must match edit.js logic for frontend)
+	// Note: Can't use useSetting in save, so use contentWidth or fallback
+	const effectiveContentWidth = contentWidth || '1200px';
 
 	// Calculate inner styles declaratively (must match edit.js)
 	const innerStyles = {
@@ -24,6 +28,11 @@ export default function StackSave({ attributes }) {
 		flexDirection: 'column',
 		gap: gap || 'var(--wp--preset--spacing--50)',
 		...(textAlign && { textAlign }),
+		...(constrainWidth && {
+			maxWidth: effectiveContentWidth,
+			marginLeft: 'auto',
+			marginRight: 'auto',
+		}),
 	};
 
 	// Block wrapper props

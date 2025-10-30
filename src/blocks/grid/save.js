@@ -24,7 +24,13 @@ export default function GridSave({ attributes }) {
 		rowGap,
 		columnGap,
 		alignItems,
+		constrainWidth,
+		contentWidth,
 	} = attributes;
+
+	// Calculate effective content width (must match edit.js logic for frontend)
+	// Note: Can't use useSetting in save, so use contentWidth or fallback
+	const effectiveContentWidth = contentWidth || '1200px';
 
 	// Calculate effective gaps (must match edit.js)
 	const effectiveRowGap = rowGap || gap || 'var(--wp--preset--spacing--50)';
@@ -38,6 +44,11 @@ export default function GridSave({ attributes }) {
 		rowGap: effectiveRowGap,
 		columnGap: effectiveColumnGap,
 		alignItems: alignItems || 'start',
+		...(constrainWidth && {
+			maxWidth: effectiveContentWidth,
+			marginLeft: 'auto',
+			marginRight: 'auto',
+		}),
 	};
 
 	// Block wrapper props with responsive column classes

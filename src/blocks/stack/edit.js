@@ -17,6 +17,7 @@ import {
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
+	ToggleControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseCustomUnits as useCustomUnits,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -32,12 +33,16 @@ import {
  * @return {JSX.Element} Edit component
  */
 export default function StackEdit({ attributes, setAttributes }) {
-	const { gap, textAlign } = attributes;
+	const { gap, textAlign, constrainWidth, contentWidth } = attributes;
 
-	// Get spacing units from theme
+	// Get spacing units and content size from theme
 	const units = useCustomUnits({
 		availableUnits: useSetting('spacing.units') || ['px', 'em', 'rem', 'vh', 'vw'],
 	});
+	const themeContentWidth = useSetting('layout.contentSize');
+
+	// Calculate effective content width
+	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
 	// Calculate inner styles declaratively
 	const innerStyles = {
@@ -45,6 +50,11 @@ export default function StackEdit({ attributes, setAttributes }) {
 		flexDirection: 'column',
 		gap: gap || 'var(--wp--preset--spacing--50)',
 		...(textAlign && { textAlign }),
+		...(constrainWidth && {
+			maxWidth: effectiveContentWidth,
+			marginLeft: 'auto',
+			marginRight: 'auto',
+		}),
 	};
 
 	// Block wrapper props
@@ -88,6 +98,41 @@ export default function StackEdit({ attributes, setAttributes }) {
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
+				</PanelBody>
+
+				<PanelBody
+					title={__('Width', 'designsetgo')}
+					initialOpen={false}
+				>
+					<ToggleControl
+						label={__('Constrain Width', 'designsetgo')}
+						checked={constrainWidth}
+						onChange={(value) => setAttributes({ constrainWidth: value })}
+						help={
+							constrainWidth
+								? __('Content is constrained to max width', 'designsetgo')
+								: __('Content uses full container width', 'designsetgo')
+						}
+						__nextHasNoMarginBottom
+					/>
+
+					{constrainWidth && (
+						<UnitControl
+							label={__('Content Width', 'designsetgo')}
+							value={contentWidth}
+							onChange={(value) => setAttributes({ contentWidth: value })}
+							units={units}
+							placeholder={themeContentWidth || '1200px'}
+							help={__(
+								`Leave empty to use theme default (${themeContentWidth || '1200px'})`,
+								'designsetgo'
+							)}
+							isResetValueOnUnitChange
+							__unstableInputWidth="80px"
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
+					)}
 				</PanelBody>
 			</InspectorControls>
 

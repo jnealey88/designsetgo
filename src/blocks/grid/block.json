@@ -98,6 +98,14 @@
 		"alignItems": {
 			"type": "string",
 			"default": "start"
+		},
+		"constrainWidth": {
+			"type": "boolean",
+			"default": false
+		},
+		"contentWidth": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"example": {

@@ -10,6 +10,7 @@ import { registerBlockType } from '@wordpress/blocks';
 
 import edit from './edit';
 import save from './save';
+import transforms from './transforms';
 import metadata from './block.json';
 
 import './editor.scss';
@@ -39,4 +40,5 @@ registerBlockType(metadata.name, {
 	},
 	edit,
 	save,
+	transforms,
 });

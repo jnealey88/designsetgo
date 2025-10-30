@@ -95,6 +95,14 @@
 		"mobileStack": {
 			"type": "boolean",
 			"default": false
+		},
+		"constrainWidth": {
+			"type": "boolean",
+			"default": false
+		},
+		"contentWidth": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"example": {
