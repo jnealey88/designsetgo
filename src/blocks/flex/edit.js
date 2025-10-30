@@ -11,12 +11,16 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	useSetting,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	ToggleControl,
 	SelectControl,
-	TextControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseCustomUnits as useCustomUnits,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 
 /**
@@ -36,6 +40,11 @@ export default function FlexEdit({ attributes, setAttributes }) {
 		gap,
 		mobileStack,
 	} = attributes;
+
+	// Get spacing units from theme
+	const units = useCustomUnits({
+		availableUnits: useSetting('spacing.units') || ['px', 'em', 'rem', 'vh', 'vw'],
+	});
 
 	// Calculate inner styles declaratively
 	const innerStyles = {
@@ -128,15 +137,13 @@ export default function FlexEdit({ attributes, setAttributes }) {
 						__nextHasNoMarginBottom
 					/>
 
-					<TextControl
+					<UnitControl
 						label={__('Gap', 'designsetgo')}
 						value={gap}
 						onChange={(value) => setAttributes({ gap: value })}
-						placeholder="var(--wp--preset--spacing--50)"
-						help={__(
-							'Space between items. Use CSS units (px, rem, em) or WordPress spacing tokens.',
-							'designsetgo'
-						)}
+						units={units}
+						isResetValueOnUnitChange
+						__unstableInputWidth="80px"
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>

@@ -11,13 +11,21 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	useSetting,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	RangeControl,
 	SelectControl,
-	TextControl,
 	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToolsPanel as ToolsPanel,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToolsPanelItem as ToolsPanelItem,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseCustomUnits as useCustomUnits,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
@@ -43,6 +51,12 @@ export default function GridEdit({ attributes, setAttributes }) {
 	const [useCustomGaps, setUseCustomGaps] = useState(
 		!!(rowGap || columnGap)
 	);
+
+	// Get spacing sizes and units from theme
+	const spacingSizes = useSetting('spacing.spacingSizes');
+	const units = useCustomUnits({
+		availableUnits: useSetting('spacing.units') || ['px', 'em', 'rem', 'vh', 'vw'],
+	});
 
 	// Calculate effective gaps
 	const effectiveRowGap = rowGap || gap || 'var(--wp--preset--spacing--50)';
@@ -178,15 +192,13 @@ export default function GridEdit({ attributes, setAttributes }) {
 					/>
 
 					{!useCustomGaps && (
-						<TextControl
+						<UnitControl
 							label={__('Gap', 'designsetgo')}
 							value={gap}
 							onChange={(value) => setAttributes({ gap: value })}
-							placeholder="var(--wp--preset--spacing--50)"
-							help={__(
-								'Space between grid items (rows and columns)',
-								'designsetgo'
-							)}
+							units={units}
+							isResetValueOnUnitChange
+							__unstableInputWidth="80px"
 							__next40pxDefaultSize
 							__nextHasNoMarginBottom
 						/>
@@ -194,22 +206,24 @@ export default function GridEdit({ attributes, setAttributes }) {
 
 					{useCustomGaps && (
 						<>
-							<TextControl
+							<UnitControl
 								label={__('Row Gap', 'designsetgo')}
 								value={rowGap}
 								onChange={(value) => setAttributes({ rowGap: value })}
-								placeholder={gap || 'var(--wp--preset--spacing--50)'}
-								help={__('Vertical space between rows', 'designsetgo')}
+								units={units}
+								isResetValueOnUnitChange
+								__unstableInputWidth="80px"
 								__next40pxDefaultSize
 								__nextHasNoMarginBottom
 							/>
 
-							<TextControl
+							<UnitControl
 								label={__('Column Gap', 'designsetgo')}
 								value={columnGap}
 								onChange={(value) => setAttributes({ columnGap: value })}
-								placeholder={gap || 'var(--wp--preset--spacing--50)'}
-								help={__('Horizontal space between columns', 'designsetgo')}
+								units={units}
+								isResetValueOnUnitChange
+								__unstableInputWidth="80px"
 								__next40pxDefaultSize
 								__nextHasNoMarginBottom
 							/>
