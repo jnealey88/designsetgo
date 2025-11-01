@@ -34,63 +34,76 @@ import './extensions/background-video';
 // Overlay - adds color overlay to all blocks
 import './extensions/overlay';
 
+// Grid Span - adds column span control to blocks inside Grid containers
+import './extensions/grid-span';
+
+// ===== DEFAULT PADDING FOR ROOT CONTAINERS =====
+// Set default padding for container blocks, but only when inserted at root level
+import { addFilter } from '@wordpress/hooks';
+import { select } from '@wordpress/data';
+
+/**
+ * Set default padding for container blocks at root level
+ * Top/Bottom: xxxl (64px), Left/Right: md (16px)
+ */
+addFilter(
+	'blocks.getBlockAttributes',
+	'designsetgo/set-container-default-padding',
+	(attributes, blockType, clientId) => {
+		// Only apply to container blocks
+		const containerBlocks = [
+			'designsetgo/stack',
+			'designsetgo/flex',
+			'designsetgo/grid',
+		];
+		if (!containerBlocks.includes(blockType.name)) {
+			return attributes;
+		}
+
+		// Check if block already has padding set
+		if (attributes?.style?.spacing?.padding) {
+			return attributes;
+		}
+
+		// Check if this is a root-level block (no parent)
+		const blockEditor = select('core/block-editor');
+		if (!blockEditor || !clientId) {
+			return attributes;
+		}
+
+		const parents = blockEditor.getBlockParents(clientId);
+
+		// If block has no parents, it's root-level - set default padding
+		if (parents.length === 0) {
+			return {
+				...attributes,
+				style: {
+					...attributes?.style,
+					spacing: {
+						...attributes?.style?.spacing,
+						padding: {
+							top: 'var(--wp--preset--spacing--xxxl)',
+							bottom: 'var(--wp--preset--spacing--xxxl)',
+							left: 'var(--wp--preset--spacing--md)',
+							right: 'var(--wp--preset--spacing--md)',
+						},
+					},
+				},
+			};
+		}
+
+		return attributes;
+	}
+);
+
 // ===== CUSTOM BLOCKS (Primary Architecture) =====
-// Full React control, proper video backgrounds, state management
+// Blocks are loaded via block.json (editorScript: "file:./index.js")
+// Webpack creates individual entries for each block (see webpack.config.js)
+// This prevents duplicate code and reduces main bundle size
 
-// Container blocks (new specialized blocks)
-import './blocks/stack';
-import './blocks/flex';
-import './blocks/grid';
-
-// Legacy container block (deprecated, use Stack/Flex/Grid instead)
-import './blocks/container';
-import './blocks/container/style.scss';
-import './blocks/container/editor.scss';
-
-// Tabs block (parent/child relationship)
-import './blocks/tabs';
-import './blocks/tab';
-
-// Accordion block (parent/child relationship)
-import './blocks/accordion';
-import './blocks/accordion/style.scss';
-import './blocks/accordion/editor.scss';
-import './blocks/accordion-item';
-import './blocks/accordion-item/style.scss';
-import './blocks/accordion-item/editor.scss';
-
-// Counter Group block (parent/child relationship)
-import './blocks/counter-group';
-import './blocks/counter-group/style.scss';
-import './blocks/counter-group/editor.scss';
-import './blocks/counter';
-import './blocks/counter/style.scss';
-import './blocks/counter/editor.scss';
-
-// Icon block (standalone)
-import './blocks/icon';
-import './blocks/icon/style.scss';
-import './blocks/icon/editor.scss';
-
-// Icon List block (parent/child relationship)
-import './blocks/icon-list';
-import './blocks/icon-list/style.scss';
-import './blocks/icon-list/editor.scss';
-import './blocks/icon-list-item';
-import './blocks/icon-list-item/style.scss';
-import './blocks/icon-list-item/editor.scss';
-
-// Progress Bar block (standalone)
-import './blocks/progress-bar';
-import './blocks/progress-bar/style.scss';
-import './blocks/progress-bar/editor.scss';
-
-// Pill block (standalone)
-import './blocks/pill';
-import './blocks/pill/style.scss';
-import './blocks/pill/editor.scss';
-
-// Icon Button block (standalone)
-import './blocks/icon-button';
-import './blocks/icon-button/style.scss';
-import './blocks/icon-button/editor.scss';
+// NOTE: Do NOT import blocks here! They are auto-loaded by WordPress via:
+// 1. webpack.config.js creates individual entries (blocks/*/index.js)
+// 2. block.json specifies editorScript: "file:./index.js"
+// 3. PHP registers blocks via register_block_type_from_metadata()
+//
+// Importing blocks here would duplicate code in the bundle!
