@@ -2,6 +2,8 @@
  * Grid Container Block - Editor Styles
  *
  * Editor-only styles for the Grid Container block.
+ * CRITICAL: Responsive column styles must be duplicated from style.scss
+ * for editor/frontend parity.
  *
  * @package DesignSetGo
  */
@@ -10,14 +12,43 @@
 	// Visual indicator in editor
 	position: relative;
 
-	// Ensure proper sizing
+	// Ensure proper sizing and full width when nested
+	width: 100%;
+	box-sizing: border-box;
+
 	&__inner {
 		width: 100%;
+		box-sizing: border-box;
 	}
 
 	// Show outline when selected (editor-only)
 	&.is-selected {
 		outline: 1px dashed rgba(37, 99, 235, 0.3);
 		outline-offset: -1px;
+	}
+
+	// ========================================
+	// CRITICAL: Responsive column classes
+	// MUST be duplicated from style.scss for editor/frontend parity
+	// Desktop columns are set via inline styles (default)
+	// Tablet and mobile columns use media queries
+	// ========================================
+
+	// Tablet breakpoint (≤ 1024px)
+	@media (max-width: 1024px) {
+		@for $i from 1 through 12 {
+			&.dsg-grid-cols-tablet-#{$i} .dsg-grid__inner {
+				grid-template-columns: repeat(#{$i}, 1fr) !important;
+			}
+		}
+	}
+
+	// Mobile breakpoint (≤ 767px)
+	@media (max-width: 767px) {
+		@for $i from 1 through 12 {
+			&.dsg-grid-cols-mobile-#{$i} .dsg-grid__inner {
+				grid-template-columns: repeat(#{$i}, 1fr) !important;
+			}
+		}
 	}
 }

@@ -65,15 +65,15 @@ export default function GridEdit({ attributes, setAttributes }) {
 	];
 
 	// Calculate inner styles declaratively with responsive columns
-	// IMPORTANT: Only set gap when custom gaps are used
-	// Otherwise, let WordPress blockGap support handle spacing via style.spacing.blockGap
+	// IMPORTANT: Always provide a default gap to prevent overlapping items
+	// Custom gaps override the default when set
 	const innerStyles = {
 		display: 'grid',
 		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
 		alignItems: alignItems || 'start',
-		// Only apply custom gaps if set, otherwise use WordPress blockGap
-		...(rowGap && { rowGap }),
-		...(columnGap && { columnGap }),
+		// Apply gaps: custom values OR default (24px / --wp--preset--spacing--50)
+		rowGap: rowGap || 'var(--wp--preset--spacing--50)',
+		columnGap: columnGap || 'var(--wp--preset--spacing--50)',
 		...(constrainWidth && {
 			maxWidth: effectiveContentWidth,
 			marginLeft: 'auto',
