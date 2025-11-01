@@ -85,6 +85,14 @@
 			"type": "string",
 			"default": ""
 		},
+		"style": {
+			"type": "object",
+			"default": {
+				"spacing": {
+					"blockGap": "var(--wp--preset--spacing--50)"
+				}
+			}
+		},
 		"alignItems": {
 			"type": "string",
 			"default": "start"

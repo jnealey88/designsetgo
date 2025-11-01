@@ -47,9 +47,7 @@ export default function GridEdit({ attributes, setAttributes }) {
 		contentWidth,
 	} = attributes;
 
-	const [useCustomGaps, setUseCustomGaps] = useState(
-		!!(rowGap || columnGap)
-	);
+	const [useCustomGaps, setUseCustomGaps] = useState(!!(rowGap || columnGap));
 
 	// Get spacing sizes and content size from theme
 	const spacingSizes = useSetting('spacing.spacingSizes');
@@ -66,18 +64,16 @@ export default function GridEdit({ attributes, setAttributes }) {
 		{ value: '%', label: '%' },
 	];
 
-	// Calculate effective gaps
-	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
-	const effectiveRowGap = rowGap || 'var(--wp--preset--spacing--50)';
-	const effectiveColumnGap = columnGap || 'var(--wp--preset--spacing--50)';
-
 	// Calculate inner styles declaratively with responsive columns
+	// IMPORTANT: Only set gap when custom gaps are used
+	// Otherwise, let WordPress blockGap support handle spacing via style.spacing.blockGap
 	const innerStyles = {
 		display: 'grid',
 		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
-		rowGap: effectiveRowGap,
-		columnGap: effectiveColumnGap,
 		alignItems: alignItems || 'start',
+		// Only apply custom gaps if set, otherwise use WordPress blockGap
+		...(rowGap && { rowGap }),
+		...(columnGap && { columnGap }),
 		...(constrainWidth && {
 			maxWidth: effectiveContentWidth,
 			marginLeft: 'auto',
@@ -113,9 +109,15 @@ export default function GridEdit({ attributes, setAttributes }) {
 						value={desktopColumns}
 						onChange={(value) => {
 							// Ensure tablet columns don't exceed desktop
-							const newTabletCols = Math.min(tabletColumns, value);
+							const newTabletCols = Math.min(
+								tabletColumns,
+								value
+							);
 							// Ensure mobile columns don't exceed tablet
-							const newMobileCols = Math.min(mobileColumns, newTabletCols);
+							const newMobileCols = Math.min(
+								mobileColumns,
+								newTabletCols
+							);
 
 							setAttributes({
 								desktopColumns: value,
@@ -129,7 +131,10 @@ export default function GridEdit({ attributes, setAttributes }) {
 						}}
 						min={1}
 						max={12}
-						help={__('Number of columns on desktop screens', 'designsetgo')}
+						help={__(
+							'Number of columns on desktop screens',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -139,7 +144,10 @@ export default function GridEdit({ attributes, setAttributes }) {
 						value={tabletColumns}
 						onChange={(value) => {
 							// Ensure mobile columns don't exceed tablet
-							const newMobileCols = Math.min(mobileColumns, value);
+							const newMobileCols = Math.min(
+								mobileColumns,
+								value
+							);
 
 							setAttributes({
 								tabletColumns: value,
@@ -150,7 +158,10 @@ export default function GridEdit({ attributes, setAttributes }) {
 						}}
 						min={1}
 						max={desktopColumns}
-						help={__('Number of columns on tablet screens (≤ 1024px)', 'designsetgo')}
+						help={__(
+							'Number of columns on tablet screens (≤ 1024px)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -158,10 +169,15 @@ export default function GridEdit({ attributes, setAttributes }) {
 					<RangeControl
 						label={__('Mobile Columns', 'designsetgo')}
 						value={mobileColumns}
-						onChange={(value) => setAttributes({ mobileColumns: value })}
+						onChange={(value) =>
+							setAttributes({ mobileColumns: value })
+						}
 						min={1}
 						max={tabletColumns}
-						help={__('Number of columns on mobile screens (≤ 767px)', 'designsetgo')}
+						help={__(
+							'Number of columns on mobile screens (≤ 767px)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -170,13 +186,27 @@ export default function GridEdit({ attributes, setAttributes }) {
 						label={__('Align Items', 'designsetgo')}
 						value={alignItems}
 						options={[
-							{ label: __('Start', 'designsetgo'), value: 'start' },
-							{ label: __('Center', 'designsetgo'), value: 'center' },
+							{
+								label: __('Start', 'designsetgo'),
+								value: 'start',
+							},
+							{
+								label: __('Center', 'designsetgo'),
+								value: 'center',
+							},
 							{ label: __('End', 'designsetgo'), value: 'end' },
-							{ label: __('Stretch', 'designsetgo'), value: 'stretch' },
+							{
+								label: __('Stretch', 'designsetgo'),
+								value: 'stretch',
+							},
 						]}
-						onChange={(value) => setAttributes({ alignItems: value })}
-						help={__('Vertical alignment of grid items', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ alignItems: value })
+						}
+						help={__(
+							'Vertical alignment of grid items',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -198,8 +228,14 @@ export default function GridEdit({ attributes, setAttributes }) {
 						}}
 						help={
 							useCustomGaps
-								? __('Using separate row and column gaps', 'designsetgo')
-								: __('Using WordPress blockGap (configure in Spacing panel)', 'designsetgo')
+								? __(
+										'Using separate row and column gaps',
+										'designsetgo'
+									)
+								: __(
+										'Using WordPress blockGap (configure in Spacing panel)',
+										'designsetgo'
+									)
 						}
 						__nextHasNoMarginBottom
 					/>
@@ -209,7 +245,9 @@ export default function GridEdit({ attributes, setAttributes }) {
 							<UnitControl
 								label={__('Row Gap', 'designsetgo')}
 								value={rowGap}
-								onChange={(value) => setAttributes({ rowGap: value })}
+								onChange={(value) =>
+									setAttributes({ rowGap: value })
+								}
 								units={units}
 								isResetValueOnUnitChange
 								__unstableInputWidth="80px"
@@ -220,7 +258,9 @@ export default function GridEdit({ attributes, setAttributes }) {
 							<UnitControl
 								label={__('Column Gap', 'designsetgo')}
 								value={columnGap}
-								onChange={(value) => setAttributes({ columnGap: value })}
+								onChange={(value) =>
+									setAttributes({ columnGap: value })
+								}
 								units={units}
 								isResetValueOnUnitChange
 								__unstableInputWidth="80px"

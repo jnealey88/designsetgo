@@ -31,18 +31,16 @@ export default function GridSave({ attributes }) {
 	// Note: Can't use useSetting in save, so use contentWidth or fallback
 	const effectiveContentWidth = contentWidth || '1200px';
 
-	// Calculate effective gaps (must match edit.js)
-	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
-	const effectiveRowGap = rowGap || 'var(--wp--preset--spacing--50)';
-	const effectiveColumnGap = columnGap || 'var(--wp--preset--spacing--50)';
-
-	// Calculate inner styles declaratively (must match edit.js)
+	// Calculate inner styles declaratively (must match edit.js EXACTLY)
+	// IMPORTANT: Only set gap when custom gaps are used
+	// Otherwise, let WordPress blockGap support handle spacing via style.spacing.blockGap
 	const innerStyles = {
 		display: 'grid',
 		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
-		rowGap: effectiveRowGap,
-		columnGap: effectiveColumnGap,
 		alignItems: alignItems || 'start',
+		// Only apply custom gaps if set, otherwise use WordPress blockGap
+		...(rowGap && { rowGap }),
+		...(columnGap && { columnGap }),
 		...(constrainWidth && {
 			maxWidth: effectiveContentWidth,
 			marginLeft: 'auto',
