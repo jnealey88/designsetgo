@@ -10,11 +10,20 @@
 	// Visual indicator in editor
 	position: relative;
 
+	// CRITICAL: Must match style.scss for editor/frontend parity
+	width: 100%;
+
 	&__inner {
 		// CRITICAL: Stack container needs full width for alignment properties to work
 		// Must be duplicated from style.scss for editor/frontend parity
 		width: 100%;
 		min-height: 100px; // Ensure visible area when empty
+
+		// CRITICAL: Child elements need full width for text-align to work properly
+		// Must be duplicated from style.scss for editor/frontend parity
+		> * {
+			width: 100%;
+		}
 	}
 
 	// Show outline when selected (editor-only)

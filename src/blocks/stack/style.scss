@@ -7,12 +7,20 @@
  */
 
 .dsg-stack {
-	// Let WordPress handle sizing natively for outer wrapper (alignfull support)
+	// CRITICAL: When nested inside other containers, needs full width
+	// This doesn't break alignfull because alignfull uses margin calculations, not width
+	width: 100%;
 
 	&__inner {
 		// CRITICAL: Stack container needs full width for alignment properties to work
 		// Without this, the container shrinks to fit content and align-items doesn't apply
 		width: 100%;
+
+		// CRITICAL: Child elements need full width for text-align to work properly
+		// Without this, headings/paragraphs shrink to fit content and can't be left/center/right aligned
+		> * {
+			width: 100%;
+		}
 	}
 }
 

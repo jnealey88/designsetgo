@@ -7,7 +7,9 @@
  */
 
 .dsg-grid {
-	// Let WordPress handle sizing natively for outer wrapper (alignfull support)
+	// CRITICAL: When nested inside other containers, needs full width
+	// This doesn't break alignfull because alignfull uses margin calculations, not width
+	width: 100%;
 
 	&__inner {
 		// CRITICAL: Grid container needs full width for proper column distribution
@@ -20,6 +22,7 @@
 		> * {
 			min-width: 0;     // Allow shrinking below content width
 			min-height: 0;    // Allow shrinking vertically
+			width: 100%;      // Full width for text-align to work
 		}
 	}
 
