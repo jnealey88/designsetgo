@@ -12,9 +12,6 @@
 	// Visual indicator in editor
 	position: relative;
 
-	// CRITICAL: Must match style.scss for editor/frontend parity
-	width: 100%;
-
 	&__inner {
 		// CRITICAL: Grid container needs full width for proper column distribution
 		// Must be duplicated from style.scss for editor/frontend parity

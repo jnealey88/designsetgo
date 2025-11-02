@@ -10,9 +10,6 @@
 	// Visual indicator in editor
 	position: relative;
 
-	// CRITICAL: Must match style.scss for editor/frontend parity
-	width: 100%;
-
 	&__inner {
 		// CRITICAL: Stack container needs full width for alignment properties to work
 		// Must be duplicated from style.scss for editor/frontend parity

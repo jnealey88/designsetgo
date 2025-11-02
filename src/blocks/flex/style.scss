@@ -7,9 +7,8 @@
  */
 
 .dsg-flex {
-	// CRITICAL: When nested inside other containers, needs full width
-	// This doesn't break alignfull because alignfull uses margin calculations, not width
-	width: 100%;
+	// Let WordPress handle outer wrapper sizing for alignfull support
+	// Inner wrapper gets width: 100% for flex properties to work
 
 	&__inner {
 		// CRITICAL: Flex container needs full width for justify-content/align-items to work
