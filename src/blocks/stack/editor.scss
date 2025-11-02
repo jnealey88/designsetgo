@@ -19,9 +19,17 @@
 		width: 100%;
 		min-height: 100px; // Ensure visible area when empty
 
-		// CRITICAL: Child elements need full width for text-align to work properly
+		// CRITICAL: Block-level elements need full width for text-align to work properly
 		// Must be duplicated from style.scss for editor/frontend parity
-		> * {
+		> h1,
+		> h2,
+		> h3,
+		> h4,
+		> h5,
+		> h6,
+		> p,
+		> .wp-block-heading,
+		> .wp-block-paragraph {
 			width: 100%;
 		}
 	}

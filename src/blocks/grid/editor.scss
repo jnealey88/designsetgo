@@ -25,7 +25,20 @@
 		> * {
 			min-width: 0;     // Allow shrinking below content width
 			min-height: 0;    // Allow shrinking vertically
-			width: 100%;      // Full width for text-align to work
+		}
+
+		// CRITICAL: Block-level elements need full width for text-align to work properly
+		// Must be duplicated from style.scss for editor/frontend parity
+		> h1,
+		> h2,
+		> h3,
+		> h4,
+		> h5,
+		> h6,
+		> p,
+		> .wp-block-heading,
+		> .wp-block-paragraph {
+			width: 100%;
 		}
 	}
 
