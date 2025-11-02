@@ -2173,6 +2173,64 @@ const innerBlocksProps = useInnerBlocksProps({
 <div {...innerBlocksProps} />
 ```
 
+### 7. Custom Width/Sizing Rules Breaking Alignfull
+**Mistake**: Adding custom `width: 100%`, `box-sizing: border-box`, or `max-width` rules to blocks that support alignfull alignment.
+
+**Result**:
+- Alignfull blocks have extra padding on left/right sides
+- Blocks don't extend edge-to-edge as expected
+- `.has-global-padding` class conflicts with custom width rules
+- Block appears constrained within parent padding instead of breaking out
+
+**Real-World Example**:
+Grid, Flex, and Stack container blocks had these rules:
+```scss
+.dsg-grid {
+  width: 100%;              // ❌ Interfered with alignfull
+  box-sizing: border-box;   // ❌ Caused sizing issues
+
+  &__inner {
+    width: 100%;            // ❌ Prevented breakout
+    box-sizing: border-box; // ❌ Conflicted with WordPress
+  }
+}
+```
+
+This prevented alignfull blocks from breaking out of the parent container's padding properly.
+
+**Root Cause**:
+- WordPress's alignfull uses specific width calculations and negative margins to break out of container padding
+- Custom `width: 100%` forces the block to stay within its parent's content area
+- `box-sizing: border-box` changes how padding is calculated, breaking WordPress's math
+- These rules override WordPress's native alignfull behavior
+
+**Prevention**:
+- **DON'T** add custom width rules to blocks that support alignfull (`"align": ["wide", "full"]`)
+- **DON'T** force `box-sizing: border-box` on block wrappers
+- **DON'T** try to "help" WordPress with sizing - it handles this correctly by default
+- **DO** let WordPress handle all sizing and alignment natively
+- **DO** test alignfull alignment after adding any width/sizing CSS
+
+**Fix**:
+Remove custom width/sizing rules and let WordPress handle it:
+```scss
+.dsg-grid {
+  // ✅ Let WordPress handle sizing natively
+  // Only add essential block-specific styles like display
+}
+```
+
+**Testing Checklist**:
+When adding new blocks or modifying container blocks:
+- [ ] Does the block support alignfull? (`"align": ["wide", "full"]` in block.json)
+- [ ] Have you added any `width`, `max-width`, or `box-sizing` rules?
+- [ ] If yes, remove them and test alignfull alignment
+- [ ] Test with `.has-global-padding` class present
+- [ ] Verify block extends edge-to-edge without extra padding
+- [ ] Check that WordPress's native breakout works correctly
+
+**Key Principle**: WordPress's alignment system is sophisticated and battle-tested. Custom width/sizing rules almost always interfere with it. When alignfull doesn't work, **remove your custom CSS first** before trying to fix it with more CSS.
+
 ## Version Control Best Practices
 
 ### Commit Messages for This Plugin
