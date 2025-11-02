@@ -33,19 +33,12 @@ registerBlockType(metadata.name, {
 				fill="none"
 				stroke="currentColor"
 				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			>
-				<rect x="6" y="4" width="12" height="16" rx="1" />
-				<text
-					x="12"
-					y="14"
-					fontSize="10"
-					fontWeight="bold"
-					textAnchor="middle"
-					stroke="none"
-					fill="currentColor"
-				>
-					123
-				</text>
+				<path d="M4 8l4 4-4 4" />
+				<line x1="12" y1="4" x2="10" y2="20" />
+				<path d="M20 8l-4 4 4 4" />
 			</svg>
 		),
 		foreground: ICON_COLOR,

@@ -198,7 +198,9 @@
 
 // Mobile optimizations
 @media (max-width: 768px) {
+
 	.dsg-accordion-item {
+
 		.dsg-accordion-item__trigger {
 			// Ensure minimum touch target size
 			min-height: 44px;
@@ -214,7 +216,9 @@
 
 // Print styles - show all content
 @media print {
+
 	.dsg-accordion-item {
+
 		.dsg-accordion-item__panel {
 			display: block !important;
 			height: auto !important;

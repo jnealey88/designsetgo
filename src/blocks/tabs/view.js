@@ -63,8 +63,8 @@
 				return;
 			}
 
-			// Clear existing navigation
-			this.nav.innerHTML = '';
+			// Clear existing navigation (modern approach without innerHTML)
+			this.nav.replaceChildren();
 
 			// Build tab buttons from panels
 			this.panels.forEach((panel, index) => {

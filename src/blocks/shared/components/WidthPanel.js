@@ -17,12 +17,12 @@ import {
 /**
  * Width Panel Component
  *
- * @param {Object}   props                    Component props
- * @param {boolean}  props.constrainWidth     Whether width is constrained
- * @param {string}   props.contentWidth       Custom content width
- * @param {Function} props.setAttributes      Function to update attributes
- * @param {Array}    props.units              Available units for UnitControl
- * @param {string}   props.themeContentWidth  Theme default content width
+ * @param {Object}   props                   Component props
+ * @param {boolean}  props.constrainWidth    Whether width is constrained
+ * @param {string}   props.contentWidth      Custom content width
+ * @param {Function} props.setAttributes     Function to update attributes
+ * @param {Array}    props.units             Available units for UnitControl
+ * @param {string}   props.themeContentWidth Theme default content width
  * @return {JSX.Element} Width Panel component
  */
 export function WidthPanel({
@@ -40,7 +40,10 @@ export function WidthPanel({
 				onChange={(value) => setAttributes({ constrainWidth: value })}
 				help={
 					constrainWidth
-						? __('Content is constrained to max width', 'designsetgo')
+						? __(
+								'Content is constrained to max width',
+								'designsetgo'
+							)
 						: __('Content uses full container width', 'designsetgo')
 				}
 				__nextHasNoMarginBottom

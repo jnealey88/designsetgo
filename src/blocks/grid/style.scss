@@ -7,12 +7,14 @@
  */
 
 .dsg-grid {
-	// Ensure proper sizing
-	box-sizing: border-box;
-
 	&__inner {
-		width: 100%;
-		box-sizing: border-box;
+		// CRITICAL: Prevent grid items from overflowing their cells
+		// Grid items with width: 100% can overflow if not constrained
+		// This is essential for container blocks (Stack, Flex, etc.) inside Grid
+		> * {
+			min-width: 0;     // Allow shrinking below content width
+			min-height: 0;    // Allow shrinking vertically
+		}
 	}
 
 	// Responsive column classes
@@ -21,6 +23,7 @@
 
 	// Tablet breakpoint (≤ 1024px)
 	@media (max-width: 1024px) {
+
 		@for $i from 1 through 12 {
 			&.dsg-grid-cols-tablet-#{$i} .dsg-grid__inner {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;
@@ -30,6 +33,7 @@
 
 	// Mobile breakpoint (≤ 767px)
 	@media (max-width: 767px) {
+
 		@for $i from 1 through 12 {
 			&.dsg-grid-cols-mobile-#{$i} .dsg-grid__inner {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;

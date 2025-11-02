@@ -13,11 +13,7 @@ import {
 	InspectorControls,
 	useSetting,
 } from '@wordpress/block-editor';
-import {
-	PanelBody,
-	ToggleControl,
-	SelectControl,
-} from '@wordpress/components';
+import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
 
 /**
  * Flex Container Edit Component
@@ -87,10 +83,18 @@ export default function FlexEdit({ attributes, setAttributes }) {
 						label={__('Direction', 'designsetgo')}
 						value={direction}
 						options={[
-							{ label: __('Row (Horizontal)', 'designsetgo'), value: 'row' },
-							{ label: __('Column (Vertical)', 'designsetgo'), value: 'column' },
+							{
+								label: __('Row (Horizontal)', 'designsetgo'),
+								value: 'row',
+							},
+							{
+								label: __('Column (Vertical)', 'designsetgo'),
+								value: 'column',
+							},
 						]}
-						onChange={(value) => setAttributes({ direction: value })}
+						onChange={(value) =>
+							setAttributes({ direction: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -101,8 +105,14 @@ export default function FlexEdit({ attributes, setAttributes }) {
 						onChange={(value) => setAttributes({ wrap: value })}
 						help={
 							wrap
-								? __('Items will wrap to next line if needed', 'designsetgo')
-								: __('Items will stay in single line', 'designsetgo')
+								? __(
+										'Items will wrap to next line if needed',
+										'designsetgo'
+									)
+								: __(
+										'Items will stay in single line',
+										'designsetgo'
+									)
 						}
 						__nextHasNoMarginBottom
 					/>
@@ -111,15 +121,38 @@ export default function FlexEdit({ attributes, setAttributes }) {
 						label={__('Justify Content', 'designsetgo')}
 						value={justifyContent}
 						options={[
-							{ label: __('Start', 'designsetgo'), value: 'flex-start' },
-							{ label: __('Center', 'designsetgo'), value: 'center' },
-							{ label: __('End', 'designsetgo'), value: 'flex-end' },
-							{ label: __('Space Between', 'designsetgo'), value: 'space-between' },
-							{ label: __('Space Around', 'designsetgo'), value: 'space-around' },
-							{ label: __('Space Evenly', 'designsetgo'), value: 'space-evenly' },
+							{
+								label: __('Start', 'designsetgo'),
+								value: 'flex-start',
+							},
+							{
+								label: __('Center', 'designsetgo'),
+								value: 'center',
+							},
+							{
+								label: __('End', 'designsetgo'),
+								value: 'flex-end',
+							},
+							{
+								label: __('Space Between', 'designsetgo'),
+								value: 'space-between',
+							},
+							{
+								label: __('Space Around', 'designsetgo'),
+								value: 'space-around',
+							},
+							{
+								label: __('Space Evenly', 'designsetgo'),
+								value: 'space-evenly',
+							},
 						]}
-						onChange={(value) => setAttributes({ justifyContent: value })}
-						help={__('Horizontal alignment (main axis)', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ justifyContent: value })
+						}
+						help={__(
+							'Horizontal alignment (main axis)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -128,14 +161,34 @@ export default function FlexEdit({ attributes, setAttributes }) {
 						label={__('Align Items', 'designsetgo')}
 						value={alignItems}
 						options={[
-							{ label: __('Start', 'designsetgo'), value: 'flex-start' },
-							{ label: __('Center', 'designsetgo'), value: 'center' },
-							{ label: __('End', 'designsetgo'), value: 'flex-end' },
-							{ label: __('Stretch', 'designsetgo'), value: 'stretch' },
-							{ label: __('Baseline', 'designsetgo'), value: 'baseline' },
+							{
+								label: __('Start', 'designsetgo'),
+								value: 'flex-start',
+							},
+							{
+								label: __('Center', 'designsetgo'),
+								value: 'center',
+							},
+							{
+								label: __('End', 'designsetgo'),
+								value: 'flex-end',
+							},
+							{
+								label: __('Stretch', 'designsetgo'),
+								value: 'stretch',
+							},
+							{
+								label: __('Baseline', 'designsetgo'),
+								value: 'baseline',
+							},
 						]}
-						onChange={(value) => setAttributes({ alignItems: value })}
-						help={__('Vertical alignment (cross axis)', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ alignItems: value })
+						}
+						help={__(
+							'Vertical alignment (cross axis)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -143,11 +196,19 @@ export default function FlexEdit({ attributes, setAttributes }) {
 					<ToggleControl
 						label={__('Stack on Mobile', 'designsetgo')}
 						checked={mobileStack}
-						onChange={(value) => setAttributes({ mobileStack: value })}
+						onChange={(value) =>
+							setAttributes({ mobileStack: value })
+						}
 						help={
 							mobileStack
-								? __('Items will stack vertically on mobile devices', 'designsetgo')
-								: __('Items maintain flex layout on all devices', 'designsetgo')
+								? __(
+										'Items will stack vertically on mobile devices',
+										'designsetgo'
+									)
+								: __(
+										'Items maintain flex layout on all devices',
+										'designsetgo'
+									)
 						}
 						__nextHasNoMarginBottom
 					/>

@@ -3,7 +3,7 @@
  *
  * Handles overlay initialization on the frontend.
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 
@@ -18,7 +18,10 @@
 
 		overlayBlocks.forEach((block) => {
 			const overlayColor = block.getAttribute('data-overlay-color');
-			const overlayOpacity = parseInt(block.getAttribute('data-overlay-opacity') || '75', 10);
+			const overlayOpacity = parseInt(
+				block.getAttribute('data-overlay-opacity') || '75',
+				10
+			);
 
 			// Check if overlay already exists
 			if (block.querySelector('.dsg-overlay')) {
@@ -61,7 +64,8 @@
 			// Ensure content is above overlay
 			Array.from(block.children).forEach((child) => {
 				if (child !== overlay) {
-					const childPosition = window.getComputedStyle(child).position;
+					const childPosition =
+						window.getComputedStyle(child).position;
 					if (childPosition === 'static') {
 						child.style.position = 'relative';
 						child.style.zIndex = '2';

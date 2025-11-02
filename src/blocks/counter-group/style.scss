@@ -43,6 +43,7 @@
 
 	// Tablet breakpoint (768px - 1023px)
 	@media (max-width: 1023px) {
+
 		&__inner {
 			grid-template-columns: repeat(var(--dsg-counter-columns-tablet, 2), 1fr);
 		}
@@ -50,6 +51,7 @@
 
 	// Mobile breakpoint (<768px)
 	@media (max-width: 767px) {
+
 		&__inner {
 			grid-template-columns: repeat(var(--dsg-counter-columns-mobile, 1), 1fr);
 		}

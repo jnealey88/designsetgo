@@ -9,6 +9,7 @@
 // Editor-specific overrides and enhancements
 .editor-styles-wrapper,
 .block-editor-block-list__layout {
+
 	.dsg-accordion {
 		// Editor visual aids for container
 		position: relative;
@@ -28,6 +29,7 @@
 
 		// When selected, show more prominent border
 		&.is-selected {
+
 			&::before {
 				border-color: var(--wp--admin-theme-color, #007cba);
 				border-style: solid;
@@ -61,6 +63,7 @@
 
 		// Better spacing for inner blocks in editor
 		.dsg-accordion__items {
+
 			> .block-editor-inner-blocks > .block-editor-block-list__layout {
 				// Remove default WordPress inner blocks spacing
 				padding: 0;
@@ -71,6 +74,7 @@
 
 // Block preview (inserter/pattern library)
 .block-editor-block-preview__content {
+
 	.dsg-accordion {
 		// Remove visual aids in preview
 		&::before,

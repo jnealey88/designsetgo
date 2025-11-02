@@ -3,14 +3,18 @@
  *
  * Adds overlay capability to all WordPress blocks.
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { InspectorControls, PanelColorSettings, useSettings } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	PanelColorSettings,
+	useSettings,
+} from '@wordpress/block-editor';
 import { PanelBody, ToggleControl, RangeControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
@@ -67,7 +71,8 @@ addFilter(
 const withOverlayControls = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, name } = props;
-		const { dsgEnableOverlay, dsgOverlayColor, dsgOverlayOpacity } = attributes;
+		const { dsgEnableOverlay, dsgOverlayColor, dsgOverlayOpacity } =
+			attributes;
 
 		if (EXCLUDED_BLOCKS.includes(name)) {
 			return <BlockEdit {...props} />;
@@ -78,7 +83,9 @@ const withOverlayControls = createHigherOrderComponent((BlockEdit) => {
 
 		// Get default overlay color (theme accent-5 or black)
 		const themeColors = colorSettings?.theme || [];
-		const accent5Color = themeColors.find((color) => color.slug === 'accent-5');
+		const accent5Color = themeColors.find(
+			(color) => color.slug === 'accent-5'
+		);
 		const defaultOverlayColor = accent5Color?.color || '#000000';
 
 		// Use custom color if set, otherwise use default
@@ -95,11 +102,16 @@ const withOverlayControls = createHigherOrderComponent((BlockEdit) => {
 						<ToggleControl
 							label={__('Enable Overlay', 'designsetgo')}
 							checked={dsgEnableOverlay}
-							onChange={(value) => setAttributes({ dsgEnableOverlay: value })}
+							onChange={(value) =>
+								setAttributes({ dsgEnableOverlay: value })
+							}
 							help={
 								dsgEnableOverlay
 									? __('Overlay is enabled', 'designsetgo')
-									: __('Add a color overlay to this block', 'designsetgo')
+									: __(
+											'Add a color overlay to this block',
+											'designsetgo'
+										)
 							}
 							__nextHasNoMarginBottom
 						/>
@@ -112,7 +124,10 @@ const withOverlayControls = createHigherOrderComponent((BlockEdit) => {
 										{
 											value: effectiveOverlayColor,
 											onChange: (value) =>
-												setAttributes({ dsgOverlayColor: value || '' }),
+												setAttributes({
+													dsgOverlayColor:
+														value || '',
+												}),
 											label: __('Color', 'designsetgo'),
 											colors: colorSettings,
 										},
@@ -131,12 +146,17 @@ const withOverlayControls = createHigherOrderComponent((BlockEdit) => {
 									label={__('Overlay Opacity', 'designsetgo')}
 									value={dsgOverlayOpacity}
 									onChange={(value) =>
-										setAttributes({ dsgOverlayOpacity: value })
+										setAttributes({
+											dsgOverlayOpacity: value,
+										})
 									}
 									min={0}
 									max={100}
 									step={5}
-									help={__('Transparency of the overlay (0 = transparent, 100 = opaque)', 'designsetgo')}
+									help={__(
+										'Transparency of the overlay (0 = transparent, 100 = opaque)',
+										'designsetgo'
+									)}
 									__next40pxDefaultSize
 									__nextHasNoMarginBottom
 								/>
@@ -161,7 +181,8 @@ addFilter(
 const withOverlayEdit = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, name } = props;
-		const { dsgEnableOverlay, dsgOverlayColor, dsgOverlayOpacity } = attributes;
+		const { dsgEnableOverlay, dsgOverlayColor, dsgOverlayOpacity } =
+			attributes;
 
 		if (EXCLUDED_BLOCKS.includes(name) || !dsgEnableOverlay) {
 			return <BlockListBlock {...props} />;
@@ -200,14 +221,13 @@ const withOverlayEdit = createHigherOrderComponent((BlockListBlock) => {
 	};
 }, 'withOverlayEdit');
 
-addFilter(
-	'editor.BlockListBlock',
-	'designsetgo/overlay-edit',
-	withOverlayEdit
-);
+addFilter('editor.BlockListBlock', 'designsetgo/overlay-edit', withOverlayEdit);
 
 /**
  * Add overlay classes and data attributes to save
+ * @param props
+ * @param blockType
+ * @param attributes
  */
 function addOverlaySaveProps(props, blockType, attributes) {
 	const { dsgEnableOverlay, dsgOverlayColor, dsgOverlayOpacity } = attributes;

@@ -7,17 +7,13 @@
  */
 
 .dsg-flex {
-	// Ensure proper sizing
-	box-sizing: border-box;
-
-	&__inner {
-		width: 100%;
-		box-sizing: border-box;
-	}
+	// Let WordPress handle sizing natively
 
 	// Mobile stack behavior (screens < 768px)
 	&--mobile-stack {
+
 		@media (max-width: 767px) {
+
 			.dsg-flex__inner {
 				flex-direction: column !important;
 			}

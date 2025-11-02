@@ -111,11 +111,20 @@ const withCustomCSSControl = createHigherOrderComponent((BlockEdit) => {
 						<p className="components-base-control__help">
 							<strong>{__('Examples:', 'designsetgo')}</strong>
 							<br />
-							<code>selector {'{'} background: red; {'}'}</code> - Style this block
+							<code>
+								selector {'{'} background: red; {'}'}
+							</code>{' '}
+							- Style this block
 							<br />
-							<code>selector h3 {'{'} color: white; {'}'}</code> - Style H3s inside
+							<code>
+								selector h3 {'{'} color: white; {'}'}
+							</code>{' '}
+							- Style H3s inside
 							<br />
-							<code>selector:hover {'{'} opacity: 0.8; {'}'}</code> - Hover effect
+							<code>
+								selector:hover {'{'} opacity: 0.8; {'}'}
+							</code>{' '}
+							- Hover effect
 						</p>
 					</PanelBody>
 				</InspectorControls>
@@ -135,57 +144,66 @@ addFilter(
  * Add custom CSS class AND inject styles into editor
  * Combined into single filter to avoid conflicts
  */
-const withCustomCSSClassAndStyles = createHigherOrderComponent((BlockListBlock) => {
-	return (props) => {
-		const { attributes, name, clientId } = props;
-		const { dsgCustomCSS } = attributes;
+const withCustomCSSClassAndStyles = createHigherOrderComponent(
+	(BlockListBlock) => {
+		return (props) => {
+			const { attributes, name, clientId } = props;
+			const { dsgCustomCSS } = attributes;
 
-		// Skip if no custom CSS set or excluded block
-		if (!dsgCustomCSS || EXCLUDED_BLOCKS.includes(name)) {
-			return <BlockListBlock {...props} />;
-		}
-
-		// Add custom CSS class to block wrapper
-		const customClassName = `dsg-custom-css-${clientId}`;
-		const styleId = `dsg-custom-css-style-${clientId}`;
-
-		// Inject styles into editor with "selector" replaced by actual class
-		useEffect(() => {
-			// Check if we're in the editor iframe or main window
-			const editorDocument = document.querySelector('iframe[name="editor-canvas"]')?.contentDocument || document;
-
-			// Remove existing style element if present
-			const existingStyle = editorDocument.getElementById(styleId);
-			if (existingStyle) {
-				existingStyle.remove();
+			// Skip if no custom CSS set or excluded block
+			if (!dsgCustomCSS || EXCLUDED_BLOCKS.includes(name)) {
+				return <BlockListBlock {...props} />;
 			}
 
-			// Create new style element if custom CSS is provided
-			if (dsgCustomCSS) {
-				const styleElement = editorDocument.createElement('style');
-				styleElement.id = styleId;
-				// Replace "selector" with actual class name
-				styleElement.textContent = replaceSelector(dsgCustomCSS, customClassName);
-				editorDocument.head.appendChild(styleElement);
-			}
+			// Add custom CSS class to block wrapper
+			const customClassName = `dsg-custom-css-${clientId}`;
+			const styleId = `dsg-custom-css-style-${clientId}`;
 
-			// Cleanup function to remove style element when block is removed
-			return () => {
-				const styleToRemove = editorDocument.getElementById(styleId);
-				if (styleToRemove) {
-					styleToRemove.remove();
+			// Inject styles into editor with "selector" replaced by actual class
+			useEffect(() => {
+				// Check if we're in the editor iframe or main window
+				const editorDocument =
+					document.querySelector('iframe[name="editor-canvas"]')
+						?.contentDocument || document;
+
+				// Remove existing style element if present
+				const existingStyle = editorDocument.getElementById(styleId);
+				if (existingStyle) {
+					existingStyle.remove();
 				}
-			};
-		}, [dsgCustomCSS, clientId, styleId, customClassName]);
 
-		return (
-			<BlockListBlock
-				{...props}
-				className={`${props.className || ''} ${customClassName}`.trim()}
-			/>
-		);
-	};
-}, 'withCustomCSSClassAndStyles');
+				// Create new style element if custom CSS is provided
+				if (dsgCustomCSS) {
+					const styleElement = editorDocument.createElement('style');
+					styleElement.id = styleId;
+					// Replace "selector" with actual class name
+					styleElement.textContent = replaceSelector(
+						dsgCustomCSS,
+						customClassName
+					);
+					editorDocument.head.appendChild(styleElement);
+				}
+
+				// Cleanup function to remove style element when block is removed
+				return () => {
+					const styleToRemove =
+						editorDocument.getElementById(styleId);
+					if (styleToRemove) {
+						styleToRemove.remove();
+					}
+				};
+			}, [dsgCustomCSS, clientId, styleId, customClassName]);
+
+			return (
+				<BlockListBlock
+					{...props}
+					className={`${props.className || ''} ${customClassName}`.trim()}
+				/>
+			);
+		};
+	},
+	'withCustomCSSClassAndStyles'
+);
 
 addFilter(
 	'editor.BlockListBlock',
@@ -196,6 +214,9 @@ addFilter(
 
 /**
  * Add custom CSS class to block wrapper on frontend
+ * @param props
+ * @param blockType
+ * @param attributes
  */
 function applyCustomCSSClass(props, blockType, attributes) {
 	const { dsgCustomCSS } = attributes;

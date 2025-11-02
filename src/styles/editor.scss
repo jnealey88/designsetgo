@@ -12,6 +12,12 @@
 // Extension Editor Styles (must be after variables/mixins but before other rules)
 @use '../extensions/background-video/editor' as background-video;
 @use '../extensions/overlay/editor' as overlay;
+@use '../extensions/grid-span/editor' as grid-span;
+
+// Container blocks editor styles
+@use '../blocks/stack/editor' as stack;
+@use '../blocks/flex/editor' as flex;
+@use '../blocks/grid/editor' as grid;
 
 // Editor-specific styles
 .editor-styles-wrapper {
@@ -24,10 +30,13 @@
 
 // Custom CSS Extension - Textarea Styling
 .dsg-custom-css-textarea {
+
 	textarea {
-		font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+		font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, monospace;
 		font-size: 13px;
 		line-height: 1.6;
 		tab-size: 2;
 	}
 }
+
+// No custom alignfull overrides in editor - let WordPress handle it natively

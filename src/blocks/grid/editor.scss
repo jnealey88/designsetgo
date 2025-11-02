@@ -12,13 +12,13 @@
 	// Visual indicator in editor
 	position: relative;
 
-	// Ensure proper sizing and full width when nested
-	width: 100%;
-	box-sizing: border-box;
-
 	&__inner {
-		width: 100%;
-		box-sizing: border-box;
+		// CRITICAL: Prevent grid items from overflowing their cells
+		// Must be duplicated from style.scss for editor/frontend parity
+		> * {
+			min-width: 0;     // Allow shrinking below content width
+			min-height: 0;    // Allow shrinking vertically
+		}
 	}
 
 	// Show outline when selected (editor-only)

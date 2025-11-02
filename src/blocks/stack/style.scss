@@ -7,13 +7,7 @@
  */
 
 .dsg-stack {
-	// Ensure proper sizing
-	box-sizing: border-box;
-
-	&__inner {
-		width: 100%;
-		box-sizing: border-box;
-	}
+	// Let WordPress handle sizing natively
 }
 
 /**

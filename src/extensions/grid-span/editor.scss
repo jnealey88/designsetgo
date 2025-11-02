@@ -1,0 +1,47 @@
+/**
+ * Grid Span Extension - Editor Styles
+ *
+ * Editor-only styles for grid column span functionality.
+ * Ensures column span doesn't exceed available columns at different viewport widths.
+ *
+ * @package DesignSetGo
+ */
+
+/**
+ * Responsive Column Span Constraints (Editor)
+ *
+ * On mobile/tablet, if the grid has fewer columns than the span,
+ * the span should be constrained to the max available columns.
+ * This prevents blocks from spanning more columns than exist.
+ */
+
+// Generate responsive constraints for each grid column configuration
+// Tablet breakpoint (≤ 1024px)
+@media (max-width: 1024px) {
+	@for $cols from 1 through 12 {
+		.dsg-grid-cols-tablet-#{$cols} .dsg-grid__inner > [data-block] {
+			// If span exceeds available columns, constrain it
+			@for $span from ($cols + 1) through 12 {
+				&[style*="span #{$span}"],
+				&[style*="span#{$span}"] {
+					grid-column: span #{$cols} !important;
+				}
+			}
+		}
+	}
+}
+
+// Mobile breakpoint (≤ 767px)
+@media (max-width: 767px) {
+	@for $cols from 1 through 12 {
+		.dsg-grid-cols-mobile-#{$cols} .dsg-grid__inner > [data-block] {
+			// If span exceeds available columns, constrain it
+			@for $span from ($cols + 1) through 12 {
+				&[style*="span #{$span}"],
+				&[style*="span#{$span}"] {
+					grid-column: span #{$cols} !important;
+				}
+			}
+		}
+	}
+}

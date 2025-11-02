@@ -55,6 +55,18 @@
 			"type": "string",
 			"default": "star"
 		},
+		"iconStyle": {
+			"type": "string",
+			"default": "filled",
+			"enum": [
+				"filled",
+				"outlined"
+			]
+		},
+		"strokeWidth": {
+			"type": "number",
+			"default": 1.5
+		},
 		"iconSize": {
 			"type": "number",
 			"default": 48

@@ -10,22 +10,8 @@
 	// Visual indicator in editor
 	position: relative;
 
-	// Ensure proper spacing and width
 	&__inner {
-		width: 100%;
 		min-height: 100px; // Ensure visible area when empty
-
-		// Override flex alignment for inner blocks container in editor
-		// This prevents the appender from being squeezed when alignItems is set
-		> .block-editor-inner-blocks > .block-editor-block-list__layout {
-			width: 100%;
-		}
-
-		// Override WordPress's .is-vertical .block-list-appender { width: 24px; }
-		// This was making the placeholder incredibly narrow
-		.block-list-appender {
-			width: 100% !important;
-		}
 	}
 
 	// Show outline when selected (editor-only)

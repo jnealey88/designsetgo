@@ -47,3 +47,26 @@
 	display: table;
 	clear: both;
 }
+
+/**
+ * Separator Fix
+ * Ensures separators display correctly within container blocks
+ * by restoring WordPress core's expected border behavior
+ */
+.wp-block-separator {
+	// Ensure border displays (override theme.json if needed)
+	border-top-width: 2px !important;
+	border-bottom-width: 0 !important;
+	border-style: solid !important;
+
+	// Ensure border has a visible color with fallback
+	// Uses currentColor if text color is set, otherwise falls back to theme contrast color
+	border-color: currentcolor;
+
+	// Fallback for when currentColor is transparent
+	&:not([class*="has-"]) {
+		border-color: var(--wp--preset--color--contrast, rgba(0, 0, 0, 0.1));
+	}
+}
+
+// No custom alignfull overrides - let WordPress handle it natively

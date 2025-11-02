@@ -10,11 +10,6 @@
 	// Visual indicator in editor
 	position: relative;
 
-	// Ensure proper sizing
-	&__inner {
-		width: 100%;
-	}
-
 	// Show outline when selected (editor-only)
 	&.is-selected {
 		outline: 1px dashed rgba(37, 99, 235, 0.3);

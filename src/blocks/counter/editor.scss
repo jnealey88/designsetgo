@@ -36,11 +36,12 @@
 	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
 	// Number color - inherits from wrapper
 	&__number {
-		color: currentColor;
+		color: currentcolor;
 	}
 
 	// Hover state - must match frontend
 	&:hover {
+
 		.dsg-counter__number {
 			color: var(
 				--dsg-counter-hover-color,

@@ -30,10 +30,38 @@ registerBlockType(metadata.name, {
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
 			>
-				<rect x="4" y="4" width="6" height="6" rx="1" fill="currentColor" />
-				<rect x="14" y="4" width="6" height="6" rx="1" fill="currentColor" />
-				<rect x="4" y="14" width="6" height="6" rx="1" fill="currentColor" />
-				<rect x="14" y="14" width="6" height="6" rx="1" fill="currentColor" />
+				<rect
+					x="4"
+					y="4"
+					width="6"
+					height="6"
+					rx="1"
+					fill="currentColor"
+				/>
+				<rect
+					x="14"
+					y="4"
+					width="6"
+					height="6"
+					rx="1"
+					fill="currentColor"
+				/>
+				<rect
+					x="4"
+					y="14"
+					width="6"
+					height="6"
+					rx="1"
+					fill="currentColor"
+				/>
+				<rect
+					x="14"
+					y="14"
+					width="6"
+					height="6"
+					rx="1"
+					fill="currentColor"
+				/>
 			</svg>
 		),
 		foreground: '#2563eb',

@@ -9,6 +9,7 @@
 // Editor-specific overrides and enhancements
 .editor-styles-wrapper,
 .block-editor-block-list__layout {
+
 	.dsg-accordion-item {
 		// Editor-specific spacing between items
 		&:not(:last-child) {
@@ -33,7 +34,9 @@
 
 		// Editor visual feedback when selected
 		&.is-selected {
+
 			> .dsg-accordion-item__header {
+
 				.dsg-accordion-item__trigger {
 					outline: 2px solid var(--wp--admin-theme-color, #007cba);
 					outline-offset: 2px;
@@ -61,6 +64,7 @@
 
 		// Visual feedback for open/closed state in editor
 		&.dsg-accordion-item--open {
+
 			.dsg-accordion-item__header {
 				// Add indicator that this will be open on frontend
 				&::after {
@@ -80,6 +84,7 @@
 		}
 
 		&.dsg-accordion-item--closed {
+
 			.dsg-accordion-item__header {
 				opacity: 0.8;
 			}
@@ -89,7 +94,9 @@
 
 // Block preview (inserter)
 .block-editor-block-preview__content {
+
 	.dsg-accordion-item {
+
 		.dsg-accordion-item__panel {
 			display: block !important;
 		}

@@ -23,7 +23,7 @@
 
 		// Default colors (can be overridden by block color controls)
 		background-color: var(--wp--preset--color--primary, #2563eb);
-		color: var(--wp--preset--color--base, #ffffff);
+		color: var(--wp--preset--color--base, #fff);
 
 		&:hover {
 			opacity: 0.9;
@@ -51,7 +51,7 @@
 			width: 100%;
 			height: 100%;
 			display: block;
-			fill: currentColor;
+			fill: currentcolor;
 		}
 	}
 

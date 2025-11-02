@@ -18,11 +18,15 @@
 @use './extensions/max-width/style' as max-width;
 @use './extensions/background-video/style' as background-video;
 @use './extensions/overlay/style' as overlay;
+@use './extensions/grid-span/style' as grid-span;
 
 // Custom blocks (frontend)
+// Container blocks
+@use './blocks/stack/style' as stack;
+@use './blocks/flex/style' as flex;
+@use './blocks/grid/style' as grid;
 @use './blocks/accordion/style' as accordion;
 @use './blocks/accordion-item/style' as accordion-item;
-@use './blocks/container/style' as container;
 @use './blocks/tabs/style' as tabs;
 @use './blocks/tab/style' as tab;
 @use './blocks/icon-list/style' as icon-list;

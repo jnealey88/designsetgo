@@ -124,9 +124,11 @@ class Assets {
 			return false;
 		}
 
-		// Check transient cache first.
-		$cache_key = 'dsg_has_blocks_' . $post_id;
-		$cached    = get_transient( $cache_key );
+		// Check object cache first (faster if Redis/Memcached available).
+		// Include post modified time in key for automatic cache invalidation.
+		$modified_time = get_post_modified_time( 'U', false, $post_id );
+		$cache_key     = 'dsg_has_blocks_' . $post_id . '_' . $modified_time;
+		$cached        = wp_cache_get( $cache_key, 'designsetgo' );
 
 		if ( false !== $cached ) {
 			return (bool) $cached;
@@ -136,14 +138,14 @@ class Assets {
 
 		// Method 1: Check has_blocks() first (fastest).
 		if ( ! has_blocks() ) {
-			set_transient( $cache_key, 0, HOUR_IN_SECONDS );
+			wp_cache_set( $cache_key, 0, 'designsetgo', HOUR_IN_SECONDS );
 			return false;
 		}
 
 		// Method 2: Single content check for all our patterns.
 		global $post;
 		if ( ! $post || empty( $post->post_content ) ) {
-			set_transient( $cache_key, 0, HOUR_IN_SECONDS );
+			wp_cache_set( $cache_key, 0, 'designsetgo', HOUR_IN_SECONDS );
 			return false;
 		}
 
@@ -172,8 +174,9 @@ class Assets {
 			$has_blocks = true;
 		}
 
-		// Cache result for 1 hour.
-		set_transient( $cache_key, (int) $has_blocks, HOUR_IN_SECONDS );
+		// Cache result for 1 hour using object cache (faster than transients).
+		// Falls back to non-persistent cache if Redis/Memcached not available.
+		wp_cache_set( $cache_key, (int) $has_blocks, 'designsetgo', HOUR_IN_SECONDS );
 
 		return $has_blocks;
 	}
@@ -182,11 +185,34 @@ class Assets {
 	 * Clear block detection cache for a post.
 	 *
 	 * Called automatically when a post is saved or deleted.
+	 * Clears object cache (cache key includes modified time, so it auto-invalidates).
 	 *
 	 * @param int $post_id Post ID.
 	 */
 	public function clear_block_cache( $post_id ) {
+		// Ignore autosaves.
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		// Ignore revisions.
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		// Check user can edit post (optional security check).
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		// Clear all cache entries for this post (wildcard not supported in wp_cache).
+		// The modified time in the cache key handles automatic invalidation,
+		// so we don't strictly need to delete old entries (they'll expire).
+		// This is here for backwards compatibility with old transient-based cache.
 		delete_transient( 'dsg_has_blocks_' . $post_id );
+
+		// Note: Object cache entries auto-invalidate on post update because
+		// the cache key includes the post's modified time.
 	}
 
 	/**

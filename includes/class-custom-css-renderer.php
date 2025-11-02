@@ -109,30 +109,51 @@ class Custom_CSS_Renderer {
 	/**
 	 * Sanitize CSS to remove potentially dangerous content.
 	 *
+	 * Enhanced security version that blocks:
+	 * - Script tags and HTML
+	 * - Event handlers
+	 * - JavaScript protocols
+	 * - Data URIs (prevent data URI attacks)
+	 * - Browser-specific XSS vectors
+	 * - HTML entities (bypass attempts)
+	 *
 	 * @param string $css CSS code.
 	 * @return string Sanitized CSS.
 	 */
 	private function sanitize_css( $css ) {
-		// Remove script tags.
+		// Remove script tags and all HTML tags.
 		$css = preg_replace( '/<script\b[^>]*>(.*?)<\/script>/is', '', $css );
+		$css = preg_replace( '/<[^>]+>/i', '', $css );
 
 		// Remove event handlers (onclick, onload, etc.).
 		$css = preg_replace( '/on\w+\s*=\s*["\'].*?["\']/i', '', $css );
 
-		// Remove javascript: protocol.
+		// Remove dangerous protocols.
 		$css = preg_replace( '/javascript:/i', '', $css );
+		$css = preg_replace( '/vbscript:/i', '', $css );
 
-		// Remove -moz-binding (XBL).
+		// Remove data: protocol in url() functions (prevents data URI attacks).
+		$css = preg_replace( '/url\s*\(\s*["\']?data:/i', 'url(', $css );
+
+		// Remove -moz-binding (XBL) and -moz-document.
 		$css = preg_replace( '/-moz-binding\s*:/i', '', $css );
+		$css = preg_replace( '/@-moz-document/i', '', $css );
 
 		// Remove behavior (IE specific).
 		$css = preg_replace( '/behavior\s*:/i', '', $css );
 
-		// Remove @import with non-http(s) URLs (data:, javascript:, etc.).
+		// Remove @import with non-http(s) URLs.
 		$css = preg_replace( '/@import\s+url\s*\(\s*["\']?(?!https?:).*?["\']?\s*\)/i', '', $css );
+		$css = preg_replace( '/@import\s+["\'](?!https?:).*?["\']/i', '', $css );
 
 		// Remove expression() (IE specific).
 		$css = preg_replace( '/expression\s*\(/i', '', $css );
+
+		// Remove HTML entities that could be used to bypass filters.
+		$css = preg_replace( '/&#[xX]?[0-9a-fA-F]+;/i', '', $css );
+
+		// Additional WordPress-recommended sanitization.
+		$css = wp_strip_all_tags( $css );
 
 		return $css;
 	}

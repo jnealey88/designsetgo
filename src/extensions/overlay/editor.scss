@@ -35,6 +35,7 @@
 
 	// If block has both video and overlay, adjust indicator positions
 	&.dsg-has-video-background {
+
 		&::before {
 			left: 120px; // Move overlay indicator to avoid video indicator
 		}

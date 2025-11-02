@@ -13,15 +13,8 @@ import {
 	BlockControls,
 	useSetting,
 } from '@wordpress/block-editor';
-import {
-	ToolbarGroup,
-	ToolbarButton,
-} from '@wordpress/components';
-import {
-	alignLeft,
-	alignCenter,
-	alignRight,
-} from '@wordpress/icons';
+import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
+import { alignLeft, alignCenter, alignRight } from '@wordpress/icons';
 
 /**
  * Stack Container Edit Component
@@ -78,7 +71,9 @@ export default function StackEdit({ attributes, setAttributes }) {
 						icon={alignLeft}
 						label={__('Align items left', 'designsetgo')}
 						isPressed={alignItems === 'flex-start'}
-						onClick={() => setAttributes({ alignItems: 'flex-start' })}
+						onClick={() =>
+							setAttributes({ alignItems: 'flex-start' })
+						}
 					/>
 					<ToolbarButton
 						icon={alignCenter}
@@ -90,7 +85,9 @@ export default function StackEdit({ attributes, setAttributes }) {
 						icon={alignRight}
 						label={__('Align items right', 'designsetgo')}
 						isPressed={alignItems === 'flex-end'}
-						onClick={() => setAttributes({ alignItems: 'flex-end' })}
+						onClick={() =>
+							setAttributes({ alignItems: 'flex-end' })
+						}
 					/>
 				</ToolbarGroup>
 			</BlockControls>

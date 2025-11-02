@@ -8,9 +8,6 @@
  */
 
 // ===== CUSTOM BLOCKS FRONTEND =====
-// Container block - video backgrounds, clickable containers
-import './blocks/container/view.js';
-
 // Tabs block - tab switching, keyboard navigation, deep linking
 import './blocks/tabs/view.js';
 

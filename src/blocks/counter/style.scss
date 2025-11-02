@@ -23,12 +23,11 @@
 		justify-content: center;
 		margin-bottom: 1rem;
 		// Inherit color from parent or use currentColor as fallback
-		color: currentColor;
+		color: currentcolor;
 		opacity: 0.9;
 
 		svg {
 			width: 48px;
-			height: 48px;
 			max-width: 100%;
 			height: auto;
 		}
@@ -65,12 +64,12 @@
 	&__number {
 		// Use em units to scale with parent font-size (WordPress typography controls)
 		font-size: 3em;
-		font-weight: bold;
+		font-weight: 700;
 		line-height: 1.2;
 		// Inherit from .dsg-counter wrapper, which has theme contrast color as default
 		// If user sets color via WordPress panel, inline style on wrapper takes precedence
 		// This prevents inheriting from grandparent containers (like Container blocks)
-		color: currentColor;
+		color: currentcolor;
 		margin: 0;
 		transition: color 0.3s ease;
 
@@ -93,6 +92,7 @@
 
 	// Hover state
 	&:hover {
+
 		.dsg-counter__number {
 			// Priority: custom hover color > theme accent-2 > counter's text color (currentColor)
 			// If user sets hover color via panel, it's applied as CSS custom property
@@ -110,6 +110,7 @@
 
 	// Accessibility: Respect prefers-reduced-motion
 	@media (prefers-reduced-motion: reduce) {
+
 		.dsg-counter__number,
 		.dsg-counter__label {
 			transition: none;

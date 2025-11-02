@@ -31,7 +31,15 @@ import { IconPicker } from './components/IconPicker';
  * @return {JSX.Element} Edit component
  */
 export default function IconEdit({ attributes, setAttributes }) {
-	const { icon, iconSize, rotation, linkUrl, linkTarget } = attributes;
+	const {
+		icon,
+		iconStyle,
+		strokeWidth,
+		iconSize,
+		rotation,
+		linkUrl,
+		linkTarget,
+	} = attributes;
 
 	const blockProps = useBlockProps({
 		className: 'dsg-icon',
@@ -63,6 +71,40 @@ export default function IconEdit({ attributes, setAttributes }) {
 						value={icon}
 						onChange={(value) => setAttributes({ icon: value })}
 					/>
+					<ToggleGroupControl
+						label={__('Style', 'designsetgo')}
+						value={iconStyle}
+						onChange={(value) => setAttributes({ iconStyle: value })}
+						isBlock
+						__nextHasNoMarginBottom
+					>
+						<ToggleGroupControlOption
+							value="filled"
+							label={__('Filled', 'designsetgo')}
+						/>
+						<ToggleGroupControlOption
+							value="outlined"
+							label={__('Outlined', 'designsetgo')}
+						/>
+					</ToggleGroupControl>
+					{iconStyle === 'outlined' && (
+						<RangeControl
+							label={__('Stroke Width', 'designsetgo')}
+							value={strokeWidth}
+							onChange={(value) =>
+								setAttributes({ strokeWidth: value })
+							}
+							min={0.5}
+							max={4}
+							step={0.5}
+							help={__(
+								'Thinner strokes work better for detailed icons',
+								'designsetgo'
+							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
+					)}
 					<RangeControl
 						label={__('Icon Size', 'designsetgo')}
 						value={iconSize}
@@ -79,6 +121,7 @@ export default function IconEdit({ attributes, setAttributes }) {
 							setAttributes({ rotation: Number(value) })
 						}
 						isBlock
+						__nextHasNoMarginBottom
 					>
 						<ToggleGroupControlOption value="0" label="0°" />
 						<ToggleGroupControlOption value="90" label="90°" />
@@ -117,7 +160,7 @@ export default function IconEdit({ attributes, setAttributes }) {
 
 			<div {...blockProps}>
 				<div className="dsg-icon__wrapper" style={iconWrapperStyle}>
-					{getIcon(icon)}
+					{getIcon(icon, iconStyle, strokeWidth)}
 				</div>
 			</div>
 		</>

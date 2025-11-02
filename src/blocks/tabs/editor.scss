@@ -65,6 +65,7 @@
 	 * Orientation: Horizontal (Default)
 	 */
 	&.dsg-tabs--horizontal {
+
 		.dsg-tabs__nav {
 			flex-direction: row;
 			flex-wrap: wrap;
@@ -84,6 +85,7 @@
 		}
 
 		&.dsg-tabs--align-justified .dsg-tabs__nav {
+
 			.dsg-tabs__tab {
 				flex: 1;
 				justify-content: center;
@@ -129,6 +131,7 @@
 	 * Vertical + Underline: Remove right border in editor
 	 */
 	&.dsg-tabs--vertical.dsg-tabs--underline {
+
 		.dsg-tabs__nav {
 			border-right: none;
 		}
@@ -149,6 +152,7 @@
 	 * Tab Style: Default
 	 */
 	&.dsg-tabs--default {
+
 		.dsg-tabs__tab {
 			border-bottom: 3px solid transparent;
 			margin-bottom: -2px;
@@ -163,6 +167,7 @@
 	 * Tab Style: Pills
 	 */
 	&.dsg-tabs--pills {
+
 		.dsg-tabs__nav {
 			border-bottom: none;
 		}
@@ -188,6 +193,7 @@
 	 * Tab Style: Underline
 	 */
 	&.dsg-tabs--underline {
+
 		.dsg-tabs__tab {
 			padding-bottom: calc(var(--dsg-tab-padding, 1rem) + 0.5rem);
 			border-bottom: 2px solid transparent;
@@ -203,6 +209,7 @@
 	 * Tab Style: Minimal
 	 */
 	&.dsg-tabs--minimal {
+
 		.dsg-tabs__nav {
 			border-bottom: none;
 		}

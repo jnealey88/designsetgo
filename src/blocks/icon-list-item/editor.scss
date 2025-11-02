@@ -68,6 +68,7 @@
 	// Placeholder styling
 	.dsg-icon-list-item__title,
 	.dsg-icon-list-item__description {
+
 		&.is-empty::before {
 			opacity: 0.5;
 		}

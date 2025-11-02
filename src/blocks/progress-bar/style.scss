@@ -40,7 +40,7 @@
 		// Label positions
 		&--top,
 		&--bottom {
-			color: currentColor;
+			color: currentcolor;
 		}
 
 		&--top {
@@ -52,7 +52,7 @@
 		}
 
 		&--inside {
-			color: #ffffff;
+			color: #fff;
 			font-weight: 600;
 			white-space: nowrap;
 			padding-right: 0.5rem;
@@ -66,6 +66,7 @@
 	&__fill[style*="width: 3%"],
 	&__fill[style*="width: 4%"],
 	&__fill[style*="width: 5%"] {
+
 		.dsg-progress-bar__label--inside {
 			display: none;
 		}
@@ -74,9 +75,11 @@
 
 // Striped animation keyframes
 @keyframes dsg-progress-stripes {
+
 	0% {
 		background-position: 1rem 0;
 	}
+
 	100% {
 		background-position: 0 0;
 	}

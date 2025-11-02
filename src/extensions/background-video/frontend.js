@@ -3,7 +3,7 @@
  *
  * Handles background video initialization on the frontend.
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 
@@ -11,20 +11,48 @@
 	'use strict';
 
 	/**
+	 * Validate video URL to prevent XSS attacks.
+	 * Only allows http(s) protocols.
+	 *
+	 * @param {string} url - URL to validate.
+	 * @return {boolean} True if URL is safe.
+	 */
+	function isValidVideoUrl(url) {
+		if (!url || typeof url !== 'string') {
+			return false;
+		}
+
+		// Allow only http(s) protocols.
+		try {
+			const parsed = new URL(url, window.location.href);
+			return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+		} catch (e) {
+			return false;
+		}
+	}
+
+	/**
 	 * Initialize background videos
 	 */
 	function initBackgroundVideos() {
-		const videoBlocks = document.querySelectorAll('.dsg-has-video-background');
+		const videoBlocks = document.querySelectorAll(
+			'.dsg-has-video-background'
+		);
 
 		videoBlocks.forEach((block) => {
 			const videoUrl = block.getAttribute('data-video-url');
 			const posterUrl = block.getAttribute('data-video-poster');
 			const muted = block.getAttribute('data-video-muted') === 'true';
 			const loop = block.getAttribute('data-video-loop') === 'true';
-			const autoplay = block.getAttribute('data-video-autoplay') === 'true';
-			const mobileHide = block.getAttribute('data-video-mobile-hide') === 'true';
+			const autoplay =
+				block.getAttribute('data-video-autoplay') === 'true';
+			const mobileHide =
+				block.getAttribute('data-video-mobile-hide') === 'true';
 
-			if (!videoUrl) {
+			// Validate video URL for security.
+			if (!videoUrl || !isValidVideoUrl(videoUrl)) {
+				// Invalid URL detected and blocked for security.
+				// Silently fail to prevent console clutter in production.
 				return;
 			}
 
@@ -54,7 +82,9 @@
 			// Create video element
 			const video = document.createElement('video');
 			video.src = videoUrl;
-			if (posterUrl) {
+
+			// Validate and set poster URL if provided.
+			if (posterUrl && isValidVideoUrl(posterUrl)) {
 				video.poster = posterUrl;
 			}
 			video.muted = muted;
@@ -80,7 +110,8 @@
 			// Ensure content is above video
 			Array.from(block.children).forEach((child) => {
 				if (child !== videoWrapper) {
-					const childPosition = window.getComputedStyle(child).position;
+					const childPosition =
+						window.getComputedStyle(child).position;
 					if (childPosition === 'static') {
 						child.style.position = 'relative';
 						child.style.zIndex = '2';
@@ -93,8 +124,9 @@
 				const playPromise = video.play();
 				if (playPromise !== undefined) {
 					playPromise.catch(() => {
-						// Autoplay failed, likely because not muted
-						console.warn('Background video autoplay failed. Video must be muted for autoplay.');
+						// Autoplay failed, likely because not muted.
+						// This is expected behavior in many browsers, so we silently ignore it.
+						// Developers can check the browser console if debugging is needed.
 					});
 				}
 			}
@@ -114,9 +146,11 @@
 		clearTimeout(resizeTimeout);
 		resizeTimeout = setTimeout(() => {
 			// Remove existing videos
-			document.querySelectorAll('.dsg-video-background').forEach((video) => {
-				video.remove();
-			});
+			document
+				.querySelectorAll('.dsg-video-background')
+				.forEach((video) => {
+					video.remove();
+				});
 			// Re-initialize
 			initBackgroundVideos();
 		}, 250);

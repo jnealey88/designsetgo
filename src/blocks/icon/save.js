@@ -8,8 +8,16 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { getIcon } from './utils/svg-icons';
 
 export default function IconSave({ attributes }) {
-	const { icon, iconSize, rotation, linkUrl, linkTarget, linkRel } =
-		attributes;
+	const {
+		icon,
+		iconStyle,
+		strokeWidth,
+		iconSize,
+		rotation,
+		linkUrl,
+		linkTarget,
+		linkRel,
+	} = attributes;
 
 	const blockProps = useBlockProps.save({
 		className: 'dsg-icon',
@@ -35,7 +43,7 @@ export default function IconSave({ attributes }) {
 
 	const iconElement = (
 		<div className="dsg-icon__wrapper" style={iconWrapperStyle}>
-			{getIcon(icon)}
+			{getIcon(icon, iconStyle, strokeWidth)}
 		</div>
 	);
 

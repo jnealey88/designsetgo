@@ -9,10 +9,10 @@
 	// CSS custom properties for easy customization
 	--dsg-tabs-gap: 8px;
 	--dsg-tab-padding: var(--wp--preset--spacing--md, 1rem);
-	--dsg-tab-bg: var(--wp--preset--color--base, #ffffff);
-	--dsg-tab-color: var(--wp--preset--color--contrast, #000000);
+	--dsg-tab-bg: var(--wp--preset--color--base, #fff);
+	--dsg-tab-color: var(--wp--preset--color--contrast, #000);
 	--dsg-tab-bg-active: var(--wp--preset--color--accent-2, #2563eb);
-	--dsg-tab-color-active: var(--wp--preset--color--base, #ffffff);
+	--dsg-tab-color-active: var(--wp--preset--color--base, #fff);
 	--dsg-tab-border-color: var(--wp--preset--color--accent-2, #2563eb);
 	--dsg-tab-border-radius: var(--wp--custom--designsetgo--border-radius--small, 0.25rem);
 
@@ -100,6 +100,7 @@
 	 * Orientation: Horizontal (Default)
 	 */
 	&.dsg-tabs--horizontal {
+
 		.dsg-tabs__nav {
 			flex-direction: row;
 			flex-wrap: wrap;
@@ -119,6 +120,7 @@
 		}
 
 		&.dsg-tabs--align-justified .dsg-tabs__nav {
+
 			.dsg-tabs__tab {
 				flex: 1;
 				justify-content: center;
@@ -151,6 +153,7 @@
 	 * Tab Style: Default
 	 */
 	&.dsg-tabs--default {
+
 		.dsg-tabs__tab {
 			border-bottom: 3px solid transparent;
 			margin-bottom: -2px;
@@ -165,6 +168,7 @@
 	 * Tab Style: Pills
 	 */
 	&.dsg-tabs--pills {
+
 		.dsg-tabs__nav {
 			border-bottom: none;
 		}
@@ -188,6 +192,7 @@
 	 * Tab Style: Underline
 	 */
 	&.dsg-tabs--underline {
+
 		.dsg-tabs__tab {
 			padding-bottom: calc(var(--dsg-tab-padding) + 0.5rem);
 			border-bottom: 2px solid transparent;
@@ -203,6 +208,7 @@
 	 * Vertical + Underline: Remove right border
 	 */
 	&.dsg-tabs--vertical.dsg-tabs--underline {
+
 		.dsg-tabs__nav {
 			border-right: none;
 		}
@@ -222,6 +228,7 @@
 	 * Tab Style: Minimal
 	 */
 	&.dsg-tabs--minimal {
+
 		.dsg-tabs__nav {
 			border-bottom: none;
 		}
@@ -239,6 +246,7 @@
 	 * Mobile: Accordion Mode
 	 */
 	&.dsg-tabs--accordion {
+
 		.dsg-tabs__nav {
 			display: none;
 		}
@@ -284,6 +292,7 @@
 			}
 
 			&:not(.is-active) {
+
 				.dsg-tab__content {
 					display: none;
 				}
@@ -295,6 +304,7 @@
 	 * Mobile: Dropdown Mode
 	 */
 	&.dsg-tabs--dropdown {
+
 		.dsg-tabs__nav {
 			// Dropdown implementation
 		}
@@ -312,10 +322,12 @@
  * Animation: Fade In
  */
 @keyframes dsg-tab-fade-in {
+
 	from {
 		opacity: 0;
 		transform: translateY(10px);
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -330,6 +342,7 @@
  * Accessibility: Reduced Motion
  */
 @media (prefers-reduced-motion: reduce) {
+
 	.dsg-tabs__tab,
 	.dsg-tab {
 		transition: none;
@@ -341,9 +354,11 @@
  * Responsive: Mobile
  */
 @media (max-width: 767px) {
+
 	.dsg-tabs {
 		// Default to accordion on mobile
 		&:not([data-mobile-mode='tabs']) {
+
 			.dsg-tabs__nav {
 				overflow-x: auto;
 				scrollbar-width: thin;

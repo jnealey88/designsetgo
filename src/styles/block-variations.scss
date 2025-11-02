@@ -13,7 +13,7 @@
 
 /* Card Style - Elevated card with shadow */
 .wp-block-designsetgo-container.is-style-card {
-	background: var(--wp--preset--color--base, #ffffff) !important;
+	background: var(--wp--preset--color--base, #fff) !important;
 	border-radius: var(--wp--custom--designsetgo--border-radius--medium, 0.5rem) !important;
 	box-shadow: var(--wp--custom--designsetgo--shadow--medium, 0 4px 6px -1px rgba(0, 0, 0, 0.1)) !important;
 	padding: var(--wp--preset--spacing--lg, 2rem) !important;
@@ -21,7 +21,7 @@
 
 /* Elevated Style - Stronger shadow for more depth */
 .wp-block-designsetgo-container.is-style-elevated {
-	background: var(--wp--preset--color--base, #ffffff) !important;
+	background: var(--wp--preset--color--base, #fff) !important;
 	border-radius: var(--wp--custom--designsetgo--border-radius--large, 1rem) !important;
 	box-shadow: var(--wp--custom--designsetgo--shadow--xlarge, 0 20px 25px -5px rgba(0, 0, 0, 0.1)) !important;
 	padding: var(--wp--preset--spacing--xl, 3rem) !important;
@@ -46,7 +46,7 @@
 	background: var(--wp--preset--gradient--primary-gradient, linear-gradient(135deg, #2563eb 0%, #334155 100%)) !important;
 	border-radius: var(--wp--custom--designsetgo--border-radius--large, 1rem) !important;
 	padding: var(--wp--preset--spacing--xl, 3rem) !important;
-	color: var(--wp--preset--color--base, #ffffff) !important;
+	color: var(--wp--preset--color--base, #fff) !important;
 
 	/* Ensure text is readable on gradient */
 	h1, h2, h3, h4, h5, h6, p {
@@ -73,18 +73,21 @@
 
 /* Hide on specific devices */
 .dsg-hide-mobile {
+
 	@media (max-width: 767px) {
 		display: none !important;
 	}
 }
 
 .dsg-hide-tablet {
+
 	@media (min-width: 768px) and (max-width: 1024px) {
 		display: none !important;
 	}
 }
 
 .dsg-hide-desktop {
+
 	@media (min-width: 1025px) {
 		display: none !important;
 	}
@@ -98,16 +101,24 @@
 
 /* Padding utilities */
 .dsg-p-xs { padding: var(--wp--preset--spacing--xs, 0.5rem) !important; }
+
 .dsg-p-sm { padding: var(--wp--preset--spacing--sm, 1rem) !important; }
+
 .dsg-p-md { padding: var(--wp--preset--spacing--md, 1.5rem) !important; }
+
 .dsg-p-lg { padding: var(--wp--preset--spacing--lg, 2rem) !important; }
+
 .dsg-p-xl { padding: var(--wp--preset--spacing--xl, 3rem) !important; }
 
 /* Margin utilities */
 .dsg-m-xs { margin: var(--wp--preset--spacing--xs, 0.5rem) !important; }
+
 .dsg-m-sm { margin: var(--wp--preset--spacing--sm, 1rem) !important; }
+
 .dsg-m-md { margin: var(--wp--preset--spacing--md, 1.5rem) !important; }
+
 .dsg-m-lg { margin: var(--wp--preset--spacing--lg, 2rem) !important; }
+
 .dsg-m-xl { margin: var(--wp--preset--spacing--xl, 3rem) !important; }
 
 /**
@@ -117,16 +128,23 @@
  */
 
 /* Background utilities */
-.dsg-bg-base { background-color: var(--wp--preset--color--base, #ffffff) !important; }
-.dsg-bg-contrast { background-color: var(--wp--preset--color--contrast, #000000) !important; }
+.dsg-bg-base { background-color: var(--wp--preset--color--base, #fff) !important; }
+
+.dsg-bg-contrast { background-color: var(--wp--preset--color--contrast, #000) !important; }
+
 .dsg-bg-accent-1 { background-color: var(--wp--preset--color--accent-1, #f5f5f5) !important; }
+
 .dsg-bg-accent-2 { background-color: var(--wp--preset--color--accent-2, #2563eb) !important; }
+
 .dsg-bg-accent-3 { background-color: var(--wp--preset--color--accent-3, #1e293b) !important; }
 
 /* Text utilities */
-.dsg-text-base { color: var(--wp--preset--color--base, #ffffff) !important; }
-.dsg-text-contrast { color: var(--wp--preset--color--contrast, #000000) !important; }
+.dsg-text-base { color: var(--wp--preset--color--base, #fff) !important; }
+
+.dsg-text-contrast { color: var(--wp--preset--color--contrast, #000) !important; }
+
 .dsg-text-accent-2 { color: var(--wp--preset--color--accent-2, #2563eb) !important; }
+
 .dsg-text-accent-5 { color: var(--wp--preset--color--accent-5, #94a3b8) !important; }
 
 /**
@@ -134,9 +152,13 @@
  */
 
 .dsg-rounded-none { border-radius: var(--wp--custom--designsetgo--border-radius--none, 0) !important; }
+
 .dsg-rounded-sm { border-radius: var(--wp--custom--designsetgo--border-radius--small, 0.25rem) !important; }
+
 .dsg-rounded-md { border-radius: var(--wp--custom--designsetgo--border-radius--medium, 0.5rem) !important; }
+
 .dsg-rounded-lg { border-radius: var(--wp--custom--designsetgo--border-radius--large, 1rem) !important; }
+
 .dsg-rounded-full { border-radius: var(--wp--custom--designsetgo--border-radius--full, 9999px) !important; }
 
 /**
@@ -144,9 +166,13 @@
  */
 
 .dsg-shadow-sm { box-shadow: var(--wp--custom--designsetgo--shadow--small, 0 1px 2px 0 rgba(0, 0, 0, 0.05)) !important; }
+
 .dsg-shadow-md { box-shadow: var(--wp--custom--designsetgo--shadow--medium, 0 4px 6px -1px rgba(0, 0, 0, 0.1)) !important; }
+
 .dsg-shadow-lg { box-shadow: var(--wp--custom--designsetgo--shadow--large, 0 10px 15px -3px rgba(0, 0, 0, 0.1)) !important; }
+
 .dsg-shadow-xl { box-shadow: var(--wp--custom--designsetgo--shadow--xlarge, 0 20px 25px -5px rgba(0, 0, 0, 0.1)) !important; }
+
 .dsg-shadow-none { box-shadow: none !important; }
 
 /**
@@ -156,6 +182,7 @@
  */
 
 @media (prefers-reduced-motion: no-preference) {
+
 	.dsg-fade-in {
 		animation: dsg-fadeIn 0.6s ease-out;
 	}
@@ -169,19 +196,23 @@
 	}
 
 	@keyframes dsg-fadeIn {
+
 		from {
 			opacity: 0;
 		}
+
 		to {
 			opacity: 1;
 		}
 	}
 
 	@keyframes dsg-slideUp {
+
 		from {
 			opacity: 0;
 			transform: translateY(20px);
 		}
+
 		to {
 			opacity: 1;
 			transform: translateY(0);
@@ -189,10 +220,12 @@
 	}
 
 	@keyframes dsg-zoomIn {
+
 		from {
 			opacity: 0;
 			transform: scale(0.95);
 		}
+
 		to {
 			opacity: 1;
 			transform: scale(1);
@@ -205,10 +238,17 @@
  */
 
 .dsg-flex { display: flex !important; }
+
 .dsg-grid { display: grid !important; }
+
 .dsg-flex-col { flex-direction: column !important; }
+
 .dsg-items-center { align-items: center !important; }
+
 .dsg-justify-center { justify-content: center !important; }
+
 .dsg-gap-sm { gap: var(--wp--preset--spacing--sm, 1rem) !important; }
+
 .dsg-gap-md { gap: var(--wp--preset--spacing--md, 1.5rem) !important; }
+
 .dsg-gap-lg { gap: var(--wp--preset--spacing--lg, 2rem) !important; }

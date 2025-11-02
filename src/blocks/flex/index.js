@@ -30,9 +30,30 @@ registerBlockType(metadata.name, {
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
 			>
-				<rect x="4" y="9" width="4" height="6" rx="1" fill="currentColor" />
-				<rect x="10" y="9" width="4" height="6" rx="1" fill="currentColor" />
-				<rect x="16" y="9" width="4" height="6" rx="1" fill="currentColor" />
+				<rect
+					x="4"
+					y="9"
+					width="4"
+					height="6"
+					rx="1"
+					fill="currentColor"
+				/>
+				<rect
+					x="10"
+					y="9"
+					width="4"
+					height="6"
+					rx="1"
+					fill="currentColor"
+				/>
+				<rect
+					x="16"
+					y="9"
+					width="4"
+					height="6"
+					rx="1"
+					fill="currentColor"
+				/>
 				<path
 					d="M2 7L4 5L6 7M18 7L20 5L22 7M2 17L4 19L6 17M18 17L20 19L22 17"
 					stroke="currentColor"

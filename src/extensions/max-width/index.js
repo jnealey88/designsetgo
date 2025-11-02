@@ -13,7 +13,12 @@ import './style.scss';
 import { __, sprintf } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { InspectorControls, useSettings } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl, __experimentalUnitControl as UnitControl, __experimentalUseCustomUnits as useCustomUnits } from '@wordpress/components';
+import {
+	PanelBody,
+	ToggleControl,
+	__experimentalUnitControl as UnitControl,
+	__experimentalUseCustomUnits as useCustomUnits,
+} from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useEffect } from '@wordpress/element';
 
@@ -87,7 +92,14 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 		const [themeContentSize] = useSettings('layout.contentSize');
 		const [spacingUnits] = useSettings('spacing.units');
 		const units = useCustomUnits({
-			availableUnits: spacingUnits || ['px', 'em', 'rem', 'vh', 'vw', '%'],
+			availableUnits: spacingUnits || [
+				'px',
+				'em',
+				'rem',
+				'vh',
+				'vw',
+				'%',
+			],
 		});
 
 		return (
@@ -113,20 +125,30 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 													'Content is centered with max-width',
 													'designsetgo'
 												)
-											: __('Content uses full width', 'designsetgo')
+											: __(
+													'Content uses full width',
+													'designsetgo'
+												)
 									}
 									__nextHasNoMarginBottom
 								/>
 
 								{constrainWidth && (
 									<UnitControl
-										label={__('Content Width', 'designsetgo')}
+										label={__(
+											'Content Width',
+											'designsetgo'
+										)}
 										value={contentWidth}
 										onChange={(value) =>
-											setAttributes({ contentWidth: value || '' })
+											setAttributes({
+												contentWidth: value || '',
+											})
 										}
 										units={units}
-										placeholder={themeContentSize || '1200px'}
+										placeholder={
+											themeContentSize || '1200px'
+										}
 										help={__(
 											`Leave empty to use theme default (${themeContentSize || '1200px'})`,
 											'designsetgo'
@@ -190,7 +212,9 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 		// Inject dynamic CSS into editor
 		useEffect(() => {
 			// Get editor document (may be in iframe)
-			const editorDocument = document.querySelector('iframe[name="editor-canvas"]')?.contentDocument || document;
+			const editorDocument =
+				document.querySelector('iframe[name="editor-canvas"]')
+					?.contentDocument || document;
 
 			// Remove existing style
 			const existingStyle = editorDocument.getElementById(styleId);
@@ -257,6 +281,9 @@ addFilter(
 /**
  * Apply max-width styles to block wrapper on frontend
  * Respects text alignment to adjust margins like WordPress Group block
+ * @param props
+ * @param blockType
+ * @param attributes
  */
 function applyMaxWidthStyles(props, blockType, attributes) {
 	const { dsgMaxWidth, align, textAlign } = attributes;

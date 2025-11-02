@@ -15,9 +15,16 @@ registerBlockType(metadata.name, {
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
-				fill="currentColor"
+				fill="none"
+				stroke="currentColor"
+				strokeWidth="1.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			>
-				<path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" />
+				<path d="M3 6h18M3 12h18M3 18h18" />
+				<circle cx="7" cy="6" r="1.5" fill="currentColor" />
+				<circle cx="7" cy="12" r="1.5" fill="currentColor" />
+				<circle cx="7" cy="18" r="1.5" fill="currentColor" />
 			</svg>
 		),
 		foreground: ICON_COLOR,

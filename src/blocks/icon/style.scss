@@ -36,7 +36,7 @@
 		align-items: center;
 		justify-content: center;
 		line-height: 1;
-		color: currentColor;
+		color: currentcolor;
 		transition: background-color 0.2s ease, color 0.2s ease;
 		width: fit-content;
 
@@ -88,6 +88,7 @@
 
 	// Accessibility: Respect prefers-reduced-motion
 	@media (prefers-reduced-motion: reduce) {
+
 		&__link,
 		&__wrapper,
 		.dashicons {
@@ -96,6 +97,23 @@
 
 		&__link:hover {
 			transform: none;
+		}
+	}
+}
+
+// Outlined icon style
+.dsg-icon-outlined {
+	svg {
+		fill: none !important;
+		stroke: currentColor;
+		stroke-width: var(--icon-stroke-width, 1.5);
+		stroke-linecap: round;
+		stroke-linejoin: round;
+
+		// Ensure all paths and shapes use stroke
+		* {
+			fill: none !important;
+			stroke: currentColor;
 		}
 	}
 }

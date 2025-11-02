@@ -62,13 +62,7 @@ const ICON_CATEGORIES = {
 	},
 	ecommerce: {
 		label: __('Shop', 'designsetgo'),
-		icons: [
-			'shopping-cart',
-			'credit-card',
-			'tag',
-			'gift',
-			'percentage',
-		],
+		icons: ['shopping-cart', 'credit-card', 'tag', 'gift', 'percentage'],
 	},
 	tech: {
 		label: __('Tech', 'designsetgo'),

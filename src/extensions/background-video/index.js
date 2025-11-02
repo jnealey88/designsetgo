@@ -3,15 +3,24 @@
  *
  * Adds background video capability to all WordPress blocks.
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { InspectorControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { PanelBody, Button, ToggleControl, TextControl } from '@wordpress/components';
+import {
+	InspectorControls,
+	MediaUpload,
+	MediaUploadCheck,
+} from '@wordpress/block-editor';
+import {
+	PanelBody,
+	Button,
+	ToggleControl,
+	TextControl,
+} from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
 /**
@@ -128,9 +137,14 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 													onClick={open}
 													variant="secondary"
 													isSmall
-													style={{ marginRight: '8px' }}
+													style={{
+														marginRight: '8px',
+													}}
 												>
-													{__('Replace Video', 'designsetgo')}
+													{__(
+														'Replace Video',
+														'designsetgo'
+													)}
 												</Button>
 												<Button
 													onClick={() =>
@@ -143,12 +157,21 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 													isDestructive
 													isSmall
 												>
-													{__('Remove Video', 'designsetgo')}
+													{__(
+														'Remove Video',
+														'designsetgo'
+													)}
 												</Button>
 											</Fragment>
 										) : (
-											<Button onClick={open} variant="primary">
-												{__('Upload Video', 'designsetgo')}
+											<Button
+												onClick={open}
+												variant="primary"
+											>
+												{__(
+													'Upload Video',
+													'designsetgo'
+												)}
 											</Button>
 										)}
 									</div>
@@ -176,46 +199,80 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 															marginBottom: '8px',
 															fontSize: '11px',
 															fontWeight: '500',
-															textTransform: 'uppercase',
+															textTransform:
+																'uppercase',
 														}}
 													>
-														{__('Poster Image (Optional)', 'designsetgo')}
+														{__(
+															'Poster Image (Optional)',
+															'designsetgo'
+														)}
 													</label>
 													{dsgVideoPoster ? (
 														<Fragment>
 															<img
-																src={dsgVideoPoster}
-																alt={__('Video poster', 'designsetgo')}
+																src={
+																	dsgVideoPoster
+																}
+																alt={__(
+																	'Video poster',
+																	'designsetgo'
+																)}
 																style={{
 																	width: '100%',
-																	maxHeight: '100px',
-																	objectFit: 'cover',
-																	borderRadius: '4px',
-																	marginBottom: '8px',
+																	maxHeight:
+																		'100px',
+																	objectFit:
+																		'cover',
+																	borderRadius:
+																		'4px',
+																	marginBottom:
+																		'8px',
 																}}
 															/>
 															<Button
 																onClick={open}
 																variant="secondary"
 																isSmall
-																style={{ marginRight: '8px' }}
+																style={{
+																	marginRight:
+																		'8px',
+																}}
 															>
-																{__('Replace Poster', 'designsetgo')}
+																{__(
+																	'Replace Poster',
+																	'designsetgo'
+																)}
 															</Button>
 															<Button
 																onClick={() =>
-																	setAttributes({ dsgVideoPoster: '' })
+																	setAttributes(
+																		{
+																			dsgVideoPoster:
+																				'',
+																		}
+																	)
 																}
 																variant="secondary"
 																isDestructive
 																isSmall
 															>
-																{__('Remove Poster', 'designsetgo')}
+																{__(
+																	'Remove Poster',
+																	'designsetgo'
+																)}
 															</Button>
 														</Fragment>
 													) : (
-														<Button onClick={open} variant="secondary" isSmall>
-															{__('Upload Poster', 'designsetgo')}
+														<Button
+															onClick={open}
+															variant="secondary"
+															isSmall
+														>
+															{__(
+																'Upload Poster',
+																'designsetgo'
+															)}
 														</Button>
 													)}
 												</div>
@@ -228,7 +285,9 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 									label={__('Autoplay', 'designsetgo')}
 									checked={dsgVideoAutoplay}
 									onChange={(value) =>
-										setAttributes({ dsgVideoAutoplay: value })
+										setAttributes({
+											dsgVideoAutoplay: value,
+										})
 									}
 									help={__(
 										'Automatically start playing when page loads',
@@ -240,15 +299,22 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 								<ToggleControl
 									label={__('Loop', 'designsetgo')}
 									checked={dsgVideoLoop}
-									onChange={(value) => setAttributes({ dsgVideoLoop: value })}
-									help={__('Restart video when it ends', 'designsetgo')}
+									onChange={(value) =>
+										setAttributes({ dsgVideoLoop: value })
+									}
+									help={__(
+										'Restart video when it ends',
+										'designsetgo'
+									)}
 									__nextHasNoMarginBottom
 								/>
 
 								<ToggleControl
 									label={__('Muted', 'designsetgo')}
 									checked={dsgVideoMuted}
-									onChange={(value) => setAttributes({ dsgVideoMuted: value })}
+									onChange={(value) =>
+										setAttributes({ dsgVideoMuted: value })
+									}
 									help={__(
 										'Mute audio (required for autoplay)',
 										'designsetgo'
@@ -260,7 +326,9 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 									label={__('Hide on Mobile', 'designsetgo')}
 									checked={dsgVideoMobileHide}
 									onChange={(value) =>
-										setAttributes({ dsgVideoMobileHide: value })
+										setAttributes({
+											dsgVideoMobileHide: value,
+										})
 									}
 									help={__(
 										'Hide video on mobile devices to save bandwidth',
@@ -339,6 +407,9 @@ addFilter(
 
 /**
  * Add background video classes and data attributes to save
+ * @param props
+ * @param blockType
+ * @param attributes
  */
 function addBackgroundVideoSaveProps(props, blockType, attributes) {
 	const { dsgVideoUrl } = attributes;
@@ -355,7 +426,9 @@ function addBackgroundVideoSaveProps(props, blockType, attributes) {
 		'data-video-muted': attributes.dsgVideoMuted ? 'true' : 'false',
 		'data-video-loop': attributes.dsgVideoLoop ? 'true' : 'false',
 		'data-video-autoplay': attributes.dsgVideoAutoplay ? 'true' : 'false',
-		'data-video-mobile-hide': attributes.dsgVideoMobileHide ? 'true' : 'false',
+		'data-video-mobile-hide': attributes.dsgVideoMobileHide
+			? 'true'
+			: 'false',
 	};
 }
 
