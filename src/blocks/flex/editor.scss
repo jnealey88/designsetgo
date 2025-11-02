@@ -10,6 +10,12 @@
 	// Visual indicator in editor
 	position: relative;
 
+	&__inner {
+		// CRITICAL: Flex container needs full width for justify-content/align-items to work
+		// Must be duplicated from style.scss for editor/frontend parity
+		width: 100%;
+	}
+
 	// Show outline when selected (editor-only)
 	&.is-selected {
 		outline: 1px dashed rgba(37, 99, 235, 0.3);

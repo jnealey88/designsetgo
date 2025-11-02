@@ -7,7 +7,13 @@
  */
 
 .dsg-grid {
+	// Let WordPress handle sizing natively for outer wrapper (alignfull support)
+
 	&__inner {
+		// CRITICAL: Grid container needs full width for proper column distribution
+		// Without this, the grid shrinks to fit content instead of using available space
+		width: 100%;
+
 		// CRITICAL: Prevent grid items from overflowing their cells
 		// Grid items with width: 100% can overflow if not constrained
 		// This is essential for container blocks (Stack, Flex, etc.) inside Grid

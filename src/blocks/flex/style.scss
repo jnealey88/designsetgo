@@ -7,7 +7,13 @@
  */
 
 .dsg-flex {
-	// Let WordPress handle sizing natively
+	// Let WordPress handle sizing natively for outer wrapper (alignfull support)
+
+	&__inner {
+		// CRITICAL: Flex container needs full width for justify-content/align-items to work
+		// Without this, the container shrinks to fit content and flex properties don't apply
+		width: 100%;
+	}
 
 	// Mobile stack behavior (screens < 768px)
 	&--mobile-stack {

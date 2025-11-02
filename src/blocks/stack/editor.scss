@@ -11,6 +11,9 @@
 	position: relative;
 
 	&__inner {
+		// CRITICAL: Stack container needs full width for alignment properties to work
+		// Must be duplicated from style.scss for editor/frontend parity
+		width: 100%;
 		min-height: 100px; // Ensure visible area when empty
 	}
 
