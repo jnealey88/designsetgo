@@ -46,11 +46,13 @@ export default function FlexSave({ attributes }) {
 	};
 
 	// Block wrapper props
-	// CRITICAL: Set width: 100% on outer wrapper so nested containers fill parent (must match edit.js)
+	// CRITICAL: Set width: 100% AND align-self: stretch (must match edit.js)
+	// align-self: stretch ensures nested containers fill parent width even when parent has alignItems: flex-start
 	const blockProps = useBlockProps.save({
 		className: `dsg-flex ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
 		style: {
 			width: '100%',
+			alignSelf: 'stretch',
 		},
 	});
 
