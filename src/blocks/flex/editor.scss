@@ -14,6 +14,14 @@
 	padding-left: var(--wp--preset--spacing--md, 1.5rem);
 	padding-right: var(--wp--preset--spacing--md, 1.5rem);
 
+	// CRITICAL: Ensure Flex takes full width when nested in another container
+	// Without this, nested Flex containers only take up content width in editor
+	.dsg-stack__inner > [data-block] &,
+	.dsg-flex__inner > [data-block] &,
+	.dsg-grid__inner > [data-block] & {
+		width: 100%;
+	}
+
 	// Visual indicator in editor
 	position: relative;
 
