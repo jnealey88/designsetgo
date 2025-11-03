@@ -30,9 +30,9 @@ export default function FlexSave({ attributes }) {
 	// Note: Can't use useSetting in save, so use contentWidth or fallback
 	const effectiveContentWidth = contentWidth || '1200px';
 
-	// Calculate styles declaratively (must match edit.js)
+	// Calculate inner styles declaratively (must match edit.js)
 	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
-	const containerStyles = {
+	const innerStyles = {
 		display: 'flex',
 		flexDirection: direction || 'row',
 		flexWrap: wrap ? 'wrap' : 'nowrap',
@@ -45,16 +45,24 @@ export default function FlexSave({ attributes }) {
 		}),
 	};
 
-	// Block wrapper props - SINGLE ELEMENT PATTERN (matches WordPress core Group block)
-	// Combine outer and inner classes, apply styles directly
+	// Block wrapper props
+	// CRITICAL: Set width: 100% on outer wrapper so nested containers fill parent (must match edit.js)
 	const blockProps = useBlockProps.save({
-		className: `dsg-flex dsg-flex__inner ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
-		style: containerStyles,
+		className: `dsg-flex ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
+		style: {
+			width: '100%',
+		},
 	});
 
-	// Inner blocks props - pass blockProps as first argument (WordPress modern pattern)
-	// This creates a single element instead of double wrapper
-	const innerBlocksProps = useInnerBlocksProps.save(blockProps);
+	// Inner blocks props with declarative styles
+	const innerBlocksProps = useInnerBlocksProps.save({
+		className: 'dsg-flex__inner',
+		style: innerStyles,
+	});
 
-	return <div {...innerBlocksProps} />;
+	return (
+		<div {...blockProps}>
+			<div {...innerBlocksProps} />
+		</div>
+	);
 }

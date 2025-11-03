@@ -40,9 +40,9 @@ export default function FlexEdit({ attributes, setAttributes }) {
 	// Calculate effective content width
 	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
-	// Calculate styles declaratively
+	// Calculate inner styles declaratively
 	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
-	const containerStyles = {
+	const innerStyles = {
 		display: 'flex',
 		flexDirection: direction || 'row',
 		flexWrap: wrap ? 'wrap' : 'nowrap',
@@ -55,19 +55,26 @@ export default function FlexEdit({ attributes, setAttributes }) {
 		}),
 	};
 
-	// Block wrapper props - SINGLE ELEMENT PATTERN (matches WordPress core Group block)
-	// Combine outer and inner classes, apply styles directly
+	// Block wrapper props
+	// CRITICAL: Set width: 100% on outer wrapper so nested containers fill parent
 	const blockProps = useBlockProps({
-		className: `dsg-flex dsg-flex__inner ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
-		style: containerStyles,
+		className: `dsg-flex ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
+		style: {
+			width: '100%',
+		},
 	});
 
-	// Inner blocks props - pass blockProps as first argument (WordPress modern pattern)
-	// This creates a single element instead of double wrapper
-	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		orientation: direction === 'column' ? 'vertical' : 'horizontal',
-		templateLock: false,
-	});
+	// Inner blocks props with declarative styles
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'dsg-flex__inner',
+			style: innerStyles,
+		},
+		{
+			orientation: direction === 'column' ? 'vertical' : 'horizontal',
+			templateLock: false,
+		}
+	);
 
 	return (
 		<>
@@ -212,7 +219,9 @@ export default function FlexEdit({ attributes, setAttributes }) {
 				</PanelBody>
 			</InspectorControls>
 
-			<div {...innerBlocksProps} />
+			<div {...blockProps}>
+				<div {...innerBlocksProps} />
+			</div>
 		</>
 	);
 }

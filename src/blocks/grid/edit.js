@@ -64,10 +64,10 @@ export default function GridEdit({ attributes, setAttributes }) {
 		{ value: '%', label: '%' },
 	];
 
-	// Calculate styles declaratively with responsive columns
+	// Calculate inner styles declaratively with responsive columns
 	// IMPORTANT: Always provide a default gap to prevent overlapping items
 	// Custom gaps override the default when set
-	const containerStyles = {
+	const innerStyles = {
 		display: 'grid',
 		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
 		alignItems: alignItems || 'start',
@@ -81,18 +81,25 @@ export default function GridEdit({ attributes, setAttributes }) {
 		}),
 	};
 
-	// Block wrapper props - SINGLE ELEMENT PATTERN (matches WordPress core Group block)
-	// Combine outer and inner classes, apply styles directly
+	// Block wrapper props with responsive column classes
+	// CRITICAL: Set width: 100% on outer wrapper so nested containers fill parent
 	const blockProps = useBlockProps({
-		className: `dsg-grid dsg-grid__inner dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
-		style: containerStyles,
+		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
+		style: {
+			width: '100%',
+		},
 	});
 
-	// Inner blocks props - pass blockProps as first argument (WordPress modern pattern)
-	// This creates a single element instead of double wrapper
-	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		templateLock: false,
-	});
+	// Inner blocks props with declarative styles
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'dsg-grid__inner',
+			style: innerStyles,
+		},
+		{
+			templateLock: false,
+		}
+	);
 
 	return (
 		<>
@@ -269,7 +276,9 @@ export default function GridEdit({ attributes, setAttributes }) {
 				</PanelBody>
 			</InspectorControls>
 
-			<div {...innerBlocksProps} />
+			<div {...blockProps}>
+				<div {...innerBlocksProps} />
+			</div>
 		</>
 	);
 }

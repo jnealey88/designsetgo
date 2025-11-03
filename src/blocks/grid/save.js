@@ -31,10 +31,10 @@ export default function GridSave({ attributes }) {
 	// Note: Can't use useSetting in save, so use contentWidth or fallback
 	const effectiveContentWidth = contentWidth || '1200px';
 
-	// Calculate styles declaratively (must match edit.js EXACTLY)
+	// Calculate inner styles declaratively (must match edit.js EXACTLY)
 	// IMPORTANT: Always provide a default gap to prevent overlapping items
 	// Custom gaps override the default when set
-	const containerStyles = {
+	const innerStyles = {
 		display: 'grid',
 		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
 		alignItems: alignItems || 'start',
@@ -48,16 +48,24 @@ export default function GridSave({ attributes }) {
 		}),
 	};
 
-	// Block wrapper props - SINGLE ELEMENT PATTERN (matches WordPress core Group block)
-	// Combine outer and inner classes, apply styles directly
+	// Block wrapper props with responsive column classes
+	// CRITICAL: Set width: 100% on outer wrapper so nested containers fill parent (must match edit.js)
 	const blockProps = useBlockProps.save({
-		className: `dsg-grid dsg-grid__inner dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
-		style: containerStyles,
+		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
+		style: {
+			width: '100%',
+		},
 	});
 
-	// Inner blocks props - pass blockProps as first argument (WordPress modern pattern)
-	// This creates a single element instead of double wrapper
-	const innerBlocksProps = useInnerBlocksProps.save(blockProps);
+	// Inner blocks props with declarative styles
+	const innerBlocksProps = useInnerBlocksProps.save({
+		className: 'dsg-grid__inner',
+		style: innerStyles,
+	});
 
-	return <div {...innerBlocksProps} />;
+	return (
+		<div {...blockProps}>
+			<div {...innerBlocksProps} />
+		</div>
+	);
 }

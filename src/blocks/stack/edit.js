@@ -33,9 +33,9 @@ export default function StackEdit({ attributes, setAttributes }) {
 	// Calculate effective content width
 	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
-	// Calculate styles declaratively
+	// Calculate inner styles declaratively
 	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
-	const containerStyles = {
+	const innerStyles = {
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: alignItems || 'flex-start',
@@ -46,19 +46,26 @@ export default function StackEdit({ attributes, setAttributes }) {
 		}),
 	};
 
-	// Block wrapper props - SINGLE ELEMENT PATTERN (matches WordPress core Group block)
-	// Combine outer and inner classes, apply styles directly
+	// Block wrapper props
+	// CRITICAL: Set width: 100% on outer wrapper so nested containers fill parent
 	const blockProps = useBlockProps({
-		className: 'dsg-stack dsg-stack__inner',
-		style: containerStyles,
+		className: 'dsg-stack',
+		style: {
+			width: '100%',
+		},
 	});
 
-	// Inner blocks props - pass blockProps as first argument (WordPress modern pattern)
-	// This creates a single element instead of double wrapper
-	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		orientation: 'vertical',
-		templateLock: false,
-	});
+	// Inner blocks props with declarative styles
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'dsg-stack__inner',
+			style: innerStyles,
+		},
+		{
+			orientation: 'vertical',
+			templateLock: false,
+		}
+	);
 
 	return (
 		<>
@@ -89,7 +96,9 @@ export default function StackEdit({ attributes, setAttributes }) {
 				</ToolbarGroup>
 			</BlockControls>
 
-			<div {...innerBlocksProps} />
+			<div {...blockProps}>
+				<div {...innerBlocksProps} />
+			</div>
 		</>
 	);
 }
