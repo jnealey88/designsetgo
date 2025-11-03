@@ -21,7 +21,7 @@
 	.dsg-stack__inner > [data-block] &,
 	.dsg-flex__inner > [data-block] &,
 	.dsg-grid__inner > [data-block] & {
-		width: 100%;
+		width: 100% !important;
 	}
 
 	// Visual indicator in editor

@@ -19,7 +19,7 @@
 	.dsg-stack__inner > [data-block] &,
 	.dsg-flex__inner > [data-block] &,
 	.dsg-grid__inner > [data-block] & {
-		width: 100%;
+		width: 100% !important;
 	}
 
 	// Visual indicator in editor
@@ -36,7 +36,7 @@
 		// Grid containers are block-level and auto-fill, don't need explicit width
 		> .dsg-flex,
 		> .dsg-stack {
-			width: 100%;
+			width: 100% !important;
 		}
 
 		// CRITICAL: Ensure block appender takes full width in stack layouts
