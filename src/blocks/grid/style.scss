@@ -16,8 +16,7 @@
 		width: 100%;
 
 		// CRITICAL: Prevent grid items from overflowing their cells
-		// Grid items with width: 100% can overflow if not constrained
-		// This is essential for container blocks (Stack, Flex, etc.) inside Grid
+		// Grid items automatically fill their grid cell, so we only need to prevent overflow
 		> * {
 			min-width: 0;     // Allow shrinking below content width
 			min-height: 0;    // Allow shrinking vertically
@@ -25,6 +24,8 @@
 
 		// CRITICAL: Block-level elements need full width for text-align to work properly
 		// Only apply to text blocks, not buttons or inline elements
+		// NOTE: Nested containers (.dsg-flex, .dsg-grid, .dsg-stack) don't need width: 100%
+		// because grid items automatically fill their cell
 		> h1,
 		> h2,
 		> h3,
@@ -59,6 +60,31 @@
 			&.dsg-grid-cols-mobile-#{$i} .dsg-grid__inner {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;
 			}
+		}
+	}
+}
+
+// CRITICAL: Force grid items and nested layouts to stack properly on mobile
+// Must be outside .dsg-grid scope for proper specificity
+@media (max-width: 767px) {
+	// Force all grid items with column spans to span 1 on mobile
+	// High specificity to override inline styles
+	.dsg-grid__inner > [style*="grid-column"],
+	.dsg-grid__inner > [data-block][style*="grid-column"],
+	.dsg-grid__inner > [data-block] {
+		grid-column: span 1 !important;
+	}
+
+	// Force nested layouts inside grid items to stack
+	.dsg-grid__inner > * {
+		// Force any nested grid to single column
+		.dsg-grid__inner {
+			grid-template-columns: 1fr !important;
+		}
+
+		// Force any nested flex to stack vertically
+		.dsg-flex__inner {
+			flex-direction: column !important;
 		}
 	}
 }

@@ -13,7 +13,7 @@
 		padding: 12px 24px;
 		border-radius: 4px;
 		font-weight: 500;
-		text-decoration: none;
+		text-decoration: none !important;
 		transition: all 0.2s ease;
 		cursor: pointer;
 		border: none;
@@ -28,15 +28,18 @@
 		&:hover {
 			opacity: 0.9;
 			transform: translateY(-1px);
+			text-decoration: none !important;
 		}
 
 		&:active {
 			transform: translateY(0);
+			text-decoration: none !important;
 		}
 
 		&:focus {
 			outline: 2px solid var(--wp--preset--color--primary, #2563eb);
 			outline-offset: 2px;
+			text-decoration: none !important;
 		}
 
 		// When it's a div (no link), remove cursor pointer

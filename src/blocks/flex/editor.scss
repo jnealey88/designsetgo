@@ -15,6 +15,13 @@
 		// Must be duplicated from style.scss for editor/frontend parity
 		width: 100%;
 
+		// CRITICAL: Nested Flex containers need full width to fill parent
+		// Must be duplicated from style.scss for editor/frontend parity
+		// Grid and Stack containers are block-level and auto-fill, don't need explicit width
+		> .dsg-flex {
+			width: 100%;
+		}
+
 		// CRITICAL: Block-level elements need full width for text-align to work properly
 		// Must be duplicated from style.scss for editor/frontend parity
 		> h1,
@@ -34,5 +41,33 @@
 	&.is-selected {
 		outline: 1px dashed rgba(37, 99, 235, 0.3);
 		outline-offset: -1px;
+	}
+
+	// CRITICAL: Mobile stack behavior
+	// Must be duplicated from style.scss for editor/frontend parity
+	&--mobile-stack {
+		@media (max-width: 767px) {
+			.dsg-flex__inner {
+				flex-direction: column !important;
+			}
+		}
+	}
+}
+
+// ========================================
+// Hide padding controls for nested containers
+// When a container is nested inside another container, padding should default to 0
+// Only parent containers should have padding controls visible
+// Uses CSS to detect if a flex is nested inside any container block
+// ========================================
+body:has(.dsg-grid .dsg-flex.is-selected),
+body:has(.dsg-flex .dsg-flex.is-selected),
+body:has(.dsg-stack .dsg-flex.is-selected) {
+	// Hide padding controls in Dimensions panel
+	.block-editor-block-inspector__advanced
+		.components-panel__body:has(.components-base-control:has([aria-label*='Padding' i])) {
+		.components-base-control:has([aria-label*='Padding' i]) {
+			display: none !important;
+		}
 	}
 }

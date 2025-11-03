@@ -15,6 +15,13 @@
 		// Without this, the container shrinks to fit content and flex properties don't apply
 		width: 100%;
 
+		// CRITICAL: Nested Flex containers need full width to fill parent
+		// Grid and Stack containers are block-level and auto-fill, don't need explicit width
+		// (adding width: 100% to Grid/Stack causes overflow issues)
+		> .dsg-flex {
+			width: 100%;
+		}
+
 		// CRITICAL: Block-level elements need full width for text-align to work properly
 		// Only apply to text blocks, not buttons or inline elements
 		> h1,
