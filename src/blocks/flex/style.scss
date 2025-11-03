@@ -7,6 +7,14 @@
  */
 
 .dsg-flex {
+	// Default padding (theme-level): xl top/bottom, md left/right
+	// Users can override via WordPress padding controls
+	// When padding is set to "Default", these theme values apply
+	padding-top: var(--wp--preset--spacing--xl, 3rem);
+	padding-bottom: var(--wp--preset--spacing--xl, 3rem);
+	padding-left: var(--wp--preset--spacing--md, 1.5rem);
+	padding-right: var(--wp--preset--spacing--md, 1.5rem);
+
 	// Let WordPress handle outer wrapper sizing for alignfull support
 	// Inner wrapper gets width: 100% for flex properties to work
 

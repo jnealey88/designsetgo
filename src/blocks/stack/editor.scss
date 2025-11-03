@@ -7,6 +7,13 @@
  */
 
 .dsg-stack {
+	// CRITICAL: Must duplicate default padding from style.scss for editor/frontend parity
+	// Default padding (theme-level): xl top/bottom, md left/right
+	padding-top: var(--wp--preset--spacing--xl, 3rem);
+	padding-bottom: var(--wp--preset--spacing--xl, 3rem);
+	padding-left: var(--wp--preset--spacing--md, 1.5rem);
+	padding-right: var(--wp--preset--spacing--md, 1.5rem);
+
 	// Visual indicator in editor
 	position: relative;
 
@@ -21,6 +28,12 @@
 		// Grid containers are block-level and auto-fill, don't need explicit width
 		> .dsg-flex,
 		> .dsg-stack {
+			width: 100%;
+		}
+
+		// CRITICAL: Ensure block appender takes full width in stack layouts
+		// Fixes narrow appender issue in stack containers
+		> .block-list-appender {
 			width: 100%;
 		}
 
