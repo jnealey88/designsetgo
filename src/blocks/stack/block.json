@@ -92,6 +92,9 @@
 			"default": ""
 		}
 	},
+	"providesContext": {
+		"designsetgo/alignItems": "alignItems"
+	},
 	"example": {
 		"attributes": {
 			"gap": "var(--wp--preset--spacing--50)"

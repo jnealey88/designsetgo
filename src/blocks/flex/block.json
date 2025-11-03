@@ -102,6 +102,9 @@
 			"default": ""
 		}
 	},
+	"providesContext": {
+		"designsetgo/alignItems": "alignItems"
+	},
 	"example": {
 		"attributes": {
 			"direction": "row",

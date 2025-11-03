@@ -106,6 +106,9 @@
 			"default": ""
 		}
 	},
+	"providesContext": {
+		"designsetgo/alignItems": "alignItems"
+	},
 	"example": {
 		"attributes": {
 			"desktopColumns": 3,

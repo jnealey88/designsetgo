@@ -61,7 +61,7 @@
 	"attributes": {
 		"text": {
 			"type": "string",
-			"default": "Click here"
+			"default": ""
 		},
 		"url": {
 			"type": "string",

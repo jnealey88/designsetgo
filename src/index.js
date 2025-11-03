@@ -37,6 +37,9 @@ import './extensions/overlay';
 // Grid Span - adds column span control to blocks inside Grid containers
 import './extensions/grid-span';
 
+// Text Alignment Inheritance - sets text-align based on parent container's alignItems
+import './extensions/text-alignment-inheritance';
+
 // ===== DEFAULT PADDING FOR ROOT CONTAINERS =====
 // Set default padding for container blocks, but only when inserted at root level
 import { addFilter } from '@wordpress/hooks';
