@@ -40,3 +40,16 @@
 }
 
 // No custom alignfull overrides in editor - let WordPress handle it natively
+
+/**
+ * WordPress Core Editor Post Content Fix
+ * Fixes horizontal overflow in editor when post content has both alignfull and is-layout-constrained
+ * Must be duplicated from _utilities.scss for editor/frontend parity
+ * IMPORTANT: Only target the post content container, not all constrained layouts
+ * Higher specificity needed to override WordPress core styles
+ */
+.is-root-container.wp-block-post-content.is-layout-constrained.alignfull.has-global-padding,
+.is-root-container.block-editor-block-list__layout.is-layout-constrained.alignfull.has-global-padding {
+	width: 100% !important;
+	max-width: 100% !important;
+}

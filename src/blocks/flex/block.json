@@ -4,7 +4,7 @@
 	"name": "designsetgo/flex",
 	"version": "1.0.0",
 	"title": "Flex Container",
-	"category": "designsetgo",
+	"category": "design",
 	"description": "Flexible horizontal or vertical layouts with wrapping. Perfect for button groups, hero sections, and responsive card layouts.",
 	"keywords": ["flex", "flexbox", "horizontal", "row", "layout", "container"],
 	"textdomain": "designsetgo",

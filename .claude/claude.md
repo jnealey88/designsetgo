@@ -35,18 +35,50 @@ const [colorPalette] = useSettings('color.palette');
 const [contentSize, spacingUnits] = useSettings('layout.contentSize', 'spacing.units');
 ```
 
-**Why These Matter**: These hooks integrate your blocks with WordPress's layout system, theme.json settings, and block editor features. Using them means less custom code and better compatibility.
-
 ## Architecture Decisions
 
-### Extension-Only Approach
-**Decision**: Use block extensions via filters instead of custom blocks.
+### Dual Categorization for Maximum Discoverability
+**Decision**: Blocks appear in BOTH WordPress core categories AND custom DesignSetGo category.
 
 **Why**:
-- Works WITH WordPress's native layout system rather than fighting it
-- Reduces maintenance burden - WordPress handles core functionality
+- **Better Discovery**: Users find blocks in familiar WordPress categories (Design, Text, Widgets)
+- **Brand Presence**: All blocks still grouped in DesignSetGo category
+- **Best Practice**: Follows patterns from major plugins like CoBlocks
+
+**Implementation**:
+```json
+// block.json - Use WordPress core category
+{
+  "category": "design"  // or "text", "widgets", etc.
+}
+```
+
+```javascript
+// src/block-category-filter.js - Register collection for DesignSetGo
+wp.blocks.registerBlockCollection('designsetgo', {
+  title: 'DesignSetGo',
+  icon: 'layout',
+});
+```
+
+**Category Mapping**:
+- **Design**: Container blocks (Flex, Grid, Stack), UI elements (Icon, Pill, Accordion, Tabs, Icon Button)
+- **Text**: Content blocks (Icon List)
+- **Widgets**: Dynamic blocks (Counter Group, Progress Bar)
+
+**Files**:
+- [src/block-category-filter.js](src/block-category-filter.js:1) - Collection registration
+- [webpack.config.js](webpack.config.js:51) - Build configuration
+- [includes/class-plugin.php](includes/class-plugin.php:129) - Asset enqueuing
+
+### Extension-Only Approach
+**Decision**: Use block extensions via filters instead of custom blocks where appropriate.
+
+**Why**:
+- Works WITH WordPress's native layout system
+- Reduces maintenance burden
 - Prevents conflicts with theme and core updates
-- Eliminates build complexity for custom blocks
+- Eliminates build complexity
 
 **Implementation**:
 - Use `addFilter('blocks.registerBlockType')` to add attributes
@@ -56,31 +88,9 @@ const [contentSize, spacingUnits] = useSettings('layout.contentSize', 'spacing.u
 ### PHP Filters for Block Modification
 **Decision**: Use PHP filters to modify block behavior when CSS isn't reliable.
 
-**Why PHP Over CSS**:
-- **More Reliable**: PHP modifies block registration at the source, not presentation layer
-- **Cleaner**: No complex CSS selectors that may break with WordPress updates
-- **Targeted**: Only affects specific blocks, no side effects
-- **Persistent**: Works regardless of theme or CSS loading order
-
-**Use Cases**:
-- Disabling WordPress's native UI controls
-- Modifying block supports (layout, spacing, colors, etc.)
-- Setting default attributes programmatically
-- Restricting block features for specific use cases
-
 **Pattern - Disable WordPress Layout Controls**:
-
-When you want to replace WordPress's native controls with your own custom interface (like a responsive grid system), use PHP to disable the native controls:
-
 ```php
-// In includes/blocks/class-loader.php
-
-public function __construct() {
-    add_filter( 'register_block_type_args', array( $this, 'modify_block_supports' ), 10, 2 );
-}
-
 public function modify_block_supports( $args, $name ) {
-    // Only modify your specific block
     if ( 'designsetgo/container' !== $name ) {
         return $args;
     }
@@ -94,61 +104,13 @@ public function modify_block_supports( $args, $name ) {
 }
 ```
 
-**What This Does**:
-- Removes WordPress's Layout panel from the block settings sidebar
-- Hides grid/flex controls (columns, alignment, etc.)
-- Allows your custom controls to be the primary interface
-- Only affects the specified block, all other blocks work normally
-
-**Alternative Patterns**:
-
-```php
-// Completely disable layout support
-unset( $args['supports']['layout'] );
-
-// Disable specific layout features
-$args['supports']['layout']['allowSwitching'] = false;  // Hide Flow/Flex/Grid toolbar
-$args['supports']['layout']['allowInheriting'] = false; // Disable theme layout inheritance
-
-// Modify color support
-$args['supports']['color']['background'] = false;  // Hide background color
-$args['supports']['color']['text'] = false;        // Hide text color
-
-// Modify spacing support
-$args['supports']['spacing']['padding'] = false;   // Hide padding controls
-$args['supports']['spacing']['margin'] = false;    // Hide margin controls
-```
-
 **When to Use PHP vs CSS**:
 - ✅ **Use PHP** when you want to completely remove/replace WordPress functionality
-- ✅ **Use CSS** for styling, hiding non-essential UI elements, or visual tweaks
-- ❌ **Avoid CSS** for hiding functional controls (unreliable, may break)
-
-**Example - Container Block**:
-
-Our Container block provides a responsive grid system (Desktop/Tablet/Mobile columns). We use PHP to disable WordPress's native layout controls because:
-
-1. **Prevents Confusion**: Users don't see duplicate column controls
-2. **Single Source of Truth**: Our responsive grid is the only interface
-3. **Reliable**: Works regardless of theme CSS or WordPress updates
-4. **Scoped**: Only affects Container block, Group/Column blocks work normally
-
-**Debugging Tip**:
-
-To verify the filter is working, inspect the block's registered type:
-
-```javascript
-// In browser console
-wp.blocks.getBlockType('designsetgo/container').supports.layout
-// Should show: { allowEditing: false, ... }
-```
+- ✅ **Use CSS** for styling, hiding non-essential UI elements
+- ❌ **Avoid CSS** for hiding functional controls (unreliable)
 
 ### Frontend Asset Loading
 **Critical Learning**: Frontend styles MUST be explicitly imported.
-
-**Problem**: Made changes to group enhancement styles, but they only appeared in editor, not frontend.
-
-**Root Cause**: `src/styles/style.scss` wasn't importing group enhancement styles, so `build/style-index.css` didn't include them.
 
 **Fix**:
 ```scss
@@ -162,292 +124,16 @@ grep -i "has-dsg-overlay" build/style-index.css
 ```
 
 ### FSE (Full Site Editing) Compatibility
-**Critical**: Custom blocks MUST support FSE to work with modern WordPress themes like Twenty Twenty-Five.
+**Critical**: Custom blocks MUST support FSE to work with modern WordPress themes.
 
-**Why FSE Matters**:
-- Users expect blocks to work in Site Editor
-- Global styles allow site-wide customization
-- Theme.json integration is the WordPress standard
-- Patterns make blocks more accessible to users
+📖 **See [FSE-COMPATIBILITY-GUIDE.md](docs/FSE-COMPATIBILITY-GUIDE.md) for complete details**
 
-#### Required block.json Supports
-
-**Minimum FSE Support**:
-```json
-{
-  "supports": {
-    "html": false,
-    "inserter": true,
-    "layout": {
-      "allowSwitching": true,
-      "allowEditing": true
-    },
-    "spacing": {
-      "margin": true,
-      "padding": true,
-      "blockGap": true
-    },
-    "color": {
-      "background": true,
-      "text": true,
-      "link": true
-    }
-  }
-}
-```
-
-**Full FSE Support** (Recommended):
-```json
-{
-  "supports": {
-    "anchor": true,
-    "align": ["wide", "full"],
-    "html": false,
-    "inserter": true,
-    "layout": {
-      "allowSwitching": true,
-      "allowInheriting": false,
-      "allowEditing": true,
-      "allowSizingOnChildren": true,
-      "default": {
-        "type": "flex",
-        "orientation": "vertical"
-      }
-    },
-    "spacing": {
-      "margin": true,
-      "padding": true,
-      "blockGap": true,
-      "__experimentalDefaultControls": {
-        "padding": true,
-        "blockGap": true
-      }
-    },
-    "dimensions": {
-      "minHeight": true
-    },
-    "color": {
-      "background": true,
-      "text": true,
-      "gradients": true,
-      "link": true,
-      "__experimentalDefaultControls": {
-        "background": true,
-        "text": true
-      }
-    },
-    "background": {
-      "backgroundImage": true,
-      "backgroundSize": true
-    },
-    "typography": {
-      "fontSize": true,
-      "lineHeight": true,
-      "__experimentalDefaultControls": {
-        "fontSize": true
-      }
-    },
-    "shadow": true,
-    "position": {
-      "sticky": true
-    },
-    "__experimentalBorder": {
-      "color": true,
-      "radius": true,
-      "style": true,
-      "width": true,
-      "__experimentalDefaultControls": {
-        "color": true,
-        "radius": true,
-        "style": true,
-        "width": true
-      }
-    }
-  }
-}
-```
-
-#### Block Example (Required for Patterns)
-
-Add an `example` property to show a preview:
-
-```json
-{
-  "example": {
-    "attributes": {
-      "layout": {
-        "type": "flex",
-        "orientation": "vertical"
-      }
-    },
-    "innerBlocks": [
-      {
-        "name": "core/heading",
-        "attributes": {
-          "level": 2,
-          "content": "Block Title"
-        }
-      },
-      {
-        "name": "core/paragraph",
-        "attributes": {
-          "content": "Block description here."
-        }
-      }
-    ]
-  }
-}
-```
-
-**Why**:
-- Shows preview in block inserter
-- Displays in pattern library
-- Helps users understand block purpose
-- Required for pattern discovery
-
-#### Use Theme Spacing Tokens
-
-**Always use WordPress spacing presets** instead of hardcoded values:
-
-```javascript
-// ❌ BAD - Hardcoded values
-style={{
-  paddingTop: '80px',
-  paddingBottom: '80px'
-}}
-
-// ✅ GOOD - Theme spacing tokens
-style={{
-  paddingTop: 'var(--wp--preset--spacing--xl)',
-  paddingBottom: 'var(--wp--preset--spacing--xl)'
-}}
-```
-
-**In block patterns**:
-```html
-<!-- Use var:preset|spacing|xl notation -->
-<div style="padding-top:var(--wp--preset--spacing--xl)">
-```
-
-#### Theme.json Global Styles
-
-Users can customize your block globally via theme.json:
-
-```json
-{
-  "styles": {
-    "blocks": {
-      "designsetgo/container": {
-        "spacing": {
-          "padding": {
-            "top": "var(--wp--preset--spacing--50)",
-            "bottom": "var(--wp--preset--spacing--50)"
-          }
-        },
-        "color": {
-          "background": "var(--wp--preset--color--base)"
-        },
-        "border": {
-          "radius": "8px"
-        }
-      }
-    }
-  }
-}
-```
-
-**Ensure your blocks respect these settings** - don't override with `!important` unless necessary.
-
-#### Block Patterns for Discoverability
-
-Create patterns to showcase your blocks:
-
-```php
-<?php
-/**
- * Title: Hero Section with Container
- * Slug: designsetgo/hero/container-hero
- * Categories: dsg-hero
- * Description: Full-width hero section
- * Keywords: hero, header, banner
- */
-
-return array(
-	'title'      => __( 'Hero Section with Container', 'designsetgo' ),
-	'categories' => array( 'dsg-hero' ),
-	'content'    => '<!-- wp:designsetgo/container {...} -->...'
-);
-```
-
-**Pattern Structure**:
-```
-patterns/
-├── hero/
-│   └── container-hero.php
-├── features/
-│   └── three-column-grid.php
-└── cta/
-    └── centered-cta.php
-```
-
-**Benefits**:
-- Users discover features through patterns
-- Pre-built layouts increase adoption
-- Shows best practices for using your blocks
-- Works seamlessly in Site Editor
-
-#### FSE Testing Checklist
-
-Before releasing a block, test FSE compatibility:
-
-- [ ] Block appears in Site Editor inserter
-- [ ] Block preview shows in pattern library
-- [ ] Global styles can be applied (Styles → Blocks → Your Block)
-- [ ] Theme spacing tokens work (`var:preset|spacing|*`)
-- [ ] Theme colors work (`var:preset|color|*`)
-- [ ] Layout switching works (Stack/Row/Grid)
-- [ ] Block patterns appear in pattern inserter
-- [ ] Works with Twenty Twenty-Five theme
-- [ ] No console errors in Site Editor
-- [ ] Saves and loads correctly in templates
-
-#### Common FSE Issues
-
-**Issue 1: Block not appearing in Site Editor**
-```json
-// Add to block.json
-"inserter": true
-```
-
-**Issue 2: Global styles not applying**
-```json
-// Enable color/spacing/typography supports
-"supports": {
-  "color": { "background": true, "text": true },
-  "spacing": { "padding": true, "margin": true }
-}
-```
-
-**Issue 3: Patterns not showing**
-```json
-// Add example to block.json
-"example": { "attributes": {...}, "innerBlocks": [...] }
-```
-
-**Issue 4: Theme colors not available**
-```javascript
-// Use useSettings hook (WordPress 6.5+)
-const [themeColors] = useSettings('color.palette');
-```
-
-#### Key Takeaways
-
-1. **FSE is not optional** - Modern themes expect it
-2. **Use WordPress spacing/color presets** - Don't hardcode values
-3. **Add comprehensive supports** - The more, the better
-4. **Provide block examples** - Required for patterns
-5. **Create patterns** - Increases discoverability
-6. **Test with FSE themes** - Twenty Twenty-Five is your baseline
+**Quick Checklist**:
+- [ ] Add comprehensive `supports` in block.json
+- [ ] Include `example` property for pattern library
+- [ ] Use WordPress spacing/color presets (no hardcoded values)
+- [ ] Test with Twenty Twenty-Five theme
+- [ ] Create block patterns for discoverability
 
 ## UI/UX Patterns
 
@@ -455,254 +141,74 @@ const [themeColors] = useSettings('color.palette');
 **Learning**: When a complex feature doesn't work reliably, simplify it.
 
 **Case Study - Overlay Color**:
-- **Initial Approach**: Color picker with opacity slider, dynamic CSS variables
-- **Problem**: CSS variables weren't being applied to DOM elements
-- **User Feedback**: "This isn't working. Let's just have a toggle"
-- **Final Solution**: Boolean toggle with fixed `rgba(0, 0, 0, 0.75)`
+- **Initial**: Color picker with opacity slider, dynamic CSS variables
+- **Problem**: CSS variables weren't being applied reliably
+- **Solution**: Boolean toggle with fixed `rgba(0, 0, 0, 0.75)`
 - **Result**: Simpler, more reliable, easier to maintain
 
 **Takeaway**: Fixed, well-designed defaults often beat complex customization.
 
 ### Accessibility First
-**Learning**: Always consider contrast and readability when adding overlay features.
-
-**Problem**: Dark overlay (75% black) could make text unreadable if theme uses light text.
-
-**Solution**: Force white text color when overlay is enabled:
+Always consider contrast and readability. Force white text when overlay is enabled:
 ```scss
 .has-dsg-overlay {
     color: #ffffff !important;
-
     h1, h2, h3, h4, h5, h6, p, a, span {
         color: #ffffff !important;
     }
 }
 ```
 
-**Why `!important`**: Must override theme styles to ensure readability. Accessibility > CSS specificity rules.
+**Why `!important`**: Accessibility > CSS specificity rules.
 
 ### Use WordPress Native Color Controls
-**Learning**: Always use WordPress's built-in color controls (`PanelColorSettings`) instead of custom color pickers.
-
-**Why Native Controls**:
-- **Familiar UX**: Users already know how WordPress color controls work
-- **Theme Integration**: Automatically shows theme colors and custom palette
+Always use `PanelColorSettings` instead of custom color pickers for:
+- **Familiar UX**: Users already know WordPress color controls
+- **Theme Integration**: Automatically shows theme colors
 - **Consistent UI**: Matches WordPress design system
-- **Less Code**: No need to build custom color picker components
 
 **Pattern - Parent-Child Color Inheritance**:
-
-When you want a parent block to provide a default color that child blocks can override:
-
 ```javascript
-// Parent Block (Counter Group) - edit.js
-import { PanelColorSettings, useSettings } from '@wordpress/block-editor';
-
-function ParentEdit({ attributes, setAttributes }) {
-  const { hoverColor } = attributes;
-  // WordPress 6.5+ - useSettings returns array
-  const [colorSettings] = useSettings('color.palette');
-
-  return (
-    <>
-      <InspectorControls>
-        <PanelColorSettings
-          title={__('Hover Color', 'designsetgo')}
-          colorSettings={[
-            {
-              value: hoverColor,
-              onChange: (value) => setAttributes({ hoverColor: value || '' }),
-              label: __('Number Hover Color', 'designsetgo'),
-              colors: colorSettings,
-            },
-          ]}
-          initialOpen={false}
-        >
-          <p className="components-base-control__help">
-            {__('Color for counter numbers on hover. Individual counters can override this.', 'designsetgo')}
-          </p>
-        </PanelColorSettings>
-      </InspectorControls>
-    </>
-  );
+// Parent provides context
+"providesContext": {
+  "namespace/parentBlock/hoverColor": "hoverColor"
 }
 
-// Parent Block - block.json (context passing)
-{
-  "attributes": {
-    "hoverColor": { "type": "string", "default": "" }
-  },
-  "providesContext": {
-    "namespace/parentBlock/hoverColor": "hoverColor"
-  }
-}
+// Child receives context
+"usesContext": ["namespace/parentBlock/hoverColor"]
 
-// Child Block - block.json (receive context)
-{
-  "attributes": {
-    "hoverColor": { "type": "string", "default": "" }
-  },
-  "usesContext": ["namespace/parentBlock/hoverColor"]
-}
-
-// Child Block - edit.js (use parent color with override)
-function ChildEdit({ attributes, setAttributes, context }) {
-  const { hoverColor } = attributes;
-  // WordPress 6.5+ - useSettings returns array
-  const [colorSettings] = useSettings('color.palette');
-
-  // Get parent hover color from context
-  const parentHoverColor = context?.['namespace/parentBlock/hoverColor'] || '';
-
-  // Get theme accent-2 color as default
-  const themeColors = colorSettings?.theme || [];
-  const accent2Color = themeColors.find((color) => color.slug === 'accent-2');
-  const defaultHoverColor = accent2Color?.color || '';
-
-  // Priority: individual override > parent > theme accent-2
-  const effectiveHoverColor = hoverColor || parentHoverColor || defaultHoverColor;
-
-  const blockProps = useBlockProps({
-    style: {
-      // Apply as CSS custom property
-      ...(effectiveHoverColor && { '--hover-color': effectiveHoverColor }),
-    },
-  });
-
-  return (
-    <>
-      <InspectorControls>
-        <PanelColorSettings
-          title={__('Hover Color', 'designsetgo')}
-          colorSettings={[
-            {
-              value: hoverColor,
-              onChange: (value) => setAttributes({ hoverColor: value || '' }),
-              label: __('Number Hover Color', 'designsetgo'),
-              colors: colorSettings,
-            },
-          ]}
-          initialOpen={false}
-        >
-          <p className="components-base-control__help">
-            {parentHoverColor
-              ? __('Override parent group hover color. Leave empty to use group setting.', 'designsetgo')
-              : __('Color for element on hover. Leave empty to use theme accent color.', 'designsetgo')}
-          </p>
-        </PanelColorSettings>
-      </InspectorControls>
-      <div {...blockProps}>...</div>
-    </>
-  );
-}
+// Priority: individual override > parent > theme default
+const effectiveColor = hoverColor || parentHoverColor || defaultHoverColor;
 ```
-
-**CSS Pattern - Fallback Chain**:
-
-```scss
-.block {
-  &:hover {
-    .element {
-      // Priority: custom color > parent color > theme accent-2 > current color
-      color: var(
-        --hover-color,
-        var(--wp--preset--color--accent-2, currentColor)
-      );
-    }
-  }
-}
-```
-
-**Key Principles**:
-1. **Use `PanelColorSettings`** - Never build custom color pickers
-2. **Pass via context** - Use `providesContext` and `usesContext` in block.json
-3. **CSS custom properties** - Apply colors as `--custom-property` in inline styles
-4. **Fallback chain** - CSS `var()` with multiple fallbacks (custom > parent > theme > default)
-5. **Theme integration** - Always include theme colors via `useSettings('color.palette')` (WordPress 6.5+)
-6. **Clear help text** - Explain override behavior and defaults
-
-**Benefits**:
-- Users get familiar WordPress color UI
-- Theme colors automatically available
-- Parent-child inheritance works seamlessly
-- Individual blocks can override parent settings
-- Graceful fallbacks to theme defaults
 
 ## Technical Patterns
 
-### Use WordPress Block Hooks (useInnerBlocksProps, useBlockProps)
-**Learning**: Always use WordPress's provided hooks instead of manually rendering components.
+### Use WordPress Block Hooks
+**Critical**: Always use `useInnerBlocksProps()` instead of plain `<InnerBlocks />`.
 
-**Problem**: Content width constraint wasn't working because inner blocks weren't using WordPress's proper pattern.
-
-**Wrong Approach**:
 ```javascript
-// ❌ BAD - Manual InnerBlocks component
-const blockProps = useBlockProps();
-return (
-  <div {...blockProps}>
-    <div style={{ maxWidth: contentWidth }}>
-      <InnerBlocks />
-    </div>
-  </div>
-);
-```
+// ❌ WRONG - Manual InnerBlocks component
+<div style={{ maxWidth: contentWidth }}>
+  <InnerBlocks />
+</div>
 
-**Correct Approach**:
-```javascript
-// ✅ GOOD - Using useInnerBlocksProps
-const blockProps = useBlockProps();
+// ✅ CORRECT - Using useInnerBlocksProps
 const innerBlocksProps = useInnerBlocksProps({
   className: 'my-inner-container',
-  style: {
-    maxWidth: contentWidth,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  }
+  style: { maxWidth: contentWidth }
 });
-
-return (
-  <div {...blockProps}>
-    <div {...innerBlocksProps} />
-  </div>
-);
+<div {...innerBlocksProps} />
 ```
 
-**Why This Works**:
-- `useInnerBlocksProps()` properly integrates with WordPress's layout system
-- Automatically handles block inserter, selection states, and appender
-- Respects WordPress's block spacing and layout settings
-- Applies styles directly to the container that holds inner blocks
-- Works correctly with both editor and save functions
-
-**Key Insight**: WordPress provides hooks that handle the complexity of block integration. Use them instead of trying to manually wire things up.
-
-**Save Function Pattern**:
-```javascript
-// In save.js, use the .save() variant
-const innerBlocksProps = useInnerBlocksProps.save({
-  className: 'my-inner-container',
-  style: { /* styles */ }
-});
-```
-
-**Real-World Impact**:
-- Fixed content width not being respected
-- Fixed grid layout not applying to inner blocks
-- Reduced code complexity
-- Better integration with WordPress theme.json settings
+📖 **See [EDITOR-STYLING-GUIDE.md](docs/EDITOR-STYLING-GUIDE.md) for complete styling patterns**
 
 ### Clickable Groups Without Interfering with Interactive Elements
-**Pattern**: Make entire group clickable, but detect and preserve nested interactive elements.
-
-**Implementation**:
 ```javascript
 group.addEventListener('click', function (e) {
-    const isInteractive =
-        e.target.tagName === 'A' ||
-        e.target.tagName === 'BUTTON' ||
-        e.target.closest('a') ||
-        e.target.closest('button');
+    const isInteractive = e.target.tagName === 'A' ||
+                         e.target.tagName === 'BUTTON' ||
+                         e.target.closest('a') ||
+                         e.target.closest('button');
 
     if (!isInteractive) {
         window.location.href = linkUrl;
@@ -710,14 +216,8 @@ group.addEventListener('click', function (e) {
 });
 ```
 
-**Why**: Allows card-style clickable containers while preserving button/link functionality inside.
-
 ### Security for External Links
-**Pattern**: Always add `noopener noreferrer` when opening links in new tabs.
-
-**Why**: Prevents new window from accessing `window.opener` (security risk).
-
-**Implementation**:
+Always add `noopener noreferrer` when opening links in new tabs:
 ```javascript
 if (linkTarget === '_blank') {
     const newWindow = window.open(linkUrl, '_blank');
@@ -728,149 +228,37 @@ if (linkTarget === '_blank') {
 ```
 
 ### Future-Proof WordPress Components
-**Critical**: Always add future-proof props to WordPress components to avoid deprecation warnings and prepare for upcoming WordPress versions.
+Add these props to ALL form components to avoid deprecation warnings:
 
-**Problem**: WordPress 6.7+ deprecated old size and margin defaults for form components. Without future-proof props, console shows warnings:
-- "36px default size for wp.components.{Component} is deprecated since version 6.8"
-- "Bottom margin styles for wp.components.{Component} is deprecated since version 6.7"
+**Affected Components**: `SelectControl`, `RangeControl`, `UnitControl`, `ToggleGroupControl`, `TextControl`
 
-**Solution**: Add these two props to ALL instances of these components:
-
-**Affected Components**:
-- `SelectControl`
-- `RangeControl`
-- `UnitControl`
-- `ToggleGroupControl`
-- `TextControl`
-
-**Required Props**:
 ```javascript
 <RangeControl
   label={__('My Setting', 'designsetgo')}
   value={myValue}
   onChange={(value) => setAttributes({ myValue: value })}
-  min={1}
-  max={10}
   __next40pxDefaultSize        // ← Future-proof size
   __nextHasNoMarginBottom      // ← Future-proof margin
 />
 ```
 
-**Why This Matters**:
-- Eliminates deprecation warnings in console (cleaner developer experience)
-- Prepares codebase for WordPress 7.0+ when old defaults are removed
-- Adopts new WordPress component sizing standards early
-- Prevents future breaking changes
-
-**When to Add**:
-- **All new blocks**: Add these props from day one
-- **Existing blocks**: Add during any component updates or refactoring
-- **Component libraries**: Update all instances systematically
-
-**Real-World Impact**:
-- Updated 80 component instances across 22 files in DesignSetGo
-- Eliminated 14+ deprecation warnings from console
-- Future-proofed plugin for WordPress 7.0+ compatibility
-
 ### Proper Asset Enqueuing for Block Editor
-**Critical**: Use correct WordPress hooks for enqueuing block editor assets to avoid iframe warnings.
+Use `enqueue_block_assets` hook with `is_admin()` guard instead of `enqueue_block_editor_assets`:
 
-**Problem**: Using `enqueue_block_editor_assets` hook causes warning:
-```
-designsetgo-extensions-css was added to the iframe incorrectly.
-Please use block.json or enqueue_block_assets to add styles to the iframe.
-```
-
-**Root Cause**: WordPress 5.8+ uses iframe for block editor. The `enqueue_block_editor_assets` hook runs before iframe is ready, causing assets to load in wrong context.
-
-**Wrong Approach**:
 ```php
-// ❌ BAD - Assets don't load correctly in iframe
-add_action('enqueue_block_editor_assets', array($this, 'enqueue_editor_assets'));
-```
-
-**Correct Approach**:
-```php
-// ✅ GOOD - Works correctly with block editor iframe
+// ✅ CORRECT - Works with block editor iframe
 add_action('enqueue_block_assets', array($this, 'enqueue_editor_assets'));
 
 public function enqueue_editor_assets() {
-    // Guard: Only run in editor context
-    if (!is_admin()) {
-        return;
-    }
-
+    if (!is_admin()) return;
     // Enqueue scripts/styles...
 }
 ```
 
-**Why This Works**:
-- `enqueue_block_assets` hook runs in BOTH editor and frontend contexts
-- Guard with `is_admin()` to run only in editor
-- Assets load correctly in block editor iframe
-- No console warnings about incorrect asset loading
-
-**Key Differences**:
-
-| Hook | Context | Iframe Support | Best For |
-|------|---------|----------------|----------|
-| `enqueue_block_editor_assets` | Editor only | ❌ Old pattern | Deprecated |
-| `enqueue_block_assets` + `is_admin()` guard | Both (guarded) | ✅ Correct | **Use this** |
-| `wp_enqueue_scripts` | Frontend only | N/A | Frontend assets |
-
-**Pattern for Assets Class**:
-```php
-class Assets {
-    public function __construct() {
-        // Editor assets (extensions, variations)
-        add_action('enqueue_block_assets', array($this, 'enqueue_editor_assets'));
-
-        // Frontend assets (only when blocks present)
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
-    }
-
-    public function enqueue_editor_assets() {
-        // Guard: Editor only
-        if (!is_admin()) {
-            return;
-        }
-
-        // Load editor scripts/styles
-        wp_enqueue_style('designsetgo-extensions', ...);
-        wp_enqueue_script('designsetgo-extensions', ...);
-    }
-
-    public function enqueue_frontend_assets() {
-        // Only load if blocks are used
-        if (!$this->has_designsetgo_blocks()) {
-            return;
-        }
-
-        // Load frontend scripts/styles
-        wp_enqueue_style('designsetgo-frontend', ...);
-        wp_enqueue_script('designsetgo-frontend', ...);
-    }
-}
-```
-
-**Benefits**:
-- No iframe warnings in console
-- Proper asset loading in block editor
-- Works with WordPress 5.8+ iframe architecture
-- Follows WordPress best practices
-
-**When to Use**:
-- Block extensions (filters that modify core blocks)
-- Block variations
-- Global editor styles/scripts
-- Any editor-only customizations
-
-**Note**: Individual block assets should still use `block.json` `editorScript`, `editorStyle`, `script`, and `style` properties for automatic loading.
-
 ## WordPress-Specific Learnings
 
 ### Block Category Ordering
-**How to Make Custom Category First**:
+Make custom category appear first:
 ```php
 public function register_block_category( $categories ) {
     return array_merge(
@@ -880,7 +268,7 @@ public function register_block_category( $categories ) {
                 'title' => __( 'DesignSetGo', 'designsetgo' ),
             ),
         ),
-        $categories  // New category first, then existing
+        $categories
     );
 }
 ```
@@ -888,82 +276,33 @@ public function register_block_category( $categories ) {
 ### Block Variations Cleanup
 **Learning**: Fewer, better variations > many mediocre ones.
 
-**Original**: 5 variations (Hero, 3-Column Grid, Card Grid, Centered Container, Side by Side)
-
-**Final**: 2 variations (Hero Section, Responsive Grid)
-
-**Why**:
-- Removed redundant patterns
-- Cleaner block inserter UI
-- Users can customize from base variations
-
 ## Debugging Techniques
 
 ### 500 Internal Server Error - Block Assets
-**Symptom**: `GET /wp-admin/post.php?post=7&action=edit 500`
+**Symptom**: `GET /wp-admin/post.php 500`
 
-**Debug Process**:
-1. Check PHP error logs: `npx wp-env logs`
-2. Found: `Failed opening required 'build/blocks/container/index.asset.php'`
-3. Root cause: `block.json` existed but JS wasn't compiled
-
-**Fix**: Remove custom blocks entirely, use extensions only.
+**Debug**: Check PHP error logs: `npx wp-env logs`
 
 ### CSS Not Applying - Missing Imports
 **Debug Process**:
-1. Check if CSS exists in build: `cat build/style-index.css`
-2. Search for specific class: `grep -i "has-dsg-overlay" build/style-index.css`
-3. If missing, check source imports in `src/styles/style.scss`
-
-### Dynamic Styles Not Applying
-**Symptom**: Console shows style object created, but not in DOM.
-
-**Debugging**:
-```javascript
-console.log('Attributes:', { dsgOverlayColor });
-console.log('Style object:', overlayStyles);
-// Then inspect HTML element to see if style attribute exists
-```
-
-**Finding**: `editor.BlockListBlock` filter doesn't reliably apply inline styles.
-
-**Solution**: Use CSS classes instead of dynamic inline styles.
+1. Check build: `cat build/style-index.css`
+2. Search for class: `grep -i "has-dsg-overlay" build/style-index.css`
+3. Check source imports in `src/styles/style.scss`
 
 ## Build Process
 
 ### When to Rebuild
-Always rebuild after changes to:
-- SCSS files (`.scss`)
-- JavaScript files (`.js`, `.jsx`)
-- Block attributes or controls
-
-**Command**:
+Always rebuild after changes to SCSS/JS files:
 ```bash
 npx wp-scripts build
 ```
 
 ### Build Output Verification
-Check what got compiled:
 ```bash
-ls -lh build/                    # See file sizes
+ls -lh build/                    # File sizes
 cat build/style-index.css       # Frontend styles
 cat build/index.css             # Editor styles
-cat build/index.js              # Block extensions JS
 ```
-
-### Sass Deprecation Warnings
-**Warning**: `Sass @import rules are deprecated`
-
-**Fix** (future): Migrate to `@use` and `@forward`:
-```scss
-// Instead of:
-@import 'variables';
-
-// Use:
-@use 'variables';
-```
-
-**Note**: Not critical for now, but plan migration before Dart Sass 3.0.0.
 
 ## File Organization
 
@@ -973,543 +312,49 @@ src/extensions/group-enhancements/
 ├── index.js         # Block registration, attributes, controls
 ├── styles.scss      # Frontend styles
 ├── editor.scss      # Editor-only styles
-└── frontend.js      # Frontend JavaScript (clickable groups, etc.)
+└── frontend.js      # Frontend JavaScript
 ```
 
 ### Style Imports
-```
-src/
-├── index.js                    # Main entry - imports everything
-├── styles/
-│   ├── style.scss             # Frontend entry - imports all frontend styles
-│   └── editor.scss            # Editor entry - imports all editor styles
-└── extensions/
-    └── group-enhancements/
-        ├── styles.scss        # Must be imported in style.scss
-        └── editor.scss        # Must be imported in editor.scss
-```
+**Critical**: Extensions' styles must be explicitly imported in main style files.
 
-**Critical**: Extensions' styles must be explicitly imported in main style files, or they won't be compiled into build output.
-
-## Code Maintainability and Refactoring Patterns
+## Code Maintainability
 
 ### File Size Limits
 **Hard Rule**: No single file should exceed **300 lines** (excluding pure data/constants).
 
-**Why**:
-- Files >300 lines become hard to navigate and understand
-- Testing becomes difficult
-- Changes require excessive context switching
-- Code reviews become overwhelming
+📖 **See [REFACTORING-GUIDE.md](docs/REFACTORING-GUIDE.md) for complete refactoring patterns**
 
-**Action**: When a file exceeds 300 lines, refactor it following the patterns below.
-
----
-
-### Refactored Block File Structure (Standard Pattern)
-
-**Use this structure for ALL custom blocks:**
-
+**Quick Pattern**:
 ```
 src/blocks/{block-name}/
 ├── index.js (40-60 lines)          # Registration only
-│   ├── Import edit, save, metadata
-│   ├── Import styles (editor.scss, style.scss)
-│   └── registerBlockType() call
-│
 ├── edit.js (100-150 lines)         # Focused edit component
-│   ├── Import extracted panels
-│   ├── Import extracted utilities
-│   ├── Attribute destructuring
-│   ├── Calculate styles using utilities
-│   ├── Return JSX with panels
-│   └── NO inline PanelBody components
-│
-├── save.js (as-is)                 # Usually already good
-│
-├── components/
-│   └── inspector/                   # One file per panel
-│       ├── SettingsPanel1.js (60-150 lines)
-│       ├── SettingsPanel2.js (60-150 lines)
-│       └── SettingsPanel3.js (60-150 lines)
-│
-├── utils/                           # Pure functions
-│   ├── style-calculator.js (60-120 lines)
-│   ├── formatter.js (60-100 lines)
-│   └── data-library.js (any size - pure data)
-│
-├── editor.scss                      # Editor-only styles
-└── style.scss                       # Frontend styles
+├── save.js                         # Usually already good
+├── components/inspector/           # One file per panel
+└── utils/                          # Pure functions
 ```
 
----
-
-### Refactoring Pattern (Step-by-Step)
-
-**When a block file exceeds 300 lines, follow these steps:**
-
-#### 1. Analyze and Backup
-```bash
-# Check file size
-wc -l src/blocks/{block-name}/index.js
-
-# Backup original
-cp src/blocks/{block-name}/index.js src/blocks/{block-name}/index.js.backup
-```
-
-#### 2. Extract Pure Utilities First
-Create `utils/` directory and extract:
-- Style calculation functions
-- Number/string formatters
-- Data transformations
-- Icon/image libraries
-- Any pure functions (no side effects)
-
-**Example:**
-```javascript
-// utils/style-calculator.js
-/**
- * Calculate container inner styles
- * Pure function - 100% testable
- */
-export const calculateInnerStyles = (attributes) => {
-  const { layoutType, constrainWidth, contentWidth, gridColumns, gap } = attributes;
-
-  const styles = {
-    position: 'relative',
-    zIndex: 2,
-  };
-
-  if (layoutType === 'grid') {
-    styles.display = 'grid';
-    styles.gridTemplateColumns = `repeat(${gridColumns}, 1fr)`;
-    styles.gap = gap;
-  }
-
-  return styles;
-};
-```
-
-**Why Pure Functions First**:
-- Immediately testable without WordPress
-- No dependencies
-- Can be used in both edit.js and save.js
-- Simplifies component extraction
-
-#### 3. Extract Inspector Panels
-Create `components/inspector/` directory with one file per `<PanelBody>`.
-
-**Panel Component Pattern:**
-```javascript
-// components/inspector/LayoutPanel.js
-import { __ } from '@wordpress/i18n';
-import { PanelBody, ToggleGroupControl, TextControl } from '@wordpress/components';
-
-/**
- * Layout Panel - Controls for layout type and gap
- *
- * @param {Object} props - Component props
- * @param {string} props.layoutType - Current layout type
- * @param {string} props.gap - Gap between items
- * @param {Function} props.setAttributes - Function to update attributes
- */
-export const LayoutPanel = ({ layoutType, gap, setAttributes }) => {
-  return (
-    <PanelBody title={__('Layout', 'designsetgo')} initialOpen={true}>
-      <ToggleGroupControl
-        label={__('Layout Type', 'designsetgo')}
-        value={layoutType}
-        onChange={(value) => setAttributes({ layoutType: value })}
-        isBlock
-      >
-        {/* Controls */}
-      </ToggleGroupControl>
-
-      <TextControl
-        label={__('Gap', 'designsetgo')}
-        value={gap}
-        onChange={(value) => setAttributes({ gap: value })}
-      />
-    </PanelBody>
-  );
-};
-```
-
-**Panel Naming Convention**:
-- `{Feature}Panel.js` - e.g., `LayoutPanel.js`, `GridPanel.js`
-- Export as named export: `export const LayoutPanel = ...`
-- Always include JSDoc comments
-
-#### 4. Create Focused edit.js
-Move edit logic from index.js to new edit.js file.
-
-**Edit Component Pattern:**
-```javascript
-// edit.js
-import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { LayoutPanel } from './components/inspector/LayoutPanel';
-import { GridPanel } from './components/inspector/GridPanel';
-import { calculateInnerStyles } from './utils/style-calculator';
-
-export default function BlockEdit({ attributes, setAttributes }) {
-  const { layoutType, gridColumns, gap } = attributes;
-
-  // Calculate styles using utilities (declarative)
-  const innerStyles = calculateInnerStyles(attributes);
-
-  // Get block props
-  const blockProps = useBlockProps({ className: 'my-block' });
-
-  return (
-    <>
-      <InspectorControls>
-        <LayoutPanel
-          layoutType={layoutType}
-          gap={gap}
-          setAttributes={setAttributes}
-        />
-        <GridPanel
-          gridColumns={gridColumns}
-          setAttributes={setAttributes}
-        />
-      </InspectorControls>
-
-      <div {...blockProps}>
-        <div style={innerStyles}>
-          {/* Block content */}
-        </div>
-      </div>
-    </>
-  );
-}
-```
-
-#### 5. Update index.js to Registration-Only
-Simplify index.js to just register the block.
-
-**Registration Pattern:**
-```javascript
-// index.js (40-60 lines)
-import { registerBlockType } from '@wordpress/blocks';
-
-import edit from './edit';
-import save from './save';
-import metadata from './block.json';
-
-import './editor.scss';
-import './style.scss';
-
-/**
- * Register Block Name Block
- */
-registerBlockType(metadata.name, {
-  ...metadata,
-  icon: {
-    src: (/* SVG */),
-    foreground: '#2563eb',
-  },
-  edit,
-  save,
-});
-```
-
-#### 6. Build and Test
-```bash
-# Build
-npx wp-scripts build
-
-# Check bundle sizes
-ls -lh build/index.js build/style-index.css
-
-# Test in wp-env
-npx wp-env start
-```
-
-#### 7. Verify No Breaking Changes
-- [ ] Block loads without errors
-- [ ] All controls work in editor
-- [ ] Styles apply correctly
-- [ ] Frontend matches editor
-- [ ] Existing blocks don't show validation errors
-- [ ] Bundle size increase is acceptable (<5%)
-
----
-
-### Refactoring Success Metrics
-
-**Before Starting:**
-- File size >300 lines
-- Mixed concerns (registration + edit + panels + utilities)
-- Hard to test
-- Hard to navigate
-
-**After Refactoring:**
-- Main file: 40-60 lines (registration only)
-- Edit file: 100-150 lines (focused component)
-- Each panel: 60-150 lines (single responsibility)
-- Pure utilities: 60-120 lines (100% testable)
-- Total files: 6-10 focused files
-- **Code health improvement: +5-10 points**
-
----
-
-### Real-World Examples from This Project
-
-#### Container Block Refactoring
-- **Before**: 658 lines (monolithic)
-- **After**: 349 lines edit.js + 7 panels + 1 utility
-- **Reduction**: -47% in main file
-- **Files created**: 9 focused files
-- **Time**: 2 hours
-- **ROI**: 76 hours/year saved
-
-#### Counter Block Refactoring
-- **Before**: 357 lines (monolithic)
-- **After**: 54 lines index.js + 154 lines edit.js + 4 panels + 2 utilities
-- **Reduction**: -85% in main file
-- **Files created**: 8 focused files
-- **Time**: 1.5 hours
-- **ROI**: 33 hours/year saved
-
-#### Icon Block Refactoring
-- **Before**: 350 lines (monolithic)
-- **After**: 41 lines index.js + 102 lines edit.js + 3 panels + 2 utilities
-- **Reduction**: -88% in main file
-- **Files created**: 7 focused files
-- **Time**: 1.5 hours
-- **ROI**: 31 hours/year saved
-
-**Total ROI (All 3 Blocks)**: 140+ hours/year saved from 6.5 hours invested = **2,054% ROI**
-
----
-
-### When to Refactor
-
-**Triggers:**
-1. File exceeds 300 lines
-2. Adding a feature requires scrolling through >200 lines
-3. Testing requires mocking WordPress extensively
-4. Code reviews take >20 minutes
-5. Onboarding new developers is difficult
-
-**Don't Refactor When:**
-1. File is <250 lines and well-organized
-2. File is pure data (e.g., icon library, constants)
-3. About to make major architectural changes
-4. No tests exist (write tests first, then refactor)
-
----
-
-### Naming Conventions
-
-**Files:**
-- `{BlockName}Edit.js` or just `edit.js` (we prefer `edit.js`)
-- `{Feature}Panel.js` (e.g., `LayoutPanel.js`, not `layout-panel.js`)
-- `{purpose}-{type}.js` (e.g., `style-calculator.js`, `number-formatter.js`)
-
-**Exports:**
-- Named exports for panels: `export const LayoutPanel = ...`
-- Default export for edit/save: `export default function BlockEdit() {...}`
-- Named exports for utilities: `export const calculateStyle = ...`
-
-**Directories:**
-- `components/inspector/` (not `components/panels/`)
-- `utils/` (not `utilities/` or `helpers/`)
-
----
-
-### Testing Extracted Code
-
-**Pure Utilities (Easy):**
-```javascript
-// utils/number-formatter.test.js
-import { formatNumber } from './number-formatter';
-
-describe('formatNumber', () => {
-  it('formats with thousands separator', () => {
-    expect(formatNumber(1000)).toBe('1,000');
-  });
-
-  it('formats with decimals', () => {
-    expect(formatNumber(1234.56, { decimals: 2 })).toBe('1,234.56');
-  });
-});
-```
-
-**Inspector Panels (Medium):**
-```javascript
-// components/inspector/LayoutPanel.test.js
-import { render, screen } from '@testing-library/react';
-import { LayoutPanel } from './LayoutPanel';
-
-describe('LayoutPanel', () => {
-  it('renders layout controls', () => {
-    render(<LayoutPanel layoutType="grid" gap="24px" setAttributes={jest.fn()} />);
-    expect(screen.getByText('Layout')).toBeInTheDocument();
-  });
-});
-```
-
----
-
-### Performance Considerations
-
-**Bundle Size:**
-- Refactoring typically adds 2-5 KB to editor bundle
-- This is acceptable due to webpack tree-shaking
-- Frontend bundle should not increase
-- Monitor with `ls -lh build/`
-
-**Build Time:**
-- More files = slightly longer builds (~5-10%)
-- Offset by better developer experience
-- Use `--webpack-bundle-analyzer` to check
-
-**Runtime Performance:**
-- No impact - same code, just organized better
-- Pure functions may improve performance (memoization opportunities)
-
----
-
-### Documentation Requirements
-
-**Every refactored block must have:**
-
-1. **JSDoc on all exports:**
-```javascript
-/**
- * Layout Panel - Controls for layout type and gap
- *
- * @param {Object} props - Component props
- * @param {string} props.layoutType - Current layout type
- * @param {Function} props.setAttributes - Function to update attributes
- * @return {JSX.Element} Layout Panel component
- */
-```
-
-2. **File header comments:**
-```javascript
-/**
- * Container Block - Layout Panel Component
- *
- * Provides controls for layout type selection and gap settings.
- *
- * @since 1.0.0
- */
-```
-
-3. **Inline comments for complex logic:**
-```javascript
-// Calculate responsive columns, ensuring Desktop >= Tablet >= Mobile
-const effectiveTabletCols = Math.min(tabletColumns, desktopColumns);
-```
-
----
-
-### Refactoring Checklist
-
-Use this checklist for every refactoring:
-
-**Planning:**
-- [ ] File exceeds 300 lines
-- [ ] Identified pure utilities to extract
-- [ ] Identified panels to extract (one per PanelBody)
-- [ ] Estimated time (1.5-2 hours per block)
-
-**Backup:**
-- [ ] Created `.backup` file of original
-
-**Extraction:**
-- [ ] Created `utils/` directory
-- [ ] Extracted pure functions with JSDoc
-- [ ] Created `components/inspector/` directory
-- [ ] Extracted panels with JSDoc
-- [ ] Created focused `edit.js`
-- [ ] Updated `index.js` to registration-only
-
-**Testing:**
-- [ ] Build succeeds
-- [ ] No console errors
-- [ ] Block works in editor
-- [ ] Block works on frontend
-- [ ] No validation errors
-- [ ] Bundle size acceptable
-
-**Documentation:**
-- [ ] JSDoc on all exports
-- [ ] File headers added
-- [ ] Updated CLAUDE.md if patterns changed
-
-**Commit:**
-- [ ] Committed with descriptive message
-- [ ] Mentioned reduction percentage
-- [ ] Noted any bundle size changes
-
----
-
-### Common Refactoring Mistakes
-
-**❌ Don't:**
-1. Extract panels but keep them all in index.js
-2. Create utilities that import WordPress hooks (not pure)
-3. Split files arbitrarily without purpose
-4. Refactor without tests
-5. Change functionality while refactoring
-6. Mix registration and edit logic in index.js
-7. Use default exports for panels (use named exports)
-
-**✅ Do:**
-1. Extract pure functions first (easiest to test)
-2. One panel component per PanelBody
-3. Keep edit.js focused (just composition)
-4. Maintain exact same functionality
-5. Test before and after refactoring
-6. Write JSDoc comments as you extract
-7. Follow established naming conventions
-
----
-
-### Future Refactoring Candidates
-
-**Priority Order:**
-1. **P0 - Critical**: Files >500 lines
-2. **P1 - High**: Files >400 lines
-3. **P2 - Medium**: Files >300 lines
-4. **P3 - Low**: Files >250 lines (optional)
-
-**Monitor:**
-```bash
-# Find large files
-find src/blocks -name "*.js" -exec wc -l {} + | sort -rn | head -10
-```
-
-**Current Status (After Phase 3):**
-- Large files (>300 lines): 1 remaining
-- Code health: 95%
-- Refactoring complete for all critical priorities
-
----
+**Real-World Results**:
+- Container: 658 → 349 lines (-47%)
+- Counter: 357 → 54 lines (-85%)
+- Icon: 350 → 41 lines (-88%)
+- **ROI**: 140+ hours/year saved from 6.5 hours invested
 
 ## Code Quality
 
 ### When to Use `!important`
-**Guideline**: Avoid `!important` EXCEPT when:
-1. **Accessibility requirement** - Must override theme for readability (e.g., white text on dark overlay)
-2. **User expectation** - Feature explicitly chosen should take precedence (e.g., responsive grid columns)
-3. **WordPress core override** - Need to override core block styles for enhancement to work
+Avoid `!important` EXCEPT when:
+1. **Accessibility requirement** - Must override theme for readability
+2. **User expectation** - Explicitly chosen feature should take precedence
+3. **WordPress core override** - Need to override core block styles
 
 ### Clean Code After Pivots
 When making architectural changes:
 1. Remove unused code immediately
-2. Delete abandoned approaches (e.g., container custom block)
-3. Clean up imports (remove unused React hooks, components)
+2. Delete abandoned approaches
+3. Clean up imports
 4. Update comments to reflect current implementation
-
-**Example**: After simplifying overlay from color picker to toggle:
-- Removed `useEffect`, `__experimentalPanelColorGradientSettings`
-- Removed CSS variable logic
-- Removed data attribute handling
-- Updated comments from "dynamic overlay color" to "fixed dark overlay"
 
 ## Testing Strategy
 
@@ -1525,732 +370,69 @@ When making architectural changes:
 - [ ] Changes appear on frontend
 - [ ] Changes work on mobile (responsive)
 - [ ] Accessibility: Contrast, keyboard navigation
-- [ ] Interactive elements still work (buttons, links)
+- [ ] Interactive elements still work
 - [ ] No console errors
 - [ ] Build completes without errors
 
 ## User Feedback Patterns
 
 ### When User Says "It's Not Working"
-1. **Ask for specifics**: Editor or frontend? What's expected vs. actual?
-2. **Get console output**: JavaScript errors? Network errors?
-3. **Check build**: Did changes compile? File sizes increased?
-4. **Verify deployment**: Changes copied to Docker/Local WP?
+1. Ask for specifics: Editor or frontend?
+2. Get console output: JavaScript/network errors?
+3. Check build: Did changes compile?
+4. Verify deployment: Changes copied to environment?
 
 ### Simplification Triggers
 User phrases that signal need to simplify:
 - "This isn't working"
 - "Let's just..."
-- "Instead of [complex feature]..."
 - "Can we make it simpler?"
 
-**Response**: Immediately pivot to simpler solution, don't try to fix complex approach.
-
-## WordPress Block Editor Quirks
-
-### CSS Variable Limitations
-- Block wrapper elements don't reliably accept inline style attributes from filters
-- Use CSS classes instead of dynamic inline styles
-- If you need dynamic values, use data attributes + CSS `attr()` or JavaScript
-
-### Grid Layout Enhancement
-WordPress sets `display: grid` via theme.json/layout settings. To enhance:
-```scss
-.dsg-grid-enhanced {
-    // Override column count, WordPress handles display: grid
-    &.dsg-grid-cols-3 {
-        grid-template-columns: repeat(3, 1fr) !important;
-    }
-}
-```
-
-**Don't**: Try to set `display: grid` yourself - WordPress already does it.
-
-### Hide WordPress Controls
-To hide redundant WordPress controls when your enhancement is active:
-```scss
-body:has(.wp-block-group.is-selected.dsg-grid-enhanced) {
-    .block-editor-hooks__layout-controls
-    .components-base-control:has(input[aria-label*='Columns' i]) {
-        display: none !important;
-    }
-}
-```
-
-**Why**: Prevents confusion from duplicate controls (WordPress columns + your responsive columns).
-
-## WordPress Block Editor Styling Best Practices ⭐
-
-### Critical Discovery: Editor/Frontend Style Inconsistency
-**Date**: October 24, 2025
-**Issue**: Container block styles applied on frontend but NOT in editor
-**Root Cause**: Using WordPress anti-patterns (DOM manipulation + plain InnerBlocks)
-
----
-
-### ❌ Anti-Pattern 1: DOM Manipulation with useEffect
-
-**What We Were Doing (WRONG)**:
-```javascript
-// Container block edit.js - ANTI-PATTERN
-useEffect(() => {
-  const container = document.querySelector(`[data-block="${clientId}"]`);
-  const inner = container.querySelector('.dsg-container__inner');
-
-  // Manual DOM manipulation
-  inner.style.display = 'grid';
-  inner.style.gridTemplateColumns = `repeat(${gridColumns}, 1fr)`;
-}, [layoutType, gridColumns, clientId]);
-```
-
-**Why This Fails**:
-- ⏱️ **Timing Issues**: WordPress block editor uses iframes; DOM queries run before elements render
-- 🏁 **Race Conditions**: `useEffect` may execute before block wrapper exists
-- 🚫 **Not Declarative**: Conflicts with WordPress's React-based architecture
-- 💥 **Unreliable**: Styles inconsistently apply or don't apply at all in editor
-
-**WordPress Documentation Says**:
-> "The save function should be a pure and stateless function that depends only on the attributes used to invoke it and **shouldn't use any APIs such as useState or useEffect**."
-
----
-
-### ❌ Anti-Pattern 2: Plain `<InnerBlocks />` Instead of `useInnerBlocksProps`
-
-**What We Were Doing (WRONG)**:
-```javascript
-// Container block edit.js - ANTI-PATTERN
-<div className="dsg-container__inner" style={{ position: 'relative', zIndex: 2 }}>
-  <InnerBlocks />
-</div>
-```
-
-**Why This Breaks Layouts**:
-- 📦 **Wrapper Divs**: WordPress adds `block-editor-inner-blocks` and `block-editor-block-list__layout` wrappers
-- 🔨 **Broken Grid/Flexbox**: These wrapper divs **break CSS Grid and Flexbox** because styles apply to wrong element
-- 🎭 **Editor/Frontend Mismatch**: Editor markup doesn't match frontend markup
-- ⚠️ **Block Appender Issues**: Block inserter may not work correctly
-
-**WordPress Community Insight**:
-> "When using plain `<InnerBlocks />`, additional wrapper divs break flexbox and CSS Grid layouts. Use `useInnerBlocksProps` hooks that core blocks employ. This will allow your block markup to match the frontend without the editor wrapping things in additional tags."
-> — [WordPress StackExchange](https://wordpress.stackexchange.com/questions/390696/innerblocks-breaks-flexbox-and-css-grid-styles)
-
----
-
-### ✅ Correct Pattern: Declarative Styles with `useInnerBlocksProps`
-
-**How WordPress Core Blocks Do It**:
-
-```javascript
-import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-
-export default function ContainerEdit({ attributes }) {
-  const { layoutType, constrainWidth, contentWidth, gridColumns, gap } = attributes;
-
-  // ========================================
-  // 1. Calculate styles DECLARATIVELY
-  //    (NO useEffect, NO DOM queries)
-  // ========================================
-  const innerStyles = {
-    position: 'relative',
-    zIndex: 2,
-  };
-
-  if (layoutType === 'grid') {
-    innerStyles.display = 'grid';
-    innerStyles.gridTemplateColumns = `repeat(${gridColumns}, 1fr)`;
-    innerStyles.gap = gap;
-  } else if (layoutType === 'flex') {
-    innerStyles.display = 'flex';
-    innerStyles.flexDirection = 'row';
-    innerStyles.flexWrap = 'wrap';
-    innerStyles.gap = gap;
-  } else {
-    // Stack (default)
-    innerStyles.display = 'flex';
-    innerStyles.flexDirection = 'column';
-    innerStyles.gap = gap;
-  }
-
-  if (constrainWidth) {
-    innerStyles.maxWidth = contentWidth;
-    innerStyles.marginLeft = 'auto';
-    innerStyles.marginRight = 'auto';
-  }
-
-  // ========================================
-  // 2. Apply to block wrapper
-  // ========================================
-  const blockProps = useBlockProps({
-    className: 'dsg-container',
-  });
-
-  // ========================================
-  // 3. Apply to inner blocks wrapper
-  //    KEY: No wrapper div, props spread directly
-  // ========================================
-  const innerBlocksProps = useInnerBlocksProps(
-    {
-      className: 'dsg-container__inner',
-      style: innerStyles, // ← Styles applied declaratively
-    },
-    {
-      orientation: layoutType === 'flex' ? 'horizontal' : undefined,
-    }
-  );
-
-  // ========================================
-  // 4. Return: NO wrapper div around innerBlocksProps
-  // ========================================
-  return (
-    <>
-      <BlockControls>...</BlockControls>
-      <InspectorControls>...</InspectorControls>
-
-      <div {...blockProps}>
-        {/* Background elements */}
-        {videoUrl && <div className="dsg-video-background">...</div>}
-        {enableOverlay && <div className="dsg-overlay">...</div>}
-
-        {/* Inner blocks - NO wrapper div, spread props directly */}
-        <div {...innerBlocksProps} />
-      </div>
-    </>
-  );
-}
-```
-
-**Save Function (Must Match Editor)**:
-
-```javascript
-export default function ContainerSave({ attributes }) {
-  // Same style calculation as edit.js
-  const innerStyles = { /* ... same logic ... */ };
-
-  const blockProps = useBlockProps.save({
-    className: 'dsg-container',
-  });
-
-  // Use .save() variant for consistency
-  const innerBlocksProps = useInnerBlocksProps.save({
-    className: 'dsg-container__inner',
-    style: innerStyles,
-  });
-
-  return (
-    <div {...blockProps}>
-      {enableOverlay && <div className="dsg-overlay">...</div>}
-      {/* NO wrapper div, spread props directly */}
-      <div {...innerBlocksProps} />
-    </div>
-  );
-}
-```
-
----
-
-### Key Benefits of Correct Pattern
-
-| Benefit | Description |
-|---------|-------------|
-| ⚡ **Immediate Application** | Styles apply instantly in editor, no delay or race conditions |
-| 🎯 **Editor/Frontend Parity** | What you see in editor matches frontend exactly |
-| 🚀 **No Timing Issues** | Declarative = no race conditions or DOM queries |
-| 🏛️ **WordPress-Native** | Uses official WordPress APIs that all core blocks use |
-| 🔮 **Future-Proof** | Won't break with WordPress updates to block editor |
-| 💪 **Better Performance** | No DOM queries, no useEffect overhead, smaller bundles |
-
----
-
-### Real-World Impact on Container Block
-
-**Performance Improvements**:
-- `index.js`: 17.2 KiB → 16.7 KiB (**-500 bytes**)
-- `frontend.js`: 4.2 KiB → 3.17 KiB (**-1 KB**, removed layout engine)
-- `index.css`: 1.95 KiB → 1.5 KiB (**-450 bytes**)
-- **Total savings**: -2 KB (**8.5% reduction**)
-
-**Functional Improvements**:
-- ✅ Layouts apply **instantly** in editor (no delay)
-- ✅ Editor matches frontend **exactly** (no wrapper div issues)
-- ✅ Grid/Flexbox layouts work **correctly** in both editor and frontend
-- ✅ Width constraints apply **immediately** without JavaScript
-- ✅ Progressive enhancement: Layouts work **without JavaScript**
-
----
-
-### When to Use Inline Styles vs CSS Classes
-
-**WordPress Best Practice**:
-
-| Type | Use Case | Example |
-|------|----------|---------|
-| **Inline Styles** | User-controlled dynamic values | Colors, spacing, custom widths, column counts |
-| **CSS Classes** | Static design patterns | Responsive behavior, theme variations, state indicators |
-
-**Our Container Block**:
-- **Inline Styles**: Layout type, column counts, gap, content width (user-defined)
-- **CSS Classes**: Responsive visibility, video indicators, clickable state, variations
-
----
-
-### Frontend JavaScript Implications
-
-**Before (Anti-Pattern)**:
-- ❌ `frontend.js` had `initLayouts()` function
-- ❌ Queried all `.dsg-container` elements
-- ❌ Applied layout styles via JavaScript
-- ❌ Listened for window resize events
-- ❌ Flash of unstyled content (FOUC) possible
-- ❌ Layouts broken if JavaScript fails to load
-
-**After (Correct Pattern)**:
-- ✅ `frontend.js` only handles video backgrounds and clickable containers
-- ✅ Layouts applied via inline styles (no JavaScript needed)
-- ✅ No FOUC, no resize listeners
-- ✅ Progressive enhancement: layouts work without JavaScript
-- ✅ **1 KB smaller** frontend bundle
-
----
-
-### Migration Checklist
-
-When refactoring blocks to use WordPress best practices:
-
-**Edit Component (`edit.js`)**:
-- [ ] Import `useInnerBlocksProps` from `@wordpress/block-editor`
-- [ ] Remove all `useEffect` hooks with DOM manipulation
-- [ ] Calculate styles declaratively in component body
-- [ ] Replace plain `<InnerBlocks />` with `<div {...innerBlocksProps} />`
-- [ ] Ensure NO wrapper div around inner blocks props
-- [ ] Remove `clientId` from function parameters (no longer needed)
-
-**Save Component (`save.js`)**:
-- [ ] Import `useInnerBlocksProps` from `@wordpress/block-editor`
-- [ ] Calculate same styles as edit.js (must match exactly)
-- [ ] Use `useInnerBlocksProps.save()` instead of `<InnerBlocks.Content />`
-- [ ] Ensure markup matches edit.js exactly (critical for validation)
-
-**Frontend JavaScript (`frontend.js`)**:
-- [ ] Remove layout application functions entirely
-- [ ] Remove window resize listeners for layouts
-- [ ] Keep only interactive features (video, clickable, etc.)
-
-**Editor CSS (`editor.scss`)**:
-- [ ] Remove data-attribute selectors for layouts
-- [ ] Remove data-attribute selectors for constraints
-- [ ] Keep only editor-specific indicators (video, clickable, etc.)
-
----
-
-### Testing Checklist
-
-After implementing WordPress best practices:
-
-**Editor Testing**:
-- [ ] Editor loads without errors
-- [ ] Layouts apply **immediately** (no delay)
-- [ ] Switching layouts updates **instantly**
-- [ ] Grid columns adjust in editor
-- [ ] Width constraint applies in editor
-- [ ] Block inserter works correctly
-- [ ] No console errors
-
-**Frontend Testing**:
-- [ ] Frontend matches editor exactly
-- [ ] Layouts work without JavaScript
-- [ ] No flash of unstyled content (FOUC)
-- [ ] Responsive behavior works correctly
-
-**Validation Testing**:
-- [ ] Block validation doesn't fail when editing existing blocks
-- [ ] Existing blocks don't break after update
-- [ ] No "This block contains unexpected or invalid content" errors
-
----
-
-### Resources
-
-**Official WordPress Documentation**:
-- [Block Wrapper (useBlockProps)](https://developer.wordpress.org/block-editor/getting-started/fundamentals/block-wrapper/)
-- [useInnerBlocksProps](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useinnerblocksprops)
-- [Block Styles Guide](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/applying-styles-with-stylesheets/)
-
-**Community Resources**:
-- [useInnerBlocksProps Tutorial - DLX Plugins](https://dlxplugins.com/tutorials/how-to-use-useinnerblocksprops-in-nested-blocks/)
-- [InnerBlocks breaks flexbox/grid - WordPress StackExchange](https://wordpress.stackexchange.com/questions/390696/innerblocks-breaks-flexbox-and-css-grid-styles)
-
-**WordPress Core Block Examples**:
-- `core/group` - [GitHub](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/group)
-- `core/columns` - [GitHub](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/columns)
-- `core/cover` - [GitHub](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/cover)
-
----
-
-### Golden Rules for WordPress Block Development
-
-1. ✅ **DO** use `useInnerBlocksProps` for all blocks with InnerBlocks
-2. ✅ **DO** calculate styles declaratively based on attributes
-3. ✅ **DO** apply styles via React props, not DOM manipulation
-4. ❌ **DON'T** use `useEffect` for styling (anti-pattern)
-5. ❌ **DON'T** use `querySelector` or direct DOM access (anti-pattern)
-6. ❌ **DON'T** wrap `<InnerBlocks />` in extra divs (breaks layouts)
-7. ✅ **DO** match edit.js and save.js markup exactly (validation)
-8. ✅ **DO** test in both editor AND frontend before considering complete
-
----
-
-### Critical: Using `:where()` for Layout-Constrained Blocks
-
-**Date**: October 28, 2025
-**Discovery**: Container block heading margins weren't following layout settings like Group blocks do
-**Root Cause**: Using high-specificity selectors instead of WordPress's zero-specificity pattern
-
----
-
-#### ❌ Anti-Pattern: High Specificity with `!important`
-
-**What We Initially Did (WRONG)**:
-```scss
-// Container block style.scss - ANTI-PATTERN
-.wp-block-designsetgo-container.is-layout-constrained > :first-child {
-  margin-block-start: 0 !important;
-}
-
-.wp-block-designsetgo-container.is-layout-constrained > * {
-  margin-block-start: 1.2rem !important;
-  margin-block-end: 0 !important;
-}
-```
-
-**Why This Fails**:
-- 🚫 **Fights WordPress**: High specificity overrides WordPress's natural cascade
-- 💥 **Breaks blockGap**: WordPress's spacing system can't function properly
-- 🎯 **Inconsistent**: Doesn't match Group block behavior
-- 🔨 **Requires `!important`**: A sign you're fighting the system, not working with it
-
-**User Insight**:
-> "This doesn't happen in a group block but does in our container. Group blocks use `:root :where(.is-layout-constrained)` with zero specificity. We should try to leverage this."
-
----
-
-#### ✅ Correct Pattern: Zero Specificity with `:where()`
-
-**How WordPress Group Blocks Do It**:
-```scss
-/**
- * Layout-Constrained Margin Rules
- * Matches WordPress Group block behavior EXACTLY for proper vertical spacing
- * Applied when layout support is enabled (type: constrained)
- *
- * CRITICAL: Uses :where() for zero specificity to allow WordPress's natural
- * cascade and blockGap system to work properly. DO NOT use higher specificity
- * or !important - it breaks WordPress's layout system.
- */
-
-// First child should have no top margin
-:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :first-child {
-  margin-block-start: 0;
-}
-
-// All children get consistent vertical spacing
-:root :where(.wp-block-designsetgo-container.is-layout-constrained) > * {
-  margin-block-start: 1.2rem;
-  margin-block-end: 0;
-}
-
-// Last child should have no bottom margin
-:root :where(.wp-block-designsetgo-container.is-layout-constrained) > :last-child {
-  margin-block-end: 0;
-}
-```
-
-**Why This Works**:
-- ✅ **Zero Specificity**: `:where()` has 0-0-0 specificity, allowing WordPress's cascade to work
-- ✅ **Matches Core**: Exact same pattern as `core/group` block
-- ✅ **blockGap Support**: WordPress's spacing system functions correctly
-- ✅ **No `!important`**: Works with WordPress, not against it
-- ✅ **Theme Compatible**: Themes can override if needed
-
----
-
-#### Understanding `:where()` Specificity
-
-**CSS Specificity Comparison**:
-```scss
-// Specificity: 0-0-0 (zero specificity)
-:where(.block.is-layout-constrained) > * {
-  margin-block-start: 1.2rem;
-}
-
-// Specificity: 0-2-0 (class selectors)
-.block.is-layout-constrained > * {
-  margin-block-start: 1.2rem;
-}
-
-// Specificity: 0-2-0 + !important (nuclear option)
-.block.is-layout-constrained > * {
-  margin-block-start: 1.2rem !important;
-}
-```
-
-**Why Zero Specificity Matters**:
-- WordPress applies blockGap spacing via theme.json with normal specificity
-- Your block's rules need to be *defaults*, not *overrides*
-- `:where()` provides defaults that can be naturally overridden
-- High specificity or `!important` prevents WordPress's spacing from working
-
----
-
-#### When to Use `:where()` Pattern
-
-**Use this pattern for**:
-1. ✅ Layout-constrained spacing rules (margin-block)
-2. ✅ Default typography styles that themes should override
-3. ✅ Any rule where WordPress or themes need control
-4. ✅ BlockGap and spacing system integration
-
-**Don't use for**:
-1. ❌ User-chosen features (those CAN use `!important` for accessibility)
-2. ❌ Critical accessibility overrides (e.g., white text on dark overlay)
-3. ❌ Block-specific styles that shouldn't be overridden
-
----
-
-#### Real-World Impact
-
-**Before (High Specificity)**:
-- Headings had unwanted margins: `margin-block-start: 0.67em; margin-block-end: 0.67em`
-- Paragraphs had browser defaults: `margin-block-start: 1em; margin-block-end: 1em`
-- BlockGap settings in theme.json didn't work
-- Container blocks behaved differently from Group blocks
-
-**After (Zero Specificity with `:where()`)**:
-- First child has no top margin
-- All children have consistent 1.2rem vertical spacing
-- Last child has no bottom margin
-- BlockGap settings work correctly
-- Container blocks match Group block behavior exactly
-
----
-
-#### Key Takeaways
-
-1. **Match WordPress Core Patterns**: When in doubt, copy how core blocks do it
-2. **Zero Specificity for Layout**: Use `:where()` for margin/padding/spacing rules
-3. **Let WordPress Control Spacing**: Don't fight the blockGap system
-4. **Test with Group Blocks**: Your block should behave like Group blocks for layout
-5. **Avoid `!important` for Layout**: Save it for accessibility overrides only
-
----
-
-#### Resources
-
-- [CSS :where() MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/CSS/:where)
-- [WordPress blockGap Support](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/#spacing)
-- [Group Block Source Code](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/group)
-
----
+**Response**: Immediately pivot to simpler solution.
 
 ## Common Pitfalls
 
 ### 1. Forgetting Frontend Imports
-**Mistake**: Adding styles to `src/extensions/*/styles.scss` but not importing in `src/styles/style.scss`.
-
-**Result**: Works in editor, broken on frontend.
-
-**Prevention**: Always update both source file AND import file.
+**Mistake**: Adding styles but not importing in `src/styles/style.scss`
+**Result**: Works in editor, broken on frontend
+**Prevention**: Always update both source file AND import file
 
 ### 2. Only Updating style.scss Without editor.scss (or Vice Versa)
-**Mistake**: Making styling changes to `style.scss` but forgetting to update `editor.scss`, or only updating editor styles without updating frontend styles.
-
-**Result**:
-- If only `style.scss` updated: Works on frontend, broken in editor
-- If only `editor.scss` updated: Works in editor, broken on frontend
-- Users see different appearance in editor vs published page
-- Creates confusion and trust issues with the block editor
-
-**Real-World Examples**:
-1. **Icon background colors**: Added `background: 'inherit'` to icon wrapper in edit.js and save.js, updated style.scss with `.dsg-icon__wrapper` styles, but forgot editor.scss → Background colors showed on frontend but not in editor
-2. **Container margin rules**: Added `:where()` pattern to style.scss for layout-constrained margins, but forgot editor.scss → Margins worked on frontend but not in editor
-
+**Mistake**: Making styling changes to one file but not the other
+**Result**: Different appearance in editor vs frontend
 **Prevention**:
-- **ALWAYS edit BOTH files** when making style changes that affect block appearance
-- Use comments to indicate styles duplicated across files: `// CRITICAL: Must be duplicated from style.scss for editor/frontend parity`
-- After making changes, ask yourself: "Does this style need to appear in the editor AND on the frontend?"
-- Test in both editor AND frontend before considering the task complete
-- Consider this checklist:
-  - [ ] Updated style.scss (frontend)
-  - [ ] Updated editor.scss (editor)
-  - [ ] Built plugin (`npx wp-scripts build`)
-  - [ ] Tested in editor
-  - [ ] Tested on frontend
-  - [ ] Verified editor matches frontend
+- **ALWAYS edit BOTH files** for visual styles
+- Use comment: `// CRITICAL: Must be duplicated from style.scss for editor/frontend parity`
+- Test in both editor AND frontend
 
-**Pattern - Duplicating Critical Styles**:
-```scss
-// src/blocks/my-block/style.scss (Frontend)
-.my-block {
-  &__wrapper {
-    display: inline-flex;
-    align-items: center;
-    background-color: inherit; // User's color choice
-    border-radius: inherit;
-  }
-}
+### 3. Not Using WordPress Block Hooks
+**Mistake**: Using plain `<InnerBlocks />` instead of `useInnerBlocksProps()`
+**Result**: Layouts don't work correctly
+**Prevention**: Always use `useInnerBlocksProps()` in edit/save components
 
-// src/blocks/my-block/editor.scss (Editor)
-// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
-.my-block {
-  &__wrapper {
-    display: inline-flex;
-    align-items: center;
-    background-color: inherit; // User's color choice
-    border-radius: inherit;
-  }
-}
-```
-
-**When Duplication is Required**:
-- User-visible styles (colors, backgrounds, borders, spacing)
-- Layout patterns (flex, grid, alignment)
-- Shape variants (circles, rounded corners, etc.)
-- Typography that affects appearance
-- Any style that impacts the visual design users are creating
-
-**When Duplication is NOT Required**:
-- Editor-only indicators (selected state, hover outlines, "Video Background" labels)
-- Block appender styles
-- Editor-specific positioning/sizing helpers
-- Debugging aids
-
-### 3. Custom Block Asset Dependencies
-**Mistake**: Creating `block.json` for custom block without ensuring build process compiles it.
-
-**Result**: 500 error - WordPress looks for `index.asset.php` that doesn't exist.
-
-**Prevention**: If using custom blocks, verify build output in `build/blocks/*/` directory.
-
-### 4. Assuming CSS Specificity Works
-**Mistake**: Expecting your styles to override theme without `!important`.
-
-**Result**: Styles work in isolation but fail with real themes.
-
-**Prevention**: Test with popular themes (Twenty Twenty-Four, etc.), use `!important` when necessary for user-chosen features.
+### 4. Custom Width/Sizing Rules Breaking Alignfull
+**Mistake**: Adding custom `width: 100%` or `box-sizing: border-box` to alignfull blocks
+**Result**: Blocks don't extend edge-to-edge
+**Prevention**: Let WordPress handle sizing natively
+**Fix**: Remove custom width/sizing rules
 
 ### 5. Not Testing Frontend
-**Mistake**: Only testing in block editor, assuming frontend works.
-
-**Result**: Frontend broken, user discovers after deploy.
-
-**Prevention**: ALWAYS test both editor AND frontend before considering feature complete.
-
-### 6. Not Using WordPress Block Hooks
-**Mistake**: Using plain `<InnerBlocks />` instead of `useInnerBlocksProps()`.
-
-**Result**:
-- Content width constraints don't work
-- Layout settings aren't respected
-- Grid/flex layouts fail to apply
-- Block inserter and appender may not work correctly
-
-**Prevention**:
-- **Always** use `useInnerBlocksProps()` in edit components
-- **Always** use `useInnerBlocksProps.save()` in save components
-- Apply custom classes and styles to the props object, not wrapper divs
-- Let WordPress handle block integration - don't manually wire it up
-
-**Example**:
-```javascript
-// ❌ WRONG
-<div style={{ maxWidth: '800px' }}>
-  <InnerBlocks />
-</div>
-
-// ✅ CORRECT
-const innerBlocksProps = useInnerBlocksProps({
-  style: { maxWidth: '800px' }
-});
-<div {...innerBlocksProps} />
-```
-
-### 7. Custom Width/Sizing Rules Breaking Alignfull
-**Mistake**: Adding custom `width: 100%`, `box-sizing: border-box`, or `max-width` rules to blocks that support alignfull alignment.
-
-**Result**:
-- Alignfull blocks have extra padding on left/right sides
-- Blocks don't extend edge-to-edge as expected
-- `.has-global-padding` class conflicts with custom width rules
-- Block appears constrained within parent padding instead of breaking out
-
-**Real-World Example**:
-Grid, Flex, and Stack container blocks had these rules:
-```scss
-.dsg-grid {
-  width: 100%;              // ❌ Interfered with alignfull
-  box-sizing: border-box;   // ❌ Caused sizing issues
-
-  &__inner {
-    width: 100%;            // ❌ Prevented breakout
-    box-sizing: border-box; // ❌ Conflicted with WordPress
-  }
-}
-```
-
-This prevented alignfull blocks from breaking out of the parent container's padding properly.
-
-**Root Cause**:
-- WordPress's alignfull uses specific width calculations and negative margins to break out of container padding
-- Custom `width: 100%` forces the block to stay within its parent's content area
-- `box-sizing: border-box` changes how padding is calculated, breaking WordPress's math
-- These rules override WordPress's native alignfull behavior
-
-**Prevention**:
-- **DON'T** add custom width rules to blocks that support alignfull (`"align": ["wide", "full"]`)
-- **DON'T** force `box-sizing: border-box` on block wrappers
-- **DON'T** try to "help" WordPress with sizing - it handles this correctly by default
-- **DO** let WordPress handle all sizing and alignment natively
-- **DO** test alignfull alignment after adding any width/sizing CSS
-
-**Fix**:
-Remove custom width/sizing rules and let WordPress handle it:
-```scss
-.dsg-grid {
-  // ✅ Let WordPress handle sizing natively
-  // Only add essential block-specific styles like display
-}
-```
-
-**Testing Checklist**:
-When adding new blocks or modifying container blocks:
-- [ ] Does the block support alignfull? (`"align": ["wide", "full"]` in block.json)
-- [ ] Have you added any `width`, `max-width`, or `box-sizing` rules?
-- [ ] If yes, remove them and test alignfull alignment
-- [ ] Test with `.has-global-padding` class present
-- [ ] Verify block extends edge-to-edge without extra padding
-- [ ] Check that WordPress's native breakout works correctly
-
-**Key Principle**: WordPress's alignment system is sophisticated and battle-tested. Custom width/sizing rules almost always interfere with it. When alignfull doesn't work, **remove your custom CSS first** before trying to fix it with more CSS.
+**Mistake**: Only testing in block editor
+**Result**: Frontend broken after deploy
+**Prevention**: ALWAYS test both editor AND frontend
 
 ## Version Control Best Practices
 
-### Commit Messages for This Plugin
+### Commit Messages
 Format: `type: description`
 
-Types:
-- `feat:` - New feature (clickable groups, overlay)
-- `fix:` - Bug fix (500 error, CSS not loading)
-- `refactor:` - Code restructure (remove custom blocks)
-- `style:` - CSS/SCSS changes
-- `docs:` - Documentation updates
-- `chore:` - Build, dependencies, cleanup
+Types: `feat:`, `fix:`, `refactor:`, `style:`, `docs:`, `chore:`
 
 **Examples**:
 ```
 feat: Add clickable group blocks with link settings
 fix: Remove custom block causing 500 error
 refactor: Simplify overlay from color picker to toggle
-style: Add white text contrast for dark overlay
-docs: Update claude.md with accessibility learnings
 ```
 
 ### What to Commit
@@ -2263,251 +445,66 @@ docs: Update claude.md with accessibility learnings
 - Build output (`build/`)
 - Dependencies (`node_modules/`)
 - WordPress environment (`wp-env/`)
-- Logs
 
 ## Future Improvements
 
 ### Potential Enhancements
-1. **Custom breakpoints** - Let users define tablet/mobile breakpoints
-2. **Overlay opacity slider** - After CSS variable issue is resolved
-3. **Animation presets** - Scroll-triggered animations
-4. **Spacing presets** - Common padding/margin combinations
-5. **Color scheme generator** - Auto-generate complementary colors
+1. Custom breakpoints for responsive controls
+2. Overlay opacity slider
+3. Animation presets (scroll-triggered)
+4. Spacing presets
+5. Color scheme generator
 
 ### Technical Debt
 1. Migrate from `@import` to `@use`/`@forward` for Sass
 2. Add unit tests for frontend JavaScript
 3. Add E2E tests for block interactions
-4. Optimize CSS bundle size (currently ~4.25 KiB, could be smaller)
+4. Optimize CSS bundle size
 5. Add translation support for all strings
 
-## Comprehensive Block Development Best Practices 📚
+## Comprehensive Block Development Resources
 
-**Date Added**: October 24, 2025
-**Research Scope**: WordPress core patterns, industry leaders (Kadence, GenerateBlocks, Stackable), official documentation
-
-Following the Container block refactoring, we conducted comprehensive research into WordPress block development best practices. This resulted in two essential documentation resources:
+Following the Container block refactoring, we conducted comprehensive research into WordPress block development best practices.
 
 ### 📖 Documentation Resources
 
 1. **[BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md)** (2,537 lines)
    - Complete reference covering 15 major topics
    - Code examples for every pattern
-   - Why explanations for each practice
    - Real-world examples from WordPress core
 
 2. **[BEST-PRACTICES-SUMMARY.md](docs/BEST-PRACTICES-SUMMARY.md)** (583 lines)
    - Quick reference for daily development
    - Copy-paste ready code patterns
-   - Decision trees for common choices
    - Complete block templates
 
-### 🎯 Top 10 Critical Findings for DesignSetGo
+3. **[FSE-COMPATIBILITY-GUIDE.md](docs/FSE-COMPATIBILITY-GUIDE.md)**
+   - Full Site Editing support requirements
+   - Block.json configuration
+   - Testing checklist
 
-#### 1. Custom Blocks vs Extensions - Decision Matrix
+4. **[REFACTORING-GUIDE.md](docs/REFACTORING-GUIDE.md)**
+   - File structure patterns
+   - Step-by-step refactoring process
+   - Real-world examples with ROI
 
-| Criteria | Extension | Custom Block |
-|----------|-----------|--------------|
-| Complexity | ≤3 controls | Any complexity |
-| DOM Changes | None | Restructuring needed |
-| State Management | None | React state required |
-| Video/Media | ❌ No | ✅ Yes |
-| Interactions | Simple CSS | Tabs, accordion, carousel |
-| **Recommendation for DesignSetGo** | Rarely | **Default choice** |
+5. **[EDITOR-STYLING-GUIDE.md](docs/EDITOR-STYLING-GUIDE.md)**
+   - Declarative styling patterns
+   - useInnerBlocksProps usage
+   - :where() specificity patterns
 
-**Key Insight**: For unique functionality (Accordion, Tabs, Timeline, Counter), always use **custom blocks**. Extensions are only for simple enhancements to existing blocks.
+### 🎯 Top 10 Critical Principles
 
-#### 2. React Hooks - The Golden Rules
-
-**ALWAYS Use:**
-```javascript
-✅ useBlockProps()           // Block wrapper props
-✅ useInnerBlocksProps()     // For nested blocks
-✅ useSelect()               // Read from WordPress stores
-✅ useDispatch()             // Write to WordPress stores
-```
-
-**NEVER Use:**
-```javascript
-❌ useEffect() for styling   // Timing issues, race conditions
-❌ querySelector()           // DOM manipulation anti-pattern
-❌ useState() for block data // Use attributes instead
-```
-
-#### 3. Attribute Design - Keep It Simple
-
-```javascript
-// ✅ GOOD - Flat, typed, with defaults
-{
-  "columns": { "type": "number", "default": 3 },
-  "gap": { "type": "string", "default": "24px" },
-  "enableFeature": { "type": "boolean", "default": false }
-}
-
-// ❌ BAD - Nested, untyped, no defaults
-{
-  "settings": { "type": "object", "default": {} }
-}
-```
-
-**Principles:**
-- Flat structure > nested (easier to migrate)
-- Always provide defaults
-- Use specific types
-- Plan for future changes from day one
-
-#### 4. Styling Strategy Matrix
-
-| Scenario | Solution | Example |
-|----------|----------|---------|
-| User-controlled | Inline styles | `backgroundColor`, `fontSize`, `padding` |
-| Responsive | CSS classes + media queries | `.block--mobile`, `.block--tablet` |
-| Theme variations | CSS classes | `.block--style-card`, `.block--style-minimal` |
-| State indicators | CSS classes | `.is-active`, `.has-overlay`, `.is-expanded` |
-| Dynamic calc | CSS custom properties | `--columns: 3; grid-template-columns: repeat(var(--columns), 1fr)` |
-
-#### 5. Performance Budgets
-
-| Metric | Target | Maximum | Consequence if Exceeded |
-|--------|--------|---------|------------------------|
-| Bundle size per block | < 10 KB | 15 KB | Lazy load |
-| Editor JS (all blocks) | < 150 KB | 200 KB | Code split |
-| Frontend JS (per block) | < 5 KB | 10 KB | Remove feature or optimize |
-| CSS (per block) | < 3 KB | 5 KB | Remove unused styles |
-
-**Optimization Techniques:**
-- Code splitting per block
-- Conditional loading (only load blocks used on page)
-- Tree-shaking (import only what's needed)
-- No jQuery (saves 150 KB)
-
-#### 6. Accessibility Non-Negotiables
-
-**Every Block MUST Have:**
-- [ ] WCAG 2.1 AA compliance (4.5:1 contrast minimum)
-- [ ] Full keyboard navigation (Tab, Enter, Escape, Arrows)
-- [ ] ARIA labels for all custom controls
-- [ ] Screen reader announcements for state changes
-- [ ] Visible focus indicators
-- [ ] Semantic HTML (proper heading hierarchy)
-- [ ] Required alt text for images
-- [ ] Color NOT the only visual indicator
-
-**Test With:**
-- axe DevTools browser extension
-- Screen reader (VoiceOver/NVDA)
-- Keyboard only (no mouse)
-
-#### 7. InnerBlocks Parent-Child Communication
-
-**Use Block Context (Official WordPress Pattern):**
-
-```javascript
-// Parent (block.json)
-{
-  "providesContext": {
-    "designsetgo/layout": "layoutType"
-  }
-}
-
-// Child (block.json)
-{
-  "usesContext": ["designsetgo/layout"]
-}
-
-// Child (edit.js)
-export default function Edit({ context }) {
-  const parentLayout = context['designsetgo/layout'];
-  // Adjust child behavior based on parent
-}
-```
-
-**Why Block Context?**
-- No prop drilling
-- Works across nesting levels
-- Automatic reactivity
-- Official WordPress pattern
-
-#### 8. Security Checklist
-
-**JavaScript (Editor):**
-```javascript
-// Validate ALL user input
-<URLInput
-  value={url}
-  onChange={(value) => {
-    // Validate before saving
-    if (value.match(/^https?:\/\//)) {
-      setAttributes({ url: value });
-    }
-  }}
-/>
-```
-
-**PHP (Render):**
-```php
-// Escape ALL output
-<h2><?php echo esc_html($attributes['title']); ?></h2>
-<a href="<?php echo esc_url($attributes['url']); ?>">
-  <?php echo esc_html($attributes['text']); ?>
-</a>
-<div><?php echo wp_kses_post($attributes['content']); ?></div>
-```
-
-#### 9. Internationalization Pattern
-
-**Every User-Facing String:**
-```javascript
-import { __ } from '@wordpress/i18n';
-
-__('Click here', 'designsetgo')                        // Simple
-sprintf(__('You have %d items', 'designsetgo'), count) // Placeholder
-_n('%d item', '%d items', count, 'designsetgo')        // Plural
-```
-
-**Always:**
-- Use `'designsetgo'` text domain consistently
-- Mark ALL user-facing strings
-- Include translator comments for context
-
-#### 10. Block Validation Error Prevention
-
-**Causes:**
-- Edit/Save markup mismatch
-- Attribute changes without migration
-- Missing defaults
-- InnerBlocks template changes
-
-**Solution - Always Provide Deprecations:**
-```javascript
-const deprecated = [
-  {
-    attributes: {
-      oldAttribute: { type: 'string' }
-    },
-    migrate(attributes) {
-      return {
-        newAttribute: attributes.oldAttribute
-      };
-    },
-    save(props) {
-      // Old save function
-    }
-  }
-];
-```
-
-### 🔗 Quick Reference Links
-
-| Task | Document | Section |
-|------|----------|---------|
-| **Daily Development** | [Best Practices Summary](docs/BEST-PRACTICES-SUMMARY.md) | All |
-| **Deep Dives** | [Comprehensive Guide](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) | Table of Contents |
-| **Block Template** | [Best Practices Summary](docs/BEST-PRACTICES-SUMMARY.md) | Complete Edit Pattern |
-| **Performance** | [Comprehensive Guide](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) | Section 6 |
-| **Accessibility** | [Comprehensive Guide](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) | Section 5 |
-| **Security** | [Comprehensive Guide](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) | Section 15 |
-| **Testing** | [Comprehensive Guide](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) | Section 11 |
+1. **Custom Blocks vs Extensions**: Use custom blocks for unique functionality, extensions for simple enhancements
+2. **React Hooks**: Always use `useBlockProps()`, `useInnerBlocksProps()`, never `useEffect()` for styling
+3. **Attribute Design**: Flat structure, typed, with defaults
+4. **Styling Strategy**: Inline styles for user values, CSS classes for static patterns
+5. **Performance**: Bundle size budgets (10KB per block max)
+6. **Accessibility**: WCAG 2.1 AA compliance mandatory
+7. **Parent-Child Communication**: Use block context (providesContext/usesContext)
+8. **Security**: Validate input, escape output always
+9. **Internationalization**: Use `__()` for all user-facing strings
+10. **Block Validation**: Provide deprecations for attribute changes
 
 ### 💡 Golden Rules
 
@@ -2520,8 +517,6 @@ const deprecated = [
 7. **Test everything** - Unit, E2E, accessibility
 8. **Document as you code** - Future you will thank present you
 
----
-
 ## Resources
 
 ### Documentation
@@ -2530,12 +525,11 @@ const deprecated = [
 - [@wordpress/scripts Documentation](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/)
 - [Block Supports Reference](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/)
 - [Theme.json Documentation](https://developer.wordpress.org/themes/global-settings-and-styles/settings/)
-- [Block Patterns Documentation](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-patterns/)
 
 ### Tools
-- [WordPress Playground](https://playground.wordpress.net/) - Quick testing
-- [Block Editor Development Tools](https://wordpress.org/plugins/gutenberg-development-tools/) - Debug blocks
-- [Query Monitor](https://wordpress.org/plugins/query-monitor/) - Debug PHP/SQL
+- [WordPress Playground](https://playground.wordpress.net/)
+- [Block Editor Development Tools](https://wordpress.org/plugins/gutenberg-development-tools/)
+- [Query Monitor](https://wordpress.org/plugins/query-monitor/)
 
 ### Community
 - [WordPress Development Stack Exchange](https://wordpress.stackexchange.com/)
@@ -2544,6 +538,6 @@ const deprecated = [
 
 ---
 
-**Last Updated**: 2025-10-24
+**Last Updated**: 2025-11-03
 **Plugin Version**: 1.0.0
 **WordPress Compatibility**: 6.4+

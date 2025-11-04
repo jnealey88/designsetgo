@@ -4,7 +4,7 @@
 	"name": "designsetgo/stack",
 	"version": "1.0.0",
 	"title": "Stack Container",
-	"category": "designsetgo",
+	"category": "design",
 	"description": "Simple vertical stacking container with consistent gaps. Perfect for sections, content areas, and vertical layouts.",
 	"keywords": ["stack", "vertical", "layout", "container", "section"],
 	"textdomain": "designsetgo",

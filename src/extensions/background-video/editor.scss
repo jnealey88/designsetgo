@@ -2,14 +2,42 @@
  * Background Video Extension - Editor Styles
  *
  * Editor-only styles for blocks with background videos.
+ * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
  *
  * @package DesignSetGo
  */
 
 .dsg-has-video-background {
 	position: relative;
+	overflow: hidden; // CRITICAL: Makes border radius work by clipping video
+	width: 100%; // CRITICAL: Ensure wrapper doesn't shrink nested containers
 
-	// Visual indicator in editor
+	// CRITICAL: Must match style.scss for frontend parity
+	.dsg-video-background,
+	.dsg-video-background-editor {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 0;
+		overflow: hidden;
+		pointer-events: none;
+
+		video {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	// CRITICAL: Ensure content is above video - must match style.scss
+	> *:not(.dsg-video-background):not(.dsg-video-background-editor) {
+		position: relative;
+		z-index: 2;
+	}
+
+	// Visual indicator in editor only
 	&::after {
 		content: 'Video Background';
 		position: absolute;
@@ -25,11 +53,5 @@
 		letter-spacing: 0.5px;
 		z-index: 10;
 		pointer-events: none;
-	}
-
-	// Ensure video doesn't interfere with editing
-	.dsg-video-background-editor {
-		pointer-events: none;
-		user-select: none;
 	}
 }

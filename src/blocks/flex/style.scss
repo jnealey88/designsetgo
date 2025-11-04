@@ -7,6 +7,10 @@
  */
 
 .dsg-flex {
+	// CRITICAL: Ensure width includes padding to prevent overflow
+	// When width: 100% is set, padding must be included in the total width
+	box-sizing: border-box;
+
 	// Default padding (theme-level): xl top/bottom, md left/right
 	// Users can override via WordPress padding controls
 	// When padding is set to "Default", these theme values apply
@@ -14,6 +18,14 @@
 	padding-bottom: var(--wp--preset--spacing--xl, 3rem);
 	padding-left: var(--wp--preset--spacing--md, 1.5rem);
 	padding-right: var(--wp--preset--spacing--md, 1.5rem);
+
+	// CRITICAL: Nested containers should have no padding to prevent overflow
+	// Only parent containers should have padding
+	.dsg-stack__inner > &,
+	.dsg-flex__inner > &,
+	.dsg-grid__inner > & {
+		padding: 0;
+	}
 
 	// Let WordPress handle outer wrapper sizing for alignfull support
 	// Inner wrapper gets width: 100% for flex properties to work
@@ -23,10 +35,20 @@
 		// Without this, the container shrinks to fit content and flex properties don't apply
 		width: 100%;
 
+		// CRITICAL: Remove auto margins from flex children to allow justify-content to work
+		// WordPress width controls add margin: auto which centers blocks, overriding justify-content
+		> * {
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+
 		// CRITICAL: Nested Flex containers need full width to fill parent
 		// Grid and Stack containers are block-level and auto-fill, don't need explicit width
 		// (adding width: 100% to Grid/Stack causes overflow issues)
-		> .dsg-flex {
+		// Only apply when no custom width is set (inline styles take precedence)
+		> .dsg-flex:not([style*="width"]),
+		> .dsg-stack:not([style*="width"]),
+		> .dsg-grid:not([style*="width"]) {
 			width: 100%;
 		}
 

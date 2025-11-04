@@ -13,7 +13,9 @@ import {
 	InspectorControls,
 	useSetting,
 } from '@wordpress/block-editor';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
+import { useRef } from '@wordpress/element';
 
 /**
  * Flex Container Edit Component
@@ -21,9 +23,10 @@ import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
  * @param {Object}   props               Component props
  * @param {Object}   props.attributes    Block attributes
  * @param {Function} props.setAttributes Function to update attributes
+ * @param {string}   props.clientId      Block client ID
  * @return {JSX.Element} Edit component
  */
-export default function FlexEdit({ attributes, setAttributes }) {
+export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	const {
 		direction,
 		wrap,
@@ -39,6 +42,25 @@ export default function FlexEdit({ attributes, setAttributes }) {
 
 	// Calculate effective content width
 	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
+
+	// Reference to inner container div (where the empty space actually is)
+	const innerRef = useRef(null);
+
+	// Get dispatch function to select this block
+	const { selectBlock } = useDispatch('core/block-editor');
+
+	/**
+	 * Handle clicks on the container to enable selection when clicking empty space
+	 * This allows clicks between flex items to select the container
+	 */
+	const handleContainerClick = (event) => {
+		// Only handle clicks directly on the inner container (empty space between blocks)
+		// Don't handle clicks on child blocks themselves
+		if (event.target === innerRef.current || event.target.classList.contains('dsg-flex__inner')) {
+			event.stopPropagation();
+			selectBlock(clientId);
+		}
+	};
 
 	// Calculate inner styles declaratively
 	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
@@ -71,6 +93,8 @@ export default function FlexEdit({ attributes, setAttributes }) {
 		{
 			className: 'dsg-flex__inner',
 			style: innerStyles,
+			ref: innerRef,
+			onClick: handleContainerClick,
 		},
 		{
 			orientation: direction === 'column' ? 'vertical' : 'horizontal',

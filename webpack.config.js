@@ -47,6 +47,8 @@ module.exports = {
 		'style-index': path.resolve(process.cwd(), 'src', 'style.scss'),
 		// Frontend entry point for frontend-only scripts
 		frontend: path.resolve(process.cwd(), 'src', 'frontend.js'),
+		// Block category filter for dual categorization
+		'block-category-filter': path.resolve(process.cwd(), 'src', 'block-category-filter.js'),
 		// Block-specific entries (auto-detected from src/blocks/*/index.js)
 		...blockEntries,
 		// Block-specific view scripts (auto-detected from src/blocks/*/view.js)

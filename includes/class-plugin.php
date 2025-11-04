@@ -127,8 +127,20 @@ class Plugin {
 	 * Note: Block-specific assets are loaded automatically via block.json.
 	 */
 	public function editor_assets() {
-		// Block-specific editor styles are handled by block.json.
-		// Add any global editor assets here if needed.
+		// Enqueue block category filter to show blocks in multiple categories.
+		$asset_file = DESIGNSETGO_PATH . 'build/block-category-filter.asset.php';
+
+		if ( file_exists( $asset_file ) ) {
+			$asset = include $asset_file;
+
+			wp_enqueue_script(
+				'designsetgo-block-category-filter',
+				DESIGNSETGO_URL . 'build/block-category-filter.js',
+				$asset['dependencies'],
+				$asset['version'],
+				true
+			);
+		}
 	}
 
 	/**

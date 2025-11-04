@@ -7,12 +7,28 @@
  */
 
 .dsg-flex {
+	// CRITICAL: Ensure width includes padding to prevent overflow
+	// Must match style.scss for editor/frontend parity
+	box-sizing: border-box;
+
 	// CRITICAL: Must duplicate default padding from style.scss for editor/frontend parity
 	// Default padding (theme-level): xl top/bottom, md left/right
 	padding-top: var(--wp--preset--spacing--xl, 3rem);
 	padding-bottom: var(--wp--preset--spacing--xl, 3rem);
 	padding-left: var(--wp--preset--spacing--md, 1.5rem);
 	padding-right: var(--wp--preset--spacing--md, 1.5rem);
+
+	// CRITICAL: Nested containers should have no padding to prevent overflow
+	// Must be duplicated from style.scss for editor/frontend parity
+	// Only parent containers should have padding
+	.dsg-stack__inner > &,
+	.dsg-flex__inner > &,
+	.dsg-grid__inner > &,
+	.dsg-stack__inner > [data-block] &,
+	.dsg-flex__inner > [data-block] &,
+	.dsg-grid__inner > [data-block] & {
+		padding: 0;
+	}
 
 	// CRITICAL: Ensure Flex takes full width when nested in another container
 	// Without this, nested Flex containers only take up content width in editor
@@ -25,15 +41,48 @@
 	// Visual indicator in editor
 	position: relative;
 
+	// Make container more clickable by ensuring it catches clicks
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none; // Don't block clicks on children
+		background: transparent;
+		z-index: -1; // Behind children
+	}
+
 	&__inner {
 		// CRITICAL: Flex container needs full width for justify-content/align-items to work
 		// Must be duplicated from style.scss for editor/frontend parity
 		width: 100%;
+		min-height: 100px; // Ensure clickable area when empty or sparse
+		position: relative; // Establish stacking context
 
-		// CRITICAL: Nested Flex containers need full width to fill parent
+		// CRITICAL: Remove auto margins from flex children to allow justify-content to work
 		// Must be duplicated from style.scss for editor/frontend parity
-		// Grid and Stack containers are block-level and auto-fill, don't need explicit width
-		> .dsg-flex {
+		// WordPress width controls add margin: auto which centers blocks, overriding justify-content
+		> *,
+		> [data-block] {
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+
+		// CRITICAL: Nested containers need full width to fill parent
+		// Must be duplicated from style.scss for editor/frontend parity
+		// Frontend: nested containers are direct children
+		// Only apply when no custom width is set (inline styles take precedence)
+		> .dsg-flex:not([style*="width"]),
+		> .dsg-stack:not([style*="width"]),
+		> .dsg-grid:not([style*="width"]) {
+			width: 100% !important;
+		}
+
+		// CRITICAL: Editor-specific - nested containers wrapped in [data-block]
+		// WordPress wraps each block in [data-block] element in editor
+		// Only apply when no custom width is set (inline styles take precedence)
+		> [data-block] > .dsg-flex:not([style*="width"]),
+		> [data-block] > .dsg-stack:not([style*="width"]),
+		> [data-block] > .dsg-grid:not([style*="width"]) {
 			width: 100% !important;
 		}
 

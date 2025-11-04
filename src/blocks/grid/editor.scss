@@ -9,12 +9,28 @@
  */
 
 .dsg-grid {
+	// CRITICAL: Ensure width includes padding to prevent overflow
+	// Must match style.scss for editor/frontend parity
+	box-sizing: border-box;
+
 	// CRITICAL: Must duplicate default padding from style.scss for editor/frontend parity
 	// Default padding (theme-level): xl top/bottom, md left/right
 	padding-top: var(--wp--preset--spacing--xl, 3rem);
 	padding-bottom: var(--wp--preset--spacing--xl, 3rem);
 	padding-left: var(--wp--preset--spacing--md, 1.5rem);
 	padding-right: var(--wp--preset--spacing--md, 1.5rem);
+
+	// CRITICAL: Nested containers should have no padding to prevent overflow
+	// Must be duplicated from style.scss for editor/frontend parity
+	// Only parent containers should have padding
+	.dsg-stack__inner > &,
+	.dsg-flex__inner > &,
+	.dsg-grid__inner > &,
+	.dsg-stack__inner > [data-block] &,
+	.dsg-flex__inner > [data-block] &,
+	.dsg-grid__inner > [data-block] & {
+		padding: 0;
+	}
 
 	// CRITICAL: Ensure Grid takes full width when nested in another container
 	// Without this, nested Grids only take up content width in editor
@@ -31,6 +47,23 @@
 		// CRITICAL: Grid container needs full width for proper column distribution
 		// Must be duplicated from style.scss for editor/frontend parity
 		width: 100%;
+
+		// CRITICAL: Nested containers need full width to fill parent
+		// Must be duplicated from style.scss for editor/frontend parity
+		// Frontend: nested containers are direct children
+		> .dsg-flex,
+		> .dsg-stack,
+		> .dsg-grid {
+			width: 100% !important;
+		}
+
+		// CRITICAL: Editor-specific - nested containers wrapped in [data-block]
+		// WordPress wraps each block in [data-block] element in editor
+		> [data-block] > .dsg-flex,
+		> [data-block] > .dsg-stack,
+		> [data-block] > .dsg-grid {
+			width: 100% !important;
+		}
 
 		// CRITICAL: Prevent grid items from overflowing their cells
 		// Must be duplicated from style.scss for editor/frontend parity

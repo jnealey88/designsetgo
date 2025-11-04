@@ -1,5 +1,9 @@
 {
 	"mcpServers": {
+		"browsermcp": {
+			"command": "npx",
+			"args": ["@browsermcp/mcp@latest"]
+		},
 		"playwright": {
 			"command": "npx",
 			"args": [
@@ -10,6 +14,17 @@
 				"PLAYWRIGHT_CONFIG": "playwright.config.js",
 				"PLAYWRIGHT_BASE_URL": "http://localhost:8888"
 			}
+		},
+		"puppeteer": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-puppeteer"
+			]
+		},
+		"context7": {
+			"command": "npx",
+			"args": ["-y", "@upstash/context7-mcp@latest"]
 		}
 	}
 }

@@ -9,6 +9,12 @@
 .dsg-has-overlay {
 	position: relative;
 
+	// CRITICAL: Preserve flex/width behavior when wrapper is added
+	// Without this, the overlay wrapper breaks flex layouts
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+
 	// Visual indicator in editor
 	&::before {
 		content: 'Overlay';

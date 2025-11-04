@@ -9,6 +9,7 @@
 .dsg-has-video-background {
 	position: relative;
 	overflow: hidden;
+	width: 100%; // CRITICAL: Ensure wrapper doesn't shrink nested containers
 
 	.dsg-video-background {
 		position: absolute;

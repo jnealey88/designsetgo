@@ -71,10 +71,11 @@ addFilter(
 const withOverlayControls = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, name } = props;
-		const { dsgEnableOverlay, dsgOverlayColor, dsgOverlayOpacity } =
+		const { dsgEnableOverlay, dsgOverlayColor, dsgOverlayOpacity, dsgVideoUrl } =
 			attributes;
 
-		if (EXCLUDED_BLOCKS.includes(name)) {
+		// Only show overlay controls if block has video background
+		if (EXCLUDED_BLOCKS.includes(name) || !dsgVideoUrl) {
 			return <BlockEdit {...props} />;
 		}
 

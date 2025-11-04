@@ -4,7 +4,7 @@
 	"name": "designsetgo/grid",
 	"version": "1.0.0",
 	"title": "Grid Container",
-	"category": "designsetgo",
+	"category": "design",
 	"description": "Responsive multi-column grid layouts. Perfect for feature grids, product listings, team members, and card layouts.",
 	"keywords": ["grid", "columns", "layout", "container", "responsive"],
 	"textdomain": "designsetgo",

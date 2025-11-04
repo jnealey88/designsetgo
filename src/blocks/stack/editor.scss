@@ -7,6 +7,10 @@
  */
 
 .dsg-stack {
+	// CRITICAL: Ensure width includes padding to prevent overflow
+	// Must match style.scss for editor/frontend parity
+	box-sizing: border-box;
+
 	// CRITICAL: Must duplicate default padding from style.scss for editor/frontend parity
 	// Default padding (theme-level): xl top/bottom, md left/right
 	padding-top: var(--wp--preset--spacing--xl, 3rem);
@@ -14,11 +18,24 @@
 	padding-left: var(--wp--preset--spacing--md, 1.5rem);
 	padding-right: var(--wp--preset--spacing--md, 1.5rem);
 
-	// CRITICAL: Ensure Stack takes full width when nested in another container
-	// Without this, nested Stacks only take up content width in editor
+	// CRITICAL: Nested containers should have no padding to prevent overflow
+	// Must be duplicated from style.scss for editor/frontend parity
+	// Only parent containers should have padding
+	.dsg-stack__inner > &,
+	.dsg-flex__inner > &,
+	.dsg-grid__inner > &,
 	.dsg-stack__inner > [data-block] &,
 	.dsg-flex__inner > [data-block] &,
 	.dsg-grid__inner > [data-block] & {
+		padding: 0;
+	}
+
+	// CRITICAL: Ensure Stack takes full width when nested in another container
+	// Without this, nested Stacks only take up content width in editor
+	// Only apply when no custom width is set (inline styles take precedence)
+	.dsg-stack__inner > [data-block] &:not([style*="width"]),
+	.dsg-flex__inner > [data-block] &:not([style*="width"]),
+	.dsg-grid__inner > [data-block] &:not([style*="width"]) {
 		width: 100% !important;
 	}
 
@@ -31,11 +48,22 @@
 		width: 100%;
 		min-height: 100px; // Ensure visible area when empty
 
-		// CRITICAL: Nested Flex/Stack containers need full width to fill parent
+		// CRITICAL: Nested containers need full width to fill parent
 		// Must be duplicated from style.scss for editor/frontend parity
-		// Grid containers are block-level and auto-fill, don't need explicit width
-		> .dsg-flex,
-		> .dsg-stack {
+		// Frontend: nested containers are direct children
+		// Only apply when no custom width is set (inline styles take precedence)
+		> .dsg-flex:not([style*="width"]),
+		> .dsg-stack:not([style*="width"]),
+		> .dsg-grid:not([style*="width"]) {
+			width: 100% !important;
+		}
+
+		// CRITICAL: Editor-specific - nested containers wrapped in [data-block]
+		// WordPress wraps each block in [data-block] element in editor
+		// Only apply when no custom width is set (inline styles take precedence)
+		> [data-block] > .dsg-flex:not([style*="width"]),
+		> [data-block] > .dsg-stack:not([style*="width"]),
+		> [data-block] > .dsg-grid:not([style*="width"]) {
 			width: 100% !important;
 		}
 
