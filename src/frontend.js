@@ -20,6 +20,9 @@ import './blocks/counter-group/view.js';
 // Progress Bar block - scroll-triggered animations
 import './blocks/progress-bar/view.js';
 
+// Flip Card block - interactive flip animations
+import './blocks/flip-card/frontend.js';
+
 // ===== EXTENSIONS FRONTEND =====
 // Block animations - scroll-triggered, hover, click animations
 import './extensions/block-animations/frontend.js';

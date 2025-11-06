@@ -5,6 +5,7 @@
 .dsg-tabs {
 	position: relative;
 	padding: 0; // Default to no padding
+	width: 100%; // Fill container width
 
 	// CSS custom properties for easy customization
 	--dsg-tabs-gap: 8px;

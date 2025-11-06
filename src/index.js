@@ -40,6 +40,9 @@ import './extensions/grid-span';
 // Text Alignment Inheritance - sets text-align based on parent container's alignItems
 import './extensions/text-alignment-inheritance';
 
+// Reveal Control - adds reveal on hover control to blocks inside Reveal containers
+import './extensions/reveal-control';
+
 // ===== DEFAULT PADDING FOR ROOT CONTAINERS =====
 // Set default padding for container blocks, but only when inserted at root level
 import { addFilter } from '@wordpress/hooks';

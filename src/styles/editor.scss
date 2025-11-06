@@ -13,11 +13,13 @@
 @use '../extensions/background-video/editor' as background-video;
 @use '../extensions/overlay/editor' as overlay;
 @use '../extensions/grid-span/editor' as grid-span;
+@use '../extensions/reveal-control/editor' as reveal-control;
 
 // Container blocks editor styles
 @use '../blocks/stack/editor' as stack;
 @use '../blocks/flex/editor' as flex;
 @use '../blocks/grid/editor' as grid;
+@use '../blocks/reveal/editor' as reveal;
 
 // Editor-specific styles
 .editor-styles-wrapper {

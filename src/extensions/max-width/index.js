@@ -31,6 +31,11 @@ const EXCLUDED_BLOCKS = [
 	'core/separator', // Already has width control
 	'core/page-list', // Navigation element
 	'core/navigation', // Navigation element
+	// Container blocks have their own "Constrain Width" and "Content Width" controls
+	'designsetgo/container',
+	'designsetgo/stack',
+	'designsetgo/flex',
+	'designsetgo/grid',
 ];
 
 /**
@@ -75,11 +80,6 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 		const { attributes, setAttributes, name } = props;
 		const { dsgMaxWidth, constrainWidth, contentWidth } = attributes;
 
-		// Skip excluded blocks
-		if (EXCLUDED_BLOCKS.includes(name)) {
-			return <BlockEdit {...props} />;
-		}
-
 		// Check if this is a Container block (legacy or new Stack/Flex/Grid)
 		const isContainerBlock = [
 			'designsetgo/container',
@@ -87,6 +87,11 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 			'designsetgo/flex',
 			'designsetgo/grid',
 		].includes(name);
+
+		// Skip excluded blocks (but NOT container blocks - they need Constrain Width controls)
+		if (EXCLUDED_BLOCKS.includes(name) && !isContainerBlock) {
+			return <BlockEdit {...props} />;
+		}
 
 		// Get theme content size and spacing units for Container blocks
 		const [themeContentSize] = useSettings('layout.contentSize');
@@ -162,21 +167,23 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 							</>
 						)}
 
-						{/* Max width - Shows for ALL blocks */}
-						<UnitControl
-							label={__('Max width', 'designsetgo')}
-							value={dsgMaxWidth || ''}
-							onChange={(value) =>
-								setAttributes({ dsgMaxWidth: value || '' })
-							}
-							units={units}
-							help={__(
-								'Maximum width for this block. Leave empty for no constraint.',
-								'designsetgo'
-							)}
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
-						/>
+						{/* Max width - Shows for ALL non-container blocks */}
+						{!isContainerBlock && (
+							<UnitControl
+								label={__('Max width', 'designsetgo')}
+								value={dsgMaxWidth || ''}
+								onChange={(value) =>
+									setAttributes({ dsgMaxWidth: value || '' })
+								}
+								units={units}
+								help={__(
+									'Maximum width for this block. Leave empty for no constraint.',
+									'designsetgo'
+								)}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+						)}
 					</PanelBody>
 				</InspectorControls>
 			</>
@@ -200,8 +207,8 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 		const { attributes, name, clientId } = props;
 		const { dsgMaxWidth, align, textAlign } = attributes;
 
-		// Skip if no max-width set or excluded block
-		if (!dsgMaxWidth || EXCLUDED_BLOCKS.includes(name)) {
+		// Skip excluded blocks
+		if (EXCLUDED_BLOCKS.includes(name)) {
 			return <BlockListBlock {...props} />;
 		}
 
@@ -210,6 +217,8 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 		const styleId = `dsg-max-width-${clientId}`;
 
 		// Inject dynamic CSS into editor
+		// IMPORTANT: Always run this effect, even when dsgMaxWidth is empty,
+		// to ensure cleanup happens when max-width is removed
 		useEffect(() => {
 			// Get editor document (may be in iframe)
 			const editorDocument =
@@ -222,7 +231,7 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 				existingStyle.remove();
 			}
 
-			// Create new style element
+			// Create new style element only if max-width is set
 			if (dsgMaxWidth) {
 				const styleElement = editorDocument.createElement('style');
 				styleElement.id = styleId;
@@ -252,7 +261,7 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 				editorDocument.head.appendChild(styleElement);
 			}
 
-			// Cleanup
+			// Cleanup - remove style when component unmounts or max-width changes
 			return () => {
 				const styleToRemove = editorDocument.getElementById(styleId);
 				if (styleToRemove) {
@@ -261,13 +270,12 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 			};
 		}, [dsgMaxWidth, clientId, styleId, textAlign, align]);
 
-		// Add class for identification
-		return (
-			<BlockListBlock
-				{...props}
-				className={`${props.className || ''} dsg-has-max-width`.trim()}
-			/>
-		);
+		// Add class for identification only when max-width is set
+		const className = dsgMaxWidth
+			? `${props.className || ''} dsg-has-max-width`.trim()
+			: props.className;
+
+		return <BlockListBlock {...props} className={className} />;
 	};
 }, 'withMaxWidthStyles');
 

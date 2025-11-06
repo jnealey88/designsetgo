@@ -4,6 +4,7 @@
 
 .dsg-tabs {
 	padding: 0; // Default to no padding
+	width: 100%; // CRITICAL: Must be duplicated from style.scss for editor/frontend parity
 
 	// Tab Navigation - Clean, simple styling
 	.dsg-tabs__nav {

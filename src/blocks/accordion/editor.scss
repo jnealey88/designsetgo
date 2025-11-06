@@ -13,6 +13,7 @@
 	.dsg-accordion {
 		// Editor visual aids for container
 		position: relative;
+		width: 100%; // CRITICAL: Must be duplicated from style.scss for editor/frontend parity
 
 		// Add subtle border in editor to show container bounds
 		&::before {

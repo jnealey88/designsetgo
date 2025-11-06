@@ -19,12 +19,14 @@
 @use './extensions/background-video/style' as background-video;
 @use './extensions/overlay/style' as overlay;
 @use './extensions/grid-span/style' as grid-span;
+@use './extensions/reveal-control/styles' as reveal-control;
 
 // Custom blocks (frontend)
 // Container blocks
 @use './blocks/stack/style' as stack;
 @use './blocks/flex/style' as flex;
 @use './blocks/grid/style' as grid;
+@use './blocks/reveal/style' as reveal;
 @use './blocks/accordion/style' as accordion;
 @use './blocks/accordion-item/style' as accordion-item;
 @use './blocks/tabs/style' as tabs;
@@ -32,3 +34,8 @@
 @use './blocks/icon-list/style' as icon-list;
 @use './blocks/icon-list-item/style' as icon-list-item;
 @use './blocks/pill/style' as pill;
+@use './blocks/flip-card/style' as flip-card;
+@use './blocks/flip-card-front/style' as flip-card-front;
+@use './blocks/flip-card-back/style' as flip-card-back;
+@use './blocks/scroll-accordion/style' as scroll-accordion;
+@use './blocks/scroll-accordion-item/style' as scroll-accordion-item;
