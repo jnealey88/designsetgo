@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/scroll-accordion-item",
+	"version": "1.0.0",
+	"title": "Scroll Accordion Item",
+	"category": "design",
+	"description": "Individual item within a Scroll Accordion",
+	"keywords": ["scroll", "item", "panel", "section"],
+	"textdomain": "designsetgo",
+	"parent": ["designsetgo/scroll-accordion"],
+	"attributes": {},
+	"supports": {
+		"anchor": true,
+		"align": ["left", "center", "right", "wide", "full"],
+		"html": false,
+		"spacing": {
+			"margin": false,
+			"padding": true
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"shadow": true,
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}

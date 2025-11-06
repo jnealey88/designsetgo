@@ -1,0 +1,33 @@
+/**
+ * Scroll Accordion - Frontend Styles
+ * Stacking cards with sticky positioning - Apple-style scroll effect
+ */
+
+.dsg-scroll-accordion {
+	--dsg-scroll-accordion-gap: var(--wp--preset--spacing--40, 1.5rem);
+	--dsg-scroll-accordion-duration: 600ms;
+
+	position: relative;
+	width: 100%;
+	align-self: stretch;
+
+	/**
+	 * Container height is determined by content - no min-height needed
+	 * CRITICAL: NO overflow:hidden - it breaks sticky positioning
+	 */
+	margin-top: 2rem; /* Prevent overlap with previous blocks */
+
+	.dsg-scroll-accordion__items {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		width: 100%;
+		/* alignItems controlled via inline style from save.js */
+	}
+}
+
+/**
+ * Note: Animation styles for .dsg-scroll-accordion-item
+ * are defined in the child block's style.scss
+ */
