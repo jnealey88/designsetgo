@@ -1,0 +1,109 @@
+/**
+ * Scroll Marquee Block - Editor Styles
+ * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+ */
+
+.dsg-scroll-marquee {
+	--dsg-marquee-gap: 20px;
+	--dsg-marquee-row-gap: 20px;
+	--dsg-marquee-image-height: 200px;
+	--dsg-marquee-image-width: 300px;
+	--dsg-marquee-border-radius: 8px;
+
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	gap: var(--dsg-marquee-row-gap);
+
+	&__row {
+		position: relative;
+		width: 100%;
+		overflow: visible; // Allow controls to be fully visible
+		// No padding/margin - spacing controlled by rowGap setting
+	}
+
+	&__row-controls {
+		margin-bottom: 12px;
+		padding: 8px;
+		background: white;
+		border-radius: 4px;
+	}
+
+	&__track {
+		display: flex;
+		gap: var(--dsg-marquee-gap);
+		flex-wrap: nowrap; // Keep horizontal layout
+		align-items: center;
+		min-height: 80px; // Reasonable minimum height for empty state
+		overflow: visible; // No scrollbars in editor
+	}
+
+	&__track-segment {
+		display: flex;
+		gap: var(--dsg-marquee-gap);
+		flex-shrink: 0;
+	}
+
+	&__image-wrapper {
+		position: relative;
+		display: inline-block;
+
+		&:hover .dsg-scroll-marquee__remove-image {
+			opacity: 1;
+		}
+	}
+
+	&__image {
+		height: var(--dsg-marquee-image-height);
+		width: var(--dsg-marquee-image-width);
+		object-fit: cover;
+		border-radius: var(--dsg-marquee-border-radius);
+		flex-shrink: 0;
+		display: block;
+		border: 2px solid #e0e0e0;
+	}
+
+	&__remove-image {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		opacity: 0;
+		transition: opacity 0.2s ease;
+		background: rgba(255, 255, 255, 0.95);
+		border-radius: 4px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
+
+	&__add-images {
+		// Reasonable fixed size for button (not image size)
+		height: 80px;
+		min-width: 160px;
+		padding: 16px 24px;
+		border: 2px dashed #2271b1;
+		border-radius: 8px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		background: #f0f6fc;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		font-size: 14px;
+		font-weight: 500;
+
+		&:hover {
+			background: #e5f2ff;
+			border-color: #135e96;
+			transform: translateY(-2px);
+			box-shadow: 0 2px 8px rgba(34, 113, 177, 0.2);
+		}
+	}
+
+	&__add-row {
+		margin-top: 16px;
+		width: 100%;
+		justify-content: center;
+	}
+}

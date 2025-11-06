@@ -1,0 +1,71 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/flip-card-front",
+	"version": "1.0.0",
+	"title": "Flip Card Front",
+	"category": "design",
+	"parent": ["designsetgo/flip-card"],
+	"description": "Front face of the flip card.",
+	"keywords": ["flip", "card", "front"],
+	"textdomain": "designsetgo",
+	"supports": {
+		"anchor": false,
+		"align": false,
+		"html": false,
+		"inserter": false,
+		"reusable": false,
+		"lock": false,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"allowEditing": true,
+			"allowVerticalAlignment": true,
+			"allowJustification": true,
+			"default": {
+				"type": "flex",
+				"orientation": "vertical",
+				"verticalAlignment": "center",
+				"justifyContent": "center"
+			}
+		},
+		"spacing": {
+			"padding": true,
+			"margin": false,
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"padding": true,
+				"blockGap": true
+			}
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"radius": true
+			}
+		}
+	},
+	"attributes": {},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}

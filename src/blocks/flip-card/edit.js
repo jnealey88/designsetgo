@@ -1,0 +1,274 @@
+/**
+ * Flip Card Block - Edit Component
+ *
+ * Interactive card that flips to reveal content on the back.
+ *
+ * @since 1.0.0
+ */
+
+import { __ } from '@wordpress/i18n';
+import {
+	useBlockProps,
+	useInnerBlocksProps,
+	InspectorControls,
+} from '@wordpress/block-editor';
+import {
+	PanelBody,
+	SelectControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl,
+} from '@wordpress/components';
+
+/**
+ * Flip Card Edit Component
+ *
+ * Uses a template with two child blocks (flip-card-front and flip-card-back).
+ * Each child block can contain any blocks the user wants to add.
+ *
+ * @param {Object}   props               Component props
+ * @param {Object}   props.attributes    Block attributes
+ * @param {Function} props.setAttributes Function to update attributes
+ * @return {JSX.Element} Edit component
+ */
+export default function FlipCardEdit({ attributes, setAttributes }) {
+	const { flipTrigger, flipEffect, flipDirection, flipDuration } = attributes;
+
+	// Block wrapper props
+	const blockProps = useBlockProps({
+		className: 'dsg-flip-card',
+		style: {
+			'--dsg-flip-duration': flipDuration,
+			width: '100%',
+		},
+	});
+
+	// Inner blocks configuration
+	// Template creates two child blocks (front and back)
+	// Template is locked so users can't delete or reorder the front/back
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'dsg-flip-card__container',
+		},
+		{
+			allowedBlocks: ['designsetgo/flip-card-front', 'designsetgo/flip-card-back'],
+			template: [
+				[
+					'designsetgo/flip-card-front',
+					{
+						style: {
+							spacing: {
+								padding: {
+									top: '3rem',
+									right: '2rem',
+									bottom: '3rem',
+									left: '2rem',
+								},
+								blockGap: '1rem',
+							},
+							color: {
+								gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+								text: '#ffffff',
+							},
+						},
+					},
+					[
+						['core/heading', {
+							content: '✨ Discover More',
+							level: 2,
+							textAlign: 'center',
+							style: {
+								typography: {
+									fontSize: '2.5rem',
+									fontWeight: '700',
+								},
+							},
+						}],
+						['core/paragraph', {
+							content: 'Hover to reveal amazing content',
+							align: 'center',
+							style: {
+								typography: {
+									fontSize: '1.1rem',
+								},
+							},
+						}],
+					],
+				],
+				[
+					'designsetgo/flip-card-back',
+					{
+						style: {
+							spacing: {
+								padding: {
+									top: '3rem',
+									right: '2rem',
+									bottom: '3rem',
+									left: '2rem',
+								},
+								blockGap: '1.5rem',
+							},
+							color: {
+								gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+								text: '#ffffff',
+							},
+						},
+					},
+					[
+						['core/heading', {
+							content: '🚀 Ready to Start?',
+							level: 2,
+							textAlign: 'center',
+							style: {
+								typography: {
+									fontSize: '2rem',
+									fontWeight: '700',
+								},
+							},
+						}],
+						['core/paragraph', {
+							content: 'Add your own content here using any WordPress blocks. Customize colors, add images, buttons, and more!',
+							align: 'center',
+							style: {
+								typography: {
+									fontSize: '1rem',
+								},
+							},
+						}],
+					],
+				],
+			],
+			templateLock: 'all', // Lock template so users can't delete/reorder front/back
+			orientation: 'vertical',
+		}
+	);
+
+	return (
+		<>
+			<InspectorControls>
+				<PanelBody
+					title={__('Flip Card Settings', 'designsetgo')}
+					initialOpen={true}
+				>
+					<SelectControl
+						label={__('Flip Trigger', 'designsetgo')}
+						value={flipTrigger}
+						options={[
+							{
+								label: __('Hover', 'designsetgo'),
+								value: 'hover',
+							},
+							{
+								label: __('Click', 'designsetgo'),
+								value: 'click',
+							},
+						]}
+						onChange={(value) => setAttributes({ flipTrigger: value })}
+						help={
+							flipTrigger === 'hover'
+								? __('Card flips when hovering over it', 'designsetgo')
+								: __('Card flips when clicking on it', 'designsetgo')
+						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					<SelectControl
+						label={__('Flip Effect', 'designsetgo')}
+						value={flipEffect}
+						options={[
+							{
+								label: __('Flip (3D Rotation)', 'designsetgo'),
+								value: 'flip',
+							},
+							{
+								label: __('Fade', 'designsetgo'),
+								value: 'fade',
+							},
+							{
+								label: __('Slide', 'designsetgo'),
+								value: 'slide',
+							},
+							{
+								label: __('Zoom', 'designsetgo'),
+								value: 'zoom',
+							},
+						]}
+						onChange={(value) => setAttributes({ flipEffect: value })}
+						help={__('Choose the transition animation style', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					{flipEffect === 'flip' && (
+						<SelectControl
+							label={__('Flip Direction', 'designsetgo')}
+							value={flipDirection}
+							options={[
+								{
+									label: __('Horizontal', 'designsetgo'),
+									value: 'horizontal',
+								},
+								{
+									label: __('Vertical', 'designsetgo'),
+									value: 'vertical',
+								},
+							]}
+							onChange={(value) => setAttributes({ flipDirection: value })}
+							help={
+								flipDirection === 'horizontal'
+									? __('Card flips left to right', 'designsetgo')
+									: __('Card flips top to bottom', 'designsetgo')
+							}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
+					)}
+
+					<UnitControl
+						label={__('Flip Duration', 'designsetgo')}
+						value={flipDuration}
+						onChange={(value) => setAttributes({ flipDuration: value || '0.6s' })}
+						units={[
+							{ value: 's', label: 's', default: 0.6 },
+							{ value: 'ms', label: 'ms', default: 600 },
+						]}
+						min={0.1}
+						max={3}
+						step={0.1}
+						help={__('Speed of the flip animation', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+				</PanelBody>
+
+				<PanelBody
+					title={__('How to Use', 'designsetgo')}
+					initialOpen={false}
+				>
+					<p>
+						{__(
+							'This flip card has two sections: Front and Back. Click on each section to edit its content.',
+							'designsetgo'
+						)}
+					</p>
+					<p>
+						{__(
+							'You can add any blocks you want to the front and back, including images, headings, buttons, and more.',
+							'designsetgo'
+						)}
+					</p>
+					<p>
+						{__(
+							'Style each section using the block toolbar or the Styles panel.',
+							'designsetgo'
+						)}
+					</p>
+				</PanelBody>
+			</InspectorControls>
+
+			<div {...blockProps}>
+				<div {...innerBlocksProps} />
+			</div>
+		</>
+	);
+}

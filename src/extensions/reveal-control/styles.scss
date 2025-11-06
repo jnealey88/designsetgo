@@ -1,0 +1,35 @@
+/**
+ * Frontend styles for Reveal Control Extension
+ * Works with Stack, Flex, Grid, and Reveal blocks
+ */
+
+.dsg-has-reveal {
+	position: relative;
+
+	// Fade animation (default)
+	&[data-reveal-animation="fade"] .dsg-reveal-item {
+		opacity: 0;
+		transition: opacity 300ms ease-in-out;
+	}
+
+	&[data-reveal-animation="fade"]:hover .dsg-reveal-item {
+		opacity: 1;
+	}
+
+	// Collapse animation (smooth height/scale transition)
+	&[data-reveal-animation="collapse"] .dsg-reveal-item {
+		opacity: 0;
+		max-height: 0;
+		overflow: hidden;
+		transform: scaleY(0);
+		transform-origin: top;
+		transition: opacity 300ms ease-in-out, max-height 300ms ease-in-out,
+			transform 300ms ease-in-out;
+	}
+
+	&[data-reveal-animation="collapse"]:hover .dsg-reveal-item {
+		opacity: 1;
+		max-height: 1000px; // Large enough for most content
+		transform: scaleY(1);
+	}
+}

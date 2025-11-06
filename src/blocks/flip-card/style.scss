@@ -1,0 +1,241 @@
+/**
+ * Flip Card Block - Frontend Styles
+ *
+ * JavaScript-based flip animation (much more reliable than CSS 3D transforms)
+ *
+ * @since 1.0.0
+ */
+
+.dsg-flip-card {
+	position: relative;
+	width: 100%;
+
+	&__container {
+		position: relative;
+		width: 100%;
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr;
+	}
+
+	// Both front and back - ensure proper box sizing
+	&__container > * {
+		width: 100%;
+		box-sizing: border-box;
+		transition: opacity var(--dsg-flip-duration, 0.6s) ease,
+			transform var(--dsg-flip-duration, 0.6s) ease;
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	// Front face (visible by default) - use exact class names
+	&__container > .wp-block-designsetgo-flip-card-front,
+	&__container > .dsg-flip-card__front {
+		position: relative;
+		opacity: 1;
+		transform: rotateY(0deg);
+		z-index: 2;
+	}
+
+	// Back face (hidden by default) - use exact class names
+	&__container > .wp-block-designsetgo-flip-card-back,
+	&__container > .dsg-flip-card__back {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		opacity: 0;
+		transform: rotateY(180deg);
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	// When flipped (JS adds this class)
+	&.is-flipped {
+		// Hide front - make it absolutely positioned
+		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
+		.dsg-flip-card__container > .dsg-flip-card__front {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			opacity: 0;
+			transform: rotateY(-180deg);
+			pointer-events: none;
+		}
+
+		// Show back - make it relatively positioned
+		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+		.dsg-flip-card__container > .dsg-flip-card__back {
+			position: relative;
+			opacity: 1;
+			transform: rotateY(0deg);
+			z-index: 2;
+			pointer-events: auto;
+		}
+	}
+
+	// Vertical flip direction (rotateX instead of rotateY)
+	&--vertical {
+		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
+		.dsg-flip-card__container > .dsg-flip-card__front {
+			transform: rotateX(0deg);
+		}
+
+		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+		.dsg-flip-card__container > .dsg-flip-card__back {
+			transform: rotateX(180deg);
+		}
+
+		&.is-flipped {
+			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
+			.dsg-flip-card__container > .dsg-flip-card__front {
+				transform: rotateX(-180deg);
+			}
+
+			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+			.dsg-flip-card__container > .dsg-flip-card__back {
+				transform: rotateX(0deg);
+			}
+		}
+	}
+
+	// Click trigger
+	&--click {
+		cursor: pointer;
+
+		&:focus {
+			outline: 2px solid var(--wp--preset--color--primary, #3b82f6);
+			outline-offset: 2px;
+		}
+	}
+
+	// Hover trigger
+	&--hover {
+		&:focus {
+			outline: 2px solid var(--wp--preset--color--primary, #3b82f6);
+			outline-offset: 2px;
+		}
+	}
+
+	// ===== FADE EFFECT =====
+	&--effect-fade {
+		.dsg-flip-card__container > * {
+			transform: none !important;
+		}
+
+		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+		.dsg-flip-card__container > .dsg-flip-card__back {
+			transform: none !important;
+		}
+
+		&.is-flipped {
+			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
+			.dsg-flip-card__container > .dsg-flip-card__front {
+				transform: none !important;
+			}
+
+			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+			.dsg-flip-card__container > .dsg-flip-card__back {
+				transform: none !important;
+			}
+		}
+	}
+
+	// ===== SLIDE EFFECT =====
+	&--effect-slide {
+		.dsg-flip-card__container {
+			overflow: hidden;
+		}
+
+		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
+		.dsg-flip-card__container > .dsg-flip-card__front {
+			transform: translateX(0);
+		}
+
+		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+		.dsg-flip-card__container > .dsg-flip-card__back {
+			transform: translateX(100%);
+		}
+
+		&.is-flipped {
+			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
+			.dsg-flip-card__container > .dsg-flip-card__front {
+				transform: translateX(-100%);
+			}
+
+			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+			.dsg-flip-card__container > .dsg-flip-card__back {
+				transform: translateX(0);
+			}
+		}
+
+		// Vertical slide for vertical direction
+		&.dsg-flip-card--vertical {
+			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
+			.dsg-flip-card__container > .dsg-flip-card__front {
+				transform: translateY(0);
+			}
+
+			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+			.dsg-flip-card__container > .dsg-flip-card__back {
+				transform: translateY(100%);
+			}
+
+			&.is-flipped {
+				.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
+				.dsg-flip-card__container > .dsg-flip-card__front {
+					transform: translateY(-100%);
+				}
+
+				.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+				.dsg-flip-card__container > .dsg-flip-card__back {
+					transform: translateY(0);
+				}
+			}
+		}
+	}
+
+	// ===== ZOOM EFFECT =====
+	&--effect-zoom {
+		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
+		.dsg-flip-card__container > .dsg-flip-card__front {
+			transform: scale(1);
+		}
+
+		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+		.dsg-flip-card__container > .dsg-flip-card__back {
+			transform: scale(0.8);
+		}
+
+		&.is-flipped {
+			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
+			.dsg-flip-card__container > .dsg-flip-card__front {
+				transform: scale(1.2);
+			}
+
+			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
+			.dsg-flip-card__container > .dsg-flip-card__back {
+				transform: scale(1);
+			}
+		}
+	}
+}
+
+// Accessibility: Reduce motion preference
+@media (prefers-reduced-motion: reduce) {
+	.dsg-flip-card__container > * {
+		transition: opacity 0.1s ease;
+		transform: none !important;
+	}
+
+	.dsg-flip-card.is-flipped {
+		.dsg-flip-card__container > [class*="flip-card-front"] {
+			transform: none;
+		}
+
+		.dsg-flip-card__container > [class*="flip-card-back"] {
+			transform: none;
+		}
+	}
+}

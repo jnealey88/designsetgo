@@ -1,0 +1,94 @@
+/**
+ * Flip Card Block - Editor Styles
+ *
+ * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+ * JavaScript-based flip animation (much more reliable than CSS 3D transforms)
+ *
+ * @since 1.0.0
+ */
+
+.dsg-flip-card {
+	position: relative;
+	width: 100%;
+
+	&__container {
+		position: relative;
+		width: 100%;
+	}
+
+	// Click trigger
+	&--click {
+		cursor: pointer;
+
+		&:focus {
+			outline: 2px solid var(--wp--preset--color--primary, #3b82f6);
+			outline-offset: 2px;
+		}
+	}
+
+	// Hover trigger
+	&--hover {
+		&:focus {
+			outline: 2px solid var(--wp--preset--color--primary, #3b82f6);
+			outline-offset: 2px;
+		}
+	}
+}
+
+// Editor-specific: Show both cards for editing
+.editor-styles-wrapper,
+.block-editor-block-preview__content {
+	.dsg-flip-card {
+		// Ensure flip card respects parent width constraints
+		width: 100%;
+
+		&__container {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+			width: 100%;
+		}
+
+		// Both cards visible for editing
+		&__container > .wp-block-designsetgo-flip-card-front,
+		&__container > .wp-block-designsetgo-flip-card-back {
+			box-sizing: border-box;
+			position: relative;
+
+			// Add label in editor
+			&::before {
+				position: absolute;
+				top: 0.5rem;
+				left: 0.5rem;
+				font-size: 0.75rem;
+				font-weight: 600;
+				padding: 0.25rem 0.5rem;
+				background: rgba(0, 0, 0, 0.7);
+				color: white;
+				border-radius: 3px;
+				z-index: 100;
+				pointer-events: none;
+			}
+		}
+
+		&__container > .wp-block-designsetgo-flip-card-front {
+			&::before {
+				content: 'Front';
+			}
+		}
+
+		&__container > .wp-block-designsetgo-flip-card-back {
+			&::before {
+				content: 'Back';
+			}
+		}
+	}
+}
+
+// Accessibility: Reduce motion preference
+@media (prefers-reduced-motion: reduce) {
+	.dsg-flip-card__container > * {
+		transition: opacity 0.1s ease;
+		transform: none !important;
+	}
+}

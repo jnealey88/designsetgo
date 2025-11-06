@@ -1,0 +1,51 @@
+/**
+ * Editor styles for Reveal Control Extension
+ * CRITICAL: Must be duplicated from styles.scss for editor/frontend parity
+ */
+
+.dsg-has-reveal {
+	position: relative;
+
+	// Fade animation (default)
+	&[data-reveal-animation="fade"] .dsg-reveal-item {
+		opacity: 0;
+		transition: opacity 300ms ease-in-out;
+	}
+
+	&[data-reveal-animation="fade"]:hover .dsg-reveal-item {
+		opacity: 1;
+	}
+
+	// Collapse animation (smooth height/scale transition)
+	&[data-reveal-animation="collapse"] .dsg-reveal-item {
+		opacity: 0;
+		max-height: 0;
+		overflow: hidden;
+		transform: scaleY(0);
+		transform-origin: top;
+		transition: opacity 300ms ease-in-out, max-height 300ms ease-in-out,
+			transform 300ms ease-in-out;
+	}
+
+	&[data-reveal-animation="collapse"]:hover .dsg-reveal-item {
+		opacity: 1;
+		max-height: 1000px; // Large enough for most content
+		transform: scaleY(1);
+	}
+
+	// Editor indicator for revealed items
+	.dsg-reveal-item::before {
+		content: '👁️ Reveals on hover';
+		position: absolute;
+		top: -24px;
+		left: 0;
+		font-size: 11px;
+		background: #1e1e1e;
+		color: #fff;
+		padding: 2px 6px;
+		border-radius: 2px;
+		z-index: 1;
+		pointer-events: none;
+		opacity: 0.8;
+	}
+}

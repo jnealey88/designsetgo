@@ -1,0 +1,63 @@
+/**
+ * Scroll Marquee Block - Frontend Styles
+ * Displays rows of images that scroll horizontally based on page scroll
+ */
+
+.dsg-scroll-marquee {
+	--dsg-marquee-gap: 20px;
+	--dsg-marquee-row-gap: 20px;
+	--dsg-marquee-image-height: 200px;
+	--dsg-marquee-image-width: 300px;
+	--dsg-marquee-border-radius: 8px;
+
+	// Respect parent container width like other blocks
+	position: relative;
+	width: 100%;
+	max-width: 100%; // Prevent overflow
+	overflow: hidden; // Hide images that scroll beyond edges
+	display: flex;
+	flex-direction: column;
+	gap: var(--dsg-marquee-row-gap);
+	// Ensure this block doesn't affect page width
+	contain: layout;
+
+	&__row {
+		position: relative;
+		width: 100%;
+		max-width: 100%; // Prevent overflow
+		overflow: hidden; // Hide overflow, no scrollbars
+		overflow-x: clip; // Modern: prevents scrollbar and doesn't create scroll container
+		// Isolate this row's layout
+		contain: layout;
+	}
+
+	&__track {
+		display: flex;
+		gap: var(--dsg-marquee-gap);
+		will-change: transform; // GPU acceleration for smooth performance
+		// Start with initial position for seamless appearance
+		transform: translateX(0);
+	}
+
+	&__track-segment {
+		display: flex;
+		gap: var(--dsg-marquee-gap);
+		flex-shrink: 0;
+	}
+
+	&__image {
+		height: var(--dsg-marquee-image-height);
+		width: var(--dsg-marquee-image-width);
+		object-fit: cover;
+		border-radius: var(--dsg-marquee-border-radius);
+		flex-shrink: 0; // Prevent images from shrinking
+		display: block;
+	}
+}
+
+// Accessibility: Respect user's motion preferences
+@media (prefers-reduced-motion: reduce) {
+	.dsg-scroll-marquee__track {
+		transform: none !important;
+	}
+}
