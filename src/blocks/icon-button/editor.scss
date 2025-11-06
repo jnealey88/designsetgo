@@ -42,3 +42,16 @@
 		}
 	}
 }
+
+// CRITICAL: Must duplicate from style.scss for editor/frontend parity
+// Parent container hover: apply button background when parent is hovered
+// Uses CSS variable set by parent container (Flex, Grid, Stack)
+// CRITICAL: Check if PARENT container has the variable, not the button itself
+// CRITICAL: Use __inner wrapper to avoid triggering on outer padding areas
+// CRITICAL: Use direct child selector (>) to only affect direct children
+.dsg-flex[style*="--dsg-parent-hover-button-bg"]:hover .dsg-flex__inner > .dsg-icon-button .dsg-icon-button__wrapper,
+.dsg-grid[style*="--dsg-parent-hover-button-bg"]:hover .dsg-grid__inner > .dsg-icon-button .dsg-icon-button__wrapper,
+.dsg-stack[style*="--dsg-parent-hover-button-bg"]:hover .dsg-stack__inner > .dsg-icon-button .dsg-icon-button__wrapper {
+	background-color: var(--dsg-parent-hover-button-bg) !important;
+	transition: background-color 0.3s ease;
+}

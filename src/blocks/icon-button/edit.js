@@ -21,9 +21,10 @@ import { ButtonSettingsPanel } from './components/inspector/ButtonSettingsPanel'
  * @param {Object}   props               - Component props
  * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
+ * @param {Object}   props.context       - Block context from parent
  * @return {JSX.Element} Icon Button edit component
  */
-export default function IconButtonEdit({ attributes, setAttributes }) {
+export default function IconButtonEdit({ attributes, setAttributes, context }) {
 	const {
 		text,
 		url,
@@ -35,6 +36,9 @@ export default function IconButtonEdit({ attributes, setAttributes }) {
 		iconGap,
 		width,
 	} = attributes;
+
+	// Get hover button background from parent container context
+	const parentHoverButtonBg = context['designsetgo/hoverButtonBackgroundColor'];
 
 	// Calculate button styles
 	const buttonStyles = {
@@ -58,7 +62,12 @@ export default function IconButtonEdit({ attributes, setAttributes }) {
 
 	const blockProps = useBlockProps({
 		className: 'dsg-icon-button',
-		style: { display: width === '100%' ? 'block' : 'inline-block' },
+		style: {
+			display: width === '100%' ? 'block' : 'inline-block',
+			...(parentHoverButtonBg && {
+				'--dsg-parent-hover-button-bg': parentHoverButtonBg,
+			}),
+		},
 	});
 
 	return (

@@ -86,6 +86,22 @@
 		margin-right: auto;
 	}
 
+	// Ensure proper color inheritance from WordPress color controls
+	// Use background-color instead of background shorthand to avoid conflicts with hover
+	&[style*="background-color"]:not([style*="background-image"]) .dsg-icon__wrapper {
+		background-color: inherit !important;
+	}
+
+	// For background images, inherit full background
+	&[style*="background-image"] .dsg-icon__wrapper {
+		background: inherit !important;
+	}
+
+	// Transfer background from WordPress color classes (e.g., has-warning-background-color)
+	&.has-background .dsg-icon__wrapper {
+		background-color: transparent !important;
+	}
+
 	// Accessibility: Respect prefers-reduced-motion
 	@media (prefers-reduced-motion: reduce) {
 
@@ -116,4 +132,17 @@
 			stroke: currentColor;
 		}
 	}
+}
+
+// Parent container hover: apply icon background when parent is hovered
+// Uses CSS variable set by parent container (Flex, Grid, Stack)
+// CRITICAL: Check if PARENT container has the variable, not the icon itself
+// CRITICAL: Use __inner wrapper to avoid triggering on outer padding areas
+// CRITICAL: Exclude icons that are inside nested containers
+// This changes the block's background color, which the wrapper inherits
+.dsg-flex[style*="--dsg-parent-hover-icon-bg"]:hover .dsg-flex__inner > .dsg-icon,
+.dsg-grid[style*="--dsg-parent-hover-icon-bg"]:hover .dsg-grid__inner > .dsg-icon,
+.dsg-stack[style*="--dsg-parent-hover-icon-bg"]:hover .dsg-stack__inner > .dsg-icon {
+	background-color: var(--dsg-parent-hover-icon-bg) !important;
+	transition: background-color 0.3s ease;
 }

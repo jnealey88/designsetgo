@@ -13,6 +13,7 @@
 		"graphic"
 	],
 	"textdomain": "designsetgo",
+	"usesContext": ["designsetgo/hoverIconBackgroundColor"],
 	"supports": {
 		"anchor": true,
 		"align": [

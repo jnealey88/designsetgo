@@ -28,9 +28,10 @@ import { IconPicker } from './components/IconPicker';
  * @param {Object}   props               - Component props
  * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
+ * @param {Object}   props.context       - Block context from parent
  * @return {JSX.Element} Edit component
  */
-export default function IconEdit({ attributes, setAttributes }) {
+export default function IconEdit({ attributes, setAttributes, context }) {
 	const {
 		icon,
 		iconStyle,
@@ -41,12 +42,18 @@ export default function IconEdit({ attributes, setAttributes }) {
 		linkTarget,
 	} = attributes;
 
+	// Get hover icon background from parent container context
+	const parentHoverIconBg = context['designsetgo/hoverIconBackgroundColor'];
+
 	const blockProps = useBlockProps({
 		className: 'dsg-icon',
 		style: {
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'center',
+			...(parentHoverIconBg && {
+				'--dsg-parent-hover-icon-bg': parentHoverIconBg,
+			}),
 		},
 	});
 
@@ -58,8 +65,8 @@ export default function IconEdit({ attributes, setAttributes }) {
 		alignItems: 'center',
 		justifyContent: 'center',
 		transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined,
-		// Inherit background from parent (applied by WordPress color controls)
-		background: 'inherit',
+		// Background is inherited via CSS rules (see style.scss and editor.scss)
+		// borderRadius inherits from parent for shape variants
 		borderRadius: 'inherit',
 	};
 

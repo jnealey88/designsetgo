@@ -36,8 +36,8 @@ export default function IconSave({ attributes }) {
 		alignItems: 'center',
 		justifyContent: 'center',
 		transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined,
-		// Inherit background from parent (applied by WordPress color controls)
-		background: 'inherit',
+		// Background is inherited via CSS rules (see style.scss)
+		// borderRadius inherits from parent for shape variants
 		borderRadius: 'inherit',
 	};
 
