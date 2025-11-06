@@ -12,6 +12,7 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 	useSetting,
+	PanelColorSettings,
 } from '@wordpress/block-editor';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
@@ -35,6 +36,10 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		mobileStack,
 		constrainWidth,
 		contentWidth,
+		hoverBackgroundColor,
+		hoverTextColor,
+		hoverIconBackgroundColor,
+		hoverButtonBackgroundColor,
 	} = attributes;
 
 	// Get content size from theme
@@ -85,6 +90,18 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		style: {
 			width: '100%',
 			alignSelf: 'stretch',
+			...(hoverBackgroundColor && {
+				'--dsg-hover-bg-color': hoverBackgroundColor,
+			}),
+			...(hoverTextColor && {
+				'--dsg-hover-text-color': hoverTextColor,
+			}),
+			...(hoverIconBackgroundColor && {
+				'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
+			}),
+			...(hoverButtonBackgroundColor && {
+				'--dsg-hover-button-bg-color': hoverButtonBackgroundColor,
+			}),
 		},
 	});
 
@@ -243,6 +260,61 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
+
+				<PanelColorSettings
+					title={__('Hover Settings', 'designsetgo')}
+					initialOpen={false}
+					colorSettings={[
+						{
+							value: hoverBackgroundColor,
+							onChange: (color) =>
+								setAttributes({ hoverBackgroundColor: color }),
+							label: __('Hover Background Color', 'designsetgo'),
+							clearable: true,
+						},
+						{
+							value: hoverTextColor,
+							onChange: (color) =>
+								setAttributes({ hoverTextColor: color }),
+							label: __('Hover Text Color', 'designsetgo'),
+							clearable: true,
+						},
+						// Only show icon background control if hover background is set
+						...(hoverBackgroundColor
+							? [
+									{
+										value: hoverIconBackgroundColor,
+										onChange: (color) =>
+											setAttributes({
+												hoverIconBackgroundColor: color,
+											}),
+										label: __(
+											'Hover Icon Background Color',
+											'designsetgo'
+										),
+										clearable: true,
+									},
+								]
+							: []),
+						// Only show button background control if hover background is set
+						...(hoverBackgroundColor
+							? [
+									{
+										value: hoverButtonBackgroundColor,
+										onChange: (color) =>
+											setAttributes({
+												hoverButtonBackgroundColor: color,
+											}),
+										label: __(
+											'Hover Button Background Color',
+											'designsetgo'
+										),
+										clearable: true,
+									},
+								]
+							: []),
+					]}
+				/>
 			</InspectorControls>
 
 			<div {...blockProps}>

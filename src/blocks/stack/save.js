@@ -16,7 +16,13 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  * @return {JSX.Element} Save component
  */
 export default function StackSave({ attributes }) {
-	const { alignItems, constrainWidth, contentWidth } = attributes;
+	const {
+		alignItems,
+		constrainWidth,
+		contentWidth,
+		hoverBackgroundColor,
+		hoverTextColor,
+	} = attributes;
 
 	// Calculate effective content width (must match edit.js logic for frontend)
 	// Note: Can't use useSetting in save, so use contentWidth or fallback
@@ -43,6 +49,18 @@ export default function StackSave({ attributes }) {
 		style: {
 			width: '100%',
 			alignSelf: 'stretch',
+			...(hoverBackgroundColor && {
+				'--dsg-hover-bg-color': hoverBackgroundColor,
+			}),
+			...(hoverTextColor && {
+				'--dsg-hover-text-color': hoverTextColor,
+			}),
+			...(attributes.hoverIconBackgroundColor && {
+				'--dsg-parent-hover-icon-bg': attributes.hoverIconBackgroundColor,
+			}),
+			...(attributes.hoverButtonBackgroundColor && {
+				'--dsg-parent-hover-button-bg': attributes.hoverButtonBackgroundColor,
+			}),
 		},
 	});
 

@@ -11,6 +11,10 @@
 	// Must match style.scss for editor/frontend parity
 	box-sizing: border-box;
 
+	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
+	// Smooth transition for hover background color
+	transition: background-color 0.3s ease;
+
 	// CRITICAL: Must duplicate default padding from style.scss for editor/frontend parity
 	// Default padding (theme-level): xl top/bottom, md left/right
 	padding-top: var(--wp--preset--spacing--xl, 3rem);
@@ -54,7 +58,8 @@
 		// Only apply when no custom width is set (inline styles take precedence)
 		> .dsg-flex:not([style*="width"]),
 		> .dsg-stack:not([style*="width"]),
-		> .dsg-grid:not([style*="width"]) {
+		> .dsg-grid:not([style*="width"]),
+		> .wp-block-group:not([style*="width"]) {
 			width: 100% !important;
 		}
 
@@ -63,7 +68,8 @@
 		// Only apply when no custom width is set (inline styles take precedence)
 		> [data-block] > .dsg-flex:not([style*="width"]),
 		> [data-block] > .dsg-stack:not([style*="width"]),
-		> [data-block] > .dsg-grid:not([style*="width"]) {
+		> [data-block] > .dsg-grid:not([style*="width"]),
+		> [data-block] > .wp-block-group:not([style*="width"]) {
 			width: 100% !important;
 		}
 
@@ -92,6 +98,31 @@
 	&.is-selected {
 		outline: 1px dashed rgba(37, 99, 235, 0.3);
 		outline-offset: -1px;
+	}
+
+	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
+	// Hover background and text colors using CSS custom properties
+	// CRITICAL: Only apply hover when variables are actually set on THIS element
+	// This prevents hover bleeding to adjacent containers that don't have hover settings
+	&:hover {
+		// Only apply background if hover background is set
+		&[style*="--dsg-hover-bg-color"] {
+			background-color: var(--dsg-hover-bg-color);
+		}
+
+		// Only apply text color if hover text color is set
+		// Use !important to override custom text colors set by users
+		&[style*="--dsg-hover-text-color"] {
+			color: var(--dsg-hover-text-color) !important;
+
+			// Apply text color to all text elements for consistency
+			// !important needed to override custom color classes/inline styles
+			h1, h2, h3, h4, h5, h6, p, a, span, li, td, th,
+			.wp-block-heading,
+			.wp-block-paragraph {
+				color: var(--dsg-hover-text-color) !important;
+			}
+		}
 	}
 }
 

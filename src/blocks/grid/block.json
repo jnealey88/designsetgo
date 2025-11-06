@@ -24,7 +24,8 @@
 			}
 		},
 		"dimensions": {
-			"minHeight": true
+			"minHeight": true,
+			"maxWidth": false
 		},
 		"color": {
 			"background": true,
@@ -104,10 +105,28 @@
 		"contentWidth": {
 			"type": "string",
 			"default": ""
+		},
+		"hoverBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"hoverTextColor": {
+			"type": "string",
+			"default": ""
+		},
+		"hoverIconBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"hoverButtonBackgroundColor": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"providesContext": {
-		"designsetgo/alignItems": "alignItems"
+		"designsetgo/alignItems": "alignItems",
+		"designsetgo/hoverIconBackgroundColor": "hoverIconBackgroundColor",
+		"designsetgo/hoverButtonBackgroundColor": "hoverButtonBackgroundColor"
 	},
 	"example": {
 		"attributes": {

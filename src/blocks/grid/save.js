@@ -25,6 +25,8 @@ export default function GridSave({ attributes }) {
 		alignItems,
 		constrainWidth,
 		contentWidth,
+		hoverBackgroundColor,
+		hoverTextColor,
 	} = attributes;
 
 	// Calculate effective content width (must match edit.js logic for frontend)
@@ -56,6 +58,18 @@ export default function GridSave({ attributes }) {
 		style: {
 			width: '100%',
 			alignSelf: 'stretch',
+			...(hoverBackgroundColor && {
+				'--dsg-hover-bg-color': hoverBackgroundColor,
+			}),
+			...(hoverTextColor && {
+				'--dsg-hover-text-color': hoverTextColor,
+			}),
+			...(attributes.hoverIconBackgroundColor && {
+				'--dsg-parent-hover-icon-bg': attributes.hoverIconBackgroundColor,
+			}),
+			...(attributes.hoverButtonBackgroundColor && {
+				'--dsg-parent-hover-button-bg': attributes.hoverButtonBackgroundColor,
+			}),
 		},
 	});
 

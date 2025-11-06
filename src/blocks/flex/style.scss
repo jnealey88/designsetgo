@@ -11,6 +11,9 @@
 	// When width: 100% is set, padding must be included in the total width
 	box-sizing: border-box;
 
+	// Smooth transition for hover background color
+	transition: background-color 0.3s ease;
+
 	// Default padding (theme-level): xl top/bottom, md left/right
 	// Users can override via WordPress padding controls
 	// When padding is set to "Default", these theme values apply
@@ -48,7 +51,8 @@
 		// Only apply when no custom width is set (inline styles take precedence)
 		> .dsg-flex:not([style*="width"]),
 		> .dsg-stack:not([style*="width"]),
-		> .dsg-grid:not([style*="width"]) {
+		> .dsg-grid:not([style*="width"]),
+		> .wp-block-group:not([style*="width"]) {
 			width: 100%;
 		}
 
@@ -74,6 +78,30 @@
 
 			.dsg-flex__inner {
 				flex-direction: column !important;
+			}
+		}
+	}
+
+	// Hover background and text colors using CSS custom properties
+	// CRITICAL: Only apply hover when variables are actually set on THIS element
+	// This prevents hover bleeding to adjacent containers that don't have hover settings
+	&:hover {
+		// Only apply background if hover background is set
+		&[style*="--dsg-hover-bg-color"] {
+			background-color: var(--dsg-hover-bg-color);
+		}
+
+		// Only apply text color if hover text color is set
+		// Use !important to override custom text colors set by users
+		&[style*="--dsg-hover-text-color"] {
+			color: var(--dsg-hover-text-color) !important;
+
+			// Apply text color to all text elements for consistency
+			// !important needed to override custom color classes/inline styles
+			h1, h2, h3, h4, h5, h6, p, a, span, li, td, th,
+			.wp-block-heading,
+			.wp-block-paragraph {
+				color: var(--dsg-hover-text-color) !important;
 			}
 		}
 	}
