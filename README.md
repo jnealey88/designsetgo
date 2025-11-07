@@ -2,6 +2,12 @@
 
 Modern Gutenberg block library bridging the gap between core WordPress blocks and advanced page builders. Design made easy, fast, and beautiful.
 
+## 🤖 **First AI-Native WordPress Block Library**
+
+DesignSetGo is the **first WordPress block plugin** to integrate with the WordPress 6.9 Abilities API, making it fully accessible to AI agents and automation tools. Build pages programmatically with Claude, ChatGPT, or custom AI workflows.
+
+> **[📖 Read the Abilities API Documentation →](docs/ABILITIES-API.md)**
+
 ## Status
 
 ✨ **Active Development** - Core blocks complete, expanding features
@@ -10,14 +16,17 @@ Modern Gutenberg block library bridging the gap between core WordPress blocks an
 - ✅ Project foundation and architecture complete
 - ✅ Build system configured (webpack + @wordpress/scripts)
 - ✅ PHP plugin architecture implemented
-- ✅ 12 custom blocks with FSE integration
-- ✅ Block extensions (Responsive, Animations)
+- ✅ 40 custom blocks across 5 categories with FSE integration
+- ✅ Block extensions (Responsive, Animations, Scroll Effects, Overlay)
 - ✅ Global styles system (theme.json integration)
 - ✅ Animation system with 8+ entrance animations
+- ✅ Complete Form Builder with 12 field types
 - ✅ Block patterns library
-- ✅ Comprehensive testing setup (E2E + Unit)
+- ✅ Comprehensive testing setup (E2E + Unit + PHP)
 - ✅ WordPress 6.4+ compatibility
-- 🔄 Expanding pattern library and documentation
+- ✅ WordPress Abilities API integration (AI-native)
+- ✅ Comprehensive documentation (5,000+ lines)
+- 🔄 Expanding pattern library
 
 See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 
@@ -25,8 +34,9 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 
 | Category | Features |
 |----------|----------|
-| **Blocks** | 12 custom blocks (Container, Accordion, Tabs, Counter, Icon, Progress Bar, Pill, etc.) |
-| **Extensions** | Responsive visibility, entrance animations for any block |
+| **🤖 AI Integration** | **WordPress Abilities API** - First plugin with AI-native programmatic access |
+| **Blocks** | 40 custom blocks across 5 categories: Layout Containers (3), Interactive Content (7), Content Elements (7), Advanced Interactions (1), Form Builder (14+) |
+| **Extensions** | Responsive visibility, entrance animations, scroll effects, overlay, custom CSS |
 | **Patterns** | Pre-designed layouts (Hero, CTA, Features, FAQ) |
 | **FSE Ready** | Full Site Editing compatible, theme.json integration |
 | **Performance** | < 10 KB per block, CSS-only animations, no jQuery |
@@ -114,65 +124,43 @@ npm run plugin-zip
 
 ## Current Features
 
-### 12 Custom Blocks
+### 40 Custom Blocks
 
-#### Layout & Structure
-**Container Block** - Advanced layout container with responsive controls
-- Layout types: Stack, Grid, Flexbox
-- Responsive grid columns (Desktop/Tablet/Mobile)
-- Content width constraints
-- Video backgrounds
-- Background overlays
-- Clickable containers (card-style links)
-- Semantic HTML options (div, section, article, etc.)
+📚 **[View Complete Blocks Reference →](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)**
 
-#### Interactive Components
-**Accordion** - Collapsible content panels
-- Multiple items with expand/collapse
-- Customizable icons
-- Smooth animations
-- Individual item control (Accordion Item block)
+#### Layout Containers (3 Blocks)
+- **Flex Container** - Horizontal/vertical layouts with wrapping
+- **Grid Container** - Responsive CSS Grid layouts
+- **Stack Container** - Vertical stacking with spacing control
 
-**Tabs** - Horizontal tabbed interface
-- Multiple tab panels
-- Customizable styling
-- Keyboard navigation
-- Individual tab control (Tab block)
+#### Interactive Content (7 Block Groups)
+- **Accordion** - Collapsible content panels
+- **Tabs** - Tabbed content interface with icons
+- **Slider** - Modern slider with multiple effects (slide, fade, zoom)
+- **Flip Card** - Interactive cards that flip on hover/click
+- **Reveal** - Content that reveals on hover
+- **Scroll Accordion** - Sticky stacking accordion triggered by scroll
+- **Image Accordion** - Expandable image panels for portfolios
 
-**Counter** - Animated number counting
-- Count-up animations using CountUp.js
-- Customizable start/end values
-- Duration, delay, and easing controls
-- Prefix/suffix support
-- Decimal precision
-- Counter Group for multiple stats
+#### Content Elements (7 Blocks)
+- **Icon** - 500+ icons with shapes and animations
+- **Icon Button** - Icon-based buttons with styles
+- **Icon List** - Lists with custom icons
+- **Pill** - Badge/tag components
+- **Counter** - Animated counting numbers
+- **Progress Bar** - Animated progress indicators
+- **Blobs** - Organic shapes with morphing animations
 
-**Progress Bar** - Visual progress indicator
-- Animated fill effect
-- Customizable colors and height
-- Percentage display
-- Label support
+#### Advanced Interactions (1 Block)
+- **Scroll Marquee** - Horizontal scrolling image galleries with parallax
 
-#### Visual Elements
-**Icon Block** - SVG icon library
-- 20+ built-in icons
-- Size and color controls
-- Alignment options
-- Link support
-
-**Icon List** - Structured lists with icons
-- Custom icon per item
-- Flexible styling
-- Individual item control (Icon List Item block)
-
-**Pill** - Badge/tag-style text
-- Inline text with rounded background
-- Background wraps tightly around content
-- Full color customization (background, text, gradients)
-- Typography controls (font size, weight, spacing)
-- Border and border radius controls
-- Text alignment options
-- Default small font size
+#### Form Builder (14+ Blocks)
+- **Form Builder** - Complete form system with 12 field types:
+  - Text, Email, Phone, URL fields
+  - Date, Time, Number fields
+  - Checkbox, Select, Textarea
+  - File Upload, Hidden field
+- AJAX submission, spam protection, email notifications
 
 ### Block Extensions
 
@@ -256,14 +244,15 @@ designsetgo/
 ## Roadmap
 
 ### ✅ Completed (Phase 1)
-- 12 core custom blocks (Container, Accordion, Tabs, Counter, Icon, Progress Bar, Pill, etc.)
-- Block extensions (Responsive, Animations)
+- 40 custom blocks across 5 categories (Layout, Interactive, Content, Advanced, Forms)
+- Block extensions (Responsive, Animations, Scroll Effects)
 - Global styles integration
 - Animation system (8+ entrance animations)
 - Block patterns (Hero, CTA, Features, FAQ)
-- Comprehensive documentation (2,500+ lines)
-- Testing infrastructure (E2E + Unit)
+- Comprehensive documentation (5,000+ lines across wiki and docs)
+- Testing infrastructure (E2E + Unit + PHP)
 - FSE compatibility (Twenty Twenty-Five)
+- WordPress Abilities API integration
 
 ### 🔄 Current Focus
 - Expanding pattern library
@@ -277,16 +266,17 @@ designsetgo/
 - Advanced animation sequences
 - More block patterns (20+ total)
 - Video tutorials and documentation
+- Enhanced Form Builder features (conditional logic, multi-step forms)
 - Community feedback integration
 - WordPress.org release
 
 ### 🔮 Future Phases
 - Dynamic content blocks
 - WooCommerce integration blocks
-- Form builder blocks
 - Advanced theme builder features
 - Template library
 - Community pattern marketplace
+- Form integrations (Mailchimp, ConvertKit, etc.)
 
 ## What Makes DesignSetGo Different?
 
@@ -351,21 +341,76 @@ GPL-2.0-or-later - 100% Free Forever
 
 Blocks are organized in the WordPress block inserter:
 
-**DesignSetGo** - Main category (appears first)
-- Container
-- Accordion / Accordion Item
-- Tabs / Tab
-- Counter / Counter Group
-- Icon / Icon List / Icon List Item
-- Progress Bar
-- Pill
+**DesignSetGo Collection** - All 40 blocks grouped together
+- Layout Containers: Flex, Grid, Stack
+- Interactive: Accordion, Tabs, Slider, Flip Card, Reveal, Scroll Accordion, Image Accordion
+- Content: Icon, Icon Button, Icon List, Pill, Counter, Progress Bar, Blobs
+- Advanced: Scroll Marquee
+- Forms: Form Builder + 12 field types
+
+**WordPress Core Categories** - Blocks also appear in native categories
+- **Design**: Most layout and interactive blocks
+- **Text**: Icon List
+- **Widgets**: Forms, Counters, Progress Bars
 
 **Extensions** - Available for all blocks
-- Responsive visibility toggles (Block Settings → DesignSetGo)
-- Entrance animations (Block Settings → DesignSetGo)
+- Responsive visibility toggles
+- Entrance animations (8+ effects)
+- Scroll effects
+- Overlay controls
+- Custom CSS
 
 **Patterns** - Pre-designed layouts
 - Look for the "DesignSetGo" category in the pattern inserter
+
+📚 **[Complete Blocks Reference](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)** - Detailed documentation for all blocks
+
+## 🤖 AI Integration (WordPress Abilities API)
+
+DesignSetGo is the **first WordPress block plugin** to fully integrate with the WordPress 6.9 Abilities API, enabling AI agents and automation tools to programmatically interact with blocks.
+
+### Available Abilities (v2.0)
+
+**Discovery:**
+- `designsetgo/list-blocks` - List all available blocks with schemas
+
+**Block Insertion:**
+- `designsetgo/insert-flex-container` - Insert Flex layout
+- `designsetgo/insert-grid-container` - Insert responsive Grid
+
+**Configuration:**
+- `designsetgo/configure-counter-animation` - Update counter settings
+- `designsetgo/apply-animation` - Apply animations to any block
+
+### Quick Example
+
+```bash
+# List all DesignSetGo blocks
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/list-blocks/execute \
+  -u "username:password" \
+  -d '{"category": "all"}'
+
+# Insert a Flex container
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/insert-flex-container/execute \
+  -u "username:password" \
+  -d '{
+    "post_id": 123,
+    "attributes": {
+      "direction": "row",
+      "justifyContent": "center"
+    }
+  }'
+```
+
+### AI Agent Support
+
+- ✅ **Claude** (via Model Context Protocol)
+- ✅ **ChatGPT** (via REST API)
+- ✅ **Custom Automation Tools**
+
+**[📖 Full Abilities API Documentation →](docs/ABILITIES-API.md)**
+
+---
 
 ## Support
 
@@ -390,7 +435,7 @@ Built with ❤️ for the WordPress community by developers who believe in:
 - Accessible, performant web experiences
 - Clean, maintainable code
 
-**Powered by**: React, WordPress Block Editor, Webpack, @wordpress/scripts
+**Powered by**: React, WordPress Block Editor, Webpack, @wordpress/scripts, WordPress Abilities API
 
 ---
 

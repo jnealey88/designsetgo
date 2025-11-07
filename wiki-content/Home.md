@@ -10,15 +10,40 @@
 - **[Quick Start Guide](Quick-Start)** - Get up and running in 5 minutes
 - **[Installation](Installation)** - Installation methods and requirements
 - **[Finding Your Blocks](Finding-Your-Blocks)** - Locate blocks in the WordPress editor
+- **[Blocks Reference](Blocks-Reference)** - Complete guide to all 40 blocks
 
-### Using DesignSetGo
-- **[Container Block](Container-Block)** - Advanced layouts, grids, and video backgrounds
-- **[Tabs Block](Tabs-Block)** - Tabbed content with icons and deep linking
-- **[Accordion Block](Accordion-Block)** - Collapsible content panels
-- **[Counter Block](Counter-Block)** - Animated counting numbers
-- **[Icon Block](Icon-Block)** - 500+ icons with shapes and animations
-- **[Progress Bar Block](Progress-Bar)** - Animated progress indicators
-- **[Pill Block](Pill-Block)** - Badge/tag components
+### Layout Containers
+- **[Flex Container](Flex-Container)** - Flexible horizontal or vertical layouts with wrapping
+- **[Grid Container](Grid-Container)** - Advanced grid layouts with responsive columns
+- **[Stack Container](Stack-Container)** - Vertical stacking layouts with controlled spacing
+
+### Interactive Content
+- **[Accordion](Accordion-Block)** - Collapsible content panels with smooth animations
+- **[Tabs](Tabs-Block)** - Tabbed content with icons and deep linking
+- **[Slider](Slider-Block)** - Modern slider with multiple transition effects and auto-play
+- **[Flip Card](Flip-Card-Block)** - Interactive cards that flip to reveal content on hover or click
+- **[Reveal](Reveal-Block)** - Container that reveals hidden content on hover
+- **[Scroll Accordion](Scroll-Accordion-Block)** - Accordion with sticky stacking effect on scroll
+- **[Image Accordion](Image-Accordion-Block)** - Expandable image panels for portfolios and galleries
+
+### Content Elements
+- **[Icon](Icon-Block)** - 500+ icons with shapes, animations, and hover effects
+- **[Icon Button](Icon-Button-Block)** - Icon-based buttons with multiple styles
+- **[Icon List](Icon-List-Block)** - Lists with custom icons for each item
+- **[Pill](Pill-Block)** - Badge/tag components with customizable styles
+- **[Counter](Counter-Block)** - Animated counting numbers with grouping support
+- **[Progress Bar](Progress-Bar)** - Animated progress indicators with multiple styles
+- **[Blobs](Blobs-Block)** - Organic shapes with morphing animations and gradients
+
+### Advanced Interactions
+- **[Scroll Marquee](Scroll-Marquee-Block)** - Horizontal scrolling galleries with parallax effect
+
+### Form Builder
+- **[Form Builder](Form-Builder-Block)** - Complete form system with 12 field types
+  - Text Field, Email Field, Phone Field, URL Field
+  - Date Field, Time Field, Number Field
+  - Checkbox Field, Select Field, Textarea
+  - File Upload, Hidden Field
 
 ### For Developers
 - **[Development Guide](Development-Guide)** - Complete development reference
@@ -42,7 +67,7 @@ DesignSetGo is a **free, open-source Gutenberg block library** that adds powerfu
 
 | Category | Features |
 |----------|----------|
-| **Blocks** | 7 custom blocks (Container, Accordion, Tabs, Counter, Icon, Progress Bar, Pill) |
+| **Blocks** | 40 custom blocks organized in 5 categories: Layout Containers (3), Interactive Content (7), Content Elements (7), Advanced Interactions (1), Form Builder (14+) |
 | **Patterns** | Pre-designed layouts (Hero, CTA, Features, FAQ) |
 | **FSE Ready** | Full Site Editing compatible, theme.json integration |
 | **Performance** | < 10 KB per block, CSS-only animations, no jQuery |
