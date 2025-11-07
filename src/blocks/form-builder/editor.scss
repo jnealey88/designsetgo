@@ -1,0 +1,60 @@
+/**
+ * Form Builder Block - Editor Styles
+ *
+ * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+ *
+ * @since 1.0.0
+ */
+
+// Import the main frontend styles for base styling
+@import './style.scss';
+
+// Editor-specific overrides and enhancements
+.editor-styles-wrapper {
+	// Form builder in editor
+	.dsg-form-builder {
+		// Add slight padding in editor for better block selection
+		padding: 1rem;
+		border: 1px dashed transparent;
+		transition: border-color 0.2s ease;
+
+		&.is-selected,
+		&.has-child-selected {
+			border-color: var(--wp-admin-theme-color, #2563eb);
+		}
+	}
+
+	// Submit button in editor should be disabled
+	.dsg-form__submit {
+		cursor: default;
+		pointer-events: none;
+
+		&:hover {
+			transform: none;
+			opacity: 1;
+		}
+	}
+
+	// Show editor message hint
+	.dsg-form__message--editor {
+		display: block !important;
+		opacity: 0.5;
+		font-style: italic;
+		background-color: #f3f4f6;
+		border: 1px dashed #d1d5db;
+		color: #6b7280;
+	}
+
+	// Empty state hint for form fields
+	.dsg-form__fields:empty::after {
+		content: 'Add form fields using the block inserter (+) button';
+		display: block;
+		padding: 2rem;
+		text-align: center;
+		color: #6b7280;
+		font-style: italic;
+		background-color: #f9fafb;
+		border: 2px dashed #e5e7eb;
+		border-radius: var(--dsg-form-border-radius);
+	}
+}

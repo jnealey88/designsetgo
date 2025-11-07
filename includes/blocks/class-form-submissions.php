@@ -1,0 +1,224 @@
+<?php
+/**
+ * Form Submissions Custom Post Type
+ *
+ * Registers and manages form submission post type and admin UI.
+ *
+ * @package DesignSetGo
+ * @since 1.0.0
+ */
+
+namespace DesignSetGo\Blocks;
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Form_Submissions class.
+ */
+class Form_Submissions {
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		add_action( 'init', array( $this, 'register_post_type' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+		add_filter( 'manage_dsg_form_submission_posts_columns', array( $this, 'custom_columns' ) );
+		add_action( 'manage_dsg_form_submission_posts_custom_column', array( $this, 'custom_column_content' ), 10, 2 );
+	}
+
+	/**
+	 * Register custom post type for form submissions.
+	 */
+	public function register_post_type() {
+		$labels = array(
+			'name'               => _x( 'Form Submissions', 'post type general name', 'designsetgo' ),
+			'singular_name'      => _x( 'Form Submission', 'post type singular name', 'designsetgo' ),
+			'menu_name'          => _x( 'Form Submissions', 'admin menu', 'designsetgo' ),
+			'name_admin_bar'     => _x( 'Form Submission', 'add new on admin bar', 'designsetgo' ),
+			'all_items'          => __( 'All Submissions', 'designsetgo' ),
+			'view_item'          => __( 'View Submission', 'designsetgo' ),
+			'search_items'       => __( 'Search Submissions', 'designsetgo' ),
+			'not_found'          => __( 'No submissions found', 'designsetgo' ),
+			'not_found_in_trash' => __( 'No submissions found in Trash', 'designsetgo' ),
+		);
+
+		$args = array(
+			'labels'             => $labels,
+			'public'             => false,
+			'publicly_queryable' => false,
+			'show_ui'            => true,
+			'show_in_menu'       => 'designsetgo', // Show under DesignSetGo menu
+			'query_var'          => true,
+			'rewrite'            => false,
+			'capability_type'    => 'post',
+			'capabilities'       => array(
+				'create_posts' => 'do_not_allow', // Prevent manual creation
+			),
+			'map_meta_cap'       => true,
+			'has_archive'        => false,
+			'hierarchical'       => false,
+			'menu_position'      => null,
+			'supports'           => array( 'title' ),
+		);
+
+		register_post_type( 'dsg_form_submission', $args );
+	}
+
+	/**
+	 * Add meta boxes to submission edit screen.
+	 */
+	public function add_meta_boxes() {
+		add_meta_box(
+			'dsg_submission_details',
+			__( 'Submission Details', 'designsetgo' ),
+			array( $this, 'render_submission_details' ),
+			'dsg_form_submission',
+			'normal',
+			'high'
+		);
+
+		add_meta_box(
+			'dsg_submission_meta',
+			__( 'Submission Information', 'designsetgo' ),
+			array( $this, 'render_submission_meta' ),
+			'dsg_form_submission',
+			'side',
+			'default'
+		);
+	}
+
+	/**
+	 * Render submission details meta box.
+	 *
+	 * @param \WP_Post $post Post object.
+	 */
+	public function render_submission_details( $post ) {
+		$fields = get_post_meta( $post->ID, '_dsg_form_fields', true );
+
+		if ( empty( $fields ) || ! is_array( $fields ) ) {
+			echo '<p>' . esc_html__( 'No form data available.', 'designsetgo' ) . '</p>';
+			return;
+		}
+
+		echo '<table class="widefat striped">';
+		echo '<thead><tr>';
+		echo '<th>' . esc_html__( 'Field Name', 'designsetgo' ) . '</th>';
+		echo '<th>' . esc_html__( 'Value', 'designsetgo' ) . '</th>';
+		echo '<th>' . esc_html__( 'Type', 'designsetgo' ) . '</th>';
+		echo '</tr></thead>';
+		echo '<tbody>';
+
+		foreach ( $fields as $field_name => $field_data ) {
+			$value = isset( $field_data['value'] ) ? $field_data['value'] : '';
+			$type  = isset( $field_data['type'] ) ? $field_data['type'] : 'text';
+
+			// Format value based on type
+			if ( $type === 'email' ) {
+				$value = '<a href="mailto:' . esc_attr( $value ) . '">' . esc_html( $value ) . '</a>';
+			} elseif ( $type === 'url' ) {
+				$value = '<a href="' . esc_url( $value ) . '" target="_blank" rel="noopener">' . esc_html( $value ) . '</a>';
+			} elseif ( $type === 'textarea' ) {
+				$value = '<div style="white-space: pre-wrap;">' . esc_html( $value ) . '</div>';
+			} else {
+				$value = esc_html( $value );
+			}
+
+			echo '<tr>';
+			echo '<td><strong>' . esc_html( $field_name ) . '</strong></td>';
+			echo '<td>' . $value . '</td>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo '<td><code>' . esc_html( $type ) . '</code></td>';
+			echo '</tr>';
+		}
+
+		echo '</tbody>';
+		echo '</table>';
+	}
+
+	/**
+	 * Render submission meta information.
+	 *
+	 * @param \WP_Post $post Post object.
+	 */
+	public function render_submission_meta( $post ) {
+		$form_id    = get_post_meta( $post->ID, '_dsg_form_id', true );
+		$ip_address = get_post_meta( $post->ID, '_dsg_submission_ip', true );
+		$user_agent = get_post_meta( $post->ID, '_dsg_submission_user_agent', true );
+		$referer    = get_post_meta( $post->ID, '_dsg_submission_referer', true );
+		$date       = get_post_meta( $post->ID, '_dsg_submission_date', true );
+
+		echo '<div style="margin-bottom: 1em;">';
+		echo '<strong>' . esc_html__( 'Form ID:', 'designsetgo' ) . '</strong><br>';
+		echo '<code>' . esc_html( $form_id ) . '</code>';
+		echo '</div>';
+
+		if ( $date ) {
+			echo '<div style="margin-bottom: 1em;">';
+			echo '<strong>' . esc_html__( 'Submitted:', 'designsetgo' ) . '</strong><br>';
+			echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $date ) ) );
+			echo '</div>';
+		}
+
+		if ( $ip_address ) {
+			echo '<div style="margin-bottom: 1em;">';
+			echo '<strong>' . esc_html__( 'IP Address:', 'designsetgo' ) . '</strong><br>';
+			echo '<code>' . esc_html( $ip_address ) . '</code>';
+			echo '</div>';
+		}
+
+		if ( $referer ) {
+			echo '<div style="margin-bottom: 1em;">';
+			echo '<strong>' . esc_html__( 'Referrer:', 'designsetgo' ) . '</strong><br>';
+			echo '<a href="' . esc_url( $referer ) . '" target="_blank" rel="noopener">' . esc_html( $referer ) . '</a>';
+			echo '</div>';
+		}
+
+		if ( $user_agent ) {
+			echo '<div style="margin-bottom: 1em;">';
+			echo '<strong>' . esc_html__( 'User Agent:', 'designsetgo' ) . '</strong><br>';
+			echo '<code style="word-break: break-all;">' . esc_html( $user_agent ) . '</code>';
+			echo '</div>';
+		}
+	}
+
+	/**
+	 * Customize admin columns.
+	 *
+	 * @param array $columns Existing columns.
+	 * @return array Modified columns.
+	 */
+	public function custom_columns( $columns ) {
+		$new_columns = array(
+			'cb'         => $columns['cb'],
+			'title'      => __( 'Submission', 'designsetgo' ),
+			'form_id'    => __( 'Form ID', 'designsetgo' ),
+			'ip_address' => __( 'IP Address', 'designsetgo' ),
+			'date'       => __( 'Date', 'designsetgo' ),
+		);
+
+		return $new_columns;
+	}
+
+	/**
+	 * Render custom column content.
+	 *
+	 * @param string $column Column name.
+	 * @param int    $post_id Post ID.
+	 */
+	public function custom_column_content( $column, $post_id ) {
+		switch ( $column ) {
+			case 'form_id':
+				$form_id = get_post_meta( $post_id, '_dsg_form_id', true );
+				echo $form_id ? '<code>' . esc_html( $form_id ) . '</code>' : '—';
+				break;
+
+			case 'ip_address':
+				$ip_address = get_post_meta( $post_id, '_dsg_submission_ip', true );
+				echo $ip_address ? '<code>' . esc_html( $ip_address ) . '</code>' : '—';
+				break;
+		}
+	}
+}

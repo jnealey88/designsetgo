@@ -1,0 +1,180 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/form-builder",
+	"version": "1.0.0",
+	"title": "Form Builder",
+	"category": "widgets",
+	"description": "Create custom forms with multiple field types, AJAX submission, and spam protection.",
+	"keywords": [
+		"form",
+		"contact",
+		"submit",
+		"fields",
+		"survey"
+	],
+	"textdomain": "designsetgo",
+	"attributes": {
+		"formId": {
+			"type": "string",
+			"default": ""
+		},
+		"submitButtonText": {
+			"type": "string",
+			"default": "Submit"
+		},
+		"submitButtonAlignment": {
+			"type": "string",
+			"default": "left",
+			"enum": ["left", "center", "right"]
+		},
+		"ajaxSubmit": {
+			"type": "boolean",
+			"default": true
+		},
+		"successMessage": {
+			"type": "string",
+			"default": "Thank you! Your form has been submitted successfully."
+		},
+		"errorMessage": {
+			"type": "string",
+			"default": "There was an error submitting the form. Please try again."
+		},
+		"fieldSpacing": {
+			"type": "string",
+			"default": "1.5rem"
+		},
+		"inputHeight": {
+			"type": "string",
+			"default": "44px"
+		},
+		"inputPadding": {
+			"type": "string",
+			"default": "0.75rem"
+		},
+		"fieldLabelColor": {
+			"type": "string",
+			"default": ""
+		},
+		"fieldBorderColor": {
+			"type": "string",
+			"default": ""
+		},
+		"fieldBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"submitButtonColor": {
+			"type": "string",
+			"default": ""
+		},
+		"submitButtonBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"enableHoneypot": {
+			"type": "boolean",
+			"default": true
+		},
+		"enableRateLimit": {
+			"type": "boolean",
+			"default": true
+		},
+		"rateLimitCount": {
+			"type": "number",
+			"default": 3
+		},
+		"rateLimitWindow": {
+			"type": "number",
+			"default": 60
+		},
+		"enableEmail": {
+			"type": "boolean",
+			"default": false
+		},
+		"emailTo": {
+			"type": "string",
+			"default": ""
+		},
+		"emailSubject": {
+			"type": "string",
+			"default": "New Form Submission"
+		},
+		"emailFromName": {
+			"type": "string",
+			"default": ""
+		},
+		"emailFromEmail": {
+			"type": "string",
+			"default": ""
+		},
+		"emailReplyTo": {
+			"type": "string",
+			"default": ""
+		},
+		"emailBody": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"providesContext": {
+		"designsetgo/form/submitButtonText": "submitButtonText",
+		"designsetgo/form/submitButtonColor": "submitButtonColor",
+		"designsetgo/form/fieldLabelColor": "fieldLabelColor",
+		"designsetgo/form/fieldBorderColor": "fieldBorderColor",
+		"designsetgo/form/fieldSpacing": "fieldSpacing",
+		"designsetgo/form/formId": "formId"
+	},
+	"supports": {
+		"anchor": true,
+		"align": ["wide", "full"],
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"margin": false,
+				"padding": true
+			}
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"__experimentalDefaultControls": {
+				"background": false,
+				"text": false
+			}
+		}
+	},
+	"example": {
+		"attributes": {
+			"submitButtonText": "Send Message"
+		},
+		"innerBlocks": [
+			{
+				"name": "designsetgo/form-text-field",
+				"attributes": {
+					"label": "Name",
+					"required": true
+				}
+			},
+			{
+				"name": "designsetgo/form-email-field",
+				"attributes": {
+					"label": "Email",
+					"required": true
+				}
+			},
+			{
+				"name": "designsetgo/form-textarea",
+				"attributes": {
+					"label": "Message"
+				}
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"viewScript": "file:./view.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
+}

@@ -1,0 +1,162 @@
+/**
+ * Form Builder Block - Frontend Styles
+ *
+ * @since 1.0.0
+ */
+
+.dsg-form-builder {
+	// CSS Custom Properties (set from block attributes)
+	--dsg-form-field-spacing: 1.5rem;
+	--dsg-form-label-color: inherit;
+	--dsg-form-border-color: #d1d5db;
+	--dsg-form-border-radius: 0.375rem;
+	--dsg-form-focus-color: var(--wp--preset--color--primary, #2563eb);
+	--dsg-form-error-color: #dc2626;
+	--dsg-form-success-color: #16a34a;
+	// Button colors intentionally not set here - uses theme defaults unless overridden
+
+	// Form container
+	width: 100%;
+	max-width: 100%;
+}
+
+.dsg-form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--dsg-form-field-spacing);
+	width: 100%;
+
+	// Form fields container
+	&__fields {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: var(--dsg-form-field-spacing);
+		align-items: flex-start;
+	}
+
+	// Footer with submit button
+	&__footer {
+		display: flex;
+		margin-top: var(--dsg-form-field-spacing);
+	}
+
+	// Submit button - minimal styling to allow theme styles to work
+	&__submit {
+		// No color/background rules - let theme handle via wp-element-button
+		// Custom colors applied as inline styles when user sets them
+
+		// Minimal overrides for functionality
+		cursor: pointer;
+		min-height: 44px; // Touch-friendly (accessibility requirement)
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+
+		// Loading state
+		&.dsg-form__submit--loading {
+			position: relative;
+			color: transparent;
+			pointer-events: none;
+
+			&::after {
+				content: '';
+				position: absolute;
+				width: 16px;
+				height: 16px;
+				top: 50%;
+				left: 50%;
+				margin-left: -8px;
+				margin-top: -8px;
+				border: 2px solid currentColor;
+				border-radius: 50%;
+				border-top-color: transparent;
+				animation: dsg-form-spinner 0.6s linear infinite;
+				color: var(--dsg-form-submit-color);
+			}
+		}
+	}
+
+	// Message container (success/error)
+	&__message {
+		margin-top: 1rem;
+		padding: 1rem;
+		border-radius: var(--dsg-form-border-radius);
+		font-size: 0.875rem;
+		line-height: 1.5;
+
+		&--success {
+			color: var(--dsg-form-success-color);
+			background-color: rgb(220 252 231); // light green
+			border: 1px solid var(--dsg-form-success-color);
+		}
+
+		&--error {
+			color: var(--dsg-form-error-color);
+			background-color: rgb(254 226 226); // light red
+			border: 1px solid var(--dsg-form-error-color);
+		}
+
+		&--editor {
+			display: none;
+		}
+	}
+}
+
+// Button alignment modifiers
+.dsg-form-builder--align-left {
+	.dsg-form__footer {
+		justify-content: flex-start;
+	}
+}
+
+.dsg-form-builder--align-center {
+	.dsg-form__footer {
+		justify-content: center;
+	}
+}
+
+.dsg-form-builder--align-right {
+	.dsg-form__footer {
+		justify-content: flex-end;
+	}
+}
+
+// Loading spinner animation
+@keyframes dsg-form-spinner {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+	.dsg-form__submit {
+		width: 100%; // Full width on mobile for easier tapping
+	}
+
+	.dsg-form-builder--align-left,
+	.dsg-form-builder--align-center,
+	.dsg-form-builder--align-right {
+		.dsg-form__footer {
+			justify-content: stretch;
+		}
+	}
+}
+
+// Print styles
+@media print {
+	.dsg-form__submit {
+		display: none;
+	}
+
+	.dsg-form__message {
+		display: none;
+	}
+}
