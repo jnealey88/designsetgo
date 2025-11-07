@@ -29,7 +29,7 @@ export default function Edit() {
 				'core/paragraph',
 				{
 					placeholder: __(
-						'Add content for this scroll accordion item...',
+						'Add content for this scroll accordion item…',
 						'designsetgo'
 					),
 				},

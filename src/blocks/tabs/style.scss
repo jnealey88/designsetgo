@@ -2,10 +2,29 @@
  * Tabs Block - Frontend Styles
  */
 
+// Ensure WordPress block wrapper doesn't cause overflow
+.wp-block-designsetgo-tabs {
+	max-width: 100%;
+	box-sizing: border-box;
+
+	// Override WordPress alignment negative margins
+	&.alignfull,
+	&.alignwide {
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+	}
+}
+
 .dsg-tabs {
 	position: relative;
 	padding: 0; // Default to no padding
 	width: 100%; // Fill container width
+	max-width: 100%; // Prevent overflow beyond parent
+	min-width: 0; // Allow shrinking in flex containers
+	box-sizing: border-box; // Include padding/border in width calculation
+	overflow: hidden; // Prevent child elements from overflowing
+	margin-left: 0 !important; // Prevent WordPress negative margins
+	margin-right: 0 !important; // Prevent WordPress negative margins
 
 	// CSS custom properties for easy customization
 	--dsg-tabs-gap: 8px;
@@ -25,6 +44,25 @@
 		gap: var(--dsg-tabs-gap);
 		margin-bottom: var(--wp--preset--spacing--md, 1.5rem);
 		border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+
+		// Hide scrollbar in most browsers but keep functionality
+		scrollbar-width: thin;
+		scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
+		&::-webkit-scrollbar {
+			height: 4px;
+		}
+
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: rgba(0, 0, 0, 0.2);
+			border-radius: 2px;
+		}
 	}
 
 	/**
@@ -80,6 +118,10 @@
 	 */
 	.dsg-tabs__panels {
 		position: relative;
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
+		box-sizing: border-box;
 	}
 
 	/**
@@ -87,6 +129,10 @@
 	 */
 	.dsg-tab {
 		display: none;
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
+		box-sizing: border-box;
 
 		&.is-active {
 			display: block;
@@ -95,6 +141,13 @@
 		&[hidden] {
 			display: none;
 		}
+	}
+
+	/**
+	 * Tab Content Wrapper
+	 */
+	.dsg-tab__content {
+		// Let content flow naturally
 	}
 
 	/**
@@ -253,10 +306,13 @@
 		}
 
 		.dsg-tab {
-			display: block;
+			display: block !important; // Force all tabs visible in accordion mode
 			border: 1px solid rgba(0, 0, 0, 0.1);
 			border-radius: var(--dsg-tab-border-radius);
 			margin-bottom: 0.5rem;
+			padding: 0; // Remove any padding from tab panel itself
+			overflow: hidden; // Ensure content doesn't create extra space
+			min-height: 0 !important; // Override editor min-height for accordion mode
 
 			.dsg-tab__accordion-header {
 				width: 100%;
@@ -295,7 +351,10 @@
 			&:not(.is-active) {
 
 				.dsg-tab__content {
-					display: none;
+					display: none !important; // Force content to be completely hidden when inactive
+					height: 0 !important; // Collapse height to prevent space
+					padding: 0 !important; // Remove padding when collapsed
+					overflow: hidden !important; // Ensure nothing shows
 				}
 			}
 		}
@@ -307,7 +366,26 @@
 	&.dsg-tabs--dropdown {
 
 		.dsg-tabs__nav {
-			// Dropdown implementation
+			display: none;
+		}
+
+		.dsg-tabs__dropdown {
+			width: 100%;
+			padding: var(--dsg-tab-padding);
+			font-family: inherit;
+			font-size: inherit;
+			font-weight: 500;
+			border: 1px solid rgba(0, 0, 0, 0.2);
+			border-radius: var(--dsg-tab-border-radius);
+			background: var(--dsg-tab-bg);
+			color: var(--dsg-tab-color);
+			cursor: pointer;
+			margin-bottom: var(--wp--preset--spacing--md, 1.5rem);
+
+			&:focus {
+				outline: 2px solid var(--dsg-tab-border-color);
+				outline-offset: 2px;
+			}
 		}
 	}
 

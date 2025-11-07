@@ -38,7 +38,8 @@ export default function IconButtonEdit({ attributes, setAttributes, context }) {
 	} = attributes;
 
 	// Get hover button background from parent container context
-	const parentHoverButtonBg = context['designsetgo/hoverButtonBackgroundColor'];
+	const parentHoverButtonBg =
+		context['designsetgo/hoverButtonBackgroundColor'];
 
 	// Calculate button styles
 	const buttonStyles = {

@@ -1210,8 +1210,8 @@ export const getIconNames = () => Object.keys(SVG_ICONS);
 /**
  * Get icon component by name
  *
- * @param {string} name - Icon name
- * @param {string} style - Icon style ('filled' or 'outlined')
+ * @param {string} name        - Icon name
+ * @param {string} style       - Icon style ('filled' or 'outlined')
  * @param {number} strokeWidth - Stroke width for outlined icons (default: 1.5)
  * @return {JSX.Element|null} SVG icon component
  */

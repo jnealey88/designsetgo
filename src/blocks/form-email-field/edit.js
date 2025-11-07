@@ -15,15 +15,14 @@ import {
 import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
 
-export default function FormEmailFieldEdit({ attributes, setAttributes, clientId, context }) {
-	const {
-		fieldName,
-		label,
-		placeholder,
-		helpText,
-		required,
-		defaultValue,
-	} = attributes;
+export default function FormEmailFieldEdit({
+	attributes,
+	setAttributes,
+	clientId,
+	context,
+}) {
+	const { fieldName, label, placeholder, helpText, required, defaultValue } =
+		attributes;
 
 	// Generate unique field name on mount if not set
 	useEffect(() => {
@@ -51,11 +50,18 @@ export default function FormEmailFieldEdit({ attributes, setAttributes, clientId
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Field Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Field Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<TextControl
 						label={__('Field Name', 'designsetgo')}
 						value={fieldName}
-						onChange={(value) => setAttributes({ fieldName: value.replace(/[^a-z0-9_]/g, '_') })}
+						onChange={(value) =>
+							setAttributes({
+								fieldName: value.replace(/[^a-z0-9_]/g, '_'),
+							})
+						}
 						help={__(
 							'Unique identifier for this field',
 							'designsetgo'
@@ -75,7 +81,9 @@ export default function FormEmailFieldEdit({ attributes, setAttributes, clientId
 					<TextControl
 						label={__('Placeholder', 'designsetgo')}
 						value={placeholder}
-						onChange={(value) => setAttributes({ placeholder: value })}
+						onChange={(value) =>
+							setAttributes({ placeholder: value })
+						}
 						placeholder="email@example.com"
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
@@ -99,7 +107,9 @@ export default function FormEmailFieldEdit({ attributes, setAttributes, clientId
 					<TextControl
 						label={__('Default Value', 'designsetgo')}
 						value={defaultValue}
-						onChange={(value) => setAttributes({ defaultValue: value })}
+						onChange={(value) =>
+							setAttributes({ defaultValue: value })
+						}
 						type="email"
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
@@ -108,9 +118,14 @@ export default function FormEmailFieldEdit({ attributes, setAttributes, clientId
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<label htmlFor={`field-${clientId}`} className="dsg-form-field__label">
+				<label
+					htmlFor={`field-${clientId}`}
+					className="dsg-form-field__label"
+				>
 					{label}
-					{required && <span className="dsg-form-field__required">*</span>}
+					{required && (
+						<span className="dsg-form-field__required">*</span>
+					)}
 				</label>
 
 				<input
@@ -121,11 +136,7 @@ export default function FormEmailFieldEdit({ attributes, setAttributes, clientId
 					disabled
 				/>
 
-				{helpText && (
-					<p className="dsg-form-field__help">
-						{helpText}
-					</p>
-				)}
+				{helpText && <p className="dsg-form-field__help">{helpText}</p>}
 			</div>
 		</>
 	);

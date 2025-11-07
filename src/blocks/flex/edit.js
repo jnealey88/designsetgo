@@ -14,7 +14,7 @@ import {
 	useSetting,
 	PanelColorSettings,
 } from '@wordpress/block-editor';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
 import { useRef } from '@wordpress/element';
 
@@ -57,11 +57,16 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	/**
 	 * Handle clicks on the container to enable selection when clicking empty space
 	 * This allows clicks between flex items to select the container
+	 *
+	 * @param {MouseEvent} event - The click event.
 	 */
 	const handleContainerClick = (event) => {
 		// Only handle clicks directly on the inner container (empty space between blocks)
 		// Don't handle clicks on child blocks themselves
-		if (event.target === innerRef.current || event.target.classList.contains('dsg-flex__inner')) {
+		if (
+			event.target === innerRef.current ||
+			event.target.classList.contains('dsg-flex__inner')
+		) {
 			event.stopPropagation();
 			selectBlock(clientId);
 		}
@@ -303,7 +308,8 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 										value: hoverButtonBackgroundColor,
 										onChange: (color) =>
 											setAttributes({
-												hoverButtonBackgroundColor: color,
+												hoverButtonBackgroundColor:
+													color,
 											}),
 										label: __(
 											'Hover Button Background Color',

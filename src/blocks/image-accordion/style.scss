@@ -1,0 +1,54 @@
+/**
+ * Image Accordion Block - Frontend Styles
+ *
+ * Horizontal accordion with hover/click expansion and smooth flexbox transitions
+ */
+
+.dsg-image-accordion {
+	// CSS Custom Properties (set from block attributes)
+	--transition-duration: var(--dsg-image-accordion-transition, 0.5s);
+	--expanded-ratio: var(--dsg-image-accordion-expanded-ratio, 3);
+	--accordion-gap: var(--dsg-image-accordion-gap, 4px);
+	--accordion-height: var(--dsg-image-accordion-height, 500px);
+
+	display: flex;
+	flex-direction: row;
+	gap: var(--accordion-gap);
+	overflow: hidden;
+	border-radius: 8px;
+	position: relative;
+	width: 100%;
+	height: var(--accordion-height);
+	min-height: 400px;
+
+	// Items container
+	&__items {
+		display: flex;
+		flex-direction: row;
+		gap: var(--accordion-gap);
+		width: 100%;
+		height: 100%;
+	}
+
+	// Alignment support
+	&.alignwide,
+	&.alignfull {
+		width: 100%;
+		max-width: none;
+	}
+
+	// Responsive: Stack vertically on mobile
+	@media (max-width: 768px) {
+		flex-direction: column;
+		height: auto;
+		min-height: 600px;
+
+		.dsg-image-accordion-item {
+			min-height: 150px;
+		}
+
+		.dsg-image-accordion__items {
+			flex-direction: column;
+		}
+	}
+}

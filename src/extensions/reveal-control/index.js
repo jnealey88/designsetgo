@@ -20,6 +20,7 @@ const CONTAINER_BLOCKS = [
 
 /**
  * Add reveal control attributes to all blocks
+ * @param settings
  */
 function addRevealAttributes(settings) {
 	// Add reveal toggle to container blocks
@@ -77,8 +78,10 @@ addFilter(
 const withRevealControl = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, context = {}, name } = props;
-		const { dsgRevealOnHover, enableRevealOnHover, revealAnimationType } = attributes;
-		const isInRevealContainer = context['designsetgo/reveal/isRevealContainer'];
+		const { dsgRevealOnHover, enableRevealOnHover, revealAnimationType } =
+			attributes;
+		const isInRevealContainer =
+			context['designsetgo/reveal/isRevealContainer'];
 		const isContainerBlock = CONTAINER_BLOCKS.includes(name);
 
 		return (
@@ -97,36 +100,43 @@ const withRevealControl = createHigherOrderComponent((BlockEdit) => {
 										? __(
 												'Child blocks can be set to reveal when hovering over this container.',
 												'designsetgo'
-										  )
+											)
 										: __(
 												'Enable to allow child blocks to reveal on hover.',
 												'designsetgo'
-										  )
+											)
 								}
 								checked={enableRevealOnHover}
 								onChange={(value) =>
-									setAttributes({ enableRevealOnHover: value })
+									setAttributes({
+										enableRevealOnHover: value,
+									})
 								}
 								__nextHasNoMarginBottom
 							/>
 							{enableRevealOnHover && (
 								<ToggleControl
-									label={__('Collapse Animation', 'designsetgo')}
+									label={__(
+										'Collapse Animation',
+										'designsetgo'
+									)}
 									help={
 										revealAnimationType === 'collapse'
 											? __(
 													'Items collapse from height 0 with fade.',
 													'designsetgo'
-											  )
+												)
 											: __(
 													'Items fade in without size change.',
 													'designsetgo'
-											  )
+												)
 									}
 									checked={revealAnimationType === 'collapse'}
 									onChange={(value) =>
 										setAttributes({
-											revealAnimationType: value ? 'collapse' : 'fade',
+											revealAnimationType: value
+												? 'collapse'
+												: 'fade',
 										})
 									}
 									__nextHasNoMarginBottom
@@ -146,11 +156,11 @@ const withRevealControl = createHigherOrderComponent((BlockEdit) => {
 										? __(
 												'This block will be hidden until you hover over the parent container.',
 												'designsetgo'
-										  )
+											)
 										: __(
 												'This block is always visible.',
 												'designsetgo'
-										  )
+											)
 								}
 								checked={dsgRevealOnHover}
 								onChange={(value) =>
@@ -166,13 +176,21 @@ const withRevealControl = createHigherOrderComponent((BlockEdit) => {
 	};
 }, 'withRevealControl');
 
-addFilter('editor.BlockEdit', 'designsetgo/reveal-control-edit', withRevealControl);
+addFilter(
+	'editor.BlockEdit',
+	'designsetgo/reveal-control-edit',
+	withRevealControl
+);
 
 /**
  * Add reveal classes and data attributes to blocks
+ * @param props
+ * @param blockType
+ * @param attributes
  */
 function addRevealClasses(props, blockType, attributes) {
-	const { dsgRevealOnHover, enableRevealOnHover, revealAnimationType } = attributes;
+	const { dsgRevealOnHover, enableRevealOnHover, revealAnimationType } =
+		attributes;
 	const isContainerBlock = CONTAINER_BLOCKS.includes(blockType.name);
 
 	// Add class to container blocks with reveal enabled
@@ -207,8 +225,10 @@ addFilter(
 const withRevealEditorClasses = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, context = {}, name } = props;
-		const { dsgRevealOnHover, enableRevealOnHover, revealAnimationType } = attributes;
-		const isInRevealContainer = context['designsetgo/reveal/isRevealContainer'];
+		const { dsgRevealOnHover, enableRevealOnHover, revealAnimationType } =
+			attributes;
+		const isInRevealContainer =
+			context['designsetgo/reveal/isRevealContainer'];
 		const isContainerBlock = CONTAINER_BLOCKS.includes(name);
 
 		// Add class to container blocks with reveal enabled

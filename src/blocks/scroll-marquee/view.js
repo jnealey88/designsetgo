@@ -14,10 +14,14 @@ function initScrollMarquees() {
 	console.log(`Scroll Marquee: Initializing ${marquees.length} marquee(s)`);
 
 	// Check if user prefers reduced motion
-	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const prefersReducedMotion = window.matchMedia(
+		'(prefers-reduced-motion: reduce)'
+	).matches;
 
 	if (prefersReducedMotion) {
-		console.log('Scroll Marquee: Reduced motion preferred, skipping animation');
+		console.log(
+			'Scroll Marquee: Reduced motion preferred, skipping animation'
+		);
 		return; // Don't animate if user prefers reduced motion
 	}
 
@@ -33,7 +37,9 @@ function initScrollMarquees() {
 		const rowData = [];
 		rows.forEach((row, index) => {
 			const track = row.querySelector('.dsg-scroll-marquee__track');
-			const segment = track?.querySelector('.dsg-scroll-marquee__track-segment');
+			const segment = track?.querySelector(
+				'.dsg-scroll-marquee__track-segment'
+			);
 			if (segment) {
 				// Get the width of one segment (one set of images)
 				const segmentWidth = segment.offsetWidth;
@@ -41,13 +47,15 @@ function initScrollMarquees() {
 				const gapStyle = getComputedStyle(track).gap || '20px';
 				const gap = parseFloat(gapStyle);
 
-				console.log(`Row ${index}: segmentWidth=${segmentWidth}px, gap=${gap}px`);
+				console.log(
+					`Row ${index}: segmentWidth=${segmentWidth}px, gap=${gap}px`
+				);
 
 				// For seamless loop: we have 6 segments, loop every 1 segment
 				// This ensures we always have enough duplicates visible
 				rowData.push({
-					segmentWidth: segmentWidth,
-					gap: gap,
+					segmentWidth,
+					gap,
 				});
 			} else {
 				console.log(`Row ${index}: No segment found`);

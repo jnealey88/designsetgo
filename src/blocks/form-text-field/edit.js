@@ -17,7 +17,12 @@ import {
 import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
 
-export default function FormTextFieldEdit({ attributes, setAttributes, clientId, context }) {
+export default function FormTextFieldEdit({
+	attributes,
+	setAttributes,
+	clientId,
+	context,
+}) {
 	const {
 		fieldName,
 		label,
@@ -80,11 +85,18 @@ export default function FormTextFieldEdit({ attributes, setAttributes, clientId,
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Field Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Field Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<TextControl
 						label={__('Field Name', 'designsetgo')}
 						value={fieldName}
-						onChange={(value) => setAttributes({ fieldName: value.replace(/[^a-z0-9_]/g, '_') })}
+						onChange={(value) =>
+							setAttributes({
+								fieldName: value.replace(/[^a-z0-9_]/g, '_'),
+							})
+						}
 						help={__(
 							'Unique identifier for this field (letters, numbers, underscores)',
 							'designsetgo'
@@ -104,7 +116,9 @@ export default function FormTextFieldEdit({ attributes, setAttributes, clientId,
 					<TextControl
 						label={__('Placeholder', 'designsetgo')}
 						value={placeholder}
-						onChange={(value) => setAttributes({ placeholder: value })}
+						onChange={(value) =>
+							setAttributes({ placeholder: value })
+						}
 						help={__(
 							'Hint text shown inside the field',
 							'designsetgo'
@@ -135,7 +149,9 @@ export default function FormTextFieldEdit({ attributes, setAttributes, clientId,
 					<TextControl
 						label={__('Default Value', 'designsetgo')}
 						value={defaultValue}
-						onChange={(value) => setAttributes({ defaultValue: value })}
+						onChange={(value) =>
+							setAttributes({ defaultValue: value })
+						}
 						help={__(
 							'Pre-fill this field with a default value',
 							'designsetgo'
@@ -148,25 +164,56 @@ export default function FormTextFieldEdit({ attributes, setAttributes, clientId,
 						label={__('Field Width', 'designsetgo')}
 						value={fieldWidth}
 						options={[
-							{ label: __('Full Width (100%)', 'designsetgo'), value: '100' },
-							{ label: __('Half Width (50%)', 'designsetgo'), value: '50' },
-							{ label: __('One Third (33%)', 'designsetgo'), value: '33' },
-							{ label: __('Two Thirds (66%)', 'designsetgo'), value: '66' },
-							{ label: __('One Quarter (25%)', 'designsetgo'), value: '25' },
-							{ label: __('Three Quarters (75%)', 'designsetgo'), value: '75' },
+							{
+								label: __('Full Width (100%)', 'designsetgo'),
+								value: '100',
+							},
+							{
+								label: __('Half Width (50%)', 'designsetgo'),
+								value: '50',
+							},
+							{
+								label: __('One Third (33%)', 'designsetgo'),
+								value: '33',
+							},
+							{
+								label: __('Two Thirds (66%)', 'designsetgo'),
+								value: '66',
+							},
+							{
+								label: __('One Quarter (25%)', 'designsetgo'),
+								value: '25',
+							},
+							{
+								label: __(
+									'Three Quarters (75%)',
+									'designsetgo'
+								),
+								value: '75',
+							},
 						]}
-						onChange={(value) => setAttributes({ fieldWidth: value })}
-						help={__('Set field width to create multi-column layouts', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ fieldWidth: value })
+						}
+						help={__(
+							'Set field width to create multi-column layouts',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Validation', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Validation', 'designsetgo')}
+					initialOpen={false}
+				>
 					<RangeControl
 						label={__('Minimum Length', 'designsetgo')}
 						value={minLength}
-						onChange={(value) => setAttributes({ minLength: value })}
+						onChange={(value) =>
+							setAttributes({ minLength: value })
+						}
 						min={0}
 						max={500}
 						help={__(
@@ -180,7 +227,9 @@ export default function FormTextFieldEdit({ attributes, setAttributes, clientId,
 					<RangeControl
 						label={__('Maximum Length', 'designsetgo')}
 						value={maxLength}
-						onChange={(value) => setAttributes({ maxLength: value })}
+						onChange={(value) =>
+							setAttributes({ maxLength: value })
+						}
 						min={0}
 						max={500}
 						help={__(
@@ -196,12 +245,26 @@ export default function FormTextFieldEdit({ attributes, setAttributes, clientId,
 						value={validation}
 						options={[
 							{ label: __('None', 'designsetgo'), value: 'none' },
-							{ label: __('Letters Only', 'designsetgo'), value: 'letters' },
-							{ label: __('Numbers Only', 'designsetgo'), value: 'numbers' },
-							{ label: __('Alphanumeric', 'designsetgo'), value: 'alphanumeric' },
-							{ label: __('Custom Pattern', 'designsetgo'), value: 'custom' },
+							{
+								label: __('Letters Only', 'designsetgo'),
+								value: 'letters',
+							},
+							{
+								label: __('Numbers Only', 'designsetgo'),
+								value: 'numbers',
+							},
+							{
+								label: __('Alphanumeric', 'designsetgo'),
+								value: 'alphanumeric',
+							},
+							{
+								label: __('Custom Pattern', 'designsetgo'),
+								value: 'custom',
+							},
 						]}
-						onChange={(value) => setAttributes({ validation: value })}
+						onChange={(value) =>
+							setAttributes({ validation: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -209,9 +272,14 @@ export default function FormTextFieldEdit({ attributes, setAttributes, clientId,
 					{validation === 'custom' && (
 						<>
 							<TextControl
-								label={__('Custom Pattern (Regex)', 'designsetgo')}
+								label={__(
+									'Custom Pattern (Regex)',
+									'designsetgo'
+								)}
 								value={validationPattern}
-								onChange={(value) => setAttributes({ validationPattern: value })}
+								onChange={(value) =>
+									setAttributes({ validationPattern: value })
+								}
 								help={__(
 									'Regular expression for validation',
 									'designsetgo'
@@ -223,7 +291,9 @@ export default function FormTextFieldEdit({ attributes, setAttributes, clientId,
 							<TextControl
 								label={__('Validation Message', 'designsetgo')}
 								value={validationMessage}
-								onChange={(value) => setAttributes({ validationMessage: value })}
+								onChange={(value) =>
+									setAttributes({ validationMessage: value })
+								}
 								help={__(
 									'Message shown when validation fails',
 									'designsetgo'
@@ -237,9 +307,14 @@ export default function FormTextFieldEdit({ attributes, setAttributes, clientId,
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<label htmlFor={`field-${clientId}`} className="dsg-form-field__label">
+				<label
+					htmlFor={`field-${clientId}`}
+					className="dsg-form-field__label"
+				>
 					{label}
-					{required && <span className="dsg-form-field__required">*</span>}
+					{required && (
+						<span className="dsg-form-field__required">*</span>
+					)}
 				</label>
 
 				<input
@@ -250,11 +325,7 @@ export default function FormTextFieldEdit({ attributes, setAttributes, clientId,
 					disabled
 				/>
 
-				{helpText && (
-					<p className="dsg-form-field__help">
-						{helpText}
-					</p>
-				)}
+				{helpText && <p className="dsg-form-field__help">{helpText}</p>}
 			</div>
 		</>
 	);

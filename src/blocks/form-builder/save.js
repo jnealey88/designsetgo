@@ -4,10 +4,7 @@
  * @since 1.0.0
  */
 
-import {
-	useBlockProps,
-	useInnerBlocksProps,
-} from '@wordpress/block-editor';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 export default function FormBuilderSave({ attributes }) {
@@ -38,7 +35,8 @@ export default function FormBuilderSave({ attributes }) {
 
 	// Same classes as edit.js - MUST MATCH
 	const formClasses = classnames('dsg-form-builder', {
-		[`dsg-form-builder--align-${submitButtonAlignment}`]: submitButtonAlignment,
+		[`dsg-form-builder--align-${submitButtonAlignment}`]:
+			submitButtonAlignment,
 	});
 
 	// Apply form settings as CSS custom properties - MUST MATCH edit.js
@@ -75,11 +73,7 @@ export default function FormBuilderSave({ attributes }) {
 
 	return (
 		<div {...blockProps}>
-			<form
-				className="dsg-form"
-				method="post"
-				noValidate
-			>
+			<form className="dsg-form" method="post" noValidate>
 				<div {...innerBlocksProps} />
 
 				{enableHoneypot && (
@@ -100,11 +94,7 @@ export default function FormBuilderSave({ attributes }) {
 					/>
 				)}
 
-				<input
-					type="hidden"
-					name="dsg_form_id"
-					value={formId}
-				/>
+				<input type="hidden" name="dsg_form_id" value={formId} />
 
 				{/* Timestamp added via JavaScript in view.js to avoid validation errors */}
 
@@ -113,8 +103,12 @@ export default function FormBuilderSave({ attributes }) {
 						type="submit"
 						className="dsg-form__submit wp-element-button"
 						style={{
-							...(submitButtonColor && { color: submitButtonColor }),
-							...(submitButtonBackgroundColor && { backgroundColor: submitButtonBackgroundColor }),
+							...(submitButtonColor && {
+								color: submitButtonColor,
+							}),
+							...(submitButtonBackgroundColor && {
+								backgroundColor: submitButtonBackgroundColor,
+							}),
 						}}
 					>
 						{submitButtonText}

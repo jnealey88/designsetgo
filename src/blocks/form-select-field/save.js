@@ -30,7 +30,14 @@ export default function FormSelectFieldSave({ attributes }) {
 		<div {...blockProps}>
 			<label htmlFor={fieldId} className="dsg-form-field__label">
 				{label}
-				{required && <span className="dsg-form-field__required" aria-label="required">*</span>}
+				{required && (
+					<span
+						className="dsg-form-field__required"
+						aria-label="required"
+					>
+						*
+					</span>
+				)}
 			</label>
 
 			<select

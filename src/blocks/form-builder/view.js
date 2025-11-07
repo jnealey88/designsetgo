@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	forms.forEach((formContainer) => {
 		const formElement = formContainer.querySelector('.dsg-form');
 		const submitButton = formElement?.querySelector('.dsg-form__submit');
-		const messageContainer = formElement?.querySelector('.dsg-form__message');
+		const messageContainer =
+			formElement?.querySelector('.dsg-form__message');
 
 		if (!formElement || !submitButton || !messageContainer) {
 			return;
@@ -27,8 +28,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		// Get form settings from data attributes
 		const formId = formContainer.getAttribute('data-form-id');
-		const ajaxEnabled = formContainer.getAttribute('data-ajax-submit') === 'true';
-		const successMessage = formContainer.getAttribute('data-success-message');
+		const ajaxEnabled =
+			formContainer.getAttribute('data-ajax-submit') === 'true';
+		const successMessage = formContainer.getAttribute(
+			'data-success-message'
+		);
 		const errorMessage = formContainer.getAttribute('data-error-message');
 		const submitText = formContainer.getAttribute('data-submit-text');
 
@@ -36,8 +40,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		const enableEmail = formContainer.getAttribute('data-enable-email');
 		const emailTo = formContainer.getAttribute('data-email-to');
 		const emailSubject = formContainer.getAttribute('data-email-subject');
-		const emailFromName = formContainer.getAttribute('data-email-from-name');
-		const emailFromEmail = formContainer.getAttribute('data-email-from-email');
+		const emailFromName = formContainer.getAttribute(
+			'data-email-from-name'
+		);
+		const emailFromEmail = formContainer.getAttribute(
+			'data-email-from-email'
+		);
 		const emailReplyTo = formContainer.getAttribute('data-email-reply-to');
 		const emailBody = formContainer.getAttribute('data-email-body');
 
@@ -71,18 +79,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			for (const [name, value] of formData.entries()) {
 				// Skip honeypot and system fields
-				if (name === 'dsg_website' || name === 'dsg_form_id' || name === 'dsg_timestamp') {
+				if (
+					name === 'dsg_website' ||
+					name === 'dsg_form_id' ||
+					name === 'dsg_timestamp'
+				) {
 					continue;
 				}
 
-				const fieldElement = formElement.querySelector(`[name="${name}"]`);
-				const fieldType = fieldElement?.getAttribute('data-field-type') ||
-								fieldElement?.type ||
-								'text';
+				const fieldElement = formElement.querySelector(
+					`[name="${name}"]`
+				);
+				const fieldType =
+					fieldElement?.getAttribute('data-field-type') ||
+					fieldElement?.type ||
+					'text';
 
 				fields.push({
-					name: name,
-					value: value,
+					name,
+					value,
 					type: fieldType,
 				});
 			}
@@ -100,8 +115,8 @@ document.addEventListener('DOMContentLoaded', function () {
 						'X-WP-Nonce': designsetgoForm.nonce,
 					},
 					body: JSON.stringify({
-						formId: formId,
-						fields: fields,
+						formId,
+						fields,
 						honeypot: honeypot || '',
 						timestamp: timestamp || Date.now(),
 						enable_email: enableEmail,
@@ -118,7 +133,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 				if (result.success) {
 					// Show success message
-					showMessage(messageContainer, successMessage || result.message, 'success');
+					showMessage(
+						messageContainer,
+						successMessage || result.message,
+						'success'
+					);
 
 					// Reset form
 					formElement.reset();
@@ -127,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					formContainer.dispatchEvent(
 						new CustomEvent('dsgFormSubmitted', {
 							detail: {
-								formId: formId,
+								formId,
 								submissionId: result.submissionId,
 							},
 							bubbles: true,
@@ -136,7 +155,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 					// Scroll to message if not visible
 					if (!isElementInViewport(messageContainer)) {
-						messageContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+						messageContainer.scrollIntoView({
+							behavior: 'smooth',
+							block: 'nearest',
+						});
 					}
 				} else {
 					throw new Error(result.message || errorMessage);
@@ -147,7 +169,9 @@ document.addEventListener('DOMContentLoaded', function () {
 				// Show error message
 				showMessage(
 					messageContainer,
-					error.message || errorMessage || 'An error occurred. Please try again.',
+					error.message ||
+						errorMessage ||
+						'An error occurred. Please try again.',
 					'error'
 				);
 
@@ -155,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				formContainer.dispatchEvent(
 					new CustomEvent('dsgFormError', {
 						detail: {
-							formId: formId,
+							formId,
 							error: error.message,
 						},
 						bubbles: true,
@@ -175,8 +199,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	 * Show message to user
 	 *
 	 * @param {HTMLElement} container Message container element
-	 * @param {string} message Message text to display
-	 * @param {string} type Message type: 'success' or 'error'
+	 * @param {string}      message   Message text to display
+	 * @param {string}      type      Message type: 'success' or 'error'
 	 */
 	function showMessage(container, message, type) {
 		container.textContent = message;
@@ -214,8 +238,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		return (
 			rect.top >= 0 &&
 			rect.left >= 0 &&
-			rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-			rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+			rect.bottom <=
+				(window.innerHeight || document.documentElement.clientHeight) &&
+			rect.right <=
+				(window.innerWidth || document.documentElement.clientWidth)
 		);
 	}
 });

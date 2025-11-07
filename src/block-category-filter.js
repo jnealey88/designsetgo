@@ -7,11 +7,10 @@
  *
  * This improves discoverability while maintaining organization.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { addFilter } from '@wordpress/hooks';
-import { getBlockTypes } from '@wordpress/blocks';
 
 /**
  * Modify block categories to add DesignSetGo category alongside core categories.
@@ -39,7 +38,7 @@ addFilter(
 			// Keep the core category as primary
 			category: originalCategory,
 			// Add metadata for our custom handling
-			__experimentalLabel: (props, { context }) => {
+			__experimentalLabel: () => {
 				// This allows blocks to show context-aware labeling
 				return settings.title;
 			},

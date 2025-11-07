@@ -1,0 +1,234 @@
+/**
+ * Blobs Block - Frontend Styles
+ *
+ * Organic blob shapes with CSS border-radius morphing animations
+ *
+ * @since 1.0.0
+ */
+
+.dsg-blobs {
+	// CSS Custom Properties (set from block attributes)
+	--dsg-blob-size: 300px;
+	--dsg-blob-animation-duration: 8s;
+	--dsg-blob-animation-easing: ease-in-out;
+
+	// Container with blob shape
+	position: relative;
+	width: var(--dsg-blob-size);
+	height: var(--dsg-blob-size);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+
+	// Default background color (can be overridden by user)
+	background-color: var(--wp--preset--color--accent-2, #2563eb);
+
+	// Shape variants - EXTREMELY different organic blob shapes
+	&--shape-1 {
+		// Classic blob - balanced and organic
+		border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+	}
+
+	&--shape-2 {
+		// Amoeba - very irregular, super elongated
+		border-radius: 15% 85% 85% 15% / 80% 20% 80% 20%;
+	}
+
+	&--shape-3 {
+		// Pebble - almost perfect circle
+		border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+	}
+
+	&--shape-4 {
+		// Splash - EXTREME asymmetry
+		border-radius: 10% 90% 20% 80% / 90% 10% 85% 15%;
+	}
+
+	&--shape-5 {
+		// Drop - sharp teardrop with point at bottom
+		border-radius: 50% 50% 0% 100% / 60% 60% 0% 100%;
+	}
+
+	&--shape-6 {
+		// Cloud - very irregular soft blob
+		border-radius: 75% 25% 65% 35% / 35% 65% 25% 75%;
+	}
+
+	// Background overlay (for images)
+	&__overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	// Blob shape container
+	&__shape {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		// Content inside blob
+		.dsg-blobs__content {
+			position: relative;
+			z-index: 2;
+			padding: var(--wp--preset--spacing--medium, 1.5rem);
+			text-align: center;
+			width: 100%;
+
+			// Ensure proper spacing for block elements
+			> * + * {
+				margin-top: var(--wp--preset--spacing--small, 1rem);
+			}
+		}
+	}
+
+	// Animation variants (applied to outer container)
+	&--morph-1 {
+		animation: dsg-blob-morph-1 var(--dsg-blob-animation-duration) var(--dsg-blob-animation-easing) infinite;
+	}
+
+	&--morph-2 {
+		animation: dsg-blob-morph-2 var(--dsg-blob-animation-duration) var(--dsg-blob-animation-easing) infinite;
+	}
+
+	&--float {
+		animation: dsg-blob-float var(--dsg-blob-animation-duration) var(--dsg-blob-animation-easing) infinite;
+	}
+
+	&--pulse {
+		animation: dsg-blob-pulse var(--dsg-blob-animation-duration) var(--dsg-blob-animation-easing) infinite;
+	}
+
+	&--spin {
+		animation: dsg-blob-spin var(--dsg-blob-animation-duration) linear infinite;
+	}
+
+	// Alignment support
+	&.aligncenter {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	&.alignleft {
+		margin-right: auto;
+	}
+
+	&.alignright {
+		margin-left: auto;
+	}
+
+	&.alignwide,
+	&.alignfull {
+		max-width: none;
+	}
+}
+
+// Keyframe Animations
+
+// Morph 1: Organic shape morphing through 3 states
+@keyframes dsg-blob-morph-1 {
+	0%, 100% {
+		border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+	}
+	33% {
+		border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+	}
+	66% {
+		border-radius: 50% 40% 20% 80% / 25% 70% 30% 75%;
+	}
+}
+
+// Morph 2: Different morphing pattern
+@keyframes dsg-blob-morph-2 {
+	0%, 100% {
+		border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+	}
+	25% {
+		border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
+	}
+	50% {
+		border-radius: 50% 50% 30% 70% / 50% 50% 50% 50%;
+	}
+	75% {
+		border-radius: 30% 70% 70% 30% / 60% 40% 60% 40%;
+	}
+}
+
+// Float: Gentle floating motion (no rotation)
+@keyframes dsg-blob-float {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-15px);
+	}
+}
+
+// Pulse: Scale in and out with slight rotation
+@keyframes dsg-blob-pulse {
+	0%, 100% {
+		transform: scale(1) rotate(0deg);
+	}
+	50% {
+		transform: scale(1.1) rotate(5deg);
+	}
+}
+
+// Spin: Continuous rotation with slight scale
+@keyframes dsg-blob-spin {
+	0% {
+		transform: rotate(0deg) scale(1);
+	}
+	50% {
+		transform: rotate(180deg) scale(1.05);
+	}
+	100% {
+		transform: rotate(360deg) scale(1);
+	}
+}
+
+// Accessibility: Reduce motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+	.dsg-blobs {
+		&--morph-1,
+		&--morph-2,
+		&--float,
+		&--pulse,
+		&--spin {
+			animation: none;
+		}
+	}
+}
+
+// Responsive: Adjust size on mobile
+@media (max-width: 768px) {
+	.dsg-blobs {
+		&__shape {
+			// Scale down on mobile if using fixed pixel values
+			max-width: 100%;
+			max-height: 100vw;
+		}
+	}
+}
+
+// Print styles: Remove animations
+@media print {
+	.dsg-blobs {
+		&--morph-1,
+		&--morph-2,
+		&--float,
+		&--pulse,
+		&--spin {
+			animation: none;
+			transform: none;
+		}
+	}
+}

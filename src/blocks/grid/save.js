@@ -1,87 +1,23 @@
 /**
  * Grid Container Block - Save Component
  *
- * Saves the block content with declarative styles.
+ * This is a DYNAMIC BLOCK with server-side rendering via render.php.
+ * The save function only returns inner blocks content - the wrapper
+ * is generated dynamically by render.php using get_block_wrapper_attributes().
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 
-import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Grid Container Save Component
  *
- * @param {Object} props            Component props
- * @param {Object} props.attributes Block attributes
+ * For dynamic blocks, we only save the inner blocks content.
+ * The wrapper div is generated server-side by render.php.
+ *
  * @return {JSX.Element} Save component
  */
-export default function GridSave({ attributes }) {
-	const {
-		desktopColumns,
-		tabletColumns,
-		mobileColumns,
-		rowGap,
-		columnGap,
-		alignItems,
-		constrainWidth,
-		contentWidth,
-		hoverBackgroundColor,
-		hoverTextColor,
-	} = attributes;
-
-	// Calculate effective content width (must match edit.js logic for frontend)
-	// Note: Can't use useSetting in save, so use contentWidth or fallback
-	const effectiveContentWidth = contentWidth || '1200px';
-
-	// Calculate inner styles declaratively (must match edit.js EXACTLY)
-	// IMPORTANT: Always provide a default gap to prevent overlapping items
-	// Custom gaps override the default when set
-	const innerStyles = {
-		display: 'grid',
-		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
-		alignItems: alignItems || 'start',
-		// Apply gaps: custom values OR default (24px / --wp--preset--spacing--50)
-		rowGap: rowGap || 'var(--wp--preset--spacing--50)',
-		columnGap: columnGap || 'var(--wp--preset--spacing--50)',
-		...(constrainWidth && {
-			maxWidth: effectiveContentWidth,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		}),
-	};
-
-	// Block wrapper props with responsive column classes
-	// CRITICAL: Set width: 100% AND align-self: stretch (must match edit.js)
-	// align-self: stretch ensures nested containers fill parent width even when parent has alignItems: flex-start
-	const blockProps = useBlockProps.save({
-		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
-		style: {
-			width: '100%',
-			alignSelf: 'stretch',
-			...(hoverBackgroundColor && {
-				'--dsg-hover-bg-color': hoverBackgroundColor,
-			}),
-			...(hoverTextColor && {
-				'--dsg-hover-text-color': hoverTextColor,
-			}),
-			...(attributes.hoverIconBackgroundColor && {
-				'--dsg-parent-hover-icon-bg': attributes.hoverIconBackgroundColor,
-			}),
-			...(attributes.hoverButtonBackgroundColor && {
-				'--dsg-parent-hover-button-bg': attributes.hoverButtonBackgroundColor,
-			}),
-		},
-	});
-
-	// Inner blocks props with declarative styles
-	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-grid__inner',
-		style: innerStyles,
-	});
-
-	return (
-		<div {...blockProps}>
-			<div {...innerBlocksProps} />
-		</div>
-	);
+export default function GridSave() {
+	return <InnerBlocks.Content />;
 }

@@ -83,6 +83,7 @@
 	"supports": {
 		"html": false,
 		"reusable": false,
+		"align": ["left", "center", "right", "wide", "full"],
 		"spacing": {
 			"margin": false,
 			"padding": true,

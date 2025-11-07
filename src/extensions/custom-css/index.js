@@ -137,7 +137,7 @@ addFilter(
 	'editor.BlockEdit',
 	'designsetgo/add-custom-css-control',
 	withCustomCSSControl,
-	20 // Higher priority to ensure it runs after other extensions
+	200 // Lowest priority - advanced feature, appears last in settings
 );
 
 /**

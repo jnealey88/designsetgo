@@ -1,6 +1,12 @@
 # DesignSetGo Testing
 
-End-to-end tests for the DesignSetGo WordPress plugin using Playwright.
+Comprehensive testing suite for the DesignSetGo WordPress plugin.
+
+## Test Types
+
+- **E2E** (Playwright): End-to-end browser tests
+- **Unit** (Jest): JavaScript unit tests
+- **PHP** (PHPUnit): PHP unit tests
 
 ## Quick Start
 
@@ -43,6 +49,8 @@ tests/
 
 ## Available Commands
 
+### E2E Tests (Playwright)
+
 | Command | Description |
 |---------|-------------|
 | `npm run test:e2e` | Run all E2E tests (headless) |
@@ -54,6 +62,21 @@ tests/
 | `npm run test:e2e:webkit` | Run tests in Safari only |
 | `npm run test:e2e:mobile` | Run tests on mobile devices |
 | `npm run test:e2e:report` | View HTML test report |
+
+### Unit Tests (Jest)
+
+| Command | Description |
+|---------|-------------|
+| `npm run test:unit` | Run JavaScript unit tests |
+| `npm run test:unit -- --watch` | Run tests in watch mode |
+| `npm run test:unit -- --coverage` | Run tests with coverage report |
+
+### PHP Tests (PHPUnit)
+
+| Command | Description |
+|---------|-------------|
+| `npm run test:php` | Run PHP unit tests |
+| `composer test` | Alternative: Run PHP tests via Composer |
 
 ## Writing Tests
 
@@ -83,7 +106,9 @@ Configuration is in [.claude/mcp.json](../.claude/mcp.json).
 
 ## Documentation
 
-Full testing documentation: [docs/TESTING.md](../docs/TESTING.md)
+- **Quick Start**: This README
+- **Comprehensive Guide**: [TESTING.md](../TESTING.md)
+- **E2E Details**: [docs/TESTING.md](../docs/TESTING.md)
 
 ## Troubleshooting
 

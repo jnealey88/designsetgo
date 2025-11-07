@@ -20,6 +20,10 @@
 @use '../blocks/flex/editor' as flex;
 @use '../blocks/grid/editor' as grid;
 @use '../blocks/reveal/editor' as reveal;
+@use '../blocks/blobs/editor' as blobs;
+@use '../blocks/slider/editor' as slider;
+@use '../blocks/slide/editor' as slide;
+@use '../blocks/form-builder/editor' as form-builder;
 
 // Editor-specific styles
 .editor-styles-wrapper {

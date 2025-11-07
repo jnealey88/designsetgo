@@ -45,17 +45,24 @@
 			// Build tab navigation from panels
 			this.buildNavigation();
 
-			// Set initial active tab
+			// Handle mobile responsiveness FIRST (before setting active tab)
+			// This ensures accordion mode is set up before panels are shown/hidden
+			this.handleResize();
+
+			// Debounced resize handler for better performance
+			let resizeTimeout;
+			window.addEventListener('resize', () => {
+				clearTimeout(resizeTimeout);
+				resizeTimeout = setTimeout(() => this.handleResize(), 150);
+			});
+
+			// Set initial active tab (after mobile mode is determined)
 			this.setActiveTab(this.activeTab, false);
 
 			// Handle deep linking
 			if (this.enableDeepLinking) {
 				this.handleDeepLinking();
 			}
-
-			// Handle mobile responsiveness
-			this.handleResize();
-			window.addEventListener('resize', () => this.handleResize());
 		}
 
 		buildNavigation() {
@@ -148,6 +155,11 @@
 
 			this.activeTab = index;
 
+			// Check if we're in accordion mode
+			const isAccordionMode = this.element.classList.contains(
+				'dsg-tabs--accordion'
+			);
+
 			// Update tabs
 			const tabs = this.nav.querySelectorAll('.dsg-tabs__tab');
 			tabs.forEach((tab, i) => {
@@ -161,7 +173,23 @@
 			this.panels.forEach((panel, i) => {
 				const isActive = i === index;
 				panel.classList.toggle('is-active', isActive);
-				panel.hidden = !isActive;
+
+				// In accordion mode, keep all panels visible (CSS handles content visibility)
+				// In tabs mode, hide inactive panels
+				if (!isAccordionMode) {
+					panel.hidden = !isActive;
+				}
+
+				// Update accordion header aria-expanded if present
+				const accordionHeader = panel.querySelector(
+					'.dsg-tab__accordion-header'
+				);
+				if (accordionHeader) {
+					accordionHeader.setAttribute(
+						'aria-expanded',
+						isActive ? 'true' : 'false'
+					);
+				}
 			});
 
 			// Update URL hash if deep linking enabled
@@ -285,6 +313,11 @@
 				this.nav.style.display = 'none';
 			}
 
+			// Show all panels in accordion mode
+			this.panels.forEach((panel) => {
+				panel.hidden = false;
+			});
+
 			// Add accordion headers to each panel
 			this.panels.forEach((panel, index) => {
 				let header = panel.querySelector('.dsg-tab__accordion-header');
@@ -298,7 +331,11 @@
 						index === this.activeTab ? 'true' : 'false'
 					);
 
-					const title = this.getTabTitle(panel) || `Tab ${index + 1}`;
+					// Get title from aria-label attribute (set in save.js)
+					const title =
+						panel.getAttribute('aria-label') ||
+						this.getTabTitle(panel) ||
+						`Tab ${index + 1}`;
 					header.textContent = title;
 
 					header.addEventListener('click', () => {
@@ -319,11 +356,46 @@
 			this.element.classList.add('dsg-tabs--dropdown');
 			this.element.classList.remove('dsg-tabs--accordion');
 
-			// Convert nav to dropdown
-			if (this.nav) {
-				this.nav.style.display = 'block';
-				// Implementation would convert buttons to <select> dropdown
+			// Check if dropdown already exists
+			let dropdown = this.element.querySelector('.dsg-tabs__dropdown');
+
+			if (!dropdown) {
+				// Create dropdown select element
+				dropdown = document.createElement('select');
+				dropdown.className = 'dsg-tabs__dropdown';
+				dropdown.setAttribute('aria-label', 'Select tab');
+
+				// Add options from panels
+				this.panels.forEach((panel, index) => {
+					const option = document.createElement('option');
+					option.value = index;
+					option.textContent =
+						panel.getAttribute('aria-label') ||
+						this.getTabTitle(panel) ||
+						`Tab ${index + 1}`;
+					option.selected = index === this.activeTab;
+					dropdown.appendChild(option);
+				});
+
+				// Add change event listener
+				dropdown.addEventListener('change', (e) => {
+					this.setActiveTab(parseInt(e.target.value));
+				});
+
+				// Insert dropdown before panels
+				this.element.insertBefore(
+					dropdown,
+					this.element.querySelector('.dsg-tabs__panels')
+				);
 			}
+
+			// Hide tab navigation
+			if (this.nav) {
+				this.nav.style.display = 'none';
+			}
+
+			// Update dropdown selected value
+			dropdown.value = this.activeTab;
 		}
 
 		restoreTabsMode() {
@@ -337,6 +409,12 @@
 				this.nav.style.display = '';
 			}
 
+			// Remove dropdown if exists
+			const dropdown = this.element.querySelector('.dsg-tabs__dropdown');
+			if (dropdown) {
+				dropdown.remove();
+			}
+
 			// Remove accordion headers
 			this.panels.forEach((panel) => {
 				const header = panel.querySelector(
@@ -345,6 +423,11 @@
 				if (header) {
 					header.remove();
 				}
+			});
+
+			// Restore panel visibility for tab mode
+			this.panels.forEach((panel, index) => {
+				panel.hidden = index !== this.activeTab;
 			});
 		}
 	}

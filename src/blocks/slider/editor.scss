@@ -1,0 +1,113 @@
+/**
+ * Slider Block - Editor-only Styles
+ * CRITICAL: Imports base styles from style.scss for editor/frontend parity
+ */
+
+@import './style.scss';
+
+// Editor-specific adjustments
+.dsg-slider {
+	// Add visual indicator in editor
+	&::before {
+		content: 'Slider: ' attr(data-effect);
+		position: absolute;
+		top: 8px;
+		left: 8px;
+		z-index: 20;
+		padding: 4px 8px;
+		background: rgba(0, 0, 0, 0.7);
+		color: #fff;
+		font-size: 11px;
+		font-weight: 600;
+		border-radius: 4px;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		pointer-events: none;
+	}
+
+	// Make track scrollable in editor for easier slide management
+	&__track {
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x mandatory;
+		-webkit-overflow-scrolling: touch;
+
+		// Hide scrollbar in editor
+		&::-webkit-scrollbar {
+			height: 6px;
+		}
+
+		&::-webkit-scrollbar-track {
+			background: rgba(0, 0, 0, 0.1);
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: rgba(0, 0, 0, 0.3);
+			border-radius: 3px;
+
+			&:hover {
+				background: rgba(0, 0, 0, 0.5);
+			}
+		}
+
+		> .dsg-slide {
+			scroll-snap-align: start;
+		}
+	}
+
+	// Editor-only: Show all slides in a row for easy editing
+	&.is-selected &__track,
+	&:hover &__track {
+		flex-wrap: nowrap;
+	}
+
+	// Editor-only: Highlight selected slide
+	.dsg-slide {
+		&.is-selected {
+			outline: 2px solid #2271b1;
+			outline-offset: -2px;
+		}
+	}
+
+	// Editor-only navigation (functional scroll controls)
+	&__arrows--editor-only {
+		pointer-events: auto;
+
+		.dsg-slider__arrow {
+			cursor: pointer;
+		}
+	}
+
+	&__dots--editor-only {
+		pointer-events: auto;
+
+		.dsg-slider__dot {
+			cursor: pointer;
+		}
+	}
+
+	// Make appender visible in editor
+	.block-list-appender {
+		margin-left: var(--dsg-slider-gap);
+	}
+
+	// Fix fade/zoom effects in editor - show all slides
+	// These effects use absolute positioning + opacity: 0, which hides all slides in editor
+	&.dsg-slider--effect-fade,
+	&.dsg-slider--effect-zoom {
+		.dsg-slider__track > .dsg-slide {
+			position: relative !important;
+			opacity: 1 !important;
+			transform: none !important;
+			pointer-events: auto !important;
+		}
+	}
+}
+
+// Editor: Block toolbar
+.wp-block-designsetgo-slider {
+	.block-editor-block-list__block {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}

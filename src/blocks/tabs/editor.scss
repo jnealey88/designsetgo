@@ -2,9 +2,28 @@
  * Tabs Block - Editor Styles
  */
 
+// Ensure WordPress block wrapper doesn't cause overflow
+.wp-block-designsetgo-tabs {
+	max-width: 100%;
+	box-sizing: border-box;
+
+	// Override WordPress alignment negative margins
+	&.alignfull,
+	&.alignwide {
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+	}
+}
+
 .dsg-tabs {
 	padding: 0; // Default to no padding
 	width: 100%; // CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+	max-width: 100%; // Prevent overflow beyond parent
+	min-width: 0; // Allow shrinking in flex containers
+	box-sizing: border-box; // Include padding/border in width calculation
+	overflow: hidden; // Prevent child elements from overflowing
+	margin-left: 0 !important; // Prevent WordPress negative margins
+	margin-right: 0 !important; // Prevent WordPress negative margins
 
 	// Tab Navigation - Clean, simple styling
 	.dsg-tabs__nav {
@@ -13,6 +32,8 @@
 		margin-bottom: var(--wp--preset--spacing--lg, 1.5rem);
 		padding: 0;
 		border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
 	}
 
 	.dsg-tabs__tab {
@@ -60,6 +81,17 @@
 	// Panels container - no typography overrides
 	.dsg-tabs__panels {
 		position: relative;
+		width: 100%; // CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+		max-width: 100%; // Prevent overflow beyond parent
+		min-width: 0; // Allow shrinking in flex containers
+		box-sizing: border-box; // Include padding/border in width calculation
+	}
+
+	/**
+	 * Tab Content Wrapper
+	 */
+	.dsg-tab__content {
+		// Let content flow naturally
 	}
 
 	/**

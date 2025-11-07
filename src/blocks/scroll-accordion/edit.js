@@ -7,10 +7,7 @@ import {
 	useInnerBlocksProps,
 	BlockControls,
 } from '@wordpress/block-editor';
-import {
-	ToolbarGroup,
-	ToolbarButton,
-} from '@wordpress/components';
+import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
 import { alignLeft, alignCenter, alignRight } from '@wordpress/icons';
 
 /**

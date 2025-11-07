@@ -421,6 +421,28 @@ User phrases that signal need to simplify:
 **Result**: Frontend broken after deploy
 **Prevention**: ALWAYS test both editor AND frontend
 
+### 6. Missing Default Block Spacing in Dynamic Blocks
+**Mistake**: Not setting default `blockGap` in block.json attributes for dynamic blocks
+**Result**: Block spacing appears in editor but not on frontend (gap is basically 0)
+**Why**: Block.json defaults aren't automatically applied during server-side rendering
+**Prevention**:
+- Add default blockGap to `attributes` in block.json:
+  ```json
+  "style": {
+    "type": "object",
+    "default": {
+      "spacing": {
+        "blockGap": "var(--wp--preset--spacing--50)"
+      }
+    }
+  }
+  ```
+- Always provide fallback in render.php:
+  ```php
+  $final_gap = ! empty( $block_gap ) ? $block_gap : 'var(--wp--preset--spacing--50)';
+  $inner_styles['gap'] = $final_gap;
+  ```
+
 ## Version Control Best Practices
 
 ### Commit Messages

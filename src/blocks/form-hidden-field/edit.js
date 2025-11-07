@@ -6,17 +6,14 @@
 
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import {
-	PanelBody,
-	TextControl,
-	Notice,
-} from '@wordpress/components';
+import { PanelBody, TextControl, Notice } from '@wordpress/components';
 
-export default function FormHiddenFieldEdit({ attributes, setAttributes, clientId }) {
-	const {
-		fieldName,
-		value,
-	} = attributes;
+export default function FormHiddenFieldEdit({
+	attributes,
+	setAttributes,
+	clientId,
+}) {
+	const { fieldName, value } = attributes;
 
 	// Generate field name from clientId if empty
 	if (!fieldName) {
@@ -30,14 +27,22 @@ export default function FormHiddenFieldEdit({ attributes, setAttributes, clientI
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Field Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Field Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<TextControl
 						label={__('Field Name', 'designsetgo')}
 						value={fieldName}
 						onChange={(value) =>
-							setAttributes({ fieldName: value.replace(/[^a-z0-9_-]/gi, '') })
+							setAttributes({
+								fieldName: value.replace(/[^a-z0-9_-]/gi, ''),
+							})
 						}
-						help={__('Unique identifier for this field (letters, numbers, hyphens, underscores only)', 'designsetgo')}
+						help={__(
+							'Unique identifier for this field (letters, numbers, hyphens, underscores only)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -45,8 +50,11 @@ export default function FormHiddenFieldEdit({ attributes, setAttributes, clientI
 					<TextControl
 						label={__('Value', 'designsetgo')}
 						value={value}
-						onChange={(value) => setAttributes({ value: value })}
-						help={__('The hidden value to be submitted with the form', 'designsetgo')}
+						onChange={(value) => setAttributes({ value })}
+						help={__(
+							'The hidden value to be submitted with the form',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -55,7 +63,8 @@ export default function FormHiddenFieldEdit({ attributes, setAttributes, clientI
 
 			<div {...blockProps}>
 				<Notice status="info" isDismissible={false}>
-					<strong>{__('Hidden Field:', 'designsetgo')}</strong> {fieldName} = {value || __('(empty)', 'designsetgo')}
+					<strong>{__('Hidden Field:', 'designsetgo')}</strong>{' '}
+					{fieldName} = {value || __('(empty)', 'designsetgo')}
 				</Notice>
 			</div>
 		</>

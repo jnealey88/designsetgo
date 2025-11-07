@@ -16,7 +16,11 @@ import {
 } from '@wordpress/components';
 import classnames from 'classnames';
 
-export default function FormSelectFieldEdit({ attributes, setAttributes, clientId }) {
+export default function FormSelectFieldEdit({
+	attributes,
+	setAttributes,
+	clientId,
+}) {
 	const {
 		fieldName,
 		label,
@@ -44,7 +48,10 @@ export default function FormSelectFieldEdit({ attributes, setAttributes, clientI
 	const addOption = () => {
 		const newOptions = [
 			...options,
-			{ label: `Option ${options.length + 1}`, value: `option-${options.length + 1}` },
+			{
+				label: `Option ${options.length + 1}`,
+				value: `option-${options.length + 1}`,
+			},
 		];
 		setAttributes({ options: newOptions });
 	};
@@ -69,14 +76,22 @@ export default function FormSelectFieldEdit({ attributes, setAttributes, clientI
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Field Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Field Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<TextControl
 						label={__('Field Name', 'designsetgo')}
 						value={fieldName}
 						onChange={(value) =>
-							setAttributes({ fieldName: value.replace(/[^a-z0-9_-]/gi, '') })
+							setAttributes({
+								fieldName: value.replace(/[^a-z0-9_-]/gi, ''),
+							})
 						}
-						help={__('Unique identifier for this field (letters, numbers, hyphens, underscores only)', 'designsetgo')}
+						help={__(
+							'Unique identifier for this field (letters, numbers, hyphens, underscores only)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -97,14 +112,23 @@ export default function FormSelectFieldEdit({ attributes, setAttributes, clientI
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Options', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Options', 'designsetgo')}
+					initialOpen={true}
+				>
 					{options.map((option, index) => (
-						<Flex key={index} gap={2} style={{ marginBottom: '1rem' }}>
+						<Flex
+							key={index}
+							gap={2}
+							style={{ marginBottom: '1rem' }}
+						>
 							<FlexItem isBlock>
 								<TextControl
 									label={__('Label', 'designsetgo')}
 									value={option.label}
-									onChange={(value) => updateOption(index, 'label', value)}
+									onChange={(value) =>
+										updateOption(index, 'label', value)
+									}
 									__next40pxDefaultSize
 									__nextHasNoMarginBottom
 								/>
@@ -113,7 +137,9 @@ export default function FormSelectFieldEdit({ attributes, setAttributes, clientI
 								<TextControl
 									label={__('Value', 'designsetgo')}
 									value={option.value}
-									onChange={(value) => updateOption(index, 'value', value)}
+									onChange={(value) =>
+										updateOption(index, 'value', value)
+									}
 									__next40pxDefaultSize
 									__nextHasNoMarginBottom
 								/>
@@ -135,12 +161,20 @@ export default function FormSelectFieldEdit({ attributes, setAttributes, clientI
 					</Button>
 				</PanelBody>
 
-				<PanelBody title={__('Additional Options', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Additional Options', 'designsetgo')}
+					initialOpen={false}
+				>
 					<TextControl
 						label={__('Placeholder', 'designsetgo')}
 						value={placeholder}
-						onChange={(value) => setAttributes({ placeholder: value })}
-						help={__('Text shown when no option is selected', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ placeholder: value })
+						}
+						help={__(
+							'Text shown when no option is selected',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -148,7 +182,9 @@ export default function FormSelectFieldEdit({ attributes, setAttributes, clientI
 					<TextControl
 						label={__('Default Value', 'designsetgo')}
 						value={defaultValue}
-						onChange={(value) => setAttributes({ defaultValue: value })}
+						onChange={(value) =>
+							setAttributes({ defaultValue: value })
+						}
 						help={__('Pre-selected option value', 'designsetgo')}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
@@ -158,7 +194,10 @@ export default function FormSelectFieldEdit({ attributes, setAttributes, clientI
 						label={__('Help Text', 'designsetgo')}
 						value={helpText}
 						onChange={(value) => setAttributes({ helpText: value })}
-						help={__('Additional guidance shown below the field', 'designsetgo')}
+						help={__(
+							'Additional guidance shown below the field',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -168,7 +207,14 @@ export default function FormSelectFieldEdit({ attributes, setAttributes, clientI
 			<div {...blockProps}>
 				<label htmlFor={fieldId} className="dsg-form-field__label">
 					{label}
-					{required && <span className="dsg-form-field__required" aria-label="required">*</span>}
+					{required && (
+						<span
+							className="dsg-form-field__required"
+							aria-label="required"
+						>
+							*
+						</span>
+					)}
 				</label>
 
 				<select

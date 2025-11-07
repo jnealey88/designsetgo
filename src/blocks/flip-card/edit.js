@@ -50,7 +50,10 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 			className: 'dsg-flip-card__container',
 		},
 		{
-			allowedBlocks: ['designsetgo/flip-card-front', 'designsetgo/flip-card-back'],
+			allowedBlocks: [
+				'designsetgo/flip-card-front',
+				'designsetgo/flip-card-back',
+			],
 			template: [
 				[
 					'designsetgo/flip-card-front',
@@ -66,32 +69,39 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 								blockGap: '1rem',
 							},
 							color: {
-								gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+								gradient:
+									'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
 								text: '#ffffff',
 							},
 						},
 					},
 					[
-						['core/heading', {
-							content: '✨ Discover More',
-							level: 2,
-							textAlign: 'center',
-							style: {
-								typography: {
-									fontSize: '2.5rem',
-									fontWeight: '700',
+						[
+							'core/heading',
+							{
+								content: '✨ Discover More',
+								level: 2,
+								textAlign: 'center',
+								style: {
+									typography: {
+										fontSize: '2.5rem',
+										fontWeight: '700',
+									},
 								},
 							},
-						}],
-						['core/paragraph', {
-							content: 'Hover to reveal amazing content',
-							align: 'center',
-							style: {
-								typography: {
-									fontSize: '1.1rem',
+						],
+						[
+							'core/paragraph',
+							{
+								content: 'Hover to reveal amazing content',
+								align: 'center',
+								style: {
+									typography: {
+										fontSize: '1.1rem',
+									},
 								},
 							},
-						}],
+						],
 					],
 				],
 				[
@@ -108,32 +118,40 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 								blockGap: '1.5rem',
 							},
 							color: {
-								gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+								gradient:
+									'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
 								text: '#ffffff',
 							},
 						},
 					},
 					[
-						['core/heading', {
-							content: '🚀 Ready to Start?',
-							level: 2,
-							textAlign: 'center',
-							style: {
-								typography: {
-									fontSize: '2rem',
-									fontWeight: '700',
+						[
+							'core/heading',
+							{
+								content: '🚀 Ready to Start?',
+								level: 2,
+								textAlign: 'center',
+								style: {
+									typography: {
+										fontSize: '2rem',
+										fontWeight: '700',
+									},
 								},
 							},
-						}],
-						['core/paragraph', {
-							content: 'Add your own content here using any WordPress blocks. Customize colors, add images, buttons, and more!',
-							align: 'center',
-							style: {
-								typography: {
-									fontSize: '1rem',
+						],
+						[
+							'core/paragraph',
+							{
+								content:
+									'Add your own content here using any WordPress blocks. Customize colors, add images, buttons, and more!',
+								align: 'center',
+								style: {
+									typography: {
+										fontSize: '1rem',
+									},
 								},
 							},
-						}],
+						],
 					],
 				],
 			],
@@ -162,11 +180,19 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 								value: 'click',
 							},
 						]}
-						onChange={(value) => setAttributes({ flipTrigger: value })}
+						onChange={(value) =>
+							setAttributes({ flipTrigger: value })
+						}
 						help={
 							flipTrigger === 'hover'
-								? __('Card flips when hovering over it', 'designsetgo')
-								: __('Card flips when clicking on it', 'designsetgo')
+								? __(
+										'Card flips when hovering over it',
+										'designsetgo'
+									)
+								: __(
+										'Card flips when clicking on it',
+										'designsetgo'
+									)
 						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
@@ -193,8 +219,13 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 								value: 'zoom',
 							},
 						]}
-						onChange={(value) => setAttributes({ flipEffect: value })}
-						help={__('Choose the transition animation style', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ flipEffect: value })
+						}
+						help={__(
+							'Choose the transition animation style',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -213,11 +244,19 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 									value: 'vertical',
 								},
 							]}
-							onChange={(value) => setAttributes({ flipDirection: value })}
+							onChange={(value) =>
+								setAttributes({ flipDirection: value })
+							}
 							help={
 								flipDirection === 'horizontal'
-									? __('Card flips left to right', 'designsetgo')
-									: __('Card flips top to bottom', 'designsetgo')
+									? __(
+											'Card flips left to right',
+											'designsetgo'
+										)
+									: __(
+											'Card flips top to bottom',
+											'designsetgo'
+										)
 							}
 							__next40pxDefaultSize
 							__nextHasNoMarginBottom
@@ -227,7 +266,9 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 					<UnitControl
 						label={__('Flip Duration', 'designsetgo')}
 						value={flipDuration}
-						onChange={(value) => setAttributes({ flipDuration: value || '0.6s' })}
+						onChange={(value) =>
+							setAttributes({ flipDuration: value || '0.6s' })
+						}
 						units={[
 							{ value: 's', label: 's', default: 0.6 },
 							{ value: 'ms', label: 'ms', default: 600 },

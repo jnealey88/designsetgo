@@ -94,6 +94,14 @@
 			"type": "boolean",
 			"default": false
 		},
+		"style": {
+			"type": "object",
+			"default": {
+				"spacing": {
+					"blockGap": "var(--wp--preset--spacing--50)"
+				}
+			}
+		},
 		"constrainWidth": {
 			"type": "boolean",
 			"default": true
@@ -146,6 +154,7 @@
 			}
 		]
 	},
+	"render": "file:./render.php",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./editor.scss",
 	"style": "file:./style.scss"

@@ -8,16 +8,13 @@ import { useBlockProps, RichText } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 export default function FormCheckboxFieldSave({ attributes }) {
-	const {
-		fieldName,
-		label,
-		helpText,
-		required,
-		checkedByDefault,
-		value,
-	} = attributes;
+	const { fieldName, label, helpText, required, checkedByDefault, value } =
+		attributes;
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--checkbox');
+	const fieldClasses = classnames(
+		'dsg-form-field',
+		'dsg-form-field--checkbox'
+	);
 
 	const blockProps = useBlockProps.save({
 		className: fieldClasses,
@@ -40,9 +37,20 @@ export default function FormCheckboxFieldSave({ attributes }) {
 					aria-required={required ? 'true' : undefined}
 					data-field-type="checkbox"
 				/>
-				<label htmlFor={fieldId} className="dsg-form-field__checkbox-label">
+				<label
+					htmlFor={fieldId}
+					className="dsg-form-field__checkbox-label"
+				>
 					<RichText.Content tagName="span" value={label} />
-					{required && <span className="dsg-form-field__required" aria-label="required"> *</span>}
+					{required && (
+						<span
+							className="dsg-form-field__required"
+							aria-label="required"
+						>
+							{' '}
+							*
+						</span>
+					)}
 				</label>
 			</div>
 

@@ -1,0 +1,140 @@
+/**
+ * Image Accordion Item - Frontend Styles
+ *
+ * Implements expandable panels with background images and overlays
+ */
+
+.dsg-image-accordion-item {
+	// Position and layout
+	position: relative;
+	flex: 1;
+	overflow: hidden;
+	cursor: pointer;
+
+	// Smooth transition on flex property
+	transition: flex var(--transition-duration, 0.5s) cubic-bezier(0.4, 0, 0.2, 1);
+
+	// Background image handling (WordPress adds this automatically)
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	// Overlay (pseudo-element)
+	&--has-overlay::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-color: var(--dsg-overlay-color, rgba(0, 0, 0, 0.4));
+		opacity: var(--dsg-overlay-opacity, 0.4);
+		transition: opacity 0.3s ease;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	// Content wrapper
+	&__content {
+		position: relative;
+		z-index: 2;
+		// Default padding: L (top/bottom), M (left/right)
+		padding-top: var(--wp--preset--spacing--large, 2rem);
+		padding-bottom: var(--wp--preset--spacing--large, 2rem);
+		padding-left: var(--wp--preset--spacing--medium, 1.5rem);
+		padding-right: var(--wp--preset--spacing--medium, 1.5rem);
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		// Use alignment from attributes
+		justify-content: var(--dsg-vertical-alignment, center);
+		align-items: var(--dsg-horizontal-alignment, center);
+		color: white;
+
+		// Smooth content opacity transition
+		opacity: 0.9;
+		transition: opacity 0.3s ease;
+
+		// Make all text white for readability over images
+		h1, h2, h3, h4, h5, h6,
+		p, a, span, li {
+			color: inherit;
+		}
+
+		// Ensure links are visible
+		a {
+			text-decoration: underline;
+
+			&:hover {
+				opacity: 0.9;
+			}
+		}
+
+		// Prevent buttons and blocks from wrapping/breaking
+		.wp-block-button,
+		.wp-block-buttons {
+			flex-shrink: 0;
+		}
+
+		// Ensure proper spacing for block elements
+		> * + * {
+			margin-top: var(--wp--preset--spacing--small, 1rem);
+		}
+	}
+
+	// Expanded state
+	&.is-expanded {
+		flex: var(--expanded-ratio, 3);
+
+		&.dsg-image-accordion-item--has-overlay::before {
+			opacity: var(--dsg-overlay-opacity-expanded, 0.2);
+		}
+
+		.dsg-image-accordion-item__content {
+			opacity: 1;
+		}
+	}
+
+	// Collapsed state (normal size)
+	&.is-collapsed {
+		flex: 1;
+
+		&.dsg-image-accordion-item--has-overlay::before {
+			opacity: calc(var(--dsg-overlay-opacity, 0.4) + 0.2); // Darker when collapsed
+		}
+
+		.dsg-image-accordion-item__content {
+			opacity: 0.7;
+		}
+	}
+
+	// Focus state for accessibility
+	&:focus {
+		outline: 2px solid var(--wp--preset--color--primary, #3b82f6);
+		outline-offset: -2px;
+		z-index: 10;
+	}
+
+	// Note: Hover interactions are handled by JavaScript (view.js)
+	// which adds/removes is-expanded and is-collapsed classes
+}
+
+// Accessibility: Reduce motion
+@media (prefers-reduced-motion: reduce) {
+	.dsg-image-accordion-item {
+		transition: flex 0.1s ease;
+
+		&--has-overlay::before {
+			transition: opacity 0.1s ease;
+		}
+
+		&__content {
+			transition: opacity 0.1s ease;
+		}
+	}
+}
+
+// Print styles: Expand all items
+@media print {
+	.dsg-image-accordion-item {
+		flex: 1 !important;
+		page-break-inside: avoid;
+	}
+}

@@ -336,7 +336,8 @@ export default function GridEdit({ attributes, setAttributes }) {
 										value: hoverButtonBackgroundColor,
 										onChange: (color) =>
 											setAttributes({
-												hoverButtonBackgroundColor: color,
+												hoverButtonBackgroundColor:
+													color,
 											}),
 										label: __(
 											'Hover Button Background Color',

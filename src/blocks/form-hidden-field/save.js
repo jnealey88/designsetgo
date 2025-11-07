@@ -7,10 +7,7 @@
 import { useBlockProps } from '@wordpress/block-editor';
 
 export default function FormHiddenFieldSave({ attributes }) {
-	const {
-		fieldName,
-		value,
-	} = attributes;
+	const { fieldName, value } = attributes;
 
 	const blockProps = useBlockProps.save({
 		className: 'dsg-form-field dsg-form-field--hidden',

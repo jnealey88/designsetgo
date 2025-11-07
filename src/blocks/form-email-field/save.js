@@ -8,14 +8,8 @@ import { useBlockProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 export default function FormEmailFieldSave({ attributes }) {
-	const {
-		fieldName,
-		label,
-		placeholder,
-		helpText,
-		required,
-		defaultValue,
-	} = attributes;
+	const { fieldName, label, placeholder, helpText, required, defaultValue } =
+		attributes;
 
 	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--email');
 
@@ -29,7 +23,14 @@ export default function FormEmailFieldSave({ attributes }) {
 		<div {...blockProps}>
 			<label htmlFor={fieldId} className="dsg-form-field__label">
 				{label}
-				{required && <span className="dsg-form-field__required" aria-label="required">*</span>}
+				{required && (
+					<span
+						className="dsg-form-field__required"
+						aria-label="required"
+					>
+						*
+					</span>
+				)}
 			</label>
 
 			<input

@@ -42,7 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
 					const isFlipped = card.classList.contains('is-flipped');
 					card.setAttribute(
 						'aria-label',
-						isFlipped ? 'Flip card back to front' : 'Flip card to reveal content'
+						isFlipped
+							? 'Flip card back to front'
+							: 'Flip card to reveal content'
 					);
 				}
 			});
@@ -58,7 +60,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			// Keyboard support for hover cards
 			card.setAttribute('tabindex', '0');
-			card.setAttribute('aria-label', 'Flip card - hover or focus to reveal content');
+			card.setAttribute(
+				'aria-label',
+				'Flip card - hover or focus to reveal content'
+			);
 
 			card.addEventListener('focus', function () {
 				card.classList.add('is-flipped');

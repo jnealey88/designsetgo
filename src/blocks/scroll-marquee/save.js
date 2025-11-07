@@ -1,7 +1,15 @@
 import { useBlockProps } from '@wordpress/block-editor';
 
 export default function ScrollMarqueeSave({ attributes }) {
-	const { rows, scrollSpeed, imageHeight, imageWidth, gap, rowGap, borderRadius } = attributes;
+	const {
+		rows,
+		scrollSpeed,
+		imageHeight,
+		imageWidth,
+		gap,
+		rowGap,
+		borderRadius,
+	} = attributes;
 
 	const blockProps = useBlockProps.save({
 		className: 'dsg-scroll-marquee',
@@ -26,7 +34,10 @@ export default function ScrollMarqueeSave({ attributes }) {
 					<div className="dsg-scroll-marquee__track">
 						{/* Render images 6 times for seamless infinite scroll */}
 						{[...Array(6)].map((_, repeatIndex) => (
-							<div key={repeatIndex} className="dsg-scroll-marquee__track-segment">
+							<div
+								key={repeatIndex}
+								className="dsg-scroll-marquee__track-segment"
+							>
 								{row.images.map((image, imageIndex) => (
 									<img
 										key={`${repeatIndex}-${imageIndex}`}

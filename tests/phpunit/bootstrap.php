@@ -1,0 +1,66 @@
+<?php
+/**
+ * PHPUnit Bootstrap File for DesignSetGo
+ *
+ * Sets up the testing environment for WordPress plugin tests.
+ * This file is loaded before all PHPUnit tests.
+ *
+ * @package DesignSetGo
+ */
+
+// Require Composer autoloader if available
+if ( file_exists( dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php' ) ) {
+	require_once dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php';
+}
+
+// Define test environment constants
+define( 'DESIGNSETGO_PLUGIN_DIR', dirname( dirname( __DIR__ ) ) );
+define( 'DESIGNSETGO_TESTS_DIR', __DIR__ );
+
+// Check if we're running in wp-env (WordPress test environment)
+$wp_tests_dir = getenv( 'WP_TESTS_DIR' );
+
+// If WP_TESTS_DIR is not set, check common locations
+if ( ! $wp_tests_dir ) {
+	// Try wp-env location first
+	$wp_env_config = dirname( dirname( __DIR__ ) ) . '/.wp-env.json';
+	if ( file_exists( $wp_env_config ) ) {
+		// Running in wp-env, use its WordPress installation
+		$wp_tests_dir = '/tmp/wordpress-tests-lib';
+	} else {
+		// Try default WordPress test suite location
+		if ( false !== getenv( 'WP_DEVELOP_DIR' ) ) {
+			$wp_tests_dir = getenv( 'WP_DEVELOP_DIR' ) . '/tests/phpunit';
+		} elseif ( file_exists( '/tmp/wordpress-tests-lib/includes/functions.php' ) ) {
+			$wp_tests_dir = '/tmp/wordpress-tests-lib';
+		} elseif ( file_exists( '/vagrant/www/wordpress-develop/tests/phpunit/includes/functions.php' ) ) {
+			$wp_tests_dir = '/vagrant/www/wordpress-develop/tests/phpunit';
+		}
+	}
+}
+
+// Give installation instructions if WordPress test suite not found
+if ( ! $wp_tests_dir || ! file_exists( $wp_tests_dir . '/includes/functions.php' ) ) {
+	echo "Could not find WordPress test suite.\n\n";
+	echo "To run PHPUnit tests, you have two options:\n\n";
+	echo "Option 1 (Recommended) - Use wp-env:\n";
+	echo "  1. Start wp-env: npm run wp-env:start\n";
+	echo "  2. Run tests in wp-env: npm run wp-env run tests-cli --env-cwd=wp-content/plugins/designsetgo vendor/bin/phpunit\n\n";
+	echo "Option 2 - Install WordPress test suite manually:\n";
+	echo "  bash bin/install-wp-tests.sh wordpress_test root '' localhost latest\n\n";
+	exit( 1 );
+}
+
+// Load WordPress test suite
+require_once $wp_tests_dir . '/includes/functions.php';
+
+/**
+ * Manually load the plugin being tested.
+ */
+function _manually_load_plugin() {
+	require dirname( dirname( __DIR__ ) ) . '/designsetgo.php';
+}
+tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+
+// Start up the WordPress testing environment
+require $wp_tests_dir . '/includes/bootstrap.php';

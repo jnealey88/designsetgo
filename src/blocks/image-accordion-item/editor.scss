@@ -1,0 +1,84 @@
+/**
+ * Image Accordion Item - Editor Styles
+ *
+ * CRITICAL: Must match style.scss for editor/frontend parity
+ */
+
+.dsg-image-accordion-item {
+	// Position and layout
+	position: relative;
+	flex: 1;
+	overflow: hidden;
+	min-height: 200px;
+
+	// Background image handling (WordPress adds this automatically)
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	// Overlay (pseudo-element) - same as frontend
+	&--has-overlay::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-color: var(--dsg-overlay-color, rgba(0, 0, 0, 0.4));
+		opacity: var(--dsg-overlay-opacity, 0.4);
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	// Content wrapper
+	&__content {
+		position: relative;
+		z-index: 2;
+		// Default padding: L (top/bottom), M (left/right) - MUST MATCH style.scss
+		padding-top: var(--wp--preset--spacing--large, 2rem);
+		padding-bottom: var(--wp--preset--spacing--large, 2rem);
+		padding-left: var(--wp--preset--spacing--medium, 1.5rem);
+		padding-right: var(--wp--preset--spacing--medium, 1.5rem);
+		min-height: 150px;
+		display: flex;
+		flex-direction: column;
+		// Use alignment from attributes - MUST MATCH style.scss
+		justify-content: var(--dsg-vertical-alignment, center);
+		align-items: var(--dsg-horizontal-alignment, center);
+		color: white;
+
+		// Make all text white for readability
+		h1, h2, h3, h4, h5, h6,
+		p, a, span, li {
+			color: inherit;
+		}
+
+		// Ensure links are visible
+		a {
+			text-decoration: underline;
+		}
+	}
+
+	// Editor-specific: Show placeholder when no background image
+	&:not([style*="background-image"])::after {
+		content: 'Add background image in Styles panel →';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background: rgba(0, 0, 0, 0.8);
+		color: white;
+		padding: 12px 20px;
+		border-radius: 8px;
+		font-size: 14px;
+		text-align: center;
+		z-index: 3;
+		pointer-events: none;
+		white-space: nowrap;
+	}
+
+	// Border for better visibility in editor
+	border: 1px dashed rgba(0, 0, 0, 0.2);
+
+	// Hover effect in editor (subtle)
+	&:hover {
+		border-color: var(--wp-admin-theme-color, #2271b1);
+	}
+}

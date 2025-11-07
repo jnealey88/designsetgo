@@ -39,6 +39,20 @@ class Plugin {
 	public $blocks;
 
 	/**
+	 * Form Handler instance.
+	 *
+	 * @var Blocks\Form_Handler
+	 */
+	public $form_handler;
+
+	/**
+	 * Form Submissions instance.
+	 *
+	 * @var Blocks\Form_Submissions
+	 */
+	public $form_submissions;
+
+	/**
 	 * Patterns Loader instance.
 	 *
 	 * @var Patterns\Loader
@@ -53,11 +67,39 @@ class Plugin {
 	public $global_styles;
 
 	/**
+	 * Admin Menu instance.
+	 *
+	 * @var Admin\Admin_Menu
+	 */
+	public $admin_menu;
+
+	/**
+	 * Settings instance.
+	 *
+	 * @var Admin\Settings
+	 */
+	public $settings;
+
+	/**
+	 * Block Manager instance.
+	 *
+	 * @var Admin\Block_Manager
+	 */
+	public $block_manager;
+
+	/**
 	 * Custom CSS Renderer instance.
 	 *
 	 * @var Custom_CSS_Renderer
 	 */
 	public $custom_css_renderer;
+
+	/**
+	 * Abilities Registry instance.
+	 *
+	 * @var Abilities\Abilities_Registry
+	 */
+	public $abilities_registry;
 
 	/**
 	 * Returns the instance.
@@ -85,10 +127,31 @@ class Plugin {
 	private function load_dependencies() {
 		require_once DESIGNSETGO_PATH . 'includes/class-assets.php';
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-loader.php';
+		require_once DESIGNSETGO_PATH . 'includes/blocks/class-form-handler.php';
+		require_once DESIGNSETGO_PATH . 'includes/blocks/class-form-submissions.php';
 		require_once DESIGNSETGO_PATH . 'includes/patterns/class-loader.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-global-styles.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-settings.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-block-manager.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-admin-menu.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/helpers.php';
+
+		// Load Composer autoloader if available.
+		if ( file_exists( DESIGNSETGO_PATH . 'vendor/autoload.php' ) ) {
+			require_once DESIGNSETGO_PATH . 'vendor/autoload.php';
+		}
+
+		// Load WordPress Abilities API if available.
+		if ( file_exists( DESIGNSETGO_PATH . 'vendor/wordpress/abilities-api/includes/bootstrap.php' ) ) {
+			if ( ! defined( 'WP_ABILITIES_API_DIR' ) ) {
+				define( 'WP_ABILITIES_API_DIR', DESIGNSETGO_PATH . 'vendor/wordpress/abilities-api/' );
+			}
+			require_once DESIGNSETGO_PATH . 'vendor/wordpress/abilities-api/includes/bootstrap.php';
+		}
+
+		// Load Abilities Registry.
+		require_once DESIGNSETGO_PATH . 'includes/abilities/class-abilities-registry.php';
 	}
 
 	/**
@@ -98,9 +161,23 @@ class Plugin {
 		// Initialize components.
 		$this->assets              = new Assets();
 		$this->blocks              = new Blocks\Loader();
+		$this->form_handler        = new Blocks\Form_Handler();
+		$this->form_submissions    = new Blocks\Form_Submissions();
 		$this->patterns            = new Patterns\Loader();
 		$this->global_styles       = new Admin\Global_Styles();
+		$this->settings            = new Admin\Settings();
+		$this->block_manager       = new Admin\Block_Manager();
 		$this->custom_css_renderer = new Custom_CSS_Renderer();
+
+		// Initialize admin menu (only in admin area).
+		if ( is_admin() ) {
+			$this->admin_menu = new Admin\Admin_Menu();
+		}
+
+		// Initialize Abilities Registry (AI-native API).
+		if ( class_exists( 'DesignSetGo\Abilities\Abilities_Registry' ) ) {
+			$this->abilities_registry = Abilities\Abilities_Registry::get_instance();
+		}
 
 		// Hook into WordPress.
 		add_action( 'init', array( $this, 'load_textdomain' ) );

@@ -7,14 +7,13 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import {
-	PanelBody,
-	SelectControl,
-	RangeControl,
-} from '@wordpress/components';
+import { PanelBody, SelectControl, RangeControl } from '@wordpress/components';
 
 /**
  * Edit component for Reveal block
+ * @param root0
+ * @param root0.attributes
+ * @param root0.setAttributes
  */
 export default function Edit({ attributes, setAttributes }) {
 	const { revealAnimation, revealDuration } = attributes;

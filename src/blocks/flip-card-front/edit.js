@@ -14,8 +14,21 @@ export default function FlipCardFrontEdit() {
 
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		template: [
-			['core/heading', { content: __('Front of Card', 'designsetgo'), level: 2, textAlign: 'center' }],
-			['core/paragraph', { content: __('Add any blocks you want here...', 'designsetgo'), align: 'center' }],
+			[
+				'core/heading',
+				{
+					content: __('Front of Card', 'designsetgo'),
+					level: 2,
+					textAlign: 'center',
+				},
+			],
+			[
+				'core/paragraph',
+				{
+					content: __('Add any blocks you want here…', 'designsetgo'),
+					align: 'center',
+				},
+			],
 		],
 		templateLock: false,
 	});

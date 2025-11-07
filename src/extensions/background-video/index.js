@@ -1,7 +1,7 @@
 /**
  * Background Video Extension
  *
- * Adds background video capability to all WordPress blocks.
+ * Adds background video capability to DesignSetGo container blocks.
  *
  * @package
  * @since 1.0.0
@@ -24,23 +24,36 @@ import {
 import { Fragment } from '@wordpress/element';
 
 /**
- * Blocks excluded from background video extension
+ * Container blocks that support background video
  */
-const EXCLUDED_BLOCKS = [
-	'core/freeform',
-	'core/template-part',
-	'core/post-content',
+const ALLOWED_BLOCKS = [
+	'designsetgo/flex',
+	'designsetgo/grid',
+	'designsetgo/stack',
+	'designsetgo/reveal',
+	'designsetgo/flip-card',
+	'designsetgo/flip-card-front',
+	'designsetgo/flip-card-back',
+	'designsetgo/accordion',
+	'designsetgo/accordion-item',
+	'designsetgo/tabs',
+	'designsetgo/tab',
+	'designsetgo/scroll-accordion',
+	'designsetgo/scroll-accordion-item',
+	'designsetgo/scroll-marquee',
+	'designsetgo/image-accordion',
+	'designsetgo/image-accordion-item',
 ];
 
 /**
- * Add background video attributes to all blocks
+ * Add background video attributes to allowed container blocks
  *
  * @param {Object} settings Block settings
  * @param {string} name     Block name
  * @return {Object} Modified settings
  */
 function addBackgroundVideoAttributes(settings, name) {
-	if (EXCLUDED_BLOCKS.includes(name)) {
+	if (!ALLOWED_BLOCKS.includes(name)) {
 		return settings;
 	}
 
@@ -97,7 +110,7 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 			dsgVideoMobileHide,
 		} = attributes;
 
-		if (EXCLUDED_BLOCKS.includes(name)) {
+		if (!ALLOWED_BLOCKS.includes(name)) {
 			return <BlockEdit {...props} />;
 		}
 
@@ -348,7 +361,8 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 addFilter(
 	'editor.BlockEdit',
 	'designsetgo/background-video-controls',
-	withBackgroundVideoControls
+	withBackgroundVideoControls,
+	5 // High priority - major visual element, appears early in settings
 );
 
 /**
@@ -359,7 +373,7 @@ const withBackgroundVideoEdit = createHigherOrderComponent((BlockListBlock) => {
 		const { attributes, name } = props;
 		const { dsgVideoUrl, dsgVideoPoster } = attributes;
 
-		if (EXCLUDED_BLOCKS.includes(name) || !dsgVideoUrl) {
+		if (!ALLOWED_BLOCKS.includes(name) || !dsgVideoUrl) {
 			return <BlockListBlock {...props} />;
 		}
 

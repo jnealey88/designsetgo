@@ -14,7 +14,11 @@ import {
 } from '@wordpress/components';
 import classnames from 'classnames';
 
-export default function FormTimeFieldEdit({ attributes, setAttributes, clientId }) {
+export default function FormTimeFieldEdit({
+	attributes,
+	setAttributes,
+	clientId,
+}) {
 	const {
 		fieldName,
 		label,
@@ -42,14 +46,22 @@ export default function FormTimeFieldEdit({ attributes, setAttributes, clientId 
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Field Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Field Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<TextControl
 						label={__('Field Name', 'designsetgo')}
 						value={fieldName}
 						onChange={(value) =>
-							setAttributes({ fieldName: value.replace(/[^a-z0-9_-]/gi, '') })
+							setAttributes({
+								fieldName: value.replace(/[^a-z0-9_-]/gi, ''),
+							})
 						}
-						help={__('Unique identifier for this field (letters, numbers, hyphens, underscores only)', 'designsetgo')}
+						help={__(
+							'Unique identifier for this field (letters, numbers, hyphens, underscores only)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -70,7 +82,10 @@ export default function FormTimeFieldEdit({ attributes, setAttributes, clientId 
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Time Range', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Time Range', 'designsetgo')}
+					initialOpen={false}
+				>
 					<TextControl
 						label={__('Minimum Time', 'designsetgo')}
 						value={minTime}
@@ -94,20 +109,33 @@ export default function FormTimeFieldEdit({ attributes, setAttributes, clientId 
 					<NumberControl
 						label={__('Step (seconds)', 'designsetgo')}
 						value={step}
-						onChange={(value) => setAttributes({ step: parseInt(value) || 60 })}
-						help={__('Time increment in seconds (60 = 1 minute)', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ step: parseInt(value) || 60 })
+						}
+						help={__(
+							'Time increment in seconds (60 = 1 minute)',
+							'designsetgo'
+						)}
 						min={1}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Additional Options', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Additional Options', 'designsetgo')}
+					initialOpen={false}
+				>
 					<TextControl
 						label={__('Default Value', 'designsetgo')}
 						value={defaultValue}
-						onChange={(value) => setAttributes({ defaultValue: value })}
-						help={__('Pre-filled time (Format: HH:MM)', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ defaultValue: value })
+						}
+						help={__(
+							'Pre-filled time (Format: HH:MM)',
+							'designsetgo'
+						)}
 						type="time"
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
@@ -117,7 +145,10 @@ export default function FormTimeFieldEdit({ attributes, setAttributes, clientId 
 						label={__('Help Text', 'designsetgo')}
 						value={helpText}
 						onChange={(value) => setAttributes({ helpText: value })}
-						help={__('Additional guidance shown below the field', 'designsetgo')}
+						help={__(
+							'Additional guidance shown below the field',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -127,7 +158,14 @@ export default function FormTimeFieldEdit({ attributes, setAttributes, clientId 
 			<div {...blockProps}>
 				<label htmlFor={fieldId} className="dsg-form-field__label">
 					{label}
-					{required && <span className="dsg-form-field__required" aria-label="required">*</span>}
+					{required && (
+						<span
+							className="dsg-form-field__required"
+							aria-label="required"
+						>
+							*
+						</span>
+					)}
 				</label>
 
 				<input

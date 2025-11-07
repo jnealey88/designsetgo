@@ -71,8 +71,12 @@ addFilter(
 const withOverlayControls = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, name } = props;
-		const { dsgEnableOverlay, dsgOverlayColor, dsgOverlayOpacity, dsgVideoUrl } =
-			attributes;
+		const {
+			dsgEnableOverlay,
+			dsgOverlayColor,
+			dsgOverlayOpacity,
+			dsgVideoUrl,
+		} = attributes;
 
 		// Only show overlay controls if block has video background
 		if (EXCLUDED_BLOCKS.includes(name) || !dsgVideoUrl) {
@@ -173,7 +177,8 @@ const withOverlayControls = createHigherOrderComponent((BlockEdit) => {
 addFilter(
 	'editor.BlockEdit',
 	'designsetgo/overlay-controls',
-	withOverlayControls
+	withOverlayControls,
+	6 // Right after Background Video - directly related functionality
 );
 
 /**

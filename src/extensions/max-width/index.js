@@ -195,7 +195,7 @@ addFilter(
 	'editor.BlockEdit',
 	'designsetgo/add-max-width-control',
 	withMaxWidthControl,
-	20 // Higher priority to ensure it runs after other extensions
+	150 // After animations - layout utility for fine-tuning
 );
 
 /**

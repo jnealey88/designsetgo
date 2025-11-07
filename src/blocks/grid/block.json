@@ -206,6 +206,7 @@
 			}
 		]
 	},
+	"render": "file:./render.php",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./editor.scss",
 	"style": "file:./style.scss"

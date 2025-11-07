@@ -14,7 +14,11 @@ import {
 } from '@wordpress/components';
 import classnames from 'classnames';
 
-export default function FormNumberFieldEdit({ attributes, setAttributes, clientId }) {
+export default function FormNumberFieldEdit({
+	attributes,
+	setAttributes,
+	clientId,
+}) {
 	const {
 		fieldName,
 		label,
@@ -44,14 +48,22 @@ export default function FormNumberFieldEdit({ attributes, setAttributes, clientI
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Field Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Field Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<TextControl
 						label={__('Field Name', 'designsetgo')}
 						value={fieldName}
 						onChange={(value) =>
-							setAttributes({ fieldName: value.replace(/[^a-z0-9_-]/gi, '') })
+							setAttributes({
+								fieldName: value.replace(/[^a-z0-9_-]/gi, ''),
+							})
 						}
-						help={__('Unique identifier for this field (letters, numbers, hyphens, underscores only)', 'designsetgo')}
+						help={__(
+							'Unique identifier for this field (letters, numbers, hyphens, underscores only)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -72,12 +84,22 @@ export default function FormNumberFieldEdit({ attributes, setAttributes, clientI
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Number Settings', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Number Settings', 'designsetgo')}
+					initialOpen={false}
+				>
 					<NumberControl
 						label={__('Minimum Value', 'designsetgo')}
 						value={min !== null ? min : ''}
-						onChange={(value) => setAttributes({ min: value !== '' ? parseFloat(value) : null })}
-						help={__('Minimum allowed value (leave empty for no minimum)', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({
+								min: value !== '' ? parseFloat(value) : null,
+							})
+						}
+						help={__(
+							'Minimum allowed value (leave empty for no minimum)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -85,8 +107,15 @@ export default function FormNumberFieldEdit({ attributes, setAttributes, clientI
 					<NumberControl
 						label={__('Maximum Value', 'designsetgo')}
 						value={max !== null ? max : ''}
-						onChange={(value) => setAttributes({ max: value !== '' ? parseFloat(value) : null })}
-						help={__('Maximum allowed value (leave empty for no maximum)', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({
+								max: value !== '' ? parseFloat(value) : null,
+							})
+						}
+						help={__(
+							'Maximum allowed value (leave empty for no maximum)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -94,8 +123,13 @@ export default function FormNumberFieldEdit({ attributes, setAttributes, clientI
 					<NumberControl
 						label={__('Step', 'designsetgo')}
 						value={step}
-						onChange={(value) => setAttributes({ step: parseFloat(value) || 1 })}
-						help={__('Increment/decrement step value', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ step: parseFloat(value) || 1 })
+						}
+						help={__(
+							'Increment/decrement step value',
+							'designsetgo'
+						)}
 						min={0.01}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
@@ -110,17 +144,28 @@ export default function FormNumberFieldEdit({ attributes, setAttributes, clientI
 								setAttributes({ step: 1 });
 							}
 						}}
-						help={__('Allow decimal numbers instead of integers only', 'designsetgo')}
+						help={__(
+							'Allow decimal numbers instead of integers only',
+							'designsetgo'
+						)}
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Additional Options', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Additional Options', 'designsetgo')}
+					initialOpen={false}
+				>
 					<TextControl
 						label={__('Placeholder', 'designsetgo')}
 						value={placeholder}
-						onChange={(value) => setAttributes({ placeholder: value })}
-						help={__('Example text shown when field is empty', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ placeholder: value })
+						}
+						help={__(
+							'Example text shown when field is empty',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -128,8 +173,13 @@ export default function FormNumberFieldEdit({ attributes, setAttributes, clientI
 					<TextControl
 						label={__('Default Value', 'designsetgo')}
 						value={defaultValue}
-						onChange={(value) => setAttributes({ defaultValue: value })}
-						help={__('Pre-filled value for this field', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ defaultValue: value })
+						}
+						help={__(
+							'Pre-filled value for this field',
+							'designsetgo'
+						)}
 						type="number"
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
@@ -139,7 +189,10 @@ export default function FormNumberFieldEdit({ attributes, setAttributes, clientI
 						label={__('Help Text', 'designsetgo')}
 						value={helpText}
 						onChange={(value) => setAttributes({ helpText: value })}
-						help={__('Additional guidance shown below the field', 'designsetgo')}
+						help={__(
+							'Additional guidance shown below the field',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -149,7 +202,14 @@ export default function FormNumberFieldEdit({ attributes, setAttributes, clientI
 			<div {...blockProps}>
 				<label htmlFor={fieldId} className="dsg-form-field__label">
 					{label}
-					{required && <span className="dsg-form-field__required" aria-label="required">*</span>}
+					{required && (
+						<span
+							className="dsg-form-field__required"
+							aria-label="required"
+						>
+							*
+						</span>
+					)}
 				</label>
 
 				<input

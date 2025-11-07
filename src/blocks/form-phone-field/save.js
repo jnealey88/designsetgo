@@ -47,7 +47,9 @@ export default function FormPhoneFieldSave({ attributes }) {
 
 	// Get placeholder based on format
 	const getPlaceholder = () => {
-		if (placeholder) return placeholder;
+		if (placeholder) {
+			return placeholder;
+		}
 
 		switch (phoneFormat) {
 			case 'us':
@@ -63,7 +65,14 @@ export default function FormPhoneFieldSave({ attributes }) {
 		<div {...blockProps}>
 			<label htmlFor={fieldId} className="dsg-form-field__label">
 				{label}
-				{required && <span className="dsg-form-field__required" aria-label="required">*</span>}
+				{required && (
+					<span
+						className="dsg-form-field__required"
+						aria-label="required"
+					>
+						*
+					</span>
+				)}
 			</label>
 
 			<div

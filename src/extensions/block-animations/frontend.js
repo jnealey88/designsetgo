@@ -86,6 +86,7 @@ function animateOnScroll(element) {
 	const shouldRepeat = hasExitAnimation || !once;
 
 	// Create intersection observer with multiple thresholds for smooth detection
+	// Use negative rootMargin so animations trigger when element is IN viewport, not before
 	// eslint-disable-next-line no-undef
 	const observer = new IntersectionObserver(
 		(entries) => {
@@ -163,8 +164,8 @@ function animateOnScroll(element) {
 			});
 		},
 		{
-			rootMargin: `${offset}px`,
-			threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], // Granular thresholds for early detection
+			rootMargin: `-${offset}px`,
+			threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], // Granular thresholds for smooth detection
 		}
 	);
 

@@ -47,8 +47,14 @@ module.exports = {
 		'style-index': path.resolve(process.cwd(), 'src', 'style.scss'),
 		// Frontend entry point for frontend-only scripts
 		frontend: path.resolve(process.cwd(), 'src', 'frontend.js'),
+		// Admin dashboard entry point
+		admin: path.resolve(process.cwd(), 'src', 'admin', 'index.js'),
 		// Block category filter for dual categorization
-		'block-category-filter': path.resolve(process.cwd(), 'src', 'block-category-filter.js'),
+		'block-category-filter': path.resolve(
+			process.cwd(),
+			'src',
+			'block-category-filter.js'
+		),
 		// Block-specific entries (auto-detected from src/blocks/*/index.js)
 		...blockEntries,
 		// Block-specific view scripts (auto-detected from src/blocks/*/view.js)
@@ -58,7 +64,7 @@ module.exports = {
 	// WordPress packages are already externalized by default
 	plugins: [
 		...defaultConfig.plugins,
-		// Copy block style variations to build directory
+		// Copy block style variations and admin assets to build directory
 		new CopyWebpackPlugin({
 			patterns: [
 				{
@@ -74,6 +80,11 @@ module.exports = {
 						return 'blocks/[name][ext]';
 					},
 					noErrorOnMissing: true, // Don't error if no files match
+				},
+				{
+					from: 'src/admin/assets/*',
+					to: 'admin/assets/[name][ext]',
+					noErrorOnMissing: true,
 				},
 			],
 		}),

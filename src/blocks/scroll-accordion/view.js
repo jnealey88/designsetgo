@@ -49,7 +49,10 @@ function initScrollAccordions() {
 				// Scale decreases as items approach the center from below
 				if (distanceFromCenter > 0) {
 					// Item is below center - scale based on distance
-					const scaleValue = Math.max(0.85, 1 - (distanceFromCenter / window.innerHeight) * 0.3);
+					const scaleValue = Math.max(
+						0.85,
+						1 - (distanceFromCenter / window.innerHeight) * 0.3
+					);
 					item.style.transform = `scale(${scaleValue})`;
 				} else {
 					// Item is at or above center - full scale

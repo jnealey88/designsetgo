@@ -9,6 +9,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	PanelColorSettings,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -20,11 +21,14 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
-import { PanelColorSettings } from '@wordpress/block-editor';
 import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
 
-export default function FormBuilderEdit({ attributes, setAttributes, clientId }) {
+export default function FormBuilderEdit({
+	attributes,
+	setAttributes,
+	clientId,
+}) {
 	const {
 		formId,
 		submitButtonText,
@@ -62,7 +66,8 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 
 	// Calculate classes
 	const formClasses = classnames('dsg-form-builder', {
-		[`dsg-form-builder--align-${submitButtonAlignment}`]: submitButtonAlignment,
+		[`dsg-form-builder--align-${submitButtonAlignment}`]:
+			submitButtonAlignment,
 	});
 
 	// Apply form settings as CSS custom properties
@@ -133,11 +138,16 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Form Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Form Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<ToggleControl
 						label={__('AJAX Submit', 'designsetgo')}
 						checked={ajaxSubmit}
-						onChange={(value) => setAttributes({ ajaxSubmit: value })}
+						onChange={(value) =>
+							setAttributes({ ajaxSubmit: value })
+						}
 						help={__(
 							'Submit form without page reload',
 							'designsetgo'
@@ -148,7 +158,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					<TextControl
 						label={__('Submit Button Text', 'designsetgo')}
 						value={submitButtonText}
-						onChange={(value) => setAttributes({ submitButtonText: value })}
+						onChange={(value) =>
+							setAttributes({ submitButtonText: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -158,10 +170,18 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 						value={submitButtonAlignment}
 						options={[
 							{ label: __('Left', 'designsetgo'), value: 'left' },
-							{ label: __('Center', 'designsetgo'), value: 'center' },
-							{ label: __('Right', 'designsetgo'), value: 'right' },
+							{
+								label: __('Center', 'designsetgo'),
+								value: 'center',
+							},
+							{
+								label: __('Right', 'designsetgo'),
+								value: 'right',
+							},
 						]}
-						onChange={(value) => setAttributes({ submitButtonAlignment: value })}
+						onChange={(value) =>
+							setAttributes({ submitButtonAlignment: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -169,7 +189,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					<UnitControl
 						label={__('Field Spacing', 'designsetgo')}
 						value={fieldSpacing}
-						onChange={(value) => setAttributes({ fieldSpacing: value || '1.5rem' })}
+						onChange={(value) =>
+							setAttributes({ fieldSpacing: value || '1.5rem' })
+						}
 						units={[
 							{ value: 'px', label: 'px', default: 24 },
 							{ value: 'rem', label: 'rem', default: 1.5 },
@@ -185,7 +207,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					<UnitControl
 						label={__('Input Height', 'designsetgo')}
 						value={inputHeight}
-						onChange={(value) => setAttributes({ inputHeight: value || '44px' })}
+						onChange={(value) =>
+							setAttributes({ inputHeight: value || '44px' })
+						}
 						units={[
 							{ value: 'px', label: 'px', default: 44 },
 							{ value: 'rem', label: 'rem', default: 2.75 },
@@ -193,7 +217,10 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 						]}
 						min={28}
 						max={200}
-						help={__('Minimum height for input fields', 'designsetgo')}
+						help={__(
+							'Minimum height for input fields',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -201,7 +228,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					<UnitControl
 						label={__('Input Padding', 'designsetgo')}
 						value={inputPadding}
-						onChange={(value) => setAttributes({ inputPadding: value || '0.75rem' })}
+						onChange={(value) =>
+							setAttributes({ inputPadding: value || '0.75rem' })
+						}
 						units={[
 							{ value: 'px', label: 'px', default: 12 },
 							{ value: 'rem', label: 'rem', default: 0.75 },
@@ -215,11 +244,16 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Messages', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Messages', 'designsetgo')}
+					initialOpen={false}
+				>
 					<TextareaControl
 						label={__('Success Message', 'designsetgo')}
 						value={successMessage}
-						onChange={(value) => setAttributes({ successMessage: value })}
+						onChange={(value) =>
+							setAttributes({ successMessage: value })
+						}
 						help={__(
 							'Message shown after successful submission',
 							'designsetgo'
@@ -231,7 +265,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					<TextareaControl
 						label={__('Error Message', 'designsetgo')}
 						value={errorMessage}
-						onChange={(value) => setAttributes({ errorMessage: value })}
+						onChange={(value) =>
+							setAttributes({ errorMessage: value })
+						}
 						help={__(
 							'Message shown if submission fails',
 							'designsetgo'
@@ -241,11 +277,16 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Spam Protection', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Spam Protection', 'designsetgo')}
+					initialOpen={false}
+				>
 					<ToggleControl
 						label={__('Enable Honeypot', 'designsetgo')}
 						checked={enableHoneypot}
-						onChange={(value) => setAttributes({ enableHoneypot: value })}
+						onChange={(value) =>
+							setAttributes({ enableHoneypot: value })
+						}
 						help={__(
 							'Invisible field to catch spam bots',
 							'designsetgo'
@@ -256,7 +297,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					<ToggleControl
 						label={__('Enable Rate Limiting', 'designsetgo')}
 						checked={enableRateLimit}
-						onChange={(value) => setAttributes({ enableRateLimit: value })}
+						onChange={(value) =>
+							setAttributes({ enableRateLimit: value })
+						}
 						help={__(
 							'Limit submissions per IP address',
 							'designsetgo'
@@ -269,7 +312,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 							<RangeControl
 								label={__('Max Submissions', 'designsetgo')}
 								value={rateLimitCount}
-								onChange={(value) => setAttributes({ rateLimitCount: value })}
+								onChange={(value) =>
+									setAttributes({ rateLimitCount: value })
+								}
 								min={1}
 								max={10}
 								help={__(
@@ -281,9 +326,14 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 							/>
 
 							<RangeControl
-								label={__('Time Window (seconds)', 'designsetgo')}
+								label={__(
+									'Time Window (seconds)',
+									'designsetgo'
+								)}
 								value={rateLimitWindow}
-								onChange={(value) => setAttributes({ rateLimitWindow: value })}
+								onChange={(value) =>
+									setAttributes({ rateLimitWindow: value })
+								}
 								min={30}
 								max={300}
 								step={30}
@@ -298,11 +348,16 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					)}
 				</PanelBody>
 
-				<PanelBody title={__('Email Notifications', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Email Notifications', 'designsetgo')}
+					initialOpen={false}
+				>
 					<ToggleControl
 						label={__('Enable Email Notifications', 'designsetgo')}
 						checked={enableEmail}
-						onChange={(value) => setAttributes({ enableEmail: value })}
+						onChange={(value) =>
+							setAttributes({ enableEmail: value })
+						}
 						help={__(
 							'Send email when form is submitted',
 							'designsetgo'
@@ -315,7 +370,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 							<TextControl
 								label={__('Recipient Email', 'designsetgo')}
 								value={emailTo}
-								onChange={(value) => setAttributes({ emailTo: value })}
+								onChange={(value) =>
+									setAttributes({ emailTo: value })
+								}
 								type="email"
 								placeholder="admin@example.com"
 								help={__(
@@ -329,7 +386,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 							<TextControl
 								label={__('Email Subject', 'designsetgo')}
 								value={emailSubject}
-								onChange={(value) => setAttributes({ emailSubject: value })}
+								onChange={(value) =>
+									setAttributes({ emailSubject: value })
+								}
 								help={__(
 									'Subject line for notification emails. Use {field_name} for dynamic values.',
 									'designsetgo'
@@ -341,7 +400,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 							<TextControl
 								label={__('From Name', 'designsetgo')}
 								value={emailFromName}
-								onChange={(value) => setAttributes({ emailFromName: value })}
+								onChange={(value) =>
+									setAttributes({ emailFromName: value })
+								}
 								placeholder={__('Site Name', 'designsetgo')}
 								help={__(
 									'Name shown as email sender (leave empty for site name)',
@@ -354,7 +415,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 							<TextControl
 								label={__('From Email', 'designsetgo')}
 								value={emailFromEmail}
-								onChange={(value) => setAttributes({ emailFromEmail: value })}
+								onChange={(value) =>
+									setAttributes({ emailFromEmail: value })
+								}
 								type="email"
 								placeholder="wordpress@example.com"
 								help={__(
@@ -368,7 +431,9 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 							<TextControl
 								label={__('Reply-To Field Name', 'designsetgo')}
 								value={emailReplyTo}
-								onChange={(value) => setAttributes({ emailReplyTo: value })}
+								onChange={(value) =>
+									setAttributes({ emailReplyTo: value })
+								}
 								placeholder="email"
 								help={__(
 									'Use a form field value for reply-to (e.g., "email" or "user_email")',
@@ -381,11 +446,17 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 							<TextareaControl
 								label={__('Email Body Template', 'designsetgo')}
 								value={emailBody}
-								onChange={(value) => setAttributes({ emailBody: value })}
-								placeholder={__(
-									'New form submission:\n\n{all_fields}\n\nSubmitted from: {page_url}',
-									'designsetgo'
-								)}
+								onChange={(value) =>
+									setAttributes({ emailBody: value })
+								}
+								placeholder={
+									__('New form submission:', 'designsetgo') +
+									'\n\n{all_fields}\n\n' +
+									__(
+										'Submitted from: {page_url}',
+										'designsetgo'
+									)
+								}
 								help={__(
 									'Email content template. Use {field_name} for specific fields or {all_fields} for all submitted data.',
 									'designsetgo'
@@ -402,17 +473,20 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					colorSettings={[
 						{
 							value: fieldLabelColor,
-							onChange: (value) => setAttributes({ fieldLabelColor: value }),
+							onChange: (value) =>
+								setAttributes({ fieldLabelColor: value }),
 							label: __('Label Color', 'designsetgo'),
 						},
 						{
 							value: fieldBorderColor,
-							onChange: (value) => setAttributes({ fieldBorderColor: value }),
+							onChange: (value) =>
+								setAttributes({ fieldBorderColor: value }),
 							label: __('Border Color', 'designsetgo'),
 						},
 						{
 							value: fieldBackgroundColor,
-							onChange: (value) => setAttributes({ fieldBackgroundColor: value }),
+							onChange: (value) =>
+								setAttributes({ fieldBackgroundColor: value }),
 							label: __('Field Background', 'designsetgo'),
 						},
 					]}
@@ -425,12 +499,16 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 					colorSettings={[
 						{
 							value: submitButtonColor,
-							onChange: (value) => setAttributes({ submitButtonColor: value }),
+							onChange: (value) =>
+								setAttributes({ submitButtonColor: value }),
 							label: __('Text Color', 'designsetgo'),
 						},
 						{
 							value: submitButtonBackgroundColor,
-							onChange: (value) => setAttributes({ submitButtonBackgroundColor: value }),
+							onChange: (value) =>
+								setAttributes({
+									submitButtonBackgroundColor: value,
+								}),
 							label: __('Background Color', 'designsetgo'),
 						},
 					]}
@@ -448,8 +526,12 @@ export default function FormBuilderEdit({ attributes, setAttributes, clientId })
 						className="dsg-form__submit wp-element-button"
 						disabled
 						style={{
-							...(submitButtonColor && { color: submitButtonColor }),
-							...(submitButtonBackgroundColor && { backgroundColor: submitButtonBackgroundColor }),
+							...(submitButtonColor && {
+								color: submitButtonColor,
+							}),
+							...(submitButtonBackgroundColor && {
+								backgroundColor: submitButtonBackgroundColor,
+							}),
 						}}
 					>
 						{submitButtonText}

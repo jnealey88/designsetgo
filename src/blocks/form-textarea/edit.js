@@ -16,7 +16,12 @@ import {
 import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
 
-export default function FormTextareaEdit({ attributes, setAttributes, clientId, context }) {
+export default function FormTextareaEdit({
+	attributes,
+	setAttributes,
+	clientId,
+	context,
+}) {
 	const {
 		fieldName,
 		label,
@@ -39,7 +44,10 @@ export default function FormTextareaEdit({ attributes, setAttributes, clientId, 
 	const fieldLabelColor = context['designsetgo/form/fieldLabelColor'];
 	const fieldBorderColor = context['designsetgo/form/fieldBorderColor'];
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--textarea');
+	const fieldClasses = classnames(
+		'dsg-form-field',
+		'dsg-form-field--textarea'
+	);
 
 	const fieldStyles = {
 		'--dsg-field-label-color': fieldLabelColor,
@@ -54,11 +62,18 @@ export default function FormTextareaEdit({ attributes, setAttributes, clientId, 
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Field Settings', 'designsetgo')} initialOpen={true}>
+				<PanelBody
+					title={__('Field Settings', 'designsetgo')}
+					initialOpen={true}
+				>
 					<TextControl
 						label={__('Field Name', 'designsetgo')}
 						value={fieldName}
-						onChange={(value) => setAttributes({ fieldName: value.replace(/[^a-z0-9_]/g, '_') })}
+						onChange={(value) =>
+							setAttributes({
+								fieldName: value.replace(/[^a-z0-9_]/g, '_'),
+							})
+						}
 						help={__(
 							'Unique identifier for this field',
 							'designsetgo'
@@ -78,7 +93,9 @@ export default function FormTextareaEdit({ attributes, setAttributes, clientId, 
 					<TextControl
 						label={__('Placeholder', 'designsetgo')}
 						value={placeholder}
-						onChange={(value) => setAttributes({ placeholder: value })}
+						onChange={(value) =>
+							setAttributes({ placeholder: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -115,7 +132,9 @@ export default function FormTextareaEdit({ attributes, setAttributes, clientId, 
 					<RangeControl
 						label={__('Maximum Length', 'designsetgo')}
 						value={maxLength}
-						onChange={(value) => setAttributes({ maxLength: value })}
+						onChange={(value) =>
+							setAttributes({ maxLength: value })
+						}
 						min={0}
 						max={5000}
 						step={50}
@@ -130,9 +149,14 @@ export default function FormTextareaEdit({ attributes, setAttributes, clientId, 
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<label htmlFor={`field-${clientId}`} className="dsg-form-field__label">
+				<label
+					htmlFor={`field-${clientId}`}
+					className="dsg-form-field__label"
+				>
 					{label}
-					{required && <span className="dsg-form-field__required">*</span>}
+					{required && (
+						<span className="dsg-form-field__required">*</span>
+					)}
 				</label>
 
 				<textarea
@@ -143,11 +167,7 @@ export default function FormTextareaEdit({ attributes, setAttributes, clientId, 
 					disabled
 				/>
 
-				{helpText && (
-					<p className="dsg-form-field__help">
-						{helpText}
-					</p>
-				)}
+				{helpText && <p className="dsg-form-field__help">{helpText}</p>}
 			</div>
 		</>
 	);

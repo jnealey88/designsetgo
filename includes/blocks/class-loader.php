@@ -43,7 +43,16 @@ class Loader {
 			$block_json = $block_dir . '/block.json';
 
 			if ( file_exists( $block_json ) ) {
-				register_block_type( $block_dir );
+				// Get block name from block.json.
+				$block_data = json_decode( file_get_contents( $block_json ), true );
+				$block_name = isset( $block_data['name'] ) ? $block_data['name'] : '';
+
+				// Check if block should be registered (allows filtering via Block_Manager).
+				$should_register = apply_filters( 'designsetgo_register_block', true, $block_name );
+
+				if ( $should_register ) {
+					register_block_type( $block_dir );
+				}
 			}
 		}
 	}

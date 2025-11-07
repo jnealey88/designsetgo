@@ -139,7 +139,8 @@ function addAnimationSaveProps(extraProps, blockType, attributes) {
 addFilter(
 	'editor.BlockEdit',
 	'designsetgo/block-animations/with-controls',
-	withAnimationControls
+	withAnimationControls,
+	100 // After core styling - animations are effects applied to styled blocks
 );
 
 addFilter(

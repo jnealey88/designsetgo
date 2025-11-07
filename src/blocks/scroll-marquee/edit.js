@@ -18,10 +18,21 @@ import {
 import { plus, close } from '@wordpress/icons';
 
 export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
-	const { rows, scrollSpeed, imageHeight, imageWidth, gap, rowGap, borderRadius } = attributes;
+	const {
+		rows,
+		scrollSpeed,
+		imageHeight,
+		imageWidth,
+		gap,
+		rowGap,
+		borderRadius,
+	} = attributes;
 
 	// Performance: Calculate total images across all rows
-	const totalImages = rows.reduce((sum, row) => sum + (row.images?.length || 0), 0);
+	const totalImages = rows.reduce(
+		(sum, row) => sum + (row.images?.length || 0),
+		0
+	);
 	const showPerformanceWarning = totalImages > 20;
 
 	const blockProps = useBlockProps({
@@ -36,7 +47,10 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 	});
 
 	const addRow = () => {
-		const newRows = [...rows, { images: [], direction: rows.length % 2 === 0 ? 'left' : 'right' }];
+		const newRows = [
+			...rows,
+			{ images: [], direction: rows.length % 2 === 0 ? 'left' : 'right' },
+		];
 		setAttributes({ rows: newRows });
 	};
 
@@ -47,7 +61,8 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 
 	const toggleRowDirection = (rowIndex) => {
 		const newRows = [...rows];
-		newRows[rowIndex].direction = newRows[rowIndex].direction === 'left' ? 'right' : 'left';
+		newRows[rowIndex].direction =
+			newRows[rowIndex].direction === 'left' ? 'right' : 'left';
 		setAttributes({ rows: newRows });
 	};
 
@@ -63,69 +78,100 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 
 	const removeImage = (rowIndex, imageIndex) => {
 		const newRows = [...rows];
-		newRows[rowIndex].images = newRows[rowIndex].images.filter((_, index) => index !== imageIndex);
+		newRows[rowIndex].images = newRows[rowIndex].images.filter(
+			(_, index) => index !== imageIndex
+		);
 		setAttributes({ rows: newRows });
 	};
 
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Performance', 'designsetgo')} initialOpen={showPerformanceWarning}>
+				<PanelBody
+					title={__('Performance', 'designsetgo')}
+					initialOpen={showPerformanceWarning}
+				>
 					{showPerformanceWarning && (
 						<Notice status="warning" isDismissible={false}>
-							{__('You have ', 'designsetgo')}
+							{__('You have', 'designsetgo')}
 							<strong>{totalImages}</strong>
-							{__(' images. For best performance, consider using fewer images (20 or less) or optimizing image sizes. Each image is duplicated 6 times for smooth infinite scrolling.', 'designsetgo')}
+							{__(
+								'images. For best performance, consider using fewer images (20 or less) or optimizing image sizes. Each image is duplicated 6 times for smooth infinite scrolling.',
+								'designsetgo'
+							)}
 						</Notice>
 					)}
 					{!showPerformanceWarning && (
 						<Notice status="success" isDismissible={false}>
-							{__('Total images: ', 'designsetgo')}
+							{__('Total images:', 'designsetgo')}
 							<strong>{totalImages}</strong>
-							{__(' (duplicated 6x for infinite scroll)', 'designsetgo')}
+							{__(
+								'(duplicated 6x for infinite scroll)',
+								'designsetgo'
+							)}
 						</Notice>
 					)}
 				</PanelBody>
 
-				<PanelBody title={__('Scroll Settings', 'designsetgo')} initialOpen={!showPerformanceWarning}>
+				<PanelBody
+					title={__('Scroll Settings', 'designsetgo')}
+					initialOpen={!showPerformanceWarning}
+				>
 					<RangeControl
 						label={__('Scroll Speed', 'designsetgo')}
 						value={scrollSpeed}
-						onChange={(value) => setAttributes({ scrollSpeed: value })}
+						onChange={(value) =>
+							setAttributes({ scrollSpeed: value })
+						}
 						min={0.1}
 						max={2}
 						step={0.1}
-						help={__('Controls how fast images move based on scroll', 'designsetgo')}
+						help={__(
+							'Controls how fast images move based on scroll',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Image Dimensions', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Image Dimensions', 'designsetgo')}
+					initialOpen={false}
+				>
 					<UnitControl
 						label={__('Image Height', 'designsetgo')}
 						value={imageHeight}
-						onChange={(value) => setAttributes({ imageHeight: value })}
+						onChange={(value) =>
+							setAttributes({ imageHeight: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 					<UnitControl
 						label={__('Image Width', 'designsetgo')}
 						value={imageWidth}
-						onChange={(value) => setAttributes({ imageWidth: value })}
+						onChange={(value) =>
+							setAttributes({ imageWidth: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 					<UnitControl
 						label={__('Border Radius', 'designsetgo')}
 						value={borderRadius}
-						onChange={(value) => setAttributes({ borderRadius: value })}
+						onChange={(value) =>
+							setAttributes({ borderRadius: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Spacing', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Spacing', 'designsetgo')}
+					initialOpen={false}
+				>
 					<UnitControl
 						label={__('Gap Between Images', 'designsetgo')}
 						value={gap}
@@ -145,17 +191,25 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 
 			<div {...blockProps}>
 				{rows.map((row, rowIndex) => (
-					<div key={rowIndex} className="dsg-scroll-marquee__row" data-direction={row.direction}>
+					<div
+						key={rowIndex}
+						className="dsg-scroll-marquee__row"
+						data-direction={row.direction}
+					>
 						<div className="dsg-scroll-marquee__row-controls">
 							<HStack justify="space-between" spacing={3}>
 								<div className="dsg-scroll-marquee__direction-control">
 									<Button
 										variant="secondary"
 										size="small"
-										onClick={() => toggleRowDirection(rowIndex)}
+										onClick={() =>
+											toggleRowDirection(rowIndex)
+										}
 										style={{ minWidth: '120px' }}
 									>
-										{row.direction === 'left' ? '← Scroll Left' : 'Scroll Right →'}
+										{row.direction === 'left'
+											? '← Scroll Left'
+											: 'Scroll Right →'}
 									</Button>
 								</div>
 								<Button
@@ -171,7 +225,10 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 						<div className="dsg-scroll-marquee__track">
 							<div className="dsg-scroll-marquee__track-segment">
 								{row.images.map((image, imageIndex) => (
-									<div key={imageIndex} className="dsg-scroll-marquee__image-wrapper">
+									<div
+										key={imageIndex}
+										className="dsg-scroll-marquee__image-wrapper"
+									>
 										<img
 											src={image.url}
 											alt={image.alt}
@@ -179,8 +236,16 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 										/>
 										<Button
 											icon={close}
-											label={__('Remove Image', 'designsetgo')}
-											onClick={() => removeImage(rowIndex, imageIndex)}
+											label={__(
+												'Remove Image',
+												'designsetgo'
+											)}
+											onClick={() =>
+												removeImage(
+													rowIndex,
+													imageIndex
+												)
+											}
 											className="dsg-scroll-marquee__remove-image"
 											isDestructive
 											size="small"
@@ -190,7 +255,9 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 
 								<MediaUploadCheck>
 									<MediaUpload
-										onSelect={(images) => onSelectImages(rowIndex, images)}
+										onSelect={(images) =>
+											onSelectImages(rowIndex, images)
+										}
 										allowedTypes={['image']}
 										multiple={true}
 										value={row.images.map((img) => img.id)}
@@ -202,8 +269,14 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 												variant="secondary"
 											>
 												{row.images.length === 0
-													? __('Add Images', 'designsetgo')
-													: __('Add More Images', 'designsetgo')}
+													? __(
+															'Add Images',
+															'designsetgo'
+														)
+													: __(
+															'Add More Images',
+															'designsetgo'
+														)}
 											</Button>
 										)}
 									/>

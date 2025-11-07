@@ -6,11 +6,15 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 	// Find all phone field wrappers with auto-format enabled
-	const phoneWrappers = document.querySelectorAll('.dsg-form-field__phone-wrapper[data-auto-format="true"]');
+	const phoneWrappers = document.querySelectorAll(
+		'.dsg-form-field__phone-wrapper[data-auto-format="true"]'
+	);
 
 	phoneWrappers.forEach((wrapper) => {
 		const input = wrapper.querySelector('input[type="tel"]');
-		if (!input) return;
+		if (!input) {
+			return;
+		}
 
 		const phoneFormat = input.dataset.phoneFormat || 'any';
 
@@ -25,9 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
 					return cleaned;
 				} else if (cleaned.length <= 6) {
 					return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3)}`;
-				} else {
-					return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6, 10)}`;
 				}
+				return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6, 10)}`;
 			} else if (format === 'international') {
 				// International format: +1 555 123 4567
 				if (cleaned.length <= 3) {
@@ -36,19 +39,16 @@ document.addEventListener('DOMContentLoaded', function () {
 					return `${cleaned.slice(0, 3)} ${cleaned.slice(3)}`;
 				} else if (cleaned.length <= 9) {
 					return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6)}`;
-				} else {
-					return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6, 10)}`;
 				}
-			} else {
-				// Any format: just add spaces for readability
-				if (cleaned.length <= 3) {
-					return cleaned;
-				} else if (cleaned.length <= 6) {
-					return `${cleaned.slice(0, 3)} ${cleaned.slice(3)}`;
-				} else {
-					return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6)}`;
-				}
+				return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6, 10)}`;
 			}
+			// Any format: just add spaces for readability
+			if (cleaned.length <= 3) {
+				return cleaned;
+			} else if (cleaned.length <= 6) {
+				return `${cleaned.slice(0, 3)} ${cleaned.slice(3)}`;
+			}
+			return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6)}`;
 		}
 
 		// Handle input event for auto-formatting
@@ -73,7 +73,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		// Handle paste event
 		input.addEventListener('paste', function (e) {
 			e.preventDefault();
-			const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+			const pastedText = (
+				e.clipboardData || window.clipboardData
+			).getData('text');
 			const formattedValue = formatPhoneNumber(pastedText, phoneFormat);
 			e.target.value = formattedValue;
 		});

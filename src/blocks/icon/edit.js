@@ -81,7 +81,9 @@ export default function IconEdit({ attributes, setAttributes, context }) {
 					<ToggleGroupControl
 						label={__('Style', 'designsetgo')}
 						value={iconStyle}
-						onChange={(value) => setAttributes({ iconStyle: value })}
+						onChange={(value) =>
+							setAttributes({ iconStyle: value })
+						}
 						isBlock
 						__nextHasNoMarginBottom
 					>

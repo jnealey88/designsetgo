@@ -1,0 +1,417 @@
+/**
+ * Slider Block - Frontend & Editor Styles
+ * CRITICAL: Must be duplicated to editor.scss for editor/frontend parity
+ */
+
+.dsg-slider {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	box-sizing: border-box; // Ensure padding doesn't increase slider width
+
+	// Use CSS custom properties from inline styles
+	--dsg-slider-height: 500px;
+	--dsg-slider-aspect-ratio: 16/9;
+	--dsg-slider-gap: 20px;
+	--dsg-slider-transition: 0.5s;
+	--dsg-slider-slides-per-view: 1;
+	--dsg-slider-slides-per-view-tablet: 1;
+	--dsg-slider-slides-per-view-mobile: 1;
+
+	&__viewport {
+		position: relative;
+		width: 100%;
+		height: var(--dsg-slider-height);
+		overflow: hidden;
+	}
+
+	// Use aspect ratio if enabled
+	&[data-use-aspect-ratio="true"] &__viewport {
+		height: auto;
+		aspect-ratio: var(--dsg-slider-aspect-ratio);
+	}
+
+	&__track {
+		display: flex;
+		height: 100%;
+		gap: var(--dsg-slider-gap);
+		transition: transform var(--dsg-slider-transition) ease-in-out;
+		will-change: transform;
+
+		// Multi-slide view calculations
+		> .dsg-slide {
+			flex: 0 0 calc((100% - (var(--dsg-slider-gap) * (var(--dsg-slider-slides-per-view) - 1))) / var(--dsg-slider-slides-per-view));
+			min-width: 0; // Prevent flex item overflow
+		}
+	}
+
+	// Centered slides mode
+	&--centered &__track {
+		justify-content: center;
+	}
+
+	// Free mode (smooth scrolling)
+	&--free-mode &__track {
+		scroll-snap-type: none;
+		transition: none;
+	}
+
+	// Navigation: Arrows
+	&__arrows {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		right: 0;
+		z-index: 10;
+		pointer-events: none;
+		transform: translateY(-50%);
+	}
+
+	&__arrow {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--dsg-slider-arrow-size, 48px);
+		height: var(--dsg-slider-arrow-size, 48px);
+		padding: var(--dsg-slider-arrow-padding, 0);
+		background: var(--dsg-slider-arrow-bg-color, rgba(255, 255, 255, 0.9));
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		pointer-events: auto;
+		transition: all 0.2s ease;
+		font-size: calc(var(--dsg-slider-arrow-size, 48px) / 2);
+		font-weight: bold;
+		color: var(--dsg-slider-arrow-color, #000);
+
+		&:hover:not(:disabled) {
+			opacity: 0.9;
+			transform: scale(1.05);
+		}
+
+		&:disabled {
+			opacity: 0.3;
+			cursor: not-allowed;
+		}
+
+		&--prev {
+			left: 16px;
+		}
+
+		&--next {
+			right: 16px;
+		}
+
+		// Focus styles for accessibility
+		&:focus-visible {
+			outline: 2px solid #2271b1;
+			outline-offset: 2px;
+		}
+	}
+
+	// Arrow styles
+	&[data-arrow-style="circle"] &__arrow {
+		border-radius: 50%;
+	}
+
+	&[data-arrow-style="square"] &__arrow {
+		border-radius: 0;
+	}
+
+	&[data-arrow-style="minimal"] &__arrow {
+		background: transparent;
+		border: 2px solid rgba(255, 255, 255, 0.9);
+		color: #fff;
+
+		&:hover:not(:disabled) {
+			background: rgba(255, 255, 255, 0.2);
+			border-color: rgba(255, 255, 255, 1);
+		}
+	}
+
+	// Arrow positions
+	&[data-arrow-position="inside"] &__arrow {
+		&--prev {
+			left: 32px;
+		}
+
+		&--next {
+			right: 32px;
+		}
+	}
+
+	&[data-arrow-position="outside"] {
+		padding: 0 80px;
+
+		.dsg-slider__arrow {
+			&--prev {
+				left: 0;
+			}
+
+			&--next {
+				right: 0;
+			}
+		}
+	}
+
+	// Navigation: Dots
+	&__dots {
+		position: absolute;
+		bottom: 20px;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 8px;
+		z-index: 10;
+		padding: 8px 12px;
+		background: rgba(0, 0, 0, 0.3);
+		border-radius: 20px;
+	}
+
+	&__dot {
+		width: 12px;
+		height: 12px;
+		padding: 0;
+		background: var(--dsg-slider-dot-color, rgba(255, 255, 255, 0.5));
+		border: none;
+		border-radius: 50%;
+		cursor: pointer;
+		transition: all 0.3s ease;
+
+		&:hover {
+			background: var(--dsg-slider-dot-color, rgba(255, 255, 255, 0.8));
+			opacity: 0.8;
+			transform: scale(1.2);
+		}
+
+		&--active {
+			background: var(--dsg-slider-dot-color, rgba(255, 255, 255, 1));
+			transform: scale(1.3);
+		}
+
+		// Focus styles for accessibility
+		&:focus-visible {
+			outline: 2px solid #fff;
+			outline-offset: 2px;
+		}
+	}
+
+	// Dot styles
+	&[data-dot-style="lines"] &__dot {
+		width: 24px;
+		height: 3px;
+		border-radius: 2px;
+
+		&--active {
+			width: 32px;
+		}
+	}
+
+	&[data-dot-style="squares"] &__dot {
+		border-radius: 2px;
+
+		&--active {
+			border-radius: 2px;
+		}
+	}
+
+	// Dot position
+	&[data-dot-position="top"] &__dots {
+		top: 20px;
+		bottom: auto;
+	}
+
+	// Editor-only navigation preview
+	&__arrows--editor-only,
+	&__dots--editor-only {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+}
+
+// Transition Effects
+.dsg-slider--effect-fade {
+	.dsg-slider__track > .dsg-slide {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		opacity: 0;
+		transition: opacity var(--dsg-slider-transition) ease-in-out;
+		pointer-events: none;
+
+		&--active {
+			opacity: 1;
+			pointer-events: auto;
+			z-index: 1;
+		}
+	}
+}
+
+.dsg-slider--effect-zoom {
+	.dsg-slider__track > .dsg-slide {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		opacity: 0;
+		transform: scale(0.8);
+		transition: opacity var(--dsg-slider-transition) ease-in-out,
+			transform var(--dsg-slider-transition) ease-in-out;
+		pointer-events: none;
+
+		&--active {
+			opacity: 1;
+			transform: scale(1);
+			pointer-events: auto;
+			z-index: 1;
+		}
+	}
+}
+
+// Style Variations
+.dsg-slider--classic {
+	border-radius: 8px;
+}
+
+.dsg-slider--minimal {
+	.dsg-slider__arrows {
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	&:hover .dsg-slider__arrows {
+		opacity: 1;
+	}
+
+	.dsg-slider__dots {
+		background: transparent;
+		padding: 4px 8px;
+	}
+
+	.dsg-slider__dot {
+		background: rgba(255, 255, 255, 0.3);
+	}
+}
+
+.dsg-slider--card {
+	padding: 20px;
+	border-radius: 12px;
+
+	.dsg-slider__viewport {
+		border-radius: 8px;
+	}
+
+	.dsg-slide {
+		border-radius: 8px;
+	}
+}
+
+.dsg-slider--fullbleed {
+	border-radius: 0;
+
+	.dsg-slider__viewport {
+		height: 100vh;
+	}
+
+	.dsg-slider__arrows {
+		.dsg-slider__arrow {
+			background: rgba(0, 0, 0, 0.5);
+			color: #fff;
+			border-radius: 0;
+
+			&:hover:not(:disabled) {
+				background: rgba(0, 0, 0, 0.7);
+			}
+		}
+	}
+}
+
+// Responsive Breakpoints
+@media (max-width: 1024px) {
+	.dsg-slider__track > .dsg-slide {
+		flex: 0 0 calc((100% - (var(--dsg-slider-gap) * (var(--dsg-slider-slides-per-view-tablet) - 1))) / var(--dsg-slider-slides-per-view-tablet));
+	}
+}
+
+@media (max-width: 768px) {
+	.dsg-slider__track > .dsg-slide {
+		flex: 0 0 calc((100% - (var(--dsg-slider-gap) * (var(--dsg-slider-slides-per-view-mobile) - 1))) / var(--dsg-slider-slides-per-view-mobile));
+	}
+
+	.dsg-slider__arrow {
+		width: 40px;
+		height: 40px;
+		font-size: 20px;
+
+		&--prev {
+			left: 8px;
+		}
+
+		&--next {
+			right: 8px;
+		}
+	}
+
+	.dsg-slider[data-arrow-position="inside"] .dsg-slider__arrow {
+		&--prev {
+			left: 16px;
+		}
+
+		&--next {
+			right: 16px;
+		}
+	}
+
+	.dsg-slider__dots {
+		bottom: 12px;
+		padding: 6px 10px;
+	}
+
+	.dsg-slider__dot {
+		width: 10px;
+		height: 10px;
+	}
+
+	.dsg-slider--card {
+		padding: 12px;
+	}
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+	.dsg-slider,
+	.dsg-slider__track,
+	.dsg-slider__track > .dsg-slide,
+	.dsg-slider__arrow,
+	.dsg-slider__dot {
+		transition: none !important;
+		animation: none !important;
+	}
+}
+
+// Loading state
+.dsg-slider.is-loading {
+	.dsg-slider__track {
+		opacity: 0.5;
+	}
+
+	.dsg-slider__arrows,
+	.dsg-slider__dots {
+		pointer-events: none;
+	}
+}
+
+// Screen reader only text
+.dsg-slider .screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}

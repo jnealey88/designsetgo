@@ -1,0 +1,175 @@
+/**
+ * Slide Block - Frontend & Editor Styles
+ * CRITICAL: Must be duplicated to editor.scss for editor/frontend parity
+ */
+
+.dsg-slide {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	box-sizing: border-box; // Ensure padding doesn't increase slide width
+
+	// Use CSS custom properties from inline styles
+	--dsg-slide-overlay-color: #000000;
+	--dsg-slide-overlay-opacity: 0.4;
+	--dsg-slide-content-vertical-align: center;
+	--dsg-slide-content-horizontal-align: center;
+
+	// Background image set via inline styles
+	// background-image, background-size, background-position, etc.
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+
+	// No default background - use WordPress native background colors
+	// Users can set background via Styles > Color > Background
+
+	// Ensure slide fills parent
+	min-height: 100%;
+
+	&__overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1;
+		pointer-events: none;
+		background-color: var(--dsg-slide-overlay-color);
+		opacity: var(--dsg-slide-overlay-opacity);
+	}
+
+	&__content {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		justify-content: var(--dsg-slide-content-vertical-align);
+		align-items: var(--dsg-slide-content-horizontal-align);
+		flex: 1;
+		width: 100%;
+		height: 100%;
+
+		// Ensure text is readable over images
+		color: inherit;
+
+		// Make sure inner blocks take full width when left/right aligned
+		> * {
+			width: 100%;
+			max-width: 100%;
+		}
+
+		// Center aligned content shouldn't be full width
+		&[style*="align-items: center"] > * {
+			width: auto;
+			max-width: 800px;
+		}
+	}
+
+	// Has background image modifier
+	&--has-background {
+		// Ensure good contrast with background images
+		.dsg-slide__content {
+			// Text shadow for better readability (subtle)
+			text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+		}
+	}
+
+	// Active state (for fade/zoom transitions)
+	&--active {
+		z-index: 1;
+	}
+
+	// Ensure content is clickable
+	a,
+	button {
+		position: relative;
+		z-index: 3;
+	}
+}
+
+// Style variation adjustments
+.dsg-slider--classic .dsg-slide {
+	// Classic style already handled by slider wrapper
+}
+
+.dsg-slider--minimal .dsg-slide {
+	// Minimal style - no additional slide styling needed
+}
+
+.dsg-slider--card .dsg-slide {
+	// No default background - users set via Styles > Color > Background
+}
+
+.dsg-slider--fullbleed .dsg-slide {
+	// Full bleed - ensure full viewport coverage
+	min-height: 100vh;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+	.dsg-slide {
+		&__content {
+			// Smaller text shadows on mobile
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+			> * {
+				// Ensure readable text size on mobile
+				font-size: inherit;
+			}
+		}
+	}
+}
+
+// Additional mobile adjustments handled by WordPress spacing controls
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+	.dsg-slide {
+		transition: none !important;
+		animation: none !important;
+	}
+}
+
+// Loading state
+.dsg-slide.is-loading {
+	.dsg-slide__content {
+		opacity: 0;
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 40px;
+		height: 40px;
+		border: 3px solid rgba(255, 255, 255, 0.3);
+		border-top-color: rgba(255, 255, 255, 0.8);
+		border-radius: 50%;
+		animation: slide-spinner 0.8s linear infinite;
+	}
+}
+
+@keyframes slide-spinner {
+	to {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+	.dsg-slide {
+		&__overlay {
+			opacity: calc(var(--dsg-slide-overlay-opacity) * 1.2);
+		}
+
+		&__content {
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+		}
+	}
+}
