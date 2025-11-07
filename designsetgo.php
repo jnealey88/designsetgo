@@ -39,6 +39,11 @@ require_once DESIGNSETGO_PATH . 'includes/class-plugin.php';
 require_once DESIGNSETGO_PATH . 'includes/block-animation-attributes.php';
 
 /**
+ * Load SVG icon library (used by dynamic blocks).
+ */
+require_once DESIGNSETGO_PATH . 'includes/icon-svg-library.php';
+
+/**
  * Initialize the plugin.
  */
 function designsetgo_init() {

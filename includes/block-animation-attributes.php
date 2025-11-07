@@ -108,37 +108,96 @@ function dsg_get_animation_attributes( $attributes ) {
 }
 
 /**
- * Add animation attributes to wrapper attributes string
+ * Get clickable link data attributes from block attributes
+ *
+ * Extracts link-related attributes for the clickable-group extension.
+ *
+ * @param array $attributes Block attributes array.
+ * @return array Array of data attributes for links.
+ */
+function dsg_get_clickable_attributes( $attributes ) {
+	$link_attrs   = array();
+	$link_classes = array();
+
+	$link_url = isset( $attributes['dsgLinkUrl'] ) ? $attributes['dsgLinkUrl'] : '';
+
+	if ( empty( $link_url ) ) {
+		return array(
+			'classes' => '',
+			'attrs'   => '',
+		);
+	}
+
+	// Add clickable class.
+	$link_classes[] = 'dsg-clickable';
+
+	// Add link data attributes.
+	$link_attrs['data-link-url'] = esc_attr( $link_url );
+
+	$link_target = isset( $attributes['dsgLinkTarget'] ) ? $attributes['dsgLinkTarget'] : false;
+	if ( $link_target ) {
+		$link_attrs['data-link-target'] = '_blank';
+	}
+
+	$link_rel = isset( $attributes['dsgLinkRel'] ) ? $attributes['dsgLinkRel'] : '';
+	if ( $link_rel ) {
+		$link_attrs['data-link-rel'] = esc_attr( $link_rel );
+	}
+
+	// Convert classes array to string.
+	$classes_string = implode( ' ', $link_classes );
+
+	// Convert data attributes array to string.
+	$attrs_string = '';
+	foreach ( $link_attrs as $key => $value ) {
+		$attrs_string .= ' ' . $key . '="' . $value . '"';
+	}
+
+	return array(
+		'classes' => $classes_string,
+		'attrs'   => $attrs_string,
+	);
+}
+
+/**
+ * Add animation and extension attributes to wrapper attributes string
  *
  * Takes an existing wrapper attributes string (from get_block_wrapper_attributes)
- * and injects animation classes and data attributes.
+ * and injects animation classes/data attributes plus other extension attributes.
  *
  * @param string $wrapper_attributes Existing wrapper attributes string.
  * @param array  $attributes         Block attributes array.
  * @return string Modified wrapper attributes string.
  */
 function dsg_add_animation_to_wrapper( $wrapper_attributes, $attributes ) {
+	// Get animation data.
 	$animation_data = dsg_get_animation_attributes( $attributes );
 
-	// If no animation classes, return original.
-	if ( empty( $animation_data['classes'] ) ) {
-		return $wrapper_attributes;
+	// Get clickable link data.
+	$clickable_data = dsg_get_clickable_attributes( $attributes );
+
+	// Combine all classes.
+	$all_classes = trim( $animation_data['classes'] . ' ' . $clickable_data['classes'] );
+
+	// Combine all data attributes.
+	$all_attrs = $animation_data['attrs'] . $clickable_data['attrs'];
+
+	// Add classes to existing class attribute if we have any.
+	if ( ! empty( $all_classes ) ) {
+		if ( strpos( $wrapper_attributes, 'class="' ) !== false ) {
+			$wrapper_attributes = preg_replace(
+				'/class="([^"]*)"/',
+				'class="$1 ' . $all_classes . '"',
+				$wrapper_attributes
+			);
+		} else {
+			// Add new class attribute.
+			$wrapper_attributes .= ' class="' . $all_classes . '"';
+		}
 	}
 
-	// Add animation classes to existing class attribute.
-	if ( strpos( $wrapper_attributes, 'class="' ) !== false ) {
-		$wrapper_attributes = preg_replace(
-			'/class="([^"]*)"/',
-			'class="$1 ' . $animation_data['classes'] . '"',
-			$wrapper_attributes
-		);
-	} else {
-		// Add new class attribute.
-		$wrapper_attributes .= ' class="' . $animation_data['classes'] . '"';
-	}
-
-	// Append data attributes.
-	$wrapper_attributes .= $animation_data['attrs'];
+	// Append all data attributes.
+	$wrapper_attributes .= $all_attrs;
 
 	return $wrapper_attributes;
 }
