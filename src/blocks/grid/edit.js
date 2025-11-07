@@ -20,10 +20,6 @@ import {
 	SelectControl,
 	ToggleControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToolsPanel as ToolsPanel,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToolsPanelItem as ToolsPanelItem,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
@@ -54,8 +50,7 @@ export default function GridEdit({ attributes, setAttributes }) {
 
 	const [useCustomGaps, setUseCustomGaps] = useState(!!(rowGap || columnGap));
 
-	// Get spacing sizes and content size from theme
-	const spacingSizes = useSetting('spacing.spacingSizes');
+	// Get content size from theme
 	const themeContentWidth = useSetting('layout.contentSize');
 
 	// Calculate effective content width

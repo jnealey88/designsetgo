@@ -1,0 +1,22 @@
+/**
+ * Clickable Group - Frontend Styles
+ *
+ * Styles for clickable group blocks on the frontend.
+ *
+ * @package DesignSetGo
+ * @since 1.0.0
+ */
+
+.dsg-clickable {
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	}
+
+	&:active {
+		transform: translateY(0);
+	}
+}

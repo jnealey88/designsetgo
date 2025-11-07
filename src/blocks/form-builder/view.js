@@ -6,6 +6,8 @@
  * @since 1.0.0
  */
 
+/* global designsetgoForm */
+
 document.addEventListener('DOMContentLoaded', function () {
 	const forms = document.querySelectorAll('.dsg-form-builder');
 
@@ -26,15 +28,21 @@ document.addEventListener('DOMContentLoaded', function () {
 		timestampField.value = Date.now();
 		formElement.appendChild(timestampField);
 
-		// Get form settings from data attributes
-		const formId = formContainer.getAttribute('data-form-id');
+		// Check if AJAX is enabled
 		const ajaxEnabled =
 			formContainer.getAttribute('data-ajax-submit') === 'true';
+
+		// If AJAX is not enabled, use standard form submission
+		if (!ajaxEnabled) {
+			return;
+		}
+
+		// Get form settings from data attributes (only if AJAX enabled)
+		const formId = formContainer.getAttribute('data-form-id');
 		const successMessage = formContainer.getAttribute(
 			'data-success-message'
 		);
 		const errorMessage = formContainer.getAttribute('data-error-message');
-		const submitText = formContainer.getAttribute('data-submit-text');
 
 		// Get email settings from data attributes
 		const enableEmail = formContainer.getAttribute('data-enable-email');
@@ -48,11 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		);
 		const emailReplyTo = formContainer.getAttribute('data-email-reply-to');
 		const emailBody = formContainer.getAttribute('data-email-body');
-
-		// If AJAX is not enabled, use standard form submission
-		if (!ajaxEnabled) {
-			return;
-		}
 
 		// Handle form submission
 		formElement.addEventListener('submit', async function (e) {
@@ -164,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					throw new Error(result.message || errorMessage);
 				}
 			} catch (error) {
+				// eslint-disable-next-line no-console -- Error logging for debugging
 				console.error('Form submission error:', error);
 
 				// Show error message

@@ -30,11 +30,9 @@ function initBlobs() {
 	}
 
 	// Initialize each blob
-	blobs.forEach((blob) => {
-		const animation = blob.getAttribute('data-blob-animation');
-
+	blobs.forEach(() => {
 		// Future: Add SVG-based animation logic here if implementing Phase 2
-		// For now, CSS animations handle everything
+		// For now, CSS animations handle everything via data-blob-animation attribute
 	});
 }
 

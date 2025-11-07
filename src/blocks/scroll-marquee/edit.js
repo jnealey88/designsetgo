@@ -9,11 +9,11 @@ import {
 	PanelBody,
 	RangeControl,
 	Button,
-	ToggleControl,
 	Notice,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- UnitControl and HStack are stable in practice
 	__experimentalUnitControl as UnitControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalHStack as HStack,
-	__experimentalVStack as VStack,
 } from '@wordpress/components';
 import { plus, close } from '@wordpress/icons';
 

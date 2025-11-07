@@ -3,15 +3,14 @@
  * Handles scroll-based horizontal animation with seamless infinite loop
  */
 
+/* global IntersectionObserver, requestAnimationFrame */
+
 function initScrollMarquees() {
 	const marquees = document.querySelectorAll('.dsg-scroll-marquee');
 
 	if (!marquees.length) {
-		console.log('Scroll Marquee: No marquees found');
 		return;
 	}
-
-	console.log(`Scroll Marquee: Initializing ${marquees.length} marquee(s)`);
 
 	// Check if user prefers reduced motion
 	const prefersReducedMotion = window.matchMedia(
@@ -19,9 +18,6 @@ function initScrollMarquees() {
 	).matches;
 
 	if (prefersReducedMotion) {
-		console.log(
-			'Scroll Marquee: Reduced motion preferred, skipping animation'
-		);
 		return; // Don't animate if user prefers reduced motion
 	}
 
@@ -35,7 +31,7 @@ function initScrollMarquees() {
 
 		// Calculate segment width for each row (for infinite loop)
 		const rowData = [];
-		rows.forEach((row, index) => {
+		rows.forEach((row) => {
 			const track = row.querySelector('.dsg-scroll-marquee__track');
 			const segment = track?.querySelector(
 				'.dsg-scroll-marquee__track-segment'
@@ -44,12 +40,8 @@ function initScrollMarquees() {
 				// Get the width of one segment (one set of images)
 				const segmentWidth = segment.offsetWidth;
 				// Get gap from track (gap is between segments)
-				const gapStyle = getComputedStyle(track).gap || '20px';
+				const gapStyle = window.getComputedStyle(track).gap || '20px';
 				const gap = parseFloat(gapStyle);
-
-				console.log(
-					`Row ${index}: segmentWidth=${segmentWidth}px, gap=${gap}px`
-				);
 
 				// For seamless loop: we have 6 segments, loop every 1 segment
 				// This ensures we always have enough duplicates visible
@@ -58,7 +50,6 @@ function initScrollMarquees() {
 					gap,
 				});
 			} else {
-				console.log(`Row ${index}: No segment found`);
 				rowData.push({ segmentWidth: 0, gap: 0 });
 			}
 		});

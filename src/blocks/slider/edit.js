@@ -50,7 +50,6 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 		centeredSlides,
 		mobileBreakpoint,
 		tabletBreakpoint,
-		activeSlide,
 		styleVariation,
 		ariaLabel,
 	} = attributes;
@@ -70,7 +69,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 		}
 
 		const slideWidth = slide.offsetWidth;
-		const gapValue = parseFloat(getComputedStyle(track).gap) || 0;
+		const gapValue = parseFloat(window.getComputedStyle(track).gap) || 0;
 		const scrollAmount = slideWidth + gapValue;
 
 		track.scrollBy({
@@ -93,7 +92,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 		}
 
 		const slideWidth = slide.offsetWidth;
-		const gapValue = parseFloat(getComputedStyle(track).gap) || 0;
+		const gapValue = parseFloat(window.getComputedStyle(track).gap) || 0;
 		const scrollPosition = index * (slideWidth + gapValue);
 
 		track.scrollTo({

@@ -34,6 +34,11 @@ define( 'DESIGNSETGO_BASENAME', plugin_basename( __FILE__ ) );
 require_once DESIGNSETGO_PATH . 'includes/class-plugin.php';
 
 /**
+ * Load animation attributes helper (used by dynamic blocks).
+ */
+require_once DESIGNSETGO_PATH . 'includes/block-animation-attributes.php';
+
+/**
  * Initialize the plugin.
  */
 function designsetgo_init() {

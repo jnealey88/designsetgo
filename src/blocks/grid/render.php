@@ -119,6 +119,9 @@ $wrapper_attributes = get_block_wrapper_attributes(
 	)
 );
 
+// Add animation attributes (for block animation extension support).
+$wrapper_attributes = dsg_add_animation_to_wrapper( $wrapper_attributes, $attributes );
+
 // Unescape CSS variables in the generated HTML attributes.
 // WordPress's block serialization escapes dashes (-- becomes u002d).
 $wrapper_attributes = preg_replace( '/u002d/i', '-', $wrapper_attributes );

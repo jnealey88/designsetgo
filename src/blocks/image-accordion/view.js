@@ -11,6 +11,8 @@
  * @since 1.0.0
  */
 
+/* global navigator */
+
 document.addEventListener('DOMContentLoaded', function () {
 	const accordions = document.querySelectorAll('.dsg-image-accordion');
 
@@ -31,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		/**
 		 * Expand an item and collapse all others
-		 * @param itemToExpand
+		 * @param {HTMLElement} itemToExpand - The accordion item to expand.
 		 */
 		function expandItem(itemToExpand) {
 			items.forEach((item) => {
@@ -83,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			(triggerType === 'hover' && !isTouchDevice) ||
 			triggerType === 'hover'
 		) {
-			items.forEach((item, index) => {
+			items.forEach((item) => {
 				// Mouse enter: expand this item
 				item.addEventListener('mouseenter', function () {
 					// Only apply hover on non-touch devices
@@ -116,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		// CLICK/TAP INTERACTION (Always enabled on touch devices, or when explicitly set)
 		if (isTouchDevice || triggerType === 'click') {
-			items.forEach((item, index) => {
+			items.forEach((item) => {
 				item.addEventListener('click', function (e) {
 					// Don't trigger if clicking on a link or button inside the item
 					const isInteractive =
@@ -143,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		// KEYBOARD NAVIGATION
 		// Arrow keys to navigate between items
 		accordion.addEventListener('keydown', function (e) {
-			const focusedItem = document.activeElement;
+			const focusedItem = e.target.ownerDocument.activeElement;
 			const focusedIndex = Array.from(items).indexOf(focusedItem);
 
 			if (focusedIndex === -1) {
@@ -180,11 +182,4 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 	});
-
-	// Log initialization for debugging
-	if (accordions.length > 0) {
-		console.log(
-			`DesignSetGo: Initialized ${accordions.length} Image Accordion(s)`
-		);
-	}
 });

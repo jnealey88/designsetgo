@@ -4,6 +4,8 @@
  * Based on scroll position within page
  */
 
+/* global requestAnimationFrame */
+
 /**
  * Initialize all scroll accordions on the page
  */
@@ -36,10 +38,9 @@ function initScrollAccordions() {
 		let ticking = false;
 
 		function updateCards() {
-			const accordionRect = accordion.getBoundingClientRect();
 			const viewportCenter = window.innerHeight / 2;
 
-			items.forEach((item, index) => {
+			items.forEach((item) => {
 				const itemRect = item.getBoundingClientRect();
 
 				// Calculate how far the item has scrolled relative to viewport center

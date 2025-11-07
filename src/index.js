@@ -43,6 +43,9 @@ import './extensions/text-alignment-inheritance';
 // Reveal Control - adds reveal on hover control to blocks inside Reveal containers
 import './extensions/reveal-control';
 
+// Clickable Group - makes core/group blocks clickable with link functionality
+import './extensions/clickable-group';
+
 // ===== DEFAULT PADDING FOR ROOT CONTAINERS =====
 // Set default padding for container blocks, but only when inserted at root level
 import { addFilter } from '@wordpress/hooks';

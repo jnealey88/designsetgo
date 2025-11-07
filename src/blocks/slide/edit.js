@@ -34,7 +34,6 @@ export default function SlideEdit({ attributes, setAttributes, context }) {
 	} = attributes;
 
 	// Get context from parent slider
-	const sliderEffect = context['designsetgo/slider/effect'];
 	const styleVariation = context['designsetgo/slider/styleVariation'];
 
 	// Declaratively calculate classes

@@ -36,7 +36,7 @@ msgstr ""
 #. Description of the plugin
 #: designsetgo.php
 msgid "Modern Gutenberg block library bridging the gap between core WordPress blocks and advanced page builders. Design made easy, fast, and beautiful."
-msgstr ""
+msgstr "Bibliothèque moderne de blocs Gutenberg comblant le fossé entre les blocs WordPress de base et les constructeurs de pages avancés. Conception facile, rapide et belle."
 
 #: includes/abilities/class-abilities-registry.php:247
 msgid "Information"
@@ -44,37 +44,37 @@ msgstr ""
 
 #: includes/abilities/class-abilities-registry.php:248
 msgid "Abilities that provide information about blocks and capabilities"
-msgstr ""
+msgstr "Capacités fournissant des informations sur les blocs et fonctionnalités"
 
 #: includes/abilities/class-abilities-registry.php:255
 #: build/admin.js:1
 #: src/admin/components/BlocksExtensions.js:242
 msgid "Blocks"
-msgstr ""
+msgstr "Blocs"
 
 #: includes/abilities/class-abilities-registry.php:256
 msgid "Abilities for inserting and configuring blocks"
-msgstr ""
+msgstr "Capacités pour insérer et configurer les blocs"
 
 #: includes/abilities/class-abstract-ability.php:106
 #: includes/abilities/class-block-configurator.php:42
 #: includes/abilities/class-block-inserter.php:43
 msgid "Post not found."
-msgstr ""
+msgstr "Article non trouvé."
 
 #: includes/abilities/class-block-configurator.php:51
 #: includes/abilities/class-block-inserter.php:52
 msgid "You do not have permission to edit this post."
-msgstr ""
+msgstr "Vous n'avez pas la permission de modifier cet article."
 
 #: includes/abilities/class-block-configurator.php:93
 msgid "No matching blocks found to update."
-msgstr ""
+msgstr "Aucun bloc correspondant trouvé pour la mise à jour."
 
 #: includes/abilities/class-block-configurator.php:266
 #: includes/abilities/class-block-inserter.php:417
 msgid "Target post ID"
-msgstr ""
+msgstr "ID de l'article cible"
 
 #: includes/abilities/class-block-configurator.php:271
 msgid "Specific block client ID to update (optional)"
@@ -87,15 +87,15 @@ msgstr ""
 #: includes/abilities/class-block-configurator.php:292
 #: includes/abilities/class-block-inserter.php:439
 msgid "Whether the operation was successful"
-msgstr ""
+msgstr "Si l'opération a réussi"
 
 #: includes/abilities/class-block-configurator.php:296
 msgid "Post ID where blocks were updated"
-msgstr ""
+msgstr "ID de l'article où les blocs ont été mis à jour"
 
 #: includes/abilities/class-block-configurator.php:300
 msgid "Number of blocks updated"
-msgstr ""
+msgstr "Nombre de blocs mis à jour"
 
 #: includes/abilities/class-block-configurator.php:304
 msgid "Name of the block that was updated"
@@ -192,7 +192,7 @@ msgstr ""
 #: includes/abilities/configurators/class-configure-counter-animation.php:116
 #: includes/abilities/inserters/class-insert-counter-group.php:120
 msgid "Animation easing function"
-msgstr ""
+msgstr "Fonction de lissage d'animation"
 
 #: includes/abilities/configurators/class-apply-animation.php:145
 msgid "Offset from viewport (pixels) before triggering scroll animation"
@@ -531,7 +531,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:158
 #: includes/admin/class-settings.php:76
 msgid "Flex Container"
-msgstr ""
+msgstr "Conteneur Flex"
 
 #: includes/abilities/info/class-list-blocks.php:159
 msgid "Flexible horizontal or vertical layout container with customizable alignment, gap, and wrapping."
@@ -540,7 +540,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:172
 #: includes/admin/class-settings.php:82
 msgid "Grid Container"
-msgstr ""
+msgstr "Conteneur de grille"
 
 #: includes/abilities/info/class-list-blocks.php:173
 msgid "Responsive grid layout with customizable columns for desktop, tablet, and mobile."
@@ -549,7 +549,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:187
 #: includes/admin/class-settings.php:88
 msgid "Stack Container"
-msgstr ""
+msgstr "Conteneur de pile"
 
 #: includes/abilities/info/class-list-blocks.php:188
 msgid "Vertical stacking container with consistent spacing between elements."
@@ -560,7 +560,7 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:318
 msgid "Accordion"
-msgstr ""
+msgstr "Accordéon"
 
 #: includes/abilities/info/class-list-blocks.php:201
 msgid "Collapsible accordion container for FAQ sections and content organization."
@@ -569,7 +569,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:211
 #: includes/admin/class-settings.php:135
 msgid "Accordion Item"
-msgstr ""
+msgstr "Élément d'accordéon"
 
 #: includes/abilities/info/class-list-blocks.php:212
 msgid "Individual item within an accordion with title and content."
@@ -580,7 +580,7 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:362
 msgid "Tabs"
-msgstr ""
+msgstr "Onglets"
 
 #: includes/abilities/info/class-list-blocks.php:224
 msgid "Tabbed interface for organizing content into switchable panels."
@@ -589,7 +589,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:234
 #: includes/admin/class-settings.php:147
 msgid "Tab"
-msgstr ""
+msgstr "Onglet"
 
 #: includes/abilities/info/class-list-blocks.php:235
 msgid "Individual tab within a tabs container."
@@ -598,7 +598,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:244
 #: includes/admin/class-settings.php:153
 msgid "Scroll Accordion"
-msgstr ""
+msgstr "Accordéon défilant"
 
 #: includes/abilities/info/class-list-blocks.php:245
 msgid "Sticky stacking accordion that reveals items on scroll."
@@ -607,7 +607,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:254
 #: includes/admin/class-settings.php:159
 msgid "Scroll Accordion Item"
-msgstr ""
+msgstr "Élément d'accordéon défilant"
 
 #: includes/abilities/info/class-list-blocks.php:255
 msgid "Individual item within a scroll accordion."
@@ -625,7 +625,7 @@ msgstr ""
 #: src/blocks/tab/edit.js:124
 #: src/blocks/tab/edit.js:224
 msgid "Icon"
-msgstr ""
+msgstr "Icône"
 
 #: includes/abilities/info/class-list-blocks.php:265
 msgid "SVG icon with customizable size, color, and rotation."
@@ -634,7 +634,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:277
 #: includes/admin/class-settings.php:105
 msgid "Icon Button"
-msgstr ""
+msgstr "Bouton avec icône"
 
 #: includes/abilities/info/class-list-blocks.php:278
 msgid "Button with icon and optional text label."
@@ -643,7 +643,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:292
 #: includes/admin/class-settings.php:123
 msgid "Pill"
-msgstr ""
+msgstr "Pilule"
 
 #: includes/abilities/info/class-list-blocks.php:293
 msgid "Rounded pill-shaped badge or tag element."
@@ -652,7 +652,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:304
 #: includes/admin/class-settings.php:111
 msgid "Icon List"
-msgstr ""
+msgstr "Liste d'icônes"
 
 #: includes/abilities/info/class-list-blocks.php:305
 msgid "List with icons for each item, perfect for features or benefits."
@@ -661,7 +661,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:314
 #: includes/admin/class-settings.php:117
 msgid "Icon List Item"
-msgstr ""
+msgstr "Élément de liste d'icônes"
 
 #: includes/abilities/info/class-list-blocks.php:315
 msgid "Individual item within an icon list."
@@ -670,7 +670,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:326
 #: includes/admin/class-settings.php:194
 msgid "Flip Card"
-msgstr ""
+msgstr "Carte à retourner"
 
 #: includes/abilities/info/class-list-blocks.php:327
 msgid "3D card that flips on hover to reveal back content."
@@ -679,7 +679,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:337
 #: includes/admin/class-settings.php:200
 msgid "Flip Card Front"
-msgstr ""
+msgstr "Face avant de la carte"
 
 #: includes/abilities/info/class-list-blocks.php:338
 msgid "Front face of a flip card."
@@ -688,7 +688,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:345
 #: includes/admin/class-settings.php:206
 msgid "Flip Card Back"
-msgstr ""
+msgstr "Face arrière de la carte"
 
 #: includes/abilities/info/class-list-blocks.php:346
 msgid "Back face of a flip card."
@@ -697,7 +697,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:353
 #: includes/admin/class-settings.php:171
 msgid "Reveal"
-msgstr ""
+msgstr "Révélation"
 
 #: includes/abilities/info/class-list-blocks.php:354
 msgid "Content that reveals on scroll with customizable animations."
@@ -706,7 +706,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:365
 #: includes/admin/class-settings.php:165
 msgid "Scroll Marquee"
-msgstr ""
+msgstr "Défilement de marquise"
 
 #: includes/abilities/info/class-list-blocks.php:366
 msgid "Infinite scrolling marquee for logos or content."
@@ -715,7 +715,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:379
 #: includes/admin/class-settings.php:241
 msgid "Counter"
-msgstr ""
+msgstr "Compteur"
 
 #: includes/abilities/info/class-list-blocks.php:380
 msgid "Animated counter that counts up to a target value."
@@ -724,7 +724,7 @@ msgstr ""
 #: includes/abilities/info/class-list-blocks.php:394
 #: includes/admin/class-settings.php:235
 msgid "Counter Group"
-msgstr ""
+msgstr "Groupe de compteurs"
 
 #: includes/abilities/info/class-list-blocks.php:395
 msgid "Group of animated counters for statistics sections."
@@ -735,7 +735,7 @@ msgstr ""
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:92
 msgid "Progress Bar"
-msgstr ""
+msgstr "Barre de progression"
 
 #: includes/abilities/info/class-list-blocks.php:406
 msgid "Animated progress bar with customizable colors and value."
@@ -1509,7 +1509,7 @@ msgstr ""
 
 #: includes/abilities/inserters/class-insert-tabs.php:86
 msgid "Tab alignment"
-msgstr ""
+msgstr "Alignement des onglets"
 
 #: includes/abilities/inserters/class-insert-tabs.php:92
 msgid "Visual style of tabs"
@@ -1569,7 +1569,7 @@ msgstr ""
 #: src/admin/components/Dashboard.js:112
 #: src/admin/components/Settings.js:98
 msgid "Settings"
-msgstr ""
+msgstr "Réglages"
 
 #: includes/admin/class-global-styles.php:50
 msgid "Blue and Orange"
@@ -1613,15 +1613,15 @@ msgstr ""
 
 #: includes/admin/class-global-styles.php:162
 msgid "Success"
-msgstr ""
+msgstr "Succès"
 
 #: includes/admin/class-global-styles.php:167
 msgid "Warning"
-msgstr ""
+msgstr "Avertissement"
 
 #: includes/admin/class-global-styles.php:172
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
 #: includes/admin/class-global-styles.php:204
 msgid "Primary Gradient"
@@ -1798,7 +1798,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:177
 msgid "Image Accordion"
-msgstr ""
+msgstr "Accordéon d'images"
 
 #: includes/admin/class-settings.php:178
 msgid "Accordion with images"
@@ -1806,7 +1806,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:183
 msgid "Image Accordion Item"
-msgstr ""
+msgstr "Élément d'accordéon d'images"
 
 #: includes/admin/class-settings.php:184
 msgid "Individual image item"
@@ -1830,7 +1830,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:212
 msgid "Slider"
-msgstr ""
+msgstr "Curseur"
 
 #: includes/admin/class-settings.php:213
 msgid "Modern carousel with effects"
@@ -1842,7 +1842,7 @@ msgstr ""
 #: src/blocks/flip-card/edit.js:188
 #: src/blocks/slider/edit.js:460
 msgid "Slide"
-msgstr ""
+msgstr "Diapositive"
 
 #: includes/admin/class-settings.php:219
 msgid "Individual slider slide"
@@ -1850,7 +1850,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:224
 msgid "Blobs"
-msgstr ""
+msgstr "Taches"
 
 #: includes/admin/class-settings.php:225
 msgid "Animated blob shapes"
@@ -1878,7 +1878,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:258
 msgid "Form Builder"
-msgstr ""
+msgstr "Constructeur de formulaires"
 
 #: includes/admin/class-settings.php:259
 msgid "Complete form with AJAX submission"
@@ -1886,7 +1886,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:264
 msgid "Text Field"
-msgstr ""
+msgstr "Champ de texte"
 
 #: includes/admin/class-settings.php:265
 msgid "Text input field"
@@ -1894,7 +1894,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:270
 msgid "Email Field"
-msgstr ""
+msgstr "Champ e-mail"
 
 #: includes/admin/class-settings.php:271
 msgid "Email input field"
@@ -1902,7 +1902,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:276
 msgid "Textarea"
-msgstr ""
+msgstr "Zone de texte"
 
 #: includes/admin/class-settings.php:277
 msgid "Multi-line text input"
@@ -1910,7 +1910,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:282
 msgid "Number Field"
-msgstr ""
+msgstr "Champ numérique"
 
 #: includes/admin/class-settings.php:283
 msgid "Number input field"
@@ -1918,7 +1918,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:288
 msgid "Phone Field"
-msgstr ""
+msgstr "Champ téléphone"
 
 #: includes/admin/class-settings.php:289
 msgid "Phone number input"
@@ -1926,7 +1926,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:294
 msgid "URL Field"
-msgstr ""
+msgstr "Champ URL"
 
 #: includes/admin/class-settings.php:295
 msgid "URL input field"
@@ -1934,7 +1934,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:300
 msgid "Date Field"
-msgstr ""
+msgstr "Champ de date"
 
 #: includes/admin/class-settings.php:301
 msgid "Date picker input"
@@ -1942,7 +1942,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:306
 msgid "Time Field"
-msgstr ""
+msgstr "Champ d'heure"
 
 #: includes/admin/class-settings.php:307
 msgid "Time picker input"
@@ -1966,7 +1966,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:324
 msgid "Hidden Field"
-msgstr ""
+msgstr "Champ masqué"
 
 #: includes/admin/class-settings.php:325
 msgid "Hidden form field"
@@ -1974,7 +1974,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:330
 msgid "File Upload"
-msgstr ""
+msgstr "Téléversement de fichier"
 
 #: includes/admin/class-settings.php:331
 msgid "File upload field"
@@ -2022,7 +2022,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:368
 msgid "Max Width"
-msgstr ""
+msgstr "Largeur maximale"
 
 #: includes/admin/class-settings.php:369
 msgid "Content width constraints"
@@ -2054,7 +2054,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:388
 msgid "Responsive"
-msgstr ""
+msgstr "Adaptatif"
 
 #: includes/admin/class-settings.php:389
 msgid "Responsive visibility/settings"
@@ -2167,7 +2167,7 @@ msgstr ""
 
 #: includes/blocks/class-form-submissions.php:45
 msgid "No submissions found"
-msgstr ""
+msgstr "Aucune soumission trouvée"
 
 #: includes/blocks/class-form-submissions.php:46
 msgid "No submissions found in Trash"
@@ -2220,7 +2220,7 @@ msgstr ""
 #: src/blocks/form-hidden-field/edit.js:46
 #: src/blocks/form-select-field/edit.js:114
 msgid "Value"
-msgstr ""
+msgstr "Valeur"
 
 #: includes/blocks/class-form-submissions.php:111
 msgid "Type"
@@ -2460,7 +2460,7 @@ msgstr ""
 #: src/admin/components/BlocksExtensions.js:358
 #: src/admin/components/Settings.js:321
 msgid "Saving..."
-msgstr ""
+msgstr "Enregistrement..."
 
 #: build/admin.js:1
 #: src/admin/components/BlocksExtensions.js:358
@@ -2718,7 +2718,7 @@ msgstr ""
 #: src/extensions/block-animations/components/AnimationPanel.js:86
 #: src/extensions/block-animations/components/AnimationToolbar.js:76
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:119
@@ -2800,7 +2800,7 @@ msgstr ""
 #: src/blocks/tab/edit.js:261
 #: src/blocks/tabs/edit.js:215
 msgid "Left"
-msgstr ""
+msgstr "Gauche"
 
 #: build/blocks/accordion/index.js:1
 #: build/blocks/counter-group/index.js:1
@@ -2823,7 +2823,7 @@ msgstr ""
 #: src/blocks/tab/edit.js:265
 #: src/blocks/tabs/edit.js:223
 msgid "Right"
-msgstr ""
+msgstr "Droite"
 
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:192
@@ -2861,13 +2861,13 @@ msgstr ""
 #: src/blocks/accordion/edit.js:245
 #: src/blocks/accordion/edit.js:275
 msgid "Background"
-msgstr ""
+msgstr "Arrière-plan"
 
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:251
 #: src/blocks/accordion/edit.js:282
 msgid "Text"
-msgstr ""
+msgstr "Texte"
 
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:260
@@ -3021,28 +3021,28 @@ msgstr ""
 #: src/blocks/counter/components/inspector/AnimationPanel.js:122
 #: src/blocks/slider/edit.js:492
 msgid "Linear"
-msgstr ""
+msgstr "Linéaire"
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/slider/index.js:1
 #: src/blocks/blobs/edit.js:152
 #: src/blocks/slider/edit.js:488
 msgid "Ease"
-msgstr ""
+msgstr "Lissé"
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/slider/index.js:1
 #: src/blocks/blobs/edit.js:153
 #: src/blocks/slider/edit.js:490
 msgid "Ease In"
-msgstr ""
+msgstr "Lissé à l'entrée"
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/slider/index.js:1
 #: src/blocks/blobs/edit.js:154
 #: src/blocks/slider/edit.js:491
 msgid "Ease Out"
-msgstr ""
+msgstr "Lissé à la sortie"
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/counter-group/index.js:1
@@ -3053,7 +3053,7 @@ msgstr ""
 #: src/blocks/counter/components/inspector/AnimationPanel.js:118
 #: src/blocks/slider/edit.js:489
 msgid "Ease In Out"
-msgstr ""
+msgstr "Lissé à l'entrée et sortie"
 
 #: build/blocks/blobs/index.js:1
 #: src/blocks/blobs/edit.js:158
@@ -3153,7 +3153,7 @@ msgstr ""
 #: src/blocks/counter-group/index.js:160
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:136
 msgid "Gap"
-msgstr ""
+msgstr "Espacement"
 
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/image-accordion-item/index.js:1
@@ -3184,7 +3184,7 @@ msgstr ""
 #: src/blocks/slide/edit.js:285
 #: src/blocks/tabs/edit.js:219
 msgid "Center"
-msgstr ""
+msgstr "Centre"
 
 #: build/blocks/counter-group/index.js:1
 #: src/blocks/counter-group/index.js:196
@@ -3307,7 +3307,7 @@ msgstr ""
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:38
 msgid "Start Value"
-msgstr ""
+msgstr "Valeur de départ"
 
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:43
@@ -3317,7 +3317,7 @@ msgstr ""
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:49
 msgid "End Value"
-msgstr ""
+msgstr "Valeur finale"
 
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:55
@@ -3379,7 +3379,7 @@ msgstr ""
 #: src/blocks/form-time-field/edit.js:58
 #: src/blocks/form-url-field/edit.js:55
 msgid "Label"
-msgstr ""
+msgstr "Étiquette"
 
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/LabelSettingsPanel.js:30
@@ -3460,7 +3460,7 @@ msgstr ""
 #: src/blocks/tab/edit.js:149
 #: src/blocks/tab/edit.js:269
 msgid "Top"
-msgstr ""
+msgstr "Haut"
 
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/AnimationPanel.js:50
@@ -3550,7 +3550,7 @@ msgstr ""
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:168
 msgid "Justify Content"
-msgstr ""
+msgstr "Justifier le contenu"
 
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
@@ -3560,7 +3560,7 @@ msgstr ""
 #: src/blocks/grid/edit.js:213
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:98
 msgid "Start"
-msgstr ""
+msgstr "Début"
 
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
@@ -3570,7 +3570,7 @@ msgstr ""
 #: src/blocks/grid/edit.js:220
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:99
 msgid "End"
-msgstr ""
+msgstr "Fin"
 
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:184
@@ -3597,14 +3597,14 @@ msgstr ""
 #: src/blocks/flex/edit.js:208
 #: src/blocks/grid/edit.js:209
 msgid "Align Items"
-msgstr ""
+msgstr "Aligner les éléments"
 
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
 #: src/blocks/flex/edit.js:224
 #: src/blocks/grid/edit.js:222
 msgid "Stretch"
-msgstr ""
+msgstr "Étirer"
 
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:228
@@ -3740,7 +3740,7 @@ msgstr ""
 #: src/blocks/reveal/edit.js:42
 #: src/blocks/slider/edit.js:461
 msgid "Fade"
-msgstr ""
+msgstr "Fondu"
 
 #: build/blocks/flip-card/index.js:1
 #: build/blocks/slider/index.js:1
@@ -3818,7 +3818,7 @@ msgstr ""
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:108
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:116
@@ -3833,7 +3833,7 @@ msgstr ""
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:136
 msgid "Form Settings"
-msgstr ""
+msgstr "Paramètres du formulaire"
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:138
@@ -4128,7 +4128,7 @@ msgstr ""
 #: src/blocks/form-time-field/edit.js:66
 #: src/blocks/form-url-field/edit.js:63
 msgid "Required"
-msgstr ""
+msgstr "Obligatoire"
 
 #: build/blocks/form-checkbox-field/index.js:1
 #: src/blocks/form-checkbox-field/edit.js:62
@@ -4247,7 +4247,7 @@ msgstr ""
 #: src/blocks/form-time-field/edit.js:107
 #: src/blocks/form-url-field/edit.js:81
 msgid "Default Value"
-msgstr ""
+msgstr "Valeur par défaut"
 
 #: build/blocks/form-date-field/index.js:1
 #: src/blocks/form-date-field/edit.js:98
@@ -4276,7 +4276,7 @@ msgstr ""
 #: src/blocks/form-textarea/edit.js:79
 #: src/blocks/form-url-field/edit.js:72
 msgid "Placeholder"
-msgstr ""
+msgstr "Espace réservé"
 
 #: build/blocks/form-email-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
@@ -4300,7 +4300,7 @@ msgstr ""
 #: build/blocks/form-hidden-field/index.js:1
 #: src/blocks/form-hidden-field/edit.js:58
 msgid "(empty)"
-msgstr ""
+msgstr "(vide)"
 
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:75
@@ -4606,7 +4606,7 @@ msgstr ""
 #: build/blocks/form-textarea/index.js:1
 #: src/blocks/form-textarea/edit.js:122
 msgid "Maximum characters allowed (0 = no limit)"
-msgstr ""
+msgstr "Caractères maximums autorisés (0 = aucune limite)"
 
 #: build/blocks/form-time-field/index.js:1
 #: src/blocks/form-time-field/edit.js:73
@@ -4708,12 +4708,12 @@ msgstr ""
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:269
 msgid "Row Gap"
-msgstr ""
+msgstr "Espacement des lignes"
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:282
 msgid "Column Gap"
-msgstr ""
+msgstr "Espacement des colonnes"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
@@ -4776,7 +4776,7 @@ msgstr ""
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:102
 msgid "Media"
-msgstr ""
+msgstr "Médias"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
@@ -4902,14 +4902,14 @@ msgstr ""
 #: src/blocks/shared/components/WidthPanel.js:36
 #: src/extensions/max-width/index.js:115
 msgid "Width"
-msgstr ""
+msgstr "Largeur"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/slide/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:158
 #: src/blocks/slide/edit.js:194
 msgid "Auto"
-msgstr ""
+msgstr "Automatique"
 
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:160
@@ -4956,12 +4956,12 @@ msgstr ""
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:50
 #: src/blocks/image-accordion/edit.js:76
 msgid "Layout"
-msgstr ""
+msgstr "Mise en page"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:57
 msgid "Grid"
-msgstr ""
+msgstr "Grille"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:60
@@ -4973,7 +4973,7 @@ msgstr ""
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:70
 #: src/blocks/tabs/edit.js:211
 msgid "Alignment"
-msgstr ""
+msgstr "Alignement"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:86
@@ -4983,7 +4983,7 @@ msgstr ""
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:97
 msgid "Columns"
-msgstr ""
+msgstr "Colonnes"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:102
@@ -5060,7 +5060,7 @@ msgstr ""
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/edit.js:141
 msgid "Link"
-msgstr ""
+msgstr "Lien"
 
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
@@ -5076,7 +5076,7 @@ msgstr ""
 #: src/blocks/slide/edit.js:273
 #: src/blocks/slider/edit.js:430
 msgid "Bottom"
-msgstr ""
+msgstr "Bas"
 
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
@@ -5090,7 +5090,7 @@ msgstr ""
 #: src/blocks/image-accordion/edit.js:78
 #: src/blocks/slider/edit.js:287
 msgid "Height"
-msgstr ""
+msgstr "Hauteur"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:88
@@ -5185,7 +5185,7 @@ msgstr ""
 #: src/blocks/slide/edit.js:244
 #: src/extensions/overlay/index.js:132
 msgid "Color"
-msgstr ""
+msgstr "Couleur"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:211
@@ -5220,7 +5220,7 @@ msgstr ""
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:109
 msgid "Percentage"
-msgstr ""
+msgstr "Pourcentage"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:117
@@ -5272,7 +5272,7 @@ msgstr ""
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:189
 msgid "Bar Color"
-msgstr ""
+msgstr "Couleur de la barre"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:206
@@ -5354,7 +5354,7 @@ msgstr ""
 #: build/blocks/reveal/index.js:1
 #: src/blocks/reveal/edit.js:54
 msgid "Scale"
-msgstr ""
+msgstr "Échelle"
 
 #: build/blocks/reveal/index.js:1
 #: src/blocks/reveal/edit.js:65
@@ -5430,17 +5430,17 @@ msgstr ""
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:106
 msgid "Image Height"
-msgstr ""
+msgstr "Hauteur de l'image"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:113
 msgid "Image Width"
-msgstr ""
+msgstr "Largeur de l'image"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:128
 msgid "Spacing"
-msgstr ""
+msgstr "Espacement"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:130
@@ -5512,12 +5512,12 @@ msgstr ""
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:192
 msgid "Cover"
-msgstr ""
+msgstr "Couvrir"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:193
 msgid "Contain"
-msgstr ""
+msgstr "Contenir"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:197
@@ -5667,7 +5667,7 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:272
 msgid "Aspect Ratio"
-msgstr ""
+msgstr "Rapport d'aspect"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:303
@@ -5695,7 +5695,7 @@ msgstr ""
 #: src/blocks/slider/edit.js:417
 #: src/blocks/tabs/edit.js:188
 msgid "Default"
-msgstr ""
+msgstr "Par défaut"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:35
@@ -5959,12 +5959,12 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:635
 msgid "Previous slide"
-msgstr ""
+msgstr "Diapositive précédente"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:643
 msgid "Next slide"
-msgstr ""
+msgstr "Diapositive suivante"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:658
@@ -6373,7 +6373,7 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:339
 msgid "Advanced"
-msgstr ""
+msgstr "Avancé"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:343
@@ -6418,7 +6418,7 @@ msgstr ""
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:121
 msgid "Duration"
-msgstr ""
+msgstr "Durée"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:134
@@ -6428,7 +6428,7 @@ msgstr ""
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:151
 msgid "Easing"
-msgstr ""
+msgstr "Lissage"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:164
@@ -6796,7 +6796,7 @@ msgstr ""
 
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:61
 msgid "Padding"
-msgstr ""
+msgstr "Marge intérieure"
 
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:69
 msgid "Space between the icon and the shape edge."
@@ -6818,7 +6818,7 @@ msgstr ""
 #: src/blocks/accordion-item/block.json
 msgctxt "block title"
 msgid "Accordion Item"
-msgstr ""
+msgstr "Élément d'accordéon"
 
 #: build/blocks/accordion-item/block.json
 #: src/blocks/accordion-item/block.json
@@ -6884,7 +6884,7 @@ msgstr ""
 #: src/blocks/accordion/block.json
 msgctxt "block title"
 msgid "Accordion"
-msgstr ""
+msgstr "Accordéon"
 
 #: build/blocks/accordion/block.json
 #: src/blocks/accordion/block.json
@@ -6926,7 +6926,7 @@ msgstr ""
 #: src/blocks/blobs/block.json
 msgctxt "block title"
 msgid "Blobs"
-msgstr ""
+msgstr "Taches"
 
 #: build/blocks/blobs/block.json
 #: src/blocks/blobs/block.json
@@ -6974,7 +6974,7 @@ msgstr ""
 #: src/blocks/counter-group/block.json
 msgctxt "block title"
 msgid "Counter Group"
-msgstr ""
+msgstr "Groupe de compteurs"
 
 #: build/blocks/counter-group/block.json
 #: src/blocks/counter-group/block.json
@@ -7018,7 +7018,7 @@ msgstr ""
 #: src/blocks/counter/block.json
 msgctxt "block title"
 msgid "Counter"
-msgstr ""
+msgstr "Compteur"
 
 #: build/blocks/counter/block.json
 #: src/blocks/counter/block.json
@@ -7046,7 +7046,7 @@ msgstr ""
 #: src/blocks/flex/block.json
 msgctxt "block title"
 msgid "Flex Container"
-msgstr ""
+msgstr "Conteneur Flex"
 
 #: build/blocks/flex/block.json
 #: src/blocks/flex/block.json
@@ -7104,7 +7104,7 @@ msgstr ""
 #: src/blocks/flip-card-back/block.json
 msgctxt "block title"
 msgid "Flip Card Back"
-msgstr ""
+msgstr "Face arrière de la carte"
 
 #: build/blocks/flip-card-back/block.json
 #: src/blocks/flip-card-back/block.json
@@ -7142,7 +7142,7 @@ msgstr ""
 #: src/blocks/flip-card-front/block.json
 msgctxt "block title"
 msgid "Flip Card Front"
-msgstr ""
+msgstr "Face avant de la carte"
 
 #: build/blocks/flip-card-front/block.json
 #: src/blocks/flip-card-front/block.json
@@ -7160,7 +7160,7 @@ msgstr ""
 #: src/blocks/flip-card/block.json
 msgctxt "block title"
 msgid "Flip Card"
-msgstr ""
+msgstr "Carte à retourner"
 
 #: build/blocks/flip-card/block.json
 #: src/blocks/flip-card/block.json
@@ -7200,7 +7200,7 @@ msgstr ""
 #: src/blocks/form-builder/block.json
 msgctxt "block title"
 msgid "Form Builder"
-msgstr ""
+msgstr "Constructeur de formulaires"
 
 #: build/blocks/form-builder/block.json
 #: src/blocks/form-builder/block.json
@@ -7296,7 +7296,7 @@ msgstr ""
 #: src/blocks/form-date-field/block.json
 msgctxt "block title"
 msgid "Date Field"
-msgstr ""
+msgstr "Champ de date"
 
 #: build/blocks/form-date-field/block.json
 #: src/blocks/form-date-field/block.json
@@ -7332,7 +7332,7 @@ msgstr ""
 #: src/blocks/form-email-field/block.json
 msgctxt "block title"
 msgid "Email Field"
-msgstr ""
+msgstr "Champ e-mail"
 
 #: build/blocks/form-email-field/block.json
 #: src/blocks/form-email-field/block.json
@@ -7398,7 +7398,7 @@ msgstr ""
 #: src/blocks/form-hidden-field/block.json
 msgctxt "block title"
 msgid "Hidden Field"
-msgstr ""
+msgstr "Champ masqué"
 
 #: build/blocks/form-hidden-field/block.json
 #: src/blocks/form-hidden-field/block.json
@@ -7430,7 +7430,7 @@ msgstr ""
 #: src/blocks/form-number-field/block.json
 msgctxt "block title"
 msgid "Number Field"
-msgstr ""
+msgstr "Champ numérique"
 
 #: build/blocks/form-number-field/block.json
 #: src/blocks/form-number-field/block.json
@@ -7454,7 +7454,7 @@ msgstr ""
 #: src/blocks/form-phone-field/block.json
 msgctxt "block title"
 msgid "Phone Field"
-msgstr ""
+msgstr "Champ téléphone"
 
 #: build/blocks/form-phone-field/block.json
 #: src/blocks/form-phone-field/block.json
@@ -7526,7 +7526,7 @@ msgstr ""
 #: src/blocks/form-text-field/block.json
 msgctxt "block title"
 msgid "Text Field"
-msgstr ""
+msgstr "Champ de texte"
 
 #: build/blocks/form-text-field/block.json
 #: src/blocks/form-text-field/block.json
@@ -7546,7 +7546,7 @@ msgstr ""
 #: src/blocks/form-textarea/block.json
 msgctxt "block title"
 msgid "Textarea"
-msgstr ""
+msgstr "Zone de texte"
 
 #: build/blocks/form-textarea/block.json
 #: src/blocks/form-textarea/block.json
@@ -7570,7 +7570,7 @@ msgstr ""
 #: src/blocks/form-time-field/block.json
 msgctxt "block title"
 msgid "Time Field"
-msgstr ""
+msgstr "Champ d'heure"
 
 #: build/blocks/form-time-field/block.json
 #: src/blocks/form-time-field/block.json
@@ -7606,7 +7606,7 @@ msgstr ""
 #: src/blocks/form-url-field/block.json
 msgctxt "block title"
 msgid "URL Field"
-msgstr ""
+msgstr "Champ URL"
 
 #: build/blocks/form-url-field/block.json
 #: src/blocks/form-url-field/block.json
@@ -7644,7 +7644,7 @@ msgstr ""
 #: src/blocks/grid/block.json
 msgctxt "block title"
 msgid "Grid Container"
-msgstr ""
+msgstr "Conteneur de grille"
 
 #: build/blocks/grid/block.json
 #: src/blocks/grid/block.json
@@ -7674,7 +7674,7 @@ msgstr ""
 #: src/blocks/icon-button/block.json
 msgctxt "block title"
 msgid "Icon Button"
-msgstr ""
+msgstr "Bouton avec icône"
 
 #: build/blocks/icon-button/block.json
 #: src/blocks/icon-button/block.json
@@ -7716,7 +7716,7 @@ msgstr ""
 #: src/blocks/icon-list-item/block.json
 msgctxt "block title"
 msgid "Icon List Item"
-msgstr ""
+msgstr "Élément de liste d'icônes"
 
 #: build/blocks/icon-list-item/block.json
 #: src/blocks/icon-list-item/block.json
@@ -7740,7 +7740,7 @@ msgstr ""
 #: src/blocks/icon-list/block.json
 msgctxt "block title"
 msgid "Icon List"
-msgstr ""
+msgstr "Liste d'icônes"
 
 #: build/blocks/icon-list/block.json
 #: src/blocks/icon-list/block.json
@@ -7776,7 +7776,7 @@ msgstr ""
 #: src/blocks/icon/block.json
 msgctxt "block title"
 msgid "Icon"
-msgstr ""
+msgstr "Icône"
 
 #: build/blocks/icon/block.json
 #: src/blocks/icon/block.json
@@ -7806,7 +7806,7 @@ msgstr ""
 #: src/blocks/image-accordion-item/block.json
 msgctxt "block title"
 msgid "Image Accordion Item"
-msgstr ""
+msgstr "Élément d'accordéon d'images"
 
 #: build/blocks/image-accordion-item/block.json
 #: src/blocks/image-accordion-item/block.json
@@ -7826,7 +7826,7 @@ msgstr ""
 #: src/blocks/image-accordion/block.json
 msgctxt "block title"
 msgid "Image Accordion"
-msgstr ""
+msgstr "Accordéon d'images"
 
 #: build/blocks/image-accordion/block.json
 #: src/blocks/image-accordion/block.json
@@ -7854,7 +7854,7 @@ msgstr ""
 #: src/blocks/pill/block.json
 msgctxt "block title"
 msgid "Pill"
-msgstr ""
+msgstr "Pilule"
 
 #: build/blocks/pill/block.json
 #: src/blocks/pill/block.json
@@ -7890,7 +7890,7 @@ msgstr ""
 #: src/blocks/progress-bar/block.json
 msgctxt "block title"
 msgid "Progress Bar"
-msgstr ""
+msgstr "Barre de progression"
 
 #: build/blocks/progress-bar/block.json
 #: src/blocks/progress-bar/block.json
@@ -7926,7 +7926,7 @@ msgstr ""
 #: src/blocks/reveal/block.json
 msgctxt "block title"
 msgid "Reveal"
-msgstr ""
+msgstr "Révélation"
 
 #: build/blocks/reveal/block.json
 #: src/blocks/reveal/block.json
@@ -7944,13 +7944,13 @@ msgstr ""
 #: src/blocks/reveal/block.json
 msgctxt "block keyword"
 msgid "show"
-msgstr ""
+msgstr "afficher"
 
 #: build/blocks/scroll-accordion-item/block.json
 #: src/blocks/scroll-accordion-item/block.json
 msgctxt "block title"
 msgid "Scroll Accordion Item"
-msgstr ""
+msgstr "Élément d'accordéon défilant"
 
 #: build/blocks/scroll-accordion-item/block.json
 #: src/blocks/scroll-accordion-item/block.json
@@ -7972,7 +7972,7 @@ msgstr ""
 #: src/blocks/scroll-accordion/block.json
 msgctxt "block title"
 msgid "Scroll Accordion"
-msgstr ""
+msgstr "Accordéon défilant"
 
 #: build/blocks/scroll-accordion/block.json
 #: src/blocks/scroll-accordion/block.json
@@ -7996,7 +7996,7 @@ msgstr ""
 #: src/blocks/scroll-marquee/block.json
 msgctxt "block title"
 msgid "Scroll Marquee"
-msgstr ""
+msgstr "Défilement de marquise"
 
 #: build/blocks/scroll-marquee/block.json
 #: src/blocks/scroll-marquee/block.json
@@ -8032,7 +8032,7 @@ msgstr ""
 #: src/blocks/slide/block.json
 msgctxt "block title"
 msgid "Slide"
-msgstr ""
+msgstr "Diapositive"
 
 #: build/blocks/slide/block.json
 #: src/blocks/slide/block.json
@@ -8050,7 +8050,7 @@ msgstr ""
 #: src/blocks/slider/block.json
 msgctxt "block title"
 msgid "Slider"
-msgstr ""
+msgstr "Curseur"
 
 #: build/blocks/slider/block.json
 #: src/blocks/slider/block.json
@@ -8086,7 +8086,7 @@ msgstr ""
 #: src/blocks/stack/block.json
 msgctxt "block title"
 msgid "Stack Container"
-msgstr ""
+msgstr "Conteneur de pile"
 
 #: build/blocks/stack/block.json
 #: src/blocks/stack/block.json
@@ -8110,7 +8110,7 @@ msgstr ""
 #: src/blocks/tab/block.json
 msgctxt "block title"
 msgid "Tab"
-msgstr ""
+msgstr "Onglet"
 
 #: build/blocks/tab/block.json
 #: src/blocks/tab/block.json
@@ -8128,7 +8128,7 @@ msgstr ""
 #: src/blocks/tabs/block.json
 msgctxt "block title"
 msgid "Tabs"
-msgstr ""
+msgstr "Onglets"
 
 #: build/blocks/tabs/block.json
 #: src/blocks/tabs/block.json

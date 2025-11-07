@@ -10,6 +10,7 @@ import {
 	PanelBody,
 	TextControl,
 	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- NumberControl is stable in practice
 	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
 import classnames from 'classnames';

@@ -28,7 +28,6 @@ export default function FormTextareaEdit({
 		placeholder,
 		helpText,
 		required,
-		defaultValue,
 		rows,
 		maxLength,
 	} = attributes;

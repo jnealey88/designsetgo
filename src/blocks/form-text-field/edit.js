@@ -64,24 +64,6 @@ export default function FormTextFieldEdit({
 		},
 	});
 
-	// Get validation pattern based on validation type
-	const getValidationPattern = () => {
-		switch (validation) {
-			case 'letters':
-				return '[A-Za-z\\s]+';
-			case 'numbers':
-				return '[0-9]+';
-			case 'alphanumeric':
-				return '[A-Za-z0-9]+';
-			case 'custom':
-				return validationPattern;
-			default:
-				return null;
-		}
-	};
-
-	const pattern = getValidationPattern();
-
 	return (
 		<>
 			<InspectorControls>
