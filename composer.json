@@ -1,10 +1,11 @@
 {
-  "name": "airo-blocks/airo-blocks",
-  "description": "Modern Gutenberg block library for WordPress",
+  "name": "designsetgo/designsetgo",
+  "description": "Modern Gutenberg block library bridging the gap between core WordPress blocks and advanced page builders. Design made easy, fast, and beautiful.",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": ">=7.4"
+    "php": ">=7.4",
+    "wordpress/abilities-api": "^0.4.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.0",

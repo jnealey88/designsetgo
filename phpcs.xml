@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<ruleset name="Airo Blocks">
-	<description>Airo Blocks Coding Standards</description>
+<ruleset name="DesignSetGo">
+	<description>DesignSetGo WordPress Coding Standards</description>
 
 	<!-- Files to check -->
-	<file>./airo-blocks.php</file>
+	<file>./designsetgo.php</file>
 	<file>./includes</file>
 
 	<!-- Exclude patterns -->
@@ -31,7 +31,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="airo-blocks"/>
+				<element value="designsetgo"/>
 			</property>
 		</properties>
 	</rule>

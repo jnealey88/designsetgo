@@ -32,7 +32,9 @@
     "wp-env:start": "wp-env start",
     "wp-env:stop": "wp-env stop",
     "wp-env:clean": "wp-env clean",
-    "security:audit": "npm audit && npm run check-licenses"
+    "security:audit": "npm audit && npm run check-licenses",
+    "i18n:make-pot": "wp-env run cli wp i18n make-pot /var/www/html/wp-content/plugins/designsetgo /var/www/html/wp-content/plugins/designsetgo/languages/designsetgo.pot --domain=designsetgo",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
