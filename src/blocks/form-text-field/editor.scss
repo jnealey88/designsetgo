@@ -1,0 +1,22 @@
+/**
+ * Form Text Field Block - Editor Styles
+ *
+ * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+ *
+ * @since 1.0.0
+ */
+
+// Import the main frontend styles for base styling
+@import './style.scss';
+
+// Editor-specific overrides
+.editor-styles-wrapper {
+	.dsg-form-field {
+		// Make fields look disabled in editor
+		&__input,
+		&__textarea,
+		&__select {
+			cursor: default;
+		}
+	}
+}
