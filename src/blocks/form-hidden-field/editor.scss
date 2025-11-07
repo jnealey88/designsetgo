@@ -1,0 +1,14 @@
+/**
+ * Form Hidden Field Block - Editor Styles
+ *
+ * @since 1.0.0
+ */
+
+// Import the main frontend styles
+@import './style.scss';
+
+// Show in editor with visual indicator
+.dsg-form-field--hidden {
+	display: block; // Override frontend hiding
+	margin-bottom: 1rem;
+}

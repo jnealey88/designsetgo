@@ -1,0 +1,73 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/form-number-field",
+	"version": "1.0.0",
+	"title": "Number Field",
+	"category": "design",
+	"description": "A number input field for forms.",
+	"keywords": ["form", "number", "input", "integer", "decimal"],
+	"parent": ["designsetgo/form-builder"],
+	"textdomain": "designsetgo",
+	"supports": {
+		"html": false,
+		"anchor": false,
+		"customClassName": false,
+		"reusable": false
+	},
+	"usesContext": [
+		"designsetgo/form-builder/fieldSpacing",
+		"designsetgo/form-builder/fieldLabelColor",
+		"designsetgo/form-builder/fieldBorderColor",
+		"designsetgo/form-builder/fieldBorderRadius",
+		"designsetgo/form-builder/fieldFocusColor",
+		"designsetgo/form-builder/inputHeight",
+		"designsetgo/form-builder/inputPadding",
+		"designsetgo/form-builder/fieldBackgroundColor"
+	],
+	"attributes": {
+		"fieldName": {
+			"type": "string",
+			"default": ""
+		},
+		"label": {
+			"type": "string",
+			"default": "Number"
+		},
+		"placeholder": {
+			"type": "string",
+			"default": ""
+		},
+		"helpText": {
+			"type": "string",
+			"default": ""
+		},
+		"required": {
+			"type": "boolean",
+			"default": false
+		},
+		"defaultValue": {
+			"type": "string",
+			"default": ""
+		},
+		"min": {
+			"type": "number",
+			"default": null
+		},
+		"max": {
+			"type": "number",
+			"default": null
+		},
+		"step": {
+			"type": "number",
+			"default": 1
+		},
+		"allowDecimals": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}

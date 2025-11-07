@@ -1,0 +1,25 @@
+/**
+ * Form Number Field Block - Styles
+ *
+ * Uses shared form field styles from text field
+ *
+ * @since 1.0.0
+ */
+
+// Number field uses the same styles as text field
+@import '../form-text-field/style.scss';
+
+// Number-specific adjustments
+.dsg-form-field--number {
+	input[type="number"] {
+		// Remove spinner arrows in WebKit browsers
+		&::-webkit-inner-spin-button,
+		&::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		// For Firefox
+		-moz-appearance: textfield;
+	}
+}

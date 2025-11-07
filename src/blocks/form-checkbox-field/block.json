@@ -1,0 +1,54 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/form-checkbox-field",
+	"version": "1.0.0",
+	"title": "Checkbox Field",
+	"category": "design",
+	"description": "A single checkbox field for forms.",
+	"keywords": ["form", "checkbox", "check", "toggle", "agree"],
+	"parent": ["designsetgo/form-builder"],
+	"textdomain": "designsetgo",
+	"supports": {
+		"html": false,
+		"anchor": false,
+		"customClassName": false,
+		"reusable": false
+	},
+	"usesContext": [
+		"designsetgo/form-builder/fieldSpacing",
+		"designsetgo/form-builder/fieldLabelColor",
+		"designsetgo/form-builder/fieldBorderColor",
+		"designsetgo/form-builder/fieldBorderRadius",
+		"designsetgo/form-builder/fieldFocusColor"
+	],
+	"attributes": {
+		"fieldName": {
+			"type": "string",
+			"default": ""
+		},
+		"label": {
+			"type": "string",
+			"default": "I agree to the terms and conditions"
+		},
+		"helpText": {
+			"type": "string",
+			"default": ""
+		},
+		"required": {
+			"type": "boolean",
+			"default": false
+		},
+		"checkedByDefault": {
+			"type": "boolean",
+			"default": false
+		},
+		"value": {
+			"type": "string",
+			"default": "1"
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}
