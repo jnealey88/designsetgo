@@ -5,7 +5,7 @@
  * Works with core/group and custom container blocks (Stack, Flex, Grid).
  * Perfect for card designs where the entire container should be clickable.
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 

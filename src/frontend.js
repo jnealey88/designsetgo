@@ -27,6 +27,9 @@ import './blocks/flip-card/frontend.js';
 // Block animations - scroll-triggered, hover, click animations
 import './extensions/block-animations/frontend.js';
 
+// Clickable group - makes containers clickable with link functionality
+import './extensions/clickable-group/frontend.js';
+
 // Background video - video background initialization
 import './extensions/background-video/frontend.js';
 

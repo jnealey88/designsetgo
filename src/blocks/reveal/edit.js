@@ -11,9 +11,10 @@ import { PanelBody, SelectControl, RangeControl } from '@wordpress/components';
 
 /**
  * Edit component for Reveal block
- * @param root0
- * @param root0.attributes
- * @param root0.setAttributes
+ *
+ * @param {Object}   root0               - Component props.
+ * @param {Object}   root0.attributes    - Block attributes.
+ * @param {Function} root0.setAttributes - Function to set block attributes.
  */
 export default function Edit({ attributes, setAttributes }) {
 	const { revealAnimation, revealDuration } = attributes;

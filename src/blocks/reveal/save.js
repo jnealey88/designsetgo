@@ -5,8 +5,9 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
  * Save component for Reveal block
- * @param root0
- * @param root0.attributes
+ *
+ * @param {Object} root0            - Component props.
+ * @param {Object} root0.attributes - Block attributes.
  */
 export default function Save({ attributes }) {
 	const { revealAnimation, revealDuration } = attributes;

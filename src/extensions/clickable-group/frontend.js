@@ -5,7 +5,7 @@
  * Makes entire group blocks clickable while preserving
  * functionality of interactive elements inside.
  *
- * @package DesignSetGo
+ * @package
  * @since 1.0.0
  */
 
