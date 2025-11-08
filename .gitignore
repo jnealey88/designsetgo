@@ -72,3 +72,28 @@ pnpm-lock.yaml
 *.backup
 *.bak
 *.old
+
+# Translation automation scripts (temporary)
+*.py
+__pycache__/
+*_translate*.py
+*_translator*.py
+*TRANSLATION*.py
+*COMPLETE*.py
+
+# Translation working files (temporary)
+/*_translations.txt
+/*_untranslated*.txt
+/*_remaining*.txt
+/RU_DICT.txt
+/strings_to_translate.txt
+/translation_*.txt
+/TRANSLATION-STATUS.md
+/ES_TRANSLATION_COMPLETE.md
+
+# Compiled translation files (built from .po files)
+*.mo
+
+# Temporary files
+zimJK2ks
+messages.mo
