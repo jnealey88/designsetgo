@@ -5,9 +5,23 @@
 
 .dsg-slider {
 	position: relative;
-	width: 100%;
 	overflow: hidden;
 	box-sizing: border-box; // Ensure padding doesn't increase slider width
+	max-width: 100%; // Prevent overflow in containers and on small screens
+
+	// Wide alignment - use negative margins to extend to wide width
+	&.alignwide {
+		width: var(--wp--style--global--wide-size);
+		max-width: 100%;
+	}
+
+	// Full alignment - use negative margins to extend edge-to-edge
+	&.alignfull {
+		width: 100%;
+		max-width: 100%;
+		margin-right: calc(var(--wp--style--root--padding-right) * -1);
+		margin-left: calc(var(--wp--style--root--padding-left) * -1);
+	}
 
 	// Use CSS custom properties from inline styles
 	--dsg-slider-height: 500px;
@@ -20,7 +34,7 @@
 
 	&__viewport {
 		position: relative;
-		width: 100%;
+		width: 100%; // Inner viewport fills the slider width
 		height: var(--dsg-slider-height);
 		overflow: hidden;
 	}

@@ -12,7 +12,10 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 	useSetting,
-	PanelColorSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import { useDispatch } from '@wordpress/data';
 import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
@@ -41,6 +44,9 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Get content size from theme
 	const themeContentWidth = useSetting('layout.contentSize');
@@ -265,38 +271,43 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
+			</InspectorControls>
 
-				<PanelColorSettings
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
 					title={__('Hover Settings', 'designsetgo')}
-					initialOpen={false}
-					colorSettings={[
+					settings={[
 						{
-							value: hoverBackgroundColor,
-							onChange: (color) =>
-								setAttributes({ hoverBackgroundColor: color }),
 							label: __('Hover Background Color', 'designsetgo'),
+							colorValue: hoverBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({
+									hoverBackgroundColor: color || '',
+								}),
 							clearable: true,
 						},
 						{
-							value: hoverTextColor,
-							onChange: (color) =>
-								setAttributes({ hoverTextColor: color }),
 							label: __('Hover Text Color', 'designsetgo'),
+							colorValue: hoverTextColor,
+							onColorChange: (color) =>
+								setAttributes({ hoverTextColor: color || '' }),
 							clearable: true,
 						},
 						// Only show icon background control if hover background is set
 						...(hoverBackgroundColor
 							? [
 									{
-										value: hoverIconBackgroundColor,
-										onChange: (color) =>
-											setAttributes({
-												hoverIconBackgroundColor: color,
-											}),
 										label: __(
 											'Hover Icon Background Color',
 											'designsetgo'
 										),
+										colorValue: hoverIconBackgroundColor,
+										onColorChange: (color) =>
+											setAttributes({
+												hoverIconBackgroundColor:
+													color || '',
+											}),
 										clearable: true,
 									},
 								]
@@ -305,21 +316,22 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 						...(hoverBackgroundColor
 							? [
 									{
-										value: hoverButtonBackgroundColor,
-										onChange: (color) =>
-											setAttributes({
-												hoverButtonBackgroundColor:
-													color,
-											}),
 										label: __(
 											'Hover Button Background Color',
 											'designsetgo'
 										),
+										colorValue: hoverButtonBackgroundColor,
+										onColorChange: (color) =>
+											setAttributes({
+												hoverButtonBackgroundColor:
+													color || '',
+											}),
 										clearable: true,
 									},
 								]
 							: []),
 					]}
+					{...colorGradientSettings}
 				/>
 			</InspectorControls>
 

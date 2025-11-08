@@ -27,8 +27,8 @@
 	// No default background - use WordPress native background colors
 	// Users can set background via Styles > Color > Background
 
-	// Ensure slide fills parent
-	min-height: 100%;
+	// No default min-height - only applied when user sets override
+	// Users can set min-height via Content Alignment > Min Height Override
 
 	&__overlay {
 		position: absolute;

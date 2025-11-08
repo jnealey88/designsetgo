@@ -21,16 +21,17 @@ import { IconPicker } from '../../../icon/components/IconPicker';
 /**
  * Button Settings Panel Component
  *
- * @param {Object}   props               - Component props
- * @param {string}   props.url           - Button URL
- * @param {string}   props.linkTarget    - Link target (_self, _blank)
- * @param {string}   props.rel           - Link rel attribute
- * @param {string}   props.icon          - Selected icon name
- * @param {string}   props.iconPosition  - Icon position (start, end, none)
- * @param {number}   props.iconSize      - Icon size in pixels
- * @param {string}   props.iconGap       - Gap between icon and text
- * @param {string}   props.width         - Button width
- * @param {Function} props.setAttributes - Function to update attributes
+ * @param {Object}   props                - Component props
+ * @param {string}   props.url            - Button URL
+ * @param {string}   props.linkTarget     - Link target (_self, _blank)
+ * @param {string}   props.rel            - Link rel attribute
+ * @param {string}   props.icon           - Selected icon name
+ * @param {string}   props.iconPosition   - Icon position (start, end, none)
+ * @param {number}   props.iconSize       - Icon size in pixels
+ * @param {string}   props.iconGap        - Gap between icon and text
+ * @param {string}   props.width          - Button width
+ * @param {string}   props.hoverAnimation - Hover animation style
+ * @param {Function} props.setAttributes  - Function to update attributes
  * @return {JSX.Element} Button Settings Panel component
  */
 export const ButtonSettingsPanel = ({
@@ -42,6 +43,7 @@ export const ButtonSettingsPanel = ({
 	iconSize,
 	iconGap,
 	width,
+	hoverAnimation,
 	setAttributes,
 }) => {
 	return (
@@ -88,9 +90,84 @@ export const ButtonSettingsPanel = ({
 			</PanelBody>
 
 			<PanelBody
-				title={__('Icon Settings', 'designsetgo')}
+				title={__('Button & Icon Settings', 'designsetgo')}
 				initialOpen={true}
 			>
+				<SelectControl
+					label={__('Width', 'designsetgo')}
+					value={width}
+					options={[
+						{ label: __('Auto', 'designsetgo'), value: 'auto' },
+						{
+							label: __('Full Width', 'designsetgo'),
+							value: '100%',
+						},
+						{ label: __('50%', 'designsetgo'), value: '50%' },
+						{ label: __('25%', 'designsetgo'), value: '25%' },
+					]}
+					onChange={(value) => setAttributes({ width: value })}
+					help={__('Button width', 'designsetgo')}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
+				/>
+
+				<SelectControl
+					label={__('Hover Animation', 'designsetgo')}
+					value={hoverAnimation}
+					options={[
+						{ label: __('None', 'designsetgo'), value: 'none' },
+						{
+							label: __('Fill Diagonal', 'designsetgo'),
+							value: 'fill-diagonal',
+						},
+						{
+							label: __('Zoom In', 'designsetgo'),
+							value: 'zoom-in',
+						},
+						{
+							label: __('Slide Left', 'designsetgo'),
+							value: 'slide-left',
+						},
+						{
+							label: __('Slide Right', 'designsetgo'),
+							value: 'slide-right',
+						},
+						{
+							label: __('Slide Down', 'designsetgo'),
+							value: 'slide-down',
+						},
+						{
+							label: __('Slide Up', 'designsetgo'),
+							value: 'slide-up',
+						},
+						{
+							label: __('Border Pulse', 'designsetgo'),
+							value: 'border-pulse',
+						},
+						{
+							label: __('Border Glow', 'designsetgo'),
+							value: 'border-glow',
+						},
+						{
+							label: __('Lift', 'designsetgo'),
+							value: 'lift',
+						},
+						{
+							label: __('Shrink', 'designsetgo'),
+							value: 'shrink',
+						},
+					]}
+					onChange={(value) =>
+						setAttributes({ hoverAnimation: value })
+					}
+					help={__(
+						'Choose a hover animation effect for the button',
+						'designsetgo'
+					)}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
+				/>
+
 				<SelectControl
 					label={__('Icon Position', 'designsetgo')}
 					value={iconPosition}
@@ -148,26 +225,6 @@ export const ButtonSettingsPanel = ({
 						/>
 					</>
 				)}
-			</PanelBody>
-
-			<PanelBody title={__('Button Settings', 'designsetgo')}>
-				<SelectControl
-					label={__('Width', 'designsetgo')}
-					value={width}
-					options={[
-						{ label: __('Auto', 'designsetgo'), value: 'auto' },
-						{
-							label: __('Full Width', 'designsetgo'),
-							value: '100%',
-						},
-						{ label: __('50%', 'designsetgo'), value: '50%' },
-						{ label: __('25%', 'designsetgo'), value: '25%' },
-					]}
-					onChange={(value) => setAttributes({ width: value })}
-					help={__('Button width', 'designsetgo')}
-					__next40pxDefaultSize
-					__nextHasNoMarginBottom
-				/>
 			</PanelBody>
 		</>
 	);

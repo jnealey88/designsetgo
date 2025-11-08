@@ -10,7 +10,10 @@ import {
 	InspectorControls,
 	useInnerBlocksProps,
 	store as blockEditorStore,
-	PanelColorSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -47,6 +50,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		activeTabBackgroundColor,
 		tabBorderColor,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Generate unique ID on mount
 	useEffect(() => {
@@ -155,6 +161,53 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	return (
 		<>
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
+					title={__('Tab Colors', 'designsetgo')}
+					settings={[
+						{
+							label: __('Tab Text', 'designsetgo'),
+							colorValue: tabColor,
+							onColorChange: (color) =>
+								setAttributes({ tabColor: color || '' }),
+							clearable: true,
+						},
+						{
+							label: __('Tab Background', 'designsetgo'),
+							colorValue: tabBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({ tabBackgroundColor: color || '' }),
+							clearable: true,
+						},
+						{
+							label: __('Active Tab Text', 'designsetgo'),
+							colorValue: activeTabColor,
+							onColorChange: (color) =>
+								setAttributes({ activeTabColor: color || '' }),
+							clearable: true,
+						},
+						{
+							label: __('Active Tab Background', 'designsetgo'),
+							colorValue: activeTabBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({
+									activeTabBackgroundColor: color || '',
+								}),
+							clearable: true,
+						},
+						{
+							label: __('Tab Border', 'designsetgo'),
+							colorValue: tabBorderColor,
+							onColorChange: (color) =>
+								setAttributes({ tabBorderColor: color || '' }),
+							clearable: true,
+						},
+					]}
+					{...colorGradientSettings}
+				/>
+			</InspectorControls>
+
 			<InspectorControls>
 				<PanelBody
 					title={__('Tab Settings', 'designsetgo')}
@@ -249,45 +302,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
-
-				<PanelColorSettings
-					title={__('Tab Colors', 'designsetgo')}
-					initialOpen={false}
-					colorSettings={[
-						{
-							value: tabColor,
-							onChange: (value) =>
-								setAttributes({ tabColor: value }),
-							label: __('Tab Text', 'designsetgo'),
-						},
-						{
-							value: tabBackgroundColor,
-							onChange: (value) =>
-								setAttributes({ tabBackgroundColor: value }),
-							label: __('Tab Background', 'designsetgo'),
-						},
-						{
-							value: activeTabColor,
-							onChange: (value) =>
-								setAttributes({ activeTabColor: value }),
-							label: __('Active Tab Text', 'designsetgo'),
-						},
-						{
-							value: activeTabBackgroundColor,
-							onChange: (value) =>
-								setAttributes({
-									activeTabBackgroundColor: value,
-								}),
-							label: __('Active Tab Background', 'designsetgo'),
-						},
-						{
-							value: tabBorderColor,
-							onChange: (value) =>
-								setAttributes({ tabBorderColor: value }),
-							label: __('Tab Border', 'designsetgo'),
-						},
-					]}
-				/>
 
 				<PanelBody
 					title={__('Mobile Settings', 'designsetgo')}

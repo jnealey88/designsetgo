@@ -10,7 +10,10 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	InspectorControls,
-	PanelColorSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -32,9 +35,14 @@ import {
  * @param {Object}   props               - Component props
  * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
+ * @param {string}   props.clientId      - Block client ID
  * @return {JSX.Element} Edit component
  */
-export default function ProgressBarEdit({ attributes, setAttributes }) {
+export default function ProgressBarEdit({
+	attributes,
+	setAttributes,
+	clientId,
+}) {
 	const {
 		percentage,
 		barColor,
@@ -50,6 +58,9 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 		animationDuration,
 		stripedAnimation,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Calculate bar width (clamped between 0-100)
 	const barWidth = Math.min(Math.max(percentage, 0), 100);
@@ -99,6 +110,30 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 
 	return (
 		<>
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
+					title={__('Color Settings', 'designsetgo')}
+					settings={[
+						{
+							label: __('Bar Color', 'designsetgo'),
+							colorValue: barColor,
+							onColorChange: (color) =>
+								setAttributes({ barColor: color || '' }),
+							clearable: true,
+						},
+						{
+							label: __('Background Color', 'designsetgo'),
+							colorValue: barBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({ barBackgroundColor: color || '' }),
+							clearable: true,
+						},
+					]}
+					{...colorGradientSettings}
+				/>
+			</InspectorControls>
+
 			<InspectorControls>
 				{/* Progress Settings */}
 				<PanelBody
@@ -176,26 +211,6 @@ export default function ProgressBarEdit({ attributes, setAttributes }) {
 						/>
 					</ToggleGroupControl>
 				</PanelBody>
-
-				{/* Color Settings */}
-				<PanelColorSettings
-					title={__('Color Settings', 'designsetgo')}
-					initialOpen={false}
-					colorSettings={[
-						{
-							value: barColor,
-							onChange: (value) =>
-								setAttributes({ barColor: value }),
-							label: __('Bar Color', 'designsetgo'),
-						},
-						{
-							value: barBackgroundColor,
-							onChange: (value) =>
-								setAttributes({ barBackgroundColor: value }),
-							label: __('Background Color', 'designsetgo'),
-						},
-					]}
-				/>
 
 				{/* Label Settings */}
 				<PanelBody

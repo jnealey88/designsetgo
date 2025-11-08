@@ -5,7 +5,22 @@
  */
 
 .dsg-progress-bar {
-	width: 100%; // CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+	max-width: 100%; // Prevent overflow in containers and on small screens
+
+	// Wide alignment - use negative margins to extend to wide width
+	&.alignwide {
+		width: var(--wp--style--global--wide-size);
+		max-width: 100%;
+	}
+
+	// Full alignment - use negative margins to extend edge-to-edge
+	&.alignfull {
+		width: 100%;
+		max-width: 100%;
+		margin-right: calc(var(--wp--style--root--padding-right) * -1);
+		margin-left: calc(var(--wp--style--root--padding-left) * -1);
+	}
 
 	// Editor-specific styles
 	.block-editor-block-list__layout & {

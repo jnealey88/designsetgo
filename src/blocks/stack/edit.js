@@ -13,7 +13,10 @@ import {
 	BlockControls,
 	InspectorControls,
 	useSetting,
-	PanelColorSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
 import { alignLeft, alignCenter, alignRight } from '@wordpress/icons';
@@ -24,9 +27,10 @@ import { alignLeft, alignCenter, alignRight } from '@wordpress/icons';
  * @param {Object}   props               Component props
  * @param {Object}   props.attributes    Block attributes
  * @param {Function} props.setAttributes Function to update attributes
+ * @param {string}   props.clientId      Block client ID
  * @return {JSX.Element} Edit component
  */
-export default function StackEdit({ attributes, setAttributes }) {
+export default function StackEdit({ attributes, setAttributes, clientId }) {
 	const {
 		alignItems,
 		constrainWidth,
@@ -36,6 +40,9 @@ export default function StackEdit({ attributes, setAttributes }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Get theme content size
 	const themeContentWidth = useSetting('layout.contentSize');
@@ -120,38 +127,41 @@ export default function StackEdit({ attributes, setAttributes }) {
 				</ToolbarGroup>
 			</BlockControls>
 
-			<InspectorControls>
-				<PanelColorSettings
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
 					title={__('Hover Settings', 'designsetgo')}
-					initialOpen={false}
-					colorSettings={[
+					settings={[
 						{
-							value: hoverBackgroundColor,
-							onChange: (color) =>
-								setAttributes({ hoverBackgroundColor: color }),
 							label: __('Hover Background Color', 'designsetgo'),
+							colorValue: hoverBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({
+									hoverBackgroundColor: color || '',
+								}),
 							clearable: true,
 						},
 						{
-							value: hoverTextColor,
-							onChange: (color) =>
-								setAttributes({ hoverTextColor: color }),
 							label: __('Hover Text Color', 'designsetgo'),
+							colorValue: hoverTextColor,
+							onColorChange: (color) =>
+								setAttributes({ hoverTextColor: color || '' }),
 							clearable: true,
 						},
 						// Only show icon background control if hover background is set
 						...(hoverBackgroundColor
 							? [
 									{
-										value: hoverIconBackgroundColor,
-										onChange: (color) =>
-											setAttributes({
-												hoverIconBackgroundColor: color,
-											}),
 										label: __(
 											'Hover Icon Background Color',
 											'designsetgo'
 										),
+										colorValue: hoverIconBackgroundColor,
+										onColorChange: (color) =>
+											setAttributes({
+												hoverIconBackgroundColor:
+													color || '',
+											}),
 										clearable: true,
 									},
 								]
@@ -160,21 +170,22 @@ export default function StackEdit({ attributes, setAttributes }) {
 						...(hoverBackgroundColor
 							? [
 									{
-										value: hoverButtonBackgroundColor,
-										onChange: (color) =>
-											setAttributes({
-												hoverButtonBackgroundColor:
-													color,
-											}),
 										label: __(
 											'Hover Button Background Color',
 											'designsetgo'
 										),
+										colorValue: hoverButtonBackgroundColor,
+										onColorChange: (color) =>
+											setAttributes({
+												hoverButtonBackgroundColor:
+													color || '',
+											}),
 										clearable: true,
 									},
 								]
 							: []),
 					]}
+					{...colorGradientSettings}
 				/>
 			</InspectorControls>
 

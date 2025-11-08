@@ -14,7 +14,6 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
-import { PanelColorSettings } from '@wordpress/block-editor';
 
 /**
  * List Settings Panel Component
@@ -22,7 +21,6 @@ import { PanelColorSettings } from '@wordpress/block-editor';
  * @param {Object}   props               - Component props
  * @param {string}   props.layout        - Current layout type
  * @param {number}   props.iconSize      - Icon size in pixels
- * @param {string}   props.iconColor     - Icon color
  * @param {string}   props.gap           - Gap between items
  * @param {string}   props.iconPosition  - Icon position relative to text
  * @param {number}   props.columns       - Number of columns for grid layout
@@ -33,7 +31,6 @@ import { PanelColorSettings } from '@wordpress/block-editor';
 export const ListSettingsPanel = ({
 	layout,
 	iconSize,
-	iconColor,
 	gap,
 	iconPosition,
 	columns,
@@ -146,31 +143,6 @@ export const ListSettingsPanel = ({
 					__nextHasNoMarginBottom
 				/>
 			</PanelBody>
-
-			<PanelColorSettings
-				title={__('Icon Color', 'designsetgo')}
-				colorSettings={[
-					{
-						value: iconColor,
-						onChange: (value) =>
-							setAttributes({ iconColor: value }),
-						label: __('Icon Color', 'designsetgo'),
-					},
-				]}
-			>
-				<p
-					style={{
-						fontSize: '12px',
-						color: '#757575',
-						marginTop: '8px',
-					}}
-				>
-					{__(
-						'Default color for all icons in this list',
-						'designsetgo'
-					)}
-				</p>
-			</PanelColorSettings>
 		</>
 	);
 };

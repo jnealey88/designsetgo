@@ -3,7 +3,10 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
-	PanelColorSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -53,6 +56,9 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 		styleVariation,
 		ariaLabel,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Editor navigation: scroll the track without state management
 	const scrollToSlide = (direction) => {
@@ -427,35 +433,6 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 
 					{showArrows && (
 						<>
-							<PanelColorSettings
-								title={__('Arrow Colors', 'designsetgo')}
-								initialOpen={false}
-								colorSettings={[
-									{
-										value: arrowColor,
-										onChange: (value) =>
-											setAttributes({
-												arrowColor: value,
-											}),
-										label: __(
-											'Arrow Icon Color',
-											'designsetgo'
-										),
-									},
-									{
-										value: arrowBackgroundColor,
-										onChange: (value) =>
-											setAttributes({
-												arrowBackgroundColor: value,
-											}),
-										label: __(
-											'Arrow Background',
-											'designsetgo'
-										),
-									},
-								]}
-							/>
-
 							<UnitControl
 								label={__('Arrow Size', 'designsetgo')}
 								value={arrowSize}
@@ -547,20 +524,6 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 						</>
 					)}
 
-					{showDots && (
-						<PanelColorSettings
-							title={__('Dot Color', 'designsetgo')}
-							initialOpen={false}
-							colorSettings={[
-								{
-									value: dotColor,
-									onChange: (value) =>
-										setAttributes({ dotColor: value }),
-									label: __('Dot Color', 'designsetgo'),
-								},
-							]}
-						/>
-					)}
 				</PanelBody>
 
 				<PanelBody
@@ -812,6 +775,55 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 					/>
 				</PanelBody>
 			</InspectorControls>
+
+			{showArrows && (
+				<InspectorControls group="color">
+					<ColorGradientSettingsDropdown
+						panelId={clientId}
+						title={__('Arrow Colors', 'designsetgo')}
+						settings={[
+							{
+								label: __('Arrow Icon Color', 'designsetgo'),
+								colorValue: arrowColor,
+								onColorChange: (color) =>
+									setAttributes({
+										arrowColor: color || '',
+									}),
+								clearable: true,
+							},
+							{
+								label: __('Arrow Background', 'designsetgo'),
+								colorValue: arrowBackgroundColor,
+								onColorChange: (color) =>
+									setAttributes({
+										arrowBackgroundColor: color || '',
+									}),
+								clearable: true,
+							},
+						]}
+						{...colorGradientSettings}
+					/>
+				</InspectorControls>
+			)}
+
+			{showDots && (
+				<InspectorControls group="color">
+					<ColorGradientSettingsDropdown
+						panelId={clientId}
+						title={__('Dot Color', 'designsetgo')}
+						settings={[
+							{
+								label: __('Dot Color', 'designsetgo'),
+								colorValue: dotColor,
+								onColorChange: (color) =>
+									setAttributes({ dotColor: color || '' }),
+								clearable: true,
+							},
+						]}
+						{...colorGradientSettings}
+					/>
+				</InspectorControls>
+			)}
 
 			<div {...blockProps}>
 				<div className="dsg-slider__viewport">

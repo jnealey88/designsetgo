@@ -11,6 +11,10 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import { ListSettingsPanel } from './components/inspector/ListSettingsPanel';
 
@@ -20,9 +24,10 @@ import { ListSettingsPanel } from './components/inspector/ListSettingsPanel';
  * @param {Object}   props               - Component props
  * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
+ * @param {string}   props.clientId      - Block client ID
  * @return {JSX.Element} Icon List edit component
  */
-export default function IconListEdit({ attributes, setAttributes }) {
+export default function IconListEdit({ attributes, setAttributes, clientId }) {
 	const {
 		layout,
 		iconSize,
@@ -32,6 +37,9 @@ export default function IconListEdit({ attributes, setAttributes }) {
 		columns,
 		alignment,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Calculate alignment value to avoid nested ternary
 	let alignItemsValue;
@@ -90,11 +98,27 @@ export default function IconListEdit({ attributes, setAttributes }) {
 
 	return (
 		<>
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
+					title={__('Icon Color', 'designsetgo')}
+					settings={[
+						{
+							label: __('Icon Color', 'designsetgo'),
+							colorValue: iconColor,
+							onColorChange: (color) =>
+								setAttributes({ iconColor: color || '' }),
+							clearable: true,
+						},
+					]}
+					{...colorGradientSettings}
+				/>
+			</InspectorControls>
+
 			<InspectorControls>
 				<ListSettingsPanel
 					layout={layout}
 					iconSize={iconSize}
-					iconColor={iconColor}
 					gap={gap}
 					iconPosition={iconPosition}
 					columns={columns}

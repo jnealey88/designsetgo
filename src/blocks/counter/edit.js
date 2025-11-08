@@ -13,7 +13,10 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	InspectorControls,
-	PanelColorSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 	// WordPress 6.5+ - useSettings (plural) replaces useSetting (singular)
 	useSettings,
 } from '@wordpress/block-editor';
@@ -36,9 +39,15 @@ import { getIconSvg } from './utils/icon-library';
  * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
  * @param {Object}   props.context       - Block context from parent Counter Group
+ * @param {string}   props.clientId      - Block client ID
  * @return {JSX.Element} Counter block edit component
  */
-export default function CounterEdit({ attributes, setAttributes, context }) {
+export default function CounterEdit({
+	attributes,
+	setAttributes,
+	context,
+	clientId,
+}) {
 	const {
 		uniqueId,
 		startValue,
@@ -56,6 +65,9 @@ export default function CounterEdit({ attributes, setAttributes, context }) {
 		customEasing,
 		hoverColor,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Get theme color palette (WordPress 6.5+ - useSettings returns array)
 	const [colorSettings] = useSettings('color.palette');
@@ -114,6 +126,23 @@ export default function CounterEdit({ attributes, setAttributes, context }) {
 			{/* ========================================
 			     INSPECTOR CONTROLS
 			    ======================================== */}
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
+					title={__('Hover Color', 'designsetgo')}
+					settings={[
+						{
+							label: __('Number Hover Color', 'designsetgo'),
+							colorValue: hoverColor,
+							onColorChange: (color) =>
+								setAttributes({ hoverColor: color || '' }),
+							clearable: true,
+						},
+					]}
+					{...colorGradientSettings}
+				/>
+			</InspectorControls>
+
 			<InspectorControls>
 				<CounterSettingsPanel
 					startValue={startValue}
@@ -144,32 +173,6 @@ export default function CounterEdit({ attributes, setAttributes, context }) {
 					context={context}
 					setAttributes={setAttributes}
 				/>
-
-				<PanelColorSettings
-					title={__('Hover Color', 'designsetgo')}
-					colorSettings={[
-						{
-							value: hoverColor,
-							onChange: (value) =>
-								setAttributes({ hoverColor: value || '' }),
-							label: __('Number Hover Color', 'designsetgo'),
-							colors: colorSettings,
-						},
-					]}
-					initialOpen={false}
-				>
-					<p className="components-base-control__help">
-						{parentHoverColor
-							? __(
-									'Override parent group hover color. Leave empty to use group setting.',
-									'designsetgo'
-								)
-							: __(
-									'Color for counter number on hover. Leave empty to use theme accent color.',
-									'designsetgo'
-								)}
-					</p>
-				</PanelColorSettings>
 			</InspectorControls>
 
 			{/* ========================================

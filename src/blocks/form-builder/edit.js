@@ -9,7 +9,10 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
-	PanelColorSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -56,6 +59,9 @@ export default function FormBuilderEdit({
 		emailReplyTo,
 		emailBody,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Generate unique formId on mount
 	useEffect(() => {
@@ -467,53 +473,54 @@ export default function FormBuilderEdit({
 						</>
 					)}
 				</PanelBody>
+			</InspectorControls>
 
-				<PanelColorSettings
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
 					title={__('Form Colors', 'designsetgo')}
-					colorSettings={[
+					settings={[
 						{
-							value: fieldLabelColor,
-							onChange: (value) =>
-								setAttributes({ fieldLabelColor: value }),
 							label: __('Label Color', 'designsetgo'),
+							colorValue: fieldLabelColor,
+							onColorChange: (color) =>
+								setAttributes({ fieldLabelColor: color || '' }),
+							clearable: true,
 						},
 						{
-							value: fieldBorderColor,
-							onChange: (value) =>
-								setAttributes({ fieldBorderColor: value }),
 							label: __('Border Color', 'designsetgo'),
+							colorValue: fieldBorderColor,
+							onColorChange: (color) =>
+								setAttributes({ fieldBorderColor: color || '' }),
+							clearable: true,
 						},
 						{
-							value: fieldBackgroundColor,
-							onChange: (value) =>
-								setAttributes({ fieldBackgroundColor: value }),
 							label: __('Field Background', 'designsetgo'),
-						},
-					]}
-					__experimentalHasMultipleOrigins
-					__experimentalIsRenderedInSidebar
-				/>
-
-				<PanelColorSettings
-					title={__('Button Colors', 'designsetgo')}
-					colorSettings={[
-						{
-							value: submitButtonColor,
-							onChange: (value) =>
-								setAttributes({ submitButtonColor: value }),
-							label: __('Text Color', 'designsetgo'),
-						},
-						{
-							value: submitButtonBackgroundColor,
-							onChange: (value) =>
+							colorValue: fieldBackgroundColor,
+							onColorChange: (color) =>
 								setAttributes({
-									submitButtonBackgroundColor: value,
+									fieldBackgroundColor: color || '',
 								}),
-							label: __('Background Color', 'designsetgo'),
+							clearable: true,
+						},
+						{
+							label: __('Button Text Color', 'designsetgo'),
+							colorValue: submitButtonColor,
+							onColorChange: (color) =>
+								setAttributes({ submitButtonColor: color || '' }),
+							clearable: true,
+						},
+						{
+							label: __('Button Background Color', 'designsetgo'),
+							colorValue: submitButtonBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({
+									submitButtonBackgroundColor: color || '',
+								}),
+							clearable: true,
 						},
 					]}
-					__experimentalHasMultipleOrigins
-					__experimentalIsRenderedInSidebar
+					{...colorGradientSettings}
 				/>
 			</InspectorControls>
 

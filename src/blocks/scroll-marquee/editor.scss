@@ -11,11 +11,13 @@
 	--dsg-marquee-border-radius: 8px;
 
 	position: relative;
-	width: 100%;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 	gap: var(--dsg-marquee-row-gap);
+	max-width: 100%; // Prevent overflow in containers and on small screens
+
+	// Note: scroll-marquee has align: false in block.json, so no alignment overrides
 
 	&__row {
 		position: relative;

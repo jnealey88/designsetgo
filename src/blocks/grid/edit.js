@@ -12,7 +12,10 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 	useSetting,
-	PanelColorSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -30,9 +33,10 @@ import { useState } from '@wordpress/element';
  * @param {Object}   props               Component props
  * @param {Object}   props.attributes    Block attributes
  * @param {Function} props.setAttributes Function to update attributes
+ * @param {string}   props.clientId      Block client ID
  * @return {JSX.Element} Edit component
  */
-export default function GridEdit({ attributes, setAttributes }) {
+export default function GridEdit({ attributes, setAttributes, clientId }) {
 	const {
 		desktopColumns,
 		tabletColumns,
@@ -47,6 +51,9 @@ export default function GridEdit({ attributes, setAttributes }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	const [useCustomGaps, setUseCustomGaps] = useState(!!(rowGap || columnGap));
 
@@ -117,6 +124,68 @@ export default function GridEdit({ attributes, setAttributes }) {
 
 	return (
 		<>
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
+					title={__('Hover Settings', 'designsetgo')}
+					settings={[
+						{
+							label: __('Hover Background Color', 'designsetgo'),
+							colorValue: hoverBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({
+									hoverBackgroundColor: color || '',
+								}),
+							clearable: true,
+						},
+						{
+							label: __('Hover Text Color', 'designsetgo'),
+							colorValue: hoverTextColor,
+							onColorChange: (color) =>
+								setAttributes({ hoverTextColor: color || '' }),
+							clearable: true,
+						},
+						// Only show icon background control if hover background is set
+						...(hoverBackgroundColor
+							? [
+									{
+										label: __(
+											'Hover Icon Background Color',
+											'designsetgo'
+										),
+										colorValue: hoverIconBackgroundColor,
+										onColorChange: (color) =>
+											setAttributes({
+												hoverIconBackgroundColor:
+													color || '',
+											}),
+										clearable: true,
+									},
+								]
+							: []),
+						// Only show button background control if hover background is set
+						...(hoverBackgroundColor
+							? [
+									{
+										label: __(
+											'Hover Button Background Color',
+											'designsetgo'
+										),
+										colorValue: hoverButtonBackgroundColor,
+										onColorChange: (color) =>
+											setAttributes({
+												hoverButtonBackgroundColor:
+													color || '',
+											}),
+										clearable: true,
+									},
+								]
+							: []),
+					]}
+					{...colorGradientSettings}
+				/>
+			</InspectorControls>
+
 			<InspectorControls>
 				<PanelBody
 					title={__('Grid Settings', 'designsetgo')}
@@ -288,62 +357,6 @@ export default function GridEdit({ attributes, setAttributes }) {
 						</>
 					)}
 				</PanelBody>
-
-				<PanelColorSettings
-					title={__('Hover Settings', 'designsetgo')}
-					initialOpen={false}
-					colorSettings={[
-						{
-							value: hoverBackgroundColor,
-							onChange: (color) =>
-								setAttributes({ hoverBackgroundColor: color }),
-							label: __('Hover Background Color', 'designsetgo'),
-							clearable: true,
-						},
-						{
-							value: hoverTextColor,
-							onChange: (color) =>
-								setAttributes({ hoverTextColor: color }),
-							label: __('Hover Text Color', 'designsetgo'),
-							clearable: true,
-						},
-						// Only show icon background control if hover background is set
-						...(hoverBackgroundColor
-							? [
-									{
-										value: hoverIconBackgroundColor,
-										onChange: (color) =>
-											setAttributes({
-												hoverIconBackgroundColor: color,
-											}),
-										label: __(
-											'Hover Icon Background Color',
-											'designsetgo'
-										),
-										clearable: true,
-									},
-								]
-							: []),
-						// Only show button background control if hover background is set
-						...(hoverBackgroundColor
-							? [
-									{
-										value: hoverButtonBackgroundColor,
-										onChange: (color) =>
-											setAttributes({
-												hoverButtonBackgroundColor:
-													color,
-											}),
-										label: __(
-											'Hover Button Background Color',
-											'designsetgo'
-										),
-										clearable: true,
-									},
-								]
-							: []),
-					]}
-				/>
 			</InspectorControls>
 
 			<div {...blockProps}>

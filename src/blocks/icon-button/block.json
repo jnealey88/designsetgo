@@ -5,13 +5,14 @@
 	"version": "1.0.0",
 	"title": "Icon Button",
 	"category": "design",
-	"description": "A button with optional icon at the start or end.",
+	"description": "A customizable button with optional icon and hover animations.",
 	"keywords": [
 		"button",
 		"icon",
 		"link",
 		"call to action",
-		"cta"
+		"cta",
+		"animated"
 	],
 	"textdomain": "designsetgo",
 	"usesContext": ["designsetgo/hoverButtonBackgroundColor"],
@@ -95,6 +96,18 @@
 		"width": {
 			"type": "string",
 			"default": "auto"
+		},
+		"hoverAnimation": {
+			"type": "string",
+			"default": "none"
+		},
+		"hoverBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"hoverTextColor": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"example": {

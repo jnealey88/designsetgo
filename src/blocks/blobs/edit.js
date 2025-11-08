@@ -9,7 +9,10 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
-	PanelColorSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -21,7 +24,7 @@ import {
 } from '@wordpress/components';
 import classnames from 'classnames';
 
-export default function BlobsEdit({ attributes, setAttributes }) {
+export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 	const {
 		blobShape,
 		blobAnimation,
@@ -32,6 +35,9 @@ export default function BlobsEdit({ attributes, setAttributes }) {
 		overlayColor,
 		overlayOpacity,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Calculate classes
 	const blobClasses = classnames('dsg-blobs', {
@@ -265,24 +271,28 @@ export default function BlobsEdit({ attributes, setAttributes }) {
 					)}
 				</PanelBody>
 
-				{enableOverlay && (
-					<PanelColorSettings
+			</InspectorControls>
+
+			{enableOverlay && (
+				<InspectorControls group="color">
+					<ColorGradientSettingsDropdown
+						panelId={clientId}
 						title={__('Overlay Color', 'designsetgo')}
-						colorSettings={[
+						settings={[
 							{
-								value: overlayColor,
-								onChange: (value) =>
-									setAttributes({
-										overlayColor: value || '#000000',
-									}),
 								label: __('Overlay Color', 'designsetgo'),
+								colorValue: overlayColor,
+								onColorChange: (color) =>
+									setAttributes({
+										overlayColor: color || '#000000',
+									}),
+								clearable: true,
 							},
 						]}
-						__experimentalHasMultipleOrigins
-						__experimentalIsRenderedInSidebar
+						{...colorGradientSettings}
 					/>
-				)}
-			</InspectorControls>
+				</InspectorControls>
+			)}
 
 			<div {...blockProps}>
 				{enableOverlay && (

@@ -11,6 +11,10 @@ import {
 	useBlockProps,
 	InspectorControls,
 	RichText,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
 import { ButtonSettingsPanel } from './components/inspector/ButtonSettingsPanel';
@@ -22,9 +26,15 @@ import { ButtonSettingsPanel } from './components/inspector/ButtonSettingsPanel'
  * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
  * @param {Object}   props.context       - Block context from parent
+ * @param {string}   props.clientId      - Block client ID
  * @return {JSX.Element} Icon Button edit component
  */
-export default function IconButtonEdit({ attributes, setAttributes, context }) {
+export default function IconButtonEdit({
+	attributes,
+	setAttributes,
+	context,
+	clientId,
+}) {
 	const {
 		text,
 		url,
@@ -35,11 +45,30 @@ export default function IconButtonEdit({ attributes, setAttributes, context }) {
 		iconSize,
 		iconGap,
 		width,
+		hoverAnimation,
+		hoverBackgroundColor,
+		hoverTextColor,
+		style,
+		backgroundColor,
+		textColor,
 	} = attributes;
 
 	// Get hover button background from parent container context
 	const parentHoverButtonBg =
 		context['designsetgo/hoverButtonBackgroundColor'];
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+	// Extract WordPress color values
+	// Custom colors come from style.color.background (hex/rgb)
+	// Preset colors come from backgroundColor/textColor (slugs that need conversion)
+	const bgColor =
+		style?.color?.background ||
+		(backgroundColor && `var(--wp--preset--color--${backgroundColor})`);
+	const txtColor =
+		style?.color?.text ||
+		(textColor && `var(--wp--preset--color--${textColor})`);
 
 	// Calculate button styles
 	const buttonStyles = {
@@ -49,6 +78,14 @@ export default function IconButtonEdit({ attributes, setAttributes, context }) {
 		gap: iconPosition !== 'none' && icon ? iconGap : 0,
 		width: width === 'auto' ? 'auto' : width,
 		flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
+		...(bgColor && { backgroundColor: bgColor }),
+		...(txtColor && { color: txtColor }),
+		...(hoverBackgroundColor && {
+			'--dsg-button-hover-bg': hoverBackgroundColor,
+		}),
+		...(hoverTextColor && {
+			'--dsg-button-hover-color': hoverTextColor,
+		}),
 	};
 
 	// Calculate icon wrapper styles
@@ -61,8 +98,14 @@ export default function IconButtonEdit({ attributes, setAttributes, context }) {
 		flexShrink: 0,
 	};
 
+	// Build animation class
+	const animationClass =
+		hoverAnimation && hoverAnimation !== 'none'
+			? ` dsg-icon-button--${hoverAnimation}`
+			: '';
+
 	const blockProps = useBlockProps({
-		className: 'dsg-icon-button',
+		className: `dsg-icon-button${animationClass}`,
 		style: {
 			display: width === '100%' ? 'block' : 'inline-block',
 			...(parentHoverButtonBg && {
@@ -73,6 +116,32 @@ export default function IconButtonEdit({ attributes, setAttributes, context }) {
 
 	return (
 		<>
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
+					title={__('Hover Colors', 'designsetgo')}
+					settings={[
+						{
+							label: __('Hover Background', 'designsetgo'),
+							colorValue: hoverBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({
+									hoverBackgroundColor: color || '',
+								}),
+							clearable: true,
+						},
+						{
+							label: __('Hover Text', 'designsetgo'),
+							colorValue: hoverTextColor,
+							onColorChange: (color) =>
+								setAttributes({ hoverTextColor: color || '' }),
+							clearable: true,
+						},
+					]}
+					{...colorGradientSettings}
+				/>
+			</InspectorControls>
+
 			<InspectorControls>
 				<ButtonSettingsPanel
 					url={url}
@@ -83,12 +152,16 @@ export default function IconButtonEdit({ attributes, setAttributes, context }) {
 					iconSize={iconSize}
 					iconGap={iconGap}
 					width={width}
+					hoverAnimation={hoverAnimation}
 					setAttributes={setAttributes}
 				/>
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="dsg-icon-button__wrapper" style={buttonStyles}>
+				<div
+					className="dsg-icon-button__wrapper"
+					style={buttonStyles}
+				>
 					{iconPosition !== 'none' && icon && (
 						<span
 							className="dsg-icon-button__icon"

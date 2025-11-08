@@ -21,9 +21,14 @@
 		font-size: inherit;
 		line-height: 1.5;
 
-		// Default colors (can be overridden by block color controls)
-		background-color: var(--wp--preset--color--primary, #2563eb);
-		color: var(--wp--preset--color--base, #fff);
+		// Default colors (applied via inline styles from edit.js/save.js)
+		// Only set defaults if no colors are specified
+		&:not([style*="background"]) {
+			background-color: var(--wp--preset--color--primary, #2563eb);
+		}
+		&:not([style*="color"]) {
+			color: var(--wp--preset--color--base, #fff);
+		}
 
 		&:hover {
 			opacity: 0.9;
@@ -66,29 +71,6 @@
 		flex: 1 0 auto;
 		white-space: nowrap;
 	}
-
-	// Ensure proper color inheritance from WordPress color controls
-	// Use background-color instead of background shorthand to avoid conflicts with hover
-	&[style*="background-color"]:not([style*="background-image"]) .dsg-icon-button__wrapper {
-		background-color: inherit !important;
-	}
-
-	// For background images, inherit full background
-	&[style*="background-image"] .dsg-icon-button__wrapper {
-		background: inherit !important;
-	}
-
-	// Transfer inline text color to wrapper
-	// Note: We check for " color:" or ";color:" to avoid matching "background-color"
-	&[style*=" color:"] .dsg-icon-button__wrapper,
-	&[style*=";color:"] .dsg-icon-button__wrapper {
-		color: inherit !important;
-	}
-
-	// Handle gradient backgrounds
-	&.has-background[style*="background"] .dsg-icon-button__wrapper {
-		background: inherit !important;
-	}
 }
 
 // CRITICAL: Must duplicate from icons pattern for container parent hover
@@ -102,4 +84,278 @@
 .dsg-stack[style*="--dsg-parent-hover-button-bg"]:hover .dsg-stack__inner > .dsg-icon-button .dsg-icon-button__wrapper {
 	background-color: var(--dsg-parent-hover-button-bg) !important;
 	transition: background-color 0.3s ease;
+}
+
+// ============================================================================
+// HOVER COLORS
+// ============================================================================
+// Apply custom hover colors set via CSS variables
+// These override default hover styles when specified
+
+.dsg-icon-button__wrapper[style*="--dsg-button-hover-bg"]:hover {
+	background-color: var(--dsg-button-hover-bg) !important;
+	opacity: 1; // Override default opacity change
+}
+
+.dsg-icon-button__wrapper[style*="--dsg-button-hover-color"]:hover {
+	color: var(--dsg-button-hover-color) !important;
+}
+
+// ============================================================================
+// HOVER ANIMATIONS
+// ============================================================================
+// Custom hover animations that override the default hover state
+// These use ::before or ::after pseudo-elements for advanced effects
+
+// Fill Diagonal - Diagonal sweep fill effect
+.dsg-icon-button.dsg-icon-button--fill-diagonal .dsg-icon-button__wrapper {
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.15);
+		transition: left 0.4s ease;
+		z-index: 0;
+		transform: skewX(-20deg);
+		transform-origin: top left;
+	}
+
+	&:hover::before {
+		left: 100%;
+	}
+
+	// Ensure content stays above pseudo-element
+	.dsg-icon-button__icon,
+	.dsg-icon-button__text {
+		position: relative;
+		z-index: 1;
+	}
+
+	// Override default hover effects
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+// Zoom In - Scale up on hover (applies to entire block including borders)
+.dsg-icon-button.dsg-icon-button--zoom-in {
+	transition: transform 0.3s ease;
+
+	&:hover {
+		transform: scale(1.05);
+	}
+
+	// Prevent default button hover effects
+	.dsg-icon-button__wrapper:hover {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+// Slide Left - Background slides in from right
+.dsg-icon-button.dsg-icon-button--slide-left .dsg-icon-button__wrapper {
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: -100%;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.15);
+		transition: right 0.3s ease;
+		z-index: 0;
+	}
+
+	&:hover::before {
+		right: 0;
+	}
+
+	.dsg-icon-button__icon,
+	.dsg-icon-button__text {
+		position: relative;
+		z-index: 1;
+	}
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+// Slide Right - Background slides in from left
+.dsg-icon-button.dsg-icon-button--slide-right .dsg-icon-button__wrapper {
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.15);
+		transition: left 0.3s ease;
+		z-index: 0;
+	}
+
+	&:hover::before {
+		left: 0;
+	}
+
+	.dsg-icon-button__icon,
+	.dsg-icon-button__text {
+		position: relative;
+		z-index: 1;
+	}
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+// Slide Down - Background slides down from top
+.dsg-icon-button.dsg-icon-button--slide-down .dsg-icon-button__wrapper {
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: -100%;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.15);
+		transition: top 0.3s ease;
+		z-index: 0;
+	}
+
+	&:hover::before {
+		top: 0;
+	}
+
+	.dsg-icon-button__icon,
+	.dsg-icon-button__text {
+		position: relative;
+		z-index: 1;
+	}
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+// Slide Up - Background slides up from bottom
+.dsg-icon-button.dsg-icon-button--slide-up .dsg-icon-button__wrapper {
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		bottom: -100%;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.15);
+		transition: bottom 0.3s ease;
+		z-index: 0;
+	}
+
+	&:hover::before {
+		bottom: 0;
+	}
+
+	.dsg-icon-button__icon,
+	.dsg-icon-button__text {
+		position: relative;
+		z-index: 1;
+	}
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+// Border Pulse - Animated border effect (applies to outer block wrapper)
+// Animates the border set via WordPress border controls
+.dsg-icon-button.dsg-icon-button--border-pulse {
+	transition: border-width 0.3s ease;
+
+	&:hover {
+		animation: dsg-border-pulse 1s ease infinite;
+	}
+
+	// Prevent default button hover effects on inner wrapper
+	.dsg-icon-button__wrapper:hover {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes dsg-border-pulse {
+	0%,
+	100% {
+		border-width: var(--wp--style--border-width, 2px);
+	}
+	50% {
+		border-width: calc(var(--wp--style--border-width, 2px) * 2);
+	}
+}
+
+// Border Glow - Glowing border effect (applies to button wrapper)
+.dsg-icon-button.dsg-icon-button--border-glow .dsg-icon-button__wrapper {
+	position: relative;
+	transition: all 0.3s ease;
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+		box-shadow: 0 0 15px currentColor, 0 0 30px currentColor, 0 0 45px currentColor;
+	}
+}
+
+// Lift - Elevate with shadow (applies to entire block including borders)
+.dsg-icon-button.dsg-icon-button--lift {
+	transition: all 0.3s ease;
+
+	&:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.15);
+	}
+
+	// Prevent default button hover effects
+	.dsg-icon-button__wrapper:hover {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+// Shrink - Subtle scale down (applies to entire block including borders)
+.dsg-icon-button.dsg-icon-button--shrink {
+	transition: transform 0.2s ease;
+
+	&:hover {
+		transform: scale(0.95);
+	}
+
+	// Prevent default button hover effects
+	.dsg-icon-button__wrapper:hover {
+		opacity: 1;
+		transform: none;
+	}
 }

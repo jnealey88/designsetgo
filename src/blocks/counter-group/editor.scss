@@ -5,9 +5,24 @@
  */
 
 .dsg-counter-group {
-	width: 100%;
 	box-sizing: border-box;
+	max-width: 100%; // Prevent overflow in containers and on small screens
 	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+
+	// Wide alignment - use negative margins to extend to wide width
+	&.alignwide {
+		width: var(--wp--style--global--wide-size);
+		max-width: 100%;
+	}
+
+	// Full alignment - use negative margins to extend edge-to-edge
+	&.alignfull {
+		width: 100%;
+		max-width: 100%;
+		margin-right: calc(var(--wp--style--root--padding-right) * -1);
+		margin-left: calc(var(--wp--style--root--padding-left) * -1);
+	}
+
 	// Default text color that child Counter blocks will inherit
 	// WordPress applies inline style when user chooses a color, which takes precedence
 	color: var(--wp--preset--color--contrast);
