@@ -1,0 +1,248 @@
+/**
+ * Editor-specific styles for Countdown Timer block
+ * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+ */
+
+// Fix DateTimePicker horizontal alignment and overflow issues
+.components-datetime {
+
+	.components-datetime__time {
+		display: flex;
+		align-items: flex-end; // Align to bottom for consistent baseline
+		flex-wrap: wrap;
+		gap: 8px;
+		max-width: 100%;
+
+		.components-datetime__time-wrapper {
+			display: flex;
+			align-items: flex-end; // Align inputs to bottom
+			gap: 4px;
+			flex-wrap: wrap;
+		}
+
+		.components-datetime__time-field-hours,
+		.components-datetime__time-field-minutes,
+		.components-datetime__time-field-am-pm {
+			max-width: 60px;
+
+			fieldset {
+				margin-bottom: 0 !important; // Remove bottom margin
+			}
+
+			// Override WordPress core margin-bottom on BaseControls
+			.components-base-control {
+				margin-bottom: 0 !important;
+			}
+		}
+
+		.components-datetime__time-field-am-pm {
+			display: inline-flex;
+			align-items: flex-end;
+
+			// Override WordPress core margin-bottom on BaseControls
+			.components-base-control {
+				margin-bottom: 0 !important;
+			}
+		}
+
+		.components-datetime__timezone {
+			flex-shrink: 0;
+			font-size: 12px;
+			align-self: flex-end; // Align timezone to bottom
+			padding-bottom: 2px; // Small adjustment for baseline
+			margin-bottom: 0 !important;
+		}
+
+		fieldset {
+			margin-bottom: 0;
+		}
+
+		input {
+			max-width: 100%;
+		}
+
+		// Catch-all to override WordPress core margin-bottom
+		.components-base-control {
+			margin-bottom: 0 !important;
+		}
+	}
+
+	.components-datetime__date {
+
+		.components-datetime__date-wrapper {
+			display: flex;
+			align-items: flex-end; // Align date fields to bottom
+			gap: 8px;
+			flex-wrap: wrap;
+
+			> * {
+				margin-bottom: 0 !important;
+			}
+
+			fieldset {
+				margin-bottom: 0 !important;
+			}
+
+			// Override WordPress core margin-bottom on BaseControls
+			.components-base-control {
+				margin-bottom: 0 !important;
+			}
+		}
+	}
+
+	// Global override for all BaseControls within DateTimePicker
+	.components-base-control,
+	.components-base-control__field {
+		margin-bottom: 0 !important;
+	}
+}
+
+.dsg-countdown-timer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-width: 100%; // Prevent overflow in containers and on small screens
+
+	// Wide alignment - use negative margins to extend to wide width
+	&.alignwide {
+		width: var(--wp--style--global--wide-size);
+		max-width: 100%;
+	}
+
+	// Full alignment - use negative margins to extend edge-to-edge
+	&.alignfull {
+		width: 100%;
+		max-width: 100%;
+		margin-right: calc(var(--wp--style--root--padding-right) * -1);
+		margin-left: calc(var(--wp--style--root--padding-left) * -1);
+	}
+
+	&__units {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__unit {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		min-width: 80px;
+		box-sizing: border-box;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+		&:hover {
+			transform: translateY(-2px);
+		}
+	}
+
+	&__number {
+		font-weight: 700;
+		line-height: 1.2;
+		margin-bottom: 0.25rem;
+		font-variant-numeric: tabular-nums;
+		letter-spacing: -0.02em;
+		// Use em units relative to parent fontSize (from Block Supports)
+		// Default: 3em (3x the block's fontSize)
+		font-size: 3em;
+	}
+
+	&__label {
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		line-height: 1;
+		opacity: 0.8;
+		// Use em units relative to parent fontSize (from Block Supports)
+		// Default: 1em (same as block's fontSize)
+		font-size: 1em;
+	}
+
+	&__completion-message {
+		text-align: center;
+		font-size: 1.5rem;
+		font-weight: 600;
+		padding: 2rem;
+	}
+
+	// Boxed Layout (Default)
+	&--boxed {
+
+		.dsg-countdown-timer__units {
+			gap: inherit;
+		}
+
+		.dsg-countdown-timer__unit {
+			min-width: 100px;
+			padding: 1.5rem;
+		}
+	}
+
+	// Inline Layout
+	&--inline {
+
+		.dsg-countdown-timer__units {
+			gap: 0.5rem;
+			flex-wrap: nowrap;
+		}
+
+		.dsg-countdown-timer__unit {
+			flex-direction: row;
+			min-width: auto;
+			padding: 0.5rem 1rem;
+			gap: 0.5rem;
+			border-width: 1px;
+		}
+
+		.dsg-countdown-timer__number {
+			margin-bottom: 0;
+			font-size: 1.5em;
+		}
+
+		.dsg-countdown-timer__label {
+			font-size: 0.875em;
+			opacity: 0.7;
+		}
+
+		.dsg-countdown-timer__unit:not(:last-child)::after {
+			content: ':';
+			margin-left: 0.5rem;
+			opacity: 0.5;
+		}
+	}
+
+	// Compact Layout
+	&--compact {
+
+		.dsg-countdown-timer__units {
+			gap: 0.25rem;
+		}
+
+		.dsg-countdown-timer__unit {
+			min-width: 60px;
+			padding: 0.75rem;
+			border-width: 1px;
+		}
+
+		.dsg-countdown-timer__number {
+			font-size: 1.75em;
+			margin-bottom: 0.125rem;
+		}
+
+		.dsg-countdown-timer__label {
+			font-size: 0.75em;
+		}
+	}
+
+	// Editor-specific: Add visual feedback for completion state
+	&__completion {
+		padding: 2rem;
+		text-align: center;
+		border: 2px dashed #ccc;
+		border-radius: 8px;
+		background: #f9f9f9;
+	}
+}

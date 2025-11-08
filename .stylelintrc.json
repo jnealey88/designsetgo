@@ -3,7 +3,7 @@
 	"rules": {
 		"no-descending-specificity": null,
 		"selector-class-pattern": [
-			"^(dsg-[a-z0-9-]+|wp-[a-z0-9_-]+|block-editor-[a-z0-9_-]+|components-[a-z0-9_-]+|color-block-[a-z0-9_-]+|is-[a-z0-9-]+|has-[a-z0-9-]+|editor-styles-[a-z0-9-]+)$",
+			"^(dsg-[a-z0-9_-]+|wp-[a-z0-9_-]+|block-editor-[a-z0-9_-]+|components-[a-z0-9_-]+|color-block-[a-z0-9_-]+|is-[a-z0-9-]+|has-[a-z0-9-]+|editor-styles-[a-z0-9-]+|align[a-z]+)$",
 			{
 				"resolveNestedSelectors": true
 			}
