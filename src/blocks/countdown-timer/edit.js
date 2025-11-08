@@ -49,8 +49,7 @@ export default function Edit(props) {
 		numberColor,
 		labelColor,
 		unitBackgroundColor,
-		unitBorderColor,
-		unitBorderWidth,
+		unitBorder,
 		unitBorderRadius,
 		unitGap,
 		unitPadding,
@@ -98,9 +97,10 @@ export default function Edit(props) {
 	// Build unit styles - use accent-2 if available, otherwise currentColor
 	const unitStyle = {
 		backgroundColor: unitBackgroundColor || 'transparent',
-		borderColor: unitBorderColor || defaultAccentColor || 'currentColor',
-		borderWidth: `${unitBorderWidth}px`,
-		borderStyle: 'solid',
+		borderColor:
+			unitBorder?.color || defaultAccentColor || 'currentColor',
+		borderWidth: unitBorder?.width || '2px',
+		borderStyle: unitBorder?.style || 'solid',
 		borderRadius: `${unitBorderRadius}px`,
 		padding: unitPadding || '1.5rem',
 	};
@@ -159,15 +159,6 @@ export default function Edit(props) {
 								onColorChange: (color) =>
 									setAttributes({
 										unitBackgroundColor: color || '',
-									}),
-								clearable: true,
-							},
-							{
-								label: __('Unit Border Color', 'designsetgo'),
-								colorValue: unitBorderColor,
-								onColorChange: (color) =>
-									setAttributes({
-										unitBorderColor: color || '',
 									}),
 								clearable: true,
 							},
@@ -246,18 +237,6 @@ export default function Edit(props) {
 										}),
 									clearable: true,
 								},
-								{
-									label: __(
-										'Unit Border Color',
-										'designsetgo'
-									),
-									colorValue: unitBorderColor,
-									onColorChange: (color) =>
-										setAttributes({
-											unitBorderColor: color || '',
-										}),
-									clearable: true,
-								},
 							]}
 							{...colorGradientSettings}
 						/>
@@ -326,15 +305,6 @@ export default function Edit(props) {
 									}),
 								clearable: true,
 							},
-							{
-								label: __('Unit Border Color', 'designsetgo'),
-								colorValue: unitBorderColor,
-								onColorChange: (color) =>
-									setAttributes({
-										unitBorderColor: color || '',
-									}),
-								clearable: true,
-							},
 						]}
 						{...colorGradientSettings}
 					/>
@@ -397,13 +367,6 @@ export default function Edit(props) {
 								setAttributes({
 									unitBackgroundColor: color || '',
 								}),
-							clearable: true,
-						},
-						{
-							label: __('Border Color', 'designsetgo'),
-							colorValue: unitBorderColor,
-							onColorChange: (color) =>
-								setAttributes({ unitBorderColor: color || '' }),
 							clearable: true,
 						},
 					]}

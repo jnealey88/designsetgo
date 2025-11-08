@@ -24,8 +24,7 @@ export default function save({ attributes }) {
 		numberColor,
 		labelColor,
 		unitBackgroundColor,
-		unitBorderColor,
-		unitBorderWidth,
+		unitBorder,
 		unitBorderRadius,
 		unitGap,
 		unitPadding,
@@ -35,10 +34,10 @@ export default function save({ attributes }) {
 	const unitStyle = {
 		backgroundColor: unitBackgroundColor || 'transparent',
 		borderColor:
-			unitBorderColor ||
+			unitBorder?.color ||
 			'var(--wp--preset--color--accent-2, currentColor)',
-		borderWidth: `${unitBorderWidth}px`,
-		borderStyle: 'solid',
+		borderWidth: unitBorder?.width || '2px',
+		borderStyle: unitBorder?.style || 'solid',
 		borderRadius: `${unitBorderRadius}px`,
 		padding: unitPadding || '1.5rem',
 	};

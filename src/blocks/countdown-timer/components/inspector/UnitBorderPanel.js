@@ -4,6 +4,8 @@
 import { __ } from '@wordpress/i18n';
 import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalBorderControl as BorderControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToolsPanel as ToolsPanel,
@@ -17,7 +19,7 @@ import { InspectorControls } from '@wordpress/block-editor';
  *
  * Controls for individual countdown unit borders (Days, Hours, Minutes, Seconds).
  * These appear in the Styles tab → Border section alongside container border controls.
- * Uses WordPress core-style border controls for consistency.
+ * Uses WordPress core BorderControl component for color, style, and width.
  *
  * @param {Object}   props               - Component properties
  * @param {Object}   props.attributes    - Block attributes
@@ -25,7 +27,14 @@ import { InspectorControls } from '@wordpress/block-editor';
  * @return {JSX.Element} Border controls component
  */
 export default function UnitBorderPanel({ attributes, setAttributes }) {
-	const { unitBorderWidth, unitBorderRadius } = attributes;
+	const { unitBorder, unitBorderRadius } = attributes;
+
+	// Default border values
+	const defaultBorder = {
+		color: undefined,
+		style: 'solid',
+		width: '2px',
+	};
 
 	return (
 		<InspectorControls group="border">
@@ -34,7 +43,7 @@ export default function UnitBorderPanel({ attributes, setAttributes }) {
 					label={__('Unit Borders', 'designsetgo')}
 					resetAll={() => {
 						setAttributes({
-							unitBorderWidth: 2,
+							unitBorder: defaultBorder,
 							unitBorderRadius: 12,
 						});
 					}}
@@ -54,28 +63,27 @@ export default function UnitBorderPanel({ attributes, setAttributes }) {
 						)}
 					</p>
 					<ToolsPanelItem
-						hasValue={() => unitBorderWidth !== 2}
-						label={__('Unit Width', 'designsetgo')}
-						onDeselect={() => setAttributes({ unitBorderWidth: 2 })}
+						hasValue={() =>
+							unitBorder &&
+							(unitBorder.color !== undefined ||
+								unitBorder.style !== 'solid' ||
+								unitBorder.width !== '2px')
+						}
+						label={__('Unit Border', 'designsetgo')}
+						onDeselect={() =>
+							setAttributes({ unitBorder: defaultBorder })
+						}
 						isShownByDefault={true}
 						panelId="unit-borders"
 					>
-						<UnitControl
-							label={__('Unit Width', 'designsetgo')}
-							value={`${unitBorderWidth}px`}
-							onChange={(value) => {
-								const numValue = parseInt(value);
-								setAttributes({
-									unitBorderWidth: isNaN(numValue)
-										? 2
-										: numValue,
-								});
-							}}
-							units={[{ value: 'px', label: 'px' }]}
-							min={0}
-							max={10}
+						<BorderControl
+							label={__('Unit Border', 'designsetgo')}
+							value={unitBorder || defaultBorder}
+							onChange={(value) =>
+								setAttributes({ unitBorder: value })
+							}
+							withSlider={true}
 							__next40pxDefaultSize
-							__nextHasNoMarginBottom
 						/>
 					</ToolsPanelItem>
 					<ToolsPanelItem

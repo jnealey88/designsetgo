@@ -100,13 +100,13 @@
 			"type": "string",
 			"default": ""
 		},
-		"unitBorderColor": {
-			"type": "string",
-			"default": ""
-		},
-		"unitBorderWidth": {
-			"type": "number",
-			"default": 2
+		"unitBorder": {
+			"type": "object",
+			"default": {
+				"color": "",
+				"style": "solid",
+				"width": "2px"
+			}
 		},
 		"unitBorderRadius": {
 			"type": "number",
