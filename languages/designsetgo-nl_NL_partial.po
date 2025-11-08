@@ -2085,7 +2085,7 @@ msgid ""
 "{all_fields}\n"
 "\n"
 "Submitted from: {page_url}"
-msgstr "Nieuwe formulier inzending:\n\n{all_fields}\n\nVerzonden van: {page_url}"
+msgstr ""
 
 #: includes/blocks/class-form-submissions.php:38
 msgctxt "post type general name"
@@ -3603,7 +3603,7 @@ msgstr "Hover Tekstkleur"
 #: src/blocks/grid/edit.js:324
 #: src/blocks/stack/edit.js:151
 msgid "Hover Icon Background Color"
-msgstr "Hover Icoon Achtergrondkleur"
+msgstr ""
 
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
@@ -3612,34 +3612,34 @@ msgstr "Hover Icoon Achtergrondkleur"
 #: src/blocks/grid/edit.js:341
 #: src/blocks/stack/edit.js:168
 msgid "Hover Button Background Color"
-msgstr "Hover Knop Achtergrondkleur"
+msgstr ""
 
 #: build/blocks/flip-card-back/index.js:1
 #: src/blocks/flip-card-back/edit.js:17
 msgid "Back of Card"
-msgstr "Achterkant van Kaart"
+msgstr ""
 
 #: build/blocks/flip-card-back/index.js:1
 #: build/blocks/flip-card-front/index.js:1
 #: src/blocks/flip-card-back/edit.js:18
 #: src/blocks/flip-card-front/edit.js:18
 msgid "Add any blocks you want here..."
-msgstr "Voeg hier elk gewenst blok toe..."
+msgstr ""
 
 #: build/blocks/flip-card-front/index.js:1
 #: src/blocks/flip-card-front/edit.js:17
 msgid "Front of Card"
-msgstr "Voorkant van Kaart"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:149
 msgid "Flip Card Settings"
-msgstr "Flip Card Instellingen"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:153
 msgid "Flip Trigger"
-msgstr "Flip Trigger"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:157
@@ -3654,22 +3654,22 @@ msgstr "Klik"
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:168
 msgid "Card flips when hovering over it"
-msgstr "Kaart flipt bij hoveren"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:169
 msgid "Card flips when clicking on it"
-msgstr "Kaart flipt bij klikken"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:176
 msgid "Flip Effect"
-msgstr "Flip Effect"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:180
 msgid "Flip (3D Rotation)"
-msgstr "Flippen (3D Rotatie)"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: build/blocks/reveal/index.js:1
@@ -3690,7 +3690,7 @@ msgstr "Zoomen"
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:197
 msgid "Choose the transition animation style"
-msgstr "Kies de overgangsanimatie stijl"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:204
@@ -3716,42 +3716,42 @@ msgstr "Verticaal"
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:219
 msgid "Card flips left to right"
-msgstr "Kaart flipt van links naar rechts"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:220
 msgid "Card flips top to bottom"
-msgstr "Kaart flipt van boven naar beneden"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:228
 msgid "Flip Duration"
-msgstr "Flip Duur"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:238
 msgid "Speed of the flip animation"
-msgstr "Snelheid van de flip animatie"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:245
 msgid "How to Use"
-msgstr "Hoe Te Gebruiken"
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:249
 msgid "This flip card has two sections: Front and Back. Click on each section to edit its content."
-msgstr "Deze flip card heeft twee secties: Voorkant en Achterkant. Klik op elke sectie om de content te bewerken."
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:255
 msgid "You can add any blocks you want to the front and back, including images, headings, buttons, and more."
-msgstr "Je kunt elk gewenst blok toevoegen aan de voor- en achterkant, inclusief afbeeldingen, koppen, knoppen en meer."
+msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:261
 msgid "Style each section using the block toolbar or the Styles panel."
-msgstr "Style elke sectie met de blok toolbar of het Stijlen paneel."
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:108
@@ -3761,192 +3761,192 @@ msgstr "Naam"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:116
 msgid "Email"
-msgstr "E-mail"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:124
 msgid "Message"
-msgstr "Bericht"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:136
 msgid "Form Settings"
-msgstr "Formulier Instellingen"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:138
 msgid "AJAX Submit"
-msgstr "AJAX Verzenden"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:141
 msgid "Submit form without page reload"
-msgstr "Formulier verzenden zonder pagina te herladen"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:149
 msgid "Submit Button Text"
-msgstr "Verzendknop Tekst"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:157
 msgid "Button Alignment"
-msgstr "Knop Uitlijning"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:170
 msgid "Field Spacing"
-msgstr "Veld Afstand"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:180
 msgid "Space between form fields"
-msgstr "Ruimte tussen formuliervelden"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:186
 msgid "Input Height"
-msgstr "Invoer Hoogte"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:196
 msgid "Minimum height for input fields"
-msgstr "Minimale hoogte voor invoervelden"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:202
 msgid "Input Padding"
-msgstr "Invoer Padding"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:212
 msgid "Padding inside input fields"
-msgstr "Padding binnen invoervelden"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:218
 msgid "Messages"
-msgstr "Berichten"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:220
 msgid "Success Message"
-msgstr "Succesbericht"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:223
 msgid "Message shown after successful submission"
-msgstr "Bericht getoond na succesvolle inzending"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:232
 msgid "Error Message"
-msgstr "Foutmelding"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:235
 msgid "Message shown if submission fails"
-msgstr "Bericht getoond bij mislukte inzending"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:244
 msgid "Spam Protection"
-msgstr "Spam Bescherming"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:249
 msgid "Invisible field to catch spam bots"
-msgstr "Onzichtbaar veld om spam bots te vangen"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:260
 msgid "Limit submissions per IP address"
-msgstr "Beperk inzendingen per IP-adres"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:270
 msgid "Max Submissions"
-msgstr "Max Inzendingen"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:275
 msgid "Maximum submissions allowed per time window"
-msgstr "Maximum aantal toegestane inzendingen per tijdsvenster"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:284
 msgid "Time Window (seconds)"
-msgstr "Tijdsvenster (seconden)"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:290
 msgid "Time period for rate limiting"
-msgstr "Tijdsperiode voor frequentiebeperking"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:301
 msgid "Email Notifications"
-msgstr "E-mail Notificaties"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:303
 msgid "Enable Email Notifications"
-msgstr "E-mail Notificaties Inschakelen"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:306
 msgid "Send email when form is submitted"
-msgstr "Verstuur e-mail wanneer formulier wordt verzonden"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:316
 msgid "Recipient Email"
-msgstr "Ontvanger E-mail"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:321
 msgid "Email address to receive notifications"
-msgstr "E-mailadres voor het ontvangen van notificaties"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:330
 msgid "Email Subject"
-msgstr "E-mail Onderwerp"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:333
 msgid "Subject line for notification emails. Use {field_name} for dynamic values."
-msgstr "Onderwerpregel voor notificatie e-mails. Gebruik {field_name} voor dynamische waarden."
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:342
 msgid "From Name"
-msgstr "Van Naam"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:345
 msgid "Site Name"
-msgstr "Sitenaam"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:346
 msgid "Name shown as email sender (leave empty for site name)"
-msgstr "Naam getoond als e-mail verzender (laat leeg voor sitenaam)"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:355
 msgid "From Email"
-msgstr "Van E-mail"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:360
 msgid "Email address shown as sender (leave empty for admin email)"
-msgstr "E-mailadres getoond als verzender (laat leeg voor admin e-mail)"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:369
 msgid "Reply-To Field Name"
-msgstr "Antwoord-Aan Veldnaam"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:373
@@ -3956,22 +3956,22 @@ msgstr ""
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:382
 msgid "Email Body Template"
-msgstr "E-mail Body Template"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:389
 msgid "Email content template. Use {field_name} for specific fields or {all_fields} for all submitted data."
-msgstr "E-mail inhoud template. Gebruik {field_name} voor specifieke velden of {all_fields} voor alle verzonden data."
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:401
 msgid "Form Colors"
-msgstr "Formulier Kleuren"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:406
 msgid "Label Color"
-msgstr "Label Kleur"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:411
@@ -3981,12 +3981,12 @@ msgstr "Randkleur"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:416
 msgid "Field Background"
-msgstr "Veld Achtergrond"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:424
 msgid "Button Colors"
-msgstr "Knop Kleuren"
+msgstr ""
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:429
@@ -4003,7 +4003,7 @@ msgstr "Achtergrondkleur"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:463
 msgid "Form messages will appear here"
-msgstr "Formulier berichten verschijnen hier"
+msgstr ""
 
 #: build/blocks/form-checkbox-field/index.js:1
 #: build/blocks/form-date-field/index.js:1
@@ -4029,7 +4029,7 @@ msgstr "Formulier berichten verschijnen hier"
 #: src/blocks/form-time-field/edit.js:45
 #: src/blocks/form-url-field/edit.js:42
 msgid "Field Settings"
-msgstr "Veld Instellingen"
+msgstr ""
 
 #: build/blocks/form-checkbox-field/index.js:1
 #: build/blocks/form-date-field/index.js:1
@@ -4223,7 +4223,7 @@ msgstr "Placeholder"
 #: src/blocks/form-text-field/edit.js:129
 #: src/blocks/form-textarea/edit.js:95
 msgid "Required Field"
-msgstr "Verplicht Veld"
+msgstr ""
 
 #: build/blocks/form-hidden-field/index.js:1
 #: src/blocks/form-hidden-field/edit.js:49
@@ -4238,7 +4238,7 @@ msgstr ""
 #: build/blocks/form-hidden-field/index.js:1
 #: src/blocks/form-hidden-field/edit.js:58
 msgid "(empty)"
-msgstr "(leeg)"
+msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:75
@@ -4308,7 +4308,7 @@ msgstr ""
 #: src/blocks/form-phone-field/edit.js:105
 #: src/blocks/form-text-field/edit.js:148
 msgid "Field Width"
-msgstr "Veldbreedte"
+msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
@@ -4367,7 +4367,7 @@ msgstr ""
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:124
 msgid "Format"
-msgstr "Formaat"
+msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:127
@@ -4422,7 +4422,7 @@ msgstr ""
 #: build/blocks/form-select-field/index.js:1
 #: src/blocks/form-select-field/edit.js:100
 msgid "Options"
-msgstr "Opties"
+msgstr ""
 
 #: build/blocks/form-select-field/index.js:1
 #: src/blocks/form-select-field/edit.js:125
@@ -4524,7 +4524,7 @@ msgstr ""
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:224
 msgid "Validation Message"
-msgstr "Validatiebericht"
+msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:227
@@ -4596,7 +4596,7 @@ msgstr "Grid Instellingen"
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:131
 msgid "Desktop Columns"
-msgstr "Desktop Kolommen"
+msgstr ""
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:157
@@ -4606,7 +4606,7 @@ msgstr ""
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:166
 msgid "Tablet Columns"
-msgstr "Tablet Kolommen"
+msgstr ""
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:184
@@ -4616,7 +4616,7 @@ msgstr ""
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:193
 msgid "Mobile Columns"
-msgstr "Mobiele Kolommen"
+msgstr ""
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:200
@@ -4721,7 +4721,7 @@ msgstr ""
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:106
 msgid "Arrows"
-msgstr "Pijlen"
+msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
@@ -4797,7 +4797,7 @@ msgstr "Openen in nieuw tabblad"
 #: src/blocks/icon-list-item/components/inspector/LinkSettingsPanel.js:63
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:95
 msgid "Link Rel"
-msgstr "Link Rel"
+msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:80
@@ -4822,7 +4822,7 @@ msgstr "Icoon Grootte"
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:132
 msgid "Icon Gap"
-msgstr "Icoon Ruimte"
+msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:142
@@ -4832,7 +4832,7 @@ msgstr ""
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:153
 msgid "Button Settings"
-msgstr "Knop Instellingen"
+msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/index.js:1
@@ -4852,17 +4852,17 @@ msgstr "Automatisch"
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:160
 msgid "Full Width"
-msgstr "Volle Breedte"
+msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:163
 msgid "50%"
-msgstr "50%"
+msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:164
 msgid "25%"
-msgstr "25%"
+msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:167
@@ -4887,7 +4887,7 @@ msgstr ""
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:46
 msgid "List Settings"
-msgstr "Lijst Instellingen"
+msgstr ""
 
 #: build/blocks/icon-list/index.js:1
 #: build/blocks/image-accordion/index.js:1
@@ -4998,7 +4998,7 @@ msgstr "Rotatie"
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/edit.js:141
 msgid "Link"
-msgstr "Link"
+msgstr ""
 
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
@@ -5055,7 +5055,7 @@ msgstr ""
 #: src/blocks/image-accordion/edit.js:125
 #: src/blocks/slider/edit.js:471
 msgid "Transition Duration"
-msgstr "Overgangsduur"
+msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:134
@@ -5168,7 +5168,7 @@ msgstr ""
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:128
 msgid "Appearance"
-msgstr "Uiterlijk"
+msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:132
@@ -5200,7 +5200,7 @@ msgstr ""
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:175
 msgid "Animated"
-msgstr "Geanimeerd"
+msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:182
@@ -5220,7 +5220,7 @@ msgstr "Label Tonen"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:216
 msgid "Label Text"
-msgstr "Label Tekst"
+msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:221
@@ -5235,22 +5235,22 @@ msgstr ""
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:241
 msgid "Label Position"
-msgstr "Label Positie"
+msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:245
 msgid "Above Bar"
-msgstr "Boven Balk"
+msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:249
 msgid "Inside Bar"
-msgstr "Binnen Balk"
+msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:253
 msgid "Below Bar"
-msgstr "Onder Balk"
+msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:272
@@ -5368,12 +5368,12 @@ msgstr ""
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:106
 msgid "Image Height"
-msgstr "Afbeelding Hoogte"
+msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:113
 msgid "Image Width"
-msgstr "Afbeelding Breedte"
+msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:128
@@ -5393,7 +5393,7 @@ msgstr ""
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:163
 msgid "Remove Row"
-msgstr "Rij Verwijderen"
+msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
 #: build/blocks/slide/index.js:1
@@ -5415,7 +5415,7 @@ msgstr ""
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:222
 msgid "Add Row"
-msgstr "Rij Toevoegen"
+msgstr ""
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:98
@@ -5445,12 +5445,12 @@ msgstr ""
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:189
 msgid "Background Size"
-msgstr "Achtergrond Grootte"
+msgstr ""
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:192
 msgid "Cover"
-msgstr "Bedekken"
+msgstr ""
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:193
@@ -5465,12 +5465,12 @@ msgstr ""
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:203
 msgid "Background Position"
-msgstr "Achtergrond Positie"
+msgstr ""
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:206
 msgid "Center Center"
-msgstr "Midden Midden"
+msgstr ""
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:207
@@ -5505,12 +5505,12 @@ msgstr ""
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:213
 msgid "Bottom Left"
-msgstr "Onder Links"
+msgstr ""
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:214
 msgid "Bottom Right"
-msgstr "Onder Rechts"
+msgstr ""
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:229
@@ -5575,7 +5575,7 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:233
 msgid "Number of slides visible at once"
-msgstr "Aantal slides tegelijk zichtbaar"
+msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:239
@@ -5605,7 +5605,7 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:272
 msgid "Aspect Ratio"
-msgstr "Beeldverhouding"
+msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:303
@@ -5639,7 +5639,7 @@ msgstr "Standaard"
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:35
 #: src/blocks/slider/edit.js:332
 msgid "Circle"
-msgstr "Cirkel"
+msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:36
@@ -5667,7 +5667,7 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:346
 msgid "Inside"
-msgstr "Binnen"
+msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:347
@@ -5692,7 +5692,7 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:376
 msgid "Arrow Size"
-msgstr "Pijl Grootte"
+msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:389
@@ -5717,7 +5717,7 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:418
 msgid "Lines"
-msgstr "Lijnen"
+msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:419
@@ -5743,7 +5743,7 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:457
 msgid "Transition Effect"
-msgstr "Overgangseffect"
+msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:465
@@ -5855,7 +5855,7 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:589
 msgid "Advanced Settings"
-msgstr "Geavanceerde Instellingen"
+msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: build/blocks/tabs/index.js:1
@@ -5882,7 +5882,7 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:613
 msgid "ARIA Label"
-msgstr "ARIA Label"
+msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:616
@@ -6221,12 +6221,12 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:184
 msgid "Tab Style"
-msgstr "Tabblad Stijl"
+msgstr ""
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:192
 msgid "Pills"
-msgstr "Pills"
+msgstr ""
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:196
@@ -6256,7 +6256,7 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:267
 msgid "Tab Background"
-msgstr "Tabblad Achtergrond"
+msgstr ""
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:273
@@ -6266,7 +6266,7 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:281
 msgid "Active Tab Background"
-msgstr "Actief Tabblad Achtergrond"
+msgstr ""
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:287
@@ -6276,7 +6276,7 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:293
 msgid "Mobile Settings"
-msgstr "Mobiele Instellingen"
+msgstr ""
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:305
@@ -6291,7 +6291,7 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:322
 msgid "Dropdown"
-msgstr "Dropdown"
+msgstr ""
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:326
@@ -6306,7 +6306,7 @@ msgstr "Geavanceerd"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:343
 msgid "Enable Deep Linking"
-msgstr "Deep Linking Inschakelen"
+msgstr ""
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:348
@@ -6356,7 +6356,7 @@ msgstr ""
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:151
 msgid "Easing"
-msgstr "Easing"
+msgstr ""
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:164
@@ -6543,7 +6543,7 @@ msgstr ""
 #: build/index.js:1
 #: src/extensions/grid-span/index.js:84
 msgid "Column Span"
-msgstr "Kolom Span"
+msgstr ""
 
 #: build/index.js:1
 #: src/extensions/grid-span/index.js:91
@@ -7062,7 +7062,7 @@ msgstr ""
 #: src/blocks/flip-card/block.json
 msgctxt "block keyword"
 msgid "3d"
-msgstr "3d"
+msgstr ""
 
 #: build/blocks/flip-card/block.json
 #: src/blocks/flip-card/block.json
@@ -7134,7 +7134,7 @@ msgstr ""
 #: src/blocks/form-checkbox-field/block.json
 msgctxt "block description"
 msgid "A single checkbox field for forms."
-msgstr "Een enkel checkbox veld voor formulieren."
+msgstr ""
 
 #: build/blocks/form-checkbox-field/block.json
 #: src/blocks/form-checkbox-field/block.json
@@ -7158,7 +7158,7 @@ msgstr ""
 #: src/blocks/form-date-field/block.json
 msgctxt "block description"
 msgid "A date picker input field for forms."
-msgstr "Een datumkiezer invoerveld voor formulieren."
+msgstr ""
 
 #: build/blocks/form-date-field/block.json
 #: src/blocks/form-date-field/block.json
@@ -7224,7 +7224,7 @@ msgstr ""
 #: src/blocks/form-file-upload/block.json
 msgctxt "block description"
 msgid "A file upload field for forms."
-msgstr "Een bestandsupload veld voor formulieren."
+msgstr ""
 
 #: build/blocks/form-file-upload/block.json
 #: src/blocks/form-file-upload/block.json
@@ -7248,7 +7248,7 @@ msgstr ""
 #: src/blocks/form-hidden-field/block.json
 msgctxt "block description"
 msgid "A hidden field for passing data in forms."
-msgstr "Een verborgen veld voor het doorgeven van data in formulieren."
+msgstr ""
 
 #: build/blocks/form-hidden-field/block.json
 #: build/blocks/reveal/block.json
@@ -7274,7 +7274,7 @@ msgstr ""
 #: src/blocks/form-number-field/block.json
 msgctxt "block description"
 msgid "A number input field for forms."
-msgstr "Een nummer invoerveld voor formulieren."
+msgstr ""
 
 #: build/blocks/form-number-field/block.json
 #: src/blocks/form-number-field/block.json
@@ -7292,7 +7292,7 @@ msgstr ""
 #: src/blocks/form-phone-field/block.json
 msgctxt "block description"
 msgid "A phone number input field for forms."
-msgstr "Een telefoonnummer invoerveld voor formulieren."
+msgstr ""
 
 #: build/blocks/form-phone-field/block.json
 #: src/blocks/form-phone-field/block.json
@@ -7322,7 +7322,7 @@ msgstr ""
 #: src/blocks/form-select-field/block.json
 msgctxt "block description"
 msgid "A dropdown select field for forms."
-msgstr "Een dropdown selectieveld voor formulieren."
+msgstr ""
 
 #: build/blocks/form-select-field/block.json
 #: src/blocks/form-select-field/block.json
@@ -7384,7 +7384,7 @@ msgstr ""
 #: src/blocks/form-time-field/block.json
 msgctxt "block description"
 msgid "A time picker input field for forms."
-msgstr "Een tijdkiezer invoerveld voor formulieren."
+msgstr ""
 
 #: build/blocks/form-time-field/block.json
 #: src/blocks/form-time-field/block.json
@@ -7414,7 +7414,7 @@ msgstr ""
 #: src/blocks/form-url-field/block.json
 msgctxt "block description"
 msgid "A URL/website address input field for forms."
-msgstr "Een URL/website adres invoerveld voor formulieren."
+msgstr ""
 
 #: build/blocks/form-url-field/block.json
 #: src/blocks/form-url-field/block.json
@@ -7470,7 +7470,7 @@ msgstr ""
 #: src/blocks/icon-button/block.json
 msgctxt "block description"
 msgid "A button with optional icon at the start or end."
-msgstr "Een knop met optioneel icoon aan het begin of einde."
+msgstr ""
 
 #: build/blocks/icon-button/block.json
 #: src/blocks/icon-button/block.json
@@ -7506,7 +7506,7 @@ msgstr ""
 #: src/blocks/icon-list-item/block.json
 msgctxt "block description"
 msgid "A single item in an icon list with icon, title, and description."
-msgstr "Een enkel item in een icoonlijst met icoon, titel en beschrijving."
+msgstr ""
 
 #: build/blocks/icon-list-item/block.json
 #: src/blocks/icon-list-item/block.json

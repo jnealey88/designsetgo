@@ -8145,3 +8145,202 @@ msgstr ""
 msgctxt "block keyword"
 msgid "tabbed"
 msgstr ""
+
+# Countdown Timer Block
+
+#: src/blocks/countdown-timer/block.json:6
+msgid "Countdown Timer"
+msgstr ""
+
+#: src/blocks/countdown-timer/block.json:8
+msgid "Display a countdown timer to a specific date and time with customizable styling."
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "At least one time unit should be visible."
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Border"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Border Color"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Border Radius"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Border Width"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "Boxed (Default)"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "Choose how the countdown units are displayed."
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Colors"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "Compact"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
+msgid "Completion Message"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
+msgid "Completion Settings"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js
+msgid "Date & Time"
+msgstr ""
+
+#: src/blocks/countdown-timer/utils/format-time.js
+msgid "Day"
+msgstr ""
+
+#: src/blocks/countdown-timer/utils/format-time.js
+msgid "Days"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
+msgid "Display Options"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "Gap Between Units"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
+msgid "Hide Timer Completely"
+msgstr ""
+
+#: src/blocks/countdown-timer/utils/format-time.js
+msgid "Hour"
+msgstr ""
+
+#: src/blocks/countdown-timer/utils/format-time.js
+msgid "Hours"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "Inline"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Label Color"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Label Font Size"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
+msgid "Layout Style"
+msgstr ""
+
+#: src/blocks/countdown-timer/utils/format-time.js
+msgid "Min"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Number Color"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Number Font Size"
+msgstr ""
+
+#: src/blocks/countdown-timer/utils/format-time.js
+msgid "Sec"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "Set a target date and time in the block settings to start your countdown."
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "Set the target date and time for your countdown."
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
+msgid "Show Custom Message"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
+msgid "Show Days"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
+msgid "Show Hours"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
+msgid "Show Minutes"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
+msgid "Show Seconds"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Spacing"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js
+msgid "Target date set!"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "The countdown has ended!"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "This message will replace the countdown timer when it reaches zero."
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "Timer hidden (countdown complete)"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js
+msgid "Timezone"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
+msgid "Typography"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "Unit Background"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "Unit Padding"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
+msgid "Visible Units"
+msgstr ""
+
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
+msgid "When Countdown Ends"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "WordPress Default"
+msgstr ""
+
+#: src/blocks/countdown-timer/edit.js
+msgid "WordPress site timezone: %s"
+msgstr ""
+
