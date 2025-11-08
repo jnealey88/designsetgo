@@ -41,13 +41,13 @@ class Insert_Reveal extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Insert Reveal', 'designsetgo' ),
-			'description'       => __( 'Inserts a Reveal container that reveals hidden content on hover. Perfect for interactive content reveals and hover effects.', 'designsetgo' ),
-			'thinking_message'  => __( 'Creating reveal container...', 'designsetgo' ),
-			'success_message'   => __( 'Reveal container inserted successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Insert Reveal', 'designsetgo' ),
+			'description'         => __( 'Inserts a Reveal container that reveals hidden content on hover. Perfect for interactive content reveals and hover effects.', 'designsetgo' ),
+			'thinking_message'    => __( 'Creating reveal container...', 'designsetgo' ),
+			'success_message'     => __( 'Reveal container inserted successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,21 +61,21 @@ class Insert_Reveal extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'attributes'  => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Reveal container attributes', 'designsetgo' ),
-						'properties' => array(
-							'revealAnimation' => array(
+						'properties'  => array(
+							'revealAnimation'   => array(
 								'type'        => 'string',
 								'description' => __( 'Reveal animation effect', 'designsetgo' ),
 								'enum'        => array( 'fade', 'slide-up', 'slide-down', 'zoom' ),
 								'default'     => 'fade',
 							),
-							'revealDuration'  => array(
+							'revealDuration'    => array(
 								'type'        => 'number',
 								'description' => __( 'Animation duration in milliseconds', 'designsetgo' ),
 								'default'     => 300,
@@ -95,11 +95,11 @@ class Insert_Reveal extends Abstract_Ability {
 						'items'       => array(
 							'type'       => 'object',
 							'properties' => array(
-								'name'       => array(
+								'name'        => array(
 									'type'        => 'string',
 									'description' => __( 'Block name (any WordPress core block or DesignSetGo block)', 'designsetgo' ),
 								),
-								'attributes' => array(
+								'attributes'  => array(
 									'type'        => 'object',
 									'description' => __( 'Block attributes', 'designsetgo' ),
 								),

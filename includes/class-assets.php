@@ -46,7 +46,7 @@ class Assets {
 	 */
 	public function track_block_usage( $block_content, $block ) {
 		if ( isset( $block['blockName'] ) && strpos( $block['blockName'], 'designsetgo/' ) === 0 ) {
-			$block_name = str_replace( 'designsetgo/', '', $block['blockName'] );
+			$block_name          = str_replace( 'designsetgo/', '', $block['blockName'] );
 			$this->used_blocks[] = $block_name;
 		}
 		return $block_content;

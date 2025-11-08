@@ -41,13 +41,13 @@ class Insert_Progress_Bar extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Insert Progress Bar', 'designsetgo' ),
-			'description'       => __( 'Inserts a Progress Bar block for displaying progress, statistics, or skills with customizable colors, labels, and animations.', 'designsetgo' ),
-			'thinking_message'  => __( 'Inserting progress bar...', 'designsetgo' ),
-			'success_message'   => __( 'Progress bar inserted successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Insert Progress Bar', 'designsetgo' ),
+			'description'         => __( 'Inserts a Progress Bar block for displaying progress, statistics, or skills with customizable colors, labels, and animations.', 'designsetgo' ),
+			'thinking_message'    => __( 'Inserting progress bar...', 'designsetgo' ),
+			'success_message'     => __( 'Progress bar inserted successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,52 +61,52 @@ class Insert_Progress_Bar extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'attributes' => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Progress bar attributes', 'designsetgo' ),
-						'properties' => array(
-							'percentage'        => array(
+						'properties'  => array(
+							'percentage'         => array(
 								'type'        => 'number',
 								'description' => __( 'Progress percentage (0-100)', 'designsetgo' ),
 								'default'     => 75,
 								'minimum'     => 0,
 								'maximum'     => 100,
 							),
-							'labelText'         => array(
+							'labelText'          => array(
 								'type'        => 'string',
 								'description' => __( 'Label text (e.g., "Project Completion")', 'designsetgo' ),
 							),
-							'showLabel'         => array(
+							'showLabel'          => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show label text', 'designsetgo' ),
 								'default'     => true,
 							),
-							'showPercentage'    => array(
+							'showPercentage'     => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show percentage value', 'designsetgo' ),
 								'default'     => true,
 							),
-							'labelPosition'     => array(
+							'labelPosition'      => array(
 								'type'        => 'string',
 								'description' => __( 'Label position', 'designsetgo' ),
 								'enum'        => array( 'top', 'bottom', 'left', 'right' ),
 								'default'     => 'top',
 							),
-							'height'            => array(
+							'height'             => array(
 								'type'        => 'string',
 								'description' => __( 'Bar height (e.g., "20px")', 'designsetgo' ),
 								'default'     => '20px',
 							),
-							'borderRadius'      => array(
+							'borderRadius'       => array(
 								'type'        => 'string',
 								'description' => __( 'Border radius (e.g., "4px")', 'designsetgo' ),
 								'default'     => '4px',
 							),
-							'barColor'          => array(
+							'barColor'           => array(
 								'type'        => 'string',
 								'description' => __( 'Progress bar color', 'designsetgo' ),
 							),
@@ -114,25 +114,25 @@ class Insert_Progress_Bar extends Abstract_Ability {
 								'type'        => 'string',
 								'description' => __( 'Bar background color', 'designsetgo' ),
 							),
-							'barStyle'          => array(
+							'barStyle'           => array(
 								'type'        => 'string',
 								'description' => __( 'Bar style', 'designsetgo' ),
 								'enum'        => array( 'solid', 'gradient', 'striped' ),
 								'default'     => 'solid',
 							),
-							'animateOnScroll'   => array(
+							'animateOnScroll'    => array(
 								'type'        => 'boolean',
 								'description' => __( 'Animate when scrolled into view', 'designsetgo' ),
 								'default'     => true,
 							),
-							'animationDuration' => array(
+							'animationDuration'  => array(
 								'type'        => 'number',
 								'description' => __( 'Animation duration in seconds', 'designsetgo' ),
 								'default'     => 1.5,
 								'minimum'     => 0.1,
 								'maximum'     => 5,
 							),
-							'stripedAnimation'  => array(
+							'stripedAnimation'   => array(
 								'type'        => 'boolean',
 								'description' => __( 'Animate striped pattern', 'designsetgo' ),
 								'default'     => false,

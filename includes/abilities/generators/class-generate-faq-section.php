@@ -40,13 +40,13 @@ class Generate_FAQ_Section extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Generate FAQ Section', 'designsetgo' ),
-			'description'       => __( 'Generates a Frequently Asked Questions section using an accordion with collapsible questions and answers.', 'designsetgo' ),
-			'thinking_message'  => __( 'Generating FAQ section...', 'designsetgo' ),
-			'success_message'   => __( 'FAQ section generated successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Generate FAQ Section', 'designsetgo' ),
+			'description'         => __( 'Generates a Frequently Asked Questions section using an accordion with collapsible questions and answers.', 'designsetgo' ),
+			'thinking_message'    => __( 'Generating FAQ section...', 'designsetgo' ),
+			'success_message'     => __( 'FAQ section generated successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -60,8 +60,8 @@ class Generate_FAQ_Section extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'faqs'  => array(

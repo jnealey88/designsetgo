@@ -41,13 +41,13 @@ class Insert_Tabs extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Insert Tabs', 'designsetgo' ),
-			'description'       => __( 'Inserts a Tabs container for organizing content into tabbed sections with icons, deep linking, and responsive accordion mode.', 'designsetgo' ),
-			'thinking_message'  => __( 'Creating tabs container...', 'designsetgo' ),
-			'success_message'   => __( 'Tabs container inserted successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Insert Tabs', 'designsetgo' ),
+			'description'         => __( 'Inserts a Tabs container for organizing content into tabbed sections with icons, deep linking, and responsive accordion mode.', 'designsetgo' ),
+			'thinking_message'    => __( 'Creating tabs container...', 'designsetgo' ),
+			'success_message'     => __( 'Tabs container inserted successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,50 +61,50 @@ class Insert_Tabs extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'attributes'  => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Tabs attributes', 'designsetgo' ),
-						'properties' => array(
-							'orientation'     => array(
+						'properties'  => array(
+							'orientation'       => array(
 								'type'        => 'string',
 								'description' => __( 'Tab orientation', 'designsetgo' ),
 								'enum'        => array( 'horizontal', 'vertical' ),
 								'default'     => 'horizontal',
 							),
-							'activeTab'       => array(
+							'activeTab'         => array(
 								'type'        => 'number',
 								'description' => __( 'Index of initially active tab (0-based)', 'designsetgo' ),
 								'default'     => 0,
 								'minimum'     => 0,
 							),
-							'alignment'       => array(
+							'alignment'         => array(
 								'type'        => 'string',
 								'description' => __( 'Tab alignment', 'designsetgo' ),
 								'enum'        => array( 'left', 'center', 'right', 'justified' ),
 								'default'     => 'left',
 							),
-							'tabStyle'        => array(
+							'tabStyle'          => array(
 								'type'        => 'string',
 								'description' => __( 'Visual style of tabs', 'designsetgo' ),
 								'enum'        => array( 'default', 'pills', 'underline', 'minimal' ),
 								'default'     => 'default',
 							),
-							'gap'             => array(
+							'gap'               => array(
 								'type'        => 'string',
 								'description' => __( 'Gap between tabs (e.g., "8px")', 'designsetgo' ),
 								'default'     => '8px',
 							),
-							'mobileMode'      => array(
+							'mobileMode'        => array(
 								'type'        => 'string',
 								'description' => __( 'How tabs display on mobile', 'designsetgo' ),
 								'enum'        => array( 'accordion', 'dropdown', 'tabs' ),
 								'default'     => 'accordion',
 							),
-							'mobileBreakpoint' => array(
+							'mobileBreakpoint'  => array(
 								'type'        => 'number',
 								'description' => __( 'Breakpoint for mobile mode in pixels', 'designsetgo' ),
 								'default'     => 768,

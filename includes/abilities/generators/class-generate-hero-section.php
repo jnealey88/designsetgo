@@ -41,13 +41,13 @@ class Generate_Hero_Section extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Generate Hero Section', 'designsetgo' ),
-			'description'       => __( 'Generates a complete hero section with heading, description text, and call-to-action buttons in a centered Stack container.', 'designsetgo' ),
-			'thinking_message'  => __( 'Generating hero section...', 'designsetgo' ),
-			'success_message'   => __( 'Hero section generated successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Generate Hero Section', 'designsetgo' ),
+			'description'         => __( 'Generates a complete hero section with heading, description text, and call-to-action buttons in a centered Stack container.', 'designsetgo' ),
+			'thinking_message'    => __( 'Generating hero section...', 'designsetgo' ),
+			'success_message'     => __( 'Hero section generated successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,24 +61,24 @@ class Generate_Hero_Section extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
-					'heading'     => array(
+					'heading'         => array(
 						'type'        => 'string',
 						'description' => __( 'Hero heading text', 'designsetgo' ),
 						'default'     => 'Welcome to Our Website',
 					),
-					'description' => array(
+					'description'     => array(
 						'type'        => 'string',
 						'description' => __( 'Hero description text', 'designsetgo' ),
 						'default'     => 'We help you build amazing websites with powerful blocks and components.',
 					),
-					'primaryButton' => array(
-						'type'       => 'object',
+					'primaryButton'   => array(
+						'type'        => 'object',
 						'description' => __( 'Primary call-to-action button', 'designsetgo' ),
-						'properties' => array(
+						'properties'  => array(
 							'text' => array(
 								'type'        => 'string',
 								'description' => __( 'Button text', 'designsetgo' ),
@@ -97,9 +97,9 @@ class Generate_Hero_Section extends Abstract_Ability {
 						),
 					),
 					'secondaryButton' => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Optional secondary button', 'designsetgo' ),
-						'properties' => array(
+						'properties'  => array(
 							'text' => array(
 								'type'        => 'string',
 								'description' => __( 'Button text', 'designsetgo' ),
@@ -112,7 +112,7 @@ class Generate_Hero_Section extends Abstract_Ability {
 							),
 						),
 					),
-					'layout' => array(
+					'layout'          => array(
 						'type'        => 'string',
 						'description' => __( 'Hero layout style', 'designsetgo' ),
 						'enum'        => array( 'centered', 'left-aligned' ),
@@ -140,13 +140,13 @@ class Generate_Hero_Section extends Abstract_Ability {
 	 * @return array<string, mixed>|WP_Error
 	 */
 	public function execute( array $input ) {
-		$post_id    = (int) ( $input['post_id'] ?? 0 );
-		$position   = (int) ( $input['position'] ?? -1 );
-		$heading    = sanitize_text_field( $input['heading'] ?? 'Welcome to Our Website' );
+		$post_id     = (int) ( $input['post_id'] ?? 0 );
+		$position    = (int) ( $input['position'] ?? -1 );
+		$heading     = sanitize_text_field( $input['heading'] ?? 'Welcome to Our Website' );
 		$description = sanitize_textarea_field( $input['description'] ?? 'We help you build amazing websites with powerful blocks and components.' );
-		$primary    = $input['primaryButton'] ?? array();
-		$secondary  = $input['secondaryButton'] ?? array();
-		$layout     = $input['layout'] ?? 'centered';
+		$primary     = $input['primaryButton'] ?? array();
+		$secondary   = $input['secondaryButton'] ?? array();
+		$layout      = $input['layout'] ?? 'centered';
 
 		// Validate post.
 		if ( ! $post_id ) {
@@ -173,8 +173,8 @@ class Generate_Hero_Section extends Abstract_Ability {
 		$inner_blocks[] = array(
 			'name'       => 'core/paragraph',
 			'attributes' => array(
-				'content'   => $description,
-				'align'     => $layout === 'centered' ? 'center' : 'left',
+				'content' => $description,
+				'align'   => $layout === 'centered' ? 'center' : 'left',
 			),
 		);
 

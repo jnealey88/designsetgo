@@ -41,13 +41,13 @@ class Insert_Scroll_Accordion extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Insert Scroll Accordion', 'designsetgo' ),
-			'description'       => __( 'Inserts a Scroll Accordion that reveals items progressively as you scroll. Items stack on top of each other with a sticky stacking effect.', 'designsetgo' ),
-			'thinking_message'  => __( 'Creating scroll accordion...', 'designsetgo' ),
-			'success_message'   => __( 'Scroll accordion inserted successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Insert Scroll Accordion', 'designsetgo' ),
+			'description'         => __( 'Inserts a Scroll Accordion that reveals items progressively as you scroll. Items stack on top of each other with a sticky stacking effect.', 'designsetgo' ),
+			'thinking_message'    => __( 'Creating scroll accordion...', 'designsetgo' ),
+			'success_message'     => __( 'Scroll accordion inserted successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,14 +61,14 @@ class Insert_Scroll_Accordion extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'attributes'  => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Scroll Accordion attributes', 'designsetgo' ),
-						'properties' => array(
+						'properties'  => array(
 							'alignItems' => array(
 								'type'        => 'string',
 								'description' => __( 'Vertical alignment of items', 'designsetgo' ),

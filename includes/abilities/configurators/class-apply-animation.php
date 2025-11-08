@@ -41,13 +41,13 @@ class Apply_Animation extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Apply Block Animation', 'designsetgo' ),
-			'description'       => __( 'Applies entrance and exit animations to any WordPress block with customizable settings for duration, delay, easing, and triggers.', 'designsetgo' ),
-			'thinking_message'  => __( 'Applying animation...', 'designsetgo' ),
-			'success_message'   => __( 'Animation applied successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Configurator::get_default_output_schema(),
+			'label'               => __( 'Apply Block Animation', 'designsetgo' ),
+			'description'         => __( 'Applies entrance and exit animations to any WordPress block with customizable settings for duration, delay, easing, and triggers.', 'designsetgo' ),
+			'thinking_message'    => __( 'Applying animation...', 'designsetgo' ),
+			'success_message'     => __( 'Animation applied successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Configurator::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,8 +61,8 @@ class Apply_Animation extends Abstract_Ability {
 		$common = Block_Configurator::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'block_name' => array(
@@ -71,15 +71,15 @@ class Apply_Animation extends Abstract_Ability {
 						'required'    => true,
 					),
 					'animation'  => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Animation settings to apply', 'designsetgo' ),
-						'properties' => array(
-							'enabled'            => array(
+						'properties'  => array(
+							'enabled'           => array(
 								'type'        => 'boolean',
 								'description' => __( 'Enable animation', 'designsetgo' ),
 								'default'     => true,
 							),
-							'entranceAnimation'  => array(
+							'entranceAnimation' => array(
 								'type'        => 'string',
 								'description' => __( 'Entrance animation type', 'designsetgo' ),
 								'enum'        => array(
@@ -98,7 +98,7 @@ class Apply_Animation extends Abstract_Ability {
 									'flipInY',
 								),
 							),
-							'exitAnimation'      => array(
+							'exitAnimation'     => array(
 								'type'        => 'string',
 								'description' => __( 'Exit animation type', 'designsetgo' ),
 								'enum'        => array(
@@ -115,37 +115,37 @@ class Apply_Animation extends Abstract_Ability {
 									'bounceOut',
 								),
 							),
-							'trigger'            => array(
+							'trigger'           => array(
 								'type'        => 'string',
 								'description' => __( 'Animation trigger', 'designsetgo' ),
 								'enum'        => array( 'scroll', 'load', 'hover', 'click' ),
 								'default'     => 'scroll',
 							),
-							'duration'           => array(
+							'duration'          => array(
 								'type'        => 'integer',
 								'description' => __( 'Animation duration in milliseconds', 'designsetgo' ),
 								'enum'        => array( 300, 600, 1000, 2000 ),
 								'default'     => 600,
 							),
-							'delay'              => array(
+							'delay'             => array(
 								'type'        => 'integer',
 								'description' => __( 'Animation delay in milliseconds', 'designsetgo' ),
 								'minimum'     => 0,
 								'maximum'     => 5000,
 								'default'     => 0,
 							),
-							'easing'             => array(
+							'easing'            => array(
 								'type'        => 'string',
 								'description' => __( 'Animation easing function', 'designsetgo' ),
 								'enum'        => array( 'ease', 'ease-in', 'ease-out', 'ease-in-out', 'linear', 'cubic-bezier(0.68, -0.55, 0.265, 1.55)' ),
 								'default'     => 'ease-out',
 							),
-							'offset'             => array(
+							'offset'            => array(
 								'type'        => 'integer',
 								'description' => __( 'Offset from viewport (pixels) before triggering scroll animation', 'designsetgo' ),
 								'default'     => 100,
 							),
-							'once'               => array(
+							'once'              => array(
 								'type'        => 'boolean',
 								'description' => __( 'Animate only once (scroll animations)', 'designsetgo' ),
 								'default'     => true,
@@ -206,15 +206,15 @@ class Apply_Animation extends Abstract_Ability {
 
 		// Map animation settings to block attributes.
 		$attributes = array(
-			'dsgAnimationEnabled'     => $animation['enabled'] ?? true,
-			'dsgEntranceAnimation'    => $animation['entranceAnimation'] ?? '',
-			'dsgExitAnimation'        => $animation['exitAnimation'] ?? '',
-			'dsgAnimationTrigger'     => $animation['trigger'] ?? 'scroll',
-			'dsgAnimationDuration'    => $animation['duration'] ?? 600,
-			'dsgAnimationDelay'       => $animation['delay'] ?? 0,
-			'dsgAnimationEasing'      => $animation['easing'] ?? 'ease-out',
-			'dsgAnimationOffset'      => $animation['offset'] ?? 100,
-			'dsgAnimationOnce'        => $animation['once'] ?? true,
+			'dsgAnimationEnabled'  => $animation['enabled'] ?? true,
+			'dsgEntranceAnimation' => $animation['entranceAnimation'] ?? '',
+			'dsgExitAnimation'     => $animation['exitAnimation'] ?? '',
+			'dsgAnimationTrigger'  => $animation['trigger'] ?? 'scroll',
+			'dsgAnimationDuration' => $animation['duration'] ?? 600,
+			'dsgAnimationDelay'    => $animation['delay'] ?? 0,
+			'dsgAnimationEasing'   => $animation['easing'] ?? 'ease-out',
+			'dsgAnimationOffset'   => $animation['offset'] ?? 100,
+			'dsgAnimationOnce'     => $animation['once'] ?? true,
 		);
 
 		// Sanitize attributes.

@@ -41,13 +41,13 @@ class Configure_Counter_Animation extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Configure Counter Animation', 'designsetgo' ),
-			'description'       => __( 'Updates animation settings for Counter blocks including start/end values, duration, delay, decimals, and prefix/suffix.', 'designsetgo' ),
-			'thinking_message'  => __( 'Updating counter animation...', 'designsetgo' ),
-			'success_message'   => __( 'Counter animation updated successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Configurator::get_default_output_schema(),
+			'label'               => __( 'Configure Counter Animation', 'designsetgo' ),
+			'description'         => __( 'Updates animation settings for Counter blocks including start/end values, duration, delay, decimals, and prefix/suffix.', 'designsetgo' ),
+			'thinking_message'    => __( 'Updating counter animation...', 'designsetgo' ),
+			'success_message'     => __( 'Counter animation updated successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Configurator::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,70 +61,70 @@ class Configure_Counter_Animation extends Abstract_Ability {
 		$common = Block_Configurator::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'settings' => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Counter animation settings to update', 'designsetgo' ),
-						'properties' => array(
-							'startValue'         => array(
+						'properties'  => array(
+							'startValue'        => array(
 								'type'        => 'number',
 								'description' => __( 'Starting value of the counter', 'designsetgo' ),
 							),
-							'endValue'           => array(
+							'endValue'          => array(
 								'type'        => 'number',
 								'description' => __( 'Ending value of the counter', 'designsetgo' ),
 							),
-							'decimals'           => array(
+							'decimals'          => array(
 								'type'        => 'integer',
 								'description' => __( 'Number of decimal places', 'designsetgo' ),
 								'minimum'     => 0,
 								'maximum'     => 10,
 							),
-							'prefix'             => array(
+							'prefix'            => array(
 								'type'        => 'string',
 								'description' => __( 'Prefix text (e.g., "$")', 'designsetgo' ),
 							),
-							'suffix'             => array(
+							'suffix'            => array(
 								'type'        => 'string',
 								'description' => __( 'Suffix text (e.g., "+", "%")', 'designsetgo' ),
 							),
-							'label'              => array(
+							'label'             => array(
 								'type'        => 'string',
 								'description' => __( 'Counter label text', 'designsetgo' ),
 							),
-							'overrideAnimation'  => array(
+							'overrideAnimation' => array(
 								'type'        => 'boolean',
 								'description' => __( 'Override group animation settings', 'designsetgo' ),
 							),
-							'customDuration'     => array(
+							'customDuration'    => array(
 								'type'        => 'number',
 								'description' => __( 'Animation duration in seconds', 'designsetgo' ),
 								'minimum'     => 0.1,
 								'maximum'     => 10,
 							),
-							'customDelay'        => array(
+							'customDelay'       => array(
 								'type'        => 'number',
 								'description' => __( 'Animation delay in seconds', 'designsetgo' ),
 								'minimum'     => 0,
 								'maximum'     => 10,
 							),
-							'customEasing'       => array(
+							'customEasing'      => array(
 								'type'        => 'string',
 								'description' => __( 'Animation easing function', 'designsetgo' ),
 								'enum'        => array( 'linear', 'easeInQuad', 'easeOutQuad', 'easeInOutQuad', 'easeInCubic', 'easeOutCubic', 'easeInOutCubic' ),
 							),
-							'showIcon'           => array(
+							'showIcon'          => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show icon with counter', 'designsetgo' ),
 							),
-							'icon'               => array(
+							'icon'              => array(
 								'type'        => 'string',
 								'description' => __( 'Icon name', 'designsetgo' ),
 							),
-							'iconPosition'       => array(
+							'iconPosition'      => array(
 								'type'        => 'string',
 								'description' => __( 'Icon position', 'designsetgo' ),
 								'enum'        => array( 'top', 'left', 'right' ),

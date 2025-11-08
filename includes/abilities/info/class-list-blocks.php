@@ -39,13 +39,13 @@ class List_Blocks extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'List DesignSetGo Blocks', 'designsetgo' ),
-			'description'       => __( 'Returns a comprehensive list of all available DesignSetGo blocks with their capabilities, attributes, and metadata.', 'designsetgo' ),
-			'thinking_message'  => __( 'Retrieving available blocks...', 'designsetgo' ),
-			'success_message'   => __( 'Successfully retrieved block list.', 'designsetgo' ),
-			'category'          => 'info',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => $this->get_output_schema(),
+			'label'               => __( 'List DesignSetGo Blocks', 'designsetgo' ),
+			'description'         => __( 'Returns a comprehensive list of all available DesignSetGo blocks with their capabilities, attributes, and metadata.', 'designsetgo' ),
+			'thinking_message'    => __( 'Retrieving available blocks...', 'designsetgo' ),
+			'success_message'     => __( 'Successfully retrieved block list.', 'designsetgo' ),
+			'category'            => 'info',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => $this->get_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -57,8 +57,8 @@ class List_Blocks extends Abstract_Ability {
 	 */
 	private function get_input_schema(): array {
 		return array(
-			'type'       => 'object',
-			'properties' => array(
+			'type'                 => 'object',
+			'properties'           => array(
 				'category' => array(
 					'type'        => 'string',
 					'description' => __( 'Filter by category', 'designsetgo' ),
@@ -159,7 +159,10 @@ class List_Blocks extends Abstract_Ability {
 				'description' => __( 'Flexible horizontal or vertical layout container with customizable alignment, gap, and wrapping.', 'designsetgo' ),
 				'category'    => 'layout',
 				'attributes'  => array(
-					'direction'      => array( 'type' => 'string', 'enum' => array( 'row', 'column' ) ),
+					'direction'      => array(
+						'type' => 'string',
+						'enum' => array( 'row', 'column' ),
+					),
 					'justifyContent' => array( 'type' => 'string' ),
 					'alignItems'     => array( 'type' => 'string' ),
 					'wrap'           => array( 'type' => 'boolean' ),
@@ -265,10 +268,10 @@ class List_Blocks extends Abstract_Ability {
 				'description' => __( 'SVG icon with customizable size, color, and rotation.', 'designsetgo' ),
 				'category'    => 'visual',
 				'attributes'  => array(
-					'iconName' => array( 'type' => 'string' ),
-					'iconSize' => array( 'type' => 'number' ),
+					'iconName'  => array( 'type' => 'string' ),
+					'iconSize'  => array( 'type' => 'number' ),
 					'iconColor' => array( 'type' => 'string' ),
-					'rotate'   => array( 'type' => 'number' ),
+					'rotate'    => array( 'type' => 'number' ),
 				),
 				'supports'    => array( 'align', 'anchor' ),
 			),
@@ -283,7 +286,10 @@ class List_Blocks extends Abstract_Ability {
 					'url'          => array( 'type' => 'string' ),
 					'linkTarget'   => array( 'type' => 'string' ),
 					'rel'          => array( 'type' => 'string' ),
-					'iconPosition' => array( 'type' => 'string', 'enum' => array( 'left', 'right' ) ),
+					'iconPosition' => array(
+						'type' => 'string',
+						'enum' => array( 'left', 'right' ),
+					),
 				),
 				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
 			),
@@ -293,9 +299,9 @@ class List_Blocks extends Abstract_Ability {
 				'description' => __( 'Rounded pill-shaped badge or tag element.', 'designsetgo' ),
 				'category'    => 'visual',
 				'attributes'  => array(
-					'text'       => array( 'type' => 'string' ),
-					'pillColor'  => array( 'type' => 'string' ),
-					'textColor'  => array( 'type' => 'string' ),
+					'text'      => array( 'type' => 'string' ),
+					'pillColor' => array( 'type' => 'string' ),
+					'textColor' => array( 'type' => 'string' ),
 				),
 				'supports'    => array( 'align', 'anchor' ),
 			),
@@ -327,8 +333,11 @@ class List_Blocks extends Abstract_Ability {
 				'description' => __( '3D card that flips on hover to reveal back content.', 'designsetgo' ),
 				'category'    => 'visual',
 				'attributes'  => array(
-					'height'    => array( 'type' => 'string' ),
-					'flipDirection' => array( 'type' => 'string', 'enum' => array( 'horizontal', 'vertical' ) ),
+					'height'        => array( 'type' => 'string' ),
+					'flipDirection' => array(
+						'type' => 'string',
+						'enum' => array( 'horizontal', 'vertical' ),
+					),
 				),
 				'supports'    => array( 'align', 'anchor' ),
 			),
@@ -366,8 +375,11 @@ class List_Blocks extends Abstract_Ability {
 				'description' => __( 'Infinite scrolling marquee for logos or content.', 'designsetgo' ),
 				'category'    => 'visual',
 				'attributes'  => array(
-					'speed'     => array( 'type' => 'number' ),
-					'direction' => array( 'type' => 'string', 'enum' => array( 'left', 'right' ) ),
+					'speed'        => array( 'type' => 'number' ),
+					'direction'    => array(
+						'type' => 'string',
+						'enum' => array( 'left', 'right' ),
+					),
 					'pauseOnHover' => array( 'type' => 'boolean' ),
 				),
 				'supports'    => array( 'align', 'anchor' ),
@@ -406,12 +418,12 @@ class List_Blocks extends Abstract_Ability {
 				'description' => __( 'Animated progress bar with customizable colors and value.', 'designsetgo' ),
 				'category'    => 'dynamic',
 				'attributes'  => array(
-					'value'         => array( 'type' => 'number' ),
-					'label'         => array( 'type' => 'string' ),
-					'showValue'     => array( 'type' => 'boolean' ),
-					'barColor'      => array( 'type' => 'string' ),
+					'value'           => array( 'type' => 'number' ),
+					'label'           => array( 'type' => 'string' ),
+					'showValue'       => array( 'type' => 'boolean' ),
+					'barColor'        => array( 'type' => 'string' ),
 					'backgroundColor' => array( 'type' => 'string' ),
-					'height'        => array( 'type' => 'string' ),
+					'height'          => array( 'type' => 'string' ),
 				),
 				'supports'    => array( 'align', 'anchor' ),
 			),

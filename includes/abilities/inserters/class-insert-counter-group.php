@@ -41,13 +41,13 @@ class Insert_Counter_Group extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Insert Counter Group', 'designsetgo' ),
-			'description'       => __( 'Inserts a Counter Group container for displaying animated statistics. Add Counter blocks as inner blocks to display multiple stats.', 'designsetgo' ),
-			'thinking_message'  => __( 'Inserting counter group...', 'designsetgo' ),
-			'success_message'   => __( 'Counter group inserted successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Insert Counter Group', 'designsetgo' ),
+			'description'         => __( 'Inserts a Counter Group container for displaying animated statistics. Add Counter blocks as inner blocks to display multiple stats.', 'designsetgo' ),
+			'thinking_message'    => __( 'Inserting counter group...', 'designsetgo' ),
+			'success_message'     => __( 'Counter group inserted successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,14 +61,14 @@ class Insert_Counter_Group extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'attributes'  => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Counter group attributes', 'designsetgo' ),
-						'properties' => array(
+						'properties'  => array(
 							'columns'           => array(
 								'type'        => 'number',
 								'description' => __( 'Number of columns on desktop', 'designsetgo' ),
@@ -144,11 +144,11 @@ class Insert_Counter_Group extends Abstract_Ability {
 						'items'       => array(
 							'type'       => 'object',
 							'properties' => array(
-								'name'        => array(
+								'name'       => array(
 									'type'        => 'string',
 									'description' => __( 'Block name (e.g., "designsetgo/counter")', 'designsetgo' ),
 								),
-								'attributes'  => array(
+								'attributes' => array(
 									'type'        => 'object',
 									'description' => __( 'Block attributes', 'designsetgo' ),
 								),

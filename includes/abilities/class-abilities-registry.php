@@ -81,7 +81,7 @@ class Abilities_Registry {
 	 * @return void
 	 */
 	private function load_ability_classes(): void {
-		$base_path = dirname( __FILE__ );
+		$base_path = __DIR__;
 
 		// Load base abstract class (already loaded, but for clarity).
 		require_once $base_path . '/class-abstract-ability.php';

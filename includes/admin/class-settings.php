@@ -43,20 +43,20 @@ class Settings {
 				'cache_duration'      => 3600, // 1 hour.
 			),
 			'forms'              => array(
-				'enable_honeypot'     => true,
+				'enable_honeypot'      => true,
 				'enable_rate_limiting' => true,
-				'retention_days'      => 30,
+				'retention_days'       => 30,
 			),
 			'animations'         => array(
-				'enable_animations'   => true,
-				'default_duration'    => 600,
-				'default_easing'      => 'ease-in-out',
+				'enable_animations'              => true,
+				'default_duration'               => 600,
+				'default_easing'                 => 'ease-in-out',
 				'respect_prefers_reduced_motion' => true,
 			),
 			'security'           => array(
-				'log_ip_addresses'    => true,
-				'log_user_agents'     => true,
-				'log_referrers'       => false,
+				'log_ip_addresses' => true,
+				'log_user_agents'  => true,
+				'log_referrers'    => false,
 			),
 		);
 	}
@@ -68,7 +68,7 @@ class Settings {
 	 */
 	public static function get_available_blocks() {
 		return array(
-			'containers'   => array(
+			'containers'  => array(
 				'label'  => __( 'Container Blocks', 'designsetgo' ),
 				'blocks' => array(
 					array(
@@ -91,7 +91,7 @@ class Settings {
 					),
 				),
 			),
-			'ui'           => array(
+			'ui'          => array(
 				'label'  => __( 'UI Elements', 'designsetgo' ),
 				'blocks' => array(
 					array(
@@ -186,7 +186,7 @@ class Settings {
 					),
 				),
 			),
-			'interactive'  => array(
+			'interactive' => array(
 				'label'  => __( 'Interactive Blocks', 'designsetgo' ),
 				'blocks' => array(
 					array(
@@ -227,7 +227,7 @@ class Settings {
 					),
 				),
 			),
-			'widgets'      => array(
+			'widgets'     => array(
 				'label'  => __( 'Dynamic Blocks', 'designsetgo' ),
 				'blocks' => array(
 					array(
@@ -250,7 +250,7 @@ class Settings {
 					),
 				),
 			),
-			'forms'        => array(
+			'forms'       => array(
 				'label'  => __( 'Form Blocks', 'designsetgo' ),
 				'blocks' => array(
 					array(
@@ -559,9 +559,9 @@ class Settings {
 	public function get_stats_endpoint() {
 		global $wpdb;
 
-		$settings      = self::get_settings();
-		$all_blocks    = self::get_available_blocks();
-		$total_blocks  = 0;
+		$settings     = self::get_settings();
+		$all_blocks   = self::get_available_blocks();
+		$total_blocks = 0;
 
 		// Count total blocks.
 		foreach ( $all_blocks as $category ) {

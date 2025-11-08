@@ -67,7 +67,7 @@ abstract class Abstract_Ability {
 			return;
 		}
 
-		$config = $this->get_config();
+		$config                     = $this->get_config();
 		$config['execute_callback'] = array( $this, 'execute' );
 
 		// Ensure ability is exposed in REST API.
@@ -149,8 +149,8 @@ abstract class Abstract_Ability {
 	/**
 	 * Create an error response.
 	 *
-	 * @param string $code Error code.
-	 * @param string $message Error message.
+	 * @param string               $code Error code.
+	 * @param string               $message Error message.
 	 * @param array<string, mixed> $data Additional error data.
 	 * @return WP_Error
 	 */
@@ -181,9 +181,9 @@ abstract class Abstract_Ability {
 	/**
 	 * Insert a block into a post.
 	 *
-	 * @param int $post_id Post ID.
+	 * @param int    $post_id Post ID.
 	 * @param string $block_markup Block markup.
-	 * @param int $position Position to insert (-1 for append, 0 for prepend).
+	 * @param int    $position Position to insert (-1 for append, 0 for prepend).
 	 * @return array<string, mixed>|WP_Error
 	 */
 	protected function insert_block( int $post_id, string $block_markup, int $position = -1 ) {
@@ -193,7 +193,7 @@ abstract class Abstract_Ability {
 			return $post;
 		}
 
-		$blocks = $this->parse_blocks( $post->post_content );
+		$blocks    = $this->parse_blocks( $post->post_content );
 		$new_block = $this->parse_blocks( $block_markup )[0];
 
 		if ( -1 === $position ) {
@@ -227,8 +227,8 @@ abstract class Abstract_Ability {
 	/**
 	 * Build block markup from block name and attributes.
 	 *
-	 * @param string $block_name Block name (e.g., 'designsetgo/flex').
-	 * @param array<string, mixed> $attributes Block attributes.
+	 * @param string                           $block_name Block name (e.g., 'designsetgo/flex').
+	 * @param array<string, mixed>             $attributes Block attributes.
 	 * @param array<int, array<string, mixed>> $inner_blocks Inner blocks.
 	 * @return string
 	 */

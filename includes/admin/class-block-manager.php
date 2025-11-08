@@ -53,8 +53,8 @@ class Block_Manager {
 	 * @return bool Whether the extension should be loaded.
 	 */
 	public function should_load_extension( $should_load, $extension_name ) {
-		$settings            = Settings::get_settings();
-		$enabled_extensions  = $settings['enabled_extensions'];
+		$settings           = Settings::get_settings();
+		$enabled_extensions = $settings['enabled_extensions'];
 
 		// If enabled_extensions is empty, all extensions are enabled by default.
 		if ( empty( $enabled_extensions ) ) {
@@ -71,7 +71,7 @@ class Block_Manager {
 	 * @return array List of registered block names.
 	 */
 	public static function get_registered_blocks() {
-		$blocks = \WP_Block_Type_Registry::get_instance()->get_all_registered();
+		$blocks     = \WP_Block_Type_Registry::get_instance()->get_all_registered();
 		$dsg_blocks = array();
 
 		foreach ( $blocks as $name => $block ) {

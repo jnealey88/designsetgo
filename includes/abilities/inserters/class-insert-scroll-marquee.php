@@ -41,13 +41,13 @@ class Insert_Scroll_Marquee extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Insert Scroll Marquee', 'designsetgo' ),
-			'description'       => __( 'Inserts a Scroll Marquee that displays rows of images scrolling horizontally in alternating directions based on page scroll. Perfect for image galleries and brand showcases.', 'designsetgo' ),
-			'thinking_message'  => __( 'Creating scroll marquee...', 'designsetgo' ),
-			'success_message'   => __( 'Scroll marquee inserted successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Insert Scroll Marquee', 'designsetgo' ),
+			'description'         => __( 'Inserts a Scroll Marquee that displays rows of images scrolling horizontally in alternating directions based on page scroll. Perfect for image galleries and brand showcases.', 'designsetgo' ),
+			'thinking_message'    => __( 'Creating scroll marquee...', 'designsetgo' ),
+			'success_message'     => __( 'Scroll marquee inserted successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,14 +61,14 @@ class Insert_Scroll_Marquee extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'attributes' => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Scroll Marquee attributes', 'designsetgo' ),
-						'properties' => array(
+						'properties'  => array(
 							'rows'         => array(
 								'type'        => 'array',
 								'description' => __( 'Rows of images with directions', 'designsetgo' ),
@@ -79,7 +79,7 @@ class Insert_Scroll_Marquee extends Abstract_Ability {
 											'type'        => 'array',
 											'description' => __( 'Images for this row', 'designsetgo' ),
 											'items'       => array(
-												'type'       => 'object',
+												'type'     => 'object',
 												'properties' => array(
 													'url' => array(
 														'type'        => 'string',
@@ -94,7 +94,7 @@ class Insert_Scroll_Marquee extends Abstract_Ability {
 														'description' => __( 'WordPress media ID (optional)', 'designsetgo' ),
 													),
 												),
-												'required'   => array( 'url' ),
+												'required' => array( 'url' ),
 											),
 										),
 										'direction' => array(

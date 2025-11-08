@@ -41,13 +41,13 @@ class Insert_Grid_Container extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Insert Grid Container', 'designsetgo' ),
-			'description'       => __( 'Inserts a responsive Grid Container block with customizable column counts for desktop, tablet, and mobile.', 'designsetgo' ),
-			'thinking_message'  => __( 'Creating grid container...', 'designsetgo' ),
-			'success_message'   => __( 'Grid container inserted successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Insert Grid Container', 'designsetgo' ),
+			'description'         => __( 'Inserts a responsive Grid Container block with customizable column counts for desktop, tablet, and mobile.', 'designsetgo' ),
+			'thinking_message'    => __( 'Creating grid container...', 'designsetgo' ),
+			'success_message'     => __( 'Grid container inserted successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,14 +61,14 @@ class Insert_Grid_Container extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'attributes'  => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Grid container attributes', 'designsetgo' ),
-						'properties' => array(
+						'properties'  => array(
 							'desktopColumns' => array(
 								'type'        => 'integer',
 								'description' => __( 'Number of columns on desktop', 'designsetgo' ),

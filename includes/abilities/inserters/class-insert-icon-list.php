@@ -41,13 +41,13 @@ class Insert_Icon_List extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Insert Icon List', 'designsetgo' ),
-			'description'       => __( 'Inserts an Icon List container for creating lists with icons, titles, and descriptions. Perfect for features, benefits, and services.', 'designsetgo' ),
-			'thinking_message'  => __( 'Creating icon list...', 'designsetgo' ),
-			'success_message'   => __( 'Icon list inserted successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Insert Icon List', 'designsetgo' ),
+			'description'         => __( 'Inserts an Icon List container for creating lists with icons, titles, and descriptions. Perfect for features, benefits, and services.', 'designsetgo' ),
+			'thinking_message'    => __( 'Creating icon list...', 'designsetgo' ),
+			'success_message'     => __( 'Icon list inserted successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,14 +61,14 @@ class Insert_Icon_List extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'attributes'  => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Icon List attributes', 'designsetgo' ),
-						'properties' => array(
+						'properties'  => array(
 							'layout'       => array(
 								'type'        => 'string',
 								'description' => __( 'List layout', 'designsetgo' ),

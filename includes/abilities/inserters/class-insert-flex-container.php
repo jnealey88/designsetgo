@@ -41,13 +41,13 @@ class Insert_Flex_Container extends Abstract_Ability {
 	 */
 	public function get_config(): array {
 		return array(
-			'label'             => __( 'Insert Flex Container', 'designsetgo' ),
-			'description'       => __( 'Inserts a Flex Container block with customizable layout settings including direction, alignment, wrapping, and gap.', 'designsetgo' ),
-			'thinking_message'  => __( 'Creating flex container...', 'designsetgo' ),
-			'success_message'   => __( 'Flex container inserted successfully.', 'designsetgo' ),
-			'category'          => 'blocks',
-			'input_schema'      => $this->get_input_schema(),
-			'output_schema'     => Block_Inserter::get_default_output_schema(),
+			'label'               => __( 'Insert Flex Container', 'designsetgo' ),
+			'description'         => __( 'Inserts a Flex Container block with customizable layout settings including direction, alignment, wrapping, and gap.', 'designsetgo' ),
+			'thinking_message'    => __( 'Creating flex container...', 'designsetgo' ),
+			'success_message'     => __( 'Flex container inserted successfully.', 'designsetgo' ),
+			'category'            => 'blocks',
+			'input_schema'        => $this->get_input_schema(),
+			'output_schema'       => Block_Inserter::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 		);
 	}
@@ -61,14 +61,14 @@ class Insert_Flex_Container extends Abstract_Ability {
 		$common = Block_Inserter::get_common_input_schema();
 
 		return array(
-			'type'       => 'object',
-			'properties' => array_merge(
+			'type'                 => 'object',
+			'properties'           => array_merge(
 				$common,
 				array(
 					'attributes'  => array(
-						'type'       => 'object',
+						'type'        => 'object',
 						'description' => __( 'Flex container attributes', 'designsetgo' ),
-						'properties' => array(
+						'properties'  => array(
 							'direction'      => array(
 								'type'        => 'string',
 								'description' => __( 'Flex direction', 'designsetgo' ),

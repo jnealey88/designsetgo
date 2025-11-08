@@ -158,7 +158,7 @@ class Loader {
 	 * @return array
 	 */
 	public static function get_registered_blocks() {
-		$blocks = \WP_Block_Type_Registry::get_instance()->get_all_registered();
+		$blocks     = \WP_Block_Type_Registry::get_instance()->get_all_registered();
 		$dsg_blocks = array();
 
 		foreach ( $blocks as $name => $block ) {

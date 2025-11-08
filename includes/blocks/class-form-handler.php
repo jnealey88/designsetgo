@@ -436,11 +436,11 @@ class Form_Handler {
 
 		// Prepare merge tags
 		$merge_tags = array(
-			'{form_id}'      => $form_id,
+			'{form_id}'       => $form_id,
 			'{submission_id}' => $submission_id,
-			'{page_url}'     => home_url( $_SERVER['REQUEST_URI'] ),
-			'{site_name}'    => get_bloginfo( 'name' ),
-			'{date}'         => current_time( 'mysql' ),
+			'{page_url}'      => home_url( $_SERVER['REQUEST_URI'] ),
+			'{site_name}'     => get_bloginfo( 'name' ),
+			'{date}'          => current_time( 'mysql' ),
 		);
 
 		// Add field values to merge tags
@@ -451,8 +451,8 @@ class Form_Handler {
 		// Build all_fields list
 		$all_fields_html = '';
 		foreach ( $fields as $field_name => $field_data ) {
-			$value = is_array( $field_data ) ? $field_data['value'] : $field_data;
-			$label = ucwords( str_replace( array( '_', '-' ), ' ', $field_name ) );
+			$value            = is_array( $field_data ) ? $field_data['value'] : $field_data;
+			$label            = ucwords( str_replace( array( '_', '-' ), ' ', $field_name ) );
 			$all_fields_html .= sprintf( "<strong>%s:</strong> %s<br>\n", esc_html( $label ), esc_html( $value ) );
 		}
 		$merge_tags['{all_fields}'] = $all_fields_html;

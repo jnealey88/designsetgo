@@ -26,11 +26,11 @@ class Block_Configurator {
 	/**
 	 * Update block attributes by block name or client ID.
 	 *
-	 * @param int $post_id Post ID.
-	 * @param string $block_name Block name to update (e.g., 'designsetgo/flex').
+	 * @param int                  $post_id Post ID.
+	 * @param string               $block_name Block name to update (e.g., 'designsetgo/flex').
 	 * @param array<string, mixed> $attributes New attributes to merge.
-	 * @param string|null $client_id Optional. Specific block client ID to update.
-	 * @param bool $update_all Whether to update all matching blocks or just the first.
+	 * @param string|null          $client_id Optional. Specific block client ID to update.
+	 * @param bool                 $update_all Whether to update all matching blocks or just the first.
 	 * @return array<string, mixed>|WP_Error Success data or error.
 	 */
 	public static function update_block_attributes( int $post_id, string $block_name, array $attributes, ?string $client_id = null, bool $update_all = false ) {
@@ -124,7 +124,7 @@ class Block_Configurator {
 	 * Walk through blocks recursively and apply a callback.
 	 *
 	 * @param array<int, array<string, mixed>> $blocks Blocks array.
-	 * @param callable $callback Callback function to apply to each block.
+	 * @param callable                         $callback Callback function to apply to each block.
 	 * @return array<int, array<string, mixed>> Modified blocks.
 	 */
 	public static function walk_blocks( array $blocks, callable $callback ): array {
@@ -149,7 +149,7 @@ class Block_Configurator {
 	 * Find a block by client ID.
 	 *
 	 * @param array<int, array<string, mixed>> $blocks Blocks array.
-	 * @param string $client_id Client ID to search for.
+	 * @param string                           $client_id Client ID to search for.
 	 * @return array<string, mixed>|null Found block or null.
 	 */
 	public static function find_block_by_client_id( array $blocks, string $client_id ): ?array {
@@ -176,7 +176,7 @@ class Block_Configurator {
 	 * Find all blocks by block name.
 	 *
 	 * @param array<int, array<string, mixed>> $blocks Blocks array.
-	 * @param string $block_name Block name to search for.
+	 * @param string                           $block_name Block name to search for.
 	 * @return array<int, array<string, mixed>> Found blocks.
 	 */
 	public static function find_blocks_by_name( array $blocks, string $block_name ): array {

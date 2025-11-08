@@ -41,9 +41,9 @@ class Global_Styles {
 			'version'  => 2,
 			'settings' => array(
 				'color'      => array(
-					'palette' => $this->get_color_palette( $saved_styles ),
+					'palette'   => $this->get_color_palette( $saved_styles ),
 					'gradients' => $this->get_gradients( $saved_styles ),
-					'duotone' => array(
+					'duotone'   => array(
 						array(
 							'slug'   => 'dsg-blue-orange',
 							'colors' => array( '#2563eb', '#f59e0b' ),
@@ -56,10 +56,10 @@ class Global_Styles {
 						'steps' => 0,
 					),
 					'spacingSizes' => $this->get_spacing_sizes( $saved_styles ),
-					'units' => array( 'px', 'em', 'rem', 'vh', 'vw', '%' ),
+					'units'        => array( 'px', 'em', 'rem', 'vh', 'vw', '%' ),
 				),
 				'typography' => array(
-					'fontSizes' => $this->get_font_sizes( $saved_styles ),
+					'fontSizes'    => $this->get_font_sizes( $saved_styles ),
 					'fontFamilies' => array(
 						array(
 							'slug'       => 'system',
@@ -68,7 +68,7 @@ class Global_Styles {
 						),
 					),
 				),
-				'custom' => array(
+				'custom'     => array(
 					'designsetgo' => array(
 						'borderRadius' => array(
 							'none'   => '0',
@@ -77,7 +77,7 @@ class Global_Styles {
 							'large'  => '1rem',
 							'full'   => '9999px',
 						),
-						'shadow' => array(
+						'shadow'       => array(
 							'small'  => '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
 							'medium' => '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
 							'large'  => '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
@@ -348,7 +348,7 @@ class Global_Styles {
 	private function get_container_block_styles( $saved_styles ) {
 		return array(
 			'spacing' => array(
-				'padding' => array(
+				'padding'  => array(
 					'top'    => 'var(--wp--preset--spacing--lg)',
 					'bottom' => 'var(--wp--preset--spacing--lg)',
 					'left'   => 'var(--wp--preset--spacing--xs)',
@@ -356,10 +356,10 @@ class Global_Styles {
 				),
 				'blockGap' => 'var(--wp--preset--spacing--md)',
 			),
-			'border' => array(
+			'border'  => array(
 				'radius' => 'var(--wp--custom--designsetgo--border-radius--medium)',
 			),
-			'color' => array(
+			'color'   => array(
 				'background' => 'transparent',
 			),
 		);
@@ -378,33 +378,33 @@ class Global_Styles {
 	 */
 	private function get_tabs_block_styles( $saved_styles ) {
 		return array(
-			'spacing' => array(
+			'spacing'    => array(
 				'margin' => array(
 					'top'    => 'var(--wp--preset--spacing--lg)',
 					'bottom' => 'var(--wp--preset--spacing--lg)',
 				),
 			),
 			'typography' => array(
-				'fontSize' => 'var(--wp--preset--font-size--medium)',
+				'fontSize'   => 'var(--wp--preset--font-size--medium)',
 				'fontWeight' => '500',
 			),
-			'color' => array(
+			'color'      => array(
 				'text' => 'var(--wp--preset--color--contrast)',
 			),
-			'elements' => array(
+			'elements'   => array(
 				'button' => array(
-					'color' => array(
-						'text' => 'var(--wp--preset--color--contrast)',
+					'color'   => array(
+						'text'       => 'var(--wp--preset--color--contrast)',
 						'background' => 'transparent',
 					),
-					':hover' => array(
+					':hover'  => array(
 						'color' => array(
 							'text' => 'var(--wp--preset--color--accent-2)',
 						),
 					),
 					':active' => array(
-						'color' => array(
-							'text' => 'var(--wp--preset--color--accent-2)',
+						'color'  => array(
+							'text'       => 'var(--wp--preset--color--accent-2)',
 							'background' => 'var(--wp--preset--color--base)',
 						),
 						'border' => array(
@@ -431,7 +431,7 @@ class Global_Styles {
 	private function get_tab_block_styles( $saved_styles ) {
 		return array(
 			'spacing' => array(
-				'padding' => array(
+				'padding'  => array(
 					'top'    => 'var(--wp--preset--spacing--xl)',
 					'bottom' => 'var(--wp--preset--spacing--xl)',
 					'left'   => 'var(--wp--preset--spacing--lg)',
@@ -439,9 +439,9 @@ class Global_Styles {
 				),
 				'blockGap' => 'var(--wp--preset--spacing--md)',
 			),
-			'color' => array(
+			'color'   => array(
 				'background' => 'transparent',
-				'text' => 'var(--wp--preset--color--contrast)',
+				'text'       => 'var(--wp--preset--color--contrast)',
 			),
 		);
 	}

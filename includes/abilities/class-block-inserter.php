@@ -27,11 +27,11 @@ class Block_Inserter {
 	/**
 	 * Insert a block into a post at the specified position.
 	 *
-	 * @param int $post_id Post ID.
-	 * @param string $block_name Block name (e.g., 'designsetgo/flex').
-	 * @param array<string, mixed> $attributes Block attributes.
+	 * @param int                              $post_id Post ID.
+	 * @param string                           $block_name Block name (e.g., 'designsetgo/flex').
+	 * @param array<string, mixed>             $attributes Block attributes.
 	 * @param array<int, array<string, mixed>> $inner_blocks Inner blocks.
-	 * @param int $position Position to insert (-1 for append, 0 for prepend, or specific index).
+	 * @param int                              $position Position to insert (-1 for append, 0 for prepend, or specific index).
 	 * @return array<string, mixed>|WP_Error Success data or error.
 	 */
 	public static function insert_block( int $post_id, string $block_name, array $attributes = array(), array $inner_blocks = array(), int $position = -1 ) {
@@ -103,8 +103,8 @@ class Block_Inserter {
 	/**
 	 * Build block markup from block name, attributes, and inner blocks.
 	 *
-	 * @param string $block_name Block name.
-	 * @param array<string, mixed> $attributes Block attributes.
+	 * @param string                           $block_name Block name.
+	 * @param array<string, mixed>             $attributes Block attributes.
 	 * @param array<int, array<string, mixed>> $inner_blocks Inner blocks.
 	 * @return string Block markup.
 	 */
@@ -121,8 +121,8 @@ class Block_Inserter {
 	 *
 	 * Handles extraction of innerHTML from 'content' attribute for core blocks.
 	 *
-	 * @param string $block_name Block name.
-	 * @param array<string, mixed> $attributes Block attributes.
+	 * @param string                           $block_name Block name.
+	 * @param array<string, mixed>             $attributes Block attributes.
 	 * @param array<int, array<string, mixed>> $inner_blocks Inner blocks.
 	 * @return array<string, mixed> WordPress block array.
 	 */
@@ -138,7 +138,7 @@ class Block_Inserter {
 			unset( $attrs['content'] );
 
 			// Generate innerHTML based on block type.
-			$innerHTML = self::generate_core_block_html( $block_name, $content, $attrs );
+			$innerHTML      = self::generate_core_block_html( $block_name, $content, $attrs );
 			$innerContent[] = $innerHTML;
 		}
 
@@ -151,7 +151,7 @@ class Block_Inserter {
 
 				if ( $inner_name ) {
 					$parsed_inners[] = self::convert_to_block_array( $inner_name, $inner_attributes, $inner_inner );
-					$innerContent[] = null; // Placeholder for inner block.
+					$innerContent[]  = null; // Placeholder for inner block.
 				}
 			}
 		}
@@ -184,19 +184,19 @@ class Block_Inserter {
 	 *
 	 * Creates opening and closing HTML that approximates the block's save output.
 	 *
-	 * @param string $block_name Block name.
+	 * @param string               $block_name Block name.
 	 * @param array<string, mixed> $attributes Block attributes.
 	 * @return array<string, string>|null Array with 'opening' and 'closing' keys, or null if not supported.
 	 */
 	private static function generate_designsetgo_wrapper_html( string $block_name, array $attributes ): ?array {
-		$block_slug = str_replace( 'designsetgo/', '', $block_name );
+		$block_slug  = str_replace( 'designsetgo/', '', $block_name );
 		$block_class = 'wp-block-designsetgo-' . $block_slug . ' dsg-' . $block_slug;
 
 		switch ( $block_name ) {
 			case 'designsetgo/stack':
-				$align_items = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'flex-start';
+				$align_items     = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'flex-start';
 				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : false;
-				$content_width = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '1200px';
+				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '1200px';
 
 				// Outer div styles (must match save.js).
 				$outer_style = 'width:100%;align-self:stretch';
@@ -213,12 +213,12 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/flex':
-				$direction = isset( $attributes['direction'] ) ? $attributes['direction'] : 'row';
-				$justify = isset( $attributes['justifyContent'] ) ? $attributes['justifyContent'] : 'flex-start';
-				$align = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'center';
-				$wrap = isset( $attributes['wrap'] ) ? $attributes['wrap'] : true;
+				$direction       = isset( $attributes['direction'] ) ? $attributes['direction'] : 'row';
+				$justify         = isset( $attributes['justifyContent'] ) ? $attributes['justifyContent'] : 'flex-start';
+				$align           = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'center';
+				$wrap            = isset( $attributes['wrap'] ) ? $attributes['wrap'] : true;
 				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : false;
-				$content_width = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '1200px';
+				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '1200px';
 
 				// Outer div styles.
 				$outer_style = 'width:100%;align-self:stretch';
@@ -235,10 +235,10 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/grid':
-				$desktop_cols = isset( $attributes['desktopColumns'] ) ? $attributes['desktopColumns'] : 3;
-				$align = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'start';
+				$desktop_cols    = isset( $attributes['desktopColumns'] ) ? $attributes['desktopColumns'] : 3;
+				$align           = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'start';
 				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : false;
-				$content_width = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '1200px';
+				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '1200px';
 
 				// Outer div styles.
 				$outer_style = 'width:100%;align-self:stretch';
@@ -267,10 +267,10 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/tabs':
-				$unique_id = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : wp_unique_id( 'tabs-' );
+				$unique_id   = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : wp_unique_id( 'tabs-' );
 				$orientation = isset( $attributes['orientation'] ) ? $attributes['orientation'] : 'horizontal';
-				$tab_style = isset( $attributes['tabStyle'] ) ? $attributes['tabStyle'] : 'default';
-				$classes = $block_class . ' dsg-tabs-' . $unique_id . ' dsg-tabs--' . $orientation . ' dsg-tabs--' . $tab_style;
+				$tab_style   = isset( $attributes['tabStyle'] ) ? $attributes['tabStyle'] : 'default';
+				$classes     = $block_class . ' dsg-tabs-' . $unique_id . ' dsg-tabs--' . $orientation . ' dsg-tabs--' . $tab_style;
 				return array(
 					'opening' => '<div class="' . esc_attr( $classes ) . '"><div class="dsg-tabs__nav"></div><div class="dsg-tabs__panels">',
 					'closing' => '</div></div>',
@@ -284,8 +284,8 @@ class Block_Inserter {
 	/**
 	 * Generate HTML for core WordPress blocks.
 	 *
-	 * @param string $block_name Block name.
-	 * @param string $content Content text.
+	 * @param string               $block_name Block name.
+	 * @param string               $content Content text.
 	 * @param array<string, mixed> $attributes Block attributes.
 	 * @return string Generated HTML.
 	 */
@@ -300,7 +300,7 @@ class Block_Inserter {
 				return '<h' . $level . ' class="' . trim( $class ) . '">' . wp_kses_post( $content ) . '</h' . $level . '>';
 
 			case 'core/paragraph':
-				$class = trim( $align );
+				$class      = trim( $align );
 				$class_attr = $class ? ' class="' . $class . '"' : '';
 				return '<p' . $class_attr . '>' . wp_kses_post( $content ) . '</p>';
 
@@ -319,7 +319,7 @@ class Block_Inserter {
 	 * @return bool True if block has a render callback, false otherwise.
 	 */
 	private static function is_dynamic_block( string $block_name ): bool {
-		$registry = \WP_Block_Type_Registry::get_instance();
+		$registry   = \WP_Block_Type_Registry::get_instance();
 		$block_type = $registry->get_registered( $block_name );
 
 		if ( ! $block_type ) {
