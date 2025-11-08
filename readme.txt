@@ -1,7 +1,7 @@
 === DesignSetGo ===
 Contributors: justinnealey
 Donate link: https://designsetgoblocks.com/donate
-Tags: blocks, gutenberg, page builder, design, visual builder, layout, container, tabs, accordion
+Tags: blocks, gutenberg, form builder, page builder, tabs, accordion, slider, flex, grid, animations
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -9,27 +9,56 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Modern Gutenberg block library bridging the gap between core WordPress blocks and advanced page builders. Design made easy, fast, and beautiful.
+The ultimate professional Gutenberg block library - 42 blocks spanning layouts, forms, interactive elements, and visual components. Design made easy, fast, and beautiful.
 
 == Description ==
 
-DesignSetGo is a comprehensive collection of modern Gutenberg blocks designed to help you create stunning websites without the complexity of traditional page builders. Built using the same patterns as WordPress core blocks (Group, Columns, Cover), DesignSetGo provides full FSE support, exceptional performance, and guaranteed editor/frontend parity.
+DesignSetGo is a comprehensive collection of 42 modern Gutenberg blocks designed to help you create stunning websites without the complexity of traditional page builders. Built using the same patterns as WordPress core blocks (Group, Columns, Cover), DesignSetGo provides full FSE support, exceptional performance, and guaranteed editor/frontend parity.
 
-= Key Features =
+= Complete Block Library (42 Blocks) =
 
-**Advanced Layout Blocks**
-* **Container Block** - Responsive grids, video backgrounds, overlays, and flexible layouts
-* **Tabs Block** - Tabbed content with icons, deep linking, and mobile accordion mode
-* **Accordion Block** - Collapsible panels with smooth animations
+**Container System (3 Blocks)**
+* **Flex Container** - Flexible horizontal/vertical layouts with wrapping. Perfect for button groups and hero sections
+* **Grid Container** - CSS Grid layouts with responsive column controls and alignment options
+* **Stack Container** - Vertical stacking with consistent spacing and alignment
 
-**Interactive Elements**
-* **Counter Block** - Animated counting statistics with icons and formatters
-* **Icon Block** - 500+ icons with customizable shapes and animations
-* **Progress Bar Block** - Animated progress indicators with multiple styles
-* **Pill Block** - Badge/tag-style text with rounded backgrounds
+**Form Builder System (13 Blocks)**
+* **Form Builder** - Complete form system with AJAX submission, spam protection (honeypot + rate limiting), and email notifications
+* **Text Field** - Single-line text input with validation and placeholder support
+* **Email Field** - Email input with built-in validation
+* **Phone Field** - Phone number input with country code selector and auto-formatting
+* **Textarea Field** - Multi-line text input for messages and comments
+* **Number Field** - Numeric input with min/max validation
+* **URL Field** - URL input with validation
+* **Date Field** - Date picker with format options
+* **Time Field** - Time picker with format options
+* **Select Field** - Dropdown selection with custom options
+* **Checkbox Field** - Single checkbox for agreements and confirmations
+* **File Upload** - File upload with type and size validation
+* **Hidden Field** - Hidden fields for tracking and form state
+
+**Interactive Blocks (10 Blocks)**
+* **Tabs** - Tabbed content with 4 styles (Pills, Underline, Minimal), icons, deep linking, and mobile modes
+* **Accordion** - Collapsible panels with Schema.org markup for SEO
+* **Flip Card** - 3D flip cards with hover/click triggers and multiple effects (Flip, Fade, Slide, Zoom)
+* **Reveal** - Progressive content reveal with smooth animations
+* **Scroll Marquee** - Auto-scrolling content with pause on hover
+* **Scroll Accordion** - Sticky stacking scroll effect for storytelling
+* **Image Accordion** - Expandable image panels with smooth transitions
+* **Slider** - Modern carousel with autoplay, multiple effects, and touch support
+* **Counter Group** - Animated counting statistics with number formatting
+* **Progress Bar** - Animated progress indicators with scroll triggers
+
+**Visual & UI Blocks (11 Blocks)**
+* **Icon** - 500+ icons with shape styles and hover animations
+* **Icon Button** - Buttons with icons, multiple layouts, and hover effects
+* **Icon List** - Lists with custom icons and flexible styling
+* **Pill** - Badge/tag-style text with rounded backgrounds
+* **Blobs** - Organic blob shapes for modern backgrounds and accents
+* Plus child blocks: Tab, Accordion Item, Slide, Flip Card Front/Back, Icon List Item, Image Accordion Item, Scroll Accordion Item, Counter
 
 **Global Features**
-* **Block Animations** - Add entrance and exit animations to ANY WordPress block with scroll, hover, click, or load triggers
+* **Block Animations Extension** - Add 24 entrance/exit animations to ANY WordPress block (core or third-party) with scroll, hover, click, or load triggers
 
 **Why Choose DesignSetGo?**
 
@@ -43,68 +72,64 @@ DesignSetGo is a comprehensive collection of modern Gutenberg blocks designed to
 ✓ **Progressive Enhancement** - Core functionality works even without JavaScript
 ✓ **No Vendor Lock-in** - Uses standard WordPress patterns, easy to migrate
 
-= Block List =
+= Detailed Feature List =
 
-1. **Container** - Advanced layout container with:
-   - Responsive grids (Desktop/Tablet/Mobile columns)
-   - Video backgrounds with poster images
-   - Color overlays for better contrast
-   - Content width constraints
-   - Clickable containers (card links)
-   - Responsive visibility controls
+**Container Blocks**
+1. **Flex Container** - Modern flexbox layouts with full control over direction, wrapping, alignment, and responsive behavior. Includes hover effects and content width constraints.
 
-2. **Tabs** - Tabbed content with:
-   - Horizontal or vertical orientation
-   - 4 tab styles (Default, Pills, Underline, Minimal)
-   - Icons with position control
-   - Mobile modes (Accordion, Dropdown, Scrollable)
-   - Deep linking support
-   - Keyboard navigation
+2. **Grid Container** - CSS Grid layouts with responsive column controls (Desktop/Tablet/Mobile), alignment options, and flexible gap settings.
 
-3. **Accordion** - Collapsible panels with:
-   - Individual or group toggle modes
-   - Icons and custom colors
-   - Smooth animations
-   - Schema.org markup for SEO
+3. **Stack Container** - Simple vertical layouts with consistent spacing, perfect for content sections and landing pages.
 
-4. **Counter Group** - Animated statistics with:
-   - CountUp.js integration
-   - Number formatting (thousands separator, decimals)
-   - Prefix/suffix support
-   - Custom icons
-   - Synchronized animations
+**Form Builder**
+4. **Form Builder** - Professional forms with AJAX submission (no page reload), honeypot spam protection, rate limiting, customizable success/error messages, and email notifications. Full styling control for fields, labels, and buttons.
 
-5. **Icon Block** - Icon display with:
-   - 500+ icon library
-   - Shape styles (None, Circle, Square, Rounded)
-   - Size and color controls
-   - Link support
-   - Hover animations
+5-15. **11 Form Field Blocks** - Text, Email, Phone (with country codes), Textarea, Number, URL, Date, Time, Select, Checkbox, File Upload, and Hidden fields. Each with validation, required field support, and consistent styling.
 
-6. **Progress Bar** - Progress indicators with:
-   - Percentage control (0-100%)
-   - 3 bar styles (Solid, Striped, Animated)
-   - Label positions (Above, Inside, Below)
-   - Scroll-triggered animations
-   - Custom colors
+**Interactive Elements**
+16. **Tabs** - Create tabbed interfaces with 4 visual styles (Default, Pills, Underline, Minimal), horizontal/vertical orientation, icons, deep linking for direct tab access, and mobile-responsive modes (Accordion, Dropdown, Scrollable).
 
-7. **Pill** - Badge/tag-style text with:
-   - Inline text with rounded background
-   - Background wraps tightly around content
-   - Full color customization (background, text, gradients)
-   - Typography controls (font size, weight, spacing)
-   - Border and border radius controls
-   - Text alignment options
-   - Default small font size
+17. **Accordion** - Collapsible content panels with individual or group toggle modes, custom icons, smooth animations, and Schema.org FAQ markup for SEO benefits.
 
-8. **Block Animations** - Universal animation system for ALL blocks:
-   - 13 entrance animations (Fade In, Slide In, Zoom In, Bounce In, Flip In, etc.)
+18. **Flip Card** - 3D interactive cards that flip on hover or click. 4 transition effects (Flip, Fade, Slide, Zoom), horizontal/vertical flip directions, and customizable timing.
+
+19. **Reveal** - Progressive content reveal with smooth animations, perfect for before/after comparisons or surprise content.
+
+20. **Scroll Marquee** - Auto-scrolling content ticker with adjustable speed, pause on hover, and infinite loop. Great for testimonials, logos, or announcements.
+
+21. **Scroll Accordion** - Sticky stacking effect where sections stack on top of each other during scroll. Perfect for storytelling and feature showcases.
+
+22. **Image Accordion** - Expandable image panels that grow on hover, ideal for photo galleries and portfolio displays.
+
+23. **Slider** - Full-featured carousel with multiple transition effects (Slide, Fade, Cube, Coverflow), autoplay, navigation arrows, pagination dots, touch/swipe support, and responsive slides per view.
+
+24. **Counter Group** - Animated counting statistics using CountUp.js. Number formatting (thousands separators, decimals), prefix/suffix support, custom icons, and scroll-triggered animations.
+
+25. **Progress Bar** - Animated progress indicators with 3 bar styles (Solid, Striped, Animated), label positions (Above, Inside, Below), scroll-triggered animations, and custom colors.
+
+**Visual & UI Elements**
+26. **Icon** - Display from 500+ icons with 4 shape styles (None, Circle, Square, Rounded), size controls, colors, link support, and hover animations.
+
+27. **Icon Button** - Enhanced buttons with icons, multiple icon positions (Left, Right, Top, Bottom), spacing controls, and hover effects.
+
+28. **Icon List** - Create lists with custom icons for each item, flexible spacing, and consistent styling across items.
+
+29. **Pill** - Badge-style text with tightly-wrapped rounded backgrounds. Perfect for tags, categories, or inline labels. Full color and typography control.
+
+30. **Blobs** - Organic, animated blob shapes for modern design accents and decorative backgrounds.
+
+**Child Blocks (Supporting Blocks)**
+31-42. **Tab, Accordion Item, Slide, Flip Card Front, Flip Card Back, Icon List Item, Image Accordion Item, Scroll Accordion Item, Counter, and more** - Essential child blocks that work within their parent containers.
+
+**Universal Extensions**
+43. **Block Animations** - Add professional animations to ANY WordPress block (core or third-party):
+   - 13 entrance animations (Fade In, Slide In, Zoom In, Bounce In, Flip In, Rotate In, etc.)
    - 11 exit animations (Fade Out, Slide Out, Zoom Out, Bounce Out, etc.)
-   - 4 trigger types (Scroll, Load, Hover, Click)
-   - Customizable duration, delay, and easing
-   - Scroll offset and "animate once" controls
-   - Accessible via lightning bolt icon in block toolbar
-   - Works with any WordPress block (core or third-party)
+   - 4 trigger types (Scroll into view, Page load, Hover, Click)
+   - Customizable duration (0.3s - 3s), delay (0s - 5s), and easing functions
+   - Scroll offset controls and "animate once" option
+   - Accessible via lightning bolt icon in any block's toolbar
+   - Zero performance impact - uses CSS animations and Intersection Observer API
 
 = Built With WordPress Standards =
 
@@ -118,12 +143,16 @@ DesignSetGo is a comprehensive collection of modern Gutenberg blocks designed to
 
 = Perfect For =
 
-* Marketing sites and landing pages
-* Business websites and portfolios
-* Membership and community sites
-* Educational and course platforms
-* E-commerce product showcases
-* Any site needing modern, flexible layouts
+* **Marketing Sites & Landing Pages** - Use Flex/Grid containers, Flip Cards, Counters, and animations
+* **Business Websites** - Professional forms, Icon Lists, Tabs, and Accordions for services/FAQs
+* **Portfolios & Showcases** - Image Accordion, Slider, and Reveal blocks for stunning presentations
+* **Membership & Community Sites** - Forms for registrations, Tabs for organized content, Progress Bars for gamification
+* **Educational Platforms** - Accordion for course content, Counter for statistics, Forms for student submissions
+* **E-commerce Sites** - Product showcases with Sliders, Icon Lists for features, Forms for inquiries
+* **Agency Websites** - Complete toolkit: containers, forms, interactive elements, and animations
+* **SaaS & Tech Companies** - Modern interactive blocks (Flip Cards, Scroll effects, Counters) for feature showcases
+* **Event & Conference Sites** - Countdown timers, forms for registration, animated statistics
+* **Any Modern WordPress Site** - Flexible, performant blocks that work with any theme
 
 == Installation ==
 
@@ -197,6 +226,18 @@ The free version is fully functional with all features included. We may offer pr
 
 Yes! You can use DesignSetGo blocks on any WooCommerce page, including product pages, shop pages, and custom layouts.
 
+= Does the Form Builder work with contact form plugins? =
+
+DesignSetGo includes a complete built-in Form Builder with 11 field types, AJAX submission, spam protection, and email notifications. You don't need Contact Form 7, WPForms, or Gravity Forms - everything is included! However, DesignSetGo blocks work alongside other form plugins if needed.
+
+= How many blocks are included? =
+
+DesignSetGo includes 42 blocks organized into four main categories: Container System (3), Form Builder System (13), Interactive Blocks (10), and Visual & UI Blocks (16), plus the universal Block Animations extension that works with ANY WordPress block.
+
+= Can I use these blocks with page builders like Elementor? =
+
+DesignSetGo is designed to work with the native WordPress block editor (Gutenberg), eliminating the need for heavy page builders. It provides similar functionality with better performance and no vendor lock-in. You can use DesignSetGo blocks within the WordPress block editor on pages built with page builders that support the editor, though this isn't the recommended approach.
+
 = Does the editor match the frontend exactly? =
 
 Yes! DesignSetGo uses WordPress core patterns (useBlockProps, useInnerBlocksProps) to ensure 100% editor/frontend parity. What you see in the editor is exactly what appears on your live site. No surprises, no mismatches, no "why does it look different" moments.
@@ -223,28 +264,72 @@ DesignSetGo is built using WordPress standards and shouldn't conflict with well-
 == Changelog ==
 
 = 1.0.0 - 2025-01-XX =
-* Initial release
-* Container block with video backgrounds and responsive grids
-* Tabs block with multiple orientations and styles
-* Accordion block with toggle modes
-* Counter Group block with CountUp.js
-* Icon block with 500+ icons
-* Progress Bar block with animations
+**Initial Release - 42 Professional Blocks**
+
+**Container System**
+* Flex Container - Modern flexbox layouts with responsive controls
+* Grid Container - CSS Grid with responsive column system
+* Stack Container - Vertical stacking with consistent spacing
+
+**Complete Form Builder System**
+* Form Builder block with AJAX submission (no page reload)
+* Honeypot spam protection + rate limiting
+* Email notifications with customizable templates
+* 11 specialized field blocks: Text, Email, Phone (with country codes), Textarea, Number, URL, Date, Time, Select, Checkbox, File Upload, Hidden
+* Full field validation and required field support
+* Consistent styling controls across all fields
+
+**Interactive Blocks**
+* Tabs - 4 styles, icons, deep linking, mobile modes
+* Accordion - Individual/group toggle, Schema.org markup
+* Flip Card - 3D effects with hover/click triggers
+* Reveal - Progressive content disclosure
+* Scroll Marquee - Auto-scrolling content ticker
+* Scroll Accordion - Sticky stacking scroll effect
+* Image Accordion - Expandable image panels
+* Slider - Full-featured carousel with autoplay and touch support
+* Counter Group - Animated statistics with CountUp.js
+* Progress Bar - Scroll-triggered progress indicators
+
+**Visual & UI Blocks**
+* Icon - 500+ icons with shape styles
+* Icon Button - Enhanced buttons with icons
+* Icon List - Custom icon lists
+* Pill - Badge/tag-style text elements
+* Blobs - Organic animated shapes
+* Plus 12 essential child blocks
+
+**Universal Features**
 * Block Animations extension - 24 animations for ANY WordPress block
+* Dual categorization system for better discoverability
 * Full FSE (Full Site Editing) support
 * WCAG 2.1 AA accessibility compliance
-* Complete internationalization (i18n)
-* Comprehensive documentation
+* Complete internationalization (i18n) with 9 language translations
+* Comprehensive documentation and guides
+
+**Performance & Code Quality**
 * Built with WordPress core patterns (useBlockProps, useInnerBlocksProps)
-* Editor/frontend parity - WYSIWYG reliability
-* Progressive enhancement - works without JavaScript
-* Optimized performance with declarative styling
-* Code-split architecture for minimal bundle sizes
+* Editor/frontend parity - guaranteed WYSIWYG
+* Progressive enhancement - core functionality works without JavaScript
+* ViewScript support for interactive blocks
+* Optimized bundle sizes with code-splitting
+* Zero JavaScript errors - comprehensive linting cleanup
+* Declarative styling - no DOM manipulation
+* No jQuery dependency
+
+**Developer Features**
+* Comprehensive JSDoc documentation
+* WordPress Coding Standards compliant
+* PHPStan static analysis
+* Playwright E2E tests
+* Unit test coverage
+* Pre-commit hooks with lint-staged
+* Detailed refactoring guides and best practices documentation
 
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of DesignSetGo. Start creating beautiful layouts with modern Gutenberg blocks!
+🚀 Initial release! 42 professional blocks including complete Form Builder (11 field types), container system (Flex, Grid, Stack), 10 interactive blocks (Tabs, Accordion, Flip Card, Slider, Counters, etc.), and universal Block Animations. Built with WordPress standards for guaranteed performance and editor/frontend parity. No page builders needed!
 
 == Privacy Policy ==
 

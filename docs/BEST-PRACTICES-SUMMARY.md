@@ -54,6 +54,60 @@ return <div {...blockProps}>Content</div>;
 
 **Why:** Mismatched markup causes block validation errors.
 
+### 4. ALWAYS Use ColorGradientSettingsDropdown (NEVER PanelColorSettings)
+
+```javascript
+// ❌ WRONG - Deprecated
+import { PanelColorSettings } from '@wordpress/block-editor';
+
+<PanelColorSettings
+  title={__('Colors')}
+  colorSettings={[
+    {
+      value: textColor,
+      onChange: (value) => setAttributes({ textColor: value }),
+      label: __('Text Color'),
+    },
+  ]}
+/>
+
+// ✅ CORRECT - Modern WordPress Standard
+import {
+  __experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+  __experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
+} from '@wordpress/block-editor';
+
+// Add clientId to function signature (REQUIRED)
+export default function Edit({ attributes, setAttributes, clientId }) {
+  const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+  return (
+    <InspectorControls group="color">
+      <ColorGradientSettingsDropdown
+        panelId={clientId}
+        title={__('Colors', 'designsetgo')}
+        settings={[
+          {
+            label: __('Text Color', 'designsetgo'),
+            colorValue: textColor,
+            onColorChange: (color) =>
+              setAttributes({ textColor: color || '' }),
+            clearable: true,
+          },
+        ]}
+        {...colorGradientSettings}
+      />
+    </InspectorControls>
+  );
+}
+```
+
+**Why:**
+- PanelColorSettings is deprecated (will be removed in future WordPress)
+- ColorGradientSettingsDropdown places controls in Styles tab (better UX)
+- Better theme integration and native clear/reset functionality
+- All 13 designsetgo blocks use this pattern (migrated 2025-11-08)
+
 ---
 
 ## Quick Decision Trees

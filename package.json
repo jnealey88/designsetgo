@@ -1,7 +1,7 @@
 {
   "name": "designsetgo",
   "version": "1.0.0",
-  "description": "Modern Gutenberg block library bridging the gap between core WordPress blocks and advanced page builders. Design made easy, fast, and beautiful.",
+  "description": "Professional Gutenberg block library with 42 blocks - complete Form Builder, container system, interactive elements, and animations. Built with WordPress standards.",
   "author": "DesignSetGo",
   "license": "GPL-2.0-or-later",
   "main": "build/index.js",
@@ -73,9 +73,20 @@
     "gutenberg",
     "blocks",
     "wordpress",
+    "form-builder",
     "page-builder",
     "design",
-    "visual-builder"
+    "visual-builder",
+    "flex",
+    "grid",
+    "tabs",
+    "accordion",
+    "slider",
+    "carousel",
+    "animations",
+    "interactive",
+    "container",
+    "layout"
   ],
   "overrides": {
     "@babel/runtime": "^7.26.10",

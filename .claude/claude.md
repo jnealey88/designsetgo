@@ -35,7 +35,132 @@ const [colorPalette] = useSettings('color.palette');
 const [contentSize, spacingUnits] = useSettings('layout.contentSize', 'spacing.units');
 ```
 
+### Color Controls - CRITICAL PATTERN
+
+**ALWAYS use ColorGradientSettingsDropdown, NEVER use PanelColorSettings**
+
+**Why**:
+- `PanelColorSettings` is deprecated and will be removed in future WordPress versions
+- `ColorGradientSettingsDropdown` is the modern, WordPress-standard approach
+- Places color controls in the **Styles tab** (where users expect them)
+- Better integration with theme colors and gradients
+- Native clear/reset functionality
+
+**Migration Status (2025-11-08)**:
+- ✅ **All 13 blocks migrated** to ColorGradientSettingsDropdown
+- ✅ Zero instances of PanelColorSettings remaining in codebase
+- ✅ All color controls now in Styles tab
+
+**Required Pattern for ALL new blocks**:
+```javascript
+// 1. Import required components
+import {
+    InspectorControls,
+    // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+    __experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+    // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+    __experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
+} from '@wordpress/block-editor';
+
+// 2. Add clientId to function signature (REQUIRED)
+export default function MyBlockEdit({ attributes, setAttributes, clientId }) {
+
+// 3. Add hook to get theme colors
+const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+// 4. Add color controls in Styles tab (group="color")
+<InspectorControls group="color">
+    <ColorGradientSettingsDropdown
+        panelId={clientId}
+        title={__('Colors', 'designsetgo')}
+        settings={[
+            {
+                label: __('Text Color', 'designsetgo'),
+                colorValue: textColor,
+                onColorChange: (color) =>
+                    setAttributes({ textColor: color || '' }),
+                clearable: true,
+            },
+            {
+                label: __('Background Color', 'designsetgo'),
+                colorValue: backgroundColor,
+                onColorChange: (color) =>
+                    setAttributes({ backgroundColor: color || '' }),
+                clearable: true,
+            },
+        ]}
+        {...colorGradientSettings}
+    />
+</InspectorControls>
+```
+
+**For Conditional Color Controls**:
+```javascript
+// Use when colors should only appear if a feature is enabled
+{showArrows && (
+    <InspectorControls group="color">
+        <ColorGradientSettingsDropdown
+            panelId={clientId}
+            title={__('Arrow Colors', 'designsetgo')}
+            settings={[
+                {
+                    label: __('Arrow Color', 'designsetgo'),
+                    colorValue: arrowColor,
+                    onColorChange: (color) =>
+                        setAttributes({ arrowColor: color || '' }),
+                    clearable: true,
+                },
+            ]}
+            {...colorGradientSettings}
+        />
+    </InspectorControls>
+)}
+```
+
+**Key Differences**:
+- ❌ OLD: `PanelColorSettings` with `colorSettings` array and `value`/`onChange`
+- ✅ NEW: `ColorGradientSettingsDropdown` with `settings` array and `colorValue`/`onColorChange`
+- ❌ OLD: Appears in Settings tab
+- ✅ NEW: Appears in Styles tab via `group="color"`
+- ❌ OLD: Requires `__experimentalHasMultipleOrigins` prop
+- ✅ NEW: Uses `{...colorGradientSettings}` spread
+- ❌ OLD: Missing `clientId` requirement
+- ✅ NEW: Requires `panelId={clientId}`
+
 ## Architecture Decisions
+
+### Block Supports Over Custom Controls
+**Decision**: Use WordPress Block Supports (color, typography, spacing, border, dimensions) instead of custom InspectorControls wherever possible.
+
+**Why**:
+- **Less Code**: Block Supports auto-register attributes and UI controls
+- **Better UX**: Users see familiar WordPress controls
+- **Theme Integration**: Automatic access to theme.json settings
+- **Future-Proof**: WordPress improvements benefit blocks automatically
+- **Maintainability**: Fewer custom implementations to maintain
+
+📖 **See [BLOCK-SUPPORTS-AUDIT.md](../docs/BLOCK-SUPPORTS-AUDIT.md) for comprehensive audit results**
+
+**2025-11-08 Audit Results**:
+- ✅ 93% of blocks already optimized (38/41 blocks)
+- ⚠️ 3 blocks have opportunities: Countdown Timer (-95 LOC), Progress Bar (-25 LOC), Slider (-15 LOC)
+- 💡 Potential reduction: 135 lines of code (8% in affected blocks)
+
+**Quick Reference - What to Use**:
+```json
+// Instead of custom controls, use Block Supports:
+{
+  "supports": {
+    "color": { "text": true, "background": true },           // Not custom ColorPalette
+    "typography": { "fontSize": true, "textAlign": true },   // Not custom FontSizePicker/AlignmentToolbar
+    "spacing": { "padding": true, "margin": true },          // Not custom spacing controls
+    "__experimentalBorder": { "radius": true, "width": true }, // Not custom border controls
+    "dimensions": { "minHeight": true }                      // Not custom height controls
+  }
+}
+```
+
+📖 **See [BLOCK-CONTROLS-ORGANIZATION.md](../docs/BLOCK-CONTROLS-ORGANIZATION.md) for detailed patterns**
 
 ### Dual Categorization for Maximum Discoverability
 **Decision**: Blocks appear in BOTH WordPress core categories AND custom DesignSetGo category.
