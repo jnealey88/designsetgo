@@ -5,4 +5,12 @@ module.exports = {
 		'import/no-unresolved': 'off',
 		'jsdoc/require-param-description': 'off',
 	},
+	overrides: [
+		{
+			files: ['tests/**/*.js', '**/*.test.js', '**/*.spec.js'],
+			env: {
+				jest: true,
+			},
+		},
+	],
 };
