@@ -25,6 +25,10 @@ import {
 	RangeControl,
 	SelectControl,
 	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseCustomUnits as useCustomUnits,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
@@ -55,6 +59,11 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 
 	// Get theme color palette and gradient settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+	// Get available spacing units
+	const units = useCustomUnits({
+		availableUnits: ['px', 'em', 'rem', 'vh', 'vw', '%'],
+	});
 
 	const [useCustomGaps, setUseCustomGaps] = useState(!!(rowGap || columnGap));
 

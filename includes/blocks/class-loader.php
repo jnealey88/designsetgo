@@ -153,7 +153,7 @@ class Loader {
 	 */
 	public function register_block_styles() {
 		// Register JSON-based block style variations from the /styles/ directory.
-		// This will auto-discover all *.json files in build/blocks/*/styles/ directories
+		// This will auto-discover all *.json files in build/blocks/*/styles/ directories.
 		$this->register_json_block_styles();
 	}
 

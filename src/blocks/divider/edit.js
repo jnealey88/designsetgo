@@ -19,10 +19,9 @@ import { IconPicker } from '../icon/components/IconPicker';
  * @param {Object}   props               - Component props
  * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
- * @param {string}   props.clientId      - Block client ID
  * @return {JSX.Element} Divider block edit component
  */
-export default function DividerEdit({ attributes, setAttributes, clientId }) {
+export default function DividerEdit({ attributes, setAttributes }) {
 	const { dividerStyle, width, thickness, iconName } = attributes;
 
 	// Block wrapper props - Block Supports automatically applies color styles

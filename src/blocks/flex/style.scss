@@ -13,9 +13,14 @@
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
 
+	// CRITICAL: Inner container must be full width for justify-content to work
+	// When constrainWidth is enabled, inline styles will override with max-width
+	.dsg-flex__inner {
+		width: 100%;
+	}
+
 	// CRITICAL: Fix flex children behavior
 	// With two-div structure, flex children are inside .dsg-flex__inner
-	// Do NOT target .dsg-flex__inner itself (it needs auto margins for centering when constrainWidth is enabled)
 	.dsg-flex__inner > * {
 		// Disable float - WordPress core CSS applies float: right/left for alignment classes
 		// This breaks flex layout, so we override it

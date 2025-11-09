@@ -261,7 +261,10 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 		// IMPORTANT: Don't constrain width when block is alignfull
 		let maxWidth;
 		if (isContainerBlock) {
-			maxWidth = (constrainWidth && align !== 'full') ? contentWidth || '1200px' : null;
+			maxWidth =
+				constrainWidth && align !== 'full'
+					? contentWidth || '1200px'
+					: null;
 		} else {
 			maxWidth = dsgMaxWidth;
 		}
