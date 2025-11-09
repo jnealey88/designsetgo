@@ -26,6 +26,7 @@ const ICON_CATEGORIES = {
 			'circle-check',
 			'verified-check',
 			'lightning',
+			'blocks',
 			'user',
 			'envelope',
 			'phone',
@@ -117,7 +118,7 @@ const ICON_CATEGORIES = {
 	},
 	ui: {
 		label: __('UI', 'designsetgo'),
-		icons: ['home', 'bookmark', 'link', 'folder', 'file', 'menu'],
+		icons: ['home', 'bookmark', 'link', 'folder', 'file', 'menu', 'blocks'],
 	},
 	other: {
 		label: __('Other', 'designsetgo'),
