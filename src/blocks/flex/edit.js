@@ -2,6 +2,7 @@
  * Flex Container Block - Edit Component
  *
  * Flexible horizontal or vertical layouts with wrapping.
+ * Leverages WordPress's native flex layout system.
  *
  * @since 1.0.0
  */
@@ -12,17 +13,16 @@ import {
 	useInnerBlocksProps,
 	InnerBlocks,
 	InspectorControls,
-	BlockControls,
-	AlignmentControl,
-	useSetting,
 	store as blockEditorStore,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
-import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
+import { PanelBody, ToggleControl } from '@wordpress/components';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
+import { createBlock } from '@wordpress/blocks';
 
 /**
  * Flex Container Edit Component
@@ -35,62 +35,69 @@ import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
  */
 export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	const {
-		direction,
-		wrap,
-		justifyContent,
-		alignItems,
-		textAlign,
-		mobileStack,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
+		mobileStack,
+		layout,
 	} = attributes;
 
 	// Get theme color palette and gradient settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
-	// Get content size from theme
-	const themeContentWidth = useSetting('layout.contentSize');
-
-	// Calculate effective content width
-	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
+	const { replaceBlock } = useDispatch(blockEditorStore);
 
 	// Get inner blocks to determine if container is empty
-	const hasInnerBlocks = useSelect(
+	const { hasInnerBlocks, innerBlocks } = useSelect(
 		(select) => {
 			const { getBlock } = select(blockEditorStore);
 			const block = getBlock(clientId);
-			return block?.innerBlocks?.length > 0;
+			return {
+				hasInnerBlocks: block?.innerBlocks?.length > 0,
+				innerBlocks: block?.innerBlocks || [],
+			};
 		},
 		[clientId]
 	);
 
-	// Calculate inner styles declaratively
-	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
-	const innerStyles = {
-		display: 'flex',
-		flexDirection: direction || 'row',
-		flexWrap: wrap ? 'wrap' : 'nowrap',
-		justifyContent: justifyContent || 'flex-start',
-		alignItems: alignItems || 'center',
-		...(constrainWidth && {
-			maxWidth: effectiveContentWidth,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		}),
-	};
+	// CRITICAL: Auto-convert to Stack block when orientation changes to vertical
+	// Flex is meant for horizontal layouts
+	// If user wants vertical layout, they should use Stack block
+	useEffect(() => {
+		if (layout?.orientation === 'vertical') {
+			// Create a new Stack block with the same attributes and inner blocks
+			const stackBlock = createBlock(
+				'designsetgo/stack',
+				{
+					hoverBackgroundColor,
+					hoverTextColor,
+					hoverIconBackgroundColor,
+					hoverButtonBackgroundColor,
+				},
+				innerBlocks
+			);
 
-	// Block wrapper props with merged inner blocks props (must match save.js)
-	// CRITICAL: Merge blockProps and innerBlocksProps into single div to fix paste behavior
+			// Replace this Flex block with the Stack block
+			replaceBlock(clientId, stackBlock);
+		}
+	}, [
+		layout?.orientation,
+		clientId,
+		replaceBlock,
+		hoverBackgroundColor,
+		hoverTextColor,
+		hoverIconBackgroundColor,
+		hoverButtonBackgroundColor,
+		innerBlocks,
+	]);
+
+	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	const blockProps = useBlockProps({
 		className: `dsg-flex ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
 		style: {
-			alignSelf: 'stretch',
-			// Merge inner styles with block styles
-			...innerStyles,
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
 			}),
@@ -101,151 +108,45 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 				'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsg-hover-button-bg-color': hoverButtonBackgroundColor,
+				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
 			}),
 		},
 	});
 
-	// Merge block props with inner blocks props
-	// Show big button only when container is empty, otherwise use default appender
-	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		orientation: direction === 'column' ? 'vertical' : 'horizontal',
-		templateLock: false,
-		renderAppender: hasInnerBlocks
-			? undefined
-			: InnerBlocks.ButtonBlockAppender,
-	});
+	// Inner container props with flex layout and width constraints (must match save.js EXACTLY)
+	// CRITICAL: Apply display: flex here, not via WordPress layout support on outer div
+	const innerStyle = {
+		display: 'flex',
+	};
+
+	// Apply width constraints if enabled
+	if (constrainWidth) {
+		innerStyle.maxWidth = contentWidth || '1200px';
+		innerStyle.marginLeft = 'auto';
+		innerStyle.marginRight = 'auto';
+	}
+
+	// Merge inner blocks props
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'dsg-flex__inner',
+			style: innerStyle,
+		},
+		{
+			templateLock: false,
+			renderAppender: hasInnerBlocks
+				? undefined
+				: InnerBlocks.ButtonBlockAppender,
+		}
+	);
 
 	return (
 		<>
-			<BlockControls>
-				<AlignmentControl
-					value={textAlign}
-					onChange={(newAlign) =>
-						setAttributes({ textAlign: newAlign })
-					}
-				/>
-			</BlockControls>
-
 			<InspectorControls>
 				<PanelBody
 					title={__('Flex Settings', 'designsetgo')}
 					initialOpen={true}
 				>
-					<SelectControl
-						label={__('Direction', 'designsetgo')}
-						value={direction}
-						options={[
-							{
-								label: __('Row (Horizontal)', 'designsetgo'),
-								value: 'row',
-							},
-							{
-								label: __('Column (Vertical)', 'designsetgo'),
-								value: 'column',
-							},
-						]}
-						onChange={(value) =>
-							setAttributes({ direction: value })
-						}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-
-					<ToggleControl
-						label={__('Wrap Items', 'designsetgo')}
-						checked={wrap}
-						onChange={(value) => setAttributes({ wrap: value })}
-						help={
-							wrap
-								? __(
-										'Items will wrap to next line if needed',
-										'designsetgo'
-									)
-								: __(
-										'Items will stay in single line',
-										'designsetgo'
-									)
-						}
-						__nextHasNoMarginBottom
-					/>
-
-					<SelectControl
-						label={__('Justify Content', 'designsetgo')}
-						value={justifyContent}
-						options={[
-							{
-								label: __('Start', 'designsetgo'),
-								value: 'flex-start',
-							},
-							{
-								label: __('Center', 'designsetgo'),
-								value: 'center',
-							},
-							{
-								label: __('End', 'designsetgo'),
-								value: 'flex-end',
-							},
-							{
-								label: __('Space Between', 'designsetgo'),
-								value: 'space-between',
-							},
-							{
-								label: __('Space Around', 'designsetgo'),
-								value: 'space-around',
-							},
-							{
-								label: __('Space Evenly', 'designsetgo'),
-								value: 'space-evenly',
-							},
-						]}
-						onChange={(value) =>
-							setAttributes({ justifyContent: value })
-						}
-						help={__(
-							'Horizontal alignment (main axis)',
-							'designsetgo'
-						)}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-
-					<SelectControl
-						label={__('Align Items', 'designsetgo')}
-						value={alignItems}
-						options={[
-							{
-								label: __('Start', 'designsetgo'),
-								value: 'flex-start',
-							},
-							{
-								label: __('Center', 'designsetgo'),
-								value: 'center',
-							},
-							{
-								label: __('End', 'designsetgo'),
-								value: 'flex-end',
-							},
-							{
-								label: __('Stretch', 'designsetgo'),
-								value: 'stretch',
-							},
-							{
-								label: __('Baseline', 'designsetgo'),
-								value: 'baseline',
-							},
-						]}
-						onChange={(value) =>
-							setAttributes({ alignItems: value })
-						}
-						help={__(
-							'Vertical alignment (cross axis)',
-							'designsetgo'
-						)}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-
 					<ToggleControl
 						label={__('Stack on Mobile', 'designsetgo')}
 						checked={mobileStack}
@@ -330,7 +231,9 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 				/>
 			</InspectorControls>
 
-			<div {...innerBlocksProps} />
+			<div {...blockProps}>
+				<div {...innerBlocksProps} />
+			</div>
 		</>
 	);
 }

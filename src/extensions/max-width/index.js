@@ -16,7 +16,9 @@ import { InspectorControls, useSettings } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseCustomUnits as useCustomUnits,
 } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
@@ -31,15 +33,12 @@ const EXCLUDED_BLOCKS = [
 	'core/separator', // Already has width control
 	'core/page-list', // Navigation element
 	'core/navigation', // Navigation element
-	// Container blocks have their own "Constrain Width" and "Content Width" controls
-	'designsetgo/container',
-	'designsetgo/stack',
-	'designsetgo/flex',
-	'designsetgo/grid',
 ];
 
 /**
- * Add max-width attribute to all blocks
+ * Add width attributes to blocks
+ * - Stack/Flex/Grid/Container: constrainWidth and contentWidth (custom controls)
+ * - Other blocks: dsgMaxWidth
  *
  * @param {Object} settings - Block settings
  * @param {string} name     - Block name
@@ -51,7 +50,32 @@ function addMaxWidthAttribute(settings, name) {
 		return settings;
 	}
 
-	// Add max-width attribute
+	// Add constrainWidth and contentWidth for all container blocks
+	const isContainerBlock = [
+		'designsetgo/container',
+		'designsetgo/stack',
+		'designsetgo/flex',
+		'designsetgo/grid',
+	].includes(name);
+
+	if (isContainerBlock) {
+		return {
+			...settings,
+			attributes: {
+				...settings.attributes,
+				constrainWidth: {
+					type: 'boolean',
+					default: true, // Enabled by default for container blocks
+				},
+				contentWidth: {
+					type: 'string',
+					default: '', // Empty = uses theme default or 1200px
+				},
+			},
+		};
+	}
+
+	// Add max-width attribute for all other blocks
 	return {
 		...settings,
 		attributes: {
@@ -71,16 +95,16 @@ addFilter(
 );
 
 /**
- * Add unified Width panel to block inspector
- * - Max width: Shows for ALL blocks
- * - Constrain Width: Shows ONLY for Container blocks
+ * Add width controls to block inspector
+ * - Stack/Flex/Grid/Container: Custom "Constrain Width" controls
+ * - Other blocks: Simple "Max width" control
  */
 const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, name } = props;
 		const { dsgMaxWidth, constrainWidth, contentWidth } = attributes;
 
-		// Check if this is a Container block (legacy or new Stack/Flex/Grid)
+		// Check if this is a container block (Stack/Flex/Grid/Container)
 		const isContainerBlock = [
 			'designsetgo/container',
 			'designsetgo/stack',
@@ -88,12 +112,12 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 			'designsetgo/grid',
 		].includes(name);
 
-		// Skip excluded blocks (but NOT container blocks - they need Constrain Width controls)
+		// Skip excluded blocks (but NOT containers - they need custom controls)
 		if (EXCLUDED_BLOCKS.includes(name) && !isContainerBlock) {
 			return <BlockEdit {...props} />;
 		}
 
-		// Get theme content size and spacing units for Container blocks
+		// Get theme content size and spacing units
 		const [themeContentSize] = useSettings('layout.contentSize');
 		const [spacingUnits] = useSettings('spacing.units');
 		const units = useCustomUnits({
@@ -115,7 +139,7 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 						title={__('Width', 'designsetgo')}
 						initialOpen={false}
 					>
-						{/* Constrain Width - Shows ONLY for Container blocks */}
+						{/* Custom Constrain Width controls for all container blocks */}
 						{isContainerBlock && (
 							<>
 								<ToggleControl
@@ -154,11 +178,22 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 										placeholder={
 											themeContentSize || '1200px'
 										}
-										// eslint-disable-next-line @wordpress/i18n-no-variables
-										help={__(
-											`Leave empty to use theme default (${themeContentSize || '1200px'})`,
-											'designsetgo'
-										)}
+										help={
+											themeContentSize
+												? // eslint-disable-next-line @wordpress/i18n-no-variables
+													sprintf(
+														/* translators: %s: theme content size value */
+														__(
+															'Leave empty to use theme default (%s)',
+															'designsetgo'
+														),
+														themeContentSize
+													)
+												: __(
+														'Leave empty to use default (1200px)',
+														'designsetgo'
+													)
+										}
 										isResetValueOnUnitChange
 										__unstableInputWidth="80px"
 										__next40pxDefaultSize
@@ -168,7 +203,7 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 							</>
 						)}
 
-						{/* Max width - Shows for ALL non-container blocks */}
+						{/* Max width control for all other blocks */}
 						{!isContainerBlock && (
 							<UnitControl
 								label={__('Max width', 'designsetgo')}
@@ -196,30 +231,44 @@ addFilter(
 	'editor.BlockEdit',
 	'designsetgo/add-max-width-control',
 	withMaxWidthControl,
-	150 // After animations - layout utility for fine-tuning
+	10 // Early priority to appear above other panels like background video
 );
 
 /**
  * Apply max-width styles in editor using dynamic CSS generation
- * This follows WordPress's pattern for Group block's contentSize
+ * Handles both dsgMaxWidth (regular blocks) and constrainWidth (container blocks)
  */
 const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, name, clientId } = props;
-		const { dsgMaxWidth, align, textAlign } = attributes;
+		const { dsgMaxWidth, constrainWidth, contentWidth, align, textAlign } =
+			attributes;
 
 		// Skip excluded blocks
 		if (EXCLUDED_BLOCKS.includes(name)) {
 			return <BlockListBlock {...props} />;
 		}
 
+		// Check if this is a container block
+		const isContainerBlock = [
+			'designsetgo/container',
+			'designsetgo/stack',
+			'designsetgo/flex',
+			'designsetgo/grid',
+		].includes(name);
+
+		// Determine which width value to use
+		let maxWidth;
+		if (isContainerBlock) {
+			maxWidth = constrainWidth ? contentWidth || '1200px' : null;
+		} else {
+			maxWidth = dsgMaxWidth;
+		}
+
 		// Generate dynamic CSS for this block
-		// This mimics WordPress's approach for Group block content width
 		const styleId = `dsg-max-width-${clientId}`;
 
 		// Inject dynamic CSS into editor
-		// IMPORTANT: Always run this effect, even when dsgMaxWidth is empty,
-		// to ensure cleanup happens when max-width is removed
 		useEffect(() => {
 			// Get editor document (may be in iframe)
 			const editorDocument =
@@ -233,7 +282,7 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 			}
 
 			// Create new style element only if max-width is set
-			if (dsgMaxWidth) {
+			if (maxWidth) {
 				const styleElement = editorDocument.createElement('style');
 				styleElement.id = styleId;
 
@@ -249,11 +298,14 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 					marginRight = '0';
 				}
 
-				// Generate CSS similar to WordPress Group block
-				// Use block ID for specificity
+				// Generate CSS - target inner container for container blocks
+				const selector = isContainerBlock
+					? `[data-block="${clientId}"] > .wp-block-designsetgo-${name.replace('designsetgo/', '')}`
+					: `[data-block="${clientId}"]`;
+
 				styleElement.textContent = `
-					[data-block="${clientId}"] {
-						max-width: ${dsgMaxWidth} !important;
+					${selector} {
+						max-width: ${maxWidth} !important;
 						margin-left: ${marginLeft} !important;
 						margin-right: ${marginRight} !important;
 					}
@@ -269,10 +321,18 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 					styleToRemove.remove();
 				}
 			};
-		}, [dsgMaxWidth, clientId, styleId, textAlign, align]);
+		}, [
+			maxWidth,
+			clientId,
+			styleId,
+			textAlign,
+			align,
+			isContainerBlock,
+			name,
+		]);
 
 		// Add class for identification only when max-width is set
-		const className = dsgMaxWidth
+		const className = maxWidth
 			? `${props.className || ''} dsg-has-max-width`.trim()
 			: props.className;
 
@@ -289,13 +349,28 @@ addFilter(
 
 /**
  * Apply max-width styles to block wrapper on frontend
- * Respects text alignment to adjust margins like WordPress Group block
- * @param props
- * @param blockType
- * @param attributes
+ * Only handles dsgMaxWidth for regular blocks
+ * Container blocks (Stack/Flex/Grid) handle their own width via save.js and PHP
+ *
+ * @param {Object} props      - Block wrapper props
+ * @param {Object} blockType  - Block type object
+ * @param {Object} attributes - Block attributes
+ * @return {Object} Modified props with max-width styles
  */
 function applyMaxWidthStyles(props, blockType, attributes) {
 	const { dsgMaxWidth, align, textAlign } = attributes;
+
+	// Skip container blocks - they handle width constraints internally via inner div
+	const isContainerBlock = [
+		'designsetgo/container',
+		'designsetgo/stack',
+		'designsetgo/flex',
+		'designsetgo/grid',
+	].includes(blockType.name);
+
+	if (isContainerBlock) {
+		return props;
+	}
 
 	// Skip if no max-width set
 	if (!dsgMaxWidth) {

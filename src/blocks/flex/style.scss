@@ -7,85 +7,31 @@
  */
 
 .dsg-flex {
-	// CRITICAL: Ensure width includes padding to prevent overflow
-	// When width: 100% is set, padding must be included in the total width
-	box-sizing: border-box;
+	// Container display - WordPress handles flex layout through native layout support
+	// We only need to override specific behaviors
 
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
 
-	// Default padding (theme-level): xl top/bottom, md left/right
-	// Users can override via WordPress padding controls
-	// When padding is set to "Default", these theme values apply
-	padding-top: var(--wp--preset--spacing--xl, 3rem);
-	padding-bottom: var(--wp--preset--spacing--xl, 3rem);
-	padding-left: var(--wp--preset--spacing--md, 1.5rem);
-	padding-right: var(--wp--preset--spacing--md, 1.5rem);
+	// CRITICAL: Fix flex children behavior
+	// With two-div structure, flex children are inside .dsg-flex__inner
+	// Do NOT target .dsg-flex__inner itself (it needs auto margins for centering when constrainWidth is enabled)
+	.dsg-flex__inner > * {
+		// Disable float - WordPress core CSS applies float: right/left for alignment classes
+		// This breaks flex layout, so we override it
+		float: none !important;
 
-	// CRITICAL: Nested containers should have no padding to prevent overflow
-	// Only parent containers should have padding
-	.dsg-stack__inner > &,
-	.dsg-flex > &,
-	.dsg-grid__inner > & {
-		padding: 0;
-	}
-
-	// Let WordPress handle outer wrapper sizing for alignfull support
-	// Inner wrapper uses align-self: stretch (default) to fill parent without overflow
-
-	&__inner {
-		// CRITICAL: Flex container uses align-self: stretch to fill parent
-		// This prevents overflow issues with has-global-padding
-		// align-self: stretch is the default behavior in flex containers
-		box-sizing: border-box;
-
-		// CRITICAL: Remove auto margins from flex children to allow justify-content to work
-		// WordPress width controls add margin: auto which centers blocks, overriding justify-content
-		> * {
-			margin-left: 0 !important;
-			margin-right: 0 !important;
-		}
-
-		// CRITICAL: Nested Flex containers need full width to fill parent
-		// Grid and Stack containers are block-level and auto-fill, don't need explicit width
-		// (adding width: 100% to Grid/Stack causes overflow issues)
-		// Only apply when no custom width is set (inline styles take precedence)
-		// EXCLUDE .dsg-pill to allow alignment to work
-		> .dsg-flex:not([style*="width"]),
-		> .dsg-stack:not([style*="width"]),
-		> .dsg-grid:not([style*="width"]),
-		> .wp-block-group:not([style*="width"]) {
-			width: 100%;
-		}
-
-		// Explicitly exclude pills from full-width (they need to shrink for alignment)
-		> .dsg-pill {
-			width: auto;
-		}
-
-		// CRITICAL: Block-level elements need full width for text-align to work properly
-		// Only apply to text blocks, not buttons or inline elements
-		> h1,
-		> h2,
-		> h3,
-		> h4,
-		> h5,
-		> h6,
-		> p,
-		> .wp-block-heading,
-		> .wp-block-paragraph {
-			width: 100%;
-		}
+		// Remove auto margins - WordPress adds margin-left/right: auto when contentSize is set
+		// This breaks justify-content alignment
+		margin-left: 0 !important;
+		margin-right: 0 !important;
 	}
 
 	// Mobile stack behavior (screens < 768px)
 	&--mobile-stack {
 
 		@media (max-width: 767px) {
-
-			.dsg-flex {
-				flex-direction: column !important;
-			}
+			flex-direction: column !important;
 		}
 	}
 
@@ -105,36 +51,22 @@
 
 			// Apply text color to all text elements for consistency
 			// !important needed to override custom color classes/inline styles
-			h1, h2, h3, h4, h5, h6, p, a, span, li, td, th,
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6,
+			p,
+			a,
+			span,
+			li,
+			td,
+			th,
 			.wp-block-heading,
 			.wp-block-paragraph {
 				color: var(--dsg-hover-text-color) !important;
 			}
 		}
 	}
-}
-
-/**
- * Layout-Constrained Margin Rules
- * Matches WordPress Group block behavior for proper spacing
- * Applied when layout support is enabled (type: constrained)
- *
- * CRITICAL: Uses :where() for zero specificity to allow WordPress's natural
- * cascade and blockGap system to work properly.
- */
-
-// First child should have no top margin
-:root :where(.dsg-flex.is-layout-constrained) > :first-child {
-	margin-block-start: 0;
-}
-
-// All children get consistent spacing
-:root :where(.dsg-flex.is-layout-constrained) > * {
-	margin-block-start: 0;
-	margin-block-end: 0;
-}
-
-// Last child should have no bottom margin
-:root :where(.dsg-flex.is-layout-constrained) > :last-child {
-	margin-block-end: 0;
 }

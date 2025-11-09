@@ -7,126 +7,23 @@
  */
 
 .dsg-flex {
-	// CRITICAL: Ensure width includes padding to prevent overflow
-	// Must match style.scss for editor/frontend parity
-	box-sizing: border-box;
-
 	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
 
-	// CRITICAL: Must duplicate default padding from style.scss for editor/frontend parity
-	// Default padding (theme-level): xl top/bottom, md left/right
-	padding-top: var(--wp--preset--spacing--xl, 3rem);
-	padding-bottom: var(--wp--preset--spacing--xl, 3rem);
-	padding-left: var(--wp--preset--spacing--md, 1.5rem);
-	padding-right: var(--wp--preset--spacing--md, 1.5rem);
+	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
+	// Fix flex children behavior
+	// With two-div structure, flex children are inside .dsg-flex__inner
+	// Do NOT target .dsg-flex__inner itself (it needs auto margins for centering when constrainWidth is enabled)
+	.dsg-flex__inner > * {
+		// Disable float - WordPress core CSS applies float: right/left for alignment classes
+		// This breaks flex layout, so we override it
+		float: none !important;
 
-	// CRITICAL: Nested containers should have no padding to prevent overflow
-	// Must be duplicated from style.scss for editor/frontend parity
-	// Only parent containers should have padding
-	.dsg-stack__inner > &,
-	.dsg-flex > &,
-	.dsg-grid__inner > &,
-	.dsg-stack__inner > [data-block] &,
-	.dsg-flex > [data-block] &,
-	.dsg-grid__inner > [data-block] & {
-		padding: 0;
-	}
-
-	// CRITICAL: Ensure Flex takes full width when nested in another container
-	// Without this, nested Flex containers only take up content width in editor
-	.dsg-stack__inner > [data-block] &,
-	.dsg-flex > [data-block] &,
-	.dsg-grid__inner > [data-block] & {
-		width: 100% !important;
-	}
-
-	// Visual indicator in editor
-	position: relative;
-
-	// Make container more clickable by ensuring it catches clicks
-	&::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		pointer-events: none; // Don't block clicks on children
-		background: transparent;
-		z-index: -1; // Behind children
-	}
-
-	&__inner {
-		// CRITICAL: Flex container needs full width for justify-content/align-items to work
-		// Must be duplicated from style.scss for editor/frontend parity
-		width: 100%;
-		position: relative; // Establish stacking context
-
-		// CRITICAL: Remove auto margins from flex children to allow justify-content to work
-		// Must be duplicated from style.scss for editor/frontend parity
-		// WordPress width controls add margin: auto which centers blocks, overriding justify-content
-		> *,
-		> [data-block] {
-			margin-left: 0 !important;
-			margin-right: 0 !important;
-		}
-
-		// CRITICAL: Nested containers need full width to fill parent
-		// Must be duplicated from style.scss for editor/frontend parity
-		// Frontend: nested containers are direct children
-		// Only apply when no custom width is set (inline styles take precedence)
-		// EXCLUDE .dsg-pill to allow alignment to work
-		> .dsg-flex:not([style*="width"]),
-		> .dsg-stack:not([style*="width"]),
-		> .dsg-grid:not([style*="width"]),
-		> .wp-block-group:not([style*="width"]) {
-			width: 100% !important;
-		}
-
-		// Explicitly exclude pills from full-width (they need to shrink for alignment)
-		> .dsg-pill,
-		> [data-block] > .dsg-pill {
-			width: auto !important;
-		}
-
-		// CRITICAL: Editor-specific - nested containers wrapped in [data-block]
-		// WordPress wraps each block in [data-block] element in editor
-		// Only apply when no custom width is set (inline styles take precedence)
-		> [data-block] > .dsg-flex:not([style*="width"]),
-		> [data-block] > .dsg-stack:not([style*="width"]),
-		> [data-block] > .dsg-grid:not([style*="width"]),
-		> [data-block] > .wp-block-group:not([style*="width"]) {
-			width: 100% !important;
-		}
-
-		// CRITICAL: Ensure block appender takes full width in flex layouts
-		// Fixes narrow appender issue in flex containers
-		> .block-editor-block-list__layout > .block-editor-default-block-appender {
-			width: 100%;
-			flex-basis: 100%; // Override any flex shrinking
-		}
-
-		// CRITICAL: Ensure ButtonBlockAppender is full width when container is empty
-		// High specificity to override WordPress core styles
-		/* stylelint-disable-next-line selector-class-pattern */
-		.block-list-appender:only-child,
-		.block-editor-button-block-appender {
-			width: 100% !important;
-			flex-basis: 100% !important; // Override any flex shrinking
-		}
-
-		// CRITICAL: Block-level elements need full width for text-align to work properly
-		// Must be duplicated from style.scss for editor/frontend parity
-		> h1,
-		> h2,
-		> h3,
-		> h4,
-		> h5,
-		> h6,
-		> p,
-		> .wp-block-heading,
-		> .wp-block-paragraph {
-			width: 100%;
-		}
+		// Remove auto margins - WordPress adds margin-left/right: auto when contentSize is set
+		// This breaks justify-content alignment
+		margin-left: 0 !important;
+		margin-right: 0 !important;
 	}
 
 	// Show outline when selected (editor-only)
@@ -140,17 +37,12 @@
 	&--mobile-stack {
 
 		@media (max-width: 767px) {
-
-			.dsg-flex {
-				flex-direction: column !important;
-			}
+			flex-direction: column !important;
 		}
 	}
 
 	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
 	// Hover background and text colors using CSS custom properties
-	// CRITICAL: Only apply hover when variables are actually set on THIS element
-	// This prevents hover bleeding to adjacent containers that don't have hover settings
 	&:hover {
 		// Only apply background if hover background is set
 		&[style*="--dsg-hover-bg-color"] {
@@ -158,36 +50,25 @@
 		}
 
 		// Only apply text color if hover text color is set
-		// Use !important to override custom text colors set by users
 		&[style*="--dsg-hover-text-color"] {
 			color: var(--dsg-hover-text-color) !important;
 
-			// Apply text color to all text elements for consistency
-			// !important needed to override custom color classes/inline styles
-			h1, h2, h3, h4, h5, h6, p, a, span, li, td, th,
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6,
+			p,
+			a,
+			span,
+			li,
+			td,
+			th,
 			.wp-block-heading,
 			.wp-block-paragraph {
 				color: var(--dsg-hover-text-color) !important;
 			}
-		}
-	}
-}
-
-// ========================================
-// Hide padding controls for nested containers
-// When a container is nested inside another container, padding should default to 0
-// Only parent containers should have padding controls visible
-// Uses CSS to detect if a flex is nested inside any container block
-// ========================================
-body:has(.dsg-grid .dsg-flex.is-selected),
-body:has(.dsg-flex .dsg-flex.is-selected),
-body:has(.dsg-stack .dsg-flex.is-selected) {
-	// Hide padding controls in Dimensions panel
-	.block-editor-block-inspector__advanced
-		.components-panel__body:has(.components-base-control:has([aria-label*='Padding' i])) {
-
-		.components-base-control:has([aria-label*='Padding' i]) {
-			display: none !important;
 		}
 	}
 }
