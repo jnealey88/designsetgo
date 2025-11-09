@@ -75,11 +75,18 @@
 		// Must be duplicated from style.scss for editor/frontend parity
 		// Frontend: nested containers are direct children
 		// Only apply when no custom width is set (inline styles take precedence)
+		// EXCLUDE .dsg-pill to allow alignment to work
 		> .dsg-flex:not([style*="width"]),
 		> .dsg-stack:not([style*="width"]),
 		> .dsg-grid:not([style*="width"]),
 		> .wp-block-group:not([style*="width"]) {
 			width: 100% !important;
+		}
+
+		// Explicitly exclude pills from full-width (they need to shrink for alignment)
+		> .dsg-pill,
+		> [data-block] > .dsg-pill {
+			width: auto !important;
 		}
 
 		// CRITICAL: Editor-specific - nested containers wrapped in [data-block]
@@ -94,7 +101,7 @@
 
 		// CRITICAL: Ensure block appender takes full width in flex layouts
 		// Fixes narrow appender issue in flex containers
-		> .block-list-appender {
+		> .block-editor-block-list__layout > .block-editor-default-block-appender {
 			width: 100%;
 			flex-basis: 100%; // Override any flex shrinking
 		}
@@ -123,7 +130,9 @@
 	// CRITICAL: Mobile stack behavior
 	// Must be duplicated from style.scss for editor/frontend parity
 	&--mobile-stack {
+
 		@media (max-width: 767px) {
+
 			.dsg-flex__inner {
 				flex-direction: column !important;
 			}
@@ -168,6 +177,7 @@ body:has(.dsg-stack .dsg-flex.is-selected) {
 	// Hide padding controls in Dimensions panel
 	.block-editor-block-inspector__advanced
 		.components-panel__body:has(.components-base-control:has([aria-label*='Padding' i])) {
+
 		.components-base-control:has([aria-label*='Padding' i]) {
 			display: none !important;
 		}

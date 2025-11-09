@@ -42,11 +42,17 @@
 		// Grid containers are block-level and auto-fill, don't need explicit width
 		// (adding width: 100% to Grid causes overflow issues)
 		// Only apply when no custom width is set (inline styles take precedence)
+		// EXCLUDE .dsg-pill to allow alignment to work
 		> .dsg-flex:not([style*="width"]),
 		> .dsg-stack:not([style*="width"]),
 		> .dsg-grid:not([style*="width"]),
 		> .wp-block-group:not([style*="width"]) {
 			width: 100%;
+		}
+
+		// Explicitly exclude pills from full-width (they need to shrink for alignment)
+		> .dsg-pill {
+			width: auto;
 		}
 
 		// CRITICAL: Block-level elements need full width for text-align to work properly
