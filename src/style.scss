@@ -20,6 +20,7 @@
 @use './extensions/overlay/style' as overlay;
 @use './extensions/grid-span/style' as grid-span;
 @use './extensions/reveal-control/styles' as reveal-control;
+@use './extensions/clickable-group/styles' as clickable-group;
 
 // Custom blocks (frontend)
 // Container blocks

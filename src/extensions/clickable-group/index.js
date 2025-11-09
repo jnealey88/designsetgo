@@ -22,8 +22,7 @@ import {
 import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 
-// Import styles
-import './styles.scss';
+// Import editor styles only (frontend styles imported in src/styles/style.scss)
 import './editor.scss';
 
 // Import frontend JavaScript

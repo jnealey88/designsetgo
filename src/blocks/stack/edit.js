@@ -21,8 +21,7 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
-import { alignLeft, alignCenter, alignRight } from '@wordpress/icons';
+import { PanelBody, SelectControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -119,30 +118,6 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 	return (
 		<>
 			<BlockControls>
-				<ToolbarGroup>
-					<ToolbarButton
-						icon={alignLeft}
-						label={__('Align items left', 'designsetgo')}
-						isPressed={alignItems === 'flex-start'}
-						onClick={() =>
-							setAttributes({ alignItems: 'flex-start' })
-						}
-					/>
-					<ToolbarButton
-						icon={alignCenter}
-						label={__('Align items center', 'designsetgo')}
-						isPressed={alignItems === 'center'}
-						onClick={() => setAttributes({ alignItems: 'center' })}
-					/>
-					<ToolbarButton
-						icon={alignRight}
-						label={__('Align items right', 'designsetgo')}
-						isPressed={alignItems === 'flex-end'}
-						onClick={() =>
-							setAttributes({ alignItems: 'flex-end' })
-						}
-					/>
-				</ToolbarGroup>
 				<AlignmentControl
 					value={textAlign}
 					onChange={(newAlign) =>
@@ -150,6 +125,41 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 					}
 				/>
 			</BlockControls>
+
+			<InspectorControls>
+				<PanelBody
+					title={__('Stack Settings', 'designsetgo')}
+					initialOpen={true}
+				>
+					<SelectControl
+						label={__('Align Items', 'designsetgo')}
+						value={alignItems}
+						options={[
+							{
+								label: __('Start', 'designsetgo'),
+								value: 'flex-start',
+							},
+							{
+								label: __('Center', 'designsetgo'),
+								value: 'center',
+							},
+							{
+								label: __('End', 'designsetgo'),
+								value: 'flex-end',
+							},
+						]}
+						onChange={(value) =>
+							setAttributes({ alignItems: value })
+						}
+						help={__(
+							'Horizontal alignment of stacked items',
+							'designsetgo'
+						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+				</PanelBody>
+			</InspectorControls>
 
 			<InspectorControls group="color">
 				<ColorGradientSettingsDropdown

@@ -28,6 +28,7 @@
 			"padding": true,
 			"blockGap": false,
 			"__experimentalDefaultControls": {
+				"margin": true,
 				"padding": true
 			}
 		},

@@ -16,6 +16,7 @@ import {
 import { getIcon } from '../icon/utils/svg-icons';
 import { IconPickerPanel } from './components/inspector/IconPickerPanel';
 import { LinkSettingsPanel } from './components/inspector/LinkSettingsPanel';
+import { SpacingPanel } from './components/inspector/SpacingPanel';
 
 /**
  * Icon List Item Edit Component
@@ -31,7 +32,7 @@ export default function IconListItemEdit({
 	setAttributes,
 	context,
 }) {
-	const { icon, linkUrl } = attributes;
+	const { icon, linkUrl, contentGap } = attributes;
 
 	// Get settings from parent via context
 	const iconSize = context['designsetgo/iconList/iconSize'] || 32;
@@ -84,6 +85,9 @@ export default function IconListItemEdit({
 			className: 'dsg-icon-list-item__content',
 			style: {
 				textAlign: getTextAlign(),
+				display: 'flex',
+				flexDirection: 'column',
+				gap: `${contentGap}px`,
 			},
 		},
 		{
@@ -104,6 +108,10 @@ export default function IconListItemEdit({
 		<>
 			<InspectorControls>
 				<IconPickerPanel icon={icon} setAttributes={setAttributes} />
+				<SpacingPanel
+					contentGap={contentGap}
+					setAttributes={setAttributes}
+				/>
 				<LinkSettingsPanel
 					linkUrl={linkUrl}
 					linkTarget={attributes.linkTarget}

@@ -18,7 +18,7 @@ import { getIcon } from '../icon/utils/svg-icons';
  * @return {JSX.Element} Icon List Item save component
  */
 export default function IconListItemSave({ attributes, context = {} }) {
-	const { icon, linkUrl, linkTarget, linkRel } = attributes;
+	const { icon, linkUrl, linkTarget, linkRel, contentGap } = attributes;
 
 	// Get settings from parent via context with safe defaults
 	const iconSize = context['designsetgo/iconList/iconSize'] || 32;
@@ -70,6 +70,9 @@ export default function IconListItemSave({ attributes, context = {} }) {
 		className: 'dsg-icon-list-item__content',
 		style: {
 			textAlign: getTextAlign(),
+			display: 'flex',
+			flexDirection: 'column',
+			gap: `${contentGap}px`,
 		},
 	});
 
