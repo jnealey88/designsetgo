@@ -26,10 +26,10 @@
 	// Must be duplicated from style.scss for editor/frontend parity
 	// Only parent containers should have padding
 	.dsg-stack__inner > &,
-	.dsg-flex__inner > &,
+	.dsg-flex > &,
 	.dsg-grid__inner > &,
 	.dsg-stack__inner > [data-block] &,
-	.dsg-flex__inner > [data-block] &,
+	.dsg-flex > [data-block] &,
 	.dsg-grid__inner > [data-block] & {
 		padding: 0;
 	}
@@ -37,7 +37,7 @@
 	// CRITICAL: Ensure Flex takes full width when nested in another container
 	// Without this, nested Flex containers only take up content width in editor
 	.dsg-stack__inner > [data-block] &,
-	.dsg-flex__inner > [data-block] &,
+	.dsg-flex > [data-block] &,
 	.dsg-grid__inner > [data-block] & {
 		width: 100% !important;
 	}
@@ -141,7 +141,7 @@
 
 		@media (max-width: 767px) {
 
-			.dsg-flex__inner {
+			.dsg-flex {
 				flex-direction: column !important;
 			}
 		}

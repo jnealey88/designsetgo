@@ -21,9 +21,8 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
-import { useRef } from '@wordpress/element';
 
 /**
  * Flex Container Edit Component
@@ -59,12 +58,6 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	// Calculate effective content width
 	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
-	// Reference to inner container div (where the empty space actually is)
-	const innerRef = useRef(null);
-
-	// Get dispatch function to select this block
-	const { selectBlock } = useDispatch('core/block-editor');
-
 	// Get inner blocks to determine if container is empty
 	const hasInnerBlocks = useSelect(
 		(select) => {
@@ -74,24 +67,6 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		},
 		[clientId]
 	);
-
-	/**
-	 * Handle clicks on the container to enable selection when clicking empty space
-	 * This allows clicks between flex items to select the container
-	 *
-	 * @param {MouseEvent} event - The click event.
-	 */
-	const handleContainerClick = (event) => {
-		// Only handle clicks directly on the inner container (empty space between blocks)
-		// Don't handle clicks on child blocks themselves
-		if (
-			event.target === innerRef.current ||
-			event.target.classList.contains('dsg-flex__inner')
-		) {
-			event.stopPropagation();
-			selectBlock(clientId);
-		}
-	};
 
 	// Calculate inner styles declaratively
 	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
@@ -108,13 +83,14 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		}),
 	};
 
-	// Block wrapper props
-	// CRITICAL: Use align-self: stretch to fill parent width (must match save.js)
-	// align-self: stretch ensures nested containers fill parent without overflow issues
+	// Block wrapper props with merged inner blocks props (must match save.js)
+	// CRITICAL: Merge blockProps and innerBlocksProps into single div to fix paste behavior
 	const blockProps = useBlockProps({
 		className: `dsg-flex ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
 		style: {
 			alignSelf: 'stretch',
+			// Merge inner styles with block styles
+			...innerStyles,
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
 			}),
@@ -130,23 +106,15 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		},
 	});
 
-	// Inner blocks props with declarative styles
+	// Merge block props with inner blocks props
 	// Show big button only when container is empty, otherwise use default appender
-	const innerBlocksProps = useInnerBlocksProps(
-		{
-			className: 'dsg-flex__inner',
-			style: innerStyles,
-			ref: innerRef,
-			onClick: handleContainerClick,
-		},
-		{
-			orientation: direction === 'column' ? 'vertical' : 'horizontal',
-			templateLock: false,
-			renderAppender: hasInnerBlocks
-				? undefined
-				: InnerBlocks.ButtonBlockAppender,
-		}
-	);
+	const innerBlocksProps = useInnerBlocksProps(blockProps, {
+		orientation: direction === 'column' ? 'vertical' : 'horizontal',
+		templateLock: false,
+		renderAppender: hasInnerBlocks
+			? undefined
+			: InnerBlocks.ButtonBlockAppender,
+	});
 
 	return (
 		<>
@@ -362,9 +330,7 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 				/>
 			</InspectorControls>
 
-			<div {...blockProps}>
-				<div {...innerBlocksProps} />
-			</div>
+			<div {...innerBlocksProps} />
 		</>
 	);
 }

@@ -29,10 +29,10 @@
 	// Only parent containers should have padding
 	.dsg-stack__inner > &,
 	.dsg-flex__inner > &,
-	.dsg-grid__inner > &,
+	.dsg-grid > &,
 	.dsg-stack__inner > [data-block] &,
 	.dsg-flex__inner > [data-block] &,
-	.dsg-grid__inner > [data-block] & {
+	.dsg-grid > [data-block] & {
 		padding: 0;
 	}
 
@@ -40,7 +40,7 @@
 	// Without this, nested Grids only take up content width in editor
 	.dsg-stack__inner > [data-block] &,
 	.dsg-flex__inner > [data-block] &,
-	.dsg-grid__inner > [data-block] & {
+	.dsg-grid > [data-block] & {
 		width: 100% !important;
 	}
 
@@ -128,7 +128,7 @@
 	@media (max-width: 1024px) {
 
 		@for $i from 1 through 12 {
-			&.dsg-grid-cols-tablet-#{$i} .dsg-grid__inner {
+			&.dsg-grid-cols-tablet-#{$i} .dsg-grid {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;
 			}
 		}
@@ -138,7 +138,7 @@
 	@media (max-width: 767px) {
 
 		@for $i from 1 through 12 {
-			&.dsg-grid-cols-mobile-#{$i} .dsg-grid__inner {
+			&.dsg-grid-cols-mobile-#{$i} .dsg-grid {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;
 			}
 		}
@@ -170,21 +170,47 @@
 	}
 }
 
+// CRITICAL: Force grid items to respect responsive column counts on tablet
+// Must be outside .dsg-grid scope for proper specificity
+// MUST be duplicated from style.scss for editor/frontend parity
+@media (max-width: 1024px) and (min-width: 768px) {
+	// For each possible tablet column configuration, constrain column spans
+	// This duplicates the grid-span extension logic but with additional selectors for higher specificity
+	@for $cols from 1 through 12 {
+		// Target grids with this tablet column count
+		.dsg-grid-cols-tablet-#{$cols} .dsg-grid {
+			// Force any child with grid-column spanning more than available columns
+			// to constrain to the tablet column count
+			@for $span from ($cols + 1) through 12 {
+				> *[style*="grid-column: span #{$span}"],
+				> *[style*="gridColumn:span#{$span}"],
+				> *[style*="grid-column:span #{$span}"],
+				> [data-block][style*="grid-column: span #{$span}"],
+				> [data-block][style*="gridColumn:span#{$span}"],
+				> [data-block][style*="grid-column:span #{$span}"] {
+					grid-column: span #{$cols} !important;
+				}
+			}
+		}
+	}
+}
+
 // CRITICAL: Force grid items and nested layouts to stack properly on mobile
 // Must be outside .dsg-grid scope for proper specificity
+// MUST be duplicated from style.scss for editor/frontend parity
 @media (max-width: 767px) {
 	// Force all grid items with column spans to span 1 on mobile
 	// High specificity to override inline styles with data-block selectors
-	.dsg-grid__inner > [style*="grid-column"],
-	.dsg-grid__inner > [data-block][style*="grid-column"],
-	.dsg-grid__inner > [data-block] {
+	.dsg-grid > [style*="grid-column"],
+	.dsg-grid > [data-block][style*="grid-column"],
+	.dsg-grid > [data-block] {
 		grid-column: span 1 !important;
 	}
 
 	// Force nested layouts inside grid items to stack
-	.dsg-grid__inner > * {
+	.dsg-grid > * {
 		// Force any nested grid to single column
-		.dsg-grid__inner {
+		.dsg-grid {
 			grid-template-columns: 1fr !important;
 		}
 

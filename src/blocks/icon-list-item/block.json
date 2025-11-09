@@ -28,6 +28,7 @@
 		"designsetgo/iconList/layout",
 		"designsetgo/iconList/iconSize",
 		"designsetgo/iconList/iconColor",
+		"designsetgo/iconList/iconBackgroundColor",
 		"designsetgo/iconList/gap",
 		"designsetgo/iconList/iconPosition"
 	],

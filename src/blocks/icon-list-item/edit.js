@@ -37,6 +37,8 @@ export default function IconListItemEdit({
 	// Get settings from parent via context
 	const iconSize = context['designsetgo/iconList/iconSize'] || 32;
 	const iconColor = context['designsetgo/iconList/iconColor'] || '';
+	const iconBackgroundColor =
+		context['designsetgo/iconList/iconBackgroundColor'] || '';
 	const iconPosition = context['designsetgo/iconList/iconPosition'] || 'left';
 
 	// Calculate text alignment based on icon position
@@ -61,12 +63,24 @@ export default function IconListItemEdit({
 
 	// Calculate icon wrapper styles
 	const iconWrapperStyles = {
-		width: `${iconSize}px`,
-		height: `${iconSize}px`,
-		minWidth: `${iconSize}px`,
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+		...(iconBackgroundColor
+			? {
+					width: `${iconSize + 16}px`,
+					height: `${iconSize + 16}px`,
+					minWidth: `${iconSize + 16}px`,
+					backgroundColor: iconBackgroundColor,
+					padding: '8px',
+					borderRadius: '4px',
+					boxSizing: 'border-box',
+				}
+			: {
+					width: `${iconSize}px`,
+					height: `${iconSize}px`,
+					minWidth: `${iconSize}px`,
+				}),
 		...(iconColor && {
 			color: iconColor,
 			'--dsg-icon-color': iconColor,

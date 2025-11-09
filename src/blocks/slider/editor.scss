@@ -3,7 +3,7 @@
  * CRITICAL: Imports base styles from style.scss for editor/frontend parity
  */
 
-@import './style.scss';
+@import './style';
 
 // Editor-specific adjustments
 .dsg-slider {
@@ -65,8 +65,9 @@
 
 	// Editor-only: Highlight selected slide
 	.dsg-slide {
+
 		&.is-selected {
-			outline: 2px solid #2271b1;
+			outline: 2px solid #2563eb;
 			outline-offset: -2px;
 		}
 	}
@@ -89,6 +90,7 @@
 	}
 
 	// Make appender visible in editor
+	/* stylelint-disable-next-line selector-class-pattern */
 	.block-list-appender {
 		margin-left: var(--dsg-slider-gap);
 	}
@@ -97,6 +99,7 @@
 	// These effects use absolute positioning + opacity: 0, which hides all slides in editor
 	&.dsg-slider--effect-fade,
 	&.dsg-slider--effect-zoom {
+
 		.dsg-slider__track > .dsg-slide {
 			position: relative !important;
 			opacity: 1 !important;
@@ -108,6 +111,7 @@
 
 // Editor: Block toolbar
 .wp-block-designsetgo-slider {
+
 	.block-editor-block-list__block {
 		margin-top: 0;
 		margin-bottom: 0;

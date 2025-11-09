@@ -32,6 +32,7 @@ export default function IconListEdit({ attributes, setAttributes, clientId }) {
 		layout,
 		iconSize,
 		iconColor,
+		iconBackgroundColor,
 		gap,
 		iconPosition,
 		columns,
@@ -66,14 +67,17 @@ export default function IconListEdit({ attributes, setAttributes, clientId }) {
 	}
 
 	// Calculate container styles declaratively
+	// Determine flex direction based on layout
+	let flexDirection;
+	if (layout === 'vertical') {
+		flexDirection = 'column';
+	} else if (layout === 'horizontal') {
+		flexDirection = 'row';
+	}
+
 	const containerStyles = {
 		display: layout === 'grid' ? 'grid' : 'flex',
-		flexDirection:
-			layout === 'vertical'
-				? 'column'
-				: layout === 'horizontal'
-					? 'row'
-					: undefined,
+		flexDirection,
 		gridTemplateColumns:
 			layout === 'grid' ? `repeat(${columns}, 1fr)` : undefined,
 		gap,
@@ -119,13 +123,22 @@ export default function IconListEdit({ attributes, setAttributes, clientId }) {
 			<InspectorControls group="color">
 				<ColorGradientSettingsDropdown
 					panelId={clientId}
-					title={__('Icon Color', 'designsetgo')}
+					title={__('Icon Colors', 'designsetgo')}
 					settings={[
 						{
 							label: __('Icon Color', 'designsetgo'),
 							colorValue: iconColor,
 							onColorChange: (color) =>
 								setAttributes({ iconColor: color || '' }),
+							clearable: true,
+						},
+						{
+							label: __('Icon Background Color', 'designsetgo'),
+							colorValue: iconBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({
+									iconBackgroundColor: color || '',
+								}),
 							clearable: true,
 						},
 					]}

@@ -63,6 +63,7 @@
 		"designsetgo/iconList/layout": "layout",
 		"designsetgo/iconList/iconSize": "iconSize",
 		"designsetgo/iconList/iconColor": "iconColor",
+		"designsetgo/iconList/iconBackgroundColor": "iconBackgroundColor",
 		"designsetgo/iconList/gap": "gap",
 		"designsetgo/iconList/iconPosition": "iconPosition"
 	},
@@ -76,6 +77,10 @@
 			"default": 32
 		},
 		"iconColor": {
+			"type": "string",
+			"default": ""
+		},
+		"iconBackgroundColor": {
 			"type": "string",
 			"default": ""
 		},

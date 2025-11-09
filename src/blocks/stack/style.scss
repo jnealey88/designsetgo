@@ -24,51 +24,44 @@
 
 	// CRITICAL: Nested containers should have no padding to prevent overflow
 	// Only parent containers should have padding
-	.dsg-stack__inner > &,
-	.dsg-flex__inner > &,
-	.dsg-grid__inner > & {
+	.dsg-stack > &,
+	.dsg-flex > &,
+	.dsg-grid > & {
 		padding: 0;
 	}
 
 	// Let WordPress handle outer wrapper sizing for alignfull support
-	// Inner wrapper uses align-self: stretch (default) to fill parent without overflow
+	// align-self: stretch (default) fills parent without overflow
 
-	&__inner {
-		// CRITICAL: Stack container uses align-self: stretch to fill parent
-		// This prevents overflow issues with has-global-padding
-		// align-self: stretch is the default behavior in flex containers
-		box-sizing: border-box;
+	// CRITICAL: Nested Flex/Stack containers need full width to fill parent
+	// Grid containers are block-level and auto-fill, don't need explicit width
+	// (adding width: 100% to Grid causes overflow issues)
+	// Only apply when no custom width is set (inline styles take precedence)
+	// EXCLUDE .dsg-pill to allow alignment to work
+	> .dsg-flex:not([style*="width"]),
+	> .dsg-stack:not([style*="width"]),
+	> .dsg-grid:not([style*="width"]),
+	> .wp-block-group:not([style*="width"]) {
+		width: 100%;
+	}
 
-		// CRITICAL: Nested Flex/Stack containers need full width to fill parent
-		// Grid containers are block-level and auto-fill, don't need explicit width
-		// (adding width: 100% to Grid causes overflow issues)
-		// Only apply when no custom width is set (inline styles take precedence)
-		// EXCLUDE .dsg-pill to allow alignment to work
-		> .dsg-flex:not([style*="width"]),
-		> .dsg-stack:not([style*="width"]),
-		> .dsg-grid:not([style*="width"]),
-		> .wp-block-group:not([style*="width"]) {
-			width: 100%;
-		}
+	// Explicitly exclude pills from full-width (they need to shrink for alignment)
+	> .dsg-pill {
+		width: auto;
+	}
 
-		// Explicitly exclude pills from full-width (they need to shrink for alignment)
-		> .dsg-pill {
-			width: auto;
-		}
-
-		// CRITICAL: Block-level elements need full width for text-align to work properly
-		// Only apply to text blocks, not buttons or inline elements
-		> h1,
-		> h2,
-		> h3,
-		> h4,
-		> h5,
-		> h6,
-		> p,
-		> .wp-block-heading,
-		> .wp-block-paragraph {
-			width: 100%;
-		}
+	// CRITICAL: Block-level elements need full width for text-align to work properly
+	// Only apply to text blocks, not buttons or inline elements
+	> h1,
+	> h2,
+	> h3,
+	> h4,
+	> h5,
+	> h6,
+	> p,
+	> .wp-block-heading,
+	> .wp-block-paragraph {
+		width: 100%;
 	}
 
 	// Hover background and text colors using CSS custom properties
@@ -106,17 +99,17 @@
  */
 
 // First child should have no top margin
-:root :where(.dsg-stack__inner.is-layout-constrained) > :first-child {
+:root :where(.dsg-stack.is-layout-constrained) > :first-child {
 	margin-block-start: 0;
 }
 
 // All children get consistent vertical spacing
-:root :where(.dsg-stack__inner.is-layout-constrained) > * {
+:root :where(.dsg-stack.is-layout-constrained) > * {
 	margin-block-start: 1.2rem;
 	margin-block-end: 0;
 }
 
 // Last child should have no bottom margin
-:root :where(.dsg-stack__inner.is-layout-constrained) > :last-child {
+:root :where(.dsg-stack.is-layout-constrained) > :last-child {
 	margin-block-end: 0;
 }

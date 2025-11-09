@@ -104,13 +104,14 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		}),
 	};
 
-	// Block wrapper props with responsive column classes
-	// CRITICAL: Use align-self: stretch to fill parent width (must match save.js)
-	// align-self: stretch ensures nested containers fill parent without overflow issues
+	// Block wrapper props with merged inner blocks props (must match save.js)
+	// CRITICAL: Merge blockProps and innerBlocksProps into single div to fix paste behavior
 	const blockProps = useBlockProps({
 		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
 		style: {
 			alignSelf: 'stretch',
+			// Merge inner styles with block styles
+			...innerStyles,
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
 			}),
@@ -126,20 +127,14 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		},
 	});
 
-	// Inner blocks props with declarative styles
+	// Merge block props with inner blocks props
 	// Show big button only when container is empty, otherwise use default appender
-	const innerBlocksProps = useInnerBlocksProps(
-		{
-			className: 'dsg-grid__inner',
-			style: innerStyles,
-		},
-		{
-			templateLock: false,
-			renderAppender: hasInnerBlocks
-				? undefined
-				: InnerBlocks.ButtonBlockAppender,
-		}
-	);
+	const innerBlocksProps = useInnerBlocksProps(blockProps, {
+		templateLock: false,
+		renderAppender: hasInnerBlocks
+			? undefined
+			: InnerBlocks.ButtonBlockAppender,
+	});
 
 	return (
 		<>
@@ -387,9 +382,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 				</PanelBody>
 			</InspectorControls>
 
-			<div {...blockProps}>
-				<div {...innerBlocksProps} />
-			</div>
+			<div {...innerBlocksProps} />
 		</>
 	);
 }

@@ -25,87 +25,85 @@
 	// CRITICAL: Nested containers should have no padding to prevent overflow
 	// Must be duplicated from style.scss for editor/frontend parity
 	// Only parent containers should have padding
-	.dsg-stack__inner > &,
-	.dsg-flex__inner > &,
-	.dsg-grid__inner > &,
-	.dsg-stack__inner > [data-block] &,
-	.dsg-flex__inner > [data-block] &,
-	.dsg-grid__inner > [data-block] & {
+	.dsg-stack > &,
+	.dsg-flex > &,
+	.dsg-grid > &,
+	.dsg-stack > [data-block] &,
+	.dsg-flex > [data-block] &,
+	.dsg-grid > [data-block] & {
 		padding: 0;
 	}
 
 	// CRITICAL: Ensure Stack takes full width when nested in another container
 	// Without this, nested Stacks only take up content width in editor
 	// Only apply when no custom width is set (inline styles take precedence)
-	.dsg-stack__inner > [data-block] &:not([style*="width"]),
-	.dsg-flex__inner > [data-block] &:not([style*="width"]),
-	.dsg-grid__inner > [data-block] &:not([style*="width"]) {
+	.dsg-stack > [data-block] &:not([style*="width"]),
+	.dsg-flex > [data-block] &:not([style*="width"]),
+	.dsg-grid > [data-block] &:not([style*="width"]) {
 		width: 100% !important;
 	}
 
 	// Visual indicator in editor
 	position: relative;
 
-	&__inner {
-		// CRITICAL: Stack container needs full width for alignment properties to work
-		// Must be duplicated from style.scss for editor/frontend parity
+	// CRITICAL: Stack container needs full width for alignment properties to work
+	// Must be duplicated from style.scss for editor/frontend parity
+	width: 100%;
+
+	// CRITICAL: Nested containers need full width to fill parent
+	// Must be duplicated from style.scss for editor/frontend parity
+	// Frontend: nested containers are direct children
+	// Only apply when no custom width is set (inline styles take precedence)
+	// EXCLUDE .dsg-pill to allow alignment to work
+	> .dsg-flex:not([style*="width"]),
+	> .dsg-stack:not([style*="width"]),
+	> .dsg-grid:not([style*="width"]),
+	> .wp-block-group:not([style*="width"]) {
+		width: 100% !important;
+	}
+
+	// Explicitly exclude pills from full-width (they need to shrink for alignment)
+	> .dsg-pill,
+	> [data-block] > .dsg-pill {
+		width: auto !important;
+	}
+
+	// CRITICAL: Editor-specific - nested containers wrapped in [data-block]
+	// WordPress wraps each block in [data-block] element in editor
+	// Only apply when no custom width is set (inline styles take precedence)
+	> [data-block] > .dsg-flex:not([style*="width"]),
+	> [data-block] > .dsg-stack:not([style*="width"]),
+	> [data-block] > .dsg-grid:not([style*="width"]),
+	> [data-block] > .wp-block-group:not([style*="width"]) {
+		width: 100% !important;
+	}
+
+	// CRITICAL: Ensure block appender takes full width in stack layouts
+	// Fixes narrow appender issue in stack containers
+	> .block-editor-block-list__layout > .block-editor-default-block-appender {
 		width: 100%;
+	}
 
-		// CRITICAL: Nested containers need full width to fill parent
-		// Must be duplicated from style.scss for editor/frontend parity
-		// Frontend: nested containers are direct children
-		// Only apply when no custom width is set (inline styles take precedence)
-		// EXCLUDE .dsg-pill to allow alignment to work
-		> .dsg-flex:not([style*="width"]),
-		> .dsg-stack:not([style*="width"]),
-		> .dsg-grid:not([style*="width"]),
-		> .wp-block-group:not([style*="width"]) {
-			width: 100% !important;
-		}
+	// CRITICAL: Ensure ButtonBlockAppender is full width when container is empty
+	// High specificity to override WordPress core styles
+	/* stylelint-disable-next-line selector-class-pattern */
+	.block-list-appender:only-child,
+	.block-editor-button-block-appender {
+		width: 100% !important;
+	}
 
-		// Explicitly exclude pills from full-width (they need to shrink for alignment)
-		> .dsg-pill,
-		> [data-block] > .dsg-pill {
-			width: auto !important;
-		}
-
-		// CRITICAL: Editor-specific - nested containers wrapped in [data-block]
-		// WordPress wraps each block in [data-block] element in editor
-		// Only apply when no custom width is set (inline styles take precedence)
-		> [data-block] > .dsg-flex:not([style*="width"]),
-		> [data-block] > .dsg-stack:not([style*="width"]),
-		> [data-block] > .dsg-grid:not([style*="width"]),
-		> [data-block] > .wp-block-group:not([style*="width"]) {
-			width: 100% !important;
-		}
-
-		// CRITICAL: Ensure block appender takes full width in stack layouts
-		// Fixes narrow appender issue in stack containers
-		> .block-editor-block-list__layout > .block-editor-default-block-appender {
-			width: 100%;
-		}
-
-		// CRITICAL: Ensure ButtonBlockAppender is full width when container is empty
-		// High specificity to override WordPress core styles
-		/* stylelint-disable-next-line selector-class-pattern */
-		.block-list-appender:only-child,
-		.block-editor-button-block-appender {
-			width: 100% !important;
-		}
-
-		// CRITICAL: Block-level elements need full width for text-align to work properly
-		// Must be duplicated from style.scss for editor/frontend parity
-		> h1,
-		> h2,
-		> h3,
-		> h4,
-		> h5,
-		> h6,
-		> p,
-		> .wp-block-heading,
-		> .wp-block-paragraph {
-			width: 100%;
-		}
+	// CRITICAL: Block-level elements need full width for text-align to work properly
+	// Must be duplicated from style.scss for editor/frontend parity
+	> h1,
+	> h2,
+	> h3,
+	> h4,
+	> h5,
+	> h6,
+	> p,
+	> .wp-block-heading,
+	> .wp-block-paragraph {
+		width: 100%;
 	}
 
 	// Show outline when selected (editor-only)

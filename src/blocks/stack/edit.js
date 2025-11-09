@@ -77,13 +77,15 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 		}),
 	};
 
-	// Block wrapper props
-	// CRITICAL: Use align-self: stretch to fill parent width (must match save.js)
-	// align-self: stretch ensures nested containers fill parent without overflow issues
+	// Block wrapper props with merged inner blocks props
+	// CRITICAL: Merge blockProps and innerBlocksProps into single div to fix paste behavior
+	// This prevents paste operations from replacing the container instead of adding blocks inside
 	const blockProps = useBlockProps({
 		className: 'dsg-stack',
 		style: {
 			alignSelf: 'stretch',
+			// Merge inner styles with block styles
+			...innerStyles,
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
 			}),
@@ -99,21 +101,15 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 		},
 	});
 
-	// Inner blocks props with declarative styles
+	// Merge block props with inner blocks props
 	// Show big button only when container is empty, otherwise use default appender
-	const innerBlocksProps = useInnerBlocksProps(
-		{
-			className: 'dsg-stack__inner',
-			style: innerStyles,
-		},
-		{
-			orientation: 'vertical',
-			templateLock: false,
-			renderAppender: hasInnerBlocks
-				? undefined
-				: InnerBlocks.ButtonBlockAppender,
-		}
-	);
+	const innerBlocksProps = useInnerBlocksProps(blockProps, {
+		orientation: 'vertical',
+		templateLock: false,
+		renderAppender: hasInnerBlocks
+			? undefined
+			: InnerBlocks.ButtonBlockAppender,
+	});
 
 	return (
 		<>
@@ -223,9 +219,7 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 				/>
 			</InspectorControls>
 
-			<div {...blockProps}>
-				<div {...innerBlocksProps} />
-			</div>
+			<div {...innerBlocksProps} />
 		</>
 	);
 }

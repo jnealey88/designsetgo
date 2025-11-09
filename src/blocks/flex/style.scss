@@ -25,7 +25,7 @@
 	// CRITICAL: Nested containers should have no padding to prevent overflow
 	// Only parent containers should have padding
 	.dsg-stack__inner > &,
-	.dsg-flex__inner > &,
+	.dsg-flex > &,
 	.dsg-grid__inner > & {
 		padding: 0;
 	}
@@ -83,7 +83,7 @@
 
 		@media (max-width: 767px) {
 
-			.dsg-flex__inner {
+			.dsg-flex {
 				flex-direction: column !important;
 			}
 		}
@@ -124,17 +124,17 @@
  */
 
 // First child should have no top margin
-:root :where(.dsg-flex__inner.is-layout-constrained) > :first-child {
+:root :where(.dsg-flex.is-layout-constrained) > :first-child {
 	margin-block-start: 0;
 }
 
 // All children get consistent spacing
-:root :where(.dsg-flex__inner.is-layout-constrained) > * {
+:root :where(.dsg-flex.is-layout-constrained) > * {
 	margin-block-start: 0;
 	margin-block-end: 0;
 }
 
 // Last child should have no bottom margin
-:root :where(.dsg-flex__inner.is-layout-constrained) > :last-child {
+:root :where(.dsg-flex.is-layout-constrained) > :last-child {
 	margin-block-end: 0;
 }

@@ -41,13 +41,14 @@ export default function StackSave({ attributes }) {
 		}),
 	};
 
-	// Block wrapper props
-	// CRITICAL: Use align-self: stretch to fill parent width (must match edit.js)
-	// align-self: stretch ensures nested containers fill parent without overflow issues
+	// Block wrapper props with merged inner blocks props (must match edit.js)
+	// CRITICAL: Merge blockProps and innerBlocksProps into single div to fix paste behavior
 	const blockProps = useBlockProps.save({
 		className: 'dsg-stack',
 		style: {
 			alignSelf: 'stretch',
+			// Merge inner styles with block styles
+			...innerStyles,
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
 			}),
@@ -65,15 +66,8 @@ export default function StackSave({ attributes }) {
 		},
 	});
 
-	// Inner blocks props with declarative styles
-	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-stack__inner',
-		style: innerStyles,
-	});
+	// Merge block props with inner blocks props
+	const innerBlocksProps = useInnerBlocksProps.save(blockProps);
 
-	return (
-		<div {...blockProps}>
-			<div {...innerBlocksProps} />
-		</div>
-	);
+	return <div {...innerBlocksProps} />;
 }
