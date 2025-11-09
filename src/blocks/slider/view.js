@@ -118,6 +118,9 @@ class DSGSlider {
 			this.buildDots();
 		}
 
+		// Add screen reader announcement region
+		this.buildAnnouncementRegion();
+
 		// Set initial slide
 		this.goToSlide(this.currentIndex, false);
 
@@ -214,6 +217,23 @@ class DSGSlider {
 		this.updateDots();
 	}
 
+	buildAnnouncementRegion() {
+		// Create visually hidden region for screen reader announcements
+		const announcer = document.createElement('div');
+		announcer.className = 'dsg-slider__announcer';
+		announcer.setAttribute('role', 'status');
+		announcer.setAttribute('aria-live', 'polite');
+		announcer.setAttribute('aria-atomic', 'true');
+		announcer.style.position = 'absolute';
+		announcer.style.left = '-9999px';
+		announcer.style.width = '1px';
+		announcer.style.height = '1px';
+		announcer.style.overflow = 'hidden';
+
+		this.slider.appendChild(announcer);
+		this.announcer = announcer;
+	}
+
 	goToSlide(index, animate = true) {
 		if (this.isAnimating && animate) {
 			return;
@@ -284,6 +304,13 @@ class DSGSlider {
 			})
 		);
 
+		// Announce slide change to screen readers
+		if (this.announcer && animate) {
+			const totalSlides =
+				this.cloneCount > 0 ? this.realSlideCount : this.slides.length;
+			this.announcer.textContent = `Slide ${realIndex + 1} of ${totalSlides}`;
+		}
+
 		// Reset animating state
 		if (animate) {
 			const duration = parseFloat(this.config.transitionDuration) * 1000;
@@ -295,13 +322,14 @@ class DSGSlider {
 
 	applySlideTransition(animate = true) {
 		const slideWidth = this.slides[0].offsetWidth;
-		const gap = parseFloat(getComputedStyle(this.track).gap) || 0;
+		const gap = parseFloat(window.getComputedStyle(this.track).gap) || 0;
 		const offset = -(this.currentIndex * (slideWidth + gap));
 
 		// Apply transition
 		if (!animate) {
 			this.track.style.transition = 'none';
 			this.track.style.transform = `translateX(${offset}px)`;
+			// eslint-disable-next-line no-unused-expressions
 			this.track.offsetHeight; // Force reflow
 			this.track.style.transition = '';
 		} else {
@@ -339,6 +367,7 @@ class DSGSlider {
 						this.currentIndex = newIndex;
 						this.track.style.transition = 'none';
 						this.track.style.transform = `translateX(${-(newIndex * (slideWidth + gap))}px)`;
+						// eslint-disable-next-line no-unused-expressions
 						this.track.offsetHeight; // Force reflow
 						this.track.style.transition = '';
 
@@ -494,7 +523,7 @@ class DSGSlider {
 			}
 		});
 
-		document.addEventListener('mouseup', (e) => {
+		document.addEventListener('mouseup', () => {
 			if (!this.isDragging) {
 				return;
 			}
@@ -524,7 +553,7 @@ class DSGSlider {
 		this.slider.addEventListener('keydown', (e) => {
 			if (
 				e.target !== this.slider &&
-				!this.slider.contains(document.activeElement)
+				!this.slider.contains(e.target.ownerDocument.activeElement)
 			) {
 				return;
 			}
@@ -568,7 +597,7 @@ class DSGSlider {
 
 	// Auto-play with IntersectionObserver
 	observeVisibility() {
-		const observer = new IntersectionObserver(
+		const observer = new window.IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
 					this.isInViewport = entry.isIntersecting;

@@ -40,6 +40,8 @@ export default function IconEdit({ attributes, setAttributes, context }) {
 		rotation,
 		linkUrl,
 		linkTarget,
+		ariaLabel,
+		isDecorative,
 	} = attributes;
 
 	// Get hover icon background from parent container context
@@ -161,6 +163,43 @@ export default function IconEdit({ attributes, setAttributes, context }) {
 									linkRel: value ? 'noopener noreferrer' : '',
 								})
 							}
+							__nextHasNoMarginBottom
+						/>
+					)}
+				</PanelBody>
+
+				<PanelBody
+					title={__('Accessibility', 'designsetgo')}
+					initialOpen={false}
+				>
+					<ToggleControl
+						label={__('Decorative icon', 'designsetgo')}
+						checked={isDecorative}
+						onChange={(value) =>
+							setAttributes({ isDecorative: value })
+						}
+						help={__(
+							'Enable if this icon is purely decorative and provides no information. Screen readers will ignore it.',
+							'designsetgo'
+						)}
+						__nextHasNoMarginBottom
+					/>
+					{!isDecorative && (
+						<TextControl
+							label={__('Accessible label', 'designsetgo')}
+							value={ariaLabel}
+							onChange={(value) =>
+								setAttributes({ ariaLabel: value })
+							}
+							placeholder={__(
+								'Describe the icon for screen readers',
+								'designsetgo'
+							)}
+							help={__(
+								'Provide a brief description of what the icon represents (e.g., "Search", "Shopping cart", "Download").',
+								'designsetgo'
+							)}
+							__next40pxDefaultSize
 							__nextHasNoMarginBottom
 						/>
 					)}

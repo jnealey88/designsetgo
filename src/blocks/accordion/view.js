@@ -24,6 +24,26 @@ function initAccordions() {
 			accordion.getAttribute('data-allow-multiple') === 'true';
 		const items = accordion.querySelectorAll('.dsg-accordion-item');
 
+		// Add skip link for keyboard accessibility
+		const skipLink = document.createElement('a');
+		skipLink.href = '#end-of-accordion';
+		skipLink.className = 'dsg-accordion__skip-link';
+		skipLink.textContent = 'Skip accordion';
+		skipLink.addEventListener('click', (e) => {
+			e.preventDefault();
+			// Focus on the element after the accordion
+			const nextElement = accordion.nextElementSibling;
+			if (nextElement && nextElement.tabIndex >= 0) {
+				nextElement.focus();
+			} else {
+				// If no next focusable element, focus the last item
+				items[items.length - 1]
+					?.querySelector('.dsg-accordion-item__trigger')
+					?.focus();
+			}
+		});
+		accordion.insertBefore(skipLink, accordion.firstChild);
+
 		items.forEach((item) => {
 			const trigger = item.querySelector('.dsg-accordion-item__trigger');
 			const panel = item.querySelector('.dsg-accordion-item__panel');

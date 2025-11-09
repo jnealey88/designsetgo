@@ -21,6 +21,34 @@
 	border-radius: var(--dsg-accordion-border-radius);
 	overflow: hidden;
 
+	/**
+	 * Skip Link (Accessibility)
+	 * Visually hidden until focused - allows keyboard users to skip accordion
+	 */
+	.dsg-accordion__skip-link {
+		position: absolute;
+		left: -9999px;
+		top: auto;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+
+		&:focus {
+			position: relative;
+			left: auto;
+			width: auto;
+			height: auto;
+			padding: 0.5rem 1rem;
+			margin-bottom: 0.5rem;
+			background: var(--wp--preset--color--accent-2, #2563eb);
+			color: var(--wp--preset--color--base, #fff);
+			text-decoration: none;
+			border-radius: 4px;
+			font-weight: 600;
+			display: inline-block;
+		}
+	}
+
 	// Container for accordion items
 	.dsg-accordion__items {
 		display: flex;

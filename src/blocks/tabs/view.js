@@ -73,6 +73,17 @@
 			// Clear existing navigation (modern approach without innerHTML)
 			this.nav.replaceChildren();
 
+			// Add skip link for keyboard accessibility
+			const skipLink = document.createElement('a');
+			skipLink.href = `#${this.panels[this.activeTab].id}`;
+			skipLink.className = 'dsg-tabs__skip-link';
+			skipLink.textContent = 'Skip to tab content';
+			skipLink.addEventListener('click', (e) => {
+				e.preventDefault();
+				this.panels[this.activeTab].focus();
+			});
+			this.nav.appendChild(skipLink);
+
 			// Build tab buttons from panels
 			this.panels.forEach((panel, index) => {
 				const tabId = panel.id.replace('panel-', 'tab-');

@@ -102,6 +102,13 @@ class Plugin {
 	public $abilities_registry;
 
 	/**
+	 * Section Styles instance.
+	 *
+	 * @var Section_Styles
+	 */
+	public $section_styles;
+
+	/**
 	 * Returns the instance.
 	 *
 	 * @return Plugin
@@ -135,6 +142,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-block-manager.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-admin-menu.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
+		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/helpers.php';
 
 		// Load Composer autoloader if available.
@@ -168,6 +176,8 @@ class Plugin {
 		$this->settings            = new Admin\Settings();
 		$this->block_manager       = new Admin\Block_Manager();
 		$this->custom_css_renderer = new Custom_CSS_Renderer();
+		$this->section_styles      = new Section_Styles();
+		$this->section_styles->init();
 
 		// Initialize admin menu (only in admin area).
 		if ( is_admin() ) {
@@ -227,7 +237,7 @@ class Plugin {
 	 * @param \WP_Post $post       Current post object (unused).
 	 * @return array Modified categories.
 	 */
-	public function register_block_category( $categories, $post = null ) {
+	public function register_block_category( $categories, $post = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		$categories[] = array(
 			'slug'  => 'designsetgo',
 			'title' => __( 'DesignSetGo', 'designsetgo' ),

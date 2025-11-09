@@ -17,6 +17,8 @@ export default function IconSave({ attributes }) {
 		linkUrl,
 		linkTarget,
 		linkRel,
+		ariaLabel,
+		isDecorative,
 	} = attributes;
 
 	const blockProps = useBlockProps.save({
@@ -41,8 +43,43 @@ export default function IconSave({ attributes }) {
 		borderRadius: 'inherit',
 	};
 
+	// Determine ARIA attributes based on accessibility settings
+	const getAriaAttributes = () => {
+		// If decorative, hide from assistive technology
+		if (isDecorative) {
+			return {
+				role: 'presentation',
+				'aria-hidden': 'true',
+			};
+		}
+
+		// If has custom label, use it
+		if (ariaLabel) {
+			return {
+				role: 'img',
+				'aria-label': ariaLabel,
+			};
+		}
+
+		// Fallback to icon name (convert to readable format)
+		const fallbackLabel = icon
+			.replace(/-/g, ' ')
+			.replace(/\b\w/g, (l) => l.toUpperCase());
+
+		return {
+			role: 'img',
+			'aria-label': fallbackLabel,
+		};
+	};
+
+	const ariaAttributes = getAriaAttributes();
+
 	const iconElement = (
-		<div className="dsg-icon__wrapper" style={iconWrapperStyle}>
+		<div
+			className="dsg-icon__wrapper"
+			style={iconWrapperStyle}
+			{...ariaAttributes}
+		>
 			{getIcon(icon, iconStyle, strokeWidth)}
 		</div>
 	);

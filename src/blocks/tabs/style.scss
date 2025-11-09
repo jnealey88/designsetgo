@@ -37,6 +37,33 @@
 	--dsg-tab-border-radius: var(--wp--custom--designsetgo--border-radius--small, 0.25rem);
 
 	/**
+	 * Skip Link (Accessibility)
+	 * Visually hidden until focused - allows keyboard users to skip tab navigation
+	 */
+	.dsg-tabs__skip-link {
+		position: absolute;
+		left: -9999px;
+		top: auto;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+
+		&:focus {
+			position: static;
+			width: auto;
+			height: auto;
+			padding: 0.5rem 1rem;
+			background: var(--wp--preset--color--accent-2, #2563eb);
+			color: var(--wp--preset--color--base, #fff);
+			text-decoration: none;
+			border-radius: 4px;
+			font-weight: 600;
+			margin-right: auto;
+			order: -1; // Ensure it appears first in flexbox
+		}
+	}
+
+	/**
 	 * Tab Navigation
 	 */
 	.dsg-tabs__nav {

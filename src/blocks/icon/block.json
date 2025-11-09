@@ -87,6 +87,14 @@
 		"linkRel": {
 			"type": "string",
 			"default": ""
+		},
+		"ariaLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"isDecorative": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"example": {
