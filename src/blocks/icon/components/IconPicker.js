@@ -24,6 +24,8 @@ const ICON_CATEGORIES = {
 			'heart',
 			'check',
 			'circle-check',
+			'verified-check',
+			'lightning',
 			'user',
 			'envelope',
 			'phone',
