@@ -34,9 +34,12 @@ export default function FormHiddenFieldEdit({
 					<TextControl
 						label={__('Field Name', 'designsetgo')}
 						value={fieldName}
-						onChange={(value) =>
+						onChange={(newValue) =>
 							setAttributes({
-								fieldName: value.replace(/[^a-z0-9_-]/gi, ''),
+								fieldName: newValue.replace(
+									/[^a-z0-9_-]/gi,
+									''
+								),
 							})
 						}
 						help={__(
@@ -50,7 +53,9 @@ export default function FormHiddenFieldEdit({
 					<TextControl
 						label={__('Value', 'designsetgo')}
 						value={value}
-						onChange={(value) => setAttributes({ value })}
+						onChange={(newValue) =>
+							setAttributes({ value: newValue })
+						}
 						help={__(
 							'The hidden value to be submitted with the form',
 							'designsetgo'

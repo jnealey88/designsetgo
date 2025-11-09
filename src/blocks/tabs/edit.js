@@ -177,7 +177,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							label: __('Tab Background', 'designsetgo'),
 							colorValue: tabBackgroundColor,
 							onColorChange: (color) =>
-								setAttributes({ tabBackgroundColor: color || '' }),
+								setAttributes({
+									tabBackgroundColor: color || '',
+								}),
 							clearable: true,
 						},
 						{

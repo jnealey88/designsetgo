@@ -47,9 +47,12 @@ export default function FormCheckboxFieldEdit({
 					<TextControl
 						label={__('Field Name', 'designsetgo')}
 						value={fieldName}
-						onChange={(value) =>
+						onChange={(newValue) =>
 							setAttributes({
-								fieldName: value.replace(/[^a-z0-9_-]/gi, ''),
+								fieldName: newValue.replace(
+									/[^a-z0-9_-]/gi,
+									''
+								),
 							})
 						}
 						help={__(
@@ -63,15 +66,17 @@ export default function FormCheckboxFieldEdit({
 					<ToggleControl
 						label={__('Required', 'designsetgo')}
 						checked={required}
-						onChange={(value) => setAttributes({ required: value })}
+						onChange={(newValue) =>
+							setAttributes({ required: newValue })
+						}
 						__nextHasNoMarginBottom
 					/>
 
 					<ToggleControl
 						label={__('Checked by Default', 'designsetgo')}
 						checked={checkedByDefault}
-						onChange={(value) =>
-							setAttributes({ checkedByDefault: value })
+						onChange={(newValue) =>
+							setAttributes({ checkedByDefault: newValue })
 						}
 						__nextHasNoMarginBottom
 					/>
@@ -84,7 +89,9 @@ export default function FormCheckboxFieldEdit({
 					<TextControl
 						label={__('Value', 'designsetgo')}
 						value={value}
-						onChange={(value) => setAttributes({ value })}
+						onChange={(newValue) =>
+							setAttributes({ value: newValue })
+						}
 						help={__(
 							'The value submitted when checkbox is checked',
 							'designsetgo'
@@ -96,7 +103,9 @@ export default function FormCheckboxFieldEdit({
 					<TextControl
 						label={__('Help Text', 'designsetgo')}
 						value={helpText}
-						onChange={(value) => setAttributes({ helpText: value })}
+						onChange={(newValue) =>
+							setAttributes({ helpText: newValue })
+						}
 						help={__(
 							'Additional guidance shown below the field',
 							'designsetgo'
@@ -123,8 +132,8 @@ export default function FormCheckboxFieldEdit({
 						<RichText
 							tagName="span"
 							value={label}
-							onChange={(value) =>
-								setAttributes({ label: value })
+							onChange={(newValue) =>
+								setAttributes({ label: newValue })
 							}
 							placeholder={__(
 								'Enter checkbox label…',

@@ -97,8 +97,7 @@ export default function Edit(props) {
 	// Build unit styles - use accent-2 if available, otherwise currentColor
 	const unitStyle = {
 		backgroundColor: unitBackgroundColor || 'transparent',
-		borderColor:
-			unitBorder?.color || defaultAccentColor || 'currentColor',
+		borderColor: unitBorder?.color || defaultAccentColor || 'currentColor',
 		borderWidth: unitBorder?.width || '2px',
 		borderStyle: unitBorder?.style || 'solid',
 		borderRadius: `${unitBorderRadius}px`,

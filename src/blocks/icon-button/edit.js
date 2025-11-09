@@ -158,10 +158,7 @@ export default function IconButtonEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div
-					className="dsg-icon-button__wrapper"
-					style={buttonStyles}
-				>
+				<div className="dsg-icon-button__wrapper" style={buttonStyles}>
 					{iconPosition !== 'none' && icon && (
 						<span
 							className="dsg-icon-button__icon"

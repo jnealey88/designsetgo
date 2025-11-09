@@ -19,10 +19,7 @@ import { PanelBody, RangeControl } from '@wordpress/components';
  */
 export const SpacingPanel = ({ contentGap, setAttributes }) => {
 	return (
-		<PanelBody
-			title={__('Spacing', 'designsetgo')}
-			initialOpen={false}
-		>
+		<PanelBody title={__('Spacing', 'designsetgo')} initialOpen={false}>
 			<RangeControl
 				label={__('Content Gap', 'designsetgo')}
 				value={contentGap}

@@ -126,7 +126,9 @@ export default function ProgressBarEdit({
 							label: __('Background Color', 'designsetgo'),
 							colorValue: barBackgroundColor,
 							onColorChange: (color) =>
-								setAttributes({ barBackgroundColor: color || '' }),
+								setAttributes({
+									barBackgroundColor: color || '',
+								}),
 							clearable: true,
 						},
 					]}

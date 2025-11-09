@@ -42,15 +42,18 @@ export default function IconListSave({ attributes }) {
 		}
 	}
 
+	// Determine flex direction based on layout (must match edit.js)
+	let flexDirection;
+	if (layout === 'vertical') {
+		flexDirection = 'column';
+	} else if (layout === 'horizontal') {
+		flexDirection = 'row';
+	}
+
 	// Calculate container styles (must match edit.js)
 	const containerStyles = {
 		display: layout === 'grid' ? 'grid' : 'flex',
-		flexDirection:
-			layout === 'vertical'
-				? 'column'
-				: layout === 'horizontal'
-					? 'row'
-					: undefined,
+		flexDirection,
 		gridTemplateColumns:
 			layout === 'grid' ? `repeat(${columns}, 1fr)` : undefined,
 		gap,

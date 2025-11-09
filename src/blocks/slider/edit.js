@@ -523,7 +523,6 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 							/>
 						</>
 					)}
-
 				</PanelBody>
 
 				<PanelBody

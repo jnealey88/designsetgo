@@ -93,11 +93,8 @@ const v2 = {
 	},
 
 	migrate(attributes) {
-		const {
-			unitBorderColor,
-			unitBorderWidth,
-			...otherAttributes
-		} = attributes;
+		const { unitBorderColor, unitBorderWidth, ...otherAttributes } =
+			attributes;
 
 		// Convert old attributes to new unitBorder object
 		return {

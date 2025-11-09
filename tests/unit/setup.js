@@ -18,7 +18,7 @@ global._x = jest.fn((text) => text);
 global._n = jest.fn((single, plural, number) =>
 	number === 1 ? single : plural
 );
-global.sprintf = jest.fn((format, ...args) => format);
+global.sprintf = jest.fn((format) => format);
 
 // Mock console methods in tests (optional)
 // global.console = {

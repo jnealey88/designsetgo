@@ -78,7 +78,7 @@ addFilter(
  */
 const withCustomCSSControl = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
-		const { attributes, setAttributes, name, clientId } = props;
+		const { name, attributes, setAttributes } = props;
 		const { dsgCustomCSS } = attributes;
 
 		// Skip excluded blocks

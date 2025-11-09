@@ -52,7 +52,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		className: 'my-block',
 		style: {
 			color: textColor,
-			backgroundColor: backgroundColor,
+			backgroundColor,
 		},
 	});
 
@@ -98,7 +98,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								label: __('Optional Color', 'designsetgo'),
 								colorValue: attributes.optionalColor,
 								onColorChange: (color) =>
-									setAttributes({ optionalColor: color || '' }),
+									setAttributes({
+										optionalColor: color || '',
+									}),
 								clearable: true,
 							},
 						]}
@@ -151,9 +153,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						label={__('Some Option', 'designsetgo')}
 						value={someOption}
 						options={[
-							{ label: __('Option 1', 'designsetgo'), value: 'opt1' },
-							{ label: __('Option 2', 'designsetgo'), value: 'opt2' },
-							{ label: __('Option 3', 'designsetgo'), value: 'opt3' },
+							{
+								label: __('Option 1', 'designsetgo'),
+								value: 'opt1',
+							},
+							{
+								label: __('Option 2', 'designsetgo'),
+								value: 'opt2',
+							},
+							{
+								label: __('Option 3', 'designsetgo'),
+								value: 'opt3',
+							},
 						]}
 						onChange={(value) =>
 							setAttributes({ someOption: value })

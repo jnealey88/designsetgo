@@ -491,7 +491,9 @@ export default function FormBuilderEdit({
 							label: __('Border Color', 'designsetgo'),
 							colorValue: fieldBorderColor,
 							onColorChange: (color) =>
-								setAttributes({ fieldBorderColor: color || '' }),
+								setAttributes({
+									fieldBorderColor: color || '',
+								}),
 							clearable: true,
 						},
 						{
@@ -507,7 +509,9 @@ export default function FormBuilderEdit({
 							label: __('Button Text Color', 'designsetgo'),
 							colorValue: submitButtonColor,
 							onColorChange: (color) =>
-								setAttributes({ submitButtonColor: color || '' }),
+								setAttributes({
+									submitButtonColor: color || '',
+								}),
 							clearable: true,
 						},
 						{

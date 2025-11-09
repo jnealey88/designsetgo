@@ -154,6 +154,7 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 										placeholder={
 											themeContentSize || '1200px'
 										}
+										// eslint-disable-next-line @wordpress/i18n-no-variables
 										help={__(
 											`Leave empty to use theme default (${themeContentSize || '1200px'})`,
 											'designsetgo'

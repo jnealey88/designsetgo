@@ -15,12 +15,7 @@ import {
 	MediaUpload,
 	MediaUploadCheck,
 } from '@wordpress/block-editor';
-import {
-	PanelBody,
-	Button,
-	ToggleControl,
-	TextControl,
-} from '@wordpress/components';
+import { PanelBody, Button, ToggleControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
 /**

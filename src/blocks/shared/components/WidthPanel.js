@@ -55,9 +55,10 @@ export function WidthPanel({
 					value={contentWidth}
 					onChange={(value) => setAttributes({ contentWidth: value })}
 					units={units}
+					// eslint-disable-next-line @wordpress/i18n-no-variables
 					placeholder={themeContentWidth || '1200px'}
 					help={__(
-						`Leave empty to use theme default (${themeContentWidth || '1200px'})`,
+						'Leave empty to use theme default (%s)',
 						'designsetgo'
 					)}
 					isResetValueOnUnitChange

@@ -21,7 +21,7 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -152,6 +152,18 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 							'designsetgo'
 						)}
 						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+					<ToggleControl
+						label={__('Constrain Content Width', 'designsetgo')}
+						checked={constrainWidth}
+						onChange={(value) =>
+							setAttributes({ constrainWidth: value })
+						}
+						help={__(
+							'Limit content to a maximum width and center it',
+							'designsetgo'
+						)}
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>

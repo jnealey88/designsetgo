@@ -270,7 +270,6 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 						</>
 					)}
 				</PanelBody>
-
 			</InspectorControls>
 
 			{enableOverlay && (
