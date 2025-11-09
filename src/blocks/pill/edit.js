@@ -5,15 +5,13 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	RichText,
-	BlockControls,
-	AlignmentToolbar,
 } from '@wordpress/block-editor';
 
 export default function PillEdit({ attributes, setAttributes }) {
-	const { content, alignment } = attributes;
+	const { content } = attributes;
 
 	const blockProps = useBlockProps({
-		className: `dsg-pill${alignment !== 'none' ? ` has-text-align-${alignment}` : ''}`,
+		className: 'dsg-pill',
 	});
 
 	// Extract color/background styles from blockProps to apply to inner span
@@ -58,29 +56,18 @@ export default function PillEdit({ attributes, setAttributes }) {
 	blockProps.style = wrapperStyle;
 
 	return (
-		<>
-			<BlockControls>
-				<AlignmentToolbar
-					value={alignment}
-					onChange={(newAlignment) =>
-						setAttributes({ alignment: newAlignment || 'none' })
-					}
-				/>
-			</BlockControls>
-
-			<div {...blockProps}>
-				<RichText
-					tagName="span"
-					className="dsg-pill__content"
-					value={content}
-					onChange={(newContent) =>
-						setAttributes({ content: newContent })
-					}
-					placeholder={__('Add pill text…', 'designsetgo')}
-					allowedFormats={['core/bold', 'core/italic']}
-					style={innerStyle}
-				/>
-			</div>
-		</>
+		<div {...blockProps}>
+			<RichText
+				tagName="span"
+				className="dsg-pill__content"
+				value={content}
+				onChange={(newContent) =>
+					setAttributes({ content: newContent })
+				}
+				placeholder={__('Add pill text…', 'designsetgo')}
+				allowedFormats={['core/bold', 'core/italic']}
+				style={innerStyle}
+			/>
+		</div>
 	);
 }

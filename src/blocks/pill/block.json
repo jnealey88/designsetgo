@@ -18,10 +18,6 @@
 			"type": "string",
 			"default": ""
 		},
-		"alignment": {
-			"type": "string",
-			"default": "none"
-		},
 		"fontSize": {
 			"type": "string",
 			"default": "small"

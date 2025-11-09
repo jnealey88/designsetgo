@@ -5,21 +5,7 @@
 .dsg-pill {
 	// Make editing area clear
 	min-height: 40px;
-	display: flex;
-	align-items: center;
-
-	// Alignment options in editor
-	&.has-text-align-left {
-		justify-content: flex-start;
-	}
-
-	&.has-text-align-center {
-		justify-content: center;
-	}
-
-	&.has-text-align-right {
-		justify-content: flex-end;
-	}
+	display: block;
 
 	// Remove background/color styles from wrapper when using WordPress color controls
 	// These should apply to the inner span, not the outer div
@@ -41,6 +27,19 @@
 	&[data-rich-text-placeholder]::before {
 		opacity: 0.6;
 	}
+
+	// CRITICAL: Must duplicate default styles from style.scss for editor/frontend parity
+	// Default styles - always applied as base, overridden by WordPress color transfers
+	padding: 0.5em 1em;
+	background-color: var(--wp--preset--color--primary, #2563eb);
+	color: var(--wp--preset--color--base, #fff);
+	font-size: 0.875em;
+	font-weight: 500;
+	line-height: 1.5;
+	border-radius: 999px;
+	display: inline-block;
+	transition: all 0.2s ease-in-out;
+	white-space: nowrap;
 }
 
 // Transfer WordPress color classes from wrapper to inner span (same as frontend)
