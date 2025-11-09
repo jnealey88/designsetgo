@@ -1,21 +1,91 @@
+---
+description: Create a block variation with preset configurations
+---
+
 Create a new block variation for a WordPress core block.
 
-Ask the user for:
-- Which core block (e.g., "core/group", "core/columns", "core/cover")
-- Variation name and description
-- Default layout and attributes
-- Icon for the variation (from WordPress Dashicons)
+## Ask the User For
 
-Then:
-1. If directory doesn't exist, create `src/variations/[block-name]-variations/`
-2. Create or update `index.js` with the new variation using `registerBlockVariation()`
-3. Set appropriate default attributes:
-   - Use WordPress `layout` attribute for layout types (grid, flex, etc.)
-   - Set any custom attributes from extensions
-   - Configure responsive defaults for mobile/tablet
-4. If new variation file, import it in `src/index.js`
+- **Which core block?** (e.g., "core/group", "core/columns", "core/cover")
+- **Variation name and description**
+- **Default layout and attributes**
+- **Icon** (from WordPress Dashicons)
 
-Use WordPress native layout attributes:
-- For Grid: `layout: { type: 'grid', columnCount: 3 }`
-- For Flex: `layout: { type: 'flex', orientation: 'horizontal' }`
-- For Flow: `layout: { type: 'default' }` or `layout: { type: 'constrained' }`
+## What Gets Created
+
+1. Directory: `src/variations/[block-name]-variations/` (if doesn't exist)
+2. Create or update `index.js` with new variation
+3. Import in `src/index.js` (if new file)
+
+## Variation Pattern
+
+```javascript
+import { registerBlockVariation } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
+
+registerBlockVariation('core/group', {
+    name: 'hero-section',
+    title: __('Hero Section', 'designsetgo'),
+    description: __('Full-width hero section with centered content', 'designsetgo'),
+    icon: 'cover-image',
+    scope: ['inserter'],
+    attributes: {
+        layout: {
+            type: 'constrained',
+            contentSize: '800px',
+        },
+        style: {
+            spacing: {
+                padding: {
+                    top: 'var(--wp--preset--spacing--70)',
+                    bottom: 'var(--wp--preset--spacing--70)',
+                },
+            },
+        },
+    },
+    innerBlocks: [
+        ['core/heading', { level: 1, content: __('Hero Title', 'designsetgo') }],
+        ['core/paragraph', { content: __('Hero description', 'designsetgo') }],
+    ],
+});
+```
+
+## Use WordPress Native Layout Attributes
+
+**For Grid:**
+```javascript
+layout: { type: 'grid', columnCount: 3 }
+```
+
+**For Flex:**
+```javascript
+layout: { type: 'flex', orientation: 'horizontal' }
+```
+
+**For Constrained (default):**
+```javascript
+layout: { type: 'constrained', contentSize: '800px' }
+```
+
+## Best Practices
+
+**Always:**
+- Use WordPress spacing presets: `var(--wp--preset--spacing--50)`
+- Never hardcode colors or spacing values
+- Provide meaningful `innerBlocks` examples
+- Keep variations focused (< 5 per block type)
+
+**Variation Scope:**
+- `['inserter']` - Appears in block inserter
+- `['block']` - Appears in block transforms
+- `['inserter', 'block']` - Appears in both
+
+## After Creation
+
+Build the plugin:
+
+```bash
+npm run build
+```
+
+Variations will appear in the block inserter under the parent block.

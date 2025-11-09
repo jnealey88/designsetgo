@@ -1,3 +1,7 @@
+---
+description: Display DesignSetGo plugin architecture and structure
+---
+
 Display key information about the DesignSetGo plugin.
 
 Show:

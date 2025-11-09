@@ -1,3 +1,7 @@
+---
+description: Check compatibility with WordPress and Gutenberg versions
+---
+
 Check compatibility with current WordPress and Gutenberg versions.
 
 1. **Check WordPress version requirements**

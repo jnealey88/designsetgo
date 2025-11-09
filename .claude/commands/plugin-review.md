@@ -636,27 +636,33 @@ JavaScript: XX% coverage
 - Review extensions
 - Check build configuration
 
-### 3. **Standards Compliance (30 minutes)**
+### 3. **Security Review (30-45 minutes)**
+- **Run `/security-audit` command** for comprehensive security scan
+- Review security audit findings
+- Prioritize critical security issues
+- Note high-priority vulnerabilities for immediate attention
+
+### 4. **Standards Compliance (30 minutes)**
 - Run linting tools
 - Check coding standards
 - Review accessibility
 - Verify i18n
 
-### 4. **Best Practices Check (30 minutes)**
+### 5. **Best Practices Check (30 minutes)**
 - Compare against internal docs
 - Check FSE compatibility
 - Review block.json files
 - Test responsive design
 
-### 5. **Documentation Review (15 minutes)**
+### 6. **Documentation Review (15 minutes)**
 - README quality
 - Code comments
 - User documentation
 - Developer guides
 
-### 6. **Generate Report (30 minutes)**
-- Compile findings
-- Prioritize issues
+### 7. **Generate Report (30 minutes)**
+- Compile findings (including security audit results)
+- Prioritize issues (security first, then critical, high, medium, low)
 - Write fixes
 - Create action plan
 

@@ -1,3 +1,7 @@
+---
+description: Prepare plugin for WordPress.org deployment
+---
+
 Prepare the plugin for deployment to WordPress.org.
 
 1. **Run production build**

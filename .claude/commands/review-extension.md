@@ -1,3 +1,7 @@
+---
+description: Review block extension for WordPress best practices
+---
+
 Review a block extension for best practices.
 
 Ask the user which extension to review, then check that the extension:
