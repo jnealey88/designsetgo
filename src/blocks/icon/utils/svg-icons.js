@@ -42,6 +42,23 @@ export const SVG_ICONS = {
 			<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
 		</svg>
 	),
+	'verified-check': (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<circle
+				cx="12"
+				cy="12"
+				r="9"
+				fill="none"
+				stroke="currentColor"
+				strokeWidth="2"
+			/>
+			<path d="M9 13l2.5 2.5 9-9-1.41-1.41-7.59 7.59-1.09-1.09L9 13z" />
+		</svg>
+	),
 	user: (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -76,6 +93,15 @@ export const SVG_ICONS = {
 			fill="currentColor"
 		>
 			<path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
+		</svg>
+	),
+	lightning: (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path d="M7 2v11h3v9l7-12h-4l4-8z" />
 		</svg>
 	),
 	trophy: (

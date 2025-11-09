@@ -15,8 +15,6 @@ import {
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
-	// WordPress 6.5+ - useSettings (plural) replaces useSetting (singular)
-	useSettings,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -62,13 +60,12 @@ function CounterGroupEdit({ attributes, setAttributes, clientId }) {
 	// Get theme color palette and gradient settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
-	// Get theme color palette (WordPress 6.5+ - useSettings returns array)
-	const [colorSettings] = useSettings('color.palette');
-
 	// Block wrapper props
 	const blockProps = useBlockProps({
 		className: 'dsg-counter-group',
 		style: {
+			// CRITICAL: Use align-self: stretch to fill parent width
+			alignSelf: 'stretch',
 			// Cast to string to prevent React from adding "px" suffix
 			'--dsg-counter-columns-desktop': String(columns),
 			'--dsg-counter-columns-tablet': String(columnsTablet),
@@ -82,7 +79,7 @@ function CounterGroupEdit({ attributes, setAttributes, clientId }) {
 	// Inner blocks configuration
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: `dsg-counter-group__inner align-${alignContent}`,
+			className: `dsg-counter-group__inner dsg-counter-group__inner--align-${alignContent}`,
 		},
 		{
 			allowedBlocks: ['designsetgo/counter'],
