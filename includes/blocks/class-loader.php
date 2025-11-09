@@ -21,8 +21,91 @@ class Loader {
 	 * Constructor.
 	 */
 	public function __construct() {
+		add_action( 'init', array( $this, 'register_shared_chunks' ), 5 ); // Register shared chunks first.
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_action( 'init', array( $this, 'register_block_styles' ) );
+		add_filter( 'block_type_metadata', array( $this, 'add_shared_dependencies' ) );
+	}
+
+	/**
+	 * Register shared webpack chunks (code-split dependencies).
+	 *
+	 * These are extracted by webpack's splitChunks optimization and need to be
+	 * manually registered so they can be used as dependencies by blocks.
+	 *
+	 * @since 1.0.0
+	 */
+	public function register_shared_chunks() {
+		$shared_chunks = array(
+			'shared-icon-library' => array(
+				'path' => DESIGNSETGO_PATH . 'build/shared-icon-library.js',
+			),
+			'shared-icon-picker'  => array(
+				'path' => DESIGNSETGO_PATH . 'build/shared-icon-picker.js',
+			),
+		);
+
+		foreach ( $shared_chunks as $handle => $config ) {
+			if ( ! file_exists( $config['path'] ) ) {
+				continue;
+			}
+
+			// Get asset file with dependencies and version.
+			$asset_file = str_replace( '.js', '.asset.php', $config['path'] );
+			if ( ! file_exists( $asset_file ) ) {
+				continue;
+			}
+
+			$asset_data = include $asset_file;
+
+			// Register the script.
+			wp_register_script(
+				'designsetgo-' . $handle,
+				DESIGNSETGO_URL . 'build/' . $handle . '.js',
+				$asset_data['dependencies'],
+				$asset_data['version'],
+				true
+			);
+		}
+	}
+
+	/**
+	 * Add shared chunk dependencies to blocks that use them.
+	 *
+	 * This filter runs during block registration and injects webpack-split
+	 * shared chunks as dependencies for blocks that use them.
+	 *
+	 * @param array $metadata Block metadata from block.json.
+	 * @return array Modified metadata.
+	 */
+	public function add_shared_dependencies( $metadata ) {
+		if ( ! isset( $metadata['name'] ) ) {
+			return $metadata;
+		}
+
+		// Blocks that use the icon library.
+		$icon_blocks = array(
+			'designsetgo/icon',
+			'designsetgo/icon-button',
+			'designsetgo/icon-list',
+			'designsetgo/icon-list-item',
+			'designsetgo/divider',
+		);
+
+		if ( in_array( $metadata['name'], $icon_blocks, true ) ) {
+			// Add shared icon library dependencies.
+			if ( ! isset( $metadata['editorScript'] ) ) {
+				$metadata['editorScript'] = array();
+			} elseif ( ! is_array( $metadata['editorScript'] ) ) {
+				$metadata['editorScript'] = array( $metadata['editorScript'] );
+			}
+
+			// Add shared chunks as dependencies.
+			$metadata['editorScript'][] = 'designsetgo-shared-icon-library';
+			$metadata['editorScript'][] = 'designsetgo-shared-icon-picker';
+		}
+
+		return $metadata;
 	}
 
 	/**

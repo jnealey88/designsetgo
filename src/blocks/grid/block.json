@@ -13,7 +13,16 @@
 		"align": ["wide", "full"],
 		"html": false,
 		"inserter": true,
-		"layout": false,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"allowEditing": false,
+			"allowSizingOnChildren": true,
+			"allowContentEditing": false,
+			"default": {
+				"type": "constrained"
+			}
+		},
 		"spacing": {
 			"margin": true,
 			"padding": true,
@@ -24,8 +33,7 @@
 			}
 		},
 		"dimensions": {
-			"minHeight": true,
-			"maxWidth": false
+			"minHeight": true
 		},
 		"color": {
 			"background": true,
@@ -66,6 +74,10 @@
 		}
 	},
 	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
 		"desktopColumns": {
 			"type": "number",
 			"default": 3
@@ -91,7 +103,12 @@
 			"default": {
 				"spacing": {
 					"blockGap": "var(--wp--preset--spacing--50)",
-				"padding": "var(--wp--preset--spacing--50)"
+					"padding": {
+						"top": "var(--wp--preset--spacing--xl)",
+						"bottom": "var(--wp--preset--spacing--xl)",
+						"left": "var(--wp--preset--spacing--md)",
+						"right": "var(--wp--preset--spacing--md)"
+					}
 				}
 			}
 		},
@@ -101,14 +118,6 @@
 		},
 		"textAlign": {
 			"type": "string"
-		},
-		"constrainWidth": {
-			"type": "boolean",
-			"default": true
-		},
-		"contentWidth": {
-			"type": "string",
-			"default": ""
 		},
 		"hoverBackgroundColor": {
 			"type": "string",

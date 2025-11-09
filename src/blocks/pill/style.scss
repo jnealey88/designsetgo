@@ -3,7 +3,8 @@
  */
 
 .dsg-pill {
-	// Container display - block for natural flow
+	// Container display - block so pills stack vertically
+	// Inner content is inline-block for tight wrapping
 	display: block;
 
 	// Remove background/color styles from wrapper when using WordPress color controls
@@ -72,4 +73,34 @@
 	&[style*=";color:"] .dsg-pill__content {
 		color: inherit !important;
 	}
+}
+
+// Alignment support - use flexbox to position the inner inline-block content
+// Important is needed to override Stack block's width: auto !important
+// Higher specificity selector to override Stack container rules
+.dsg-pill.alignleft,
+[class*="wp-container"] > .dsg-pill.alignleft {
+	display: flex !important;
+	justify-content: flex-start;
+	width: fit-content !important;
+	margin-right: auto !important;
+	margin-left: 0 !important;
+}
+
+.dsg-pill.aligncenter,
+[class*="wp-container"] > .dsg-pill.aligncenter {
+	display: flex !important;
+	justify-content: center;
+	width: fit-content !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+.dsg-pill.alignright,
+[class*="wp-container"] > .dsg-pill.alignright {
+	display: flex !important;
+	justify-content: flex-end;
+	width: fit-content !important;
+	margin-left: auto !important;
+	margin-right: 0 !important;
 }

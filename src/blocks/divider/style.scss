@@ -1,0 +1,272 @@
+/**
+ * Divider Block - Frontend & Editor Styles
+ *
+ * Multiple divider styles for broad site compatibility:
+ * - Solid, Dashed, Dotted, Double lines
+ * - Gradient fade effect
+ * - Decorative dots and wave patterns
+ * - Icon-centered separators (using real SVG icons from icon library)
+ *
+ * CRITICAL: Must be duplicated in editor.scss for editor/frontend parity
+ *
+ * @since 1.0.0
+ */
+
+.dsg-divider {
+	// Block Supports automatically applies color to this wrapper
+	// All child elements use currentColor to inherit the color
+
+	// Container centers the divider
+	&__container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	// Base line styles
+	&__line {
+		width: 100%;
+		background-color: currentcolor; // Inherits from Block Supports
+		border: none;
+	}
+
+	// ========================================
+	// STYLE VARIATIONS
+	// ========================================
+
+	// 1. SOLID (Default)
+	&--solid {
+
+		.dsg-divider__line {
+			background-color: currentcolor;
+		}
+	}
+
+	// 2. DASHED
+	&--dashed {
+
+		.dsg-divider__line {
+			background: none;
+			border-top: 2px dashed currentcolor;
+			height: 0 !important; // Override inline height
+		}
+	}
+
+	// 3. DOTTED
+	&--dotted {
+
+		.dsg-divider__line {
+			background: none;
+			border-top: 2px dotted currentcolor;
+			height: 0 !important; // Override inline height
+		}
+	}
+
+	// 4. DOUBLE LINE
+	&--double {
+
+		.dsg-divider__line {
+			background: none;
+			border-top: 3px double currentcolor;
+			height: 0 !important; // Override inline height
+		}
+	}
+
+	// 5. GRADIENT FADE
+	&--gradient {
+
+		.dsg-divider__line {
+			background: linear-gradient(
+				to right,
+				transparent,
+				currentcolor 20%,
+				currentcolor 80%,
+				transparent
+			);
+		}
+	}
+
+	// 6. DOTS PATTERN
+	&--dots {
+
+		.dsg-divider__line {
+			background: none;
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+
+			&::before,
+			&::after {
+				content: '';
+				width: 6px;
+				height: 6px;
+				background-color: currentcolor;
+				border-radius: 50%;
+			}
+		}
+
+		// Add center dot
+		.dsg-divider__container::after {
+			content: '';
+			position: absolute;
+			width: 6px;
+			height: 6px;
+			background-color: currentcolor;
+			border-radius: 50%;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
+
+	// 7. WAVE PATTERN
+	&--wave {
+
+		.dsg-divider__line {
+			background: none;
+			position: relative;
+			height: 4px !important;
+
+			&::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 100%;
+				background-image: repeating-linear-gradient(
+					90deg,
+					currentcolor 0,
+					currentcolor 8px,
+					transparent 8px,
+					transparent 16px
+				);
+				-webkit-mask-image: radial-gradient(
+					ellipse 100% 100% at 50% 100%,
+					transparent 40%,
+					black 41%
+				);
+				mask-image: radial-gradient(
+					ellipse 100% 100% at 50% 100%,
+					transparent 40%,
+					black 41%
+				);
+			}
+
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 8px;
+				right: 0;
+				height: 100%;
+				background-image: repeating-linear-gradient(
+					90deg,
+					currentcolor 0,
+					currentcolor 8px,
+					transparent 8px,
+					transparent 16px
+				);
+				-webkit-mask-image: radial-gradient(
+					ellipse 100% 100% at 50% 0%,
+					transparent 40%,
+					black 41%
+				);
+				mask-image: radial-gradient(
+					ellipse 100% 100% at 50% 0%,
+					transparent 40%,
+					black 41%
+				);
+			}
+		}
+	}
+
+	// 8. ICON CENTERED (Using real SVG icons)
+	&--icon {
+
+		.dsg-divider__icon-wrapper {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 16px;
+			width: 100%;
+		}
+
+		.dsg-divider__line {
+			flex: 1;
+			background-color: currentcolor;
+
+			&--left,
+			&--right {
+				height: 2px;
+			}
+		}
+
+		.dsg-divider__icon {
+			flex-shrink: 0;
+			width: 24px;
+			height: 24px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: currentcolor;
+
+			// SVG icon inherits color
+			svg {
+				width: 100%;
+				height: 100%;
+				fill: currentcolor;
+			}
+		}
+	}
+
+	// ========================================
+	// RESPONSIVE ADJUSTMENTS
+	// ========================================
+	@media (max-width: 768px) {
+
+		&--icon {
+
+			.dsg-divider__icon-wrapper {
+				gap: 12px;
+			}
+
+			.dsg-divider__icon {
+				width: 20px;
+				height: 20px;
+			}
+		}
+
+		&--dots {
+
+			.dsg-divider__line {
+				gap: 6px;
+
+				&::before,
+				&::after {
+					width: 5px;
+					height: 5px;
+				}
+			}
+
+			.dsg-divider__container::after {
+				width: 5px;
+				height: 5px;
+			}
+		}
+	}
+
+	// ========================================
+	// ACCESSIBILITY
+	// ========================================
+	// Ensure sufficient contrast
+	&[style*='color'] {
+		// Color applied via Block Supports
+	}
+
+	// Hidden from screen readers (decorative element)
+	&[role='separator'] {
+		aria-hidden: true;
+	}
+}

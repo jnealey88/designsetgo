@@ -18,6 +18,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 export default function FlexSave({ attributes }) {
 	const {
+		align,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -25,6 +26,7 @@ export default function FlexSave({ attributes }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 		mobileStack,
+		layout,
 	} = attributes;
 
 	// Block wrapper props - outer div stays full width
@@ -51,10 +53,13 @@ export default function FlexSave({ attributes }) {
 	// This ensures flex layout is applied to the element that contains the flex children
 	const innerStyle = {
 		display: 'flex',
+		// Apply layout justifyContent to inner div where flex children are
+		justifyContent: layout?.justifyContent || 'left',
 	};
 
 	// Apply width constraints if enabled
-	if (constrainWidth) {
+	// IMPORTANT: Don't constrain width when block is alignfull - let it use full container width
+	if (constrainWidth && align !== 'full') {
 		innerStyle.maxWidth = contentWidth || '1200px';
 		innerStyle.marginLeft = 'auto';
 		innerStyle.marginRight = 'auto';

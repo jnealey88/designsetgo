@@ -26,8 +26,12 @@
 	"supports": {
 		"html": false,
 		"inserter": true,
-		"align": false,
+		"align": ["left", "center", "right"],
 		"alignWide": false,
+		"typography": {
+			"textAlign": true,
+			"__experimentalWritingMode": true
+		},
 		"spacing": {
 			"padding": true,
 			"margin": [
@@ -52,6 +56,8 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
+			"textAlign": true,
+			"__experimentalWritingMode": true,
 			"__experimentalFontFamily": true,
 			"__experimentalFontWeight": true,
 			"__experimentalFontStyle": true,

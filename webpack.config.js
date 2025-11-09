@@ -91,9 +91,37 @@ module.exports = {
 	],
 	optimization: {
 		...defaultConfig.optimization,
-		// Disable code splitting - WordPress handles dependencies differently
-		// WordPress externals system already provides shared code
-		splitChunks: false,
+		// Enable code splitting for shared icon library
+		// WordPress externals system provides WordPress packages
+		// This extracts OUR shared code (icon library) into separate chunks
+		splitChunks: {
+			cacheGroups: {
+				// Extract icon library used by multiple blocks
+				iconLibrary: {
+					test: /svg-icons\.js$/,
+					name: 'shared-icon-library',
+					chunks: 'all',
+					enforce: true,
+					priority: 20,
+				},
+				// Extract IconPicker component
+				iconPicker: {
+					test: /IconPicker\.js$/,
+					name: 'shared-icon-picker',
+					chunks: 'all',
+					enforce: true,
+					priority: 15,
+				},
+				// Extract other shared utilities if needed
+				sharedUtils: {
+					test: /[\\/]src[\\/]blocks[\\/][^\/]+[\\/](utils|components)[\\/]/,
+					name: 'shared-block-utils',
+					chunks: 'all',
+					minChunks: 3, // Only extract if used by 3+ blocks
+					priority: 10,
+				},
+			},
+		},
 		// Enable aggressive tree shaking
 		usedExports: true,
 		sideEffects: false,

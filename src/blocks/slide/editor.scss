@@ -3,7 +3,7 @@
  * CRITICAL: Imports base styles from style.scss for editor/frontend parity
  */
 
-@import './style.scss';
+@import './style';
 
 // Editor-specific adjustments
 .dsg-slide {
@@ -36,7 +36,7 @@
 			0 0,
 			0 10px,
 			10px -10px,
-			-10px 0px;
+			-10px 0;
 	}
 
 	// Editor: Highlight when selected

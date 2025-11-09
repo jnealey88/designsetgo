@@ -43,7 +43,7 @@ class Form_Handler {
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'handle_form_submission' ),
-				'permission_callback' => '__return_true', // Public endpoint
+				'permission_callback' => '__return_true', // Public endpoint.
 				'args'                => array(
 					'formId'    => array(
 						'required'          => true,
@@ -87,7 +87,7 @@ class Form_Handler {
 		$honeypot  = $request->get_param( 'honeypot' );
 		$timestamp = $request->get_param( 'timestamp' );
 
-		// Honeypot spam check - if filled, it's a bot
+		// Honeypot spam check - if filled, it's a bot.
 		if ( ! empty( $honeypot ) ) {
 			return new WP_Error(
 				'spam_detected',
@@ -96,7 +96,7 @@ class Form_Handler {
 			);
 		}
 
-		// Time-based check - submission must be > 3 seconds after page load
+		// Time-based check - submission must be > 3 seconds after page load.
 		if ( ! empty( $timestamp ) ) {
 			$elapsed = ( time() * 1000 ) - intval( $timestamp );
 			if ( $elapsed < 3000 ) {
@@ -108,13 +108,13 @@ class Form_Handler {
 			}
 		}
 
-		// Rate limiting check
+		// Rate limiting check.
 		$rate_limit_check = $this->check_rate_limit( $form_id );
 		if ( is_wp_error( $rate_limit_check ) ) {
 			return $rate_limit_check;
 		}
 
-		// Sanitize and validate all fields
+		// Sanitize and validate all fields.
 		$sanitized_fields = array();
 		foreach ( $fields as $field ) {
 			if ( ! isset( $field['name'] ) || ! isset( $field['value'] ) ) {
@@ -125,7 +125,7 @@ class Form_Handler {
 			$field_value = $field['value'];
 			$field_type  = isset( $field['type'] ) ? sanitize_text_field( $field['type'] ) : 'text';
 
-			// Type-specific validation
+			// Type-specific validation.
 			$validation_result = $this->validate_field( $field_value, $field_type );
 			if ( is_wp_error( $validation_result ) ) {
 				return new WP_Error(
@@ -140,7 +140,7 @@ class Form_Handler {
 				);
 			}
 
-			// Type-specific sanitization
+			// Type-specific sanitization.
 			$sanitized_value = $this->sanitize_field( $field_value, $field_type );
 
 			$sanitized_fields[ $field_name ] = array(
@@ -149,7 +149,7 @@ class Form_Handler {
 			);
 		}
 
-		// Store submission
+		// Store submission.
 		$submission_id = $this->store_submission( $form_id, $sanitized_fields );
 
 		if ( is_wp_error( $submission_id ) ) {
@@ -160,7 +160,7 @@ class Form_Handler {
 			);
 		}
 
-		// Send email notification if enabled
+		// Send email notification if enabled.
 		$this->send_email_notification( $request, $form_id, $sanitized_fields, $submission_id );
 
 		// Trigger action hook for email notifications, integrations, etc.
@@ -187,12 +187,12 @@ class Form_Handler {
 		$key        = 'form_submit_' . $form_id . '_' . md5( $ip_address );
 		$count      = get_transient( $key );
 
-		// Default rate limit: 3 submissions per 60 seconds
+		// Default rate limit: 3 submissions per 60 seconds.
 		$max_submissions = apply_filters( 'designsetgo_form_rate_limit_count', 3, $form_id );
 		$time_window     = apply_filters( 'designsetgo_form_rate_limit_window', 60, $form_id );
 
 		if ( false === $count ) {
-			// First submission, start tracking
+			// First submission, start tracking.
 			set_transient( $key, 1, $time_window );
 			return true;
 		}
@@ -205,7 +205,7 @@ class Form_Handler {
 			);
 		}
 
-		// Increment count
+		// Increment count.
 		set_transient( $key, $count + 1, $time_window );
 		return true;
 	}
@@ -247,7 +247,7 @@ class Form_Handler {
 				break;
 
 			case 'tel':
-				// Basic phone validation - numbers, spaces, dashes, parentheses, plus
+				// Basic phone validation - numbers, spaces, dashes, parentheses, plus.
 				if ( ! preg_match( '/^[0-9\s\-\(\)\+]+$/', $value ) ) {
 					return new WP_Error(
 						'invalid_phone',
@@ -315,7 +315,7 @@ class Form_Handler {
 			return $post_id;
 		}
 
-		// Store form data as post meta
+		// Store form data as post meta.
 		update_post_meta( $post_id, '_dsg_form_id', $form_id );
 		update_post_meta( $post_id, '_dsg_form_fields', $fields );
 		update_post_meta( $post_id, '_dsg_submission_ip', $this->get_client_ip() );
@@ -345,7 +345,7 @@ class Form_Handler {
 		foreach ( $ip_keys as $key ) {
 			if ( ! empty( $_SERVER[ $key ] ) ) {
 				$ip = sanitize_text_field( wp_unslash( $_SERVER[ $key ] ) );
-				// Handle multiple IPs (take first one)
+				// Handle multiple IPs (take first one).
 				if ( strpos( $ip, ',' ) !== false ) {
 					$ip = explode( ',', $ip )[0];
 				}
@@ -374,16 +374,16 @@ class Form_Handler {
 	 * Localize script with nonce and REST URL.
 	 */
 	public function localize_form_script() {
-		// Only enqueue if form block is present on the page
+		// Only enqueue if form block is present on the page.
 		if ( ! has_block( 'designsetgo/form-builder' ) ) {
 			return;
 		}
 
-		// Get the form-builder view script handle
+		// Get the form-builder view script handle.
 		$asset_file = include DESIGNSETGO_PATH . 'build/blocks/form-builder/view.asset.php';
 		$handle     = 'designsetgo-form-builder-view-script';
 
-		// Localize with nonce and REST URL
+		// Localize with nonce and REST URL.
 		wp_localize_script(
 			$handle,
 			'designsetgoForm',
@@ -403,7 +403,7 @@ class Form_Handler {
 	 * @param int             $submission_id Submission post ID.
 	 */
 	private function send_email_notification( $request, $form_id, $fields, $submission_id ) {
-		// Get email settings from request body
+		// Get email settings from request body.
 		$enable_email = $request->get_param( 'enable_email' ) === 'true';
 
 		if ( ! $enable_email ) {
@@ -417,7 +417,7 @@ class Form_Handler {
 		$email_reply_to  = $request->get_param( 'email_reply_to' );
 		$email_body      = $request->get_param( 'email_body' );
 
-		// Set defaults
+		// Set defaults.
 		if ( empty( $email_to ) ) {
 			$email_to = get_option( 'admin_email' );
 		}
@@ -434,21 +434,28 @@ class Form_Handler {
 			$email_from = get_option( 'admin_email' );
 		}
 
-		// Prepare merge tags
+		// Prepare merge tags.
+		$current_url = '';
+		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+			$current_url = esc_url_raw(
+				home_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) )
+			);
+		}
+
 		$merge_tags = array(
 			'{form_id}'       => $form_id,
 			'{submission_id}' => $submission_id,
-			'{page_url}'      => home_url( $_SERVER['REQUEST_URI'] ),
+			'{page_url}'      => $current_url,
 			'{site_name}'     => get_bloginfo( 'name' ),
 			'{date}'          => current_time( 'mysql' ),
 		);
 
-		// Add field values to merge tags
+		// Add field values to merge tags.
 		foreach ( $fields as $field_name => $field_data ) {
 			$merge_tags[ '{' . $field_name . '}' ] = is_array( $field_data ) ? $field_data['value'] : $field_data;
 		}
 
-		// Build all_fields list
+		// Build all_fields list.
 		$all_fields_html = '';
 		foreach ( $fields as $field_name => $field_data ) {
 			$value            = is_array( $field_data ) ? $field_data['value'] : $field_data;
@@ -457,25 +464,25 @@ class Form_Handler {
 		}
 		$merge_tags['{all_fields}'] = $all_fields_html;
 
-		// Default email body if empty
+		// Default email body if empty.
 		if ( empty( $email_body ) ) {
 			$email_body = __( "New form submission:\n\n{all_fields}\n\nSubmitted from: {page_url}", 'designsetgo' );
 		}
 
-		// Replace merge tags in subject and body
+		// Replace merge tags in subject and body.
 		$email_subject = str_replace( array_keys( $merge_tags ), array_values( $merge_tags ), $email_subject );
 		$email_body    = str_replace( array_keys( $merge_tags ), array_values( $merge_tags ), $email_body );
 
-		// Convert line breaks to <br> for HTML email
+		// Convert line breaks to <br> for HTML email.
 		$email_body = nl2br( $email_body );
 
-		// Set up headers
+		// Set up headers.
 		$headers = array(
 			'Content-Type: text/html; charset=UTF-8',
 			sprintf( 'From: %s <%s>', $email_from_name, $email_from ),
 		);
 
-		// Add Reply-To if specified and field exists
+		// Add Reply-To if specified and field exists.
 		if ( ! empty( $email_reply_to ) && isset( $fields[ $email_reply_to ] ) ) {
 			$reply_to_value = is_array( $fields[ $email_reply_to ] ) ? $fields[ $email_reply_to ]['value'] : $fields[ $email_reply_to ];
 			if ( is_email( $reply_to_value ) ) {
@@ -483,7 +490,7 @@ class Form_Handler {
 			}
 		}
 
-		// Send email
+		// Send email.
 		wp_mail( $email_to, $email_subject, $email_body, $headers );
 	}
 }

@@ -135,12 +135,15 @@
 
 // Morph 1: Organic shape morphing through 3 states
 @keyframes dsg-blob-morph-1 {
+
 	0%, 100% {
 		border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
 	}
+
 	33% {
 		border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
 	}
+
 	66% {
 		border-radius: 50% 40% 20% 80% / 25% 70% 30% 75%;
 	}
@@ -148,15 +151,19 @@
 
 // Morph 2: Different morphing pattern
 @keyframes dsg-blob-morph-2 {
+
 	0%, 100% {
 		border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
 	}
+
 	25% {
 		border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
 	}
+
 	50% {
 		border-radius: 50% 50% 30% 70% / 50% 50% 50% 50%;
 	}
+
 	75% {
 		border-radius: 30% 70% 70% 30% / 60% 40% 60% 40%;
 	}
@@ -164,9 +171,11 @@
 
 // Float: Gentle floating motion (no rotation)
 @keyframes dsg-blob-float {
+
 	0%, 100% {
 		transform: translateY(0);
 	}
+
 	50% {
 		transform: translateY(-15px);
 	}
@@ -174,9 +183,11 @@
 
 // Pulse: Scale in and out with slight rotation
 @keyframes dsg-blob-pulse {
+
 	0%, 100% {
 		transform: scale(1) rotate(0deg);
 	}
+
 	50% {
 		transform: scale(1.1) rotate(5deg);
 	}
@@ -184,12 +195,15 @@
 
 // Spin: Continuous rotation with slight scale
 @keyframes dsg-blob-spin {
+
 	0% {
 		transform: rotate(0deg) scale(1);
 	}
+
 	50% {
 		transform: rotate(180deg) scale(1.05);
 	}
+
 	100% {
 		transform: rotate(360deg) scale(1);
 	}
@@ -197,7 +211,9 @@
 
 // Accessibility: Reduce motion for users who prefer it
 @media (prefers-reduced-motion: reduce) {
+
 	.dsg-blobs {
+
 		&--morph-1,
 		&--morph-2,
 		&--float,
@@ -210,7 +226,9 @@
 
 // Responsive: Adjust size on mobile
 @media (max-width: 768px) {
+
 	.dsg-blobs {
+
 		&__shape {
 			// Scale down on mobile if using fixed pixel values
 			max-width: 100%;
@@ -221,7 +239,9 @@
 
 // Print styles: Remove animations
 @media print {
+
 	.dsg-blobs {
+
 		&--morph-1,
 		&--morph-2,
 		&--float,

@@ -118,6 +118,7 @@
 
 // Accessibility: Reduce motion
 @media (prefers-reduced-motion: reduce) {
+
 	.dsg-image-accordion-item {
 		transition: flex 0.1s ease;
 
@@ -133,6 +134,7 @@
 
 // Print styles: Expand all items
 @media print {
+
 	.dsg-image-accordion-item {
 		flex: 1 !important;
 		page-break-inside: avoid;

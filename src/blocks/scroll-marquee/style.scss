@@ -58,6 +58,7 @@
 
 // Accessibility: Respect user's motion preferences
 @media (prefers-reduced-motion: reduce) {
+
 	.dsg-scroll-marquee__track {
 		transform: none !important;
 	}

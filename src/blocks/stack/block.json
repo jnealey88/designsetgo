@@ -16,10 +16,13 @@
 		"layout": {
 			"allowSwitching": false,
 			"allowInheriting": false,
-			"allowEditing": false,
+			"allowEditing": true,
+			"allowSizingOnChildren": true,
 			"default": {
 				"type": "flex",
-				"orientation": "vertical"
+				"orientation": "vertical",
+				"justifyContent": "left",
+				"contentSize": "1200px"
 			}
 		},
 		"spacing": {
@@ -32,8 +35,7 @@
 			}
 		},
 		"dimensions": {
-			"minHeight": true,
-			"maxWidth": false
+			"minHeight": true
 		},
 		"color": {
 			"background": true,
@@ -75,31 +77,21 @@
 	},
 	"attributes": {
 		"align": {
-			"type": "string"
-		},
-		"textAlign": {
-			"type": "string"
+			"type": "string",
+			"default": "full"
 		},
 		"style": {
 			"type": "object",
 			"default": {
 				"spacing": {
-					"blockGap": "var(--wp--preset--spacing--50)",
-				"padding": "var(--wp--preset--spacing--50)"
+					"padding": {
+						"top": "var(--wp--preset--spacing--xl)",
+						"bottom": "var(--wp--preset--spacing--xl)",
+						"left": "var(--wp--preset--spacing--md)",
+						"right": "var(--wp--preset--spacing--md)"
+					}
 				}
 			}
-		},
-		"alignItems": {
-			"type": "string",
-			"default": "flex-start"
-		},
-		"constrainWidth": {
-			"type": "boolean",
-			"default": false
-		},
-		"contentWidth": {
-			"type": "string",
-			"default": ""
 		},
 		"hoverBackgroundColor": {
 			"type": "string",
@@ -119,8 +111,6 @@
 		}
 	},
 	"providesContext": {
-		"designsetgo/alignItems": "alignItems",
-		"designsetgo/textAlign": "textAlign",
 		"designsetgo/hoverIconBackgroundColor": "hoverIconBackgroundColor",
 		"designsetgo/hoverButtonBackgroundColor": "hoverButtonBackgroundColor"
 	},

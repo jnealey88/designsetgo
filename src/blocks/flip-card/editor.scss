@@ -28,6 +28,7 @@
 
 	// Hover trigger
 	&--hover {
+
 		&:focus {
 			outline: 2px solid var(--wp--preset--color--primary, #3b82f6);
 			outline-offset: 2px;
@@ -38,6 +39,7 @@
 // Editor-specific: Show both cards for editing
 .editor-styles-wrapper,
 .block-editor-block-preview__content {
+
 	.dsg-flip-card {
 		// Ensure flip card respects parent width constraints
 		width: 100%;
@@ -72,12 +74,14 @@
 		}
 
 		&__container > .wp-block-designsetgo-flip-card-front {
+
 			&::before {
 				content: 'Front';
 			}
 		}
 
 		&__container > .wp-block-designsetgo-flip-card-back {
+
 			&::before {
 				content: 'Back';
 			}
@@ -87,6 +91,7 @@
 
 // Accessibility: Reduce motion preference
 @media (prefers-reduced-motion: reduce) {
+
 	.dsg-flip-card__container > * {
 		transition: opacity 0.1s ease;
 		transform: none !important;

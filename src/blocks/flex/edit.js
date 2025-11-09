@@ -35,6 +35,7 @@ import { createBlock } from '@wordpress/blocks';
  */
 export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	const {
+		align,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -117,10 +118,13 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	// CRITICAL: Apply display: flex here, not via WordPress layout support on outer div
 	const innerStyle = {
 		display: 'flex',
+		// Apply layout justifyContent to inner div where flex children are
+		justifyContent: layout?.justifyContent || 'left',
 	};
 
 	// Apply width constraints if enabled
-	if (constrainWidth) {
+	// IMPORTANT: Don't constrain width when block is alignfull - let it use full container width
+	if (constrainWidth && align !== 'full') {
 		innerStyle.maxWidth = contentWidth || '1200px';
 		innerStyle.marginLeft = 'auto';
 		innerStyle.marginRight = 'auto';

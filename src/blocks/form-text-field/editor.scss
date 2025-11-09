@@ -7,10 +7,11 @@
  */
 
 // Import the main frontend styles for base styling
-@import './style.scss';
+@import './style';
 
 // Editor-specific overrides
 .editor-styles-wrapper {
+
 	.dsg-form-field {
 		// Make fields look disabled in editor
 		&__input,

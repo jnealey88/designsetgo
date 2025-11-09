@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-07T22:08:14+00:00\n"
+"POT-Creation-Date: 2025-11-09T18:36:21+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: designsetgo\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: includes/admin/class-admin-menu.php:40
 #: includes/admin/class-global-styles.php:454
 #: includes/admin/class-global-styles.php:455
-#: includes/class-plugin.php:233
+#: includes/class-plugin.php:243
 msgid "DesignSetGo"
 msgstr ""
 
@@ -33,7 +33,7 @@ msgstr ""
 
 #. Description of the plugin
 #: designsetgo.php
-msgid "Modern Gutenberg block library bridging the gap between core WordPress blocks and advanced page builders. Design made easy, fast, and beautiful."
+msgid "Professional Gutenberg block library with 42 blocks - complete Form Builder, container system, interactive elements, and animations. Built with WordPress standards for guaranteed editor/frontend parity."
 msgstr ""
 
 #: includes/abilities/class-abilities-registry.php:247
@@ -46,7 +46,7 @@ msgstr ""
 
 #: includes/abilities/class-abilities-registry.php:255
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:242
+#: src/admin/components/BlocksExtensions.js:290
 msgid "Blocks"
 msgstr ""
 
@@ -535,83 +535,83 @@ msgstr ""
 msgid "Flexible horizontal or vertical layout container with customizable alignment, gap, and wrapping."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:172
+#: includes/abilities/info/class-list-blocks.php:175
 #: includes/admin/class-settings.php:82
 msgid "Grid Container"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:173
+#: includes/abilities/info/class-list-blocks.php:176
 msgid "Responsive grid layout with customizable columns for desktop, tablet, and mobile."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:187
+#: includes/abilities/info/class-list-blocks.php:190
 #: includes/admin/class-settings.php:88
 msgid "Stack Container"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:188
+#: includes/abilities/info/class-list-blocks.php:191
 msgid "Vertical stacking container with consistent spacing between elements."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:200
+#: includes/abilities/info/class-list-blocks.php:203
 #: includes/admin/class-settings.php:129
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:318
+#: src/blocks/tabs/edit.js:334
 msgid "Accordion"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:201
+#: includes/abilities/info/class-list-blocks.php:204
 msgid "Collapsible accordion container for FAQ sections and content organization."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:211
+#: includes/abilities/info/class-list-blocks.php:214
 #: includes/admin/class-settings.php:135
 msgid "Accordion Item"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:212
+#: includes/abilities/info/class-list-blocks.php:215
 msgid "Individual item within an accordion with title and content."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:223
+#: includes/abilities/info/class-list-blocks.php:226
 #: includes/admin/class-settings.php:141
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:362
+#: src/blocks/tabs/edit.js:378
 msgid "Tabs"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:224
+#: includes/abilities/info/class-list-blocks.php:227
 msgid "Tabbed interface for organizing content into switchable panels."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:234
+#: includes/abilities/info/class-list-blocks.php:237
 #: includes/admin/class-settings.php:147
 msgid "Tab"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:235
+#: includes/abilities/info/class-list-blocks.php:238
 msgid "Individual tab within a tabs container."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:244
+#: includes/abilities/info/class-list-blocks.php:247
 #: includes/admin/class-settings.php:153
 msgid "Scroll Accordion"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:245
+#: includes/abilities/info/class-list-blocks.php:248
 msgid "Sticky stacking accordion that reveals items on scroll."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:254
+#: includes/abilities/info/class-list-blocks.php:257
 #: includes/admin/class-settings.php:159
 msgid "Scroll Accordion Item"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:255
+#: includes/abilities/info/class-list-blocks.php:258
 msgid "Individual item within a scroll accordion."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:264
+#: includes/abilities/info/class-list-blocks.php:267
 #: includes/admin/class-settings.php:99
 #: build/blocks/counter/index.js:1
 #: build/blocks/icon-list-item/index.js:1
@@ -619,123 +619,123 @@ msgstr ""
 #: build/blocks/tab/index.js:1
 #: src/blocks/counter/components/inspector/IconSettingsPanel.js:48
 #: src/blocks/icon-list-item/components/inspector/IconPickerPanel.js:23
-#: src/blocks/icon/edit.js:76
+#: src/blocks/icon/edit.js:78
 #: src/blocks/tab/edit.js:124
 #: src/blocks/tab/edit.js:224
 msgid "Icon"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:265
+#: includes/abilities/info/class-list-blocks.php:268
 msgid "SVG icon with customizable size, color, and rotation."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:277
+#: includes/abilities/info/class-list-blocks.php:280
 #: includes/admin/class-settings.php:105
 msgid "Icon Button"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:278
+#: includes/abilities/info/class-list-blocks.php:281
 msgid "Button with icon and optional text label."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:292
+#: includes/abilities/info/class-list-blocks.php:298
 #: includes/admin/class-settings.php:123
 msgid "Pill"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:293
+#: includes/abilities/info/class-list-blocks.php:299
 msgid "Rounded pill-shaped badge or tag element."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:304
+#: includes/abilities/info/class-list-blocks.php:310
 #: includes/admin/class-settings.php:111
 msgid "Icon List"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:305
+#: includes/abilities/info/class-list-blocks.php:311
 msgid "List with icons for each item, perfect for features or benefits."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:314
+#: includes/abilities/info/class-list-blocks.php:320
 #: includes/admin/class-settings.php:117
 msgid "Icon List Item"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:315
+#: includes/abilities/info/class-list-blocks.php:321
 msgid "Individual item within an icon list."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:326
+#: includes/abilities/info/class-list-blocks.php:332
 #: includes/admin/class-settings.php:194
 msgid "Flip Card"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:327
+#: includes/abilities/info/class-list-blocks.php:333
 msgid "3D card that flips on hover to reveal back content."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:337
+#: includes/abilities/info/class-list-blocks.php:346
 #: includes/admin/class-settings.php:200
 msgid "Flip Card Front"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:338
+#: includes/abilities/info/class-list-blocks.php:347
 msgid "Front face of a flip card."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:345
+#: includes/abilities/info/class-list-blocks.php:354
 #: includes/admin/class-settings.php:206
 msgid "Flip Card Back"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:346
+#: includes/abilities/info/class-list-blocks.php:355
 msgid "Back face of a flip card."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:353
+#: includes/abilities/info/class-list-blocks.php:362
 #: includes/admin/class-settings.php:171
 msgid "Reveal"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:354
+#: includes/abilities/info/class-list-blocks.php:363
 msgid "Content that reveals on scroll with customizable animations."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:365
+#: includes/abilities/info/class-list-blocks.php:374
 #: includes/admin/class-settings.php:165
 msgid "Scroll Marquee"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:366
+#: includes/abilities/info/class-list-blocks.php:375
 msgid "Infinite scrolling marquee for logos or content."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:379
+#: includes/abilities/info/class-list-blocks.php:391
 #: includes/admin/class-settings.php:241
 msgid "Counter"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:380
+#: includes/abilities/info/class-list-blocks.php:392
 msgid "Animated counter that counts up to a target value."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:394
+#: includes/abilities/info/class-list-blocks.php:406
 #: includes/admin/class-settings.php:235
 msgid "Counter Group"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:395
+#: includes/abilities/info/class-list-blocks.php:407
 msgid "Group of animated counters for statistics sections."
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:405
+#: includes/abilities/info/class-list-blocks.php:417
 #: includes/admin/class-settings.php:247
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:92
+#: src/blocks/progress-bar/edit.js:103
 msgid "Progress Bar"
 msgstr ""
 
-#: includes/abilities/info/class-list-blocks.php:406
+#: includes/abilities/info/class-list-blocks.php:418
 msgid "Animated progress bar with customizable colors and value."
 msgstr ""
 
@@ -1029,7 +1029,7 @@ msgstr ""
 
 #: includes/abilities/inserters/class-insert-grid-container.php:103
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:229
+#: src/blocks/grid/edit.js:330
 msgid "Vertical alignment of grid items"
 msgstr ""
 
@@ -1086,7 +1086,7 @@ msgstr ""
 #: includes/abilities/inserters/class-insert-icon-list.php:80
 #: includes/abilities/inserters/class-insert-icon.php:91
 #: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:126
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:203
 msgid "Icon size in pixels"
 msgstr ""
 
@@ -1557,15 +1557,15 @@ msgstr ""
 #: includes/admin/class-admin-menu.php:61
 #: includes/admin/class-admin-menu.php:62
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:220
+#: src/admin/components/BlocksExtensions.js:265
 msgid "Blocks & Extensions"
 msgstr ""
 
 #: includes/admin/class-admin-menu.php:74
 #: includes/admin/class-admin-menu.php:75
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:112
-#: src/admin/components/Settings.js:98
+#: src/admin/components/Dashboard.js:122
+#: src/admin/components/Settings.js:104
 msgid "Settings"
 msgstr ""
 
@@ -1837,8 +1837,8 @@ msgstr ""
 #: includes/admin/class-settings.php:218
 #: build/blocks/flip-card/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/flip-card/edit.js:188
-#: src/blocks/slider/edit.js:460
+#: src/blocks/flip-card/edit.js:214
+#: src/blocks/slider/edit.js:537
 msgid "Slide"
 msgstr ""
 
@@ -1989,8 +1989,8 @@ msgstr ""
 #: includes/admin/class-settings.php:353
 #: build/blocks/image-accordion/index.js:1
 #: build/index.js:1
-#: src/blocks/image-accordion/edit.js:178
-#: src/extensions/overlay/index.js:100
+#: src/blocks/image-accordion/edit.js:212
+#: src/extensions/overlay/index.js:104
 msgid "Overlay"
 msgstr ""
 
@@ -2000,7 +2000,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:358
 #: build/index.js:1
-#: src/extensions/background-video/index.js:122
+#: src/extensions/background-video/index.js:117
 msgid "Background Video"
 msgstr ""
 
@@ -2019,6 +2019,10 @@ msgid "Per-block custom CSS"
 msgstr ""
 
 #: includes/admin/class-settings.php:368
+#: build/blocks/flex/index.js:1
+#: build/blocks/stack/index.js:1
+#: src/blocks/flex/edit.js:231
+#: src/blocks/stack/edit.js:191
 msgid "Max Width"
 msgstr ""
 
@@ -2060,7 +2064,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:393
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:268
+#: src/blocks/progress-bar/edit.js:285
 msgid "Animation"
 msgstr ""
 
@@ -2121,8 +2125,6 @@ msgid "New Form Submission"
 msgstr ""
 
 #: includes/blocks/class-form-handler.php:462
-#: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:385
 msgid ""
 "New form submission:\n"
 "\n"
@@ -2195,18 +2197,18 @@ msgstr ""
 #: build/blocks/form-textarea/index.js:1
 #: build/blocks/form-time-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:44
-#: src/blocks/form-date-field/edit.js:45
-#: src/blocks/form-email-field/edit.js:56
-#: src/blocks/form-file-upload/edit.js:41
+#: src/blocks/form-checkbox-field/edit.js:48
+#: src/blocks/form-date-field/edit.js:48
+#: src/blocks/form-email-field/edit.js:58
+#: src/blocks/form-file-upload/edit.js:49
 #: src/blocks/form-hidden-field/edit.js:35
-#: src/blocks/form-number-field/edit.js:49
-#: src/blocks/form-phone-field/edit.js:79
-#: src/blocks/form-select-field/edit.js:74
-#: src/blocks/form-text-field/edit.js:85
-#: src/blocks/form-textarea/edit.js:59
-#: src/blocks/form-time-field/edit.js:47
-#: src/blocks/form-url-field/edit.js:44
+#: src/blocks/form-number-field/edit.js:57
+#: src/blocks/form-phone-field/edit.js:88
+#: src/blocks/form-select-field/edit.js:84
+#: src/blocks/form-text-field/edit.js:75
+#: src/blocks/form-textarea/edit.js:69
+#: src/blocks/form-time-field/edit.js:55
+#: src/blocks/form-url-field/edit.js:41
 msgid "Field Name"
 msgstr ""
 
@@ -2214,9 +2216,9 @@ msgstr ""
 #: build/blocks/form-checkbox-field/index.js:1
 #: build/blocks/form-hidden-field/index.js:1
 #: build/blocks/form-select-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:71
-#: src/blocks/form-hidden-field/edit.js:46
-#: src/blocks/form-select-field/edit.js:114
+#: src/blocks/form-checkbox-field/edit.js:90
+#: src/blocks/form-hidden-field/edit.js:54
+#: src/blocks/form-select-field/edit.js:138
 msgid "Value"
 msgstr ""
 
@@ -2302,103 +2304,103 @@ msgid "Manage your DesignSetGo blocks, extensions, and settings."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:55
+#: src/admin/components/Dashboard.js:58
 msgid "Plugin Statistics"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:64
+#: src/admin/components/Dashboard.js:68
 msgid "Enabled Blocks"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:72
-#: src/admin/components/Dashboard.js:102
+#: src/admin/components/Dashboard.js:76
+#: src/admin/components/Dashboard.js:109
 msgid "Form Submissions"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:83
+#: src/admin/components/Dashboard.js:87
 msgid "Quick Links"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:92
+#: src/admin/components/Dashboard.js:96
 msgid "Manage Blocks"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:94
+#: src/admin/components/Dashboard.js:98
 msgid "Enable or disable individual blocks and extensions"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:104
+#: src/admin/components/Dashboard.js:111
 msgid "View and manage form submissions"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:114
+#: src/admin/components/Dashboard.js:124
 msgid "Configure performance, forms, and security"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:122
+#: src/admin/components/Dashboard.js:135
 msgid "Global Styles"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:124
+#: src/admin/components/Dashboard.js:137
 msgid "Customize colors, typography, and spacing"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:135
+#: src/admin/components/Dashboard.js:151
 msgid "Getting Started"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:139
+#: src/admin/components/Dashboard.js:155
 msgid "DesignSetGo provides 41 powerful blocks and 10 extensions to enhance your WordPress editing experience."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:143
+#: src/admin/components/Dashboard.js:163
 msgid "Container Blocks:"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:144
+#: src/admin/components/Dashboard.js:165
 msgid "Flex, Grid, and Stack layouts for responsive designs"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:147
+#: src/admin/components/Dashboard.js:172
 msgid "UI Elements:"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:148
+#: src/admin/components/Dashboard.js:174
 msgid "Icons, tabs, accordions, and more"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:151
+#: src/admin/components/Dashboard.js:181
 msgid "Interactive Blocks:"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:152
+#: src/admin/components/Dashboard.js:183
 msgid "Sliders, flip cards, and animations"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:155
+#: src/admin/components/Dashboard.js:190
 msgid "Form Builder:"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Dashboard.js:156
+#: src/admin/components/Dashboard.js:192
 msgid "Complete form system with 11 field types"
 msgstr ""
 
@@ -2408,61 +2410,61 @@ msgid "Failed to load data."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:222
+#: src/admin/components/BlocksExtensions.js:267
 msgid "Enable or disable blocks and extensions to customize your editing experience."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:246
-#: src/admin/components/BlocksExtensions.js:326
+#: src/admin/components/BlocksExtensions.js:294
+#: src/admin/components/BlocksExtensions.js:436
 msgid "Extensions"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:258
-msgid "Search blocks..."
+#: src/admin/components/BlocksExtensions.js:306
+msgid "Search blocks…"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:281
+#: src/admin/components/BlocksExtensions.js:355
 msgid "Enable All"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:289
+#: src/admin/components/BlocksExtensions.js:372
 msgid "Disable All"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:304
+#: src/admin/components/BlocksExtensions.js:401
 msgid "Heavy"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:330
+#: src/admin/components/BlocksExtensions.js:440
 msgid "Extensions add functionality to all blocks. Disabling extensions will reduce editor complexity."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:185
+#: src/admin/components/BlocksExtensions.js:217
 msgid "Settings saved successfully! Please refresh any open editor pages to see the changes."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:192
-#: src/admin/components/Settings.js:81
+#: src/admin/components/BlocksExtensions.js:229
+#: src/admin/components/Settings.js:87
 msgid "Failed to save settings."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:358
-#: src/admin/components/Settings.js:321
-msgid "Saving..."
+#: src/admin/components/BlocksExtensions.js:485
+#: src/admin/components/Settings.js:368
+msgid "Saving…"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/BlocksExtensions.js:358
-#: src/admin/components/Settings.js:321
+#: src/admin/components/BlocksExtensions.js:486
+#: src/admin/components/Settings.js:369
 msgid "Save Changes"
 msgstr ""
 
@@ -2472,79 +2474,79 @@ msgid "Failed to load settings."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:100
+#: src/admin/components/Settings.js:106
 msgid "Configure performance, forms, animations, and security options."
 msgstr ""
 
 #: build/admin.js:1
 #: build/blocks/scroll-marquee/index.js:1
-#: src/admin/components/Settings.js:117
-#: src/blocks/scroll-marquee/edit.js:73
+#: src/admin/components/Settings.js:126
+#: src/blocks/scroll-marquee/edit.js:91
 msgid "Performance"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:121
+#: src/admin/components/Settings.js:130
 msgid "Conditional Asset Loading"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:122
+#: src/admin/components/Settings.js:131
 msgid "Load block assets only on pages that use them. Improves performance."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:133
+#: src/admin/components/Settings.js:148
 msgid "Cache Duration (seconds)"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:134
+#: src/admin/components/Settings.js:149
 msgid "How long to cache block detection results."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:154
+#: src/admin/components/Settings.js:173
 msgid "Forms"
 msgstr ""
 
 #: build/admin.js:1
 #: build/blocks/form-builder/index.js:1
-#: src/admin/components/Settings.js:158
-#: src/blocks/form-builder/edit.js:246
+#: src/admin/components/Settings.js:177
+#: src/blocks/form-builder/edit.js:291
 msgid "Enable Honeypot"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:159
+#: src/admin/components/Settings.js:178
 msgid "Add a hidden field to detect spam bots."
 msgstr ""
 
 #: build/admin.js:1
 #: build/blocks/form-builder/index.js:1
-#: src/admin/components/Settings.js:170
-#: src/blocks/form-builder/edit.js:257
+#: src/admin/components/Settings.js:189
+#: src/blocks/form-builder/edit.js:304
 msgid "Enable Rate Limiting"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:171
+#: src/admin/components/Settings.js:190
 msgid "Prevent spam by limiting submission frequency."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:182
+#: src/admin/components/Settings.js:205
 msgid "Submission Retention (days)"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:183
+#: src/admin/components/Settings.js:206
 msgid "How long to keep form submissions. Set to 0 to keep forever."
 msgstr ""
 
 #: build/admin.js:1
 #: build/index.js:1
-#: src/admin/components/Settings.js:203
+#: src/admin/components/Settings.js:226
 #: src/extensions/block-animations/components/AnimationPanel.js:48
 #: src/extensions/block-animations/components/AnimationToolbar.js:57
 msgid "Animations"
@@ -2552,83 +2554,83 @@ msgstr ""
 
 #: build/admin.js:1
 #: build/index.js:1
-#: src/admin/components/Settings.js:207
+#: src/admin/components/Settings.js:230
 #: src/extensions/block-animations/components/AnimationPanel.js:53
 msgid "Enable Animations"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:208
+#: src/admin/components/Settings.js:231
 msgid "Enable block entrance/exit animations."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:219
+#: src/admin/components/Settings.js:248
 msgid "Default Duration (ms)"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:220
+#: src/admin/components/Settings.js:249
 msgid "Default animation duration in milliseconds."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:235
+#: src/admin/components/Settings.js:268
 msgid "Default Easing"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:236
+#: src/admin/components/Settings.js:269
 msgid "Default animation timing function."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:255
+#: src/admin/components/Settings.js:291
 msgid "Respect Prefers Reduced Motion"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:256
+#: src/admin/components/Settings.js:295
 msgid "Disable animations for users who prefer reduced motion (accessibility)."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:272
+#: src/admin/components/Settings.js:318
 msgid "Security & Privacy"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:276
+#: src/admin/components/Settings.js:322
 msgid "Log IP Addresses"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:277
+#: src/admin/components/Settings.js:323
 msgid "Store IP addresses with form submissions."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:288
+#: src/admin/components/Settings.js:334
 msgid "Log User Agents"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:289
+#: src/admin/components/Settings.js:335
 msgid "Store browser user agent strings with form submissions."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:300
+#: src/admin/components/Settings.js:346
 msgid "Log Referrers"
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:301
+#: src/admin/components/Settings.js:347
 msgid "Store referrer URLs with form submissions."
 msgstr ""
 
 #: build/admin.js:1
-#: src/admin/components/Settings.js:74
+#: src/admin/components/Settings.js:78
 msgid "Settings saved successfully!"
 msgstr ""
 
@@ -2706,9 +2708,10 @@ msgstr ""
 #: build/index.js:1
 #: src/blocks/accordion/edit.js:117
 #: src/blocks/accordion/edit.js:159
-#: src/blocks/blobs/edit.js:116
-#: src/blocks/form-text-field/edit.js:198
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:100
+#: src/blocks/blobs/edit.js:160
+#: src/blocks/form-text-field/edit.js:229
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:118
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:177
 #: src/blocks/icon-list-item/components/inspector/LinkSettingsPanel.js:66
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:34
 #: src/blocks/tab/edit.js:23
@@ -2735,10 +2738,8 @@ msgstr ""
 
 #: build/blocks/accordion/index.js:1
 #: build/blocks/counter/index.js:1
-#: build/blocks/icon-button/index.js:1
 #: src/blocks/accordion/edit.js:140
 #: src/blocks/counter/components/inspector/IconSettingsPanel.js:30
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:91
 #: src/blocks/icon/components/inspector/IconSettingsPanel.js:54
 msgid "Icon Settings"
 msgstr ""
@@ -2770,8 +2771,8 @@ msgstr ""
 #: build/blocks/tab/index.js:1
 #: src/blocks/accordion/edit.js:170
 #: src/blocks/counter/components/inspector/IconSettingsPanel.js:87
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:95
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:112
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:172
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:120
 #: src/blocks/tab/edit.js:137
 #: src/blocks/tab/edit.js:257
 msgid "Icon Position"
@@ -2787,16 +2788,16 @@ msgstr ""
 #: build/blocks/tab/index.js:1
 #: build/blocks/tabs/index.js:1
 #: src/blocks/accordion/edit.js:174
-#: src/blocks/counter-group/index.js:176
+#: src/blocks/counter-group/index.js:197
 #: src/blocks/counter/components/inspector/IconSettingsPanel.js:91
-#: src/blocks/form-builder/edit.js:160
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:73
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:115
-#: src/blocks/image-accordion-item/edit.js:105
-#: src/blocks/slide/edit.js:284
+#: src/blocks/form-builder/edit.js:178
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:74
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:123
+#: src/blocks/image-accordion-item/edit.js:125
+#: src/blocks/slide/edit.js:406
 #: src/blocks/tab/edit.js:141
 #: src/blocks/tab/edit.js:261
-#: src/blocks/tabs/edit.js:215
+#: src/blocks/tabs/edit.js:270
 msgid "Left"
 msgstr ""
 
@@ -2810,16 +2811,16 @@ msgstr ""
 #: build/blocks/tab/index.js:1
 #: build/blocks/tabs/index.js:1
 #: src/blocks/accordion/edit.js:178
-#: src/blocks/counter-group/index.js:182
+#: src/blocks/counter-group/index.js:203
 #: src/blocks/counter/components/inspector/IconSettingsPanel.js:93
-#: src/blocks/form-builder/edit.js:162
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:79
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:116
-#: src/blocks/image-accordion-item/edit.js:107
-#: src/blocks/slide/edit.js:286
+#: src/blocks/form-builder/edit.js:184
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:80
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:124
+#: src/blocks/image-accordion-item/edit.js:133
+#: src/blocks/slide/edit.js:414
 #: src/blocks/tab/edit.js:145
 #: src/blocks/tab/edit.js:265
-#: src/blocks/tabs/edit.js:223
+#: src/blocks/tabs/edit.js:278
 msgid "Right"
 msgstr ""
 
@@ -2846,7 +2847,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/accordion/edit.js:217
-#: src/blocks/image-accordion/edit.js:94
+#: src/blocks/image-accordion/edit.js:104
 msgid "Gap Between Items"
 msgstr ""
 
@@ -2889,124 +2890,124 @@ msgstr ""
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/image-accordion-item/index.js:1
-#: src/blocks/blobs/edit.js:56
-#: src/blocks/image-accordion-item/edit.js:68
+#: src/blocks/blobs/edit.js:72
+#: src/blocks/image-accordion-item/edit.js:76
 msgid "Add title…"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/image-accordion-item/index.js:1
-#: src/blocks/blobs/edit.js:63
-#: src/blocks/image-accordion-item/edit.js:74
+#: src/blocks/blobs/edit.js:79
+#: src/blocks/image-accordion-item/edit.js:82
 msgid "Add description…"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:74
+#: src/blocks/blobs/edit.js:91
 msgid "Blob Settings"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:76
+#: src/blocks/blobs/edit.js:95
 msgid "Blob Shape"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:79
+#: src/blocks/blobs/edit.js:99
 msgid "Classic Blob"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:80
+#: src/blocks/blobs/edit.js:103
 msgid "Amoeba"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:81
+#: src/blocks/blobs/edit.js:107
 msgid "Pebble"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:82
+#: src/blocks/blobs/edit.js:111
 msgid "Splash"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:83
+#: src/blocks/blobs/edit.js:115
 msgid "Drop"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:84
+#: src/blocks/blobs/edit.js:119
 msgid "Cloud"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:87
+#: src/blocks/blobs/edit.js:126
 msgid "Choose the organic shape style"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:96
+#: src/blocks/blobs/edit.js:135
 msgid "Blob Size"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:107
+#: src/blocks/blobs/edit.js:148
 msgid "Width and height of the blob shape"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/reveal/index.js:1
-#: src/blocks/blobs/edit.js:113
+#: src/blocks/blobs/edit.js:157
 #: src/blocks/reveal/edit.js:38
 msgid "Animation Type"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:117
+#: src/blocks/blobs/edit.js:162
 msgid "Float"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:118
+#: src/blocks/blobs/edit.js:166
 msgid "Pulse"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:119
+#: src/blocks/blobs/edit.js:169
 msgid "Spin"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:120
+#: src/blocks/blobs/edit.js:171
 msgid "Morph Style 1"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:121
+#: src/blocks/blobs/edit.js:175
 msgid "Morph Style 2"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:124
+#: src/blocks/blobs/edit.js:182
 msgid "Float/Pulse/Spin keep your shape. Morph changes the shape itself."
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/blobs/edit.js:133
-#: src/blocks/progress-bar/edit.js:285
+#: src/blocks/blobs/edit.js:191
+#: src/blocks/progress-bar/edit.js:302
 msgid "Animation Duration"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:142
+#: src/blocks/blobs/edit.js:202
 msgid "How long one animation cycle takes"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:148
+#: src/blocks/blobs/edit.js:211
 msgid "Animation Easing"
 msgstr ""
 
@@ -3014,31 +3015,31 @@ msgstr ""
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/blobs/edit.js:151
-#: src/blocks/counter-group/index.js:253
+#: src/blocks/blobs/edit.js:215
+#: src/blocks/counter-group/index.js:274
 #: src/blocks/counter/components/inspector/AnimationPanel.js:122
-#: src/blocks/slider/edit.js:492
+#: src/blocks/slider/edit.js:588
 msgid "Linear"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/blobs/edit.js:152
-#: src/blocks/slider/edit.js:488
+#: src/blocks/blobs/edit.js:218
+#: src/blocks/slider/edit.js:574
 msgid "Ease"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/blobs/edit.js:153
-#: src/blocks/slider/edit.js:490
+#: src/blocks/blobs/edit.js:220
+#: src/blocks/slider/edit.js:580
 msgid "Ease In"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/blobs/edit.js:154
-#: src/blocks/slider/edit.js:491
+#: src/blocks/blobs/edit.js:224
+#: src/blocks/slider/edit.js:584
 msgid "Ease Out"
 msgstr ""
 
@@ -3046,39 +3047,39 @@ msgstr ""
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/blobs/edit.js:155
-#: src/blocks/counter-group/index.js:249
+#: src/blocks/blobs/edit.js:228
+#: src/blocks/counter-group/index.js:270
 #: src/blocks/counter/components/inspector/AnimationPanel.js:118
-#: src/blocks/slider/edit.js:489
+#: src/blocks/slider/edit.js:576
 msgid "Ease In Out"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:158
+#: src/blocks/blobs/edit.js:235
 msgid "Animation timing function"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:167
+#: src/blocks/blobs/edit.js:241
 msgid "Enable Background Overlay"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:170
+#: src/blocks/blobs/edit.js:246
 msgid "Add a semi-transparent overlay over background images"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
 #: build/blocks/slide/index.js:1
 #: build/index.js:1
-#: src/blocks/blobs/edit.js:180
-#: src/blocks/slide/edit.js:251
-#: src/extensions/overlay/index.js:147
+#: src/blocks/blobs/edit.js:256
+#: src/blocks/slide/edit.js:348
+#: src/extensions/overlay/index.js:151
 msgid "Overlay Opacity"
 msgstr ""
 
 #: build/blocks/blobs/index.js:1
-#: src/blocks/blobs/edit.js:185
+#: src/blocks/blobs/edit.js:263
 msgid "Overlay transparency (0 = transparent, 100 = opaque)"
 msgstr ""
 
@@ -3086,124 +3087,387 @@ msgstr ""
 #: build/blocks/image-accordion/index.js:1
 #: build/blocks/slide/index.js:1
 #: build/index.js:1
-#: src/blocks/blobs/edit.js:195
-#: src/blocks/blobs/edit.js:200
-#: src/blocks/image-accordion/edit.js:198
-#: src/blocks/slide/edit.js:238
-#: src/extensions/overlay/index.js:123
+#: src/blocks/blobs/edit.js:279
+#: src/blocks/blobs/edit.js:282
+#: src/blocks/image-accordion/edit.js:237
+#: src/blocks/slide/edit.js:326
+#: src/extensions/overlay/index.js:127
 msgid "Overlay Color"
 msgstr ""
 
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js:16
+msgid "WordPress Default"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js:95
+msgid "Date & Time"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js:97
+msgid "Set the target date and time for your countdown."
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js:114
+msgid "Timezone"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js:121
+msgid "WordPress site timezone:"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js:131
+msgid "Target date set!"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:17
+msgid "Boxed (Default)"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:21
+msgid "Inline"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:25
+msgid "Compact"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:46
+msgid "Display Options"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:48
+msgid "Layout Style"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:52
+msgid "Choose how the countdown units are displayed."
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:62
+msgid "Visible Units"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:66
+msgid "Show Days"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:73
+msgid "Show Hours"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:80
+msgid "Show Minutes"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:87
+msgid "Show Seconds"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js:96
+msgid "At least one time unit should be visible."
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: build/blocks/icon-list-item/index.js:1
+#: build/blocks/scroll-marquee/index.js:1
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js:26
+#: src/blocks/icon-list-item/components/inspector/SpacingPanel.js:22
+#: src/blocks/scroll-marquee/edit.js:172
+msgid "Spacing"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js:28
+msgid "Gap Between Units"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/StylingPanel.js:41
+msgid "Unit Padding"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/UnitBorderPanel.js:43
+msgid "Unit Borders"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/UnitBorderPanel.js:60
+msgid "Customize borders for individual countdown units (Days, Hours, etc.). Container border is controlled above."
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/UnitBorderPanel.js:72
+#: src/blocks/countdown-timer/components/inspector/UnitBorderPanel.js:80
+msgid "Unit Border"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/UnitBorderPanel.js:91
+#: src/blocks/countdown-timer/components/inspector/UnitBorderPanel.js:99
+msgid "Unit Radius"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js:19
+msgid "Completion Settings"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js:21
+msgid "When Countdown Ends"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js:25
+msgid "Show Custom Message"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js:29
+msgid "Hide Timer Completely"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js:38
+msgid "Completion Message"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js:43
+msgid "The countdown has ended!"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js:44
+msgid "This message will replace the countdown timer when it reaches zero."
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/utils/format-time.js:21
+#: src/blocks/countdown-timer/utils/format-time.js:67
+msgid "Day"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/utils/format-time.js:22
+#: src/blocks/countdown-timer/utils/format-time.js:67
+msgid "Days"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/utils/format-time.js:32
+#: src/blocks/countdown-timer/utils/format-time.js:70
+msgid "Hour"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/utils/format-time.js:33
+#: src/blocks/countdown-timer/utils/format-time.js:71
+msgid "Hours"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/utils/format-time.js:41
+#: src/blocks/countdown-timer/utils/format-time.js:72
+msgid "Min"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/utils/format-time.js:49
+#: src/blocks/countdown-timer/utils/format-time.js:73
+msgid "Sec"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: docs/BLOCK-TEMPLATE-EDIT.js:67
+#: src/blocks/countdown-timer/edit.js:139
+#: src/blocks/countdown-timer/edit.js:210
+#: src/blocks/countdown-timer/edit.js:282
+#: src/blocks/countdown-timer/edit.js:346
+msgid "Colors"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/edit.js:142
+#: src/blocks/countdown-timer/edit.js:213
+#: src/blocks/countdown-timer/edit.js:285
+#: src/blocks/countdown-timer/edit.js:349
+msgid "Number Color"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: build/blocks/form-builder/index.js:1
+#: src/blocks/countdown-timer/edit.js:149
+#: src/blocks/countdown-timer/edit.js:222
+#: src/blocks/countdown-timer/edit.js:292
+#: src/blocks/countdown-timer/edit.js:356
+#: src/blocks/form-builder/edit.js:484
+msgid "Label Color"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/edit.js:156
+#: src/blocks/countdown-timer/edit.js:231
+#: src/blocks/countdown-timer/edit.js:299
+#: src/blocks/countdown-timer/edit.js:363
+msgid "Unit Background"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/edit.js:267
+msgid "Timer hidden (countdown complete)"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/edit.js:192
+msgid "Countdown Timer"
+msgstr ""
+
+#: build/blocks/countdown-timer/index.js:1
+#: src/blocks/countdown-timer/edit.js:193
+msgid "Set a target date and time in the block settings to start your countdown."
+msgstr ""
+
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:88
+#: src/blocks/counter-group/index.js:92
 msgid "Happy Customers"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:97
+#: src/blocks/counter-group/index.js:101
 msgid "Revenue Generated"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:106
+#: src/blocks/counter-group/index.js:110
 msgid "Uptime"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
+#: build/blocks/counter/index.js:1
+#: src/blocks/counter-group/index.js:123
+#: src/blocks/counter/edit.js:132
+msgid "Hover Color"
+msgstr ""
+
+#: build/blocks/counter-group/index.js:1
+#: build/blocks/counter/index.js:1
+#: src/blocks/counter-group/index.js:126
+#: src/blocks/counter/edit.js:135
+msgid "Number Hover Color"
+msgstr ""
+
+#: build/blocks/counter-group/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/counter-group/index.js:119
-#: src/blocks/slider/edit.js:226
+#: src/blocks/counter-group/index.js:140
+#: src/blocks/slider/edit.js:255
 msgid "Layout Settings"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:123
+#: src/blocks/counter-group/index.js:144
 msgid "Columns (Desktop)"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:128
+#: src/blocks/counter-group/index.js:149
 msgid ">1024px"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:134
+#: src/blocks/counter-group/index.js:155
 msgid "Columns (Tablet)"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:141
+#: src/blocks/counter-group/index.js:162
 msgid "768px - 1023px"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:147
+#: src/blocks/counter-group/index.js:168
 msgid "Columns (Mobile)"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:154
+#: src/blocks/counter-group/index.js:175
 msgid "<768px"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/counter-group/index.js:160
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:136
+#: src/blocks/counter-group/index.js:181
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:144
 msgid "Gap"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
-#: src/blocks/counter-group/index.js:173
-#: src/blocks/image-accordion-item/edit.js:85
-#: src/blocks/slide/edit.js:266
+#: src/blocks/counter-group/index.js:194
+#: src/blocks/image-accordion-item/edit.js:93
+#: src/blocks/slide/edit.js:374
 msgid "Content Alignment"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: build/blocks/flex/index.js:1
 #: build/blocks/form-builder/index.js:1
 #: build/blocks/grid/index.js:1
 #: build/blocks/icon-list/index.js:1
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
 #: build/blocks/tabs/index.js:1
-#: src/blocks/counter-group/index.js:178
-#: src/blocks/flex/edit.js:176
-#: src/blocks/flex/edit.js:216
-#: src/blocks/form-builder/edit.js:161
-#: src/blocks/grid/edit.js:217
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:75
-#: src/blocks/image-accordion-item/edit.js:93
-#: src/blocks/image-accordion-item/edit.js:106
-#: src/blocks/slide/edit.js:272
-#: src/blocks/slide/edit.js:285
-#: src/blocks/tabs/edit.js:219
+#: src/blocks/counter-group/index.js:199
+#: src/blocks/form-builder/edit.js:180
+#: src/blocks/grid/edit.js:318
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:76
+#: src/blocks/image-accordion-item/edit.js:105
+#: src/blocks/image-accordion-item/edit.js:129
+#: src/blocks/slide/edit.js:386
+#: src/blocks/slide/edit.js:410
+#: src/blocks/tabs/edit.js:274
 msgid "Center"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:196
+#: src/blocks/counter-group/index.js:217
 msgid "Animation Settings"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
-#: src/blocks/counter-group/index.js:200
+#: src/blocks/counter-group/index.js:221
 #: src/blocks/counter/components/inspector/AnimationPanel.js:69
 msgid "Animation Duration (seconds)"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:211
+#: src/blocks/counter-group/index.js:232
 msgid "How long the count animation takes"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
-#: src/blocks/counter-group/index.js:220
+#: src/blocks/counter-group/index.js:241
 #: src/blocks/counter/components/inspector/AnimationPanel.js:89
 msgid "Animation Delay (seconds)"
 msgstr ""
@@ -3211,7 +3475,7 @@ msgstr ""
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
 #: build/index.js:1
-#: src/blocks/counter-group/index.js:228
+#: src/blocks/counter-group/index.js:249
 #: src/blocks/counter/components/inspector/AnimationPanel.js:97
 #: src/extensions/block-animations/components/AnimationPanel.js:142
 msgid "Delay before animation starts"
@@ -3219,82 +3483,63 @@ msgstr ""
 
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
-#: src/blocks/counter-group/index.js:237
+#: src/blocks/counter-group/index.js:258
 #: src/blocks/counter/components/inspector/AnimationPanel.js:106
 msgid "Easing Function"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
-#: src/blocks/counter-group/index.js:241
+#: src/blocks/counter-group/index.js:262
 #: src/blocks/counter/components/inspector/AnimationPanel.js:110
 msgid "Ease Out Quad"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
-#: src/blocks/counter-group/index.js:245
+#: src/blocks/counter-group/index.js:266
 #: src/blocks/counter/components/inspector/AnimationPanel.js:114
 msgid "Ease Out Cubic"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:260
+#: src/blocks/counter-group/index.js:281
 msgid "Animation timing curve"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:268
+#: src/blocks/counter-group/index.js:289
 msgid "Number Formatting"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:272
+#: src/blocks/counter-group/index.js:293
 msgid "Use Thousands Separator"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:277
+#: src/blocks/counter-group/index.js:298
 msgid "Format numbers like \"1,000\" or \"1000\""
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:286
+#: src/blocks/counter-group/index.js:307
 msgid "Thousands Separator"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:291
+#: src/blocks/counter-group/index.js:312
 msgid "Character for thousands (e.g., \",\" or \".\")"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:301
+#: src/blocks/counter-group/index.js:322
 msgid "Decimal Point"
 msgstr ""
 
 #: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:304
+#: src/blocks/counter-group/index.js:325
 msgid "Character for decimals (e.g., \".\" or \",\")"
-msgstr ""
-
-#: build/blocks/counter-group/index.js:1
-#: build/blocks/counter/index.js:1
-#: src/blocks/counter-group/index.js:315
-#: src/blocks/counter/edit.js:149
-msgid "Hover Color"
-msgstr ""
-
-#: build/blocks/counter-group/index.js:1
-#: build/blocks/counter/index.js:1
-#: src/blocks/counter-group/index.js:321
-#: src/blocks/counter/edit.js:155
-msgid "Number Hover Color"
-msgstr ""
-
-#: build/blocks/counter-group/index.js:1
-#: src/blocks/counter-group/index.js:328
-msgid "Color for counter numbers on hover. Individual counters can override this. Leave empty to use default accent color."
 msgstr ""
 
 #: build/blocks/counter/index.js:1
@@ -3350,7 +3595,7 @@ msgstr ""
 #: build/blocks/counter/index.js:1
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/counter/components/inspector/LabelSettingsPanel.js:23
-#: src/blocks/progress-bar/edit.js:202
+#: src/blocks/progress-bar/edit.js:219
 msgid "Label Settings"
 msgstr ""
 
@@ -3365,17 +3610,17 @@ msgstr ""
 #: build/blocks/form-time-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
 #: src/blocks/counter/components/inspector/LabelSettingsPanel.js:27
-#: src/blocks/form-date-field/edit.js:56
-#: src/blocks/form-email-field/edit.js:68
-#: src/blocks/form-file-upload/edit.js:48
-#: src/blocks/form-number-field/edit.js:60
-#: src/blocks/form-phone-field/edit.js:90
-#: src/blocks/form-select-field/edit.js:85
-#: src/blocks/form-select-field/edit.js:105
-#: src/blocks/form-text-field/edit.js:97
-#: src/blocks/form-textarea/edit.js:71
-#: src/blocks/form-time-field/edit.js:58
-#: src/blocks/form-url-field/edit.js:55
+#: src/blocks/form-date-field/edit.js:64
+#: src/blocks/form-email-field/edit.js:74
+#: src/blocks/form-file-upload/edit.js:60
+#: src/blocks/form-number-field/edit.js:73
+#: src/blocks/form-phone-field/edit.js:104
+#: src/blocks/form-select-field/edit.js:100
+#: src/blocks/form-select-field/edit.js:127
+#: src/blocks/form-text-field/edit.js:91
+#: src/blocks/form-textarea/edit.js:85
+#: src/blocks/form-time-field/edit.js:71
+#: src/blocks/form-url-field/edit.js:57
 msgid "Label"
 msgstr ""
 
@@ -3405,7 +3650,9 @@ msgid "No icon displayed"
 msgstr ""
 
 #: build/blocks/counter/index.js:1
+#: build/blocks/divider/index.js:1
 #: src/blocks/counter/components/inspector/IconSettingsPanel.js:51
+#: src/blocks/divider/edit.js:159
 msgid "Star"
 msgstr ""
 
@@ -3415,7 +3662,9 @@ msgid "Trophy"
 msgstr ""
 
 #: build/blocks/counter/index.js:1
+#: build/blocks/divider/index.js:1
 #: src/blocks/counter/components/inspector/IconSettingsPanel.js:57
+#: src/blocks/divider/edit.js:171
 msgid "Heart"
 msgstr ""
 
@@ -3451,10 +3700,10 @@ msgstr ""
 #: build/blocks/slider/index.js:1
 #: build/blocks/tab/index.js:1
 #: src/blocks/counter/components/inspector/IconSettingsPanel.js:90
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:117
-#: src/blocks/image-accordion-item/edit.js:92
-#: src/blocks/slide/edit.js:271
-#: src/blocks/slider/edit.js:431
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:125
+#: src/blocks/image-accordion-item/edit.js:101
+#: src/blocks/slide/edit.js:382
+#: src/blocks/slider/edit.js:514
 #: src/blocks/tab/edit.js:149
 #: src/blocks/tab/edit.js:269
 msgid "Top"
@@ -3500,568 +3749,589 @@ msgstr ""
 msgid "Easing:"
 msgstr ""
 
-#: build/blocks/counter/index.js:1
-#: src/blocks/counter/edit.js:163
-msgid "Override parent group hover color. Leave empty to use group setting."
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:64
+msgid "Divider Color"
 msgstr ""
 
-#: build/blocks/counter/index.js:1
-#: src/blocks/counter/edit.js:167
-msgid "Color for counter number on hover. Leave empty to use theme accent color."
+#: build/blocks/divider/index.js:1
+#: build/blocks/image-accordion/index.js:1
+#: build/blocks/slide/index.js:1
+#: build/index.js:1
+#: src/blocks/divider/edit.js:67
+#: src/blocks/image-accordion/edit.js:245
+#: src/blocks/slide/edit.js:338
+#: src/extensions/overlay/index.js:136
+msgid "Color"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:106
+msgid "Divider Settings"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: build/blocks/icon/index.js:1
+#: src/blocks/divider/edit.js:110
+#: src/blocks/icon/edit.js:84
+msgid "Style"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: build/blocks/progress-bar/index.js:1
+#: src/blocks/divider/edit.js:114
+#: src/blocks/progress-bar/edit.js:204
+msgid "Solid"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:118
+msgid "Dashed"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:122
+msgid "Dotted"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:126
+msgid "Double"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:130
+msgid "Gradient Fade"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:134
+msgid "Dots Pattern"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:138
+msgid "Wave Pattern"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:142
+msgid "Icon Centered"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:155
+msgid "Icon Type"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: build/blocks/slider/index.js:1
+#: src/blocks/divider/edit.js:163
+#: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:35
+#: src/blocks/slider/edit.js:389
+msgid "Circle"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:167
+msgid "Diamond"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: build/blocks/slider/index.js:1
+#: src/blocks/divider/edit.js:175
+#: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:36
+#: src/blocks/slider/edit.js:393
+msgid "Square"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:188
+msgid "Width (%)"
+msgstr ""
+
+#: build/blocks/divider/index.js:1
+#: src/blocks/divider/edit.js:200
+msgid "Thickness (px)"
 msgstr ""
 
 #: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:126
+#: src/blocks/flex/edit.js:176
 msgid "Flex Settings"
 msgstr ""
 
 #: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:130
-msgid "Direction"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:134
-msgid "Row (Horizontal)"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:138
-msgid "Column (Vertical)"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:150
-msgid "Wrap Items"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:155
-msgid "Items will wrap to next line if needed"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:159
-msgid "Items will stay in single line"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:168
-msgid "Justify Content"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: build/blocks/grid/index.js:1
-#: build/blocks/icon-button/index.js:1
-#: src/blocks/flex/edit.js:172
-#: src/blocks/flex/edit.js:212
-#: src/blocks/grid/edit.js:213
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:98
-msgid "Start"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: build/blocks/grid/index.js:1
-#: build/blocks/icon-button/index.js:1
 #: src/blocks/flex/edit.js:180
-#: src/blocks/flex/edit.js:220
-#: src/blocks/grid/edit.js:220
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:99
-msgid "End"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:184
-msgid "Space Between"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:188
-msgid "Space Around"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:192
-msgid "Space Evenly"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:199
-msgid "Horizontal alignment (main axis)"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: build/blocks/grid/index.js:1
-#: src/blocks/flex/edit.js:208
-#: src/blocks/grid/edit.js:209
-msgid "Align Items"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: build/blocks/grid/index.js:1
-#: src/blocks/flex/edit.js:224
-#: src/blocks/grid/edit.js:222
-msgid "Stretch"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:228
-msgid "Baseline"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:235
-msgid "Vertical alignment (cross axis)"
-msgstr ""
-
-#: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:244
 msgid "Stack on Mobile"
 msgstr ""
 
 #: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:251
+#: src/blocks/flex/edit.js:187
 msgid "Items will stack vertically on mobile devices"
 msgstr ""
 
 #: build/blocks/flex/index.js:1
-#: src/blocks/flex/edit.js:255
+#: src/blocks/flex/edit.js:191
 msgid "Items maintain flex layout on all devices"
+msgstr ""
+
+#: build/blocks/flex/index.js:1
+#: build/blocks/stack/index.js:1
+#: build/index.js:1
+#: src/blocks/flex/edit.js:200
+#: src/blocks/shared/components/WidthPanel.js:38
+#: src/blocks/stack/edit.js:162
+#: src/extensions/max-width/index.js:122
+msgid "Constrain Width"
+msgstr ""
+
+#: build/blocks/flex/index.js:1
+#: build/blocks/stack/index.js:1
+#: src/blocks/flex/edit.js:217
+#: src/blocks/stack/edit.js:183
+msgid "Container width is constrained and centered"
+msgstr ""
+
+#: build/blocks/flex/index.js:1
+#: build/blocks/stack/index.js:1
+#: src/blocks/flex/edit.js:221
+#: src/blocks/stack/edit.js:184
+msgid "Container uses full available width"
 msgstr ""
 
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
 #: build/blocks/stack/index.js:1
-#: src/blocks/flex/edit.js:265
-#: src/blocks/grid/edit.js:298
-#: src/blocks/stack/edit.js:125
+#: src/blocks/flex/edit.js:257
+#: src/blocks/grid/edit.js:144
+#: src/blocks/stack/edit.js:216
 msgid "Hover Settings"
 msgstr ""
 
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
 #: build/blocks/stack/index.js:1
-#: src/blocks/flex/edit.js:272
-#: src/blocks/grid/edit.js:305
-#: src/blocks/stack/edit.js:132
+#: src/blocks/flex/edit.js:260
+#: src/blocks/grid/edit.js:147
+#: src/blocks/stack/edit.js:219
 msgid "Hover Background Color"
 msgstr ""
 
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
 #: build/blocks/stack/index.js:1
-#: src/blocks/flex/edit.js:279
-#: src/blocks/grid/edit.js:312
-#: src/blocks/stack/edit.js:139
+#: src/blocks/flex/edit.js:269
+#: src/blocks/grid/edit.js:156
+#: src/blocks/stack/edit.js:228
 msgid "Hover Text Color"
 msgstr ""
 
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
 #: build/blocks/stack/index.js:1
-#: src/blocks/flex/edit.js:291
-#: src/blocks/grid/edit.js:324
-#: src/blocks/stack/edit.js:151
+#: src/blocks/flex/edit.js:279
+#: src/blocks/grid/edit.js:166
+#: src/blocks/stack/edit.js:238
 msgid "Hover Icon Background Color"
 msgstr ""
 
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
 #: build/blocks/stack/index.js:1
-#: src/blocks/flex/edit.js:308
-#: src/blocks/grid/edit.js:341
-#: src/blocks/stack/edit.js:168
+#: src/blocks/flex/edit.js:297
+#: src/blocks/grid/edit.js:184
+#: src/blocks/stack/edit.js:256
 msgid "Hover Button Background Color"
 msgstr ""
 
 #: build/blocks/flip-card-back/index.js:1
-#: src/blocks/flip-card-back/edit.js:17
+#: src/blocks/flip-card-back/edit.js:20
 msgid "Back of Card"
 msgstr ""
 
 #: build/blocks/flip-card-back/index.js:1
 #: build/blocks/flip-card-front/index.js:1
-#: src/blocks/flip-card-back/edit.js:18
-#: src/blocks/flip-card-front/edit.js:18
-msgid "Add any blocks you want here..."
+#: src/blocks/flip-card-back/edit.js:28
+#: src/blocks/flip-card-front/edit.js:28
+msgid "Add any blocks you want here…"
 msgstr ""
 
 #: build/blocks/flip-card-front/index.js:1
-#: src/blocks/flip-card-front/edit.js:17
+#: src/blocks/flip-card-front/edit.js:20
 msgid "Front of Card"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:149
+#: src/blocks/flip-card/edit.js:167
 msgid "Flip Card Settings"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:153
+#: src/blocks/flip-card/edit.js:171
 msgid "Flip Trigger"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:157
+#: src/blocks/flip-card/edit.js:175
 msgid "Hover"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:161
+#: src/blocks/flip-card/edit.js:179
 msgid "Click"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:168
+#: src/blocks/flip-card/edit.js:188
 msgid "Card flips when hovering over it"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:169
+#: src/blocks/flip-card/edit.js:192
 msgid "Card flips when clicking on it"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:176
+#: src/blocks/flip-card/edit.js:202
 msgid "Flip Effect"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:180
+#: src/blocks/flip-card/edit.js:206
 msgid "Flip (3D Rotation)"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: build/blocks/reveal/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/flip-card/edit.js:184
+#: src/blocks/flip-card/edit.js:210
 #: src/blocks/reveal/edit.js:42
-#: src/blocks/slider/edit.js:461
+#: src/blocks/slider/edit.js:540
 msgid "Fade"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/flip-card/edit.js:192
-#: src/blocks/slider/edit.js:462
+#: src/blocks/flip-card/edit.js:218
+#: src/blocks/slider/edit.js:541
 msgid "Zoom"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:197
+#: src/blocks/flip-card/edit.js:225
 msgid "Choose the transition animation style"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:204
+#: src/blocks/flip-card/edit.js:235
 msgid "Flip Direction"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
+#: build/blocks/icon-list/index.js:1
 #: build/blocks/tabs/index.js:1
-#: src/blocks/flip-card/edit.js:208
-#: src/blocks/tabs/edit.js:168
+#: src/blocks/flip-card/edit.js:239
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:55
+#: src/blocks/tabs/edit.js:223
 msgid "Horizontal"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
 #: build/blocks/icon-list/index.js:1
 #: build/blocks/tabs/index.js:1
-#: src/blocks/flip-card/edit.js:212
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:54
-#: src/blocks/tabs/edit.js:172
+#: src/blocks/flip-card/edit.js:243
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:51
+#: src/blocks/tabs/edit.js:227
 msgid "Vertical"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:219
+#: src/blocks/flip-card/edit.js:252
 msgid "Card flips left to right"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:220
+#: src/blocks/flip-card/edit.js:256
 msgid "Card flips top to bottom"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:228
+#: src/blocks/flip-card/edit.js:267
 msgid "Flip Duration"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:238
+#: src/blocks/flip-card/edit.js:279
 msgid "Speed of the flip animation"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:245
+#: src/blocks/flip-card/edit.js:286
 msgid "How to Use"
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:249
+#: src/blocks/flip-card/edit.js:290
 msgid "This flip card has two sections: Front and Back. Click on each section to edit its content."
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:255
+#: src/blocks/flip-card/edit.js:296
 msgid "You can add any blocks you want to the front and back, including images, headings, buttons, and more."
 msgstr ""
 
 #: build/blocks/flip-card/index.js:1
-#: src/blocks/flip-card/edit.js:261
+#: src/blocks/flip-card/edit.js:302
 msgid "Style each section using the block toolbar or the Styles panel."
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:108
+#: src/blocks/form-builder/edit.js:119
 msgid "Name"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:116
+#: src/blocks/form-builder/edit.js:127
 msgid "Email"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:124
+#: src/blocks/form-builder/edit.js:135
 msgid "Message"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:136
+#: src/blocks/form-builder/edit.js:148
 msgid "Form Settings"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:138
+#: src/blocks/form-builder/edit.js:152
 msgid "AJAX Submit"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:141
+#: src/blocks/form-builder/edit.js:157
 msgid "Submit form without page reload"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:149
+#: src/blocks/form-builder/edit.js:165
 msgid "Submit Button Text"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:157
+#: src/blocks/form-builder/edit.js:175
 msgid "Button Alignment"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:170
+#: src/blocks/form-builder/edit.js:196
 msgid "Field Spacing"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:180
+#: src/blocks/form-builder/edit.js:208
 msgid "Space between form fields"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:186
+#: src/blocks/form-builder/edit.js:214
 msgid "Input Height"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:196
+#: src/blocks/form-builder/edit.js:226
 msgid "Minimum height for input fields"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:202
+#: src/blocks/form-builder/edit.js:235
 msgid "Input Padding"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:212
+#: src/blocks/form-builder/edit.js:247
 msgid "Padding inside input fields"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:218
+#: src/blocks/form-builder/edit.js:254
 msgid "Messages"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:220
+#: src/blocks/form-builder/edit.js:258
 msgid "Success Message"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:223
+#: src/blocks/form-builder/edit.js:263
 msgid "Message shown after successful submission"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:232
+#: src/blocks/form-builder/edit.js:272
 msgid "Error Message"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:235
+#: src/blocks/form-builder/edit.js:277
 msgid "Message shown if submission fails"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:244
+#: src/blocks/form-builder/edit.js:287
 msgid "Spam Protection"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:249
+#: src/blocks/form-builder/edit.js:296
 msgid "Invisible field to catch spam bots"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:260
+#: src/blocks/form-builder/edit.js:309
 msgid "Limit submissions per IP address"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:270
+#: src/blocks/form-builder/edit.js:319
 msgid "Max Submissions"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:275
+#: src/blocks/form-builder/edit.js:326
 msgid "Maximum submissions allowed per time window"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:284
+#: src/blocks/form-builder/edit.js:335
 msgid "Time Window (seconds)"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:290
+#: src/blocks/form-builder/edit.js:346
 msgid "Time period for rate limiting"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:301
+#: src/blocks/form-builder/edit.js:358
 msgid "Email Notifications"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:303
+#: src/blocks/form-builder/edit.js:362
 msgid "Enable Email Notifications"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:306
+#: src/blocks/form-builder/edit.js:367
 msgid "Send email when form is submitted"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:316
+#: src/blocks/form-builder/edit.js:377
 msgid "Recipient Email"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:321
+#: src/blocks/form-builder/edit.js:384
 msgid "Email address to receive notifications"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:330
+#: src/blocks/form-builder/edit.js:393
 msgid "Email Subject"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:333
+#: src/blocks/form-builder/edit.js:398
 msgid "Subject line for notification emails. Use {field_name} for dynamic values."
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:342
+#: src/blocks/form-builder/edit.js:407
 msgid "From Name"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:345
+#: src/blocks/form-builder/edit.js:412
 msgid "Site Name"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:346
+#: src/blocks/form-builder/edit.js:413
 msgid "Name shown as email sender (leave empty for site name)"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:355
+#: src/blocks/form-builder/edit.js:422
 msgid "From Email"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:360
+#: src/blocks/form-builder/edit.js:429
 msgid "Email address shown as sender (leave empty for admin email)"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:369
+#: src/blocks/form-builder/edit.js:438
 msgid "Reply-To Field Name"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:373
+#: src/blocks/form-builder/edit.js:444
 msgid "Use a form field value for reply-to (e.g., \"email\" or \"user_email\")"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:382
+#: src/blocks/form-builder/edit.js:453
 msgid "Email Body Template"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:389
+#: src/blocks/form-builder/edit.js:459
+msgid "New form submission:"
+msgstr ""
+
+#: build/blocks/form-builder/index.js:1
+#: src/blocks/form-builder/edit.js:461
+msgid "Submitted from: {page_url}"
+msgstr ""
+
+#: build/blocks/form-builder/index.js:1
+#: src/blocks/form-builder/edit.js:466
 msgid "Email content template. Use {field_name} for specific fields or {all_fields} for all submitted data."
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:401
+#: src/blocks/form-builder/edit.js:481
 msgid "Form Colors"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:406
-msgid "Label Color"
-msgstr ""
-
-#: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:411
+#: src/blocks/form-builder/edit.js:491
 msgid "Border Color"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:416
+#: src/blocks/form-builder/edit.js:500
 msgid "Field Background"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:424
-msgid "Button Colors"
+#: src/blocks/form-builder/edit.js:509
+msgid "Button Text Color"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:429
-msgid "Text Color"
+#: src/blocks/form-builder/edit.js:518
+msgid "Button Background Color"
 msgstr ""
 
 #: build/blocks/form-builder/index.js:1
-#: build/blocks/progress-bar/index.js:1
-#: src/blocks/form-builder/edit.js:434
-#: src/blocks/progress-bar/edit.js:195
-msgid "Background Color"
-msgstr ""
-
-#: build/blocks/form-builder/index.js:1
-#: src/blocks/form-builder/edit.js:463
+#: src/blocks/form-builder/edit.js:556
 msgid "Form messages will appear here"
 msgstr ""
 
@@ -4076,18 +4346,18 @@ msgstr ""
 #: build/blocks/form-textarea/index.js:1
 #: build/blocks/form-time-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:42
-#: src/blocks/form-date-field/edit.js:43
+#: src/blocks/form-checkbox-field/edit.js:44
+#: src/blocks/form-date-field/edit.js:44
 #: src/blocks/form-email-field/edit.js:54
-#: src/blocks/form-file-upload/edit.js:39
-#: src/blocks/form-hidden-field/edit.js:33
-#: src/blocks/form-number-field/edit.js:47
-#: src/blocks/form-phone-field/edit.js:77
-#: src/blocks/form-select-field/edit.js:72
-#: src/blocks/form-text-field/edit.js:83
-#: src/blocks/form-textarea/edit.js:57
-#: src/blocks/form-time-field/edit.js:45
-#: src/blocks/form-url-field/edit.js:42
+#: src/blocks/form-file-upload/edit.js:45
+#: src/blocks/form-hidden-field/edit.js:31
+#: src/blocks/form-number-field/edit.js:53
+#: src/blocks/form-phone-field/edit.js:84
+#: src/blocks/form-select-field/edit.js:80
+#: src/blocks/form-text-field/edit.js:71
+#: src/blocks/form-textarea/edit.js:65
+#: src/blocks/form-time-field/edit.js:51
+#: src/blocks/form-url-field/edit.js:37
 msgid "Field Settings"
 msgstr ""
 
@@ -4099,14 +4369,14 @@ msgstr ""
 #: build/blocks/form-select-field/index.js:1
 #: build/blocks/form-time-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:49
-#: src/blocks/form-date-field/edit.js:50
-#: src/blocks/form-hidden-field/edit.js:40
-#: src/blocks/form-number-field/edit.js:54
-#: src/blocks/form-phone-field/edit.js:84
-#: src/blocks/form-select-field/edit.js:79
-#: src/blocks/form-time-field/edit.js:52
-#: src/blocks/form-url-field/edit.js:49
+#: src/blocks/form-checkbox-field/edit.js:58
+#: src/blocks/form-date-field/edit.js:55
+#: src/blocks/form-hidden-field/edit.js:45
+#: src/blocks/form-number-field/edit.js:64
+#: src/blocks/form-phone-field/edit.js:95
+#: src/blocks/form-select-field/edit.js:91
+#: src/blocks/form-time-field/edit.js:62
+#: src/blocks/form-url-field/edit.js:48
 msgid "Unique identifier for this field (letters, numbers, hyphens, underscores only)"
 msgstr ""
 
@@ -4117,19 +4387,19 @@ msgstr ""
 #: build/blocks/form-select-field/index.js:1
 #: build/blocks/form-time-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:55
-#: src/blocks/form-date-field/edit.js:64
-#: src/blocks/form-file-upload/edit.js:55
-#: src/blocks/form-number-field/edit.js:68
-#: src/blocks/form-phone-field/edit.js:98
-#: src/blocks/form-select-field/edit.js:93
-#: src/blocks/form-time-field/edit.js:66
-#: src/blocks/form-url-field/edit.js:63
+#: src/blocks/form-checkbox-field/edit.js:67
+#: src/blocks/form-date-field/edit.js:72
+#: src/blocks/form-file-upload/edit.js:67
+#: src/blocks/form-number-field/edit.js:81
+#: src/blocks/form-phone-field/edit.js:112
+#: src/blocks/form-select-field/edit.js:108
+#: src/blocks/form-time-field/edit.js:79
+#: src/blocks/form-url-field/edit.js:65
 msgid "Required"
 msgstr ""
 
 #: build/blocks/form-checkbox-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:62
+#: src/blocks/form-checkbox-field/edit.js:76
 msgid "Checked by Default"
 msgstr ""
 
@@ -4140,18 +4410,18 @@ msgstr ""
 #: build/blocks/form-select-field/index.js:1
 #: build/blocks/form-time-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:69
-#: src/blocks/form-date-field/edit.js:93
-#: src/blocks/form-number-field/edit.js:118
-#: src/blocks/form-phone-field/edit.js:181
-#: src/blocks/form-select-field/edit.js:138
-#: src/blocks/form-time-field/edit.js:105
-#: src/blocks/form-url-field/edit.js:70
+#: src/blocks/form-checkbox-field/edit.js:86
+#: src/blocks/form-date-field/edit.js:111
+#: src/blocks/form-number-field/edit.js:157
+#: src/blocks/form-phone-field/edit.js:260
+#: src/blocks/form-select-field/edit.js:165
+#: src/blocks/form-time-field/edit.js:127
+#: src/blocks/form-url-field/edit.js:73
 msgid "Additional Options"
 msgstr ""
 
 #: build/blocks/form-checkbox-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:74
+#: src/blocks/form-checkbox-field/edit.js:95
 msgid "The value submitted when checkbox is checked"
 msgstr ""
 
@@ -4165,17 +4435,17 @@ msgstr ""
 #: build/blocks/form-textarea/index.js:1
 #: build/blocks/form-time-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:80
-#: src/blocks/form-date-field/edit.js:105
-#: src/blocks/form-email-field/edit.js:85
-#: src/blocks/form-file-upload/edit.js:86
-#: src/blocks/form-number-field/edit.js:139
-#: src/blocks/form-phone-field/edit.js:202
-#: src/blocks/form-select-field/edit.js:158
-#: src/blocks/form-text-field/edit.js:117
-#: src/blocks/form-textarea/edit.js:87
-#: src/blocks/form-time-field/edit.js:117
-#: src/blocks/form-url-field/edit.js:91
+#: src/blocks/form-checkbox-field/edit.js:104
+#: src/blocks/form-date-field/edit.js:130
+#: src/blocks/form-email-field/edit.js:93
+#: src/blocks/form-file-upload/edit.js:108
+#: src/blocks/form-number-field/edit.js:190
+#: src/blocks/form-phone-field/edit.js:293
+#: src/blocks/form-select-field/edit.js:194
+#: src/blocks/form-text-field/edit.js:113
+#: src/blocks/form-textarea/edit.js:103
+#: src/blocks/form-time-field/edit.js:146
+#: src/blocks/form-url-field/edit.js:106
 msgid "Help Text"
 msgstr ""
 
@@ -4187,45 +4457,45 @@ msgstr ""
 #: build/blocks/form-text-field/index.js:1
 #: build/blocks/form-time-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:83
-#: src/blocks/form-date-field/edit.js:108
-#: src/blocks/form-number-field/edit.js:142
-#: src/blocks/form-phone-field/edit.js:205
-#: src/blocks/form-select-field/edit.js:161
-#: src/blocks/form-text-field/edit.js:120
-#: src/blocks/form-time-field/edit.js:120
-#: src/blocks/form-url-field/edit.js:94
+#: src/blocks/form-checkbox-field/edit.js:109
+#: src/blocks/form-date-field/edit.js:133
+#: src/blocks/form-number-field/edit.js:193
+#: src/blocks/form-phone-field/edit.js:296
+#: src/blocks/form-select-field/edit.js:197
+#: src/blocks/form-text-field/edit.js:116
+#: src/blocks/form-time-field/edit.js:149
+#: src/blocks/form-url-field/edit.js:109
 msgid "Additional guidance shown below the field"
 msgstr ""
 
 #: build/blocks/form-checkbox-field/index.js:1
-#: src/blocks/form-checkbox-field/edit.js:104
-msgid "Enter checkbox label..."
+#: src/blocks/form-checkbox-field/edit.js:138
+msgid "Enter checkbox label…"
 msgstr ""
 
 #: build/blocks/form-date-field/index.js:1
-#: src/blocks/form-date-field/edit.js:71
+#: src/blocks/form-date-field/edit.js:80
 msgid "Date Range"
 msgstr ""
 
 #: build/blocks/form-date-field/index.js:1
-#: src/blocks/form-date-field/edit.js:73
+#: src/blocks/form-date-field/edit.js:84
 msgid "Minimum Date"
 msgstr ""
 
 #: build/blocks/form-date-field/index.js:1
-#: src/blocks/form-date-field/edit.js:76
-msgid "Format: YYYY-MM-DD (e.g., 2024-01-01)"
+#: src/blocks/form-date-field/edit.js:87
+msgid "Format: YYYY–MM–DD (e.g., 2024–01–01)"
 msgstr ""
 
 #: build/blocks/form-date-field/index.js:1
-#: src/blocks/form-date-field/edit.js:83
+#: src/blocks/form-date-field/edit.js:97
 msgid "Maximum Date"
 msgstr ""
 
 #: build/blocks/form-date-field/index.js:1
-#: src/blocks/form-date-field/edit.js:86
-msgid "Format: YYYY-MM-DD (e.g., 2024-12-31)"
+#: src/blocks/form-date-field/edit.js:100
+msgid "Format: YYYY–MM–DD (e.g., 2024–12–31)"
 msgstr ""
 
 #: build/blocks/form-date-field/index.js:1
@@ -4236,26 +4506,26 @@ msgstr ""
 #: build/blocks/form-text-field/index.js:1
 #: build/blocks/form-time-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-date-field/edit.js:95
-#: src/blocks/form-email-field/edit.js:100
-#: src/blocks/form-number-field/edit.js:129
-#: src/blocks/form-phone-field/edit.js:192
-#: src/blocks/form-select-field/edit.js:149
-#: src/blocks/form-text-field/edit.js:136
-#: src/blocks/form-time-field/edit.js:107
-#: src/blocks/form-url-field/edit.js:81
+#: src/blocks/form-date-field/edit.js:115
+#: src/blocks/form-email-field/edit.js:108
+#: src/blocks/form-number-field/edit.js:175
+#: src/blocks/form-phone-field/edit.js:278
+#: src/blocks/form-select-field/edit.js:183
+#: src/blocks/form-text-field/edit.js:132
+#: src/blocks/form-time-field/edit.js:131
+#: src/blocks/form-url-field/edit.js:91
 msgid "Default Value"
 msgstr ""
 
 #: build/blocks/form-date-field/index.js:1
-#: src/blocks/form-date-field/edit.js:98
+#: src/blocks/form-date-field/edit.js:120
 msgid "Pre-filled date (Format: YYYY-MM-DD)"
 msgstr ""
 
 #: build/blocks/form-email-field/index.js:1
 #: build/blocks/form-textarea/index.js:1
-#: src/blocks/form-email-field/edit.js:59
-#: src/blocks/form-textarea/edit.js:62
+#: src/blocks/form-email-field/edit.js:65
+#: src/blocks/form-textarea/edit.js:76
 msgid "Unique identifier for this field"
 msgstr ""
 
@@ -4266,450 +4536,482 @@ msgstr ""
 #: build/blocks/form-text-field/index.js:1
 #: build/blocks/form-textarea/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-email-field/edit.js:76
-#: src/blocks/form-number-field/edit.js:120
-#: src/blocks/form-phone-field/edit.js:183
-#: src/blocks/form-select-field/edit.js:140
-#: src/blocks/form-text-field/edit.js:105
-#: src/blocks/form-textarea/edit.js:79
-#: src/blocks/form-url-field/edit.js:72
+#: src/blocks/form-email-field/edit.js:82
+#: src/blocks/form-number-field/edit.js:161
+#: src/blocks/form-phone-field/edit.js:264
+#: src/blocks/form-select-field/edit.js:169
+#: src/blocks/form-text-field/edit.js:99
+#: src/blocks/form-textarea/edit.js:93
+#: src/blocks/form-url-field/edit.js:77
 msgid "Placeholder"
 msgstr ""
 
 #: build/blocks/form-email-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
 #: build/blocks/form-textarea/index.js:1
-#: src/blocks/form-email-field/edit.js:93
-#: src/blocks/form-text-field/edit.js:129
-#: src/blocks/form-textarea/edit.js:95
+#: src/blocks/form-email-field/edit.js:101
+#: src/blocks/form-text-field/edit.js:125
+#: src/blocks/form-textarea/edit.js:111
 msgid "Required Field"
 msgstr ""
 
 #: build/blocks/form-hidden-field/index.js:1
-#: src/blocks/form-hidden-field/edit.js:49
+#: src/blocks/form-hidden-field/edit.js:59
 msgid "The hidden value to be submitted with the form"
 msgstr ""
 
 #: build/blocks/form-hidden-field/index.js:1
-#: src/blocks/form-hidden-field/edit.js:58
+#: src/blocks/form-hidden-field/edit.js:71
 msgid "Hidden Field:"
 msgstr ""
 
 #: build/blocks/form-hidden-field/index.js:1
-#: src/blocks/form-hidden-field/edit.js:58
+#: src/blocks/form-hidden-field/edit.js:72
 msgid "(empty)"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
-#: src/blocks/form-number-field/edit.js:75
+#: src/blocks/form-number-field/edit.js:89
 msgid "Number Settings"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
-#: src/blocks/form-number-field/edit.js:77
+#: src/blocks/form-number-field/edit.js:93
 msgid "Minimum Value"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
-#: src/blocks/form-number-field/edit.js:80
+#: src/blocks/form-number-field/edit.js:100
 msgid "Minimum allowed value (leave empty for no minimum)"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
-#: src/blocks/form-number-field/edit.js:86
+#: src/blocks/form-number-field/edit.js:109
 msgid "Maximum Value"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
-#: src/blocks/form-number-field/edit.js:89
+#: src/blocks/form-number-field/edit.js:116
 msgid "Maximum allowed value (leave empty for no maximum)"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
-#: src/blocks/form-number-field/edit.js:95
+#: src/blocks/form-number-field/edit.js:125
 msgid "Step"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
-#: src/blocks/form-number-field/edit.js:98
+#: src/blocks/form-number-field/edit.js:130
 msgid "Increment/decrement step value"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
-#: src/blocks/form-number-field/edit.js:105
+#: src/blocks/form-number-field/edit.js:140
 msgid "Allow Decimals"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
-#: src/blocks/form-number-field/edit.js:113
+#: src/blocks/form-number-field/edit.js:148
 msgid "Allow decimal numbers instead of integers only"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-number-field/edit.js:123
-#: src/blocks/form-phone-field/edit.js:186
-#: src/blocks/form-url-field/edit.js:75
+#: src/blocks/form-number-field/edit.js:166
+#: src/blocks/form-phone-field/edit.js:269
+#: src/blocks/form-url-field/edit.js:82
 msgid "Example text shown when field is empty"
 msgstr ""
 
 #: build/blocks/form-number-field/index.js:1
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-url-field/index.js:1
-#: src/blocks/form-number-field/edit.js:132
-#: src/blocks/form-phone-field/edit.js:195
-#: src/blocks/form-url-field/edit.js:84
+#: src/blocks/form-number-field/edit.js:180
+#: src/blocks/form-phone-field/edit.js:283
+#: src/blocks/form-url-field/edit.js:96
 msgid "Pre-filled value for this field"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:105
-#: src/blocks/form-text-field/edit.js:148
+#: src/blocks/form-phone-field/edit.js:119
+#: src/blocks/form-text-field/edit.js:146
 msgid "Field Width"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:108
-#: src/blocks/form-text-field/edit.js:151
+#: src/blocks/form-phone-field/edit.js:123
+#: src/blocks/form-text-field/edit.js:150
 msgid "Full Width (100%)"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:109
-#: src/blocks/form-text-field/edit.js:152
+#: src/blocks/form-phone-field/edit.js:127
+#: src/blocks/form-text-field/edit.js:154
 msgid "Half Width (50%)"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:110
-#: src/blocks/form-text-field/edit.js:153
+#: src/blocks/form-phone-field/edit.js:131
+#: src/blocks/form-text-field/edit.js:158
 msgid "One Third (33%)"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:111
-#: src/blocks/form-text-field/edit.js:154
+#: src/blocks/form-phone-field/edit.js:135
+#: src/blocks/form-text-field/edit.js:162
 msgid "Two Thirds (66%)"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:112
-#: src/blocks/form-text-field/edit.js:155
+#: src/blocks/form-phone-field/edit.js:139
+#: src/blocks/form-text-field/edit.js:166
 msgid "One Quarter (25%)"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:113
-#: src/blocks/form-text-field/edit.js:156
+#: src/blocks/form-phone-field/edit.js:143
+#: src/blocks/form-text-field/edit.js:170
 msgid "Three Quarters (75%)"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:116
-#: src/blocks/form-text-field/edit.js:159
+#: src/blocks/form-phone-field/edit.js:153
+#: src/blocks/form-text-field/edit.js:180
 msgid "Set field width to create multi-column layouts"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:122
+#: src/blocks/form-phone-field/edit.js:163
 msgid "Phone Format"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:124
+#: src/blocks/form-phone-field/edit.js:167
 msgid "Format"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:127
+#: src/blocks/form-phone-field/edit.js:171
 msgid "Any Format"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:128
-msgid "US Format (555-123-4567)"
+#: src/blocks/form-phone-field/edit.js:175
+msgid "US Format (555–123–4567)"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:129
+#: src/blocks/form-phone-field/edit.js:182
 msgid "International (+1 555 123 4567)"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:132
+#: src/blocks/form-phone-field/edit.js:192
 msgid "Choose how phone numbers should be formatted"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:138
+#: src/blocks/form-phone-field/edit.js:202
 msgid "Country Code"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:140
+#: src/blocks/form-phone-field/edit.js:206
 msgid "Show Country Code Selector"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:143
+#: src/blocks/form-phone-field/edit.js:211
 msgid "Display a dropdown for selecting country code"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:149
+#: src/blocks/form-phone-field/edit.js:220
 msgid "Default Country Code"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:173
+#: src/blocks/form-phone-field/edit.js:246
 msgid "Auto-Format Phone Number"
 msgstr ""
 
 #: build/blocks/form-phone-field/index.js:1
-#: src/blocks/form-phone-field/edit.js:176
+#: src/blocks/form-phone-field/edit.js:251
 msgid "Automatically format phone number as user types"
 msgstr ""
 
 #: build/blocks/form-select-field/index.js:1
-#: src/blocks/form-select-field/edit.js:100
+#: src/blocks/form-select-field/edit.js:116
 msgid "Options"
 msgstr ""
 
 #: build/blocks/form-select-field/index.js:1
-#: src/blocks/form-select-field/edit.js:125
+#: src/blocks/form-select-field/edit.js:151
 msgid "Remove option"
 msgstr ""
 
 #: build/blocks/form-select-field/index.js:1
-#: src/blocks/form-select-field/edit.js:134
+#: src/blocks/form-select-field/edit.js:160
 msgid "Add Option"
 msgstr ""
 
 #: build/blocks/form-select-field/index.js:1
-#: src/blocks/form-select-field/edit.js:143
+#: src/blocks/form-select-field/edit.js:174
 msgid "Text shown when no option is selected"
 msgstr ""
 
 #: build/blocks/form-select-field/index.js:1
-#: src/blocks/form-select-field/edit.js:152
+#: src/blocks/form-select-field/edit.js:188
 msgid "Pre-selected option value"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:88
+#: src/blocks/form-text-field/edit.js:82
 msgid "Unique identifier for this field (letters, numbers, underscores)"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:108
+#: src/blocks/form-text-field/edit.js:104
 msgid "Hint text shown inside the field"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:139
+#: src/blocks/form-text-field/edit.js:137
 msgid "Pre-fill this field with a default value"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:165
+#: src/blocks/form-text-field/edit.js:190
 msgid "Validation"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:167
+#: src/blocks/form-text-field/edit.js:194
 msgid "Minimum Length"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:172
+#: src/blocks/form-text-field/edit.js:201
 msgid "Minimum number of characters required (0 = no minimum)"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
 #: build/blocks/form-textarea/index.js:1
-#: src/blocks/form-text-field/edit.js:181
-#: src/blocks/form-textarea/edit.js:116
+#: src/blocks/form-text-field/edit.js:210
+#: src/blocks/form-textarea/edit.js:132
 msgid "Maximum Length"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:186
+#: src/blocks/form-text-field/edit.js:217
 msgid "Maximum number of characters allowed (0 = no maximum)"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:195
+#: src/blocks/form-text-field/edit.js:226
 msgid "Validation Type"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:199
+#: src/blocks/form-text-field/edit.js:231
 msgid "Letters Only"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:200
+#: src/blocks/form-text-field/edit.js:235
 msgid "Numbers Only"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:201
+#: src/blocks/form-text-field/edit.js:239
 msgid "Alphanumeric"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:202
+#: src/blocks/form-text-field/edit.js:243
 msgid "Custom Pattern"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:212
+#: src/blocks/form-text-field/edit.js:257
 msgid "Custom Pattern (Regex)"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:215
+#: src/blocks/form-text-field/edit.js:265
 msgid "Regular expression for validation"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:224
+#: src/blocks/form-text-field/edit.js:274
 msgid "Validation Message"
 msgstr ""
 
 #: build/blocks/form-text-field/index.js:1
-#: src/blocks/form-text-field/edit.js:227
+#: src/blocks/form-text-field/edit.js:279
 msgid "Message shown when validation fails"
 msgstr ""
 
 #: build/blocks/form-textarea/index.js:1
-#: src/blocks/form-textarea/edit.js:102
+#: src/blocks/form-textarea/edit.js:118
 msgid "Rows"
 msgstr ""
 
 #: build/blocks/form-textarea/index.js:1
-#: src/blocks/form-textarea/edit.js:107
+#: src/blocks/form-textarea/edit.js:123
 msgid "Height of the textarea in rows"
 msgstr ""
 
 #: build/blocks/form-textarea/index.js:1
-#: src/blocks/form-textarea/edit.js:122
+#: src/blocks/form-textarea/edit.js:140
 msgid "Maximum characters allowed (0 = no limit)"
 msgstr ""
 
 #: build/blocks/form-time-field/index.js:1
-#: src/blocks/form-time-field/edit.js:73
+#: src/blocks/form-time-field/edit.js:87
 msgid "Time Range"
 msgstr ""
 
 #: build/blocks/form-time-field/index.js:1
-#: src/blocks/form-time-field/edit.js:75
+#: src/blocks/form-time-field/edit.js:91
 msgid "Minimum Time"
 msgstr ""
 
 #: build/blocks/form-time-field/index.js:1
-#: src/blocks/form-time-field/edit.js:78
+#: src/blocks/form-time-field/edit.js:94
 msgid "Format: HH:MM (e.g., 09:00)"
 msgstr ""
 
 #: build/blocks/form-time-field/index.js:1
-#: src/blocks/form-time-field/edit.js:85
+#: src/blocks/form-time-field/edit.js:101
 msgid "Maximum Time"
 msgstr ""
 
 #: build/blocks/form-time-field/index.js:1
-#: src/blocks/form-time-field/edit.js:88
+#: src/blocks/form-time-field/edit.js:104
 msgid "Format: HH:MM (e.g., 17:00)"
 msgstr ""
 
 #: build/blocks/form-time-field/index.js:1
-#: src/blocks/form-time-field/edit.js:95
+#: src/blocks/form-time-field/edit.js:111
 msgid "Step (seconds)"
 msgstr ""
 
 #: build/blocks/form-time-field/index.js:1
-#: src/blocks/form-time-field/edit.js:98
+#: src/blocks/form-time-field/edit.js:116
 msgid "Time increment in seconds (60 = 1 minute)"
 msgstr ""
 
 #: build/blocks/form-time-field/index.js:1
-#: src/blocks/form-time-field/edit.js:110
+#: src/blocks/form-time-field/edit.js:136
 msgid "Pre-filled time (Format: HH:MM)"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
 #: build/index.js:1
-#: src/blocks/grid/edit.js:127
+#: src/blocks/grid/edit.js:205
+#: src/blocks/shared/components/WidthPanel.js:54
+#: src/extensions/max-width/index.js:143
+msgid "Content Width"
+msgstr ""
+
+#: build/blocks/grid/index.js:1
+#: build/index.js:1
+#: src/blocks/grid/edit.js:228
 #: src/extensions/grid-span/index.js:80
 msgid "Grid Settings"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:131
+#: src/blocks/grid/edit.js:232
 msgid "Desktop Columns"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:157
+#: src/blocks/grid/edit.js:258
 msgid "Number of columns on desktop screens"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:166
+#: src/blocks/grid/edit.js:267
 msgid "Tablet Columns"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:184
+#: src/blocks/grid/edit.js:285
 msgid "Number of columns on tablet screens (≤ 1024px)"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:193
+#: src/blocks/grid/edit.js:294
 msgid "Mobile Columns"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:200
+#: src/blocks/grid/edit.js:301
 msgid "Number of columns on mobile screens (≤ 767px)"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:239
+#: src/blocks/grid/edit.js:310
+msgid "Align Items"
+msgstr ""
+
+#: build/blocks/grid/index.js:1
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/grid/edit.js:314
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:175
+msgid "Start"
+msgstr ""
+
+#: build/blocks/grid/index.js:1
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/grid/edit.js:321
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:176
+msgid "End"
+msgstr ""
+
+#: build/blocks/grid/index.js:1
+#: src/blocks/grid/edit.js:323
+msgid "Stretch"
+msgstr ""
+
+#: build/blocks/grid/index.js:1
+#: src/blocks/grid/edit.js:340
 msgid "Gap Settings"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:243
+#: src/blocks/grid/edit.js:344
 msgid "Custom Row/Column Gaps"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:254
+#: src/blocks/grid/edit.js:355
 msgid "Using separate row and column gaps"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:258
+#: src/blocks/grid/edit.js:359
 msgid "Using WordPress blockGap (configure in Spacing panel)"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:269
+#: src/blocks/grid/edit.js:370
 msgid "Row Gap"
 msgstr ""
 
 #: build/blocks/grid/index.js:1
-#: src/blocks/grid/edit.js:282
+#: src/blocks/grid/edit.js:383
 msgid "Column Gap"
 msgstr ""
 
@@ -4730,84 +5032,84 @@ msgstr ""
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:38
+#: src/blocks/icon/components/IconPicker.js:41
 msgid "Social"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:50
+#: src/blocks/icon/components/IconPicker.js:53
 msgid "Business"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:64
+#: src/blocks/icon/components/IconPicker.js:67
 msgid "Shop"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:68
+#: src/blocks/icon/components/IconPicker.js:71
 msgid "Tech"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:80
+#: src/blocks/icon/components/IconPicker.js:83
 msgid "Contact"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:84
+#: src/blocks/icon/components/IconPicker.js:87
 msgid "Actions"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:102
+#: src/blocks/icon/components/IconPicker.js:105
 msgid "Media"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:106
+#: src/blocks/icon/components/IconPicker.js:109
 msgid "Arrows"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:117
+#: src/blocks/icon/components/IconPicker.js:120
 msgid "UI"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:121
+#: src/blocks/icon/components/IconPicker.js:124
 msgid "Other"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:170
+#: src/blocks/icon/components/IconPicker.js:173
 msgid "Choose Icon"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:206
+#: src/blocks/icon/components/IconPicker.js:209
 #: src/blocks/icon/components/inspector/IconSettingsPanel.js:70
 msgid "Search icons…"
 msgstr ""
@@ -4815,88 +5117,71 @@ msgstr ""
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/components/IconPicker.js:269
+#: src/blocks/icon/components/IconPicker.js:272
 msgid "No icons found"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:50
+#: build/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:52
 #: src/blocks/icon-list-item/components/inspector/LinkSettingsPanel.js:35
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:39
+#: src/extensions/clickable-group/index.js:97
 msgid "Link Settings"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:54
+#: build/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:56
 #: src/blocks/icon-list-item/components/inspector/LinkSettingsPanel.js:39
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:67
-#: src/blocks/icon/edit.js:145
+#: src/blocks/icon/edit.js:149
+#: src/extensions/clickable-group/index.js:107
 msgid "URL"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:58
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:60
 msgid "Enter the link URL"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:64
+#: build/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:66
 #: src/blocks/icon-list-item/components/inspector/LinkSettingsPanel.js:51
-#: src/blocks/icon/edit.js:154
+#: src/blocks/icon/edit.js:158
+#: src/extensions/clickable-group/index.js:122
 msgid "Open in new tab"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:77
+#: build/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:79
 #: src/blocks/icon-list-item/components/inspector/LinkSettingsPanel.js:63
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:95
+#: src/extensions/clickable-group/index.js:134
 msgid "Link Rel"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:80
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:82
 msgid "Rel attribute for security (default: noopener noreferrer)"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:103
-msgid "Position of icon relative to text"
-msgstr ""
-
-#: build/blocks/icon-button/index.js:1
-#: build/blocks/icon-list/index.js:1
-#: build/blocks/icon/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:119
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:125
-#: src/blocks/icon/components/inspector/IconSettingsPanel.js:113
-#: src/blocks/icon/edit.js:116
-msgid "Icon Size"
-msgstr ""
-
-#: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:132
-msgid "Icon Gap"
-msgstr ""
-
-#: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:142
-msgid "Space between icon and text"
-msgstr ""
-
-#: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:153
-msgid "Button Settings"
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:93
+msgid "Button & Icon Settings"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:155
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:97
 #: src/blocks/shared/components/WidthPanel.js:36
 #: src/extensions/max-width/index.js:115
 msgid "Width"
@@ -4904,33 +5189,137 @@ msgstr ""
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/slide/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:158
-#: src/blocks/slide/edit.js:194
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:100
+#: src/blocks/slide/edit.js:224
 msgid "Auto"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:160
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:102
 msgid "Full Width"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:163
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:105
 msgid "50%"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:164
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:106
 msgid "25%"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:167
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:109
 msgid "Button width"
 msgstr ""
 
 #: build/blocks/icon-button/index.js:1
-#: src/blocks/icon-button/edit.js:104
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:115
+msgid "Hover Animation"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:120
+msgid "Fill Diagonal"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:124
+msgid "Zoom In"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:128
+msgid "Slide Left"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:132
+msgid "Slide Right"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: build/blocks/reveal/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:136
+#: src/blocks/reveal/edit.js:50
+msgid "Slide Down"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: build/blocks/reveal/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:140
+#: src/blocks/reveal/edit.js:46
+msgid "Slide Up"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:144
+msgid "Border Pulse"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:148
+msgid "Border Glow"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:152
+msgid "Lift"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:156
+msgid "Shrink"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:163
+msgid "Choose a hover animation effect for the button"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:180
+msgid "Position of icon relative to text"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: build/blocks/icon-list/index.js:1
+#: build/blocks/icon/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:196
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:133
+#: src/blocks/icon/components/inspector/IconSettingsPanel.js:113
+#: src/blocks/icon/edit.js:120
+msgid "Icon Size"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:209
+msgid "Icon Gap"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:219
+msgid "Space between icon and text"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/edit.js:122
+msgid "Hover Colors"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/edit.js:125
+msgid "Hover Background"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/edit.js:134
+msgid "Hover Text"
+msgstr ""
+
+#: build/blocks/icon-button/index.js:1
+#: src/blocks/icon-button/edit.js:175
 msgid "Button text…"
 msgstr ""
 
@@ -4940,413 +5329,439 @@ msgid "Make the entire list item clickable"
 msgstr ""
 
 #: build/blocks/icon-list-item/index.js:1
-#: src/blocks/icon-list-item/edit.js:95
+#: src/blocks/icon-list-item/components/inspector/SpacingPanel.js:24
+msgid "Content Gap"
+msgstr ""
+
+#: build/blocks/icon-list-item/index.js:1
+#: src/blocks/icon-list-item/components/inspector/SpacingPanel.js:29
+msgid "Space between content blocks (heading, paragraph, etc.)"
+msgstr ""
+
+#: build/blocks/icon-list-item/index.js:1
+#: src/blocks/icon-list-item/edit.js:113
 msgid "List item title…"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:46
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:43
 msgid "List Settings"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:50
-#: src/blocks/image-accordion/edit.js:76
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:47
+#: src/blocks/image-accordion/edit.js:79
 msgid "Layout"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:57
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:58
 msgid "Grid"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:60
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:61
 msgid "Choose how list items are arranged"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
 #: build/blocks/tabs/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:70
-#: src/blocks/tabs/edit.js:211
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:71
+#: src/blocks/tabs/edit.js:266
 msgid "Alignment"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:86
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:89
 msgid "Align list items horizontally"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:97
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:93
+msgid "Distribute items horizontally"
+msgstr ""
+
+#: build/blocks/icon-list/index.js:1
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:105
 msgid "Columns"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:102
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:110
 msgid "Number of columns in grid layout"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:130
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:138
 msgid "Default icon size for all items"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:144
+#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:152
 msgid "Space between list items"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:151
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:157
-msgid "Icon Color"
-msgstr ""
-
-#: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:168
-msgid "Default color for all icons in this list"
-msgstr ""
-
-#: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/edit.js:76
+#: src/blocks/icon-list/edit.js:106
 msgid "First item"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/edit.js:80
+#: src/blocks/icon-list/edit.js:110
 msgid "Second item"
 msgstr ""
 
 #: build/blocks/icon-list/index.js:1
-#: src/blocks/icon-list/edit.js:84
+#: src/blocks/icon-list/edit.js:114
 msgid "Third item"
 msgstr ""
 
-#: build/blocks/icon/index.js:1
-#: src/blocks/icon/edit.js:82
-msgid "Style"
+#: build/blocks/icon-list/index.js:1
+#: src/blocks/icon-list/edit.js:126
+msgid "Icon Colors"
 msgstr ""
 
-#: build/blocks/icon/index.js:1
-#: src/blocks/icon/edit.js:90
-msgid "Filled"
+#: build/blocks/icon-list/index.js:1
+#: src/blocks/icon-list/edit.js:129
+msgid "Icon Color"
+msgstr ""
+
+#: build/blocks/icon-list/index.js:1
+#: src/blocks/icon-list/edit.js:136
+msgid "Icon Background Color"
 msgstr ""
 
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/edit.js:94
+msgid "Filled"
+msgstr ""
+
+#: build/blocks/icon/index.js:1
+#: src/blocks/icon/edit.js:98
 msgid "Outlined"
 msgstr ""
 
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/edit.js:99
+#: src/blocks/icon/edit.js:103
 msgid "Stroke Width"
 msgstr ""
 
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/edit.js:107
+#: src/blocks/icon/edit.js:111
 msgid "Thinner strokes work better for detailed icons"
 msgstr ""
 
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/inspector/IconSettingsPanel.js:124
-#: src/blocks/icon/edit.js:125
+#: src/blocks/icon/edit.js:129
 msgid "Rotation"
 msgstr ""
 
 #: build/blocks/icon/index.js:1
-#: src/blocks/icon/edit.js:141
+#: src/blocks/icon/edit.js:145
 msgid "Link"
+msgstr ""
+
+#: build/blocks/icon/index.js:1
+#: src/blocks/icon/edit.js:172
+msgid "Accessibility"
+msgstr ""
+
+#: build/blocks/icon/index.js:1
+#: src/blocks/icon/edit.js:176
+msgid "Decorative icon"
+msgstr ""
+
+#: build/blocks/icon/index.js:1
+#: src/blocks/icon/edit.js:181
+msgid "Enable if this icon is purely decorative and provides no information. Screen readers will ignore it."
+msgstr ""
+
+#: build/blocks/icon/index.js:1
+#: src/blocks/icon/edit.js:189
+msgid "Accessible label"
+msgstr ""
+
+#: build/blocks/icon/index.js:1
+#: src/blocks/icon/edit.js:194
+msgid "Describe the icon for screen readers"
+msgstr ""
+
+#: build/blocks/icon/index.js:1
+#: src/blocks/icon/edit.js:198
+msgid "Provide a brief description of what the icon represents (e.g., \"Search\", \"Shopping cart\", \"Download\")."
 msgstr ""
 
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
-#: src/blocks/image-accordion-item/edit.js:89
-#: src/blocks/slide/edit.js:268
+#: src/blocks/image-accordion-item/edit.js:97
+#: src/blocks/slide/edit.js:378
 msgid "Vertical Alignment"
 msgstr ""
 
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/image-accordion-item/edit.js:94
-#: src/blocks/slide/edit.js:273
-#: src/blocks/slider/edit.js:430
+#: src/blocks/image-accordion-item/edit.js:109
+#: src/blocks/slide/edit.js:390
+#: src/blocks/slider/edit.js:510
 msgid "Bottom"
 msgstr ""
 
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
-#: src/blocks/image-accordion-item/edit.js:102
-#: src/blocks/slide/edit.js:281
+#: src/blocks/image-accordion-item/edit.js:121
+#: src/blocks/slide/edit.js:402
 msgid "Horizontal Alignment"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/image-accordion/edit.js:78
-#: src/blocks/slider/edit.js:287
+#: src/blocks/image-accordion/edit.js:83
+#: src/blocks/slider/edit.js:331
 msgid "Height"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:88
+#: src/blocks/image-accordion/edit.js:95
 msgid "Fixed height for the accordion"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:109
+#: src/blocks/image-accordion/edit.js:121
 msgid "Expansion Behavior"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:113
+#: src/blocks/image-accordion/edit.js:125
 msgid "Expanded Ratio"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:119
+#: src/blocks/image-accordion/edit.js:133
 msgid "How much larger the expanded item becomes (others stay normal size)"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
 #: build/blocks/slider/index.js:1
-#: src/blocks/image-accordion/edit.js:125
-#: src/blocks/slider/edit.js:471
+#: src/blocks/image-accordion/edit.js:142
+#: src/blocks/slider/edit.js:553
 msgid "Transition Duration"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:134
+#: src/blocks/image-accordion/edit.js:155
 msgid "Speed of expansion/collapse animation"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:141
+#: src/blocks/image-accordion/edit.js:165
 msgid "Interaction"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:145
+#: src/blocks/image-accordion/edit.js:169
 msgid "Trigger Type"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:148
+#: src/blocks/image-accordion/edit.js:173
 msgid "Hover (Desktop)"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:149
+#: src/blocks/image-accordion/edit.js:177
 msgid "Click/Tap"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:152
+#: src/blocks/image-accordion/edit.js:184
 msgid "Hover is automatically replaced with click on mobile"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:161
+#: src/blocks/image-accordion/edit.js:193
 msgid "Default Expanded Item"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:166
+#: src/blocks/image-accordion/edit.js:200
 msgid "Which item is expanded on page load (0 = none, 1 = first, etc.)"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
 #: build/blocks/slide/index.js:1
 #: build/index.js:1
-#: src/blocks/image-accordion/edit.js:184
-#: src/blocks/slide/edit.js:224
-#: src/extensions/overlay/index.js:104
+#: src/blocks/image-accordion/edit.js:218
+#: src/blocks/slide/edit.js:307
+#: src/extensions/overlay/index.js:108
 msgid "Enable Overlay"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:189
+#: src/blocks/image-accordion/edit.js:225
 msgid "Overlay applied to all items"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:190
+#: src/blocks/image-accordion/edit.js:229
 msgid "No overlay on items"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: build/blocks/slide/index.js:1
-#: build/index.js:1
-#: src/blocks/image-accordion/edit.js:204
-#: src/blocks/slide/edit.js:244
-#: src/extensions/overlay/index.js:132
-msgid "Color"
-msgstr ""
-
-#: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:211
+#: src/blocks/image-accordion/edit.js:252
 msgid "Overlay Opacity (Default)"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:216
+#: src/blocks/image-accordion/edit.js:262
 msgid "Opacity when item is not expanded"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:222
+#: src/blocks/image-accordion/edit.js:271
 msgid "Overlay Opacity (Expanded)"
 msgstr ""
 
 #: build/blocks/image-accordion/index.js:1
-#: src/blocks/image-accordion/edit.js:229
+#: src/blocks/image-accordion/edit.js:283
 msgid "Opacity when item is expanded"
 msgstr ""
 
 #: build/blocks/pill/index.js:1
-#: src/blocks/pill/edit.js:79
+#: src/blocks/pill/edit.js:64
 msgid "Add pill text…"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:105
+#: src/blocks/progress-bar/edit.js:116
+msgid "Color Settings"
+msgstr ""
+
+#: build/blocks/progress-bar/index.js:1
+#: src/blocks/progress-bar/edit.js:119
+msgid "Bar Color"
+msgstr ""
+
+#: build/blocks/progress-bar/index.js:1
+#: docs/BLOCK-TEMPLATE-EDIT.js:77
+#: src/blocks/progress-bar/edit.js:126
+msgid "Background Color"
+msgstr ""
+
+#: build/blocks/progress-bar/index.js:1
+#: src/blocks/progress-bar/edit.js:142
 msgid "Progress Settings"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:109
+#: src/blocks/progress-bar/edit.js:146
 msgid "Percentage"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:117
+#: src/blocks/progress-bar/edit.js:154
 msgid "Set the progress percentage (0–100)"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:128
+#: src/blocks/progress-bar/edit.js:165
 msgid "Appearance"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:132
+#: src/blocks/progress-bar/edit.js:169
 msgid "Bar Height"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
 #: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/progress-bar/edit.js:145
-#: src/blocks/scroll-marquee/edit.js:120
+#: src/blocks/progress-bar/edit.js:182
+#: src/blocks/scroll-marquee/edit.js:161
 msgid "Border Radius"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:160
+#: src/blocks/progress-bar/edit.js:197
 msgid "Bar Style"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:167
-msgid "Solid"
-msgstr ""
-
-#: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:171
+#: src/blocks/progress-bar/edit.js:208
 msgid "Striped"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:175
+#: src/blocks/progress-bar/edit.js:212
 msgid "Animated"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:182
-msgid "Color Settings"
-msgstr ""
-
-#: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:189
-msgid "Bar Color"
-msgstr ""
-
-#: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:206
+#: src/blocks/progress-bar/edit.js:223
 msgid "Show Label"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:216
+#: src/blocks/progress-bar/edit.js:233
 msgid "Label Text"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:221
+#: src/blocks/progress-bar/edit.js:238
 msgid "e.g., Project Progress"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:231
+#: src/blocks/progress-bar/edit.js:248
 msgid "Show Percentage"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:241
+#: src/blocks/progress-bar/edit.js:258
 msgid "Label Position"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:245
+#: src/blocks/progress-bar/edit.js:262
 msgid "Above Bar"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:249
+#: src/blocks/progress-bar/edit.js:266
 msgid "Inside Bar"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:253
+#: src/blocks/progress-bar/edit.js:270
 msgid "Below Bar"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:272
+#: src/blocks/progress-bar/edit.js:289
 msgid "Animate on Scroll"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:277
+#: src/blocks/progress-bar/edit.js:294
 msgid "Animate the bar when it enters the viewport"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:293
+#: src/blocks/progress-bar/edit.js:310
 msgid "Duration in seconds"
 msgstr ""
 
 #: build/blocks/progress-bar/index.js:1
-#: src/blocks/progress-bar/edit.js:301
+#: src/blocks/progress-bar/edit.js:318
 msgid "Animate Stripes"
 msgstr ""
 
 #: build/blocks/reveal/index.js:1
 #: build/index.js:1
 #: src/blocks/reveal/edit.js:34
-#: src/extensions/reveal-control/index.js:139
+#: src/extensions/reveal-control/index.js:149
 msgid "Reveal Settings"
-msgstr ""
-
-#: build/blocks/reveal/index.js:1
-#: src/blocks/reveal/edit.js:46
-msgid "Slide Up"
-msgstr ""
-
-#: build/blocks/reveal/index.js:1
-#: src/blocks/reveal/edit.js:50
-msgid "Slide Down"
 msgstr ""
 
 #: build/blocks/reveal/index.js:1
@@ -5361,129 +5776,118 @@ msgstr ""
 
 #: build/blocks/scroll-accordion-item/index.js:1
 #: src/blocks/scroll-accordion-item/edit.js:31
-msgid "Add content for this scroll accordion item..."
+msgid "Add content for this scroll accordion item…"
 msgstr ""
 
 #: build/blocks/scroll-accordion/index.js:1
-#: build/blocks/stack/index.js:1
-#: src/blocks/scroll-accordion/edit.js:227
-#: src/blocks/stack/edit.js:100
+#: src/blocks/scroll-accordion/edit.js:224
 msgid "Align items left"
 msgstr ""
 
 #: build/blocks/scroll-accordion/index.js:1
-#: build/blocks/stack/index.js:1
-#: src/blocks/scroll-accordion/edit.js:235
-#: src/blocks/stack/edit.js:108
+#: src/blocks/scroll-accordion/edit.js:232
 msgid "Align items center"
 msgstr ""
 
 #: build/blocks/scroll-accordion/index.js:1
-#: build/blocks/stack/index.js:1
-#: src/blocks/scroll-accordion/edit.js:241
-#: src/blocks/stack/edit.js:114
+#: src/blocks/scroll-accordion/edit.js:238
 msgid "Align items right"
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:76
-msgid "You have "
-msgstr ""
-
-#: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:78
-msgid " images. For best performance, consider using fewer images (20 or less) or optimizing image sizes. Each image is duplicated 6 times for smooth infinite scrolling."
-msgstr ""
-
-#: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:83
-msgid "Total images: "
-msgstr ""
-
-#: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:85
-msgid " (duplicated 6x for infinite scroll)"
-msgstr ""
-
-#: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:90
-msgid "Scroll Settings"
-msgstr ""
-
-#: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:92
-msgid "Scroll Speed"
+#: src/blocks/scroll-marquee/edit.js:96
+msgid "You have"
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:98
-msgid "Controls how fast images move based on scroll"
-msgstr ""
-
-#: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:104
-msgid "Image Dimensions"
+msgid "images. For best performance, consider using fewer images (20 or less) or optimizing image sizes. Each image is duplicated 6 times for smooth infinite scrolling."
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:106
+msgid "Total images:"
+msgstr ""
+
+#: build/blocks/scroll-marquee/index.js:1
+#: src/blocks/scroll-marquee/edit.js:108
+msgid "(duplicated 6x for infinite scroll)"
+msgstr ""
+
+#: build/blocks/scroll-marquee/index.js:1
+#: src/blocks/scroll-marquee/edit.js:117
+msgid "Scroll Settings"
+msgstr ""
+
+#: build/blocks/scroll-marquee/index.js:1
+#: src/blocks/scroll-marquee/edit.js:121
+msgid "Scroll Speed"
+msgstr ""
+
+#: build/blocks/scroll-marquee/index.js:1
+#: src/blocks/scroll-marquee/edit.js:129
+msgid "Controls how fast images move based on scroll"
+msgstr ""
+
+#: build/blocks/scroll-marquee/index.js:1
+#: src/blocks/scroll-marquee/edit.js:139
+msgid "Image Dimensions"
+msgstr ""
+
+#: build/blocks/scroll-marquee/index.js:1
+#: src/blocks/scroll-marquee/edit.js:143
 msgid "Image Height"
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:113
+#: src/blocks/scroll-marquee/edit.js:152
 msgid "Image Width"
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:128
-msgid "Spacing"
-msgstr ""
-
-#: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:130
+#: src/blocks/scroll-marquee/edit.js:176
 msgid "Gap Between Images"
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:137
+#: src/blocks/scroll-marquee/edit.js:183
 msgid "Gap Between Rows"
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:163
+#: src/blocks/scroll-marquee/edit.js:217
 msgid "Remove Row"
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
 #: build/blocks/slide/index.js:1
-#: src/blocks/scroll-marquee/edit.js:182
-#: src/blocks/slide/edit.js:176
+#: src/blocks/scroll-marquee/edit.js:239
+#: src/blocks/slide/edit.js:196
 msgid "Remove Image"
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:205
+#: src/blocks/scroll-marquee/edit.js:272
 msgid "Add Images"
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:206
+#: src/blocks/scroll-marquee/edit.js:276
 msgid "Add More Images"
 msgstr ""
 
 #: build/blocks/scroll-marquee/index.js:1
-#: src/blocks/scroll-marquee/edit.js:222
+#: src/blocks/scroll-marquee/edit.js:295
 msgid "Add Row"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:98
+#: src/blocks/slide/edit.js:97
 msgid "Add slide title…"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:105
+#: src/blocks/slide/edit.js:104
 msgid "Add slide content…"
 msgstr ""
 
@@ -5493,489 +5897,477 @@ msgid "Background Image"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:168
+#: src/blocks/slide/edit.js:185
 msgid "Replace Image"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:152
+#: src/blocks/slide/edit.js:157
 msgid "Select Background Image"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:189
+#: src/blocks/slide/edit.js:212
 msgid "Background Size"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:192
+#: src/blocks/slide/edit.js:216
 msgid "Cover"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:193
+#: src/blocks/slide/edit.js:220
 msgid "Contain"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:197
+#: src/blocks/slide/edit.js:231
 msgid "How the background image fills the slide"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:203
+#: src/blocks/slide/edit.js:240
 msgid "Background Position"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:206
+#: src/blocks/slide/edit.js:244
 msgid "Center Center"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:207
+#: src/blocks/slide/edit.js:251
 msgid "Top Center"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:208
+#: src/blocks/slide/edit.js:255
 msgid "Bottom Center"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:209
+#: src/blocks/slide/edit.js:262
 msgid "Left Center"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:210
+#: src/blocks/slide/edit.js:266
 msgid "Right Center"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:211
+#: src/blocks/slide/edit.js:273
 msgid "Top Left"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:212
+#: src/blocks/slide/edit.js:277
 msgid "Top Right"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:213
+#: src/blocks/slide/edit.js:281
 msgid "Bottom Left"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:214
+#: src/blocks/slide/edit.js:285
 msgid "Bottom Right"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:229
+#: src/blocks/slide/edit.js:314
 msgid "Overlay applied to background"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:230
+#: src/blocks/slide/edit.js:318
 msgid "No overlay"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:256
+#: src/blocks/slide/edit.js:360
 msgid "Opacity of the overlay"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:294
+#: src/blocks/slide/edit.js:426
 msgid "Min Height Override"
 msgstr ""
 
 #: build/blocks/slide/index.js:1
-#: src/blocks/slide/edit.js:301
+#: src/blocks/slide/edit.js:435
 msgid "Override slider height for this slide only (leave empty to use slider settings)"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:153
+#: src/blocks/slider/edit.js:172
 msgid "Slide 1: Beautiful Slider"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:160
+#: src/blocks/slider/edit.js:182
 msgid "Add any WordPress blocks inside slides. Click to edit or add background images."
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:177
+#: src/blocks/slider/edit.js:199
 msgid "Slide 2: Fully Customizable"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:184
+#: src/blocks/slider/edit.js:209
 msgid "Configure transitions, navigation, auto-play, and more in the settings panel."
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:201
+#: src/blocks/slider/edit.js:226
 msgid "Slide 3: Get Started"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:208
+#: src/blocks/slider/edit.js:236
 msgid "Replace these slides with your own content and images. Swipe, click arrows, or use keyboard to navigate."
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:228
+#: src/blocks/slider/edit.js:259
 msgid "Slides Per View (Desktop)"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:233
+#: src/blocks/slider/edit.js:266
 msgid "Number of slides visible at once"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:239
+#: src/blocks/slider/edit.js:275
 msgid "Slides Per View (Tablet)"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:249
+#: src/blocks/slider/edit.js:287
 msgid "Slides Per View (Mobile)"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:259
+#: src/blocks/slider/edit.js:299
 msgid "Use Aspect Ratio"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:264
+#: src/blocks/slider/edit.js:306
 msgid "Slider uses aspect ratio"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:265
+#: src/blocks/slider/edit.js:307
 msgid "Slider uses fixed height"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:272
+#: src/blocks/slider/edit.js:314
 msgid "Aspect Ratio"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:303
+#: src/blocks/slider/edit.js:349
 msgid "Gap Between Slides"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:317
+#: src/blocks/slider/edit.js:366
 msgid "Navigation Settings"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:319
+#: src/blocks/slider/edit.js:370
 msgid "Show Arrows"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:328
+#: src/blocks/slider/edit.js:381
 msgid "Arrow Style"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: build/blocks/tabs/index.js:1
-#: src/blocks/slider/edit.js:331
-#: src/blocks/slider/edit.js:417
-#: src/blocks/tabs/edit.js:188
+#: src/blocks/slider/edit.js:385
+#: src/blocks/slider/edit.js:486
+#: src/blocks/tabs/edit.js:243
 msgid "Default"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:35
-#: src/blocks/slider/edit.js:332
-msgid "Circle"
-msgstr ""
-
-#: build/blocks/slider/index.js:1
-#: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:36
-#: src/blocks/slider/edit.js:333
-msgid "Square"
-msgstr ""
-
-#: build/blocks/slider/index.js:1
 #: build/blocks/tabs/index.js:1
-#: src/blocks/slider/edit.js:334
-#: src/blocks/tabs/edit.js:200
+#: src/blocks/slider/edit.js:397
+#: src/blocks/tabs/edit.js:255
 msgid "Minimal"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:342
+#: src/blocks/slider/edit.js:409
 msgid "Arrow Position"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:345
+#: src/blocks/slider/edit.js:413
 msgid "Sides"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:346
+#: src/blocks/slider/edit.js:417
 msgid "Inside"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:347
+#: src/blocks/slider/edit.js:421
 msgid "Outside"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:359
-msgid "Arrow Colors"
-msgstr ""
-
-#: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:365
-msgid "Arrow Icon Color"
-msgstr ""
-
-#: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:370
-msgid "Arrow Background"
-msgstr ""
-
-#: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:376
+#: src/blocks/slider/edit.js:437
 msgid "Arrow Size"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:389
+#: src/blocks/slider/edit.js:452
 msgid "Arrow Padding"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:397
+#: src/blocks/slider/edit.js:462
 msgid "Inner spacing of the arrow button"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:405
+#: src/blocks/slider/edit.js:473
 msgid "Show Dots"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:414
+#: src/blocks/slider/edit.js:482
 msgid "Dot Style"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:418
+#: src/blocks/slider/edit.js:490
 msgid "Lines"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:419
+#: src/blocks/slider/edit.js:494
 msgid "Squares"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:427
+#: src/blocks/slider/edit.js:506
 msgid "Dot Position"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:442
-#: src/blocks/slider/edit.js:448
-msgid "Dot Color"
-msgstr ""
-
-#: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:455
+#: src/blocks/slider/edit.js:529
 msgid "Transition Settings"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:457
+#: src/blocks/slider/edit.js:533
 msgid "Transition Effect"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:465
+#: src/blocks/slider/edit.js:544
 msgid "Animation style between slides"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:485
+#: src/blocks/slider/edit.js:571
 msgid "Transition Easing"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:500
+#: src/blocks/slider/edit.js:601
 msgid "Auto-play Settings"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:502
+#: src/blocks/slider/edit.js:605
 msgid "Enable Auto-play"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:507
+#: src/blocks/slider/edit.js:610
 msgid "Slides advance automatically"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:508
+#: src/blocks/slider/edit.js:614
 msgid "Manual navigation only"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:516
+#: src/blocks/slider/edit.js:622
 msgid "Auto-play Interval (ms)"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:522
+#: src/blocks/slider/edit.js:633
 msgid "Time between slides"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:528
+#: src/blocks/slider/edit.js:639
 msgid "Pause on Hover"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:535
+#: src/blocks/slider/edit.js:648
 msgid "Pause on Interaction"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:538
+#: src/blocks/slider/edit.js:656
 msgid "Pause after user clicks, swipes, or drags"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:545
+#: src/blocks/slider/edit.js:667
 msgid "Behavior Settings"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: build/index.js:1
-#: src/blocks/slider/edit.js:547
-#: src/extensions/background-video/index.js:313
+#: src/blocks/slider/edit.js:671
+#: src/extensions/background-video/index.js:308
 msgid "Loop"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:552
+#: src/blocks/slider/edit.js:676
 msgid "Infinite loop navigation"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:553
+#: src/blocks/slider/edit.js:677
 msgid "Stop at first/last slide"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:559
+#: src/blocks/slider/edit.js:683
 msgid "Swipeable (Touch)"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:566
+#: src/blocks/slider/edit.js:692
 msgid "Draggable (Mouse)"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:573
+#: src/blocks/slider/edit.js:701
 msgid "Free Mode"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:576
+#: src/blocks/slider/edit.js:704
 msgid "Smooth scrolling without snap points"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:581
+#: src/blocks/slider/edit.js:712
 msgid "Centered Slides"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:584
+#: src/blocks/slider/edit.js:717
 msgid "Active slide centered in view"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:589
+#: src/blocks/slider/edit.js:726
 msgid "Advanced Settings"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
 #: build/blocks/tabs/index.js:1
-#: src/blocks/slider/edit.js:591
-#: src/blocks/tabs/edit.js:297
+#: src/blocks/slider/edit.js:730
+#: src/blocks/tabs/edit.js:313
 msgid "Mobile Breakpoint (px)"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:596
+#: src/blocks/slider/edit.js:737
 msgid "Below this width, uses mobile slides per view"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:602
+#: src/blocks/slider/edit.js:746
 msgid "Tablet Breakpoint (px)"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:607
+#: src/blocks/slider/edit.js:753
 msgid "Below this width, uses tablet slides per view"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:613
+#: src/blocks/slider/edit.js:762
 msgid "ARIA Label"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:616
+#: src/blocks/slider/edit.js:767
 msgid "Accessible label for screen readers"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:617
+#: src/blocks/slider/edit.js:771
 msgid "Image slider"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:635
+#: src/blocks/slider/edit.js:782
+msgid "Arrow Colors"
+msgstr ""
+
+#: build/blocks/slider/index.js:1
+#: src/blocks/slider/edit.js:785
+msgid "Arrow Icon Color"
+msgstr ""
+
+#: build/blocks/slider/index.js:1
+#: src/blocks/slider/edit.js:794
+msgid "Arrow Background"
+msgstr ""
+
+#: build/blocks/slider/index.js:1
+#: src/blocks/slider/edit.js:812
+#: src/blocks/slider/edit.js:815
+msgid "Dot Color"
+msgstr ""
+
+#: build/blocks/slider/index.js:1
+#: src/blocks/slider/edit.js:838
 msgid "Previous slide"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:643
+#: src/blocks/slider/edit.js:846
 msgid "Next slide"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:658
+#: src/blocks/slider/edit.js:862
 msgid "Slide 1"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:665
+#: src/blocks/slider/edit.js:871
 msgid "Slide 2"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/edit.js:672
+#: src/blocks/slider/edit.js:880
 msgid "Slide 3"
 msgstr ""
 
@@ -5990,159 +6382,159 @@ msgid "Full-height slider for hero sections with centered content"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:50
+#: src/blocks/slider/index.js:57
 msgid "Welcome to Your Site"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:51
+#: src/blocks/slider/index.js:65
 msgid "Create something amazing with beautiful, full-screen hero sliders"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:53
+#: src/blocks/slider/index.js:80
 msgid "Get Started"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:61
+#: src/blocks/slider/index.js:96
 msgid "Powerful Features"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:62
+#: src/blocks/slider/index.js:104
 msgid "Everything you need to build stunning websites"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:64
+#: src/blocks/slider/index.js:119
 msgid "Learn More"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:75
+#: src/blocks/slider/index.js:135
 msgid "Gallery Carousel"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:76
+#: src/blocks/slider/index.js:136
 msgid "Show multiple images in a carousel view"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:93
+#: src/blocks/slider/index.js:160
 msgid "Image 1"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:96
+#: src/blocks/slider/index.js:174
 msgid "Image 2"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:99
+#: src/blocks/slider/index.js:188
 msgid "Image 3"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:102
+#: src/blocks/slider/index.js:202
 msgid "Image 4"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:110
+#: src/blocks/slider/index.js:214
 msgid "Testimonial Slider"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:111
+#: src/blocks/slider/index.js:215
 msgid "Slider optimized for testimonials with fade transitions"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:126
-#: src/blocks/slider/index.js:131
-#: src/blocks/slider/index.js:136
+#: src/blocks/slider/index.js:239
+#: src/blocks/slider/index.js:282
+#: src/blocks/slider/index.js:325
 msgid "★★★★★"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:127
+#: src/blocks/slider/index.js:250
 msgid "\"This product exceeded all my expectations. Highly recommended!\""
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:128
+#: src/blocks/slider/index.js:266
 msgid "— Sarah Johnson"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:132
+#: src/blocks/slider/index.js:293
 msgid "\"Outstanding quality and amazing customer service. Will buy again!\""
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:133
+#: src/blocks/slider/index.js:309
 msgid "— Michael Chen"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:137
+#: src/blocks/slider/index.js:336
 msgid "\"Best purchase I've made this year. Absolutely love it!\""
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:138
+#: src/blocks/slider/index.js:352
 msgid "— Emily Rodriguez"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:146
+#: src/blocks/slider/index.js:367
 msgid "Logo Slider"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:147
+#: src/blocks/slider/index.js:368
 msgid "Continuous scrolling logo slider"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:166
+#: src/blocks/slider/index.js:394
 msgid "Brand 1"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:169
+#: src/blocks/slider/index.js:415
 msgid "Brand 2"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:172
+#: src/blocks/slider/index.js:436
 msgid "Brand 3"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:175
+#: src/blocks/slider/index.js:457
 msgid "Brand 4"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:178
+#: src/blocks/slider/index.js:478
 msgid "Brand 5"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:181
+#: src/blocks/slider/index.js:499
 msgid "Brand 6"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:184
+#: src/blocks/slider/index.js:520
 msgid "Brand 7"
 msgstr ""
 
 #: build/blocks/slider/index.js:1
-#: src/blocks/slider/index.js:187
+#: src/blocks/slider/index.js:541
 msgid "Brand 8"
 msgstr ""
 
@@ -6220,7 +6612,7 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tab/edit.js:106
 #: src/blocks/tab/edit.js:208
-#: src/blocks/tabs/edit.js:160
+#: src/blocks/tabs/edit.js:215
 msgid "Tab Settings"
 msgstr ""
 
@@ -6269,117 +6661,117 @@ msgid "Click the tab above to edit its content"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:28
+#: src/blocks/tabs/edit.js:31
 msgid "Tab 1"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:29
+#: src/blocks/tabs/edit.js:32
 msgid "Tab 2"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:30
+#: src/blocks/tabs/edit.js:33
 msgid "Tab 3"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:164
-msgid "Orientation"
-msgstr ""
-
-#: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:184
-msgid "Tab Style"
-msgstr ""
-
-#: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:192
-msgid "Pills"
-msgstr ""
-
-#: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:196
-msgid "Underline"
-msgstr ""
-
-#: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:227
-msgid "Justified"
-msgstr ""
-
-#: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:240
-msgid "Gap Between Tabs"
-msgstr ""
-
-#: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:254
+#: src/blocks/tabs/edit.js:167
 msgid "Tab Colors"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:261
+#: src/blocks/tabs/edit.js:170
 msgid "Tab Text"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:267
+#: src/blocks/tabs/edit.js:177
 msgid "Tab Background"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:273
+#: src/blocks/tabs/edit.js:186
 msgid "Active Tab Text"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:281
+#: src/blocks/tabs/edit.js:193
 msgid "Active Tab Background"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:287
+#: src/blocks/tabs/edit.js:202
 msgid "Tab Border"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:293
+#: src/blocks/tabs/edit.js:219
+msgid "Orientation"
+msgstr ""
+
+#: build/blocks/tabs/index.js:1
+#: src/blocks/tabs/edit.js:239
+msgid "Tab Style"
+msgstr ""
+
+#: build/blocks/tabs/index.js:1
+#: src/blocks/tabs/edit.js:247
+msgid "Pills"
+msgstr ""
+
+#: build/blocks/tabs/index.js:1
+#: src/blocks/tabs/edit.js:251
+msgid "Underline"
+msgstr ""
+
+#: build/blocks/tabs/index.js:1
+#: src/blocks/tabs/edit.js:282
+msgid "Justified"
+msgstr ""
+
+#: build/blocks/tabs/index.js:1
+#: src/blocks/tabs/edit.js:295
+msgid "Gap Between Tabs"
+msgstr ""
+
+#: build/blocks/tabs/index.js:1
+#: src/blocks/tabs/edit.js:309
 msgid "Mobile Settings"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:305
+#: src/blocks/tabs/edit.js:321
 msgid "Screen width below which mobile mode activates"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:314
+#: src/blocks/tabs/edit.js:330
 msgid "Mobile Mode"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:322
+#: src/blocks/tabs/edit.js:338
 msgid "Dropdown"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:326
+#: src/blocks/tabs/edit.js:342
 msgid "Tabs (Scrollable)"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:339
+#: src/blocks/tabs/edit.js:355
 msgid "Advanced"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:343
+#: src/blocks/tabs/edit.js:359
 msgid "Enable Deep Linking"
 msgstr ""
 
 #: build/blocks/tabs/index.js:1
-#: src/blocks/tabs/edit.js:348
+#: src/blocks/tabs/edit.js:364
 msgid "Allow tabs to be accessed via URL hash (e.g., #tab-name)"
 msgstr ""
 
@@ -6469,12 +6861,6 @@ msgid "Quick Animations"
 msgstr ""
 
 #: build/index.js:1
-#: src/blocks/shared/components/WidthPanel.js:38
-#: src/extensions/max-width/index.js:122
-msgid "Constrain Width"
-msgstr ""
-
-#: build/index.js:1
 #: src/extensions/max-width/index.js:129
 msgid "Content is centered with max-width"
 msgstr ""
@@ -6485,18 +6871,12 @@ msgid "Content uses full width"
 msgstr ""
 
 #: build/index.js:1
-#: src/blocks/shared/components/WidthPanel.js:54
-#: src/extensions/max-width/index.js:143
-msgid "Content Width"
-msgstr ""
-
-#: build/index.js:1
-#: src/extensions/max-width/index.js:173
+#: src/extensions/max-width/index.js:174
 msgid "Max width"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/max-width/index.js:179
+#: src/extensions/max-width/index.js:180
 msgid "Maximum width for this block. Leave empty for no constraint."
 msgstr ""
 
@@ -6516,97 +6896,97 @@ msgid "Examples:"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:157
+#: src/extensions/background-video/index.js:152
 msgid "Replace Video"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:173
+#: src/extensions/background-video/index.js:168
 msgid "Remove Video"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:184
+#: src/extensions/background-video/index.js:179
 msgid "Upload Video"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:219
+#: src/extensions/background-video/index.js:214
 msgid "Poster Image (Optional)"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:230
+#: src/extensions/background-video/index.js:225
 msgid "Video poster"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:255
+#: src/extensions/background-video/index.js:250
 msgid "Replace Poster"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:273
+#: src/extensions/background-video/index.js:268
 msgid "Remove Poster"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:285
+#: src/extensions/background-video/index.js:280
 msgid "Upload Poster"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:298
+#: src/extensions/background-video/index.js:293
 msgid "Autoplay"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:305
+#: src/extensions/background-video/index.js:300
 msgid "Automatically start playing when page loads"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:318
+#: src/extensions/background-video/index.js:313
 msgid "Restart video when it ends"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:326
+#: src/extensions/background-video/index.js:321
 msgid "Muted"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:331
+#: src/extensions/background-video/index.js:326
 msgid "Mute audio (required for autoplay)"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:339
+#: src/extensions/background-video/index.js:334
 msgid "Hide on Mobile"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/background-video/index.js:346
+#: src/extensions/background-video/index.js:341
 msgid "Hide video on mobile devices to save bandwidth"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/overlay/index.js:111
+#: src/extensions/overlay/index.js:115
 msgid "Overlay is enabled"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/overlay/index.js:112
+#: src/extensions/overlay/index.js:116
 msgid "Add a color overlay to this block"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/overlay/index.js:139
+#: src/extensions/overlay/index.js:143
 msgid "Choose overlay color. Defaults to theme accent color or black."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/overlay/index.js:157
+#: src/extensions/overlay/index.js:161
 msgid "Transparency of the overlay (0 = transparent, 100 = opaque)"
 msgstr ""
 
@@ -6621,68 +7001,157 @@ msgid "Number of columns this block spans in the grid"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/reveal-control/index.js:90
-#: src/extensions/reveal-control/index.js:143
+#: src/extensions/reveal-control/index.js:93
+#: src/extensions/reveal-control/index.js:153
 msgid "Reveal on Hover"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/reveal-control/index.js:94
+#: src/extensions/reveal-control/index.js:97
 msgid "Enable Reveal Mode"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/reveal-control/index.js:97
+#: src/extensions/reveal-control/index.js:100
 msgid "Child blocks can be set to reveal when hovering over this container."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/reveal-control/index.js:101
+#: src/extensions/reveal-control/index.js:104
 msgid "Enable to allow child blocks to reveal on hover."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/reveal-control/index.js:114
+#: src/extensions/reveal-control/index.js:119
 msgid "Collapse Animation"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/reveal-control/index.js:117
+#: src/extensions/reveal-control/index.js:125
 msgid "Items collapse from height 0 with fade."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/reveal-control/index.js:121
+#: src/extensions/reveal-control/index.js:129
 msgid "Items fade in without size change."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/reveal-control/index.js:146
+#: src/extensions/reveal-control/index.js:156
 msgid "This block will be hidden until you hover over the parent container."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/reveal-control/index.js:150
+#: src/extensions/reveal-control/index.js:160
 msgid "This block is always visible."
 msgstr ""
 
-#: src/blocks/form-file-upload/edit.js:61
+#: build/index.js:1
+#: src/extensions/clickable-group/index.js:101
+msgid "Make the entire container clickable. Perfect for card designs."
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/clickable-group/index.js:113
+msgid "Enter the destination URL"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/clickable-group/index.js:127
+msgid "Open link in a new browser tab"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/clickable-group/index.js:140
+msgid "Add rel attribute (e.g., nofollow, sponsored)"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/clickable-group/index.js:148
+msgid "Preview link"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:70
+msgid "Text Color"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:95
+msgid "Optional Colors"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:98
+msgid "Optional Color"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:117
+msgid "Block Settings"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:121
+msgid "Some Text"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:124
+msgid "Enter some text"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:130
+msgid "Some Toggle"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:135
+msgid "Enable or disable something"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:140
+msgid "Some Number"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:147
+msgid "Adjust a number"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:153
+msgid "Some Option"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:157
+msgid "Option 1"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:161
+msgid "Option 2"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:165
+msgid "Option 3"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:172
+msgid "Choose an option"
+msgstr ""
+
+#: docs/BLOCK-TEMPLATE-EDIT.js:183
+msgid "Add your content here"
+msgstr ""
+
+#: src/blocks/form-file-upload/edit.js:73
 msgid "Allow Multiple Files"
 msgstr ""
 
-#: src/blocks/form-file-upload/edit.js:67
+#: src/blocks/form-file-upload/edit.js:80
 msgid "File Restrictions"
 msgstr ""
 
-#: src/blocks/form-file-upload/edit.js:69
+#: src/blocks/form-file-upload/edit.js:84
 msgid "Accepted File Types"
 msgstr ""
 
-#: src/blocks/form-file-upload/edit.js:72
+#: src/blocks/form-file-upload/edit.js:89
 msgid "e.g., .pdf,.doc,.jpg (leave empty for all)"
 msgstr ""
 
-#: src/blocks/form-file-upload/edit.js:77
+#: src/blocks/form-file-upload/edit.js:97
 msgid "Max File Size (MB)"
 msgstr ""
 
@@ -6810,6 +7279,43 @@ msgstr ""
 
 #: src/blocks/shared/components/WidthPanel.js:47
 msgid "Content uses full container width"
+msgstr ""
+
+#: src/blocks/shared/components/WidthPanel.js:60
+#, js-format
+msgid "Leave empty to use theme default (%s)"
+msgstr ""
+
+#: src/components/ContrastNotice.js:49
+msgid "Accessibility Warning:"
+msgstr ""
+
+#: src/components/ContrastNotice.js:53
+msgid "Users with low vision may have difficulty reading this content."
+msgstr ""
+
+#: src/components/ContrastNotice.js:58
+msgid "This severely fails WCAG standards."
+msgstr ""
+
+#: src/components/ContrastNotice.js:59
+msgid "Consider adjusting colors for better accessibility."
+msgstr ""
+
+#: src/components/ContrastNotice.js:139
+msgid "Contrast Ratio:"
+msgstr ""
+
+#: src/components/ContrastNotice.js:142
+msgid "WCAG AAA"
+msgstr ""
+
+#: src/components/ContrastNotice.js:145
+msgid "WCAG AA"
+msgstr ""
+
+#: src/components/ContrastNotice.js:146
+msgid "Below WCAG AA"
 msgstr ""
 
 #: build/blocks/accordion-item/block.json
@@ -6968,6 +7474,50 @@ msgctxt "block keyword"
 msgid "gradient"
 msgstr ""
 
+#: build/blocks/countdown-timer/block.json
+#: src/blocks/countdown-timer/block.json
+msgctxt "block title"
+msgid "Countdown Timer"
+msgstr ""
+
+#: build/blocks/countdown-timer/block.json
+#: src/blocks/countdown-timer/block.json
+msgctxt "block description"
+msgid "Display a countdown timer to a specific date and time with customizable styling."
+msgstr ""
+
+#: build/blocks/countdown-timer/block.json
+#: src/blocks/countdown-timer/block.json
+msgctxt "block keyword"
+msgid "countdown"
+msgstr ""
+
+#: build/blocks/countdown-timer/block.json
+#: src/blocks/countdown-timer/block.json
+msgctxt "block keyword"
+msgid "timer"
+msgstr ""
+
+#: build/blocks/countdown-timer/block.json
+#: build/blocks/form-time-field/block.json
+#: src/blocks/countdown-timer/block.json
+#: src/blocks/form-time-field/block.json
+msgctxt "block keyword"
+msgid "clock"
+msgstr ""
+
+#: build/blocks/countdown-timer/block.json
+#: src/blocks/countdown-timer/block.json
+msgctxt "block keyword"
+msgid "deadline"
+msgstr ""
+
+#: build/blocks/countdown-timer/block.json
+#: src/blocks/countdown-timer/block.json
+msgctxt "block keyword"
+msgid "event"
+msgstr ""
+
 #: build/blocks/counter-group/block.json
 #: src/blocks/counter-group/block.json
 msgctxt "block title"
@@ -7007,7 +7557,9 @@ msgid "numbers"
 msgstr ""
 
 #: build/blocks/counter-group/block.json
+#: build/blocks/icon-button/block.json
 #: src/blocks/counter-group/block.json
+#: src/blocks/icon-button/block.json
 msgctxt "block keyword"
 msgid "animated"
 msgstr ""
@@ -7038,6 +7590,48 @@ msgstr ""
 #: src/blocks/form-number-field/block.json
 msgctxt "block keyword"
 msgid "number"
+msgstr ""
+
+#: build/blocks/divider/block.json
+#: src/blocks/divider/block.json
+msgctxt "block title"
+msgid "Divider"
+msgstr ""
+
+#: build/blocks/divider/block.json
+#: src/blocks/divider/block.json
+msgctxt "block description"
+msgid "Add a visual separator with multiple style options including solid, dashed, gradient, and decorative patterns."
+msgstr ""
+
+#: build/blocks/divider/block.json
+#: src/blocks/divider/block.json
+msgctxt "block keyword"
+msgid "divider"
+msgstr ""
+
+#: build/blocks/divider/block.json
+#: src/blocks/divider/block.json
+msgctxt "block keyword"
+msgid "separator"
+msgstr ""
+
+#: build/blocks/divider/block.json
+#: src/blocks/divider/block.json
+msgctxt "block keyword"
+msgid "line"
+msgstr ""
+
+#: build/blocks/divider/block.json
+#: src/blocks/divider/block.json
+msgctxt "block keyword"
+msgid "hr"
+msgstr ""
+
+#: build/blocks/divider/block.json
+#: src/blocks/divider/block.json
+msgctxt "block keyword"
+msgid "break"
 msgstr ""
 
 #: build/blocks/flex/block.json
@@ -7585,12 +8179,6 @@ msgstr ""
 #: build/blocks/form-time-field/block.json
 #: src/blocks/form-time-field/block.json
 msgctxt "block keyword"
-msgid "clock"
-msgstr ""
-
-#: build/blocks/form-time-field/block.json
-#: src/blocks/form-time-field/block.json
-msgctxt "block keyword"
 msgid "timepicker"
 msgstr ""
 
@@ -7677,7 +8265,7 @@ msgstr ""
 #: build/blocks/icon-button/block.json
 #: src/blocks/icon-button/block.json
 msgctxt "block description"
-msgid "A button with optional icon at the start or end."
+msgid "A customizable button with optional icon and hover animations."
 msgstr ""
 
 #: build/blocks/icon-button/block.json
@@ -8145,202 +8733,3 @@ msgstr ""
 msgctxt "block keyword"
 msgid "tabbed"
 msgstr ""
-
-# Countdown Timer Block
-
-#: src/blocks/countdown-timer/block.json:6
-msgid "Countdown Timer"
-msgstr ""
-
-#: src/blocks/countdown-timer/block.json:8
-msgid "Display a countdown timer to a specific date and time with customizable styling."
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "At least one time unit should be visible."
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Border"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Border Color"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Border Radius"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Border Width"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "Boxed (Default)"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "Choose how the countdown units are displayed."
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Colors"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "Compact"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
-msgid "Completion Message"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
-msgid "Completion Settings"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js
-msgid "Date & Time"
-msgstr ""
-
-#: src/blocks/countdown-timer/utils/format-time.js
-msgid "Day"
-msgstr ""
-
-#: src/blocks/countdown-timer/utils/format-time.js
-msgid "Days"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
-msgid "Display Options"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "Gap Between Units"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
-msgid "Hide Timer Completely"
-msgstr ""
-
-#: src/blocks/countdown-timer/utils/format-time.js
-msgid "Hour"
-msgstr ""
-
-#: src/blocks/countdown-timer/utils/format-time.js
-msgid "Hours"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "Inline"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Label Color"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Label Font Size"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
-msgid "Layout Style"
-msgstr ""
-
-#: src/blocks/countdown-timer/utils/format-time.js
-msgid "Min"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Number Color"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Number Font Size"
-msgstr ""
-
-#: src/blocks/countdown-timer/utils/format-time.js
-msgid "Sec"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "Set a target date and time in the block settings to start your countdown."
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "Set the target date and time for your countdown."
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
-msgid "Show Custom Message"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
-msgid "Show Days"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
-msgid "Show Hours"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
-msgid "Show Minutes"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
-msgid "Show Seconds"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Spacing"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js
-msgid "Target date set!"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "The countdown has ended!"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "This message will replace the countdown timer when it reaches zero."
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "Timer hidden (countdown complete)"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/DateTimePanel.js
-msgid "Timezone"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/StylingPanel.js
-msgid "Typography"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "Unit Background"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "Unit Padding"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
-msgid "Visible Units"
-msgstr ""
-
-#: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
-msgid "When Countdown Ends"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "WordPress Default"
-msgstr ""
-
-#: src/blocks/countdown-timer/edit.js
-msgid "WordPress site timezone: %s"
-msgstr ""
-

@@ -60,3 +60,14 @@
 	box-sizing: border-box !important;
 	max-width: 100% !important;
 }
+
+/**
+ * Fix alignfull behavior for our container blocks in the editor
+ * Ensures full-width blocks extend edge-to-edge correctly
+ */
+.has-global-padding > [data-type="designsetgo/grid"][data-align="full"],
+.has-global-padding > [data-type="designsetgo/flex"][data-align="full"],
+.has-global-padding > [data-type="designsetgo/stack"][data-align="full"] {
+	margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
+	margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
+}

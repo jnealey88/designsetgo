@@ -1,72 +1,77 @@
 /**
  * Stack Container Block - Frontend Styles
  *
- * Frontend styles for the Stack Container block.
+ * Minimal frontend styles - WordPress handles flex layout through .is-layout-flex class.
  *
  * @package DesignSetGo
  */
 
 .dsg-stack {
 	// CRITICAL: Ensure width includes padding to prevent overflow
-	// When width: 100% is set, padding must be included in the total width
 	box-sizing: border-box;
 
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
 
-	// Default padding (theme-level): xl top/bottom, md left/right
-	// Users can override via WordPress padding controls
-	// When padding is set to "Default", these theme values apply
-	padding-top: var(--wp--preset--spacing--xl, 3rem);
-	padding-bottom: var(--wp--preset--spacing--xl, 3rem);
-	padding-left: var(--wp--preset--spacing--md, 1.5rem);
-	padding-right: var(--wp--preset--spacing--md, 1.5rem);
-
-	// CRITICAL: Nested containers should have no padding to prevent overflow
-	// Only parent containers should have padding
-	.dsg-stack > &,
-	.dsg-flex > &,
-	.dsg-grid > & {
-		padding: 0;
+	// CRITICAL: Disable float for all children in flex layout
+	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
+	// but float should not work inside flex containers
+	&.is-layout-flex > * {
+		float: none !important;
 	}
 
-	// Let WordPress handle outer wrapper sizing for alignfull support
-	// align-self: stretch (default) fills parent without overflow
+	// CRITICAL: Ensure flex layout properties work correctly
+	// WordPress applies these via inline styles, but we ensure they're respected
+	&.is-layout-flex {
+		display: flex;
+		flex-direction: column; // Vertical stacking
 
-	// CRITICAL: Nested Flex/Stack containers need full width to fill parent
-	// Grid containers are block-level and auto-fill, don't need explicit width
-	// (adding width: 100% to Grid causes overflow issues)
-	// Only apply when no custom width is set (inline styles take precedence)
-	// EXCLUDE .dsg-pill to allow alignment to work
-	> .dsg-flex:not([style*="width"]),
-	> .dsg-stack:not([style*="width"]),
-	> .dsg-grid:not([style*="width"]),
-	> .wp-block-group:not([style*="width"]) {
-		width: 100%;
-	}
+		// CRITICAL: For vertical flex (column), horizontal centering uses align-items
+		// WordPress's justifyContent controls vertical alignment
+		// We need to also support horizontal centering
+		&[style*="justify-content:center"],
+		&[style*="justify-content: center"] {
+			align-items: center; // Horizontal centering for column direction
+		}
 
-	// Explicitly exclude pills from full-width (they need to shrink for alignment)
-	> .dsg-pill {
-		width: auto;
-	}
+		&[style*="justify-content:right"],
+		&[style*="justify-content: right"],
+		&[style*="justify-content:flex-end"],
+		&[style*="justify-content: flex-end"] {
+			align-items: flex-end; // Right alignment for column direction
+		}
 
-	// CRITICAL: Block-level elements need full width for text-align to work properly
-	// Only apply to text blocks, not buttons or inline elements
-	> h1,
-	> h2,
-	> h3,
-	> h4,
-	> h5,
-	> h6,
-	> p,
-	> .wp-block-heading,
-	> .wp-block-paragraph {
-		width: 100%;
+		// Default left alignment
+		align-items: flex-start;
+
+		// CRITICAL: Inline/shrink-wrap blocks should respect alignment
+		// These blocks should shrink to content width so they can be centered/aligned
+		> .dsg-pill,
+		> .wp-block-button,
+		> .wp-block-buttons {
+			align-self: flex-start; // Override to allow alignment
+			width: auto !important; // Shrink to content
+			max-width: none !important; // Remove WordPress's 1200px contentSize constraint
+		}
+
+		// CRITICAL: Block-level elements take full width by default
+		// Text blocks, groups, and most WordPress blocks
+		> .wp-block-heading,
+		> .wp-block-paragraph,
+		> .wp-block-group,
+		> .wp-block-image,
+		> .wp-block-video,
+		> .wp-block-embed,
+		> .wp-block-table,
+		> .wp-block-list {
+			width: 100%;
+		}
+
+		// Gap is handled by WordPress's blockGap support
 	}
 
 	// Hover background and text colors using CSS custom properties
 	// CRITICAL: Only apply hover when variables are actually set on THIS element
-	// This prevents hover bleeding to adjacent containers that don't have hover settings
 	&:hover {
 		// Only apply background if hover background is set
 		&[style*="--dsg-hover-bg-color"] {
@@ -74,12 +79,10 @@
 		}
 
 		// Only apply text color if hover text color is set
-		// Use !important to override custom text colors set by users
 		&[style*="--dsg-hover-text-color"] {
 			color: var(--dsg-hover-text-color) !important;
 
 			// Apply text color to all text elements for consistency
-			// !important needed to override custom color classes/inline styles
 			h1, h2, h3, h4, h5, h6, p, a, span, li, td, th,
 			.wp-block-heading,
 			.wp-block-paragraph {
@@ -89,27 +92,16 @@
 	}
 }
 
-/**
- * Layout-Constrained Margin Rules
- * Matches WordPress Group block behavior for proper vertical spacing
- * Applied when layout support is enabled (type: constrained)
- *
- * CRITICAL: Uses :where() for zero specificity to allow WordPress's natural
- * cascade and blockGap system to work properly.
- */
+// CRITICAL: Override WordPress's generated contentSize constraints for inline blocks
+// WordPress generates rules like .wp-container-{block}-is-layout-{hash} > :where(...) { max-width: 1200px }
+// We need to override these for blocks that should shrink to content
+[class*="wp-container-designsetgo-stack"] {
 
-// First child should have no top margin
-:root :where(.dsg-stack.is-layout-constrained) > :first-child {
-	margin-block-start: 0;
-}
-
-// All children get consistent vertical spacing
-:root :where(.dsg-stack.is-layout-constrained) > * {
-	margin-block-start: 1.2rem;
-	margin-block-end: 0;
-}
-
-// Last child should have no bottom margin
-:root :where(.dsg-stack.is-layout-constrained) > :last-child {
-	margin-block-end: 0;
+	> .dsg-pill,
+	> .wp-block-designsetgo-pill,
+	> .wp-block-button,
+	> .wp-block-buttons {
+		width: auto !important;
+		max-width: none !important;
+	}
 }

@@ -20,6 +20,7 @@
 
 // Dashboard Styles
 .designsetgo-dashboard {
+
 	&__header {
 		margin-bottom: 32px;
 	}
@@ -122,6 +123,7 @@
 
 // Blocks & Extensions Styles
 .designsetgo-blocks-extensions {
+
 	&__header {
 		margin-bottom: 24px;
 
@@ -137,12 +139,14 @@
 }
 
 .designsetgo-tabs {
+
 	.components-tab-panel__tabs {
 		border-bottom: 1px solid #dcdcde;
 		margin-bottom: 24px;
 	}
 
 	button {
+
 		&.is-active {
 			box-shadow: inset 0 0 0 1.5px #2271b1, inset 0 -4px 0 0 #2271b1;
 		}
@@ -227,6 +231,7 @@
 
 // Settings Styles
 .designsetgo-settings {
+
 	&__header {
 		margin-bottom: 24px;
 
@@ -258,6 +263,7 @@
 	}
 
 	.components-card__body {
+
 		.components-base-control,
 		.components-toggle-control,
 		.components-range-control,
@@ -294,6 +300,7 @@
 
 // Responsive
 @media (max-width: 782px) {
+
 	.designsetgo-quick-links-grid {
 		grid-template-columns: 1fr;
 	}

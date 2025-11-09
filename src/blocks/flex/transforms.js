@@ -15,14 +15,10 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/flex',
 					{
-						constrainWidth: attributes.constrainWidth,
-						contentWidth: attributes.contentWidth,
-						direction: 'row',
-						wrap: true,
-						justifyContent: 'flex-start',
-						alignItems: 'center',
+						// Preserve all attributes including layout
+						...attributes,
+						// mobileStack doesn't exist in Stack, default to false
 						mobileStack: false,
-						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
 					},
 					innerBlocks
 				);
@@ -35,38 +31,18 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/flex',
 					{
-						constrainWidth: attributes.constrainWidth,
-						contentWidth: attributes.contentWidth,
-						direction: 'row',
-						wrap: true,
-						justifyContent: 'flex-start',
-						alignItems: 'center',
+						// Preserve all attributes including layout
+						...attributes,
+						// Remove Grid-specific attributes
+						desktopColumns: undefined,
+						tabletColumns: undefined,
+						mobileColumns: undefined,
+						rowGap: undefined,
+						columnGap: undefined,
+						alignItems: undefined,
+						textAlign: undefined,
+						// mobileStack defaults to false
 						mobileStack: false,
-						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
-					},
-					innerBlocks
-				);
-			},
-		},
-		{
-			type: 'block',
-			blocks: ['designsetgo/container'],
-			isMatch: (attributes) => {
-				// Only allow transforming flex layout type
-				return attributes.layoutType === 'flex';
-			},
-			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
-					'designsetgo/flex',
-					{
-						constrainWidth: attributes.constrainWidth,
-						contentWidth: attributes.contentWidth,
-						direction: 'row',
-						wrap: true,
-						justifyContent: 'flex-start',
-						alignItems: 'center',
-						mobileStack: false,
-						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
 					},
 					innerBlocks
 				);
@@ -81,9 +57,10 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/stack',
 					{
-						constrainWidth: attributes.constrainWidth,
-						contentWidth: attributes.contentWidth,
-						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
+						// Preserve all attributes including layout
+						...attributes,
+						// Remove mobileStack (Flex-specific)
+						mobileStack: undefined,
 					},
 					innerBlocks
 				);
@@ -96,15 +73,17 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/grid',
 					{
-						rowGap: '',
-						columnGap: '',
-						constrainWidth: attributes.constrainWidth,
-						contentWidth: attributes.contentWidth,
+						// Preserve all attributes including layout
+						...attributes,
+						// Remove mobileStack (Flex-specific)
+						mobileStack: undefined,
+						// Set Grid-specific defaults
 						desktopColumns: 3,
 						tabletColumns: 2,
 						mobileColumns: 1,
+						rowGap: '',
+						columnGap: '',
 						alignItems: 'start',
-						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
 					},
 					innerBlocks
 				);

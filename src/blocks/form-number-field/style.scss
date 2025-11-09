@@ -7,10 +7,11 @@
  */
 
 // Number field uses the same styles as text field
-@import '../form-text-field/style.scss';
+@import '../form-text-field/style';
 
 // Number-specific adjustments
 .dsg-form-field--number {
+
 	input[type="number"] {
 		// Remove spinner arrows in WebKit browsers
 		&::-webkit-inner-spin-button,

@@ -47,7 +47,7 @@
 		font-size: 1rem;
 		line-height: 1.5;
 		color: inherit;
-		background-color: var(--dsg-form-field-bg, var(--wp--preset--color--base, #ffffff));
+		background-color: var(--dsg-form-field-bg, var(--wp--preset--color--base, #fff));
 		border: 1px solid var(--dsg-field-border-color);
 		border-radius: var(--dsg-field-border-radius);
 		transition: all 0.2s ease;
@@ -110,7 +110,9 @@
 
 // Responsive adjustments
 @media (max-width: 768px) {
+
 	.dsg-form-field {
+
 		&__input,
 		&__textarea,
 		&__select {
@@ -121,7 +123,9 @@
 
 // Print styles
 @media print {
+
 	.dsg-form-field {
+
 		&__input,
 		&__textarea,
 		&__select {

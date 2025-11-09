@@ -51,12 +51,12 @@ class Form_Submissions {
 			'public'             => false,
 			'publicly_queryable' => false,
 			'show_ui'            => true,
-			'show_in_menu'       => 'designsetgo', // Show under DesignSetGo menu
+			'show_in_menu'       => 'designsetgo', // Show under DesignSetGo menu.
 			'query_var'          => true,
 			'rewrite'            => false,
 			'capability_type'    => 'post',
 			'capabilities'       => array(
-				'create_posts' => 'do_not_allow', // Prevent manual creation
+				'create_posts' => 'do_not_allow', // Prevent manual creation.
 			),
 			'map_meta_cap'       => true,
 			'has_archive'        => false,
@@ -116,12 +116,12 @@ class Form_Submissions {
 			$value = isset( $field_data['value'] ) ? $field_data['value'] : '';
 			$type  = isset( $field_data['type'] ) ? $field_data['type'] : 'text';
 
-			// Format value based on type
-			if ( $type === 'email' ) {
+			// Format value based on type.
+			if ( 'email' === $type ) {
 				$value = '<a href="mailto:' . esc_attr( $value ) . '">' . esc_html( $value ) . '</a>';
-			} elseif ( $type === 'url' ) {
+			} elseif ( 'url' === $type ) {
 				$value = '<a href="' . esc_url( $value ) . '" target="_blank" rel="noopener">' . esc_html( $value ) . '</a>';
-			} elseif ( $type === 'textarea' ) {
+			} elseif ( 'textarea' === $type ) {
 				$value = '<div style="white-space: pre-wrap;">' . esc_html( $value ) . '</div>';
 			} else {
 				$value = esc_html( $value );

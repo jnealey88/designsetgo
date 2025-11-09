@@ -14,7 +14,6 @@ import {
 	InspectorControls,
 	BlockControls,
 	AlignmentControl,
-	useSetting,
 	store as blockEditorStore,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
@@ -26,8 +25,6 @@ import {
 	RangeControl,
 	SelectControl,
 	ToggleControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
@@ -50,8 +47,6 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		columnGap,
 		alignItems,
 		textAlign,
-		constrainWidth,
-		contentWidth,
 		hoverBackgroundColor,
 		hoverTextColor,
 		hoverIconBackgroundColor,
@@ -63,9 +58,6 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 
 	const [useCustomGaps, setUseCustomGaps] = useState(!!(rowGap || columnGap));
 
-	// Get content size from theme
-	const themeContentWidth = useSetting('layout.contentSize');
-
 	// Get inner blocks to determine if container is empty
 	const hasInnerBlocks = useSelect(
 		(select) => {
@@ -76,42 +68,10 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		[clientId]
 	);
 
-	// Calculate effective content width
-	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
-
-	// Units for UnitControl components (still used in Gap Settings)
-	const units = [
-		{ value: 'px', label: 'px' },
-		{ value: 'em', label: 'em' },
-		{ value: 'rem', label: 'rem' },
-		{ value: '%', label: '%' },
-	];
-
-	// Calculate inner styles declaratively with responsive columns
-	// IMPORTANT: Always provide a default gap to prevent overlapping items
-	// Custom gaps override the default when set
-	const innerStyles = {
-		display: 'grid',
-		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
-		alignItems: alignItems || 'start',
-		// Apply gaps: custom values OR default (24px / --wp--preset--spacing--50)
-		rowGap: rowGap || 'var(--wp--preset--spacing--50)',
-		columnGap: columnGap || 'var(--wp--preset--spacing--50)',
-		...(constrainWidth && {
-			maxWidth: effectiveContentWidth,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		}),
-	};
-
-	// Block wrapper props with merged inner blocks props (must match save.js)
-	// CRITICAL: Merge blockProps and innerBlocksProps into single div to fix paste behavior
+	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	const blockProps = useBlockProps({
 		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
 		style: {
-			alignSelf: 'stretch',
-			// Merge inner styles with block styles
-			...innerStyles,
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
 			}),
@@ -127,14 +87,29 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		},
 	});
 
-	// Merge block props with inner blocks props
-	// Show big button only when container is empty, otherwise use default appender
-	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		templateLock: false,
-		renderAppender: hasInnerBlocks
-			? undefined
-			: InnerBlocks.ButtonBlockAppender,
-	});
+	// Calculate inner styles declaratively (must match save.js EXACTLY)
+	// IMPORTANT: Always provide a default gap to prevent overlapping items
+	const innerStyles = {
+		display: 'grid',
+		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
+		alignItems: alignItems || 'start',
+		rowGap: rowGap || 'var(--wp--preset--spacing--50)',
+		columnGap: columnGap || 'var(--wp--preset--spacing--50)',
+	};
+
+	// Merge inner blocks props with inner styles
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'dsg-grid__inner',
+			style: innerStyles,
+		},
+		{
+			templateLock: false,
+			renderAppender: hasInnerBlocks
+				? undefined
+				: InnerBlocks.ButtonBlockAppender,
+		}
+	);
 
 	return (
 		<>
@@ -382,7 +357,9 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 				</PanelBody>
 			</InspectorControls>
 
-			<div {...innerBlocksProps} />
+			<div {...blockProps}>
+				<div {...innerBlocksProps} />
+			</div>
 		</>
 	);
 }

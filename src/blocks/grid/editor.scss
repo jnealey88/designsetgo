@@ -47,30 +47,27 @@
 	// Visual indicator in editor
 	position: relative;
 
-	&__inner {
-		// CRITICAL: Grid container needs full width for proper column distribution
-		// Must be duplicated from style.scss for editor/frontend parity
+	// CRITICAL: Handle full-width and wide alignment in editor
+	// WordPress automatically adds .alignfull and .alignwide classes when user selects alignment
+	&.alignfull {
+		max-width: none;
 		width: 100%;
+		margin-left: 0;
+		margin-right: 0;
+	}
 
-		// CRITICAL: Nested containers need full width to fill parent
-		// Must be duplicated from style.scss for editor/frontend parity
-		// Frontend: nested containers are direct children
-		> .dsg-flex,
-		> .dsg-stack,
-		> .dsg-grid {
-			width: 100% !important;
-		}
+	&.alignwide {
+		max-width: var(--wp--custom--layout--wide-size, 1200px);
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+	}
 
-		// CRITICAL: Editor-specific - nested containers wrapped in [data-block]
-		// WordPress wraps each block in [data-block] element in editor
-		> [data-block] > .dsg-flex,
-		> [data-block] > .dsg-stack,
-		> [data-block] > .dsg-grid {
-			width: 100% !important;
-		}
-
+	// Inner container handles all grid styling
+	// With two-div structure: .dsg-grid > .dsg-grid__inner
+	// Must be duplicated from style.scss for editor/frontend parity
+	.dsg-grid__inner {
 		// CRITICAL: Prevent grid items from overflowing their cells
-		// Must be duplicated from style.scss for editor/frontend parity
 		// Grid items automatically fill their grid cell, so we only need to prevent overflow
 		> * {
 			min-width: 0;     // Allow shrinking below content width
@@ -94,10 +91,7 @@
 			grid-column: 1 / -1 !important; // Span all columns
 		}
 
-		// CRITICAL: Block-level elements need full width for text-align to work properly
-		// Must be duplicated from style.scss for editor/frontend parity
-		// NOTE: Nested containers (.dsg-flex, .dsg-grid, .dsg-stack) don't need width: 100%
-		// because grid items automatically fill their cell
+		// CRITICAL: Block-level text elements need full width for text-align to work properly
 		> h1,
 		> h2,
 		> h3,
@@ -108,6 +102,35 @@
 		> .wp-block-heading,
 		> .wp-block-paragraph {
 			width: 100%;
+		}
+
+		// CRITICAL: Editor-specific - text elements wrapped in [data-block]
+		> [data-block] > h1,
+		> [data-block] > h2,
+		> [data-block] > h3,
+		> [data-block] > h4,
+		> [data-block] > h5,
+		> [data-block] > h6,
+		> [data-block] > p,
+		> [data-block] > .wp-block-heading,
+		> [data-block] > .wp-block-paragraph {
+			width: 100%;
+		}
+
+		// CRITICAL: Container blocks need !important to override WordPress layout system
+		// WordPress's constrained layout can apply max-width to nested containers
+		> .dsg-flex,
+		> .dsg-stack,
+		> .dsg-grid {
+			width: 100% !important;
+		}
+
+		// CRITICAL: Editor-specific - nested containers wrapped in [data-block]
+		// WordPress wraps each block in [data-block] element in editor
+		> [data-block] > .dsg-flex,
+		> [data-block] > .dsg-stack,
+		> [data-block] > .dsg-grid {
+			width: 100% !important;
 		}
 	}
 
@@ -128,7 +151,7 @@
 	@media (max-width: 1024px) {
 
 		@for $i from 1 through 12 {
-			&.dsg-grid-cols-tablet-#{$i} .dsg-grid {
+			&.dsg-grid-cols-tablet-#{$i} {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;
 			}
 		}
@@ -138,7 +161,7 @@
 	@media (max-width: 767px) {
 
 		@for $i from 1 through 12 {
-			&.dsg-grid-cols-mobile-#{$i} .dsg-grid {
+			&.dsg-grid-cols-mobile-#{$i} {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;
 			}
 		}
@@ -173,12 +196,14 @@
 // CRITICAL: Force grid items to respect responsive column counts on tablet
 // Must be outside .dsg-grid scope for proper specificity
 // MUST be duplicated from style.scss for editor/frontend parity
-@media (max-width: 1024px) and (min-width: 768px) {
+// Mobile media query below will override this for screens <= 767px
+// With two-div structure: target .dsg-grid__inner children
+@media (max-width: 1024px) {
 	// For each possible tablet column configuration, constrain column spans
 	// This duplicates the grid-span extension logic but with additional selectors for higher specificity
 	@for $cols from 1 through 12 {
 		// Target grids with this tablet column count
-		.dsg-grid-cols-tablet-#{$cols} .dsg-grid {
+		.dsg-grid-cols-tablet-#{$cols} .dsg-grid__inner {
 			// Force any child with grid-column spanning more than available columns
 			// to constrain to the tablet column count
 			@for $span from ($cols + 1) through 12 {
@@ -198,17 +223,18 @@
 // CRITICAL: Force grid items and nested layouts to stack properly on mobile
 // Must be outside .dsg-grid scope for proper specificity
 // MUST be duplicated from style.scss for editor/frontend parity
+// With two-div structure: target .dsg-grid__inner children
 @media (max-width: 767px) {
 	// Force all grid items with column spans to span 1 on mobile
 	// High specificity to override inline styles with data-block selectors
-	.dsg-grid > [style*="grid-column"],
-	.dsg-grid > [data-block][style*="grid-column"],
-	.dsg-grid > [data-block] {
+	.dsg-grid__inner > [style*="grid-column"],
+	.dsg-grid__inner > [data-block][style*="grid-column"],
+	.dsg-grid__inner > [data-block] {
 		grid-column: span 1 !important;
 	}
 
 	// Force nested layouts inside grid items to stack
-	.dsg-grid > * {
+	.dsg-grid__inner > * {
 		// Force any nested grid to single column
 		.dsg-grid {
 			grid-template-columns: 1fr !important;
@@ -226,10 +252,11 @@
 // When a container is nested inside another container, padding should default to 0
 // Only parent containers should have padding controls visible
 // Uses CSS to detect if a grid is nested inside any container block
+// With two-div structure: check for .dsg-grid__inner parent
 // ========================================
-body:has(.dsg-grid .dsg-grid.is-selected),
-body:has(.dsg-flex .dsg-grid.is-selected),
-body:has(.dsg-stack .dsg-grid.is-selected) {
+body:has(.dsg-grid__inner .dsg-grid.is-selected),
+body:has(.dsg-flex__inner .dsg-grid.is-selected),
+body:has(.dsg-stack__inner .dsg-grid.is-selected) {
 	// Hide padding controls in Dimensions panel
 	.block-editor-block-inspector__advanced
 		.components-panel__body:has(.components-base-control:has([aria-label*='Padding' i])) {
@@ -238,4 +265,26 @@ body:has(.dsg-stack .dsg-grid.is-selected) {
 			display: none !important;
 		}
 	}
+}
+
+// ========================================
+// Layout-Constrained Margin Rules (EDITOR)
+// CRITICAL: Override WordPress's margin-based spacing for Grid layouts
+// Grid uses CSS gap properties, not margins, for spacing
+// Must be duplicated from style.scss for editor/frontend parity
+// With two-div structure: .dsg-grid > .dsg-grid__inner > items
+// ========================================
+
+// Remove all margin-block spacing from grid items
+// CRITICAL: !important needed to override WordPress's layout system
+// Target inner container's children since we now have two-div structure
+.dsg-grid__inner > * {
+	margin-block-start: 0 !important;
+	margin-block-end: 0 !important;
+}
+
+// Also target data-block wrapped elements in editor
+.dsg-grid__inner > [data-block] {
+	margin-block-start: 0 !important;
+	margin-block-end: 0 !important;
 }

@@ -1,7 +1,8 @@
 /**
  * Stack Container Block - Save Component
  *
- * Saves the block content with declarative styles.
+ * Saves the block content with minimal custom styles.
+ * WordPress's layout system handles flex layout through CSS classes.
  *
  * @since 1.0.0
  */
@@ -17,57 +18,52 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 export default function StackSave({ attributes }) {
 	const {
-		alignItems,
+		align,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
 		hoverTextColor,
+		hoverIconBackgroundColor,
+		hoverButtonBackgroundColor,
 	} = attributes;
 
-	// Calculate effective content width (must match edit.js logic for frontend)
-	// Note: Can't use useSetting in save, so use contentWidth or fallback
-	const effectiveContentWidth = contentWidth || '1200px';
-
-	// Calculate inner styles declaratively (must match edit.js)
-	// Note: gap is handled by WordPress blockGap support via style.spacing.blockGap
-	const innerStyles = {
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: alignItems || 'flex-start',
-		...(constrainWidth && {
-			maxWidth: effectiveContentWidth,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		}),
-	};
-
-	// Block wrapper props with merged inner blocks props (must match edit.js)
-	// CRITICAL: Merge blockProps and innerBlocksProps into single div to fix paste behavior
+	// Block wrapper props - outer div stays full width
 	const blockProps = useBlockProps.save({
 		className: 'dsg-stack',
 		style: {
-			alignSelf: 'stretch',
-			// Merge inner styles with block styles
-			...innerStyles,
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
 			}),
 			...(hoverTextColor && {
 				'--dsg-hover-text-color': hoverTextColor,
 			}),
-			...(attributes.hoverIconBackgroundColor && {
-				'--dsg-parent-hover-icon-bg':
-					attributes.hoverIconBackgroundColor,
+			...(hoverIconBackgroundColor && {
+				'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
 			}),
-			...(attributes.hoverButtonBackgroundColor && {
-				'--dsg-parent-hover-button-bg':
-					attributes.hoverButtonBackgroundColor,
+			...(hoverButtonBackgroundColor && {
+				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
 			}),
 		},
 	});
 
-	// Merge block props with inner blocks props
-	const innerBlocksProps = useInnerBlocksProps.save(blockProps);
+	// Inner container props with width constraints
+	// IMPORTANT: Don't constrain width when block is alignfull
+	const innerStyle = {};
+	if (constrainWidth && align !== 'full') {
+		innerStyle.maxWidth = contentWidth || '1200px';
+		innerStyle.marginLeft = 'auto';
+		innerStyle.marginRight = 'auto';
+	}
 
-	return <div {...innerBlocksProps} />;
+	// Merge inner blocks props without the outer block props
+	const innerBlocksProps = useInnerBlocksProps.save({
+		className: 'dsg-stack__inner',
+		style: innerStyle,
+	});
+
+	return (
+		<div {...blockProps}>
+			<div {...innerBlocksProps} />
+		</div>
+	);
 }

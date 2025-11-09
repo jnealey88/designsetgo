@@ -17,66 +17,67 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 export default function GridSave({ attributes }) {
 	const {
+		align,
+		constrainWidth,
+		contentWidth,
 		desktopColumns,
 		tabletColumns,
 		mobileColumns,
 		rowGap,
 		columnGap,
 		alignItems,
-		constrainWidth,
-		contentWidth,
 		hoverBackgroundColor,
 		hoverTextColor,
+		hoverIconBackgroundColor,
+		hoverButtonBackgroundColor,
 	} = attributes;
 
-	// Calculate effective content width (must match edit.js logic for frontend)
-	// Note: Can't use useSetting in save, so use contentWidth or fallback
-	const effectiveContentWidth = contentWidth || '1200px';
-
-	// Calculate inner styles declaratively (must match edit.js EXACTLY)
-	// IMPORTANT: Always provide a default gap to prevent overlapping items
-	// Custom gaps override the default when set
-	const innerStyles = {
-		display: 'grid',
-		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
-		alignItems: alignItems || 'start',
-		// Apply gaps: custom values OR default (24px / --wp--preset--spacing--50)
-		rowGap: rowGap || 'var(--wp--preset--spacing--50)',
-		columnGap: columnGap || 'var(--wp--preset--spacing--50)',
-		...(constrainWidth && {
-			maxWidth: effectiveContentWidth,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		}),
-	};
-
-	// Block wrapper props with merged inner blocks props (must match edit.js)
-	// CRITICAL: Merge blockProps and innerBlocksProps into single div to fix paste behavior
+	// Block wrapper props - outer div stays full width
 	const blockProps = useBlockProps.save({
 		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
 		style: {
-			alignSelf: 'stretch',
-			// Merge inner styles with block styles
-			...innerStyles,
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
 			}),
 			...(hoverTextColor && {
 				'--dsg-hover-text-color': hoverTextColor,
 			}),
-			...(attributes.hoverIconBackgroundColor && {
-				'--dsg-parent-hover-icon-bg':
-					attributes.hoverIconBackgroundColor,
+			...(hoverIconBackgroundColor && {
+				'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
 			}),
-			...(attributes.hoverButtonBackgroundColor && {
-				'--dsg-parent-hover-button-bg':
-					attributes.hoverButtonBackgroundColor,
+			...(hoverButtonBackgroundColor && {
+				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
 			}),
 		},
 	});
 
-	// Merge block props with inner blocks props
-	const innerBlocksProps = useInnerBlocksProps.save(blockProps);
+	// Calculate inner styles declaratively (must match edit.js EXACTLY)
+	// IMPORTANT: Always provide a default gap to prevent overlapping items
+	const innerStyles = {
+		display: 'grid',
+		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
+		alignItems: alignItems || 'start',
+		rowGap: rowGap || 'var(--wp--preset--spacing--50)',
+		columnGap: columnGap || 'var(--wp--preset--spacing--50)',
+	};
 
-	return <div {...innerBlocksProps} />;
+	// Apply width constraints to inner container
+	// IMPORTANT: Don't constrain width when block is alignfull
+	if (constrainWidth && align !== 'full') {
+		innerStyles.maxWidth = contentWidth || '1200px';
+		innerStyles.marginLeft = 'auto';
+		innerStyles.marginRight = 'auto';
+	}
+
+	// Merge inner blocks props
+	const innerBlocksProps = useInnerBlocksProps.save({
+		className: 'dsg-grid__inner',
+		style: innerStyles,
+	});
+
+	return (
+		<div {...blockProps}>
+			<div {...innerBlocksProps} />
+		</div>
+	);
 }

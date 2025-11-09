@@ -18,6 +18,7 @@
 // Generate responsive constraints for each grid column configuration
 // Tablet breakpoint (≤ 1024px)
 @media (max-width: 1024px) {
+
 	@for $cols from 1 through 12 {
 		.dsg-grid-cols-tablet-#{$cols} .dsg-grid__inner > [data-block] {
 			// If span exceeds available columns, constrain it
@@ -33,6 +34,7 @@
 
 // Mobile breakpoint (≤ 767px)
 @media (max-width: 767px) {
+
 	@for $cols from 1 through 12 {
 		.dsg-grid-cols-mobile-#{$cols} .dsg-grid__inner > [data-block] {
 			// If span exceeds available columns, constrain it

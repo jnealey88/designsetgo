@@ -77,6 +77,7 @@
 
 	// Vertical flip direction (rotateX instead of rotateY)
 	&--vertical {
+
 		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
 		.dsg-flip-card__container > .dsg-flip-card__front {
 			transform: rotateX(0deg);
@@ -88,6 +89,7 @@
 		}
 
 		&.is-flipped {
+
 			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
 			.dsg-flip-card__container > .dsg-flip-card__front {
 				transform: rotateX(-180deg);
@@ -112,6 +114,7 @@
 
 	// Hover trigger
 	&--hover {
+
 		&:focus {
 			outline: 2px solid var(--wp--preset--color--primary, #3b82f6);
 			outline-offset: 2px;
@@ -120,6 +123,7 @@
 
 	// ===== FADE EFFECT =====
 	&--effect-fade {
+
 		.dsg-flip-card__container > * {
 			transform: none !important;
 		}
@@ -130,6 +134,7 @@
 		}
 
 		&.is-flipped {
+
 			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
 			.dsg-flip-card__container > .dsg-flip-card__front {
 				transform: none !important;
@@ -144,6 +149,7 @@
 
 	// ===== SLIDE EFFECT =====
 	&--effect-slide {
+
 		.dsg-flip-card__container {
 			overflow: hidden;
 		}
@@ -159,6 +165,7 @@
 		}
 
 		&.is-flipped {
+
 			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
 			.dsg-flip-card__container > .dsg-flip-card__front {
 				transform: translateX(-100%);
@@ -172,6 +179,7 @@
 
 		// Vertical slide for vertical direction
 		&.dsg-flip-card--vertical {
+
 			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
 			.dsg-flip-card__container > .dsg-flip-card__front {
 				transform: translateY(0);
@@ -183,6 +191,7 @@
 			}
 
 			&.is-flipped {
+
 				.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
 				.dsg-flip-card__container > .dsg-flip-card__front {
 					transform: translateY(-100%);
@@ -198,6 +207,7 @@
 
 	// ===== ZOOM EFFECT =====
 	&--effect-zoom {
+
 		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
 		.dsg-flip-card__container > .dsg-flip-card__front {
 			transform: scale(1);
@@ -209,6 +219,7 @@
 		}
 
 		&.is-flipped {
+
 			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
 			.dsg-flip-card__container > .dsg-flip-card__front {
 				transform: scale(1.2);
@@ -224,12 +235,14 @@
 
 // Accessibility: Reduce motion preference
 @media (prefers-reduced-motion: reduce) {
+
 	.dsg-flip-card__container > * {
 		transition: opacity 0.1s ease;
 		transform: none !important;
 	}
 
 	.dsg-flip-card.is-flipped {
+
 		.dsg-flip-card__container > [class*="flip-card-front"] {
 			transform: none;
 		}

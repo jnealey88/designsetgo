@@ -26,6 +26,7 @@
 		&:not([style*="background"]) {
 			background-color: var(--wp--preset--color--primary, #2563eb);
 		}
+
 		&:not([style*="color"]) {
 			color: var(--wp--preset--color--base, #fff);
 		}
@@ -308,10 +309,12 @@
 }
 
 @keyframes dsg-border-pulse {
+
 	0%,
 	100% {
 		border-width: var(--wp--style--border-width, 2px);
 	}
+
 	50% {
 		border-width: calc(var(--wp--style--border-width, 2px) * 2);
 	}
@@ -325,7 +328,7 @@
 	&:hover {
 		opacity: 1;
 		transform: none;
-		box-shadow: 0 0 15px currentColor, 0 0 30px currentColor, 0 0 45px currentColor;
+		box-shadow: 0 0 15px currentcolor, 0 0 30px currentcolor, 0 0 45px currentcolor;
 	}
 }
 

@@ -1,109 +1,83 @@
 /**
  * Stack Container Block - Editor Styles
  *
- * Editor-only styles for the Stack Container block.
+ * Minimal editor-only styles - WordPress handles flex layout through .is-layout-flex class.
  *
  * @package DesignSetGo
  */
 
 .dsg-stack {
 	// CRITICAL: Ensure width includes padding to prevent overflow
-	// Must match style.scss for editor/frontend parity
 	box-sizing: border-box;
 
-	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
-
-	// CRITICAL: Must duplicate default padding from style.scss for editor/frontend parity
-	// Default padding (theme-level): xl top/bottom, md left/right
-	padding-top: var(--wp--preset--spacing--xl, 3rem);
-	padding-bottom: var(--wp--preset--spacing--xl, 3rem);
-	padding-left: var(--wp--preset--spacing--md, 1.5rem);
-	padding-right: var(--wp--preset--spacing--md, 1.5rem);
-
-	// CRITICAL: Nested containers should have no padding to prevent overflow
-	// Must be duplicated from style.scss for editor/frontend parity
-	// Only parent containers should have padding
-	.dsg-stack > &,
-	.dsg-flex > &,
-	.dsg-grid > &,
-	.dsg-stack > [data-block] &,
-	.dsg-flex > [data-block] &,
-	.dsg-grid > [data-block] & {
-		padding: 0;
-	}
-
-	// CRITICAL: Ensure Stack takes full width when nested in another container
-	// Without this, nested Stacks only take up content width in editor
-	// Only apply when no custom width is set (inline styles take precedence)
-	.dsg-stack > [data-block] &:not([style*="width"]),
-	.dsg-flex > [data-block] &:not([style*="width"]),
-	.dsg-grid > [data-block] &:not([style*="width"]) {
-		width: 100% !important;
-	}
 
 	// Visual indicator in editor
 	position: relative;
 
-	// CRITICAL: Stack container needs full width for alignment properties to work
-	// Must be duplicated from style.scss for editor/frontend parity
-	width: 100%;
-
-	// CRITICAL: Nested containers need full width to fill parent
-	// Must be duplicated from style.scss for editor/frontend parity
-	// Frontend: nested containers are direct children
-	// Only apply when no custom width is set (inline styles take precedence)
-	// EXCLUDE .dsg-pill to allow alignment to work
-	> .dsg-flex:not([style*="width"]),
-	> .dsg-stack:not([style*="width"]),
-	> .dsg-grid:not([style*="width"]),
-	> .wp-block-group:not([style*="width"]) {
-		width: 100% !important;
+	// CRITICAL: Disable float for all children in flex layout (must match style.scss)
+	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
+	// but float should not work inside flex containers
+	// In editor, children are wrapped in [data-block] elements
+	&.is-layout-flex > *,
+	&.is-layout-flex > [data-block] > * {
+		float: none !important;
 	}
 
-	// Explicitly exclude pills from full-width (they need to shrink for alignment)
-	> .dsg-pill,
-	> [data-block] > .dsg-pill {
-		width: auto !important;
-	}
+	// CRITICAL: Ensure flex layout properties work correctly (must match style.scss)
+	// WordPress applies these via inline styles, but we ensure they're respected
+	&.is-layout-flex {
+		display: flex;
+		flex-direction: column; // Vertical stacking
+		
+		// CRITICAL: For vertical flex (column), horizontal centering uses align-items
+		// WordPress's justifyContent controls vertical alignment
+		// We need to also support horizontal centering
+		&[style*="justify-content:center"],
+		&[style*="justify-content: center"] {
+			align-items: center; // Horizontal centering for column direction
+		}
+		
+		&[style*="justify-content:right"],
+		&[style*="justify-content: right"],
+		&[style*="justify-content:flex-end"],
+		&[style*="justify-content: flex-end"] {
+			align-items: flex-end; // Right alignment for column direction
+		}
+		
+		// Default left alignment
+		align-items: flex-start;
+		
+		// CRITICAL: In editor, blocks are wrapped in [data-block] elements
+		// Inline/shrink-wrap blocks should respect alignment
+		> [data-block] {
+			// Reset to auto width for alignment to work
+			width: auto;
+			max-width: 100%;
 
-	// CRITICAL: Editor-specific - nested containers wrapped in [data-block]
-	// WordPress wraps each block in [data-block] element in editor
-	// Only apply when no custom width is set (inline styles take precedence)
-	> [data-block] > .dsg-flex:not([style*="width"]),
-	> [data-block] > .dsg-stack:not([style*="width"]),
-	> [data-block] > .dsg-grid:not([style*="width"]),
-	> [data-block] > .wp-block-group:not([style*="width"]) {
-		width: 100% !important;
-	}
-
-	// CRITICAL: Ensure block appender takes full width in stack layouts
-	// Fixes narrow appender issue in stack containers
-	> .block-editor-block-list__layout > .block-editor-default-block-appender {
-		width: 100%;
-	}
-
-	// CRITICAL: Ensure ButtonBlockAppender is full width when container is empty
-	// High specificity to override WordPress core styles
-	/* stylelint-disable-next-line selector-class-pattern */
-	.block-list-appender:only-child,
-	.block-editor-button-block-appender {
-		width: 100% !important;
-	}
-
-	// CRITICAL: Block-level elements need full width for text-align to work properly
-	// Must be duplicated from style.scss for editor/frontend parity
-	> h1,
-	> h2,
-	> h3,
-	> h4,
-	> h5,
-	> h6,
-	> p,
-	> .wp-block-heading,
-	> .wp-block-paragraph {
-		width: 100%;
+			// CRITICAL: Specific blocks that should shrink to content
+			> .dsg-pill,
+			> .wp-block-button,
+			> .wp-block-buttons {
+				width: auto !important;
+				max-width: none !important; // Remove WordPress's 1200px contentSize constraint
+			}
+			
+			// CRITICAL: Block-level elements take full width
+			> .wp-block-heading,
+			> .wp-block-paragraph,
+			> .wp-block-group,
+			> .wp-block-image,
+			> .wp-block-video,
+			> .wp-block-embed,
+			> .wp-block-table,
+			> .wp-block-list {
+				width: 100%;
+			}
+		}
+		
+		// Gap is handled by WordPress's blockGap support
 	}
 
 	// Show outline when selected (editor-only)
@@ -112,10 +86,8 @@
 		outline-offset: -1px;
 	}
 
-	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
-	// Hover background and text colors using CSS custom properties
+	// Hover background and text colors using CSS custom properties (must match style.scss)
 	// CRITICAL: Only apply hover when variables are actually set on THIS element
-	// This prevents hover bleeding to adjacent containers that don't have hover settings
 	&:hover {
 		// Only apply background if hover background is set
 		&[style*="--dsg-hover-bg-color"] {
@@ -123,12 +95,10 @@
 		}
 
 		// Only apply text color if hover text color is set
-		// Use !important to override custom text colors set by users
 		&[style*="--dsg-hover-text-color"] {
 			color: var(--dsg-hover-text-color) !important;
 
 			// Apply text color to all text elements for consistency
-			// !important needed to override custom color classes/inline styles
 			h1, h2, h3, h4, h5, h6, p, a, span, li, td, th,
 			.wp-block-heading,
 			.wp-block-paragraph {
@@ -138,21 +108,19 @@
 	}
 }
 
-// ========================================
-// Hide padding controls for nested containers
-// When a container is nested inside another container, padding should default to 0
-// Only parent containers should have padding controls visible
-// Uses CSS to detect if a stack is nested inside any container block
-// ========================================
-body:has(.dsg-grid .dsg-stack.is-selected),
-body:has(.dsg-flex .dsg-stack.is-selected),
-body:has(.dsg-stack .dsg-stack.is-selected) {
-	// Hide padding controls in Dimensions panel
-	.block-editor-block-inspector__advanced
-		.components-panel__body:has(.components-base-control:has([aria-label*='Padding' i])) {
+// CRITICAL: Override WordPress's generated contentSize constraints for inline blocks (editor)
+// WordPress generates rules like .wp-container-{block}-is-layout-{hash} > :where(...) { max-width: 1200px }
+// We need to override these for blocks that should shrink to content
+[class*="wp-container-designsetgo-stack"] {
 
-		.components-base-control:has([aria-label*='Padding' i]) {
-			display: none !important;
+	> [data-block] {
+
+		> .dsg-pill,
+		> .wp-block-designsetgo-pill,
+		> .wp-block-button,
+		> .wp-block-buttons {
+			width: auto !important;
+			max-width: none !important;
 		}
 	}
 }

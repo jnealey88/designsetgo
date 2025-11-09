@@ -16,10 +16,13 @@
 		"layout": {
 			"allowSwitching": false,
 			"allowInheriting": false,
-			"allowEditing": false,
+			"allowEditing": true,
+			"allowSizingOnChildren": true,
 			"default": {
 				"type": "flex",
-				"orientation": "horizontal"
+				"orientation": "horizontal",
+				"justifyContent": "left",
+				"contentSize": "1200px"
 			}
 		},
 		"spacing": {
@@ -32,8 +35,7 @@
 			}
 		},
 		"dimensions": {
-			"minHeight": true,
-			"maxWidth": false
+			"minHeight": true
 		},
 		"color": {
 			"background": true,
@@ -74,24 +76,9 @@
 		}
 	},
 	"attributes": {
-		"direction": {
+		"align": {
 			"type": "string",
-			"default": "row"
-		},
-		"wrap": {
-			"type": "boolean",
-			"default": true
-		},
-		"justifyContent": {
-			"type": "string",
-			"default": "flex-start"
-		},
-		"alignItems": {
-			"type": "string",
-			"default": "center"
-		},
-		"textAlign": {
-			"type": "string"
+			"default": "full"
 		},
 		"mobileStack": {
 			"type": "boolean",
@@ -101,18 +88,14 @@
 			"type": "object",
 			"default": {
 				"spacing": {
-					"blockGap": "var(--wp--preset--spacing--50)",
-				"padding": "var(--wp--preset--spacing--50)"
+					"padding": {
+						"top": "var(--wp--preset--spacing--xl)",
+						"bottom": "var(--wp--preset--spacing--xl)",
+						"left": "var(--wp--preset--spacing--md)",
+						"right": "var(--wp--preset--spacing--md)"
+					}
 				}
 			}
-		},
-		"constrainWidth": {
-			"type": "boolean",
-			"default": true
-		},
-		"contentWidth": {
-			"type": "string",
-			"default": ""
 		},
 		"hoverBackgroundColor": {
 			"type": "string",
@@ -132,17 +115,12 @@
 		}
 	},
 	"providesContext": {
-		"designsetgo/alignItems": "alignItems",
-		"designsetgo/textAlign": "textAlign",
 		"designsetgo/hoverIconBackgroundColor": "hoverIconBackgroundColor",
 		"designsetgo/hoverButtonBackgroundColor": "hoverButtonBackgroundColor"
 	},
 	"example": {
 		"attributes": {
-			"direction": "row",
-			"wrap": true,
-			"justifyContent": "center",
-			"alignItems": "center"
+			"mobileStack": false
 		},
 		"innerBlocks": [
 			{

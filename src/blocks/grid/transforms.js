@@ -15,15 +15,15 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/grid',
 					{
+						// Preserve all attributes including layout
+						...attributes,
+						// Set Grid-specific defaults
 						rowGap: '',
 						columnGap: '',
-						constrainWidth: attributes.constrainWidth,
-						contentWidth: attributes.contentWidth,
 						desktopColumns: 3,
 						tabletColumns: 2,
 						mobileColumns: 1,
 						alignItems: 'start',
-						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
 					},
 					innerBlocks
 				);
@@ -36,15 +36,17 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/grid',
 					{
+						// Preserve all attributes including layout
+						...attributes,
+						// Remove Flex-specific attributes
+						mobileStack: undefined,
+						// Set Grid-specific defaults
 						rowGap: '',
 						columnGap: '',
-						constrainWidth: attributes.constrainWidth,
-						contentWidth: attributes.contentWidth,
 						desktopColumns: 3,
 						tabletColumns: 2,
 						mobileColumns: 1,
 						alignItems: 'start',
-						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
 					},
 					innerBlocks
 				);
@@ -84,9 +86,16 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/stack',
 					{
-						constrainWidth: attributes.constrainWidth,
-						contentWidth: attributes.contentWidth,
-						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
+						// Preserve all attributes including layout
+						...attributes,
+						// Remove Grid-specific attributes
+						desktopColumns: undefined,
+						tabletColumns: undefined,
+						mobileColumns: undefined,
+						rowGap: undefined,
+						columnGap: undefined,
+						alignItems: undefined,
+						textAlign: undefined,
 					},
 					innerBlocks
 				);
@@ -99,14 +108,18 @@ const transforms = {
 				return wp.blocks.createBlock(
 					'designsetgo/flex',
 					{
-						constrainWidth: attributes.constrainWidth,
-						contentWidth: attributes.contentWidth,
-						direction: 'row',
-						wrap: true,
-						justifyContent: 'flex-start',
-						alignItems: 'center',
+						// Preserve all attributes including layout
+						...attributes,
+						// Remove Grid-specific attributes
+						desktopColumns: undefined,
+						tabletColumns: undefined,
+						mobileColumns: undefined,
+						rowGap: undefined,
+						columnGap: undefined,
+						alignItems: undefined,
+						textAlign: undefined,
+						// Set Flex-specific defaults
 						mobileStack: false,
-						// Note: gap is handled by WordPress blockGap (in style.spacing.blockGap)
 					},
 					innerBlocks
 				);

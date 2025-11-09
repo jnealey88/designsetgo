@@ -13,7 +13,7 @@
 	box-sizing: border-box; // Ensure padding doesn't increase slide width
 
 	// Use CSS custom properties from inline styles
-	--dsg-slide-overlay-color: #000000;
+	--dsg-slide-overlay-color: #000;
 	--dsg-slide-overlay-opacity: 0.4;
 	--dsg-slide-content-vertical-align: center;
 	--dsg-slide-content-horizontal-align: center;
@@ -111,7 +111,9 @@
 
 // Responsive adjustments
 @media (max-width: 768px) {
+
 	.dsg-slide {
+
 		&__content {
 			// Smaller text shadows on mobile
 			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -128,6 +130,7 @@
 
 // Accessibility
 @media (prefers-reduced-motion: reduce) {
+
 	.dsg-slide {
 		transition: none !important;
 		animation: none !important;
@@ -136,6 +139,7 @@
 
 // Loading state
 .dsg-slide.is-loading {
+
 	.dsg-slide__content {
 		opacity: 0;
 	}
@@ -156,6 +160,7 @@
 }
 
 @keyframes slide-spinner {
+
 	to {
 		transform: translate(-50%, -50%) rotate(360deg);
 	}
@@ -163,7 +168,9 @@
 
 // High contrast mode support
 @media (prefers-contrast: high) {
+
 	.dsg-slide {
+
 		&__overlay {
 			opacity: calc(var(--dsg-slide-overlay-opacity) * 1.2);
 		}
