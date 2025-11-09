@@ -370,7 +370,7 @@ msgstr "Array van te tonen functies"
 
 #: includes/abilities/generators/class-generate-feature-grid.php:75
 msgid "Icon name (e.g., \"star\", \"check\", \"lightbulb\")"
-msgstr "Icoonnaam (bijv. "star", "check", "lightbulb")"
+msgstr "Icoonnaam (bijv. \"star\", \"check\", \"lightbulb\")"
 
 #: includes/abilities/generators/class-generate-feature-grid.php:80
 msgid "Feature title"
@@ -470,11 +470,11 @@ msgstr "Statistiekwaarde/nummer"
 
 #: includes/abilities/generators/class-generate-stats-section.php:80
 msgid "Optional prefix (e.g., \"$\")"
-msgstr "Optioneel voorvoegsel (bijv. "$")"
+msgstr "Optioneel voorvoegsel (bijv. \"$\")"
 
 #: includes/abilities/generators/class-generate-stats-section.php:85
 msgid "Optional suffix (e.g., \"+\", \"%\", \"K\")"
-msgstr "Optioneel achtervoegsel (bijv. "+", "%", "K")"
+msgstr "Optioneel achtervoegsel (bijv. \"+\", \"%\", \"K\")"
 
 #: includes/abilities/generators/class-generate-stats-section.php:90
 msgid "Stat label/description"
@@ -866,7 +866,7 @@ msgstr "Te invoegen tellerblokken (meestal designsetgo/counter)"
 
 #: includes/abilities/inserters/class-insert-counter-group.php:149
 msgid "Block name (e.g., \"designsetgo/counter\")"
-msgstr "Bloknaam (bijv. "designsetgo/counter")"
+msgstr "Bloknaam (bijv. \"designsetgo/counter\")"
 
 #: includes/abilities/inserters/class-insert-counter-group.php:153
 #: includes/abilities/inserters/class-insert-flex-container.php:123
@@ -2036,7 +2036,7 @@ msgstr "Verzending te snel. Probeer het opnieuw."
 #: includes/blocks/class-form-handler.php:135
 #, php-format
 msgid "Field \"%1$s\": %2$s"
-msgstr ""
+msgstr "Veld \"%1$s\": %2$s"
 
 #: includes/blocks/class-form-handler.php:158
 msgid "Failed to save form submission. Please try again."
@@ -3196,7 +3196,7 @@ msgstr "Duizendtalscheidingsteken gebruiken"
 #: build/blocks/counter-group/index.js:1
 #: src/blocks/counter-group/index.js:277
 msgid "Format numbers like \"1,000\" or \"1000\""
-msgstr ""
+msgstr "Formatteer nummers zoals \"1.000\" of \"1000\""
 
 #: build/blocks/counter-group/index.js:1
 #: src/blocks/counter-group/index.js:286
@@ -3206,7 +3206,7 @@ msgstr "Duizendtalscheidingsteken"
 #: build/blocks/counter-group/index.js:1
 #: src/blocks/counter-group/index.js:291
 msgid "Character for thousands (e.g., \",\" or \".\")"
-msgstr ""
+msgstr "Scheidingsteken voor duizendtallen (bijv. \".\" of \",\")"
 
 #: build/blocks/counter-group/index.js:1
 #: src/blocks/counter-group/index.js:301
@@ -3216,7 +3216,7 @@ msgstr "Decimaalteken"
 #: build/blocks/counter-group/index.js:1
 #: src/blocks/counter-group/index.js:304
 msgid "Character for decimals (e.g., \".\" or \",\")"
-msgstr ""
+msgstr "Scheidingsteken voor decimalen (bijv. \",\" of \".\")"
 
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
@@ -3275,7 +3275,7 @@ msgstr "Voorvoegsel"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:76
 msgid "Text before number (e.g., \"$\", \"€\")"
-msgstr ""
+msgstr "Tekst vóór nummer (bijv. \"$\", \"€\")"
 
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:82
@@ -3285,7 +3285,7 @@ msgstr "Achtervoegsel"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:86
 msgid "Text after number (e.g., \"+\", \"%\", \"K\")"
-msgstr ""
+msgstr "Tekst na nummer (bijv. \"+\", \"%\", \"K\")"
 
 #: build/blocks/counter/index.js:1
 #: build/blocks/progress-bar/index.js:1
@@ -3951,7 +3951,7 @@ msgstr "Antwoord-Aan Veldnaam"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:373
 msgid "Use a form field value for reply-to (e.g., \"email\" or \"user_email\")"
-msgstr ""
+msgstr "Gebruik een formulierveldwaarde voor antwoord aan (bijv. \"email\" of \"user_email\")"
 
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:382
@@ -4048,7 +4048,7 @@ msgstr "Veld Instellingen"
 #: src/blocks/form-time-field/edit.js:52
 #: src/blocks/form-url-field/edit.js:49
 msgid "Unique identifier for this field (letters, numbers, hyphens, underscores only)"
-msgstr ""
+msgstr "Unieke identificatie voor dit veld (alleen letters, cijfers, streepjes en underscores)"
 
 #: build/blocks/form-checkbox-field/index.js:1
 #: build/blocks/form-date-field/index.js:1
@@ -4071,7 +4071,7 @@ msgstr "Verplicht"
 #: build/blocks/form-checkbox-field/index.js:1
 #: src/blocks/form-checkbox-field/edit.js:62
 msgid "Checked by Default"
-msgstr ""
+msgstr "Standaard aangevinkt"
 
 #: build/blocks/form-checkbox-field/index.js:1
 #: build/blocks/form-date-field/index.js:1
@@ -4088,12 +4088,12 @@ msgstr ""
 #: src/blocks/form-time-field/edit.js:105
 #: src/blocks/form-url-field/edit.js:70
 msgid "Additional Options"
-msgstr ""
+msgstr "Aanvullende opties"
 
 #: build/blocks/form-checkbox-field/index.js:1
 #: src/blocks/form-checkbox-field/edit.js:74
 msgid "The value submitted when checkbox is checked"
-msgstr ""
+msgstr "De waarde die wordt verzonden wanneer het vakje is aangevinkt"
 
 #: build/blocks/form-checkbox-field/index.js:1
 #: build/blocks/form-date-field/index.js:1
@@ -4136,37 +4136,37 @@ msgstr "Helptekst"
 #: src/blocks/form-time-field/edit.js:120
 #: src/blocks/form-url-field/edit.js:94
 msgid "Additional guidance shown below the field"
-msgstr ""
+msgstr "Aanvullende uitleg weergegeven onder het veld"
 
 #: build/blocks/form-checkbox-field/index.js:1
 #: src/blocks/form-checkbox-field/edit.js:104
 msgid "Enter checkbox label..."
-msgstr ""
+msgstr "Voer label voor vakje in..."
 
 #: build/blocks/form-date-field/index.js:1
 #: src/blocks/form-date-field/edit.js:71
 msgid "Date Range"
-msgstr ""
+msgstr "Datumbereik"
 
 #: build/blocks/form-date-field/index.js:1
 #: src/blocks/form-date-field/edit.js:73
 msgid "Minimum Date"
-msgstr ""
+msgstr "Minimale datum"
 
 #: build/blocks/form-date-field/index.js:1
 #: src/blocks/form-date-field/edit.js:76
 msgid "Format: YYYY-MM-DD (e.g., 2024-01-01)"
-msgstr ""
+msgstr "Formaat: JJJJ-MM-DD (bijv. 2024-01-01)"
 
 #: build/blocks/form-date-field/index.js:1
 #: src/blocks/form-date-field/edit.js:83
 msgid "Maximum Date"
-msgstr ""
+msgstr "Maximale datum"
 
 #: build/blocks/form-date-field/index.js:1
 #: src/blocks/form-date-field/edit.js:86
 msgid "Format: YYYY-MM-DD (e.g., 2024-12-31)"
-msgstr ""
+msgstr "Formaat: JJJJ-MM-DD (bijv. 2024-12-31)"
 
 #: build/blocks/form-date-field/index.js:1
 #: build/blocks/form-email-field/index.js:1
@@ -4190,14 +4190,14 @@ msgstr "Standaardwaarde"
 #: build/blocks/form-date-field/index.js:1
 #: src/blocks/form-date-field/edit.js:98
 msgid "Pre-filled date (Format: YYYY-MM-DD)"
-msgstr ""
+msgstr "Vooraf ingevulde datum (Formaat: JJJJ-MM-DD)"
 
 #: build/blocks/form-email-field/index.js:1
 #: build/blocks/form-textarea/index.js:1
 #: src/blocks/form-email-field/edit.js:59
 #: src/blocks/form-textarea/edit.js:62
 msgid "Unique identifier for this field"
-msgstr ""
+msgstr "Unieke identificatie voor dit veld"
 
 #: build/blocks/form-email-field/index.js:1
 #: build/blocks/form-number-field/index.js:1
@@ -4228,12 +4228,12 @@ msgstr "Verplicht Veld"
 #: build/blocks/form-hidden-field/index.js:1
 #: src/blocks/form-hidden-field/edit.js:49
 msgid "The hidden value to be submitted with the form"
-msgstr ""
+msgstr "De verborgen waarde die met het formulier wordt verzonden"
 
 #: build/blocks/form-hidden-field/index.js:1
 #: src/blocks/form-hidden-field/edit.js:58
 msgid "Hidden Field:"
-msgstr ""
+msgstr "Verborgen veld:"
 
 #: build/blocks/form-hidden-field/index.js:1
 #: src/blocks/form-hidden-field/edit.js:58
@@ -4243,47 +4243,47 @@ msgstr "(leeg)"
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:75
 msgid "Number Settings"
-msgstr ""
+msgstr "Nummerinstellingen"
 
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:77
 msgid "Minimum Value"
-msgstr ""
+msgstr "Minimale waarde"
 
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:80
 msgid "Minimum allowed value (leave empty for no minimum)"
-msgstr ""
+msgstr "Minimaal toegestane waarde (laat leeg voor geen minimum)"
 
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:86
 msgid "Maximum Value"
-msgstr ""
+msgstr "Maximale waarde"
 
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:89
 msgid "Maximum allowed value (leave empty for no maximum)"
-msgstr ""
+msgstr "Maximaal toegestane waarde (laat leeg voor geen maximum)"
 
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:95
 msgid "Step"
-msgstr ""
+msgstr "Stap"
 
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:98
 msgid "Increment/decrement step value"
-msgstr ""
+msgstr "Stap waarde voor verhogen/verlagen"
 
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:105
 msgid "Allow Decimals"
-msgstr ""
+msgstr "Decimalen toestaan"
 
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:113
 msgid "Allow decimal numbers instead of integers only"
-msgstr ""
+msgstr "Sta decimale getallen toe in plaats van alleen hele getallen"
 
 #: build/blocks/form-number-field/index.js:1
 #: build/blocks/form-phone-field/index.js:1
@@ -4292,7 +4292,7 @@ msgstr ""
 #: src/blocks/form-phone-field/edit.js:186
 #: src/blocks/form-url-field/edit.js:75
 msgid "Example text shown when field is empty"
-msgstr ""
+msgstr "Voorbeeldtekst die wordt getoond wanneer veld leeg is"
 
 #: build/blocks/form-number-field/index.js:1
 #: build/blocks/form-phone-field/index.js:1
@@ -4301,7 +4301,7 @@ msgstr ""
 #: src/blocks/form-phone-field/edit.js:195
 #: src/blocks/form-url-field/edit.js:84
 msgid "Pre-filled value for this field"
-msgstr ""
+msgstr "Vooraf ingevulde waarde voor dit veld"
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
@@ -4315,54 +4315,54 @@ msgstr "Veldbreedte"
 #: src/blocks/form-phone-field/edit.js:108
 #: src/blocks/form-text-field/edit.js:151
 msgid "Full Width (100%)"
-msgstr ""
+msgstr "Volle breedte (100%)"
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:109
 #: src/blocks/form-text-field/edit.js:152
 msgid "Half Width (50%)"
-msgstr ""
+msgstr "Halve breedte (50%)"
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:110
 #: src/blocks/form-text-field/edit.js:153
 msgid "One Third (33%)"
-msgstr ""
+msgstr "Een derde (33%)"
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:111
 #: src/blocks/form-text-field/edit.js:154
 msgid "Two Thirds (66%)"
-msgstr ""
+msgstr "Twee derde (66%)"
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:112
 #: src/blocks/form-text-field/edit.js:155
 msgid "One Quarter (25%)"
-msgstr ""
+msgstr "Een kwart (25%)"
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:113
 #: src/blocks/form-text-field/edit.js:156
 msgid "Three Quarters (75%)"
-msgstr ""
+msgstr "Drie kwart (75%)"
 
 #: build/blocks/form-phone-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:116
 #: src/blocks/form-text-field/edit.js:159
 msgid "Set field width to create multi-column layouts"
-msgstr ""
+msgstr "Stel veldbreedte in om meerkoloms layouts te maken"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:122
 msgid "Phone Format"
-msgstr ""
+msgstr "Telefoonformaat"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:124
@@ -4372,52 +4372,52 @@ msgstr "Formaat"
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:127
 msgid "Any Format"
-msgstr ""
+msgstr "Elk formaat"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:128
 msgid "US Format (555-123-4567)"
-msgstr ""
+msgstr "VS formaat (555-123-4567)"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:129
 msgid "International (+1 555 123 4567)"
-msgstr ""
+msgstr "Internationaal (+1 555 123 4567)"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:132
 msgid "Choose how phone numbers should be formatted"
-msgstr ""
+msgstr "Kies hoe telefoonnummers moeten worden geformatteerd"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:138
 msgid "Country Code"
-msgstr ""
+msgstr "Landcode"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:140
 msgid "Show Country Code Selector"
-msgstr ""
+msgstr "Landcodekiezer weergeven"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:143
 msgid "Display a dropdown for selecting country code"
-msgstr ""
+msgstr "Toon een vervolgkeuzelijst voor het selecteren van de landcode"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:149
 msgid "Default Country Code"
-msgstr ""
+msgstr "Standaard landcode"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:173
 msgid "Auto-Format Phone Number"
-msgstr ""
+msgstr "Telefoonnummer automatisch formatteren"
 
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:176
 msgid "Automatically format phone number as user types"
-msgstr ""
+msgstr "Formatteer telefoonnummer automatisch terwijl de gebruiker typt"
 
 #: build/blocks/form-select-field/index.js:1
 #: src/blocks/form-select-field/edit.js:100
@@ -4427,99 +4427,99 @@ msgstr "Opties"
 #: build/blocks/form-select-field/index.js:1
 #: src/blocks/form-select-field/edit.js:125
 msgid "Remove option"
-msgstr ""
+msgstr "Optie verwijderen"
 
 #: build/blocks/form-select-field/index.js:1
 #: src/blocks/form-select-field/edit.js:134
 msgid "Add Option"
-msgstr ""
+msgstr "Optie toevoegen"
 
 #: build/blocks/form-select-field/index.js:1
 #: src/blocks/form-select-field/edit.js:143
 msgid "Text shown when no option is selected"
-msgstr ""
+msgstr "Tekst die wordt getoond wanneer geen optie is geselecteerd"
 
 #: build/blocks/form-select-field/index.js:1
 #: src/blocks/form-select-field/edit.js:152
 msgid "Pre-selected option value"
-msgstr ""
+msgstr "Vooraf geselecteerde optiewaarde"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:88
 msgid "Unique identifier for this field (letters, numbers, underscores)"
-msgstr ""
+msgstr "Unieke identificatie voor dit veld (letters, cijfers, underscores)"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:108
 msgid "Hint text shown inside the field"
-msgstr ""
+msgstr "Hinttekst weergegeven in het veld"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:139
 msgid "Pre-fill this field with a default value"
-msgstr ""
+msgstr "Vul dit veld vooraf in met een standaardwaarde"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:165
 msgid "Validation"
-msgstr ""
+msgstr "Validatie"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:167
 msgid "Minimum Length"
-msgstr ""
+msgstr "Minimale lengte"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:172
 msgid "Minimum number of characters required (0 = no minimum)"
-msgstr ""
+msgstr "Minimaal vereist aantal tekens (0 = geen minimum)"
 
 #: build/blocks/form-text-field/index.js:1
 #: build/blocks/form-textarea/index.js:1
 #: src/blocks/form-text-field/edit.js:181
 #: src/blocks/form-textarea/edit.js:116
 msgid "Maximum Length"
-msgstr ""
+msgstr "Maximale lengte"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:186
 msgid "Maximum number of characters allowed (0 = no maximum)"
-msgstr ""
+msgstr "Maximaal toegestaan aantal tekens (0 = geen maximum)"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:195
 msgid "Validation Type"
-msgstr ""
+msgstr "Validatietype"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:199
 msgid "Letters Only"
-msgstr ""
+msgstr "Alleen letters"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:200
 msgid "Numbers Only"
-msgstr ""
+msgstr "Alleen cijfers"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:201
 msgid "Alphanumeric"
-msgstr ""
+msgstr "Alfanumeriek"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:202
 msgid "Custom Pattern"
-msgstr ""
+msgstr "Aangepast patroon"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:212
 msgid "Custom Pattern (Regex)"
-msgstr ""
+msgstr "Aangepast patroon (Regex)"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:215
 msgid "Regular expression for validation"
-msgstr ""
+msgstr "Reguliere expressie voor validatie"
 
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:224
@@ -4529,62 +4529,62 @@ msgstr "Validatiebericht"
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:227
 msgid "Message shown when validation fails"
-msgstr ""
+msgstr "Bericht dat wordt getoond wanneer validatie mislukt"
 
 #: build/blocks/form-textarea/index.js:1
 #: src/blocks/form-textarea/edit.js:102
 msgid "Rows"
-msgstr ""
+msgstr "Rijen"
 
 #: build/blocks/form-textarea/index.js:1
 #: src/blocks/form-textarea/edit.js:107
 msgid "Height of the textarea in rows"
-msgstr ""
+msgstr "Hoogte van het tekstvak in rijen"
 
 #: build/blocks/form-textarea/index.js:1
 #: src/blocks/form-textarea/edit.js:122
 msgid "Maximum characters allowed (0 = no limit)"
-msgstr ""
+msgstr "Maximaal aantal toegestane tekens (0 = geen limiet)"
 
 #: build/blocks/form-time-field/index.js:1
 #: src/blocks/form-time-field/edit.js:73
 msgid "Time Range"
-msgstr ""
+msgstr "Tijdsbereik"
 
 #: build/blocks/form-time-field/index.js:1
 #: src/blocks/form-time-field/edit.js:75
 msgid "Minimum Time"
-msgstr ""
+msgstr "Minimale tijd"
 
 #: build/blocks/form-time-field/index.js:1
 #: src/blocks/form-time-field/edit.js:78
 msgid "Format: HH:MM (e.g., 09:00)"
-msgstr ""
+msgstr "Formaat: UU:MM (bijv. 09:00)"
 
 #: build/blocks/form-time-field/index.js:1
 #: src/blocks/form-time-field/edit.js:85
 msgid "Maximum Time"
-msgstr ""
+msgstr "Maximale tijd"
 
 #: build/blocks/form-time-field/index.js:1
 #: src/blocks/form-time-field/edit.js:88
 msgid "Format: HH:MM (e.g., 17:00)"
-msgstr ""
+msgstr "Formaat: UU:MM (bijv. 17:00)"
 
 #: build/blocks/form-time-field/index.js:1
 #: src/blocks/form-time-field/edit.js:95
 msgid "Step (seconds)"
-msgstr ""
+msgstr "Stap (seconden)"
 
 #: build/blocks/form-time-field/index.js:1
 #: src/blocks/form-time-field/edit.js:98
 msgid "Time increment in seconds (60 = 1 minute)"
-msgstr ""
+msgstr "Tijdstap in seconden (60 = 1 minuut)"
 
 #: build/blocks/form-time-field/index.js:1
 #: src/blocks/form-time-field/edit.js:110
 msgid "Pre-filled time (Format: HH:MM)"
-msgstr ""
+msgstr "Vooraf ingevulde tijd (Formaat: UU:MM)"
 
 #: build/blocks/grid/index.js:1
 #: build/index.js:1
@@ -4601,7 +4601,7 @@ msgstr "Desktop Kolommen"
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:157
 msgid "Number of columns on desktop screens"
-msgstr ""
+msgstr "Aantal kolommen op desktopschermen"
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:166
@@ -4611,7 +4611,7 @@ msgstr "Tablet Kolommen"
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:184
 msgid "Number of columns on tablet screens (≤ 1024px)"
-msgstr ""
+msgstr "Aantal kolommen op tabletschermen (≤ 1024px)"
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:193
@@ -4621,27 +4621,27 @@ msgstr "Mobiele Kolommen"
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:200
 msgid "Number of columns on mobile screens (≤ 767px)"
-msgstr ""
+msgstr "Aantal kolommen op mobiele schermen (≤ 767px)"
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:239
 msgid "Gap Settings"
-msgstr ""
+msgstr "Tussenruimte-instellingen"
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:243
 msgid "Custom Row/Column Gaps"
-msgstr ""
+msgstr "Aangepaste rij-/kolomtussenruimten"
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:254
 msgid "Using separate row and column gaps"
-msgstr ""
+msgstr "Gebruik aparte rij- en kolomtussenruimten"
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:258
 msgid "Using WordPress blockGap (configure in Spacing panel)"
-msgstr ""
+msgstr "Gebruik WordPress blockGap (configureer in paneel Tussenruimte)"
 
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:269
@@ -4672,49 +4672,49 @@ msgstr "Populair"
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:38
 msgid "Social"
-msgstr ""
+msgstr "Social"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:50
 msgid "Business"
-msgstr ""
+msgstr "Zakelijk"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:64
 msgid "Shop"
-msgstr ""
+msgstr "Winkel"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:68
 msgid "Tech"
-msgstr ""
+msgstr "Technologie"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:80
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:84
 msgid "Actions"
-msgstr ""
+msgstr "Acties"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:102
 msgid "Media"
-msgstr ""
+msgstr "Media"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
@@ -4728,7 +4728,7 @@ msgstr "Pijlen"
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:117
 msgid "UI"
-msgstr ""
+msgstr "UI"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
@@ -4742,7 +4742,7 @@ msgstr "Ander"
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/IconPicker.js:170
 msgid "Choose Icon"
-msgstr ""
+msgstr "Kies icoon"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
@@ -4750,7 +4750,7 @@ msgstr ""
 #: src/blocks/icon/components/IconPicker.js:206
 #: src/blocks/icon/components/inspector/IconSettingsPanel.js:70
 msgid "Search icons…"
-msgstr ""
+msgstr "Zoek iconen..."
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
@@ -4780,7 +4780,7 @@ msgstr "URL"
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:58
 msgid "Enter the link URL"
-msgstr ""
+msgstr "Voer de link-URL in"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
@@ -4802,12 +4802,12 @@ msgstr "Link Rel"
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:80
 msgid "Rel attribute for security (default: noopener noreferrer)"
-msgstr ""
+msgstr "Rel-attribuut voor beveiliging (standaard: noopener noreferrer)"
 
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:103
 msgid "Position of icon relative to text"
-msgstr ""
+msgstr "Positie van icoon ten opzichte van tekst"
 
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list/index.js:1
@@ -4827,7 +4827,7 @@ msgstr "Icoon Ruimte"
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:142
 msgid "Space between icon and text"
-msgstr ""
+msgstr "Ruimte tussen icoon en tekst"
 
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:153
@@ -4867,22 +4867,22 @@ msgstr "25%"
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:167
 msgid "Button width"
-msgstr ""
+msgstr "Knopbreedte"
 
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/edit.js:104
 msgid "Button text…"
-msgstr ""
+msgstr "Knoptekst..."
 
 #: build/blocks/icon-list-item/index.js:1
 #: src/blocks/icon-list-item/components/inspector/LinkSettingsPanel.js:43
 msgid "Make the entire list item clickable"
-msgstr ""
+msgstr "Maak het hele lijstitem klikbaar"
 
 #: build/blocks/icon-list-item/index.js:1
 #: src/blocks/icon-list-item/edit.js:95
 msgid "List item title…"
-msgstr ""
+msgstr "Lijstitem titel..."
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:46
@@ -4904,7 +4904,7 @@ msgstr "Grid"
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:60
 msgid "Choose how list items are arranged"
-msgstr ""
+msgstr "Kies hoe lijstitems worden gerangschikt"
 
 #: build/blocks/icon-list/index.js:1
 #: build/blocks/tabs/index.js:1
@@ -4916,7 +4916,7 @@ msgstr "Uitlijning"
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:86
 msgid "Align list items horizontally"
-msgstr ""
+msgstr "Lijstitems horizontaal uitlijnen"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:97
@@ -4926,17 +4926,17 @@ msgstr "Kolommen"
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:102
 msgid "Number of columns in grid layout"
-msgstr ""
+msgstr "Aantal kolommen in grid layout"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:130
 msgid "Default icon size for all items"
-msgstr ""
+msgstr "Standaard icoongrootte voor alle items"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:144
 msgid "Space between list items"
-msgstr ""
+msgstr "Ruimte tussen lijstitems"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:151
@@ -4947,22 +4947,22 @@ msgstr "Icoon Kleur"
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:168
 msgid "Default color for all icons in this list"
-msgstr ""
+msgstr "Standaardkleur voor alle iconen in deze lijst"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/edit.js:76
 msgid "First item"
-msgstr ""
+msgstr "Eerste item"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/edit.js:80
 msgid "Second item"
-msgstr ""
+msgstr "Tweede item"
 
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/edit.js:84
 msgid "Third item"
-msgstr ""
+msgstr "Derde item"
 
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/edit.js:82
@@ -4982,12 +4982,12 @@ msgstr "Omlijnd"
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/edit.js:99
 msgid "Stroke Width"
-msgstr ""
+msgstr "Lijndikte"
 
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/edit.js:107
 msgid "Thinner strokes work better for detailed icons"
-msgstr ""
+msgstr "Dunnere lijnen werken beter voor gedetailleerde iconen"
 
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/components/inspector/IconSettingsPanel.js:124
@@ -5005,7 +5005,7 @@ msgstr "Link"
 #: src/blocks/image-accordion-item/edit.js:89
 #: src/blocks/slide/edit.js:268
 msgid "Vertical Alignment"
-msgstr ""
+msgstr "Verticale uitlijning"
 
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
@@ -5021,7 +5021,7 @@ msgstr "Onder"
 #: src/blocks/image-accordion-item/edit.js:102
 #: src/blocks/slide/edit.js:281
 msgid "Horizontal Alignment"
-msgstr ""
+msgstr "Horizontale uitlijning"
 
 #: build/blocks/image-accordion/index.js:1
 #: build/blocks/slider/index.js:1
@@ -5033,22 +5033,22 @@ msgstr "Hoogte"
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:88
 msgid "Fixed height for the accordion"
-msgstr ""
+msgstr "Vaste hoogte voor de accordeon"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:109
 msgid "Expansion Behavior"
-msgstr ""
+msgstr "Uitklap gedrag"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:113
 msgid "Expanded Ratio"
-msgstr ""
+msgstr "Uitgeklapt ratio"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:119
 msgid "How much larger the expanded item becomes (others stay normal size)"
-msgstr ""
+msgstr "Hoeveel groter het uitgeklapte item wordt (andere blijven normale grootte)"
 
 #: build/blocks/image-accordion/index.js:1
 #: build/blocks/slider/index.js:1
@@ -5060,42 +5060,42 @@ msgstr "Overgangsduur"
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:134
 msgid "Speed of expansion/collapse animation"
-msgstr ""
+msgstr "Snelheid van uitklap-/inklap animatie"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:141
 msgid "Interaction"
-msgstr ""
+msgstr "Interactie"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:145
 msgid "Trigger Type"
-msgstr ""
+msgstr "Activatietype"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:148
 msgid "Hover (Desktop)"
-msgstr ""
+msgstr "Hover (Desktop)"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:149
 msgid "Click/Tap"
-msgstr ""
+msgstr "Klik/Tik"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:152
 msgid "Hover is automatically replaced with click on mobile"
-msgstr ""
+msgstr "Hover wordt automatisch vervangen door klik op mobiel"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:161
 msgid "Default Expanded Item"
-msgstr ""
+msgstr "Standaard uitgeklapt item"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:166
 msgid "Which item is expanded on page load (0 = none, 1 = first, etc.)"
-msgstr ""
+msgstr "Welk item is uitgeklapt bij laden van pagina (0 = geen, 1 = eerste, etc.)"
 
 #: build/blocks/image-accordion/index.js:1
 #: build/blocks/slide/index.js:1
@@ -5104,17 +5104,17 @@ msgstr ""
 #: src/blocks/slide/edit.js:224
 #: src/extensions/overlay/index.js:104
 msgid "Enable Overlay"
-msgstr ""
+msgstr "Overlay inschakelen"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:189
 msgid "Overlay applied to all items"
-msgstr ""
+msgstr "Overlay toegepast op alle items"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:190
 msgid "No overlay on items"
-msgstr ""
+msgstr "Geen overlay op items"
 
 #: build/blocks/image-accordion/index.js:1
 #: build/blocks/slide/index.js:1
@@ -5128,42 +5128,42 @@ msgstr "Kleur"
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:211
 msgid "Overlay Opacity (Default)"
-msgstr ""
+msgstr "Overlay doorzichtigheid (Standaard)"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:216
 msgid "Opacity when item is not expanded"
-msgstr ""
+msgstr "Doorzichtigheid wanneer item niet is uitgeklapt"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:222
 msgid "Overlay Opacity (Expanded)"
-msgstr ""
+msgstr "Overlay doorzichtigheid (Uitgeklapt)"
 
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:229
 msgid "Opacity when item is expanded"
-msgstr ""
+msgstr "Doorzichtigheid wanneer item is uitgeklapt"
 
 #: build/blocks/pill/index.js:1
 #: src/blocks/pill/edit.js:79
 msgid "Add pill text…"
-msgstr ""
+msgstr "Voeg pill tekst toe..."
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:105
 msgid "Progress Settings"
-msgstr ""
+msgstr "Voortgangsinstellingen"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:109
 msgid "Percentage"
-msgstr ""
+msgstr "Percentage"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:117
 msgid "Set the progress percentage (0–100)"
-msgstr ""
+msgstr "Stel het voortgangspercentage in (0–100)"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:128
@@ -5185,7 +5185,7 @@ msgstr "Randradius"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:160
 msgid "Bar Style"
-msgstr ""
+msgstr "Balkstijl"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:167
@@ -5195,7 +5195,7 @@ msgstr "Solid"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:171
 msgid "Striped"
-msgstr ""
+msgstr "Gestreept"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:175
@@ -5205,7 +5205,7 @@ msgstr "Geanimeerd"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:182
 msgid "Color Settings"
-msgstr ""
+msgstr "Kleurinstellingen"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:189
@@ -5225,12 +5225,12 @@ msgstr "Label Tekst"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:221
 msgid "e.g., Project Progress"
-msgstr ""
+msgstr "bijv. Projectvoortgang"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:231
 msgid "Show Percentage"
-msgstr ""
+msgstr "Percentage weergeven"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:241
@@ -5255,29 +5255,29 @@ msgstr "Onder Balk"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:272
 msgid "Animate on Scroll"
-msgstr ""
+msgstr "Animeren bij scrollen"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:277
 msgid "Animate the bar when it enters the viewport"
-msgstr ""
+msgstr "Animeer de balk wanneer deze in beeld komt"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:293
 msgid "Duration in seconds"
-msgstr ""
+msgstr "Duur in seconden"
 
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:301
 msgid "Animate Stripes"
-msgstr ""
+msgstr "Strepen animeren"
 
 #: build/blocks/reveal/index.js:1
 #: build/index.js:1
 #: src/blocks/reveal/edit.js:34
 #: src/extensions/reveal-control/index.js:139
 msgid "Reveal Settings"
-msgstr ""
+msgstr "Onthullingsinstellingen"
 
 #: build/blocks/reveal/index.js:1
 #: src/blocks/reveal/edit.js:46
@@ -5297,58 +5297,58 @@ msgstr "Schalen"
 #: build/blocks/reveal/index.js:1
 #: src/blocks/reveal/edit.js:65
 msgid "Animation Duration (ms)"
-msgstr ""
+msgstr "Animatieduur (ms)"
 
 #: build/blocks/scroll-accordion-item/index.js:1
 #: src/blocks/scroll-accordion-item/edit.js:31
 msgid "Add content for this scroll accordion item..."
-msgstr ""
+msgstr "Voeg inhoud toe voor dit scroll accordion item..."
 
 #: build/blocks/scroll-accordion/index.js:1
 #: build/blocks/stack/index.js:1
 #: src/blocks/scroll-accordion/edit.js:227
 #: src/blocks/stack/edit.js:100
 msgid "Align items left"
-msgstr ""
+msgstr "Items links uitlijnen"
 
 #: build/blocks/scroll-accordion/index.js:1
 #: build/blocks/stack/index.js:1
 #: src/blocks/scroll-accordion/edit.js:235
 #: src/blocks/stack/edit.js:108
 msgid "Align items center"
-msgstr ""
+msgstr "Items centreren"
 
 #: build/blocks/scroll-accordion/index.js:1
 #: build/blocks/stack/index.js:1
 #: src/blocks/scroll-accordion/edit.js:241
 #: src/blocks/stack/edit.js:114
 msgid "Align items right"
-msgstr ""
+msgstr "Items rechts uitlijnen"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:76
 msgid "You have "
-msgstr ""
+msgstr "Je hebt "
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:78
 msgid " images. For best performance, consider using fewer images (20 or less) or optimizing image sizes. Each image is duplicated 6 times for smooth infinite scrolling."
-msgstr ""
+msgstr " afbeeldingen. Voor de beste prestaties kun je beter minder afbeeldingen gebruiken (20 of minder) of afbeeldingsgroottes optimaliseren. Elke afbeelding wordt 6 keer gedupliceerd voor vloeiend oneindig scrollen."
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:83
 msgid "Total images: "
-msgstr ""
+msgstr "Totaal afbeeldingen: "
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:85
 msgid " (duplicated 6x for infinite scroll)"
-msgstr ""
+msgstr " (6x gedupliceerd voor oneindig scrollen)"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:90
 msgid "Scroll Settings"
-msgstr ""
+msgstr "Scroll instellingen"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:92
@@ -5358,12 +5358,12 @@ msgstr "Scroll Snelheid"
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:98
 msgid "Controls how fast images move based on scroll"
-msgstr ""
+msgstr "Bepaalt hoe snel afbeeldingen bewegen tijdens het scrollen"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:104
 msgid "Image Dimensions"
-msgstr ""
+msgstr "Afbeeldingsafmetingen"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:106
@@ -5383,12 +5383,12 @@ msgstr "Ruimte"
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:130
 msgid "Gap Between Images"
-msgstr ""
+msgstr "Tussenruimte tussen afbeeldingen"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:137
 msgid "Gap Between Rows"
-msgstr ""
+msgstr "Tussenruimte tussen rijen"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:163
@@ -5405,12 +5405,12 @@ msgstr "Afbeelding verwijderen"
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:205
 msgid "Add Images"
-msgstr ""
+msgstr "Afbeeldingen toevoegen"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:206
 msgid "Add More Images"
-msgstr ""
+msgstr "Meer afbeeldingen toevoegen"
 
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:222
@@ -5420,12 +5420,12 @@ msgstr "Rij Toevoegen"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:98
 msgid "Add slide title…"
-msgstr ""
+msgstr "Voeg slide titel toe..."
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:105
 msgid "Add slide content…"
-msgstr ""
+msgstr "Voeg slide inhoud toe..."
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:138
@@ -5435,12 +5435,12 @@ msgstr "Achtergrondafbeelding"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:168
 msgid "Replace Image"
-msgstr ""
+msgstr "Afbeelding vervangen"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:152
 msgid "Select Background Image"
-msgstr ""
+msgstr "Selecteer achtergrondafbeelding"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:189
@@ -5455,12 +5455,12 @@ msgstr "Bedekken"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:193
 msgid "Contain"
-msgstr ""
+msgstr "Bevatten"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:197
 msgid "How the background image fills the slide"
-msgstr ""
+msgstr "Hoe de achtergrondafbeelding de slide vult"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:203
@@ -5475,32 +5475,32 @@ msgstr "Midden Midden"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:207
 msgid "Top Center"
-msgstr ""
+msgstr "Boven midden"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:208
 msgid "Bottom Center"
-msgstr ""
+msgstr "Onder midden"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:209
 msgid "Left Center"
-msgstr ""
+msgstr "Links midden"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:210
 msgid "Right Center"
-msgstr ""
+msgstr "Rechts midden"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:211
 msgid "Top Left"
-msgstr ""
+msgstr "Linksboven"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:212
 msgid "Top Right"
-msgstr ""
+msgstr "Rechtsboven"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:213
@@ -5515,62 +5515,62 @@ msgstr "Onder Rechts"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:229
 msgid "Overlay applied to background"
-msgstr ""
+msgstr "Overlay toegepast op achtergrond"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:230
 msgid "No overlay"
-msgstr ""
+msgstr "Geen overlay"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:256
 msgid "Opacity of the overlay"
-msgstr ""
+msgstr "Doorzichtigheid van de overlay"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:294
 msgid "Min Height Override"
-msgstr ""
+msgstr "Minimale hoogte overschrijven"
 
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:301
 msgid "Override slider height for this slide only (leave empty to use slider settings)"
-msgstr ""
+msgstr "Overschrijf slider hoogte alleen voor deze slide (laat leeg om slider instellingen te gebruiken)"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:153
 msgid "Slide 1: Beautiful Slider"
-msgstr ""
+msgstr "Slide 1: Prachtige Slider"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:160
 msgid "Add any WordPress blocks inside slides. Click to edit or add background images."
-msgstr ""
+msgstr "Voeg WordPress-blokken toe aan slides. Klik om te bewerken of achtergrondafbeeldingen toe te voegen."
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:177
 msgid "Slide 2: Fully Customizable"
-msgstr ""
+msgstr "Slide 2: Volledig aanpasbaar"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:184
 msgid "Configure transitions, navigation, auto-play, and more in the settings panel."
-msgstr ""
+msgstr "Configureer overgangen, navigatie, automatisch afspelen en meer in het instellingenpaneel."
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:201
 msgid "Slide 3: Get Started"
-msgstr ""
+msgstr "Slide 3: Ga aan de slag"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:208
 msgid "Replace these slides with your own content and images. Swipe, click arrows, or use keyboard to navigate."
-msgstr ""
+msgstr "Vervang deze slides door je eigen inhoud en afbeeldingen. Veeg, klik op pijlen of gebruik het toetsenbord om te navigeren."
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:228
 msgid "Slides Per View (Desktop)"
-msgstr ""
+msgstr "Slides per weergave (Desktop)"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:233
@@ -5580,27 +5580,27 @@ msgstr "Aantal slides tegelijk zichtbaar"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:239
 msgid "Slides Per View (Tablet)"
-msgstr ""
+msgstr "Slides per weergave (Tablet)"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:249
 msgid "Slides Per View (Mobile)"
-msgstr ""
+msgstr "Slides per weergave (Mobiel)"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:259
 msgid "Use Aspect Ratio"
-msgstr ""
+msgstr "Beeldverhouding gebruiken"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:264
 msgid "Slider uses aspect ratio"
-msgstr ""
+msgstr "Slider gebruikt beeldverhouding"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:265
 msgid "Slider uses fixed height"
-msgstr ""
+msgstr "Slider gebruikt vaste hoogte"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:272
@@ -5610,22 +5610,22 @@ msgstr "Beeldverhouding"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:303
 msgid "Gap Between Slides"
-msgstr ""
+msgstr "Tussenruimte tussen slides"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:317
 msgid "Navigation Settings"
-msgstr ""
+msgstr "Navigatie-instellingen"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:319
 msgid "Show Arrows"
-msgstr ""
+msgstr "Pijlen weergeven"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:328
 msgid "Arrow Style"
-msgstr ""
+msgstr "Pijlstijl"
 
 #: build/blocks/slider/index.js:1
 #: build/blocks/tabs/index.js:1
@@ -5645,24 +5645,24 @@ msgstr "Cirkel"
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:36
 #: src/blocks/slider/edit.js:333
 msgid "Square"
-msgstr ""
+msgstr "Vierkant"
 
 #: build/blocks/slider/index.js:1
 #: build/blocks/tabs/index.js:1
 #: src/blocks/slider/edit.js:334
 #: src/blocks/tabs/edit.js:200
 msgid "Minimal"
-msgstr ""
+msgstr "Minimaal"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:342
 msgid "Arrow Position"
-msgstr ""
+msgstr "Pijlpositie"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:345
 msgid "Sides"
-msgstr ""
+msgstr "Zijkanten"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:346
@@ -5672,22 +5672,22 @@ msgstr "Binnen"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:347
 msgid "Outside"
-msgstr ""
+msgstr "Buiten"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:359
 msgid "Arrow Colors"
-msgstr ""
+msgstr "Pijlkleuren"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:365
 msgid "Arrow Icon Color"
-msgstr ""
+msgstr "Pijl icoonkleur"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:370
 msgid "Arrow Background"
-msgstr ""
+msgstr "Pijlachtergrond"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:376
@@ -5697,22 +5697,22 @@ msgstr "Pijl Grootte"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:389
 msgid "Arrow Padding"
-msgstr ""
+msgstr "Pijl padding"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:397
 msgid "Inner spacing of the arrow button"
-msgstr ""
+msgstr "Binnenste ruimte van de pijlknop"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:405
 msgid "Show Dots"
-msgstr ""
+msgstr "Puntjes weergeven"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:414
 msgid "Dot Style"
-msgstr ""
+msgstr "Puntjesstijl"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:418
@@ -5722,23 +5722,23 @@ msgstr "Lijnen"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:419
 msgid "Squares"
-msgstr ""
+msgstr "Vierkanten"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:427
 msgid "Dot Position"
-msgstr ""
+msgstr "Puntjespositie"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:442
 #: src/blocks/slider/edit.js:448
 msgid "Dot Color"
-msgstr ""
+msgstr "Puntjeskleur"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:455
 msgid "Transition Settings"
-msgstr ""
+msgstr "Overgangsinstellingen"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:457
@@ -5748,42 +5748,42 @@ msgstr "Overgangseffect"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:465
 msgid "Animation style between slides"
-msgstr ""
+msgstr "Animatiestijl tussen slides"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:485
 msgid "Transition Easing"
-msgstr ""
+msgstr "Overgang versoepeling"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:500
 msgid "Auto-play Settings"
-msgstr ""
+msgstr "Automatisch afspelen instellingen"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:502
 msgid "Enable Auto-play"
-msgstr ""
+msgstr "Automatisch afspelen inschakelen"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:507
 msgid "Slides advance automatically"
-msgstr ""
+msgstr "Slides gaan automatisch verder"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:508
 msgid "Manual navigation only"
-msgstr ""
+msgstr "Alleen handmatige navigatie"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:516
 msgid "Auto-play Interval (ms)"
-msgstr ""
+msgstr "Automatisch afspelen interval (ms)"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:522
 msgid "Time between slides"
-msgstr ""
+msgstr "Tijd tussen slides"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:528
@@ -5793,17 +5793,17 @@ msgstr "Pauzeren bij Hover"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:535
 msgid "Pause on Interaction"
-msgstr ""
+msgstr "Pauzeren bij interactie"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:538
 msgid "Pause after user clicks, swipes, or drags"
-msgstr ""
+msgstr "Pauzeer na klikken, vegen of slepen door gebruiker"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:545
 msgid "Behavior Settings"
-msgstr ""
+msgstr "Gedragsinstellingen"
 
 #: build/blocks/slider/index.js:1
 #: build/index.js:1
@@ -5815,42 +5815,42 @@ msgstr "Loop"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:552
 msgid "Infinite loop navigation"
-msgstr ""
+msgstr "Oneindige lus navigatie"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:553
 msgid "Stop at first/last slide"
-msgstr ""
+msgstr "Stop bij eerste/laatste slide"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:559
 msgid "Swipeable (Touch)"
-msgstr ""
+msgstr "Veegbaar (Touch)"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:566
 msgid "Draggable (Mouse)"
-msgstr ""
+msgstr "Sleepbaar (Muis)"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:573
 msgid "Free Mode"
-msgstr ""
+msgstr "Vrije modus"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:576
 msgid "Smooth scrolling without snap points"
-msgstr ""
+msgstr "Vloeiend scrollen zonder vastklikpunten"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:581
 msgid "Centered Slides"
-msgstr ""
+msgstr "Gecentreerde slides"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:584
 msgid "Active slide centered in view"
-msgstr ""
+msgstr "Actieve slide gecentreerd in weergave"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:589
@@ -5862,22 +5862,22 @@ msgstr "Geavanceerde Instellingen"
 #: src/blocks/slider/edit.js:591
 #: src/blocks/tabs/edit.js:297
 msgid "Mobile Breakpoint (px)"
-msgstr ""
+msgstr "Mobiel breekpunt (px)"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:596
 msgid "Below this width, uses mobile slides per view"
-msgstr ""
+msgstr "Onder deze breedte worden mobiele slides per weergave gebruikt"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:602
 msgid "Tablet Breakpoint (px)"
-msgstr ""
+msgstr "Tablet breekpunt (px)"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:607
 msgid "Below this width, uses tablet slides per view"
-msgstr ""
+msgstr "Onder deze breedte worden tablet slides per weergave gebruikt"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:613
@@ -5887,264 +5887,264 @@ msgstr "ARIA Label"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:616
 msgid "Accessible label for screen readers"
-msgstr ""
+msgstr "Toegankelijk label voor schermlezers"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:617
 msgid "Image slider"
-msgstr ""
+msgstr "Afbeeldingenslider"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:635
 msgid "Previous slide"
-msgstr ""
+msgstr "Vorige slide"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:643
 msgid "Next slide"
-msgstr ""
+msgstr "Volgende slide"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:658
 msgid "Slide 1"
-msgstr ""
+msgstr "Slide 1"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:665
 msgid "Slide 2"
-msgstr ""
+msgstr "Slide 2"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:672
 msgid "Slide 3"
-msgstr ""
+msgstr "Slide 3"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:32
 msgid "Hero Slider"
-msgstr ""
+msgstr "Hero Slider"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:33
 msgid "Full-height slider for hero sections with centered content"
-msgstr ""
+msgstr "Volledige hoogte slider voor hero secties met gecentreerde inhoud"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:50
 msgid "Welcome to Your Site"
-msgstr ""
+msgstr "Welkom op je site"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:51
 msgid "Create something amazing with beautiful, full-screen hero sliders"
-msgstr ""
+msgstr "Creëer iets geweldigs met mooie, volledige scherm hero sliders"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:53
 msgid "Get Started"
-msgstr ""
+msgstr "Ga aan de slag"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:61
 msgid "Powerful Features"
-msgstr ""
+msgstr "Krachtige functies"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:62
 msgid "Everything you need to build stunning websites"
-msgstr ""
+msgstr "Alles wat je nodig hebt om verbluffende websites te bouwen"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:64
 msgid "Learn More"
-msgstr ""
+msgstr "Meer informatie"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:75
 msgid "Gallery Carousel"
-msgstr ""
+msgstr "Galerij Carrousel"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:76
 msgid "Show multiple images in a carousel view"
-msgstr ""
+msgstr "Toon meerdere afbeeldingen in een carrousel weergave"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:93
 msgid "Image 1"
-msgstr ""
+msgstr "Afbeelding 1"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:96
 msgid "Image 2"
-msgstr ""
+msgstr "Afbeelding 2"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:99
 msgid "Image 3"
-msgstr ""
+msgstr "Afbeelding 3"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:102
 msgid "Image 4"
-msgstr ""
+msgstr "Afbeelding 4"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:110
 msgid "Testimonial Slider"
-msgstr ""
+msgstr "Testimonial Slider"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:111
 msgid "Slider optimized for testimonials with fade transitions"
-msgstr ""
+msgstr "Slider geoptimaliseerd voor testimonials met fade overgangen"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:126
 #: src/blocks/slider/index.js:131
 #: src/blocks/slider/index.js:136
 msgid "★★★★★"
-msgstr ""
+msgstr "★★★★★"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:127
 msgid "\"This product exceeded all my expectations. Highly recommended!\""
-msgstr ""
+msgstr "\"Dit product overtrof al mijn verwachtingen. Sterk aanbevolen!\""
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:128
 msgid "— Sarah Johnson"
-msgstr ""
+msgstr "— Sarah Johnson"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:133
 msgid "— Michael Chen"
-msgstr ""
+msgstr "— Michael Chen"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:138
 msgid "— Emily Rodriguez"
-msgstr ""
+msgstr "— Emily Rodriguez"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:146
 msgid "Logo Slider"
-msgstr ""
+msgstr "Logo Slider"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:147
 msgid "Continuous scrolling logo slider"
-msgstr ""
+msgstr "Continu scrollende logo slider"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:166
 msgid "Brand 1"
-msgstr ""
+msgstr "Merk 1"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:169
 msgid "Brand 2"
-msgstr ""
+msgstr "Merk 2"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:172
 msgid "Brand 3"
-msgstr ""
+msgstr "Merk 3"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:175
 msgid "Brand 4"
-msgstr ""
+msgstr "Merk 4"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:178
 msgid "Brand 5"
-msgstr ""
+msgstr "Merk 5"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:181
 msgid "Brand 6"
-msgstr ""
+msgstr "Merk 6"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:184
 msgid "Brand 7"
-msgstr ""
+msgstr "Merk 7"
 
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/index.js:187
 msgid "Brand 8"
-msgstr ""
+msgstr "Merk 8"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:24
 msgid "★ Star"
-msgstr ""
+msgstr "★ Ster"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:25
 msgid "❤ Heart"
-msgstr ""
+msgstr "❤ Hart"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:26
 msgid "⚙ Settings"
-msgstr ""
+msgstr "⚙ Instellingen"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:27
 msgid "👤 User"
-msgstr ""
+msgstr "👤 Gebruiker"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:28
 msgid "📊 Chart"
-msgstr ""
+msgstr "📊 Grafiek"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:29
 msgid "✓ Check"
-msgstr ""
+msgstr "✓ Vinkje"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:30
 msgid "✉ Email"
-msgstr ""
+msgstr "✉ E-mail"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:31
 msgid "🏠 Home"
-msgstr ""
+msgstr "🏠 Home"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:32
 msgid "🔒 Lock"
-msgstr ""
+msgstr "🔒 Slot"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:33
 msgid "📁 Folder"
-msgstr ""
+msgstr "📁 Map"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:34
 msgid "📷 Camera"
-msgstr ""
+msgstr "📷 Camera"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:35
 msgid "🔍 Search"
-msgstr ""
+msgstr "🔍 Zoeken"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:36
 msgid "⚡ Lightning"
-msgstr ""
+msgstr "⚡ Bliksem"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:37
 msgid "🎯 Target"
-msgstr ""
+msgstr "🎯 Doel"
 
 #: build/blocks/tab/index.js:1
 #: build/blocks/tabs/index.js:1
@@ -6164,59 +6164,59 @@ msgstr "Tabblad Titel"
 #: src/blocks/tab/edit.js:115
 #: src/blocks/tab/edit.js:215
 msgid "The title shown in the tab navigation"
-msgstr ""
+msgstr "De titel die wordt getoond in de tab navigatie"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:228
 msgid "Choose an icon to display with the tab"
-msgstr ""
+msgstr "Kies een icoon om weer te geven bij de tab"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:250
 msgid "Icon preview"
-msgstr ""
+msgstr "Icoon voorbeeld"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:162
 #: src/blocks/tab/edit.js:282
 msgid "Anchor (URL Hash)"
-msgstr ""
+msgstr "Anker (URL Hash)"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:167
 #: src/blocks/tab/edit.js:285
 msgid "URL-friendly identifier for deep linking"
-msgstr ""
+msgstr "URL-vriendelijke identificatie voor directe links"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:127
 msgid "Font Awesome icon name (e.g., \"star\")"
-msgstr ""
+msgstr "Font Awesome icoonnaam (bijv. \"star\")"
 
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:193
 msgid "Click the tab above to edit its content"
-msgstr ""
+msgstr "Klik op de tab hierboven om de inhoud te bewerken"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:28
 msgid "Tab 1"
-msgstr ""
+msgstr "Tab 1"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:29
 msgid "Tab 2"
-msgstr ""
+msgstr "Tab 2"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:30
 msgid "Tab 3"
-msgstr ""
+msgstr "Tab 3"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:164
 msgid "Orientation"
-msgstr ""
+msgstr "Oriëntatie"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:184
@@ -6236,22 +6236,22 @@ msgstr "Onderstrepen"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:227
 msgid "Justified"
-msgstr ""
+msgstr "Uitgelijnd"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:240
 msgid "Gap Between Tabs"
-msgstr ""
+msgstr "Tussenruimte tussen tabs"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:254
 msgid "Tab Colors"
-msgstr ""
+msgstr "Tab kleuren"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:261
 msgid "Tab Text"
-msgstr ""
+msgstr "Tab tekst"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:267
@@ -6261,7 +6261,7 @@ msgstr "Tabblad Achtergrond"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:273
 msgid "Active Tab Text"
-msgstr ""
+msgstr "Actieve tab tekst"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:281
@@ -6271,7 +6271,7 @@ msgstr "Actief Tabblad Achtergrond"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:287
 msgid "Tab Border"
-msgstr ""
+msgstr "Tab rand"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:293
@@ -6281,12 +6281,12 @@ msgstr "Mobiele Instellingen"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:305
 msgid "Screen width below which mobile mode activates"
-msgstr ""
+msgstr "Schermbreedte waaronder mobiele modus wordt geactiveerd"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:314
 msgid "Mobile Mode"
-msgstr ""
+msgstr "Mobiele modus"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:322
@@ -6296,7 +6296,7 @@ msgstr "Dropdown"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:326
 msgid "Tabs (Scrollable)"
-msgstr ""
+msgstr "Tabs (Scrollbaar)"
 
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:339
@@ -6311,37 +6311,37 @@ msgstr "Deep Linking Inschakelen"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:348
 msgid "Allow tabs to be accessed via URL hash (e.g., #tab-name)"
-msgstr ""
+msgstr "Sta toe dat tabs toegankelijk zijn via URL hash (bijv. #tab-name)"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:58
 msgid "Add entrance and exit animations to this block"
-msgstr ""
+msgstr "Voeg in- en uitgangsanimaties toe aan dit blok"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:68
 msgid "Entrance Animation"
-msgstr ""
+msgstr "Ingangsanimatie"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:77
 msgid "Animation when block appears"
-msgstr ""
+msgstr "Animatie wanneer blok verschijnt"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:83
 msgid "Exit Animation (Optional)"
-msgstr ""
+msgstr "Uitgangsanimatie (Optioneel)"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:101
 msgid "Animation when block disappears"
-msgstr ""
+msgstr "Animatie wanneer blok verdwijnt"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:110
 msgid "Animation Trigger"
-msgstr ""
+msgstr "Animatie trigger"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:121
@@ -6351,7 +6351,7 @@ msgstr "Duur"
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:134
 msgid "Delay (ms)"
-msgstr ""
+msgstr "Vertraging (ms)"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:151
@@ -6361,58 +6361,58 @@ msgstr "Easing"
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:164
 msgid "Viewport Offset (px)"
-msgstr ""
+msgstr "Viewport afstand (px)"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:175
 msgid "Distance from viewport to trigger animation"
-msgstr ""
+msgstr "Afstand vanaf viewport om animatie te activeren"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:185
 msgid "Exit animations require repeating behavior. \"Animate Once\" is disabled."
-msgstr ""
+msgstr "Uitgangsanimaties vereisen herhalend gedrag. \"Eenmalig animeren\" is uitgeschakeld."
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:193
 msgid "Animate Once"
-msgstr ""
+msgstr "Eenmalig animeren"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:201
 msgid "Disabled when exit animation is set"
-msgstr ""
+msgstr "Uitgeschakeld wanneer uitgangsanimatie is ingesteld"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:205
 msgid "Only animate the first time block enters viewport"
-msgstr ""
+msgstr "Animeer alleen de eerste keer dat blok in viewport komt"
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:217
 msgid "Please select at least one animation type."
-msgstr ""
+msgstr "Selecteer minimaal één animatietype."
 
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationToolbar.js:65
 msgid "Quick Animations"
-msgstr ""
+msgstr "Snelle animaties"
 
 #: build/index.js:1
 #: src/blocks/shared/components/WidthPanel.js:38
 #: src/extensions/max-width/index.js:122
 msgid "Constrain Width"
-msgstr ""
+msgstr "Breedte beperken"
 
 #: build/index.js:1
 #: src/extensions/max-width/index.js:129
 msgid "Content is centered with max-width"
-msgstr ""
+msgstr "Inhoud is gecentreerd met max-breedte"
 
 #: build/index.js:1
 #: src/extensions/max-width/index.js:133
 msgid "Content uses full width"
-msgstr ""
+msgstr "Inhoud gebruikt volledige breedte"
 
 #: build/index.js:1
 #: src/blocks/shared/components/WidthPanel.js:54
@@ -6423,67 +6423,67 @@ msgstr "Inhoudsbreedte"
 #: build/index.js:1
 #: src/extensions/max-width/index.js:173
 msgid "Max width"
-msgstr ""
+msgstr "Max breedte"
 
 #: build/index.js:1
 #: src/extensions/max-width/index.js:179
 msgid "Maximum width for this block. Leave empty for no constraint."
-msgstr ""
+msgstr "Maximale breedte voor dit blok. Laat leeg voor geen beperking."
 
 #: build/index.js:1
 #: src/extensions/custom-css/index.js:98
 msgid "CSS Code"
-msgstr ""
+msgstr "CSS Code"
 
 #: build/index.js:1
 #: src/extensions/custom-css/index.js:105
 msgid "Use \"selector\" to target this block. Write nested selectors like \"selector h3\" to target elements inside."
-msgstr ""
+msgstr "Gebruik \"selector\" om dit blok te targeten. Schrijf geneste selectors zoals \"selector h3\" om elementen binnen het blok te targeten."
 
 #: build/index.js:1
 #: src/extensions/custom-css/index.js:112
 msgid "Examples:"
-msgstr ""
+msgstr "Voorbeelden:"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:157
 msgid "Replace Video"
-msgstr ""
+msgstr "Video vervangen"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:173
 msgid "Remove Video"
-msgstr ""
+msgstr "Video verwijderen"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:184
 msgid "Upload Video"
-msgstr ""
+msgstr "Video uploaden"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:219
 msgid "Poster Image (Optional)"
-msgstr ""
+msgstr "Posterafbeelding (Optioneel)"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:230
 msgid "Video poster"
-msgstr ""
+msgstr "Video poster"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:255
 msgid "Replace Poster"
-msgstr ""
+msgstr "Poster vervangen"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:273
 msgid "Remove Poster"
-msgstr ""
+msgstr "Poster verwijderen"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:285
 msgid "Upload Poster"
-msgstr ""
+msgstr "Poster uploaden"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:298
@@ -6493,52 +6493,52 @@ msgstr "Automatisch afspelen"
 #: build/index.js:1
 #: src/extensions/background-video/index.js:305
 msgid "Automatically start playing when page loads"
-msgstr ""
+msgstr "Start automatisch afspelen wanneer pagina laadt"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:318
 msgid "Restart video when it ends"
-msgstr ""
+msgstr "Herstart video wanneer deze eindigt"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:326
 msgid "Muted"
-msgstr ""
+msgstr "Gedempt"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:331
 msgid "Mute audio (required for autoplay)"
-msgstr ""
+msgstr "Geluid dempen (vereist voor automatisch afspelen)"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:339
 msgid "Hide on Mobile"
-msgstr ""
+msgstr "Verbergen op mobiel"
 
 #: build/index.js:1
 #: src/extensions/background-video/index.js:346
 msgid "Hide video on mobile devices to save bandwidth"
-msgstr ""
+msgstr "Verberg video op mobiele apparaten om bandbreedte te besparen"
 
 #: build/index.js:1
 #: src/extensions/overlay/index.js:111
 msgid "Overlay is enabled"
-msgstr ""
+msgstr "Overlay is ingeschakeld"
 
 #: build/index.js:1
 #: src/extensions/overlay/index.js:112
 msgid "Add a color overlay to this block"
-msgstr ""
+msgstr "Voeg een kleur overlay toe aan dit blok"
 
 #: build/index.js:1
 #: src/extensions/overlay/index.js:139
 msgid "Choose overlay color. Defaults to theme accent color or black."
-msgstr ""
+msgstr "Kies overlay kleur. Standaard naar thema accentkleur of zwart."
 
 #: build/index.js:1
 #: src/extensions/overlay/index.js:157
 msgid "Transparency of the overlay (0 = transparent, 100 = opaque)"
-msgstr ""
+msgstr "Doorzichtigheid van de overlay (0 = transparant, 100 = ondoorzichtig)"
 
 #: build/index.js:1
 #: src/extensions/grid-span/index.js:84
@@ -6548,179 +6548,179 @@ msgstr "Kolom Span"
 #: build/index.js:1
 #: src/extensions/grid-span/index.js:91
 msgid "Number of columns this block spans in the grid"
-msgstr ""
+msgstr "Aantal kolommen dat dit blok beslaat in het grid"
 
 #: build/index.js:1
 #: src/extensions/reveal-control/index.js:90
 #: src/extensions/reveal-control/index.js:143
 msgid "Reveal on Hover"
-msgstr ""
+msgstr "Onthullen bij hover"
 
 #: build/index.js:1
 #: src/extensions/reveal-control/index.js:94
 msgid "Enable Reveal Mode"
-msgstr ""
+msgstr "Onthullingsmodus inschakelen"
 
 #: build/index.js:1
 #: src/extensions/reveal-control/index.js:97
 msgid "Child blocks can be set to reveal when hovering over this container."
-msgstr ""
+msgstr "Onderliggende blokken kunnen worden ingesteld om te onthullen bij hover over deze container."
 
 #: build/index.js:1
 #: src/extensions/reveal-control/index.js:101
 msgid "Enable to allow child blocks to reveal on hover."
-msgstr ""
+msgstr "Schakel in om onderliggende blokken te onthullen bij hover."
 
 #: build/index.js:1
 #: src/extensions/reveal-control/index.js:114
 msgid "Collapse Animation"
-msgstr ""
+msgstr "Inklap animatie"
 
 #: build/index.js:1
 #: src/extensions/reveal-control/index.js:117
 msgid "Items collapse from height 0 with fade."
-msgstr ""
+msgstr "Items klappen in vanaf hoogte 0 met vervaging."
 
 #: build/index.js:1
 #: src/extensions/reveal-control/index.js:121
 msgid "Items fade in without size change."
-msgstr ""
+msgstr "Items vervagen zonder grootteverandering."
 
 #: build/index.js:1
 #: src/extensions/reveal-control/index.js:146
 msgid "This block will be hidden until you hover over the parent container."
-msgstr ""
+msgstr "Dit blok wordt verborgen totdat je over de bovenliggende container hovert."
 
 #: build/index.js:1
 #: src/extensions/reveal-control/index.js:150
 msgid "This block is always visible."
-msgstr ""
+msgstr "Dit blok is altijd zichtbaar."
 
 #: src/blocks/form-file-upload/edit.js:61
 msgid "Allow Multiple Files"
-msgstr ""
+msgstr "Meerdere bestanden toestaan"
 
 #: src/blocks/form-file-upload/edit.js:67
 msgid "File Restrictions"
-msgstr ""
+msgstr "Bestandsbeperkingen"
 
 #: src/blocks/form-file-upload/edit.js:69
 msgid "Accepted File Types"
-msgstr ""
+msgstr "Geaccepteerde bestandstypen"
 
 #: src/blocks/form-file-upload/edit.js:72
 msgid "e.g., .pdf,.doc,.jpg (leave empty for all)"
-msgstr ""
+msgstr "bijv. .pdf,.doc,.jpg (laat leeg voor alle)"
 
 #: src/blocks/form-file-upload/edit.js:77
 msgid "Max File Size (MB)"
-msgstr ""
+msgstr "Max bestandsgrootte (MB)"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:28
 msgid "Text Settings"
-msgstr ""
+msgstr "Tekstinstellingen"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:32
 msgid "Title Tag"
-msgstr ""
+msgstr "Titel tag"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:35
 msgid "Heading 2 (H2)"
-msgstr ""
+msgstr "Kop 2 (H2)"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:36
 msgid "Heading 3 (H3)"
-msgstr ""
+msgstr "Kop 3 (H3)"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:37
 msgid "Heading 4 (H4)"
-msgstr ""
+msgstr "Kop 4 (H4)"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:38
 msgid "Heading 5 (H5)"
-msgstr ""
+msgstr "Kop 5 (H5)"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:39
 msgid "Heading 6 (H6)"
-msgstr ""
+msgstr "Kop 6 (H6)"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:40
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:53
 msgid "Paragraph (P)"
-msgstr ""
+msgstr "Paragraaf (P)"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:41
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:55
 msgid "Div"
-msgstr ""
+msgstr "Div"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:44
 msgid "HTML element for the title"
-msgstr ""
+msgstr "HTML element voor de titel"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:50
 msgid "Description Tag"
-msgstr ""
+msgstr "Beschrijving tag"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:54
 msgid "Span"
-msgstr ""
+msgstr "Span"
 
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:58
 msgid "HTML element for the description"
-msgstr ""
+msgstr "HTML element voor de beschrijving"
 
 #: src/blocks/icon/components/inspector/IconSettingsPanel.js:62
 msgid "Change Icon"
-msgstr ""
+msgstr "Icoon wijzigen"
 
 #: src/blocks/icon/components/inspector/IconSettingsPanel.js:103
 msgid "Showing first 100 results. Refine your search to see more."
-msgstr ""
+msgstr "Eerste 100 resultaten worden getoond. Verfijn je zoekopdracht om meer te zien."
 
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:60
 msgid "Remove Link"
-msgstr ""
+msgstr "Link verwijderen"
 
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:61
 msgid "Add Link"
-msgstr ""
+msgstr "Link toevoegen"
 
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:75
 msgid "Open in"
-msgstr ""
+msgstr "Openen in"
 
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:79
 msgid "Same Tab"
-msgstr ""
+msgstr "Zelfde tab"
 
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:83
 msgid "New Tab"
-msgstr ""
+msgstr "Nieuwe tab"
 
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:100
 msgid "Recommended: \"noopener noreferrer\""
-msgstr ""
+msgstr "Aanbevolen: \"noopener noreferrer\""
 
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:27
 msgid "Shape & Background"
-msgstr ""
+msgstr "Vorm & Achtergrond"
 
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:31
 msgid "Background Shape"
-msgstr ""
+msgstr "Achtergrondvorm"
 
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:38
 msgid "Rounded Square"
-msgstr ""
+msgstr "Afgerond vierkant"
 
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:45
 msgid "Select a shape to add a background behind the icon."
-msgstr ""
+msgstr "Selecteer een vorm om een achtergrond achter het icoon toe te voegen."
 
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:49
 msgid "The background color is set in the \"Color\" panel below."
-msgstr ""
+msgstr "De achtergrondkleur wordt ingesteld in het paneel \"Kleur\" hieronder."
 
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:61
 msgid "Padding"
@@ -6728,25 +6728,25 @@ msgstr "Opvulling"
 
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:69
 msgid "Space between the icon and the shape edge."
-msgstr ""
+msgstr "Ruimte tussen het icoon en de rand van de vorm."
 
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:77
 msgid "💡 Tip: Set the background color using the \"Color\" panel, and adjust border radius using the \"Border\" panel."
-msgstr ""
+msgstr "💡 Tip: Stel de achtergrondkleur in met het paneel \"Kleur\" en pas de hoekafronding aan met het paneel \"Rand\"."
 
 #: src/blocks/shared/components/WidthPanel.js:43
 msgid "Content is constrained to max width"
-msgstr ""
+msgstr "Inhoud is beperkt tot max breedte"
 
 #: src/blocks/shared/components/WidthPanel.js:47
 msgid "Content uses full container width"
-msgstr ""
+msgstr "Inhoud gebruikt volledige containerbreedte"
 
 #: build/blocks/accordion-item/block.json
 #: src/blocks/accordion-item/block.json
 msgctxt "block description"
 msgid "An individual collapsible item within an accordion."
-msgstr ""
+msgstr "Een individueel inklapbaar item binnen een accordeon."
 
 #: build/blocks/accordion-item/block.json
 #: build/blocks/accordion/block.json
@@ -6762,7 +6762,7 @@ msgstr ""
 #: src/blocks/tabs/block.json
 msgctxt "block keyword"
 msgid "accordion"
-msgstr ""
+msgstr "accordeon"
 
 #: build/blocks/accordion-item/block.json
 #: build/blocks/image-accordion-item/block.json
@@ -6774,7 +6774,7 @@ msgstr ""
 #: src/blocks/slide/block.json
 msgctxt "block keyword"
 msgid "item"
-msgstr ""
+msgstr "item"
 
 #: build/blocks/accordion-item/block.json
 #: build/blocks/image-accordion-item/block.json
@@ -6788,7 +6788,7 @@ msgstr ""
 #: src/blocks/tab/block.json
 msgctxt "block keyword"
 msgid "panel"
-msgstr ""
+msgstr "paneel"
 
 #: build/blocks/accordion-item/block.json
 #: build/blocks/image-accordion-item/block.json
@@ -6800,25 +6800,25 @@ msgstr ""
 #: src/blocks/stack/block.json
 msgctxt "block keyword"
 msgid "section"
-msgstr ""
+msgstr "sectie"
 
 #: build/blocks/accordion/block.json
 #: src/blocks/accordion/block.json
 msgctxt "block description"
 msgid "Create accessible accordion sections with customizable icons and behavior for FAQs and content organization."
-msgstr ""
+msgstr "Creëer toegankelijke accordeon secties met aanpasbare iconen en gedrag voor FAQs en contentorganisatie."
 
 #: build/blocks/accordion/block.json
 #: src/blocks/accordion/block.json
 msgctxt "block keyword"
 msgid "faq"
-msgstr ""
+msgstr "faq"
 
 #: build/blocks/accordion/block.json
 #: src/blocks/accordion/block.json
 msgctxt "block keyword"
 msgid "collapsible"
-msgstr ""
+msgstr "inklapbaar"
 
 #: build/blocks/accordion/block.json
 #: build/blocks/form-checkbox-field/block.json
@@ -6828,7 +6828,7 @@ msgstr ""
 #: src/blocks/tabs/block.json
 msgctxt "block keyword"
 msgid "toggle"
-msgstr ""
+msgstr "schakelaar"
 
 #: build/blocks/accordion/block.json
 #: build/blocks/image-accordion/block.json
@@ -6836,55 +6836,55 @@ msgstr ""
 #: src/blocks/image-accordion/block.json
 msgctxt "block keyword"
 msgid "expand"
-msgstr ""
+msgstr "uitklappen"
 
 #: build/blocks/blobs/block.json
 #: src/blocks/blobs/block.json
 msgctxt "block description"
 msgid "Create random, unique, and organic-looking blob shapes. Customize with gradients, overlays, and images. Animate with smooth morphing effects."
-msgstr ""
+msgstr "Creëer willekeurige, unieke en organisch ogende blob vormen. Pas aan met gradiënten, overlays en afbeeldingen. Animeer met vloeiende morph effecten."
 
 #: build/blocks/blobs/block.json
 #: src/blocks/blobs/block.json
 msgctxt "block keyword"
 msgid "blob"
-msgstr ""
+msgstr "blob"
 
 #: build/blocks/blobs/block.json
 #: src/blocks/blobs/block.json
 msgctxt "block keyword"
 msgid "shape"
-msgstr ""
+msgstr "vorm"
 
 #: build/blocks/blobs/block.json
 #: src/blocks/blobs/block.json
 msgctxt "block keyword"
 msgid "organic"
-msgstr ""
+msgstr "organisch"
 
 #: build/blocks/blobs/block.json
 #: src/blocks/blobs/block.json
 msgctxt "block keyword"
 msgid "morph"
-msgstr ""
+msgstr "morph"
 
 #: build/blocks/blobs/block.json
 #: src/blocks/blobs/block.json
 msgctxt "block keyword"
 msgid "animate"
-msgstr ""
+msgstr "animeren"
 
 #: build/blocks/blobs/block.json
 #: src/blocks/blobs/block.json
 msgctxt "block keyword"
 msgid "gradient"
-msgstr ""
+msgstr "gradiënt"
 
 #: build/blocks/counter-group/block.json
 #: src/blocks/counter-group/block.json
 msgctxt "block description"
 msgid "Display animated statistics and numbers that count up on scroll"
-msgstr ""
+msgstr "Toon geanimeerde statistieken en nummers die optellen bij scrollen"
 
 #: build/blocks/counter-group/block.json
 #: build/blocks/counter/block.json
@@ -6892,37 +6892,37 @@ msgstr ""
 #: src/blocks/counter/block.json
 msgctxt "block keyword"
 msgid "counter"
-msgstr ""
+msgstr "teller"
 
 #: build/blocks/counter-group/block.json
 #: src/blocks/counter-group/block.json
 msgctxt "block keyword"
 msgid "stats"
-msgstr ""
+msgstr "statistieken"
 
 #: build/blocks/counter-group/block.json
 #: src/blocks/counter-group/block.json
 msgctxt "block keyword"
 msgid "statistics"
-msgstr ""
+msgstr "statistieken"
 
 #: build/blocks/counter-group/block.json
 #: src/blocks/counter-group/block.json
 msgctxt "block keyword"
 msgid "numbers"
-msgstr ""
+msgstr "nummers"
 
 #: build/blocks/counter-group/block.json
 #: src/blocks/counter-group/block.json
 msgctxt "block keyword"
 msgid "animated"
-msgstr ""
+msgstr "geanimeerd"
 
 #: build/blocks/counter/block.json
 #: src/blocks/counter/block.json
 msgctxt "block description"
 msgid "Individual counter item with animated number"
-msgstr ""
+msgstr "Individueel telleritem met geanimeerd nummer"
 
 #: build/blocks/counter/block.json
 #: build/blocks/progress-bar/block.json
@@ -6930,7 +6930,7 @@ msgstr ""
 #: src/blocks/progress-bar/block.json
 msgctxt "block keyword"
 msgid "stat"
-msgstr ""
+msgstr "statistiek"
 
 #: build/blocks/counter/block.json
 #: build/blocks/form-number-field/block.json
@@ -6938,37 +6938,37 @@ msgstr ""
 #: src/blocks/form-number-field/block.json
 msgctxt "block keyword"
 msgid "number"
-msgstr ""
+msgstr "nummer"
 
 #: build/blocks/flex/block.json
 #: src/blocks/flex/block.json
 msgctxt "block description"
 msgid "Flexible horizontal or vertical layouts with wrapping. Perfect for button groups, hero sections, and responsive card layouts."
-msgstr ""
+msgstr "Flexibele horizontale of verticale layouts met wrapping. Perfect voor knopgroepen, hero secties en responsieve card layouts."
 
 #: build/blocks/flex/block.json
 #: src/blocks/flex/block.json
 msgctxt "block keyword"
 msgid "flex"
-msgstr ""
+msgstr "flex"
 
 #: build/blocks/flex/block.json
 #: src/blocks/flex/block.json
 msgctxt "block keyword"
 msgid "flexbox"
-msgstr ""
+msgstr "flexbox"
 
 #: build/blocks/flex/block.json
 #: src/blocks/flex/block.json
 msgctxt "block keyword"
 msgid "horizontal"
-msgstr ""
+msgstr "horizontaal"
 
 #: build/blocks/flex/block.json
 #: src/blocks/flex/block.json
 msgctxt "block keyword"
 msgid "row"
-msgstr ""
+msgstr "rij"
 
 #: build/blocks/flex/block.json
 #: build/blocks/grid/block.json
@@ -6978,7 +6978,7 @@ msgstr ""
 #: src/blocks/stack/block.json
 msgctxt "block keyword"
 msgid "layout"
-msgstr ""
+msgstr "layout"
 
 #: build/blocks/flex/block.json
 #: build/blocks/grid/block.json
@@ -6990,13 +6990,13 @@ msgstr ""
 #: src/blocks/stack/block.json
 msgctxt "block keyword"
 msgid "container"
-msgstr ""
+msgstr "container"
 
 #: build/blocks/flip-card-back/block.json
 #: src/blocks/flip-card-back/block.json
 msgctxt "block description"
 msgid "Back face of the flip card."
-msgstr ""
+msgstr "Achterkant van de flip card."
 
 #: build/blocks/flip-card-back/block.json
 #: build/blocks/flip-card-front/block.json
@@ -7006,7 +7006,7 @@ msgstr ""
 #: src/blocks/flip-card/block.json
 msgctxt "block keyword"
 msgid "flip"
-msgstr ""
+msgstr "flip"
 
 #: build/blocks/flip-card-back/block.json
 #: build/blocks/flip-card-front/block.json
@@ -7016,37 +7016,37 @@ msgstr ""
 #: src/blocks/flip-card/block.json
 msgctxt "block keyword"
 msgid "card"
-msgstr ""
+msgstr "kaart"
 
 #: build/blocks/flip-card-back/block.json
 #: src/blocks/flip-card-back/block.json
 msgctxt "block keyword"
 msgid "back"
-msgstr ""
+msgstr "achterkant"
 
 #: build/blocks/flip-card-front/block.json
 #: src/blocks/flip-card-front/block.json
 msgctxt "block description"
 msgid "Front face of the flip card."
-msgstr ""
+msgstr "Voorkant van de flip card."
 
 #: build/blocks/flip-card-front/block.json
 #: src/blocks/flip-card-front/block.json
 msgctxt "block keyword"
 msgid "front"
-msgstr ""
+msgstr "voorkant"
 
 #: build/blocks/flip-card/block.json
 #: src/blocks/flip-card/block.json
 msgctxt "block description"
 msgid "Interactive card that flips to reveal content on the back. Perfect for team profiles, product showcases, and feature highlights."
-msgstr ""
+msgstr "Interactieve kaart die omdraait om inhoud aan de achterkant te onthullen. Perfect voor teamprofielen, productshowcases en feature highlights."
 
 #: build/blocks/flip-card/block.json
 #: src/blocks/flip-card/block.json
 msgctxt "block keyword"
 msgid "interactive"
-msgstr ""
+msgstr "interactief"
 
 #: build/blocks/flip-card/block.json
 #: build/blocks/image-accordion/block.json
@@ -7056,7 +7056,7 @@ msgstr ""
 #: src/blocks/reveal/block.json
 msgctxt "block keyword"
 msgid "hover"
-msgstr ""
+msgstr "hover"
 
 #: build/blocks/flip-card/block.json
 #: src/blocks/flip-card/block.json
@@ -7068,13 +7068,13 @@ msgstr "3d"
 #: src/blocks/flip-card/block.json
 msgctxt "block keyword"
 msgid "rotate"
-msgstr ""
+msgstr "draaien"
 
 #: build/blocks/form-builder/block.json
 #: src/blocks/form-builder/block.json
 msgctxt "block description"
 msgid "Create custom forms with multiple field types, AJAX submission, and spam protection."
-msgstr ""
+msgstr "Creëer aangepaste formulieren met meerdere veldtypen, AJAX verzending en spambescherming."
 
 #: build/blocks/form-builder/block.json
 #: build/blocks/form-checkbox-field/block.json
@@ -7104,31 +7104,31 @@ msgstr ""
 #: src/blocks/form-url-field/block.json
 msgctxt "block keyword"
 msgid "form"
-msgstr ""
+msgstr "formulier"
 
 #: build/blocks/form-builder/block.json
 #: src/blocks/form-builder/block.json
 msgctxt "block keyword"
 msgid "contact"
-msgstr ""
+msgstr "contact"
 
 #: build/blocks/form-builder/block.json
 #: src/blocks/form-builder/block.json
 msgctxt "block keyword"
 msgid "submit"
-msgstr ""
+msgstr "verzenden"
 
 #: build/blocks/form-builder/block.json
 #: src/blocks/form-builder/block.json
 msgctxt "block keyword"
 msgid "fields"
-msgstr ""
+msgstr "velden"
 
 #: build/blocks/form-builder/block.json
 #: src/blocks/form-builder/block.json
 msgctxt "block keyword"
 msgid "survey"
-msgstr ""
+msgstr "enquête"
 
 #: build/blocks/form-checkbox-field/block.json
 #: src/blocks/form-checkbox-field/block.json
@@ -7140,19 +7140,19 @@ msgstr "Een enkel checkbox veld voor formulieren."
 #: src/blocks/form-checkbox-field/block.json
 msgctxt "block keyword"
 msgid "checkbox"
-msgstr ""
+msgstr "checkbox"
 
 #: build/blocks/form-checkbox-field/block.json
 #: src/blocks/form-checkbox-field/block.json
 msgctxt "block keyword"
 msgid "check"
-msgstr ""
+msgstr "vinkje"
 
 #: build/blocks/form-checkbox-field/block.json
 #: src/blocks/form-checkbox-field/block.json
 msgctxt "block keyword"
 msgid "agree"
-msgstr ""
+msgstr "akkoord"
 
 #: build/blocks/form-date-field/block.json
 #: src/blocks/form-date-field/block.json
@@ -7164,37 +7164,37 @@ msgstr "Een datumkiezer invoerveld voor formulieren."
 #: src/blocks/form-date-field/block.json
 msgctxt "block keyword"
 msgid "date"
-msgstr ""
+msgstr "datum"
 
 #: build/blocks/form-date-field/block.json
 #: src/blocks/form-date-field/block.json
 msgctxt "block keyword"
 msgid "calendar"
-msgstr ""
+msgstr "kalender"
 
 #: build/blocks/form-date-field/block.json
 #: src/blocks/form-date-field/block.json
 msgctxt "block keyword"
 msgid "datepicker"
-msgstr ""
+msgstr "datumkiezer"
 
 #: build/blocks/form-date-field/block.json
 #: src/blocks/form-date-field/block.json
 msgctxt "block keyword"
 msgid "day"
-msgstr ""
+msgstr "dag"
 
 #: build/blocks/form-email-field/block.json
 #: src/blocks/form-email-field/block.json
 msgctxt "block description"
 msgid "Email input field with built-in validation."
-msgstr ""
+msgstr "E-mail invoerveld met ingebouwde validatie."
 
 #: build/blocks/form-email-field/block.json
 #: src/blocks/form-email-field/block.json
 msgctxt "block keyword"
 msgid "email"
-msgstr ""
+msgstr "e-mail"
 
 #: build/blocks/form-email-field/block.json
 #: build/blocks/form-number-field/block.json
@@ -7204,7 +7204,7 @@ msgstr ""
 #: src/blocks/form-text-field/block.json
 msgctxt "block keyword"
 msgid "input"
-msgstr ""
+msgstr "invoer"
 
 #: build/blocks/form-email-field/block.json
 #: build/blocks/form-text-field/block.json
@@ -7212,13 +7212,13 @@ msgstr ""
 #: src/blocks/form-text-field/block.json
 msgctxt "block keyword"
 msgid "field"
-msgstr ""
+msgstr "veld"
 
 #: build/blocks/form-file-upload/block.json
 #: src/blocks/form-file-upload/block.json
 msgctxt "block title"
 msgid "File Upload Field"
-msgstr ""
+msgstr "Bestandsupload veld"
 
 #: build/blocks/form-file-upload/block.json
 #: src/blocks/form-file-upload/block.json
@@ -7230,19 +7230,19 @@ msgstr "Een bestandsupload veld voor formulieren."
 #: src/blocks/form-file-upload/block.json
 msgctxt "block keyword"
 msgid "file"
-msgstr ""
+msgstr "bestand"
 
 #: build/blocks/form-file-upload/block.json
 #: src/blocks/form-file-upload/block.json
 msgctxt "block keyword"
 msgid "upload"
-msgstr ""
+msgstr "uploaden"
 
 #: build/blocks/form-file-upload/block.json
 #: src/blocks/form-file-upload/block.json
 msgctxt "block keyword"
 msgid "attachment"
-msgstr ""
+msgstr "bijlage"
 
 #: build/blocks/form-hidden-field/block.json
 #: src/blocks/form-hidden-field/block.json
@@ -7256,19 +7256,19 @@ msgstr "Een verborgen veld voor het doorgeven van data in formulieren."
 #: src/blocks/reveal/block.json
 msgctxt "block keyword"
 msgid "hidden"
-msgstr ""
+msgstr "verborgen"
 
 #: build/blocks/form-hidden-field/block.json
 #: src/blocks/form-hidden-field/block.json
 msgctxt "block keyword"
 msgid "data"
-msgstr ""
+msgstr "gegevens"
 
 #: build/blocks/form-hidden-field/block.json
 #: src/blocks/form-hidden-field/block.json
 msgctxt "block keyword"
 msgid "value"
-msgstr ""
+msgstr "waarde"
 
 #: build/blocks/form-number-field/block.json
 #: src/blocks/form-number-field/block.json
@@ -7280,13 +7280,13 @@ msgstr "Een nummer invoerveld voor formulieren."
 #: src/blocks/form-number-field/block.json
 msgctxt "block keyword"
 msgid "integer"
-msgstr ""
+msgstr "geheel getal"
 
 #: build/blocks/form-number-field/block.json
 #: src/blocks/form-number-field/block.json
 msgctxt "block keyword"
 msgid "decimal"
-msgstr ""
+msgstr "decimaal"
 
 #: build/blocks/form-phone-field/block.json
 #: src/blocks/form-phone-field/block.json
@@ -7298,25 +7298,25 @@ msgstr "Een telefoonnummer invoerveld voor formulieren."
 #: src/blocks/form-phone-field/block.json
 msgctxt "block keyword"
 msgid "phone"
-msgstr ""
+msgstr "telefoon"
 
 #: build/blocks/form-phone-field/block.json
 #: src/blocks/form-phone-field/block.json
 msgctxt "block keyword"
 msgid "telephone"
-msgstr ""
+msgstr "telefoon"
 
 #: build/blocks/form-phone-field/block.json
 #: src/blocks/form-phone-field/block.json
 msgctxt "block keyword"
 msgid "tel"
-msgstr ""
+msgstr "tel"
 
 #: build/blocks/form-phone-field/block.json
 #: src/blocks/form-phone-field/block.json
 msgctxt "block keyword"
 msgid "mobile"
-msgstr ""
+msgstr "mobiel"
 
 #: build/blocks/form-select-field/block.json
 #: src/blocks/form-select-field/block.json
@@ -7328,31 +7328,31 @@ msgstr "Een dropdown selectieveld voor formulieren."
 #: src/blocks/form-select-field/block.json
 msgctxt "block keyword"
 msgid "select"
-msgstr ""
+msgstr "selecteren"
 
 #: build/blocks/form-select-field/block.json
 #: src/blocks/form-select-field/block.json
 msgctxt "block keyword"
 msgid "dropdown"
-msgstr ""
+msgstr "vervolgkeuzelijst"
 
 #: build/blocks/form-select-field/block.json
 #: src/blocks/form-select-field/block.json
 msgctxt "block keyword"
 msgid "options"
-msgstr ""
+msgstr "opties"
 
 #: build/blocks/form-select-field/block.json
 #: src/blocks/form-select-field/block.json
 msgctxt "block keyword"
 msgid "choice"
-msgstr ""
+msgstr "keuze"
 
 #: build/blocks/form-text-field/block.json
 #: src/blocks/form-text-field/block.json
 msgctxt "block description"
 msgid "Single-line text input field for forms."
-msgstr ""
+msgstr "Eenregelig tekst invoerveld voor formulieren."
 
 #: build/blocks/form-text-field/block.json
 #: build/blocks/form-textarea/block.json
@@ -7360,25 +7360,25 @@ msgstr ""
 #: src/blocks/form-textarea/block.json
 msgctxt "block keyword"
 msgid "text"
-msgstr ""
+msgstr "tekst"
 
 #: build/blocks/form-textarea/block.json
 #: src/blocks/form-textarea/block.json
 msgctxt "block description"
 msgid "Multi-line text area for longer text input."
-msgstr ""
+msgstr "Meerregelig tekstvak voor langere tekstinvoer."
 
 #: build/blocks/form-textarea/block.json
 #: src/blocks/form-textarea/block.json
 msgctxt "block keyword"
 msgid "textarea"
-msgstr ""
+msgstr "tekstvak"
 
 #: build/blocks/form-textarea/block.json
 #: src/blocks/form-textarea/block.json
 msgctxt "block keyword"
 msgid "message"
-msgstr ""
+msgstr "bericht"
 
 #: build/blocks/form-time-field/block.json
 #: src/blocks/form-time-field/block.json
@@ -7390,25 +7390,25 @@ msgstr "Een tijdkiezer invoerveld voor formulieren."
 #: src/blocks/form-time-field/block.json
 msgctxt "block keyword"
 msgid "time"
-msgstr ""
+msgstr "tijd"
 
 #: build/blocks/form-time-field/block.json
 #: src/blocks/form-time-field/block.json
 msgctxt "block keyword"
 msgid "clock"
-msgstr ""
+msgstr "klok"
 
 #: build/blocks/form-time-field/block.json
 #: src/blocks/form-time-field/block.json
 msgctxt "block keyword"
 msgid "timepicker"
-msgstr ""
+msgstr "tijdkiezer"
 
 #: build/blocks/form-time-field/block.json
 #: src/blocks/form-time-field/block.json
 msgctxt "block keyword"
 msgid "hour"
-msgstr ""
+msgstr "uur"
 
 #: build/blocks/form-url-field/block.json
 #: src/blocks/form-url-field/block.json
@@ -7420,13 +7420,13 @@ msgstr "Een URL/website adres invoerveld voor formulieren."
 #: src/blocks/form-url-field/block.json
 msgctxt "block keyword"
 msgid "url"
-msgstr ""
+msgstr "url"
 
 #: build/blocks/form-url-field/block.json
 #: src/blocks/form-url-field/block.json
 msgctxt "block keyword"
 msgid "website"
-msgstr ""
+msgstr "website"
 
 #: build/blocks/form-url-field/block.json
 #: build/blocks/icon-button/block.json
@@ -7434,37 +7434,37 @@ msgstr ""
 #: src/blocks/icon-button/block.json
 msgctxt "block keyword"
 msgid "link"
-msgstr ""
+msgstr "link"
 
 #: build/blocks/form-url-field/block.json
 #: src/blocks/form-url-field/block.json
 msgctxt "block keyword"
 msgid "address"
-msgstr ""
+msgstr "adres"
 
 #: build/blocks/grid/block.json
 #: src/blocks/grid/block.json
 msgctxt "block description"
 msgid "Responsive multi-column grid layouts. Perfect for feature grids, product listings, team members, and card layouts."
-msgstr ""
+msgstr "Responsieve meerkoloms grid layouts. Perfect voor feature grids, productlijsten, teamleden en card layouts."
 
 #: build/blocks/grid/block.json
 #: src/blocks/grid/block.json
 msgctxt "block keyword"
 msgid "grid"
-msgstr ""
+msgstr "grid"
 
 #: build/blocks/grid/block.json
 #: src/blocks/grid/block.json
 msgctxt "block keyword"
 msgid "columns"
-msgstr ""
+msgstr "kolommen"
 
 #: build/blocks/grid/block.json
 #: src/blocks/grid/block.json
 msgctxt "block keyword"
 msgid "responsive"
-msgstr ""
+msgstr "responsief"
 
 #: build/blocks/icon-button/block.json
 #: src/blocks/icon-button/block.json
@@ -7476,7 +7476,7 @@ msgstr "Een knop met optioneel icoon aan het begin of einde."
 #: src/blocks/icon-button/block.json
 msgctxt "block keyword"
 msgid "button"
-msgstr ""
+msgstr "knop"
 
 #: build/blocks/icon-button/block.json
 #: build/blocks/icon-list-item/block.json
@@ -7488,19 +7488,19 @@ msgstr ""
 #: src/blocks/icon/block.json
 msgctxt "block keyword"
 msgid "icon"
-msgstr ""
+msgstr "icoon"
 
 #: build/blocks/icon-button/block.json
 #: src/blocks/icon-button/block.json
 msgctxt "block keyword"
 msgid "call to action"
-msgstr ""
+msgstr "call to action"
 
 #: build/blocks/icon-button/block.json
 #: src/blocks/icon-button/block.json
 msgctxt "block keyword"
 msgid "cta"
-msgstr ""
+msgstr "cta"
 
 #: build/blocks/icon-list-item/block.json
 #: src/blocks/icon-list-item/block.json
@@ -7512,73 +7512,73 @@ msgstr "Een enkel item in een icoonlijst met icoon, titel en beschrijving."
 #: src/blocks/icon-list-item/block.json
 msgctxt "block keyword"
 msgid "list item"
-msgstr ""
+msgstr "lijstitem"
 
 #: build/blocks/icon-list-item/block.json
 #: src/blocks/icon-list-item/block.json
 msgctxt "block keyword"
 msgid "feature"
-msgstr ""
+msgstr "feature"
 
 #: build/blocks/icon-list/block.json
 #: src/blocks/icon-list/block.json
 msgctxt "block description"
 msgid "Create a list of items with icons, titles, and descriptions."
-msgstr ""
+msgstr "Creëer een lijst met items met iconen, titels en beschrijvingen."
 
 #: build/blocks/icon-list/block.json
 #: src/blocks/icon-list/block.json
 msgctxt "block keyword"
 msgid "list"
-msgstr ""
+msgstr "lijst"
 
 #: build/blocks/icon-list/block.json
 #: src/blocks/icon-list/block.json
 msgctxt "block keyword"
 msgid "features"
-msgstr ""
+msgstr "features"
 
 #: build/blocks/icon-list/block.json
 #: src/blocks/icon-list/block.json
 msgctxt "block keyword"
 msgid "benefits"
-msgstr ""
+msgstr "voordelen"
 
 #: build/blocks/icon-list/block.json
 #: src/blocks/icon-list/block.json
 msgctxt "block keyword"
 msgid "services"
-msgstr ""
+msgstr "diensten"
 
 #: build/blocks/icon/block.json
 #: src/blocks/icon/block.json
 msgctxt "block description"
 msgid "Display an inline SVG icon with customizable styling."
-msgstr ""
+msgstr "Toon een inline SVG icoon met aanpasbare styling."
 
 #: build/blocks/icon/block.json
 #: src/blocks/icon/block.json
 msgctxt "block keyword"
 msgid "svg"
-msgstr ""
+msgstr "svg"
 
 #: build/blocks/icon/block.json
 #: src/blocks/icon/block.json
 msgctxt "block keyword"
 msgid "symbol"
-msgstr ""
+msgstr "symbool"
 
 #: build/blocks/icon/block.json
 #: src/blocks/icon/block.json
 msgctxt "block keyword"
 msgid "graphic"
-msgstr ""
+msgstr "grafisch"
 
 #: build/blocks/image-accordion-item/block.json
 #: src/blocks/image-accordion-item/block.json
 msgctxt "block description"
 msgid "An individual expandable panel within an image accordion."
-msgstr ""
+msgstr "Een individueel uitklapbaar paneel binnen een afbeeldingenaccordeon."
 
 #: build/blocks/image-accordion-item/block.json
 #: build/blocks/image-accordion/block.json
@@ -7586,13 +7586,13 @@ msgstr ""
 #: src/blocks/image-accordion/block.json
 msgctxt "block keyword"
 msgid "image"
-msgstr ""
+msgstr "afbeelding"
 
 #: build/blocks/image-accordion/block.json
 #: src/blocks/image-accordion/block.json
 msgctxt "block description"
 msgid "Display a series of expandable image panels that reveal content on hover or click, perfect for showcasing portfolios, galleries, or featured content."
-msgstr ""
+msgstr "Toon een reeks uitklapbare afbeeldingspanelen die inhoud onthullen bij hover of klik, perfect voor het tonen van portfolio's, galerijen of uitgelichte content."
 
 #: build/blocks/image-accordion/block.json
 #: build/blocks/scroll-marquee/block.json
@@ -7602,97 +7602,97 @@ msgstr ""
 #: src/blocks/slider/block.json
 msgctxt "block keyword"
 msgid "gallery"
-msgstr ""
+msgstr "galerij"
 
 #: build/blocks/image-accordion/block.json
 #: src/blocks/image-accordion/block.json
 msgctxt "block keyword"
 msgid "portfolio"
-msgstr ""
+msgstr "portfolio"
 
 #: build/blocks/pill/block.json
 #: src/blocks/pill/block.json
 msgctxt "block description"
 msgid "Display text with a rounded background that wraps tightly around content."
-msgstr ""
+msgstr "Toon tekst met een afgeronde achtergrond die nauw om de inhoud past."
 
 #: build/blocks/pill/block.json
 #: src/blocks/pill/block.json
 msgctxt "block keyword"
 msgid "pill"
-msgstr ""
+msgstr "pill"
 
 #: build/blocks/pill/block.json
 #: src/blocks/pill/block.json
 msgctxt "block keyword"
 msgid "badge"
-msgstr ""
+msgstr "badge"
 
 #: build/blocks/pill/block.json
 #: src/blocks/pill/block.json
 msgctxt "block keyword"
 msgid "tag"
-msgstr ""
+msgstr "tag"
 
 #: build/blocks/pill/block.json
 #: src/blocks/pill/block.json
 msgctxt "block keyword"
 msgid "label"
-msgstr ""
+msgstr "label"
 
 #: build/blocks/progress-bar/block.json
 #: src/blocks/progress-bar/block.json
 msgctxt "block description"
 msgid "Display progress or statistics with an animated bar"
-msgstr ""
+msgstr "Toon voortgang of statistieken met een geanimeerde balk"
 
 #: build/blocks/progress-bar/block.json
 #: src/blocks/progress-bar/block.json
 msgctxt "block keyword"
 msgid "progress"
-msgstr ""
+msgstr "voortgang"
 
 #: build/blocks/progress-bar/block.json
 #: src/blocks/progress-bar/block.json
 msgctxt "block keyword"
 msgid "bar"
-msgstr ""
+msgstr "balk"
 
 #: build/blocks/progress-bar/block.json
 #: src/blocks/progress-bar/block.json
 msgctxt "block keyword"
 msgid "percentage"
-msgstr ""
+msgstr "percentage"
 
 #: build/blocks/progress-bar/block.json
 #: src/blocks/progress-bar/block.json
 msgctxt "block keyword"
 msgid "meter"
-msgstr ""
+msgstr "meter"
 
 #: build/blocks/reveal/block.json
 #: src/blocks/reveal/block.json
 msgctxt "block description"
 msgid "Container that reveals hidden content on hover"
-msgstr ""
+msgstr "Container die verborgen inhoud onthult bij hover"
 
 #: build/blocks/reveal/block.json
 #: src/blocks/reveal/block.json
 msgctxt "block keyword"
 msgid "reveal"
-msgstr ""
+msgstr "onthullen"
 
 #: build/blocks/reveal/block.json
 #: src/blocks/reveal/block.json
 msgctxt "block keyword"
 msgid "show"
-msgstr ""
+msgstr "tonen"
 
 #: build/blocks/scroll-accordion-item/block.json
 #: src/blocks/scroll-accordion-item/block.json
 msgctxt "block description"
 msgid "Individual item within a Scroll Accordion"
-msgstr ""
+msgstr "Individueel item binnen een Scroll Accordeon"
 
 #: build/blocks/scroll-accordion-item/block.json
 #: build/blocks/scroll-accordion/block.json
@@ -7702,145 +7702,145 @@ msgstr ""
 #: src/blocks/scroll-marquee/block.json
 msgctxt "block keyword"
 msgid "scroll"
-msgstr ""
+msgstr "scrollen"
 
 #: build/blocks/scroll-accordion/block.json
 #: src/blocks/scroll-accordion/block.json
 msgctxt "block description"
 msgid "Accordion that reveals items progressively as you scroll down the page"
-msgstr ""
+msgstr "Accordeon die items geleidelijk onthult terwijl je naar beneden scrolt"
 
 #: build/blocks/scroll-accordion/block.json
 #: src/blocks/scroll-accordion/block.json
 msgctxt "block keyword"
 msgid "sticky"
-msgstr ""
+msgstr "sticky"
 
 #: build/blocks/scroll-accordion/block.json
 #: src/blocks/scroll-accordion/block.json
 msgctxt "block keyword"
 msgid "stacking"
-msgstr ""
+msgstr "stapelen"
 
 #: build/blocks/scroll-marquee/block.json
 #: src/blocks/scroll-marquee/block.json
 msgctxt "block description"
 msgid "Display rows of images that scroll horizontally in alternating directions based on page scroll. For best performance, use optimized images (WebP format recommended) and limit to 20 images or less."
-msgstr ""
+msgstr "Toon rijen afbeeldingen die horizontaal scrollen in afwisselende richtingen op basis van pagina scroll. Voor de beste prestaties gebruik je geoptimaliseerde afbeeldingen (WebP formaat aanbevolen) en beperk je tot 20 afbeeldingen of minder."
 
 #: build/blocks/scroll-marquee/block.json
 #: src/blocks/scroll-marquee/block.json
 msgctxt "block keyword"
 msgid "marquee"
-msgstr ""
+msgstr "marquee"
 
 #: build/blocks/scroll-marquee/block.json
 #: src/blocks/scroll-marquee/block.json
 msgctxt "block keyword"
 msgid "parallax"
-msgstr ""
+msgstr "parallax"
 
 #: build/blocks/scroll-marquee/block.json
 #: src/blocks/scroll-marquee/block.json
 msgctxt "block keyword"
 msgid "images"
-msgstr ""
+msgstr "afbeeldingen"
 
 #: build/blocks/scroll-marquee/block.json
 #: src/blocks/scroll-marquee/block.json
 msgctxt "block keyword"
 msgid "infinite"
-msgstr ""
+msgstr "oneindig"
 
 #: build/blocks/slide/block.json
 #: src/blocks/slide/block.json
 msgctxt "block description"
 msgid "Individual slide within a slider with background image support and full block flexibility."
-msgstr ""
+msgstr "Individuele slide binnen een slider met ondersteuning voor achtergrondafbeeldingen en volledige blokflexibiliteit."
 
 #: build/blocks/slide/block.json
 #: src/blocks/slide/block.json
 msgctxt "block keyword"
 msgid "slide"
-msgstr ""
+msgstr "slide"
 
 #: build/blocks/slider/block.json
 #: src/blocks/slider/block.json
 msgctxt "block description"
 msgid "A modern, performant slider with multiple transition effects, auto-play, and full block support inside slides."
-msgstr ""
+msgstr "Een moderne, performante slider met meerdere overgangseffecten, automatisch afspelen en volledige blokondersteuning binnen slides."
 
 #: build/blocks/slider/block.json
 #: src/blocks/slider/block.json
 msgctxt "block keyword"
 msgid "slider"
-msgstr ""
+msgstr "slider"
 
 #: build/blocks/slider/block.json
 #: src/blocks/slider/block.json
 msgctxt "block keyword"
 msgid "carousel"
-msgstr ""
+msgstr "carrousel"
 
 #: build/blocks/slider/block.json
 #: src/blocks/slider/block.json
 msgctxt "block keyword"
 msgid "slideshow"
-msgstr ""
+msgstr "diavoorstelling"
 
 #: build/blocks/slider/block.json
 #: src/blocks/slider/block.json
 msgctxt "block keyword"
 msgid "hero"
-msgstr ""
+msgstr "hero"
 
 #: build/blocks/stack/block.json
 #: src/blocks/stack/block.json
 msgctxt "block description"
 msgid "Simple vertical stacking container with consistent gaps. Perfect for sections, content areas, and vertical layouts."
-msgstr ""
+msgstr "Eenvoudige verticale stapelcontainer met consistente tussenruimten. Perfect voor secties, contentgebieden en verticale layouts."
 
 #: build/blocks/stack/block.json
 #: src/blocks/stack/block.json
 msgctxt "block keyword"
 msgid "stack"
-msgstr ""
+msgstr "stapel"
 
 #: build/blocks/stack/block.json
 #: src/blocks/stack/block.json
 msgctxt "block keyword"
 msgid "vertical"
-msgstr ""
+msgstr "verticaal"
 
 #: build/blocks/tab/block.json
 #: src/blocks/tab/block.json
 msgctxt "block description"
 msgid "Individual tab panel within a Tabs block."
-msgstr ""
+msgstr "Individueel tab paneel binnen een Tabs blok."
 
 #: build/blocks/tab/block.json
 #: src/blocks/tab/block.json
 msgctxt "block keyword"
 msgid "tab"
-msgstr ""
+msgstr "tab"
 
 #: build/blocks/tabs/block.json
 #: src/blocks/tabs/block.json
 msgctxt "block description"
 msgid "Create tabbed content with icons, deep linking, and responsive accordion mode."
-msgstr ""
+msgstr "Creëer tabbed content met iconen, deep linking en responsieve accordeonmodus."
 
 #: build/blocks/tabs/block.json
 #: src/blocks/tabs/block.json
 msgctxt "block keyword"
 msgid "tabs"
-msgstr ""
+msgstr "tabs"
 
 #: build/blocks/tabs/block.json
 #: src/blocks/tabs/block.json
 msgctxt "block keyword"
 msgid "tabbed"
-msgstr ""
+msgstr "tabbed"
 
 # Countdown Timer Block
 

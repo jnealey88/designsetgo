@@ -26,106 +26,135 @@ msgstr ""
 #: includes/class-plugin.php:233
 msgid "DesignSetGo"
 
+msgstr "DesignSetGo"
 #. Plugin URI of the plugin
 #. Author URI of the plugin
 #: designsetgo.php
 msgid "https://designsetgoblocks.com"
 
+msgstr "https://designsetgoblocks.com"
 #. Description of the plugin
 #: designsetgo.php
 msgid "Modern Gutenberg block library bridging the gap between core WordPress blocks and advanced page builders. Design made easy, fast, and beautiful."
 
+msgstr "Modern Gutenberg block library bridging the gap between core WordPress blocks and advanced page builders. Design made easy, fast, and beautiful."
 #: includes/abilities/class-abilities-registry.php:247
 msgid "Information"
 
+msgstr "情報"
 #: includes/abilities/class-abilities-registry.php:248
 msgid "Abilities that provide information about blocks and capabilities"
 
+msgstr "ブロックと機能に関する情報を提供する機能"
 #: includes/abilities/class-abilities-registry.php:255
 #: build/admin.js:1
 #: src/admin/components/BlocksExtensions.js:242
 msgid "Blocks"
 
+msgstr "ブロック"
 #: includes/abilities/class-abilities-registry.php:256
 msgid "Abilities for inserting and configuring blocks"
 
+msgstr "ブロックの挿入と設定を行う機能"
 #: includes/abilities/class-abstract-ability.php:106
 #: includes/abilities/class-block-configurator.php:42
 #: includes/abilities/class-block-inserter.php:43
 msgid "Post not found."
 
+msgstr "投稿が見つかりません。"
 #: includes/abilities/class-block-configurator.php:51
 #: includes/abilities/class-block-inserter.php:52
 msgid "You do not have permission to edit this post."
 
+msgstr "この投稿を編集する権限がありません。"
 #: includes/abilities/class-block-configurator.php:93
 msgid "No matching blocks found to update."
 
+msgstr "更新する一致するブロックが見つかりません。"
 #: includes/abilities/class-block-configurator.php:266
 #: includes/abilities/class-block-inserter.php:417
 msgid "Target post ID"
 
+msgstr "対象の投稿ID"
 #: includes/abilities/class-block-configurator.php:271
 msgid "Specific block client ID to update (optional)"
 
+msgstr "更新する特定のブロッククライアントID（オプション）"
 #: includes/abilities/class-block-configurator.php:275
 msgid "Whether to update all matching blocks or just the first"
 
+msgstr "一致するすべてのブロックを更新するか、最初のブロックのみ更新するか"
 #: includes/abilities/class-block-configurator.php:292
 #: includes/abilities/class-block-inserter.php:439
 msgid "Whether the operation was successful"
 
+msgstr "操作が成功したかどうか"
 #: includes/abilities/class-block-configurator.php:296
 msgid "Post ID where blocks were updated"
 
+msgstr "ブロックが更新された投稿ID"
 #: includes/abilities/class-block-configurator.php:300
 msgid "Number of blocks updated"
 
+msgstr "更新されたブロック数"
 #: includes/abilities/class-block-configurator.php:304
 msgid "Name of the block that was updated"
 
+msgstr "更新されたブロックの名前"
 #: includes/abilities/class-block-configurator.php:308
 msgid "New attributes that were applied"
 
+msgstr "適用された新しい属性"
 #. translators: %d: Block index
 #: includes/abilities/class-block-inserter.php:368
 #, php-format
 msgid "Inner block at index %d is missing a valid name."
 
+msgstr "インデックス %d の内部ブロックに有効な名前がありません。"
 #. translators: %d: Block index
 #: includes/abilities/class-block-inserter.php:379
 #, php-format
 msgid "Inner block at index %d has invalid attributes (must be an array)."
 
+msgstr "インデックス %d の内部ブロックの属性が無効です（配列である必要があります）。"
 #. translators: %d: Block index
 #: includes/abilities/class-block-inserter.php:390
 #, php-format
 msgid "Inner block at index %d has invalid innerBlocks (must be an array)."
 
+msgstr "インデックス %d の内部ブロックのinnerBlocksが無効です（配列である必要があります）。"
 #: includes/abilities/class-block-inserter.php:422
 msgid "Block position (0 = prepend, -1 = append, or specific index)"
 
+msgstr "ブロックの位置（0 = 先頭に追加、-1 = 末尾に追加、または特定のインデックス）"
 #: includes/abilities/class-block-inserter.php:443
 msgid "Post ID where block was inserted"
 
+msgstr "ブロックが挿入された投稿ID"
 #: includes/abilities/class-block-inserter.php:447
 msgid "Unique block identifier"
 
+msgstr "一意のブロック識別子"
 #: includes/abilities/class-block-inserter.php:451
 msgid "Position where block was inserted"
 
+msgstr "ブロックが挿入された位置"
 #: includes/abilities/configurators/class-apply-animation.php:44
 msgid "Apply Block Animation"
 
+msgstr "ブロックアニメーションを適用"
 #: includes/abilities/configurators/class-apply-animation.php:45
 msgid "Applies entrance and exit animations to any WordPress block with customizable settings for duration, delay, easing, and triggers."
 
+msgstr "Applies entrance and exit animations to any WordPress block with customizable settings for duration, delay, easing, and triggers."
 #: includes/abilities/configurators/class-apply-animation.php:46
 msgid "Applying animation..."
 
+msgstr "アニメーションを適用中..."
 #: includes/abilities/configurators/class-apply-animation.php:47
 msgid "Animation applied successfully."
 
+msgstr "アニメーションが正常に適用されました。"
 #: includes/abilities/configurators/class-apply-animation.php:70
 msgid "Block name to apply animation to (e.g., \"core/paragraph\", \"core/heading\")"
 msgstr "アニメーションを適用するブロック名（例：\"core/paragraph\"、\"core/heading\"）"
@@ -133,36 +162,46 @@ msgstr "アニメーションを適用するブロック名（例：\"core/parag
 #: includes/abilities/configurators/class-apply-animation.php:75
 msgid "Animation settings to apply"
 
+msgstr "適用するアニメーション設定"
 #: includes/abilities/configurators/class-apply-animation.php:79
 msgid "Enable animation"
 
+msgstr "アニメーションを有効化"
 #: includes/abilities/configurators/class-apply-animation.php:84
 msgid "Entrance animation type"
 
+msgstr "表示アニメーションタイプ"
 #: includes/abilities/configurators/class-apply-animation.php:103
 msgid "Exit animation type"
 
+msgstr "非表示アニメーションタイプ"
 #: includes/abilities/configurators/class-apply-animation.php:120
 msgid "Animation trigger"
 
+msgstr "アニメーショントリガー"
 #: includes/abilities/configurators/class-apply-animation.php:126
 #: includes/abilities/inserters/class-insert-reveal.php:80
 msgid "Animation duration in milliseconds"
 
+msgstr "アニメーション期間（ミリ秒）"
 #: includes/abilities/configurators/class-apply-animation.php:132
 msgid "Animation delay in milliseconds"
 
+msgstr "アニメーション遅延（ミリ秒）"
 #: includes/abilities/configurators/class-apply-animation.php:139
 #: includes/abilities/configurators/class-configure-counter-animation.php:116
 #: includes/abilities/inserters/class-insert-counter-group.php:120
 msgid "Animation easing function"
 
+msgstr "アニメーションイージング関数"
 #: includes/abilities/configurators/class-apply-animation.php:145
 msgid "Offset from viewport (pixels) before triggering scroll animation"
 
+msgstr "スクロールアニメーションをトリガーする前のビューポートからのオフセット（ピクセル）"
 #: includes/abilities/configurators/class-apply-animation.php:150
 msgid "Animate only once (scroll animations)"
 
+msgstr "一度だけアニメーション（スクロールアニメーション）"
 #: includes/abilities/configurators/class-apply-animation.php:187
 #: includes/abilities/configurators/class-configure-counter-animation.php:165
 #: includes/abilities/generators/class-generate-faq-section.php:124
@@ -186,39 +225,50 @@ msgid "Animate only once (scroll animations)"
 #: includes/abilities/inserters/class-insert-tabs.php:185
 msgid "Post ID is required."
 
+msgstr "投稿IDは必須です。"
 #: includes/abilities/configurators/class-apply-animation.php:195
 msgid "Block name is required."
 
+msgstr "ブロック名は必須です。"
 #: includes/abilities/configurators/class-apply-animation.php:203
 msgid "Animation settings are required."
 
+msgstr "アニメーション設定は必須です。"
 #: includes/abilities/configurators/class-configure-counter-animation.php:44
 msgid "Configure Counter Animation"
 
+msgstr "カウンターアニメーションを設定"
 #: includes/abilities/configurators/class-configure-counter-animation.php:45
 msgid "Updates animation settings for Counter blocks including start/end values, duration, delay, decimals, and prefix/suffix."
 
+msgstr "カウンターブロックの開始値/終了値、期間、遅延、小数点以下の桁数、接頭辞/接尾辞を含むアニメーション設定を更新します。"
 #: includes/abilities/configurators/class-configure-counter-animation.php:46
 msgid "Updating counter animation..."
 
+msgstr "カウンターアニメーションを更新中..."
 #: includes/abilities/configurators/class-configure-counter-animation.php:47
 msgid "Counter animation updated successfully."
 
+msgstr "カウンターアニメーションが正常に更新されました。"
 #: includes/abilities/configurators/class-configure-counter-animation.php:70
 msgid "Counter animation settings to update"
 
+msgstr "更新するカウンターアニメーション設定"
 #: includes/abilities/configurators/class-configure-counter-animation.php:74
 msgid "Starting value of the counter"
 
+msgstr "カウンターの開始値"
 #: includes/abilities/configurators/class-configure-counter-animation.php:78
 msgid "Ending value of the counter"
 
+msgstr "カウンターの終了値"
 #: includes/abilities/configurators/class-configure-counter-animation.php:82
 #: includes/abilities/generators/class-generate-stats-section.php:95
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:66
 msgid "Number of decimal places"
 
+msgstr "小数点以下の桁数"
 #: includes/abilities/configurators/class-configure-counter-animation.php:88
 msgid "Prefix text (e.g., \"$\")"
 msgstr "接頭辞テキスト（例：\"$\"）"
@@ -230,72 +280,94 @@ msgstr "接尾辞テキスト（例：\"+\"、\"%\"）"
 #: includes/abilities/configurators/class-configure-counter-animation.php:96
 msgid "Counter label text"
 
+msgstr "カウンターラベルテキスト"
 #: includes/abilities/configurators/class-configure-counter-animation.php:100
 msgid "Override group animation settings"
 
+msgstr "グループアニメーション設定を上書き"
 #: includes/abilities/configurators/class-configure-counter-animation.php:104
 #: includes/abilities/inserters/class-insert-counter-group.php:106
 #: includes/abilities/inserters/class-insert-progress-bar.php:130
 msgid "Animation duration in seconds"
 
+msgstr "アニメーション期間（秒）"
 #: includes/abilities/configurators/class-configure-counter-animation.php:110
 #: includes/abilities/inserters/class-insert-counter-group.php:113
 msgid "Animation delay in seconds"
 
+msgstr "アニメーション遅延（秒）"
 #: includes/abilities/configurators/class-configure-counter-animation.php:121
 msgid "Show icon with counter"
 
+msgstr "カウンターとともにアイコンを表示"
 #: includes/abilities/configurators/class-configure-counter-animation.php:125
 msgid "Icon name"
 
+msgstr "アイコン名"
 #: includes/abilities/configurators/class-configure-counter-animation.php:129
 msgid "Icon position"
 
+msgstr "アイコン位置"
 #: includes/abilities/configurators/class-configure-counter-animation.php:173
 msgid "Settings are required."
 
+msgstr "設定は必須です。"
 #: includes/abilities/generators/class-generate-faq-section.php:43
 msgid "Generate FAQ Section"
 
+msgstr "FAQセクションを生成"
 #: includes/abilities/generators/class-generate-faq-section.php:44
 msgid "Generates a Frequently Asked Questions section using an accordion with collapsible questions and answers."
 
+msgstr "折りたたみ可能な質問と回答を含むアコーディオンを使用して、よくある質問セクションを生成します。"
 #: includes/abilities/generators/class-generate-faq-section.php:45
 msgid "Generating FAQ section..."
 
+msgstr "FAQセクションを生成中..."
 #: includes/abilities/generators/class-generate-faq-section.php:46
 msgid "FAQ section generated successfully."
 
+msgstr "FAQセクションが正常に生成されました。"
 #: includes/abilities/generators/class-generate-faq-section.php:69
 msgid "Array of FAQ items"
 
+msgstr "FAQ項目の配列"
 #: includes/abilities/generators/class-generate-faq-section.php:75
 msgid "FAQ question"
 
+msgstr "FAQ質問"
 #: includes/abilities/generators/class-generate-faq-section.php:79
 msgid "FAQ answer"
 
+msgstr "FAQ回答"
 #: includes/abilities/generators/class-generate-faq-section.php:89
 msgid "Optional section title"
 
+msgstr "オプションのセクションタイトル"
 #: includes/abilities/generators/class-generate-faq-section.php:132
 msgid "At least one FAQ is required."
 
+msgstr "少なくとも1つのFAQが必要です。"
 #: includes/abilities/generators/class-generate-feature-grid.php:43
 msgid "Generate Feature Grid"
 
+msgstr "機能グリッドを生成"
 #: includes/abilities/generators/class-generate-feature-grid.php:44
 msgid "Generates a responsive grid of features with icons, headings, and descriptions. Perfect for showcasing product features or services."
 
+msgstr "アイコン、見出し、説明を含むレスポンシブな機能グリッドを生成します。製品の機能やサービスを紹介するのに最適です。"
 #: includes/abilities/generators/class-generate-feature-grid.php:45
 msgid "Generating feature grid..."
 
+msgstr "機能グリッドを生成中..."
 #: includes/abilities/generators/class-generate-feature-grid.php:46
 msgid "Feature grid generated successfully."
 
+msgstr "機能グリッドが正常に生成されました。"
 #: includes/abilities/generators/class-generate-feature-grid.php:69
 msgid "Array of features to display"
 
+msgstr "表示する機能の配列"
 #: includes/abilities/generators/class-generate-feature-grid.php:75
 msgid "Icon name (e.g., \"star\", \"check\", \"lightbulb\")"
 msgstr "アイコン名（例：\"star\"、\"check\"、\"lightbulb\"）"
@@ -303,77 +375,99 @@ msgstr "アイコン名（例：\"star\"、\"check\"、\"lightbulb\"）"
 #: includes/abilities/generators/class-generate-feature-grid.php:80
 msgid "Feature title"
 
+msgstr "機能タイトル"
 #: includes/abilities/generators/class-generate-feature-grid.php:85
 msgid "Feature description"
 
+msgstr "機能の説明"
 #: includes/abilities/generators/class-generate-feature-grid.php:96
 #: includes/abilities/generators/class-generate-stats-section.php:108
 #: includes/abilities/inserters/class-insert-counter-group.php:74
 #: includes/abilities/inserters/class-insert-grid-container.php:74
 msgid "Number of columns on desktop"
 
+msgstr "デスクトップでの列数"
 #: includes/abilities/generators/class-generate-feature-grid.php:141
 msgid "At least one feature is required."
 
+msgstr "少なくとも1つの機能が必要です。"
 #: includes/abilities/generators/class-generate-hero-section.php:44
 msgid "Generate Hero Section"
 
+msgstr "ヒーローセクションを生成"
 #: includes/abilities/generators/class-generate-hero-section.php:45
 msgid "Generates a complete hero section with heading, description text, and call-to-action buttons in a centered Stack container."
 
+msgstr "中央揃えのスタックコンテナ内に見出し、説明テキスト、コールトゥアクションボタンを含む完全なヒーローセクションを生成します。"
 #: includes/abilities/generators/class-generate-hero-section.php:46
 msgid "Generating hero section..."
 
+msgstr "ヒーローセクションを生成中..."
 #: includes/abilities/generators/class-generate-hero-section.php:47
 msgid "Hero section generated successfully."
 
+msgstr "ヒーローセクションが正常に生成されました。"
 #: includes/abilities/generators/class-generate-hero-section.php:70
 msgid "Hero heading text"
 
+msgstr "ヒーロー見出しテキスト"
 #: includes/abilities/generators/class-generate-hero-section.php:75
 msgid "Hero description text"
 
+msgstr "ヒーロー説明テキスト"
 #: includes/abilities/generators/class-generate-hero-section.php:80
 msgid "Primary call-to-action button"
 
+msgstr "プライマリコールトゥアクションボタン"
 #: includes/abilities/generators/class-generate-hero-section.php:84
 #: includes/abilities/generators/class-generate-hero-section.php:105
 #: includes/abilities/inserters/class-insert-icon-button.php:73
 msgid "Button text"
 
+msgstr "ボタンテキスト"
 #: includes/abilities/generators/class-generate-hero-section.php:89
 #: includes/abilities/generators/class-generate-hero-section.php:110
 #: includes/abilities/inserters/class-insert-icon-button.php:78
 msgid "Button URL"
 
+msgstr "ボタンURL"
 #: includes/abilities/generators/class-generate-hero-section.php:94
 #: includes/abilities/inserters/class-insert-tabs.php:142
 msgid "Optional icon name"
 
+msgstr "オプションのアイコン名"
 #: includes/abilities/generators/class-generate-hero-section.php:101
 msgid "Optional secondary button"
 
+msgstr "オプションのセカンダリボタン"
 #: includes/abilities/generators/class-generate-hero-section.php:117
 msgid "Hero layout style"
 
+msgstr "ヒーローレイアウトスタイル"
 #: includes/abilities/generators/class-generate-stats-section.php:43
 msgid "Generate Stats Section"
 
+msgstr "統計セクションを生成"
 #: includes/abilities/generators/class-generate-stats-section.php:44
 msgid "Generates a statistics section with animated counters. Perfect for showcasing metrics, achievements, or key numbers."
 
+msgstr "アニメーションカウンターを含む統計セクションを生成します。指標、実績、または主要な数値を紹介するのに最適です。"
 #: includes/abilities/generators/class-generate-stats-section.php:45
 msgid "Generating stats section..."
 
+msgstr "統計セクションを生成中..."
 #: includes/abilities/generators/class-generate-stats-section.php:46
 msgid "Stats section generated successfully."
 
+msgstr "統計セクションが正常に生成されました。"
 #: includes/abilities/generators/class-generate-stats-section.php:69
 msgid "Array of statistics to display"
 
+msgstr "表示する統計の配列"
 #: includes/abilities/generators/class-generate-stats-section.php:75
 msgid "Stat value/number"
 
+msgstr "統計値/数値"
 #: includes/abilities/generators/class-generate-stats-section.php:80
 msgid "Optional prefix (e.g., \"$\")"
 msgstr "オプションの接頭辞（例：\"$\"）"
@@ -385,109 +479,140 @@ msgstr "オプションの接尾辞（例：\"+\"、\"%\"、\"K\"）"
 #: includes/abilities/generators/class-generate-stats-section.php:90
 msgid "Stat label/description"
 
+msgstr "統計ラベル/説明"
 #: includes/abilities/generators/class-generate-stats-section.php:153
 msgid "At least one stat is required."
 
+msgstr "少なくとも1つの統計が必要です。"
 #: includes/abilities/info/class-list-blocks.php:42
 msgid "List DesignSetGo Blocks"
 
+msgstr "List DesignSetGo Blocks"
 #: includes/abilities/info/class-list-blocks.php:43
 msgid "Returns a comprehensive list of all available DesignSetGo blocks with their capabilities, attributes, and metadata."
 
+msgstr "Returns a comprehensive list of all available DesignSetGo blocks with their capabilities, attributes, and metadata."
 #: includes/abilities/info/class-list-blocks.php:44
 msgid "Retrieving available blocks..."
 
+msgstr "利用可能なブロックを取得中..."
 #: includes/abilities/info/class-list-blocks.php:45
 msgid "Successfully retrieved block list."
 
+msgstr "ブロックリストを正常に取得しました。"
 #: includes/abilities/info/class-list-blocks.php:64
 msgid "Filter by category"
 
+msgstr "カテゴリーでフィルター"
 #: includes/abilities/info/class-list-blocks.php:86
 msgid "Block name"
 
+msgstr "ブロック名"
 #: includes/abilities/info/class-list-blocks.php:90
 msgid "Human-readable title"
 
+msgstr "読みやすいタイトル"
 #: includes/abilities/info/class-list-blocks.php:94
 msgid "Block description"
 
+msgstr "ブロックの説明"
 #: includes/abilities/info/class-list-blocks.php:98
 msgid "Block category"
 
+msgstr "ブロックカテゴリー"
 #: includes/abilities/info/class-list-blocks.php:102
 msgid "Available block attributes"
 
+msgstr "利用可能なブロック属性"
 #: includes/abilities/info/class-list-blocks.php:106
 msgid "Block support features"
 
+msgstr "ブロックサポート機能"
 #: includes/abilities/info/class-list-blocks.php:158
 #: includes/admin/class-settings.php:76
 msgid "Flex Container"
 
+msgstr "フレックスコンテナ"
 #: includes/abilities/info/class-list-blocks.php:159
 msgid "Flexible horizontal or vertical layout container with customizable alignment, gap, and wrapping."
 
+msgstr "カスタマイズ可能な配置、ギャップ、折り返しを持つ柔軟な水平または垂直レイアウトコンテナ。"
 #: includes/abilities/info/class-list-blocks.php:172
 #: includes/admin/class-settings.php:82
 msgid "Grid Container"
 
+msgstr "グリッドコンテナ"
 #: includes/abilities/info/class-list-blocks.php:173
 msgid "Responsive grid layout with customizable columns for desktop, tablet, and mobile."
 
+msgstr "デスクトップ、タブレット、モバイル用にカスタマイズ可能な列を持つレスポンシブグリッドレイアウト。"
 #: includes/abilities/info/class-list-blocks.php:187
 #: includes/admin/class-settings.php:88
 msgid "Stack Container"
 
+msgstr "スタックコンテナ"
 #: includes/abilities/info/class-list-blocks.php:188
 msgid "Vertical stacking container with consistent spacing between elements."
 
+msgstr "要素間に一貫したスペーシングを持つ垂直スタッキングコンテナ。"
 #: includes/abilities/info/class-list-blocks.php:200
 #: includes/admin/class-settings.php:129
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:318
 msgid "Accordion"
 
+msgstr "アコーディオン"
 #: includes/abilities/info/class-list-blocks.php:201
 msgid "Collapsible accordion container for FAQ sections and content organization."
 
+msgstr "FAQセクションとコンテンツ整理のための折りたたみ可能なアコーディオンコンテナ。"
 #: includes/abilities/info/class-list-blocks.php:211
 #: includes/admin/class-settings.php:135
 msgid "Accordion Item"
 
+msgstr "アコーディオン項目"
 #: includes/abilities/info/class-list-blocks.php:212
 msgid "Individual item within an accordion with title and content."
 
+msgstr "タイトルとコンテンツを持つアコーディオン内の個別項目。"
 #: includes/abilities/info/class-list-blocks.php:223
 #: includes/admin/class-settings.php:141
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:362
 msgid "Tabs"
 
+msgstr "タブ"
 #: includes/abilities/info/class-list-blocks.php:224
 msgid "Tabbed interface for organizing content into switchable panels."
 
+msgstr "切り替え可能なパネルにコンテンツを整理するためのタブ付きインターフェース。"
 #: includes/abilities/info/class-list-blocks.php:234
 #: includes/admin/class-settings.php:147
 msgid "Tab"
 
+msgstr "タブ"
 #: includes/abilities/info/class-list-blocks.php:235
 msgid "Individual tab within a tabs container."
 
+msgstr "タブコンテナ内の個別タブ。"
 #: includes/abilities/info/class-list-blocks.php:244
 #: includes/admin/class-settings.php:153
 msgid "Scroll Accordion"
 
+msgstr "スクロールアコーディオン"
 #: includes/abilities/info/class-list-blocks.php:245
 msgid "Sticky stacking accordion that reveals items on scroll."
 
+msgstr "スクロール時に項目を表示する固定スタッキングアコーディオン。"
 #: includes/abilities/info/class-list-blocks.php:254
 #: includes/admin/class-settings.php:159
 msgid "Scroll Accordion Item"
 
+msgstr "スクロールアコーディオン項目"
 #: includes/abilities/info/class-list-blocks.php:255
 msgid "Individual item within a scroll accordion."
 
+msgstr "スクロールアコーディオン内の個別項目。"
 #: includes/abilities/info/class-list-blocks.php:264
 #: includes/admin/class-settings.php:99
 #: build/blocks/counter/index.js:1
@@ -501,83 +626,106 @@ msgid "Individual item within a scroll accordion."
 #: src/blocks/tab/edit.js:224
 msgid "Icon"
 
+msgstr "アイコン"
 #: includes/abilities/info/class-list-blocks.php:265
 msgid "SVG icon with customizable size, color, and rotation."
 
+msgstr "カスタマイズ可能なサイズ、色、回転を持つSVGアイコン。"
 #: includes/abilities/info/class-list-blocks.php:277
 #: includes/admin/class-settings.php:105
 msgid "Icon Button"
 
+msgstr "アイコンボタン"
 #: includes/abilities/info/class-list-blocks.php:278
 msgid "Button with icon and optional text label."
 
+msgstr "アイコンとオプションのテキストラベルを持つボタン。"
 #: includes/abilities/info/class-list-blocks.php:292
 #: includes/admin/class-settings.php:123
 msgid "Pill"
 
+msgstr "ピル"
 #: includes/abilities/info/class-list-blocks.php:293
 msgid "Rounded pill-shaped badge or tag element."
 
+msgstr "丸いピル型のバッジまたはタグ要素。"
 #: includes/abilities/info/class-list-blocks.php:304
 #: includes/admin/class-settings.php:111
 msgid "Icon List"
 
+msgstr "アイコンリスト"
 #: includes/abilities/info/class-list-blocks.php:305
 msgid "List with icons for each item, perfect for features or benefits."
 
+msgstr "各項目にアイコンを持つリスト。機能やメリットに最適。"
 #: includes/abilities/info/class-list-blocks.php:314
 #: includes/admin/class-settings.php:117
 msgid "Icon List Item"
 
+msgstr "アイコンリスト項目"
 #: includes/abilities/info/class-list-blocks.php:315
 msgid "Individual item within an icon list."
 
+msgstr "アイコンリスト内の個別項目。"
 #: includes/abilities/info/class-list-blocks.php:326
 #: includes/admin/class-settings.php:194
 msgid "Flip Card"
 
+msgstr "フリップカード"
 #: includes/abilities/info/class-list-blocks.php:327
 msgid "3D card that flips on hover to reveal back content."
 
+msgstr "ホバー時に反転して裏面のコンテンツを表示する3Dカード。"
 #: includes/abilities/info/class-list-blocks.php:337
 #: includes/admin/class-settings.php:200
 msgid "Flip Card Front"
 
+msgstr "フリップカード前面"
 #: includes/abilities/info/class-list-blocks.php:338
 msgid "Front face of a flip card."
 
+msgstr "フリップカードの前面。"
 #: includes/abilities/info/class-list-blocks.php:345
 #: includes/admin/class-settings.php:206
 msgid "Flip Card Back"
 
+msgstr "フリップカード背面"
 #: includes/abilities/info/class-list-blocks.php:346
 msgid "Back face of a flip card."
 
+msgstr "フリップカードの背面。"
 #: includes/abilities/info/class-list-blocks.php:353
 #: includes/admin/class-settings.php:171
 msgid "Reveal"
 
+msgstr "リビール"
 #: includes/abilities/info/class-list-blocks.php:354
 msgid "Content that reveals on scroll with customizable animations."
 
+msgstr "カスタマイズ可能なアニメーションでスクロール時に表示されるコンテンツ。"
 #: includes/abilities/info/class-list-blocks.php:365
 #: includes/admin/class-settings.php:165
 msgid "Scroll Marquee"
 
+msgstr "スクロールマーキー"
 #: includes/abilities/info/class-list-blocks.php:366
 msgid "Infinite scrolling marquee for logos or content."
 
+msgstr "ロゴまたはコンテンツ用の無限スクロールマーキー。"
 #: includes/abilities/info/class-list-blocks.php:379
 #: includes/admin/class-settings.php:241
 msgid "Counter"
 
+msgstr "カウンター"
 #: includes/abilities/info/class-list-blocks.php:380
 msgid "Animated counter that counts up to a target value."
 
+msgstr "目標値までカウントアップするアニメーションカウンター。"
 #: includes/abilities/info/class-list-blocks.php:394
 #: includes/admin/class-settings.php:235
 msgid "Counter Group"
 
+msgstr "カウンターグループ"
 #: includes/abilities/info/class-list-blocks.php:395
 msgid "Group of animated counters for statistics sections."
 msgstr "統計セクション用のアニメーションカウンターのグループです。"
@@ -588,6 +736,7 @@ msgstr "統計セクション用のアニメーションカウンターのグル
 #: src/blocks/progress-bar/edit.js:92
 msgid "Progress Bar"
 
+msgstr "プログレスバー"
 #: includes/abilities/info/class-list-blocks.php:406
 msgid "Animated progress bar with customizable colors and value."
 msgstr "カスタマイズ可能な色と値を持つアニメーション付きプログレスバーです。"
@@ -603,9 +752,11 @@ msgstr "アクセシブルな折りたたみ可能なコンテンツセクショ
 #: includes/abilities/inserters/class-insert-accordion.php:46
 msgid "Creating accordion..."
 
+msgstr "アコーディオンを作成中..."
 #: includes/abilities/inserters/class-insert-accordion.php:47
 msgid "Accordion inserted successfully."
 
+msgstr "アコーディオンが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-accordion.php:70
 msgid "Accordion attributes"
 msgstr "アコーディオン属性"
@@ -670,9 +821,11 @@ msgstr "アニメーション統計を表示するためのカウンターグル
 #: includes/abilities/inserters/class-insert-counter-group.php:46
 msgid "Inserting counter group..."
 
+msgstr "カウンターグループを挿入中..."
 #: includes/abilities/inserters/class-insert-counter-group.php:47
 msgid "Counter group inserted successfully."
 
+msgstr "カウンターグループが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-counter-group.php:70
 msgid "Counter group attributes"
 msgstr "カウンターグループ属性"
@@ -735,9 +888,11 @@ msgstr "方向、配置、折り返し、間隔などのカスタマイズ可能
 #: includes/abilities/inserters/class-insert-flex-container.php:46
 msgid "Creating flex container..."
 
+msgstr "フレックスコンテナを作成中..."
 #: includes/abilities/inserters/class-insert-flex-container.php:47
 msgid "Flex container inserted successfully."
 
+msgstr "フレックスコンテナが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-flex-container.php:70
 msgid "Flex container attributes"
 msgstr "Flexコンテナ属性"
@@ -745,6 +900,7 @@ msgstr "Flexコンテナ属性"
 #: includes/abilities/inserters/class-insert-flex-container.php:74
 msgid "Flex direction"
 
+msgstr "フレックス方向"
 #: includes/abilities/inserters/class-insert-flex-container.php:80
 msgid "Allow wrapping to multiple lines"
 msgstr "複数行への折り返しを許可"
@@ -795,9 +951,11 @@ msgstr "裏面のコンテンツを表示するインタラクティブなフリ
 #: includes/abilities/inserters/class-insert-flip-card.php:46
 msgid "Creating flip card..."
 
+msgstr "フリップカードを作成中..."
 #: includes/abilities/inserters/class-insert-flip-card.php:47
 msgid "Flip card inserted successfully."
 
+msgstr "フリップカードが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-flip-card.php:70
 msgid "Flip Card attributes"
 msgstr "フリップカード属性"
@@ -845,9 +1003,11 @@ msgstr "デスクトップ、タブレット、モバイル用のカスタマイ
 #: includes/abilities/inserters/class-insert-grid-container.php:46
 msgid "Creating grid container..."
 
+msgstr "グリッドコンテナを作成中..."
 #: includes/abilities/inserters/class-insert-grid-container.php:47
 msgid "Grid container inserted successfully."
 
+msgstr "グリッドコンテナが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-grid-container.php:70
 msgid "Grid container attributes"
 msgstr "Gridコンテナ属性"
@@ -881,9 +1041,11 @@ msgstr "カスタマイズ可能なテキスト、アイコン、リンク、ス
 #: includes/abilities/inserters/class-insert-icon-button.php:45
 msgid "Inserting icon button..."
 
+msgstr "アイコンボタンを挿入中..."
 #: includes/abilities/inserters/class-insert-icon-button.php:46
 msgid "Icon button inserted successfully."
 
+msgstr "アイコンボタンが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-icon-button.php:69
 msgid "Icon button attributes"
 msgstr "アイコンボタン属性"
@@ -894,6 +1056,7 @@ msgstr "アイコンボタン属性"
 #: includes/abilities/inserters/class-insert-icon.php:109
 msgid "Link target"
 
+msgstr "リンクターゲット"
 #: includes/abilities/inserters/class-insert-icon-button.php:89
 #: includes/abilities/inserters/class-insert-icon-list.php:148
 #: includes/abilities/inserters/class-insert-icon.php:115
@@ -931,9 +1094,11 @@ msgstr "アイコン、オプションのリンク、リッチコンテンツを
 #: includes/abilities/inserters/class-insert-icon-list-item.php:46
 msgid "Adding icon list item..."
 
+msgstr "アイコンリスト項目を追加中..."
 #: includes/abilities/inserters/class-insert-icon-list-item.php:47
 msgid "Icon list item inserted successfully."
 
+msgstr "アイコンリスト項目が正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-icon-list-item.php:70
 msgid "Icon List Item attributes"
 msgstr "アイコンリスト項目属性"
@@ -963,9 +1128,11 @@ msgstr "アイコン、タイトル、説明を持つリストを作成するた
 #: includes/abilities/inserters/class-insert-icon-list.php:46
 msgid "Creating icon list..."
 
+msgstr "アイコンリストを作成中..."
 #: includes/abilities/inserters/class-insert-icon-list.php:47
 msgid "Icon list inserted successfully."
 
+msgstr "アイコンリストが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-icon-list.php:70
 msgid "Icon List attributes"
 msgstr "アイコンリスト属性"
@@ -1013,9 +1180,11 @@ msgstr "アイコンの選択、サイズ、スタイル（塗りつぶし/ア�
 #: includes/abilities/inserters/class-insert-icon.php:45
 msgid "Inserting icon..."
 
+msgstr "アイコンを挿入中..."
 #: includes/abilities/inserters/class-insert-icon.php:46
 msgid "Icon inserted successfully."
 
+msgstr "アイコンが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-icon.php:69
 msgid "Icon attributes"
 msgstr "アイコン属性"
@@ -1047,9 +1216,11 @@ msgstr "カスタマイズ可能な色、ラベル、アニメーションを持
 #: includes/abilities/inserters/class-insert-progress-bar.php:46
 msgid "Inserting progress bar..."
 
+msgstr "プログレスバーを挿入中..."
 #: includes/abilities/inserters/class-insert-progress-bar.php:47
 msgid "Progress bar inserted successfully."
 
+msgstr "プログレスバーが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-progress-bar.php:70
 msgid "Progress bar attributes"
 msgstr "プログレスバー属性"
@@ -1113,9 +1284,11 @@ msgstr "ホバー時に隠れたコンテンツを表示するリビールコン
 #: includes/abilities/inserters/class-insert-reveal.php:46
 msgid "Creating reveal container..."
 
+msgstr "リビールコンテナを作成中..."
 #: includes/abilities/inserters/class-insert-reveal.php:47
 msgid "Reveal container inserted successfully."
 
+msgstr "リビールコンテナが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-reveal.php:70
 msgid "Reveal container attributes"
 msgstr "リビールコンテナ属性"
@@ -1151,9 +1324,11 @@ msgstr "スクロールに応じて項目を段階的に表示するスクロー
 #: includes/abilities/inserters/class-insert-scroll-accordion.php:46
 msgid "Creating scroll accordion..."
 
+msgstr "スクロールアコーディオンを作成中..."
 #: includes/abilities/inserters/class-insert-scroll-accordion.php:47
 msgid "Scroll accordion inserted successfully."
 
+msgstr "スクロールアコーディオンが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-scroll-accordion.php:70
 msgid "Scroll Accordion attributes"
 msgstr "スクロールアコーディオン属性"
@@ -1181,9 +1356,11 @@ msgstr "ページスクロールに基づいて交互方向に水平スクロー
 #: includes/abilities/inserters/class-insert-scroll-marquee.php:46
 msgid "Creating scroll marquee..."
 
+msgstr "スクロールマーキーを作成中..."
 #: includes/abilities/inserters/class-insert-scroll-marquee.php:47
 msgid "Scroll marquee inserted successfully."
 
+msgstr "スクロールマーキーが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-scroll-marquee.php:70
 msgid "Scroll Marquee attributes"
 msgstr "スクロールマーキー属性"
@@ -1199,9 +1376,11 @@ msgstr "この行の画像"
 #: includes/abilities/inserters/class-insert-scroll-marquee.php:86
 msgid "Image URL"
 
+msgstr "画像URL"
 #: includes/abilities/inserters/class-insert-scroll-marquee.php:90
 msgid "Image alt text"
 
+msgstr "画像代替テキスト"
 #: includes/abilities/inserters/class-insert-scroll-marquee.php:94
 msgid "WordPress media ID (optional)"
 msgstr "WordPressメディアID（オプション）"
@@ -1241,9 +1420,11 @@ msgstr "一貫した間隔でのシンプルな垂直スタッキング用のSta
 #: includes/abilities/inserters/class-insert-stack-container.php:46
 msgid "Creating stack container..."
 
+msgstr "スタックコンテナを作成中..."
 #: includes/abilities/inserters/class-insert-stack-container.php:47
 msgid "Stack container inserted successfully."
 
+msgstr "スタックコンテナが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-stack-container.php:70
 msgid "Stack container attributes"
 msgstr "Stackコンテナ属性"
@@ -1267,9 +1448,11 @@ msgstr "アイコン、ディープリンク、レスポンシブアコーディ
 #: includes/abilities/inserters/class-insert-tabs.php:46
 msgid "Creating tabs container..."
 
+msgstr "タブコンテナを作成中..."
 #: includes/abilities/inserters/class-insert-tabs.php:47
 msgid "Tabs container inserted successfully."
 
+msgstr "タブコンテナが正常に挿入されました。"
 #: includes/abilities/inserters/class-insert-tabs.php:70
 msgid "Tabs attributes"
 msgstr "タブ属性"
@@ -1317,6 +1500,7 @@ msgstr "タイトルとアイコンを含むタブ属性"
 #: includes/abilities/inserters/class-insert-tabs.php:138
 msgid "Tab title"
 
+msgstr "タブタイトル"
 #: includes/abilities/inserters/class-insert-tabs.php:148
 msgid "Content blocks for this tab"
 msgstr "このタブのコンテンツブロック"
@@ -1340,6 +1524,7 @@ msgstr "ブロックと拡張機能"
 #: src/admin/components/Settings.js:98
 msgid "Settings"
 
+msgstr "設定"
 #: includes/admin/class-global-styles.php:50
 msgid "Blue and Orange"
 msgstr "ブルーとオレンジ"
@@ -1383,12 +1568,15 @@ msgstr "アクセント 6 / 透明"
 #: includes/admin/class-global-styles.php:162
 msgid "Success"
 
+msgstr "成功"
 #: includes/admin/class-global-styles.php:167
 msgid "Warning"
 
+msgstr "警告"
 #: includes/admin/class-global-styles.php:172
 msgid "Error"
 
+msgstr "エラー"
 #: includes/admin/class-global-styles.php:204
 msgid "Primary Gradient"
 msgstr "プライマリグラデーション"
@@ -1565,6 +1753,7 @@ msgstr "スクロール時のコンテンツ表示"
 #: includes/admin/class-settings.php:177
 msgid "Image Accordion"
 
+msgstr "画像アコーディオン"
 #: includes/admin/class-settings.php:178
 msgid "Accordion with images"
 msgstr "画像付きアコーディオン"
@@ -1572,6 +1761,7 @@ msgstr "画像付きアコーディオン"
 #: includes/admin/class-settings.php:183
 msgid "Image Accordion Item"
 
+msgstr "画像アコーディオン項目"
 #: includes/admin/class-settings.php:184
 msgid "Individual image item"
 msgstr "個別画像項目"
@@ -1595,6 +1785,7 @@ msgstr "フリップカードの裏面"
 #: includes/admin/class-settings.php:212
 msgid "Slider"
 
+msgstr "スライダー"
 #: includes/admin/class-settings.php:213
 msgid "Modern carousel with effects"
 msgstr "エフェクト付きモダンカルーセル"
@@ -1606,6 +1797,7 @@ msgstr "エフェクト付きモダンカルーセル"
 #: src/blocks/slider/edit.js:460
 msgid "Slide"
 
+msgstr "スライド"
 #: includes/admin/class-settings.php:219
 msgid "Individual slider slide"
 msgstr "個別スライダースライド"
@@ -1613,6 +1805,7 @@ msgstr "個別スライダースライド"
 #: includes/admin/class-settings.php:224
 msgid "Blobs"
 
+msgstr "ブロブ"
 #: includes/admin/class-settings.php:225
 msgid "Animated blob shapes"
 msgstr "アニメーション付きブロブ形状"
@@ -1640,6 +1833,7 @@ msgstr "フォームブロック"
 #: includes/admin/class-settings.php:258
 msgid "Form Builder"
 
+msgstr "フォームビルダー"
 #: includes/admin/class-settings.php:259
 msgid "Complete form with AJAX submission"
 msgstr "AJAX送信付き完全フォーム"
@@ -1647,6 +1841,7 @@ msgstr "AJAX送信付き完全フォーム"
 #: includes/admin/class-settings.php:264
 msgid "Text Field"
 
+msgstr "テキストフィールド"
 #: includes/admin/class-settings.php:265
 msgid "Text input field"
 msgstr "テキスト入力フィールド"
@@ -1654,6 +1849,7 @@ msgstr "テキスト入力フィールド"
 #: includes/admin/class-settings.php:270
 msgid "Email Field"
 
+msgstr "メールフィールド"
 #: includes/admin/class-settings.php:271
 msgid "Email input field"
 msgstr "メール入力フィールド"
@@ -1661,6 +1857,7 @@ msgstr "メール入力フィールド"
 #: includes/admin/class-settings.php:276
 msgid "Textarea"
 
+msgstr "テキストエリア"
 #: includes/admin/class-settings.php:277
 msgid "Multi-line text input"
 msgstr "複数行テキスト入力"
@@ -1668,6 +1865,7 @@ msgstr "複数行テキスト入力"
 #: includes/admin/class-settings.php:282
 msgid "Number Field"
 
+msgstr "数値フィールド"
 #: includes/admin/class-settings.php:283
 msgid "Number input field"
 msgstr "数値入力フィールド"
@@ -1675,6 +1873,7 @@ msgstr "数値入力フィールド"
 #: includes/admin/class-settings.php:288
 msgid "Phone Field"
 
+msgstr "電話フィールド"
 #: includes/admin/class-settings.php:289
 msgid "Phone number input"
 msgstr "電話番号入力"
@@ -1682,6 +1881,7 @@ msgstr "電話番号入力"
 #: includes/admin/class-settings.php:294
 msgid "URL Field"
 
+msgstr "URLフィールド"
 #: includes/admin/class-settings.php:295
 msgid "URL input field"
 msgstr "URL入力フィールド"
@@ -1689,6 +1889,7 @@ msgstr "URL入力フィールド"
 #: includes/admin/class-settings.php:300
 msgid "Date Field"
 
+msgstr "日付フィールド"
 #: includes/admin/class-settings.php:301
 msgid "Date picker input"
 msgstr "日付選択入力"
@@ -1696,6 +1897,7 @@ msgstr "日付選択入力"
 #: includes/admin/class-settings.php:306
 msgid "Time Field"
 
+msgstr "時刻フィールド"
 #: includes/admin/class-settings.php:307
 msgid "Time picker input"
 msgstr "時刻選択入力"
@@ -1703,6 +1905,7 @@ msgstr "時刻選択入力"
 #: includes/admin/class-settings.php:312
 msgid "Select Field"
 
+msgstr "選択フィールド"
 #: includes/admin/class-settings.php:313
 msgid "Dropdown select"
 msgstr "ドロップダウン選択"
@@ -1710,6 +1913,7 @@ msgstr "ドロップダウン選択"
 #: includes/admin/class-settings.php:318
 msgid "Checkbox Field"
 
+msgstr "チェックボックスフィールド"
 #: includes/admin/class-settings.php:319
 msgid "Checkbox input"
 msgstr "チェックボックス入力"
@@ -1729,6 +1933,7 @@ msgstr "ファイルアップロード"
 #: includes/admin/class-settings.php:331
 msgid "File upload field"
 
+msgstr "ファイルアップロードフィールド"
 #: includes/admin/class-settings.php:348
 msgid "Block Animations"
 msgstr "ブロックアニメーション"
@@ -1744,6 +1949,7 @@ msgstr "すべてのブロックの表示/非表示アニメーション"
 #: src/extensions/overlay/index.js:100
 msgid "Overlay"
 
+msgstr "オーバーレイ"
 #: includes/admin/class-settings.php:354
 msgid "Add overlay to any block"
 msgstr "任意のブロックにオーバーレイを追加"
@@ -1753,6 +1959,7 @@ msgstr "任意のブロックにオーバーレイを追加"
 #: src/extensions/background-video/index.js:122
 msgid "Background Video"
 
+msgstr "背景ビデオ"
 #: includes/admin/class-settings.php:359
 msgid "Video backgrounds for blocks"
 msgstr "ブロック用の動画背景"
@@ -1762,6 +1969,7 @@ msgstr "ブロック用の動画背景"
 #: src/extensions/custom-css/index.js:94
 msgid "Custom CSS"
 
+msgstr "カスタムCSS"
 #: includes/admin/class-settings.php:364
 msgid "Per-block custom CSS"
 msgstr "ブロックごとのカスタムCSS"
@@ -1769,6 +1977,7 @@ msgstr "ブロックごとのカスタムCSS"
 #: includes/admin/class-settings.php:368
 msgid "Max Width"
 
+msgstr "最大幅"
 #: includes/admin/class-settings.php:369
 msgid "Content width constraints"
 msgstr "コンテンツ幅の制約"
@@ -1800,6 +2009,7 @@ msgstr "カスケードテキスト配置"
 #: includes/admin/class-settings.php:388
 msgid "Responsive"
 
+msgstr "レスポンシブ"
 #: includes/admin/class-settings.php:389
 msgid "Responsive visibility/settings"
 msgstr "レスポンシブ表示/設定"
@@ -1809,6 +2019,7 @@ msgstr "レスポンシブ表示/設定"
 #: src/blocks/progress-bar/edit.js:268
 msgid "Animation"
 
+msgstr "アニメーション"
 #: includes/admin/class-settings.php:394
 msgid "Base animation framework"
 msgstr "基本アニメーションフレームワーク"
@@ -1949,6 +2160,7 @@ msgstr "フォームデータがありません。"
 #: src/blocks/form-url-field/edit.js:44
 msgid "Field Name"
 
+msgstr "フィールド名"
 #: includes/blocks/class-form-submissions.php:110
 #: build/blocks/form-checkbox-field/index.js:1
 #: build/blocks/form-hidden-field/index.js:1
@@ -1958,9 +2170,11 @@ msgid "Field Name"
 #: src/blocks/form-select-field/edit.js:114
 msgid "Value"
 
+msgstr "値"
 #: includes/blocks/class-form-submissions.php:111
 msgid "Type"
 
+msgstr "タイプ"
 #: includes/blocks/class-form-submissions.php:154
 msgid "Form ID:"
 msgstr "フォームID："
@@ -1996,6 +2210,7 @@ msgstr "IPアドレス"
 #: includes/blocks/class-form-submissions.php:199
 msgid "Date"
 
+msgstr "日付"
 #: includes/patterns/class-loader.php:33
 msgid "DesignSetGo: Hero"
 msgstr "DesignSetGo：ヒーロー"
@@ -2147,10 +2362,12 @@ msgstr "ブロックと拡張機能を有効化または無効化して、編集
 #: src/admin/components/BlocksExtensions.js:326
 msgid "Extensions"
 
+msgstr "拡張機能"
 #: build/admin.js:1
 #: src/admin/components/BlocksExtensions.js:258
 msgid "Search blocks..."
 
+msgstr "ブロックを検索..."
 #: build/admin.js:1
 #: src/admin/components/BlocksExtensions.js:281
 msgid "Enable All"
@@ -2187,6 +2404,7 @@ msgstr "設定の保存に失敗しました。"
 #: src/admin/components/Settings.js:321
 msgid "Saving..."
 
+msgstr "保存中..."
 #: build/admin.js:1
 #: src/admin/components/BlocksExtensions.js:358
 #: src/admin/components/Settings.js:321
@@ -2209,6 +2427,7 @@ msgstr "パフォーマンス、フォーム、アニメーション、セキュ
 #: src/blocks/scroll-marquee/edit.js:73
 msgid "Performance"
 
+msgstr "パフォーマンス"
 #: build/admin.js:1
 #: src/admin/components/Settings.js:121
 msgid "Conditional Asset Loading"
@@ -2275,12 +2494,14 @@ msgstr "フォーム送信を保持する期間。0に設定すると永久に�
 #: src/extensions/block-animations/components/AnimationToolbar.js:57
 msgid "Animations"
 
+msgstr "アニメーション"
 #: build/admin.js:1
 #: build/index.js:1
 #: src/admin/components/Settings.js:207
 #: src/extensions/block-animations/components/AnimationPanel.js:53
 msgid "Enable Animations"
 
+msgstr "アニメーションを有効化"
 #: build/admin.js:1
 #: src/admin/components/Settings.js:208
 msgid "Enable block entrance/exit animations."
@@ -2365,6 +2586,7 @@ msgstr "コンテンツを追加…"
 #: src/blocks/accordion-item/edit.js:124
 msgid "Item Settings"
 
+msgstr "項目設定"
 #: build/blocks/accordion-item/index.js:1
 #: src/blocks/accordion-item/edit.js:128
 msgid "Open by Default"
@@ -2399,6 +2621,7 @@ msgstr "アコーディオン項目 2"
 #: src/blocks/accordion/edit.js:92
 msgid "Accordion Settings"
 
+msgstr "アコーディオン設定"
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:94
 msgid "Allow Multiple Open"
@@ -2418,6 +2641,7 @@ msgstr "一度に1つのパネルのみ開くことができます"
 #: src/blocks/accordion/edit.js:114
 msgid "Initially Open"
 
+msgstr "初期状態で開く"
 #: build/blocks/accordion/index.js:1
 #: build/blocks/blobs/index.js:1
 #: build/blocks/form-text-field/index.js:1
@@ -2438,6 +2662,7 @@ msgid "Initially Open"
 #: src/extensions/block-animations/components/AnimationToolbar.js:76
 msgid "None"
 
+msgstr "なし"
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:119
 msgid "First Item"
@@ -2462,10 +2687,12 @@ msgstr "ページ読み込み時に開くパネル"
 #: src/blocks/icon/components/inspector/IconSettingsPanel.js:54
 msgid "Icon Settings"
 
+msgstr "アイコン設定"
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:144
 msgid "Icon Style"
 
+msgstr "アイコンスタイル"
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:148
 msgid "Chevron"
@@ -2494,6 +2721,7 @@ msgstr "キャレット"
 #: src/blocks/tab/edit.js:257
 msgid "Icon Position"
 
+msgstr "アイコン位置"
 #: build/blocks/accordion/index.js:1
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
@@ -2516,6 +2744,7 @@ msgid "Icon Position"
 #: src/blocks/tabs/edit.js:215
 msgid "Left"
 
+msgstr "左"
 #: build/blocks/accordion/index.js:1
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
@@ -2538,10 +2767,12 @@ msgid "Left"
 #: src/blocks/tabs/edit.js:223
 msgid "Right"
 
+msgstr "右"
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:192
 msgid "Style Settings"
 
+msgstr "スタイル設定"
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:196
 msgid "Border Between Items"
@@ -2574,11 +2805,13 @@ msgstr "開いた状態の色"
 #: src/blocks/accordion/edit.js:275
 msgid "Background"
 
+msgstr "背景"
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:251
 #: src/blocks/accordion/edit.js:282
 msgid "Text"
 
+msgstr "テキスト"
 #: build/blocks/accordion/index.js:1
 #: src/blocks/accordion/edit.js:260
 msgid "Colors applied to all accordion items when open."
@@ -2674,10 +2907,12 @@ msgstr "ブロブ形状の幅と高さ"
 #: src/blocks/reveal/edit.js:38
 msgid "Animation Type"
 
+msgstr "アニメーションタイプ"
 #: build/blocks/blobs/index.js:1
 #: src/blocks/blobs/edit.js:117
 msgid "Float"
 
+msgstr "フロート"
 #: build/blocks/blobs/index.js:1
 #: src/blocks/blobs/edit.js:118
 msgid "Pulse"
@@ -2709,6 +2944,7 @@ msgstr "Float/Pulse/Spinは形状を保持します。Morphは形状自体を変
 #: src/blocks/progress-bar/edit.js:285
 msgid "Animation Duration"
 
+msgstr "アニメーション期間"
 #: build/blocks/blobs/index.js:1
 #: src/blocks/blobs/edit.js:142
 msgid "How long one animation cycle takes"
@@ -2729,12 +2965,14 @@ msgstr "アニメーションイージング"
 #: src/blocks/slider/edit.js:492
 msgid "Linear"
 
+msgstr "リニア"
 #: build/blocks/blobs/index.js:1
 #: build/blocks/slider/index.js:1
 #: src/blocks/blobs/edit.js:152
 #: src/blocks/slider/edit.js:488
 msgid "Ease"
 
+msgstr "イーズ"
 #: build/blocks/blobs/index.js:1
 #: build/blocks/slider/index.js:1
 #: src/blocks/blobs/edit.js:153
@@ -2783,6 +3021,7 @@ msgstr "背景画像の上に半透明のオーバーレイを追加"
 #: src/extensions/overlay/index.js:147
 msgid "Overlay Opacity"
 
+msgstr "オーバーレイ不透明度"
 #: build/blocks/blobs/index.js:1
 #: src/blocks/blobs/edit.js:185
 msgid "Overlay transparency (0 = transparent, 100 = opaque)"
@@ -2799,6 +3038,7 @@ msgstr "オーバーレイの透明度（0 = 透明、100 = 不透明）"
 #: src/extensions/overlay/index.js:123
 msgid "Overlay Color"
 
+msgstr "オーバーレイカラー"
 #: build/blocks/counter-group/index.js:1
 #: src/blocks/counter-group/index.js:88
 msgid "Happy Customers"
@@ -2820,6 +3060,7 @@ msgstr "稼働時間"
 #: src/blocks/slider/edit.js:226
 msgid "Layout Settings"
 
+msgstr "レイアウト設定"
 #: build/blocks/counter-group/index.js:1
 #: src/blocks/counter-group/index.js:123
 msgid "Columns (Desktop)"
@@ -2856,6 +3097,7 @@ msgstr "<768px"
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:136
 msgid "Gap"
 
+msgstr "ギャップ"
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
@@ -2886,10 +3128,12 @@ msgstr "コンテンツの配置"
 #: src/blocks/tabs/edit.js:219
 msgid "Center"
 
+msgstr "中央"
 #: build/blocks/counter-group/index.js:1
 #: src/blocks/counter-group/index.js:196
 msgid "Animation Settings"
 
+msgstr "アニメーション設定"
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter-group/index.js:200
@@ -2963,6 +3207,7 @@ msgstr "数値を\"1,000\"または\"1000\"のようにフォーマット"
 #: src/blocks/counter-group/index.js:286
 msgid "Thousands Separator"
 
+msgstr "千の位区切り"
 #: build/blocks/counter-group/index.js:1
 #: src/blocks/counter-group/index.js:291
 msgid "Character for thousands (e.g., \",\" or \".\")"
@@ -2984,6 +3229,7 @@ msgstr "小数点の文字（例：\".\"または\",\"）"
 #: src/blocks/counter/edit.js:149
 msgid "Hover Color"
 
+msgstr "ホバーカラー"
 #: build/blocks/counter-group/index.js:1
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter-group/index.js:321
@@ -3000,10 +3246,12 @@ msgstr "ホバー時のカウンター数値の色。個別のカウンターで
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:34
 msgid "Counter Settings"
 
+msgstr "カウンター設定"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:38
 msgid "Start Value"
 
+msgstr "開始値"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:43
 msgid "Number to count from"
@@ -3013,6 +3261,7 @@ msgstr "カウント開始数値"
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:49
 msgid "End Value"
 
+msgstr "終了値"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:55
 msgid "Final number to display"
@@ -3022,10 +3271,12 @@ msgstr "表示する最終数値"
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:61
 msgid "Decimal Places"
 
+msgstr "小数点以下の桁数"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:72
 msgid "Prefix"
 
+msgstr "接頭辞"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:76
 msgid "Text before number (e.g., \"$\", \"€\")"
@@ -3035,6 +3286,7 @@ msgstr "数値の前のテキスト（例：\"$\"、\"€\"）"
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:82
 msgid "Suffix"
 
+msgstr "接尾辞"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/CounterSettingsPanel.js:86
 msgid "Text after number (e.g., \"+\", \"%\", \"K\")"
@@ -3046,6 +3298,7 @@ msgstr "数値の後のテキスト（例：\"+\"、\"%\"、\"K\"）"
 #: src/blocks/progress-bar/edit.js:202
 msgid "Label Settings"
 
+msgstr "ラベル設定"
 #: build/blocks/counter/index.js:1
 #: build/blocks/form-date-field/index.js:1
 #: build/blocks/form-email-field/index.js:1
@@ -3070,6 +3323,7 @@ msgid "Label Settings"
 #: src/blocks/form-url-field/edit.js:55
 msgid "Label"
 
+msgstr "ラベル"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/LabelSettingsPanel.js:30
 msgid "Enter label…"
@@ -3084,6 +3338,7 @@ msgstr "カウンター下の説明テキスト"
 #: src/blocks/counter/components/inspector/IconSettingsPanel.js:34
 msgid "Show Icon"
 
+msgstr "アイコンを表示"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/IconSettingsPanel.js:39
 msgid "Icon is displayed"
@@ -3149,6 +3404,7 @@ msgstr "ロケット"
 #: src/blocks/tab/edit.js:269
 msgid "Top"
 
+msgstr "上"
 #: build/blocks/counter/index.js:1
 #: src/blocks/counter/components/inspector/AnimationPanel.js:50
 msgid "Animation Override"
@@ -3203,10 +3459,12 @@ msgstr "ホバー時のカウンター数値の色。テーマのアクセント
 #: src/blocks/flex/edit.js:126
 msgid "Flex Settings"
 
+msgstr "フレックス設定"
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:130
 msgid "Direction"
 
+msgstr "方向"
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:134
 msgid "Row (Horizontal)"
@@ -3236,6 +3494,7 @@ msgstr "項目は単一行に留まります"
 #: src/blocks/flex/edit.js:168
 msgid "Justify Content"
 
+msgstr "コンテンツの位置揃え"
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
 #: build/blocks/icon-button/index.js:1
@@ -3245,6 +3504,7 @@ msgid "Justify Content"
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:98
 msgid "Start"
 
+msgstr "開始"
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
 #: build/blocks/icon-button/index.js:1
@@ -3254,18 +3514,22 @@ msgid "Start"
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:99
 msgid "End"
 
+msgstr "終了"
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:184
 msgid "Space Between"
 
+msgstr "間隔を空ける"
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:188
 msgid "Space Around"
 
+msgstr "周囲に空間"
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:192
 msgid "Space Evenly"
 
+msgstr "均等に空間"
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:199
 msgid "Horizontal alignment (main axis)"
@@ -3277,16 +3541,19 @@ msgstr "水平方向の配置（主軸）"
 #: src/blocks/grid/edit.js:209
 msgid "Align Items"
 
+msgstr "項目の配置"
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
 #: src/blocks/flex/edit.js:224
 #: src/blocks/grid/edit.js:222
 msgid "Stretch"
 
+msgstr "伸縮"
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:228
 msgid "Baseline"
 
+msgstr "ベースライン"
 #: build/blocks/flex/index.js:1
 #: src/blocks/flex/edit.js:235
 msgid "Vertical alignment (cross axis)"
@@ -3315,6 +3582,7 @@ msgstr "項目はすべてのデバイスでFlexレイアウトを維持しま�
 #: src/blocks/stack/edit.js:125
 msgid "Hover Settings"
 
+msgstr "ホバー設定"
 #: build/blocks/flex/index.js:1
 #: build/blocks/grid/index.js:1
 #: build/blocks/stack/index.js:1
@@ -3362,6 +3630,7 @@ msgstr "カードの裏面"
 #: src/blocks/flip-card-front/edit.js:18
 msgid "Add any blocks you want here..."
 
+msgstr "ここに任意のブロックを追加..."
 #: build/blocks/flip-card-front/index.js:1
 #: src/blocks/flip-card-front/edit.js:17
 msgid "Front of Card"
@@ -3381,10 +3650,12 @@ msgstr "反転トリガー"
 #: src/blocks/flip-card/edit.js:157
 msgid "Hover"
 
+msgstr "ホバー"
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:161
 msgid "Click"
 
+msgstr "クリック"
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:168
 msgid "Card flips when hovering over it"
@@ -3413,12 +3684,14 @@ msgstr "フリップ（3D回転）"
 #: src/blocks/slider/edit.js:461
 msgid "Fade"
 
+msgstr "フェード"
 #: build/blocks/flip-card/index.js:1
 #: build/blocks/slider/index.js:1
 #: src/blocks/flip-card/edit.js:192
 #: src/blocks/slider/edit.js:462
 msgid "Zoom"
 
+msgstr "ズーム"
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:197
 msgid "Choose the transition animation style"
@@ -3435,6 +3708,7 @@ msgstr "反転方向"
 #: src/blocks/tabs/edit.js:168
 msgid "Horizontal"
 
+msgstr "水平"
 #: build/blocks/flip-card/index.js:1
 #: build/blocks/icon-list/index.js:1
 #: build/blocks/tabs/index.js:1
@@ -3443,6 +3717,7 @@ msgid "Horizontal"
 #: src/blocks/tabs/edit.js:172
 msgid "Vertical"
 
+msgstr "垂直"
 #: build/blocks/flip-card/index.js:1
 #: src/blocks/flip-card/edit.js:219
 msgid "Card flips left to right"
@@ -3487,10 +3762,12 @@ msgstr "ブロックツールバーまたはスタイルパネルを使用して
 #: src/blocks/form-builder/edit.js:108
 msgid "Name"
 
+msgstr "名前"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:116
 msgid "Email"
 
+msgstr "メール"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:124
 msgid "Message"
@@ -3500,6 +3777,7 @@ msgstr "メッセージ"
 #: src/blocks/form-builder/edit.js:136
 msgid "Form Settings"
 
+msgstr "フォーム設定"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:138
 msgid "AJAX Submit"
@@ -3559,6 +3837,7 @@ msgstr "メッセージ"
 #: src/blocks/form-builder/edit.js:220
 msgid "Success Message"
 
+msgstr "成功メッセージ"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:223
 msgid "Message shown after successful submission"
@@ -3568,6 +3847,7 @@ msgstr "送信成功後に表示されるメッセージ"
 #: src/blocks/form-builder/edit.js:232
 msgid "Error Message"
 
+msgstr "エラーメッセージ"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:235
 msgid "Message shown if submission fails"
@@ -3697,10 +3977,12 @@ msgstr "フォームカラー"
 #: src/blocks/form-builder/edit.js:406
 msgid "Label Color"
 
+msgstr "ラベルカラー"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:411
 msgid "Border Color"
 
+msgstr "ボーダーカラー"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:416
 msgid "Field Background"
@@ -3715,12 +3997,14 @@ msgstr "ボタンカラー"
 #: src/blocks/form-builder/edit.js:429
 msgid "Text Color"
 
+msgstr "テキストカラー"
 #: build/blocks/form-builder/index.js:1
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/form-builder/edit.js:434
 #: src/blocks/progress-bar/edit.js:195
 msgid "Background Color"
 
+msgstr "背景色"
 #: build/blocks/form-builder/index.js:1
 #: src/blocks/form-builder/edit.js:463
 msgid "Form messages will appear here"
@@ -3751,6 +4035,7 @@ msgstr "フォームメッセージがここに表示されます"
 #: src/blocks/form-url-field/edit.js:42
 msgid "Field Settings"
 
+msgstr "フィールド設定"
 #: build/blocks/form-checkbox-field/index.js:1
 #: build/blocks/form-date-field/index.js:1
 #: build/blocks/form-hidden-field/index.js:1
@@ -3787,6 +4072,7 @@ msgstr "このフィールドの一意識別子（英字、数字、ハイフン
 #: src/blocks/form-url-field/edit.js:63
 msgid "Required"
 
+msgstr "必須"
 #: build/blocks/form-checkbox-field/index.js:1
 #: src/blocks/form-checkbox-field/edit.js:62
 msgid "Checked by Default"
@@ -3837,6 +4123,7 @@ msgstr "チェックボックスがチェックされたときに送信される
 #: src/blocks/form-url-field/edit.js:91
 msgid "Help Text"
 
+msgstr "ヘルプテキスト"
 #: build/blocks/form-checkbox-field/index.js:1
 #: build/blocks/form-date-field/index.js:1
 #: build/blocks/form-number-field/index.js:1
@@ -3860,6 +4147,7 @@ msgstr "フィールドの下に表示される追加のガイダンス"
 #: src/blocks/form-checkbox-field/edit.js:104
 msgid "Enter checkbox label..."
 
+msgstr "チェックボックスラベルを入力..."
 #: build/blocks/form-date-field/index.js:1
 #: src/blocks/form-date-field/edit.js:71
 msgid "Date Range"
@@ -3932,6 +4220,7 @@ msgstr "このフィールドの一意識別子"
 #: src/blocks/form-url-field/edit.js:72
 msgid "Placeholder"
 
+msgstr "プレースホルダー"
 #: build/blocks/form-email-field/index.js:1
 #: build/blocks/form-text-field/index.js:1
 #: build/blocks/form-textarea/index.js:1
@@ -3960,6 +4249,7 @@ msgstr "（空）"
 #: src/blocks/form-number-field/edit.js:75
 msgid "Number Settings"
 
+msgstr "数値設定"
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:77
 msgid "Minimum Value"
@@ -3984,6 +4274,7 @@ msgstr "許可される最大値（最大値なしの場合は空のままにし
 #: src/blocks/form-number-field/edit.js:95
 msgid "Step"
 
+msgstr "ステップ"
 #: build/blocks/form-number-field/index.js:1
 #: src/blocks/form-number-field/edit.js:98
 msgid "Increment/decrement step value"
@@ -4082,6 +4373,7 @@ msgstr "電話番号形式"
 #: src/blocks/form-phone-field/edit.js:124
 msgid "Format"
 
+msgstr "フォーマット"
 #: build/blocks/form-phone-field/index.js:1
 #: src/blocks/form-phone-field/edit.js:127
 msgid "Any Format"
@@ -4136,6 +4428,7 @@ msgstr "ユーザーが入力する際に電話番号を自動的にフォーマ
 #: src/blocks/form-select-field/edit.js:100
 msgid "Options"
 
+msgstr "オプション"
 #: build/blocks/form-select-field/index.js:1
 #: src/blocks/form-select-field/edit.js:125
 msgid "Remove option"
@@ -4175,6 +4468,7 @@ msgstr "このフィールドにデフォルト値を事前入力"
 #: src/blocks/form-text-field/edit.js:165
 msgid "Validation"
 
+msgstr "検証"
 #: build/blocks/form-text-field/index.js:1
 #: src/blocks/form-text-field/edit.js:167
 msgid "Minimum Length"
@@ -4246,6 +4540,7 @@ msgstr "検証が失敗したときに表示されるメッセージ"
 #: src/blocks/form-textarea/edit.js:102
 msgid "Rows"
 
+msgstr "行"
 #: build/blocks/form-textarea/index.js:1
 #: src/blocks/form-textarea/edit.js:107
 msgid "Height of the textarea in rows"
@@ -4302,10 +4597,12 @@ msgstr "事前入力時刻（形式：HH:MM）"
 #: src/extensions/grid-span/index.js:80
 msgid "Grid Settings"
 
+msgstr "グリッド設定"
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:131
 msgid "Desktop Columns"
 
+msgstr "デスクトップ列"
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:157
 msgid "Number of columns on desktop screens"
@@ -4315,6 +4612,7 @@ msgstr "デスクトップ画面での列数"
 #: src/blocks/grid/edit.js:166
 msgid "Tablet Columns"
 
+msgstr "タブレット列"
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:184
 msgid "Number of columns on tablet screens (≤ 1024px)"
@@ -4324,6 +4622,7 @@ msgstr "タブレット画面での列数（≤ 1024px）"
 #: src/blocks/grid/edit.js:193
 msgid "Mobile Columns"
 
+msgstr "モバイル列"
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:200
 msgid "Number of columns on mobile screens (≤ 767px)"
@@ -4333,6 +4632,7 @@ msgstr "モバイル画面での列数（≤ 767px）"
 #: src/blocks/grid/edit.js:239
 msgid "Gap Settings"
 
+msgstr "ギャップ設定"
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:243
 msgid "Custom Row/Column Gaps"
@@ -4352,10 +4652,12 @@ msgstr "WordPressのblockGapを使用（間隔パネルで設定）"
 #: src/blocks/grid/edit.js:269
 msgid "Row Gap"
 
+msgstr "行ギャップ"
 #: build/blocks/grid/index.js:1
 #: src/blocks/grid/edit.js:282
 msgid "Column Gap"
 
+msgstr "列ギャップ"
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
@@ -4418,6 +4720,7 @@ msgstr "アクション"
 #: src/blocks/icon/components/IconPicker.js:102
 msgid "Media"
 
+msgstr "メディア"
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
@@ -4445,6 +4748,7 @@ msgstr "その他"
 #: src/blocks/icon/components/IconPicker.js:170
 msgid "Choose Icon"
 
+msgstr "アイコンを選択"
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
@@ -4467,6 +4771,7 @@ msgstr "アイコンが見つかりません"
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:39
 msgid "Link Settings"
 
+msgstr "リンク設定"
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: build/blocks/icon/index.js:1
@@ -4476,6 +4781,7 @@ msgid "Link Settings"
 #: src/blocks/icon/edit.js:145
 msgid "URL"
 
+msgstr "URL"
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:58
 msgid "Enter the link URL"
@@ -4489,6 +4795,7 @@ msgstr "リンクURLを入力"
 #: src/blocks/icon/edit.js:154
 msgid "Open in new tab"
 
+msgstr "新しいタブで開く"
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/icon-list-item/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:77
@@ -4516,6 +4823,7 @@ msgstr "テキストに対するアイコンの位置"
 #: src/blocks/icon/edit.js:116
 msgid "Icon Size"
 
+msgstr "アイコンサイズ"
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:132
 msgid "Icon Gap"
@@ -4530,6 +4838,7 @@ msgstr "アイコンとテキストの間隔"
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:153
 msgid "Button Settings"
 
+msgstr "ボタン設定"
 #: build/blocks/icon-button/index.js:1
 #: build/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:155
@@ -4537,16 +4846,19 @@ msgid "Button Settings"
 #: src/extensions/max-width/index.js:115
 msgid "Width"
 
+msgstr "幅"
 #: build/blocks/icon-button/index.js:1
 #: build/blocks/slide/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:158
 #: src/blocks/slide/edit.js:194
 msgid "Auto"
 
+msgstr "自動"
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:160
 msgid "Full Width"
 
+msgstr "全幅"
 #: build/blocks/icon-button/index.js:1
 #: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:163
 msgid "50%"
@@ -4581,16 +4893,19 @@ msgstr "リスト項目タイトル…"
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:46
 msgid "List Settings"
 
+msgstr "リスト設定"
 #: build/blocks/icon-list/index.js:1
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:50
 #: src/blocks/image-accordion/edit.js:76
 msgid "Layout"
 
+msgstr "レイアウト"
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:57
 msgid "Grid"
 
+msgstr "グリッド"
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:60
 msgid "Choose how list items are arranged"
@@ -4602,6 +4917,7 @@ msgstr "リスト項目の配置方法を選択"
 #: src/blocks/tabs/edit.js:211
 msgid "Alignment"
 
+msgstr "配置"
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:86
 msgid "Align list items horizontally"
@@ -4611,6 +4927,7 @@ msgstr "リスト項目を水平方向に配置"
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:97
 msgid "Columns"
 
+msgstr "列"
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:102
 msgid "Number of columns in grid layout"
@@ -4631,6 +4948,7 @@ msgstr "リスト項目間の間隔"
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:157
 msgid "Icon Color"
 
+msgstr "アイコンカラー"
 #: build/blocks/icon-list/index.js:1
 #: src/blocks/icon-list/components/inspector/ListSettingsPanel.js:168
 msgid "Default color for all icons in this list"
@@ -4655,6 +4973,7 @@ msgstr "3番目の項目"
 #: src/blocks/icon/edit.js:82
 msgid "Style"
 
+msgstr "スタイル"
 #: build/blocks/icon/index.js:1
 #: src/blocks/icon/edit.js:90
 msgid "Filled"
@@ -4685,6 +5004,7 @@ msgstr "回転"
 #: src/blocks/icon/edit.js:141
 msgid "Link"
 
+msgstr "リンク"
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
 #: src/blocks/image-accordion-item/edit.js:89
@@ -4700,6 +5020,7 @@ msgstr "垂直方向の配置"
 #: src/blocks/slider/edit.js:430
 msgid "Bottom"
 
+msgstr "下"
 #: build/blocks/image-accordion-item/index.js:1
 #: build/blocks/slide/index.js:1
 #: src/blocks/image-accordion-item/edit.js:102
@@ -4713,6 +5034,7 @@ msgstr "水平方向の配置"
 #: src/blocks/slider/edit.js:287
 msgid "Height"
 
+msgstr "高さ"
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:88
 msgid "Fixed height for the accordion"
@@ -4788,6 +5110,7 @@ msgstr "ページ読み込み時に展開される項目（0 = なし、1 = 最�
 #: src/extensions/overlay/index.js:104
 msgid "Enable Overlay"
 
+msgstr "オーバーレイを有効化"
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:189
 msgid "Overlay applied to all items"
@@ -4806,6 +5129,7 @@ msgstr "項目にオーバーレイなし"
 #: src/extensions/overlay/index.js:132
 msgid "Color"
 
+msgstr "色"
 #: build/blocks/image-accordion/index.js:1
 #: src/blocks/image-accordion/edit.js:211
 msgid "Overlay Opacity (Default)"
@@ -4835,10 +5159,12 @@ msgstr "ピルテキストを追加…"
 #: src/blocks/progress-bar/edit.js:105
 msgid "Progress Settings"
 
+msgstr "プログレス設定"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:109
 msgid "Percentage"
 
+msgstr "パーセンテージ"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:117
 msgid "Set the progress percentage (0–100)"
@@ -4848,6 +5174,7 @@ msgstr "進捗率を設定（0–100）"
 #: src/blocks/progress-bar/edit.js:128
 msgid "Appearance"
 
+msgstr "外観"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:132
 msgid "Bar Height"
@@ -4859,14 +5186,17 @@ msgstr "バーの高さ"
 #: src/blocks/scroll-marquee/edit.js:120
 msgid "Border Radius"
 
+msgstr "ボーダー半径"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:160
 msgid "Bar Style"
 
+msgstr "バースタイル"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:167
 msgid "Solid"
 
+msgstr "ソリッド"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:171
 msgid "Striped"
@@ -4881,14 +5211,17 @@ msgstr "アニメーション"
 #: src/blocks/progress-bar/edit.js:182
 msgid "Color Settings"
 
+msgstr "カラー設定"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:189
 msgid "Bar Color"
 
+msgstr "バーカラー"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:206
 msgid "Show Label"
 
+msgstr "ラベルを表示"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:216
 msgid "Label Text"
@@ -4903,10 +5236,12 @@ msgstr "例：プロジェクト進捗"
 #: src/blocks/progress-bar/edit.js:231
 msgid "Show Percentage"
 
+msgstr "パーセンテージを表示"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:241
 msgid "Label Position"
 
+msgstr "ラベル位置"
 #: build/blocks/progress-bar/index.js:1
 #: src/blocks/progress-bar/edit.js:245
 msgid "Above Bar"
@@ -4948,18 +5283,22 @@ msgstr "ストライプをアニメーション"
 #: src/extensions/reveal-control/index.js:139
 msgid "Reveal Settings"
 
+msgstr "リビール設定"
 #: build/blocks/reveal/index.js:1
 #: src/blocks/reveal/edit.js:46
 msgid "Slide Up"
 
+msgstr "スライドアップ"
 #: build/blocks/reveal/index.js:1
 #: src/blocks/reveal/edit.js:50
 msgid "Slide Down"
 
+msgstr "スライドダウン"
 #: build/blocks/reveal/index.js:1
 #: src/blocks/reveal/edit.js:54
 msgid "Scale"
 
+msgstr "スケール"
 #: build/blocks/reveal/index.js:1
 #: src/blocks/reveal/edit.js:65
 msgid "Animation Duration (ms)"
@@ -4969,6 +5308,7 @@ msgstr "アニメーション時間（ミリ秒）"
 #: src/blocks/scroll-accordion-item/edit.js:31
 msgid "Add content for this scroll accordion item..."
 
+msgstr "このスクロールアコーディオン項目のコンテンツを追加..."
 #: build/blocks/scroll-accordion/index.js:1
 #: build/blocks/stack/index.js:1
 #: src/blocks/scroll-accordion/edit.js:227
@@ -5014,10 +5354,12 @@ msgstr " （無限スクロール用に6倍複製）"
 #: src/blocks/scroll-marquee/edit.js:90
 msgid "Scroll Settings"
 
+msgstr "スクロール設定"
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:92
 msgid "Scroll Speed"
 
+msgstr "スクロール速度"
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:98
 msgid "Controls how fast images move based on scroll"
@@ -5042,6 +5384,7 @@ msgstr "画像の幅"
 #: src/blocks/scroll-marquee/edit.js:128
 msgid "Spacing"
 
+msgstr "スペーシング"
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:130
 msgid "Gap Between Images"
@@ -5063,6 +5406,7 @@ msgstr "行を削除"
 #: src/blocks/slide/edit.js:176
 msgid "Remove Image"
 
+msgstr "画像を削除"
 #: build/blocks/scroll-marquee/index.js:1
 #: src/blocks/scroll-marquee/edit.js:205
 msgid "Add Images"
@@ -5097,6 +5441,7 @@ msgstr "背景画像"
 #: src/blocks/slide/edit.js:168
 msgid "Replace Image"
 
+msgstr "画像を置換"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:152
 msgid "Select Background Image"
@@ -5106,14 +5451,17 @@ msgstr "背景画像を選択"
 #: src/blocks/slide/edit.js:189
 msgid "Background Size"
 
+msgstr "背景サイズ"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:192
 msgid "Cover"
 
+msgstr "カバー"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:193
 msgid "Contain"
 
+msgstr "コンテイン"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:197
 msgid "How the background image fills the slide"
@@ -5123,18 +5471,22 @@ msgstr "背景画像がスライドをどのように埋めるか"
 #: src/blocks/slide/edit.js:203
 msgid "Background Position"
 
+msgstr "背景位置"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:206
 msgid "Center Center"
 
+msgstr "中央 中央"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:207
 msgid "Top Center"
 
+msgstr "上 中央"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:208
 msgid "Bottom Center"
 
+msgstr "下 中央"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:209
 msgid "Left Center"
@@ -5149,18 +5501,22 @@ msgstr "右中央"
 #: src/blocks/slide/edit.js:211
 msgid "Top Left"
 
+msgstr "上 左"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:212
 msgid "Top Right"
 
+msgstr "上 右"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:213
 msgid "Bottom Left"
 
+msgstr "下 左"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:214
 msgid "Bottom Right"
 
+msgstr "下 右"
 #: build/blocks/slide/index.js:1
 #: src/blocks/slide/edit.js:229
 msgid "Overlay applied to background"
@@ -5265,6 +5621,7 @@ msgstr "スライド間の間隔"
 #: src/blocks/slider/edit.js:317
 msgid "Navigation Settings"
 
+msgstr "ナビゲーション設定"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:319
 msgid "Show Arrows"
@@ -5282,6 +5639,7 @@ msgstr "矢印スタイル"
 #: src/blocks/tabs/edit.js:188
 msgid "Default"
 
+msgstr "デフォルト"
 #: build/blocks/slider/index.js:1
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:35
 #: src/blocks/slider/edit.js:332
@@ -5436,6 +5794,7 @@ msgstr "スライド間の時間"
 #: src/blocks/slider/edit.js:528
 msgid "Pause on Hover"
 
+msgstr "ホバー時に一時停止"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:535
 msgid "Pause on Interaction"
@@ -5450,12 +5809,14 @@ msgstr "ユーザーがクリック、スワイプ、またはドラッグした
 #: src/blocks/slider/edit.js:545
 msgid "Behavior Settings"
 
+msgstr "動作設定"
 #: build/blocks/slider/index.js:1
 #: build/index.js:1
 #: src/blocks/slider/edit.js:547
 #: src/extensions/background-video/index.js:313
 msgid "Loop"
 
+msgstr "ループ"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:552
 msgid "Infinite loop navigation"
@@ -5500,6 +5861,7 @@ msgstr "アクティブスライドをビューの中央に配置"
 #: src/blocks/slider/edit.js:589
 msgid "Advanced Settings"
 
+msgstr "詳細設定"
 #: build/blocks/slider/index.js:1
 #: build/blocks/tabs/index.js:1
 #: src/blocks/slider/edit.js:591
@@ -5526,6 +5888,7 @@ msgstr "この幅未満では、タブレットの表示スライド数を使用
 #: src/blocks/slider/edit.js:613
 msgid "ARIA Label"
 
+msgstr "ARIAラベル"
 #: build/blocks/slider/index.js:1
 #: src/blocks/slider/edit.js:616
 msgid "Accessible label for screen readers"
@@ -5795,11 +6158,13 @@ msgstr "🎯 ターゲット"
 #: src/blocks/tabs/edit.js:160
 msgid "Tab Settings"
 
+msgstr "タブ設定"
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:110
 #: src/blocks/tab/edit.js:212
 msgid "Tab Title"
 
+msgstr "タブタイトル"
 #: build/blocks/tab/index.js:1
 #: src/blocks/tab/edit.js:115
 #: src/blocks/tab/edit.js:215
@@ -5862,6 +6227,7 @@ msgstr "方向"
 #: src/blocks/tabs/edit.js:184
 msgid "Tab Style"
 
+msgstr "タブスタイル"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:192
 msgid "Pills"
@@ -5871,6 +6237,7 @@ msgstr "ピル"
 #: src/blocks/tabs/edit.js:196
 msgid "Underline"
 
+msgstr "アンダーライン"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:227
 msgid "Justified"
@@ -5915,6 +6282,7 @@ msgstr "タブ枠線"
 #: src/blocks/tabs/edit.js:293
 msgid "Mobile Settings"
 
+msgstr "モバイル設定"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:305
 msgid "Screen width below which mobile mode activates"
@@ -5929,6 +6297,7 @@ msgstr "モバイルモード"
 #: src/blocks/tabs/edit.js:322
 msgid "Dropdown"
 
+msgstr "ドロップダウン"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:326
 msgid "Tabs (Scrollable)"
@@ -5938,6 +6307,7 @@ msgstr "タブ（スクロール可能）"
 #: src/blocks/tabs/edit.js:339
 msgid "Advanced"
 
+msgstr "詳細"
 #: build/blocks/tabs/index.js:1
 #: src/blocks/tabs/edit.js:343
 msgid "Enable Deep Linking"
@@ -5982,6 +6352,7 @@ msgstr "アニメーショントリガー"
 #: src/extensions/block-animations/components/AnimationPanel.js:121
 msgid "Duration"
 
+msgstr "期間"
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:134
 msgid "Delay (ms)"
@@ -5991,6 +6362,7 @@ msgstr "遅延（ミリ秒）"
 #: src/extensions/block-animations/components/AnimationPanel.js:151
 msgid "Easing"
 
+msgstr "イージング"
 #: build/index.js:1
 #: src/extensions/block-animations/components/AnimationPanel.js:164
 msgid "Viewport Offset (px)"
@@ -6052,10 +6424,12 @@ msgstr "コンテンツは全幅を使用します"
 #: src/extensions/max-width/index.js:143
 msgid "Content Width"
 
+msgstr "コンテンツ幅"
 #: build/index.js:1
 #: src/extensions/max-width/index.js:173
 msgid "Max width"
 
+msgstr "最大幅"
 #: build/index.js:1
 #: src/extensions/max-width/index.js:179
 msgid "Maximum width for this block. Leave empty for no constraint."
@@ -6090,6 +6464,7 @@ msgstr "動画を削除"
 #: src/extensions/background-video/index.js:184
 msgid "Upload Video"
 
+msgstr "ビデオをアップロード"
 #: build/index.js:1
 #: src/extensions/background-video/index.js:219
 msgid "Poster Image (Optional)"
@@ -6249,6 +6624,7 @@ msgstr "最大ファイルサイズ（MB）"
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:28
 msgid "Text Settings"
 
+msgstr "テキスト設定"
 #: src/blocks/icon-list-item/components/inspector/TextSettingsPanel.js:32
 msgid "Title Tag"
 msgstr "タイトルタグ"
@@ -6310,9 +6686,11 @@ msgstr "最初の100件の結果を表示しています。検索を絞り込ん
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:60
 msgid "Remove Link"
 
+msgstr "リンクを削除"
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:61
 msgid "Add Link"
 
+msgstr "リンクを追加"
 #: src/blocks/icon/components/inspector/LinkSettingsPanel.js:75
 msgid "Open in"
 msgstr "開く場所"
@@ -6352,6 +6730,7 @@ msgstr "背景色は下の「カラー」パネルで設定されます。"
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:61
 msgid "Padding"
 
+msgstr "パディング"
 #: src/blocks/icon/components/inspector/ShapeSettingsPanel.js:69
 msgid "Space between the icon and the shape edge."
 msgstr "アイコンと形状の端の間の間隔。"
@@ -6401,6 +6780,7 @@ msgstr "アコーディオン"
 msgctxt "block keyword"
 msgid "item"
 
+msgstr "項目"
 #: build/blocks/accordion-item/block.json
 #: build/blocks/image-accordion-item/block.json
 #: build/blocks/scroll-accordion-item/block.json
@@ -6414,6 +6794,7 @@ msgid "item"
 msgctxt "block keyword"
 msgid "panel"
 
+msgstr "パネル"
 #: build/blocks/accordion-item/block.json
 #: build/blocks/image-accordion-item/block.json
 #: build/blocks/scroll-accordion-item/block.json
@@ -6453,6 +6834,7 @@ msgstr "折りたたみ可能"
 msgctxt "block keyword"
 msgid "toggle"
 
+msgstr "トグル"
 #: build/blocks/accordion/block.json
 #: build/blocks/image-accordion/block.json
 #: src/blocks/accordion/block.json
@@ -6580,16 +6962,19 @@ msgstr "フレックス"
 msgctxt "block keyword"
 msgid "flexbox"
 
+msgstr "フレックスボックス"
 #: build/blocks/flex/block.json
 #: src/blocks/flex/block.json
 msgctxt "block keyword"
 msgid "horizontal"
 
+msgstr "水平"
 #: build/blocks/flex/block.json
 #: src/blocks/flex/block.json
 msgctxt "block keyword"
 msgid "row"
 
+msgstr "行"
 #: build/blocks/flex/block.json
 #: build/blocks/grid/block.json
 #: build/blocks/stack/block.json
@@ -6599,6 +6984,7 @@ msgid "row"
 msgctxt "block keyword"
 msgid "layout"
 
+msgstr "レイアウト"
 #: build/blocks/flex/block.json
 #: build/blocks/grid/block.json
 #: build/blocks/reveal/block.json
@@ -6610,6 +6996,7 @@ msgid "layout"
 msgctxt "block keyword"
 msgid "container"
 
+msgstr "コンテナ"
 #: build/blocks/flip-card-back/block.json
 #: src/blocks/flip-card-back/block.json
 msgctxt "block description"
@@ -6625,6 +7012,7 @@ msgstr "フリップカードの裏面です。"
 msgctxt "block keyword"
 msgid "flip"
 
+msgstr "反転"
 #: build/blocks/flip-card-back/block.json
 #: build/blocks/flip-card-front/block.json
 #: build/blocks/flip-card/block.json
@@ -6674,6 +7062,7 @@ msgstr "インタラクティブ"
 msgctxt "block keyword"
 msgid "hover"
 
+msgstr "ホバー"
 #: build/blocks/flip-card/block.json
 #: src/blocks/flip-card/block.json
 msgctxt "block keyword"
@@ -6685,6 +7074,7 @@ msgstr "3D"
 msgctxt "block keyword"
 msgid "rotate"
 
+msgstr "回転"
 #: build/blocks/form-builder/block.json
 #: src/blocks/form-builder/block.json
 msgctxt "block description"
@@ -6732,6 +7122,7 @@ msgstr "連絡先"
 msgctxt "block keyword"
 msgid "submit"
 
+msgstr "送信"
 #: build/blocks/form-builder/block.json
 #: src/blocks/form-builder/block.json
 msgctxt "block keyword"
@@ -6797,6 +7188,7 @@ msgstr "日付選択"
 msgctxt "block keyword"
 msgid "day"
 
+msgstr "日"
 #: build/blocks/form-email-field/block.json
 #: src/blocks/form-email-field/block.json
 msgctxt "block description"
@@ -6832,6 +7224,7 @@ msgstr "フィールド"
 msgctxt "block title"
 msgid "File Upload Field"
 
+msgstr "ファイルアップロードフィールド"
 #: build/blocks/form-file-upload/block.json
 #: src/blocks/form-file-upload/block.json
 msgctxt "block description"
@@ -6849,6 +7242,7 @@ msgstr "ファイル"
 msgctxt "block keyword"
 msgid "upload"
 
+msgstr "アップロード"
 #: build/blocks/form-file-upload/block.json
 #: src/blocks/form-file-upload/block.json
 msgctxt "block keyword"
@@ -6928,6 +7322,7 @@ msgstr "電話"
 msgctxt "block keyword"
 msgid "mobile"
 
+msgstr "モバイル"
 #: build/blocks/form-select-field/block.json
 #: src/blocks/form-select-field/block.json
 msgctxt "block description"
@@ -6939,6 +7334,7 @@ msgstr "フォーム用のドロップダウン選択フィールドです。"
 msgctxt "block keyword"
 msgid "select"
 
+msgstr "選択"
 #: build/blocks/form-select-field/block.json
 #: src/blocks/form-select-field/block.json
 msgctxt "block keyword"
@@ -6970,6 +7366,7 @@ msgstr "フォーム用の単一行テキスト入力フィールドです。"
 msgctxt "block keyword"
 msgid "text"
 
+msgstr "テキスト"
 #: build/blocks/form-textarea/block.json
 #: src/blocks/form-textarea/block.json
 msgctxt "block description"
@@ -7017,6 +7414,7 @@ msgstr "時刻選択"
 msgctxt "block keyword"
 msgid "hour"
 
+msgstr "時間"
 #: build/blocks/form-url-field/block.json
 #: src/blocks/form-url-field/block.json
 msgctxt "block description"
@@ -7042,6 +7440,7 @@ msgstr "ウェブサイト"
 msgctxt "block keyword"
 msgid "link"
 
+msgstr "リンク"
 #: build/blocks/form-url-field/block.json
 #: src/blocks/form-url-field/block.json
 msgctxt "block keyword"
@@ -7059,16 +7458,19 @@ msgstr "レスポンシブマルチカラムグリッドレイアウト。機能
 msgctxt "block keyword"
 msgid "grid"
 
+msgstr "グリッド"
 #: build/blocks/grid/block.json
 #: src/blocks/grid/block.json
 msgctxt "block keyword"
 msgid "columns"
 
+msgstr "列"
 #: build/blocks/grid/block.json
 #: src/blocks/grid/block.json
 msgctxt "block keyword"
 msgid "responsive"
 
+msgstr "レスポンシブ"
 #: build/blocks/icon-button/block.json
 #: src/blocks/icon-button/block.json
 msgctxt "block description"
@@ -7092,6 +7494,7 @@ msgstr "ボタン"
 msgctxt "block keyword"
 msgid "icon"
 
+msgstr "アイコン"
 #: build/blocks/icon-button/block.json
 #: src/blocks/icon-button/block.json
 msgctxt "block keyword"
@@ -7133,6 +7536,7 @@ msgstr "アイコン、タイトル、説明を持つ項目のリストを作成
 msgctxt "block keyword"
 msgid "list"
 
+msgstr "リスト"
 #: build/blocks/icon-list/block.json
 #: src/blocks/icon-list/block.json
 msgctxt "block keyword"
@@ -7188,6 +7592,7 @@ msgstr "画像アコーディオン内の個別の展開可能なパネルです
 msgctxt "block keyword"
 msgid "image"
 
+msgstr "画像"
 #: build/blocks/image-accordion/block.json
 #: src/blocks/image-accordion/block.json
 msgctxt "block description"
@@ -7239,6 +7644,7 @@ msgstr "タグ"
 msgctxt "block keyword"
 msgid "label"
 
+msgstr "ラベル"
 #: build/blocks/progress-bar/block.json
 #: src/blocks/progress-bar/block.json
 msgctxt "block description"
@@ -7250,6 +7656,7 @@ msgstr "アニメーションバーで進捗や統計を表示"
 msgctxt "block keyword"
 msgid "progress"
 
+msgstr "プログレス"
 #: build/blocks/progress-bar/block.json
 #: src/blocks/progress-bar/block.json
 msgctxt "block keyword"
@@ -7261,6 +7668,7 @@ msgstr "バー"
 msgctxt "block keyword"
 msgid "percentage"
 
+msgstr "パーセンテージ"
 #: build/blocks/progress-bar/block.json
 #: src/blocks/progress-bar/block.json
 msgctxt "block keyword"
@@ -7284,6 +7692,7 @@ msgstr "リビール"
 msgctxt "block keyword"
 msgid "show"
 
+msgstr "表示"
 #: build/blocks/scroll-accordion-item/block.json
 #: src/blocks/scroll-accordion-item/block.json
 msgctxt "block description"
@@ -7311,6 +7720,7 @@ msgstr "ページを下にスクロールすると段階的に項目を表示す
 msgctxt "block keyword"
 msgid "sticky"
 
+msgstr "固定"
 #: build/blocks/scroll-accordion/block.json
 #: src/blocks/scroll-accordion/block.json
 msgctxt "block keyword"
@@ -7358,6 +7768,7 @@ msgstr "背景画像サポートと完全なブロック柔軟性を持つスラ
 msgctxt "block keyword"
 msgid "slide"
 
+msgstr "スライド"
 #: build/blocks/slider/block.json
 #: src/blocks/slider/block.json
 msgctxt "block description"
@@ -7369,6 +7780,7 @@ msgstr "複数のトランジションエフェクト、自動再生、スライ
 msgctxt "block keyword"
 msgid "slider"
 
+msgstr "スライダー"
 #: build/blocks/slider/block.json
 #: src/blocks/slider/block.json
 msgctxt "block keyword"
@@ -7404,6 +7816,7 @@ msgstr "スタック"
 msgctxt "block keyword"
 msgid "vertical"
 
+msgstr "垂直"
 #: build/blocks/tab/block.json
 #: src/blocks/tab/block.json
 msgctxt "block description"
@@ -7439,134 +7852,179 @@ msgstr "タブ型"
 #: src/blocks/countdown-timer/edit.js
 msgid "At least one time unit should be visible."
 
+msgstr "少なくとも1つの時間単位を表示する必要があります。"
 #: src/blocks/countdown-timer/components/inspector/StylingPanel.js
 msgid "Border"
 
+msgstr "ボーダー"
 #: src/blocks/countdown-timer/components/inspector/StylingPanel.js
 msgid "Border Width"
 
+msgstr "ボーダー幅"
 #: src/blocks/countdown-timer/edit.js
 msgid "Boxed (Default)"
 
+msgstr "ボックス型（デフォルト）"
 #: src/blocks/countdown-timer/edit.js
 msgid "Choose how the countdown units are displayed."
 
+msgstr "カウントダウンユニットの表示方法を選択してください。"
 #: src/blocks/countdown-timer/components/inspector/StylingPanel.js
 msgid "Colors"
 
+msgstr "カラー"
 #: src/blocks/countdown-timer/edit.js
 msgid "Compact"
 
+msgstr "コンパクト"
 #: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
 msgid "Completion Message"
 
+msgstr "完了メッセージ"
 #: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
 msgid "Completion Settings"
 
+msgstr "完了設定"
 #: src/blocks/countdown-timer/edit.js
 msgid "Countdown Timer"
 
+msgstr "カウントダウンタイマー"
 #: src/blocks/countdown-timer/components/inspector/DateTimePanel.js
 msgid "Date & Time"
 
+msgstr "日付と時刻"
 #: src/blocks/countdown-timer/utils/format-time.js
 msgid "Day"
 
+msgstr "日"
 #: src/blocks/countdown-timer/utils/format-time.js
 msgid "Days"
 
+msgstr "日"
 #: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
 msgid "Display Options"
 
+msgstr "表示オプション"
 #: src/blocks/countdown-timer/edit.js
 msgid "Display a countdown timer to a specific date and time with customizable styling."
 
+msgstr "カスタマイズ可能なスタイルで特定の日時へのカウントダウンタイマーを表示します。"
 #: src/blocks/countdown-timer/edit.js
 msgid "Gap Between Units"
 
+msgstr "ユニット間のギャップ"
 #: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
 msgid "Hide Timer Completely"
 
+msgstr "タイマーを完全に非表示"
 #: src/blocks/countdown-timer/utils/format-time.js
 msgid "Hour"
 
+msgstr "時間"
 #: src/blocks/countdown-timer/utils/format-time.js
 msgid "Hours"
 
+msgstr "時間"
 #: src/blocks/countdown-timer/edit.js
 msgid "Inline"
 
+msgstr "インライン"
 #: src/blocks/countdown-timer/components/inspector/StylingPanel.js
 msgid "Label Font Size"
 
+msgstr "ラベルフォントサイズ"
 #: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
 msgid "Layout Style"
 
+msgstr "レイアウトスタイル"
 #: src/blocks/countdown-timer/utils/format-time.js
 msgid "Min"
 
+msgstr "分"
 #: src/blocks/countdown-timer/components/inspector/StylingPanel.js
 msgid "Number Color"
 
+msgstr "数値カラー"
 #: src/blocks/countdown-timer/components/inspector/StylingPanel.js
 msgid "Number Font Size"
 
+msgstr "数値フォントサイズ"
 #: src/blocks/countdown-timer/utils/format-time.js
 msgid "Sec"
 
+msgstr "秒"
 #: src/blocks/countdown-timer/edit.js
 msgid "Set a target date and time in the block settings to start your countdown."
 
+msgstr "ブロック設定で目標日時を設定して、カウントダウンを開始してください。"
 #: src/blocks/countdown-timer/edit.js
 msgid "Set the target date and time for your countdown."
 
+msgstr "カウントダウンの目標日時を設定してください。"
 #: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
 msgid "Show Custom Message"
 
+msgstr "カスタムメッセージを表示"
 #: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
 msgid "Show Days"
 
+msgstr "日を表示"
 #: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
 msgid "Show Hours"
 
+msgstr "時間を表示"
 #: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
 msgid "Show Minutes"
 
+msgstr "分を表示"
 #: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
 msgid "Show Seconds"
 
+msgstr "秒を表示"
 #: src/blocks/countdown-timer/components/inspector/DateTimePanel.js
 msgid "Target date set!"
 
+msgstr "目標日時が設定されました！"
 #: src/blocks/countdown-timer/edit.js
 msgid "The countdown has ended!"
 
+msgstr "カウントダウンが終了しました！"
 #: src/blocks/countdown-timer/edit.js
 msgid "This message will replace the countdown timer when it reaches zero."
 
+msgstr "このメッセージは、カウントダウンがゼロに達したときにタイマーを置き換えます。"
 #: src/blocks/countdown-timer/edit.js
 msgid "Timer hidden (countdown complete)"
 
+msgstr "タイマー非表示（カウントダウン完了）"
 #: src/blocks/countdown-timer/components/inspector/DateTimePanel.js
 msgid "Timezone"
 
+msgstr "タイムゾーン"
 #: src/blocks/countdown-timer/components/inspector/StylingPanel.js
 msgid "Typography"
 
+msgstr "タイポグラフィ"
 #: src/blocks/countdown-timer/edit.js
 msgid "Unit Background"
 
+msgstr "ユニット背景"
 #: src/blocks/countdown-timer/edit.js
 msgid "Unit Padding"
 
+msgstr "ユニットパディング"
 #: src/blocks/countdown-timer/components/inspector/DisplayPanel.js
 msgid "Visible Units"
 
+msgstr "表示ユニット"
 #: src/blocks/countdown-timer/components/inspector/CompletionPanel.js
 msgid "When Countdown Ends"
 
+msgstr "カウントダウン終了時"
 #: src/blocks/countdown-timer/edit.js
 msgid "WordPress Default"
 
+msgstr "WordPress Default"
 #: src/blocks/countdown-timer/edit.js
 msgid "WordPress site timezone: %s"
+msgstr "WordPress サイトのタイムゾーン: %s"
