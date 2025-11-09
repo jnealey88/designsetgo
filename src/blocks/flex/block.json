@@ -90,6 +90,9 @@
 			"type": "string",
 			"default": "center"
 		},
+		"textAlign": {
+			"type": "string"
+		},
 		"mobileStack": {
 			"type": "boolean",
 			"default": false
@@ -130,6 +133,7 @@
 	},
 	"providesContext": {
 		"designsetgo/alignItems": "alignItems",
+		"designsetgo/textAlign": "textAlign",
 		"designsetgo/hoverIconBackgroundColor": "hoverIconBackgroundColor",
 		"designsetgo/hoverButtonBackgroundColor": "hoverButtonBackgroundColor"
 	},

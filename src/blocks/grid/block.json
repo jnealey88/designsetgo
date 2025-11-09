@@ -99,6 +99,9 @@
 			"type": "string",
 			"default": "start"
 		},
+		"textAlign": {
+			"type": "string"
+		},
 		"constrainWidth": {
 			"type": "boolean",
 			"default": true
@@ -126,6 +129,7 @@
 	},
 	"providesContext": {
 		"designsetgo/alignItems": "alignItems",
+		"designsetgo/textAlign": "textAlign",
 		"designsetgo/hoverIconBackgroundColor": "hoverIconBackgroundColor",
 		"designsetgo/hoverButtonBackgroundColor": "hoverButtonBackgroundColor"
 	},

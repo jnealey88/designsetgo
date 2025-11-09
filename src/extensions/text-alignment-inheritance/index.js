@@ -1,118 +1,163 @@
 /**
  * Text Alignment Inheritance Extension
  *
- * Automatically sets text alignment for headings and paragraphs based on parent container's alignItems.
+ * Automatically inherits text alignment from parent container blocks.
+ * - Child blocks inherit parent's textAlign setting dynamically
+ * - New blocks default to parent alignment
+ * - Individual blocks can override by setting their own alignment
+ * - Clearing alignment restores inheritance
  *
  * @since 1.0.0
  */
 
 import { addFilter } from '@wordpress/hooks';
-import { select } from '@wordpress/data';
+import { createHigherOrderComponent } from '@wordpress/compose';
 
 /**
- * Map container alignItems values to text-align values
- *
- * @param {string} alignItems Container's alignItems value
- * @return {string} Corresponding text-align value
+ * List of core blocks that support text alignment
  */
-function mapAlignItemsToTextAlign(alignItems) {
-	// Flex/Stack containers use flex-start, flex-end
-	if (alignItems === 'flex-start' || alignItems === 'start') {
-		return 'left';
-	}
-	if (alignItems === 'flex-end' || alignItems === 'end') {
-		return 'right';
-	}
-	if (alignItems === 'center') {
-		return 'center';
-	}
-	return null; // No default needed
-}
+const TEXT_BLOCKS = [
+	'core/paragraph',
+	'core/heading',
+	'core/list',
+	'core/quote',
+	'core/pullquote',
+	'core/verse',
+	'core/preformatted',
+	'core/code',
+];
 
 /**
- * Add usesContext to core text blocks so they can receive parent alignment
+ * Add attributes to track alignment inheritance
  */
 addFilter(
 	'blocks.registerBlockType',
-	'designsetgo/add-text-alignment-context',
+	'designsetgo/add-alignment-inheritance-attributes',
 	(settings, name) => {
-		// Only apply to heading and paragraph blocks
-		if (!['core/heading', 'core/paragraph'].includes(name)) {
+		// Only apply to text blocks that support alignment
+		if (!TEXT_BLOCKS.includes(name)) {
 			return settings;
 		}
 
 		return {
 			...settings,
+			attributes: {
+				...settings.attributes,
+				// Track if alignment was explicitly set by user or inherited
+				__textAlignSource: {
+					type: 'string',
+					// 'inherit' = use parent, 'manual' = user set
+					default: 'inherit',
+				},
+			},
 			usesContext: [
 				...(settings.usesContext || []),
-				'designsetgo/alignItems',
+				'designsetgo/textAlign',
 			],
 		};
 	}
 );
 
 /**
- * Set default textAlign attribute when block is inserted
+ * Override block save to apply inherited alignment styles
  */
-addFilter(
-	'blocks.getBlockAttributes',
-	'designsetgo/set-text-alignment-from-parent',
-	(attributes, blockType, clientId) => {
-		// Only apply to heading and paragraph blocks
-		if (!['core/heading', 'core/paragraph'].includes(blockType.name)) {
-			return attributes;
-		}
+const withInheritedAlignmentProps = createHigherOrderComponent(
+	(BlockListBlock) => {
+		return (props) => {
+			const { name, attributes, context } = props;
 
-		// Don't override if textAlign is already set
-		if (attributes.textAlign) {
-			return attributes;
-		}
+			// Only apply to text blocks
+			if (!TEXT_BLOCKS.includes(name)) {
+				return <BlockListBlock {...props} />;
+			}
 
-		// Get parent block's alignItems from context
-		const blockEditor = select('core/block-editor');
-		if (!blockEditor || !clientId) {
-			return attributes;
-		}
+			// Get parent's textAlign from context
+			const parentTextAlign = context?.['designsetgo/textAlign'];
+			const { textAlign, __textAlignSource } = attributes;
 
-		const parents = blockEditor.getBlockParents(clientId);
-		if (parents.length === 0) {
-			return attributes;
-		}
+			// Determine effective alignment:
+			// Priority: manual setting > inherited from parent > default (none)
+			const effectiveAlign =
+				__textAlignSource === 'manual' ? textAlign : parentTextAlign;
 
-		// Check if parent is one of our container blocks
-		const parentId = parents[parents.length - 1];
-		const parentBlock = blockEditor.getBlock(parentId);
+			// Apply alignment as a style if inherited and different from block's own setting
+			if (
+				effectiveAlign &&
+				__textAlignSource === 'inherit' &&
+				textAlign !== effectiveAlign
+			) {
+				const wrapperProps = {
+					...props.wrapperProps,
+					style: {
+						...props.wrapperProps?.style,
+						textAlign: effectiveAlign,
+					},
+				};
 
-		if (!parentBlock) {
-			return attributes;
-		}
+				return (
+					<BlockListBlock {...props} wrapperProps={wrapperProps} />
+				);
+			}
 
-		const containerBlocks = [
-			'designsetgo/stack',
-			'designsetgo/flex',
-			'designsetgo/grid',
-		];
-
-		if (!containerBlocks.includes(parentBlock.name)) {
-			return attributes;
-		}
-
-		// Get parent's alignItems
-		const parentAlignItems = parentBlock.attributes?.alignItems;
-		if (!parentAlignItems) {
-			return attributes;
-		}
-
-		// Map to text-align
-		const textAlign = mapAlignItemsToTextAlign(parentAlignItems);
-		if (!textAlign) {
-			return attributes;
-		}
-
-		// Set default textAlign
-		return {
-			...attributes,
-			textAlign,
+			return <BlockListBlock {...props} />;
 		};
-	}
+	},
+	'withInheritedAlignmentProps'
+);
+
+addFilter(
+	'editor.BlockListBlock',
+	'designsetgo/with-inherited-alignment-props',
+	withInheritedAlignmentProps
+);
+
+/**
+ * Intercept alignment changes to mark them as manual
+ */
+const withManualAlignmentTracking = createHigherOrderComponent((BlockEdit) => {
+	return (props) => {
+		const { name, attributes, setAttributes } = props;
+
+		// Only apply to text blocks
+		if (!TEXT_BLOCKS.includes(name)) {
+			return <BlockEdit {...props} />;
+		}
+
+		// Wrap setAttributes to track when alignment is manually changed
+		const wrappedSetAttributes = (newAttributes) => {
+			// If textAlign is being changed, mark it as manual
+			if (
+				newAttributes.hasOwnProperty('textAlign') &&
+				newAttributes.textAlign !== attributes.textAlign
+			) {
+				// If clearing alignment (undefined/null), restore inheritance
+				if (
+					newAttributes.textAlign === undefined ||
+					newAttributes.textAlign === null ||
+					newAttributes.textAlign === ''
+				) {
+					setAttributes({
+						...newAttributes,
+						__textAlignSource: 'inherit',
+					});
+				} else {
+					// Manual change
+					setAttributes({
+						...newAttributes,
+						__textAlignSource: 'manual',
+					});
+				}
+			} else {
+				setAttributes(newAttributes);
+			}
+		};
+
+		return <BlockEdit {...props} setAttributes={wrappedSetAttributes} />;
+	};
+}, 'withManualAlignmentTracking');
+
+addFilter(
+	'editor.BlockEdit',
+	'designsetgo/with-manual-alignment-tracking',
+	withManualAlignmentTracking
 );

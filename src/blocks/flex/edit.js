@@ -12,6 +12,8 @@ import {
 	useInnerBlocksProps,
 	InnerBlocks,
 	InspectorControls,
+	BlockControls,
+	AlignmentControl,
 	useSetting,
 	store as blockEditorStore,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -38,6 +40,7 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		wrap,
 		justifyContent,
 		alignItems,
+		textAlign,
 		mobileStack,
 		constrainWidth,
 		contentWidth,
@@ -147,6 +150,15 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 
 	return (
 		<>
+			<BlockControls>
+				<AlignmentControl
+					value={textAlign}
+					onChange={(newAlign) =>
+						setAttributes({ textAlign: newAlign })
+					}
+				/>
+			</BlockControls>
+
 			<InspectorControls>
 				<PanelBody
 					title={__('Flex Settings', 'designsetgo')}

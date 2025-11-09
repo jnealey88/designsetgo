@@ -12,6 +12,7 @@ import {
 	useInnerBlocksProps,
 	InnerBlocks,
 	BlockControls,
+	AlignmentControl,
 	InspectorControls,
 	useSetting,
 	store as blockEditorStore,
@@ -36,6 +37,7 @@ import { useSelect } from '@wordpress/data';
 export default function StackEdit({ attributes, setAttributes, clientId }) {
 	const {
 		alignItems,
+		textAlign,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -141,6 +143,12 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 						}
 					/>
 				</ToolbarGroup>
+				<AlignmentControl
+					value={textAlign}
+					onChange={(newAlign) =>
+						setAttributes({ textAlign: newAlign })
+					}
+				/>
 			</BlockControls>
 
 			<InspectorControls group="color">

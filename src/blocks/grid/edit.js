@@ -12,6 +12,8 @@ import {
 	useInnerBlocksProps,
 	InnerBlocks,
 	InspectorControls,
+	BlockControls,
+	AlignmentControl,
 	useSetting,
 	store as blockEditorStore,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -47,6 +49,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		rowGap,
 		columnGap,
 		alignItems,
+		textAlign,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -140,6 +143,15 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 
 	return (
 		<>
+			<BlockControls>
+				<AlignmentControl
+					value={textAlign}
+					onChange={(newAlign) =>
+						setAttributes({ textAlign: newAlign })
+					}
+				/>
+			</BlockControls>
+
 			<InspectorControls group="color">
 				<ColorGradientSettingsDropdown
 					panelId={clientId}

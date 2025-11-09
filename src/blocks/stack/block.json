@@ -120,6 +120,7 @@
 	},
 	"providesContext": {
 		"designsetgo/alignItems": "alignItems",
+		"designsetgo/textAlign": "textAlign",
 		"designsetgo/hoverIconBackgroundColor": "hoverIconBackgroundColor",
 		"designsetgo/hoverButtonBackgroundColor": "hoverButtonBackgroundColor"
 	},
