@@ -58,8 +58,7 @@ export default function FlexSave({ attributes }) {
 	};
 
 	// Apply width constraints if enabled
-	// IMPORTANT: Don't constrain width when block is alignfull - let it use full container width
-	if (constrainWidth && align !== 'full') {
+	if (constrainWidth) {
 		innerStyle.maxWidth = contentWidth || '1200px';
 		innerStyle.marginLeft = 'auto';
 		innerStyle.marginRight = 'auto';

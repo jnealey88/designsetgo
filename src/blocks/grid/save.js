@@ -62,8 +62,7 @@ export default function GridSave({ attributes }) {
 	};
 
 	// Apply width constraints to inner container
-	// IMPORTANT: Don't constrain width when block is alignfull
-	if (constrainWidth && align !== 'full') {
+	if (constrainWidth) {
 		innerStyles.maxWidth = contentWidth || '1200px';
 		innerStyles.marginLeft = 'auto';
 		innerStyles.marginRight = 'auto';

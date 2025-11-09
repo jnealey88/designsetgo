@@ -47,9 +47,8 @@ export default function StackSave({ attributes }) {
 	});
 
 	// Inner container props with width constraints
-	// IMPORTANT: Don't constrain width when block is alignfull
 	const innerStyle = {};
-	if (constrainWidth && align !== 'full') {
+	if (constrainWidth) {
 		innerStyle.maxWidth = contentWidth || '1200px';
 		innerStyle.marginLeft = 'auto';
 		innerStyle.marginRight = 'auto';
