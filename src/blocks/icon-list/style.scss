@@ -22,6 +22,14 @@
 		}
 	}
 
+	// Horizontal layout
+	&--horizontal {
+
+		.dsg-icon-list__items {
+			// flex-direction: row applied via inline styles
+		}
+	}
+
 	// Grid layout
 	&--grid {
 

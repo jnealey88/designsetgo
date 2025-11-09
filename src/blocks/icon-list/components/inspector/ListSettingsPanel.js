@@ -51,6 +51,10 @@ export const ListSettingsPanel = ({
 							label: __('Vertical', 'designsetgo'),
 							value: 'vertical',
 						},
+						{
+							label: __('Horizontal', 'designsetgo'),
+							value: 'horizontal',
+						},
 						{ label: __('Grid', 'designsetgo'), value: 'grid' },
 					]}
 					onChange={(value) => setAttributes({ layout: value })}
@@ -62,7 +66,7 @@ export const ListSettingsPanel = ({
 					__nextHasNoMarginBottom
 				/>
 
-				{layout === 'vertical' && (
+				{(layout === 'vertical' || layout === 'horizontal') && (
 					<SelectControl
 						label={__('Alignment', 'designsetgo')}
 						value={alignment}
@@ -80,10 +84,17 @@ export const ListSettingsPanel = ({
 						onChange={(value) =>
 							setAttributes({ alignment: value })
 						}
-						help={__(
-							'Align list items horizontally',
-							'designsetgo'
-						)}
+						help={
+							layout === 'vertical'
+								? __(
+										'Align list items horizontally',
+										'designsetgo'
+									)
+								: __(
+										'Distribute items horizontally',
+										'designsetgo'
+									)
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>

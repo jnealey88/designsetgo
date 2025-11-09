@@ -20,7 +20,10 @@ export default function IconListSave({ attributes }) {
 
 	// Calculate alignment value to avoid nested ternary (must match edit.js)
 	let alignItemsValue;
+	let justifyContentValue;
+
 	if (layout === 'vertical') {
+		// For vertical layout, alignItems controls horizontal alignment
 		if (alignment === 'center') {
 			alignItemsValue = 'center';
 		} else if (alignment === 'right') {
@@ -28,16 +31,31 @@ export default function IconListSave({ attributes }) {
 		} else {
 			alignItemsValue = 'flex-start';
 		}
+	} else if (layout === 'horizontal') {
+		// For horizontal layout, justifyContent controls horizontal distribution
+		if (alignment === 'center') {
+			justifyContentValue = 'center';
+		} else if (alignment === 'right') {
+			justifyContentValue = 'flex-end';
+		} else {
+			justifyContentValue = 'flex-start';
+		}
 	}
 
 	// Calculate container styles (must match edit.js)
 	const containerStyles = {
 		display: layout === 'grid' ? 'grid' : 'flex',
-		flexDirection: layout === 'vertical' ? 'column' : undefined,
+		flexDirection:
+			layout === 'vertical'
+				? 'column'
+				: layout === 'horizontal'
+					? 'row'
+					: undefined,
 		gridTemplateColumns:
 			layout === 'grid' ? `repeat(${columns}, 1fr)` : undefined,
 		gap,
 		alignItems: alignItemsValue,
+		justifyContent: justifyContentValue,
 		width: '100%', // Ensure container fills available space
 	};
 
