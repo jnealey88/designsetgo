@@ -33,36 +33,31 @@
 		gap: var(--dsg-counter-gap, 32px);
 		width: 100%;
 		box-sizing: border-box;
+		pointer-events: auto;
+		min-height: 50px; // Ensure there's a clickable area even with few items
 
 		// Alignment classes
-		&.align-left {
+		&--align-left {
 			justify-items: start;
 			text-align: left;
 		}
 
-		&.align-center {
+		&--align-center {
 			justify-items: center;
 			text-align: center;
 		}
 
-		&.align-right {
+		&--align-right {
 			justify-items: end;
 			text-align: right;
 		}
-	}
 
-	// Editor-specific styles to improve UX
-	// WordPress wraps inner blocks in .block-editor-block-list__layout
-	// We need to make it transparent so grid applies to the actual counter blocks
-	&__inner > .block-editor-block-list__layout {
-		display: contents;
-	}
-
-	// Make the grid container clickable in gap areas
-	// This allows users to click between counter items to select the counter-group
-	&__inner {
-		pointer-events: auto;
-		min-height: 50px; // Ensure there's a clickable area even with few items
+		// Editor-specific styles to improve UX
+		// WordPress wraps inner blocks in .block-editor-block-list__layout
+		// We need to make it transparent so grid applies to the actual counter blocks
+		> .block-editor-block-list__layout {
+			display: contents;
+		}
 
 		// Add a subtle visual indicator when the counter-group is selected
 		.is-selected > & {

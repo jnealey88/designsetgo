@@ -40,17 +40,17 @@
 		}
 
 		// Alignment classes
-		&.align-left {
+		&--align-left {
 			justify-items: start;
 			text-align: left;
 		}
 
-		&.align-center {
+		&--align-center {
 			justify-items: center;
 			text-align: center;
 		}
 
-		&.align-right {
+		&--align-right {
 			justify-items: end;
 			text-align: right;
 		}

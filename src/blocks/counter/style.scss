@@ -54,8 +54,8 @@
 		justify-content: center;
 		gap: 1rem;
 
-		&.icon-left,
-		&.icon-right {
+		&--icon-left,
+		&--icon-right {
 			flex-direction: row;
 		}
 	}
