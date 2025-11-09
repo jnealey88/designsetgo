@@ -42,12 +42,11 @@ export default function StackSave({ attributes }) {
 	};
 
 	// Block wrapper props
-	// CRITICAL: Set width: 100% AND align-self: stretch (must match edit.js)
-	// align-self: stretch ensures nested containers fill parent width even when parent has alignItems: flex-start
+	// CRITICAL: Use align-self: stretch to fill parent width (must match edit.js)
+	// align-self: stretch ensures nested containers fill parent without overflow issues
 	const blockProps = useBlockProps.save({
 		className: 'dsg-stack',
 		style: {
-			width: '100%',
 			alignSelf: 'stretch',
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,

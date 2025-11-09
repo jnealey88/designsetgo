@@ -10,12 +10,54 @@ export default function PillSave({ attributes }) {
 		className: 'dsg-pill',
 	});
 
+	// Extract color/background styles from blockProps to apply to inner span
+	const wrapperStyle = blockProps.style || {};
+	const innerStyle = {};
+
+	// Transfer background color to inner span
+	if (wrapperStyle.backgroundColor) {
+		innerStyle.backgroundColor = wrapperStyle.backgroundColor;
+		delete wrapperStyle.backgroundColor;
+	}
+	if (wrapperStyle.background) {
+		innerStyle.background = wrapperStyle.background;
+		delete wrapperStyle.background;
+	}
+
+	// Transfer text color to inner span
+	if (wrapperStyle.color) {
+		innerStyle.color = wrapperStyle.color;
+		delete wrapperStyle.color;
+	}
+
+	// Transfer border styles to inner span
+	if (wrapperStyle.borderColor) {
+		innerStyle.borderColor = wrapperStyle.borderColor;
+		delete wrapperStyle.borderColor;
+	}
+	if (wrapperStyle.borderWidth) {
+		innerStyle.borderWidth = wrapperStyle.borderWidth;
+		delete wrapperStyle.borderWidth;
+	}
+	if (wrapperStyle.borderStyle) {
+		innerStyle.borderStyle = wrapperStyle.borderStyle;
+		delete wrapperStyle.borderStyle;
+	}
+	if (wrapperStyle.borderRadius) {
+		innerStyle.borderRadius = wrapperStyle.borderRadius;
+		delete wrapperStyle.borderRadius;
+	}
+
+	// Update blockProps with cleaned style
+	blockProps.style = wrapperStyle;
+
 	return (
 		<div {...blockProps}>
 			<RichText.Content
 				tagName="span"
 				className="dsg-pill__content"
 				value={content}
+				style={innerStyle}
 			/>
 		</div>
 	);

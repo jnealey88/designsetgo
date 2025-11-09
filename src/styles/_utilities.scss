@@ -74,10 +74,15 @@
 /**
  * WordPress Core Post Content Fix
  * Fixes horizontal overflow when post content has both alignfull and is-layout-constrained
- * This combination creates width conflicts that cause overflow issues
+ * Must match editor.scss for editor/frontend parity
+ * IMPORTANT: box-sizing must be border-box so padding is included in width calculation
  */
+/* stylelint-disable selector-class-pattern */
 .entry-content.alignfull.is-layout-constrained,
-.wp-block-post-content.alignfull.is-layout-constrained {
-	width: 100%;
+.wp-block-post-content.alignfull.is-layout-constrained,
+.entry-content.alignfull.is-layout-constrained.has-global-padding,
+.wp-block-post-content.alignfull.is-layout-constrained.has-global-padding {
+	box-sizing: border-box;
 	max-width: 100%;
 }
+/* stylelint-enable selector-class-pattern */

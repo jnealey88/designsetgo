@@ -50,7 +50,6 @@
 		// CRITICAL: Stack container needs full width for alignment properties to work
 		// Must be duplicated from style.scss for editor/frontend parity
 		width: 100%;
-		min-height: 100px; // Ensure visible area when empty
 
 		// CRITICAL: Nested containers need full width to fill parent
 		// Must be duplicated from style.scss for editor/frontend parity
@@ -84,6 +83,14 @@
 		// Fixes narrow appender issue in stack containers
 		> .block-editor-block-list__layout > .block-editor-default-block-appender {
 			width: 100%;
+		}
+
+		// CRITICAL: Ensure ButtonBlockAppender is full width when container is empty
+		// High specificity to override WordPress core styles
+		/* stylelint-disable-next-line selector-class-pattern */
+		.block-list-appender:only-child,
+		.block-editor-button-block-appender {
+			width: 100% !important;
 		}
 
 		// CRITICAL: Block-level elements need full width for text-align to work properly

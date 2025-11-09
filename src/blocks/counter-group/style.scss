@@ -30,7 +30,6 @@
 		display: grid;
 		grid-template-columns: repeat(var(--dsg-counter-columns-desktop, 3), 1fr);
 		gap: var(--dsg-counter-gap, 32px);
-		width: 100%;
 		box-sizing: border-box;
 
 		// WordPress may wrap inner blocks - make wrapper transparent so grid applies to counter blocks
@@ -39,7 +38,7 @@
 			display: contents;
 		}
 
-		// Alignment classes
+		// Alignment classes (match class names from save.js/index.js)
 		&--align-left {
 			justify-items: start;
 			text-align: left;

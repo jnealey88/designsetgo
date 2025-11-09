@@ -84,7 +84,8 @@
 			"type": "object",
 			"default": {
 				"spacing": {
-					"blockGap": "var(--wp--preset--spacing--50)"
+					"blockGap": "var(--wp--preset--spacing--50)",
+				"padding": "var(--wp--preset--spacing--50)"
 				}
 			}
 		},

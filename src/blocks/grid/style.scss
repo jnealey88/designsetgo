@@ -31,12 +31,13 @@
 	}
 
 	// Let WordPress handle outer wrapper sizing for alignfull support
-	// Inner wrapper gets width: 100% for grid properties to work
+	// Inner wrapper uses align-self: stretch (default) to fill parent without overflow
 
 	&__inner {
-		// CRITICAL: Grid container needs full width for proper column distribution
-		// Without this, the grid shrinks to fit content instead of using available space
-		width: 100%;
+		// CRITICAL: Grid container uses align-self: stretch to fill parent
+		// This prevents overflow issues with has-global-padding
+		// align-self: stretch is the default behavior in flex containers
+		box-sizing: border-box;
 
 		// CRITICAL: Prevent grid items from overflowing their cells
 		// Grid items automatically fill their grid cell, so we only need to prevent overflow

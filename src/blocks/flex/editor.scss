@@ -59,7 +59,6 @@
 		// CRITICAL: Flex container needs full width for justify-content/align-items to work
 		// Must be duplicated from style.scss for editor/frontend parity
 		width: 100%;
-		min-height: 100px; // Ensure clickable area when empty or sparse
 		position: relative; // Establish stacking context
 
 		// CRITICAL: Remove auto margins from flex children to allow justify-content to work
@@ -104,6 +103,15 @@
 		> .block-editor-block-list__layout > .block-editor-default-block-appender {
 			width: 100%;
 			flex-basis: 100%; // Override any flex shrinking
+		}
+
+		// CRITICAL: Ensure ButtonBlockAppender is full width when container is empty
+		// High specificity to override WordPress core styles
+		/* stylelint-disable-next-line selector-class-pattern */
+		.block-list-appender:only-child,
+		.block-editor-button-block-appender {
+			width: 100% !important;
+			flex-basis: 100% !important; // Override any flex shrinking
 		}
 
 		// CRITICAL: Block-level elements need full width for text-align to work properly

@@ -10,14 +10,16 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
+	InnerBlocks,
 	InspectorControls,
 	useSetting,
+	store as blockEditorStore,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { useDispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
 import { useRef } from '@wordpress/element';
 
@@ -60,6 +62,16 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	// Get dispatch function to select this block
 	const { selectBlock } = useDispatch('core/block-editor');
 
+	// Get inner blocks to determine if container is empty
+	const hasInnerBlocks = useSelect(
+		(select) => {
+			const { getBlock } = select(blockEditorStore);
+			const block = getBlock(clientId);
+			return block?.innerBlocks?.length > 0;
+		},
+		[clientId]
+	);
+
 	/**
 	 * Handle clicks on the container to enable selection when clicking empty space
 	 * This allows clicks between flex items to select the container
@@ -94,12 +106,11 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	};
 
 	// Block wrapper props
-	// CRITICAL: Set width: 100% AND align-self: stretch on outer wrapper
-	// align-self: stretch ensures nested containers fill parent width even when parent has alignItems: flex-start
+	// CRITICAL: Use align-self: stretch to fill parent width (must match save.js)
+	// align-self: stretch ensures nested containers fill parent without overflow issues
 	const blockProps = useBlockProps({
 		className: `dsg-flex ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
 		style: {
-			width: '100%',
 			alignSelf: 'stretch',
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
@@ -117,6 +128,7 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	});
 
 	// Inner blocks props with declarative styles
+	// Show big button only when container is empty, otherwise use default appender
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: 'dsg-flex__inner',
@@ -127,6 +139,9 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		{
 			orientation: direction === 'column' ? 'vertical' : 'horizontal',
 			templateLock: false,
+			renderAppender: hasInnerBlocks
+				? undefined
+				: InnerBlocks.ButtonBlockAppender,
 		}
 	);
 

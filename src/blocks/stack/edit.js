@@ -10,9 +10,11 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
+	InnerBlocks,
 	BlockControls,
 	InspectorControls,
 	useSetting,
+	store as blockEditorStore,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -20,6 +22,7 @@ import {
 } from '@wordpress/block-editor';
 import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
 import { alignLeft, alignCenter, alignRight } from '@wordpress/icons';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Stack Container Edit Component
@@ -47,6 +50,16 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 	// Get theme content size
 	const themeContentWidth = useSetting('layout.contentSize');
 
+	// Get inner blocks to determine if container is empty
+	const hasInnerBlocks = useSelect(
+		(select) => {
+			const { getBlock } = select(blockEditorStore);
+			const block = getBlock(clientId);
+			return block?.innerBlocks?.length > 0;
+		},
+		[clientId]
+	);
+
 	// Calculate effective content width
 	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
@@ -64,12 +77,11 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 	};
 
 	// Block wrapper props
-	// CRITICAL: Set width: 100% AND align-self: stretch on outer wrapper
-	// align-self: stretch ensures nested containers fill parent width even when parent has alignItems: flex-start
+	// CRITICAL: Use align-self: stretch to fill parent width (must match save.js)
+	// align-self: stretch ensures nested containers fill parent without overflow issues
 	const blockProps = useBlockProps({
 		className: 'dsg-stack',
 		style: {
-			width: '100%',
 			alignSelf: 'stretch',
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
@@ -87,6 +99,7 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 	});
 
 	// Inner blocks props with declarative styles
+	// Show big button only when container is empty, otherwise use default appender
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: 'dsg-stack__inner',
@@ -95,6 +108,9 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 		{
 			orientation: 'vertical',
 			templateLock: false,
+			renderAppender: hasInnerBlocks
+				? undefined
+				: InnerBlocks.ButtonBlockAppender,
 		}
 	);
 

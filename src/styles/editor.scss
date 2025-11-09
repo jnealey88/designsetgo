@@ -52,10 +52,11 @@
  * Fixes horizontal overflow in editor when post content has both alignfull and is-layout-constrained
  * Must be duplicated from _utilities.scss for editor/frontend parity
  * IMPORTANT: Only target the post content container, not all constrained layouts
+ * IMPORTANT: box-sizing must be border-box so padding is included in width calculation
  * Higher specificity needed to override WordPress core styles
  */
 .is-root-container.wp-block-post-content.is-layout-constrained.alignfull.has-global-padding,
 .is-root-container.block-editor-block-list__layout.is-layout-constrained.alignfull.has-global-padding {
-	width: 100% !important;
+	box-sizing: border-box !important;
 	max-width: 100% !important;
 }

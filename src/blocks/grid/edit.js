@@ -10,8 +10,10 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
+	InnerBlocks,
 	InspectorControls,
 	useSetting,
+	store as blockEditorStore,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -26,6 +28,7 @@ import {
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Grid Container Edit Component
@@ -60,6 +63,16 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	// Get content size from theme
 	const themeContentWidth = useSetting('layout.contentSize');
 
+	// Get inner blocks to determine if container is empty
+	const hasInnerBlocks = useSelect(
+		(select) => {
+			const { getBlock } = select(blockEditorStore);
+			const block = getBlock(clientId);
+			return block?.innerBlocks?.length > 0;
+		},
+		[clientId]
+	);
+
 	// Calculate effective content width
 	const effectiveContentWidth = contentWidth || themeContentWidth || '1200px';
 
@@ -89,12 +102,11 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	};
 
 	// Block wrapper props with responsive column classes
-	// CRITICAL: Set width: 100% AND align-self: stretch on outer wrapper
-	// align-self: stretch ensures nested containers fill parent width even when parent has alignItems: flex-start
+	// CRITICAL: Use align-self: stretch to fill parent width (must match save.js)
+	// align-self: stretch ensures nested containers fill parent without overflow issues
 	const blockProps = useBlockProps({
 		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
 		style: {
-			width: '100%',
 			alignSelf: 'stretch',
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
@@ -112,6 +124,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	});
 
 	// Inner blocks props with declarative styles
+	// Show big button only when container is empty, otherwise use default appender
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: 'dsg-grid__inner',
@@ -119,6 +132,9 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		},
 		{
 			templateLock: false,
+			renderAppender: hasInnerBlocks
+				? undefined
+				: InnerBlocks.ButtonBlockAppender,
 		}
 	);
 

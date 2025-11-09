@@ -29,6 +29,8 @@ export default function CounterGroupSave({ attributes }) {
 	const blockProps = useBlockProps.save({
 		className: 'dsg-counter-group',
 		style: {
+			// CRITICAL: Use align-self: stretch to fill parent width (must match index.js)
+			alignSelf: 'stretch',
 			// Cast to string to prevent React from adding "px" suffix
 			'--dsg-counter-columns-desktop': String(columns),
 			'--dsg-counter-columns-tablet': String(columnsTablet),
@@ -48,7 +50,7 @@ export default function CounterGroupSave({ attributes }) {
 
 	// Inner blocks props (WordPress best practice)
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: `dsg-counter-group__inner align-${alignContent}`,
+		className: `dsg-counter-group__inner dsg-counter-group__inner--align-${alignContent}`,
 	});
 
 	return (
