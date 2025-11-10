@@ -65,11 +65,11 @@
  * Fix alignfull behavior for our container blocks in the editor
  * Ensures full-width blocks extend edge-to-edge correctly
  * CRITICAL: High specificity required to override WordPress core styles
- * Target the blocks themselves using .alignfull class
+ * Target the blocks themselves using .alignfull class and .block-editor-block-list__block
  */
-.block-editor-block-list__layout.has-global-padding.alignfull[data-type="designsetgo/grid"],
-.block-editor-block-list__layout.has-global-padding.alignfull[data-type="designsetgo/flex"],
-.block-editor-block-list__layout.has-global-padding.alignfull[data-type="designsetgo/stack"] {
+.block-editor-block-list__block.has-global-padding.alignfull[data-type="designsetgo/grid"],
+.block-editor-block-list__block.has-global-padding.alignfull[data-type="designsetgo/flex"],
+.block-editor-block-list__block.has-global-padding.alignfull[data-type="designsetgo/stack"] {
 	margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
 	margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
 }
