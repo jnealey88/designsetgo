@@ -6,6 +6,29 @@
  * @since 1.0.0
  */
 
+// Outer wrapper - takes full width and receives WordPress classes/styles
+.dsg-blobs-wrapper {
+	display: block;
+	width: 100%;
+	// WordPress applies backgrounds here, but we want them on the blob
+	// So we make wrapper transparent and JavaScript transfers styles to inner blob
+	background: none !important;
+
+	// Alignment classes on wrapper should apply to inner blob
+	&.aligncenter > .dsg-blobs {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	&.alignleft > .dsg-blobs {
+		margin-right: auto;
+	}
+
+	&.alignright > .dsg-blobs {
+		margin-left: auto;
+	}
+}
+
 .dsg-blobs {
 	// CSS Custom Properties (set from block attributes)
 	--dsg-blob-size: 300px;
@@ -109,25 +132,6 @@
 
 	&--spin {
 		animation: dsg-blob-spin var(--dsg-blob-animation-duration) linear infinite;
-	}
-
-	// Alignment support
-	&.aligncenter {
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	&.alignleft {
-		margin-right: auto;
-	}
-
-	&.alignright {
-		margin-left: auto;
-	}
-
-	&.alignwide,
-	&.alignfull {
-		max-width: none;
 	}
 }
 

@@ -33,10 +33,9 @@ export default function BlobsSave({ attributes }) {
 		'--dsg-blob-animation-easing': animationEasing,
 	};
 
+	// Get block props with our wrapper class
 	const blockProps = useBlockProps.save({
-		className: blobClasses,
-		style: customStyles,
-		'data-blob-animation': blobAnimation,
+		className: 'dsg-blobs-wrapper',
 	});
 
 	const innerBlocksProps = useInnerBlocksProps.save({
@@ -45,17 +44,23 @@ export default function BlobsSave({ attributes }) {
 
 	return (
 		<div {...blockProps}>
-			{enableOverlay && (
-				<div
-					className="dsg-blobs__overlay"
-					style={{
-						backgroundColor: overlayColor,
-						opacity: overlayOpacity / 100,
-					}}
-				/>
-			)}
-			<div className="dsg-blobs__shape">
-				<div {...innerBlocksProps} />
+			<div
+				className={blobClasses}
+				style={customStyles}
+				data-blob-animation={blobAnimation}
+			>
+				{enableOverlay && (
+					<div
+						className="dsg-blobs__overlay"
+						style={{
+							backgroundColor: overlayColor,
+							opacity: overlayOpacity / 100,
+						}}
+					/>
+				)}
+				<div className="dsg-blobs__shape">
+					<div {...innerBlocksProps} />
+				</div>
 			</div>
 		</div>
 	);

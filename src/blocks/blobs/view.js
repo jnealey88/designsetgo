@@ -7,9 +7,91 @@
  */
 
 /**
+ * Transfer background styles from wrapper to blob
+ */
+function transferBackgroundStyles() {
+	const wrappers = document.querySelectorAll('.dsg-blobs-wrapper');
+
+	wrappers.forEach((wrapper) => {
+		const blob = wrapper.querySelector('.dsg-blobs');
+		if (!blob) {
+			return;
+		}
+
+		// WordPress sets inline styles on the wrapper
+		// We need to read inline styles directly because our CSS has `background: none !important;`
+		// which overrides them in getComputedStyle()
+		const inlineStyle = wrapper.style;
+
+		// Transfer background image
+		if (
+			inlineStyle.backgroundImage &&
+			inlineStyle.backgroundImage !== 'none'
+		) {
+			blob.style.setProperty(
+				'background-image',
+				inlineStyle.backgroundImage
+			);
+		}
+
+		// Transfer background size
+		if (
+			inlineStyle.backgroundSize &&
+			inlineStyle.backgroundSize !== 'auto'
+		) {
+			blob.style.setProperty(
+				'background-size',
+				inlineStyle.backgroundSize
+			);
+		}
+
+		// Transfer background position
+		if (inlineStyle.backgroundPosition) {
+			blob.style.setProperty(
+				'background-position',
+				inlineStyle.backgroundPosition
+			);
+		}
+
+		// Transfer background repeat
+		if (
+			inlineStyle.backgroundRepeat &&
+			inlineStyle.backgroundRepeat !== 'repeat'
+		) {
+			blob.style.setProperty(
+				'background-repeat',
+				inlineStyle.backgroundRepeat
+			);
+		}
+
+		// Transfer background attachment
+		if (
+			inlineStyle.backgroundAttachment &&
+			inlineStyle.backgroundAttachment !== 'scroll'
+		) {
+			blob.style.setProperty(
+				'background-attachment',
+				inlineStyle.backgroundAttachment
+			);
+		}
+
+		// Transfer background color
+		if (inlineStyle.backgroundColor) {
+			blob.style.setProperty(
+				'background-color',
+				inlineStyle.backgroundColor
+			);
+		}
+	});
+}
+
+/**
  * Initialize blob animations with accessibility support
  */
 function initBlobs() {
+	// First transfer background styles
+	transferBackgroundStyles();
+
 	const blobs = document.querySelectorAll('.dsg-blobs');
 
 	if (blobs.length === 0) {

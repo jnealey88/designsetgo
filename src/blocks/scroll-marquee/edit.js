@@ -68,6 +68,9 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 
 	const onSelectImages = (rowIndex, images) => {
 		const newRows = [...rows];
+		// MediaUpload with 'value' prop pre-selects existing images,
+		// so 'images' param contains ALL selected images (existing + new)
+		// We just need to map them to our format
 		newRows[rowIndex].images = images.map((img) => ({
 			id: img.id,
 			url: img.url,

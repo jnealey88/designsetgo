@@ -5,6 +5,7 @@
  */
 
 import { __ } from '@wordpress/i18n';
+import { useEffect, useRef } from '@wordpress/element';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
@@ -25,6 +26,7 @@ import {
 import classnames from 'classnames';
 
 export default function BlobsEdit({ attributes, setAttributes, clientId }) {
+	const wrapperRef = useRef(null);
 	const {
 		blobShape,
 		blobAnimation,
@@ -53,10 +55,92 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 		'--dsg-blob-animation-easing': animationEasing,
 	};
 
+	// Get block props with our wrapper class
 	const blockProps = useBlockProps({
-		className: blobClasses,
-		style: customStyles,
+		className: 'dsg-blobs-wrapper',
+		ref: wrapperRef,
 	});
+
+	// Transfer background styles from wrapper to blob in editor
+	useEffect(() => {
+		if (!wrapperRef.current) {
+			return;
+		}
+
+		const wrapper = wrapperRef.current;
+		const blob = wrapper.querySelector('.dsg-blobs');
+		if (!blob) {
+			return;
+		}
+
+		// WordPress sets inline styles on the wrapper
+		// We need to read inline styles directly because our CSS has `background: none !important;`
+		const inlineStyle = wrapper.style;
+
+		// Transfer background image
+		if (
+			inlineStyle.backgroundImage &&
+			inlineStyle.backgroundImage !== 'none'
+		) {
+			blob.style.setProperty(
+				'background-image',
+				inlineStyle.backgroundImage
+			);
+		} else {
+			blob.style.removeProperty('background-image');
+		}
+
+		// Transfer background size
+		if (
+			inlineStyle.backgroundSize &&
+			inlineStyle.backgroundSize !== 'auto'
+		) {
+			blob.style.setProperty(
+				'background-size',
+				inlineStyle.backgroundSize
+			);
+		}
+
+		// Transfer background position
+		if (inlineStyle.backgroundPosition) {
+			blob.style.setProperty(
+				'background-position',
+				inlineStyle.backgroundPosition
+			);
+		}
+
+		// Transfer background repeat
+		if (
+			inlineStyle.backgroundRepeat &&
+			inlineStyle.backgroundRepeat !== 'repeat'
+		) {
+			blob.style.setProperty(
+				'background-repeat',
+				inlineStyle.backgroundRepeat
+			);
+		}
+
+		// Transfer background attachment
+		if (
+			inlineStyle.backgroundAttachment &&
+			inlineStyle.backgroundAttachment !== 'scroll'
+		) {
+			blob.style.setProperty(
+				'background-attachment',
+				inlineStyle.backgroundAttachment
+			);
+		}
+
+		// Transfer background color
+		if (inlineStyle.backgroundColor) {
+			blob.style.setProperty(
+				'background-color',
+				inlineStyle.backgroundColor
+			);
+		} else {
+			blob.style.removeProperty('background-color');
+		}
+	}); // Run on every render to catch style changes
 
 	// Inner blocks for content inside blob
 	const innerBlocksProps = useInnerBlocksProps(
@@ -294,17 +378,19 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 			)}
 
 			<div {...blockProps}>
-				{enableOverlay && (
-					<div
-						className="dsg-blobs__overlay"
-						style={{
-							backgroundColor: overlayColor,
-							opacity: overlayOpacity / 100,
-						}}
-					/>
-				)}
-				<div className="dsg-blobs__shape">
-					<div {...innerBlocksProps} />
+				<div className={blobClasses} style={customStyles}>
+					{enableOverlay && (
+						<div
+							className="dsg-blobs__overlay"
+							style={{
+								backgroundColor: overlayColor,
+								opacity: overlayOpacity / 100,
+							}}
+						/>
+					)}
+					<div className="dsg-blobs__shape">
+						<div {...innerBlocksProps} />
+					</div>
 				</div>
 			</div>
 		</>

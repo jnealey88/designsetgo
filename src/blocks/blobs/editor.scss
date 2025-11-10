@@ -7,6 +7,15 @@
  * @since 1.0.0
  */
 
+// Editor: Wrapper styling
+.editor-styles-wrapper .dsg-blobs-wrapper {
+	// Ensure wrapper behavior matches frontend
+	display: block;
+	width: 100%;
+	// Make wrapper transparent so backgrounds show on blob
+	background: none !important;
+}
+
 // Editor: Enable blob animations for WYSIWYG editing
 .editor-styles-wrapper .dsg-blobs {
 	// Animations work the same in editor as frontend
