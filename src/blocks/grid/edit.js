@@ -31,7 +31,7 @@ import {
 	__experimentalUseCustomUnits as useCustomUnits,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * Grid Container Edit Component
@@ -68,14 +68,19 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	const [useCustomGaps, setUseCustomGaps] = useState(!!(rowGap || columnGap));
 
 	// Get inner blocks to determine if container is empty
-	const hasInnerBlocks = useSelect(
+	const { hasInnerBlocks, innerBlocks } = useSelect(
 		(select) => {
 			const { getBlock } = select(blockEditorStore);
 			const block = getBlock(clientId);
-			return block?.innerBlocks?.length > 0;
+			return {
+				hasInnerBlocks: block?.innerBlocks?.length > 0,
+				innerBlocks: block?.innerBlocks || [],
+			};
 		},
 		[clientId]
 	);
+
+	const { insertBlocks } = useDispatch(blockEditorStore);
 
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	const blockProps = useBlockProps({
@@ -117,6 +122,15 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 			renderAppender: hasInnerBlocks
 				? undefined
 				: InnerBlocks.ButtonBlockAppender,
+			// CRITICAL: Prevent paste from replacing container
+			// When user pastes while container is focused, insert content inside instead of replacing
+			onReplace: (blocks) => {
+				// Insert the pasted blocks at the end of the container
+				// This ensures paste behavior matches user expectations
+				insertBlocks(blocks, innerBlocks.length, clientId, false);
+				// Return false to prevent the default replace behavior
+				return false;
+			},
 		}
 	);
 
