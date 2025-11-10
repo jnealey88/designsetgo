@@ -34,6 +34,7 @@ import { createBlock } from '@wordpress/blocks';
  */
 export default function StackEdit({ attributes, setAttributes, clientId }) {
 	const {
+		constrainWidth,
 		hoverBackgroundColor,
 		hoverTextColor,
 		hoverIconBackgroundColor,
@@ -90,11 +91,19 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 		innerBlocks,
 	]);
 
+	// Build className - add indicator when no width constraints
+	const className = [
+		'dsg-stack',
+		!constrainWidth && 'dsg-no-width-constraint',
+	]
+		.filter(Boolean)
+		.join(' ');
+
 	// Block wrapper props
 	// WordPress handles flex layout through layout support and CSS classes
 	// We only add custom CSS variables for hover effects
 	const blockProps = useBlockProps({
-		className: 'dsg-stack',
+		className,
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,

@@ -18,7 +18,6 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 export default function StackSave({ attributes }) {
 	const {
-		align,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -27,9 +26,17 @@ export default function StackSave({ attributes }) {
 		hoverButtonBackgroundColor,
 	} = attributes;
 
+	// Build className - add indicator when no width constraints
+	const className = [
+		'dsg-stack',
+		!constrainWidth && 'dsg-no-width-constraint',
+	]
+		.filter(Boolean)
+		.join(' ');
+
 	// Block wrapper props - outer div stays full width
 	const blockProps = useBlockProps.save({
-		className: 'dsg-stack',
+		className,
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
