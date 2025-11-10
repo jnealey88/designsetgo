@@ -138,7 +138,42 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 				inlineStyle.backgroundColor
 			);
 		} else {
-			blob.style.removeProperty('background-color');
+			// Check if wrapper has a WordPress background color class
+			// Pattern: has-{color-slug}-background-color
+			const colorClassMatch = wrapper.className.match(
+				/has-([a-z0-9-]+)-background-color/
+			);
+
+			if (colorClassMatch) {
+				// Extract color slug (e.g., "success", "warning", "primary")
+				const colorSlug = colorClassMatch[1];
+				// Get the color value from WordPress CSS variable
+				const colorValue = getComputedStyle(
+					document.documentElement
+				).getPropertyValue(`--wp--preset--color--${colorSlug}`);
+
+				if (colorValue) {
+					blob.style.setProperty('background-color', colorValue.trim());
+				} else {
+					// Fallback: try to get computed color by temporarily removing our override
+					const tempBg = wrapper.style.background;
+					wrapper.style.background = '';
+					const computedBgColor = getComputedStyle(wrapper).backgroundColor;
+					wrapper.style.background = tempBg;
+
+					if (computedBgColor && computedBgColor !== 'rgba(0, 0, 0, 0)') {
+						blob.style.setProperty('background-color', computedBgColor);
+					}
+				}
+			} else {
+				// Apply default color if no user color is set
+				// Use WordPress theme color or fallback to blue
+				const defaultColor =
+					getComputedStyle(document.documentElement).getPropertyValue(
+						'--wp--preset--color--accent-2'
+					) || '#2563eb';
+				blob.style.setProperty('background-color', defaultColor.trim());
+			}
 		}
 	}); // Run on every render to catch style changes
 
@@ -321,61 +356,55 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 						__nextHasNoMarginBottom
 					/>
 
-					<ToggleControl
-						label={__('Enable Background Overlay', 'designsetgo')}
-						checked={enableOverlay}
-						onChange={(value) =>
-							setAttributes({ enableOverlay: value })
-						}
-						help={__(
-							'Add a semi-transparent overlay over background images',
-							'designsetgo'
-						)}
-						__nextHasNoMarginBottom
-					/>
-
 					{enableOverlay && (
-						<>
-							<RangeControl
-								label={__('Overlay Opacity', 'designsetgo')}
-								value={overlayOpacity}
-								onChange={(value) =>
-									setAttributes({ overlayOpacity: value })
-								}
-								min={0}
-								max={100}
-								help={__(
-									'Overlay transparency (0 = transparent, 100 = opaque)',
-									'designsetgo'
-								)}
-								__next40pxDefaultSize
-								__nextHasNoMarginBottom
-							/>
-						</>
+						<RangeControl
+							label={__('Overlay Opacity', 'designsetgo')}
+							value={overlayOpacity}
+							onChange={(value) =>
+								setAttributes({ overlayOpacity: value })
+							}
+							min={0}
+							max={100}
+							help={__(
+								'Overlay transparency (0 = transparent, 100 = opaque)',
+								'designsetgo'
+							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
 					)}
 				</PanelBody>
 			</InspectorControls>
 
-			{enableOverlay && (
-				<InspectorControls group="color">
-					<ColorGradientSettingsDropdown
-						panelId={clientId}
-						title={__('Overlay Color', 'designsetgo')}
-						settings={[
-							{
-								label: __('Overlay Color', 'designsetgo'),
-								colorValue: overlayColor,
-								onColorChange: (color) =>
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
+					title={__('Overlay Color', 'designsetgo')}
+					settings={[
+						{
+							label: __('Overlay Color', 'designsetgo'),
+							colorValue: overlayColor,
+							onColorChange: (color) => {
+								// Auto-enable overlay when user sets a color
+								if (color) {
 									setAttributes({
-										overlayColor: color || '#000000',
-									}),
-								clearable: true,
+										overlayColor: color,
+										enableOverlay: true,
+									});
+								} else {
+									// Disable overlay when color is cleared
+									setAttributes({
+										overlayColor: '',
+										enableOverlay: false,
+									});
+								}
 							},
-						]}
-						{...colorGradientSettings}
-					/>
-				</InspectorControls>
-			)}
+							clearable: true,
+						},
+					]}
+					{...colorGradientSettings}
+				/>
+			</InspectorControls>
 
 			<div {...blockProps}>
 				<div className={blobClasses} style={customStyles}>

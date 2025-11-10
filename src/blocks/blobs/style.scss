@@ -44,8 +44,8 @@
 	justify-content: center;
 	overflow: hidden;
 
-	// Default background color (can be overridden by user)
-	background-color: var(--wp--preset--color--accent-2, #2563eb);
+	// Default background color (applied via JavaScript if no user color is set)
+	// Don't set here - would override user's inline background-color styles
 
 	// Shape variants - EXTREMELY different organic blob shapes
 	&--shape-1 {

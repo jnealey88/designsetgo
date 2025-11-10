@@ -81,6 +81,43 @@ function transferBackgroundStyles() {
 				'background-color',
 				inlineStyle.backgroundColor
 			);
+		} else {
+			// Check if wrapper has a WordPress background color class
+			// Pattern: has-{color-slug}-background-color
+			const colorClassMatch = wrapper.className.match(
+				/has-([a-z0-9-]+)-background-color/
+			);
+
+			if (colorClassMatch) {
+				// Extract color slug (e.g., "success", "warning", "primary")
+				const colorSlug = colorClassMatch[1];
+				// Get the color value from WordPress CSS variable
+				const colorValue = getComputedStyle(
+					document.documentElement
+				).getPropertyValue(`--wp--preset--color--${colorSlug}`);
+
+				if (colorValue) {
+					blob.style.setProperty('background-color', colorValue.trim());
+				} else {
+					// Fallback: try to get computed color by temporarily removing our override
+					const tempBg = wrapper.style.background;
+					wrapper.style.background = '';
+					const computedBgColor = getComputedStyle(wrapper).backgroundColor;
+					wrapper.style.background = tempBg;
+
+					if (computedBgColor && computedBgColor !== 'rgba(0, 0, 0, 0)') {
+						blob.style.setProperty('background-color', computedBgColor);
+					}
+				}
+			} else {
+				// Apply default color if no user color is set
+				// Use WordPress theme color or fallback to blue
+				const defaultColor =
+					getComputedStyle(document.documentElement).getPropertyValue(
+						'--wp--preset--color--accent-2'
+					) || '#2563eb';
+				blob.style.setProperty('background-color', defaultColor.trim());
+			}
 		}
 	});
 }

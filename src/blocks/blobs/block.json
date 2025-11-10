@@ -65,11 +65,11 @@
 		},
 		"overlayColor": {
 			"type": "string",
-			"default": "#000000"
+			"default": ""
 		},
 		"overlayOpacity": {
 			"type": "number",
-			"default": 50
+			"default": 80
 		}
 	},
 	"supports": {
