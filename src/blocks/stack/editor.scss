@@ -126,14 +126,15 @@
 }
 
 // CRITICAL: When Stack is full-width (alignfull), allow child blocks to also go full-width (editor)
-// WordPress constrains children with max-width: 1200px by default
-// We override this so children can extend full-width within the full-width container
+// WordPress constrains children with max-width: 1200px by default via generated classes like:
+// .wp-container-designsetgo-stack-is-layout-{hash} > :where(:not(.alignleft):not(.alignright):not(.alignfull))
+// We need higher specificity to override this
 // MUST match style.scss for editor/frontend parity
-.dsg-stack.alignfull {
+.dsg-stack.alignfull[class*="wp-container-designsetgo-stack"] {
 
-	// Target WordPress's generated layout classes
+	// Target all direct children that aren't explicitly aligned
 	// In editor, children are wrapped in [data-block] elements
-	&[class*="wp-container-"] > [data-block]:where(:not(.alignleft):not(.alignright)) {
+	> [data-block]:not(.alignleft):not(.alignright) {
 		max-width: none !important;
 		margin-left: 0 !important;
 		margin-right: 0 !important;
