@@ -21,7 +21,7 @@
 			"default": {
 				"type": "flex",
 				"orientation": "vertical",
-				"justifyContent": "left",
+				"justifyContent": "center",
 				"contentSize": "1200px"
 			}
 		},

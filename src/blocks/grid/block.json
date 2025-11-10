@@ -114,7 +114,7 @@
 		},
 		"alignItems": {
 			"type": "string",
-			"default": "start"
+			"default": "stretch"
 		},
 		"textAlign": {
 			"type": "string"
