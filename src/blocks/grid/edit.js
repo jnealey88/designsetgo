@@ -31,7 +31,7 @@ import {
 	__experimentalUseCustomUnits as useCustomUnits,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Grid Container Edit Component
@@ -77,9 +77,6 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		[clientId]
 	);
 
-	const { insertBlocks } = useDispatch(blockEditorStore);
-	const { getBlocks } = useSelect((select) => select(blockEditorStore), []);
-
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	const blockProps = useBlockProps({
 		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
@@ -120,22 +117,6 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 			renderAppender: hasInnerBlocks
 				? undefined
 				: InnerBlocks.ButtonBlockAppender,
-			// CRITICAL: Prevent paste from replacing container
-			// When user pastes while container is focused, insert content inside instead of replacing
-			onReplace: (blocks) => {
-				// Get current inner blocks at time of paste to ensure correct insertion position
-				const currentInnerBlocks = getBlocks(clientId);
-				// Insert the pasted blocks at the end of the container
-				// This ensures paste behavior matches user expectations
-				insertBlocks(
-					blocks,
-					currentInnerBlocks.length,
-					clientId,
-					false
-				);
-				// Return false to prevent the default replace behavior
-				return false;
-			},
 		}
 	);
 
