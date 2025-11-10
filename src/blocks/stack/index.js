@@ -1,5 +1,5 @@
 /**
- * DSG Section Block Registration
+ * Section Block Registration
  *
  * Vertical stacking container for sections and content areas.
  *
@@ -18,7 +18,7 @@ import './editor.scss';
 import './style.scss';
 
 /**
- * Register DSG Section Block
+ * Register Section Block
  */
 registerBlockType(metadata.name, {
 	...metadata,

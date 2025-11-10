@@ -34,13 +34,15 @@ import { createBlock } from '@wordpress/blocks';
  */
 export default function StackEdit({ attributes, setAttributes, clientId }) {
 	const {
-		constrainWidth,
 		hoverBackgroundColor,
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 		layout,
 	} = attributes;
+
+	// Extract contentSize from layout support
+	const contentSize = layout?.contentSize;
 
 	// Get theme color palette and gradient settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
@@ -92,14 +94,11 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 	]);
 
 	// Build className - add indicator when no width constraints
-	const className = [
-		'dsg-stack',
-		!constrainWidth && 'dsg-no-width-constraint',
-	]
+	const className = ['dsg-stack', !contentSize && 'dsg-no-width-constraint']
 		.filter(Boolean)
 		.join(' ');
 
-	// Block wrapper props
+	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	// WordPress handles flex layout through layout support and CSS classes
 	// We only add custom CSS variables for hover effects
 	const blockProps = useBlockProps({
@@ -120,14 +119,27 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 		},
 	});
 
-	// Merge block props with inner blocks props
-	// Show big button only when container is empty, otherwise use default appender
-	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		templateLock: false,
-		renderAppender: hasInnerBlocks
-			? undefined
-			: InnerBlocks.ButtonBlockAppender,
-	});
+	// Inner container props with width constraints (must match save.js EXACTLY)
+	const innerStyle = {};
+	if (contentSize) {
+		innerStyle.maxWidth = contentSize;
+		innerStyle.marginLeft = 'auto';
+		innerStyle.marginRight = 'auto';
+	}
+
+	// Merge inner blocks props
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'dsg-stack__inner',
+			style: innerStyle,
+		},
+		{
+			templateLock: false,
+			renderAppender: hasInnerBlocks
+				? undefined
+				: InnerBlocks.ButtonBlockAppender,
+		}
+	);
 
 	return (
 		<>
@@ -193,7 +205,9 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 				/>
 			</InspectorControls>
 
-			<div {...innerBlocksProps} />
+			<div {...blockProps}>
+				<div {...innerBlocksProps} />
+			</div>
 		</>
 	);
 }

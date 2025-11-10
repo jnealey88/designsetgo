@@ -16,6 +16,12 @@
 	// Visual indicator in editor
 	position: relative;
 
+	// CRITICAL: Inner container must be full width for layout to work
+	// When constrainWidth is enabled, inline styles will override with max-width
+	.dsg-stack__inner {
+		width: 100%;
+	}
+
 	// CRITICAL: Disable float for all children in flex layout (must match style.scss)
 	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
 	// but float should not work inside flex containers

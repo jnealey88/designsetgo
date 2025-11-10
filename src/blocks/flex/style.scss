@@ -30,6 +30,18 @@
 		// This breaks justify-content alignment
 		margin-left: 0 !important;
 		margin-right: 0 !important;
+
+		// Remove margin-block-start - WordPress adds this but we want to use gap instead
+		// This makes spacing behave like the core Row block
+		margin-block-start: 0 !important;
+
+		// CRITICAL: Support WordPress width controls (fit/grow/fixed)
+		// Allow flex-basis, flex-grow, flex-shrink from WordPress layout support
+		// These are applied as inline styles by WordPress
+		// Explicitly set flex-shrink to allow shrinking when needed
+		flex-shrink: 1;
+		// Set min-width to 0 to allow flex items to shrink below content size
+		min-width: 0;
 	}
 
 	// Mobile stack behavior (screens < 768px)

@@ -18,19 +18,18 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 export default function StackSave({ attributes }) {
 	const {
-		constrainWidth,
-		contentWidth,
 		hoverBackgroundColor,
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
+		layout,
 	} = attributes;
 
+	// Extract contentSize from layout support
+	const contentSize = layout?.contentSize;
+
 	// Build className - add indicator when no width constraints
-	const className = [
-		'dsg-stack',
-		!constrainWidth && 'dsg-no-width-constraint',
-	]
+	const className = ['dsg-stack', !contentSize && 'dsg-no-width-constraint']
 		.filter(Boolean)
 		.join(' ');
 
@@ -55,8 +54,8 @@ export default function StackSave({ attributes }) {
 
 	// Inner container props with width constraints
 	const innerStyle = {};
-	if (constrainWidth) {
-		innerStyle.maxWidth = contentWidth || '1200px';
+	if (contentSize) {
+		innerStyle.maxWidth = contentSize;
 		innerStyle.marginLeft = 'auto';
 		innerStyle.marginRight = 'auto';
 	}

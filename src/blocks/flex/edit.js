@@ -120,19 +120,10 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		innerBlocks,
 	]);
 
-	// Extract gap BEFORE creating blockProps, so we can apply it to inner div instead (must match save.js EXACTLY)
-	// WordPress layout support stores gap in attributes.style.spacing.blockGap
-	// Convert from WordPress preset format (var:preset|spacing|md) to CSS var (var(--wp--preset--spacing--md))
-	const rawGapValue = attributes.style?.spacing?.blockGap;
-	const gapValue = convertPresetToCSSVar(rawGapValue);
-
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
-	// CRITICAL: Suppress gap on outer div by passing undefined, we'll apply it to inner div instead
 	const blockProps = useBlockProps({
 		className: `dsg-flex ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
 		style: {
-			// Suppress gap from being applied to outer div
-			gap: undefined,
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
 			}),
@@ -147,6 +138,18 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 			}),
 		},
 	});
+
+	// Extract gap AFTER creating blockProps, so we can move it to inner div instead (must match save.js EXACTLY)
+	// WordPress layout support stores gap in attributes.style.spacing.blockGap
+	// Convert from WordPress preset format (var:preset|spacing|md) to CSS var (var(--wp--preset--spacing--md))
+	const rawGapValue = attributes.style?.spacing?.blockGap;
+	const gapValue = convertPresetToCSSVar(rawGapValue);
+
+	// Remove gap from outer div's inline styles - it should only be on inner div
+	// This prevents WordPress from applying gap to the wrong element
+	if (blockProps.style?.gap) {
+		delete blockProps.style.gap;
+	}
 
 	// Inner container props with flex layout and width constraints (must match save.js EXACTLY)
 	// CRITICAL: Apply display: flex here, not via WordPress layout support on outer div

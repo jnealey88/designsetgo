@@ -18,11 +18,13 @@
 			"allowInheriting": false,
 			"allowEditing": true,
 			"allowSizingOnChildren": true,
+			"allowVerticalAlignment": true,
 			"default": {
 				"type": "flex",
 				"orientation": "horizontal",
 				"justifyContent": "left",
-				"contentSize": "1200px"
+				"contentSize": "1200px",
+				"flexWrap": "wrap"
 			}
 		},
 		"spacing": {
@@ -35,7 +37,8 @@
 			}
 		},
 		"dimensions": {
-			"minHeight": true
+			"minHeight": true,
+			"minWidth": true
 		},
 		"color": {
 			"background": true,
