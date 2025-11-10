@@ -1,7 +1,7 @@
 /**
- * Stack Container Block - Transforms
+ * DSG Section Block - Transforms
  *
- * Allows transforming to/from Flex and Grid blocks.
+ * Allows transforming to/from DSG Row and DSG Grid blocks.
  *
  * @since 1.0.0
  */

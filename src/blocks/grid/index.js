@@ -1,5 +1,5 @@
 /**
- * Grid Container Block Registration
+ * DSG Grid Block Registration
  *
  * Responsive multi-column grid layouts.
  *
@@ -11,7 +11,6 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import save from './save';
 import transforms from './transforms';
-import deprecated from './deprecated';
 import metadata from './block.json';
 import { ICON_COLOR } from '../shared/constants';
 
@@ -19,7 +18,7 @@ import './editor.scss';
 import './style.scss';
 
 /**
- * Register Grid Container Block
+ * Register DSG Grid Block
  */
 registerBlockType(metadata.name, {
 	...metadata,
@@ -71,5 +70,4 @@ registerBlockType(metadata.name, {
 	edit,
 	save,
 	transforms,
-	deprecated,
 });

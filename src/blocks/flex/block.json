@@ -3,10 +3,10 @@
 	"apiVersion": 3,
 	"name": "designsetgo/flex",
 	"version": "1.0.0",
-	"title": "Flex Container",
+	"title": "DSG Row",
 	"category": "design",
 	"description": "Flexible horizontal or vertical layouts with wrapping. Perfect for button groups, hero sections, and responsive card layouts.",
-	"keywords": ["flex", "flexbox", "horizontal", "row", "layout", "container"],
+	"keywords": ["row", "flex", "flexbox", "horizontal", "layout", "container"],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,

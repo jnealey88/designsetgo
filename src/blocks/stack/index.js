@@ -1,7 +1,7 @@
 /**
- * Stack Container Block Registration
+ * DSG Section Block Registration
  *
- * Simple vertical stacking container with consistent gaps.
+ * Vertical stacking container for sections and content areas.
  *
  * @since 1.0.0
  */
@@ -11,7 +11,6 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import save from './save';
 import transforms from './transforms';
-import deprecated from './deprecated';
 import metadata from './block.json';
 import { ICON_COLOR } from '../shared/constants';
 
@@ -19,7 +18,7 @@ import './editor.scss';
 import './style.scss';
 
 /**
- * Register Stack Container Block
+ * Register DSG Section Block
  */
 registerBlockType(metadata.name, {
 	...metadata,
@@ -63,5 +62,4 @@ registerBlockType(metadata.name, {
 	edit,
 	save,
 	transforms,
-	deprecated,
 });

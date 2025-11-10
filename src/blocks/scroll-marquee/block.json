@@ -3,10 +3,10 @@
 	"apiVersion": 3,
 	"name": "designsetgo/scroll-marquee",
 	"version": "1.0.0",
-	"title": "Scroll Marquee",
+	"title": "Scrolling Gallery",
 	"category": "design",
 	"description": "Display rows of images that scroll horizontally in alternating directions based on page scroll. For best performance, use optimized images (WebP format recommended) and limit to 20 images or less.",
-	"keywords": ["scroll", "marquee", "parallax", "images", "gallery", "infinite"],
+	"keywords": ["scrolling", "gallery", "images", "parallax", "scroll", "infinite"],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,

@@ -1,7 +1,7 @@
 /**
- * Stack Container Block - Edit Component
+ * DSG Section Block - Edit Component
  *
- * Simple vertical stacking container with consistent gaps.
+ * Vertical stacking container for sections and content areas.
  * Leverages WordPress's native flex layout system.
  *
  * @since 1.0.0

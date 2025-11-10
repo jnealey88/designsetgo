@@ -3,10 +3,10 @@
 	"apiVersion": 3,
 	"name": "designsetgo/stack",
 	"version": "1.0.0",
-	"title": "Stack Container",
+	"title": "DSG Section",
 	"category": "design",
-	"description": "Simple vertical stacking container with consistent gaps. Perfect for sections, content areas, and vertical layouts.",
-	"keywords": ["stack", "vertical", "layout", "container", "section"],
+	"description": "Vertical stacking container for sections and content areas. Perfect for building layouts with consistent spacing. Can be nested within other sections for complex page structures.",
+	"keywords": ["section", "stack", "vertical", "layout", "container", "content area"],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
@@ -123,13 +123,13 @@
 				"name": "core/heading",
 				"attributes": {
 					"level": 2,
-					"content": "Stack Container"
+					"content": "DSG Section"
 				}
 			},
 			{
 				"name": "core/paragraph",
 				"attributes": {
-					"content": "Simple vertical stacking with consistent gaps between elements. Perfect for sections and content areas."
+					"content": "Vertical stacking container for sections and content areas with consistent spacing. Can be nested for complex layouts."
 				}
 			}
 		]

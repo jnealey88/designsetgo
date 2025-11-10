@@ -1,5 +1,5 @@
 /**
- * Flex Container Block - Save Component
+ * DSG Row Block - Save Component
  *
  * Saves the block content with minimal custom styles.
  * WordPress's layout system handles flex layout through CSS classes.
@@ -18,7 +18,6 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 export default function FlexSave({ attributes }) {
 	const {
-		align,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,

@@ -1,5 +1,5 @@
 /**
- * Grid Container Block - Save Component
+ * DSG Grid Block - Save Component
  *
  * Saves the block content with declarative styles.
  *
@@ -17,7 +17,6 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 export default function GridSave({ attributes }) {
 	const {
-		align,
 		constrainWidth,
 		contentWidth,
 		desktopColumns,

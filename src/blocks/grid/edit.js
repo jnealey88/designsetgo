@@ -1,5 +1,5 @@
 /**
- * Grid Container Block - Edit Component
+ * DSG Grid Block - Edit Component
  *
  * Responsive multi-column grid layouts.
  *

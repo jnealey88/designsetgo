@@ -1,5 +1,5 @@
 /**
- * Stack Container Block - Save Component
+ * DSG Section Block - Save Component
  *
  * Saves the block content with minimal custom styles.
  * WordPress's layout system handles flex layout through CSS classes.

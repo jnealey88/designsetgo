@@ -1,5 +1,5 @@
 /**
- * Scroll Marquee Block - Frontend JavaScript
+ * Scrolling Gallery Block - Frontend JavaScript
  * Handles scroll-based horizontal animation with seamless infinite loop
  */
 

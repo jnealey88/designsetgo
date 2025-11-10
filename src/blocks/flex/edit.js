@@ -1,5 +1,5 @@
 /**
- * Flex Container Block - Edit Component
+ * DSG Row Block - Edit Component
  *
  * Flexible horizontal or vertical layouts with wrapping.
  * Leverages WordPress's native flex layout system.
@@ -35,7 +35,6 @@ import { createBlock } from '@wordpress/blocks';
  */
 export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	const {
-		align,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
