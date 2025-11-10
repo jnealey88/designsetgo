@@ -75,6 +75,7 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	const { replaceBlock, insertBlocks } = useDispatch(blockEditorStore);
+	const { getBlocks } = useSelect((select) => select(blockEditorStore), []);
 
 	// Get inner blocks to determine if container is empty
 	const { hasInnerBlocks, innerBlocks } = useSelect(
@@ -184,9 +185,16 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 			// CRITICAL: Prevent paste from replacing container
 			// When user pastes while container is focused, insert content inside instead of replacing
 			onReplace: (blocks) => {
+				// Get current inner blocks at time of paste to ensure correct insertion position
+				const currentInnerBlocks = getBlocks(clientId);
 				// Insert the pasted blocks at the end of the container
 				// This ensures paste behavior matches user expectations
-				insertBlocks(blocks, innerBlocks.length, clientId, false);
+				insertBlocks(
+					blocks,
+					currentInnerBlocks.length,
+					clientId,
+					false
+				);
 				// Return false to prevent the default replace behavior
 				return false;
 			},

@@ -68,19 +68,17 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	const [useCustomGaps, setUseCustomGaps] = useState(!!(rowGap || columnGap));
 
 	// Get inner blocks to determine if container is empty
-	const { hasInnerBlocks, innerBlocks } = useSelect(
+	const hasInnerBlocks = useSelect(
 		(select) => {
 			const { getBlock } = select(blockEditorStore);
 			const block = getBlock(clientId);
-			return {
-				hasInnerBlocks: block?.innerBlocks?.length > 0,
-				innerBlocks: block?.innerBlocks || [],
-			};
+			return block?.innerBlocks?.length > 0;
 		},
 		[clientId]
 	);
 
 	const { insertBlocks } = useDispatch(blockEditorStore);
+	const { getBlocks } = useSelect((select) => select(blockEditorStore), []);
 
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	const blockProps = useBlockProps({
@@ -125,9 +123,16 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 			// CRITICAL: Prevent paste from replacing container
 			// When user pastes while container is focused, insert content inside instead of replacing
 			onReplace: (blocks) => {
+				// Get current inner blocks at time of paste to ensure correct insertion position
+				const currentInnerBlocks = getBlocks(clientId);
 				// Insert the pasted blocks at the end of the container
 				// This ensures paste behavior matches user expectations
-				insertBlocks(blocks, innerBlocks.length, clientId, false);
+				insertBlocks(
+					blocks,
+					currentInnerBlocks.length,
+					clientId,
+					false
+				);
 				// Return false to prevent the default replace behavior
 				return false;
 			},
