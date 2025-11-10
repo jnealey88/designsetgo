@@ -18,7 +18,6 @@ import {
 import {
 	PanelBody,
 	SelectControl,
-	ToggleControl,
 	RangeControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
@@ -148,30 +147,41 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 				// Extract color slug (e.g., "success", "warning", "primary")
 				const colorSlug = colorClassMatch[1];
 				// Get the color value from WordPress CSS variable
-				const colorValue = getComputedStyle(
-					document.documentElement
-				).getPropertyValue(`--wp--preset--color--${colorSlug}`);
+				const colorValue = window
+					.getComputedStyle(document.documentElement)
+					.getPropertyValue(`--wp--preset--color--${colorSlug}`);
 
 				if (colorValue) {
-					blob.style.setProperty('background-color', colorValue.trim());
+					blob.style.setProperty(
+						'background-color',
+						colorValue.trim()
+					);
 				} else {
 					// Fallback: try to get computed color by temporarily removing our override
 					const tempBg = wrapper.style.background;
 					wrapper.style.background = '';
-					const computedBgColor = getComputedStyle(wrapper).backgroundColor;
+					const computedBgColor =
+						window.getComputedStyle(wrapper).backgroundColor;
 					wrapper.style.background = tempBg;
 
-					if (computedBgColor && computedBgColor !== 'rgba(0, 0, 0, 0)') {
-						blob.style.setProperty('background-color', computedBgColor);
+					if (
+						computedBgColor &&
+						computedBgColor !== 'rgba(0, 0, 0, 0)'
+					) {
+						blob.style.setProperty(
+							'background-color',
+							computedBgColor
+						);
 					}
 				}
 			} else {
 				// Apply default color if no user color is set
 				// Use WordPress theme color or fallback to blue
 				const defaultColor =
-					getComputedStyle(document.documentElement).getPropertyValue(
-						'--wp--preset--color--accent-2'
-					) || '#2563eb';
+					window
+						.getComputedStyle(document.documentElement)
+						.getPropertyValue('--wp--preset--color--accent-2') ||
+					'#2563eb';
 				blob.style.setProperty('background-color', defaultColor.trim());
 			}
 		}

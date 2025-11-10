@@ -23,10 +23,23 @@ export default function StackSave({ attributes }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 		layout,
+		contentWidth, // Legacy attribute from before layout support
 	} = attributes;
 
-	// Extract contentSize from layout support
-	const contentSize = layout?.contentSize;
+	// Extract contentSize with fallback priority:
+	// 1. WordPress layout support (layout.contentSize) - if explicitly set
+	// 2. Legacy custom attribute (contentWidth) - for backward compatibility
+	// 3. Plugin default (1200px) - as last resort
+	// Note: If user explicitly disabled width constraint in Layout panel, layout.contentSize will be ''
+	// and we should NOT apply fallbacks (respect user's choice for full width)
+	let contentSize;
+	if (layout && 'contentSize' in layout) {
+		// User has interacted with Layout panel - respect their choice
+		contentSize = layout.contentSize; // Could be a value or '' (disabled)
+	} else {
+		// User hasn't set layout.contentSize - use fallbacks
+		contentSize = contentWidth || '1200px';
+	}
 
 	// Build className - add indicator when no width constraints
 	const className = ['dsg-stack', !contentSize && 'dsg-no-width-constraint']

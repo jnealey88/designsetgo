@@ -77,8 +77,7 @@
 	},
 	"attributes": {
 		"align": {
-			"type": "string",
-			"default": "full"
+			"type": "string"
 		},
 		"style": {
 			"type": "object",

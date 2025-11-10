@@ -14,6 +14,20 @@
 	width: 100%;
 	// Make wrapper transparent so backgrounds show on blob
 	background: none !important;
+
+	// CRITICAL: Alignment classes on wrapper should apply to inner blob (must match style.scss)
+	&.aligncenter > .dsg-blobs {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	&.alignleft > .dsg-blobs {
+		margin-right: auto;
+	}
+
+	&.alignright > .dsg-blobs {
+		margin-left: auto;
+	}
 }
 
 // Editor: Enable blob animations for WYSIWYG editing

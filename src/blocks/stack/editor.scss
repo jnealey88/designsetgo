@@ -26,80 +26,33 @@
 	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
 	// but float should not work inside flex containers
 	// In editor, children are wrapped in [data-block] elements
-	&.is-layout-flex > *,
-	&.is-layout-flex > [data-block] > * {
+	.dsg-stack__inner.is-layout-flex > *,
+	.dsg-stack__inner.is-layout-flex > [data-block] > * {
 		float: none !important;
 	}
 
-	// CRITICAL: Ensure flex layout properties work correctly (must match style.scss)
-	// WordPress applies these via inline styles, but we ensure they're respected
-	&.is-layout-flex {
-		display: flex;
-		flex-direction: column; // Vertical stacking
-		
-		// CRITICAL: For vertical flex (column), horizontal centering uses align-items
-		// WordPress's justifyContent controls vertical alignment
-		// We need to also support horizontal centering
-		&[style*="justify-content:center"],
-		&[style*="justify-content: center"] {
-			align-items: center; // Horizontal centering for column direction
+	// CRITICAL: In editor, blocks are wrapped in [data-block] elements inside .dsg-stack__inner
+	// Note: is-layout-flex class is on .dsg-stack__inner, not on .dsg-stack
+	.dsg-stack__inner.is-layout-flex > [data-block] {
+		// Auto width by default for alignment to work
+		width: auto;
+		max-width: 100%;
+
+		// CRITICAL: Block-level element wrappers should take full width
+		// This makes the wrapper stretch so the inner block can use its full width
+		&[data-type="core/heading"],
+		&[data-type="core/paragraph"],
+		&[data-type="core/group"],
+		&[data-type="core/image"],
+		&[data-type="core/video"],
+		&[data-type="core/embed"],
+		&[data-type="core/table"],
+		&[data-type="core/list"],
+		&[data-type="designsetgo/grid"],
+		&[data-type="designsetgo/stack"],
+		&[data-type="designsetgo/flex"] {
+			width: 100%;
 		}
-		
-		&[style*="justify-content:right"],
-		&[style*="justify-content: right"],
-		&[style*="justify-content:flex-end"],
-		&[style*="justify-content: flex-end"] {
-			align-items: flex-end; // Right alignment for column direction
-		}
-
-		// Default left alignment
-		align-items: flex-start;
-		
-		// CRITICAL: In editor, blocks are wrapped in [data-block] elements
-		> [data-block] {
-			// Auto width by default for alignment to work
-			width: auto;
-			max-width: 100%;
-
-			// CRITICAL: Block-level element wrappers should take full width
-			// This makes the wrapper stretch so the inner block can use its full width
-			&[data-type="core/heading"],
-			&[data-type="core/paragraph"],
-			&[data-type="core/group"],
-			&[data-type="core/image"],
-			&[data-type="core/video"],
-			&[data-type="core/embed"],
-			&[data-type="core/table"],
-			&[data-type="core/list"],
-			&[data-type="designsetgo/grid"],
-			&[data-type="designsetgo/stack"] {
-				width: 100%;
-			}
-
-			// CRITICAL: Specific blocks that should shrink to content
-			> .dsg-pill,
-			> .wp-block-button,
-			> .wp-block-buttons {
-				width: auto !important;
-				max-width: none !important; // Remove WordPress's 1200px contentSize constraint
-			}
-
-			// CRITICAL: Block-level elements take full width
-			> .wp-block-heading,
-			> .wp-block-paragraph,
-			> .wp-block-group,
-			> .wp-block-image,
-			> .wp-block-video,
-			> .wp-block-embed,
-			> .wp-block-table,
-			> .wp-block-list,
-			> .dsg-grid,
-			> .wp-block-designsetgo-grid {
-				width: 100%;
-			}
-		}
-		
-		// Gap is handled by WordPress's blockGap support
 	}
 
 	// Show outline when selected (editor-only)
