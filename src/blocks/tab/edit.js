@@ -10,32 +10,9 @@ import {
 	InspectorControls,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import {
-	PanelBody,
-	TextControl,
-	SelectControl,
-	Dashicon,
-} from '@wordpress/components';
+import { PanelBody, TextControl, SelectControl } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
-
-// Common icon options for tab navigation
-const ICON_OPTIONS = [
-	{ label: __('None', 'designsetgo'), value: '' },
-	{ label: __('★ Star', 'designsetgo'), value: 'star-filled' },
-	{ label: __('❤ Heart', 'designsetgo'), value: 'heart' },
-	{ label: __('⚙ Settings', 'designsetgo'), value: 'admin-settings' },
-	{ label: __('👤 User', 'designsetgo'), value: 'admin-users' },
-	{ label: __('📊 Chart', 'designsetgo'), value: 'chart-bar' },
-	{ label: __('✓ Check', 'designsetgo'), value: 'yes-alt' },
-	{ label: __('✉ Email', 'designsetgo'), value: 'email' },
-	{ label: __('🏠 Home', 'designsetgo'), value: 'admin-home' },
-	{ label: __('🔒 Lock', 'designsetgo'), value: 'lock' },
-	{ label: __('📁 Folder', 'designsetgo'), value: 'portfolio' },
-	{ label: __('📷 Camera', 'designsetgo'), value: 'camera' },
-	{ label: __('🔍 Search', 'designsetgo'), value: 'search' },
-	{ label: __('⚡ Lightning', 'designsetgo'), value: 'lightbulb' },
-	{ label: __('🎯 Target', 'designsetgo'), value: 'location' },
-];
+import { IconPicker } from '../icon/components/IconPicker';
 
 export default function Edit({ attributes, setAttributes, clientId, context }) {
 	const { uniqueId, title, icon, iconPosition } = attributes;
@@ -120,16 +97,14 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 							__nextHasNoMarginBottom
 						/>
 
-						<TextControl
-							label={__('Icon', 'designsetgo')}
+						<IconPicker
 							value={icon}
 							onChange={(value) => setAttributes({ icon: value })}
+							label={__('Tab Icon', 'designsetgo')}
 							help={__(
-								'Font Awesome icon name (e.g., "star")',
+								'Choose an icon to display with the tab',
 								'designsetgo'
 							)}
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
 						/>
 
 						{icon && (
@@ -220,37 +195,15 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 						__nextHasNoMarginBottom
 					/>
 
-					<SelectControl
-						label={__('Icon', 'designsetgo')}
+					<IconPicker
 						value={icon}
-						options={ICON_OPTIONS}
 						onChange={(value) => setAttributes({ icon: value })}
+						label={__('Tab Icon', 'designsetgo')}
 						help={__(
 							'Choose an icon to display with the tab',
 							'designsetgo'
 						)}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
 					/>
-
-					{icon && (
-						<div
-							style={{
-								marginBottom: '16px',
-								padding: '12px',
-								background: '#f0f0f0',
-								borderRadius: '4px',
-								display: 'flex',
-								alignItems: 'center',
-								gap: '8px',
-							}}
-						>
-							<Dashicon icon={icon} size={24} />
-							<span style={{ fontSize: '14px', color: '#555' }}>
-								{__('Icon preview', 'designsetgo')}
-							</span>
-						</div>
-					)}
 
 					{icon && (
 						<SelectControl

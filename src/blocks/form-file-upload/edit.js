@@ -10,6 +10,7 @@ import {
 	PanelBody,
 	TextControl,
 	ToggleControl,
+	SelectControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- NumberControl is stable in practice
 	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
@@ -19,6 +20,7 @@ export default function FormFileUploadEdit({
 	attributes,
 	setAttributes,
 	clientId,
+	context,
 }) {
 	const {
 		fieldName,
@@ -28,14 +30,38 @@ export default function FormFileUploadEdit({
 		acceptedFileTypes,
 		maxFileSize,
 		multiple,
+		fieldWidth,
 	} = attributes;
 
 	if (!fieldName) {
 		setAttributes({ fieldName: `file-${clientId.slice(0, 8)}` });
 	}
 
+	// Get context values from parent form
+	const fieldBackgroundColor =
+		context['designsetgo/form-builder/fieldBackgroundColor'];
+
 	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--file');
-	const blockProps = useBlockProps({ className: fieldClasses });
+
+	const fieldStyles = {
+		'--dsg-form-field-bg': fieldBackgroundColor,
+	};
+
+	const blockProps = useBlockProps({
+		className: fieldClasses,
+		style: {
+			...fieldStyles,
+			// Use flex-basis with calc to account for gap between fields
+			flexBasis:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+			maxWidth:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+		},
+	});
 	const fieldId = `field-${fieldName}`;
 
 	return (
@@ -73,6 +99,49 @@ export default function FormFileUploadEdit({
 						label={__('Allow Multiple Files', 'designsetgo')}
 						checked={multiple}
 						onChange={(value) => setAttributes({ multiple: value })}
+						__nextHasNoMarginBottom
+					/>
+
+					<SelectControl
+						label={__('Field Width', 'designsetgo')}
+						value={fieldWidth}
+						options={[
+							{
+								label: __('Full Width (100%)', 'designsetgo'),
+								value: '100',
+							},
+							{
+								label: __('Half Width (50%)', 'designsetgo'),
+								value: '50',
+							},
+							{
+								label: __('One Third (33%)', 'designsetgo'),
+								value: '33',
+							},
+							{
+								label: __('Two Thirds (66%)', 'designsetgo'),
+								value: '66',
+							},
+							{
+								label: __('One Quarter (25%)', 'designsetgo'),
+								value: '25',
+							},
+							{
+								label: __(
+									'Three Quarters (75%)',
+									'designsetgo'
+								),
+								value: '75',
+							},
+						]}
+						onChange={(value) =>
+							setAttributes({ fieldWidth: value })
+						}
+						help={__(
+							'Set field width to create multi-column layouts',
+							'designsetgo'
+						)}
+						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>

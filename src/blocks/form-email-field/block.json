@@ -33,11 +33,16 @@
 		"defaultValue": {
 			"type": "string",
 			"default": ""
+		},
+		"fieldWidth": {
+			"type": "string",
+			"default": "100"
 		}
 	},
 	"usesContext": [
 		"designsetgo/form/fieldLabelColor",
 		"designsetgo/form/fieldBorderColor",
+		"designsetgo/form/fieldBackgroundColor",
 		"designsetgo/form/fieldSpacing",
 		"designsetgo/form/formId"
 	],

@@ -65,6 +65,10 @@
 		"allowDecimals": {
 			"type": "boolean",
 			"default": false
+		},
+		"fieldWidth": {
+			"type": "string",
+			"default": "100"
 		}
 	},
 	"editorScript": "file:./index.js",

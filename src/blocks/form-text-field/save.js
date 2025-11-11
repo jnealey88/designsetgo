@@ -28,7 +28,15 @@ export default function FormTextFieldSave({ attributes }) {
 	const blockProps = useBlockProps.save({
 		className: fieldClasses,
 		style: {
-			width: `${fieldWidth}%`,
+			// Use flex-basis with calc to account for gap between fields
+			flexBasis:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+			maxWidth:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 

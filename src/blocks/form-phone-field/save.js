@@ -27,7 +27,15 @@ export default function FormPhoneFieldSave({ attributes }) {
 	const blockProps = useBlockProps.save({
 		className: fieldClasses,
 		style: {
-			width: `${fieldWidth}%`,
+			// Use flex-basis with calc to account for gap between fields
+			flexBasis:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+			maxWidth:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -85,7 +93,7 @@ export default function FormPhoneFieldSave({ attributes }) {
 						name={`${fieldName}_country_code`}
 						className="dsg-form-field__country-code"
 						defaultValue={countryCode}
-						style={{ width: '100px', flexShrink: 0 }}
+						style={{ minWidth: '85px', flexShrink: 0 }}
 						aria-label="Country Code"
 					>
 						<option value="+1">+1 (US/Canada)</option>

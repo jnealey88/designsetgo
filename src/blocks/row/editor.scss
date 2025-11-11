@@ -11,6 +11,9 @@
 	// Row should be full-width by default (like other block-level elements)
 	width: 100%;
 
+	// Visual indicator in editor and positioning context for block inserter
+	position: relative;
+
 	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
@@ -20,6 +23,28 @@
 	// When constrainWidth is enabled, inline styles will override with max-width
 	.dsg-flex__inner {
 		width: 100%;
+		// Ensure inner container doesn't create positioning context for absolute children
+		position: static;
+	}
+
+	// CRITICAL: When row has content, position appender at outer container corner
+	// Target from outer container to position relative to main block wrapper
+	// Use :not(:only-child) to exclude empty row state
+	/* stylelint-disable-next-line selector-class-pattern */
+	.dsg-flex__inner > .block-list-appender:not(:only-child) {
+		// Remove from flex flow and position at outer container corner
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		// Allow inserter button to position naturally
+		width: auto;
+		height: auto;
+	}
+
+	// CRITICAL: When row is empty, show normal appender
+	/* stylelint-disable-next-line selector-class-pattern */
+	.dsg-flex__inner > .block-list-appender:only-child {
+		position: static; // Reset positioning
 	}
 
 	// CRITICAL: When Row/Flex is nested inside another container, force full width (EDITOR)

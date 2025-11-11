@@ -113,10 +113,6 @@ export default function AccordionItemEdit({
 		);
 	};
 
-	const toggleOpen = () => {
-		setAttributes({ isOpen: !isOpen });
-	};
-
 	return (
 		<>
 			<InspectorControls>
@@ -154,7 +150,6 @@ export default function AccordionItemEdit({
 							'dsg-accordion-item__trigger--icon-right':
 								iconPosition === 'right',
 						})}
-						onClick={toggleOpen}
 						aria-expanded={isOpen}
 					>
 						{iconPosition === 'left' && renderIcon()}
@@ -175,11 +170,9 @@ export default function AccordionItemEdit({
 					</button>
 				</div>
 
-				{isOpen && (
-					<div className="dsg-accordion-item__panel">
-						<div {...innerBlocksProps} />
-					</div>
-				)}
+				<div className="dsg-accordion-item__panel">
+					<div {...innerBlocksProps} />
+				</div>
 			</div>
 		</>
 	);

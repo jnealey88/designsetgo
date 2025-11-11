@@ -20,10 +20,10 @@ import {
 	SelectControl,
 	ToggleControl,
 	RangeControl,
-	Dashicon,
 } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
+import { getIcon } from '../icon/utils/svg-icons';
 
 const ALLOWED_BLOCKS = ['designsetgo/tab'];
 
@@ -49,6 +49,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		activeTabColor,
 		activeTabBackgroundColor,
 		tabBorderColor,
+		showNavBorder,
 	} = attributes;
 
 	// Get theme color palette and gradient settings
@@ -134,7 +135,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	};
 
 	const blockProps = useBlockProps({
-		className: `dsg-tabs dsg-tabs-${uniqueId} dsg-tabs--${orientation} dsg-tabs--${tabStyle} dsg-tabs--align-${alignment}`,
+		className: `dsg-tabs dsg-tabs-${uniqueId} dsg-tabs--${orientation} dsg-tabs--${tabStyle} dsg-tabs--align-${alignment}${showNavBorder ? ' dsg-tabs--show-nav-border' : ''}`,
 		style: {
 			'--dsg-tabs-gap': gap,
 			...(tabColor && { '--dsg-tab-color': tabColor }),
@@ -303,6 +304,19 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
+
+					<ToggleControl
+						label={__('Show Border Below Tabs', 'designsetgo')}
+						checked={showNavBorder}
+						onChange={(value) =>
+							setAttributes({ showNavBorder: value })
+						}
+						help={__(
+							'Add a divider line between tab navigation and content',
+							'designsetgo'
+						)}
+						__nextHasNoMarginBottom
+					/>
 				</PanelBody>
 
 				<PanelBody
@@ -403,13 +417,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							>
 								{icon && iconPosition === 'left' && (
 									<span className="dsg-tabs__tab-icon">
-										<Dashicon icon={icon} size={20} />
+										{getIcon(icon, 20, 20)}
 									</span>
 								)}
 
 								{icon && iconPosition === 'top' && (
 									<span className="dsg-tabs__tab-icon-top">
-										<Dashicon icon={icon} size={20} />
+										{getIcon(icon, 20, 20)}
 									</span>
 								)}
 
@@ -419,7 +433,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 								{icon && iconPosition === 'right' && (
 									<span className="dsg-tabs__tab-icon">
-										<Dashicon icon={icon} size={20} />
+										{getIcon(icon, 20, 20)}
 									</span>
 								)}
 							</button>

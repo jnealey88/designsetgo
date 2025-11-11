@@ -91,6 +91,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"showNavBorder": {
+			"type": "boolean",
+			"default": false
+		},
 		"style": {
 			"type": "object",
 			"default": {

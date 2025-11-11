@@ -36,6 +36,7 @@ export default function FormBuilderEdit({
 		formId,
 		submitButtonText,
 		submitButtonAlignment,
+		submitButtonPosition,
 		ajaxSubmit,
 		successMessage,
 		errorMessage,
@@ -73,7 +74,8 @@ export default function FormBuilderEdit({
 	// Calculate classes
 	const formClasses = classnames('dsg-form-builder', {
 		[`dsg-form-builder--align-${submitButtonAlignment}`]:
-			submitButtonAlignment,
+			submitButtonAlignment && submitButtonPosition === 'below',
+		'dsg-form-builder--button-inline': submitButtonPosition === 'inline',
 	});
 
 	// Apply form settings as CSS custom properties
@@ -172,25 +174,57 @@ export default function FormBuilderEdit({
 					/>
 
 					<SelectControl
-						label={__('Button Alignment', 'designsetgo')}
-						value={submitButtonAlignment}
+						label={__('Button Position', 'designsetgo')}
+						value={submitButtonPosition}
 						options={[
-							{ label: __('Left', 'designsetgo'), value: 'left' },
 							{
-								label: __('Center', 'designsetgo'),
-								value: 'center',
+								label: __('Below fields', 'designsetgo'),
+								value: 'below',
 							},
 							{
-								label: __('Right', 'designsetgo'),
-								value: 'right',
+								label: __(
+									'Inline with last field',
+									'designsetgo'
+								),
+								value: 'inline',
 							},
 						]}
 						onChange={(value) =>
-							setAttributes({ submitButtonAlignment: value })
+							setAttributes({ submitButtonPosition: value })
 						}
+						help={__(
+							'Place button below all fields or inline with the last field (useful for subscribe forms)',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
+
+					{submitButtonPosition === 'below' && (
+						<SelectControl
+							label={__('Button Alignment', 'designsetgo')}
+							value={submitButtonAlignment}
+							options={[
+								{
+									label: __('Left', 'designsetgo'),
+									value: 'left',
+								},
+								{
+									label: __('Center', 'designsetgo'),
+									value: 'center',
+								},
+								{
+									label: __('Right', 'designsetgo'),
+									value: 'right',
+								},
+							]}
+							onChange={(value) =>
+								setAttributes({ submitButtonAlignment: value })
+							}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
+					)}
 
 					<UnitControl
 						label={__('Field Spacing', 'designsetgo')}
@@ -531,10 +565,10 @@ export default function FormBuilderEdit({
 			<div {...blockProps}>
 				<div {...innerBlocksProps} />
 
-				<div className="dsg-form__footer">
+				{submitButtonPosition === 'inline' && (
 					<button
 						type="button"
-						className="dsg-form__submit wp-element-button"
+						className="dsg-form__submit dsg-form__submit--inline wp-element-button"
 						disabled
 						style={{
 							...(submitButtonColor && {
@@ -547,7 +581,28 @@ export default function FormBuilderEdit({
 					>
 						{submitButtonText}
 					</button>
-				</div>
+				)}
+
+				{submitButtonPosition === 'below' && (
+					<div className="dsg-form__footer">
+						<button
+							type="button"
+							className="dsg-form__submit wp-element-button"
+							disabled
+							style={{
+								...(submitButtonColor && {
+									color: submitButtonColor,
+								}),
+								...(submitButtonBackgroundColor && {
+									backgroundColor:
+										submitButtonBackgroundColor,
+								}),
+							}}
+						>
+							{submitButtonText}
+						</button>
+					</div>
+				)}
 
 				<div
 					className="dsg-form__message dsg-form__message--editor"

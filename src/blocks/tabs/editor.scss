@@ -31,9 +31,14 @@
 		gap: var(--dsg-tabs-gap, 8px);
 		margin-bottom: var(--wp--preset--spacing--lg, 1.5rem);
 		padding: 0;
-		border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 		overflow-x: auto;
 		-webkit-overflow-scrolling: touch;
+	}
+
+	// Optional Nav Border
+	&.dsg-tabs--show-nav-border .dsg-tabs__nav {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		padding-bottom: 0.5rem;
 	}
 
 	.dsg-tabs__tab {
@@ -41,15 +46,13 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
-		background: none;
+		background: var(--dsg-tab-bg, transparent);
 		border: none;
-		border-bottom: 3px solid transparent;
 		padding: 0.75rem 1.25rem;
 		margin: 0;
-		margin-bottom: -2px;
 		font-family: inherit;
 		font-size: inherit;
-		color: inherit;
+		color: var(--dsg-tab-color, inherit);
 		cursor: pointer;
 		white-space: nowrap;
 
@@ -59,21 +62,21 @@
 		font-weight: 500;
 		transition: all 0.2s ease;
 
-		// Remove default focus outline, add custom
-		&:focus {
-			outline: 2px solid var(--wp--preset--color--accent-2, #2563eb);
+		// Remove default focus outline, add custom (only for keyboard users)
+		&:focus-visible {
+			outline: 2px solid var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
 			outline-offset: 2px;
 		}
 
 		// Subtle hover effect
 		&:hover:not(.is-active) {
-			color: var(--wp--preset--color--accent-2, #2563eb);
+			color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 		}
 
-		// Active state - simple underline like frontend
+		// Active state - apply custom colors
 		&.is-active {
-			color: var(--wp--preset--color--accent-2, #2563eb);
-			border-bottom-color: var(--wp--preset--color--accent-2, #2563eb);
+			background: var(--dsg-tab-bg-active, transparent);
+			color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			font-weight: 600;
 		}
 	}
@@ -135,8 +138,6 @@
 
 		.dsg-tabs__nav {
 			flex-direction: column;
-			border-bottom: none;
-			border-right: 2px solid rgba(0, 0, 0, 0.1);
 			margin-bottom: 0;
 			padding-right: var(--wp--preset--spacing--md, 1.5rem);
 			min-width: 200px;
@@ -149,34 +150,42 @@
 		.dsg-tabs__tab {
 			justify-content: flex-start;
 			margin-bottom: 0;
-			border-bottom: none;
-			border-right: 3px solid transparent;
 			margin-right: calc(var(--wp--preset--spacing--md, 1.5rem) * -1);
 			padding-right: var(--wp--preset--spacing--md, 1.5rem);
+		}
+	}
+
+	/**
+	 * Vertical + Default: Use border-bottom (not border-right)
+	 */
+	&.dsg-tabs--vertical.dsg-tabs--default {
+
+		.dsg-tabs__tab {
+			border-bottom: 3px solid transparent;
+			margin-bottom: -2px;
 
 			&.is-active {
-				border-right-color: var(--wp--preset--color--accent-2, #2563eb);
+				border-bottom-color: var(--wp--preset--color--accent-2, #2563eb);
 			}
 		}
 	}
 
 	/**
-	 * Vertical + Underline: Remove right border in editor
+	 * Vertical + Underline in editor
 	 */
 	&.dsg-tabs--vertical.dsg-tabs--underline {
 
-		.dsg-tabs__nav {
-			border-right: none;
-		}
-
 		.dsg-tabs__tab {
-			border-right: none !important;
 			border-bottom: 2px solid transparent;
 			margin-right: 0;
 
+			&:hover:not(.is-active) {
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			}
+
 			&.is-active {
-				border-bottom-color: var(--wp--preset--color--accent-2, #2563eb);
-				border-right-color: transparent;
+				border-bottom-color: var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
 	}
@@ -190,8 +199,15 @@
 			border-bottom: 3px solid transparent;
 			margin-bottom: -2px;
 
+			&:hover:not(.is-active) {
+				background: transparent;
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			}
+
 			&.is-active {
-				border-bottom-color: var(--wp--preset--color--accent-2, #2563eb);
+				background: transparent;
+				border-bottom-color: var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
 	}
@@ -200,6 +216,8 @@
 	 * Tab Style: Pills
 	 */
 	&.dsg-tabs--pills {
+		// Override color variable for pills - white text on colored background
+		--dsg-tab-color-active: #fff;
 
 		.dsg-tabs__nav {
 			border-bottom: none;
@@ -211,13 +229,14 @@
 			margin-bottom: 0;
 			background: rgba(0, 0, 0, 0.05);
 
-			&:hover {
+			&:hover:not(.is-active) {
 				background: rgba(0, 0, 0, 0.1);
+				color: var(--wp--preset--color--accent-2, #2563eb);
 			}
 
 			&.is-active {
-				background: var(--wp--preset--color--accent-2, #2563eb);
-				color: white;
+				background: var(--dsg-tab-bg-active, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsg-tab-color-active, #fff);
 			}
 		}
 	}
@@ -227,13 +246,25 @@
 	 */
 	&.dsg-tabs--underline {
 
+		.dsg-tabs__nav {
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		}
+
 		.dsg-tabs__tab {
 			padding-bottom: calc(var(--dsg-tab-padding, 1rem) + 0.5rem);
 			border-bottom: 2px solid transparent;
-			margin-bottom: -2px;
+			margin-bottom: -1px; // Overlap the nav border
+			background: transparent; // No background by default for underline style
+
+			&:hover:not(.is-active) {
+				background: transparent; // Keep transparent on hover
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			}
 
 			&.is-active {
-				border-bottom-color: var(--wp--preset--color--accent-2, #2563eb);
+				border-bottom-color: var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				background: transparent; // Keep transparent even when active
 			}
 		}
 	}
@@ -252,8 +283,13 @@
 			border-bottom: none;
 			margin-bottom: 0;
 
+			&:hover:not(.is-active) {
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			}
+
 			&.is-active {
 				background: rgba(0, 0, 0, 0.03);
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
 	}

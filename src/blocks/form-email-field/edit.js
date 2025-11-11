@@ -11,6 +11,7 @@ import {
 	TextControl,
 	TextareaControl,
 	ToggleControl,
+	SelectControl,
 } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
@@ -21,8 +22,15 @@ export default function FormEmailFieldEdit({
 	clientId,
 	context,
 }) {
-	const { fieldName, label, placeholder, helpText, required, defaultValue } =
-		attributes;
+	const {
+		fieldName,
+		label,
+		placeholder,
+		helpText,
+		required,
+		defaultValue,
+		fieldWidth,
+	} = attributes;
 
 	// Generate unique field name on mount if not set
 	useEffect(() => {
@@ -34,17 +42,31 @@ export default function FormEmailFieldEdit({
 	// Get context values from parent form
 	const fieldLabelColor = context['designsetgo/form/fieldLabelColor'];
 	const fieldBorderColor = context['designsetgo/form/fieldBorderColor'];
+	const fieldBackgroundColor =
+		context['designsetgo/form/fieldBackgroundColor'];
 
 	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--email');
 
 	const fieldStyles = {
 		'--dsg-field-label-color': fieldLabelColor,
 		'--dsg-field-border-color': fieldBorderColor,
+		'--dsg-form-field-bg': fieldBackgroundColor,
 	};
 
 	const blockProps = useBlockProps({
 		className: fieldClasses,
-		style: fieldStyles,
+		style: {
+			...fieldStyles,
+			// Use flex-basis with calc to account for gap between fields
+			flexBasis:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+			maxWidth:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+		},
 	});
 
 	return (
@@ -111,6 +133,49 @@ export default function FormEmailFieldEdit({
 							setAttributes({ defaultValue: value })
 						}
 						type="email"
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					<SelectControl
+						label={__('Field Width', 'designsetgo')}
+						value={fieldWidth}
+						options={[
+							{
+								label: __('Full Width (100%)', 'designsetgo'),
+								value: '100',
+							},
+							{
+								label: __('Half Width (50%)', 'designsetgo'),
+								value: '50',
+							},
+							{
+								label: __('One Third (33%)', 'designsetgo'),
+								value: '33',
+							},
+							{
+								label: __('Two Thirds (66%)', 'designsetgo'),
+								value: '66',
+							},
+							{
+								label: __('One Quarter (25%)', 'designsetgo'),
+								value: '25',
+							},
+							{
+								label: __(
+									'Three Quarters (75%)',
+									'designsetgo'
+								),
+								value: '75',
+							},
+						]}
+						onChange={(value) =>
+							setAttributes({ fieldWidth: value })
+						}
+						help={__(
+							'Set field width to create multi-column layouts',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>

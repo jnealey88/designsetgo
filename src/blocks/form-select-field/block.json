@@ -64,6 +64,10 @@
 		"placeholder": {
 			"type": "string",
 			"default": "-- Select an option --"
+		},
+		"fieldWidth": {
+			"type": "string",
+			"default": "100"
 		}
 	},
 	"editorScript": "file:./index.js",

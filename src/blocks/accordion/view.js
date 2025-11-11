@@ -20,6 +20,12 @@ function initAccordions() {
 	const accordions = document.querySelectorAll('.dsg-accordion');
 
 	accordions.forEach((accordion) => {
+		// Prevent duplicate initialization
+		if (accordion.hasAttribute('data-dsg-initialized')) {
+			return;
+		}
+		accordion.setAttribute('data-dsg-initialized', 'true');
+
 		const allowMultiple =
 			accordion.getAttribute('data-allow-multiple') === 'true';
 		const items = accordion.querySelectorAll('.dsg-accordion-item');

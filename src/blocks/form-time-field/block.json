@@ -57,6 +57,10 @@
 		"step": {
 			"type": "number",
 			"default": 60
+		},
+		"fieldWidth": {
+			"type": "string",
+			"default": "100"
 		}
 	},
 	"editorScript": "file:./index.js",

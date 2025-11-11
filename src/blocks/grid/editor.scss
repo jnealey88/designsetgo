@@ -67,28 +67,14 @@
 	// With two-div structure: .dsg-grid > .dsg-grid__inner
 	// Must be duplicated from style.scss for editor/frontend parity
 	.dsg-grid__inner {
+		// Ensure inner container doesn't create positioning context for absolute children
+		position: static;
+
 		// CRITICAL: Prevent grid items from overflowing their cells
 		// Grid items automatically fill their grid cell, so we only need to prevent overflow
 		> * {
 			min-width: 0;     // Allow shrinking below content width
 			min-height: 0;    // Allow shrinking vertically
-		}
-
-		// CRITICAL: Ensure block appender takes full width and spans all columns
-		// Fixes narrow appender issue in grid layouts
-		/* stylelint-disable-next-line selector-class-pattern */
-		> .block-list-appender {
-			width: 100%;
-			grid-column: 1 / -1; // Span all columns (from first to last)
-		}
-
-		// CRITICAL: Ensure ButtonBlockAppender is full width when container is empty
-		// High specificity to override WordPress core styles
-		/* stylelint-disable-next-line selector-class-pattern */
-		.block-list-appender:only-child,
-		.block-editor-button-block-appender {
-			width: 100% !important;
-			grid-column: 1 / -1 !important; // Span all columns
 		}
 
 		// CRITICAL: Block-level text elements need full width for text-align to work properly
@@ -132,6 +118,28 @@
 		> [data-block] > .dsg-grid {
 			width: 100% !important;
 		}
+	}
+
+	// CRITICAL: When grid has content, position appender at outer container corner
+	// Target from outer container to position relative to main block wrapper
+	// Use :not(:only-child) to exclude empty grid state
+	/* stylelint-disable-next-line selector-class-pattern */
+	.dsg-grid__inner > .block-list-appender:not(:only-child) {
+		// Remove from grid flow and position at outer container corner
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		// Allow inserter button to position naturally
+		width: auto;
+		height: auto;
+	}
+
+	// CRITICAL: When grid is empty, show full-width appender
+	/* stylelint-disable-next-line selector-class-pattern */
+	.dsg-grid__inner > .block-list-appender:only-child {
+		width: 100%;
+		grid-column: 1 / -1; // Span all columns
+		position: static; // Reset positioning
 	}
 
 	// CRITICAL: When Grid is nested inside Section/Stack/Flex, force full width (EDITOR)

@@ -152,6 +152,11 @@
 			opacity: 1;
 			color: var(--dsg-accordion-open-text, var(--wp--preset--color--contrast, currentColor));
 		}
+
+		// Ensure panel is visible when open
+		.dsg-accordion-item__panel {
+			opacity: 1;
+		}
 	}
 
 	// Content panel - Smoother animations

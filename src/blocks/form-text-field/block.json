@@ -63,6 +63,7 @@
 	"usesContext": [
 		"designsetgo/form/fieldLabelColor",
 		"designsetgo/form/fieldBorderColor",
+		"designsetgo/form/fieldBackgroundColor",
 		"designsetgo/form/fieldSpacing",
 		"designsetgo/form/formId"
 	],

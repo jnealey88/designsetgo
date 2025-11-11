@@ -41,11 +41,16 @@
 		"maxLength": {
 			"type": "number",
 			"default": 0
+		},
+		"fieldWidth": {
+			"type": "string",
+			"default": "100"
 		}
 	},
 	"usesContext": [
 		"designsetgo/form/fieldLabelColor",
 		"designsetgo/form/fieldBorderColor",
+		"designsetgo/form/fieldBackgroundColor",
 		"designsetgo/form/fieldSpacing",
 		"designsetgo/form/formId"
 	],

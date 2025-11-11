@@ -55,6 +55,14 @@
 			cursor: not-allowed;
 		}
 
+		// Inline button (for subscribe forms, etc.)
+		&--inline {
+			flex: 0 0 auto;
+			width: auto;
+			padding-left: 2rem;
+			padding-right: 2rem;
+		}
+
 		// Loading state
 		&.dsg-form__submit--loading {
 			position: relative;
@@ -124,6 +132,32 @@
 
 	.dsg-form__footer {
 		justify-content: flex-end;
+	}
+}
+
+// Inline button mode (for subscribe forms)
+.dsg-form-builder--button-inline {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--dsg-form-field-spacing);
+	align-items: flex-end; // Align button with input baseline
+
+	.dsg-form__fields {
+		flex: 1 1 auto;
+		align-items: flex-end; // Align fields with button baseline
+	}
+
+	.dsg-form__submit--inline {
+		flex: 0 0 auto;
+	}
+
+	.dsg-form__footer {
+		display: none; // Button is moved outside fields container
+	}
+
+	.dsg-form__message {
+		flex-basis: 100%; // Force message to new line
+		order: 999; // Ensure message appears after button
 	}
 }
 

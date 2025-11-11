@@ -18,7 +18,6 @@ import classnames from 'classnames';
 export default function AccordionEdit({ attributes, setAttributes }) {
 	const {
 		allowMultipleOpen,
-		initiallyOpen,
 		iconStyle,
 		iconPosition,
 		borderBetween,
@@ -69,16 +68,14 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 					'designsetgo/accordion-item',
 					{
 						title: __('Accordion Item 1', 'designsetgo'),
-						isOpen:
-							initiallyOpen === 'first' ||
-							initiallyOpen === 'all',
+						isOpen: false,
 					},
 				],
 				[
 					'designsetgo/accordion-item',
 					{
 						title: __('Accordion Item 2', 'designsetgo'),
-						isOpen: initiallyOpen === 'all',
+						isOpen: false,
 					},
 				],
 			],
@@ -109,31 +106,12 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 						}
 						__nextHasNoMarginBottom
 					/>
-
-					<SelectControl
-						label={__('Initially Open', 'designsetgo')}
-						value={initiallyOpen}
-						options={[
-							{ label: __('None', 'designsetgo'), value: 'none' },
-							{
-								label: __('First Item', 'designsetgo'),
-								value: 'first',
-							},
-							{
-								label: __('All Items', 'designsetgo'),
-								value: 'all',
-							},
-						]}
-						onChange={(value) =>
-							setAttributes({ initiallyOpen: value })
-						}
-						help={__(
-							'Which panels should be open when the page loads',
+					<p className="components-base-control__help">
+						{__(
+							'Tip: Use the "Open by Default" toggle on individual accordion items to control which panels are open when the page loads.',
 							'designsetgo'
 						)}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
+					</p>
 				</PanelBody>
 
 				<PanelBody

@@ -18,6 +18,7 @@ export default function FormPhoneFieldEdit({
 	attributes,
 	setAttributes,
 	clientId,
+	context,
 }) {
 	const {
 		fieldName,
@@ -38,12 +39,33 @@ export default function FormPhoneFieldEdit({
 		setAttributes({ fieldName: `phone-${clientId.slice(0, 8)}` });
 	}
 
+	// Get context values from parent form
+	const fieldLabelColor = context['designsetgo/form/fieldLabelColor'];
+	const fieldBorderColor = context['designsetgo/form/fieldBorderColor'];
+	const fieldBackgroundColor =
+		context['designsetgo/form/fieldBackgroundColor'];
+
 	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--phone');
+
+	const fieldStyles = {
+		'--dsg-field-label-color': fieldLabelColor,
+		'--dsg-field-border-color': fieldBorderColor,
+		'--dsg-form-field-bg': fieldBackgroundColor,
+	};
 
 	const blockProps = useBlockProps({
 		className: fieldClasses,
 		style: {
-			width: `${fieldWidth}%`,
+			...fieldStyles,
+			// Use flex-basis with calc to account for gap between fields
+			flexBasis:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+			maxWidth:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -325,7 +347,7 @@ export default function FormPhoneFieldEdit({
 							className="dsg-form-field__country-code"
 							defaultValue={countryCode}
 							disabled
-							style={{ width: '100px', flexShrink: 0 }}
+							style={{ minWidth: '85px', flexShrink: 0 }}
 						>
 							<option value="+1">+1</option>
 							<option value="+44">+44</option>

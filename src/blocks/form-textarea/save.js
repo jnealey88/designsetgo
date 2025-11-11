@@ -17,6 +17,7 @@ export default function FormTextareaSave({ attributes }) {
 		defaultValue,
 		rows,
 		maxLength,
+		fieldWidth,
 	} = attributes;
 
 	const fieldClasses = classnames(
@@ -26,6 +27,17 @@ export default function FormTextareaSave({ attributes }) {
 
 	const blockProps = useBlockProps.save({
 		className: fieldClasses,
+		style: {
+			// Use flex-basis with calc to account for gap between fields
+			flexBasis:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+			maxWidth:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+		},
 	});
 
 	const fieldId = `field-${fieldName}`;

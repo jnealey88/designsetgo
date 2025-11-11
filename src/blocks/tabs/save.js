@@ -22,10 +22,11 @@ export default function Save({ attributes }) {
 		activeTabColor,
 		activeTabBackgroundColor,
 		tabBorderColor,
+		showNavBorder,
 	} = attributes;
 
 	const blockProps = useBlockProps.save({
-		className: `dsg-tabs dsg-tabs-${uniqueId} dsg-tabs--${orientation} dsg-tabs--${tabStyle} dsg-tabs--align-${alignment}`,
+		className: `dsg-tabs dsg-tabs-${uniqueId} dsg-tabs--${orientation} dsg-tabs--${tabStyle} dsg-tabs--align-${alignment}${showNavBorder ? ' dsg-tabs--show-nav-border' : ''}`,
 		'data-active-tab': activeTab,
 		'data-mobile-breakpoint': mobileBreakpoint,
 		'data-mobile-mode': mobileMode,

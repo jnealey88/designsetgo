@@ -2,6 +2,9 @@
  * Tab Block - Editor Styles
  */
 
+// Import frontend styles so they appear in editor
+@use './style.scss' as *;
+
 .dsg-tab {
 	position: relative;
 	min-height: 100px;
@@ -72,10 +75,7 @@
 	&.is-active {
 
 		.dsg-tab__content {
-			// Style InnerBlocks appender
-			.block-list-appender {
-				margin-top: 1rem;
-			}
+			// InnerBlocks appender styling handled by WordPress core
 		}
 	}
 }

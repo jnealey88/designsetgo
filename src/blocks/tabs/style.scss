@@ -32,7 +32,7 @@
 	--dsg-tab-bg: var(--wp--preset--color--base, #fff);
 	--dsg-tab-color: var(--wp--preset--color--contrast, #000);
 	--dsg-tab-bg-active: var(--wp--preset--color--accent-2, #2563eb);
-	--dsg-tab-color-active: var(--wp--preset--color--base, #fff);
+	--dsg-tab-color-active: var(--wp--preset--color--accent-2, #2563eb);
 	--dsg-tab-border-color: var(--wp--preset--color--accent-2, #2563eb);
 	--dsg-tab-border-radius: var(--wp--custom--designsetgo--border-radius--small, 0.25rem);
 
@@ -70,7 +70,6 @@
 		display: flex;
 		gap: var(--dsg-tabs-gap);
 		margin-bottom: var(--wp--preset--spacing--md, 1.5rem);
-		border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 		overflow-x: auto;
 		-webkit-overflow-scrolling: touch;
 
@@ -93,6 +92,15 @@
 	}
 
 	/**
+	 * Optional Nav Border
+	 * Shows a divider line below the tab navigation when enabled
+	 */
+	&.dsg-tabs--show-nav-border .dsg-tabs__nav {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		padding-bottom: 0.5rem;
+	}
+
+	/**
 	 * Individual Tab Buttons
 	 */
 	.dsg-tabs__tab {
@@ -100,9 +108,9 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding: var(--dsg-tab-padding);
-		background: transparent;
+		background: var(--dsg-tab-bg, transparent);
 		border: none;
-		color: var(--dsg-tab-color);
+		color: var(--dsg-tab-color, inherit);
 		font-family: inherit;
 		font-size: inherit;
 		font-weight: 500;
@@ -111,18 +119,19 @@
 		position: relative;
 		white-space: nowrap;
 
-		&:hover {
-			color: var(--dsg-tab-bg-active);
+		&:hover:not(.is-active) {
+			color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 		}
 
 		&:focus-visible {
-			outline: 2px solid var(--dsg-tab-border-color);
+			outline: 2px solid var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
 			outline-offset: 2px;
 			border-radius: var(--dsg-tab-border-radius);
 		}
 
 		&.is-active {
-			color: var(--dsg-tab-bg-active);
+			background: var(--dsg-tab-bg-active, transparent);
+			color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			font-weight: 600;
 		}
 
@@ -218,8 +227,6 @@
 
 		.dsg-tabs__nav {
 			flex-direction: column;
-			border-bottom: none;
-			border-right: 2px solid rgba(0, 0, 0, 0.1);
 			margin-bottom: 0;
 			padding-right: var(--wp--preset--spacing--md, 1.5rem);
 			min-width: 200px;
@@ -239,8 +246,15 @@
 			border-bottom: 3px solid transparent;
 			margin-bottom: -2px;
 
+			&:hover:not(.is-active) {
+				background: transparent;
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			}
+
 			&.is-active {
-				border-bottom-color: var(--dsg-tab-border-color);
+				background: transparent;
+				border-bottom-color: var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
 	}
@@ -249,6 +263,8 @@
 	 * Tab Style: Pills
 	 */
 	&.dsg-tabs--pills {
+		// Override color variable for pills - white text on colored background
+		--dsg-tab-color-active: #fff;
 
 		.dsg-tabs__nav {
 			border-bottom: none;
@@ -257,14 +273,17 @@
 		.dsg-tabs__tab {
 			background: rgba(0, 0, 0, 0.05);
 			border-radius: var(--dsg-tab-border-radius);
+			border-bottom: none;
+			margin-bottom: 0;
 
-			&:hover {
+			&:hover:not(.is-active) {
 				background: rgba(0, 0, 0, 0.1);
+				color: var(--wp--preset--color--accent-2, #2563eb);
 			}
 
 			&.is-active {
-				background: var(--dsg-tab-bg-active);
-				color: var(--dsg-tab-color-active);
+				background: var(--dsg-tab-bg-active, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsg-tab-color-active, #fff);
 			}
 		}
 	}
@@ -274,33 +293,45 @@
 	 */
 	&.dsg-tabs--underline {
 
+		.dsg-tabs__nav {
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		}
+
 		.dsg-tabs__tab {
 			padding-bottom: calc(var(--dsg-tab-padding) + 0.5rem);
 			border-bottom: 2px solid transparent;
-			margin-bottom: -2px;
+			margin-bottom: -1px; // Overlap the nav border
+			background: transparent; // No background by default for underline style
+
+			&:hover:not(.is-active) {
+				background: transparent; // Keep transparent on hover
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			}
 
 			&.is-active {
-				border-bottom-color: var(--dsg-tab-border-color);
+				border-bottom-color: var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				background: transparent; // Keep transparent even when active
 			}
 		}
 	}
 
 	/**
-	 * Vertical + Underline: Remove right border
+	 * Vertical + Underline
 	 */
 	&.dsg-tabs--vertical.dsg-tabs--underline {
 
-		.dsg-tabs__nav {
-			border-right: none;
-		}
-
 		.dsg-tabs__tab {
-			border-right: none !important;
 			border-bottom: 2px solid transparent;
 			margin-right: 0;
 
+			&:hover:not(.is-active) {
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			}
+
 			&.is-active {
-				border-bottom-color: var(--dsg-tab-border-color);
+				border-bottom-color: var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
 	}
@@ -316,9 +347,16 @@
 
 		.dsg-tabs__tab {
 			padding: 0.5rem 1rem;
+			border-bottom: none;
+			margin-bottom: 0;
+
+			&:hover:not(.is-active) {
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			}
 
 			&.is-active {
 				background: rgba(0, 0, 0, 0.03);
+				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
 	}
@@ -409,8 +447,8 @@
 			cursor: pointer;
 			margin-bottom: var(--wp--preset--spacing--md, 1.5rem);
 
-			&:focus {
-				outline: 2px solid var(--dsg-tab-border-color);
+			&:focus-visible {
+				outline: 2px solid var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
 				outline-offset: 2px;
 			}
 		}

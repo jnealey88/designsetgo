@@ -254,6 +254,69 @@ const effectiveColor = color || parentColor || defaultColor;
 ### When to Use `!important`
 Only for: Accessibility, User expectation, WordPress core override
 
+### Width & Layout Patterns (Container Blocks)
+
+**⚠️ CRITICAL: Always use two-div pattern for container blocks**
+
+```jsx
+// ✅ CORRECT - Two-div pattern
+<div className="dsg-block">        // Outer: full-width, backgrounds
+  <div className="dsg-block__inner" style={innerStyle}>  // Inner: constrained
+    {children}
+  </div>
+</div>
+```
+
+**Width Constraint Pattern:**
+```javascript
+// In edit.js
+const [themeContentSize] = useSettings('layout.contentSize');
+const innerStyle = {};
+if (constrainWidth) {
+    innerStyle.maxWidth = contentWidth || themeContentSize;
+    innerStyle.marginLeft = 'auto';
+    innerStyle.marginRight = 'auto';
+}
+
+// In save.js
+if (constrainWidth) {
+    innerStyle.maxWidth = contentWidth || 'var(--wp--style--global--content-size, 1140px)';
+    innerStyle.marginLeft = 'auto';
+    innerStyle.marginRight = 'auto';
+}
+```
+
+**Apply Conditional Classes:**
+```javascript
+const className = [
+    'dsg-block',
+    !constrainWidth && 'dsg-no-width-constraint',
+].filter(Boolean).join(' ');
+```
+
+**Handle Nested Containers (Required CSS):**
+```scss
+.dsg-my-block {
+    // When nested inside another container
+    .dsg-stack__inner > &,
+    .dsg-flex__inner > &,
+    .dsg-grid__inner > & {
+        width: 100% !important;
+        .dsg-my-block__inner {
+            max-width: none !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+    }
+}
+```
+
+**📖 See [WIDTH-LAYOUT-PATTERNS.md](docs/WIDTH-LAYOUT-PATTERNS.md) for:**
+- Complete width/contentSize documentation
+- Known conflicts with nested items (7 identified issues)
+- Testing matrix for container nesting
+- Migration guide for fixing existing issues
+
 ## FSE Compatibility
 
 📖 See [FSE-COMPATIBILITY-GUIDE.md](docs/FSE-COMPATIBILITY-GUIDE.md)
@@ -276,6 +339,7 @@ Only for: Accessibility, User expectation, WordPress core override
 - [BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) - Complete reference
 - [BEST-PRACTICES-SUMMARY.md](docs/BEST-PRACTICES-SUMMARY.md) - Quick patterns
 - [EDITOR-STYLING-GUIDE.md](docs/EDITOR-STYLING-GUIDE.md) - Styling patterns
+- [WIDTH-LAYOUT-PATTERNS.md](docs/WIDTH-LAYOUT-PATTERNS.md) - Width/layout patterns & nesting conflicts
 
 **Official**:
 - [Block Editor Handbook](https://developer.wordpress.org/block-editor/)
@@ -291,4 +355,4 @@ Only for: Accessibility, User expectation, WordPress core override
 **Don't Commit**: `build/`, `node_modules/`, `wp-env/`
 
 ---
-**Updated**: 2025-11-09 | **Version**: 1.0.0 | **WP**: 6.4+
+**Updated**: 2025-11-11 | **Version**: 1.0.1 | **WP**: 6.4+

@@ -5,4 +5,32 @@
 .dsg-tab {
 	// Let WordPress handle natural block spacing and typography
 	// No custom overrides - child blocks inherit from theme/body naturally
+
+	// Alignment support for tab content
+	&.alignleft {
+		text-align: left;
+
+		.dsg-tab__content > * {
+			margin-left: 0;
+			margin-right: auto;
+		}
+	}
+
+	&.aligncenter {
+		text-align: center;
+
+		.dsg-tab__content > * {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	&.alignright {
+		text-align: right;
+
+		.dsg-tab__content > * {
+			margin-left: auto;
+			margin-right: 0;
+		}
+	}
 }

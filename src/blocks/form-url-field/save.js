@@ -8,13 +8,31 @@ import { useBlockProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 export default function FormURLFieldSave({ attributes }) {
-	const { fieldName, label, placeholder, helpText, required, defaultValue } =
-		attributes;
+	const {
+		fieldName,
+		label,
+		placeholder,
+		helpText,
+		required,
+		defaultValue,
+		fieldWidth,
+	} = attributes;
 
 	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--url');
 
 	const blockProps = useBlockProps.save({
 		className: fieldClasses,
+		style: {
+			// Use flex-basis with calc to account for gap between fields
+			flexBasis:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+			maxWidth:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+		},
 	});
 
 	const fieldId = `field-${fieldName}`;

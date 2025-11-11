@@ -49,6 +49,10 @@
 		"defaultValue": {
 			"type": "string",
 			"default": ""
+		},
+		"fieldWidth": {
+			"type": "string",
+			"default": "100"
 		}
 	},
 	"editorScript": "file:./index.js",

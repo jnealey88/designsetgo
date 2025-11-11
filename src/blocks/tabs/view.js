@@ -56,12 +56,29 @@
 				resizeTimeout = setTimeout(() => this.handleResize(), 150);
 			});
 
-			// Set initial active tab (after mobile mode is determined)
-			this.setActiveTab(this.activeTab, false);
+			// Determine initial tab: prioritize deep linking, then default to first tab
+			let initialTab = 0;
 
-			// Handle deep linking
+			// Check for deep link hash first
 			if (this.enableDeepLinking) {
-				this.handleDeepLinking();
+				const hash = window.location.hash.substring(1);
+				if (hash) {
+					const panel = this.element.querySelector(`#${hash}`);
+					if (panel) {
+						const index = Array.from(this.panels).indexOf(panel);
+						if (index !== -1) {
+							initialTab = index;
+						}
+					}
+				}
+			}
+
+			// Set initial active tab (after mobile mode is determined)
+			this.setActiveTab(initialTab, false);
+
+			// Set up deep linking listeners (after initial tab is set)
+			if (this.enableDeepLinking) {
+				this.setupDeepLinkingListeners();
 			}
 		}
 
@@ -270,20 +287,8 @@
 			}
 		}
 
-		handleDeepLinking() {
-			// Check URL hash on load
-			const hash = window.location.hash.substring(1);
-			if (hash) {
-				const panel = this.element.querySelector(`#${hash}`);
-				if (panel) {
-					const index = Array.from(this.panels).indexOf(panel);
-					if (index !== -1) {
-						this.setActiveTab(index, false);
-					}
-				}
-			}
-
-			// Listen for hash changes
+		setupDeepLinkingListeners() {
+			// Listen for hash changes (initial hash is handled in init())
 			window.addEventListener('hashchange', () => {
 				const newHash = window.location.hash.substring(1);
 				if (newHash) {

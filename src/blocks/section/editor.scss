@@ -20,6 +20,28 @@
 	// When constrainWidth is enabled, inline styles will override with max-width
 	.dsg-stack__inner {
 		width: 100%;
+		// Ensure inner container doesn't create positioning context for absolute children
+		position: static;
+	}
+
+	// CRITICAL: When section has content, position appender at outer container corner
+	// Target from outer container to position relative to main block wrapper
+	// Use :not(:only-child) to exclude empty section state
+	/* stylelint-disable-next-line selector-class-pattern */
+	.dsg-stack__inner > .block-list-appender:not(:only-child) {
+		// Remove from flex flow and position at outer container corner
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		// Allow inserter button to position naturally
+		width: auto;
+		height: auto;
+	}
+
+	// CRITICAL: When section is empty, show normal appender
+	/* stylelint-disable-next-line selector-class-pattern */
+	.dsg-stack__inner > .block-list-appender:only-child {
+		position: static; // Reset positioning
 	}
 
 	// CRITICAL: When Section is nested inside another container, force full width (EDITOR)

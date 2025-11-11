@@ -48,19 +48,30 @@ export default function FormTextFieldEdit({
 	// Get context values from parent form
 	const fieldLabelColor = context['designsetgo/form/fieldLabelColor'];
 	const fieldBorderColor = context['designsetgo/form/fieldBorderColor'];
+	const fieldBackgroundColor =
+		context['designsetgo/form/fieldBackgroundColor'];
 
 	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--text');
 
 	const fieldStyles = {
 		'--dsg-field-label-color': fieldLabelColor,
 		'--dsg-field-border-color': fieldBorderColor,
+		'--dsg-form-field-bg': fieldBackgroundColor,
 	};
 
 	const blockProps = useBlockProps({
 		className: fieldClasses,
 		style: {
 			...fieldStyles,
-			width: `${fieldWidth}%`,
+			// Use flex-basis with calc to account for gap between fields
+			flexBasis:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+			maxWidth:
+				fieldWidth === '100'
+					? '100%'
+					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
