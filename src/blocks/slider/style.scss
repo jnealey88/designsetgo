@@ -4,6 +4,9 @@
  */
 
 .dsg-slider {
+	// CRITICAL: Ensure slider takes full width of parent container
+	// Without this, slider can collapse to 0 width inside flex containers
+	width: 100%;
 	position: relative;
 	overflow: hidden;
 	box-sizing: border-box; // Ensure padding doesn't increase slider width
