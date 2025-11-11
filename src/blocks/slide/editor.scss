@@ -3,7 +3,7 @@
  * CRITICAL: Imports base styles from style.scss for editor/frontend parity
  */
 
-@import './style';
+@use './style' as *;
 
 // Editor-specific adjustments
 .dsg-slide {

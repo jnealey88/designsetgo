@@ -7,4 +7,4 @@
  */
 
 // Phone field uses the same styles as text field
-@import '../form-text-field/style';
+@use '../form-text-field/style' as *;

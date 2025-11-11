@@ -6,17 +6,17 @@
  * @package DesignSetGo
  */
 
-@import 'variables';
-@import 'mixins';
-@import 'animations';
-@import 'utilities';
-@import 'block-variations';
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'animations' as *;
+@use 'utilities' as *;
+@use 'block-variations' as *;
 
 // Block animations extension (frontend)
-@import '../extensions/block-animations/animations';
+@use '../extensions/block-animations/animations' as block-animations;
 
 // Custom blocks (frontend)
-@import '../blocks/accordion/style';
-@import '../blocks/accordion-item/style';
-@import '../blocks/tabs/style';
-@import '../blocks/tab/style';
+@use '../blocks/accordion/style' as accordion;
+@use '../blocks/accordion-item/style' as accordion-item;
+@use '../blocks/tabs/style' as tabs;
+@use '../blocks/tab/style' as tab;
