@@ -1,9 +1,9 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "designsetgo/stack",
+	"name": "designsetgo/section",
 	"version": "1.0.0",
-	"title": "Section (DSG)",
+	"title": "Section",
 	"category": "design",
 	"description": "Vertical stacking container for sections and content areas. Perfect for building layouts with consistent spacing. Can be nested within other sections for complex page structures.",
 	"keywords": ["section", "dsg", "stack", "vertical", "layout", "container", "content area"],
@@ -21,8 +21,7 @@
 			"default": {
 				"type": "flex",
 				"orientation": "vertical",
-				"justifyContent": "center",
-				"contentSize": "1200px"
+				"justifyContent": "center"
 			}
 		},
 		"spacing": {
@@ -79,6 +78,14 @@
 		"align": {
 			"type": "string"
 		},
+		"constrainWidth": {
+			"type": "boolean",
+			"default": false
+		},
+		"contentWidth": {
+			"type": "string",
+			"default": ""
+		},
 		"style": {
 			"type": "object",
 			"default": {
@@ -122,7 +129,7 @@
 				"name": "core/heading",
 				"attributes": {
 					"level": 2,
-					"content": "Section (DSG)"
+					"content": "Section"
 				}
 			},
 			{

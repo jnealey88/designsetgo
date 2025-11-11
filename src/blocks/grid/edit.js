@@ -6,7 +6,7 @@
  * @since 1.0.0
  */
 
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
@@ -15,6 +15,7 @@ import {
 	BlockControls,
 	AlignmentControl,
 	store as blockEditorStore,
+	useSettings,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -30,7 +31,7 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseCustomUnits as useCustomUnits,
 } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -44,6 +45,10 @@ import { useSelect } from '@wordpress/data';
  */
 export default function GridEdit({ attributes, setAttributes, clientId }) {
 	const {
+		align,
+		className,
+		constrainWidth,
+		contentWidth,
 		desktopColumns,
 		tabletColumns,
 		mobileColumns,
@@ -56,6 +61,35 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 	} = attributes;
+
+	// Auto-migrate old blocks that use className for alignment
+	useEffect(() => {
+		if (!align && className) {
+			let newAlign;
+			if (className.includes('alignfull')) {
+				newAlign = 'full';
+			} else if (className.includes('alignwide')) {
+				newAlign = 'wide';
+			}
+
+			if (newAlign) {
+				const cleanClassName = className
+					.split(' ')
+					.filter((cls) => cls !== 'alignfull' && cls !== 'alignwide')
+					.join(' ')
+					.trim();
+
+				setAttributes({
+					align: newAlign,
+					className: cleanClassName || undefined,
+				});
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []); // Run only once on mount
+
+	// Get theme settings (WP 6.5+)
+	const [themeContentSize] = useSettings('layout.contentSize');
 
 	// Get theme color palette and gradient settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
@@ -105,6 +139,14 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		rowGap: rowGap || 'var(--wp--preset--spacing--50)',
 		columnGap: columnGap || 'var(--wp--preset--spacing--50)',
 	};
+
+	// Apply width constraints if enabled
+	// Use custom contentWidth if set, otherwise fallback to theme's contentSize
+	if (constrainWidth) {
+		innerStyles.maxWidth = contentWidth || themeContentSize || '1200px';
+		innerStyles.marginLeft = 'auto';
+		innerStyles.marginRight = 'auto';
+	}
 
 	// Merge inner blocks props with inner styles
 	const innerBlocksProps = useInnerBlocksProps(
@@ -362,6 +404,60 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 								__nextHasNoMarginBottom
 							/>
 						</>
+					)}
+				</PanelBody>
+
+				<PanelBody
+					title={__('Width Settings', 'designsetgo')}
+					initialOpen={false}
+				>
+					<ToggleControl
+						label={__('Constrain Inner Width', 'designsetgo')}
+						checked={constrainWidth}
+						onChange={(value) =>
+							setAttributes({ constrainWidth: value })
+						}
+						help={
+							constrainWidth
+								? __(
+										'Inner content is constrained to max width',
+										'designsetgo'
+									)
+								: __(
+										'Inner content spans full container width',
+										'designsetgo'
+									)
+						}
+						__nextHasNoMarginBottom
+					/>
+					{constrainWidth && (
+						<UnitControl
+							label={__('Max Content Width', 'designsetgo')}
+							value={contentWidth}
+							onChange={(value) =>
+								setAttributes({ contentWidth: value })
+							}
+							placeholder={
+								themeContentSize ||
+								__('Theme default', 'designsetgo')
+							}
+							units={units}
+							__unstableInputWidth="80px"
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+							help={
+								!contentWidth && themeContentSize
+									? sprintf(
+											/* translators: %s: theme content size value */
+											__(
+												'Using theme default: %s',
+												'designsetgo'
+											),
+											themeContentSize
+										)
+									: ''
+							}
+						/>
 					)}
 				</PanelBody>
 			</InspectorControls>

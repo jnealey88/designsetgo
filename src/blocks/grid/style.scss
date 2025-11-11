@@ -83,12 +83,13 @@
 	// Responsive column classes
 	// Desktop columns are set via inline styles (default)
 	// Tablet and mobile columns use media queries
+	// CRITICAL: Target .dsg-grid__inner since that's where grid-template-columns is applied
 
 	// Tablet breakpoint (≤ 1024px)
 	@media (max-width: 1024px) {
 
 		@for $i from 1 through 12 {
-			&.dsg-grid-cols-tablet-#{$i} {
+			&.dsg-grid-cols-tablet-#{$i} .dsg-grid__inner {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;
 			}
 		}
@@ -98,7 +99,7 @@
 	@media (max-width: 767px) {
 
 		@for $i from 1 through 12 {
-			&.dsg-grid-cols-mobile-#{$i} {
+			&.dsg-grid-cols-mobile-#{$i} .dsg-grid__inner {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;
 			}
 		}

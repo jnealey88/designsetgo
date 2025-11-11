@@ -1,5 +1,5 @@
 /**
- * DSG Row Block - Edit Component
+ * Row Block - Edit Component
  *
  * Flexible horizontal or vertical layouts with wrapping.
  * Leverages WordPress's native flex layout system.
@@ -7,19 +7,27 @@
  * @since 1.0.0
  */
 
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InnerBlocks,
 	InspectorControls,
 	store as blockEditorStore,
+	useSettings,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import {
+	PanelBody,
+	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseCustomUnits as useCustomUnits,
+} from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
@@ -51,7 +59,7 @@ function convertPresetToCSSVar(value) {
 }
 
 /**
- * Flex Container Edit Component
+ * Row Container Edit Component
  *
  * @param {Object}   props               Component props
  * @param {Object}   props.attributes    Block attributes
@@ -59,8 +67,10 @@ function convertPresetToCSSVar(value) {
  * @param {string}   props.clientId      Block client ID
  * @return {JSX.Element} Edit component
  */
-export default function FlexEdit({ attributes, setAttributes, clientId }) {
+export default function RowEdit({ attributes, setAttributes, clientId }) {
 	const {
+		align,
+		className,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -71,8 +81,42 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		layout,
 	} = attributes;
 
+	// Auto-migrate old blocks that use className for alignment
+	useEffect(() => {
+		if (!align && className) {
+			let newAlign;
+			if (className.includes('alignfull')) {
+				newAlign = 'full';
+			} else if (className.includes('alignwide')) {
+				newAlign = 'wide';
+			}
+
+			if (newAlign) {
+				const cleanClassName = className
+					.split(' ')
+					.filter((cls) => cls !== 'alignfull' && cls !== 'alignwide')
+					.join(' ')
+					.trim();
+
+				setAttributes({
+					align: newAlign,
+					className: cleanClassName || undefined,
+				});
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []); // Only run once on mount
+
+	// Get theme settings (WP 6.5+)
+	const [themeContentSize] = useSettings('layout.contentSize');
+
 	// Get theme color palette and gradient settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+	// Get available spacing units
+	const units = useCustomUnits({
+		availableUnits: ['px', 'em', 'rem', 'vh', 'vw', '%'],
+	});
 
 	const { replaceBlock } = useDispatch(blockEditorStore);
 
@@ -89,14 +133,14 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		[clientId]
 	);
 
-	// CRITICAL: Auto-convert to Stack block when orientation changes to vertical
-	// Flex is meant for horizontal layouts
-	// If user wants vertical layout, they should use Stack block
+	// CRITICAL: Auto-convert to Section block when orientation changes to vertical
+	// Row is meant for horizontal layouts
+	// If user wants vertical layout, they should use Section block
 	useEffect(() => {
 		if (layout?.orientation === 'vertical') {
-			// Create a new Stack block with the same attributes and inner blocks
-			const stackBlock = createBlock(
-				'designsetgo/stack',
+			// Create a new Section block with the same attributes and inner blocks
+			const sectionBlock = createBlock(
+				'designsetgo/section',
 				{
 					hoverBackgroundColor,
 					hoverTextColor,
@@ -106,8 +150,8 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 				innerBlocks
 			);
 
-			// Replace this Flex block with the Stack block
-			replaceBlock(clientId, stackBlock);
+			// Replace this Row block with the Section block
+			replaceBlock(clientId, sectionBlock);
 		}
 	}, [
 		layout?.orientation,
@@ -164,8 +208,9 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 	};
 
 	// Apply width constraints if enabled
+	// Use custom contentWidth if set, otherwise fallback to theme's contentSize
 	if (constrainWidth) {
-		innerStyle.maxWidth = contentWidth || '1200px';
+		innerStyle.maxWidth = contentWidth || themeContentSize || '1200px';
 		innerStyle.marginLeft = 'auto';
 		innerStyle.marginRight = 'auto';
 	}
@@ -188,9 +233,59 @@ export default function FlexEdit({ attributes, setAttributes, clientId }) {
 		<>
 			<InspectorControls>
 				<PanelBody
-					title={__('Flex Settings', 'designsetgo')}
+					title={__('Row Settings', 'designsetgo')}
 					initialOpen={true}
 				>
+					<ToggleControl
+						label={__('Constrain Inner Width', 'designsetgo')}
+						checked={constrainWidth}
+						onChange={(value) =>
+							setAttributes({ constrainWidth: value })
+						}
+						help={
+							constrainWidth
+								? __(
+										'Inner content is constrained to max width',
+										'designsetgo'
+									)
+								: __(
+										'Inner content spans full container width',
+										'designsetgo'
+									)
+						}
+						__nextHasNoMarginBottom
+					/>
+
+					{constrainWidth && (
+						<UnitControl
+							label={__('Max Content Width', 'designsetgo')}
+							value={contentWidth}
+							onChange={(value) =>
+								setAttributes({ contentWidth: value })
+							}
+							placeholder={
+								themeContentSize ||
+								__('Theme default', 'designsetgo')
+							}
+							units={units}
+							__unstableInputWidth="80px"
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+							help={
+								!contentWidth && themeContentSize
+									? sprintf(
+											/* translators: %s: theme content size value */
+											__(
+												'Using theme default: %s',
+												'designsetgo'
+											),
+											themeContentSize
+										)
+									: ''
+							}
+						/>
+					)}
+
 					<ToggleControl
 						label={__('Stack on Mobile', 'designsetgo')}
 						checked={mobileStack}

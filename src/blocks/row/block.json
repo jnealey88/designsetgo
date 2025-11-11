@@ -1,9 +1,9 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "designsetgo/flex",
+	"name": "designsetgo/row",
 	"version": "1.0.0",
-	"title": "Row (DSG)",
+	"title": "Row",
 	"category": "design",
 	"description": "Flexible horizontal or vertical layouts with wrapping. Perfect for button groups, hero sections, and responsive card layouts.",
 	"keywords": ["row", "dsg", "flex", "flexbox", "horizontal", "layout", "container"],
@@ -23,7 +23,6 @@
 				"type": "flex",
 				"orientation": "horizontal",
 				"justifyContent": "left",
-				"contentSize": "1200px",
 				"flexWrap": "wrap"
 			}
 		},
@@ -82,6 +81,14 @@
 		"align": {
 			"type": "string",
 			"default": "full"
+		},
+		"constrainWidth": {
+			"type": "boolean",
+			"default": false
+		},
+		"contentWidth": {
+			"type": "string",
+			"default": ""
 		},
 		"mobileStack": {
 			"type": "boolean",

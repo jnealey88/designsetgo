@@ -7,11 +7,14 @@
 .dsg-icon-button {
 	// Block wrapper styles applied via inline styles
 	// (display: inline-block or block depending on width setting)
+	// CRITICAL: Border-radius default - WordPress border controls override this via inline styles
+	border-radius: 4px;
 
 	&__wrapper {
 		// Layout styles applied via inline styles (display, gap, flex-direction, width)
 		padding: 12px 24px;
-		border-radius: 4px;
+		border-radius: inherit; // CRITICAL: Inherit border-radius from parent (.dsg-icon-button) so WordPress border controls work
+		overflow: hidden; // CRITICAL: Clip background to border-radius
 		font-weight: 500;
 		text-decoration: none !important;
 		transition: all 0.2s ease;

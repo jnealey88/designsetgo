@@ -1,5 +1,5 @@
 /**
- * DSG Section Block - Save Component
+ * Section Block - Save Component
  *
  * Saves the block content with minimal custom styles.
  * WordPress's layout system handles flex layout through CSS classes.
@@ -10,41 +10,24 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
- * Stack Container Save Component
+ * Section Container Save Component
  *
  * @param {Object} props            Component props
  * @param {Object} props.attributes Block attributes
  * @return {JSX.Element} Save component
  */
-export default function StackSave({ attributes }) {
+export default function SectionSave({ attributes }) {
 	const {
+		constrainWidth,
+		contentWidth,
 		hoverBackgroundColor,
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
-		layout,
-		contentWidth, // Legacy attribute from before layout support
 	} = attributes;
 
-	// Extract contentSize with fallback priority:
-	// 1. WordPress layout support (layout.contentSize) - if explicitly set
-	// 2. Legacy custom attribute (contentWidth) - for backward compatibility
-	// 3. Plugin default (1200px) - as last resort
-	// Note: If user explicitly disabled width constraint in Layout panel, layout.contentSize will be ''
-	// and we should NOT apply fallbacks (respect user's choice for full width)
-	let contentSize;
-	if (layout && 'contentSize' in layout) {
-		// User has interacted with Layout panel - respect their choice
-		contentSize = layout.contentSize; // Could be a value or '' (disabled)
-	} else {
-		// User hasn't set layout.contentSize - use fallbacks
-		contentSize = contentWidth || '1200px';
-	}
-
-	// Build className - add indicator when no width constraints
-	const className = ['dsg-stack', !contentSize && 'dsg-no-width-constraint']
-		.filter(Boolean)
-		.join(' ');
+	// Build className
+	const className = 'dsg-stack';
 
 	// Block wrapper props - outer div stays full width
 	const blockProps = useBlockProps.save({
@@ -66,9 +49,11 @@ export default function StackSave({ attributes }) {
 	});
 
 	// Inner container props with width constraints
+	// Use custom contentWidth if set, otherwise fallback to theme's contentSize via CSS variable
 	const innerStyle = {};
-	if (contentSize) {
-		innerStyle.maxWidth = contentSize;
+	if (constrainWidth) {
+		innerStyle.maxWidth =
+			contentWidth || 'var(--wp--style--global--content-size, 1140px)';
 		innerStyle.marginLeft = 'auto';
 		innerStyle.marginRight = 'auto';
 	}

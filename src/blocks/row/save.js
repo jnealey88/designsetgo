@@ -1,5 +1,5 @@
 /**
- * DSG Row Block - Save Component
+ * Row Block - Save Component
  *
  * Saves the block content with minimal custom styles.
  * WordPress's layout system handles flex layout through CSS classes.
@@ -36,13 +36,13 @@ function convertPresetToCSSVar(value) {
 }
 
 /**
- * Flex Container Save Component
+ * Row Container Save Component
  *
  * @param {Object} props            Component props
  * @param {Object} props.attributes Block attributes
  * @return {JSX.Element} Save component
  */
-export default function FlexSave({ attributes }) {
+export default function RowSave({ attributes }) {
 	const {
 		constrainWidth,
 		contentWidth,
@@ -99,8 +99,10 @@ export default function FlexSave({ attributes }) {
 	};
 
 	// Apply width constraints if enabled
+	// Use custom contentWidth if set, otherwise fallback to theme's contentSize via CSS variable
 	if (constrainWidth) {
-		innerStyle.maxWidth = contentWidth || '1200px';
+		innerStyle.maxWidth =
+			contentWidth || 'var(--wp--style--global--content-size, 1140px)';
 		innerStyle.marginLeft = 'auto';
 		innerStyle.marginRight = 'auto';
 	}

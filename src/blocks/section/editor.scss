@@ -26,14 +26,15 @@
 	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
 	// but float should not work inside flex containers
 	// In editor, children are wrapped in [data-block] elements
-	.dsg-stack__inner.is-layout-flex > *,
-	.dsg-stack__inner.is-layout-flex > [data-block] > * {
+	// With two-div structure: .dsg-stack.is-layout-flex > .dsg-stack__inner > [data-block]
+	&.is-layout-flex .dsg-stack__inner > *,
+	&.is-layout-flex .dsg-stack__inner > [data-block] > * {
 		float: none !important;
 	}
 
 	// CRITICAL: In editor, blocks are wrapped in [data-block] elements inside .dsg-stack__inner
-	// Note: is-layout-flex class is on .dsg-stack__inner, not on .dsg-stack
-	.dsg-stack__inner.is-layout-flex > [data-block] {
+	// Layout class is on outer .dsg-stack, not on .dsg-stack__inner
+	&.is-layout-flex .dsg-stack__inner > [data-block] {
 		// Auto width by default for alignment to work
 		width: auto;
 		max-width: 100%;
@@ -49,6 +50,8 @@
 		&[data-type="core/table"],
 		&[data-type="core/list"],
 		&[data-type="designsetgo/grid"],
+		&[data-type="designsetgo/section"],
+		&[data-type="designsetgo/row"],
 		&[data-type="designsetgo/stack"],
 		&[data-type="designsetgo/flex"] {
 			width: 100%;

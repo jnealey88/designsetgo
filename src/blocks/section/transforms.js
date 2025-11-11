@@ -1,7 +1,7 @@
 /**
- * DSG Section Block - Transforms
+ * Section Block - Transforms
  *
- * Allows transforming to/from DSG Row and DSG Grid blocks.
+ * Allows transforming to/from Row, Grid, and legacy Stack/Flex blocks.
  *
  * @since 1.0.0
  */
@@ -10,14 +10,28 @@ const transforms = {
 	from: [
 		{
 			type: 'block',
-			blocks: ['designsetgo/flex'],
+			blocks: ['designsetgo/stack'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
-					'designsetgo/stack',
+					'designsetgo/section',
+					{
+						// Transfer all attributes from legacy Stack block
+						...attributes,
+					},
+					innerBlocks
+				);
+			},
+		},
+		{
+			type: 'block',
+			blocks: ['designsetgo/flex', 'designsetgo/row'],
+			transform: (attributes, innerBlocks) => {
+				return wp.blocks.createBlock(
+					'designsetgo/section',
 					{
 						// Preserve all attributes including layout
 						...attributes,
-						// Remove mobileStack (Flex-specific)
+						// Remove mobileStack (Flex/Row-specific)
 						mobileStack: undefined,
 					},
 					innerBlocks
@@ -29,7 +43,7 @@ const transforms = {
 			blocks: ['designsetgo/grid'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
-					'designsetgo/stack',
+					'designsetgo/section',
 					{
 						// Preserve all attributes including layout
 						...attributes,
@@ -50,10 +64,10 @@ const transforms = {
 	to: [
 		{
 			type: 'block',
-			blocks: ['designsetgo/flex'],
+			blocks: ['designsetgo/row'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
-					'designsetgo/flex',
+					'designsetgo/row',
 					{
 						// Preserve all attributes including layout
 						...attributes,

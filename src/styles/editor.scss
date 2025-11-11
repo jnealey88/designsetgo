@@ -16,8 +16,8 @@
 @use '../extensions/reveal-control/editor' as reveal-control;
 
 // Container blocks editor styles
-@use '../blocks/stack/editor' as stack;
-@use '../blocks/flex/editor' as flex;
+@use '../blocks/section/editor' as section;
+@use '../blocks/row/editor' as row;
 @use '../blocks/grid/editor' as grid;
 @use '../blocks/reveal/editor' as reveal;
 @use '../blocks/blobs/editor' as blobs;
@@ -68,8 +68,8 @@
  * Target the blocks themselves using .alignfull class and .block-editor-block-list__block
  */
 .block-editor-block-list__block.has-global-padding.alignfull[data-type="designsetgo/grid"],
-.block-editor-block-list__block.has-global-padding.alignfull[data-type="designsetgo/flex"],
-.block-editor-block-list__block.has-global-padding.alignfull[data-type="designsetgo/stack"] {
+.block-editor-block-list__block.has-global-padding.alignfull[data-type="designsetgo/row"],
+.block-editor-block-list__block.has-global-padding.alignfull[data-type="designsetgo/section"] {
 	margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
 	margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
 }

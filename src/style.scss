@@ -24,8 +24,8 @@
 
 // Custom blocks (frontend)
 // Container blocks
-@use './blocks/stack/style' as stack;
-@use './blocks/flex/style' as flex;
+@use './blocks/section/style' as section;
+@use './blocks/row/style' as row;
 @use './blocks/grid/style' as grid;
 @use './blocks/reveal/style' as reveal;
 @use './blocks/accordion/style' as accordion;

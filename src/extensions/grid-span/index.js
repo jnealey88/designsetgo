@@ -20,7 +20,8 @@ import { useEffect } from '@wordpress/element';
 
 /**
  * Add columnSpan attribute to all blocks
- * @param settings
+ * @param {Object} settings Block settings
+ * @return {Object} Modified block settings
  */
 function addColumnSpanAttribute(settings) {
 	return {
@@ -139,9 +140,38 @@ const withColumnSpanStyles = createHigherOrderComponent((BlockListBlock) => {
 		// Generate dynamic CSS for column span in editor
 		const styleId = `dsg-grid-span-${clientId}`;
 
+		// Get parent grid's responsive column settings
+		const parentGridSettings = useSelect(
+			(select) => {
+				if (!isInGrid) {
+					return null;
+				}
+
+				const { getBlockParents, getBlock } =
+					select('core/block-editor');
+				const parents = getBlockParents(clientId);
+
+				for (const parentId of parents) {
+					const parent = getBlock(parentId);
+					if (parent && parent.name === 'designsetgo/grid') {
+						return {
+							desktopColumns:
+								parent.attributes?.desktopColumns || 3,
+							tabletColumns:
+								parent.attributes?.tabletColumns || 2,
+							mobileColumns:
+								parent.attributes?.mobileColumns || 1,
+						};
+					}
+				}
+				return null;
+			},
+			[clientId, isInGrid]
+		);
+
 		useEffect(() => {
 			// Only apply if inside Grid
-			if (!isInGrid) {
+			if (!isInGrid || !parentGridSettings) {
 				return;
 			}
 
@@ -160,9 +190,36 @@ const withColumnSpanStyles = createHigherOrderComponent((BlockListBlock) => {
 			if (dsgColumnSpan && dsgColumnSpan > 1) {
 				const styleElement = editorDocument.createElement('style');
 				styleElement.id = styleId;
+
+				// Calculate effective spans for each breakpoint
+				// Constrain to parent's column count at each breakpoint
+				const effectiveTabletSpan = Math.min(
+					dsgColumnSpan,
+					parentGridSettings.tabletColumns
+				);
+				const effectiveMobileSpan = Math.min(
+					dsgColumnSpan,
+					parentGridSettings.mobileColumns
+				);
+
 				styleElement.textContent = `
+					/* Desktop */
 					[data-block="${clientId}"] {
 						grid-column: span ${dsgColumnSpan} !important;
+					}
+
+					/* Tablet - constrain to parent tablet columns */
+					@media (max-width: 1024px) {
+						[data-block="${clientId}"] {
+							grid-column: span ${effectiveTabletSpan} !important;
+						}
+					}
+
+					/* Mobile - constrain to parent mobile columns */
+					@media (max-width: 767px) {
+						[data-block="${clientId}"] {
+							grid-column: span ${effectiveMobileSpan} !important;
+						}
 					}
 				`;
 				editorDocument.head.appendChild(styleElement);
@@ -175,7 +232,7 @@ const withColumnSpanStyles = createHigherOrderComponent((BlockListBlock) => {
 					styleToRemove.remove();
 				}
 			};
-		}, [dsgColumnSpan, clientId, styleId, isInGrid]);
+		}, [dsgColumnSpan, clientId, styleId, isInGrid, parentGridSettings]);
 
 		return <BlockListBlock {...props} />;
 	};
@@ -190,9 +247,10 @@ addFilter(
 
 /**
  * Apply column span styles on frontend
- * @param props
- * @param blockType
- * @param attributes
+ * @param {Object} props      Block props
+ * @param {Object} blockType  Block type
+ * @param {Object} attributes Block attributes
+ * @return {Object} Modified props
  */
 function applyColumnSpanStyles(props, blockType, attributes) {
 	const { dsgColumnSpan } = attributes;

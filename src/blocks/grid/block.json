@@ -134,6 +134,14 @@
 		"hoverButtonBackgroundColor": {
 			"type": "string",
 			"default": ""
+		},
+		"constrainWidth": {
+			"type": "boolean",
+			"default": false
+		},
+		"contentWidth": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"providesContext": {

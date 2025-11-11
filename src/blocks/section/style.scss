@@ -14,15 +14,19 @@
 	transition: background-color 0.3s ease;
 
 	// CRITICAL: Inner container must be full width for layout to work
-	// When constrainWidth is enabled, inline styles will override with max-width
+	// Defaults to theme's content width, but inline styles will override when user sets custom width
 	.dsg-stack__inner {
 		width: 100%;
+		max-width: var(--wp--style--global--content-size, 1140px);
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	// CRITICAL: Disable float for all children in flex layout
 	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
 	// but float should not work inside flex containers
-	&.is-layout-flex > * {
+	// With two-div structure, target children inside inner container
+	&.is-layout-flex .dsg-stack__inner > * {
 		float: none !important;
 	}
 
@@ -52,9 +56,10 @@
 
 		// CRITICAL: Inline/shrink-wrap blocks should respect alignment
 		// These blocks should shrink to content width so they can be centered/aligned
-		> .dsg-pill,
-		> .wp-block-button,
-		> .wp-block-buttons {
+		// With two-div structure, target children inside inner container
+		.dsg-stack__inner > .dsg-pill,
+		.dsg-stack__inner > .wp-block-button,
+		.dsg-stack__inner > .wp-block-buttons {
 			align-self: flex-start; // Override to allow alignment
 			width: auto !important; // Shrink to content
 			max-width: none !important; // Remove WordPress's 1200px contentSize constraint
@@ -62,20 +67,22 @@
 
 		// CRITICAL: Block-level elements take full width by default
 		// Text blocks, groups, and most WordPress blocks
-		> .wp-block-heading,
-		> .wp-block-paragraph,
-		> .wp-block-group,
-		> .wp-block-image,
-		> .wp-block-video,
-		> .wp-block-embed,
-		> .wp-block-table,
-		> .wp-block-list,
-		> .dsg-grid,
-		> .wp-block-designsetgo-grid,
-		> .dsg-stack,
-		> .wp-block-designsetgo-stack,
-		> .dsg-flex,
-		> .wp-block-designsetgo-flex {
+		// With two-div structure, target children inside inner container
+		.dsg-stack__inner > .wp-block-heading,
+		.dsg-stack__inner > .wp-block-paragraph,
+		.dsg-stack__inner > .wp-block-group,
+		.dsg-stack__inner > .wp-block-image,
+		.dsg-stack__inner > .wp-block-video,
+		.dsg-stack__inner > .wp-block-embed,
+		.dsg-stack__inner > .wp-block-table,
+		.dsg-stack__inner > .wp-block-list,
+		.dsg-stack__inner > .dsg-grid,
+		.dsg-stack__inner > .wp-block-designsetgo-grid,
+		.dsg-stack__inner > .dsg-stack,
+		.dsg-stack__inner > .wp-block-designsetgo-stack,
+		.dsg-stack__inner > .dsg-flex,
+		.dsg-stack__inner > .wp-block-designsetgo-flex,
+		.dsg-stack__inner > .wp-block-designsetgo-row {
 			width: 100%;
 		}
 

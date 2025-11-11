@@ -1,5 +1,5 @@
 /**
- * DSG Section Block - Edit Component
+ * Section Block - Edit Component
  *
  * Vertical stacking container for sections and content areas.
  * Leverages WordPress's native flex layout system.
@@ -7,24 +7,33 @@
  * @since 1.0.0
  */
 
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InnerBlocks,
 	InspectorControls,
 	store as blockEditorStore,
+	useSettings,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
+import {
+	PanelBody,
+	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseCustomUnits as useCustomUnits,
+} from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
 
 /**
- * Stack Container Edit Component
+ * Section Container Edit Component
  *
  * @param {Object}   props               Component props
  * @param {Object}   props.attributes    Block attributes
@@ -32,33 +41,57 @@ import { createBlock } from '@wordpress/blocks';
  * @param {string}   props.clientId      Block client ID
  * @return {JSX.Element} Edit component
  */
-export default function StackEdit({ attributes, setAttributes, clientId }) {
+export default function SectionEdit({ attributes, setAttributes, clientId }) {
 	const {
+		align,
+		className,
+		constrainWidth,
+		contentWidth,
 		hoverBackgroundColor,
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 		layout,
-		contentWidth, // Legacy attribute from before layout support
 	} = attributes;
 
-	// Extract contentSize with fallback priority:
-	// 1. WordPress layout support (layout.contentSize) - if explicitly set
-	// 2. Legacy custom attribute (contentWidth) - for backward compatibility
-	// 3. Plugin default (1200px) - as last resort
-	// Note: If user explicitly disabled width constraint in Layout panel, layout.contentSize will be ''
-	// and we should NOT apply fallbacks (respect user's choice for full width)
-	let contentSize;
-	if (layout && 'contentSize' in layout) {
-		// User has interacted with Layout panel - respect their choice
-		contentSize = layout.contentSize; // Could be a value or '' (disabled)
-	} else {
-		// User hasn't set layout.contentSize - use fallbacks
-		contentSize = contentWidth || '1200px';
-	}
+	// Auto-migrate old blocks that use className for alignment
+	useEffect(() => {
+		// Only run if block doesn't have align attribute but has alignfull/alignwide in className
+		if (!align && className) {
+			let newAlign;
+			if (className.includes('alignfull')) {
+				newAlign = 'full';
+			} else if (className.includes('alignwide')) {
+				newAlign = 'wide';
+			}
+
+			if (newAlign) {
+				// Remove alignment classes from className
+				const cleanClassName = className
+					.split(' ')
+					.filter((cls) => cls !== 'alignfull' && cls !== 'alignwide')
+					.join(' ')
+					.trim();
+
+				setAttributes({
+					align: newAlign,
+					className: cleanClassName || undefined,
+				});
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []); // Run only once on mount
+
+	// Get theme settings (WP 6.5+)
+	const [themeContentSize] = useSettings('layout.contentSize');
 
 	// Get theme color palette and gradient settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+	// Setup custom units for width control
+	const units = useCustomUnits({
+		availableUnits: ['px', 'em', 'rem', 'vh', 'vw', '%'],
+	});
 
 	const { replaceBlock } = useDispatch(blockEditorStore);
 
@@ -75,14 +108,14 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 		[clientId]
 	);
 
-	// CRITICAL: Auto-convert to Flex block when orientation changes to horizontal
-	// Stack is meant for vertical stacking only
-	// If user wants horizontal layout, they should use Flex block
+	// CRITICAL: Auto-convert to Row block when orientation changes to horizontal
+	// Section is meant for vertical stacking only
+	// If user wants horizontal layout, they should use Row block
 	useEffect(() => {
 		if (layout?.orientation === 'horizontal') {
-			// Create a new Flex block with the same attributes and inner blocks
-			const flexBlock = createBlock(
-				'designsetgo/flex',
+			// Create a new Row block with the same attributes and inner blocks
+			const rowBlock = createBlock(
+				'designsetgo/row',
 				{
 					hoverBackgroundColor,
 					hoverTextColor,
@@ -92,8 +125,8 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 				innerBlocks
 			);
 
-			// Replace this Stack block with the Flex block
-			replaceBlock(clientId, flexBlock);
+			// Replace this Section block with the Row block
+			replaceBlock(clientId, rowBlock);
 		}
 	}, [
 		layout?.orientation,
@@ -106,16 +139,14 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 		innerBlocks,
 	]);
 
-	// Build className - add indicator when no width constraints
-	const className = ['dsg-stack', !contentSize && 'dsg-no-width-constraint']
-		.filter(Boolean)
-		.join(' ');
+	// Build className
+	const blockClassName = 'dsg-stack';
 
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	// WordPress handles flex layout through layout support and CSS classes
 	// We only add custom CSS variables for hover effects
 	const blockProps = useBlockProps({
-		className,
+		className: blockClassName,
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
@@ -133,11 +164,15 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 	});
 
 	// Inner container props with width constraints (must match save.js EXACTLY)
+	// Use custom contentWidth if set, otherwise fallback to theme's contentSize
 	const innerStyle = {};
-	if (contentSize) {
-		innerStyle.maxWidth = contentSize;
-		innerStyle.marginLeft = 'auto';
-		innerStyle.marginRight = 'auto';
+	if (constrainWidth) {
+		const effectiveWidth = contentWidth || themeContentSize;
+		if (effectiveWidth) {
+			innerStyle.maxWidth = effectiveWidth;
+			innerStyle.marginLeft = 'auto';
+			innerStyle.marginRight = 'auto';
+		}
 	}
 
 	// Merge inner blocks props
@@ -156,6 +191,62 @@ export default function StackEdit({ attributes, setAttributes, clientId }) {
 
 	return (
 		<>
+			<InspectorControls>
+				<PanelBody
+					title={__('Section Settings', 'designsetgo')}
+					initialOpen={true}
+				>
+					<ToggleControl
+						label={__('Constrain Inner Width', 'designsetgo')}
+						checked={constrainWidth}
+						onChange={(value) =>
+							setAttributes({ constrainWidth: value })
+						}
+						help={
+							constrainWidth
+								? __(
+										'Inner content is constrained to max width',
+										'designsetgo'
+									)
+								: __(
+										'Inner content spans full container width',
+										'designsetgo'
+									)
+						}
+						__nextHasNoMarginBottom
+					/>
+					{constrainWidth && (
+						<UnitControl
+							label={__('Max Content Width', 'designsetgo')}
+							value={contentWidth}
+							onChange={(value) =>
+								setAttributes({ contentWidth: value })
+							}
+							placeholder={
+								themeContentSize ||
+								__('Theme default', 'designsetgo')
+							}
+							units={units}
+							__unstableInputWidth="80px"
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+							help={
+								!contentWidth && themeContentSize
+									? sprintf(
+											/* translators: %s: theme content size value */
+											__(
+												'Using theme default: %s',
+												'designsetgo'
+											),
+											themeContentSize
+										)
+									: ''
+							}
+						/>
+					)}
+				</PanelBody>
+			</InspectorControls>
+
 			<InspectorControls group="color">
 				<ColorGradientSettingsDropdown
 					panelId={clientId}

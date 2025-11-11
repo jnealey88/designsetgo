@@ -61,8 +61,10 @@ export default function GridSave({ attributes }) {
 	};
 
 	// Apply width constraints to inner container
+	// Use custom contentWidth if set, otherwise fallback to theme's contentSize via CSS variable
 	if (constrainWidth) {
-		innerStyles.maxWidth = contentWidth || '1200px';
+		innerStyles.maxWidth =
+			contentWidth || 'var(--wp--style--global--content-size, 1140px)';
 		innerStyles.marginLeft = 'auto';
 		innerStyles.marginRight = 'auto';
 	}

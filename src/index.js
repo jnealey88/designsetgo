@@ -61,9 +61,11 @@ addFilter(
 	(attributes, blockType, clientId) => {
 		// Only apply to container blocks
 		const containerBlocks = [
-			'designsetgo/stack',
-			'designsetgo/flex',
+			'designsetgo/stack', // Legacy - will be deprecated
+			'designsetgo/flex', // Legacy - will be deprecated
 			'designsetgo/grid',
+			'designsetgo/section', // New name for stack
+			'designsetgo/row', // New name for flex
 		];
 		if (!containerBlocks.includes(blockType.name)) {
 			return attributes;

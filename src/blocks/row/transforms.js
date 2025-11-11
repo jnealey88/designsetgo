@@ -1,7 +1,7 @@
 /**
- * DSG Row Block - Transforms
+ * Row Block - Transforms
  *
- * Allows transforming to/from DSG Section, DSG Grid, and legacy Container blocks.
+ * Allows transforming to/from Section, Grid, and legacy Stack/Flex blocks.
  *
  * @since 1.0.0
  */
@@ -10,14 +10,28 @@ const transforms = {
 	from: [
 		{
 			type: 'block',
-			blocks: ['designsetgo/stack'],
+			blocks: ['designsetgo/flex'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
-					'designsetgo/flex',
+					'designsetgo/row',
+					{
+						// Transfer all attributes from legacy Flex block
+						...attributes,
+					},
+					innerBlocks
+				);
+			},
+		},
+		{
+			type: 'block',
+			blocks: ['designsetgo/stack', 'designsetgo/section'],
+			transform: (attributes, innerBlocks) => {
+				return wp.blocks.createBlock(
+					'designsetgo/row',
 					{
 						// Preserve all attributes including layout
 						...attributes,
-						// mobileStack doesn't exist in Stack, default to false
+						// mobileStack doesn't exist in Stack/Section, default to false
 						mobileStack: false,
 					},
 					innerBlocks
@@ -29,7 +43,7 @@ const transforms = {
 			blocks: ['designsetgo/grid'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
-					'designsetgo/flex',
+					'designsetgo/row',
 					{
 						// Preserve all attributes including layout
 						...attributes,
@@ -52,14 +66,14 @@ const transforms = {
 	to: [
 		{
 			type: 'block',
-			blocks: ['designsetgo/stack'],
+			blocks: ['designsetgo/section'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
-					'designsetgo/stack',
+					'designsetgo/section',
 					{
 						// Preserve all attributes including layout
 						...attributes,
-						// Remove mobileStack (Flex-specific)
+						// Remove mobileStack (Row-specific)
 						mobileStack: undefined,
 					},
 					innerBlocks
@@ -75,7 +89,7 @@ const transforms = {
 					{
 						// Preserve all attributes including layout
 						...attributes,
-						// Remove mobileStack (Flex-specific)
+						// Remove mobileStack (Row-specific)
 						mobileStack: undefined,
 						// Set Grid-specific defaults
 						desktopColumns: 3,
