@@ -60,9 +60,12 @@
 		"reusable": false,
 		"spacing": {
 			"padding": true,
-			"margin": false,
+			"margin": true,
+			"blockGap": true,
 			"__experimentalDefaultControls": {
-				"padding": true
+				"padding": true,
+				"margin": true,
+				"blockGap": true
 			}
 		},
 		"color": {
