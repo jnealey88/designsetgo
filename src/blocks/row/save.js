@@ -54,9 +54,18 @@ export default function RowSave({ attributes }) {
 		layout,
 	} = attributes;
 
+	// Build className with conditional classes
+	const className = [
+		'dsg-flex',
+		mobileStack && 'dsg-flex--mobile-stack',
+		!constrainWidth && 'dsg-no-width-constraint',
+	]
+		.filter(Boolean)
+		.join(' ');
+
 	// Block wrapper props - outer div stays full width
 	const blockProps = useBlockProps.save({
-		className: `dsg-flex ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
+		className,
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,

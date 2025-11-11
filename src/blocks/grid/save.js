@@ -31,9 +31,20 @@ export default function GridSave({ attributes }) {
 		hoverButtonBackgroundColor,
 	} = attributes;
 
+	// Build className with conditional classes
+	const className = [
+		'dsg-grid',
+		`dsg-grid-cols-${desktopColumns}`,
+		`dsg-grid-cols-tablet-${tabletColumns}`,
+		`dsg-grid-cols-mobile-${mobileColumns}`,
+		!constrainWidth && 'dsg-no-width-constraint',
+	]
+		.filter(Boolean)
+		.join(' ');
+
 	// Block wrapper props - outer div stays full width
 	const blockProps = useBlockProps.save({
-		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
+		className,
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,

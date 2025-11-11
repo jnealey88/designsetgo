@@ -26,8 +26,13 @@ export default function SectionSave({ attributes }) {
 		hoverButtonBackgroundColor,
 	} = attributes;
 
-	// Build className
-	const className = 'dsg-stack';
+	// Build className with conditional no-width-constraint class
+	const className = [
+		'dsg-stack',
+		!constrainWidth && 'dsg-no-width-constraint',
+	]
+		.filter(Boolean)
+		.join(' ');
 
 	// Block wrapper props - outer div stays full width
 	const blockProps = useBlockProps.save({
