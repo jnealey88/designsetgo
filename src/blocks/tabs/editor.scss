@@ -141,6 +141,7 @@
 			margin-bottom: 0;
 			padding-right: var(--wp--preset--spacing--md, 1.5rem);
 			min-width: 200px;
+			overflow: visible; // Remove horizontal scrollbar for vertical tabs
 		}
 
 		.dsg-tabs__panels {
