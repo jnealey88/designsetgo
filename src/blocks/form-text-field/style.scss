@@ -64,8 +64,7 @@
 		}
 
 		&:focus {
-			outline: 2px solid var(--dsg-field-focus-color);
-			outline-offset: 2px;
+			outline: none;
 			border-color: var(--dsg-field-focus-color);
 		}
 

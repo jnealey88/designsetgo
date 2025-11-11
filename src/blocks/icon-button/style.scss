@@ -48,8 +48,7 @@
 		}
 
 		&:focus {
-			outline: 2px solid var(--wp--preset--color--primary, #2563eb);
-			outline-offset: 2px;
+			outline: none;
 			text-decoration: none !important;
 			border: none !important; // Prevent theme/WordPress from adding borders
 		}

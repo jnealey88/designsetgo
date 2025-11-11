@@ -24,9 +24,7 @@
 		}
 
 		&:focus {
-			outline: 2px solid var(--wp--preset--color--primary, #007cba);
-			outline-offset: 4px;
-			border-radius: 4px;
+			outline: none;
 		}
 	}
 
@@ -40,6 +38,7 @@
 		transition: background-color 0.2s ease, color 0.2s ease;
 		width: fit-content;
 
+		/* stylelint-disable-next-line selector-class-pattern */
 		.dashicons {
 			display: block;
 			width: 1em;
@@ -50,6 +49,7 @@
 		}
 
 		// Ensure shapes are square (1:1 aspect ratio)
+		/* stylelint-disable selector-class-pattern */
 		&.shape-circle,
 		&.shape-square,
 		&.shape-rounded {
@@ -68,6 +68,7 @@
 		&.shape-rounded {
 			border-radius: 8px;
 		}
+		/* stylelint-enable selector-class-pattern */
 	}
 
 	// Alignment variants
@@ -104,12 +105,13 @@
 
 	// Accessibility: Respect prefers-reduced-motion
 	@media (prefers-reduced-motion: reduce) {
-
+		/* stylelint-disable selector-class-pattern */
 		&__link,
 		&__wrapper,
 		.dashicons {
 			transition: none;
 		}
+		/* stylelint-enable selector-class-pattern */
 
 		&__link:hover {
 			transform: none;

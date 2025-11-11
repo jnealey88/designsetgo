@@ -46,7 +46,7 @@
 		// Use alignment from attributes
 		justify-content: var(--dsg-vertical-alignment, center);
 		align-items: var(--dsg-horizontal-alignment, center);
-		color: white;
+		color: #fff;
 
 		// Smooth content opacity transition
 		opacity: 0.9;
@@ -105,11 +105,8 @@
 		}
 	}
 
-	// Focus state for accessibility
 	&:focus {
-		outline: 2px solid var(--wp--preset--color--primary, #3b82f6);
-		outline-offset: -2px;
-		z-index: 10;
+		outline: none;
 	}
 
 	// Note: Hover interactions are handled by JavaScript (view.js)

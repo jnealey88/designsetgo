@@ -68,14 +68,11 @@
 		margin-block-start: 0; // Remove default heading top margin
 		margin-block-end: 0.25em;
 
-		&:last-child {
-			margin-block-end: 0;
-		}
-
 		// Remove default margins for all possible tags
 		margin: 0 0 0.25em 0;
 
 		&:last-child {
+			margin-block-end: 0;
 			margin-bottom: 0;
 		}
 	}
@@ -119,8 +116,7 @@
 		}
 
 		&:focus {
-			outline: 2px solid var(--wp--preset--color--primary, #2563eb);
-			outline-offset: 2px;
+			outline: none;
 		}
 	}
 

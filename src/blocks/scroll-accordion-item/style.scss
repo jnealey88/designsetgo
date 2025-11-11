@@ -14,6 +14,33 @@
 	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
 	/**
+	 * Background overlay
+	 * Only rendered when overlay color is set
+	 */
+	&--has-overlay {
+		position: relative;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: var(--dsg-overlay-color);
+			opacity: var(--dsg-overlay-opacity, 0.8);
+			pointer-events: none; /* Allow clicks to pass through to content */
+			z-index: 1; /* Above background image but below content */
+		}
+
+		/* Ensure content is above overlay */
+		> * {
+			position: relative;
+			z-index: 2;
+		}
+	}
+
+	/**
 	 * Stacking effect - all cards at same position
 	 * Later cards appear on top (higher z-index)
 	 * Positioned at 20vh from top for better visual balance

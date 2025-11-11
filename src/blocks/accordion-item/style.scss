@@ -53,24 +53,9 @@
 			}
 		}
 
-		// Enhanced focus state for accessibility
-		&:focus {
-			outline: 2px solid var(--wp--preset--color--contrast, #2563eb);
-			outline-offset: 2px;
-			z-index: 1;
-		}
-
-		// Modern focus-visible (only keyboard focus)
+		&:focus,
 		&:focus-visible {
-			outline: 2px solid var(--wp--preset--color--contrast, #2563eb);
-			outline-offset: 2px;
-			box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-		}
-
-		// Remove outline for mouse clicks
-		&:focus:not(:focus-visible) {
 			outline: none;
-			box-shadow: none;
 		}
 
 		// Active state (pressed)

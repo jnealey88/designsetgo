@@ -107,8 +107,7 @@
 		cursor: pointer;
 
 		&:focus {
-			outline: 2px solid var(--wp--preset--color--primary, #3b82f6);
-			outline-offset: 2px;
+			outline: none;
 		}
 	}
 
@@ -116,8 +115,7 @@
 	&--hover {
 
 		&:focus {
-			outline: 2px solid var(--wp--preset--color--primary, #3b82f6);
-			outline-offset: 2px;
+			outline: none;
 		}
 	}
 

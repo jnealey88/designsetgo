@@ -120,10 +120,8 @@
 			right: 16px;
 		}
 
-		// Focus styles for accessibility
 		&:focus-visible {
-			outline: 2px solid #2563eb;
-			outline-offset: 2px;
+			outline: none;
 		}
 	}
 
@@ -147,7 +145,7 @@
 		}
 	}
 
-	// Arrow positions
+	// Arrow positions (Horizontal)
 	&[data-arrow-position="inside"] &__arrow {
 
 		&--prev {
@@ -172,6 +170,21 @@
 				right: 0;
 			}
 		}
+	}
+
+	// Arrow positions (Vertical)
+	&[data-arrow-vertical-position="top"] &__arrow {
+		top: 20px;
+		transform: translateY(0);
+	}
+
+	// Center is default via top: 50% and transform: translateY(-50%)
+	// No additional styles needed
+
+	&[data-arrow-vertical-position="bottom"] &__arrow {
+		top: auto;
+		bottom: 20px;
+		transform: translateY(0);
 	}
 
 	// Navigation: Dots
@@ -209,10 +222,8 @@
 			transform: scale(1.3);
 		}
 
-		// Focus styles for accessibility
 		&:focus-visible {
-			outline: 2px solid #fff;
-			outline-offset: 2px;
+			outline: none;
 		}
 	}
 
