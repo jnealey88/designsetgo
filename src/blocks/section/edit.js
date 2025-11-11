@@ -263,6 +263,13 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 					title={__('Hover Settings', 'designsetgo')}
 					settings={[
 						{
+							label: __('Overlay Color', 'designsetgo'),
+							colorValue: overlayColor,
+							onColorChange: (color) =>
+								setAttributes({ overlayColor: color || '' }),
+							clearable: true,
+						},
+						{
 							label: __('Hover Background Color', 'designsetgo'),
 							colorValue: hoverBackgroundColor,
 							onColorChange: (color) =>
@@ -314,20 +321,6 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 									},
 								]
 							: []),
-					]}
-					{...colorGradientSettings}
-				/>
-				<ColorGradientSettingsDropdown
-					panelId={`${clientId}-overlay`}
-					title={__('Overlay', 'designsetgo')}
-					settings={[
-						{
-							label: __('Overlay Color', 'designsetgo'),
-							colorValue: overlayColor,
-							onColorChange: (color) =>
-								setAttributes({ overlayColor: color || '' }),
-							clearable: true,
-						},
 					]}
 					{...colorGradientSettings}
 				/>

@@ -29,6 +29,16 @@ function initScrollAccordions() {
 			return;
 		}
 
+		// Ensure parent Sections aren't clipping sticky children
+		let stackWrapper = accordion.closest('.dsg-stack');
+
+		while (stackWrapper) {
+			stackWrapper.classList.add('dsg-stack--allow-overflow');
+			stackWrapper = stackWrapper.parentElement
+				? stackWrapper.parentElement.closest('.dsg-stack')
+				: null;
+		}
+
 		// If reduced motion is preferred, don't animate
 		if (prefersReducedMotion) {
 			return;

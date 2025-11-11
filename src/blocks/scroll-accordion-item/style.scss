@@ -16,14 +16,6 @@
 	/* Ensure background images respect border radius */
 	overflow: hidden;
 
-	/* Vertical spacing for scroll-reveal effect */
-	margin-bottom: 80vh; /* Creates space for next item to scroll into view */
-
-	/* Remove margin from last item */
-	&:last-child {
-		margin-bottom: 0;
-	}
-
 	/**
 	 * Background overlay
 	 * Only rendered when overlay color is set
@@ -55,9 +47,9 @@
 	/**
 	 * Stacking effect - all cards at same position
 	 * Later cards appear on top (higher z-index)
-	 * Positioned at 20vh from top for better visual balance
+	 * Stick at top so items overlap as you scroll
 	 */
-	top: 20vh;
+	top: var(--dsg-scroll-accordion-sticky-offset, 15vh);
 
 	&:nth-child(1) {
 		z-index: 1;

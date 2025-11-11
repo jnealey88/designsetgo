@@ -13,6 +13,11 @@
 	// Ensure background images respect border radius
 	overflow: hidden;
 
+	// Allow specific layouts (like scroll accordions) to opt out of clipping
+	&.dsg-stack--allow-overflow {
+		overflow: visible;
+	}
+
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
 
