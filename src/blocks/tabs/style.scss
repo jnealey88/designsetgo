@@ -123,10 +123,9 @@
 			color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 		}
 
+		&:focus,
 		&:focus-visible {
-			outline: 2px solid var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
-			outline-offset: 2px;
-			border-radius: var(--dsg-tab-border-radius);
+			outline: none;
 		}
 
 		&.is-active {

@@ -62,10 +62,10 @@
 		font-weight: 500;
 		transition: all 0.2s ease;
 
-		// Remove default focus outline, add custom (only for keyboard users)
+		// Remove focus outline
+		&:focus,
 		&:focus-visible {
-			outline: 2px solid var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
-			outline-offset: 2px;
+			outline: none;
 		}
 
 		// Subtle hover effect
