@@ -7,7 +7,6 @@ export default function SlideSave({ attributes }) {
 		backgroundSize,
 		backgroundPosition,
 		backgroundRepeat,
-		enableOverlay,
 		overlayColor,
 		overlayOpacity,
 		contentVerticalAlign,
@@ -18,7 +17,7 @@ export default function SlideSave({ attributes }) {
 	// Same classes as edit.js - MUST MATCH EXACTLY
 	const slideClasses = classnames('dsg-slide', {
 		'dsg-slide--has-background': backgroundImage?.url,
-		'dsg-slide--has-overlay': enableOverlay,
+		'dsg-slide--has-overlay': overlayColor, // Show overlay if color is set
 	});
 
 	// Background image styles - MUST MATCH edit.js
@@ -31,8 +30,8 @@ export default function SlideSave({ attributes }) {
 			}
 		: {};
 
-	// Overlay styles
-	const overlayStyles = enableOverlay
+	// Overlay styles - only apply if overlayColor is set
+	const overlayStyles = overlayColor
 		? {
 				'--dsg-slide-overlay-color': overlayColor,
 				'--dsg-slide-overlay-opacity': String(overlayOpacity / 100),
@@ -67,7 +66,7 @@ export default function SlideSave({ attributes }) {
 
 	return (
 		<div {...blockProps}>
-			{enableOverlay && (
+			{overlayColor && (
 				<div
 					className="dsg-slide__overlay"
 					style={{

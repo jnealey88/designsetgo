@@ -88,6 +88,8 @@
 		"background": {
 			"backgroundImage": true,
 			"backgroundSize": true,
+			"backgroundPosition": true,
+			"backgroundRepeat": true,
 			"__experimentalDefaultControls": {
 				"backgroundImage": true
 			}

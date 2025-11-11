@@ -21,6 +21,36 @@
 	align-self: stretch !important;
 	margin-bottom: 2rem;
 
+	/* Ensure background images respect border radius in editor */
+	overflow: hidden !important;
+
+	/**
+	 * Background overlay for editor
+	 * Applied when overlay color is set
+	 */
+	&.dsg-scroll-accordion-item--has-overlay {
+
+		&::before {
+			content: '';
+			position: absolute !important;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: var(--dsg-overlay-color) !important;
+			opacity: var(--dsg-overlay-opacity, 0.8) !important;
+			pointer-events: none;
+			z-index: 0;
+			border-radius: inherit;
+		}
+
+		/* Ensure all content is above overlay */
+		> * {
+			position: relative;
+			z-index: 1;
+		}
+	}
+
 	/* Editor visual indicator */
 	&::after {
 		content: '';
@@ -33,7 +63,7 @@
 		opacity: 0.3;
 		pointer-events: none;
 		transition: opacity 0.2s ease;
-		z-index: 1;
+		z-index: 3; /* Above overlay */
 	}
 
 	&:hover::after {

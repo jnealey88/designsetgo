@@ -52,6 +52,10 @@
 			"type": "string",
 			"default": "sides"
 		},
+		"arrowVerticalPosition": {
+			"type": "string",
+			"default": "center"
+		},
 		"arrowColor": {
 			"type": "string",
 			"default": ""

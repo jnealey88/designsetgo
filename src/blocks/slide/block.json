@@ -29,17 +29,13 @@
 			"type": "string",
 			"default": "no-repeat"
 		},
-		"enableOverlay": {
-			"type": "boolean",
-			"default": false
-		},
 		"overlayColor": {
 			"type": "string",
-			"default": "#000000"
+			"default": ""
 		},
 		"overlayOpacity": {
 			"type": "number",
-			"default": 40
+			"default": 80
 		},
 		"contentVerticalAlign": {
 			"type": "string",

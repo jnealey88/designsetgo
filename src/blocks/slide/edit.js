@@ -6,11 +6,12 @@ import {
 	MediaUpload,
 	MediaUploadCheck,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
-	ToggleControl,
 	SelectControl,
 	RangeControl,
 	Button,
@@ -19,13 +20,17 @@ import {
 } from '@wordpress/components';
 import classnames from 'classnames';
 
-export default function SlideEdit({ attributes, setAttributes, context }) {
+export default function SlideEdit({
+	attributes,
+	setAttributes,
+	context,
+	clientId,
+}) {
 	const {
 		backgroundImage,
 		backgroundSize,
 		backgroundPosition,
 		backgroundRepeat,
-		enableOverlay,
 		overlayColor,
 		overlayOpacity,
 		contentVerticalAlign,
@@ -36,10 +41,13 @@ export default function SlideEdit({ attributes, setAttributes, context }) {
 	// Get context from parent slider
 	const styleVariation = context['designsetgo/slider/styleVariation'];
 
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
 	// Declaratively calculate classes
 	const slideClasses = classnames('dsg-slide', {
 		'dsg-slide--has-background': backgroundImage?.url,
-		'dsg-slide--has-overlay': enableOverlay,
+		'dsg-slide--has-overlay': overlayColor, // Show overlay if color is set
 		[`dsg-slide--${styleVariation}`]: styleVariation,
 	});
 
@@ -53,8 +61,8 @@ export default function SlideEdit({ attributes, setAttributes, context }) {
 			}
 		: {};
 
-	// Overlay styles
-	const overlayStyles = enableOverlay
+	// Overlay styles - only apply if overlayColor is set
+	const overlayStyles = overlayColor
 		? {
 				'--dsg-slide-overlay-color': overlayColor,
 				'--dsg-slide-overlay-opacity': String(overlayOpacity / 100),
@@ -133,6 +141,25 @@ export default function SlideEdit({ attributes, setAttributes, context }) {
 
 	return (
 		<>
+			{/* Color controls - appear in STYLES tab */}
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
+					title={__('Overlay Color', 'designsetgo')}
+					settings={[
+						{
+							label: __('Overlay Color', 'designsetgo'),
+							colorValue: overlayColor,
+							onColorChange: (color) =>
+								setAttributes({ overlayColor: color || '' }),
+							clearable: true,
+						},
+					]}
+					{...colorGradientSettings}
+				/>
+			</InspectorControls>
+
+			{/* Other controls - appear in SETTINGS tab */}
 			<InspectorControls>
 				<PanelBody
 					title={__('Background Image', 'designsetgo')}
@@ -296,52 +323,13 @@ export default function SlideEdit({ attributes, setAttributes, context }) {
 								__nextHasNoMarginBottom
 							/>
 
-							<hr
-								style={{
-									margin: '16px 0',
-									borderColor: '#ddd',
-								}}
-							/>
-
-							<ToggleControl
-								label={__('Enable Overlay', 'designsetgo')}
-								checked={enableOverlay}
-								onChange={(value) =>
-									setAttributes({ enableOverlay: value })
-								}
-								help={
-									enableOverlay
-										? __(
-												'Overlay applied to background',
-												'designsetgo'
-											)
-										: __('No overlay', 'designsetgo')
-								}
-								__nextHasNoMarginBottom
-							/>
-
-							{enableOverlay && (
+							{overlayColor && (
 								<>
-									<PanelColorGradientSettings
-										title={__(
-											'Overlay Color',
-											'designsetgo'
-										)}
-										settings={[
-											{
-												colorValue: overlayColor,
-												onColorChange: (value) =>
-													setAttributes({
-														overlayColor:
-															value || '#000000',
-													}),
-												label: __(
-													'Color',
-													'designsetgo'
-												),
-											},
-										]}
-										__experimentalIsRenderedInSidebar
+									<hr
+										style={{
+											margin: '16px 0',
+											borderColor: '#ddd',
+										}}
 									/>
 
 									<RangeControl
@@ -358,7 +346,7 @@ export default function SlideEdit({ attributes, setAttributes, context }) {
 										min={0}
 										max={100}
 										help={__(
-											'Opacity of the overlay',
+											'Set overlay color in the Styles tab to enable overlay',
 											'designsetgo'
 										)}
 										__next40pxDefaultSize
@@ -443,7 +431,7 @@ export default function SlideEdit({ attributes, setAttributes, context }) {
 			</InspectorControls>
 
 			<div {...blockProps}>
-				{enableOverlay && (
+				{overlayColor && (
 					<div
 						className="dsg-slide__overlay"
 						style={{

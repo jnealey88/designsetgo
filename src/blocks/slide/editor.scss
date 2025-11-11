@@ -51,8 +51,8 @@
 
 	// Editor: Better content area visibility
 	&__content {
-		// Ensure content is always editable
-		min-height: 200px;
+		// No min-height - let content determine size naturally
+		// The slider viewport height and content within determine the slide size
 
 		// Show placeholder for empty slides
 		&:empty::before {
@@ -74,17 +74,12 @@
 
 // Editor: Block toolbar adjustments
 .wp-block-designsetgo-slide {
-	// Ensure slide takes full height in editor
-	min-height: 300px;
+	// No min-height - let the slider viewport height and content determine the size
+	// This allows images and other content to display naturally without being forced beyond the viewport
 
 	// Remove vertical margins from blocks inside slides
 	.block-editor-block-list__block {
 		margin-top: 0;
 		margin-bottom: 0;
-	}
-
-	// Only apply min-height to the direct content layout, not nested blocks
-	> .block-editor-inner-blocks > .block-editor-block-list__layout {
-		min-height: 200px;
 	}
 }

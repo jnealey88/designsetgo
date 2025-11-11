@@ -51,6 +51,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
+		overlayColor,
 		layout,
 	} = attributes;
 
@@ -140,11 +141,16 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 	]);
 
 	// Build className
-	const blockClassName = 'dsg-stack';
+	const blockClassName = [
+		'dsg-stack',
+		overlayColor && 'dsg-stack--has-overlay',
+	]
+		.filter(Boolean)
+		.join(' ');
 
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	// WordPress handles flex layout through layout support and CSS classes
-	// We only add custom CSS variables for hover effects
+	// We only add custom CSS variables for hover effects and overlay
 	const blockProps = useBlockProps({
 		className: blockClassName,
 		style: {
@@ -159,6 +165,10 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 			}),
 			...(hoverButtonBackgroundColor && {
 				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+			}),
+			...(overlayColor && {
+				'--dsg-overlay-color': overlayColor,
+				'--dsg-overlay-opacity': '0.8',
 			}),
 		},
 	});
@@ -304,6 +314,20 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 									},
 								]
 							: []),
+					]}
+					{...colorGradientSettings}
+				/>
+				<ColorGradientSettingsDropdown
+					panelId={`${clientId}-overlay`}
+					title={__('Overlay', 'designsetgo')}
+					settings={[
+						{
+							label: __('Overlay Color', 'designsetgo'),
+							colorValue: overlayColor,
+							onColorChange: (color) =>
+								setAttributes({ overlayColor: color || '' }),
+							clearable: true,
+						},
 					]}
 					{...colorGradientSettings}
 				/>

@@ -48,7 +48,12 @@
 		},
 		"background": {
 			"backgroundImage": true,
-			"backgroundSize": true
+			"backgroundSize": true,
+			"backgroundPosition": true,
+			"backgroundRepeat": true,
+			"__experimentalDefaultControls": {
+				"backgroundImage": true
+			}
 		},
 		"typography": {
 			"fontSize": true,
@@ -113,6 +118,10 @@
 			"default": ""
 		},
 		"hoverButtonBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"overlayColor": {
 			"type": "string",
 			"default": ""
 		}

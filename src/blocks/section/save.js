@@ -24,12 +24,14 @@ export default function SectionSave({ attributes }) {
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
+		overlayColor,
 	} = attributes;
 
-	// Build className with conditional no-width-constraint class
+	// Build className with conditional no-width-constraint and overlay classes
 	const className = [
 		'dsg-stack',
 		!constrainWidth && 'dsg-no-width-constraint',
+		overlayColor && 'dsg-stack--has-overlay',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -49,6 +51,10 @@ export default function SectionSave({ attributes }) {
 			}),
 			...(hoverButtonBackgroundColor && {
 				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+			}),
+			...(overlayColor && {
+				'--dsg-overlay-color': overlayColor,
+				'--dsg-overlay-opacity': '0.8',
 			}),
 		},
 	});

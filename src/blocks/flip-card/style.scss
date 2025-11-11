@@ -13,25 +13,30 @@
 	&__container {
 		position: relative;
 		width: 100%;
+		// CRITICAL: Use CSS Grid to overlay both cards while both contribute to height
 		display: grid;
 		grid-template-columns: 1fr;
-		grid-template-rows: 1fr;
+		// Both cards in same grid cell, grid auto-sizes to tallest
+		grid-template-rows: minmax(0, 1fr);
 	}
 
 	// Both front and back - ensure proper box sizing
 	&__container > * {
 		width: 100%;
+		height: 100%; // Fill container so both cards match height
 		box-sizing: border-box;
 		transition: opacity var(--dsg-flip-duration, 0.6s) ease,
 			transform var(--dsg-flip-duration, 0.6s) ease;
+		// CRITICAL: Both occupy the same grid cell
 		grid-column: 1;
 		grid-row: 1;
+		// Allow content to overflow grid for height calculation
+		align-self: start;
 	}
 
 	// Front face (visible by default) - use exact class names
 	&__container > .wp-block-designsetgo-flip-card-front,
 	&__container > .dsg-flip-card__front {
-		position: relative;
 		opacity: 1;
 		transform: rotateY(0deg);
 		z-index: 2;
@@ -40,10 +45,6 @@
 	// Back face (hidden by default) - use exact class names
 	&__container > .wp-block-designsetgo-flip-card-back,
 	&__container > .dsg-flip-card__back {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
 		opacity: 0;
 		transform: rotateY(180deg);
 		z-index: 1;
@@ -52,22 +53,17 @@
 
 	// When flipped (JS adds this class)
 	&.is-flipped {
-		// Hide front - make it absolutely positioned
+		// Hide front
 		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
 		.dsg-flip-card__container > .dsg-flip-card__front {
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
 			opacity: 0;
 			transform: rotateY(-180deg);
 			pointer-events: none;
 		}
 
-		// Show back - make it relatively positioned
+		// Show back
 		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
 		.dsg-flip-card__container > .dsg-flip-card__back {
-			position: relative;
 			opacity: 1;
 			transform: rotateY(0deg);
 			z-index: 2;

@@ -10,11 +10,41 @@
 	// CRITICAL: Ensure width includes padding to prevent overflow
 	box-sizing: border-box;
 
+	// Ensure background images respect border radius in editor
+	overflow: hidden;
+
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
 
 	// Visual indicator in editor
 	position: relative;
+
+	/**
+	 * Background overlay for editor
+	 * Applied when overlay color is set
+	 */
+	&.dsg-stack--has-overlay {
+
+		&::before {
+			content: '';
+			position: absolute !important;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: var(--dsg-overlay-color) !important;
+			opacity: var(--dsg-overlay-opacity, 0.8) !important;
+			pointer-events: none;
+			z-index: 1;
+			border-radius: inherit;
+		}
+
+		/* Ensure content is above overlay */
+		> .dsg-stack__inner {
+			position: relative;
+			z-index: 2;
+		}
+	}
 
 	// CRITICAL: Inner container must be full width for layout to work
 	// When constrainWidth is enabled, inline styles will override with max-width

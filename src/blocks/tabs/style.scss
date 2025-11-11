@@ -338,6 +338,8 @@
 	 * Tab Style: Minimal
 	 */
 	&.dsg-tabs--minimal {
+		// Override defaults for minimal style - use light gray background with blue text
+		--dsg-tab-bg-active: rgba(0, 0, 0, 0.03);
 
 		.dsg-tabs__nav {
 			border-bottom: none;
@@ -353,9 +355,14 @@
 			}
 
 			&.is-active {
-				background: var(--dsg-tab-bg-active, rgba(0, 0, 0, 0.03));
+				background: var(--dsg-tab-bg-active);
 				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
+		}
+
+		// When user customizes background to a color (via inline styles), use white text for contrast
+		&[style*="--dsg-tab-bg-active"] .dsg-tabs__tab.is-active {
+			color: var(--wp--preset--color--base, #fff);
 		}
 	}
 

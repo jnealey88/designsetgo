@@ -32,6 +32,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 		showDots,
 		arrowStyle,
 		arrowPosition,
+		arrowVerticalPosition,
 		arrowColor,
 		arrowBackgroundColor,
 		arrowSize,
@@ -148,6 +149,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 		'data-show-dots': showDots,
 		'data-arrow-style': arrowStyle,
 		'data-arrow-position': arrowPosition,
+		'data-arrow-vertical-position': arrowVerticalPosition,
 		'data-dot-style': dotStyle,
 		'data-dot-position': dotPosition,
 		'data-effect': effect,
@@ -406,7 +408,10 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 							/>
 
 							<SelectControl
-								label={__('Arrow Position', 'designsetgo')}
+								label={__(
+									'Arrow Position (Horizontal)',
+									'designsetgo'
+								)}
 								value={arrowPosition}
 								options={[
 									{
@@ -424,6 +429,35 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 								]}
 								onChange={(value) =>
 									setAttributes({ arrowPosition: value })
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+
+							<SelectControl
+								label={__(
+									'Arrow Position (Vertical)',
+									'designsetgo'
+								)}
+								value={arrowVerticalPosition}
+								options={[
+									{
+										label: __('Top', 'designsetgo'),
+										value: 'top',
+									},
+									{
+										label: __('Center', 'designsetgo'),
+										value: 'center',
+									},
+									{
+										label: __('Bottom', 'designsetgo'),
+										value: 'bottom',
+									},
+								]}
+								onChange={(value) =>
+									setAttributes({
+										arrowVerticalPosition: value,
+									})
 								}
 								__next40pxDefaultSize
 								__nextHasNoMarginBottom

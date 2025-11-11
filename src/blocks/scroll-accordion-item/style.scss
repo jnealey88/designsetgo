@@ -13,6 +13,17 @@
 	/* NO opacity - fully opaque at all times */
 	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
+	/* Ensure background images respect border radius */
+	overflow: hidden;
+
+	/* Vertical spacing for scroll-reveal effect */
+	margin-bottom: 80vh; /* Creates space for next item to scroll into view */
+
+	/* Remove margin from last item */
+	&:last-child {
+		margin-bottom: 0;
+	}
+
 	/**
 	 * Background overlay
 	 * Only rendered when overlay color is set
@@ -31,6 +42,7 @@
 			opacity: var(--dsg-overlay-opacity, 0.8);
 			pointer-events: none; /* Allow clicks to pass through to content */
 			z-index: 1; /* Above background image but below content */
+			border-radius: inherit; /* Match parent border radius */
 		}
 
 		/* Ensure content is above overlay */

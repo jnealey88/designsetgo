@@ -9,7 +9,12 @@
 	"keywords": ["scroll", "item", "panel", "section"],
 	"textdomain": "designsetgo",
 	"parent": ["designsetgo/scroll-accordion"],
-	"attributes": {},
+	"attributes": {
+		"overlayColor": {
+			"type": "string",
+			"default": ""
+		}
+	},
 	"supports": {
 		"anchor": true,
 		"align": ["left", "center", "right", "wide", "full"],
@@ -22,6 +27,15 @@
 			"background": true,
 			"text": true,
 			"gradients": true
+		},
+		"background": {
+			"backgroundImage": true,
+			"backgroundSize": true,
+			"backgroundPosition": true,
+			"backgroundRepeat": true,
+			"__experimentalDefaultControls": {
+				"backgroundImage": true
+			}
 		},
 		"typography": {
 			"fontSize": true,
