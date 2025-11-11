@@ -53,8 +53,8 @@ function addMaxWidthAttribute(settings, name) {
 	// Add constrainWidth and contentWidth for all container blocks
 	const isContainerBlock = [
 		'designsetgo/container',
-		'designsetgo/stack',
-		'designsetgo/flex',
+		'designsetgo/section', // Section block (vertical stack)
+		'designsetgo/row', // Row block (horizontal flex)
 		'designsetgo/grid',
 	].includes(name);
 
@@ -104,11 +104,11 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 		const { attributes, setAttributes, name } = props;
 		const { dsgMaxWidth, constrainWidth, contentWidth } = attributes;
 
-		// Check if this is a container block (Stack/Flex/Grid/Container)
+		// Check if this is a container block (Section/Row/Grid/Container)
 		const isContainerBlock = [
 			'designsetgo/container',
-			'designsetgo/stack',
-			'designsetgo/flex',
+			'designsetgo/section', // Section block (vertical stack)
+			'designsetgo/row', // Row block (horizontal flex)
 			'designsetgo/grid',
 		].includes(name);
 
@@ -252,8 +252,8 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 		// Check if this is a container block
 		const isContainerBlock = [
 			'designsetgo/container',
-			'designsetgo/stack',
-			'designsetgo/flex',
+			'designsetgo/section', // Section block (vertical stack)
+			'designsetgo/row', // Row block (horizontal flex)
 			'designsetgo/grid',
 		].includes(name);
 
@@ -367,8 +367,8 @@ function applyMaxWidthStyles(props, blockType, attributes) {
 	// Skip container blocks - they handle width constraints internally via inner div
 	const isContainerBlock = [
 		'designsetgo/container',
-		'designsetgo/stack',
-		'designsetgo/flex',
+		'designsetgo/section', // Section block (vertical stack)
+		'designsetgo/row', // Row block (horizontal flex)
 		'designsetgo/grid',
 	].includes(blockType.name);
 

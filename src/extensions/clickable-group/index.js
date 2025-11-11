@@ -2,7 +2,7 @@
  * Clickable Group Extension
  *
  * Makes container blocks clickable with link functionality.
- * Works with core/group and custom container blocks (Stack, Flex, Grid).
+ * Works with core/group and custom container blocks (Section, Row, Grid).
  * Perfect for card designs where the entire container should be clickable.
  *
  * @package
@@ -33,8 +33,8 @@ import './frontend';
  */
 const SUPPORTED_BLOCKS = [
 	'core/group',
-	'designsetgo/stack',
-	'designsetgo/flex',
+	'designsetgo/section', // Section block (vertical stack)
+	'designsetgo/row', // Row block (horizontal flex)
 	'designsetgo/grid',
 ];
 

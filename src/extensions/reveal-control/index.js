@@ -12,8 +12,8 @@ import { PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const CONTAINER_BLOCKS = [
-	'designsetgo/stack',
-	'designsetgo/flex',
+	'designsetgo/section', // Section block (vertical stack)
+	'designsetgo/row', // Row block (horizontal flex)
 	'designsetgo/grid',
 	'designsetgo/reveal',
 ];
