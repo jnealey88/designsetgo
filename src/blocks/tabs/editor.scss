@@ -192,12 +192,11 @@
 
 	/**
 	 * Tab Style: Default
+	 * Simple text-only style with no borders or backgrounds
 	 */
 	&.dsg-tabs--default {
 
 		.dsg-tabs__tab {
-			border-bottom: 3px solid transparent;
-			margin-bottom: -2px;
 
 			&:hover:not(.is-active) {
 				background: transparent;
@@ -206,7 +205,6 @@
 
 			&.is-active {
 				background: transparent;
-				border-bottom-color: var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
 				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}

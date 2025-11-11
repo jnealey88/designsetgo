@@ -29,7 +29,7 @@
 	// CSS custom properties for easy customization
 	--dsg-tabs-gap: 8px;
 	--dsg-tab-padding: var(--wp--preset--spacing--md, 1rem);
-	--dsg-tab-bg: var(--wp--preset--color--base, #fff);
+	--dsg-tab-bg: transparent;
 	--dsg-tab-color: var(--wp--preset--color--contrast, #000);
 	--dsg-tab-bg-active: var(--wp--preset--color--accent-2, #2563eb);
 	--dsg-tab-color-active: var(--wp--preset--color--accent-2, #2563eb);
@@ -239,12 +239,11 @@
 
 	/**
 	 * Tab Style: Default
+	 * Simple text-only style with no borders or backgrounds
 	 */
 	&.dsg-tabs--default {
 
 		.dsg-tabs__tab {
-			border-bottom: 3px solid transparent;
-			margin-bottom: -2px;
 
 			&:hover:not(.is-active) {
 				background: transparent;
@@ -253,7 +252,6 @@
 
 			&.is-active {
 				background: transparent;
-				border-bottom-color: var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
 				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
