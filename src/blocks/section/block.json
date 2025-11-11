@@ -76,7 +76,8 @@
 	},
 	"attributes": {
 		"align": {
-			"type": "string"
+			"type": "string",
+			"default": "full"
 		},
 		"constrainWidth": {
 			"type": "boolean",
