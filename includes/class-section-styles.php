@@ -10,6 +10,11 @@
 
 namespace DesignSetGo;
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class Section_Styles
  *

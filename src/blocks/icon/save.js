@@ -7,6 +7,26 @@
 import { useBlockProps } from '@wordpress/block-editor';
 import { getIcon } from './utils/svg-icons';
 
+/**
+ * Sanitize URL to prevent XSS attacks
+ *
+ * @param {string} url URL to sanitize
+ * @return {string} Sanitized URL or empty string if dangerous
+ */
+function sanitizeUrl(url) {
+	if (!url || typeof url !== 'string') {
+		return '';
+	}
+
+	// Block dangerous protocols
+	const dangerousProtocols = /^(javascript|data|vbscript|file|about):/i;
+	if (dangerousProtocols.test(url.trim())) {
+		return '';
+	}
+
+	return url;
+}
+
 export default function IconSave({ attributes }) {
 	const {
 		icon,
@@ -84,11 +104,14 @@ export default function IconSave({ attributes }) {
 		</div>
 	);
 
+	// Sanitize URL for security
+	const safeUrl = sanitizeUrl(linkUrl);
+
 	return (
 		<div {...blockProps}>
-			{linkUrl ? (
+			{safeUrl ? (
 				<a
-					href={linkUrl}
+					href={safeUrl}
 					target={linkTarget}
 					rel={
 						linkTarget === '_blank'

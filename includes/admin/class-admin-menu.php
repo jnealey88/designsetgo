@@ -10,6 +10,11 @@
 
 namespace DesignSetGo\Admin;
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Admin Menu class
  */
@@ -66,7 +71,7 @@ class Admin_Menu {
 		);
 
 		// Note: Form Submissions is automatically added by the custom post type
-		// registration in Form_Submissions class (show_in_menu => 'designsetgo')
+		// registration in Form_Submissions class (show_in_menu => 'designsetgo').
 
 		// Settings.
 		add_submenu_page(
@@ -120,6 +125,7 @@ class Admin_Menu {
 			$reordered[] = $item;
 		}
 
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required for menu reordering.
 		$submenu['designsetgo'] = $reordered;
 	}
 

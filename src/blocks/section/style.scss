@@ -14,12 +14,9 @@
 	transition: background-color 0.3s ease;
 
 	// CRITICAL: Inner container must be full width for layout to work
-	// Defaults to theme's content width, but inline styles will override when user sets custom width
+	// Width constraints are applied via inline styles when constrainWidth is enabled
 	.dsg-stack__inner {
 		width: 100%;
-		max-width: var(--wp--style--global--content-size, 1140px);
-		margin-left: auto;
-		margin-right: auto;
 	}
 
 	// CRITICAL: Disable float for all children in flex layout

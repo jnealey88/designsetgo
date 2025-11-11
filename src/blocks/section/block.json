@@ -80,7 +80,7 @@
 		},
 		"constrainWidth": {
 			"type": "boolean",
-			"default": false
+			"default": true
 		},
 		"contentWidth": {
 			"type": "string",

@@ -9,6 +9,31 @@
  * @since 1.0.0
  */
 
+/**
+ * Validate URL to prevent XSS attacks
+ *
+ * @param {string} url URL to validate
+ * @return {boolean} True if URL is safe
+ */
+function isValidHttpUrl(url) {
+	if (!url || typeof url !== 'string') {
+		return false;
+	}
+
+	// Trim whitespace
+	url = url.trim();
+
+	// Block dangerous protocols
+	const dangerousProtocols = /^(javascript|data|vbscript|file|about):/i;
+	if (dangerousProtocols.test(url)) {
+		return false;
+	}
+
+	// Allow relative URLs, http, https, mailto, tel
+	const safePattern = /^(https?:\/\/|mailto:|tel:|\/|\.\/|\.\.\/|#)/i;
+	return safePattern.test(url);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 	// Find all clickable groups
 	const clickableGroups = document.querySelectorAll('.dsg-clickable');
@@ -20,8 +45,20 @@ document.addEventListener('DOMContentLoaded', function () {
 			return;
 		}
 
+		// SECURITY: Validate URL before using it
+		if (!isValidHttpUrl(linkUrl)) {
+			// eslint-disable-next-line no-console
+			if (window.console && console.warn) {
+				// eslint-disable-next-line no-console
+				console.warn(
+					'DesignSetGo: Blocked potentially unsafe URL:',
+					linkUrl
+				);
+			}
+			return;
+		}
+
 		const linkTarget = group.getAttribute('data-link-target');
-		const linkRel = group.getAttribute('data-link-rel');
 
 		// Make the cursor show it's clickable
 		group.style.cursor = 'pointer';
@@ -40,19 +77,10 @@ document.addEventListener('DOMContentLoaded', function () {
 				target.closest('button');
 
 			if (!isInteractive) {
-				// Build rel attribute for security
-				let relValue = linkRel || '';
-				if (linkTarget === '_blank') {
-					// Add noopener noreferrer for security when opening in new tab
-					relValue = relValue
-						? `${relValue} noopener noreferrer`
-						: 'noopener noreferrer';
-				}
-
 				// Navigate to URL
 				if (linkTarget === '_blank') {
 					const newWindow = window.open(linkUrl, '_blank');
-					if (newWindow && relValue) {
+					if (newWindow) {
 						newWindow.opener = null; // Security: prevent window.opener access
 					}
 				} else {
