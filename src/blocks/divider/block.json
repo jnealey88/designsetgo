@@ -33,10 +33,10 @@
 			}
 		},
 		"color": {
-			"background": true,
-			"gradient": true,
+			"text": true,
+			"gradient": false,
 			"__experimentalDefaultControls": {
-				"background": true
+				"text": true
 			}
 		},
 		"dimensions": {

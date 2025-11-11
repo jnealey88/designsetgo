@@ -16,6 +16,10 @@
 	// Block Supports automatically applies color to this wrapper
 	// All child elements use currentColor to inherit the color
 
+	// CRITICAL: Ensure divider takes full width of parent container
+	// Without this, divider can collapse to 0 width inside flex containers
+	width: 100%;
+
 	// Container centers the divider
 	&__container {
 		display: flex;
@@ -260,13 +264,9 @@
 	// ========================================
 	// ACCESSIBILITY
 	// ========================================
-	// Ensure sufficient contrast
+	// Ensure sufficient contrast and proper color application
 	&[style*='color'] {
-		// Color applied via Block Supports
-	}
-
-	// Hidden from screen readers (decorative element)
-	&[role='separator'] {
-		aria-hidden: true;
+		// Text color applied via Block Supports
+		// Divider line inherits via currentcolor
 	}
 }

@@ -10,6 +10,10 @@
 	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
 	// (Main styles are in style.scss and automatically applied in editor)
 
+	// CRITICAL: Ensure divider takes full width of parent container
+	// Without this, divider can collapse to 0 width inside flex containers
+	width: 100%;
+
 	// Editor-specific styles to improve UX
 	position: relative;
 	min-height: 20px; // Ensure block is selectable even with thin dividers
