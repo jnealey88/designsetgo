@@ -22,6 +22,8 @@
 @use '../blocks/blobs/editor' as blobs;
 @use '../blocks/slider/editor' as slider;
 @use '../blocks/slide/editor' as slide;
+@use '../blocks/scroll-accordion/editor' as scroll-accordion;
+@use '../blocks/scroll-accordion-item/editor' as scroll-accordion-item;
 @use '../blocks/form-builder/editor' as form-builder;
 
 // Editor-specific styles

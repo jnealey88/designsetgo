@@ -21,7 +21,7 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: 0;
+		gap: 0; /* No gap - items stack naturally with sticky positioning */
 		width: 100%;
 
 		/* alignItems controlled via inline style from save.js */
