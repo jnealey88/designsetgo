@@ -269,13 +269,13 @@
 		}
 
 		.dsg-tabs__tab {
-			background: rgba(0, 0, 0, 0.05);
+			background: var(--dsg-tab-bg, rgba(0, 0, 0, 0.05));
 			border-radius: var(--dsg-tab-border-radius);
 			border-bottom: none;
 			margin-bottom: 0;
 
 			&:hover:not(.is-active) {
-				background: rgba(0, 0, 0, 0.1);
+				background: var(--dsg-tab-bg, rgba(0, 0, 0, 0.1));
 				color: var(--wp--preset--color--accent-2, #2563eb);
 			}
 
@@ -353,7 +353,7 @@
 			}
 
 			&.is-active {
-				background: rgba(0, 0, 0, 0.03);
+				background: var(--dsg-tab-bg-active, rgba(0, 0, 0, 0.03));
 				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
