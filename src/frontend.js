@@ -33,7 +33,4 @@ import './extensions/clickable-group/frontend.js';
 // Background video - video background initialization
 import './extensions/background-video/frontend.js';
 
-// Overlay - overlay initialization
-import './extensions/overlay/frontend.js';
-
 // Additional frontend scripts can be imported here

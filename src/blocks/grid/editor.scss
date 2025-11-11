@@ -193,9 +193,10 @@
 	// This prevents hover bleeding to adjacent containers that don't have hover settings
 	&:hover {
 		// Only apply background if hover background is set
-		// !important needed to override WordPress color classes (e.g., .has-accent-2-background-color)
+		// !important needed to override WordPress color classes and gradients
+		// Use 'background' instead of 'background-color' to override gradients
 		&[style*="--dsg-hover-bg-color"] {
-			background-color: var(--dsg-hover-bg-color) !important;
+			background: var(--dsg-hover-bg-color) !important;
 		}
 
 		// Only apply text color if hover text color is set

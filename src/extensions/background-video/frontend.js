@@ -41,7 +41,6 @@
 
 		videoBlocks.forEach((block) => {
 			const videoUrl = block.getAttribute('data-video-url');
-			const posterUrl = block.getAttribute('data-video-poster');
 			const muted = block.getAttribute('data-video-muted') === 'true';
 			const loop = block.getAttribute('data-video-loop') === 'true';
 			const autoplay =
@@ -84,6 +83,7 @@
 			video.src = videoUrl;
 
 			// Validate and set poster URL if provided.
+			const posterUrl = block.getAttribute('data-video-poster');
 			if (posterUrl && isValidVideoUrl(posterUrl)) {
 				video.poster = posterUrl;
 			}
@@ -97,6 +97,23 @@
 
 			// Append video to wrapper
 			videoWrapper.appendChild(video);
+
+			// Add overlay if color is set
+			const overlayColor = block.getAttribute('data-video-overlay-color');
+			if (overlayColor) {
+				const overlay = document.createElement('div');
+				overlay.className = 'dsg-video-overlay';
+				overlay.style.position = 'absolute';
+				overlay.style.top = '0';
+				overlay.style.left = '0';
+				overlay.style.width = '100%';
+				overlay.style.height = '100%';
+				overlay.style.backgroundColor = overlayColor;
+				overlay.style.opacity = '0.7';
+				overlay.style.zIndex = '1';
+				overlay.style.pointerEvents = 'none';
+				videoWrapper.appendChild(overlay);
+			}
 
 			// Ensure block has position relative
 			const blockPosition = window.getComputedStyle(block).position;

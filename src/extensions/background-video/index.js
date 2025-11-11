@@ -14,6 +14,10 @@ import {
 	InspectorControls,
 	MediaUpload,
 	MediaUploadCheck,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import { PanelBody, Button, ToggleControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
@@ -22,9 +26,9 @@ import { Fragment } from '@wordpress/element';
  * Container blocks that support background video
  */
 const ALLOWED_BLOCKS = [
-	'designsetgo/flex',
+	'designsetgo/section', // Section block (vertical stack)
+	'designsetgo/row', // Row block (horizontal flex)
 	'designsetgo/grid',
-	'designsetgo/stack',
 	'designsetgo/reveal',
 	'designsetgo/flip-card',
 	'designsetgo/flip-card-front',
@@ -80,6 +84,10 @@ function addBackgroundVideoAttributes(settings, name) {
 				type: 'boolean',
 				default: true,
 			},
+			dsgVideoOverlayColor: {
+				type: 'string',
+				default: '',
+			},
 		},
 	};
 }
@@ -95,7 +103,7 @@ addFilter(
  */
 const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
-		const { attributes, setAttributes, name } = props;
+		const { attributes, setAttributes, name, clientId } = props;
 		const {
 			dsgVideoUrl,
 			dsgVideoPoster,
@@ -103,7 +111,10 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 			dsgVideoLoop,
 			dsgVideoAutoplay,
 			dsgVideoMobileHide,
+			dsgVideoOverlayColor,
 		} = attributes;
+
+		const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 		if (!ALLOWED_BLOCKS.includes(name)) {
 			return <BlockEdit {...props} />;
@@ -112,6 +123,30 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 		return (
 			<Fragment>
 				<BlockEdit {...props} />
+				{dsgVideoUrl && (
+					<InspectorControls group="color">
+						<ColorGradientSettingsDropdown
+							panelId={clientId}
+							title={__('Video Overlay', 'designsetgo')}
+							settings={[
+								{
+									label: __(
+										'Video Overlay Color',
+										'designsetgo'
+									),
+									colorValue: dsgVideoOverlayColor,
+									onColorChange: (color) => {
+										setAttributes({
+											dsgVideoOverlayColor: color || '',
+										});
+									},
+									clearable: true,
+								},
+							]}
+							{...colorGradientSettings}
+						/>
+					</InspectorControls>
+				)}
 				<InspectorControls>
 					<PanelBody
 						title={__('Background Video', 'designsetgo')}
@@ -132,7 +167,9 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 											<Fragment>
 												<video
 													src={dsgVideoUrl}
-													poster={dsgVideoPoster}
+													autoPlay
+													loop
+													muted
 													style={{
 														width: '100%',
 														maxHeight: '200px',
@@ -201,7 +238,7 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 											value={dsgVideoPoster}
 											render={({ open }) => (
 												<div className="dsg-poster-upload">
-													<label
+													<div
 														style={{
 															display: 'block',
 															marginBottom: '8px',
@@ -215,7 +252,7 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 															'Poster Image (Optional)',
 															'designsetgo'
 														)}
-													</label>
+													</div>
 													{dsgVideoPoster ? (
 														<Fragment>
 															<img
@@ -366,11 +403,27 @@ addFilter(
 const withBackgroundVideoEdit = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, name } = props;
-		const { dsgVideoUrl, dsgVideoPoster } = attributes;
+		const { dsgVideoUrl, dsgVideoPoster, dsgVideoOverlayColor } =
+			attributes;
 
 		if (!ALLOWED_BLOCKS.includes(name) || !dsgVideoUrl) {
 			return <BlockListBlock {...props} />;
 		}
+
+		// Apply 70% opacity to overlay color if set
+		const overlayStyle = dsgVideoOverlayColor
+			? {
+					backgroundColor: dsgVideoOverlayColor,
+					opacity: 0.7,
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					width: '100%',
+					height: '100%',
+					zIndex: 1,
+					pointerEvents: 'none',
+				}
+			: null;
 
 		return (
 			<div className="dsg-has-video-background">
@@ -398,9 +451,9 @@ const withBackgroundVideoEdit = createHigherOrderComponent((BlockListBlock) => {
 							width: '100%',
 							height: '100%',
 							objectFit: 'cover',
-							opacity: 0.7,
 						}}
 					/>
+					{overlayStyle && <div style={overlayStyle} />}
 				</div>
 				<BlockListBlock {...props} />
 			</div>
@@ -416,9 +469,11 @@ addFilter(
 
 /**
  * Add background video classes and data attributes to save
- * @param props
- * @param blockType
- * @param attributes
+ *
+ * @param {Object} props      - Block props.
+ * @param {Object} blockType  - Block type.
+ * @param {Object} attributes - Block attributes.
+ * @return {Object} Modified props.
  */
 function addBackgroundVideoSaveProps(props, blockType, attributes) {
 	const { dsgVideoUrl } = attributes;
@@ -438,6 +493,7 @@ function addBackgroundVideoSaveProps(props, blockType, attributes) {
 		'data-video-mobile-hide': attributes.dsgVideoMobileHide
 			? 'true'
 			: 'false',
+		'data-video-overlay-color': attributes.dsgVideoOverlayColor || '',
 	};
 }
 

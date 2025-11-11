@@ -31,9 +31,6 @@ import './extensions/custom-css';
 // Background Video - adds background video to all blocks
 import './extensions/background-video';
 
-// Overlay - adds color overlay to all blocks
-import './extensions/overlay';
-
 // Grid Span - adds column span control to blocks inside Grid containers
 import './extensions/grid-span';
 

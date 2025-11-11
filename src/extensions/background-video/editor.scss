@@ -29,6 +29,17 @@
 			height: 100%;
 			object-fit: cover;
 		}
+
+		// Video overlay color (70% opacity applied via inline styles)
+		.dsg-video-overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			pointer-events: none;
+		}
 	}
 
 	// CRITICAL: Ensure content is above video - must match style.scss
@@ -44,7 +55,7 @@
 		top: 8px;
 		right: 8px;
 		background: rgba(37, 99, 235, 0.9);
-		color: white;
+		color: #fff;
 		padding: 4px 8px;
 		border-radius: 4px;
 		font-size: 11px;

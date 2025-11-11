@@ -11,7 +11,6 @@
 
 // Extension Editor Styles (must be after variables/mixins but before other rules)
 @use '../extensions/background-video/editor' as background-video;
-@use '../extensions/overlay/editor' as overlay;
 @use '../extensions/grid-span/editor' as grid-span;
 @use '../extensions/reveal-control/editor' as reveal-control;
 
