@@ -80,6 +80,21 @@
 		}
 	}
 
+	// CRITICAL: When Grid is nested inside Section/Stack/Flex, force full width
+	// WordPress applies constrained layout which can limit width
+	// This ensures nested Grids take full width of their parent container
+	.dsg-stack__inner > &,
+	.dsg-flex__inner > &,
+	.dsg-grid__inner > & {
+		width: 100% !important;
+
+		.dsg-grid__inner {
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+	}
+
 	// Responsive column classes
 	// Desktop columns are set via inline styles (default)
 	// Tablet and mobile columns use media queries
@@ -110,8 +125,9 @@
 	// This prevents hover bleeding to adjacent containers that don't have hover settings
 	&:hover {
 		// Only apply background if hover background is set
+		// !important needed to override WordPress color classes (e.g., .has-accent-2-background-color)
 		&[style*="--dsg-hover-bg-color"] {
-			background-color: var(--dsg-hover-bg-color);
+			background-color: var(--dsg-hover-bg-color) !important;
 		}
 
 		// Only apply text color if hover text color is set

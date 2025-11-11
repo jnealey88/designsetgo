@@ -134,6 +134,25 @@
 		}
 	}
 
+	// CRITICAL: When Grid is nested inside Section/Stack/Flex, force full width (EDITOR)
+	// WordPress applies constrained layout which can limit width
+	// This ensures nested Grids take full width of their parent container
+	// In editor, blocks are wrapped in [data-block] elements
+	.dsg-stack__inner > &,
+	.dsg-stack__inner > [data-block] &,
+	.dsg-flex__inner > &,
+	.dsg-flex__inner > [data-block] &,
+	.dsg-grid__inner > &,
+	.dsg-grid__inner > [data-block] & {
+		width: 100% !important;
+
+		.dsg-grid__inner {
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+	}
+
 	// Show outline when selected (editor-only)
 	&.is-selected {
 		outline: 1px dashed rgba(37, 99, 235, 0.3);
@@ -174,8 +193,9 @@
 	// This prevents hover bleeding to adjacent containers that don't have hover settings
 	&:hover {
 		// Only apply background if hover background is set
+		// !important needed to override WordPress color classes (e.g., .has-accent-2-background-color)
 		&[style*="--dsg-hover-bg-color"] {
-			background-color: var(--dsg-hover-bg-color);
+			background-color: var(--dsg-hover-bg-color) !important;
 		}
 
 		// Only apply text color if hover text color is set

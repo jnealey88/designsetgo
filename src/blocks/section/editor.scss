@@ -22,6 +22,25 @@
 		width: 100%;
 	}
 
+	// CRITICAL: When Section is nested inside another container, force full width (EDITOR)
+	// WordPress applies constrained layout which can limit width
+	// This ensures nested Sections take full width of their parent container
+	// In editor, blocks are wrapped in [data-block] elements
+	.dsg-stack__inner > &,
+	.dsg-stack__inner > [data-block] &,
+	.dsg-flex__inner > &,
+	.dsg-flex__inner > [data-block] &,
+	.dsg-grid__inner > &,
+	.dsg-grid__inner > [data-block] & {
+		width: 100% !important;
+
+		.dsg-stack__inner {
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+	}
+
 	// CRITICAL: Disable float for all children in flex layout (must match style.scss)
 	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
 	// but float should not work inside flex containers
@@ -68,8 +87,9 @@
 	// CRITICAL: Only apply hover when variables are actually set on THIS element
 	&:hover {
 		// Only apply background if hover background is set
+		// !important needed to override WordPress color classes (e.g., .has-accent-2-background-color)
 		&[style*="--dsg-hover-bg-color"] {
-			background-color: var(--dsg-hover-bg-color);
+			background-color: var(--dsg-hover-bg-color) !important;
 		}
 
 		// Only apply text color if hover text color is set

@@ -22,6 +22,25 @@
 		width: 100%;
 	}
 
+	// CRITICAL: When Row/Flex is nested inside another container, force full width (EDITOR)
+	// WordPress applies constrained layout which can limit width
+	// This ensures nested Rows take full width of their parent container
+	// In editor, blocks are wrapped in [data-block] elements
+	.dsg-stack__inner > &,
+	.dsg-stack__inner > [data-block] &,
+	.dsg-flex__inner > &,
+	.dsg-flex__inner > [data-block] &,
+	.dsg-grid__inner > &,
+	.dsg-grid__inner > [data-block] & {
+		width: 100% !important;
+
+		.dsg-flex__inner {
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+	}
+
 	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
 	// Fix flex children behavior
 	// With two-div structure, flex children are inside .dsg-flex__inner
