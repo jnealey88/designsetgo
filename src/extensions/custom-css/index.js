@@ -214,9 +214,9 @@ addFilter(
 
 /**
  * Add custom CSS class to block wrapper on frontend
- * @param props
- * @param blockType
- * @param attributes
+ * @param {Object} props      - Block props
+ * @param {Object} blockType  - Block type
+ * @param {Object} attributes - Block attributes
  */
 function applyCustomCSSClass(props, blockType, attributes) {
 	const { dsgCustomCSS } = attributes;
@@ -251,7 +251,9 @@ function hashCode(str) {
 	let hash = 0;
 	for (let i = 0; i < str.length; i++) {
 		const char = str.charCodeAt(i);
+		// eslint-disable-next-line no-bitwise
 		hash = (hash << 5) - hash + char;
+		// eslint-disable-next-line no-bitwise
 		hash = hash & hash; // Convert to 32bit integer
 	}
 	return Math.abs(hash).toString(36);

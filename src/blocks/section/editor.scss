@@ -96,16 +96,16 @@
 	// CRITICAL: Disable float for all children in flex layout (must match style.scss)
 	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
 	// but float should not work inside flex containers
+	// NOTE: .is-layout-flex is on the dsg-stack__inner element, not the outer wrapper
 	// In editor, children are wrapped in [data-block] elements
-	// With two-div structure: .dsg-stack.is-layout-flex > .dsg-stack__inner > [data-block]
-	&.is-layout-flex .dsg-stack__inner > *,
-	&.is-layout-flex .dsg-stack__inner > [data-block] > * {
+	.dsg-stack__inner.is-layout-flex > *,
+	.dsg-stack__inner.is-layout-flex > [data-block] > * {
 		float: none !important;
 	}
 
 	// CRITICAL: In editor, blocks are wrapped in [data-block] elements inside .dsg-stack__inner
-	// Layout class is on outer .dsg-stack, not on .dsg-stack__inner
-	&.is-layout-flex .dsg-stack__inner > [data-block] {
+	// NOTE: .is-layout-flex is on the dsg-stack__inner element, not the outer wrapper
+	.dsg-stack__inner.is-layout-flex > [data-block] {
 		// Auto width by default for alignment to work
 		width: auto;
 		max-width: 100%;
@@ -124,8 +124,72 @@
 		&[data-type="designsetgo/section"],
 		&[data-type="designsetgo/row"],
 		&[data-type="designsetgo/stack"],
-		&[data-type="designsetgo/flex"] {
+		&[data-type="designsetgo/flex"],
+		&[data-type="designsetgo/tabs"],
+		&[data-type="designsetgo/accordion"],
+		&[data-type="designsetgo/scroll-marquee"] {
 			width: 100%;
+
+			> :where(
+					.wp-block-heading,
+					.wp-block-paragraph,
+					.wp-block-group,
+					.wp-block-image,
+					.wp-block-video,
+					.wp-block-embed,
+					.wp-block-table,
+					.wp-block-list,
+					.dsg-grid,
+					.wp-block-designsetgo-grid,
+					.dsg-stack,
+					.wp-block-designsetgo-stack,
+					.dsg-flex,
+					.wp-block-designsetgo-flex,
+					.wp-block-designsetgo-row,
+					.dsg-tabs,
+					.wp-block-designsetgo-tabs,
+					.dsg-accordion,
+					.wp-block-designsetgo-accordion,
+					.dsg-scroll-marquee,
+					.wp-block-designsetgo-scroll-marquee
+				):not(.alignleft):not(.alignright):not(.alignfull):not(.alignwide) {
+				width: 100% !important;
+				max-width: none !important;
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+		}
+
+		// Old group structure (pre-6.0) with __inner-container
+		&[data-type="core/group"]
+			> .wp-block-group
+			> .wp-block-group__inner-container {
+			width: 100% !important;
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+
+		&[data-type="core/group"]
+			> .wp-block-group.wp-block-group-is-layout-constrained
+			> .wp-block-group__inner-container {
+			width: 100% !important;
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+
+		// Modern group structure (6.0+) without __inner-container
+		// Target all layout types: flow, constrained, flex, grid
+		// The .wp-block-group class is on the SAME element as data-type="core/group"
+		&[data-type="core/group"].wp-block-group {
+			width: 100% !important;
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+
+			// Ensure the block takes full width regardless of content
+			min-width: 100% !important;
 		}
 	}
 
@@ -169,9 +233,128 @@
 		> .dsg-pill,
 		> .wp-block-designsetgo-pill,
 		> .wp-block-button,
-		> .wp-block-buttons {
+		> .wp-block-buttons,
+		> .dsg-icon-button,
+		> .wp-block-designsetgo-icon-button {
 			width: auto !important;
 			max-width: none !important;
+		}
+	}
+}
+
+// Text alignment helpers for inline-width children (editor)
+.dsg-stack,
+.wp-block-designsetgo-stack {
+
+	&,
+	&.has-text-align-left,
+	&[style*='text-align:left'] {
+
+		.dsg-stack__inner.is-layout-flex
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+			align-self: flex-start;
+		}
+	}
+
+	&.has-text-align-center,
+	&[style*='text-align:center'] {
+
+		.dsg-stack__inner.is-layout-flex
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+			align-self: center;
+		}
+	}
+
+	&.has-text-align-right,
+	&[style*='text-align:right'] {
+
+		.dsg-stack__inner.is-layout-flex
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+			align-self: flex-end;
+		}
+	}
+
+	.dsg-stack__inner.is-layout-flex {
+
+		&.is-content-justification-center {
+
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+				align-self: center;
+			}
+		}
+
+		&.is-content-justification-right {
+
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+				align-self: flex-end;
+			}
+		}
+
+		&.is-content-justification-left {
+
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+				align-self: flex-start;
+			}
+		}
+
+		> .aligncenter {
+			align-self: center !important;
+		}
+
+		> .alignright {
+			align-self: flex-end !important;
+		}
+
+		> .alignleft {
+			align-self: flex-start !important;
+		}
+
+		> .alignwide,
+		> .alignfull {
+			align-self: stretch !important;
+			width: 100% !important;
 		}
 	}
 }

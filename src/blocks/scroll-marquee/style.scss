@@ -19,6 +19,12 @@
 	// Ensure this block doesn't affect page width
 	contain: layout;
 	max-width: 100%; // Prevent overflow in containers and on small screens
+	background: none;
+
+	// Only show a background when the user chooses one via block supports
+	&:not(.has-background) {
+		background-color: transparent;
+	}
 
 	// Note: scroll-marquee has align: false in block.json, so no alignment overrides
 

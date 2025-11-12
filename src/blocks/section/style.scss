@@ -73,41 +73,28 @@
 	// CRITICAL: Disable float for all children in flex layout
 	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
 	// but float should not work inside flex containers
-	// With two-div structure, target children inside inner container
-	&.is-layout-flex .dsg-stack__inner > * {
+	// NOTE: .is-layout-flex is on the dsg-stack__inner element, not the outer wrapper
+	.dsg-stack__inner.is-layout-flex > * {
 		float: none !important;
 	}
 
 	// CRITICAL: Ensure flex layout properties work correctly
 	// WordPress applies these via inline styles, but we ensure they're respected
-	&.is-layout-flex {
+	// NOTE: .is-layout-flex is on the dsg-stack__inner element, not the outer wrapper
+	.dsg-stack__inner.is-layout-flex {
 		display: flex;
 		flex-direction: column; // Vertical stacking
 
-		// CRITICAL: For vertical flex (column), horizontal centering uses align-items
-		// WordPress's justifyContent controls vertical alignment
-		// We need to also support horizontal centering
-		&[style*="justify-content:center"],
-		&[style*="justify-content: center"] {
-			align-items: center; // Horizontal centering for column direction
-		}
-
-		&[style*="justify-content:right"],
-		&[style*="justify-content: right"],
-		&[style*="justify-content:flex-end"],
-		&[style*="justify-content: flex-end"] {
-			align-items: flex-end; // Right alignment for column direction
-		}
-
-		// Default left alignment
-		align-items: flex-start;
+		// Match WordPress default: children stretch to container width unless the user explicitly sets alignment.
+		align-items: stretch;
 
 		// CRITICAL: Inline/shrink-wrap blocks should respect alignment
 		// These blocks should shrink to content width so they can be centered/aligned
-		// With two-div structure, target children inside inner container
-		.dsg-stack__inner > .dsg-pill,
-		.dsg-stack__inner > .wp-block-button,
-		.dsg-stack__inner > .wp-block-buttons {
+		> .dsg-pill,
+		> .wp-block-button,
+		> .wp-block-buttons,
+		> .dsg-icon-button,
+		> .wp-block-designsetgo-icon-button {
 			align-self: flex-start; // Override to allow alignment
 			width: auto !important; // Shrink to content
 			max-width: none !important; // Remove WordPress's 1200px contentSize constraint
@@ -115,26 +102,176 @@
 
 		// CRITICAL: Block-level elements take full width by default
 		// Text blocks, groups, and most WordPress blocks
-		// With two-div structure, target children inside inner container
-		.dsg-stack__inner > .wp-block-heading,
-		.dsg-stack__inner > .wp-block-paragraph,
-		.dsg-stack__inner > .wp-block-group,
-		.dsg-stack__inner > .wp-block-image,
-		.dsg-stack__inner > .wp-block-video,
-		.dsg-stack__inner > .wp-block-embed,
-		.dsg-stack__inner > .wp-block-table,
-		.dsg-stack__inner > .wp-block-list,
-		.dsg-stack__inner > .dsg-grid,
-		.dsg-stack__inner > .wp-block-designsetgo-grid,
-		.dsg-stack__inner > .dsg-stack,
-		.dsg-stack__inner > .wp-block-designsetgo-stack,
-		.dsg-stack__inner > .dsg-flex,
-		.dsg-stack__inner > .wp-block-designsetgo-flex,
-		.dsg-stack__inner > .wp-block-designsetgo-row {
-			width: 100%;
+		> :where(
+			.wp-block-heading,
+			.wp-block-paragraph,
+			.wp-block-group,
+			.wp-block-image,
+			.wp-block-video,
+			.wp-block-embed,
+			.wp-block-table,
+			.wp-block-list,
+			.dsg-grid,
+			.wp-block-designsetgo-grid,
+			.dsg-stack,
+			.wp-block-designsetgo-stack,
+			.dsg-flex,
+			.wp-block-designsetgo-flex,
+			.wp-block-designsetgo-row,
+			.dsg-tabs,
+			.wp-block-designsetgo-tabs,
+			.dsg-accordion,
+			.wp-block-designsetgo-accordion,
+			.dsg-scroll-marquee,
+			.wp-block-designsetgo-scroll-marquee
+		):not(.alignleft):not(.alignright):not(.alignfull):not(.alignwide) {
+			width: 100% !important;
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+
+		&.is-content-justification-center {
+
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+				align-self: center;
+			}
+		}
+
+		&.is-content-justification-right {
+
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+				align-self: flex-end;
+			}
+		}
+
+		&.is-content-justification-left {
+
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+				align-self: flex-start;
+			}
+		}
+
+		> .aligncenter {
+			align-self: center !important;
+		}
+
+		> .alignright {
+			align-self: flex-end !important;
+		}
+
+		> .alignleft {
+			align-self: flex-start !important;
+		}
+
+		> .alignwide,
+		> .alignfull {
+			align-self: stretch !important;
+			width: 100% !important;
+		}
+
+		// Old group structure (pre-6.0) with __inner-container
+		> :where(.wp-block-group, .wp-block-designsetgo-stack, .dsg-stack)
+			:not(.alignleft):not(.alignright):not(.alignfull):not(.alignwide)
+			> .wp-block-group__inner-container {
+			width: 100% !important;
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+
+		> :where(.wp-block-group, .dsg-stack, .wp-block-designsetgo-stack)
+			:is(.is-layout-constrained, .wp-block-group-is-layout-constrained)
+			> .wp-block-group__inner-container {
+			width: 100% !important;
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+
+		// Modern group structure (6.0+) without __inner-container
+		// Ensure nested groups take full width regardless of their layout type
+		> .wp-block-group:not(.alignleft):not(.alignright):not(.alignfull):not(.alignwide) {
+			width: 100% !important;
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+			// Ensure the block takes full width regardless of content
+			min-width: 100% !important;
 		}
 
 		// Gap is handled by WordPress's blockGap support
+	}
+
+	// Text alignment helpers for inline-width children
+	&,
+	&.has-text-align-left,
+	&[style*='text-align:left'] {
+
+		.dsg-stack__inner.is-layout-flex
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+			align-self: flex-start;
+		}
+	}
+
+	&.has-text-align-center,
+	&[style*='text-align:center'] {
+
+		.dsg-stack__inner.is-layout-flex
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+			align-self: center;
+		}
+	}
+
+	&.has-text-align-right,
+	&[style*='text-align:right'] {
+
+		.dsg-stack__inner.is-layout-flex
+			> :where(
+				.dsg-pill,
+				.wp-block-designsetgo-pill,
+				.wp-block-button,
+				.wp-block-buttons,
+				.dsg-icon-button,
+				.wp-block-designsetgo-icon-button
+			) {
+			align-self: flex-end;
+		}
 	}
 
 	// Hover background and text colors using CSS custom properties
@@ -169,7 +306,9 @@
 	> .dsg-pill,
 	> .wp-block-designsetgo-pill,
 	> .wp-block-button,
-	> .wp-block-buttons {
+	> .wp-block-buttons,
+	> .dsg-icon-button,
+	> .wp-block-designsetgo-icon-button {
 		width: auto !important;
 		max-width: none !important;
 	}

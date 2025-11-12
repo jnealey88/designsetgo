@@ -57,6 +57,7 @@ export function WidthPanel({
 					units={units}
 					// eslint-disable-next-line @wordpress/i18n-no-variables
 					placeholder={themeContentWidth || '1200px'}
+					// translators: %s: theme content width value
 					help={__(
 						'Leave empty to use theme default (%s)',
 						'designsetgo'

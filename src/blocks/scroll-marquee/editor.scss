@@ -3,6 +3,21 @@
  * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
  */
 
+.block-editor-block-list__block.wp-block-designsetgo-scroll-marquee,
+.editor-styles-wrapper .wp-block-designsetgo-scroll-marquee {
+	width: 100%;
+	max-width: 100%;
+}
+
+.editor-styles-wrapper .dsg-scroll-marquee {
+	width: 100%;
+}
+
+.editor-styles-wrapper .dsg-scroll-marquee .dsg-scroll-marquee__image {
+	height: var(--dsg-marquee-image-height);
+	width: var(--dsg-marquee-image-width);
+}
+
 .dsg-scroll-marquee {
 	--dsg-marquee-gap: 20px;
 	--dsg-marquee-row-gap: 20px;
@@ -16,6 +31,11 @@
 	flex-direction: column;
 	gap: var(--dsg-marquee-row-gap);
 	max-width: 100%; // Prevent overflow in containers and on small screens
+	background: none;
+
+	&:not(.has-background) {
+		background-color: transparent;
+	}
 
 	// Note: scroll-marquee has align: false in block.json, so no alignment overrides
 

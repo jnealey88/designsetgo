@@ -17,16 +17,103 @@ registerBlockType(metadata.name, {
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
 			>
-				<path
-					d="M2 6h20M2 12h20M2 18h20"
-					stroke="currentColor"
-					strokeWidth="2"
-					strokeLinecap="round"
+				{/* Top row of images - scrolling right */}
+				<rect
+					x="2"
+					y="3"
+					width="4"
+					height="4"
+					rx="0.5"
+					fill="currentColor"
+					opacity="0.3"
 				/>
-				<path
-					d="M17 4l3 2-3 2M7 10l-3 2 3 2M17 16l3 2-3 2"
+				<rect
+					x="7"
+					y="3"
+					width="4"
+					height="4"
+					rx="0.5"
 					fill="currentColor"
 					opacity="0.5"
+				/>
+				<rect
+					x="12"
+					y="3"
+					width="4"
+					height="4"
+					rx="0.5"
+					fill="currentColor"
+					opacity="0.7"
+				/>
+				<path
+					d="M18 5l2 0 -1.5 -1.5M18 5l2 0 -1.5 1.5"
+					stroke="currentColor"
+					strokeWidth="1.2"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+
+				{/* Middle row of images - scrolling left */}
+				<rect
+					x="11"
+					y="10"
+					width="4"
+					height="4"
+					rx="0.5"
+					fill="currentColor"
+					opacity="0.5"
+				/>
+				<rect
+					x="16"
+					y="10"
+					width="4"
+					height="4"
+					rx="0.5"
+					fill="currentColor"
+					opacity="0.7"
+				/>
+				<path
+					d="M6 12l-2 0 1.5 -1.5M6 12l-2 0 1.5 1.5"
+					stroke="currentColor"
+					strokeWidth="1.2"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+
+				{/* Bottom row of images - scrolling right */}
+				<rect
+					x="2"
+					y="17"
+					width="4"
+					height="4"
+					rx="0.5"
+					fill="currentColor"
+					opacity="0.5"
+				/>
+				<rect
+					x="7"
+					y="17"
+					width="4"
+					height="4"
+					rx="0.5"
+					fill="currentColor"
+					opacity="0.6"
+				/>
+				<rect
+					x="12"
+					y="17"
+					width="4"
+					height="4"
+					rx="0.5"
+					fill="currentColor"
+					opacity="0.3"
+				/>
+				<path
+					d="M18 19l2 0 -1.5 -1.5M18 19l2 0 -1.5 1.5"
+					stroke="currentColor"
+					strokeWidth="1.2"
+					strokeLinecap="round"
+					strokeLinejoin="round"
 				/>
 			</svg>
 		),

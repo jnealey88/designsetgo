@@ -20,7 +20,7 @@ const CONTAINER_BLOCKS = [
 
 /**
  * Add reveal control attributes to all blocks
- * @param settings
+ * @param {Object} settings - Block settings
  */
 function addRevealAttributes(settings) {
 	// Add reveal toggle to container blocks
@@ -184,9 +184,9 @@ addFilter(
 
 /**
  * Add reveal classes and data attributes to blocks
- * @param props
- * @param blockType
- * @param attributes
+ * @param {Object} props      - Block props
+ * @param {Object} blockType  - Block type
+ * @param {Object} attributes - Block attributes
  */
 function addRevealClasses(props, blockType, attributes) {
 	const { dsgRevealOnHover, enableRevealOnHover, revealAnimationType } =

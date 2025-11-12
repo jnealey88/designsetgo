@@ -28,6 +28,12 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 		borderRadius,
 	} = attributes;
 
+	const imageInlineStyle = {
+		height: imageHeight,
+		width: imageWidth,
+		borderRadius,
+	};
+
 	// Performance: Calculate total images across all rows
 	const totalImages = rows.reduce(
 		(sum, row) => sum + (row.images?.length || 0),
@@ -236,6 +242,7 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 											src={image.url}
 											alt={image.alt}
 											className="dsg-scroll-marquee__image"
+											style={imageInlineStyle}
 										/>
 										<Button
 											icon={close}
