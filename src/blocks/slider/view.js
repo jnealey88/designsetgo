@@ -3,6 +3,8 @@
  * Handles all slider interactions: navigation, auto-play, swipe, drag, keyboard
  */
 
+const SINGLE_SLIDE_EFFECTS = ['fade', 'zoom'];
+
 class DSGSlider {
 	constructor(element) {
 		this.slider = element;
@@ -44,13 +46,20 @@ class DSGSlider {
 	}
 
 	parseConfig() {
+		const effect = this.slider.dataset.effect || 'slide';
+		const requiresSingleSlideEffect = SINGLE_SLIDE_EFFECTS.includes(effect);
+
 		return {
-			slidesPerView: parseInt(this.slider.dataset.slidesPerView) || 1,
-			slidesPerViewTablet:
-				parseInt(this.slider.dataset.slidesPerViewTablet) || 1,
-			slidesPerViewMobile:
-				parseInt(this.slider.dataset.slidesPerViewMobile) || 1,
-			effect: this.slider.dataset.effect || 'slide',
+			slidesPerView: requiresSingleSlideEffect
+				? 1
+				: parseInt(this.slider.dataset.slidesPerView) || 1,
+			slidesPerViewTablet: requiresSingleSlideEffect
+				? 1
+				: parseInt(this.slider.dataset.slidesPerViewTablet) || 1,
+			slidesPerViewMobile: requiresSingleSlideEffect
+				? 1
+				: parseInt(this.slider.dataset.slidesPerViewMobile) || 1,
+			effect,
 			transitionDuration:
 				this.slider.dataset.transitionDuration || '0.5s',
 			transitionEasing:

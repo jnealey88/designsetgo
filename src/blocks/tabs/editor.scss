@@ -81,6 +81,30 @@
 		}
 	}
 
+	.dsg-tabs__tab-icon {
+		display: inline-flex;
+		align-items: center;
+		color: currentcolor;
+
+		svg {
+			fill: currentcolor;
+			color: currentcolor;
+		}
+	}
+
+	.dsg-tabs__tab-icon-top {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 0.25rem;
+		color: currentcolor;
+
+		svg {
+			fill: currentcolor;
+			color: currentcolor;
+		}
+	}
+
 	// Panels container - no typography overrides
 	.dsg-tabs__panels {
 		position: relative;
@@ -91,11 +115,19 @@
 	}
 
 	/**
-	 * Tab Content Wrapper
+	 * Individual Tab Panel (editor)
 	 */
-	.dsg-tab__content {
-		// Let content flow naturally
+	.dsg-tab {
+		background: var(--dsg-tab-content-bg, transparent);
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
 	}
+
+	/**
+	 * Tab Content Wrapper
+	 * No additional styles needed - padding/background applied to .dsg-tab
+	 */
 
 	/**
 	 * Orientation: Horizontal (Default)

@@ -99,6 +99,9 @@
 	// These effects use absolute positioning + opacity: 0, which hides all slides in editor
 	&.dsg-slider--effect-fade,
 	&.dsg-slider--effect-zoom {
+		--dsg-slider-slides-per-view: 1;
+		--dsg-slider-slides-per-view-tablet: 1;
+		--dsg-slider-slides-per-view-mobile: 1;
 
 		.dsg-slider__track > .dsg-slide {
 			position: relative !important;

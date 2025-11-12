@@ -46,6 +46,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		tabStyle,
 		tabColor,
 		tabBackgroundColor,
+		tabContentBackgroundColor,
 		activeTabColor,
 		activeTabBackgroundColor,
 		tabBorderColor,
@@ -140,6 +141,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			'--dsg-tabs-gap': gap,
 			...(tabColor && { '--dsg-tab-color': tabColor }),
 			...(tabBackgroundColor && { '--dsg-tab-bg': tabBackgroundColor }),
+			...(tabContentBackgroundColor && {
+				'--dsg-tab-content-bg': tabContentBackgroundColor,
+			}),
 			...(activeTabColor && { '--dsg-tab-color-active': activeTabColor }),
 			...(activeTabBackgroundColor && {
 				'--dsg-tab-bg-active': activeTabBackgroundColor,
@@ -204,6 +208,15 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							colorValue: tabBorderColor,
 							onColorChange: (color) =>
 								setAttributes({ tabBorderColor: color || '' }),
+							clearable: true,
+						},
+						{
+							label: __('Tab Content Background', 'designsetgo'),
+							colorValue: tabContentBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({
+									tabContentBackgroundColor: color || '',
+								}),
 							clearable: true,
 						},
 					]}

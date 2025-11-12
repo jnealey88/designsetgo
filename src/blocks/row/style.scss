@@ -13,9 +13,34 @@
 	// CRITICAL: Row should be full-width by default (like other block-level elements)
 	// This ensures it spans the container width when placed inside Section or other containers
 	width: 100%;
+	position: relative;
+	overflow: visible;
 
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
+
+	/**
+	 * Background overlay
+	 * Only rendered when overlay color is set
+	 */
+	&.dsg-flex--has-overlay {
+		overflow: hidden;
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background-color: var(--dsg-overlay-color);
+			opacity: var(--dsg-overlay-opacity, 0.8);
+			pointer-events: none;
+			z-index: 1;
+		}
+
+		> .dsg-flex__inner {
+			position: relative;
+			z-index: 2;
+		}
+	}
 
 	// CRITICAL: Inner container must be full width for justify-content to work
 	// When constrainWidth is enabled, inline styles will override with max-width

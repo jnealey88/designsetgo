@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import { useEffect } from '@wordpress/element';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
@@ -14,10 +15,13 @@ import {
 	SelectControl,
 	RangeControl,
 	TextControl,
+	Notice,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
+
+const SINGLE_SLIDE_EFFECTS = ['fade', 'zoom'];
 
 export default function SliderEdit({ attributes, setAttributes, clientId }) {
 	const {
@@ -60,6 +64,30 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 
 	// Get theme color palette and gradient settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+	const requiresSingleSlideEffect = SINGLE_SLIDE_EFFECTS.includes(effect);
+
+	useEffect(() => {
+		if (
+			!requiresSingleSlideEffect ||
+			(slidesPerView === 1 &&
+				slidesPerViewTablet === 1 &&
+				slidesPerViewMobile === 1)
+		) {
+			return;
+		}
+
+		setAttributes({
+			slidesPerView: 1,
+			slidesPerViewTablet: 1,
+			slidesPerViewMobile: 1,
+		});
+	}, [
+		requiresSingleSlideEffect,
+		slidesPerView,
+		slidesPerViewTablet,
+		slidesPerViewMobile,
+		setAttributes,
+	]);
 
 	// Editor navigation: scroll the track without state management
 	const scrollToSlide = (direction) => {
@@ -118,15 +146,43 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 		'dsg-slider--free-mode': freeMode,
 	});
 
+	const effectiveSlidesPerView = requiresSingleSlideEffect
+		? 1
+		: slidesPerView;
+	const effectiveSlidesPerViewTablet = requiresSingleSlideEffect
+		? 1
+		: slidesPerViewTablet;
+	const effectiveSlidesPerViewMobile = requiresSingleSlideEffect
+		? 1
+		: slidesPerViewMobile;
+	const singleSlideNotice = __(
+		'Fade and Zoom transitions show one slide per view. Switch back to the Slide effect to display multiple slides at once.',
+		'designsetgo'
+	);
+
+	const handleEffectChange = (value) => {
+		const updates = { effect: value };
+		if (SINGLE_SLIDE_EFFECTS.includes(value)) {
+			updates.slidesPerView = 1;
+			updates.slidesPerViewTablet = 1;
+			updates.slidesPerViewMobile = 1;
+		}
+		setAttributes(updates);
+	};
+
 	// Apply settings as CSS custom properties
 	const customStyles = {
 		'--dsg-slider-height': height,
 		'--dsg-slider-aspect-ratio': aspectRatio,
 		'--dsg-slider-gap': gap,
 		'--dsg-slider-transition': transitionDuration,
-		'--dsg-slider-slides-per-view': String(slidesPerView),
-		'--dsg-slider-slides-per-view-tablet': String(slidesPerViewTablet),
-		'--dsg-slider-slides-per-view-mobile': String(slidesPerViewMobile),
+		'--dsg-slider-slides-per-view': String(effectiveSlidesPerView),
+		'--dsg-slider-slides-per-view-tablet': String(
+			effectiveSlidesPerViewTablet
+		),
+		'--dsg-slider-slides-per-view-mobile': String(
+			effectiveSlidesPerViewMobile
+		),
 		...(arrowColor && { '--dsg-slider-arrow-color': arrowColor }),
 		...(arrowBackgroundColor && {
 			'--dsg-slider-arrow-bg-color': arrowBackgroundColor,
@@ -141,9 +197,9 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 	const blockProps = useBlockProps({
 		className: sliderClasses,
 		style: customStyles,
-		'data-slides-per-view': slidesPerView,
-		'data-slides-per-view-tablet': slidesPerViewTablet,
-		'data-slides-per-view-mobile': slidesPerViewMobile,
+		'data-slides-per-view': effectiveSlidesPerView,
+		'data-slides-per-view-tablet': effectiveSlidesPerViewTablet,
+		'data-slides-per-view-mobile': effectiveSlidesPerViewMobile,
 		'data-use-aspect-ratio': useAspectRatio,
 		'data-show-arrows': showArrows,
 		'data-show-dots': showDots,
@@ -265,10 +321,15 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 						}
 						min={1}
 						max={6}
-						help={__(
-							'Number of slides visible at once',
-							'designsetgo'
-						)}
+						help={
+							requiresSingleSlideEffect
+								? singleSlideNotice
+								: __(
+										'Number of slides visible at once',
+										'designsetgo'
+									)
+						}
+						disabled={requiresSingleSlideEffect}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -281,6 +342,10 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 						}
 						min={1}
 						max={4}
+						help={
+							requiresSingleSlideEffect ? singleSlideNotice : ''
+						}
+						disabled={requiresSingleSlideEffect}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -293,9 +358,19 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 						}
 						min={1}
 						max={2}
+						help={
+							requiresSingleSlideEffect ? singleSlideNotice : ''
+						}
+						disabled={requiresSingleSlideEffect}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
+
+					{requiresSingleSlideEffect && (
+						<Notice status="info" isDismissible={false}>
+							{singleSlideNotice}
+						</Notice>
+					)}
 
 					<ToggleControl
 						label={__('Use Aspect Ratio', 'designsetgo')}
@@ -574,7 +649,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 							{ label: __('Fade', 'designsetgo'), value: 'fade' },
 							{ label: __('Zoom', 'designsetgo'), value: 'zoom' },
 						]}
-						onChange={(value) => setAttributes({ effect: value })}
+						onChange={handleEffectChange}
 						help={__(
 							'Animation style between slides',
 							'designsetgo'

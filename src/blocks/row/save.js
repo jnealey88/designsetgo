@@ -46,6 +46,7 @@ export default function RowSave({ attributes }) {
 	const {
 		constrainWidth,
 		contentWidth,
+		overlayColor,
 		hoverBackgroundColor,
 		hoverTextColor,
 		hoverIconBackgroundColor,
@@ -59,6 +60,7 @@ export default function RowSave({ attributes }) {
 		'dsg-flex',
 		mobileStack && 'dsg-flex--mobile-stack',
 		!constrainWidth && 'dsg-no-width-constraint',
+		overlayColor && 'dsg-flex--has-overlay',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -78,6 +80,10 @@ export default function RowSave({ attributes }) {
 			}),
 			...(hoverButtonBackgroundColor && {
 				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+			}),
+			...(overlayColor && {
+				'--dsg-overlay-color': overlayColor,
+				'--dsg-overlay-opacity': '0.8',
 			}),
 		},
 	});

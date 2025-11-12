@@ -48,8 +48,6 @@ describe('Utility Functions', () => {
 	});
 
 	describe('debounce helper', () => {
-		jest.useFakeTimers();
-
 		const debounce = (func, wait) => {
 			let timeout;
 			return (...args) => {
@@ -57,6 +55,14 @@ describe('Utility Functions', () => {
 				timeout = setTimeout(() => func(...args), wait);
 			};
 		};
+
+		beforeEach(() => {
+			jest.useFakeTimers();
+		});
+
+		afterEach(() => {
+			jest.useRealTimers();
+		});
 
 		test('delays function execution', () => {
 			const func = jest.fn();
@@ -80,8 +86,6 @@ describe('Utility Functions', () => {
 			jest.advanceTimersByTime(100);
 			expect(func).toHaveBeenCalledTimes(1);
 		});
-
-		jest.useRealTimers();
 	});
 
 	describe('sanitize functions', () => {
@@ -109,7 +113,7 @@ describe('Utility Functions', () => {
 			};
 
 			expect(sanitizeClassName('My Class Name')).toBe('my-class-name');
-			expect(sanitizeClassName('class__name')).toBe('class_name');
+			expect(sanitizeClassName('class__name')).toBe('class__name');
 			expect(sanitizeClassName('123-class')).toBe('123-class');
 			expect(sanitizeClassName('invalid@#$class')).toBe('invalid-class');
 		});

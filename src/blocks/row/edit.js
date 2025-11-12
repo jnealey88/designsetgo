@@ -73,6 +73,7 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 		className,
 		constrainWidth,
 		contentWidth,
+		overlayColor,
 		hoverBackgroundColor,
 		hoverTextColor,
 		hoverIconBackgroundColor,
@@ -146,6 +147,7 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 					hoverTextColor,
 					hoverIconBackgroundColor,
 					hoverButtonBackgroundColor,
+					overlayColor,
 				},
 				innerBlocks
 			);
@@ -161,12 +163,21 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
+		overlayColor,
 		innerBlocks,
 	]);
 
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
+	const blockClassName = [
+		'dsg-flex',
+		mobileStack && 'dsg-flex--mobile-stack',
+		overlayColor && 'dsg-flex--has-overlay',
+	]
+		.filter(Boolean)
+		.join(' ');
+
 	const blockProps = useBlockProps({
-		className: `dsg-flex ${mobileStack ? 'dsg-flex--mobile-stack' : ''}`,
+		className: blockClassName,
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsg-hover-bg-color': hoverBackgroundColor,
@@ -179,6 +190,10 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 			}),
 			...(hoverButtonBackgroundColor && {
 				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+			}),
+			...(overlayColor && {
+				'--dsg-overlay-color': overlayColor,
+				'--dsg-overlay-opacity': '0.8',
 			}),
 		},
 	});
@@ -313,6 +328,13 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 					panelId={clientId}
 					title={__('Hover Settings', 'designsetgo')}
 					settings={[
+						{
+							label: __('Overlay Color', 'designsetgo'),
+							colorValue: overlayColor,
+							onColorChange: (color) =>
+								setAttributes({ overlayColor: color || '' }),
+							clearable: true,
+						},
 						{
 							label: __('Hover Background Color', 'designsetgo'),
 							colorValue: hoverBackgroundColor,

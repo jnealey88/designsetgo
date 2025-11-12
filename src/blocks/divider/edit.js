@@ -32,7 +32,6 @@ export default function DividerEdit({ attributes, setAttributes }) {
 	// Divider container styles
 	const containerStyle = {
 		width: `${width}%`,
-		margin: '0 auto',
 	};
 
 	// Divider line styles

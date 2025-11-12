@@ -8,6 +8,8 @@
  */
 
 // ===== CUSTOM BLOCKS FRONTEND =====
+import './utils/focus-outline.js';
+
 // Tabs block - tab switching, keyboard navigation, deep linking
 import './blocks/tabs/view.js';
 

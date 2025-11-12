@@ -35,6 +35,7 @@
 	--dsg-tab-color-active: var(--wp--preset--color--accent-2, #2563eb);
 	--dsg-tab-border-color: var(--wp--preset--color--accent-2, #2563eb);
 	--dsg-tab-border-radius: var(--wp--custom--designsetgo--border-radius--small, 0.25rem);
+	--dsg-tab-content-bg: transparent;
 
 	/**
 	 * Skip Link (Accessibility)
@@ -137,6 +138,12 @@
 		.dsg-tabs__tab-icon {
 			display: inline-flex;
 			align-items: center;
+			color: currentcolor;
+
+			svg {
+				fill: currentcolor;
+				color: currentcolor;
+			}
 		}
 
 		.dsg-tabs__tab-icon-top {
@@ -144,6 +151,12 @@
 			flex-direction: column;
 			align-items: center;
 			margin-bottom: 0.25rem;
+			color: currentcolor;
+
+			svg {
+				fill: currentcolor;
+				color: currentcolor;
+			}
 		}
 	}
 
@@ -168,6 +181,7 @@
 		max-width: 100%;
 		min-width: 0;
 		box-sizing: border-box;
+		background: var(--dsg-tab-content-bg, transparent);
 
 		&.is-active {
 			display: block;
@@ -180,10 +194,8 @@
 
 	/**
 	 * Tab Content Wrapper
+	 * No additional styles needed - padding/background applied to .dsg-tab
 	 */
-	.dsg-tab__content {
-		// Let content flow naturally
-	}
 
 	/**
 	 * Orientation: Horizontal (Default)

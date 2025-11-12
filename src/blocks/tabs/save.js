@@ -19,6 +19,7 @@ export default function Save({ attributes }) {
 		tabStyle,
 		tabColor,
 		tabBackgroundColor,
+		tabContentBackgroundColor,
 		activeTabColor,
 		activeTabBackgroundColor,
 		tabBorderColor,
@@ -35,6 +36,9 @@ export default function Save({ attributes }) {
 			'--dsg-tabs-gap': gap,
 			...(tabColor && { '--dsg-tab-color': tabColor }),
 			...(tabBackgroundColor && { '--dsg-tab-bg': tabBackgroundColor }),
+			...(tabContentBackgroundColor && {
+				'--dsg-tab-content-bg': tabContentBackgroundColor,
+			}),
 			...(activeTabColor && { '--dsg-tab-color-active': activeTabColor }),
 			...(activeTabBackgroundColor && {
 				'--dsg-tab-bg-active': activeTabBackgroundColor,

@@ -13,6 +13,26 @@
 
 	// Visual indicator in editor and positioning context for block inserter
 	position: relative;
+	overflow: visible;
+
+	&.dsg-flex--has-overlay {
+		overflow: hidden;
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background-color: var(--dsg-overlay-color);
+			opacity: var(--dsg-overlay-opacity, 0.8);
+			pointer-events: none;
+			z-index: 1;
+		}
+
+		> .dsg-flex__inner {
+			position: relative;
+			z-index: 2;
+		}
+	}
 
 	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
 	// Smooth transition for hover background color

@@ -5,7 +5,7 @@
  * It logs in as an admin user and saves the authentication state.
  */
 
-const { test as setup, expect } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const path = require('path');
 const fs = require('fs');
 
@@ -13,7 +13,7 @@ const fs = require('fs');
 const ADMIN_USER = process.env.WP_ADMIN_USER || 'admin';
 const ADMIN_PASSWORD = process.env.WP_ADMIN_PASSWORD || 'password';
 
-setup('authenticate as admin', async ({ page, context }) => {
+test('authenticate as admin', async ({ page, context }) => {
 	// Navigate to WordPress login page
 	await page.goto('/wp-login.php');
 
@@ -31,10 +31,9 @@ setup('authenticate as admin', async ({ page, context }) => {
 	await expect(page.locator('#wpadminbar')).toBeVisible();
 
 	// Save authentication state
-	const storageStatePath = process.env.STORAGE_STATE_PATH || path.join(
-		process.cwd(),
-		'artifacts/storage-states/admin.json'
-	);
+	const storageStatePath =
+		process.env.STORAGE_STATE_PATH ||
+		path.join(process.cwd(), 'artifacts/storage-states/admin.json');
 
 	// Ensure directory exists
 	const dir = path.dirname(storageStatePath);

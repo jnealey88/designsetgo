@@ -123,6 +123,10 @@
 		"hoverButtonBackgroundColor": {
 			"type": "string",
 			"default": ""
+		},
+		"overlayColor": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"providesContext": {

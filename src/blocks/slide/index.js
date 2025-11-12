@@ -6,6 +6,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import metadata from './block.json';
 import Edit from './edit';
 import Save from './save';
+import deprecated from './deprecated';
 import { ICON_COLOR } from '../shared/constants';
 
 registerBlockType(metadata.name, {
@@ -31,4 +32,5 @@ registerBlockType(metadata.name, {
 	},
 	edit: Edit,
 	save: Save,
+	deprecated,
 });

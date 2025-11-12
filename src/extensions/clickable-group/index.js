@@ -107,7 +107,9 @@ const withLinkControls = createHigherOrderComponent((BlockEdit) => {
 							label={__('URL', 'designsetgo')}
 							value={dsgLinkUrl}
 							onChange={(value) =>
-								setAttributes({ dsgLinkUrl: value })
+								setAttributes({
+									dsgLinkUrl: value?.trim() || '',
+								})
 							}
 							placeholder="https://example.com"
 							help={__(
@@ -176,8 +178,11 @@ const withClickableClass = createHigherOrderComponent((BlockListBlock) => {
 
 		const { dsgLinkUrl } = attributes;
 
+		// Only add class if URL exists and is not empty after trimming
+		const hasValidUrl = dsgLinkUrl && dsgLinkUrl.trim().length > 0;
+
 		const classes = classnames({
-			'dsg-clickable': dsgLinkUrl,
+			'dsg-clickable': hasValidUrl,
 		});
 
 		return <BlockListBlock {...props} className={classes} />;
@@ -205,7 +210,8 @@ function addLinkSaveProps(extraProps, blockType, attributes) {
 
 	const { dsgLinkUrl, dsgLinkTarget, dsgLinkRel } = attributes;
 
-	if (!dsgLinkUrl) {
+	// Only apply link functionality if URL exists and is not empty after trimming
+	if (!dsgLinkUrl || dsgLinkUrl.trim().length === 0) {
 		return extraProps;
 	}
 

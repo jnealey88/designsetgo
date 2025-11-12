@@ -6,6 +6,7 @@
 
 .dsg-progress-bar {
 	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+	width: 100%; // Fill container width
 	max-width: 100%; // Prevent overflow in containers and on small screens
 
 	// Wide alignment - use negative margins to extend to wide width

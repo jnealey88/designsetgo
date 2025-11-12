@@ -261,6 +261,13 @@
 }
 
 // Transition Effects
+.dsg-slider--effect-fade,
+.dsg-slider--effect-zoom {
+	--dsg-slider-slides-per-view: 1;
+	--dsg-slider-slides-per-view-tablet: 1;
+	--dsg-slider-slides-per-view-mobile: 1;
+}
+
 .dsg-slider--effect-fade {
 
 	.dsg-slider__track > .dsg-slide {

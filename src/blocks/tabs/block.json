@@ -79,6 +79,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"tabContentBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
 		"activeTabColor": {
 			"type": "string",
 			"default": ""

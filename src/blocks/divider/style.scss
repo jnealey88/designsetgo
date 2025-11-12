@@ -20,10 +20,31 @@
 	// Without this, divider can collapse to 0 width inside flex containers
 	width: 100%;
 
-	// Container centers the divider
+	// Container centers the divider (default)
 	&__container {
 		display: flex;
 		align-items: center;
+		justify-content: center;
+		margin: 0 auto; // Default center alignment
+	}
+
+	// Left alignment
+	&.alignleft &__container {
+		margin-left: 0;
+		margin-right: auto;
+		justify-content: flex-start;
+	}
+
+	// Right alignment
+	&.alignright &__container {
+		margin-left: auto;
+		margin-right: 0;
+		justify-content: flex-end;
+	}
+
+	// Center alignment (explicit)
+	&.aligncenter &__container {
+		margin: 0 auto;
 		justify-content: center;
 	}
 

@@ -1,6 +1,8 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
+const SINGLE_SLIDE_EFFECTS = ['fade', 'zoom'];
+
 export default function SliderSave({ attributes }) {
 	const {
 		slidesPerView,
@@ -41,6 +43,17 @@ export default function SliderSave({ attributes }) {
 		ariaLabel,
 	} = attributes;
 
+	const requiresSingleSlideEffect = SINGLE_SLIDE_EFFECTS.includes(effect);
+	const effectiveSlidesPerView = requiresSingleSlideEffect
+		? 1
+		: slidesPerView;
+	const effectiveSlidesPerViewTablet = requiresSingleSlideEffect
+		? 1
+		: slidesPerViewTablet;
+	const effectiveSlidesPerViewMobile = requiresSingleSlideEffect
+		? 1
+		: slidesPerViewMobile;
+
 	// Same classes as edit.js - MUST MATCH EXACTLY
 	const sliderClasses = classnames('dsg-slider', {
 		[`dsg-slider--${styleVariation}`]: styleVariation,
@@ -57,9 +70,13 @@ export default function SliderSave({ attributes }) {
 		'--dsg-slider-aspect-ratio': aspectRatio,
 		'--dsg-slider-gap': gap,
 		'--dsg-slider-transition': transitionDuration,
-		'--dsg-slider-slides-per-view': String(slidesPerView),
-		'--dsg-slider-slides-per-view-tablet': String(slidesPerViewTablet),
-		'--dsg-slider-slides-per-view-mobile': String(slidesPerViewMobile),
+		'--dsg-slider-slides-per-view': String(effectiveSlidesPerView),
+		'--dsg-slider-slides-per-view-tablet': String(
+			effectiveSlidesPerViewTablet
+		),
+		'--dsg-slider-slides-per-view-mobile': String(
+			effectiveSlidesPerViewMobile
+		),
 		...(arrowColor && { '--dsg-slider-arrow-color': arrowColor }),
 		...(arrowBackgroundColor && {
 			'--dsg-slider-arrow-bg-color': arrowBackgroundColor,
@@ -74,9 +91,9 @@ export default function SliderSave({ attributes }) {
 	const blockProps = useBlockProps.save({
 		className: sliderClasses,
 		style: customStyles,
-		'data-slides-per-view': slidesPerView,
-		'data-slides-per-view-tablet': slidesPerViewTablet,
-		'data-slides-per-view-mobile': slidesPerViewMobile,
+		'data-slides-per-view': effectiveSlidesPerView,
+		'data-slides-per-view-tablet': effectiveSlidesPerViewTablet,
+		'data-slides-per-view-mobile': effectiveSlidesPerViewMobile,
 		'data-use-aspect-ratio': useAspectRatio,
 		'data-show-arrows': showArrows,
 		'data-show-dots': showDots,

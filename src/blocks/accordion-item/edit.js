@@ -5,8 +5,9 @@ import {
 	RichText,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useMemo } from '@wordpress/element';
 import { PanelBody, Icon, ToggleControl } from '@wordpress/components';
+import { useSelect, useDispatch } from '@wordpress/data';
 import classnames from 'classnames';
 
 // Icon components for different styles
@@ -43,6 +44,7 @@ export default function AccordionItemEdit({
 	attributes,
 	setAttributes,
 	context,
+	clientId,
 }) {
 	const { title, isOpen, uniqueId } = attributes;
 
@@ -50,6 +52,61 @@ export default function AccordionItemEdit({
 	const iconStyle = context['designsetgo/accordion/iconStyle'] || 'chevron';
 	const iconPosition =
 		context['designsetgo/accordion/iconPosition'] || 'right';
+	const allowMultipleOpen =
+		context['designsetgo/accordion/allowMultipleOpen'] || false;
+
+	const { updateBlockAttributes } = useDispatch('core/block-editor');
+
+	// Get sibling accordion IDs as a string for stable comparison
+	const { siblingsString } = useSelect(
+		(select) => {
+			const { getBlockParents, getBlockOrder, getBlockName } =
+				select('core/block-editor');
+			const parents = getBlockParents(clientId);
+			const parentId = parents[parents.length - 1];
+
+			if (!parentId) {
+				return { siblingsString: '' };
+			}
+
+			// Get all child block IDs and filter to accordion items
+			const childOrder = getBlockOrder(parentId);
+			const accordionSiblings = childOrder.filter(
+				(id) =>
+					id !== clientId &&
+					getBlockName(id) === 'designsetgo/accordion-item'
+			);
+
+			return {
+				// Join to string for stable value comparison
+				siblingsString: accordionSiblings.join(','),
+			};
+		},
+		[clientId]
+	);
+
+	// Parse string back to array with useMemo for stable reference
+	const siblingClientIds = useMemo(
+		() => (siblingsString ? siblingsString.split(',') : []),
+		[siblingsString]
+	);
+
+	// Handle accordion item click
+	const handleToggle = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		// Toggle current item
+		const newIsOpen = !isOpen;
+		setAttributes({ isOpen: newIsOpen });
+
+		// If opening and single mode, close all siblings
+		if (newIsOpen && !allowMultipleOpen) {
+			siblingClientIds.forEach((siblingId) => {
+				updateBlockAttributes(siblingId, { isOpen: false });
+			});
+		}
+	};
 
 	// Generate unique ID for accessibility
 	useEffect(() => {
@@ -151,6 +208,7 @@ export default function AccordionItemEdit({
 								iconPosition === 'right',
 						})}
 						aria-expanded={isOpen}
+						onClick={handleToggle}
 					>
 						{iconPosition === 'left' && renderIcon()}
 						<RichText

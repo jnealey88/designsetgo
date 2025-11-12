@@ -41,18 +41,26 @@
 	border-width: 0;
 }
 
-// Focus styles: Only show outline for keyboard navigation (accessibility)
-// Remove default focus outline for mouse clicks
-:where(.wp-site-blocks *:focus:not(:focus-visible)) {
+// Focus styles: Only show outline for keyboard navigation (toggled via JS)
+body:not(.dsg-show-focus-outlines) :where(.wp-site-blocks *:focus) {
 	outline: none;
 }
 
-// Show outline only for keyboard navigation
-:where(.wp-site-blocks *:focus-visible) {
+body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 	outline-width: 2px;
 	outline-style: solid;
 	outline-color: var(--wp--preset--color--contrast, currentColor);
 	outline-offset: 2px;
+}
+
+@supports not selector(:focus-visible) {
+
+	body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus) {
+		outline-width: 2px;
+		outline-style: solid;
+		outline-color: var(--wp--preset--color--contrast, currentColor);
+		outline-offset: 2px;
+	}
 }
 
 // Clearfix
