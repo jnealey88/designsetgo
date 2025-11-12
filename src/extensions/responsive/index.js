@@ -128,12 +128,12 @@ addFilter(
 
 /**
  * Add visual styling in editor when block is hidden on any device
- * Shows block as dimmed with a subtle badge indicator
+ * Shows a subtle badge indicator in the top-right corner
  */
 const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 	(BlockListBlock) => {
 		return (props) => {
-			const { attributes, className } = props;
+			const { attributes, className, wrapperProps = {} } = props;
 			const { dsgHideOnDesktop, dsgHideOnTablet, dsgHideOnMobile } =
 				attributes;
 
@@ -143,22 +143,27 @@ const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 			if (dsgHideOnTablet) hiddenDevices.push('T');
 			if (dsgHideOnMobile) hiddenDevices.push('M');
 
-			// Add indicator class if hidden on any device
-			const updatedClassName = hiddenDevices.length
-				? `${className || ''} dsg-has-responsive-visibility`.trim()
-				: className;
-
-			// Add data attribute with hidden devices for CSS styling
-			const updatedProps = {
-				...props,
-				className: updatedClassName,
-			};
-
-			if (hiddenDevices.length > 0) {
-				updatedProps['data-hidden-devices'] = hiddenDevices.join('');
+			// Only apply if we have hidden devices
+			if (hiddenDevices.length === 0) {
+				return <BlockListBlock {...props} />;
 			}
 
-			return <BlockListBlock {...updatedProps} />;
+			// Add indicator class
+			const updatedClassName = `${className || ''} dsg-has-responsive-visibility`.trim();
+
+			// Create updated wrapper props with data attribute
+			const updatedWrapperProps = {
+				...wrapperProps,
+				'data-hidden-devices': hiddenDevices.join(''),
+			};
+
+			return (
+				<BlockListBlock
+					{...props}
+					className={updatedClassName}
+					wrapperProps={updatedWrapperProps}
+				/>
+			);
 		};
 	},
 	'withResponsiveVisibilityIndicator'
