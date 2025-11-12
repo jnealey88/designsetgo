@@ -1,0 +1,49 @@
+/**
+ * Responsive Visibility Extension - Editor Styles
+ *
+ * Styles for the visual indicator shown in the editor when blocks
+ * have responsive visibility settings applied.
+ *
+ * @package DesignSetGo
+ */
+
+/**
+ * Visual indicator displayed above blocks that have visibility restrictions
+ */
+.dsg-responsive-visibility-indicator {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 8px;
+	padding: 6px 12px;
+	background-color: #0073aa;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.4;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	z-index: 1;
+}
+
+.dsg-responsive-visibility-indicator__label {
+	margin: 0;
+	padding: 0;
+}
+
+/**
+ * Slightly reduce opacity of blocks with visibility restrictions
+ * to provide subtle visual feedback in the editor
+ */
+.dsg-has-responsive-visibility {
+	opacity: 0.9;
+}
+
+/**
+ * Warning state when block is hidden on all devices
+ * (Future enhancement - Phase 2)
+ */
+.dsg-responsive-visibility-indicator--warning {
+	background-color: #d63638;
+}

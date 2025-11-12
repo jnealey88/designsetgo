@@ -46,6 +46,9 @@ import './extensions/clickable-group';
 // Sticky Header Controls - adds sticky header configuration to template parts in Site Editor
 import './extensions/sticky-header-controls';
 
+// Responsive Visibility - adds device-based visibility controls to all blocks
+import './extensions/responsive';
+
 // ===== DEFAULT PADDING FOR ROOT CONTAINERS =====
 // Set default padding for container blocks, but only when inserted at root level
 import { addFilter } from '@wordpress/hooks';
