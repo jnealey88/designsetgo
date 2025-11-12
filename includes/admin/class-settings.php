@@ -576,13 +576,21 @@ class Settings {
 		// Count enabled blocks.
 		$enabled_blocks = empty( $settings['enabled_blocks'] ) ? $total_blocks : count( $settings['enabled_blocks'] );
 
-		// Count form submissions.
-		$form_submissions = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s",
-				'dsg_form_submission'
-			)
-		);
+		// Count form submissions (with caching).
+		$form_submissions = get_transient( 'dsg_form_submissions_count' );
+
+		if ( false === $form_submissions ) {
+			// Cache miss - run the database query.
+			$form_submissions = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s",
+					'dsg_form_submission'
+				)
+			);
+
+			// Cache for 5 minutes.
+			set_transient( 'dsg_form_submissions_count', $form_submissions, 5 * MINUTE_IN_SECONDS );
+		}
 
 		return rest_ensure_response(
 			array(

@@ -5,6 +5,58 @@
  * Handles form submissions via REST API endpoint with validation,
  * spam protection, and data storage.
  *
+ * Security Monitoring Hooks
+ * -------------------------
+ * This class provides several action hooks for monitoring security events:
+ *
+ * 1. designsetgo_form_spam_detected
+ *    Fired when spam is detected (honeypot or time-based)
+ *
+ *    @param string $form_id     Form identifier
+ *    @param string $reason      Detection method: 'honeypot' or 'too_fast'
+ *    @param string $ip_address  Client IP address
+ *    @param array  $data        Additional data (optional, e.g., elapsed time)
+ *
+ * 2. designsetgo_form_rate_limit_exceeded
+ *    Fired when rate limit is exceeded
+ *    @param string $form_id         Form identifier
+ *    @param string $ip_address      Client IP address
+ *    @param int    $current_count   Current submission count
+ *    @param int    $max_submissions Maximum allowed submissions
+ *
+ * 3. designsetgo_form_validation_failed
+ *    Fired when field validation fails
+ *    @param string $form_id     Form identifier
+ *    @param string $field_name  Field that failed validation
+ *    @param string $field_type  Field type (email, url, etc.)
+ *    @param string $error_code  Validation error code
+ *    @param string $ip_address  Client IP address
+ *
+ * 4. designsetgo_form_submitted
+ *    Fired when form is successfully submitted
+ *    @param int    $submission_id   Submission post ID
+ *    @param string $form_id         Form identifier
+ *    @param array  $sanitized_fields Sanitized form fields
+ *
+ * Example Usage:
+ * ```php
+ * // Log spam attempts
+ * add_action( 'designsetgo_form_spam_detected', function( $form_id, $reason, $ip ) {
+ *     error_log( "Spam detected on form {$form_id}: {$reason} from {$ip}" );
+ * }, 10, 3 );
+ *
+ * // Block IPs after multiple rate limit violations
+ * add_action( 'designsetgo_form_rate_limit_exceeded', function( $form_id, $ip, $count ) {
+ *     if ( $count > 10 ) {
+ *         // Add to blocklist
+ *         update_option( 'blocked_ips', array_merge(
+ *             get_option( 'blocked_ips', [] ),
+ *             [ $ip ]
+ *         ) );
+ *     }
+ * }, 10, 3 );
+ * ```
+ *
  * @package DesignSetGo
  * @since 1.0.0
  */
@@ -148,6 +200,9 @@ class Form_Handler {
 
 		// Honeypot spam check - if filled, it's a bot.
 		if ( ! empty( $honeypot ) ) {
+			// Security monitoring hook for honeypot spam detection.
+			do_action( 'designsetgo_form_spam_detected', $form_id, 'honeypot', $this->get_client_ip() );
+
 			return new WP_Error(
 				'spam_detected',
 				__( 'Spam submission rejected.', 'designsetgo' ),
@@ -159,6 +214,9 @@ class Form_Handler {
 		if ( ! empty( $timestamp ) ) {
 			$elapsed = ( time() * 1000 ) - intval( $timestamp );
 			if ( $elapsed < 3000 ) {
+				// Security monitoring hook for time-based spam detection.
+				do_action( 'designsetgo_form_spam_detected', $form_id, 'too_fast', $this->get_client_ip(), array( 'elapsed_ms' => $elapsed ) );
+
 				return new WP_Error(
 					'too_fast',
 					__( 'Submission too fast. Please try again.', 'designsetgo' ),
@@ -187,6 +245,9 @@ class Form_Handler {
 			// Type-specific validation.
 			$validation_result = $this->validate_field( $field_value, $field_type );
 			if ( is_wp_error( $validation_result ) ) {
+				// Security monitoring hook for validation failures.
+				do_action( 'designsetgo_form_validation_failed', $form_id, $field_name, $field_type, $validation_result->get_error_code(), $this->get_client_ip() );
+
 				return new WP_Error(
 					'validation_error',
 					sprintf(
@@ -257,6 +318,9 @@ class Form_Handler {
 		}
 
 		if ( $count >= $max_submissions ) {
+			// Security monitoring hook for rate limit violations.
+			do_action( 'designsetgo_form_rate_limit_exceeded', $form_id, $ip_address, $count, $max_submissions );
+
 			return new WP_Error(
 				'rate_limit',
 				__( 'Too many submissions. Please try again later.', 'designsetgo' ),
@@ -381,6 +445,9 @@ class Form_Handler {
 		update_post_meta( $post_id, '_dsg_submission_user_agent', $this->get_user_agent() );
 		update_post_meta( $post_id, '_dsg_submission_referer', wp_get_referer() );
 		update_post_meta( $post_id, '_dsg_submission_date', current_time( 'mysql' ) );
+
+		// Clear cached form submission count.
+		delete_transient( 'dsg_form_submissions_count' );
 
 		return $post_id;
 	}

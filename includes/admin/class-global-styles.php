@@ -23,7 +23,7 @@ class Global_Styles {
 	public function __construct() {
 		add_filter( 'wp_theme_json_data_theme', array( $this, 'extend_theme_json' ) );
 		// Temporarily disabled - no settings page needed at this time.
-		// add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
+		// add_action( 'admin_menu', array( $this, 'add_admin_menu' ) ).
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 	}
 
@@ -111,7 +111,7 @@ class Global_Styles {
 	 */
 	private function get_color_palette( $saved_styles ) {
 		$defaults = array(
-			// Core semantic colors
+			// Core semantic colors.
 			array(
 				'slug'  => 'base',
 				'color' => '#ffffff',
@@ -123,7 +123,7 @@ class Global_Styles {
 				'name'  => __( 'Contrast / Text', 'designsetgo' ),
 			),
 
-			// Accent colors - semantic purposes
+			// Accent colors - semantic purposes.
 			array(
 				'slug'  => 'accent-1',
 				'color' => '#f5f5f5',
@@ -155,7 +155,7 @@ class Global_Styles {
 				'name'  => __( 'Accent 6 / Transparent', 'designsetgo' ),
 			),
 
-			// Utility colors (for backwards compatibility)
+			// Utility colors (for backwards compatibility).
 			array(
 				'slug'  => 'success',
 				'color' => '#10b981',
@@ -197,7 +197,7 @@ class Global_Styles {
 	 */
 	private function get_gradients( $saved_styles ) {
 		return array(
-			// Primary gradients using accent colors
+			// Primary gradients using accent colors.
 			array(
 				'slug'     => 'primary-gradient',
 				'gradient' => 'linear-gradient(135deg, var(--wp--preset--color--accent-2) 0%, var(--wp--preset--color--accent-4) 100%)',
@@ -645,15 +645,12 @@ class Global_Styles {
 
 			if ( is_array( $value ) ) {
 				$sanitized[ $sanitized_key ] = $this->sanitize_styles_array( $value );
+			} elseif ( is_numeric( $value ) ) {
+				$sanitized[ $sanitized_key ] = floatval( $value );
+			} elseif ( is_bool( $value ) ) {
+				$sanitized[ $sanitized_key ] = (bool) $value;
 			} else {
-				// Sanitize based on expected value type.
-				if ( is_numeric( $value ) ) {
-					$sanitized[ $sanitized_key ] = floatval( $value );
-				} elseif ( is_bool( $value ) ) {
-					$sanitized[ $sanitized_key ] = (bool) $value;
-				} else {
-					$sanitized[ $sanitized_key ] = sanitize_text_field( $value );
-				}
+				$sanitized[ $sanitized_key ] = sanitize_text_field( $value );
 			}
 		}
 
