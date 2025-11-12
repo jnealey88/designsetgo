@@ -175,6 +175,7 @@ class Plugin {
 		$this->global_styles       = new Admin\Global_Styles();
 		$this->settings            = new Admin\Settings();
 		$this->block_manager       = new Admin\Block_Manager();
+		$this->gdpr_compliance     = new Admin\GDPR_Compliance();
 		$this->custom_css_renderer = new Custom_CSS_Renderer();
 		$this->section_styles      = new Section_Styles();
 		$this->section_styles->init();

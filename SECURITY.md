@@ -177,6 +177,29 @@ Form submissions can optionally log IP addresses for abuse prevention.
 - Provide opt-out option if required by local laws
 - Consider disabling IP logging if not needed
 
+### GDPR Compliance
+
+DesignSetGo includes comprehensive GDPR compliance features for form submissions:
+
+**Features:**
+- **Personal Data Export**: Export all form submissions for a specific email address via WordPress Privacy Tools
+- **Personal Data Erasure**: Delete all form submissions for a specific email address (right to be forgotten)
+- **Privacy Policy Integration**: Suggested privacy policy text automatically added to WordPress Privacy settings
+- **REST API Access**: Programmatic data export and deletion endpoints for developers
+
+**How to use:**
+1. **Export Data**: Go to Tools → Export Personal Data, enter email address
+2. **Erase Data**: Go to Tools → Erase Personal Data, enter email address
+3. **Privacy Policy**: Go to Settings → Privacy, find "DesignSetGo Forms" section
+
+**For developers:**
+- REST API: `POST /wp-json/designsetgo/v1/gdpr/export`
+- REST API: `DELETE /wp-json/designsetgo/v1/gdpr/delete`
+- Hook: `designsetgo_can_delete_form_submission` - Prevent specific deletions
+- Hook: `designsetgo_form_submission_erased` - Run actions after erasure
+
+See [docs/GDPR-COMPLIANCE.md](docs/GDPR-COMPLIANCE.md) for complete documentation.
+
 ## Security Audit History
 
 ### Version 1.0.0 (2024-11-11)
