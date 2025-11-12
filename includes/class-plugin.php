@@ -88,6 +88,13 @@ class Plugin {
 	public $block_manager;
 
 	/**
+	 * GDPR Compliance instance.
+	 *
+	 * @var Admin\GDPR_Compliance
+	 */
+	public $gdpr_compliance;
+
+	/**
 	 * Custom CSS Renderer instance.
 	 *
 	 * @var Custom_CSS_Renderer
