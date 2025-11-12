@@ -8,6 +8,7 @@
 
 @use 'variables' as *;
 @use 'mixins' as *;
+@use 'utilities' as *;
 
 // Extension Editor Styles (must be after variables/mixins but before other rules)
 // Extensions are kept global because they apply to multiple blocks

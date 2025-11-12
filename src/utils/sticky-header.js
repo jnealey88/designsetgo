@@ -1,0 +1,247 @@
+/**
+ * Sticky Header Enhancements
+ *
+ * Provides dynamic sticky header functionality:
+ * - Shadow on scroll
+ * - Shrink on scroll
+ * - Hide on scroll down/show on scroll up
+ * - Background color on scroll
+ * - Mobile responsive behavior
+ *
+ * @package
+ * @since 1.0.0
+ */
+
+(function () {
+	'use strict';
+
+	// Get settings from localized script data
+	const settings = window.dsgStickyHeaderSettings || {
+		enable: true,
+		customSelector: '',
+		zIndex: 100,
+		shadowOnScroll: true,
+		shadowSize: 'medium',
+		shrinkOnScroll: false,
+		shrinkAmount: 20,
+		mobileEnabled: true,
+		mobileBreakpoint: 768,
+		transitionSpeed: 300,
+		scrollThreshold: 50,
+		hideOnScrollDown: false,
+		backgroundOnScroll: false,
+		backgroundScrollColor: '',
+		backgroundScrollOpacity: 100,
+	};
+
+	// Early exit if sticky header is disabled
+	if (!settings.enable) {
+		return;
+	}
+
+	// Determine selector to use
+	const selector =
+		settings.customSelector ||
+		'body:not(.block-editor-page) .wp-block-template-part:first-of-type, body:not(.block-editor-page) header.wp-block-template-part, body:not(.block-editor-page) .wp-block-template-part:has(.wp-block-navigation), body:not(.block-editor-page) .wp-block-template-part:has(.is-position-sticky)';
+
+	// Find sticky headers
+	const stickyHeaders = document.querySelectorAll(selector);
+
+	if (stickyHeaders.length === 0) {
+		return;
+	}
+
+	// State tracking
+	let lastScrollY = window.scrollY;
+	let ticking = false;
+
+	/**
+	 * Check if we're on mobile
+	 */
+	function isMobile() {
+		return window.innerWidth < settings.mobileBreakpoint;
+	}
+
+	/**
+	 * Apply CSS custom properties
+	 *
+	 * @param {HTMLElement} header Header element
+	 */
+	function applyCustomProperties(header) {
+		header.style.setProperty(
+			'--dsg-sticky-header-z-index',
+			settings.zIndex
+		);
+		header.style.setProperty(
+			'--dsg-sticky-header-transition-speed',
+			`${settings.transitionSpeed}ms`
+		);
+
+		// Check for per-block shrink amount from FSE controls
+		const blockShrinkAmount =
+			header.dataset.dsgShrinkAmount ||
+			(settings.shrinkOnScroll ? settings.shrinkAmount : null);
+
+		if (blockShrinkAmount) {
+			// Calculate scale amount (shrink by X% = scale to (1 - X/100))
+			const shrinkDecimal = parseInt(blockShrinkAmount) / 100;
+			const scaleAmount = 1 - shrinkDecimal;
+			header.style.setProperty('--dsg-sticky-scale-amount', scaleAmount);
+		}
+
+		if (settings.backgroundOnScroll && settings.backgroundScrollColor) {
+			const opacity = settings.backgroundScrollOpacity / 100;
+			// Convert hex to rgba if needed
+			let bgColor = settings.backgroundScrollColor;
+			if (bgColor.startsWith('#')) {
+				const r = parseInt(bgColor.slice(1, 3), 16);
+				const g = parseInt(bgColor.slice(3, 5), 16);
+				const b = parseInt(bgColor.slice(5, 7), 16);
+				bgColor = `rgba(${r}, ${g}, ${b}, ${opacity})`;
+			}
+			header.style.setProperty('--dsg-sticky-scroll-bg-color', bgColor);
+		}
+	}
+
+	/**
+	 * Apply configuration classes to header
+	 * Respects FSE-configured classes (takes precedence over global settings)
+	 *
+	 * @param {HTMLElement} header Header element
+	 */
+	function applyConfigurationClasses(header) {
+		// Check if this header has FSE controls enabled
+		const hasFSEControls = header.classList.contains(
+			'dsg-sticky-header-enabled'
+		);
+
+		// If FSE controls are active, classes are already applied in block save
+		// Only add global settings if no FSE controls present
+		if (!hasFSEControls) {
+			// Shadow on scroll
+			if (settings.shadowOnScroll) {
+				header.classList.add(
+					`dsg-sticky-shadow-${settings.shadowSize}`
+				);
+			}
+
+			// Shrink on scroll
+			if (settings.shrinkOnScroll) {
+				header.classList.add('dsg-sticky-shrink');
+			}
+
+			// Hide on scroll down
+			if (settings.hideOnScrollDown) {
+				header.classList.add('dsg-sticky-hide-on-scroll-down');
+			}
+
+			// Background on scroll
+			if (settings.backgroundOnScroll) {
+				header.classList.add('dsg-sticky-bg-on-scroll');
+			}
+
+			// Mobile disabled
+			if (!settings.mobileEnabled) {
+				header.classList.add('dsg-sticky-mobile-disabled');
+			}
+		}
+	}
+
+	/**
+	 * Handle scroll events
+	 *
+	 * @param {HTMLElement} header Header element
+	 */
+	function handleScroll(header) {
+		const scrollY = window.scrollY;
+
+		// Check if we should disable on mobile
+		if (!settings.mobileEnabled && isMobile()) {
+			return;
+		}
+
+		// Add/remove scrolled class based on threshold
+		if (scrollY > settings.scrollThreshold) {
+			header.classList.add('dsg-scrolled');
+		} else {
+			header.classList.remove('dsg-scrolled');
+		}
+
+		// Handle hide on scroll down
+		if (settings.hideOnScrollDown && scrollY > settings.scrollThreshold) {
+			if (scrollY > lastScrollY) {
+				// Scrolling down
+				header.classList.add('dsg-scroll-down');
+				header.classList.remove('dsg-scroll-up');
+			} else {
+				// Scrolling up
+				header.classList.add('dsg-scroll-up');
+				header.classList.remove('dsg-scroll-down');
+			}
+		}
+
+		lastScrollY = scrollY;
+	}
+
+	/**
+	 * Request animation frame wrapper for scroll handling
+	 *
+	 * @param {HTMLElement} header Header element
+	 */
+	function onScroll(header) {
+		if (!ticking) {
+			window.requestAnimationFrame(() => {
+				handleScroll(header);
+				ticking = false;
+			});
+			ticking = true;
+		}
+	}
+
+	/**
+	 * Initialize sticky header
+	 *
+	 * @param {HTMLElement} header Header element
+	 */
+	function initStickyHeader(header) {
+		// Apply custom properties
+		applyCustomProperties(header);
+
+		// Apply configuration classes
+		applyConfigurationClasses(header);
+
+		// Handle initial state
+		handleScroll(header);
+
+		// Add scroll listener
+		window.addEventListener('scroll', () => onScroll(header), {
+			passive: true,
+		});
+
+		// Handle resize for mobile breakpoint changes
+		let resizeTimeout;
+		window.addEventListener('resize', () => {
+			clearTimeout(resizeTimeout);
+			resizeTimeout = setTimeout(() => {
+				handleScroll(header);
+			}, 150);
+		});
+	}
+
+	/**
+	 * Initialize all sticky headers
+	 */
+	function init() {
+		// Wait for DOM to be fully loaded
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', () => {
+				stickyHeaders.forEach(initStickyHeader);
+			});
+		} else {
+			stickyHeaders.forEach(initStickyHeader);
+		}
+	}
+
+	// Initialize
+	init();
+})();

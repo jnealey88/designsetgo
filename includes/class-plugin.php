@@ -116,6 +116,13 @@ class Plugin {
 	public $section_styles;
 
 	/**
+	 * Sticky Header instance.
+	 *
+	 * @var Sticky_Header
+	 */
+	public $sticky_header;
+
+	/**
 	 * Returns the instance.
 	 *
 	 * @return Plugin
@@ -151,6 +158,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-admin-menu.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
+		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
 		require_once DESIGNSETGO_PATH . 'includes/helpers.php';
 
 		// Load Composer autoloader if available.
@@ -187,6 +195,7 @@ class Plugin {
 		$this->custom_css_renderer = new Custom_CSS_Renderer();
 		$this->section_styles      = new Section_Styles();
 		$this->section_styles->init();
+		$this->sticky_header = new Sticky_Header();
 
 		// Initialize admin menu (only in admin area).
 		if ( is_admin() ) {

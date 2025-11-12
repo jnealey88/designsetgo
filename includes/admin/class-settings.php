@@ -58,6 +58,23 @@ class Settings {
 				'log_user_agents'  => true,
 				'log_referrers'    => false,
 			),
+			'sticky_header'      => array(
+				'enable'                    => true,
+				'custom_selector'           => '',
+				'z_index'                   => 100,
+				'shadow_on_scroll'          => true,
+				'shadow_size'               => 'medium',
+				'shrink_on_scroll'          => false,
+				'shrink_amount'             => 20,
+				'mobile_enabled'            => true,
+				'mobile_breakpoint'         => 768,
+				'transition_speed'          => 300,
+				'scroll_threshold'          => 50,
+				'hide_on_scroll_down'       => false,
+				'background_on_scroll'      => false,
+				'background_scroll_color'   => '',
+				'background_scroll_opacity' => 100,
+			),
 		);
 	}
 
@@ -471,10 +488,10 @@ class Settings {
 	/**
 	 * Check read permission
 	 *
-	 * @param \WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $_request Request object (unused but required by REST API).
 	 * @return bool True if user has permission.
 	 */
-	public function check_read_permission( $request ) {
+	public function check_read_permission( $_request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		return current_user_can( 'manage_options' );
 	}
 
@@ -653,6 +670,27 @@ class Settings {
 				'log_ip_addresses' => isset( $settings['security']['log_ip_addresses'] ) ? (bool) $settings['security']['log_ip_addresses'] : true,
 				'log_user_agents'  => isset( $settings['security']['log_user_agents'] ) ? (bool) $settings['security']['log_user_agents'] : true,
 				'log_referrers'    => isset( $settings['security']['log_referrers'] ) ? (bool) $settings['security']['log_referrers'] : false,
+			);
+		}
+
+		// Sanitize sticky header settings.
+		if ( isset( $settings['sticky_header'] ) && is_array( $settings['sticky_header'] ) ) {
+			$sanitized['sticky_header'] = array(
+				'enable'                    => isset( $settings['sticky_header']['enable'] ) ? (bool) $settings['sticky_header']['enable'] : true,
+				'custom_selector'           => isset( $settings['sticky_header']['custom_selector'] ) ? sanitize_text_field( $settings['sticky_header']['custom_selector'] ) : '',
+				'z_index'                   => isset( $settings['sticky_header']['z_index'] ) ? absint( $settings['sticky_header']['z_index'] ) : 100,
+				'shadow_on_scroll'          => isset( $settings['sticky_header']['shadow_on_scroll'] ) ? (bool) $settings['sticky_header']['shadow_on_scroll'] : true,
+				'shadow_size'               => isset( $settings['sticky_header']['shadow_size'] ) ? sanitize_text_field( $settings['sticky_header']['shadow_size'] ) : 'medium',
+				'shrink_on_scroll'          => isset( $settings['sticky_header']['shrink_on_scroll'] ) ? (bool) $settings['sticky_header']['shrink_on_scroll'] : false,
+				'shrink_amount'             => isset( $settings['sticky_header']['shrink_amount'] ) ? absint( $settings['sticky_header']['shrink_amount'] ) : 20,
+				'mobile_enabled'            => isset( $settings['sticky_header']['mobile_enabled'] ) ? (bool) $settings['sticky_header']['mobile_enabled'] : true,
+				'mobile_breakpoint'         => isset( $settings['sticky_header']['mobile_breakpoint'] ) ? absint( $settings['sticky_header']['mobile_breakpoint'] ) : 768,
+				'transition_speed'          => isset( $settings['sticky_header']['transition_speed'] ) ? absint( $settings['sticky_header']['transition_speed'] ) : 300,
+				'scroll_threshold'          => isset( $settings['sticky_header']['scroll_threshold'] ) ? absint( $settings['sticky_header']['scroll_threshold'] ) : 50,
+				'hide_on_scroll_down'       => isset( $settings['sticky_header']['hide_on_scroll_down'] ) ? (bool) $settings['sticky_header']['hide_on_scroll_down'] : false,
+				'background_on_scroll'      => isset( $settings['sticky_header']['background_on_scroll'] ) ? (bool) $settings['sticky_header']['background_on_scroll'] : false,
+				'background_scroll_color'   => isset( $settings['sticky_header']['background_scroll_color'] ) ? sanitize_hex_color( $settings['sticky_header']['background_scroll_color'] ) : '',
+				'background_scroll_opacity' => isset( $settings['sticky_header']['background_scroll_opacity'] ) ? absint( $settings['sticky_header']['background_scroll_opacity'] ) : 100,
 			);
 		}
 

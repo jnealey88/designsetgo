@@ -44,7 +44,10 @@ const styleEntries = glob
 	.sync('./src/blocks/*/style.scss')
 	.reduce((entries, file) => {
 		const blockName = file.match(/\/blocks\/([^/]+)\/style\.scss$/)[1];
-		entries[`blocks/${blockName}/style-index`] = path.resolve(process.cwd(), file);
+		entries[`blocks/${blockName}/style-index`] = path.resolve(
+			process.cwd(),
+			file
+		);
 		return entries;
 	}, {});
 
@@ -64,6 +67,13 @@ module.exports = {
 			process.cwd(),
 			'src',
 			'block-category-filter.js'
+		),
+		// Sticky header utility script
+		'utils/sticky-header': path.resolve(
+			process.cwd(),
+			'src',
+			'utils',
+			'sticky-header.js'
 		),
 		// Block-specific entries (auto-detected from src/blocks/*/index.js)
 		...blockEntries,
@@ -111,7 +121,7 @@ module.exports = {
 						generateStatsFile: true,
 						statsFilename: 'bundle-stats.json',
 					}),
-			  ]
+				]
 			: []),
 	],
 	optimization: {

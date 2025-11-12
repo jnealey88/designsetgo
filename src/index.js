@@ -43,6 +43,9 @@ import './extensions/reveal-control';
 // Clickable Group - makes core/group blocks clickable with link functionality
 import './extensions/clickable-group';
 
+// Sticky Header Controls - adds sticky header configuration to template parts in Site Editor
+import './extensions/sticky-header-controls';
+
 // ===== DEFAULT PADDING FOR ROOT CONTAINERS =====
 // Set default padding for container blocks, but only when inserted at root level
 import { addFilter } from '@wordpress/hooks';

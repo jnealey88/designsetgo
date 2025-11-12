@@ -6,6 +6,9 @@
 
 @use 'mixins' as *;
 
+// Import sticky header utilities
+@use 'utilities/sticky-header';
+
 // Responsive visibility
 .dsg-hide-desktop {
 
@@ -108,3 +111,136 @@ body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 	max-width: 100%;
 }
 /* stylelint-enable selector-class-pattern */
+
+/**
+ * ============================================================================
+ * CONTAINER CHILD WIDTH STRATEGY
+ * ============================================================================
+ *
+ * Centralized width and layout rules for container blocks and their children.
+ * Defines how child blocks behave inside Section/Row/Grid containers.
+ *
+ * By default, all blocks inside containers should span the full width of their
+ * parent container for consistent behavior and predictable layouts.
+ */
+
+/**
+ * A. Full-Width Blocks (Default Behavior)
+ * All blocks inside container inner divs default to full width
+ */
+.dsg-stack__inner,
+.dsg-flex__inner,
+.dsg-grid__inner {
+
+	> .wp-block {
+		width: 100%;
+		max-width: none;
+	}
+
+	/**
+	 * B. Intrinsic Width Blocks (Inline Elements)
+	 * These blocks maintain their natural inline sizing
+	 */
+	> .wp-block-designsetgo-icon,
+	> .wp-block-designsetgo-icon-button,
+	> .wp-block-designsetgo-pill {
+		width: auto;
+		display: inline-flex;
+	}
+
+	> .wp-block-designsetgo-counter:not([style*="width"]) {
+		width: auto;
+		display: inline-flex;
+	}
+
+	/**
+	 * C. WordPress Alignment Classes (User-Controlled Width)
+	 */
+	> .alignleft {
+		width: auto;
+		max-width: 50%;
+		margin-right: 2em;
+		float: left;
+	}
+
+	> .alignright {
+		width: auto;
+		max-width: 50%;
+		margin-left: 2em;
+		float: right;
+	}
+
+	/**
+	 * Aligncenter - ONLY for block-level elements
+	 * Inline blocks (icon button, pill) should use flexbox alignment instead
+	 */
+	> .aligncenter:not(.wp-block-designsetgo-icon):not(.wp-block-designsetgo-icon-button):not(.wp-block-designsetgo-pill):not(.wp-block-designsetgo-counter) {
+		width: auto;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	/**
+	 * Alignfull breakout - ONLY for non-container blocks
+	 * Container blocks are handled separately in section D
+	 */
+	> .alignfull:not(.wp-block-designsetgo-section):not(.wp-block-designsetgo-row):not(.wp-block-designsetgo-grid) {
+		width: 100vw;
+		max-width: 100vw;
+		margin-left: calc(50% - 50vw);
+		margin-right: calc(50% - 50vw);
+	}
+
+	> .alignwide {
+		width: 100%;
+		max-width: var(--wp--custom--layout--wide-size, 1200px);
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	/**
+	 * D. Nested Container Behavior
+	 * Nested containers span full width of parent and can set their own constraints
+	 * Container blocks should NEVER use viewport breakout (calc(50% - 50vw))
+	 */
+	> .wp-block-designsetgo-section,
+	> .wp-block-designsetgo-row,
+	> .wp-block-designsetgo-grid {
+		width: 100% !important;
+
+		> .dsg-stack__inner,
+		> .dsg-flex__inner,
+		> .dsg-grid__inner {
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+	}
+
+	/**
+	 * E. Interactive Blocks - Always Full Width
+	 */
+	> .wp-block-designsetgo-accordion,
+	> .wp-block-designsetgo-tabs {
+		width: 100% !important;
+		max-width: none !important;
+	}
+}
+
+/**
+ * No Width Constraint Mode
+ * When container has constrainWidth=false, ensure no artificial limits
+ */
+.dsg-stack.dsg-no-width-constraint,
+.dsg-flex.dsg-no-width-constraint,
+.dsg-grid.dsg-no-width-constraint {
+
+	> .dsg-stack__inner,
+	> .dsg-flex__inner,
+	> .dsg-grid__inner {
+
+		> :not(.alignleft):not(.alignright) {
+			max-width: none !important;
+		}
+	}
+}
