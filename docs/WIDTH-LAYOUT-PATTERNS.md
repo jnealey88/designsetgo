@@ -3,17 +3,66 @@
 **Purpose**: Prevent conflicts with nested items when handling width, contentSize, and layout across blocks.
 
 **Last Updated**: 2025-11-11
-**Status**: 🔴 Multiple conflicts identified - requires refactoring
+**Status**: 🟢 Phase 1 Complete - 4 critical issues resolved, 2 deferred
 
 ---
 
 ## Table of Contents
 
-1. [Core Architecture](#core-architecture)
-2. [Current Patterns](#current-patterns)
-3. [Known Conflicts](#known-conflicts)
-4. [Best Practices](#best-practices)
-5. [Migration Guide](#migration-guide)
+1. [Resolved Issues (2025-11-11)](#resolved-issues-2025-11-11)
+2. [Core Architecture](#core-architecture)
+3. [Current Patterns](#current-patterns)
+4. [Known Conflicts](#known-conflicts)
+5. [Best Practices](#best-practices)
+6. [Migration Guide](#migration-guide)
+
+---
+
+## Resolved Issues (2025-11-11)
+
+### ✅ Issue #1: Missing `dsg-no-width-constraint` Class
+**Status:** RESOLVED
+**Fix:** Added class application in [section/save.js:31-37](../src/blocks/section/save.js), [row/save.js](../src/blocks/row/save.js), [grid/save.js](../src/blocks/grid/save.js)
+**Commit:** 2765159 (2025-11-11)
+
+### ✅ Issue #3: Grid Block Hard-coded Gaps
+**Status:** RESOLVED
+**Fix:** Added blockGap priority in [grid/edit.js:137](../src/blocks/grid/edit.js) and [grid/save.js:67](../src/blocks/grid/save.js)
+**Priority:** `blockGap → rowGap/columnGap → preset fallback`
+
+### ✅ Issue #4: Extension Duplicates Native Attributes
+**Status:** RESOLVED
+**Fix:** Excluded container blocks from [max-width extension](../src/extensions/max-width/index.js:37-39)
+**Impact:** No duplicate controls, extension preserved for future blocks
+
+### ✅ Issue #5: Editor/Frontend Parity
+**Status:** RESOLVED
+**Fix:** Standardized contentSize usage across all edit.js files:
+- [section/edit.js:180](../src/blocks/section/edit.js)
+- [row/edit.js:228](../src/blocks/row/edit.js)
+- [grid/edit.js:151](../src/blocks/grid/edit.js)
+**Pattern:** `contentWidth || themeContentSize || '1140px'`
+
+### ✅ Issue #6: Accordion/Tabs Width Controls
+**Status:** DESIGN DECISION (Not a bug)
+**Decision:** Always full-width by default
+**Rationale:** Interactive blocks work best at full container width
+**User Control:** Nest in Section/Row/Grid for layout constraints
+
+### New: Centralized Width Strategy
+**Added:** Comprehensive child block width rules in [utilities.scss:112-234](../src/styles/_utilities.scss)
+**Features:**
+- Full-width default for most blocks
+- Inline sizing for Icon, Pill, Icon Button
+- WordPress alignment class support
+- Nested container handling
+- Accordion/Tabs forced full-width
+
+### Deferred Issues
+
+**Issue #2:** Row Block Manual Flex
+**Issue #7:** CSS Specificity Wars
+**Reason:** Lower priority, requires larger refactor
 
 ---
 
@@ -269,7 +318,7 @@ When containers nest, the inner container should:
 
 ## Known Conflicts
 
-### 🔴 Issue #1: Missing `dsg-no-width-constraint` Class
+### ✅ Issue #1: Missing `dsg-no-width-constraint` Class (**RESOLVED 2025-11-11**)
 
 **Problem:** CSS references a class that's never applied.
 
@@ -304,6 +353,8 @@ const className = [
     !constrainWidth && 'dsg-no-width-constraint',
 ].filter(Boolean).join(' ');
 ```
+
+**✅ RESOLUTION (2025-11-11):** Fixed in commit 2765159. Class now properly applied in all three container blocks (Section, Row, Grid).
 
 ---
 
@@ -344,7 +395,7 @@ Let WordPress handle flex via layout classes (like Section does).
 
 ---
 
-### 🔴 Issue #3: Grid Block Hard-coded Gaps
+### ✅ Issue #3: Grid Block Hard-coded Gaps (**RESOLVED 2025-11-11**)
 
 **Problem:** Hard-coded spacing preset instead of respecting WordPress blockGap.
 
@@ -368,9 +419,11 @@ columnGap: columnGap || blockGap,
 
 **Location:** [grid/save.js](../src/blocks/grid/save.js) (lines 55-61)
 
+**✅ RESOLUTION (2025-11-11):** Fixed in both [grid/edit.js:137](../src/blocks/grid/edit.js) and [grid/save.js:67](../src/blocks/grid/save.js). Now uses priority: `blockGap → rowGap → columnGap → preset fallback`.
+
 ---
 
-### 🔴 Issue #4: Extension Duplicates Native Attributes
+### ✅ Issue #4: Extension Duplicates Native Attributes (**RESOLVED 2025-11-11**)
 
 **Problem:** Max-width extension adds attributes that blocks already have.
 
@@ -410,9 +463,11 @@ if (isContainerBlock) {
 
 **Fix Required:** Remove extension entirely or refactor to only add controls to blocks that DON'T have them (e.g., Accordion, Tabs).
 
+**✅ RESOLUTION (2025-11-11):** Container blocks excluded from extension via `EXCLUDED_BLOCKS` array. Extension preserved for future non-container blocks. See [max-width/index.js:37-39](../src/extensions/max-width/index.js).
+
 ---
 
-### 🔴 Issue #5: Editor/Frontend Parity
+### ✅ Issue #5: Editor/Frontend Parity (**RESOLVED 2025-11-11**)
 
 **Problem:** Different contentSize sources in editor vs frontend.
 
@@ -435,9 +490,14 @@ innerStyle.maxWidth = contentWidth || 'var(--wp--style--global--content-size, 11
 
 **Fix Required:** Use consistent approach or ensure CSS variable is always available.
 
+**✅ RESOLUTION (2025-11-11):** Standardized all edit.js files to use `contentWidth || themeContentSize || '1140px'`. Consistent fallback ensures editor/frontend parity. Changed files:
+- [section/edit.js:180](../src/blocks/section/edit.js)
+- [row/edit.js:228](../src/blocks/row/edit.js)
+- [grid/edit.js:151](../src/blocks/grid/edit.js)
+
 ---
 
-### 🟡 Issue #6: Accordion/Tabs Lack Width Controls
+### ✅ Issue #6: Accordion/Tabs Width Controls (**DESIGN DECISION 2025-11-11**)
 
 **Current State:**
 
@@ -458,6 +518,12 @@ innerStyle.maxWidth = contentWidth || 'var(--wp--style--global--content-size, 11
 - [accordion/style.scss](../src/blocks/accordion/style.scss) (line 18: `width: 100%;`)
 - [tabs/edit.js](../src/blocks/tabs/edit.js)
 - [tabs/style.scss](../src/blocks/tabs/style.scss) (line 21: `width: 100%;`)
+
+**✅ DECISION (2025-11-11):** This is intentional, not a bug. Accordion and Tabs blocks will ALWAYS be full-width of their parent container. Rationale:
+- Interactive UI elements work best at full width
+- Simpler UX (fewer controls)
+- Users can nest in Section/Row/Grid for layout control
+- Enforced via CSS in [utilities.scss:211-215](../src/styles/_utilities.scss)
 
 ---
 

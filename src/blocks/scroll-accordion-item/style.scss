@@ -49,7 +49,7 @@
 	 * Later cards appear on top (higher z-index)
 	 * Stick at top so items overlap as you scroll
 	 */
-	top: var(--dsg-scroll-accordion-sticky-offset, 15vh);
+	top: var(--dsg-scroll-accordion-sticky-offset, 30vh);
 
 	&:nth-child(1) {
 		z-index: 1;

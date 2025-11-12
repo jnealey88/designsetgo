@@ -23,6 +23,7 @@ import {
 import {
 	PanelBody,
 	ToggleControl,
+	SelectControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -71,6 +72,7 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 	const {
 		align,
 		className,
+		tagName = 'div',
 		constrainWidth,
 		contentWidth,
 		overlayColor,
@@ -176,6 +178,7 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 		.filter(Boolean)
 		.join(' ');
 
+	const TagName = tagName || 'div';
 	const blockProps = useBlockProps({
 		className: blockClassName,
 		style: {
@@ -225,7 +228,7 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 	// Apply width constraints if enabled
 	// Use custom contentWidth if set, otherwise fallback to theme's contentSize
 	if (constrainWidth) {
-		innerStyle.maxWidth = contentWidth || themeContentSize || '1200px';
+		innerStyle.maxWidth = contentWidth || themeContentSize || '1140px';
 		innerStyle.marginLeft = 'auto';
 		innerStyle.marginRight = 'auto';
 	}
@@ -246,6 +249,25 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 
 	return (
 		<>
+			<InspectorControls group="advanced">
+				<SelectControl
+					label={__('HTML Element', 'designsetgo')}
+					value={tagName}
+					options={[
+						{ label: __('Default (<div>)', 'designsetgo'), value: 'div' },
+						{ label: '<section>', value: 'section' },
+						{ label: '<article>', value: 'article' },
+						{ label: '<aside>', value: 'aside' },
+						{ label: '<header>', value: 'header' },
+						{ label: '<footer>', value: 'footer' },
+						{ label: '<main>', value: 'main' },
+					]}
+					onChange={(value) => setAttributes({ tagName: value })}
+					help={__('Choose the HTML element for this block. Use semantic elements when appropriate for better accessibility.', 'designsetgo')}
+					__nextHasNoMarginBottom
+				/>
+			</InspectorControls>
+
 			<InspectorControls>
 				<PanelBody
 					title={__('Row Settings', 'designsetgo')}
@@ -392,9 +414,9 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 				/>
 			</InspectorControls>
 
-			<div {...blockProps}>
+			<TagName {...blockProps}>
 				<div {...innerBlocksProps} />
-			</div>
+			</TagName>
 		</>
 	);
 }

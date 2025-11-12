@@ -5,6 +5,10 @@ import {
 	InspectorControls,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -15,18 +19,22 @@ import {
 } from '@wordpress/components';
 import classnames from 'classnames';
 
-export default function AccordionEdit({ attributes, setAttributes }) {
+export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 	const {
 		allowMultipleOpen,
 		iconStyle,
 		iconPosition,
 		borderBetween,
+		borderBetweenColor,
 		itemGap,
 		openBackgroundColor,
 		openTextColor,
 		hoverBackgroundColor,
 		hoverTextColor,
 	} = attributes;
+
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Smart default: hover mirrors open unless explicitly set
 	const effectiveHoverBg = hoverBackgroundColor || openBackgroundColor;
@@ -48,6 +56,9 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 		'--dsg-accordion-hover-bg': effectiveHoverBg,
 		'--dsg-accordion-hover-text': effectiveHoverText,
 		'--dsg-accordion-gap': itemGap,
+		...(borderBetweenColor && {
+			'--dsg-accordion-border-color': borderBetweenColor,
+		}),
 	};
 
 	// Block wrapper props
@@ -209,6 +220,25 @@ export default function AccordionEdit({ attributes, setAttributes }) {
 						/>
 					)}
 				</PanelBody>
+			</InspectorControls>
+
+			<InspectorControls group="color">
+				{borderBetween && (
+					<ColorGradientSettingsDropdown
+						panelId={clientId}
+						title={__('Border Color', 'designsetgo')}
+						settings={[
+							{
+								label: __('Between Items', 'designsetgo'),
+								colorValue: borderBetweenColor,
+								onColorChange: (color) =>
+									setAttributes({ borderBetweenColor: color || '' }),
+								clearable: true,
+							},
+						]}
+						{...colorGradientSettings}
+					/>
+				)}
 			</InspectorControls>
 
 			<InspectorControls group="styles">

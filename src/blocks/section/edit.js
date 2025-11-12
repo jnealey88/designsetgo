@@ -23,6 +23,7 @@ import {
 import {
 	PanelBody,
 	ToggleControl,
+	SelectControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -45,6 +46,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 	const {
 		align,
 		className,
+		tagName = 'div',
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -151,6 +153,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	// WordPress handles flex layout through layout support and CSS classes
 	// We only add custom CSS variables for hover effects and overlay
+	const TagName = tagName || 'div';
 	const blockProps = useBlockProps({
 		className: blockClassName,
 		style: {
@@ -198,6 +201,25 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 
 	return (
 		<>
+			<InspectorControls group="advanced">
+				<SelectControl
+					label={__('HTML Element', 'designsetgo')}
+					value={tagName}
+					options={[
+						{ label: __('Default (<div>)', 'designsetgo'), value: 'div' },
+						{ label: '<section>', value: 'section' },
+						{ label: '<article>', value: 'article' },
+						{ label: '<aside>', value: 'aside' },
+						{ label: '<header>', value: 'header' },
+						{ label: '<footer>', value: 'footer' },
+						{ label: '<main>', value: 'main' },
+					]}
+					onChange={(value) => setAttributes({ tagName: value })}
+					help={__('Choose the HTML element for this block. Use semantic elements when appropriate for better accessibility.', 'designsetgo')}
+					__nextHasNoMarginBottom
+				/>
+			</InspectorControls>
+
 			<InspectorControls>
 				<PanelBody
 					title={__('Section Settings', 'designsetgo')}
@@ -323,9 +345,9 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 				/>
 			</InspectorControls>
 
-			<div {...blockProps}>
+			<TagName {...blockProps}>
 				<div {...innerBlocksProps} />
-			</div>
+			</TagName>
 		</>
 	);
 }

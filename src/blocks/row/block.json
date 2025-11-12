@@ -82,6 +82,10 @@
 			"type": "string",
 			"default": "full"
 		},
+		"tagName": {
+			"type": "string",
+			"default": "div"
+		},
 		"constrainWidth": {
 			"type": "boolean",
 			"default": false

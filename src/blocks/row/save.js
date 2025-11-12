@@ -44,6 +44,7 @@ function convertPresetToCSSVar(value) {
  */
 export default function RowSave({ attributes }) {
 	const {
+		tagName = 'div',
 		constrainWidth,
 		contentWidth,
 		overlayColor,
@@ -66,6 +67,7 @@ export default function RowSave({ attributes }) {
 		.join(' ');
 
 	// Block wrapper props - outer div stays full width
+	const TagName = tagName || 'div';
 	const blockProps = useBlockProps.save({
 		className,
 		style: {
@@ -129,8 +131,8 @@ export default function RowSave({ attributes }) {
 	});
 
 	return (
-		<div {...blockProps}>
+		<TagName {...blockProps}>
 			<div {...innerBlocksProps} />
-		</div>
+		</TagName>
 	);
 }

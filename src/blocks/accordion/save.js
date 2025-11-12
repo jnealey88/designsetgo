@@ -7,6 +7,7 @@ export default function AccordionSave({ attributes }) {
 		iconStyle,
 		iconPosition,
 		borderBetween,
+		borderBetweenColor,
 		itemGap,
 		openBackgroundColor,
 		openTextColor,
@@ -34,6 +35,9 @@ export default function AccordionSave({ attributes }) {
 		'--dsg-accordion-hover-bg': effectiveHoverBg,
 		'--dsg-accordion-hover-text': effectiveHoverText,
 		'--dsg-accordion-gap': itemGap,
+		...(borderBetweenColor && {
+			'--dsg-accordion-border-color': borderBetweenColor,
+		}),
 	};
 
 	// Use .save() variant for save function

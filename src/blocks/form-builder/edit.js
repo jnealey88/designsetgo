@@ -48,6 +48,10 @@ export default function FormBuilderEdit({
 		fieldBackgroundColor,
 		submitButtonColor,
 		submitButtonBackgroundColor,
+		submitButtonPaddingVertical,
+		submitButtonPaddingHorizontal,
+		submitButtonFontSize,
+		submitButtonHeight,
 		enableHoneypot,
 		enableRateLimit,
 		rateLimitCount,
@@ -96,52 +100,54 @@ export default function FormBuilderEdit({
 	});
 
 	// Inner blocks for form fields
-	const innerBlocksProps = useInnerBlocksProps(
-		{
-			className: 'dsg-form__fields',
-		},
-		{
-			allowedBlocks: [
-				'designsetgo/form-text-field',
-				'designsetgo/form-email-field',
-				'designsetgo/form-textarea',
-				'designsetgo/form-number-field',
-				'designsetgo/form-phone-field',
-				'designsetgo/form-url-field',
-				'designsetgo/form-date-field',
-				'designsetgo/form-time-field',
-				'designsetgo/form-select-field',
-				'designsetgo/form-checkbox',
-				'designsetgo/form-hidden-field',
-			],
-			template: [
-				[
+	// Extract children so we can add button inside fields container
+	const { children, ...innerBlocksPropsWithoutChildren } =
+		useInnerBlocksProps(
+			{
+				className: 'dsg-form__fields',
+			},
+			{
+				allowedBlocks: [
 					'designsetgo/form-text-field',
-					{
-						label: __('Name', 'designsetgo'),
-						fieldName: 'name',
-						required: true,
-					},
-				],
-				[
 					'designsetgo/form-email-field',
-					{
-						label: __('Email', 'designsetgo'),
-						fieldName: 'email',
-						required: true,
-					},
-				],
-				[
 					'designsetgo/form-textarea',
-					{
-						label: __('Message', 'designsetgo'),
-						fieldName: 'message',
-					},
+					'designsetgo/form-number-field',
+					'designsetgo/form-phone-field',
+					'designsetgo/form-url-field',
+					'designsetgo/form-date-field',
+					'designsetgo/form-time-field',
+					'designsetgo/form-select-field',
+					'designsetgo/form-checkbox',
+					'designsetgo/form-hidden-field',
 				],
-			],
-			orientation: 'vertical',
-		}
-	);
+				template: [
+					[
+						'designsetgo/form-text-field',
+						{
+							label: __('Name', 'designsetgo'),
+							fieldName: 'name',
+							required: true,
+						},
+					],
+					[
+						'designsetgo/form-email-field',
+						{
+							label: __('Email', 'designsetgo'),
+							fieldName: 'email',
+							required: true,
+						},
+					],
+					[
+						'designsetgo/form-textarea',
+						{
+							label: __('Message', 'designsetgo'),
+							fieldName: 'message',
+						},
+					],
+				],
+				orientation: 'vertical',
+			}
+		);
 
 	return (
 		<>
@@ -225,7 +231,102 @@ export default function FormBuilderEdit({
 							__nextHasNoMarginBottom
 						/>
 					)}
+				</PanelBody>
 
+				<PanelBody
+					title={__('Button Styling', 'designsetgo')}
+					initialOpen={false}
+				>
+					<UnitControl
+						label={__('Button Height', 'designsetgo')}
+						value={submitButtonHeight}
+						onChange={(value) =>
+							setAttributes({ submitButtonHeight: value || '44px' })
+						}
+						units={[
+							{ value: 'px', label: 'px', default: 44 },
+							{ value: 'rem', label: 'rem', default: 2.75 },
+							{ value: 'em', label: 'em', default: 2.75 },
+						]}
+						min={28}
+						max={200}
+						help={__(
+							'Minimum height for submit button',
+							'designsetgo'
+						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					<UnitControl
+						label={__('Button Padding (Vertical)', 'designsetgo')}
+						value={submitButtonPaddingVertical}
+						onChange={(value) =>
+							setAttributes({
+								submitButtonPaddingVertical: value || '0.75rem',
+							})
+						}
+						units={[
+							{ value: 'px', label: 'px', default: 12 },
+							{ value: 'rem', label: 'rem', default: 0.75 },
+							{ value: 'em', label: 'em', default: 0.75 },
+						]}
+						min={0}
+						max={50}
+						help={__(
+							'Top and bottom padding for button',
+							'designsetgo'
+						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					<UnitControl
+						label={__('Button Padding (Horizontal)', 'designsetgo')}
+						value={submitButtonPaddingHorizontal}
+						onChange={(value) =>
+							setAttributes({
+								submitButtonPaddingHorizontal: value || '2rem',
+							})
+						}
+						units={[
+							{ value: 'px', label: 'px', default: 32 },
+							{ value: 'rem', label: 'rem', default: 2 },
+							{ value: 'em', label: 'em', default: 2 },
+						]}
+						min={0}
+						max={100}
+						help={__('Left and right padding for button', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					<UnitControl
+						label={__('Button Font Size', 'designsetgo')}
+						value={submitButtonFontSize}
+						onChange={(value) =>
+							setAttributes({ submitButtonFontSize: value || '' })
+						}
+						units={[
+							{ value: 'px', label: 'px', default: 16 },
+							{ value: 'rem', label: 'rem', default: 1 },
+							{ value: 'em', label: 'em', default: 1 },
+						]}
+						min={10}
+						max={100}
+						help={__(
+							'Font size for button text (leave empty to inherit)',
+							'designsetgo'
+						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+				</PanelBody>
+
+				<PanelBody
+					title={__('Field Styling', 'designsetgo')}
+					initialOpen={false}
+				>
 					<UnitControl
 						label={__('Field Spacing', 'designsetgo')}
 						value={fieldSpacing}
@@ -563,25 +664,34 @@ export default function FormBuilderEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div {...innerBlocksProps} />
-
-				{submitButtonPosition === 'inline' && (
-					<button
-						type="button"
-						className="dsg-form__submit dsg-form__submit--inline wp-element-button"
-						disabled
-						style={{
-							...(submitButtonColor && {
-								color: submitButtonColor,
-							}),
-							...(submitButtonBackgroundColor && {
-								backgroundColor: submitButtonBackgroundColor,
-							}),
-						}}
-					>
-						{submitButtonText}
-					</button>
-				)}
+				<div {...innerBlocksPropsWithoutChildren}>
+					{children}
+					{submitButtonPosition === 'inline' && (
+						<button
+							type="button"
+							className="dsg-form__submit dsg-form__submit--inline wp-element-button"
+							disabled
+							style={{
+								...(submitButtonColor && {
+									color: submitButtonColor,
+								}),
+								...(submitButtonBackgroundColor && {
+									backgroundColor: submitButtonBackgroundColor,
+								}),
+								minHeight: submitButtonHeight,
+								paddingTop: submitButtonPaddingVertical,
+								paddingBottom: submitButtonPaddingVertical,
+								paddingLeft: submitButtonPaddingHorizontal,
+								paddingRight: submitButtonPaddingHorizontal,
+								...(submitButtonFontSize && {
+									fontSize: submitButtonFontSize,
+								}),
+							}}
+						>
+							{submitButtonText}
+						</button>
+					)}
+				</div>
 
 				{submitButtonPosition === 'below' && (
 					<div className="dsg-form__footer">
@@ -596,6 +706,14 @@ export default function FormBuilderEdit({
 								...(submitButtonBackgroundColor && {
 									backgroundColor:
 										submitButtonBackgroundColor,
+								}),
+								minHeight: submitButtonHeight,
+								paddingTop: submitButtonPaddingVertical,
+								paddingBottom: submitButtonPaddingVertical,
+								paddingLeft: submitButtonPaddingHorizontal,
+								paddingRight: submitButtonPaddingHorizontal,
+								...(submitButtonFontSize && {
+									fontSize: submitButtonFontSize,
 								}),
 							}}
 						>

@@ -44,11 +44,10 @@
 	// Submit button - minimal styling to allow theme styles to work
 	&__submit {
 		// No color/background rules - let theme handle via wp-element-button
-		// Custom colors applied as inline styles when user sets them
+		// Custom colors and sizing applied as inline styles via block attributes
 
 		// Minimal overrides for functionality
 		cursor: pointer;
-		min-height: 44px; // Touch-friendly (accessibility requirement)
 
 		&:disabled {
 			opacity: 0.5;
@@ -56,11 +55,10 @@
 		}
 
 		// Inline button (for subscribe forms, etc.)
+		// Sizing is controlled via block attributes (inline styles)
 		&--inline {
 			flex: 0 0 auto;
 			width: auto;
-			padding-left: 2rem;
-			padding-right: 2rem;
 		}
 
 		// Loading state
@@ -137,27 +135,24 @@
 
 // Inline button mode (for subscribe forms)
 .dsg-form-builder--button-inline {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--dsg-form-field-spacing);
-	align-items: flex-end; // Align button with input baseline
 
+	// CRITICAL: Button is inside .dsg-form__fields as a flex child
+	// No need to make .dsg-form a flex container
 	.dsg-form__fields {
-		flex: 1 1 auto;
-		align-items: flex-end; // Align fields with button baseline
+		// Fields container is already flex with wrap
+		// Just ensure proper alignment for inline button
+		align-items: flex-end; // Align button with input baseline
 	}
 
 	.dsg-form__submit--inline {
+		// Button sits inline with fields as a flex child
+		// Sizing is controlled via block attributes (inline styles)
 		flex: 0 0 auto;
+		width: auto;
 	}
 
 	.dsg-form__footer {
-		display: none; // Button is moved outside fields container
-	}
-
-	.dsg-form__message {
-		flex-basis: 100%; // Force message to new line
-		order: 999; // Ensure message appears after button
+		display: none; // Hidden in inline mode
 	}
 }
 

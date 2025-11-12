@@ -18,6 +18,12 @@
 		overflow: visible;
 	}
 
+	// CRITICAL: Allow Navigation block dropdowns to overflow
+	// Navigation menus need to display outside container bounds
+	&:has(.wp-block-navigation) {
+		overflow: visible;
+	}
+
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
 
@@ -131,6 +137,7 @@
 			margin-right: 0 !important;
 		}
 
+		// Section center alignment - apply to inline blocks WITHOUT their own alignment
 		&.is-content-justification-center {
 
 			> :where(
@@ -140,11 +147,12 @@
 				.wp-block-buttons,
 				.dsg-icon-button,
 				.wp-block-designsetgo-icon-button
-			) {
+			):not(.alignleft):not(.alignright):not(.aligncenter) {
 				align-self: center;
 			}
 		}
 
+		// Section right alignment - apply to inline blocks WITHOUT their own alignment
 		&.is-content-justification-right {
 
 			> :where(
@@ -154,11 +162,12 @@
 				.wp-block-buttons,
 				.dsg-icon-button,
 				.wp-block-designsetgo-icon-button
-			) {
+			):not(.alignleft):not(.alignright):not(.aligncenter) {
 				align-self: flex-end;
 			}
 		}
 
+		// Section left alignment - apply to inline blocks WITHOUT their own alignment
 		&.is-content-justification-left {
 
 			> :where(
@@ -168,20 +177,49 @@
 				.wp-block-buttons,
 				.dsg-icon-button,
 				.wp-block-designsetgo-icon-button
-			) {
+			):not(.alignleft):not(.alignright):not(.aligncenter) {
 				align-self: flex-start;
 			}
 		}
 
-		> .aligncenter {
+		// Inline blocks WITH explicit alignment - override section alignment
+		> :where(
+			.wp-block-designsetgo-icon,
+			.wp-block-designsetgo-icon-button,
+			.wp-block-designsetgo-pill,
+			.wp-block-designsetgo-counter
+		).aligncenter {
 			align-self: center !important;
 		}
 
-		> .alignright {
+		> :where(
+			.wp-block-designsetgo-icon,
+			.wp-block-designsetgo-icon-button,
+			.wp-block-designsetgo-pill,
+			.wp-block-designsetgo-counter
+		).alignleft {
+			align-self: flex-start !important;
+		}
+
+		> :where(
+			.wp-block-designsetgo-icon,
+			.wp-block-designsetgo-icon-button,
+			.wp-block-designsetgo-pill,
+			.wp-block-designsetgo-counter
+		).alignright {
 			align-self: flex-end !important;
 		}
 
-		> .alignleft {
+		// Block-level elements WITH explicit alignment
+		> .aligncenter:not(.wp-block-designsetgo-icon):not(.wp-block-designsetgo-icon-button):not(.wp-block-designsetgo-pill):not(.wp-block-designsetgo-counter) {
+			align-self: center !important;
+		}
+
+		> .alignright:not(.wp-block-designsetgo-icon):not(.wp-block-designsetgo-icon-button):not(.wp-block-designsetgo-pill):not(.wp-block-designsetgo-counter) {
+			align-self: flex-end !important;
+		}
+
+		> .alignleft:not(.wp-block-designsetgo-icon):not(.wp-block-designsetgo-icon-button):not(.wp-block-designsetgo-pill):not(.wp-block-designsetgo-counter) {
 			align-self: flex-start !important;
 		}
 

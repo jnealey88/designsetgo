@@ -47,6 +47,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	const {
 		align,
 		className,
+		tagName = 'div',
 		constrainWidth,
 		contentWidth,
 		desktopColumns,
@@ -113,6 +114,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	);
 
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
+	const TagName = tagName || 'div';
 	const blockProps = useBlockProps({
 		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
 		style: {
@@ -148,7 +150,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	// Apply width constraints if enabled
 	// Use custom contentWidth if set, otherwise fallback to theme's contentSize
 	if (constrainWidth) {
-		innerStyles.maxWidth = contentWidth || themeContentSize || '1200px';
+		innerStyles.maxWidth = contentWidth || themeContentSize || '1140px';
 		innerStyles.marginLeft = 'auto';
 		innerStyles.marginRight = 'auto';
 	}
@@ -177,6 +179,25 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 					}
 				/>
 			</BlockControls>
+
+			<InspectorControls group="advanced">
+				<SelectControl
+					label={__('HTML Element', 'designsetgo')}
+					value={tagName}
+					options={[
+						{ label: __('Default (<div>)', 'designsetgo'), value: 'div' },
+						{ label: '<section>', value: 'section' },
+						{ label: '<article>', value: 'article' },
+						{ label: '<aside>', value: 'aside' },
+						{ label: '<header>', value: 'header' },
+						{ label: '<footer>', value: 'footer' },
+						{ label: '<main>', value: 'main' },
+					]}
+					onChange={(value) => setAttributes({ tagName: value })}
+					help={__('Choose the HTML element for this block. Use semantic elements when appropriate for better accessibility.', 'designsetgo')}
+					__nextHasNoMarginBottom
+				/>
+			</InspectorControls>
 
 			<InspectorControls group="color">
 				<ColorGradientSettingsDropdown
@@ -467,9 +488,9 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 				</PanelBody>
 			</InspectorControls>
 
-			<div {...blockProps}>
+			<TagName {...blockProps}>
 				<div {...innerBlocksProps} />
-			</div>
+			</TagName>
 		</>
 	);
 }

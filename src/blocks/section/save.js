@@ -18,6 +18,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 export default function SectionSave({ attributes }) {
 	const {
+		tagName = 'div',
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -37,6 +38,7 @@ export default function SectionSave({ attributes }) {
 		.join(' ');
 
 	// Block wrapper props - outer div stays full width
+	const TagName = tagName || 'div';
 	const blockProps = useBlockProps.save({
 		className,
 		style: {
@@ -76,8 +78,8 @@ export default function SectionSave({ attributes }) {
 	});
 
 	return (
-		<div {...blockProps}>
+		<TagName {...blockProps}>
 			<div {...innerBlocksProps} />
-		</div>
+		</TagName>
 	);
 }

@@ -34,6 +34,12 @@
 		}
 	}
 
+	// CRITICAL: Allow Navigation block dropdowns to overflow even with overlay
+	// Navigation menus need to display outside container bounds
+	&:has(.wp-block-navigation) {
+		overflow: visible;
+	}
+
 	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;

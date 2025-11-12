@@ -77,6 +77,22 @@
 			"type": "string",
 			"default": ""
 		},
+		"submitButtonPaddingVertical": {
+			"type": "string",
+			"default": "0.75rem"
+		},
+		"submitButtonPaddingHorizontal": {
+			"type": "string",
+			"default": "2rem"
+		},
+		"submitButtonFontSize": {
+			"type": "string",
+			"default": ""
+		},
+		"submitButtonHeight": {
+			"type": "string",
+			"default": "44px"
+		},
 		"enableHoneypot": {
 			"type": "boolean",
 			"default": true

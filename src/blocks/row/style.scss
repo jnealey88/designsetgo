@@ -42,6 +42,12 @@
 		}
 	}
 
+	// CRITICAL: Allow Navigation block dropdowns to overflow even with overlay
+	// Navigation menus need to display outside container bounds
+	&:has(.wp-block-navigation) {
+		overflow: visible;
+	}
+
 	// CRITICAL: Inner container must be full width for justify-content to work
 	// When constrainWidth is enabled, inline styles will override with max-width
 	.dsg-flex__inner {

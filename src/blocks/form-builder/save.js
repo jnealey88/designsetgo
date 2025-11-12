@@ -12,6 +12,7 @@ export default function FormBuilderSave({ attributes }) {
 		formId,
 		submitButtonText,
 		submitButtonAlignment,
+		submitButtonPosition,
 		ajaxSubmit,
 		successMessage,
 		errorMessage,
@@ -23,6 +24,10 @@ export default function FormBuilderSave({ attributes }) {
 		fieldBackgroundColor,
 		submitButtonColor,
 		submitButtonBackgroundColor,
+		submitButtonPaddingVertical,
+		submitButtonPaddingHorizontal,
+		submitButtonFontSize,
+		submitButtonHeight,
 		enableHoneypot,
 		enableEmail,
 		emailTo,
@@ -36,7 +41,8 @@ export default function FormBuilderSave({ attributes }) {
 	// Same classes as edit.js - MUST MATCH
 	const formClasses = classnames('dsg-form-builder', {
 		[`dsg-form-builder--align-${submitButtonAlignment}`]:
-			submitButtonAlignment,
+			submitButtonAlignment && submitButtonPosition === 'below',
+		'dsg-form-builder--button-inline': submitButtonPosition === 'inline',
 	});
 
 	// Apply form settings as CSS custom properties - MUST MATCH edit.js
@@ -67,14 +73,42 @@ export default function FormBuilderSave({ attributes }) {
 		'data-email-body': emailBody,
 	});
 
-	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-form__fields',
-	});
+	// Extract children from innerBlocksProps so we can add button inside fields container
+	const { children, ...innerBlocksPropsWithoutChildren } =
+		useInnerBlocksProps.save({
+			className: 'dsg-form__fields',
+		});
 
 	return (
 		<div {...blockProps}>
 			<form className="dsg-form" method="post" noValidate>
-				<div {...innerBlocksProps} />
+				<div {...innerBlocksPropsWithoutChildren}>
+					{children}
+					{submitButtonPosition === 'inline' && (
+						<button
+							type="submit"
+							className="dsg-form__submit dsg-form__submit--inline wp-element-button"
+							style={{
+								...(submitButtonColor && {
+									color: submitButtonColor,
+								}),
+								...(submitButtonBackgroundColor && {
+									backgroundColor: submitButtonBackgroundColor,
+								}),
+								minHeight: submitButtonHeight,
+								paddingTop: submitButtonPaddingVertical,
+								paddingBottom: submitButtonPaddingVertical,
+								paddingLeft: submitButtonPaddingHorizontal,
+								paddingRight: submitButtonPaddingHorizontal,
+								...(submitButtonFontSize && {
+									fontSize: submitButtonFontSize,
+								}),
+							}}
+						>
+							{submitButtonText}
+						</button>
+					)}
+				</div>
 
 				{enableHoneypot && (
 					<input
@@ -98,22 +132,32 @@ export default function FormBuilderSave({ attributes }) {
 
 				{/* Timestamp added via JavaScript in view.js to avoid validation errors */}
 
-				<div className="dsg-form__footer">
-					<button
-						type="submit"
-						className="dsg-form__submit wp-element-button"
-						style={{
-							...(submitButtonColor && {
-								color: submitButtonColor,
-							}),
-							...(submitButtonBackgroundColor && {
-								backgroundColor: submitButtonBackgroundColor,
-							}),
-						}}
-					>
-						{submitButtonText}
-					</button>
-				</div>
+				{submitButtonPosition === 'below' && (
+					<div className="dsg-form__footer">
+						<button
+							type="submit"
+							className="dsg-form__submit wp-element-button"
+							style={{
+								...(submitButtonColor && {
+									color: submitButtonColor,
+								}),
+								...(submitButtonBackgroundColor && {
+									backgroundColor: submitButtonBackgroundColor,
+								}),
+								minHeight: submitButtonHeight,
+								paddingTop: submitButtonPaddingVertical,
+								paddingBottom: submitButtonPaddingVertical,
+								paddingLeft: submitButtonPaddingHorizontal,
+								paddingRight: submitButtonPaddingHorizontal,
+								...(submitButtonFontSize && {
+									fontSize: submitButtonFontSize,
+								}),
+							}}
+						>
+							{submitButtonText}
+						</button>
+					</div>
+				)}
 
 				<div
 					className="dsg-form__message"
