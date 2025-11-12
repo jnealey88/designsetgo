@@ -511,14 +511,8 @@ class DSGSlider {
 		let currentTranslate = 0;
 		let previousTranslate = 0;
 
-		this.track.addEventListener('mousedown', (e) => {
-			this.isDragging = true;
-			startX = e.clientX;
-			this.track.style.cursor = 'grabbing';
-			previousTranslate = currentTranslate;
-		});
-
-		document.addEventListener('mousemove', (e) => {
+		// ✅ Store bound functions for cleanup
+		this.handleMouseMove = (e) => {
 			if (!this.isDragging) {
 				return;
 			}
@@ -530,9 +524,9 @@ class DSGSlider {
 			if (this.config.effect === 'slide') {
 				this.track.style.transform = `translateX(${currentTranslate}px)`;
 			}
-		});
+		};
 
-		document.addEventListener('mouseup', () => {
+		this.handleMouseUp = () => {
 			if (!this.isDragging) {
 				return;
 			}
@@ -552,7 +546,19 @@ class DSGSlider {
 			} else {
 				this.goToSlide(this.currentIndex); // Snap back
 			}
-		});
+		};
+
+		this.handleMouseDown = (e) => {
+			this.isDragging = true;
+			startX = e.clientX;
+			this.track.style.cursor = 'grabbing';
+			previousTranslate = currentTranslate;
+		};
+
+		// Add event listeners
+		this.track.addEventListener('mousedown', this.handleMouseDown);
+		document.addEventListener('mousemove', this.handleMouseMove);
+		document.addEventListener('mouseup', this.handleMouseUp);
 
 		this.track.style.cursor = 'grab';
 	}
@@ -596,12 +602,16 @@ class DSGSlider {
 	// Responsive handling
 	initResponsive() {
 		let resizeTimer;
-		window.addEventListener('resize', () => {
+		// ✅ Store handler for cleanup
+		this.handleResize = () => {
 			clearTimeout(resizeTimer);
 			resizeTimer = setTimeout(() => {
-				this.goToSlide(this.currentIndex, false);
+				if (!this.isDestroyed) {
+					this.goToSlide(this.currentIndex, false);
+				}
 			}, 250);
-		});
+		};
+		window.addEventListener('resize', this.handleResize);
 	}
 
 	// Auto-play with IntersectionObserver
@@ -671,12 +681,58 @@ class DSGSlider {
 			}
 		}
 	}
+
+	/**
+	 * Cleanup method to prevent memory leaks
+	 * Removes all event listeners and clears timers
+	 *
+	 * PERFORMANCE FIX: Prevents memory leaks from accumulating
+	 * document-level event listeners on pages with multiple sliders
+	 */
+	destroy() {
+		// Stop autoplay timer
+		this.stopAutoplay();
+
+		// Remove drag event listeners
+		if (this.handleMouseMove) {
+			document.removeEventListener('mousemove', this.handleMouseMove);
+		}
+		if (this.handleMouseUp) {
+			document.removeEventListener('mouseup', this.handleMouseUp);
+		}
+		if (this.handleMouseDown && this.track) {
+			this.track.removeEventListener('mousedown', this.handleMouseDown);
+		}
+
+		// Remove resize listener
+		if (this.handleResize) {
+			window.removeEventListener('resize', this.handleResize);
+		}
+
+		// Mark as destroyed
+		this.isDestroyed = true;
+	}
 }
+
+// Store slider instances for cleanup
+const sliderInstances = new WeakMap();
 
 // Initialize all sliders on page load
 document.addEventListener('DOMContentLoaded', () => {
 	const sliders = document.querySelectorAll('.dsg-slider');
 	sliders.forEach((slider) => {
-		new DSGSlider(slider);
+		const instance = new DSGSlider(slider);
+		sliderInstances.set(slider, instance);
+	});
+});
+
+// Cleanup on page unload (prevents memory leaks on SPA navigation)
+window.addEventListener('beforeunload', () => {
+	const sliders = document.querySelectorAll('.dsg-slider');
+	sliders.forEach((slider) => {
+		const instance = sliderInstances.get(slider);
+		if (instance && instance.destroy) {
+			instance.destroy();
+		}
 	});
 });

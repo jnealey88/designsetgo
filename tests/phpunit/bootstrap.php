@@ -17,6 +17,11 @@ if ( file_exists( dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php' ) ) {
 define( 'DESIGNSETGO_PLUGIN_DIR', dirname( dirname( __DIR__ ) ) );
 define( 'DESIGNSETGO_TESTS_DIR', __DIR__ );
 
+// Load PHPUnit Polyfills for WordPress test compatibility
+if ( ! defined( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' ) ) {
+	define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', dirname( dirname( __DIR__ ) ) . '/vendor/yoast/phpunit-polyfills' );
+}
+
 // Check if we're running in wp-env (WordPress test environment)
 $wp_tests_dir = getenv( 'WP_TESTS_DIR' );
 

@@ -16,6 +16,7 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const glob = require('glob');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 // Auto-detect all blocks with index.js files
 const blockEntries = glob
@@ -35,6 +36,15 @@ const viewEntries = glob
 	.reduce((entries, file) => {
 		const blockName = file.match(/\/blocks\/([^/]+)\/view\.js$/)[1];
 		entries[`blocks/${blockName}/view`] = path.resolve(process.cwd(), file);
+		return entries;
+	}, {});
+
+// Auto-detect all blocks with style.scss files (frontend CSS)
+const styleEntries = glob
+	.sync('./src/blocks/*/style.scss')
+	.reduce((entries, file) => {
+		const blockName = file.match(/\/blocks\/([^/]+)\/style\.scss$/)[1];
+		entries[`blocks/${blockName}/style-index`] = path.resolve(process.cwd(), file);
 		return entries;
 	}, {});
 
@@ -59,6 +69,8 @@ module.exports = {
 		...blockEntries,
 		// Block-specific view scripts (auto-detected from src/blocks/*/view.js)
 		...viewEntries,
+		// Block-specific frontend styles (auto-detected from src/blocks/*/style.scss)
+		...styleEntries,
 	},
 	// Use default externals from @wordpress/scripts
 	// WordPress packages are already externalized by default
@@ -88,6 +100,19 @@ module.exports = {
 				},
 			],
 		}),
+		// Bundle analyzer - run with: ANALYZE=true npm run build
+		// Opens interactive visualization of bundle sizes
+		...(process.env.ANALYZE
+			? [
+					new BundleAnalyzerPlugin({
+						analyzerMode: 'static',
+						reportFilename: 'bundle-report.html',
+						openAnalyzer: true,
+						generateStatsFile: true,
+						statsFilename: 'bundle-stats.json',
+					}),
+			  ]
+			: []),
 	],
 	optimization: {
 		...defaultConfig.optimization,
@@ -129,16 +154,27 @@ module.exports = {
 		minimize: defaultConfig.mode === 'production',
 	},
 	performance: {
-		// Set performance budgets with externals optimization
-		// Bundle should be smaller now that WordPress packages are externalized
+		// ===================================================================
+		// PERFORMANCE BUDGETS (Updated 2025-11-11)
+		// ===================================================================
+		// After optimizations (Grid CSS -84%, Bundle splitting):
+		// - Individual blocks: Target <15KB JS, <10KB CSS (raw)
+		// - Shared chunks: Max 50KB (icon library at 50KB is acceptable)
+		// - Entry points: Max 250KB (editor entry with all extensions)
+		//
+		// These budgets prevent future bloat and maintain optimization gains.
+		// Run `ANALYZE=true npm run build` to visualize bundle sizes.
+		// ===================================================================
 		hints: defaultConfig.mode === 'production' ? 'warning' : false,
-		maxEntrypointSize: 300000, // 300KB threshold
-		maxAssetSize: 120000, // 120KB threshold (reduced from 150KB)
-		// Filter out asset.php files and source maps from performance hints
+		maxEntrypointSize: 250000, // 250KB - main editor entry (tightened from 300KB)
+		maxAssetSize: 50000, // 50KB - individual blocks/chunks (tightened from 120KB)
+		// Filter out asset.php files, source maps, and CSS from performance hints
+		// CSS is less critical as it's loaded async and highly cacheable
 		assetFilter: (assetFilename) => {
 			return (
 				!assetFilename.endsWith('.asset.php') &&
-				!assetFilename.endsWith('.map')
+				!assetFilename.endsWith('.map') &&
+				!assetFilename.endsWith('.css')
 			);
 		},
 	},

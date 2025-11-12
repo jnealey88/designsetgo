@@ -15,7 +15,7 @@
  * @since 1.0.0
  */
 
-namespace DesignSetGo\Includes\Admin;
+namespace DesignSetGo\Admin;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

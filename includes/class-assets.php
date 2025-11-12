@@ -65,9 +65,9 @@ class Assets {
 			return;
 		}
 
-		// Enqueue Dashicons for tab icons.
-		// Note: WordPress automatically loads Dashicons in the admin, but we enqueue
-		// explicitly to ensure it's available for our tab icon picker.
+		// Enqueue Dashicons for tab/accordion icon pickers.
+		// Note: WordPress automatically loads Dashicons in admin, but we enqueue
+		// explicitly to ensure availability. This is lightweight in editor context.
 		wp_enqueue_style( 'dashicons' );
 
 		// Load block extensions and variations.
@@ -100,7 +100,7 @@ class Assets {
 		wp_enqueue_style(
 			'designsetgo-extensions',
 			DESIGNSETGO_URL . 'build/index.css',
-			array( 'wp-edit-blocks', 'dashicons' ),
+			array( 'wp-edit-blocks' ), // Dashicons loads automatically in admin.
 			$asset_file['version']
 		);
 	}
@@ -216,6 +216,34 @@ class Assets {
 	}
 
 	/**
+	 * Check if any blocks that use Dashicons are present.
+	 *
+	 * Only tabs and accordion blocks use Dashicons. This method checks if either
+	 * of these blocks is present to avoid loading 40KB of Dashicons unnecessarily.
+	 *
+	 * @return bool True if Dashicon blocks are present.
+	 */
+	private function has_dashicon_blocks() {
+		// Not on singular content - can't reliably detect.
+		if ( ! is_singular() ) {
+			return false;
+		}
+
+		global $post;
+		if ( ! $post || empty( $post->post_content ) ) {
+			return false;
+		}
+
+		$content = $post->post_content;
+
+		// Check for blocks that use Dashicons.
+		return (
+			strpos( $content, 'wp:designsetgo/tabs' ) !== false ||
+			strpos( $content, 'wp:designsetgo/accordion' ) !== false
+		);
+	}
+
+	/**
 	 * Enqueue frontend assets.
 	 */
 	public function enqueue_frontend_assets() {
@@ -224,17 +252,18 @@ class Assets {
 			return;
 		}
 
-		// Enqueue Dashicons for tab icons on frontend.
-		// Note: Dashicons is typically only loaded in admin, so we enqueue it here
-		// to ensure tab icons display correctly on the frontend.
-		wp_enqueue_style( 'dashicons' );
+		// Only enqueue Dashicons if tabs or accordion blocks are present.
+		// This saves 40KB on pages that don't use icon-based blocks.
+		if ( $this->has_dashicon_blocks() ) {
+			wp_enqueue_style( 'dashicons' );
+		}
 
 		// Block-specific frontend styles are handled by block.json.
 		// Load global frontend styles for extensions.
 		wp_enqueue_style(
 			'designsetgo-frontend',
 			DESIGNSETGO_URL . 'build/style-index.css',
-			array( 'dashicons' ),
+			array(), // No hard dependency on Dashicons.
 			DESIGNSETGO_VERSION
 		);
 

@@ -10,6 +10,13 @@ composer.lock
 /build
 /*.zip
 
+# Bundle analyzer reports
+bundle-report.html
+bundle-stats.json
+
+# Performance testing files
+grid-test.html
+
 # IDE
 .vscode/
 .idea/

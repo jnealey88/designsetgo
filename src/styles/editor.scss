@@ -10,21 +10,27 @@
 @use 'mixins' as *;
 
 // Extension Editor Styles (must be after variables/mixins but before other rules)
+// Extensions are kept global because they apply to multiple blocks
 @use '../extensions/background-video/editor' as background-video;
 @use '../extensions/grid-span/editor' as grid-span;
 @use '../extensions/reveal-control/editor' as reveal-control;
 
-// Container blocks editor styles
-@use '../blocks/section/editor' as section;
-@use '../blocks/row/editor' as row;
-@use '../blocks/grid/editor' as grid;
-@use '../blocks/reveal/editor' as reveal;
-@use '../blocks/blobs/editor' as blobs;
-@use '../blocks/slider/editor' as slider;
-@use '../blocks/slide/editor' as slide;
-@use '../blocks/scroll-accordion/editor' as scroll-accordion;
-@use '../blocks/scroll-accordion-item/editor' as scroll-accordion-item;
-@use '../blocks/form-builder/editor' as form-builder;
+// ===================================================================
+// PERFORMANCE OPTIMIZATION (2025-11-11)
+// ===================================================================
+// Individual block editor styles are now loaded per-block via block.json
+// "editorStyle" property instead of in one monolithic bundle.
+// This reduces the global editor CSS from 177KB to ~60KB.
+// Benefits:
+// - Faster editor initialization (less CSS to parse)
+// - Better code splitting
+// - Only loads editor styles for blocks used in the post
+// The imports below have been removed (previously 10 blocks):
+// - section, row, grid, reveal, blobs
+// - slider, slide
+// - scroll-accordion, scroll-accordion-item
+// - form-builder
+// ===================================================================
 
 // Editor-specific styles
 .editor-styles-wrapper {

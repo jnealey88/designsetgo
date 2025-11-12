@@ -8,6 +8,7 @@
   "scripts": {
     "start": "wp-scripts start",
     "build": "wp-scripts build",
+    "build:analyze": "ANALYZE=true wp-scripts build",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
     "format": "wp-scripts format",
@@ -44,7 +45,8 @@
     "husky": "^9.0.0",
     "lint-staged": "^15.0.0",
     "playwright": "^1.56.1",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "webpack-bundle-analyzer": "^4.10.2"
   },
   "dependencies": {
     "@wordpress/block-editor": "^14.0.0",

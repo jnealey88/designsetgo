@@ -223,32 +223,14 @@
 	}
 }
 
-// CRITICAL: Force grid items to respect responsive column counts on tablet
-// Must be outside .dsg-grid scope for proper specificity
-// MUST be duplicated from style.scss for editor/frontend parity
-// Mobile media query below will override this for screens <= 767px
-// With two-div structure: target .dsg-grid__inner children
-@media (max-width: 1024px) {
-	// For each possible tablet column configuration, constrain column spans
-	// This duplicates the grid-span extension logic but with additional selectors for higher specificity
-	@for $cols from 1 through 12 {
-		// Target grids with this tablet column count
-		.dsg-grid-cols-tablet-#{$cols} .dsg-grid__inner {
-			// Force any child with grid-column spanning more than available columns
-			// to constrain to the tablet column count
-			@for $span from ($cols + 1) through 12 {
-				> *[style*="grid-column: span #{$span}"],
-				> *[style*="gridColumn:span#{$span}"],
-				> *[style*="grid-column:span #{$span}"],
-				> [data-block][style*="grid-column: span #{$span}"],
-				> [data-block][style*="gridColumn:span#{$span}"],
-				> [data-block][style*="grid-column:span #{$span}"] {
-					grid-column: span #{$cols} !important;
-				}
-			}
-		}
-	}
-}
+// ===================================================================
+// PERFORMANCE OPTIMIZATION (2025-11-11)
+// ===================================================================
+// Tablet grid-column span constraints are now handled by JavaScript (view.js)
+// In the editor, spans are visible at desktop width so no constraints needed
+// On frontend, view.js handles responsive span constraints dynamically
+// This eliminates 396 CSS rules (66KB) from editor styles
+// ===================================================================
 
 // CRITICAL: Force grid items and nested layouts to stack properly on mobile
 // Must be outside .dsg-grid scope for proper specificity

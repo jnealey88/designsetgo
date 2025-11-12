@@ -152,17 +152,34 @@
 					button.appendChild(this.createDashicon(icon));
 				}
 
-				// Event listeners
-				button.addEventListener('click', () =>
-					this.setActiveTab(index)
-				);
-				button.addEventListener('keydown', (e) =>
-					this.handleKeyboard(e, index)
-				);
 
-				this.nav.appendChild(button);
-			});
-		}
+			// ✅ PERFORMANCE: No individual listeners - use event delegation below
+			this.nav.appendChild(button);
+		});
+
+		// ✅ PERFORMANCE: Event delegation - single listener for all tabs
+		// Reduces event listeners from 2*N to 2 total (90% reduction for 10 tabs)
+		this.nav.addEventListener("click", (e) => {
+			const button = e.target.closest(".dsg-tabs__tab");
+			if (!button) return;
+
+			const index = parseInt(button.dataset.tabIndex);
+			if (!isNaN(index)) {
+				this.setActiveTab(index);
+			}
+		});
+
+		this.nav.addEventListener("keydown", (e) => {
+			const button = e.target.closest(".dsg-tabs__tab");
+			if (!button) return;
+
+			const index = parseInt(button.dataset.tabIndex);
+			if (!isNaN(index)) {
+				this.handleKeyboard(e, index);
+			}
+		});
+	}
+
 
 		getTabTitle(panel) {
 			// Try to get title from data attribute or panel content
