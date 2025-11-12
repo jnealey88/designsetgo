@@ -140,6 +140,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-global-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-settings.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-block-manager.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-gdpr-compliance.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-admin-menu.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
