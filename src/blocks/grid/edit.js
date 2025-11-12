@@ -60,6 +60,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
+		style,
 	} = attributes;
 
 	// Auto-migrate old blocks that use className for alignment
@@ -132,12 +133,16 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 
 	// Calculate inner styles declaratively (must match save.js EXACTLY)
 	// IMPORTANT: Always provide a default gap to prevent overlapping items
+	// Priority: blockGap (WordPress spacing) → custom rowGap/columnGap → preset fallback
+	const blockGap = style?.spacing?.blockGap;
+	const defaultGap = 'var(--wp--preset--spacing--50)';
+
 	const innerStyles = {
 		display: 'grid',
 		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
 		alignItems: alignItems || 'start',
-		rowGap: rowGap || 'var(--wp--preset--spacing--50)',
-		columnGap: columnGap || 'var(--wp--preset--spacing--50)',
+		rowGap: blockGap || rowGap || defaultGap,
+		columnGap: blockGap || columnGap || defaultGap,
 	};
 
 	// Apply width constraints if enabled

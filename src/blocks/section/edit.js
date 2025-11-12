@@ -174,15 +174,12 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 	});
 
 	// Inner container props with width constraints (must match save.js EXACTLY)
-	// Use custom contentWidth if set, otherwise fallback to theme's contentSize
+	// Use custom contentWidth if set, otherwise fallback to theme's contentSize, then default
 	const innerStyle = {};
 	if (constrainWidth) {
-		const effectiveWidth = contentWidth || themeContentSize;
-		if (effectiveWidth) {
-			innerStyle.maxWidth = effectiveWidth;
-			innerStyle.marginLeft = 'auto';
-			innerStyle.marginRight = 'auto';
-		}
+		innerStyle.maxWidth = contentWidth || themeContentSize || '1140px';
+		innerStyle.marginLeft = 'auto';
+		innerStyle.marginRight = 'auto';
 	}
 
 	// Merge inner blocks props
