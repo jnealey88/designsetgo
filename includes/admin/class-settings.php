@@ -485,7 +485,12 @@ class Settings {
 	 * @return bool|\WP_Error True if user has permission, WP_Error otherwise.
 	 */
 	public function check_write_permission( $request ) {
-		// Check nonce.
+		// Check capability first (more fundamental than nonce).
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return false;
+		}
+
+		// Then check nonce.
 		$nonce = $request->get_header( 'X-WP-Nonce' );
 		if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
 			return new \WP_Error(
@@ -495,7 +500,7 @@ class Settings {
 			);
 		}
 
-		return current_user_can( 'manage_options' );
+		return true;
 	}
 
 	/**
@@ -573,7 +578,10 @@ class Settings {
 
 		// Count form submissions.
 		$form_submissions = $wpdb->get_var(
-			"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'dsg_form_submission'"
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s",
+				'dsg_form_submission'
+			)
 		);
 
 		return rest_ensure_response(

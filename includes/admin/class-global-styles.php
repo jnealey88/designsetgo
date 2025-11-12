@@ -551,7 +551,12 @@ class Global_Styles {
 	 * @return bool|\WP_Error True if user has permission, WP_Error otherwise.
 	 */
 	public function check_write_permission( $request ) {
-		// Check nonce.
+		// Check capability first (more fundamental than nonce).
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return false;
+		}
+
+		// Then check nonce.
 		$nonce = $request->get_header( 'X-WP-Nonce' );
 		if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
 			return new \WP_Error(
@@ -561,7 +566,7 @@ class Global_Styles {
 			);
 		}
 
-		return current_user_can( 'manage_options' );
+		return true;
 	}
 
 	/**

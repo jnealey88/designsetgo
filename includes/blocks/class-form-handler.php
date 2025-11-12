@@ -35,6 +35,29 @@ class Form_Handler {
 
 	/**
 	 * Register REST API endpoint for form submission.
+	 *
+	 * SECURITY NOTE: This is a public endpoint (permission_callback = __return_true)
+	 * because it needs to accept form submissions from non-logged-in users.
+	 *
+	 * Security measures in place:
+	 * - Honeypot field check (detects spam bots)
+	 * - Time-based submission check (< 3 seconds = likely bot)
+	 * - Rate limiting (3 submissions per 60 seconds per IP address)
+	 * - Comprehensive field validation (email, url, phone, number types)
+	 * - Type-specific sanitization for all field values
+	 * - Email header injection prevention (strips newlines from email parameters)
+	 * - REST API parameter validation for email configuration
+	 *
+	 * If abuse occurs, consider adding:
+	 * - Google reCAPTCHA integration
+	 * - More aggressive rate limiting
+	 * - IP blocklist functionality
+	 * - Cloudflare Turnstile or similar
+	 *
+	 * Extensibility:
+	 * - Use 'designsetgo_form_rate_limit_count' filter to adjust rate limit
+	 * - Use 'designsetgo_form_rate_limit_window' filter to adjust time window
+	 * - Use 'designsetgo_form_submitted' action to hook into successful submissions
 	 */
 	public function register_rest_endpoint() {
 		register_rest_route(
@@ -43,9 +66,9 @@ class Form_Handler {
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'handle_form_submission' ),
-				'permission_callback' => '__return_true', // Public endpoint.
+				'permission_callback' => '__return_true', // Public endpoint - see DocBlock above for security measures.
 				'args'                => array(
-					'formId'    => array(
+					'formId'           => array(
 						'required'          => true,
 						'type'              => 'string',
 						'sanitize_callback' => 'sanitize_text_field',
@@ -53,22 +76,58 @@ class Form_Handler {
 							return is_string( $param ) && ! empty( $param );
 						},
 					),
-					'fields'    => array(
+					'fields'           => array(
 						'required'          => true,
 						'type'              => 'array',
 						'validate_callback' => function ( $param ) {
 							return is_array( $param );
 						},
 					),
-					'honeypot'  => array(
+					'honeypot'         => array(
 						'required' => false,
 						'type'     => 'string',
 						'default'  => '',
 					),
-					'timestamp' => array(
+					'timestamp'        => array(
 						'required' => false,
 						'type'     => 'string',
 						'default'  => '',
+					),
+					// Email configuration parameters.
+					'enable_email'     => array(
+						'type'              => 'boolean',
+						'default'           => false,
+						'sanitize_callback' => 'rest_sanitize_boolean',
+					),
+					'email_to'         => array(
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_email',
+						'validate_callback' => function ( $param ) {
+							return empty( $param ) || is_email( $param );
+						},
+					),
+					'email_from_email' => array(
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_email',
+						'validate_callback' => function ( $param ) {
+							return empty( $param ) || is_email( $param );
+						},
+					),
+					'email_from_name'  => array(
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'email_subject'    => array(
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'email_reply_to'   => array(
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'email_body'       => array(
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_textarea_field',
 					),
 				),
 			)
@@ -410,16 +469,22 @@ class Form_Handler {
 			return;
 		}
 
-		$email_to        = $request->get_param( 'email_to' );
-		$email_subject   = $request->get_param( 'email_subject' );
-		$email_from_name = $request->get_param( 'email_from_name' );
-		$email_from      = $request->get_param( 'email_from_email' );
-		$email_reply_to  = $request->get_param( 'email_reply_to' );
+		// Get and sanitize email parameters (strip newlines to prevent header injection).
+		$email_to        = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $request->get_param( 'email_to' ) );
+		$email_subject   = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $request->get_param( 'email_subject' ) );
+		$email_from_name = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $request->get_param( 'email_from_name' ) );
+		$email_from      = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $request->get_param( 'email_from_email' ) );
+		$email_reply_to  = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $request->get_param( 'email_reply_to' ) );
 		$email_body      = $request->get_param( 'email_body' );
 
-		// Set defaults.
+		// Set defaults and validate email addresses.
 		if ( empty( $email_to ) ) {
 			$email_to = get_option( 'admin_email' );
+		} else {
+			$email_to = sanitize_email( $email_to );
+			if ( ! is_email( $email_to ) ) {
+				$email_to = get_option( 'admin_email' );
+			}
 		}
 
 		if ( empty( $email_subject ) ) {
@@ -432,6 +497,11 @@ class Form_Handler {
 
 		if ( empty( $email_from ) ) {
 			$email_from = get_option( 'admin_email' );
+		} else {
+			$email_from = sanitize_email( $email_from );
+			if ( ! is_email( $email_from ) ) {
+				$email_from = get_option( 'admin_email' );
+			}
 		}
 
 		// Prepare merge tags.
@@ -485,6 +555,11 @@ class Form_Handler {
 		// Add Reply-To if specified and field exists.
 		if ( ! empty( $email_reply_to ) && isset( $fields[ $email_reply_to ] ) ) {
 			$reply_to_value = is_array( $fields[ $email_reply_to ] ) ? $fields[ $email_reply_to ]['value'] : $fields[ $email_reply_to ];
+
+			// Strip newlines to prevent email header injection.
+			$reply_to_value = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $reply_to_value );
+			$reply_to_value = sanitize_email( $reply_to_value );
+
 			if ( is_email( $reply_to_value ) ) {
 				$headers[] = sprintf( 'Reply-To: %s', $reply_to_value );
 			}
