@@ -6,6 +6,9 @@
  * @package DesignSetGo
  */
 
+/* stylelint-disable selector-class-pattern */
+/* Admin classes intentionally use 'designsetgo-' prefix for WordPress admin namespace */
+
 .designsetgo-admin-wrapper {
 	max-width: 1200px;
 	margin: 20px 0;

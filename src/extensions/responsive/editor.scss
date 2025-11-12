@@ -1,49 +1,67 @@
 /**
  * Responsive Visibility Extension - Editor Styles
  *
- * Styles for the visual indicator shown in the editor when blocks
- * have responsive visibility settings applied.
+ * Provides subtle visual feedback when blocks have responsive visibility settings.
+ * Uses a "disabled/dimmed" appearance instead of intrusive indicators.
  *
  * @package DesignSetGo
  */
 
 /**
- * Visual indicator displayed above blocks that have visibility restrictions
+ * Dimmed appearance for blocks with responsive visibility
+ * Reduces opacity and adds a subtle dashed border
  */
-.dsg-responsive-visibility-indicator {
+.dsg-has-responsive-visibility {
 	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-bottom: 8px;
-	padding: 6px 12px;
-	background-color: #0073aa;
-	color: #fff;
-	font-size: 12px;
-	font-weight: 500;
-	line-height: 1.4;
-	border-radius: 4px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	z-index: 1;
-}
-
-.dsg-responsive-visibility-indicator__label {
-	margin: 0;
-	padding: 0;
+	opacity: 0.6;
+	outline: 2px dashed rgba(0, 115, 170, 0.3);
+	outline-offset: -2px;
 }
 
 /**
- * Slightly reduce opacity of blocks with visibility restrictions
- * to provide subtle visual feedback in the editor
+ * Small badge indicator in top-right corner
+ * Shows which devices the block is hidden on using abbreviations:
+ * D = Desktop, T = Tablet, M = Mobile
  */
-.dsg-has-responsive-visibility {
-	opacity: 0.9;
+.dsg-has-responsive-visibility::before {
+	content: attr(data-hidden-devices);
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	z-index: 10;
+	padding: 2px 6px;
+	background-color: rgba(0, 115, 170, 0.9);
+	color: #fff;
+	font-size: 10px;
+	font-weight: 600;
+	line-height: 1.2;
+	border-radius: 3px;
+	pointer-events: none;
+	letter-spacing: 1px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/**
+ * Hover state - restore full opacity temporarily
+ * Allows users to see what the block looks like normally
+ */
+.dsg-has-responsive-visibility:hover {
+	opacity: 0.85;
+}
+
+/**
+ * Selected state - restore full opacity
+ * When editing, show the block normally
+ */
+.dsg-has-responsive-visibility.is-selected {
+	opacity: 1;
+	outline-color: rgba(0, 115, 170, 0.5);
 }
 
 /**
  * Warning state when block is hidden on all devices
- * (Future enhancement - Phase 2)
+ * (Future enhancement - change badge color to red)
  */
-.dsg-responsive-visibility-indicator--warning {
+.dsg-has-responsive-visibility[data-hidden-devices="DTM"]::before {
 	background-color: #d63638;
 }

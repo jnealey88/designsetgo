@@ -127,7 +127,8 @@ addFilter(
 );
 
 /**
- * Add visual indicator in editor when block is hidden on any device
+ * Add visual styling in editor when block is hidden on any device
+ * Shows block as dimmed with a subtle badge indicator
  */
 const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 	(BlockListBlock) => {
@@ -138,36 +139,26 @@ const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 
 			// Determine which devices the block is hidden on
 			const hiddenDevices = [];
-			if (dsgHideOnDesktop) hiddenDevices.push('Desktop');
-			if (dsgHideOnTablet) hiddenDevices.push('Tablet');
-			if (dsgHideOnMobile) hiddenDevices.push('Mobile');
+			if (dsgHideOnDesktop) hiddenDevices.push('D');
+			if (dsgHideOnTablet) hiddenDevices.push('T');
+			if (dsgHideOnMobile) hiddenDevices.push('M');
 
 			// Add indicator class if hidden on any device
 			const updatedClassName = hiddenDevices.length
 				? `${className || ''} dsg-has-responsive-visibility`.trim()
 				: className;
 
-			// Create indicator element
-			let indicator = null;
+			// Add data attribute with hidden devices for CSS styling
+			const updatedProps = {
+				...props,
+				className: updatedClassName,
+			};
+
 			if (hiddenDevices.length > 0) {
-				indicator = (
-					<div
-						className="dsg-responsive-visibility-indicator"
-						aria-label={`Hidden on: ${hiddenDevices.join(', ')}`}
-					>
-						<span className="dsg-responsive-visibility-indicator__label">
-							Hidden on: {hiddenDevices.join(', ')}
-						</span>
-					</div>
-				);
+				updatedProps['data-hidden-devices'] = hiddenDevices.join('');
 			}
 
-			return (
-				<>
-					{indicator}
-					<BlockListBlock {...props} className={updatedClassName} />
-				</>
-			);
+			return <BlockListBlock {...updatedProps} />;
 		};
 	},
 	'withResponsiveVisibilityIndicator'
