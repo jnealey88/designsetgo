@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       DesignSetGo
  * Plugin URI:        https://designsetgoblocks.com
- * Description:       Professional Gutenberg block library with 42 blocks - complete Form Builder, container system, interactive elements, and animations. Built with WordPress standards for guaranteed editor/frontend parity.
+ * Description:       Professional Gutenberg block library with 47 blocks plus 7 universal extensions - complete Form Builder, container system, interactive elements, and more. Built with WordPress standards for guaranteed editor/frontend parity.
  * Version:           1.0.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
