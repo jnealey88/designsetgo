@@ -144,7 +144,8 @@ body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 	> .wp-block-designsetgo-icon,
 	> .wp-block-designsetgo-icon-button,
 	> .wp-block-designsetgo-pill {
-		width: auto;
+		width: fit-content !important;
+		max-width: fit-content !important;
 		display: inline-flex;
 	}
 

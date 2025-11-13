@@ -68,10 +68,7 @@ const withResponsiveVisibilityControl = createHigherOrderComponent(
 					<BlockEdit {...props} />
 					<InspectorControls>
 						<PanelBody
-							title={__(
-								'Responsive Visibility',
-								'designsetgo'
-							)}
+							title={__('Responsive Visibility', 'designsetgo')}
 							initialOpen={false}
 						>
 							<ToggleControl
@@ -139,9 +136,15 @@ const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 
 			// Determine which devices the block is hidden on
 			const hiddenDevices = [];
-			if (dsgHideOnDesktop) hiddenDevices.push('D');
-			if (dsgHideOnTablet) hiddenDevices.push('T');
-			if (dsgHideOnMobile) hiddenDevices.push('M');
+			if (dsgHideOnDesktop) {
+				hiddenDevices.push('D');
+			}
+			if (dsgHideOnTablet) {
+				hiddenDevices.push('T');
+			}
+			if (dsgHideOnMobile) {
+				hiddenDevices.push('M');
+			}
 
 			// Only apply if we have hidden devices
 			if (hiddenDevices.length === 0) {
@@ -149,7 +152,8 @@ const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 			}
 
 			// Add indicator class
-			const updatedClassName = `${className || ''} dsg-has-responsive-visibility`.trim();
+			const updatedClassName =
+				`${className || ''} dsg-has-responsive-visibility`.trim();
 
 			// Create updated wrapper props with data attribute
 			const updatedWrapperProps = {
@@ -189,9 +193,15 @@ function applyResponsiveVisibilityClasses(props, blockType, attributes) {
 
 	// Build array of CSS classes to apply
 	const visibilityClasses = [];
-	if (dsgHideOnDesktop) visibilityClasses.push('dsg-hide-desktop');
-	if (dsgHideOnTablet) visibilityClasses.push('dsg-hide-tablet');
-	if (dsgHideOnMobile) visibilityClasses.push('dsg-hide-mobile');
+	if (dsgHideOnDesktop) {
+		visibilityClasses.push('dsg-hide-desktop');
+	}
+	if (dsgHideOnTablet) {
+		visibilityClasses.push('dsg-hide-tablet');
+	}
+	if (dsgHideOnMobile) {
+		visibilityClasses.push('dsg-hide-mobile');
+	}
 
 	// Only modify if we have classes to add
 	if (visibilityClasses.length === 0) {
@@ -200,7 +210,8 @@ function applyResponsiveVisibilityClasses(props, blockType, attributes) {
 
 	// Add classes to existing className
 	const existingClasses = props.className || '';
-	const newClassName = `${existingClasses} ${visibilityClasses.join(' ')}`.trim();
+	const newClassName =
+		`${existingClasses} ${visibilityClasses.join(' ')}`.trim();
 
 	return {
 		...props,

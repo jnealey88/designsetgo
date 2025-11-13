@@ -93,7 +93,8 @@ export default function FormBuilderSave({ attributes }) {
 									color: submitButtonColor,
 								}),
 								...(submitButtonBackgroundColor && {
-									backgroundColor: submitButtonBackgroundColor,
+									backgroundColor:
+										submitButtonBackgroundColor,
 								}),
 								minHeight: submitButtonHeight,
 								paddingTop: submitButtonPaddingVertical,
@@ -142,7 +143,8 @@ export default function FormBuilderSave({ attributes }) {
 									color: submitButtonColor,
 								}),
 								...(submitButtonBackgroundColor && {
-									backgroundColor: submitButtonBackgroundColor,
+									backgroundColor:
+										submitButtonBackgroundColor,
 								}),
 								minHeight: submitButtonHeight,
 								paddingTop: submitButtonPaddingVertical,

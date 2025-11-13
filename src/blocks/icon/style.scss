@@ -8,6 +8,8 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	width: fit-content; // Ensure block only takes space needed for icon + padding
+	max-width: fit-content; // Prevent expansion beyond content
 	// Background color will be inherited by child .dsg-icon__wrapper
 	// No need to force transparent here
 

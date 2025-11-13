@@ -241,7 +241,9 @@ export default function FormBuilderEdit({
 						label={__('Button Height', 'designsetgo')}
 						value={submitButtonHeight}
 						onChange={(value) =>
-							setAttributes({ submitButtonHeight: value || '44px' })
+							setAttributes({
+								submitButtonHeight: value || '44px',
+							})
 						}
 						units={[
 							{ value: 'px', label: 'px', default: 44 },
@@ -296,7 +298,10 @@ export default function FormBuilderEdit({
 						]}
 						min={0}
 						max={100}
-						help={__('Left and right padding for button', 'designsetgo')}
+						help={__(
+							'Left and right padding for button',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -676,7 +681,8 @@ export default function FormBuilderEdit({
 									color: submitButtonColor,
 								}),
 								...(submitButtonBackgroundColor && {
-									backgroundColor: submitButtonBackgroundColor,
+									backgroundColor:
+										submitButtonBackgroundColor,
 								}),
 								minHeight: submitButtonHeight,
 								paddingTop: submitButtonPaddingVertical,

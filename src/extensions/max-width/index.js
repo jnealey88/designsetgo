@@ -15,7 +15,6 @@ import { addFilter } from '@wordpress/hooks';
 import { InspectorControls, useSettings } from '@wordpress/block-editor';
 import {
 	PanelBody,
-	ToggleControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis

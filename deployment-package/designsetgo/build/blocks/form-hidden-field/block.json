@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/form-hidden-field",
+  "version": "1.0.0",
+  "title": "Hidden Field",
+  "category": "design",
+  "description": "A hidden field for passing data in forms.",
+  "keywords": [
+    "form",
+    "hidden",
+    "data",
+    "value"
+  ],
+  "parent": [
+    "designsetgo/form-builder"
+  ],
+  "textdomain": "designsetgo",
+  "supports": {
+    "html": false,
+    "anchor": false,
+    "customClassName": false,
+    "reusable": false
+  },
+  "attributes": {
+    "fieldName": {
+      "type": "string",
+      "default": ""
+    },
+    "value": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

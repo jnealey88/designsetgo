@@ -1,0 +1,91 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/pill",
+  "version": "1.0.0",
+  "title": "Pill",
+  "category": "design",
+  "description": "Display text with a rounded background that wraps tightly around content.",
+  "keywords": [
+    "pill",
+    "badge",
+    "tag",
+    "label"
+  ],
+  "textdomain": "designsetgo",
+  "attributes": {
+    "content": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSize": {
+      "type": "string",
+      "default": "small"
+    }
+  },
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "align": [
+      "left",
+      "center",
+      "right"
+    ],
+    "alignWide": false,
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "textAlign": true,
+      "__experimentalWritingMode": true,
+      "__experimentalFontFamily": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontStyle": true,
+      "__experimentalTextTransform": true,
+      "__experimentalTextDecoration": true,
+      "__experimentalLetterSpacing": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      },
+      "__experimentalSelector": ".dsg-pill__content"
+    },
+    "spacing": {
+      "padding": true,
+      "margin": [
+        "top",
+        "bottom"
+      ],
+      "__experimentalDefaultControls": {
+        "padding": true
+      },
+      "__experimentalSelector": ".dsg-pill__content"
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "gradients": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true
+      },
+      "__experimentalSelector": ".dsg-pill__content"
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true,
+      "__experimentalDefaultControls": {
+        "radius": true
+      },
+      "__experimentalSelector": ".dsg-pill__content"
+    }
+  },
+  "example": {
+    "attributes": {
+      "content": "New Feature"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css"
+}

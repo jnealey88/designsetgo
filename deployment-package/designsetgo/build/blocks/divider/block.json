@@ -1,0 +1,86 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/divider",
+  "version": "1.0.0",
+  "title": "Divider",
+  "category": "design",
+  "description": "Add a visual separator with multiple style options including solid, dashed, gradient, and decorative patterns.",
+  "keywords": [
+    "divider",
+    "separator",
+    "line",
+    "hr",
+    "break"
+  ],
+  "textdomain": "designsetgo",
+  "supports": {
+    "anchor": true,
+    "align": [
+      "left",
+      "center",
+      "right",
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "inserter": true,
+    "spacing": {
+      "margin": true,
+      "padding": false,
+      "__experimentalDefaultControls": {
+        "margin": true
+      }
+    },
+    "color": {
+      "text": true,
+      "gradient": false,
+      "__experimentalDefaultControls": {
+        "text": true
+      }
+    },
+    "dimensions": {
+      "minHeight": true,
+      "__experimentalDefaultControls": {
+        "minHeight": false
+      }
+    }
+  },
+  "attributes": {
+    "dividerStyle": {
+      "type": "string",
+      "default": "solid",
+      "enum": [
+        "solid",
+        "dashed",
+        "dotted",
+        "double",
+        "gradient",
+        "dots",
+        "wave",
+        "icon"
+      ]
+    },
+    "width": {
+      "type": "number",
+      "default": 100
+    },
+    "thickness": {
+      "type": "number",
+      "default": 2
+    },
+    "iconName": {
+      "type": "string",
+      "default": "star"
+    }
+  },
+  "example": {
+    "attributes": {
+      "dividerStyle": "gradient",
+      "width": 80
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css"
+}

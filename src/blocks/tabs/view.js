@@ -152,34 +152,36 @@
 					button.appendChild(this.createDashicon(icon));
 				}
 
+				// ✅ PERFORMANCE: No individual listeners - use event delegation below
+				this.nav.appendChild(button);
+			});
 
-			// ✅ PERFORMANCE: No individual listeners - use event delegation below
-			this.nav.appendChild(button);
-		});
+			// ✅ PERFORMANCE: Event delegation - single listener for all tabs
+			// Reduces event listeners from 2*N to 2 total (90% reduction for 10 tabs)
+			this.nav.addEventListener('click', (e) => {
+				const button = e.target.closest('.dsg-tabs__tab');
+				if (!button) {
+					return;
+				}
 
-		// ✅ PERFORMANCE: Event delegation - single listener for all tabs
-		// Reduces event listeners from 2*N to 2 total (90% reduction for 10 tabs)
-		this.nav.addEventListener("click", (e) => {
-			const button = e.target.closest(".dsg-tabs__tab");
-			if (!button) return;
+				const index = parseInt(button.dataset.tabIndex);
+				if (!isNaN(index)) {
+					this.setActiveTab(index);
+				}
+			});
 
-			const index = parseInt(button.dataset.tabIndex);
-			if (!isNaN(index)) {
-				this.setActiveTab(index);
-			}
-		});
+			this.nav.addEventListener('keydown', (e) => {
+				const button = e.target.closest('.dsg-tabs__tab');
+				if (!button) {
+					return;
+				}
 
-		this.nav.addEventListener("keydown", (e) => {
-			const button = e.target.closest(".dsg-tabs__tab");
-			if (!button) return;
-
-			const index = parseInt(button.dataset.tabIndex);
-			if (!isNaN(index)) {
-				this.handleKeyboard(e, index);
-			}
-		});
-	}
-
+				const index = parseInt(button.dataset.tabIndex);
+				if (!isNaN(index)) {
+					this.handleKeyboard(e, index);
+				}
+			});
+		}
 
 		getTabTitle(panel) {
 			// Try to get title from data attribute or panel content

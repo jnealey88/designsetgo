@@ -10,6 +10,7 @@
 	// Editor-specific styles to improve UX
 	position: relative;
 	width: fit-content;
+	max-width: fit-content; // Prevent expansion beyond content
 	min-width: 48px; // Ensure block is always visible in editor
 	min-height: 48px;
 	display: inline-flex;

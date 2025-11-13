@@ -1,0 +1,1 @@
+.dsg-scroll-accordion{--dsg-scroll-accordion-gap:var(--wp--preset--spacing--40,1.5rem);--dsg-scroll-accordion-duration:600ms;--dsg-scroll-accordion-sticky-offset:clamp(6rem,30vh,12rem);align-self:stretch;margin-top:2rem;position:relative;width:100%}.dsg-scroll-accordion .dsg-scroll-accordion__items{display:flex;flex-direction:column;gap:0;position:relative;width:100%}

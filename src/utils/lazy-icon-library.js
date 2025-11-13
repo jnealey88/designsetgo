@@ -18,6 +18,8 @@
  * };
  */
 
+import { useState, useEffect } from '@wordpress/element';
+
 // Cache the loaded icon library module
 let iconLibraryPromise = null;
 
@@ -52,6 +54,7 @@ export async function getIconLazy(iconName, width = 24, height = 24, color) {
 		const { getIcon } = await loadIconLibrary();
 		return getIcon(iconName, width, height, color);
 	} catch (error) {
+		// eslint-disable-next-line no-console
 		console.error('Failed to load icon library:', error);
 		return null;
 	}
@@ -67,6 +70,7 @@ export async function getAllIconsLazy() {
 		const { icons } = await loadIconLibrary();
 		return icons;
 	} catch (error) {
+		// eslint-disable-next-line no-console
 		console.error('Failed to load icon library:', error);
 		return {};
 	}
@@ -82,9 +86,9 @@ export async function getAllIconsLazy() {
  * @return {JSX.Element|null} The icon element or null while loading.
  */
 export function useLazyIcon(iconName, width = 24, height = 24, color) {
-	const [icon, setIcon] = React.useState(null);
+	const [icon, setIcon] = useState(null);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (iconName) {
 			getIconLazy(iconName, width, height, color).then(setIcon);
 		}

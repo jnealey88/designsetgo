@@ -12,7 +12,9 @@
 		constructor(element) {
 			this.element = element;
 			this.inner = element.querySelector('.dsg-grid__inner');
-			if (!this.inner) return;
+			if (!this.inner) {
+				return;
+			}
 
 			this.tabletBreakpoint = 1024;
 			this.mobileBreakpoint = 767;
@@ -89,11 +91,15 @@
 			children.forEach((child) => {
 				// Get inline grid-column style
 				const inlineStyle = child.style.gridColumn;
-				if (!inlineStyle) return;
+				if (!inlineStyle) {
+					return;
+				}
 
 				// Parse span value (e.g., "span 3" or "3")
 				const spanMatch = inlineStyle.match(/span\s+(\d+)|^(\d+)$/);
-				if (!spanMatch) return;
+				if (!spanMatch) {
+					return;
+				}
 
 				const spanValue = parseInt(spanMatch[1] || spanMatch[2]);
 

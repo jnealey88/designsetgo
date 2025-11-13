@@ -206,7 +206,10 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 					label={__('HTML Element', 'designsetgo')}
 					value={tagName}
 					options={[
-						{ label: __('Default (<div>)', 'designsetgo'), value: 'div' },
+						{
+							label: __('Default (<div>)', 'designsetgo'),
+							value: 'div',
+						},
 						{ label: '<section>', value: 'section' },
 						{ label: '<article>', value: 'article' },
 						{ label: '<aside>', value: 'aside' },
@@ -215,7 +218,10 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 						{ label: '<main>', value: 'main' },
 					]}
 					onChange={(value) => setAttributes({ tagName: value })}
-					help={__('Choose the HTML element for this block. Use semantic elements when appropriate for better accessibility.', 'designsetgo')}
+					help={__(
+						'Choose the HTML element for this block. Use semantic elements when appropriate for better accessibility.',
+						'designsetgo'
+					)}
 					__nextHasNoMarginBottom
 				/>
 			</InspectorControls>

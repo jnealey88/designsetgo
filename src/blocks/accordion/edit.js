@@ -232,7 +232,9 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 								label: __('Between Items', 'designsetgo'),
 								colorValue: borderBetweenColor,
 								onColorChange: (color) =>
-									setAttributes({ borderBetweenColor: color || '' }),
+									setAttributes({
+										borderBetweenColor: color || '',
+									}),
 								clearable: true,
 							},
 						]}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/form-file-upload",
+  "version": "1.0.0",
+  "title": "File Upload Field",
+  "category": "design",
+  "description": "A file upload field for forms.",
+  "keywords": [
+    "form",
+    "file",
+    "upload",
+    "attachment"
+  ],
+  "parent": [
+    "designsetgo/form-builder"
+  ],
+  "textdomain": "designsetgo",
+  "supports": {
+    "html": false,
+    "anchor": false,
+    "customClassName": false,
+    "reusable": false
+  },
+  "usesContext": [
+    "designsetgo/form-builder/fieldSpacing",
+    "designsetgo/form-builder/fieldLabelColor",
+    "designsetgo/form-builder/fieldBorderColor",
+    "designsetgo/form-builder/fieldBorderRadius",
+    "designsetgo/form-builder/fieldFocusColor",
+    "designsetgo/form-builder/inputHeight",
+    "designsetgo/form-builder/inputPadding",
+    "designsetgo/form-builder/fieldBackgroundColor"
+  ],
+  "attributes": {
+    "fieldName": {
+      "type": "string",
+      "default": ""
+    },
+    "label": {
+      "type": "string",
+      "default": "Upload File"
+    },
+    "helpText": {
+      "type": "string",
+      "default": ""
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "acceptedFileTypes": {
+      "type": "string",
+      "default": ""
+    },
+    "maxFileSize": {
+      "type": "number",
+      "default": 5
+    },
+    "multiple": {
+      "type": "boolean",
+      "default": false
+    },
+    "fieldWidth": {
+      "type": "string",
+      "default": "100"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

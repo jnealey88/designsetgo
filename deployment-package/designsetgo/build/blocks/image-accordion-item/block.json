@@ -1,0 +1,101 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/image-accordion-item",
+  "version": "1.0.0",
+  "title": "Image Accordion Item",
+  "category": "designsetgo",
+  "parent": [
+    "designsetgo/image-accordion"
+  ],
+  "description": "An individual expandable panel within an image accordion.",
+  "keywords": [
+    "image",
+    "accordion",
+    "item",
+    "panel",
+    "section"
+  ],
+  "textdomain": "designsetgo",
+  "attributes": {
+    "uniqueId": {
+      "type": "string",
+      "default": ""
+    },
+    "verticalAlignment": {
+      "type": "string",
+      "default": "center"
+    },
+    "horizontalAlignment": {
+      "type": "string",
+      "default": "center"
+    }
+  },
+  "usesContext": [
+    "designsetgo/imageAccordion/enableOverlay",
+    "designsetgo/imageAccordion/overlayColor",
+    "designsetgo/imageAccordion/overlayOpacity",
+    "designsetgo/imageAccordion/overlayOpacityExpanded"
+  ],
+  "example": {
+    "attributes": {},
+    "innerBlocks": [
+      {
+        "name": "core/heading",
+        "attributes": {
+          "level": 2,
+          "content": "Featured Content"
+        }
+      },
+      {
+        "name": "core/paragraph",
+        "attributes": {
+          "content": "Add your description here. This content will be revealed when the panel expands."
+        }
+      }
+    ]
+  },
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "spacing": {
+      "padding": true,
+      "margin": true,
+      "blockGap": true,
+      "__experimentalDefaultControls": {
+        "padding": true,
+        "margin": true,
+        "blockGap": true
+      }
+    },
+    "color": {
+      "background": false,
+      "text": true,
+      "link": true,
+      "__experimentalDefaultControls": {
+        "text": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontFamily": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      }
+    },
+    "background": {
+      "backgroundImage": true,
+      "backgroundSize": true,
+      "backgroundPosition": true,
+      "backgroundRepeat": true,
+      "__experimentalDefaultControls": {
+        "backgroundImage": true
+      }
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css"
+}

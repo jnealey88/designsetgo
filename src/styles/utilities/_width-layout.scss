@@ -58,7 +58,8 @@
 .dsg-grid__inner {
 	// Icon blocks - inline by nature
 	> .wp-block-designsetgo-icon {
-		width: auto;
+		width: fit-content !important;
+		max-width: fit-content !important;
 		display: inline-flex;
 	}
 
