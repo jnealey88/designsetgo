@@ -10,10 +10,10 @@
  * Transfer background styles from wrapper to blob
  */
 function transferBackgroundStyles() {
-	const wrappers = document.querySelectorAll('.dsg-blobs-wrapper');
+	const wrappers = document.querySelectorAll('.dsgo-blobs-wrapper');
 
 	wrappers.forEach((wrapper) => {
-		const blob = wrapper.querySelector('.dsg-blobs');
+		const blob = wrapper.querySelector('.dsgo-blobs');
 		if (!blob) {
 			return;
 		}
@@ -140,7 +140,7 @@ function initBlobs() {
 	// First transfer background styles
 	transferBackgroundStyles();
 
-	const blobs = document.querySelectorAll('.dsg-blobs');
+	const blobs = document.querySelectorAll('.dsgo-blobs');
 
 	if (blobs.length === 0) {
 		return;
@@ -154,7 +154,7 @@ function initBlobs() {
 	if (prefersReducedMotion) {
 		// Disable all animations by adding a class
 		blobs.forEach((blob) => {
-			blob.classList.add('dsg-blobs--no-animation');
+			blob.classList.add('dsgo-blobs--no-animation');
 		});
 		return;
 	}

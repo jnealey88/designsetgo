@@ -63,19 +63,19 @@ export const IconSettingsPanel = ({
 			</Button>
 
 			{isIconPickerOpen && (
-				<div className="dsg-icon-picker">
+				<div className="dsgo-icon-picker">
 					<SearchControl
 						value={iconSearch}
 						onChange={setIconSearch}
 						placeholder={__('Search icons…', 'designsetgo')}
 					/>
-					<div className="dsg-icon-picker__grid">
+					<div className="dsgo-icon-picker__grid">
 						{(filteredIcons || ALL_ICONS)
 							.slice(0, MAX_DISPLAYED_ICONS)
 							.map((iconName) => (
 								<button
 									key={iconName}
-									className={`dsg-icon-picker__item ${
+									className={`dsgo-icon-picker__item ${
 										icon === iconName ? 'is-selected' : ''
 									}`}
 									onClick={() => {

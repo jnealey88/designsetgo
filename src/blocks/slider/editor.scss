@@ -6,7 +6,7 @@
 @use './style' as *;
 
 // Editor-specific adjustments
-.dsg-slider {
+.dsgo-slider {
 	max-width: 100%; // Prevent overflow in containers and on small screens
 
 	// Add visual indicator in editor
@@ -52,7 +52,7 @@
 			}
 		}
 
-		> .dsg-slide {
+		> .dsgo-slide {
 			scroll-snap-align: start;
 		}
 	}
@@ -64,7 +64,7 @@
 	}
 
 	// Editor-only: Highlight selected slide
-	.dsg-slide {
+	.dsgo-slide {
 
 		&.is-selected {
 			outline: 2px solid #2563eb;
@@ -76,7 +76,7 @@
 	&__arrows--editor-only {
 		pointer-events: auto;
 
-		.dsg-slider__arrow {
+		.dsgo-slider__arrow {
 			cursor: pointer;
 		}
 	}
@@ -84,7 +84,7 @@
 	&__dots--editor-only {
 		pointer-events: auto;
 
-		.dsg-slider__dot {
+		.dsgo-slider__dot {
 			cursor: pointer;
 		}
 	}
@@ -92,18 +92,18 @@
 	// Make appender visible in editor
 	/* stylelint-disable-next-line selector-class-pattern */
 	.block-list-appender {
-		margin-left: var(--dsg-slider-gap);
+		margin-left: var(--dsgo-slider-gap);
 	}
 
 	// Fix fade/zoom effects in editor - show all slides
 	// These effects use absolute positioning + opacity: 0, which hides all slides in editor
-	&.dsg-slider--effect-fade,
-	&.dsg-slider--effect-zoom {
-		--dsg-slider-slides-per-view: 1;
-		--dsg-slider-slides-per-view-tablet: 1;
-		--dsg-slider-slides-per-view-mobile: 1;
+	&.dsgo-slider--effect-fade,
+	&.dsgo-slider--effect-zoom {
+		--dsgo-slider-slides-per-view: 1;
+		--dsgo-slider-slides-per-view-tablet: 1;
+		--dsgo-slider-slides-per-view-mobile: 1;
 
-		.dsg-slider__track > .dsg-slide {
+		.dsgo-slider__track > .dsgo-slide {
 			position: relative !important;
 			opacity: 1 !important;
 			transform: none !important;

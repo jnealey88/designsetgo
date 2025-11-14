@@ -4,15 +4,15 @@
  * @since 1.0.0
  */
 
-.dsg-form-builder {
+.dsgo-form-builder {
 	// CSS Custom Properties (set from block attributes)
-	--dsg-form-field-spacing: 1.5rem;
-	--dsg-form-label-color: inherit;
-	--dsg-form-border-color: #d1d5db;
-	--dsg-form-border-radius: 0.375rem;
-	--dsg-form-focus-color: var(--wp--preset--color--primary, #2563eb);
-	--dsg-form-error-color: #dc2626;
-	--dsg-form-success-color: #16a34a;
+	--dsgo-form-field-spacing: 1.5rem;
+	--dsgo-form-label-color: inherit;
+	--dsgo-form-border-color: #d1d5db;
+	--dsgo-form-border-radius: 0.375rem;
+	--dsgo-form-focus-color: var(--wp--preset--color--primary, #2563eb);
+	--dsgo-form-error-color: #dc2626;
+	--dsgo-form-success-color: #16a34a;
 	// Button colors intentionally not set here - uses theme defaults unless overridden
 
 	// Form container
@@ -20,10 +20,10 @@
 	max-width: 100%;
 }
 
-.dsg-form {
+.dsgo-form {
 	display: flex;
 	flex-direction: column;
-	gap: var(--dsg-form-field-spacing);
+	gap: var(--dsgo-form-field-spacing);
 	width: 100%;
 
 	// Form fields container
@@ -31,14 +31,14 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		gap: var(--dsg-form-field-spacing);
+		gap: var(--dsgo-form-field-spacing);
 		align-items: flex-start;
 	}
 
 	// Footer with submit button
 	&__footer {
 		display: flex;
-		margin-top: var(--dsg-form-field-spacing);
+		margin-top: var(--dsgo-form-field-spacing);
 	}
 
 	// Submit button - minimal styling to allow theme styles to work
@@ -62,7 +62,7 @@
 		}
 
 		// Loading state
-		&.dsg-form__submit--loading {
+		&.dsgo-form__submit--loading {
 			position: relative;
 			color: transparent;
 			pointer-events: none;
@@ -79,8 +79,8 @@
 				border: 2px solid currentcolor;
 				border-radius: 50%;
 				border-top-color: transparent;
-				animation: dsg-form-spinner 0.6s linear infinite;
-				color: var(--dsg-form-submit-color);
+				animation: dsgo-form-spinner 0.6s linear infinite;
+				color: var(--dsgo-form-submit-color);
 			}
 		}
 	}
@@ -89,20 +89,20 @@
 	&__message {
 		margin-top: 1rem;
 		padding: 1rem;
-		border-radius: var(--dsg-form-border-radius);
+		border-radius: var(--dsgo-form-border-radius);
 		font-size: 0.875rem;
 		line-height: 1.5;
 
 		&--success {
-			color: var(--dsg-form-success-color);
+			color: var(--dsgo-form-success-color);
 			background-color: rgb(220 252 231); // light green
-			border: 1px solid var(--dsg-form-success-color);
+			border: 1px solid var(--dsgo-form-success-color);
 		}
 
 		&--error {
-			color: var(--dsg-form-error-color);
+			color: var(--dsgo-form-error-color);
 			background-color: rgb(254 226 226); // light red
-			border: 1px solid var(--dsg-form-error-color);
+			border: 1px solid var(--dsgo-form-error-color);
 		}
 
 		&--editor {
@@ -112,52 +112,52 @@
 }
 
 // Button alignment modifiers
-.dsg-form-builder--align-left {
+.dsgo-form-builder--align-left {
 
-	.dsg-form__footer {
+	.dsgo-form__footer {
 		justify-content: flex-start;
 	}
 }
 
-.dsg-form-builder--align-center {
+.dsgo-form-builder--align-center {
 
-	.dsg-form__footer {
+	.dsgo-form__footer {
 		justify-content: center;
 	}
 }
 
-.dsg-form-builder--align-right {
+.dsgo-form-builder--align-right {
 
-	.dsg-form__footer {
+	.dsgo-form__footer {
 		justify-content: flex-end;
 	}
 }
 
 // Inline button mode (for subscribe forms)
-.dsg-form-builder--button-inline {
+.dsgo-form-builder--button-inline {
 
-	// CRITICAL: Button is inside .dsg-form__fields as a flex child
-	// No need to make .dsg-form a flex container
-	.dsg-form__fields {
+	// CRITICAL: Button is inside .dsgo-form__fields as a flex child
+	// No need to make .dsgo-form a flex container
+	.dsgo-form__fields {
 		// Fields container is already flex with wrap
 		// Just ensure proper alignment for inline button
 		align-items: flex-end; // Align button with input baseline
 	}
 
-	.dsg-form__submit--inline {
+	.dsgo-form__submit--inline {
 		// Button sits inline with fields as a flex child
 		// Sizing is controlled via block attributes (inline styles)
 		flex: 0 0 auto;
 		width: auto;
 	}
 
-	.dsg-form__footer {
+	.dsgo-form__footer {
 		display: none; // Hidden in inline mode
 	}
 }
 
 // Loading spinner animation
-@keyframes dsg-form-spinner {
+@keyframes dsgo-form-spinner {
 
 	0% {
 		transform: rotate(0deg);
@@ -171,15 +171,15 @@
 // Responsive adjustments
 @media (max-width: 768px) {
 
-	.dsg-form__submit {
+	.dsgo-form__submit {
 		width: 100%; // Full width on mobile for easier tapping
 	}
 
-	.dsg-form-builder--align-left,
-	.dsg-form-builder--align-center,
-	.dsg-form-builder--align-right {
+	.dsgo-form-builder--align-left,
+	.dsgo-form-builder--align-center,
+	.dsgo-form-builder--align-right {
 
-		.dsg-form__footer {
+		.dsgo-form__footer {
 			justify-content: stretch;
 		}
 	}
@@ -188,11 +188,11 @@
 // Print styles
 @media print {
 
-	.dsg-form__submit {
+	.dsgo-form__submit {
 		display: none;
 	}
 
-	.dsg-form__message {
+	.dsgo-form__message {
 		display: none;
 	}
 }

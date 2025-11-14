@@ -41,22 +41,22 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Calculate classes
-	const blobClasses = classnames('dsg-blobs', {
-		[`dsg-blobs--${blobShape}`]: blobShape,
-		[`dsg-blobs--${blobAnimation}`]:
+	const blobClasses = classnames('dsgo-blobs', {
+		[`dsgo-blobs--${blobShape}`]: blobShape,
+		[`dsgo-blobs--${blobAnimation}`]:
 			blobAnimation && blobAnimation !== 'none',
 	});
 
 	// Apply animation settings as CSS custom properties
 	const customStyles = {
-		'--dsg-blob-size': size,
-		'--dsg-blob-animation-duration': animationDuration,
-		'--dsg-blob-animation-easing': animationEasing,
+		'--dsgo-blob-size': size,
+		'--dsgo-blob-animation-duration': animationDuration,
+		'--dsgo-blob-animation-easing': animationEasing,
 	};
 
 	// Get block props with our wrapper class
 	const blockProps = useBlockProps({
-		className: 'dsg-blobs-wrapper',
+		className: 'dsgo-blobs-wrapper',
 		ref: wrapperRef,
 	});
 
@@ -67,7 +67,7 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 		}
 
 		const wrapper = wrapperRef.current;
-		const blob = wrapper.querySelector('.dsg-blobs');
+		const blob = wrapper.querySelector('.dsgo-blobs');
 		if (!blob) {
 			return;
 		}
@@ -190,7 +190,7 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 	// Inner blocks for content inside blob
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-blobs__content',
+			className: 'dsgo-blobs__content',
 		},
 		{
 			template: [
@@ -420,14 +420,14 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 				<div className={blobClasses} style={customStyles}>
 					{enableOverlay && (
 						<div
-							className="dsg-blobs__overlay"
+							className="dsgo-blobs__overlay"
 							style={{
 								backgroundColor: overlayColor,
 								opacity: overlayOpacity / 100,
 							}}
 						/>
 					)}
-					<div className="dsg-blobs__shape">
+					<div className="dsgo-blobs__shape">
 						<div {...innerBlocksProps} />
 					</div>
 				</div>

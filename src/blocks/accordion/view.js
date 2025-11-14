@@ -17,23 +17,23 @@ const prefersReducedMotion = window.matchMedia(
 const ANIMATION_DURATION = prefersReducedMotion ? 0 : 350;
 
 function initAccordions() {
-	const accordions = document.querySelectorAll('.dsg-accordion');
+	const accordions = document.querySelectorAll('.dsgo-accordion');
 
 	accordions.forEach((accordion) => {
 		// Prevent duplicate initialization
-		if (accordion.hasAttribute('data-dsg-initialized')) {
+		if (accordion.hasAttribute('data-dsgo-initialized')) {
 			return;
 		}
-		accordion.setAttribute('data-dsg-initialized', 'true');
+		accordion.setAttribute('data-dsgo-initialized', 'true');
 
 		const allowMultiple =
 			accordion.getAttribute('data-allow-multiple') === 'true';
-		const items = accordion.querySelectorAll('.dsg-accordion-item');
+		const items = accordion.querySelectorAll('.dsgo-accordion-item');
 
 		// Add skip link for keyboard accessibility
 		const skipLink = document.createElement('a');
 		skipLink.href = '#end-of-accordion';
-		skipLink.className = 'dsg-accordion__skip-link';
+		skipLink.className = 'dsgo-accordion__skip-link';
 		skipLink.textContent = 'Skip accordion';
 		skipLink.addEventListener('click', (e) => {
 			e.preventDefault();
@@ -44,15 +44,15 @@ function initAccordions() {
 			} else {
 				// If no next focusable element, focus the last item
 				items[items.length - 1]
-					?.querySelector('.dsg-accordion-item__trigger')
+					?.querySelector('.dsgo-accordion-item__trigger')
 					?.focus();
 			}
 		});
 		accordion.insertBefore(skipLink, accordion.firstChild);
 
 		items.forEach((item) => {
-			const trigger = item.querySelector('.dsg-accordion-item__trigger');
-			const panel = item.querySelector('.dsg-accordion-item__panel');
+			const trigger = item.querySelector('.dsgo-accordion-item__trigger');
+			const panel = item.querySelector('.dsgo-accordion-item__panel');
 
 			if (!trigger || !panel) {
 				return;
@@ -71,7 +71,7 @@ function initAccordions() {
 			trigger.addEventListener('click', (e) => {
 				e.preventDefault();
 				const isOpen = item.classList.contains(
-					'dsg-accordion-item--open'
+					'dsgo-accordion-item--open'
 				);
 
 				if (isOpen) {
@@ -101,7 +101,7 @@ function initAccordions() {
 					const prevItem = getPreviousItem(item, items);
 					if (prevItem) {
 						prevItem
-							.querySelector('.dsg-accordion-item__trigger')
+							.querySelector('.dsgo-accordion-item__trigger')
 							?.focus();
 					}
 				}
@@ -112,7 +112,7 @@ function initAccordions() {
 					const nextItem = getNextItem(item, items);
 					if (nextItem) {
 						nextItem
-							.querySelector('.dsg-accordion-item__trigger')
+							.querySelector('.dsgo-accordion-item__trigger')
 							?.focus();
 					}
 				}
@@ -121,7 +121,7 @@ function initAccordions() {
 				if (e.key === 'Home') {
 					e.preventDefault();
 					items[0]
-						?.querySelector('.dsg-accordion-item__trigger')
+						?.querySelector('.dsgo-accordion-item__trigger')
 						?.focus();
 				}
 
@@ -129,7 +129,7 @@ function initAccordions() {
 				if (e.key === 'End') {
 					e.preventDefault();
 					items[items.length - 1]
-						?.querySelector('.dsg-accordion-item__trigger')
+						?.querySelector('.dsgo-accordion-item__trigger')
 						?.focus();
 				}
 			});
@@ -139,11 +139,11 @@ function initAccordions() {
 
 function openPanel(item, panel, animate = true, scrollIntoView = false) {
 	// Update classes
-	item.classList.remove('dsg-accordion-item--closed');
-	item.classList.add('dsg-accordion-item--open');
+	item.classList.remove('dsgo-accordion-item--closed');
+	item.classList.add('dsgo-accordion-item--open');
 
 	// Update ARIA
-	const trigger = item.querySelector('.dsg-accordion-item__trigger');
+	const trigger = item.querySelector('.dsgo-accordion-item__trigger');
 	if (trigger) {
 		trigger.setAttribute('aria-expanded', 'true');
 	}
@@ -152,7 +152,7 @@ function openPanel(item, panel, animate = true, scrollIntoView = false) {
 	panel.hidden = false;
 
 	// Get the natural height
-	const content = panel.querySelector('.dsg-accordion-item__content');
+	const content = panel.querySelector('.dsgo-accordion-item__content');
 	const contentHeight = content ? content.scrollHeight : panel.scrollHeight;
 
 	if (!animate || prefersReducedMotion) {
@@ -186,11 +186,11 @@ function closePanel(item, panel, animate = true) {
 	const currentHeight = panel.scrollHeight;
 
 	// Update classes
-	item.classList.remove('dsg-accordion-item--open');
-	item.classList.add('dsg-accordion-item--closed');
+	item.classList.remove('dsgo-accordion-item--open');
+	item.classList.add('dsgo-accordion-item--closed');
 
 	// Update ARIA
-	const trigger = item.querySelector('.dsg-accordion-item__trigger');
+	const trigger = item.querySelector('.dsgo-accordion-item__trigger');
 	if (trigger) {
 		trigger.setAttribute('aria-expanded', 'false');
 	}
@@ -219,11 +219,11 @@ function closePanel(item, panel, animate = true) {
 }
 
 function closeAllPanels(accordion) {
-	const items = accordion.querySelectorAll('.dsg-accordion-item');
+	const items = accordion.querySelectorAll('.dsgo-accordion-item');
 
 	items.forEach((item) => {
-		const panel = item.querySelector('.dsg-accordion-item__panel');
-		if (panel && item.classList.contains('dsg-accordion-item--open')) {
+		const panel = item.querySelector('.dsgo-accordion-item__panel');
+		if (panel && item.classList.contains('dsgo-accordion-item--open')) {
 			closePanel(item, panel, true);
 		}
 	});

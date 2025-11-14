@@ -44,9 +44,9 @@ export default function AccordionItemSave({ attributes, context }) {
 		context?.['designsetgo/accordion/iconPosition'] || 'right';
 
 	// Same classes as edit.js - MUST MATCH
-	const itemClasses = classnames('dsg-accordion-item', {
-		'dsg-accordion-item--open': isOpen,
-		'dsg-accordion-item--closed': !isOpen,
+	const itemClasses = classnames('dsgo-accordion-item', {
+		'dsgo-accordion-item--open': isOpen,
+		'dsgo-accordion-item--closed': !isOpen,
 	});
 
 	const blockProps = useBlockProps.save({
@@ -55,7 +55,7 @@ export default function AccordionItemSave({ attributes, context }) {
 	});
 
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-accordion-item__content',
+		className: 'dsgo-accordion-item__content',
 	});
 
 	// Render icon (same logic as edit.js)
@@ -78,7 +78,7 @@ export default function AccordionItemSave({ attributes, context }) {
 		}
 
 		return (
-			<span className="dsg-accordion-item__icon" aria-hidden="true">
+			<span className="dsgo-accordion-item__icon" aria-hidden="true">
 				<IconComponent />
 			</span>
 		);
@@ -89,13 +89,13 @@ export default function AccordionItemSave({ attributes, context }) {
 
 	return (
 		<div {...blockProps}>
-			<div className="dsg-accordion-item__header">
+			<div className="dsgo-accordion-item__header">
 				<button
 					type="button"
-					className={classnames('dsg-accordion-item__trigger', {
-						'dsg-accordion-item__trigger--icon-left':
+					className={classnames('dsgo-accordion-item__trigger', {
+						'dsgo-accordion-item__trigger--icon-left':
 							iconPosition === 'left',
-						'dsg-accordion-item__trigger--icon-right':
+						'dsgo-accordion-item__trigger--icon-right':
 							iconPosition === 'right',
 					})}
 					aria-expanded={isOpen}
@@ -105,7 +105,7 @@ export default function AccordionItemSave({ attributes, context }) {
 					{iconPosition === 'left' && renderIcon()}
 					<RichText.Content
 						tagName="span"
-						className="dsg-accordion-item__title"
+						className="dsgo-accordion-item__title"
 						value={title}
 					/>
 					{iconPosition === 'right' && renderIcon()}
@@ -113,7 +113,7 @@ export default function AccordionItemSave({ attributes, context }) {
 			</div>
 
 			<div
-				className="dsg-accordion-item__panel"
+				className="dsgo-accordion-item__panel"
 				role="region"
 				aria-labelledby={headerId}
 				id={panelId}

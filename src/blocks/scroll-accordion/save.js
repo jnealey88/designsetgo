@@ -21,7 +21,7 @@ export default function Save({ attributes }) {
 	};
 
 	const blockProps = useBlockProps.save({
-		className: 'dsg-scroll-accordion',
+		className: 'dsgo-scroll-accordion',
 		style: {
 			width: '100%',
 			alignSelf: 'stretch',
@@ -29,7 +29,7 @@ export default function Save({ attributes }) {
 	});
 
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-scroll-accordion__items',
+		className: 'dsgo-scroll-accordion__items',
 		style: innerStyles,
 	});
 

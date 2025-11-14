@@ -5,12 +5,12 @@
 // Import frontend styles so they appear in editor
 @use './style.scss' as *;
 
-.dsg-tab {
+.dsgo-tab {
 	position: relative;
 	min-height: 100px;
 
 	// Inactive tab notice - modern design
-	.dsg-tab__inactive-notice {
+	.dsgo-tab__inactive-notice {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -46,7 +46,7 @@
 	}
 
 	// Content area styling - let WordPress handle natural spacing
-	.dsg-tab__content {
+	.dsgo-tab__content {
 		// Empty state - show helpful message (only when truly empty)
 		&:empty::before {
 			content: 'Click the + button below to add content to this tab';
@@ -74,7 +74,7 @@
 	// Active tab styling - clean and minimal
 	&.is-active {
 
-		.dsg-tab__content {
+		.dsgo-tab__content {
 			// InnerBlocks appender styling handled by WordPress core
 		}
 	}

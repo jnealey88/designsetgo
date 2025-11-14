@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 
-.dsg-progress-bar {
+.dsgo-progress-bar {
 	// Block container
 	display: flex;
 	flex-direction: column;
@@ -43,7 +43,7 @@
 
 		// Animated stripes
 		&--animated {
-			animation: dsg-progress-stripes 1s linear infinite;
+			animation: dsgo-progress-stripes 1s linear infinite;
 		}
 	}
 
@@ -83,14 +83,14 @@
 	&__fill[style*="width: 4%"],
 	&__fill[style*="width: 5%"] {
 
-		.dsg-progress-bar__label--inside {
+		.dsgo-progress-bar__label--inside {
 			display: none;
 		}
 	}
 }
 
 // Striped animation keyframes
-@keyframes dsg-progress-stripes {
+@keyframes dsgo-progress-stripes {
 
 	0% {
 		background-position: 1rem 0;

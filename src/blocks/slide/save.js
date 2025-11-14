@@ -15,9 +15,9 @@ export default function SlideSave({ attributes }) {
 	} = attributes;
 
 	// Same classes as edit.js - MUST MATCH EXACTLY
-	const slideClasses = classnames('dsg-slide', {
-		'dsg-slide--has-background': backgroundImage?.url,
-		'dsg-slide--has-overlay': overlayColor, // Show overlay if color is set
+	const slideClasses = classnames('dsgo-slide', {
+		'dsgo-slide--has-background': backgroundImage?.url,
+		'dsgo-slide--has-overlay': overlayColor, // Show overlay if color is set
 	});
 
 	// Background image styles - MUST MATCH edit.js
@@ -33,15 +33,15 @@ export default function SlideSave({ attributes }) {
 	// Overlay styles - only apply if overlayColor is set
 	const overlayStyles = overlayColor
 		? {
-				'--dsg-slide-overlay-color': overlayColor,
-				'--dsg-slide-overlay-opacity': String(overlayOpacity / 100),
+				'--dsgo-slide-overlay-color': overlayColor,
+				'--dsgo-slide-overlay-opacity': String(overlayOpacity / 100),
 			}
 		: {};
 
 	// Content alignment styles
 	const alignmentStyles = {
-		'--dsg-slide-content-vertical-align': contentVerticalAlign,
-		'--dsg-slide-content-horizontal-align': contentHorizontalAlign,
+		'--dsgo-slide-content-vertical-align': contentVerticalAlign,
+		'--dsgo-slide-content-horizontal-align': contentHorizontalAlign,
 	};
 
 	// Min height override
@@ -61,14 +61,14 @@ export default function SlideSave({ attributes }) {
 	});
 
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-slide__content',
+		className: 'dsgo-slide__content',
 	});
 
 	return (
 		<div {...blockProps}>
 			{overlayColor && (
 				<div
-					className="dsg-slide__overlay"
+					className="dsgo-slide__overlay"
 					style={{
 						backgroundColor: overlayColor,
 						opacity: overlayOpacity / 100,

@@ -31,21 +31,21 @@ export default function ImageAccordionEdit({ attributes, setAttributes }) {
 	} = attributes;
 
 	// Declaratively calculate classes based on attributes
-	const accordionClasses = classnames('dsg-image-accordion', {
-		'dsg-image-accordion--hover': triggerType === 'hover',
-		'dsg-image-accordion--click': triggerType === 'click',
+	const accordionClasses = classnames('dsgo-image-accordion', {
+		'dsgo-image-accordion--hover': triggerType === 'hover',
+		'dsgo-image-accordion--click': triggerType === 'click',
 	});
 
 	// Apply settings as CSS custom properties for consistent styling
 	// Note: Unitless values must be strings to prevent React from adding 'px'
 	const customStyles = {
-		'--dsg-image-accordion-height': height,
-		'--dsg-image-accordion-gap': gap,
-		'--dsg-image-accordion-expanded-ratio': String(expandedRatio), // Unitless
-		'--dsg-image-accordion-transition': transitionDuration,
-		'--dsg-image-accordion-overlay-color': overlayColor,
-		'--dsg-image-accordion-overlay-opacity': String(overlayOpacity / 100), // Unitless
-		'--dsg-image-accordion-overlay-opacity-expanded': String(
+		'--dsgo-image-accordion-height': height,
+		'--dsgo-image-accordion-gap': gap,
+		'--dsgo-image-accordion-expanded-ratio': String(expandedRatio), // Unitless
+		'--dsgo-image-accordion-transition': transitionDuration,
+		'--dsgo-image-accordion-overlay-color': overlayColor,
+		'--dsgo-image-accordion-overlay-opacity': String(overlayOpacity / 100), // Unitless
+		'--dsgo-image-accordion-overlay-opacity-expanded': String(
 			overlayOpacityExpanded / 100
 		), // Unitless
 	};
@@ -59,7 +59,7 @@ export default function ImageAccordionEdit({ attributes, setAttributes }) {
 	// Inner blocks configuration - ONLY allow image-accordion-item children
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-image-accordion__items',
+			className: 'dsgo-image-accordion__items',
 		},
 		{
 			allowedBlocks: ['designsetgo/image-accordion-item'],

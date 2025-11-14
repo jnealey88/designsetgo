@@ -58,10 +58,10 @@ export default function RowSave({ attributes }) {
 
 	// Build className with conditional classes
 	const className = [
-		'dsg-flex',
-		mobileStack && 'dsg-flex--mobile-stack',
-		!constrainWidth && 'dsg-no-width-constraint',
-		overlayColor && 'dsg-flex--has-overlay',
+		'dsgo-flex',
+		mobileStack && 'dsgo-flex--mobile-stack',
+		!constrainWidth && 'dsgo-no-width-constraint',
+		overlayColor && 'dsgo-flex--has-overlay',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -72,20 +72,20 @@ export default function RowSave({ attributes }) {
 		className,
 		style: {
 			...(hoverBackgroundColor && {
-				'--dsg-hover-bg-color': hoverBackgroundColor,
+				'--dsgo-hover-bg-color': hoverBackgroundColor,
 			}),
 			...(hoverTextColor && {
-				'--dsg-hover-text-color': hoverTextColor,
+				'--dsgo-hover-text-color': hoverTextColor,
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
+				'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+				'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
 			}),
 			...(overlayColor && {
-				'--dsg-overlay-color': overlayColor,
-				'--dsg-overlay-opacity': '0.8',
+				'--dsgo-overlay-color': overlayColor,
+				'--dsgo-overlay-opacity': '0.8',
 			}),
 		},
 	});
@@ -126,7 +126,7 @@ export default function RowSave({ attributes }) {
 
 	// Merge inner blocks props
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-flex__inner',
+		className: 'dsgo-flex__inner',
 		style: innerStyle,
 	});
 

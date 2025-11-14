@@ -50,8 +50,8 @@ const v1 = {
 		}
 
 		const className = [
-			'dsg-stack',
-			!contentSize && 'dsg-no-width-constraint',
+			'dsgo-stack',
+			!contentSize && 'dsgo-no-width-constraint',
 		]
 			.filter(Boolean)
 			.join(' ');
@@ -60,16 +60,16 @@ const v1 = {
 			className,
 			style: {
 				...(hoverBackgroundColor && {
-					'--dsg-hover-bg-color': hoverBackgroundColor,
+					'--dsgo-hover-bg-color': hoverBackgroundColor,
 				}),
 				...(hoverTextColor && {
-					'--dsg-hover-text-color': hoverTextColor,
+					'--dsgo-hover-text-color': hoverTextColor,
 				}),
 				...(hoverIconBackgroundColor && {
-					'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
+					'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
 				}),
 				...(hoverButtonBackgroundColor && {
-					'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+					'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
 				}),
 			},
 		});
@@ -82,7 +82,7 @@ const v1 = {
 		}
 
 		const innerBlocksProps = useInnerBlocksProps.save({
-			className: 'dsg-stack__inner',
+			className: 'dsgo-stack__inner',
 			style: innerStyle,
 		});
 

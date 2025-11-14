@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 
-.dsg-icon-list-item {
+.dsgo-icon-list-item {
 	// Layout styles applied via inline styles (display, flex-direction, gap)
 	position: relative;
 	transition: opacity 0.2s ease;
@@ -15,11 +15,11 @@
 
 		// Use CSS custom property if set, otherwise inherit from parent
 		// This prevents section style variations from overriding manually set icon colors
-		color: var(--dsg-icon-color, inherit);
+		color: var(--dsgo-icon-color, inherit);
 
 		// When custom property is set, force it to take precedence
-		&[style*="--dsg-icon-color"] {
-			color: var(--dsg-icon-color) !important;
+		&[style*="--dsgo-icon-color"] {
+			color: var(--dsgo-icon-color) !important;
 		}
 
 		svg {
@@ -110,7 +110,7 @@
 		&:hover {
 			opacity: 0.8;
 
-			.dsg-icon-list-item__icon {
+			.dsgo-icon-list-item__icon {
 				transform: scale(1.05);
 			}
 		}
@@ -123,7 +123,7 @@
 	// Icon position variations
 	&--icon-top {
 
-		.dsg-icon-list-item__content {
+		.dsgo-icon-list-item__content {
 			width: 100%;
 		}
 	}
@@ -134,7 +134,7 @@
 
 	&--icon-right {
 
-		.dsg-icon-list-item__content {
+		.dsgo-icon-list-item__content {
 			width: 100%;
 		}
 	}

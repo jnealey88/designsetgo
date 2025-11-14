@@ -10,8 +10,8 @@
 	class DSGTabs {
 		constructor(element) {
 			this.element = element;
-			this.nav = element.querySelector('.dsg-tabs__nav');
-			this.panels = element.querySelectorAll('.dsg-tab');
+			this.nav = element.querySelector('.dsgo-tabs__nav');
+			this.panels = element.querySelectorAll('.dsgo-tab');
 			this.activeTab = parseInt(element.dataset.activeTab) || 0;
 			this.mobileBreakpoint =
 				parseInt(element.dataset.mobileBreakpoint) || 768;
@@ -29,7 +29,7 @@
 		 */
 		createDashicon(iconSlug) {
 			const iconWrapper = document.createElement('span');
-			iconWrapper.className = 'dsg-tabs__tab-icon';
+			iconWrapper.className = 'dsgo-tabs__tab-icon';
 
 			const dashicon = document.createElement('span');
 			// Icon slug is already sanitized in save.js, but validate again
@@ -93,7 +93,7 @@
 			// Add skip link for keyboard accessibility
 			const skipLink = document.createElement('a');
 			skipLink.href = `#${this.panels[this.activeTab].id}`;
-			skipLink.className = 'dsg-tabs__skip-link';
+			skipLink.className = 'dsgo-tabs__skip-link';
 			skipLink.textContent = 'Skip to tab content';
 			skipLink.addEventListener('click', (e) => {
 				e.preventDefault();
@@ -112,7 +112,7 @@
 				const iconPosition = panel.dataset.iconPosition || 'left';
 
 				const button = document.createElement('button');
-				button.className = 'dsg-tabs__tab';
+				button.className = 'dsgo-tabs__tab';
 				button.id = tabId;
 				button.setAttribute('type', 'button');
 				button.setAttribute('role', 'tab');
@@ -133,7 +133,7 @@
 
 					if (iconPosition === 'top') {
 						const iconTopWrapper = document.createElement('span');
-						iconTopWrapper.className = 'dsg-tabs__tab-icon-top';
+						iconTopWrapper.className = 'dsgo-tabs__tab-icon-top';
 						iconTopWrapper.appendChild(this.createDashicon(icon));
 						button.appendChild(iconTopWrapper);
 					} else if (iconPosition === 'left') {
@@ -143,7 +143,7 @@
 
 				// Add title
 				const titleSpan = document.createElement('span');
-				titleSpan.className = 'dsg-tabs__tab-title';
+				titleSpan.className = 'dsgo-tabs__tab-title';
 				titleSpan.textContent = title;
 				button.appendChild(titleSpan);
 
@@ -159,7 +159,7 @@
 			// ✅ PERFORMANCE: Event delegation - single listener for all tabs
 			// Reduces event listeners from 2*N to 2 total (90% reduction for 10 tabs)
 			this.nav.addEventListener('click', (e) => {
-				const button = e.target.closest('.dsg-tabs__tab');
+				const button = e.target.closest('.dsgo-tabs__tab');
 				if (!button) {
 					return;
 				}
@@ -171,7 +171,7 @@
 			});
 
 			this.nav.addEventListener('keydown', (e) => {
-				const button = e.target.closest('.dsg-tabs__tab');
+				const button = e.target.closest('.dsgo-tabs__tab');
 				if (!button) {
 					return;
 				}
@@ -185,7 +185,7 @@
 
 		getTabTitle(panel) {
 			// Try to get title from data attribute or panel content
-			const contentDiv = panel.querySelector('.dsg-tab__content');
+			const contentDiv = panel.querySelector('.dsgo-tab__content');
 			if (!contentDiv) {
 				return null;
 			}
@@ -204,11 +204,11 @@
 
 			// Check if we're in accordion mode
 			const isAccordionMode = this.element.classList.contains(
-				'dsg-tabs--accordion'
+				'dsgo-tabs--accordion'
 			);
 
 			// Update tabs
-			const tabs = this.nav.querySelectorAll('.dsg-tabs__tab');
+			const tabs = this.nav.querySelectorAll('.dsgo-tabs__tab');
 			tabs.forEach((tab, i) => {
 				const isActive = i === index;
 				tab.classList.toggle('is-active', isActive);
@@ -229,7 +229,7 @@
 
 				// Update accordion header aria-expanded if present
 				const accordionHeader = panel.querySelector(
-					'.dsg-tab__accordion-header'
+					'.dsgo-tab__accordion-header'
 				);
 				if (accordionHeader) {
 					accordionHeader.setAttribute(
@@ -250,7 +250,7 @@
 
 			// Trigger custom event
 			this.element.dispatchEvent(
-				new CustomEvent('dsg-tab-change', {
+				new CustomEvent('dsgo-tab-change', {
 					detail: { index, panel: this.panels[index] },
 				})
 			);
@@ -259,7 +259,7 @@
 		handleKeyboard(e, currentIndex) {
 			let newIndex = currentIndex;
 			const orientation = this.element.classList.contains(
-				'dsg-tabs--vertical'
+				'dsgo-tabs--vertical'
 			)
 				? 'vertical'
 				: 'horizontal';
@@ -302,7 +302,7 @@
 
 			if (newIndex !== currentIndex) {
 				this.setActiveTab(newIndex);
-				this.nav.querySelectorAll('.dsg-tabs__tab')[newIndex].focus();
+				this.nav.querySelectorAll('.dsgo-tabs__tab')[newIndex].focus();
 			}
 		}
 
@@ -340,8 +340,8 @@
 		}
 
 		convertToAccordion() {
-			this.element.classList.add('dsg-tabs--accordion');
-			this.element.classList.remove('dsg-tabs--dropdown');
+			this.element.classList.add('dsgo-tabs--accordion');
+			this.element.classList.remove('dsgo-tabs--dropdown');
 
 			// Hide tab navigation
 			if (this.nav) {
@@ -355,11 +355,11 @@
 
 			// Add accordion headers to each panel
 			this.panels.forEach((panel, index) => {
-				let header = panel.querySelector('.dsg-tab__accordion-header');
+				let header = panel.querySelector('.dsgo-tab__accordion-header');
 
 				if (!header) {
 					header = document.createElement('button');
-					header.className = 'dsg-tab__accordion-header';
+					header.className = 'dsgo-tab__accordion-header';
 					header.setAttribute('type', 'button');
 					header.setAttribute(
 						'aria-expanded',
@@ -388,16 +388,16 @@
 		}
 
 		convertToDropdown() {
-			this.element.classList.add('dsg-tabs--dropdown');
-			this.element.classList.remove('dsg-tabs--accordion');
+			this.element.classList.add('dsgo-tabs--dropdown');
+			this.element.classList.remove('dsgo-tabs--accordion');
 
 			// Check if dropdown already exists
-			let dropdown = this.element.querySelector('.dsg-tabs__dropdown');
+			let dropdown = this.element.querySelector('.dsgo-tabs__dropdown');
 
 			if (!dropdown) {
 				// Create dropdown select element
 				dropdown = document.createElement('select');
-				dropdown.className = 'dsg-tabs__dropdown';
+				dropdown.className = 'dsgo-tabs__dropdown';
 				dropdown.setAttribute('aria-label', 'Select tab');
 
 				// Add options from panels
@@ -420,7 +420,7 @@
 				// Insert dropdown before panels
 				this.element.insertBefore(
 					dropdown,
-					this.element.querySelector('.dsg-tabs__panels')
+					this.element.querySelector('.dsgo-tabs__panels')
 				);
 			}
 
@@ -435,8 +435,8 @@
 
 		restoreTabsMode() {
 			this.element.classList.remove(
-				'dsg-tabs--accordion',
-				'dsg-tabs--dropdown'
+				'dsgo-tabs--accordion',
+				'dsgo-tabs--dropdown'
 			);
 
 			// Show tab navigation
@@ -445,7 +445,7 @@
 			}
 
 			// Remove dropdown if exists
-			const dropdown = this.element.querySelector('.dsg-tabs__dropdown');
+			const dropdown = this.element.querySelector('.dsgo-tabs__dropdown');
 			if (dropdown) {
 				dropdown.remove();
 			}
@@ -453,7 +453,7 @@
 			// Remove accordion headers
 			this.panels.forEach((panel) => {
 				const header = panel.querySelector(
-					'.dsg-tab__accordion-header'
+					'.dsgo-tab__accordion-header'
 				);
 				if (header) {
 					header.remove();
@@ -469,7 +469,7 @@
 
 	// Initialize all tabs on page load
 	function initTabs() {
-		const tabsElements = document.querySelectorAll('.dsg-tabs');
+		const tabsElements = document.querySelectorAll('.dsgo-tabs');
 		tabsElements.forEach((element) => {
 			new DSGTabs(element);
 		});

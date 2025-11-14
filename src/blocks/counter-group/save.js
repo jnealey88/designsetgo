@@ -27,17 +27,17 @@ export default function CounterGroupSave({ attributes }) {
 
 	// Block wrapper props with CSS custom properties
 	const blockProps = useBlockProps.save({
-		className: 'dsg-counter-group',
+		className: 'dsgo-counter-group',
 		style: {
 			// CRITICAL: Use align-self: stretch to fill parent width (must match index.js)
 			alignSelf: 'stretch',
 			// Cast to string to prevent React from adding "px" suffix
-			'--dsg-counter-columns-desktop': String(columns),
-			'--dsg-counter-columns-tablet': String(columnsTablet),
-			'--dsg-counter-columns-mobile': String(columnsMobile),
-			'--dsg-counter-gap': gap,
+			'--dsgo-counter-columns-desktop': String(columns),
+			'--dsgo-counter-columns-tablet': String(columnsTablet),
+			'--dsgo-counter-columns-mobile': String(columnsMobile),
+			'--dsgo-counter-gap': gap,
 			// Apply hover color for child Counter blocks to inherit
-			...(hoverColor && { '--dsg-counter-hover-color': hoverColor }),
+			...(hoverColor && { '--dsgo-counter-hover-color': hoverColor }),
 		},
 		// Data attributes for frontend JavaScript
 		'data-animation-duration': animationDuration,
@@ -50,7 +50,7 @@ export default function CounterGroupSave({ attributes }) {
 
 	// Inner blocks props (WordPress best practice)
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: `dsg-counter-group__inner dsg-counter-group__inner--align-${alignContent}`,
+		className: `dsgo-counter-group__inner dsgo-counter-group__inner--align-${alignContent}`,
 	});
 
 	return (

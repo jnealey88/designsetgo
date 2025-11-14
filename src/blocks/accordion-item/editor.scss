@@ -10,20 +10,20 @@
 .editor-styles-wrapper,
 .block-editor-block-list__layout {
 
-	.dsg-accordion-item {
+	.dsgo-accordion-item {
 		// Editor-specific spacing between items
 		&:not(:last-child) {
 			margin-bottom: var(--wp--preset--spacing--20, 0.5rem);
 		}
 
 		// Panel behavior in editor - interactive like frontend
-		.dsg-accordion-item__panel {
+		.dsgo-accordion-item__panel {
 			// Respect open/closed state in editor
 			// But disable animation for instant toggle
 			transition: none !important;
 
 			// Add visual indicator in editor
-			.dsg-accordion-item__content {
+			.dsgo-accordion-item__content {
 				// Subtle border in editor to show content area
 				border-left: 2px solid var(--wp--preset--color--primary, rgba(37, 99, 235, 0.2));
 				margin-left: var(--wp--preset--spacing--40, 1.5rem);
@@ -34,9 +34,9 @@
 		// Editor visual feedback when selected
 		&.is-selected {
 
-			> .dsg-accordion-item__header {
+			> .dsgo-accordion-item__header {
 
-				.dsg-accordion-item__trigger {
+				.dsgo-accordion-item__trigger {
 					outline: 2px solid var(--wp--admin-theme-color, #007cba);
 					outline-offset: 2px;
 					box-shadow: 0 0 0 4px rgba(0, 124, 186, 0.1);
@@ -45,32 +45,32 @@
 		}
 
 		// Make trigger interactive in editor
-		.dsg-accordion-item__trigger {
+		.dsgo-accordion-item__trigger {
 			// Allow trigger to be clickable
 			cursor: pointer;
 
 			// Title is editable via RichText
-			.dsg-accordion-item__title {
+			.dsgo-accordion-item__title {
 				cursor: text;
 			}
 
 			// Show hover effects in editor
 			&:hover {
-				background-color: var(--dsg-accordion-hover-bg, var(--wp--preset--color--base-2, rgba(0, 0, 0, 0.04)));
+				background-color: var(--dsgo-accordion-hover-bg, var(--wp--preset--color--base-2, rgba(0, 0, 0, 0.04)));
 			}
 		}
 
 		// Visual feedback for open/closed state in editor
-		&.dsg-accordion-item--open {
+		&.dsgo-accordion-item--open {
 			// Panel is visible when open
-			.dsg-accordion-item__panel {
+			.dsgo-accordion-item__panel {
 				display: block;
 			}
 		}
 
-		&.dsg-accordion-item--closed {
+		&.dsgo-accordion-item--closed {
 			// Panel is hidden when closed
-			.dsg-accordion-item__panel {
+			.dsgo-accordion-item__panel {
 				display: none;
 			}
 		}
@@ -80,9 +80,9 @@
 // Block preview (inserter)
 .block-editor-block-preview__content {
 
-	.dsg-accordion-item {
+	.dsgo-accordion-item {
 
-		.dsg-accordion-item__panel {
+		.dsgo-accordion-item__panel {
 			display: block !important;
 		}
 	}

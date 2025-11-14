@@ -48,13 +48,13 @@ export default function IconEdit({ attributes, setAttributes, context }) {
 	const parentHoverIconBg = context['designsetgo/hoverIconBackgroundColor'];
 
 	const blockProps = useBlockProps({
-		className: 'dsg-icon',
+		className: 'dsgo-icon',
 		style: {
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'center',
 			...(parentHoverIconBg && {
-				'--dsg-parent-hover-icon-bg': parentHoverIconBg,
+				'--dsgo-parent-hover-icon-bg': parentHoverIconBg,
 			}),
 		},
 	});
@@ -207,7 +207,7 @@ export default function IconEdit({ attributes, setAttributes, context }) {
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="dsg-icon__wrapper" style={iconWrapperStyle}>
+				<div className="dsgo-icon__wrapper" style={iconWrapperStyle}>
 					{getIcon(icon, iconStyle, strokeWidth)}
 				</div>
 			</div>

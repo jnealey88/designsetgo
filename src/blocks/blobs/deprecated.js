@@ -57,16 +57,16 @@ const v1 = {
 			overlayOpacity,
 		} = attributes;
 
-		const blobClasses = classnames('dsg-blobs', {
-			[`dsg-blobs--${blobShape}`]: blobShape,
-			[`dsg-blobs--${blobAnimation}`]:
+		const blobClasses = classnames('dsgo-blobs', {
+			[`dsgo-blobs--${blobShape}`]: blobShape,
+			[`dsgo-blobs--${blobAnimation}`]:
 				blobAnimation && blobAnimation !== 'none',
 		});
 
 		const customStyles = {
-			'--dsg-blob-size': size,
-			'--dsg-blob-animation-duration': animationDuration,
-			'--dsg-blob-animation-easing': animationEasing,
+			'--dsgo-blob-size': size,
+			'--dsgo-blob-animation-duration': animationDuration,
+			'--dsgo-blob-animation-easing': animationEasing,
 		};
 
 		const blockProps = useBlockProps.save({
@@ -76,21 +76,21 @@ const v1 = {
 		});
 
 		const innerBlocksProps = useInnerBlocksProps.save({
-			className: 'dsg-blobs__content',
+			className: 'dsgo-blobs__content',
 		});
 
 		return (
 			<div {...blockProps}>
 				{enableOverlay && (
 					<div
-						className="dsg-blobs__overlay"
+						className="dsgo-blobs__overlay"
 						style={{
 							backgroundColor: overlayColor,
 							opacity: overlayOpacity / 100,
 						}}
 					/>
 				)}
-				<div className="dsg-blobs__shape">
+				<div className="dsgo-blobs__shape">
 					<div {...innerBlocksProps} />
 				</div>
 			</div>
@@ -146,24 +146,24 @@ const v2 = {
 			overlayOpacity,
 		} = attributes;
 
-		const blobClasses = classnames('dsg-blobs', {
-			[`dsg-blobs--${blobShape}`]: blobShape,
-			[`dsg-blobs--${blobAnimation}`]:
+		const blobClasses = classnames('dsgo-blobs', {
+			[`dsgo-blobs--${blobShape}`]: blobShape,
+			[`dsgo-blobs--${blobAnimation}`]:
 				blobAnimation && blobAnimation !== 'none',
 		});
 
 		const customStyles = {
-			'--dsg-blob-size': size,
-			'--dsg-blob-animation-duration': animationDuration,
-			'--dsg-blob-animation-easing': animationEasing,
+			'--dsgo-blob-size': size,
+			'--dsgo-blob-animation-duration': animationDuration,
+			'--dsgo-blob-animation-easing': animationEasing,
 		};
 
 		const blockProps = useBlockProps.save({
-			className: 'dsg-blobs-wrapper',
+			className: 'dsgo-blobs-wrapper',
 		});
 
 		const innerBlocksProps = useInnerBlocksProps.save({
-			className: 'dsg-blobs__content',
+			className: 'dsgo-blobs__content',
 		});
 
 		return (
@@ -175,14 +175,14 @@ const v2 = {
 				>
 					{enableOverlay && (
 						<div
-							className="dsg-blobs__overlay"
+							className="dsgo-blobs__overlay"
 							style={{
 								backgroundColor: overlayColor,
 								opacity: overlayOpacity / 100,
 							}}
 						/>
 					)}
-					<div className="dsg-blobs__shape">
+					<div className="dsgo-blobs__shape">
 						<div {...innerBlocksProps} />
 					</div>
 				</div>

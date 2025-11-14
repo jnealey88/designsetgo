@@ -21,7 +21,7 @@ export default function FormHiddenFieldEdit({
 	}
 
 	const blockProps = useBlockProps({
-		className: 'dsg-form-field dsg-form-field--hidden',
+		className: 'dsgo-form-field dsgo-form-field--hidden',
 	});
 
 	return (

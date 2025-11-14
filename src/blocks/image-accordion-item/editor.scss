@@ -4,7 +4,7 @@
  * CRITICAL: Must match style.scss for editor/frontend parity
  */
 
-.dsg-image-accordion-item {
+.dsgo-image-accordion-item {
 	// Position and layout
 	position: relative;
 	flex: 1;
@@ -21,8 +21,8 @@
 		content: '';
 		position: absolute;
 		inset: 0;
-		background-color: var(--dsg-overlay-color, rgba(0, 0, 0, 0.4));
-		opacity: var(--dsg-overlay-opacity, 0.4);
+		background-color: var(--dsgo-overlay-color, rgba(0, 0, 0, 0.4));
+		opacity: var(--dsgo-overlay-opacity, 0.4);
 		pointer-events: none;
 		z-index: 1;
 	}
@@ -40,9 +40,9 @@
 		display: flex;
 		flex-direction: column;
 		// Use alignment from attributes - MUST MATCH style.scss
-		justify-content: var(--dsg-vertical-alignment, center);
-		align-items: var(--dsg-horizontal-alignment, center);
-		color: white;
+		justify-content: var(--dsgo-vertical-alignment, center);
+		align-items: var(--dsgo-horizontal-alignment, center);
+		color: #fff;
 
 		// Make all text white for readability
 		h1, h2, h3, h4, h5, h6,
@@ -64,7 +64,7 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		background: rgba(0, 0, 0, 0.8);
-		color: white;
+		color: #fff;
 		padding: 12px 20px;
 		border-radius: 8px;
 		font-size: 14px;

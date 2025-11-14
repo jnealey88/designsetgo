@@ -45,10 +45,10 @@ export default function SlideEdit({
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	// Declaratively calculate classes
-	const slideClasses = classnames('dsg-slide', {
-		'dsg-slide--has-background': backgroundImage?.url,
-		'dsg-slide--has-overlay': overlayColor, // Show overlay if color is set
-		[`dsg-slide--${styleVariation}`]: styleVariation,
+	const slideClasses = classnames('dsgo-slide', {
+		'dsgo-slide--has-background': backgroundImage?.url,
+		'dsgo-slide--has-overlay': overlayColor, // Show overlay if color is set
+		[`dsgo-slide--${styleVariation}`]: styleVariation,
 	});
 
 	// Background image styles
@@ -64,15 +64,15 @@ export default function SlideEdit({
 	// Overlay styles - only apply if overlayColor is set
 	const overlayStyles = overlayColor
 		? {
-				'--dsg-slide-overlay-color': overlayColor,
-				'--dsg-slide-overlay-opacity': String(overlayOpacity / 100),
+				'--dsgo-slide-overlay-color': overlayColor,
+				'--dsgo-slide-overlay-opacity': String(overlayOpacity / 100),
 			}
 		: {};
 
 	// Content alignment styles
 	const alignmentStyles = {
-		'--dsg-slide-content-vertical-align': contentVerticalAlign,
-		'--dsg-slide-content-horizontal-align': contentHorizontalAlign,
+		'--dsgo-slide-content-vertical-align': contentVerticalAlign,
+		'--dsgo-slide-content-horizontal-align': contentHorizontalAlign,
 	};
 
 	// Min height override
@@ -94,7 +94,7 @@ export default function SlideEdit({
 	// Inner blocks configuration - Allow any blocks
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-slide__content',
+			className: 'dsgo-slide__content',
 		},
 		{
 			template: [
@@ -433,7 +433,7 @@ export default function SlideEdit({
 			<div {...blockProps}>
 				{overlayColor && (
 					<div
-						className="dsg-slide__overlay"
+						className="dsgo-slide__overlay"
 						style={{
 							backgroundColor: overlayColor,
 							opacity: overlayOpacity / 100,

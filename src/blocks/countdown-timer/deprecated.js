@@ -156,7 +156,7 @@ const v2 = {
 
 		// Create data attributes for frontend JavaScript
 		const blockProps = useBlockProps.save({
-			className: `dsg-countdown-timer dsg-countdown-timer--${layout}`,
+			className: `dsgo-countdown-timer dsgo-countdown-timer--${layout}`,
 			style: containerStyle,
 			'data-target-datetime': targetDateTime,
 			'data-timezone': timezone,
@@ -205,22 +205,22 @@ const v2 = {
 
 		return (
 			<div {...blockProps}>
-				<div className="dsg-countdown-timer__units">
+				<div className="dsgo-countdown-timer__units">
 					{units.map((unit) => (
 						<div
 							key={unit.type}
-							className="dsg-countdown-timer__unit"
+							className="dsgo-countdown-timer__unit"
 							data-unit-type={unit.type}
 							style={unitStyle}
 						>
 							<div
-								className="dsg-countdown-timer__number"
+								className="dsgo-countdown-timer__number"
 								style={numberStyle}
 							>
 								{unit.value}
 							</div>
 							<div
-								className="dsg-countdown-timer__label"
+								className="dsgo-countdown-timer__label"
 								style={labelStyle}
 							>
 								{unit.label}
@@ -229,7 +229,7 @@ const v2 = {
 					))}
 				</div>
 				<div
-					className="dsg-countdown-timer__completion-message"
+					className="dsgo-countdown-timer__completion-message"
 					style={{ display: 'none' }}
 				>
 					{completionMessage}
@@ -400,7 +400,7 @@ const v1 = {
 
 		// Create data attributes for frontend JavaScript
 		const blockProps = useBlockProps.save({
-			className: `dsg-countdown-timer dsg-countdown-timer--${layout}`,
+			className: `dsgo-countdown-timer dsgo-countdown-timer--${layout}`,
 			style: containerStyle,
 			'data-target-datetime': targetDateTime,
 			'data-timezone': timezone,
@@ -449,22 +449,22 @@ const v1 = {
 
 		return (
 			<div {...blockProps}>
-				<div className="dsg-countdown-timer__units">
+				<div className="dsgo-countdown-timer__units">
 					{units.map((unit) => (
 						<div
 							key={unit.type}
-							className="dsg-countdown-timer__unit"
+							className="dsgo-countdown-timer__unit"
 							data-unit-type={unit.type}
 							style={unitStyle}
 						>
 							<div
-								className="dsg-countdown-timer__number"
+								className="dsgo-countdown-timer__number"
 								style={numberStyle}
 							>
 								{unit.value}
 							</div>
 							<div
-								className="dsg-countdown-timer__label"
+								className="dsgo-countdown-timer__label"
 								style={labelStyle}
 							>
 								{unit.label}
@@ -473,7 +473,7 @@ const v1 = {
 					))}
 				</div>
 				<div
-					className="dsg-countdown-timer__completion-message"
+					className="dsgo-countdown-timer__completion-message"
 					style={{ display: 'none' }}
 				>
 					{completionMessage}

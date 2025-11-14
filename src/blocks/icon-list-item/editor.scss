@@ -12,7 +12,7 @@
 	}
 
 	// Link indicator more visible in editor
-	.dsg-icon-list-item__link-indicator {
+	.dsgo-icon-list-item__link-indicator {
 		opacity: 0.6;
 		background: rgba(0, 0, 0, 0.05);
 		padding: 2px 6px;
@@ -21,7 +21,7 @@
 
 	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
 	// Remove margins from all blocks in content area (InnerBlocks)
-	.dsg-icon-list-item__content {
+	.dsgo-icon-list-item__content {
 		// Remove margins from all blocks in content area
 		// This prevents excessive spacing since icon list item has its own gap setting
 		> * {
@@ -49,7 +49,7 @@
 	}
 
 	// Reset margins to match frontend
-	.dsg-icon-list-item__title {
+	.dsgo-icon-list-item__title {
 		margin-block-start: 0;
 		margin-block-end: 0.25em;
 		margin: 0 0 0.25em 0;
@@ -59,15 +59,15 @@
 		}
 	}
 
-	.dsg-icon-list-item__description {
+	.dsgo-icon-list-item__description {
 		margin-block-start: 0;
 		margin-block-end: 0;
 		margin: 0;
 	}
 
 	// Placeholder styling
-	.dsg-icon-list-item__title,
-	.dsg-icon-list-item__description {
+	.dsgo-icon-list-item__title,
+	.dsgo-icon-list-item__description {
 
 		&.is-empty::before {
 			opacity: 0.5;

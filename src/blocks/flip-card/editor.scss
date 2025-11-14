@@ -7,7 +7,7 @@
  * @since 1.0.0
  */
 
-.dsg-flip-card {
+.dsgo-flip-card {
 	position: relative;
 	width: 100%;
 
@@ -40,7 +40,7 @@
 .editor-styles-wrapper,
 .block-editor-block-preview__content {
 
-	.dsg-flip-card {
+	.dsgo-flip-card {
 		// Ensure flip card respects parent width constraints
 		width: 100%;
 
@@ -66,7 +66,7 @@
 				font-weight: 600;
 				padding: 0.25rem 0.5rem;
 				background: rgba(0, 0, 0, 0.7);
-				color: white;
+				color: #fff;
 				border-radius: 3px;
 				z-index: 100;
 				pointer-events: none;
@@ -92,7 +92,7 @@
 // Accessibility: Reduce motion preference
 @media (prefers-reduced-motion: reduce) {
 
-	.dsg-flip-card__container > * {
+	.dsgo-flip-card__container > * {
 		transition: opacity 0.1s ease;
 		transform: none !important;
 	}

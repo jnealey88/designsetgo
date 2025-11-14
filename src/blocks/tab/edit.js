@@ -50,7 +50,7 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 	const isActive = tabIndex === activeTab;
 
 	const blockProps = useBlockProps({
-		className: `dsg-tab dsg-tab--${tabStyle} ${isActive ? 'is-active' : 'is-inactive'}`,
+		className: `dsgo-tab dsgo-tab--${tabStyle} ${isActive ? 'is-active' : 'is-inactive'}`,
 		role: 'tabpanel',
 		'aria-labelledby': `tab-${uniqueId}`,
 		id: `panel-${uniqueId}`,
@@ -64,7 +64,7 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 	// IMPORTANT: Always show appender when tab is active so users can add content
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-tab__content',
+			className: 'dsgo-tab__content',
 		},
 		{
 			templateLock: false,
@@ -150,7 +150,7 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 				</InspectorControls>
 
 				<div {...blockProps}>
-					<div className="dsg-tab__inactive-notice">
+					<div className="dsgo-tab__inactive-notice">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="20"

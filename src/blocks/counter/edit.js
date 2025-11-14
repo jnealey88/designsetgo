@@ -111,12 +111,12 @@ export default function CounterEdit({
 
 	// Block wrapper props
 	const blockProps = useBlockProps({
-		className: 'dsg-counter',
+		className: 'dsgo-counter',
 		style: {
 			textAlign: 'center',
 			// Apply effective hover color as CSS custom property
 			...(effectiveHoverColor && {
-				'--dsg-counter-hover-color': effectiveHoverColor,
+				'--dsgo-counter-hover-color': effectiveHoverColor,
 			}),
 		},
 	});
@@ -181,32 +181,32 @@ export default function CounterEdit({
 			<div {...blockProps}>
 				{/* Icon (if enabled and position is top) */}
 				{showIcon && iconPosition === 'top' && (
-					<div className="dsg-counter__icon dsg-counter__icon--top">
+					<div className="dsgo-counter__icon dsgo-counter__icon--top">
 						{getIconSvg(icon)}
 					</div>
 				)}
 
-				<div className={`dsg-counter__content icon-${iconPosition}`}>
+				<div className={`dsgo-counter__content icon-${iconPosition}`}>
 					{/* Icon (if enabled and position is left) */}
 					{showIcon && iconPosition === 'left' && (
-						<div className="dsg-counter__icon dsg-counter__icon--left">
+						<div className="dsgo-counter__icon dsgo-counter__icon--left">
 							{getIconSvg(icon)}
 						</div>
 					)}
 
 					{/* Number */}
-					<div className="dsg-counter__number">{displayValue}</div>
+					<div className="dsgo-counter__number">{displayValue}</div>
 
 					{/* Icon (if enabled and position is right) */}
 					{showIcon && iconPosition === 'right' && (
-						<div className="dsg-counter__icon dsg-counter__icon--right">
+						<div className="dsgo-counter__icon dsgo-counter__icon--right">
 							{getIconSvg(icon)}
 						</div>
 					)}
 				</div>
 
 				{/* Label */}
-				{label && <div className="dsg-counter__label">{label}</div>}
+				{label && <div className="dsgo-counter__label">{label}</div>}
 			</div>
 		</>
 	);

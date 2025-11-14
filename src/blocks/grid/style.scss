@@ -6,7 +6,7 @@
  * @package DesignSetGo
  */
 
-.dsg-grid {
+.dsgo-grid {
 	// CRITICAL: Ensure width includes padding to prevent overflow
 	// When width: 100% is set, padding must be included in the total width
 	box-sizing: border-box;
@@ -24,9 +24,9 @@
 
 	// CRITICAL: Nested containers should have no padding to prevent overflow
 	// Only parent containers should have padding
-	.dsg-stack > &,
-	.dsg-flex > &,
-	.dsg-grid > & {
+	.dsgo-stack > &,
+	.dsgo-flex > &,
+	.dsgo-grid > & {
 		padding: 0;
 	}
 
@@ -48,8 +48,8 @@
 	}
 
 	// Inner container handles all grid styling
-	// With two-div structure: .dsg-grid > .dsg-grid__inner
-	.dsg-grid__inner {
+	// With two-div structure: .dsgo-grid > .dsgo-grid__inner
+	.dsgo-grid__inner {
 		// CRITICAL: Prevent grid items from overflowing their cells
 		// Grid items automatically fill their grid cell, so we only need to prevent overflow
 		> * {
@@ -73,9 +73,9 @@
 
 		// CRITICAL: Container blocks need !important to override WordPress layout system
 		// WordPress's constrained layout can apply max-width to nested containers
-		> .dsg-flex,
-		> .dsg-grid,
-		> .dsg-stack {
+		> .dsgo-flex,
+		> .dsgo-grid,
+		> .dsgo-stack {
 			width: 100% !important;
 		}
 	}
@@ -83,12 +83,12 @@
 	// CRITICAL: When Grid is nested inside Section/Stack/Flex, force full width
 	// WordPress applies constrained layout which can limit width
 	// This ensures nested Grids take full width of their parent container
-	.dsg-stack__inner > &,
-	.dsg-flex__inner > &,
-	.dsg-grid__inner > & {
+	.dsgo-stack__inner > &,
+	.dsgo-flex__inner > &,
+	.dsgo-grid__inner > & {
 		width: 100% !important;
 
-		.dsg-grid__inner {
+		.dsgo-grid__inner {
 			max-width: none !important;
 			margin-left: 0 !important;
 			margin-right: 0 !important;
@@ -98,8 +98,8 @@
 	// CRITICAL: Override WordPress width constraints when constrainWidth is disabled
 	// The WordPress container class is on the INNER div, not the outer div
 	// We need higher specificity to override this
-	// IMPORTANT: Only apply when .dsg-no-width-constraint class is present (constrainWidth is disabled)
-	&.alignfull.dsg-no-width-constraint > .dsg-grid__inner[class*="wp-container-"] {
+	// IMPORTANT: Only apply when .dsgo-no-width-constraint class is present (constrainWidth is disabled)
+	&.alignfull.dsgo-no-width-constraint > .dsgo-grid__inner[class*="wp-container-"] {
 		// Target all direct children that aren't explicitly aligned
 		> :not(.alignleft):not(.alignright) {
 			max-width: none !important;
@@ -111,13 +111,13 @@
 	// Responsive column classes
 	// Desktop columns are set via inline styles (default)
 	// Tablet and mobile columns use media queries
-	// CRITICAL: Target .dsg-grid__inner since that's where grid-template-columns is applied
+	// CRITICAL: Target .dsgo-grid__inner since that's where grid-template-columns is applied
 
 	// Tablet breakpoint (≤ 1024px)
 	@media (max-width: 1024px) {
 
 		@for $i from 1 through 12 {
-			&.dsg-grid-cols-tablet-#{$i} .dsg-grid__inner {
+			&.dsgo-grid-cols-tablet-#{$i} .dsgo-grid__inner {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;
 			}
 		}
@@ -127,7 +127,7 @@
 	@media (max-width: 767px) {
 
 		@for $i from 1 through 12 {
-			&.dsg-grid-cols-mobile-#{$i} .dsg-grid__inner {
+			&.dsgo-grid-cols-mobile-#{$i} .dsgo-grid__inner {
 				grid-template-columns: repeat(#{$i}, 1fr) !important;
 			}
 		}
@@ -140,21 +140,21 @@
 		// Only apply background if hover background is set
 		// !important needed to override WordPress color classes and gradients
 		// Use 'background' instead of 'background-color' to override gradients
-		&[style*="--dsg-hover-bg-color"] {
-			background: var(--dsg-hover-bg-color) !important;
+		&[style*="--dsgo-hover-bg-color"] {
+			background: var(--dsgo-hover-bg-color) !important;
 		}
 
 		// Only apply text color if hover text color is set
 		// Use !important to override custom text colors set by users
-		&[style*="--dsg-hover-text-color"] {
-			color: var(--dsg-hover-text-color) !important;
+		&[style*="--dsgo-hover-text-color"] {
+			color: var(--dsgo-hover-text-color) !important;
 
 			// Apply text color to all text elements for consistency
 			// !important needed to override custom color classes/inline styles
 			h1, h2, h3, h4, h5, h6, p, a, span, li, td, th,
 			.wp-block-heading,
 			.wp-block-paragraph {
-				color: var(--dsg-hover-text-color) !important;
+				color: var(--dsgo-hover-text-color) !important;
 			}
 		}
 	}
@@ -170,26 +170,26 @@
 // ===================================================================
 
 // CRITICAL: Force grid items and nested layouts to stack properly on mobile
-// Must be outside .dsg-grid scope for proper specificity
-// With two-div structure: target .dsg-grid__inner children
+// Must be outside .dsgo-grid scope for proper specificity
+// With two-div structure: target .dsgo-grid__inner children
 @media (max-width: 767px) {
 	// Force all grid items with column spans to span 1 on mobile
 	// High specificity to override inline styles
-	.dsg-grid__inner > [style*="grid-column"],
-	.dsg-grid__inner > [data-block][style*="grid-column"],
-	.dsg-grid__inner > [data-block] {
+	.dsgo-grid__inner > [style*="grid-column"],
+	.dsgo-grid__inner > [data-block][style*="grid-column"],
+	.dsgo-grid__inner > [data-block] {
 		grid-column: span 1 !important;
 	}
 
 	// Force nested layouts inside grid items to stack
-	.dsg-grid__inner > * {
+	.dsgo-grid__inner > * {
 		// Force any nested grid to single column
-		.dsg-grid {
+		.dsgo-grid {
 			grid-template-columns: 1fr !important;
 		}
 
 		// Force any nested flex to stack vertically
-		.dsg-flex {
+		.dsgo-flex {
 			flex-direction: column !important;
 		}
 	}
@@ -200,19 +200,19 @@
  * CRITICAL: Override WordPress's margin-based spacing for Grid layouts
  * Grid uses CSS gap properties, not margins, for spacing
  * Applied when layout support is enabled (type: constrained)
- * With two-div structure: .dsg-grid > .dsg-grid__inner > items
+ * With two-div structure: .dsgo-grid > .dsgo-grid__inner > items
  */
 
 // Remove all margin-block spacing from grid items
 // CRITICAL: !important needed to override WordPress's layout system
 // Target inner container's children since we now have two-div structure
-.dsg-grid__inner > * {
+.dsgo-grid__inner > * {
 	margin-block-start: 0 !important;
 	margin-block-end: 0 !important;
 }
 
 // Also target data-block wrapped elements in editor
-.dsg-grid__inner > [data-block] {
+.dsgo-grid__inner > [data-block] {
 	margin-block-start: 0 !important;
 	margin-block-end: 0 !important;
 }

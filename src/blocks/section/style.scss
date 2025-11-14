@@ -6,7 +6,7 @@
  * @package DesignSetGo
  */
 
-.dsg-stack {
+.dsgo-stack {
 	// CRITICAL: Ensure width includes padding to prevent overflow
 	box-sizing: border-box;
 
@@ -14,7 +14,7 @@
 	overflow: hidden;
 
 	// Allow specific layouts (like scroll accordions) to opt out of clipping
-	&.dsg-stack--allow-overflow {
+	&.dsgo-stack--allow-overflow {
 		overflow: visible;
 	}
 
@@ -41,15 +41,15 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background-color: var(--dsg-overlay-color);
-			opacity: var(--dsg-overlay-opacity, 0.8);
+			background-color: var(--dsgo-overlay-color);
+			opacity: var(--dsgo-overlay-opacity, 0.8);
 			pointer-events: none; /* Allow clicks to pass through to content */
 			z-index: 1; /* Above background image but below content */
 			border-radius: inherit; /* Match parent border radius */
 		}
 
 		/* Ensure content is above overlay */
-		> .dsg-stack__inner {
+		> .dsgo-stack__inner {
 			position: relative;
 			z-index: 2;
 		}
@@ -57,19 +57,19 @@
 
 	// CRITICAL: Inner container must be full width for layout to work
 	// Width constraints are applied via inline styles when constrainWidth is enabled
-	.dsg-stack__inner {
+	.dsgo-stack__inner {
 		width: 100%;
 	}
 
 	// CRITICAL: When Section is nested inside another container, force full width
 	// WordPress applies constrained layout which can limit width
 	// This ensures nested Sections take full width of their parent container
-	.dsg-stack__inner > &,
-	.dsg-flex__inner > &,
-	.dsg-grid__inner > & {
+	.dsgo-stack__inner > &,
+	.dsgo-flex__inner > &,
+	.dsgo-grid__inner > & {
 		width: 100% !important;
 
-		.dsg-stack__inner {
+		.dsgo-stack__inner {
 			max-width: none !important;
 			margin-left: 0 !important;
 			margin-right: 0 !important;
@@ -79,15 +79,15 @@
 	// CRITICAL: Disable float for all children in flex layout
 	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
 	// but float should not work inside flex containers
-	// NOTE: .is-layout-flex is on the dsg-stack__inner element, not the outer wrapper
-	.dsg-stack__inner.is-layout-flex > * {
+	// NOTE: .is-layout-flex is on the dsgo-stack__inner element, not the outer wrapper
+	.dsgo-stack__inner.is-layout-flex > * {
 		float: none !important;
 	}
 
 	// CRITICAL: Ensure flex layout properties work correctly
 	// WordPress applies these via inline styles, but we ensure they're respected
-	// NOTE: .is-layout-flex is on the dsg-stack__inner element, not the outer wrapper
-	.dsg-stack__inner.is-layout-flex {
+	// NOTE: .is-layout-flex is on the dsgo-stack__inner element, not the outer wrapper
+	.dsgo-stack__inner.is-layout-flex {
 		display: flex;
 		flex-direction: column; // Vertical stacking
 
@@ -96,10 +96,10 @@
 
 		// CRITICAL: Inline/shrink-wrap blocks should respect alignment
 		// These blocks should shrink to content width so they can be centered/aligned
-		> .dsg-pill,
+		> .dsgo-pill,
 		> .wp-block-button,
 		> .wp-block-buttons,
-		> .dsg-icon-button,
+		> .dsgo-icon-button,
 		> .wp-block-designsetgo-icon-button {
 			align-self: flex-start; // Override to allow alignment
 			width: auto !important; // Shrink to content
@@ -117,18 +117,18 @@
 			.wp-block-embed,
 			.wp-block-table,
 			.wp-block-list,
-			.dsg-grid,
+			.dsgo-grid,
 			.wp-block-designsetgo-grid,
-			.dsg-stack,
+			.dsgo-stack,
 			.wp-block-designsetgo-stack,
-			.dsg-flex,
+			.dsgo-flex,
 			.wp-block-designsetgo-flex,
 			.wp-block-designsetgo-row,
-			.dsg-tabs,
+			.dsgo-tabs,
 			.wp-block-designsetgo-tabs,
-			.dsg-accordion,
+			.dsgo-accordion,
 			.wp-block-designsetgo-accordion,
-			.dsg-scroll-marquee,
+			.dsgo-scroll-marquee,
 			.wp-block-designsetgo-scroll-marquee
 		):not(.alignleft):not(.alignright):not(.alignfull):not(.alignwide) {
 			width: 100% !important;
@@ -141,11 +141,11 @@
 		&.is-content-justification-center {
 
 			> :where(
-				.dsg-pill,
+				.dsgo-pill,
 				.wp-block-designsetgo-pill,
 				.wp-block-button,
 				.wp-block-buttons,
-				.dsg-icon-button,
+				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			):not(.alignleft):not(.alignright):not(.aligncenter) {
 				align-self: center;
@@ -156,11 +156,11 @@
 		&.is-content-justification-right {
 
 			> :where(
-				.dsg-pill,
+				.dsgo-pill,
 				.wp-block-designsetgo-pill,
 				.wp-block-button,
 				.wp-block-buttons,
-				.dsg-icon-button,
+				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			):not(.alignleft):not(.alignright):not(.aligncenter) {
 				align-self: flex-end;
@@ -171,11 +171,11 @@
 		&.is-content-justification-left {
 
 			> :where(
-				.dsg-pill,
+				.dsgo-pill,
 				.wp-block-designsetgo-pill,
 				.wp-block-button,
 				.wp-block-buttons,
-				.dsg-icon-button,
+				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			):not(.alignleft):not(.alignright):not(.aligncenter) {
 				align-self: flex-start;
@@ -230,7 +230,7 @@
 		}
 
 		// Old group structure (pre-6.0) with __inner-container
-		> :where(.wp-block-group, .wp-block-designsetgo-stack, .dsg-stack)
+		> :where(.wp-block-group, .wp-block-designsetgo-stack, .dsgo-stack)
 			:not(.alignleft):not(.alignright):not(.alignfull):not(.alignwide)
 			> .wp-block-group__inner-container {
 			width: 100% !important;
@@ -239,7 +239,7 @@
 			margin-right: 0 !important;
 		}
 
-		> :where(.wp-block-group, .dsg-stack, .wp-block-designsetgo-stack)
+		> :where(.wp-block-group, .dsgo-stack, .wp-block-designsetgo-stack)
 			:is(.is-layout-constrained, .wp-block-group-is-layout-constrained)
 			> .wp-block-group__inner-container {
 			width: 100% !important;
@@ -267,13 +267,13 @@
 	&.has-text-align-left,
 	&[style*='text-align:left'] {
 
-		.dsg-stack__inner.is-layout-flex
+		.dsgo-stack__inner.is-layout-flex
 			> :where(
-				.dsg-pill,
+				.dsgo-pill,
 				.wp-block-designsetgo-pill,
 				.wp-block-button,
 				.wp-block-buttons,
-				.dsg-icon-button,
+				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			) {
 			align-self: flex-start;
@@ -283,13 +283,13 @@
 	&.has-text-align-center,
 	&[style*='text-align:center'] {
 
-		.dsg-stack__inner.is-layout-flex
+		.dsgo-stack__inner.is-layout-flex
 			> :where(
-				.dsg-pill,
+				.dsgo-pill,
 				.wp-block-designsetgo-pill,
 				.wp-block-button,
 				.wp-block-buttons,
-				.dsg-icon-button,
+				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			) {
 			align-self: center;
@@ -299,13 +299,13 @@
 	&.has-text-align-right,
 	&[style*='text-align:right'] {
 
-		.dsg-stack__inner.is-layout-flex
+		.dsgo-stack__inner.is-layout-flex
 			> :where(
-				.dsg-pill,
+				.dsgo-pill,
 				.wp-block-designsetgo-pill,
 				.wp-block-button,
 				.wp-block-buttons,
-				.dsg-icon-button,
+				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			) {
 			align-self: flex-end;
@@ -318,19 +318,19 @@
 		// Only apply background if hover background is set
 		// !important needed to override WordPress color classes and gradients
 		// Use 'background' instead of 'background-color' to override gradients
-		&[style*="--dsg-hover-bg-color"] {
-			background: var(--dsg-hover-bg-color) !important;
+		&[style*="--dsgo-hover-bg-color"] {
+			background: var(--dsgo-hover-bg-color) !important;
 		}
 
 		// Only apply text color if hover text color is set
-		&[style*="--dsg-hover-text-color"] {
-			color: var(--dsg-hover-text-color) !important;
+		&[style*="--dsgo-hover-text-color"] {
+			color: var(--dsgo-hover-text-color) !important;
 
 			// Apply text color to all text elements for consistency
 			h1, h2, h3, h4, h5, h6, p, a, span, li, td, th,
 			.wp-block-heading,
 			.wp-block-paragraph {
-				color: var(--dsg-hover-text-color) !important;
+				color: var(--dsgo-hover-text-color) !important;
 			}
 		}
 	}
@@ -341,11 +341,11 @@
 // We need to override these for blocks that should shrink to content
 [class*="wp-container-designsetgo-stack"] {
 
-	> .dsg-pill,
+	> .dsgo-pill,
 	> .wp-block-designsetgo-pill,
 	> .wp-block-button,
 	> .wp-block-buttons,
-	> .dsg-icon-button,
+	> .dsgo-icon-button,
 	> .wp-block-designsetgo-icon-button {
 		width: auto !important;
 		max-width: none !important;
@@ -357,8 +357,8 @@
 // .wp-container-designsetgo-stack-is-layout-{hash} > :where(:not(.alignleft):not(.alignright):not(.alignfull))
 // The WordPress container class is on the INNER div, not the outer div
 // We need higher specificity to override this
-// IMPORTANT: Only apply when .dsg-no-width-constraint class is present (constrainWidth is disabled)
-.dsg-stack.alignfull.dsg-no-width-constraint > .dsg-stack__inner[class*="wp-container-"] {
+// IMPORTANT: Only apply when .dsgo-no-width-constraint class is present (constrainWidth is disabled)
+.dsgo-stack.alignfull.dsgo-no-width-constraint > .dsgo-stack__inner[class*="wp-container-"] {
 
 	// Target all direct children that aren't explicitly aligned
 	> :not(.alignleft):not(.alignright) {

@@ -40,10 +40,10 @@ export default function FormDateFieldEdit({
 	const fieldBackgroundColor =
 		context['designsetgo/form-builder/fieldBackgroundColor'];
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--date');
+	const fieldClasses = classnames('dsgo-form-field', 'dsgo-form-field--date');
 
 	const fieldStyles = {
-		'--dsg-form-field-bg': fieldBackgroundColor,
+		'--dsgo-form-field-bg': fieldBackgroundColor,
 	};
 
 	const blockProps = useBlockProps({
@@ -54,11 +54,11 @@ export default function FormDateFieldEdit({
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -211,11 +211,11 @@ export default function FormDateFieldEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<label htmlFor={fieldId} className="dsg-form-field__label">
+				<label htmlFor={fieldId} className="dsgo-form-field__label">
 					{label}
 					{required && (
 						<span
-							className="dsg-form-field__required"
+							className="dsgo-form-field__required"
 							aria-label="required"
 						>
 							*
@@ -226,7 +226,7 @@ export default function FormDateFieldEdit({
 				<input
 					type="date"
 					id={fieldId}
-					className="dsg-form-field__input"
+					className="dsgo-form-field__input"
 					defaultValue={defaultValue || undefined}
 					min={minDate || undefined}
 					max={maxDate || undefined}
@@ -235,7 +235,7 @@ export default function FormDateFieldEdit({
 				/>
 
 				{helpText && (
-					<p id={`${fieldId}-help`} className="dsg-form-field__help">
+					<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 						{helpText}
 					</p>
 				)}

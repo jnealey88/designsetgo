@@ -97,7 +97,7 @@
 	}
 }
 
-.dsg-countdown-timer {
+.dsgo-countdown-timer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -171,11 +171,11 @@
 	// Boxed Layout (Default)
 	&--boxed {
 
-		.dsg-countdown-timer__units {
+		.dsgo-countdown-timer__units {
 			gap: inherit;
 		}
 
-		.dsg-countdown-timer__unit {
+		.dsgo-countdown-timer__unit {
 			min-width: 100px;
 			padding: 1.5rem;
 		}
@@ -184,12 +184,12 @@
 	// Inline Layout
 	&--inline {
 
-		.dsg-countdown-timer__units {
+		.dsgo-countdown-timer__units {
 			gap: 0.5rem;
 			flex-wrap: nowrap;
 		}
 
-		.dsg-countdown-timer__unit {
+		.dsgo-countdown-timer__unit {
 			flex-direction: row;
 			min-width: auto;
 			padding: 0.5rem 1rem;
@@ -197,17 +197,17 @@
 			border-width: 1px;
 		}
 
-		.dsg-countdown-timer__number {
+		.dsgo-countdown-timer__number {
 			margin-bottom: 0;
 			font-size: 1.5em;
 		}
 
-		.dsg-countdown-timer__label {
+		.dsgo-countdown-timer__label {
 			font-size: 0.875em;
 			opacity: 0.7;
 		}
 
-		.dsg-countdown-timer__unit:not(:last-child)::after {
+		.dsgo-countdown-timer__unit:not(:last-child)::after {
 			content: ':';
 			margin-left: 0.5rem;
 			opacity: 0.5;
@@ -217,22 +217,22 @@
 	// Compact Layout
 	&--compact {
 
-		.dsg-countdown-timer__units {
+		.dsgo-countdown-timer__units {
 			gap: 0.25rem;
 		}
 
-		.dsg-countdown-timer__unit {
+		.dsgo-countdown-timer__unit {
 			min-width: 60px;
 			padding: 0.75rem;
 			border-width: 1px;
 		}
 
-		.dsg-countdown-timer__number {
+		.dsgo-countdown-timer__number {
 			font-size: 1.75em;
 			margin-bottom: 0.125rem;
 		}
 
-		.dsg-countdown-timer__label {
+		.dsgo-countdown-timer__label {
 			font-size: 0.75em;
 		}
 	}

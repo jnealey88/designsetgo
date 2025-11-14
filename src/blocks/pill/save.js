@@ -7,7 +7,7 @@ export default function PillSave({ attributes }) {
 	const { content } = attributes;
 
 	const blockProps = useBlockProps.save({
-		className: 'dsg-pill',
+		className: 'dsgo-pill',
 	});
 
 	// Extract color/background styles from blockProps to apply to inner span
@@ -55,7 +55,7 @@ export default function PillSave({ attributes }) {
 		<div {...blockProps}>
 			<RichText.Content
 				tagName="span"
-				className="dsg-pill__content"
+				className="dsgo-pill__content"
 				value={content}
 				style={innerStyle}
 			/>

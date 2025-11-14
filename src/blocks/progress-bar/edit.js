@@ -105,7 +105,7 @@ export default function ProgressBarEdit({
 
 	// Get block props
 	const blockProps = useBlockProps({
-		className: 'dsg-progress-bar',
+		className: 'dsgo-progress-bar',
 	});
 
 	return (
@@ -333,20 +333,20 @@ export default function ProgressBarEdit({
 			<div {...blockProps}>
 				{/* Label Above */}
 				{(showLabel || showPercentage) && labelPosition === 'top' && (
-					<div className="dsg-progress-bar__label dsg-progress-bar__label--top">
+					<div className="dsgo-progress-bar__label dsgo-progress-bar__label--top">
 						{displayText}
 					</div>
 				)}
 
 				{/* Progress Bar */}
 				<div
-					className="dsg-progress-bar__container"
+					className="dsgo-progress-bar__container"
 					style={barContainerStyles}
 				>
 					<div
-						className={`dsg-progress-bar__fill ${
+						className={`dsgo-progress-bar__fill ${
 							barStyle === 'striped-animated' || stripedAnimation
-								? 'dsg-progress-bar__fill--animated'
+								? 'dsgo-progress-bar__fill--animated'
 								: ''
 						}`}
 						style={barFillStyles}
@@ -354,7 +354,7 @@ export default function ProgressBarEdit({
 						{/* Label Inside */}
 						{(showLabel || showPercentage) &&
 							labelPosition === 'inside' && (
-								<div className="dsg-progress-bar__label dsg-progress-bar__label--inside">
+								<div className="dsgo-progress-bar__label dsgo-progress-bar__label--inside">
 									{displayText}
 								</div>
 							)}
@@ -364,7 +364,7 @@ export default function ProgressBarEdit({
 				{/* Label Below */}
 				{(showLabel || showPercentage) &&
 					labelPosition === 'bottom' && (
-						<div className="dsg-progress-bar__label dsg-progress-bar__label--bottom">
+						<div className="dsgo-progress-bar__label dsgo-progress-bar__label--bottom">
 							{displayText}
 						</div>
 					)}

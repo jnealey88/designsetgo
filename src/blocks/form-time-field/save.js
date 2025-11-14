@@ -20,7 +20,7 @@ export default function FormTimeFieldSave({ attributes }) {
 		fieldWidth,
 	} = attributes;
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--time');
+	const fieldClasses = classnames('dsgo-form-field', 'dsgo-form-field--time');
 
 	const blockProps = useBlockProps.save({
 		className: fieldClasses,
@@ -29,11 +29,11 @@ export default function FormTimeFieldSave({ attributes }) {
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -41,11 +41,11 @@ export default function FormTimeFieldSave({ attributes }) {
 
 	return (
 		<div {...blockProps}>
-			<label htmlFor={fieldId} className="dsg-form-field__label">
+			<label htmlFor={fieldId} className="dsgo-form-field__label">
 				{label}
 				{required && (
 					<span
-						className="dsg-form-field__required"
+						className="dsgo-form-field__required"
 						aria-label="required"
 					>
 						*
@@ -57,7 +57,7 @@ export default function FormTimeFieldSave({ attributes }) {
 				type="time"
 				id={fieldId}
 				name={fieldName}
-				className="dsg-form-field__input"
+				className="dsgo-form-field__input"
 				required={required || undefined}
 				defaultValue={defaultValue || undefined}
 				min={minTime || undefined}
@@ -69,7 +69,7 @@ export default function FormTimeFieldSave({ attributes }) {
 			/>
 
 			{helpText && (
-				<p id={`${fieldId}-help`} className="dsg-form-field__help">
+				<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 					{helpText}
 				</p>
 			)}

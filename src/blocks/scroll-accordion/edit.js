@@ -35,7 +35,7 @@ export default function Edit({ attributes, setAttributes }) {
 	};
 
 	const blockProps = useBlockProps({
-		className: 'dsg-scroll-accordion',
+		className: 'dsgo-scroll-accordion',
 		style: {
 			width: '100%',
 			alignSelf: 'stretch',
@@ -44,7 +44,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-scroll-accordion__items',
+			className: 'dsgo-scroll-accordion__items',
 			style: innerStyles,
 		},
 		{

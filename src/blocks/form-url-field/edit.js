@@ -39,10 +39,10 @@ export default function FormURLFieldEdit({
 	const fieldBackgroundColor =
 		context['designsetgo/form-builder/fieldBackgroundColor'];
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--url');
+	const fieldClasses = classnames('dsgo-form-field', 'dsgo-form-field--url');
 
 	const fieldStyles = {
-		'--dsg-form-field-bg': fieldBackgroundColor,
+		'--dsgo-form-field-bg': fieldBackgroundColor,
 	};
 
 	const blockProps = useBlockProps({
@@ -53,11 +53,11 @@ export default function FormURLFieldEdit({
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -193,11 +193,11 @@ export default function FormURLFieldEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<label htmlFor={fieldId} className="dsg-form-field__label">
+				<label htmlFor={fieldId} className="dsgo-form-field__label">
 					{label}
 					{required && (
 						<span
-							className="dsg-form-field__required"
+							className="dsgo-form-field__required"
 							aria-label="required"
 						>
 							*
@@ -208,7 +208,7 @@ export default function FormURLFieldEdit({
 				<input
 					type="url"
 					id={fieldId}
-					className="dsg-form-field__input"
+					className="dsgo-form-field__input"
 					placeholder={placeholder || undefined}
 					defaultValue={defaultValue || undefined}
 					aria-describedby={helpText ? `${fieldId}-help` : undefined}
@@ -216,7 +216,7 @@ export default function FormURLFieldEdit({
 				/>
 
 				{helpText && (
-					<p id={`${fieldId}-help`} className="dsg-form-field__help">
+					<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 						{helpText}
 					</p>
 				)}

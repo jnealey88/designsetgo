@@ -4,7 +4,7 @@
  * Responsive grid layout using CSS custom properties
  */
 
-.dsg-counter-group {
+.dsgo-counter-group {
 	box-sizing: border-box;
 	max-width: 100%; // Prevent overflow in containers and on small screens
 
@@ -28,8 +28,8 @@
 
 	&__inner {
 		display: grid;
-		grid-template-columns: repeat(var(--dsg-counter-columns-desktop, 3), 1fr);
-		gap: var(--dsg-counter-gap, 32px);
+		grid-template-columns: repeat(var(--dsgo-counter-columns-desktop, 3), 1fr);
+		gap: var(--dsgo-counter-gap, 32px);
 		box-sizing: border-box;
 
 		// WordPress may wrap inner blocks - make wrapper transparent so grid applies to counter blocks
@@ -59,7 +59,7 @@
 	@media (max-width: 1023px) {
 
 		&__inner {
-			grid-template-columns: repeat(var(--dsg-counter-columns-tablet, 2), 1fr);
+			grid-template-columns: repeat(var(--dsgo-counter-columns-tablet, 2), 1fr);
 		}
 	}
 
@@ -67,7 +67,7 @@
 	@media (max-width: 767px) {
 
 		&__inner {
-			grid-template-columns: repeat(var(--dsg-counter-columns-mobile, 1), 1fr);
+			grid-template-columns: repeat(var(--dsgo-counter-columns-mobile, 1), 1fr);
 		}
 	}
 }

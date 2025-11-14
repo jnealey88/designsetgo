@@ -48,14 +48,14 @@ export default function FormTextareaEdit({
 		context['designsetgo/form/fieldBackgroundColor'];
 
 	const fieldClasses = classnames(
-		'dsg-form-field',
-		'dsg-form-field--textarea'
+		'dsgo-form-field',
+		'dsgo-form-field--textarea'
 	);
 
 	const fieldStyles = {
-		'--dsg-field-label-color': fieldLabelColor,
-		'--dsg-field-border-color': fieldBorderColor,
-		'--dsg-form-field-bg': fieldBackgroundColor,
+		'--dsgo-field-label-color': fieldLabelColor,
+		'--dsgo-field-border-color': fieldBorderColor,
+		'--dsgo-form-field-bg': fieldBackgroundColor,
 	};
 
 	const blockProps = useBlockProps({
@@ -66,11 +66,11 @@ export default function FormTextareaEdit({
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -209,23 +209,25 @@ export default function FormTextareaEdit({
 			<div {...blockProps}>
 				<label
 					htmlFor={`field-${clientId}`}
-					className="dsg-form-field__label"
+					className="dsgo-form-field__label"
 				>
 					{label}
 					{required && (
-						<span className="dsg-form-field__required">*</span>
+						<span className="dsgo-form-field__required">*</span>
 					)}
 				</label>
 
 				<textarea
 					id={`field-${clientId}`}
-					className="dsg-form-field__textarea"
+					className="dsgo-form-field__textarea"
 					placeholder={placeholder}
 					rows={rows}
 					disabled
 				/>
 
-				{helpText && <p className="dsg-form-field__help">{helpText}</p>}
+				{helpText && (
+					<p className="dsgo-form-field__help">{helpText}</p>
+				)}
 			</div>
 		</>
 	);

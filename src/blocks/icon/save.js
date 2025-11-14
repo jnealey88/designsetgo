@@ -42,7 +42,7 @@ export default function IconSave({ attributes }) {
 	} = attributes;
 
 	const blockProps = useBlockProps.save({
-		className: 'dsg-icon',
+		className: 'dsgo-icon',
 		style: {
 			display: 'flex',
 			alignItems: 'center',
@@ -96,7 +96,7 @@ export default function IconSave({ attributes }) {
 
 	const iconElement = (
 		<div
-			className="dsg-icon__wrapper"
+			className="dsgo-icon__wrapper"
 			style={iconWrapperStyle}
 			{...ariaAttributes}
 		>

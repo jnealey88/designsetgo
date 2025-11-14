@@ -52,13 +52,13 @@ export default function CounterSave({ attributes, context }) {
 
 	// Block wrapper props
 	const blockProps = useBlockProps.save({
-		className: 'dsg-counter',
+		className: 'dsgo-counter',
 		id: uniqueId,
 		style: {
 			textAlign: 'center',
 			// Apply effective hover color as CSS custom property
 			...(effectiveHoverColor && {
-				'--dsg-counter-hover-color': effectiveHoverColor,
+				'--dsgo-counter-hover-color': effectiveHoverColor,
 			}),
 		},
 		// Data attributes for frontend JavaScript
@@ -79,35 +79,35 @@ export default function CounterSave({ attributes, context }) {
 		<div {...blockProps}>
 			{/* Icon (if enabled and position is top) */}
 			{showIcon && iconPosition === 'top' && (
-				<div className="dsg-counter__icon dsg-counter__icon--top">
+				<div className="dsgo-counter__icon dsgo-counter__icon--top">
 					{getIconSvg(icon)}
 				</div>
 			)}
 
-			<div className={`dsg-counter__content icon-${iconPosition}`}>
+			<div className={`dsgo-counter__content icon-${iconPosition}`}>
 				{/* Icon (if enabled and position is left) */}
 				{showIcon && iconPosition === 'left' && (
-					<div className="dsg-counter__icon dsg-counter__icon--left">
+					<div className="dsgo-counter__icon dsgo-counter__icon--left">
 						{getIconSvg(icon)}
 					</div>
 				)}
 
 				{/* Number - Will be animated by frontend JavaScript */}
-				<div className="dsg-counter__number">
+				<div className="dsgo-counter__number">
 					{/* Initial value (0 or startValue), will be animated to endValue */}
-					<span className="dsg-counter__value">{startValue}</span>
+					<span className="dsgo-counter__value">{startValue}</span>
 				</div>
 
 				{/* Icon (if enabled and position is right) */}
 				{showIcon && iconPosition === 'right' && (
-					<div className="dsg-counter__icon dsg-counter__icon--right">
+					<div className="dsgo-counter__icon dsgo-counter__icon--right">
 						{getIconSvg(icon)}
 					</div>
 				)}
 			</div>
 
 			{/* Label */}
-			{label && <div className="dsg-counter__label">{label}</div>}
+			{label && <div className="dsgo-counter__label">{label}</div>}
 		</div>
 	);
 }

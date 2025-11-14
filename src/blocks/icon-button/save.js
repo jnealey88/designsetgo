@@ -56,10 +56,10 @@ export default function IconButtonSave({ attributes }) {
 		...(bgColor && { backgroundColor: bgColor }),
 		...(txtColor && { color: txtColor }),
 		...(hoverBackgroundColor && {
-			'--dsg-button-hover-bg': hoverBackgroundColor,
+			'--dsgo-button-hover-bg': hoverBackgroundColor,
 		}),
 		...(hoverTextColor && {
-			'--dsg-button-hover-color': hoverTextColor,
+			'--dsgo-button-hover-color': hoverTextColor,
 		}),
 	};
 
@@ -76,11 +76,11 @@ export default function IconButtonSave({ attributes }) {
 	// Build animation class (must match edit.js)
 	const animationClass =
 		hoverAnimation && hoverAnimation !== 'none'
-			? ` dsg-icon-button--${hoverAnimation}`
+			? ` dsgo-icon-button--${hoverAnimation}`
 			: '';
 
 	const blockProps = useBlockProps.save({
-		className: `dsg-icon-button${animationClass}`,
+		className: `dsgo-icon-button${animationClass}`,
 		style: { display: width === '100%' ? 'block' : 'inline-block' },
 	});
 
@@ -88,7 +88,7 @@ export default function IconButtonSave({ attributes }) {
 	const ButtonWrapper = url ? 'a' : 'div';
 	const wrapperProps = url
 		? {
-				className: 'dsg-icon-button__wrapper',
+				className: 'dsgo-icon-button__wrapper',
 				style: buttonStyles,
 				href: url,
 				target: linkTarget,
@@ -98,7 +98,7 @@ export default function IconButtonSave({ attributes }) {
 						: rel || undefined,
 			}
 		: {
-				className: 'dsg-icon-button__wrapper',
+				className: 'dsgo-icon-button__wrapper',
 				style: buttonStyles,
 			};
 
@@ -107,7 +107,7 @@ export default function IconButtonSave({ attributes }) {
 			<ButtonWrapper {...wrapperProps}>
 				{iconPosition !== 'none' && icon && (
 					<span
-						className="dsg-icon-button__icon"
+						className="dsgo-icon-button__icon"
 						style={iconWrapperStyles}
 					>
 						{getIcon(icon)}
@@ -115,7 +115,7 @@ export default function IconButtonSave({ attributes }) {
 				)}
 				<RichText.Content
 					tagName="span"
-					className="dsg-icon-button__text"
+					className="dsgo-icon-button__text"
 					value={text}
 				/>
 			</ButtonWrapper>

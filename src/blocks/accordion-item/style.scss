@@ -3,7 +3,7 @@
  * Enhanced UI/UX with smooth animations and better visual feedback
  */
 
-.dsg-accordion-item {
+.dsgo-accordion-item {
 	// Spacing between accordion items
 	margin: 0;
 	padding: 0;
@@ -13,13 +13,13 @@
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
 	// Header container
-	.dsg-accordion-item__header {
+	.dsgo-accordion-item__header {
 		margin: 0;
 		position: relative;
 	}
 
 	// Trigger button - Enhanced UX
-	.dsg-accordion-item__trigger {
+	.dsgo-accordion-item__trigger {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -43,13 +43,13 @@
 		// Subtle hover effect
 		&:hover {
 			// Use parent accordion's hover colors if set, otherwise default
-			background-color: var(--dsg-accordion-hover-bg, var(--wp--preset--color--base-2, rgba(0, 0, 0, 0.04)));
-			color: var(--dsg-accordion-hover-text, inherit);
+			background-color: var(--dsgo-accordion-hover-bg, var(--wp--preset--color--base-2, rgba(0, 0, 0, 0.04)));
+			color: var(--dsgo-accordion-hover-text, inherit);
 
 			// Icon scale on hover
-			.dsg-accordion-item__icon {
+			.dsgo-accordion-item__icon {
 				transform: scale(1.1);
-				color: var(--dsg-accordion-hover-text, var(--wp--preset--color--contrast, currentColor));
+				color: var(--dsgo-accordion-hover-text, var(--wp--preset--color--contrast, currentColor));
 			}
 		}
 
@@ -65,19 +65,19 @@
 		}
 
 		// Icon positioning
-		&.dsg-accordion-item__trigger--icon-left {
+		&.dsgo-accordion-item__trigger--icon-left {
 			flex-direction: row;
 
-			.dsg-accordion-item__icon {
+			.dsgo-accordion-item__icon {
 				margin-right: var(--wp--preset--spacing--30, 0.75rem);
 				order: -1;
 			}
 		}
 
-		&.dsg-accordion-item__trigger--icon-right {
+		&.dsgo-accordion-item__trigger--icon-right {
 			flex-direction: row;
 
-			.dsg-accordion-item__icon {
+			.dsgo-accordion-item__icon {
 				margin-left: var(--wp--preset--spacing--30, 0.75rem);
 				order: 1;
 			}
@@ -85,7 +85,7 @@
 	}
 
 	// Title text
-	.dsg-accordion-item__title {
+	.dsgo-accordion-item__title {
 		flex: 1;
 		// Better text rendering
 		-webkit-font-smoothing: antialiased;
@@ -93,7 +93,7 @@
 	}
 
 	// Icon - Enhanced animations
-	.dsg-accordion-item__icon {
+	.dsgo-accordion-item__icon {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -111,41 +111,41 @@
 	}
 
 	// Open state - Enhanced visual feedback with custom colors
-	&.dsg-accordion-item--open {
+	&.dsgo-accordion-item--open {
 		// Use parent accordion's open colors if set, otherwise default
-		background-color: var(--dsg-accordion-open-bg, var(--wp--preset--color--base-2, rgba(0, 0, 0, 0.02)));
-		color: var(--dsg-accordion-open-text, inherit);
+		background-color: var(--dsgo-accordion-open-bg, var(--wp--preset--color--base-2, rgba(0, 0, 0, 0.02)));
+		color: var(--dsgo-accordion-open-text, inherit);
 
 		// Optional: subtle shadow for depth
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
-		.dsg-accordion-item__trigger {
+		.dsgo-accordion-item__trigger {
 			// Apply open colors to trigger
-			background-color: var(--dsg-accordion-open-bg, transparent);
-			color: var(--dsg-accordion-open-text, inherit);
+			background-color: var(--dsgo-accordion-open-bg, transparent);
+			color: var(--dsgo-accordion-open-text, inherit);
 
 			&:hover {
 				// Hover state when open - use hover colors (which default to open colors)
-				background-color: var(--dsg-accordion-hover-bg, var(--wp--preset--color--base-2, rgba(0, 0, 0, 0.03)));
-				color: var(--dsg-accordion-hover-text, inherit);
+				background-color: var(--dsgo-accordion-hover-bg, var(--wp--preset--color--base-2, rgba(0, 0, 0, 0.03)));
+				color: var(--dsgo-accordion-hover-text, inherit);
 			}
 		}
 
 		// Rotate and enhance icon when open
-		.dsg-accordion-item__icon {
+		.dsgo-accordion-item__icon {
 			transform: rotate(180deg);
 			opacity: 1;
-			color: var(--dsg-accordion-open-text, var(--wp--preset--color--contrast, currentColor));
+			color: var(--dsgo-accordion-open-text, var(--wp--preset--color--contrast, currentColor));
 		}
 
 		// Ensure panel is visible when open
-		.dsg-accordion-item__panel {
+		.dsgo-accordion-item__panel {
 			opacity: 1;
 		}
 	}
 
 	// Content panel - Smoother animations
-	.dsg-accordion-item__panel {
+	.dsgo-accordion-item__panel {
 		overflow: hidden;
 		// Enhanced transition with better easing
 		transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
@@ -157,7 +157,7 @@
 		}
 
 		// Content wrapper with improved spacing
-		.dsg-accordion-item__content {
+		.dsgo-accordion-item__content {
 			padding: 0 var(--wp--preset--spacing--40, 1.5rem) var(--wp--preset--spacing--40, 1.5rem);
 
 			// Add subtle top spacing
@@ -176,11 +176,11 @@
 	}
 
 	// Closed state
-	&.dsg-accordion-item--closed {
+	&.dsgo-accordion-item--closed {
 		background-color: transparent;
 		box-shadow: none;
 
-		.dsg-accordion-item__panel {
+		.dsgo-accordion-item__panel {
 			opacity: 0;
 		}
 	}
@@ -189,15 +189,15 @@
 // Mobile optimizations
 @media (max-width: 768px) {
 
-	.dsg-accordion-item {
+	.dsgo-accordion-item {
 
-		.dsg-accordion-item__trigger {
+		.dsgo-accordion-item__trigger {
 			// Ensure minimum touch target size
 			min-height: 44px;
 			padding: var(--wp--preset--spacing--40, 1rem);
 		}
 
-		.dsg-accordion-item__panel .dsg-accordion-item__content {
+		.dsgo-accordion-item__panel .dsgo-accordion-item__content {
 			padding-left: var(--wp--preset--spacing--40, 1rem);
 			padding-right: var(--wp--preset--spacing--40, 1rem);
 		}
@@ -207,14 +207,14 @@
 // Print styles - show all content
 @media print {
 
-	.dsg-accordion-item {
+	.dsgo-accordion-item {
 
-		.dsg-accordion-item__panel {
+		.dsgo-accordion-item__panel {
 			display: block !important;
 			height: auto !important;
 		}
 
-		.dsg-accordion-item__icon {
+		.dsgo-accordion-item__icon {
 			display: none;
 		}
 	}

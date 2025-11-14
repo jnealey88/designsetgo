@@ -11,7 +11,7 @@
  */
 function initProgressBars() {
 	const progressBars = document.querySelectorAll(
-		'.dsg-progress-bar--animate'
+		'.dsgo-progress-bar--animate'
 	);
 
 	if (!progressBars.length) {
@@ -31,7 +31,7 @@ function initProgressBars() {
 			if (entry.isIntersecting) {
 				const progressBar = entry.target;
 				const fill = progressBar.querySelector(
-					'.dsg-progress-bar__fill'
+					'.dsgo-progress-bar__fill'
 				);
 
 				if (!fill) {

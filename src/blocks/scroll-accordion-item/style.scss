@@ -3,7 +3,7 @@
  * Sticky stacking card effect - incremental top positioning
  */
 
-.dsg-scroll-accordion-item {
+.dsgo-scroll-accordion-item {
 	position: sticky;
 	width: 100%;
 	max-width: 100%;
@@ -30,8 +30,8 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background-color: var(--dsg-overlay-color);
-			opacity: var(--dsg-overlay-opacity, 0.8);
+			background-color: var(--dsgo-overlay-color);
+			opacity: var(--dsgo-overlay-opacity, 0.8);
 			pointer-events: none; /* Allow clicks to pass through to content */
 			z-index: 1; /* Above background image but below content */
 			border-radius: inherit; /* Match parent border radius */
@@ -49,7 +49,7 @@
 	 * Later cards appear on top (higher z-index)
 	 * Stick at top so items overlap as you scroll
 	 */
-	top: var(--dsg-scroll-accordion-sticky-offset, 30vh);
+	top: var(--dsgo-scroll-accordion-sticky-offset, 30vh);
 
 	&:nth-child(1) {
 		z-index: 1;
@@ -130,7 +130,7 @@
  */
 @media (prefers-reduced-motion: reduce) {
 
-	.dsg-scroll-accordion-item {
+	.dsgo-scroll-accordion-item {
 		transition: none !important;
 		transform: translateY(-50%) !important;
 		will-change: auto !important;
@@ -142,7 +142,7 @@
  */
 @media print {
 
-	.dsg-scroll-accordion-item {
+	.dsgo-scroll-accordion-item {
 		position: relative !important;
 		top: auto !important;
 		transform: none !important;

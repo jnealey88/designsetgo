@@ -3,10 +3,10 @@
  * Stacking cards with sticky positioning - Apple-style scroll effect
  */
 
-.dsg-scroll-accordion {
-	--dsg-scroll-accordion-gap: var(--wp--preset--spacing--40, 1.5rem);
-	--dsg-scroll-accordion-duration: 600ms;
-	--dsg-scroll-accordion-sticky-offset: clamp(6rem, 30vh, 12rem);
+.dsgo-scroll-accordion {
+	--dsgo-scroll-accordion-gap: var(--wp--preset--spacing--40, 1.5rem);
+	--dsgo-scroll-accordion-duration: 600ms;
+	--dsgo-scroll-accordion-sticky-offset: clamp(6rem, 30vh, 12rem);
 
 	position: relative;
 	width: 100%;
@@ -18,7 +18,7 @@
 	 */
 	margin-top: 2rem; /* Prevent overlap with previous blocks */
 
-	.dsg-scroll-accordion__items {
+	.dsgo-scroll-accordion__items {
 		position: relative;
 		display: flex;
 		flex-direction: column;
@@ -30,6 +30,6 @@
 }
 
 /**
- * Note: Animation styles for .dsg-scroll-accordion-item
+ * Note: Animation styles for .dsgo-scroll-accordion-item
  * are defined in the child block's style.scss
  */

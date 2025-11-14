@@ -171,9 +171,9 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	const blockClassName = [
-		'dsg-flex',
-		mobileStack && 'dsg-flex--mobile-stack',
-		overlayColor && 'dsg-flex--has-overlay',
+		'dsgo-flex',
+		mobileStack && 'dsgo-flex--mobile-stack',
+		overlayColor && 'dsgo-flex--has-overlay',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -183,20 +183,20 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 		className: blockClassName,
 		style: {
 			...(hoverBackgroundColor && {
-				'--dsg-hover-bg-color': hoverBackgroundColor,
+				'--dsgo-hover-bg-color': hoverBackgroundColor,
 			}),
 			...(hoverTextColor && {
-				'--dsg-hover-text-color': hoverTextColor,
+				'--dsgo-hover-text-color': hoverTextColor,
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
+				'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+				'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
 			}),
 			...(overlayColor && {
-				'--dsg-overlay-color': overlayColor,
-				'--dsg-overlay-opacity': '0.8',
+				'--dsgo-overlay-color': overlayColor,
+				'--dsgo-overlay-opacity': '0.8',
 			}),
 		},
 	});
@@ -236,7 +236,7 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 	// Merge inner blocks props
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-flex__inner',
+			className: 'dsgo-flex__inner',
 			style: innerStyle,
 		},
 		{

@@ -7,7 +7,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-	const flipCards = document.querySelectorAll('.dsg-flip-card');
+	const flipCards = document.querySelectorAll('.dsgo-flip-card');
 
 	flipCards.forEach((card) => {
 		const flipTrigger = card.getAttribute('data-flip-trigger');

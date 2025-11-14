@@ -3,11 +3,11 @@
  * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
  */
 
-.dsg-reveal-container {
+.dsgo-reveal-container {
 	position: relative;
 
 	// Hidden items by default
-	.dsg-reveal-item {
+	.dsgo-reveal-item {
 		transition-property: opacity, transform;
 		transition-timing-function: ease-in-out;
 
@@ -36,13 +36,13 @@
 	}
 
 	// Revealed state on hover
-	&:hover .dsg-reveal-item {
+	&:hover .dsgo-reveal-item {
 		opacity: 1;
 		transform: translateY(0) scale(1);
 	}
 
 	// Editor indicator for revealed items
-	.dsg-reveal-item::before {
+	.dsgo-reveal-item::before {
 		content: '👁️ Reveals on hover';
 		position: absolute;
 		top: -24px;

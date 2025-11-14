@@ -168,24 +168,24 @@ export const IconPicker = ({ value, onChange }) => {
 	const filteredIcons = getFilteredIcons();
 
 	return (
-		<div className="dsg-icon-picker">
-			<div className="dsg-icon-picker__label">
+		<div className="dsgo-icon-picker">
+			<div className="dsgo-icon-picker__label">
 				{__('Choose Icon', 'designsetgo')}
 			</div>
 
 			{/* Current Icon Preview */}
 			<Button
-				className="dsg-icon-picker__trigger"
+				className="dsgo-icon-picker__trigger"
 				onClick={() => setIsOpen(!isOpen)}
 				aria-expanded={isOpen}
 			>
 				<span
-					className="dsg-icon-picker__preview"
+					className="dsgo-icon-picker__preview"
 					style={{ width: '32px', height: '32px' }}
 				>
 					{getIcon(value)}
 				</span>
-				<span className="dsg-icon-picker__name">
+				<span className="dsgo-icon-picker__name">
 					{value.charAt(0).toUpperCase() +
 						value.slice(1).replace(/-/g, ' ')}
 				</span>
@@ -199,9 +199,9 @@ export const IconPicker = ({ value, onChange }) => {
 						setIsOpen(false);
 						setSearchTerm('');
 					}}
-					className="dsg-icon-picker__popover"
+					className="dsgo-icon-picker__popover"
 				>
-					<div className="dsg-icon-picker__content">
+					<div className="dsgo-icon-picker__content">
 						{/* Search */}
 						<SearchControl
 							value={searchTerm}
@@ -211,12 +211,12 @@ export const IconPicker = ({ value, onChange }) => {
 
 						{/* Category Tabs */}
 						{!searchTerm && (
-							<div className="dsg-icon-picker__categories">
+							<div className="dsgo-icon-picker__categories">
 								{Object.keys(ICON_CATEGORIES).map(
 									(categoryKey) => (
 										<Button
 											key={categoryKey}
-											className={`dsg-icon-picker__category ${
+											className={`dsgo-icon-picker__category ${
 												activeCategory === categoryKey
 													? 'is-active'
 													: ''
@@ -233,12 +233,12 @@ export const IconPicker = ({ value, onChange }) => {
 						)}
 
 						{/* Icon Grid */}
-						<div className="dsg-icon-picker__grid">
+						<div className="dsgo-icon-picker__grid">
 							{filteredIcons.length > 0 ? (
 								filteredIcons.map((iconName) => (
 									<Button
 										key={iconName}
-										className={`dsg-icon-picker__icon ${
+										className={`dsgo-icon-picker__icon ${
 											value === iconName
 												? 'is-selected'
 												: ''
@@ -268,7 +268,7 @@ export const IconPicker = ({ value, onChange }) => {
 									</Button>
 								))
 							) : (
-								<div className="dsg-icon-picker__empty">
+								<div className="dsgo-icon-picker__empty">
 									{__('No icons found', 'designsetgo')}
 								</div>
 							)}

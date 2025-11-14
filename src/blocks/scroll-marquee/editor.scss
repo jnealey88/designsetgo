@@ -9,27 +9,27 @@
 	max-width: 100%;
 }
 
-.editor-styles-wrapper .dsg-scroll-marquee {
+.editor-styles-wrapper .dsgo-scroll-marquee {
 	width: 100%;
 }
 
-.editor-styles-wrapper .dsg-scroll-marquee .dsg-scroll-marquee__image {
-	height: var(--dsg-marquee-image-height);
-	width: var(--dsg-marquee-image-width);
+.editor-styles-wrapper .dsgo-scroll-marquee .dsgo-scroll-marquee__image {
+	height: var(--dsgo-marquee-image-height);
+	width: var(--dsgo-marquee-image-width);
 }
 
-.dsg-scroll-marquee {
-	--dsg-marquee-gap: 20px;
-	--dsg-marquee-row-gap: 20px;
-	--dsg-marquee-image-height: 200px;
-	--dsg-marquee-image-width: 300px;
-	--dsg-marquee-border-radius: 8px;
+.dsgo-scroll-marquee {
+	--dsgo-marquee-gap: 20px;
+	--dsgo-marquee-row-gap: 20px;
+	--dsgo-marquee-image-height: 200px;
+	--dsgo-marquee-image-width: 300px;
+	--dsgo-marquee-border-radius: 8px;
 
 	position: relative;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
-	gap: var(--dsg-marquee-row-gap);
+	gap: var(--dsgo-marquee-row-gap);
 	max-width: 100%; // Prevent overflow in containers and on small screens
 	background: none;
 
@@ -55,7 +55,7 @@
 
 	&__track {
 		display: flex;
-		gap: var(--dsg-marquee-gap);
+		gap: var(--dsgo-marquee-gap);
 		flex-wrap: nowrap; // Keep horizontal layout
 		align-items: center;
 		min-height: 80px; // Reasonable minimum height for empty state
@@ -64,7 +64,7 @@
 
 	&__track-segment {
 		display: flex;
-		gap: var(--dsg-marquee-gap);
+		gap: var(--dsgo-marquee-gap);
 		flex-shrink: 0;
 	}
 
@@ -72,16 +72,16 @@
 		position: relative;
 		display: inline-block;
 
-		&:hover .dsg-scroll-marquee__remove-image {
+		&:hover .dsgo-scroll-marquee__remove-image {
 			opacity: 1;
 		}
 	}
 
 	&__image {
-		height: var(--dsg-marquee-image-height);
-		width: var(--dsg-marquee-image-width);
+		height: var(--dsgo-marquee-image-height);
+		width: var(--dsgo-marquee-image-width);
 		object-fit: cover;
-		border-radius: var(--dsg-marquee-border-radius);
+		border-radius: var(--dsgo-marquee-border-radius);
 		flex-shrink: 0;
 		display: block;
 		border: 2px solid #e0e0e0;

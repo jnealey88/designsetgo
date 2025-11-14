@@ -7,7 +7,7 @@
  */
 
 // Outer wrapper - takes full width and receives WordPress classes/styles
-.dsg-blobs-wrapper {
+.dsgo-blobs-wrapper {
 	display: block;
 	width: 100%;
 	// WordPress applies backgrounds here, but we want them on the blob
@@ -15,30 +15,30 @@
 	background: none !important;
 
 	// Alignment classes on wrapper should apply to inner blob
-	&.aligncenter > .dsg-blobs {
+	&.aligncenter > .dsgo-blobs {
 		margin-left: auto;
 		margin-right: auto;
 	}
 
-	&.alignleft > .dsg-blobs {
+	&.alignleft > .dsgo-blobs {
 		margin-right: auto;
 	}
 
-	&.alignright > .dsg-blobs {
+	&.alignright > .dsgo-blobs {
 		margin-left: auto;
 	}
 }
 
-.dsg-blobs {
+.dsgo-blobs {
 	// CSS Custom Properties (set from block attributes)
-	--dsg-blob-size: 300px;
-	--dsg-blob-animation-duration: 8s;
-	--dsg-blob-animation-easing: ease-in-out;
+	--dsgo-blob-size: 300px;
+	--dsgo-blob-animation-duration: 8s;
+	--dsgo-blob-animation-easing: ease-in-out;
 
 	// Container with blob shape
 	position: relative;
-	width: var(--dsg-blob-size);
-	height: var(--dsg-blob-size);
+	width: var(--dsgo-blob-size);
+	height: var(--dsgo-blob-size);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -99,7 +99,7 @@
 		justify-content: center;
 
 		// Content inside blob
-		.dsg-blobs__content {
+		.dsgo-blobs__content {
 			position: relative;
 			z-index: 2;
 			padding: var(--wp--preset--spacing--medium, 1.5rem);
@@ -115,30 +115,30 @@
 
 	// Animation variants (applied to outer container)
 	&--morph-1 {
-		animation: dsg-blob-morph-1 var(--dsg-blob-animation-duration) var(--dsg-blob-animation-easing) infinite;
+		animation: dsgo-blob-morph-1 var(--dsgo-blob-animation-duration) var(--dsgo-blob-animation-easing) infinite;
 	}
 
 	&--morph-2 {
-		animation: dsg-blob-morph-2 var(--dsg-blob-animation-duration) var(--dsg-blob-animation-easing) infinite;
+		animation: dsgo-blob-morph-2 var(--dsgo-blob-animation-duration) var(--dsgo-blob-animation-easing) infinite;
 	}
 
 	&--float {
-		animation: dsg-blob-float var(--dsg-blob-animation-duration) var(--dsg-blob-animation-easing) infinite;
+		animation: dsgo-blob-float var(--dsgo-blob-animation-duration) var(--dsgo-blob-animation-easing) infinite;
 	}
 
 	&--pulse {
-		animation: dsg-blob-pulse var(--dsg-blob-animation-duration) var(--dsg-blob-animation-easing) infinite;
+		animation: dsgo-blob-pulse var(--dsgo-blob-animation-duration) var(--dsgo-blob-animation-easing) infinite;
 	}
 
 	&--spin {
-		animation: dsg-blob-spin var(--dsg-blob-animation-duration) linear infinite;
+		animation: dsgo-blob-spin var(--dsgo-blob-animation-duration) linear infinite;
 	}
 }
 
 // Keyframe Animations
 
 // Morph 1: Organic shape morphing through 3 states
-@keyframes dsg-blob-morph-1 {
+@keyframes dsgo-blob-morph-1 {
 
 	0%, 100% {
 		border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
@@ -154,7 +154,7 @@
 }
 
 // Morph 2: Different morphing pattern
-@keyframes dsg-blob-morph-2 {
+@keyframes dsgo-blob-morph-2 {
 
 	0%, 100% {
 		border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
@@ -174,7 +174,7 @@
 }
 
 // Float: Gentle floating motion (no rotation)
-@keyframes dsg-blob-float {
+@keyframes dsgo-blob-float {
 
 	0%, 100% {
 		transform: translateY(0);
@@ -186,7 +186,7 @@
 }
 
 // Pulse: Scale in and out with slight rotation
-@keyframes dsg-blob-pulse {
+@keyframes dsgo-blob-pulse {
 
 	0%, 100% {
 		transform: scale(1) rotate(0deg);
@@ -198,7 +198,7 @@
 }
 
 // Spin: Continuous rotation with slight scale
-@keyframes dsg-blob-spin {
+@keyframes dsgo-blob-spin {
 
 	0% {
 		transform: rotate(0deg) scale(1);
@@ -216,7 +216,7 @@
 // Accessibility: Reduce motion for users who prefer it
 @media (prefers-reduced-motion: reduce) {
 
-	.dsg-blobs {
+	.dsgo-blobs {
 
 		&--morph-1,
 		&--morph-2,
@@ -231,7 +231,7 @@
 // Responsive: Adjust size on mobile
 @media (max-width: 768px) {
 
-	.dsg-blobs {
+	.dsgo-blobs {
 
 		&__shape {
 			// Scale down on mobile if using fixed pixel values
@@ -244,7 +244,7 @@
 // Print styles: Remove animations
 @media print {
 
-	.dsg-blobs {
+	.dsgo-blobs {
 
 		&--morph-1,
 		&--morph-2,

@@ -5,9 +5,9 @@
  */
 
 // Editor: Enable hover animations
-.editor-styles-wrapper .dsg-image-accordion {
+.editor-styles-wrapper .dsgo-image-accordion {
 	// Items container needs to be flex for hover to work
-	.dsg-image-accordion__items {
+	.dsgo-image-accordion__items {
 		display: flex;
 		flex-direction: row;
 		gap: var(--accordion-gap, 4px);
@@ -16,7 +16,7 @@
 	}
 
 	// Each item
-	.dsg-image-accordion-item {
+	.dsgo-image-accordion-item {
 		position: relative;
 		flex: 1;
 		overflow: hidden;
@@ -27,24 +27,24 @@
 			flex: var(--expanded-ratio, 3);
 
 			// Reduce overlay on hover
-			&.dsg-image-accordion-item--has-overlay::before {
-				opacity: var(--dsg-overlay-opacity-expanded, 0.2);
+			&.dsgo-image-accordion-item--has-overlay::before {
+				opacity: var(--dsgo-overlay-opacity-expanded, 0.2);
 			}
 
 			// Increase content opacity on hover
-			.dsg-image-accordion-item__content {
+			.dsgo-image-accordion-item__content {
 				opacity: 1;
 			}
 
 			// Siblings stay normal size
-			~ .dsg-image-accordion-item {
+			~ .dsgo-image-accordion-item {
 				flex: 1;
 
-				&.dsg-image-accordion-item--has-overlay::before {
-					opacity: calc(var(--dsg-overlay-opacity, 0.4) + 0.2);
+				&.dsgo-image-accordion-item--has-overlay::before {
+					opacity: calc(var(--dsgo-overlay-opacity, 0.4) + 0.2);
 				}
 
-				.dsg-image-accordion-item__content {
+				.dsgo-image-accordion-item__content {
 					opacity: 0.7;
 				}
 			}

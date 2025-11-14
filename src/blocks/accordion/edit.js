@@ -41,23 +41,23 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 	const effectiveHoverText = hoverTextColor || openTextColor;
 
 	// Declaratively calculate classes based on attributes
-	const accordionClasses = classnames('dsg-accordion', {
-		'dsg-accordion--multiple': allowMultipleOpen,
-		'dsg-accordion--icon-left': iconPosition === 'left',
-		'dsg-accordion--icon-right': iconPosition === 'right',
-		'dsg-accordion--no-icon': iconStyle === 'none',
-		'dsg-accordion--border-between': borderBetween,
+	const accordionClasses = classnames('dsgo-accordion', {
+		'dsgo-accordion--multiple': allowMultipleOpen,
+		'dsgo-accordion--icon-left': iconPosition === 'left',
+		'dsgo-accordion--icon-right': iconPosition === 'right',
+		'dsgo-accordion--no-icon': iconStyle === 'none',
+		'dsgo-accordion--border-between': borderBetween,
 	});
 
 	// Apply colors and gap as CSS custom properties that will cascade to accordion items
 	const customStyles = {
-		'--dsg-accordion-open-bg': openBackgroundColor,
-		'--dsg-accordion-open-text': openTextColor,
-		'--dsg-accordion-hover-bg': effectiveHoverBg,
-		'--dsg-accordion-hover-text': effectiveHoverText,
-		'--dsg-accordion-gap': itemGap,
+		'--dsgo-accordion-open-bg': openBackgroundColor,
+		'--dsgo-accordion-open-text': openTextColor,
+		'--dsgo-accordion-hover-bg': effectiveHoverBg,
+		'--dsgo-accordion-hover-text': effectiveHoverText,
+		'--dsgo-accordion-gap': itemGap,
 		...(borderBetweenColor && {
-			'--dsg-accordion-border-color': borderBetweenColor,
+			'--dsgo-accordion-border-color': borderBetweenColor,
 		}),
 	};
 
@@ -70,7 +70,7 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 	// Inner blocks configuration - ONLY allow accordion-item children
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-accordion__items',
+			className: 'dsgo-accordion__items',
 		},
 		{
 			allowedBlocks: ['designsetgo/accordion-item'],

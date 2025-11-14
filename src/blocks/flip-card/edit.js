@@ -35,9 +35,9 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 
 	// Block wrapper props
 	const blockProps = useBlockProps({
-		className: 'dsg-flip-card',
+		className: 'dsgo-flip-card',
 		style: {
-			'--dsg-flip-duration': flipDuration,
+			'--dsgo-flip-duration': flipDuration,
 			width: '100%',
 		},
 	});
@@ -47,7 +47,7 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 	// Template is locked so users can't delete or reorder the front/back
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-flip-card__container',
+			className: 'dsgo-flip-card__container',
 		},
 		{
 			allowedBlocks: [

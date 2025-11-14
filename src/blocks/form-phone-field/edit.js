@@ -45,12 +45,15 @@ export default function FormPhoneFieldEdit({
 	const fieldBackgroundColor =
 		context['designsetgo/form/fieldBackgroundColor'];
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--phone');
+	const fieldClasses = classnames(
+		'dsgo-form-field',
+		'dsgo-form-field--phone'
+	);
 
 	const fieldStyles = {
-		'--dsg-field-label-color': fieldLabelColor,
-		'--dsg-field-border-color': fieldBorderColor,
-		'--dsg-form-field-bg': fieldBackgroundColor,
+		'--dsgo-field-label-color': fieldLabelColor,
+		'--dsgo-field-border-color': fieldBorderColor,
+		'--dsgo-form-field-bg': fieldBackgroundColor,
 	};
 
 	const blockProps = useBlockProps({
@@ -61,11 +64,11 @@ export default function FormPhoneFieldEdit({
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -326,11 +329,11 @@ export default function FormPhoneFieldEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<label htmlFor={fieldId} className="dsg-form-field__label">
+				<label htmlFor={fieldId} className="dsgo-form-field__label">
 					{label}
 					{required && (
 						<span
-							className="dsg-form-field__required"
+							className="dsgo-form-field__required"
 							aria-label="required"
 						>
 							*
@@ -339,12 +342,12 @@ export default function FormPhoneFieldEdit({
 				</label>
 
 				<div
-					className="dsg-form-field__phone-wrapper"
+					className="dsgo-form-field__phone-wrapper"
 					style={{ display: 'flex', gap: '0.5rem' }}
 				>
 					{showCountryCode && (
 						<select
-							className="dsg-form-field__country-code"
+							className="dsgo-form-field__country-code"
 							defaultValue={countryCode}
 							disabled
 							style={{ minWidth: '85px', flexShrink: 0 }}
@@ -367,7 +370,7 @@ export default function FormPhoneFieldEdit({
 					<input
 						type="tel"
 						id={fieldId}
-						className="dsg-form-field__input"
+						className="dsgo-form-field__input"
 						placeholder={getPlaceholder()}
 						defaultValue={defaultValue || undefined}
 						pattern={getPattern()}
@@ -380,7 +383,7 @@ export default function FormPhoneFieldEdit({
 				</div>
 
 				{helpText && (
-					<p id={`${fieldId}-help`} className="dsg-form-field__help">
+					<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 						{helpText}
 					</p>
 				)}

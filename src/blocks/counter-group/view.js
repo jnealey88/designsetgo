@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
  * Initialize counter animations with lazy loading
  */
 function initCounterAnimations() {
-	const counterGroups = document.querySelectorAll('.dsg-counter-group');
+	const counterGroups = document.querySelectorAll('.dsgo-counter-group');
 
 	if (!counterGroups.length) {
 		return;
@@ -37,7 +37,7 @@ function initCounterAnimations() {
 	// If user prefers reduced motion, show final values immediately
 	if (prefersReducedMotion) {
 		counterGroups.forEach((group) => {
-			const counters = group.querySelectorAll('.dsg-counter');
+			const counters = group.querySelectorAll('.dsgo-counter');
 			counters.forEach((counter) => {
 				showFinalValue(counter);
 			});
@@ -71,7 +71,7 @@ function initCounterAnimations() {
  * @param {HTMLElement} group - Counter group element
  */
 function animateCountersInGroup(group) {
-	const counters = group.querySelectorAll('.dsg-counter');
+	const counters = group.querySelectorAll('.dsgo-counter');
 
 	counters.forEach((counter) => {
 		animateCounter(counter);
@@ -83,7 +83,7 @@ function animateCountersInGroup(group) {
  * @param {HTMLElement} counter - Counter element
  */
 function animateCounter(counter) {
-	const valueElement = counter.querySelector('.dsg-counter__value');
+	const valueElement = counter.querySelector('.dsgo-counter__value');
 	if (!valueElement) {
 		return;
 	}
@@ -141,7 +141,7 @@ function animateCounter(counter) {
  * @param {HTMLElement} counter - Counter element
  */
 function showFinalValue(counter) {
-	const valueElement = counter.querySelector('.dsg-counter__value');
+	const valueElement = counter.querySelector('.dsgo-counter__value');
 	if (!valueElement) {
 		return;
 	}

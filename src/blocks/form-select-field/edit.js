@@ -43,10 +43,13 @@ export default function FormSelectFieldEdit({
 	const fieldBackgroundColor =
 		context['designsetgo/form-builder/fieldBackgroundColor'];
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--select');
+	const fieldClasses = classnames(
+		'dsgo-form-field',
+		'dsgo-form-field--select'
+	);
 
 	const fieldStyles = {
-		'--dsg-form-field-bg': fieldBackgroundColor,
+		'--dsgo-form-field-bg': fieldBackgroundColor,
 	};
 
 	const blockProps = useBlockProps({
@@ -57,11 +60,11 @@ export default function FormSelectFieldEdit({
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -271,11 +274,11 @@ export default function FormSelectFieldEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<label htmlFor={fieldId} className="dsg-form-field__label">
+				<label htmlFor={fieldId} className="dsgo-form-field__label">
 					{label}
 					{required && (
 						<span
-							className="dsg-form-field__required"
+							className="dsgo-form-field__required"
 							aria-label="required"
 						>
 							*
@@ -285,7 +288,7 @@ export default function FormSelectFieldEdit({
 
 				<select
 					id={fieldId}
-					className="dsg-form-field__select"
+					className="dsgo-form-field__select"
 					defaultValue={defaultValue || ''}
 					aria-describedby={helpText ? `${fieldId}-help` : undefined}
 					disabled
@@ -299,7 +302,7 @@ export default function FormSelectFieldEdit({
 				</select>
 
 				{helpText && (
-					<p id={`${fieldId}-help`} className="dsg-form-field__help">
+					<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 						{helpText}
 					</p>
 				)}

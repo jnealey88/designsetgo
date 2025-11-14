@@ -12,7 +12,7 @@
  * @since 1.0.0
  */
 
-.dsg-divider {
+.dsgo-divider {
 	// Block Supports automatically applies color to this wrapper
 	// All child elements use currentColor to inherit the color
 
@@ -62,7 +62,7 @@
 	// 1. SOLID (Default)
 	&--solid {
 
-		.dsg-divider__line {
+		.dsgo-divider__line {
 			background-color: currentcolor;
 		}
 	}
@@ -70,7 +70,7 @@
 	// 2. DASHED
 	&--dashed {
 
-		.dsg-divider__line {
+		.dsgo-divider__line {
 			background: none;
 			border-top: 2px dashed currentcolor;
 			height: 0 !important; // Override inline height
@@ -80,7 +80,7 @@
 	// 3. DOTTED
 	&--dotted {
 
-		.dsg-divider__line {
+		.dsgo-divider__line {
 			background: none;
 			border-top: 2px dotted currentcolor;
 			height: 0 !important; // Override inline height
@@ -90,7 +90,7 @@
 	// 4. DOUBLE LINE
 	&--double {
 
-		.dsg-divider__line {
+		.dsgo-divider__line {
 			background: none;
 			border-top: 3px double currentcolor;
 			height: 0 !important; // Override inline height
@@ -100,7 +100,7 @@
 	// 5. GRADIENT FADE
 	&--gradient {
 
-		.dsg-divider__line {
+		.dsgo-divider__line {
 			background: linear-gradient(
 				to right,
 				transparent,
@@ -114,7 +114,7 @@
 	// 6. DOTS PATTERN
 	&--dots {
 
-		.dsg-divider__line {
+		.dsgo-divider__line {
 			background: none;
 			position: relative;
 			display: flex;
@@ -133,7 +133,7 @@
 		}
 
 		// Add center dot
-		.dsg-divider__container::after {
+		.dsgo-divider__container::after {
 			content: '';
 			position: absolute;
 			width: 6px;
@@ -148,7 +148,7 @@
 	// 7. WAVE PATTERN
 	&--wave {
 
-		.dsg-divider__line {
+		.dsgo-divider__line {
 			background: none;
 			position: relative;
 			height: 4px !important;
@@ -210,7 +210,7 @@
 	// 8. ICON CENTERED (Using real SVG icons)
 	&--icon {
 
-		.dsg-divider__icon-wrapper {
+		.dsgo-divider__icon-wrapper {
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -218,7 +218,7 @@
 			width: 100%;
 		}
 
-		.dsg-divider__line {
+		.dsgo-divider__line {
 			flex: 1;
 			background-color: currentcolor;
 
@@ -228,7 +228,7 @@
 			}
 		}
 
-		.dsg-divider__icon {
+		.dsgo-divider__icon {
 			flex-shrink: 0;
 			width: 24px;
 			height: 24px;
@@ -253,11 +253,11 @@
 
 		&--icon {
 
-			.dsg-divider__icon-wrapper {
+			.dsgo-divider__icon-wrapper {
 				gap: 12px;
 			}
 
-			.dsg-divider__icon {
+			.dsgo-divider__icon {
 				width: 20px;
 				height: 20px;
 			}
@@ -265,7 +265,7 @@
 
 		&--dots {
 
-			.dsg-divider__line {
+			.dsgo-divider__line {
 				gap: 6px;
 
 				&::before,
@@ -275,7 +275,7 @@
 				}
 			}
 
-			.dsg-divider__container::after {
+			.dsgo-divider__container::after {
 				width: 5px;
 				height: 5px;
 			}

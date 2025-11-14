@@ -117,7 +117,7 @@ export default function Edit(props) {
 	};
 
 	const blockProps = useBlockProps({
-		className: `dsg-countdown-timer dsg-countdown-timer--${layout}`,
+		className: `dsgo-countdown-timer dsgo-countdown-timer--${layout}`,
 		style: containerStyle,
 	});
 
@@ -262,7 +262,7 @@ export default function Edit(props) {
 							setAttributes={setAttributes}
 						/>
 					</InspectorControls>
-					<div className="dsg-countdown-timer__completion">
+					<div className="dsgo-countdown-timer__completion">
 						<p style={{ opacity: 0.5 }}>
 							{__(
 								'Timer hidden (countdown complete)',
@@ -330,7 +330,7 @@ export default function Edit(props) {
 						setAttributes={setAttributes}
 					/>
 				</InspectorControls>
-				<div className="dsg-countdown-timer__completion-message">
+				<div className="dsgo-countdown-timer__completion-message">
 					{completionMessage}
 				</div>
 			</div>
@@ -394,21 +394,21 @@ export default function Edit(props) {
 					setAttributes={setAttributes}
 				/>
 			</InspectorControls>
-			<div className="dsg-countdown-timer__units">
+			<div className="dsgo-countdown-timer__units">
 				{visibleUnits.map((unit) => (
 					<div
 						key={unit.type}
-						className="dsg-countdown-timer__unit"
+						className="dsgo-countdown-timer__unit"
 						style={unitStyle}
 					>
 						<div
-							className="dsg-countdown-timer__number"
+							className="dsgo-countdown-timer__number"
 							style={numberStyle}
 						>
 							{formatTimeUnit(unit.value)}
 						</div>
 						<div
-							className="dsg-countdown-timer__label"
+							className="dsgo-countdown-timer__label"
 							style={labelStyle}
 						>
 							{unit.label}

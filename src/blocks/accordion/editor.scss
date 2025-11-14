@@ -10,7 +10,7 @@
 .editor-styles-wrapper,
 .block-editor-block-list__layout {
 
-	.dsg-accordion {
+	.dsgo-accordion {
 		// Editor visual aids for container
 		position: relative;
 		width: 100%; // CRITICAL: Must be duplicated from style.scss for editor/frontend parity
@@ -25,7 +25,7 @@
 			bottom: 0;
 			border: 1px dashed rgba(0, 124, 186, 0.2);
 			pointer-events: none;
-			border-radius: var(--dsg-accordion-border-radius);
+			border-radius: var(--dsgo-accordion-border-radius);
 		}
 
 		// When selected, show more prominent border
@@ -39,14 +39,14 @@
 		}
 
 		// Visual aids for settings
-		&.dsg-accordion--border-between {
+		&.dsgo-accordion--border-between {
 			// Already has borders, less prominent container border
 			&::before {
 				opacity: 0.5;
 			}
 		}
 
-		&.dsg-accordion--multiple {
+		&.dsgo-accordion--multiple {
 			// Visual indicator for multiple mode
 			&::after {
 				content: 'Multiple panels can open';
@@ -63,7 +63,7 @@
 		}
 
 		// Better spacing for inner blocks in editor
-		.dsg-accordion__items {
+		.dsgo-accordion__items {
 
 			> .block-editor-inner-blocks > .block-editor-block-list__layout {
 				// Remove default WordPress inner blocks spacing
@@ -76,7 +76,7 @@
 // Block preview (inserter/pattern library)
 .block-editor-block-preview__content {
 
-	.dsg-accordion {
+	.dsgo-accordion {
 		// Remove visual aids in preview
 		&::before,
 		&::after {

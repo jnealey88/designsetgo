@@ -118,9 +118,9 @@ export default function AccordionItemEdit({
 	}, [uniqueId, setAttributes]);
 
 	// Declaratively calculate classes
-	const itemClasses = classnames('dsg-accordion-item', {
-		'dsg-accordion-item--open': isOpen,
-		'dsg-accordion-item--closed': !isOpen,
+	const itemClasses = classnames('dsgo-accordion-item', {
+		'dsgo-accordion-item--open': isOpen,
+		'dsgo-accordion-item--closed': !isOpen,
 	});
 
 	const blockProps = useBlockProps({
@@ -130,7 +130,7 @@ export default function AccordionItemEdit({
 	// Inner blocks for accordion content
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-accordion-item__content',
+			className: 'dsgo-accordion-item__content',
 		},
 		{
 			template: [
@@ -164,7 +164,7 @@ export default function AccordionItemEdit({
 		}
 
 		return (
-			<span className="dsg-accordion-item__icon" aria-hidden="true">
+			<span className="dsgo-accordion-item__icon" aria-hidden="true">
 				<Icon icon={<IconComponent />} />
 			</span>
 		);
@@ -198,13 +198,13 @@ export default function AccordionItemEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="dsg-accordion-item__header">
+				<div className="dsgo-accordion-item__header">
 					<button
 						type="button"
-						className={classnames('dsg-accordion-item__trigger', {
-							'dsg-accordion-item__trigger--icon-left':
+						className={classnames('dsgo-accordion-item__trigger', {
+							'dsgo-accordion-item__trigger--icon-left':
 								iconPosition === 'left',
-							'dsg-accordion-item__trigger--icon-right':
+							'dsgo-accordion-item__trigger--icon-right':
 								iconPosition === 'right',
 						})}
 						aria-expanded={isOpen}
@@ -213,7 +213,7 @@ export default function AccordionItemEdit({
 						{iconPosition === 'left' && renderIcon()}
 						<RichText
 							tagName="span"
-							className="dsg-accordion-item__title"
+							className="dsgo-accordion-item__title"
 							value={title}
 							onChange={(value) =>
 								setAttributes({ title: value })
@@ -228,7 +228,7 @@ export default function AccordionItemEdit({
 					</button>
 				</div>
 
-				<div className="dsg-accordion-item__panel">
+				<div className="dsgo-accordion-item__panel">
 					<div {...innerBlocksProps} />
 				</div>
 			</div>

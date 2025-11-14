@@ -8,7 +8,7 @@
  */
 
 // Editor: Wrapper styling
-.editor-styles-wrapper .dsg-blobs-wrapper {
+.editor-styles-wrapper .dsgo-blobs-wrapper {
 	// Ensure wrapper behavior matches frontend
 	display: block;
 	width: 100%;
@@ -16,22 +16,22 @@
 	background: none !important;
 
 	// CRITICAL: Alignment classes on wrapper should apply to inner blob (must match style.scss)
-	&.aligncenter > .dsg-blobs {
+	&.aligncenter > .dsgo-blobs {
 		margin-left: auto;
 		margin-right: auto;
 	}
 
-	&.alignleft > .dsg-blobs {
+	&.alignleft > .dsgo-blobs {
 		margin-right: auto;
 	}
 
-	&.alignright > .dsg-blobs {
+	&.alignright > .dsgo-blobs {
 		margin-left: auto;
 	}
 }
 
 // Editor: Enable blob animations for WYSIWYG editing
-.editor-styles-wrapper .dsg-blobs {
+.editor-styles-wrapper .dsgo-blobs {
 	// Animations work the same in editor as frontend
 	// No special overrides needed - style.scss handles everything
 

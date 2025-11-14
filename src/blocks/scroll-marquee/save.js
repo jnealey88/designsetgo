@@ -12,14 +12,14 @@ export default function ScrollMarqueeSave({ attributes }) {
 	} = attributes;
 
 	const blockProps = useBlockProps.save({
-		className: 'dsg-scroll-marquee',
+		className: 'dsgo-scroll-marquee',
 		'data-scroll-speed': scrollSpeed,
 		style: {
-			'--dsg-marquee-gap': gap,
-			'--dsg-marquee-row-gap': rowGap,
-			'--dsg-marquee-image-height': imageHeight,
-			'--dsg-marquee-image-width': imageWidth,
-			'--dsg-marquee-border-radius': borderRadius,
+			'--dsgo-marquee-gap': gap,
+			'--dsgo-marquee-row-gap': rowGap,
+			'--dsgo-marquee-image-height': imageHeight,
+			'--dsgo-marquee-image-width': imageWidth,
+			'--dsgo-marquee-border-radius': borderRadius,
 		},
 	});
 
@@ -28,22 +28,22 @@ export default function ScrollMarqueeSave({ attributes }) {
 			{rows.map((row, rowIndex) => (
 				<div
 					key={rowIndex}
-					className="dsg-scroll-marquee__row"
+					className="dsgo-scroll-marquee__row"
 					data-direction={row.direction}
 				>
-					<div className="dsg-scroll-marquee__track">
+					<div className="dsgo-scroll-marquee__track">
 						{/* Render images 6 times for seamless infinite scroll */}
 						{[...Array(6)].map((_, repeatIndex) => (
 							<div
 								key={repeatIndex}
-								className="dsg-scroll-marquee__track-segment"
+								className="dsgo-scroll-marquee__track-segment"
 							>
 								{row.images.map((image, imageIndex) => (
 									<img
 										key={`${repeatIndex}-${imageIndex}`}
 										src={image.url}
 										alt={image.alt || ''}
-										className="dsg-scroll-marquee__image"
+										className="dsgo-scroll-marquee__image"
 										loading="lazy"
 									/>
 								))}

@@ -21,8 +21,8 @@ export default function FormTextareaSave({ attributes }) {
 	} = attributes;
 
 	const fieldClasses = classnames(
-		'dsg-form-field',
-		'dsg-form-field--textarea'
+		'dsgo-form-field',
+		'dsgo-form-field--textarea'
 	);
 
 	const blockProps = useBlockProps.save({
@@ -32,11 +32,11 @@ export default function FormTextareaSave({ attributes }) {
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -44,11 +44,11 @@ export default function FormTextareaSave({ attributes }) {
 
 	return (
 		<div {...blockProps}>
-			<label htmlFor={fieldId} className="dsg-form-field__label">
+			<label htmlFor={fieldId} className="dsgo-form-field__label">
 				{label}
 				{required && (
 					<span
-						className="dsg-form-field__required"
+						className="dsgo-form-field__required"
 						aria-label="required"
 					>
 						*
@@ -59,7 +59,7 @@ export default function FormTextareaSave({ attributes }) {
 			<textarea
 				id={fieldId}
 				name={fieldName}
-				className="dsg-form-field__textarea"
+				className="dsgo-form-field__textarea"
 				placeholder={placeholder || undefined}
 				required={required || undefined}
 				rows={rows}
@@ -71,7 +71,7 @@ export default function FormTextareaSave({ attributes }) {
 			/>
 
 			{helpText && (
-				<p id={`${fieldId}-help`} className="dsg-form-field__help">
+				<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 					{helpText}
 				</p>
 			)}

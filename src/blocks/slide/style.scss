@@ -3,7 +3,7 @@
  * CRITICAL: Must be duplicated to editor.scss for editor/frontend parity
  */
 
-.dsg-slide {
+.dsgo-slide {
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -13,10 +13,10 @@
 	box-sizing: border-box; // Ensure padding doesn't increase slide width
 
 	// Use CSS custom properties from inline styles
-	--dsg-slide-overlay-color: #000;
-	--dsg-slide-overlay-opacity: 0.4;
-	--dsg-slide-content-vertical-align: center;
-	--dsg-slide-content-horizontal-align: center;
+	--dsgo-slide-overlay-color: #000;
+	--dsgo-slide-overlay-opacity: 0.4;
+	--dsgo-slide-content-vertical-align: center;
+	--dsgo-slide-content-horizontal-align: center;
 
 	// Background image set via inline styles
 	// background-image, background-size, background-position, etc.
@@ -38,8 +38,8 @@
 		bottom: 0;
 		z-index: 1;
 		pointer-events: none;
-		background-color: var(--dsg-slide-overlay-color);
-		opacity: var(--dsg-slide-overlay-opacity);
+		background-color: var(--dsgo-slide-overlay-color);
+		opacity: var(--dsgo-slide-overlay-opacity);
 	}
 
 	&__content {
@@ -47,8 +47,8 @@
 		z-index: 2;
 		display: flex;
 		flex-direction: column;
-		justify-content: var(--dsg-slide-content-vertical-align);
-		align-items: var(--dsg-slide-content-horizontal-align);
+		justify-content: var(--dsgo-slide-content-vertical-align);
+		align-items: var(--dsgo-slide-content-horizontal-align);
 		flex: 1;
 		width: 100%;
 		height: 100%;
@@ -72,7 +72,7 @@
 	// Has background image modifier
 	&--has-background {
 		// Ensure good contrast with background images
-		.dsg-slide__content {
+		.dsgo-slide__content {
 			// Text shadow for better readability (subtle)
 			text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 		}
@@ -92,19 +92,19 @@
 }
 
 // Style variation adjustments
-.dsg-slider--classic .dsg-slide {
+.dsgo-slider--classic .dsgo-slide {
 	// Classic style already handled by slider wrapper
 }
 
-.dsg-slider--minimal .dsg-slide {
+.dsgo-slider--minimal .dsgo-slide {
 	// Minimal style - no additional slide styling needed
 }
 
-.dsg-slider--card .dsg-slide {
+.dsgo-slider--card .dsgo-slide {
 	// No default background - users set via Styles > Color > Background
 }
 
-.dsg-slider--fullbleed .dsg-slide {
+.dsgo-slider--fullbleed .dsgo-slide {
 	// Full bleed - ensure full viewport coverage
 	min-height: 100vh;
 }
@@ -112,7 +112,7 @@
 // Responsive adjustments
 @media (max-width: 768px) {
 
-	.dsg-slide {
+	.dsgo-slide {
 
 		&__content {
 			// Smaller text shadows on mobile
@@ -131,16 +131,16 @@
 // Accessibility
 @media (prefers-reduced-motion: reduce) {
 
-	.dsg-slide {
+	.dsgo-slide {
 		transition: none !important;
 		animation: none !important;
 	}
 }
 
 // Loading state
-.dsg-slide.is-loading {
+.dsgo-slide.is-loading {
 
-	.dsg-slide__content {
+	.dsgo-slide__content {
 		opacity: 0;
 	}
 
@@ -169,10 +169,10 @@
 // High contrast mode support
 @media (prefers-contrast: high) {
 
-	.dsg-slide {
+	.dsgo-slide {
 
 		&__overlay {
-			opacity: calc(var(--dsg-slide-overlay-opacity) * 1.2);
+			opacity: calc(var(--dsgo-slide-overlay-opacity) * 1.2);
 		}
 
 		&__content {

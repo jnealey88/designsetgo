@@ -76,20 +76,20 @@ export default function FormBuilderEdit({
 	}, [formId, clientId, setAttributes]);
 
 	// Calculate classes
-	const formClasses = classnames('dsg-form-builder', {
-		[`dsg-form-builder--align-${submitButtonAlignment}`]:
+	const formClasses = classnames('dsgo-form-builder', {
+		[`dsgo-form-builder--align-${submitButtonAlignment}`]:
 			submitButtonAlignment && submitButtonPosition === 'below',
-		'dsg-form-builder--button-inline': submitButtonPosition === 'inline',
+		'dsgo-form-builder--button-inline': submitButtonPosition === 'inline',
 	});
 
 	// Apply form settings as CSS custom properties
 	const formStyles = {
-		'--dsg-form-field-spacing': fieldSpacing,
-		'--dsg-form-input-height': inputHeight,
-		'--dsg-form-input-padding': inputPadding,
-		'--dsg-form-label-color': fieldLabelColor,
-		'--dsg-form-border-color': fieldBorderColor || '#d1d5db',
-		'--dsg-form-field-bg': fieldBackgroundColor,
+		'--dsgo-form-field-spacing': fieldSpacing,
+		'--dsgo-form-input-height': inputHeight,
+		'--dsgo-form-input-padding': inputPadding,
+		'--dsgo-form-label-color': fieldLabelColor,
+		'--dsgo-form-border-color': fieldBorderColor || '#d1d5db',
+		'--dsgo-form-field-bg': fieldBackgroundColor,
 		// Button colors now applied as inline styles on button element
 	};
 
@@ -104,7 +104,7 @@ export default function FormBuilderEdit({
 	const { children, ...innerBlocksPropsWithoutChildren } =
 		useInnerBlocksProps(
 			{
-				className: 'dsg-form__fields',
+				className: 'dsgo-form__fields',
 			},
 			{
 				allowedBlocks: [
@@ -674,7 +674,7 @@ export default function FormBuilderEdit({
 					{submitButtonPosition === 'inline' && (
 						<button
 							type="button"
-							className="dsg-form__submit dsg-form__submit--inline wp-element-button"
+							className="dsgo-form__submit dsgo-form__submit--inline wp-element-button"
 							disabled
 							style={{
 								...(submitButtonColor && {
@@ -700,10 +700,10 @@ export default function FormBuilderEdit({
 				</div>
 
 				{submitButtonPosition === 'below' && (
-					<div className="dsg-form__footer">
+					<div className="dsgo-form__footer">
 						<button
 							type="button"
-							className="dsg-form__submit wp-element-button"
+							className="dsgo-form__submit wp-element-button"
 							disabled
 							style={{
 								...(submitButtonColor && {
@@ -729,7 +729,7 @@ export default function FormBuilderEdit({
 				)}
 
 				<div
-					className="dsg-form__message dsg-form__message--editor"
+					className="dsgo-form__message dsgo-form__message--editor"
 					style={{ display: 'none' }}
 				>
 					{__('Form messages will appear here', 'designsetgo')}

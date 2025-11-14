@@ -88,14 +88,14 @@ export default function IconListEdit({ attributes, setAttributes, clientId }) {
 
 	// Get block wrapper props
 	const blockProps = useBlockProps({
-		className: `dsg-icon-list dsg-icon-list--${layout}`,
+		className: `dsgo-icon-list dsgo-icon-list--${layout}`,
 		style: { width: '100%' }, // Ensure block fills parent width
 	});
 
 	// Configure inner blocks
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-icon-list__items',
+			className: 'dsgo-icon-list__items',
 			style: containerStyles,
 		},
 		{

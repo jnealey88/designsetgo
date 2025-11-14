@@ -6,7 +6,7 @@
 @use './style' as *;
 
 // Editor-specific adjustments
-.dsg-slide {
+.dsgo-slide {
 	// Add visual indicator in editor
 	&::before {
 		content: 'Slide';
@@ -68,7 +68,7 @@
 	// Editor: Overlay visibility control
 	&__overlay {
 		// Make overlay slightly more visible in editor
-		opacity: calc(var(--dsg-slide-overlay-opacity) * 0.8);
+		opacity: calc(var(--dsgo-slide-overlay-opacity) * 0.8);
 	}
 }
 

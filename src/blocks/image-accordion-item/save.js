@@ -17,17 +17,17 @@ export default function ImageAccordionItemSave({ attributes, context }) {
 		context?.['designsetgo/imageAccordion/overlayOpacityExpanded'] || 20;
 
 	// Same classes as edit.js - MUST MATCH
-	const itemClasses = classnames('dsg-image-accordion-item', {
-		'dsg-image-accordion-item--has-overlay': enableOverlay,
+	const itemClasses = classnames('dsgo-image-accordion-item', {
+		'dsgo-image-accordion-item--has-overlay': enableOverlay,
 	});
 
 	// Apply overlay and alignment as inline styles (same as edit.js)
 	// Note: Unitless values must be strings to prevent React from adding 'px'
 	const overlayStyles = enableOverlay
 		? {
-				'--dsg-overlay-color': overlayColor,
-				'--dsg-overlay-opacity': String(overlayOpacity / 100), // Unitless
-				'--dsg-overlay-opacity-expanded': String(
+				'--dsgo-overlay-color': overlayColor,
+				'--dsgo-overlay-opacity': String(overlayOpacity / 100), // Unitless
+				'--dsgo-overlay-opacity-expanded': String(
 					overlayOpacityExpanded / 100
 				), // Unitless
 			}
@@ -37,8 +37,8 @@ export default function ImageAccordionItemSave({ attributes, context }) {
 		className: itemClasses,
 		style: {
 			...overlayStyles,
-			'--dsg-vertical-alignment': verticalAlignment || 'center',
-			'--dsg-horizontal-alignment': horizontalAlignment || 'center',
+			'--dsgo-vertical-alignment': verticalAlignment || 'center',
+			'--dsgo-horizontal-alignment': horizontalAlignment || 'center',
 		},
 		'data-unique-id': uniqueId,
 		role: 'button',
@@ -46,7 +46,7 @@ export default function ImageAccordionItemSave({ attributes, context }) {
 	});
 
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-image-accordion-item__content',
+		className: 'dsgo-image-accordion-item__content',
 	});
 
 	return (

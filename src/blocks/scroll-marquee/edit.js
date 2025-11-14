@@ -42,13 +42,13 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 	const showPerformanceWarning = totalImages > 20;
 
 	const blockProps = useBlockProps({
-		className: 'dsg-scroll-marquee',
+		className: 'dsgo-scroll-marquee',
 		style: {
-			'--dsg-marquee-gap': gap,
-			'--dsg-marquee-row-gap': rowGap,
-			'--dsg-marquee-image-height': imageHeight,
-			'--dsg-marquee-image-width': imageWidth,
-			'--dsg-marquee-border-radius': borderRadius,
+			'--dsgo-marquee-gap': gap,
+			'--dsgo-marquee-row-gap': rowGap,
+			'--dsgo-marquee-image-height': imageHeight,
+			'--dsgo-marquee-image-width': imageWidth,
+			'--dsgo-marquee-border-radius': borderRadius,
 		},
 	});
 
@@ -202,12 +202,12 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 				{rows.map((row, rowIndex) => (
 					<div
 						key={rowIndex}
-						className="dsg-scroll-marquee__row"
+						className="dsgo-scroll-marquee__row"
 						data-direction={row.direction}
 					>
-						<div className="dsg-scroll-marquee__row-controls">
+						<div className="dsgo-scroll-marquee__row-controls">
 							<HStack justify="space-between" spacing={3}>
-								<div className="dsg-scroll-marquee__direction-control">
+								<div className="dsgo-scroll-marquee__direction-control">
 									<Button
 										variant="secondary"
 										size="small"
@@ -231,17 +231,17 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 							</HStack>
 						</div>
 
-						<div className="dsg-scroll-marquee__track">
-							<div className="dsg-scroll-marquee__track-segment">
+						<div className="dsgo-scroll-marquee__track">
+							<div className="dsgo-scroll-marquee__track-segment">
 								{row.images.map((image, imageIndex) => (
 									<div
 										key={imageIndex}
-										className="dsg-scroll-marquee__image-wrapper"
+										className="dsgo-scroll-marquee__image-wrapper"
 									>
 										<img
 											src={image.url}
 											alt={image.alt}
-											className="dsg-scroll-marquee__image"
+											className="dsgo-scroll-marquee__image"
 											style={imageInlineStyle}
 										/>
 										<Button
@@ -256,7 +256,7 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 													imageIndex
 												)
 											}
-											className="dsg-scroll-marquee__remove-image"
+											className="dsgo-scroll-marquee__remove-image"
 											isDestructive
 											size="small"
 										/>
@@ -275,7 +275,7 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 											<Button
 												icon={plus}
 												onClick={open}
-												className="dsg-scroll-marquee__add-images"
+												className="dsgo-scroll-marquee__add-images"
 												variant="secondary"
 											>
 												{row.images.length === 0
@@ -299,7 +299,7 @@ export default function ScrollMarqueeEdit({ attributes, setAttributes }) {
 				<Button
 					icon={plus}
 					onClick={addRow}
-					className="dsg-scroll-marquee__add-row"
+					className="dsgo-scroll-marquee__add-row"
 					variant="primary"
 				>
 					{__('Add Row', 'designsetgo')}

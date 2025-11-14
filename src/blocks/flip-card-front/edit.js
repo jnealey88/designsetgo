@@ -9,7 +9,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 export default function FlipCardFrontEdit() {
 	const blockProps = useBlockProps({
-		className: 'dsg-flip-card__face dsg-flip-card__front',
+		className: 'dsgo-flip-card__face dsgo-flip-card__front',
 	});
 
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {

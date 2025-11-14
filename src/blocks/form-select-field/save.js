@@ -19,7 +19,10 @@ export default function FormSelectFieldSave({ attributes }) {
 		fieldWidth,
 	} = attributes;
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--select');
+	const fieldClasses = classnames(
+		'dsgo-form-field',
+		'dsgo-form-field--select'
+	);
 
 	const blockProps = useBlockProps.save({
 		className: fieldClasses,
@@ -28,11 +31,11 @@ export default function FormSelectFieldSave({ attributes }) {
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -40,11 +43,11 @@ export default function FormSelectFieldSave({ attributes }) {
 
 	return (
 		<div {...blockProps}>
-			<label htmlFor={fieldId} className="dsg-form-field__label">
+			<label htmlFor={fieldId} className="dsgo-form-field__label">
 				{label}
 				{required && (
 					<span
-						className="dsg-form-field__required"
+						className="dsgo-form-field__required"
 						aria-label="required"
 					>
 						*
@@ -55,7 +58,7 @@ export default function FormSelectFieldSave({ attributes }) {
 			<select
 				id={fieldId}
 				name={fieldName}
-				className="dsg-form-field__select"
+				className="dsgo-form-field__select"
 				required={required || undefined}
 				defaultValue={defaultValue || ''}
 				aria-describedby={helpText ? `${fieldId}-help` : undefined}
@@ -71,7 +74,7 @@ export default function FormSelectFieldSave({ attributes }) {
 			</select>
 
 			{helpText && (
-				<p id={`${fieldId}-help`} className="dsg-form-field__help">
+				<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 					{helpText}
 				</p>
 			)}

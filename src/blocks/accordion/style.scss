@@ -3,12 +3,12 @@
  * Professional, polished accordion with consistent DesignSetGo styling
  */
 
-.dsg-accordion {
+.dsgo-accordion {
 	// CSS Custom Properties for easy theming
-	--dsg-accordion-gap: var(--wp--preset--spacing--20, 0.5rem);
-	--dsg-accordion-border-color: var(--wp--preset--color--contrast, rgba(0, 0, 0, 0.1));
-	--dsg-accordion-border-radius: 8px;
-	--dsg-accordion-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+	--dsgo-accordion-gap: var(--wp--preset--spacing--20, 0.5rem);
+	--dsgo-accordion-border-color: var(--wp--preset--color--contrast, rgba(0, 0, 0, 0.1));
+	--dsgo-accordion-border-radius: 8px;
+	--dsgo-accordion-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
 	// Reset any default styles
 	list-style: none;
@@ -18,14 +18,14 @@
 	width: 100%; // Fill container width
 
 	// Optional: subtle border around entire accordion
-	border-radius: var(--dsg-accordion-border-radius);
+	border-radius: var(--dsgo-accordion-border-radius);
 	overflow: hidden;
 
 	/**
 	 * Skip Link (Accessibility)
 	 * Visually hidden until focused - allows keyboard users to skip accordion
 	 */
-	.dsg-accordion__skip-link {
+	.dsgo-accordion__skip-link {
 		position: absolute;
 		left: -9999px;
 		top: auto;
@@ -50,56 +50,56 @@
 	}
 
 	// Container for accordion items
-	.dsg-accordion__items {
+	.dsgo-accordion__items {
 		display: flex;
 		flex-direction: column;
-		gap: var(--dsg-accordion-gap);
+		gap: var(--dsgo-accordion-gap);
 	}
 
 	// Border between items - refined styling
-	&.dsg-accordion--border-between {
+	&.dsgo-accordion--border-between {
 
-		.dsg-accordion__items {
+		.dsgo-accordion__items {
 			gap: 0;
 		}
 
-		.dsg-accordion-item:not(:last-child) {
-			border-bottom: 1px solid var(--dsg-accordion-border-color);
+		.dsgo-accordion-item:not(:last-child) {
+			border-bottom: 1px solid var(--dsgo-accordion-border-color);
 		}
 
 		// First item rounded top
-		.dsg-accordion-item:first-child {
-			border-top-left-radius: var(--dsg-accordion-border-radius);
-			border-top-right-radius: var(--dsg-accordion-border-radius);
+		.dsgo-accordion-item:first-child {
+			border-top-left-radius: var(--dsgo-accordion-border-radius);
+			border-top-right-radius: var(--dsgo-accordion-border-radius);
 			overflow: hidden;
 		}
 
 		// Last item rounded bottom
-		.dsg-accordion-item:last-child {
-			border-bottom-left-radius: var(--dsg-accordion-border-radius);
-			border-bottom-right-radius: var(--dsg-accordion-border-radius);
+		.dsgo-accordion-item:last-child {
+			border-bottom-left-radius: var(--dsgo-accordion-border-radius);
+			border-bottom-right-radius: var(--dsgo-accordion-border-radius);
 			overflow: hidden;
 		}
 	}
 
 	// Icon positioning variants
-	&.dsg-accordion--icon-left {
+	&.dsgo-accordion--icon-left {
 		// Custom styles if needed
 	}
 
-	&.dsg-accordion--icon-right {
+	&.dsgo-accordion--icon-right {
 		// Custom styles if needed
 	}
 
-	&.dsg-accordion--no-icon {
+	&.dsgo-accordion--no-icon {
 
-		.dsg-accordion-item__icon {
+		.dsgo-accordion-item__icon {
 			display: none;
 		}
 	}
 
 	// Multiple open mode indicator
-	&.dsg-accordion--multiple {
+	&.dsgo-accordion--multiple {
 		// Optional: visual indicator for multiple mode
 	}
 
@@ -111,19 +111,19 @@
 
 	// Card style variant (optional enhancement)
 	&.is-style-card {
-		border: 1px solid var(--dsg-accordion-border-color);
-		box-shadow: var(--dsg-accordion-shadow);
-		border-radius: var(--dsg-accordion-border-radius);
+		border: 1px solid var(--dsgo-accordion-border-color);
+		box-shadow: var(--dsgo-accordion-shadow);
+		border-radius: var(--dsgo-accordion-border-radius);
 		padding: var(--wp--preset--spacing--20, 0.5rem);
 		background: var(--wp--preset--color--base, #fff);
 	}
 
 	// Minimal style variant
 	&.is-style-minimal {
-		--dsg-accordion-border-color: transparent;
-		--dsg-accordion-shadow: none;
+		--dsgo-accordion-border-color: transparent;
+		--dsgo-accordion-shadow: none;
 
-		.dsg-accordion-item {
+		.dsgo-accordion-item {
 			background-color: transparent;
 		}
 	}
@@ -132,8 +132,8 @@
 // Dark mode support
 @media (prefers-color-scheme: dark) {
 
-	.dsg-accordion {
-		--dsg-accordion-border-color: rgba(255, 255, 255, 0.1);
-		--dsg-accordion-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	.dsgo-accordion {
+		--dsgo-accordion-border-color: rgba(255, 255, 255, 0.1);
+		--dsgo-accordion-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 	}
 }

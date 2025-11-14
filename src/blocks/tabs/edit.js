@@ -126,7 +126,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			// Focus the new tab
 			setTimeout(() => {
 				const tabButton = document.querySelector(
-					`.dsg-tabs-${uniqueId} [data-tab-index="${newIndex}"]`
+					`.dsgo-tabs-${uniqueId} [data-tab-index="${newIndex}"]`
 				);
 				if (tabButton) {
 					tabButton.focus();
@@ -136,26 +136,30 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	};
 
 	const blockProps = useBlockProps({
-		className: `dsg-tabs dsg-tabs-${uniqueId} dsg-tabs--${orientation} dsg-tabs--${tabStyle} dsg-tabs--align-${alignment}${showNavBorder ? ' dsg-tabs--show-nav-border' : ''}`,
+		className: `dsgo-tabs dsgo-tabs-${uniqueId} dsgo-tabs--${orientation} dsgo-tabs--${tabStyle} dsgo-tabs--align-${alignment}${showNavBorder ? ' dsgo-tabs--show-nav-border' : ''}`,
 		style: {
-			'--dsg-tabs-gap': gap,
-			...(tabColor && { '--dsg-tab-color': tabColor }),
-			...(tabBackgroundColor && { '--dsg-tab-bg': tabBackgroundColor }),
+			'--dsgo-tabs-gap': gap,
+			...(tabColor && { '--dsgo-tab-color': tabColor }),
+			...(tabBackgroundColor && { '--dsgo-tab-bg': tabBackgroundColor }),
 			...(tabContentBackgroundColor && {
-				'--dsg-tab-content-bg': tabContentBackgroundColor,
+				'--dsgo-tab-content-bg': tabContentBackgroundColor,
 			}),
-			...(activeTabColor && { '--dsg-tab-color-active': activeTabColor }),
+			...(activeTabColor && {
+				'--dsgo-tab-color-active': activeTabColor,
+			}),
 			...(activeTabBackgroundColor && {
-				'--dsg-tab-bg-active': activeTabBackgroundColor,
+				'--dsgo-tab-bg-active': activeTabBackgroundColor,
 			}),
-			...(tabBorderColor && { '--dsg-tab-border-color': tabBorderColor }),
+			...(tabBorderColor && {
+				'--dsgo-tab-border-color': tabBorderColor,
+			}),
 		},
 	});
 
 	// Use useInnerBlocksProps for tab panels
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-tabs__panels',
+			className: 'dsgo-tabs__panels',
 		},
 		{
 			allowedBlocks: ALLOWED_BLOCKS,
@@ -400,7 +404,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			<div {...blockProps}>
 				{/* Tab Navigation */}
 				<div
-					className="dsg-tabs__nav"
+					className="dsgo-tabs__nav"
 					role="tablist"
 					aria-label={__('Tabs', 'designsetgo')}
 				>
@@ -416,7 +420,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						return (
 							<button
 								key={block.clientId}
-								className={`dsg-tabs__tab ${isActive ? 'is-active' : ''} ${
+								className={`dsgo-tabs__tab ${isActive ? 'is-active' : ''} ${
 									icon ? `has-icon icon-${iconPosition}` : ''
 								}`}
 								id={`tab-${tabId}`}
@@ -429,23 +433,23 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								onKeyDown={(e) => handleKeyDown(e, index)}
 							>
 								{icon && iconPosition === 'left' && (
-									<span className="dsg-tabs__tab-icon">
+									<span className="dsgo-tabs__tab-icon">
 										{getIcon(icon, 20, 20)}
 									</span>
 								)}
 
 								{icon && iconPosition === 'top' && (
-									<span className="dsg-tabs__tab-icon-top">
+									<span className="dsgo-tabs__tab-icon-top">
 										{getIcon(icon, 20, 20)}
 									</span>
 								)}
 
-								<span className="dsg-tabs__tab-title">
+								<span className="dsgo-tabs__tab-title">
 									{title || `Tab ${index + 1}`}
 								</span>
 
 								{icon && iconPosition === 'right' && (
-									<span className="dsg-tabs__tab-icon">
+									<span className="dsgo-tabs__tab-icon">
 										{getIcon(icon, 20, 20)}
 									</span>
 								)}

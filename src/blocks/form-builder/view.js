@@ -9,13 +9,14 @@
 /* global designsetgoForm */
 
 document.addEventListener('DOMContentLoaded', function () {
-	const forms = document.querySelectorAll('.dsg-form-builder');
+	const forms = document.querySelectorAll('.dsgo-form-builder');
 
 	forms.forEach((formContainer) => {
-		const formElement = formContainer.querySelector('.dsg-form');
-		const submitButton = formElement?.querySelector('.dsg-form__submit');
-		const messageContainer =
-			formElement?.querySelector('.dsg-form__message');
+		const formElement = formContainer.querySelector('.dsgo-form');
+		const submitButton = formElement?.querySelector('.dsgo-form__submit');
+		const messageContainer = formElement?.querySelector(
+			'.dsgo-form__message'
+		);
 
 		if (!formElement || !submitButton || !messageContainer) {
 			return;
@@ -72,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			// Disable submit button and show loading state
 			submitButton.disabled = true;
-			submitButton.classList.add('dsg-form__submit--loading');
+			submitButton.classList.add('dsgo-form__submit--loading');
 			const originalText = submitButton.textContent;
 			submitButton.setAttribute('aria-busy', 'true');
 
@@ -147,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 					// Fire custom event for tracking/analytics
 					formContainer.dispatchEvent(
-						new CustomEvent('dsgFormSubmitted', {
+						new CustomEvent('dsgoFormSubmitted', {
 							detail: {
 								formId,
 								submissionId: result.submissionId,
@@ -181,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 				// Fire custom event for error tracking
 				formContainer.dispatchEvent(
-					new CustomEvent('dsgFormError', {
+					new CustomEvent('dsgoFormError', {
 						detail: {
 							formId,
 							error: error.message,
@@ -192,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			} finally {
 				// Re-enable submit button
 				submitButton.disabled = false;
-				submitButton.classList.remove('dsg-form__submit--loading');
+				submitButton.classList.remove('dsgo-form__submit--loading');
 				submitButton.textContent = originalText;
 				submitButton.removeAttribute('aria-busy');
 			}
@@ -208,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	 */
 	function showMessage(container, message, type) {
 		container.textContent = message;
-		container.className = `dsg-form__message dsg-form__message--${type}`;
+		container.className = `dsgo-form__message dsgo-form__message--${type}`;
 		container.style.display = 'block';
 		container.setAttribute('role', type === 'error' ? 'alert' : 'status');
 
@@ -228,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	function hideMessage(container) {
 		container.style.display = 'none';
 		container.textContent = '';
-		container.className = 'dsg-form__message';
+		container.className = 'dsgo-form__message';
 	}
 
 	/**

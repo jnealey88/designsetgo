@@ -11,7 +11,7 @@
 	class DSGGrid {
 		constructor(element) {
 			this.element = element;
-			this.inner = element.querySelector('.dsg-grid__inner');
+			this.inner = element.querySelector('.dsgo-grid__inner');
 			if (!this.inner) {
 				return;
 			}
@@ -44,7 +44,7 @@
 				for (let i = 1; i <= 12; i++) {
 					if (
 						this.element.classList.contains(
-							`dsg-grid-cols-mobile-${i}`
+							`dsgo-grid-cols-mobile-${i}`
 						)
 					) {
 						return { breakpoint: 'mobile', columns: i };
@@ -59,7 +59,7 @@
 				for (let i = 1; i <= 12; i++) {
 					if (
 						this.element.classList.contains(
-							`dsg-grid-cols-tablet-${i}`
+							`dsgo-grid-cols-tablet-${i}`
 						)
 					) {
 						return { breakpoint: 'tablet', columns: i };
@@ -119,7 +119,7 @@
 
 	// Initialize all grids on page load
 	function initGrids() {
-		const gridElements = document.querySelectorAll('.dsg-grid');
+		const gridElements = document.querySelectorAll('.dsgo-grid');
 		gridElements.forEach((element) => {
 			new DSGGrid(element);
 		});

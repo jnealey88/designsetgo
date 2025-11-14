@@ -11,7 +11,7 @@
 	margin-right: 0 !important;
 }
 
-.editor-styles-wrapper .dsg-scroll-accordion-item {
+.editor-styles-wrapper .dsgo-scroll-accordion-item {
 
 	/* Override sticky for easier editing */
 	position: relative !important;
@@ -28,7 +28,7 @@
 	 * Background overlay for editor
 	 * Applied when overlay color is set
 	 */
-	&.dsg-scroll-accordion-item--has-overlay {
+	&.dsgo-scroll-accordion-item--has-overlay {
 
 		&::before {
 			content: '';
@@ -37,8 +37,8 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background-color: var(--dsg-overlay-color) !important;
-			opacity: var(--dsg-overlay-opacity, 0.8) !important;
+			background-color: var(--dsgo-overlay-color) !important;
+			opacity: var(--dsgo-overlay-opacity, 0.8) !important;
 			pointer-events: none;
 			z-index: 0;
 			border-radius: inherit;

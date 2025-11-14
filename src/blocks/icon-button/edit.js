@@ -81,10 +81,10 @@ export default function IconButtonEdit({
 		...(bgColor && { backgroundColor: bgColor }),
 		...(txtColor && { color: txtColor }),
 		...(hoverBackgroundColor && {
-			'--dsg-button-hover-bg': hoverBackgroundColor,
+			'--dsgo-button-hover-bg': hoverBackgroundColor,
 		}),
 		...(hoverTextColor && {
-			'--dsg-button-hover-color': hoverTextColor,
+			'--dsgo-button-hover-color': hoverTextColor,
 		}),
 	};
 
@@ -101,15 +101,15 @@ export default function IconButtonEdit({
 	// Build animation class
 	const animationClass =
 		hoverAnimation && hoverAnimation !== 'none'
-			? ` dsg-icon-button--${hoverAnimation}`
+			? ` dsgo-icon-button--${hoverAnimation}`
 			: '';
 
 	const blockProps = useBlockProps({
-		className: `dsg-icon-button${animationClass}`,
+		className: `dsgo-icon-button${animationClass}`,
 		style: {
 			display: width === '100%' ? 'block' : 'inline-block',
 			...(parentHoverButtonBg && {
-				'--dsg-parent-hover-button-bg': parentHoverButtonBg,
+				'--dsgo-parent-hover-button-bg': parentHoverButtonBg,
 			}),
 		},
 	});
@@ -158,10 +158,10 @@ export default function IconButtonEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="dsg-icon-button__wrapper" style={buttonStyles}>
+				<div className="dsgo-icon-button__wrapper" style={buttonStyles}>
 					{iconPosition !== 'none' && icon && (
 						<span
-							className="dsg-icon-button__icon"
+							className="dsgo-icon-button__icon"
 							style={iconWrapperStyles}
 						>
 							{getIcon(icon)}
@@ -169,7 +169,7 @@ export default function IconButtonEdit({
 					)}
 					<RichText
 						tagName="span"
-						className="dsg-icon-button__text"
+						className="dsgo-icon-button__text"
 						value={text}
 						onChange={(value) => setAttributes({ text: value })}
 						placeholder={__('Button text…', 'designsetgo')}

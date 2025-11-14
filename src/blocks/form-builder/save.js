@@ -39,20 +39,20 @@ export default function FormBuilderSave({ attributes }) {
 	} = attributes;
 
 	// Same classes as edit.js - MUST MATCH
-	const formClasses = classnames('dsg-form-builder', {
-		[`dsg-form-builder--align-${submitButtonAlignment}`]:
+	const formClasses = classnames('dsgo-form-builder', {
+		[`dsgo-form-builder--align-${submitButtonAlignment}`]:
 			submitButtonAlignment && submitButtonPosition === 'below',
-		'dsg-form-builder--button-inline': submitButtonPosition === 'inline',
+		'dsgo-form-builder--button-inline': submitButtonPosition === 'inline',
 	});
 
 	// Apply form settings as CSS custom properties - MUST MATCH edit.js
 	const formStyles = {
-		'--dsg-form-field-spacing': fieldSpacing,
-		'--dsg-form-input-height': inputHeight,
-		'--dsg-form-input-padding': inputPadding,
-		'--dsg-form-label-color': fieldLabelColor,
-		'--dsg-form-border-color': fieldBorderColor || '#d1d5db',
-		'--dsg-form-field-bg': fieldBackgroundColor,
+		'--dsgo-form-field-spacing': fieldSpacing,
+		'--dsgo-form-input-height': inputHeight,
+		'--dsgo-form-input-padding': inputPadding,
+		'--dsgo-form-label-color': fieldLabelColor,
+		'--dsgo-form-border-color': fieldBorderColor || '#d1d5db',
+		'--dsgo-form-field-bg': fieldBackgroundColor,
 		// Button colors now applied as inline styles on button element
 	};
 
@@ -76,18 +76,18 @@ export default function FormBuilderSave({ attributes }) {
 	// Extract children from innerBlocksProps so we can add button inside fields container
 	const { children, ...innerBlocksPropsWithoutChildren } =
 		useInnerBlocksProps.save({
-			className: 'dsg-form__fields',
+			className: 'dsgo-form__fields',
 		});
 
 	return (
 		<div {...blockProps}>
-			<form className="dsg-form" method="post" noValidate>
+			<form className="dsgo-form" method="post" noValidate>
 				<div {...innerBlocksPropsWithoutChildren}>
 					{children}
 					{submitButtonPosition === 'inline' && (
 						<button
 							type="submit"
-							className="dsg-form__submit dsg-form__submit--inline wp-element-button"
+							className="dsgo-form__submit dsgo-form__submit--inline wp-element-button"
 							style={{
 								...(submitButtonColor && {
 									color: submitButtonColor,
@@ -134,10 +134,10 @@ export default function FormBuilderSave({ attributes }) {
 				{/* Timestamp added via JavaScript in view.js to avoid validation errors */}
 
 				{submitButtonPosition === 'below' && (
-					<div className="dsg-form__footer">
+					<div className="dsgo-form__footer">
 						<button
 							type="submit"
-							className="dsg-form__submit wp-element-button"
+							className="dsgo-form__submit wp-element-button"
 							style={{
 								...(submitButtonColor && {
 									color: submitButtonColor,
@@ -162,7 +162,7 @@ export default function FormBuilderSave({ attributes }) {
 				)}
 
 				<div
-					className="dsg-form__message"
+					className="dsgo-form__message"
 					role="status"
 					aria-live="polite"
 					aria-atomic="true"

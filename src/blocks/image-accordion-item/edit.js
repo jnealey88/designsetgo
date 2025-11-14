@@ -37,17 +37,17 @@ export default function ImageAccordionItemEdit({
 	}, [uniqueId, setAttributes]);
 
 	// Declaratively calculate classes
-	const itemClasses = classnames('dsg-image-accordion-item', {
-		'dsg-image-accordion-item--has-overlay': enableOverlay,
+	const itemClasses = classnames('dsgo-image-accordion-item', {
+		'dsgo-image-accordion-item--has-overlay': enableOverlay,
 	});
 
 	// Apply overlay and alignment as inline styles
 	// Note: Unitless values must be strings to prevent React from adding 'px'
 	const overlayStyles = enableOverlay
 		? {
-				'--dsg-overlay-color': overlayColor,
-				'--dsg-overlay-opacity': String(overlayOpacity / 100), // Unitless
-				'--dsg-overlay-opacity-expanded': String(
+				'--dsgo-overlay-color': overlayColor,
+				'--dsgo-overlay-opacity': String(overlayOpacity / 100), // Unitless
+				'--dsgo-overlay-opacity-expanded': String(
 					overlayOpacityExpanded / 100
 				), // Unitless
 			}
@@ -57,15 +57,15 @@ export default function ImageAccordionItemEdit({
 		className: itemClasses,
 		style: {
 			...overlayStyles,
-			'--dsg-vertical-alignment': verticalAlignment,
-			'--dsg-horizontal-alignment': horizontalAlignment,
+			'--dsgo-vertical-alignment': verticalAlignment,
+			'--dsgo-horizontal-alignment': horizontalAlignment,
 		},
 	});
 
 	// Inner blocks for item content
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-image-accordion-item__content',
+			className: 'dsgo-image-accordion-item__content',
 		},
 		{
 			template: [

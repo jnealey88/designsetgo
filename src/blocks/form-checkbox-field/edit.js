@@ -27,8 +27,8 @@ export default function FormCheckboxFieldEdit({
 	}
 
 	const fieldClasses = classnames(
-		'dsg-form-field',
-		'dsg-form-field--checkbox'
+		'dsgo-form-field',
+		'dsgo-form-field--checkbox'
 	);
 
 	const blockProps = useBlockProps({
@@ -117,17 +117,17 @@ export default function FormCheckboxFieldEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="dsg-form-field__checkbox-wrapper">
+				<div className="dsgo-form-field__checkbox-wrapper">
 					<input
 						type="checkbox"
 						id={fieldId}
-						className="dsg-form-field__checkbox-input"
+						className="dsgo-form-field__checkbox-input"
 						defaultChecked={checkedByDefault}
 						disabled
 					/>
 					<label
 						htmlFor={fieldId}
-						className="dsg-form-field__checkbox-label"
+						className="dsgo-form-field__checkbox-label"
 					>
 						<RichText
 							tagName="span"
@@ -147,7 +147,7 @@ export default function FormCheckboxFieldEdit({
 						/>
 						{required && (
 							<span
-								className="dsg-form-field__required"
+								className="dsgo-form-field__required"
 								aria-label="required"
 							>
 								{' '}
@@ -158,7 +158,7 @@ export default function FormCheckboxFieldEdit({
 				</div>
 
 				{helpText && (
-					<p id={`${fieldId}-help`} className="dsg-form-field__help">
+					<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 						{helpText}
 					</p>
 				)}

@@ -10,7 +10,7 @@
 @use '../form-text-field/style' as *;
 
 // Number-specific adjustments
-.dsg-form-field--number {
+.dsgo-form-field--number {
 
 	input[type="number"] {
 		// Remove spinner arrows in WebKit browsers

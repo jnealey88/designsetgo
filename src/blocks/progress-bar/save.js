@@ -75,7 +75,7 @@ export default function ProgressBarSave({ attributes }) {
 
 	// Get block props
 	const blockProps = useBlockProps.save({
-		className: `dsg-progress-bar ${animateOnScroll ? 'dsg-progress-bar--animate' : ''}`,
+		className: `dsgo-progress-bar ${animateOnScroll ? 'dsgo-progress-bar--animate' : ''}`,
 		'data-percentage': animateOnScroll ? barWidth : undefined,
 		'data-duration': animateOnScroll ? animationDuration : undefined,
 	});
@@ -84,27 +84,27 @@ export default function ProgressBarSave({ attributes }) {
 		<div {...blockProps}>
 			{/* Label Above */}
 			{displayText && labelPosition === 'top' && (
-				<div className="dsg-progress-bar__label dsg-progress-bar__label--top">
+				<div className="dsgo-progress-bar__label dsgo-progress-bar__label--top">
 					{displayText}
 				</div>
 			)}
 
 			{/* Progress Bar */}
 			<div
-				className="dsg-progress-bar__container"
+				className="dsgo-progress-bar__container"
 				style={barContainerStyles}
 			>
 				<div
-					className={`dsg-progress-bar__fill ${
+					className={`dsgo-progress-bar__fill ${
 						barStyle === 'striped-animated' || stripedAnimation
-							? 'dsg-progress-bar__fill--animated'
+							? 'dsgo-progress-bar__fill--animated'
 							: ''
 					}`}
 					style={barFillStyles}
 				>
 					{/* Label Inside */}
 					{displayText && labelPosition === 'inside' && (
-						<div className="dsg-progress-bar__label dsg-progress-bar__label--inside">
+						<div className="dsgo-progress-bar__label dsgo-progress-bar__label--inside">
 							{displayText}
 						</div>
 					)}
@@ -113,7 +113,7 @@ export default function ProgressBarSave({ attributes }) {
 
 			{/* Label Below */}
 			{displayText && labelPosition === 'bottom' && (
-				<div className="dsg-progress-bar__label dsg-progress-bar__label--bottom">
+				<div className="dsgo-progress-bar__label dsgo-progress-bar__label--bottom">
 					{displayText}
 				</div>
 			)}

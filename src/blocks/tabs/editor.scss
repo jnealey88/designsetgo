@@ -15,7 +15,7 @@
 	}
 }
 
-.dsg-tabs {
+.dsgo-tabs {
 	padding: 0; // Default to no padding
 	width: 100%; // CRITICAL: Must be duplicated from style.scss for editor/frontend parity
 	max-width: 100%; // Prevent overflow beyond parent
@@ -26,9 +26,9 @@
 	margin-right: 0 !important; // Prevent WordPress negative margins
 
 	// Tab Navigation - Clean, simple styling
-	.dsg-tabs__nav {
+	.dsgo-tabs__nav {
 		display: flex;
-		gap: var(--dsg-tabs-gap, 8px);
+		gap: var(--dsgo-tabs-gap, 8px);
 		margin-bottom: var(--wp--preset--spacing--lg, 1.5rem);
 		padding: 0;
 		overflow-x: auto;
@@ -36,23 +36,23 @@
 	}
 
 	// Optional Nav Border
-	&.dsg-tabs--show-nav-border .dsg-tabs__nav {
+	&.dsgo-tabs--show-nav-border .dsgo-tabs__nav {
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 		padding-bottom: 0.5rem;
 	}
 
-	.dsg-tabs__tab {
+	.dsgo-tabs__tab {
 		// Reset default button styles
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
-		background: var(--dsg-tab-bg, transparent);
+		background: var(--dsgo-tab-bg, transparent);
 		border: none;
 		padding: 0.75rem 1.25rem;
 		margin: 0;
 		font-family: inherit;
 		font-size: inherit;
-		color: var(--dsg-tab-color, inherit);
+		color: var(--dsgo-tab-color, inherit);
 		cursor: pointer;
 		white-space: nowrap;
 
@@ -70,18 +70,18 @@
 
 		// Subtle hover effect
 		&:hover:not(.is-active) {
-			color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 		}
 
 		// Active state - apply custom colors
 		&.is-active {
-			background: var(--dsg-tab-bg-active, transparent);
-			color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			background: var(--dsgo-tab-bg-active, transparent);
+			color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			font-weight: 600;
 		}
 	}
 
-	.dsg-tabs__tab-icon {
+	.dsgo-tabs__tab-icon {
 		display: inline-flex;
 		align-items: center;
 		color: currentcolor;
@@ -92,7 +92,7 @@
 		}
 	}
 
-	.dsg-tabs__tab-icon-top {
+	.dsgo-tabs__tab-icon-top {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -106,7 +106,7 @@
 	}
 
 	// Panels container - no typography overrides
-	.dsg-tabs__panels {
+	.dsgo-tabs__panels {
 		position: relative;
 		width: 100%; // CRITICAL: Must be duplicated from style.scss for editor/frontend parity
 		max-width: 100%; // Prevent overflow beyond parent
@@ -117,8 +117,8 @@
 	/**
 	 * Individual Tab Panel (editor)
 	 */
-	.dsg-tab {
-		background: var(--dsg-tab-content-bg, transparent);
+	.dsgo-tab {
+		background: var(--dsgo-tab-content-bg, transparent);
 		width: 100%;
 		max-width: 100%;
 		box-sizing: border-box;
@@ -126,35 +126,35 @@
 
 	/**
 	 * Tab Content Wrapper
-	 * No additional styles needed - padding/background applied to .dsg-tab
+	 * No additional styles needed - padding/background applied to .dsgo-tab
 	 */
 
 	/**
 	 * Orientation: Horizontal (Default)
 	 */
-	&.dsg-tabs--horizontal {
+	&.dsgo-tabs--horizontal {
 
-		.dsg-tabs__nav {
+		.dsgo-tabs__nav {
 			flex-direction: row;
 			flex-wrap: wrap;
 		}
 
 		// Alignment options
-		&.dsg-tabs--align-left .dsg-tabs__nav {
+		&.dsgo-tabs--align-left .dsgo-tabs__nav {
 			justify-content: flex-start;
 		}
 
-		&.dsg-tabs--align-center .dsg-tabs__nav {
+		&.dsgo-tabs--align-center .dsgo-tabs__nav {
 			justify-content: center;
 		}
 
-		&.dsg-tabs--align-right .dsg-tabs__nav {
+		&.dsgo-tabs--align-right .dsgo-tabs__nav {
 			justify-content: flex-end;
 		}
 
-		&.dsg-tabs--align-justified .dsg-tabs__nav {
+		&.dsgo-tabs--align-justified .dsgo-tabs__nav {
 
-			.dsg-tabs__tab {
+			.dsgo-tabs__tab {
 				flex: 1;
 				justify-content: center;
 			}
@@ -164,11 +164,11 @@
 	/**
 	 * Orientation: Vertical
 	 */
-	&.dsg-tabs--vertical {
+	&.dsgo-tabs--vertical {
 		display: flex;
 		gap: var(--wp--preset--spacing--md, 1.5rem);
 
-		.dsg-tabs__nav {
+		.dsgo-tabs__nav {
 			flex-direction: column;
 			margin-bottom: 0;
 			padding-right: var(--wp--preset--spacing--md, 1.5rem);
@@ -176,11 +176,11 @@
 			overflow: visible; // Remove horizontal scrollbar for vertical tabs
 		}
 
-		.dsg-tabs__panels {
+		.dsgo-tabs__panels {
 			flex: 1;
 		}
 
-		.dsg-tabs__tab {
+		.dsgo-tabs__tab {
 			justify-content: flex-start;
 			margin-bottom: 0;
 			margin-right: calc(var(--wp--preset--spacing--md, 1.5rem) * -1);
@@ -191,9 +191,9 @@
 	/**
 	 * Vertical + Default: Use border-bottom (not border-right)
 	 */
-	&.dsg-tabs--vertical.dsg-tabs--default {
+	&.dsgo-tabs--vertical.dsgo-tabs--default {
 
-		.dsg-tabs__tab {
+		.dsgo-tabs__tab {
 			border-bottom: 3px solid transparent;
 			margin-bottom: -2px;
 
@@ -206,19 +206,19 @@
 	/**
 	 * Vertical + Underline in editor
 	 */
-	&.dsg-tabs--vertical.dsg-tabs--underline {
+	&.dsgo-tabs--vertical.dsgo-tabs--underline {
 
-		.dsg-tabs__tab {
+		.dsgo-tabs__tab {
 			border-bottom: 2px solid transparent;
 			margin-right: 0;
 
 			&:hover:not(.is-active) {
-				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 
 			&.is-active {
-				border-bottom-color: var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
-				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				border-bottom-color: var(--dsgo-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
 	}
@@ -227,18 +227,18 @@
 	 * Tab Style: Default
 	 * Simple text-only style with no borders or backgrounds
 	 */
-	&.dsg-tabs--default {
+	&.dsgo-tabs--default {
 
-		.dsg-tabs__tab {
+		.dsgo-tabs__tab {
 
 			&:hover:not(.is-active) {
 				background: transparent;
-				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 
 			&.is-active {
 				background: transparent;
-				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
 	}
@@ -246,28 +246,28 @@
 	/**
 	 * Tab Style: Pills
 	 */
-	&.dsg-tabs--pills {
+	&.dsgo-tabs--pills {
 		// Override color variable for pills - white text on colored background
-		--dsg-tab-color-active: #fff;
+		--dsgo-tab-color-active: #fff;
 
-		.dsg-tabs__nav {
+		.dsgo-tabs__nav {
 			border-bottom: none;
 		}
 
-		.dsg-tabs__tab {
+		.dsgo-tabs__tab {
 			border-radius: 6px;
 			border-bottom: none;
 			margin-bottom: 0;
-			background: var(--dsg-tab-bg, rgba(0, 0, 0, 0.05));
+			background: var(--dsgo-tab-bg, rgba(0, 0, 0, 0.05));
 
 			&:hover:not(.is-active) {
-				background: var(--dsg-tab-bg, rgba(0, 0, 0, 0.1));
+				background: var(--dsgo-tab-bg, rgba(0, 0, 0, 0.1));
 				color: var(--wp--preset--color--accent-2, #2563eb);
 			}
 
 			&.is-active {
-				background: var(--dsg-tab-bg-active, var(--wp--preset--color--accent-2, #2563eb));
-				color: var(--dsg-tab-color-active, #fff);
+				background: var(--dsgo-tab-bg-active, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsgo-tab-color-active, #fff);
 			}
 		}
 	}
@@ -275,26 +275,26 @@
 	/**
 	 * Tab Style: Underline
 	 */
-	&.dsg-tabs--underline {
+	&.dsgo-tabs--underline {
 
-		.dsg-tabs__nav {
+		.dsgo-tabs__nav {
 			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 		}
 
-		.dsg-tabs__tab {
-			padding-bottom: calc(var(--dsg-tab-padding, 1rem) + 0.5rem);
+		.dsgo-tabs__tab {
+			padding-bottom: calc(var(--dsgo-tab-padding, 1rem) + 0.5rem);
 			border-bottom: 2px solid transparent;
 			margin-bottom: -1px; // Overlap the nav border
 			background: transparent; // No background by default for underline style
 
 			&:hover:not(.is-active) {
 				background: transparent; // Keep transparent on hover
-				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 
 			&.is-active {
-				border-bottom-color: var(--dsg-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
-				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				border-bottom-color: var(--dsgo-tab-border-color, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 				background: transparent; // Keep transparent even when active
 			}
 		}
@@ -303,24 +303,24 @@
 	/**
 	 * Tab Style: Minimal
 	 */
-	&.dsg-tabs--minimal {
+	&.dsgo-tabs--minimal {
 
-		.dsg-tabs__nav {
+		.dsgo-tabs__nav {
 			border-bottom: none;
 		}
 
-		.dsg-tabs__tab {
+		.dsgo-tabs__tab {
 			padding: 0.5rem 1rem;
 			border-bottom: none;
 			margin-bottom: 0;
 
 			&:hover:not(.is-active) {
-				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 
 			&.is-active {
-				background: var(--dsg-tab-bg-active, rgba(0, 0, 0, 0.03));
-				color: var(--dsg-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				background: var(--dsgo-tab-bg-active, rgba(0, 0, 0, 0.03));
+				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			}
 		}
 	}

@@ -35,11 +35,11 @@ export default function GridSave({ attributes }) {
 
 	// Build className with conditional classes
 	const className = [
-		'dsg-grid',
-		`dsg-grid-cols-${desktopColumns}`,
-		`dsg-grid-cols-tablet-${tabletColumns}`,
-		`dsg-grid-cols-mobile-${mobileColumns}`,
-		!constrainWidth && 'dsg-no-width-constraint',
+		'dsgo-grid',
+		`dsgo-grid-cols-${desktopColumns}`,
+		`dsgo-grid-cols-tablet-${tabletColumns}`,
+		`dsgo-grid-cols-mobile-${mobileColumns}`,
+		!constrainWidth && 'dsgo-no-width-constraint',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -50,16 +50,16 @@ export default function GridSave({ attributes }) {
 		className,
 		style: {
 			...(hoverBackgroundColor && {
-				'--dsg-hover-bg-color': hoverBackgroundColor,
+				'--dsgo-hover-bg-color': hoverBackgroundColor,
 			}),
 			...(hoverTextColor && {
-				'--dsg-hover-text-color': hoverTextColor,
+				'--dsgo-hover-text-color': hoverTextColor,
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
+				'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+				'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
 			}),
 		},
 	});
@@ -89,7 +89,7 @@ export default function GridSave({ attributes }) {
 
 	// Merge inner blocks props
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-grid__inner',
+		className: 'dsgo-grid__inner',
 		style: innerStyles,
 	});
 

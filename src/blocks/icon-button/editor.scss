@@ -7,10 +7,10 @@
 // Import frontend styles
 @use './style.scss' as *;
 
-.dsg-icon-button {
+.dsgo-icon-button {
 	// Editor-specific styles
 
-	.dsg-icon-button__wrapper {
+	.dsgo-icon-button__wrapper {
 		// Make wrapper visually appear as a button in the editor
 		position: relative;
 
@@ -27,12 +27,12 @@
 	}
 
 	// Show link indicator when button is selected and has no URL
-	&.is-selected .dsg-icon-button__wrapper:not(a)::after {
+	&.is-selected .dsgo-icon-button__wrapper:not(a)::after {
 		display: block;
 	}
 
 	// RichText input styling
-	.dsg-icon-button__text {
+	.dsgo-icon-button__text {
 		// Ensure text input doesn't have unwanted margins
 		margin: 0;
 		padding: 0;
@@ -49,9 +49,9 @@
 // CRITICAL: Check if PARENT container has the variable, not the button itself
 // CRITICAL: Use __inner wrapper to avoid triggering on outer padding areas
 // CRITICAL: Use direct child selector (>) to only affect direct children
-.dsg-flex[style*="--dsg-parent-hover-button-bg"]:hover .dsg-flex__inner > .dsg-icon-button .dsg-icon-button__wrapper,
-.dsg-grid[style*="--dsg-parent-hover-button-bg"]:hover .dsg-grid__inner > .dsg-icon-button .dsg-icon-button__wrapper,
-.dsg-stack[style*="--dsg-parent-hover-button-bg"]:hover .dsg-stack__inner > .dsg-icon-button .dsg-icon-button__wrapper {
-	background-color: var(--dsg-parent-hover-button-bg) !important;
+.dsgo-flex[style*="--dsgo-parent-hover-button-bg"]:hover .dsgo-flex__inner > .dsgo-icon-button .dsgo-icon-button__wrapper,
+.dsgo-grid[style*="--dsgo-parent-hover-button-bg"]:hover .dsgo-grid__inner > .dsgo-icon-button .dsgo-icon-button__wrapper,
+.dsgo-stack[style*="--dsgo-parent-hover-button-bg"]:hover .dsgo-stack__inner > .dsgo-icon-button .dsgo-icon-button__wrapper {
+	background-color: var(--dsgo-parent-hover-button-bg) !important;
 	transition: background-color 0.3s ease;
 }

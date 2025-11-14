@@ -8,10 +8,10 @@ const SINGLE_SLIDE_EFFECTS = ['fade', 'zoom'];
 class DSGSlider {
 	constructor(element) {
 		this.slider = element;
-		this.viewport = element.querySelector('.dsg-slider__viewport');
-		this.track = element.querySelector('.dsg-slider__track');
+		this.viewport = element.querySelector('.dsgo-slider__viewport');
+		this.track = element.querySelector('.dsgo-slider__track');
 		this.originalSlides = Array.from(
-			element.querySelectorAll('.dsg-slide')
+			element.querySelectorAll('.dsgo-slide')
 		);
 
 		if (this.originalSlides.length === 0) {
@@ -39,7 +39,7 @@ class DSGSlider {
 		}
 
 		// Get all slides (including clones)
-		this.slides = Array.from(this.track.querySelectorAll('.dsg-slide'));
+		this.slides = Array.from(this.track.querySelectorAll('.dsgo-slide'));
 
 		// Initialize
 		this.init();
@@ -97,8 +97,8 @@ class DSGSlider {
 			i++
 		) {
 			const clone = this.originalSlides[i].cloneNode(true);
-			clone.classList.add('dsg-slide--clone');
-			clone.classList.add('dsg-slide--clone-before');
+			clone.classList.add('dsgo-slide--clone');
+			clone.classList.add('dsgo-slide--clone-before');
 			clone.setAttribute('aria-hidden', 'true');
 			clone.removeAttribute('id'); // Remove any IDs from clones
 			this.track.insertBefore(clone, this.track.firstChild);
@@ -107,8 +107,8 @@ class DSGSlider {
 		// Clone first N slides and append to track
 		for (let i = 0; i < slidesToClone; i++) {
 			const clone = this.originalSlides[i].cloneNode(true);
-			clone.classList.add('dsg-slide--clone');
-			clone.classList.add('dsg-slide--clone-after');
+			clone.classList.add('dsgo-slide--clone');
+			clone.classList.add('dsgo-slide--clone-after');
 			clone.setAttribute('aria-hidden', 'true');
 			clone.removeAttribute('id'); // Remove any IDs from clones
 			this.track.appendChild(clone);
@@ -154,19 +154,19 @@ class DSGSlider {
 	buildArrows() {
 		// Remove editor-only arrows if present
 		const editorArrows = this.slider.querySelector(
-			'.dsg-slider__arrows--editor-only'
+			'.dsgo-slider__arrows--editor-only'
 		);
 		if (editorArrows) {
 			editorArrows.remove();
 		}
 
 		const arrowsContainer = document.createElement('div');
-		arrowsContainer.className = 'dsg-slider__arrows';
+		arrowsContainer.className = 'dsgo-slider__arrows';
 		arrowsContainer.innerHTML = `
-			<button type="button" class="dsg-slider__arrow dsg-slider__arrow--prev" aria-label="Previous slide">
+			<button type="button" class="dsgo-slider__arrow dsgo-slider__arrow--prev" aria-label="Previous slide">
 				<span>‹</span>
 			</button>
-			<button type="button" class="dsg-slider__arrow dsg-slider__arrow--next" aria-label="Next slide">
+			<button type="button" class="dsgo-slider__arrow dsgo-slider__arrow--next" aria-label="Next slide">
 				<span>›</span>
 			</button>
 		`;
@@ -174,10 +174,10 @@ class DSGSlider {
 		this.slider.appendChild(arrowsContainer);
 
 		this.prevArrow = arrowsContainer.querySelector(
-			'.dsg-slider__arrow--prev'
+			'.dsgo-slider__arrow--prev'
 		);
 		this.nextArrow = arrowsContainer.querySelector(
-			'.dsg-slider__arrow--next'
+			'.dsgo-slider__arrow--next'
 		);
 
 		this.prevArrow.addEventListener('click', () => this.prev());
@@ -189,14 +189,14 @@ class DSGSlider {
 	buildDots() {
 		// Remove editor-only dots if present
 		const editorDots = this.slider.querySelector(
-			'.dsg-slider__dots--editor-only'
+			'.dsgo-slider__dots--editor-only'
 		);
 		if (editorDots) {
 			editorDots.remove();
 		}
 
 		const dotsContainer = document.createElement('div');
-		dotsContainer.className = 'dsg-slider__dots';
+		dotsContainer.className = 'dsgo-slider__dots';
 		dotsContainer.setAttribute('role', 'tablist');
 		dotsContainer.setAttribute('aria-label', 'Slide navigation');
 
@@ -207,7 +207,7 @@ class DSGSlider {
 		for (let i = 0; i < dotCount; i++) {
 			const dot = document.createElement('button');
 			dot.type = 'button';
-			dot.className = 'dsg-slider__dot';
+			dot.className = 'dsgo-slider__dot';
 			dot.setAttribute('role', 'tab');
 			dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
 			const realIndex = this.cloneCount > 0 ? i + this.cloneCount : i;
@@ -221,7 +221,7 @@ class DSGSlider {
 
 		this.slider.appendChild(dotsContainer);
 		this.dots = Array.from(
-			dotsContainer.querySelectorAll('.dsg-slider__dot')
+			dotsContainer.querySelectorAll('.dsgo-slider__dot')
 		);
 		this.updateDots();
 	}
@@ -229,7 +229,7 @@ class DSGSlider {
 	buildAnnouncementRegion() {
 		// Create visually hidden region for screen reader announcements
 		const announcer = document.createElement('div');
-		announcer.className = 'dsg-slider__announcer';
+		announcer.className = 'dsgo-slider__announcer';
 		announcer.setAttribute('role', 'status');
 		announcer.setAttribute('aria-live', 'polite');
 		announcer.setAttribute('aria-atomic', 'true');
@@ -305,7 +305,7 @@ class DSGSlider {
 		// Dispatch custom event (use real index for event)
 		const realIndex = this.getRealIndex(this.currentIndex);
 		this.slider.dispatchEvent(
-			new CustomEvent('dsg-slider-change', {
+			new CustomEvent('dsgo-slider-change', {
 				detail: {
 					previousIndex: this.getRealIndex(previousIndex),
 					currentIndex: realIndex,
@@ -392,7 +392,7 @@ class DSGSlider {
 	applyFadeTransition() {
 		this.slides.forEach((slide, index) => {
 			slide.classList.toggle(
-				'dsg-slide--active',
+				'dsgo-slide--active',
 				index === this.currentIndex
 			);
 		});
@@ -401,7 +401,7 @@ class DSGSlider {
 	applyZoomTransition() {
 		this.slides.forEach((slide, index) => {
 			slide.classList.toggle(
-				'dsg-slide--active',
+				'dsgo-slide--active',
 				index === this.currentIndex
 			);
 		});
@@ -459,7 +459,7 @@ class DSGSlider {
 
 		this.dots.forEach((dot, index) => {
 			const isActive = index === realIndex;
-			dot.classList.toggle('dsg-slider__dot--active', isActive);
+			dot.classList.toggle('dsgo-slider__dot--active', isActive);
 			dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
 		});
 	}
@@ -719,7 +719,7 @@ const sliderInstances = new WeakMap();
 
 // Initialize all sliders on page load
 document.addEventListener('DOMContentLoaded', () => {
-	const sliders = document.querySelectorAll('.dsg-slider');
+	const sliders = document.querySelectorAll('.dsgo-slider');
 	sliders.forEach((slider) => {
 		const instance = new DSGSlider(slider);
 		sliderInstances.set(slider, instance);
@@ -728,7 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Cleanup on page unload (prevents memory leaks on SPA navigation)
 window.addEventListener('beforeunload', () => {
-	const sliders = document.querySelectorAll('.dsg-slider');
+	const sliders = document.querySelectorAll('.dsgo-slider');
 	sliders.forEach((slider) => {
 		const instance = sliderInstances.get(slider);
 		if (instance && instance.destroy) {

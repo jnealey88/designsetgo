@@ -60,5 +60,5 @@ export const calculateIconStyle = ({ rotation }) => {
  * @return {string} CSS classes
  */
 export const getIconWrapperClasses = (shape) => {
-	return `dsg-icon__wrapper shape-${shape}`;
+	return `dsgo-icon__wrapper shape-${shape}`;
 };

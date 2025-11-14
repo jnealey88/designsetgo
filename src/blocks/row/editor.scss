@@ -6,7 +6,7 @@
  * @package DesignSetGo
  */
 
-.dsg-flex {
+.dsgo-flex {
 	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
 	// Row should be full-width by default (like other block-level elements)
 	width: 100%;
@@ -15,20 +15,20 @@
 	position: relative;
 	overflow: visible;
 
-	&.dsg-flex--has-overlay {
+	&.dsgo-flex--has-overlay {
 		overflow: hidden;
 
 		&::before {
 			content: '';
 			position: absolute;
 			inset: 0;
-			background-color: var(--dsg-overlay-color);
-			opacity: var(--dsg-overlay-opacity, 0.8);
+			background-color: var(--dsgo-overlay-color);
+			opacity: var(--dsgo-overlay-opacity, 0.8);
 			pointer-events: none;
 			z-index: 1;
 		}
 
-		> .dsg-flex__inner {
+		> .dsgo-flex__inner {
 			position: relative;
 			z-index: 2;
 		}
@@ -47,7 +47,7 @@
 	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
 	// Inner container must be full width for justify-content to work
 	// When constrainWidth is enabled, inline styles will override with max-width
-	.dsg-flex__inner {
+	.dsgo-flex__inner {
 		width: 100%;
 		// Ensure inner container doesn't create positioning context for absolute children
 		position: static;
@@ -57,7 +57,7 @@
 	// Target from outer container to position relative to main block wrapper
 	// Use :not(:only-child) to exclude empty row state
 	/* stylelint-disable-next-line selector-class-pattern */
-	.dsg-flex__inner > .block-list-appender:not(:only-child) {
+	.dsgo-flex__inner > .block-list-appender:not(:only-child) {
 		// Remove from flex flow and position at outer container corner
 		position: absolute;
 		right: 0;
@@ -69,7 +69,7 @@
 
 	// CRITICAL: When row is empty, show normal appender
 	/* stylelint-disable-next-line selector-class-pattern */
-	.dsg-flex__inner > .block-list-appender:only-child {
+	.dsgo-flex__inner > .block-list-appender:only-child {
 		position: static; // Reset positioning
 	}
 
@@ -77,15 +77,15 @@
 	// WordPress applies constrained layout which can limit width
 	// This ensures nested Rows take full width of their parent container
 	// In editor, blocks are wrapped in [data-block] elements
-	.dsg-stack__inner > &,
-	.dsg-stack__inner > [data-block] &,
-	.dsg-flex__inner > &,
-	.dsg-flex__inner > [data-block] &,
-	.dsg-grid__inner > &,
-	.dsg-grid__inner > [data-block] & {
+	.dsgo-stack__inner > &,
+	.dsgo-stack__inner > [data-block] &,
+	.dsgo-flex__inner > &,
+	.dsgo-flex__inner > [data-block] &,
+	.dsgo-grid__inner > &,
+	.dsgo-grid__inner > [data-block] & {
 		width: 100% !important;
 
-		.dsg-flex__inner {
+		.dsgo-flex__inner {
 			max-width: none !important;
 			margin-left: 0 !important;
 			margin-right: 0 !important;
@@ -94,8 +94,8 @@
 
 	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
 	// Fix flex children behavior
-	// With two-div structure, flex children are inside .dsg-flex__inner
-	.dsg-flex__inner > * {
+	// With two-div structure, flex children are inside .dsgo-flex__inner
+	.dsgo-flex__inner > * {
 		// Disable float - WordPress core CSS applies float: right/left for alignment classes
 		// This breaks flex layout, so we override it
 		float: none !important;
@@ -139,13 +139,13 @@
 		// Only apply background if hover background is set
 		// !important needed to override WordPress color classes and gradients
 		// Use 'background' instead of 'background-color' to override gradients
-		&[style*="--dsg-hover-bg-color"] {
-			background: var(--dsg-hover-bg-color) !important;
+		&[style*="--dsgo-hover-bg-color"] {
+			background: var(--dsgo-hover-bg-color) !important;
 		}
 
 		// Only apply text color if hover text color is set
-		&[style*="--dsg-hover-text-color"] {
-			color: var(--dsg-hover-text-color) !important;
+		&[style*="--dsgo-hover-text-color"] {
+			color: var(--dsgo-hover-text-color) !important;
 
 			h1,
 			h2,
@@ -161,7 +161,7 @@
 			th,
 			.wp-block-heading,
 			.wp-block-paragraph {
-				color: var(--dsg-hover-text-color) !important;
+				color: var(--dsgo-hover-text-color) !important;
 			}
 		}
 	}

@@ -55,35 +55,35 @@ export default function SliderSave({ attributes }) {
 		: slidesPerViewMobile;
 
 	// Same classes as edit.js - MUST MATCH EXACTLY
-	const sliderClasses = classnames('dsg-slider', {
-		[`dsg-slider--${styleVariation}`]: styleVariation,
-		[`dsg-slider--effect-${effect}`]: effect,
-		'dsg-slider--has-arrows': showArrows,
-		'dsg-slider--has-dots': showDots,
-		'dsg-slider--centered': centeredSlides,
-		'dsg-slider--free-mode': freeMode,
+	const sliderClasses = classnames('dsgo-slider', {
+		[`dsgo-slider--${styleVariation}`]: styleVariation,
+		[`dsgo-slider--effect-${effect}`]: effect,
+		'dsgo-slider--has-arrows': showArrows,
+		'dsgo-slider--has-dots': showDots,
+		'dsgo-slider--centered': centeredSlides,
+		'dsgo-slider--free-mode': freeMode,
 	});
 
 	// Apply settings as CSS custom properties - MUST MATCH edit.js
 	const customStyles = {
-		'--dsg-slider-height': height,
-		'--dsg-slider-aspect-ratio': aspectRatio,
-		'--dsg-slider-gap': gap,
-		'--dsg-slider-transition': transitionDuration,
-		'--dsg-slider-slides-per-view': String(effectiveSlidesPerView),
-		'--dsg-slider-slides-per-view-tablet': String(
+		'--dsgo-slider-height': height,
+		'--dsgo-slider-aspect-ratio': aspectRatio,
+		'--dsgo-slider-gap': gap,
+		'--dsgo-slider-transition': transitionDuration,
+		'--dsgo-slider-slides-per-view': String(effectiveSlidesPerView),
+		'--dsgo-slider-slides-per-view-tablet': String(
 			effectiveSlidesPerViewTablet
 		),
-		'--dsg-slider-slides-per-view-mobile': String(
+		'--dsgo-slider-slides-per-view-mobile': String(
 			effectiveSlidesPerViewMobile
 		),
-		...(arrowColor && { '--dsg-slider-arrow-color': arrowColor }),
+		...(arrowColor && { '--dsgo-slider-arrow-color': arrowColor }),
 		...(arrowBackgroundColor && {
-			'--dsg-slider-arrow-bg-color': arrowBackgroundColor,
+			'--dsgo-slider-arrow-bg-color': arrowBackgroundColor,
 		}),
-		...(arrowSize && { '--dsg-slider-arrow-size': arrowSize }),
-		...(arrowPadding && { '--dsg-slider-arrow-padding': arrowPadding }),
-		...(dotColor && { '--dsg-slider-dot-color': dotColor }),
+		...(arrowSize && { '--dsgo-slider-arrow-size': arrowSize }),
+		...(arrowPadding && { '--dsgo-slider-arrow-padding': arrowPadding }),
+		...(dotColor && { '--dsgo-slider-dot-color': dotColor }),
 	};
 
 	// Use .save() variant for save function
@@ -123,12 +123,12 @@ export default function SliderSave({ attributes }) {
 	});
 
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-slider__track',
+		className: 'dsgo-slider__track',
 	});
 
 	return (
 		<div {...blockProps}>
-			<div className="dsg-slider__viewport">
+			<div className="dsgo-slider__viewport">
 				<div {...innerBlocksProps} />
 			</div>
 		</div>

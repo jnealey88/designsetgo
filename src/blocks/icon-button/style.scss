@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 
-.dsg-icon-button {
+.dsgo-icon-button {
 	// Block wrapper styles applied via inline styles
 	// (display: inline-block or block depending on width setting)
 	// CRITICAL: Border-radius default - WordPress border controls override this via inline styles
@@ -13,7 +13,7 @@
 	&__wrapper {
 		// Layout styles applied via inline styles (display, gap, flex-direction, width)
 		padding: 12px 24px;
-		border-radius: inherit; // CRITICAL: Inherit border-radius from parent (.dsg-icon-button) so WordPress border controls work
+		border-radius: inherit; // CRITICAL: Inherit border-radius from parent (.dsgo-icon-button) so WordPress border controls work
 		overflow: hidden; // CRITICAL: Clip background to border-radius
 		font-weight: 500;
 		text-decoration: none !important;
@@ -82,10 +82,10 @@
 // CRITICAL: Check if PARENT container has the variable, not the button itself
 // CRITICAL: Use __inner wrapper to avoid triggering on outer padding areas
 // CRITICAL: Use direct child selector (>) to only affect direct children
-.dsg-flex[style*="--dsg-parent-hover-button-bg"]:hover .dsg-flex__inner > .dsg-icon-button .dsg-icon-button__wrapper,
-.dsg-grid[style*="--dsg-parent-hover-button-bg"]:hover .dsg-grid__inner > .dsg-icon-button .dsg-icon-button__wrapper,
-.dsg-stack[style*="--dsg-parent-hover-button-bg"]:hover .dsg-stack__inner > .dsg-icon-button .dsg-icon-button__wrapper {
-	background-color: var(--dsg-parent-hover-button-bg) !important;
+.dsgo-flex[style*="--dsgo-parent-hover-button-bg"]:hover .dsgo-flex__inner > .dsgo-icon-button .dsgo-icon-button__wrapper,
+.dsgo-grid[style*="--dsgo-parent-hover-button-bg"]:hover .dsgo-grid__inner > .dsgo-icon-button .dsgo-icon-button__wrapper,
+.dsgo-stack[style*="--dsgo-parent-hover-button-bg"]:hover .dsgo-stack__inner > .dsgo-icon-button .dsgo-icon-button__wrapper {
+	background-color: var(--dsgo-parent-hover-button-bg) !important;
 	transition: background-color 0.3s ease;
 }
 
@@ -95,13 +95,13 @@
 // Apply custom hover colors set via CSS variables
 // These override default hover styles when specified
 
-.dsg-icon-button__wrapper[style*="--dsg-button-hover-bg"]:hover {
-	background-color: var(--dsg-button-hover-bg) !important;
+.dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"]:hover {
+	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1; // Override default opacity change
 }
 
-.dsg-icon-button__wrapper[style*="--dsg-button-hover-color"]:hover {
-	color: var(--dsg-button-hover-color) !important;
+.dsgo-icon-button__wrapper[style*="--dsgo-button-hover-color"]:hover {
+	color: var(--dsgo-button-hover-color) !important;
 }
 
 // ============================================================================
@@ -111,7 +111,7 @@
 // These use ::before or ::after pseudo-elements for advanced effects
 
 // Fill Diagonal - Diagonal sweep fill effect
-.dsg-icon-button.dsg-icon-button--fill-diagonal .dsg-icon-button__wrapper {
+.dsgo-icon-button.dsgo-icon-button--fill-diagonal .dsgo-icon-button__wrapper {
 	position: relative;
 	overflow: hidden;
 
@@ -134,8 +134,8 @@
 	}
 
 	// Ensure content stays above pseudo-element
-	.dsg-icon-button__icon,
-	.dsg-icon-button__text {
+	.dsgo-icon-button__icon,
+	.dsgo-icon-button__text {
 		position: relative;
 		z-index: 1;
 	}
@@ -148,7 +148,7 @@
 }
 
 // Zoom In - Scale up on hover (applies to entire block including borders)
-.dsg-icon-button.dsg-icon-button--zoom-in {
+.dsgo-icon-button.dsgo-icon-button--zoom-in {
 	transition: transform 0.3s ease;
 
 	&:hover {
@@ -156,14 +156,14 @@
 	}
 
 	// Prevent default button hover effects
-	.dsg-icon-button__wrapper:hover {
+	.dsgo-icon-button__wrapper:hover {
 		opacity: 1;
 		transform: none;
 	}
 }
 
 // Slide Left - Background slides in from right
-.dsg-icon-button.dsg-icon-button--slide-left .dsg-icon-button__wrapper {
+.dsgo-icon-button.dsgo-icon-button--slide-left .dsgo-icon-button__wrapper {
 	position: relative;
 	overflow: hidden;
 
@@ -183,8 +183,8 @@
 		right: 0;
 	}
 
-	.dsg-icon-button__icon,
-	.dsg-icon-button__text {
+	.dsgo-icon-button__icon,
+	.dsgo-icon-button__text {
 		position: relative;
 		z-index: 1;
 	}
@@ -196,7 +196,7 @@
 }
 
 // Slide Right - Background slides in from left
-.dsg-icon-button.dsg-icon-button--slide-right .dsg-icon-button__wrapper {
+.dsgo-icon-button.dsgo-icon-button--slide-right .dsgo-icon-button__wrapper {
 	position: relative;
 	overflow: hidden;
 
@@ -216,8 +216,8 @@
 		left: 0;
 	}
 
-	.dsg-icon-button__icon,
-	.dsg-icon-button__text {
+	.dsgo-icon-button__icon,
+	.dsgo-icon-button__text {
 		position: relative;
 		z-index: 1;
 	}
@@ -229,7 +229,7 @@
 }
 
 // Slide Down - Background slides down from top
-.dsg-icon-button.dsg-icon-button--slide-down .dsg-icon-button__wrapper {
+.dsgo-icon-button.dsgo-icon-button--slide-down .dsgo-icon-button__wrapper {
 	position: relative;
 	overflow: hidden;
 
@@ -249,8 +249,8 @@
 		top: 0;
 	}
 
-	.dsg-icon-button__icon,
-	.dsg-icon-button__text {
+	.dsgo-icon-button__icon,
+	.dsgo-icon-button__text {
 		position: relative;
 		z-index: 1;
 	}
@@ -262,7 +262,7 @@
 }
 
 // Slide Up - Background slides up from bottom
-.dsg-icon-button.dsg-icon-button--slide-up .dsg-icon-button__wrapper {
+.dsgo-icon-button.dsgo-icon-button--slide-up .dsgo-icon-button__wrapper {
 	position: relative;
 	overflow: hidden;
 
@@ -282,8 +282,8 @@
 		bottom: 0;
 	}
 
-	.dsg-icon-button__icon,
-	.dsg-icon-button__text {
+	.dsgo-icon-button__icon,
+	.dsgo-icon-button__text {
 		position: relative;
 		z-index: 1;
 	}
@@ -296,21 +296,21 @@
 
 // Border Pulse - Animated border effect (applies to outer block wrapper)
 // Animates the border set via WordPress border controls
-.dsg-icon-button.dsg-icon-button--border-pulse {
+.dsgo-icon-button.dsgo-icon-button--border-pulse {
 	transition: border-width 0.3s ease;
 
 	&:hover {
-		animation: dsg-border-pulse 1s ease infinite;
+		animation: dsgo-border-pulse 1s ease infinite;
 	}
 
 	// Prevent default button hover effects on inner wrapper
-	.dsg-icon-button__wrapper:hover {
+	.dsgo-icon-button__wrapper:hover {
 		opacity: 1;
 		transform: none;
 	}
 }
 
-@keyframes dsg-border-pulse {
+@keyframes dsgo-border-pulse {
 
 	0%,
 	100% {
@@ -323,7 +323,7 @@
 }
 
 // Border Glow - Glowing border effect (applies to button wrapper)
-.dsg-icon-button.dsg-icon-button--border-glow .dsg-icon-button__wrapper {
+.dsgo-icon-button.dsgo-icon-button--border-glow .dsgo-icon-button__wrapper {
 	position: relative;
 	transition: all 0.3s ease;
 
@@ -335,7 +335,7 @@
 }
 
 // Lift - Elevate with shadow (applies to entire block including borders)
-.dsg-icon-button.dsg-icon-button--lift {
+.dsgo-icon-button.dsgo-icon-button--lift {
 	transition: all 0.3s ease;
 
 	&:hover {
@@ -344,14 +344,14 @@
 	}
 
 	// Prevent default button hover effects
-	.dsg-icon-button__wrapper:hover {
+	.dsgo-icon-button__wrapper:hover {
 		opacity: 1;
 		transform: none;
 	}
 }
 
 // Shrink - Subtle scale down (applies to entire block including borders)
-.dsg-icon-button.dsg-icon-button--shrink {
+.dsgo-icon-button.dsgo-icon-button--shrink {
 	transition: transform 0.2s ease;
 
 	&:hover {
@@ -359,7 +359,7 @@
 	}
 
 	// Prevent default button hover effects
-	.dsg-icon-button__wrapper:hover {
+	.dsgo-icon-button__wrapper:hover {
 		opacity: 1;
 		transform: none;
 	}

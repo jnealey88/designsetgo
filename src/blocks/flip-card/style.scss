@@ -6,7 +6,7 @@
  * @since 1.0.0
  */
 
-.dsg-flip-card {
+.dsgo-flip-card {
 	position: relative;
 	width: 100%;
 
@@ -25,8 +25,8 @@
 		width: 100%;
 		height: 100%; // Fill container so both cards match height
 		box-sizing: border-box;
-		transition: opacity var(--dsg-flip-duration, 0.6s) ease,
-			transform var(--dsg-flip-duration, 0.6s) ease;
+		transition: opacity var(--dsgo-flip-duration, 0.6s) ease,
+			transform var(--dsgo-flip-duration, 0.6s) ease;
 		// CRITICAL: Both occupy the same grid cell
 		grid-column: 1;
 		grid-row: 1;
@@ -36,7 +36,7 @@
 
 	// Front face (visible by default) - use exact class names
 	&__container > .wp-block-designsetgo-flip-card-front,
-	&__container > .dsg-flip-card__front {
+	&__container > .dsgo-flip-card__front {
 		opacity: 1;
 		transform: rotateY(0deg);
 		z-index: 2;
@@ -44,7 +44,7 @@
 
 	// Back face (hidden by default) - use exact class names
 	&__container > .wp-block-designsetgo-flip-card-back,
-	&__container > .dsg-flip-card__back {
+	&__container > .dsgo-flip-card__back {
 		opacity: 0;
 		transform: rotateY(180deg);
 		z-index: 1;
@@ -54,16 +54,16 @@
 	// When flipped (JS adds this class)
 	&.is-flipped {
 		// Hide front
-		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
-		.dsg-flip-card__container > .dsg-flip-card__front {
+		.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+		.dsgo-flip-card__container > .dsgo-flip-card__front {
 			opacity: 0;
 			transform: rotateY(-180deg);
 			pointer-events: none;
 		}
 
 		// Show back
-		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-		.dsg-flip-card__container > .dsg-flip-card__back {
+		.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+		.dsgo-flip-card__container > .dsgo-flip-card__back {
 			opacity: 1;
 			transform: rotateY(0deg);
 			z-index: 2;
@@ -74,25 +74,25 @@
 	// Vertical flip direction (rotateX instead of rotateY)
 	&--vertical {
 
-		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
-		.dsg-flip-card__container > .dsg-flip-card__front {
+		.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+		.dsgo-flip-card__container > .dsgo-flip-card__front {
 			transform: rotateX(0deg);
 		}
 
-		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-		.dsg-flip-card__container > .dsg-flip-card__back {
+		.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+		.dsgo-flip-card__container > .dsgo-flip-card__back {
 			transform: rotateX(180deg);
 		}
 
 		&.is-flipped {
 
-			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
-			.dsg-flip-card__container > .dsg-flip-card__front {
+			.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+			.dsgo-flip-card__container > .dsgo-flip-card__front {
 				transform: rotateX(-180deg);
 			}
 
-			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-			.dsg-flip-card__container > .dsg-flip-card__back {
+			.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+			.dsgo-flip-card__container > .dsgo-flip-card__back {
 				transform: rotateX(0deg);
 			}
 		}
@@ -118,24 +118,24 @@
 	// ===== FADE EFFECT =====
 	&--effect-fade {
 
-		.dsg-flip-card__container > * {
+		.dsgo-flip-card__container > * {
 			transform: none !important;
 		}
 
-		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-		.dsg-flip-card__container > .dsg-flip-card__back {
+		.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+		.dsgo-flip-card__container > .dsgo-flip-card__back {
 			transform: none !important;
 		}
 
 		&.is-flipped {
 
-			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
-			.dsg-flip-card__container > .dsg-flip-card__front {
+			.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+			.dsgo-flip-card__container > .dsgo-flip-card__front {
 				transform: none !important;
 			}
 
-			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-			.dsg-flip-card__container > .dsg-flip-card__back {
+			.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+			.dsgo-flip-card__container > .dsgo-flip-card__back {
 				transform: none !important;
 			}
 		}
@@ -144,55 +144,55 @@
 	// ===== SLIDE EFFECT =====
 	&--effect-slide {
 
-		.dsg-flip-card__container {
+		.dsgo-flip-card__container {
 			overflow: hidden;
 		}
 
-		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
-		.dsg-flip-card__container > .dsg-flip-card__front {
+		.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+		.dsgo-flip-card__container > .dsgo-flip-card__front {
 			transform: translateX(0);
 		}
 
-		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-		.dsg-flip-card__container > .dsg-flip-card__back {
+		.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+		.dsgo-flip-card__container > .dsgo-flip-card__back {
 			transform: translateX(100%);
 		}
 
 		&.is-flipped {
 
-			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
-			.dsg-flip-card__container > .dsg-flip-card__front {
+			.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+			.dsgo-flip-card__container > .dsgo-flip-card__front {
 				transform: translateX(-100%);
 			}
 
-			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-			.dsg-flip-card__container > .dsg-flip-card__back {
+			.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+			.dsgo-flip-card__container > .dsgo-flip-card__back {
 				transform: translateX(0);
 			}
 		}
 
 		// Vertical slide for vertical direction
-		&.dsg-flip-card--vertical {
+		&.dsgo-flip-card--vertical {
 
-			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
-			.dsg-flip-card__container > .dsg-flip-card__front {
+			.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+			.dsgo-flip-card__container > .dsgo-flip-card__front {
 				transform: translateY(0);
 			}
 
-			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-			.dsg-flip-card__container > .dsg-flip-card__back {
+			.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+			.dsgo-flip-card__container > .dsgo-flip-card__back {
 				transform: translateY(100%);
 			}
 
 			&.is-flipped {
 
-				.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
-				.dsg-flip-card__container > .dsg-flip-card__front {
+				.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+				.dsgo-flip-card__container > .dsgo-flip-card__front {
 					transform: translateY(-100%);
 				}
 
-				.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-				.dsg-flip-card__container > .dsg-flip-card__back {
+				.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+				.dsgo-flip-card__container > .dsgo-flip-card__back {
 					transform: translateY(0);
 				}
 			}
@@ -202,25 +202,25 @@
 	// ===== ZOOM EFFECT =====
 	&--effect-zoom {
 
-		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
-		.dsg-flip-card__container > .dsg-flip-card__front {
+		.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+		.dsgo-flip-card__container > .dsgo-flip-card__front {
 			transform: scale(1);
 		}
 
-		.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-		.dsg-flip-card__container > .dsg-flip-card__back {
+		.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+		.dsgo-flip-card__container > .dsgo-flip-card__back {
 			transform: scale(0.8);
 		}
 
 		&.is-flipped {
 
-			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-front,
-			.dsg-flip-card__container > .dsg-flip-card__front {
+			.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+			.dsgo-flip-card__container > .dsgo-flip-card__front {
 				transform: scale(1.2);
 			}
 
-			.dsg-flip-card__container > .wp-block-designsetgo-flip-card-back,
-			.dsg-flip-card__container > .dsg-flip-card__back {
+			.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+			.dsgo-flip-card__container > .dsgo-flip-card__back {
 				transform: scale(1);
 			}
 		}
@@ -230,18 +230,18 @@
 // Accessibility: Reduce motion preference
 @media (prefers-reduced-motion: reduce) {
 
-	.dsg-flip-card__container > * {
+	.dsgo-flip-card__container > * {
 		transition: opacity 0.1s ease;
 		transform: none !important;
 	}
 
-	.dsg-flip-card.is-flipped {
+	.dsgo-flip-card.is-flipped {
 
-		.dsg-flip-card__container > [class*="flip-card-front"] {
+		.dsgo-flip-card__container > [class*="flip-card-front"] {
 			transform: none;
 		}
 
-		.dsg-flip-card__container > [class*="flip-card-back"] {
+		.dsgo-flip-card__container > [class*="flip-card-back"] {
 			transform: none;
 		}
 	}

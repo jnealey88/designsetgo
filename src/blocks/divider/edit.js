@@ -26,7 +26,7 @@ export default function DividerEdit({ attributes, setAttributes }) {
 
 	// Block wrapper props - Block Supports automatically applies color styles
 	const blockProps = useBlockProps({
-		className: `dsg-divider dsg-divider--${dividerStyle}`,
+		className: `dsgo-divider dsgo-divider--${dividerStyle}`,
 	});
 
 	// Divider container styles
@@ -135,23 +135,23 @@ export default function DividerEdit({ attributes, setAttributes }) {
 			     BLOCK CONTENT
 			    ======================================== */}
 			<div {...blockProps}>
-				<div className="dsg-divider__container" style={containerStyle}>
+				<div className="dsgo-divider__container" style={containerStyle}>
 					{dividerStyle === 'icon' ? (
-						<div className="dsg-divider__icon-wrapper">
+						<div className="dsgo-divider__icon-wrapper">
 							<span
-								className="dsg-divider__line dsg-divider__line--left"
+								className="dsgo-divider__line dsgo-divider__line--left"
 								style={lineStyle}
 							/>
-							<span className="dsg-divider__icon">
+							<span className="dsgo-divider__icon">
 								{getIcon(iconName)}
 							</span>
 							<span
-								className="dsg-divider__line dsg-divider__line--right"
+								className="dsgo-divider__line dsgo-divider__line--right"
 								style={lineStyle}
 							/>
 						</div>
 					) : (
-						<div className="dsg-divider__line" style={lineStyle} />
+						<div className="dsgo-divider__line" style={lineStyle} />
 					)}
 				</div>
 			</div>

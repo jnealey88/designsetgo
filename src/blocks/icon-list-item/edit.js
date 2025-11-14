@@ -83,20 +83,20 @@ export default function IconListItemEdit({
 				}),
 		...(iconColor && {
 			color: iconColor,
-			'--dsg-icon-color': iconColor,
+			'--dsgo-icon-color': iconColor,
 		}),
 	};
 
 	// Get block wrapper props
 	const blockProps = useBlockProps({
-		className: `dsg-icon-list-item dsg-icon-list-item--icon-${iconPosition}`,
+		className: `dsgo-icon-list-item dsgo-icon-list-item--icon-${iconPosition}`,
 		style: itemStyles,
 	});
 
 	// Configure inner blocks with h4 heading as default template
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-icon-list-item__content',
+			className: 'dsgo-icon-list-item__content',
 			style: {
 				textAlign: getTextAlign(),
 				display: 'flex',
@@ -136,7 +136,7 @@ export default function IconListItemEdit({
 
 			<div {...blockProps}>
 				<div
-					className="dsg-icon-list-item__icon"
+					className="dsgo-icon-list-item__icon"
 					style={iconWrapperStyles}
 				>
 					{getIcon(icon)}
@@ -145,7 +145,9 @@ export default function IconListItemEdit({
 				<div {...innerBlocksProps} />
 
 				{linkUrl && (
-					<div className="dsg-icon-list-item__link-indicator">🔗</div>
+					<div className="dsgo-icon-list-item__link-indicator">
+						🔗
+					</div>
 				)}
 			</div>
 		</>

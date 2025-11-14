@@ -30,9 +30,9 @@ export default function SectionSave({ attributes }) {
 
 	// Build className with conditional no-width-constraint and overlay classes
 	const className = [
-		'dsg-stack',
-		!constrainWidth && 'dsg-no-width-constraint',
-		overlayColor && 'dsg-stack--has-overlay',
+		'dsgo-stack',
+		!constrainWidth && 'dsgo-no-width-constraint',
+		overlayColor && 'dsgo-stack--has-overlay',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -43,20 +43,20 @@ export default function SectionSave({ attributes }) {
 		className,
 		style: {
 			...(hoverBackgroundColor && {
-				'--dsg-hover-bg-color': hoverBackgroundColor,
+				'--dsgo-hover-bg-color': hoverBackgroundColor,
 			}),
 			...(hoverTextColor && {
-				'--dsg-hover-text-color': hoverTextColor,
+				'--dsgo-hover-text-color': hoverTextColor,
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
+				'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+				'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
 			}),
 			...(overlayColor && {
-				'--dsg-overlay-color': overlayColor,
-				'--dsg-overlay-opacity': '0.8',
+				'--dsgo-overlay-color': overlayColor,
+				'--dsgo-overlay-opacity': '0.8',
 			}),
 		},
 	});
@@ -73,7 +73,7 @@ export default function SectionSave({ attributes }) {
 
 	// Merge inner blocks props without the outer block props
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-stack__inner',
+		className: 'dsgo-stack__inner',
 		style: innerStyle,
 	});
 

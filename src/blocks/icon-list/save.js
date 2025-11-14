@@ -64,13 +64,13 @@ export default function IconListSave({ attributes }) {
 
 	// Get block wrapper props
 	const blockProps = useBlockProps.save({
-		className: `dsg-icon-list dsg-icon-list--${layout}`,
+		className: `dsgo-icon-list dsgo-icon-list--${layout}`,
 		style: { width: '100%' }, // Ensure block fills parent width
 	});
 
 	// Get inner blocks props
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-icon-list__items',
+		className: 'dsgo-icon-list__items',
 		style: containerStyles,
 	});
 

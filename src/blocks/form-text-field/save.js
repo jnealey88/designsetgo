@@ -23,7 +23,7 @@ export default function FormTextFieldSave({ attributes }) {
 		fieldWidth,
 	} = attributes;
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--text');
+	const fieldClasses = classnames('dsgo-form-field', 'dsgo-form-field--text');
 
 	const blockProps = useBlockProps.save({
 		className: fieldClasses,
@@ -32,11 +32,11 @@ export default function FormTextFieldSave({ attributes }) {
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -61,11 +61,11 @@ export default function FormTextFieldSave({ attributes }) {
 
 	return (
 		<div {...blockProps}>
-			<label htmlFor={fieldId} className="dsg-form-field__label">
+			<label htmlFor={fieldId} className="dsgo-form-field__label">
 				{label}
 				{required && (
 					<span
-						className="dsg-form-field__required"
+						className="dsgo-form-field__required"
 						aria-label="required"
 					>
 						*
@@ -77,7 +77,7 @@ export default function FormTextFieldSave({ attributes }) {
 				type="text"
 				id={fieldId}
 				name={fieldName}
-				className="dsg-form-field__input"
+				className="dsgo-form-field__input"
 				placeholder={placeholder || undefined}
 				required={required || undefined}
 				minLength={minLength > 0 ? minLength : undefined}
@@ -91,7 +91,7 @@ export default function FormTextFieldSave({ attributes }) {
 			/>
 
 			{helpText && (
-				<p id={`${fieldId}-help`} className="dsg-form-field__help">
+				<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 					{helpText}
 				</p>
 			)}

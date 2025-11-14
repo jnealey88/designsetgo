@@ -8,16 +8,16 @@
 	box-sizing: border-box !important;
 }
 
-.dsg-scroll-accordion {
-	--dsg-scroll-accordion-gap: var(--wp--preset--spacing--40, 1.5rem);
+.dsgo-scroll-accordion {
+	--dsgo-scroll-accordion-gap: var(--wp--preset--spacing--40, 1.5rem);
 
 	position: relative;
 	align-self: stretch; /* Full width in editor */
 
-	.dsg-scroll-accordion__items {
+	.dsgo-scroll-accordion__items {
 		display: flex;
 		flex-direction: column;
-		gap: var(--dsg-scroll-accordion-gap);
+		gap: var(--dsgo-scroll-accordion-gap);
 
 		/* alignItems controlled via inline style from edit.js */
 	}
@@ -26,6 +26,6 @@
 /**
  * Block appender spacing
  */
-.dsg-scroll-accordion__items > .block-list-appender {
-	margin-top: var(--dsg-scroll-accordion-gap);
+.dsgo-scroll-accordion__items > .block-list-appender {
+	margin-top: var(--dsgo-scroll-accordion-gap);
 }

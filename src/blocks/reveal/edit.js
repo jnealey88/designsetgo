@@ -20,7 +20,7 @@ export default function Edit({ attributes, setAttributes }) {
 	const { revealAnimation, revealDuration } = attributes;
 
 	const blockProps = useBlockProps({
-		className: 'dsg-reveal-container',
+		className: 'dsgo-reveal-container',
 	});
 
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {

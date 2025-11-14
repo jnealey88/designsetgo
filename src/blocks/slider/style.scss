@@ -3,7 +3,7 @@
  * CRITICAL: Must be duplicated to editor.scss for editor/frontend parity
  */
 
-.dsg-slider {
+.dsgo-slider {
 	// CRITICAL: Ensure slider takes full width of parent container
 	// Without this, slider can collapse to 0 width inside flex containers
 	width: 100%;
@@ -27,37 +27,37 @@
 	}
 
 	// Use CSS custom properties from inline styles
-	--dsg-slider-height: 500px;
-	--dsg-slider-aspect-ratio: 16/9;
-	--dsg-slider-gap: 20px;
-	--dsg-slider-transition: 0.5s;
-	--dsg-slider-slides-per-view: 1;
-	--dsg-slider-slides-per-view-tablet: 1;
-	--dsg-slider-slides-per-view-mobile: 1;
+	--dsgo-slider-height: 500px;
+	--dsgo-slider-aspect-ratio: 16/9;
+	--dsgo-slider-gap: 20px;
+	--dsgo-slider-transition: 0.5s;
+	--dsgo-slider-slides-per-view: 1;
+	--dsgo-slider-slides-per-view-tablet: 1;
+	--dsgo-slider-slides-per-view-mobile: 1;
 
 	&__viewport {
 		position: relative;
 		width: 100%; // Inner viewport fills the slider width
-		height: var(--dsg-slider-height);
+		height: var(--dsgo-slider-height);
 		overflow: hidden;
 	}
 
 	// Use aspect ratio if enabled
 	&[data-use-aspect-ratio="true"] &__viewport {
 		height: auto;
-		aspect-ratio: var(--dsg-slider-aspect-ratio);
+		aspect-ratio: var(--dsgo-slider-aspect-ratio);
 	}
 
 	&__track {
 		display: flex;
 		height: 100%;
-		gap: var(--dsg-slider-gap);
-		transition: transform var(--dsg-slider-transition) ease-in-out;
+		gap: var(--dsgo-slider-gap);
+		transition: transform var(--dsgo-slider-transition) ease-in-out;
 		will-change: transform;
 
 		// Multi-slide view calculations
-		> .dsg-slide {
-			flex: 0 0 calc((100% - (var(--dsg-slider-gap) * (var(--dsg-slider-slides-per-view) - 1))) / var(--dsg-slider-slides-per-view));
+		> .dsgo-slide {
+			flex: 0 0 calc((100% - (var(--dsgo-slider-gap) * (var(--dsgo-slider-slides-per-view) - 1))) / var(--dsgo-slider-slides-per-view));
 			min-width: 0; // Prevent flex item overflow
 		}
 	}
@@ -89,18 +89,18 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--dsg-slider-arrow-size, 48px);
-		height: var(--dsg-slider-arrow-size, 48px);
-		padding: var(--dsg-slider-arrow-padding, 0);
-		background: var(--dsg-slider-arrow-bg-color, rgba(255, 255, 255, 0.9));
+		width: var(--dsgo-slider-arrow-size, 48px);
+		height: var(--dsgo-slider-arrow-size, 48px);
+		padding: var(--dsgo-slider-arrow-padding, 0);
+		background: var(--dsgo-slider-arrow-bg-color, rgba(255, 255, 255, 0.9));
 		border: none;
 		border-radius: 4px;
 		cursor: pointer;
 		pointer-events: auto;
 		transition: all 0.2s ease;
-		font-size: calc(var(--dsg-slider-arrow-size, 48px) / 2);
+		font-size: calc(var(--dsgo-slider-arrow-size, 48px) / 2);
 		font-weight: 700;
-		color: var(--dsg-slider-arrow-color, #2563eb);
+		color: var(--dsgo-slider-arrow-color, #2563eb);
 
 		&:hover:not(:disabled) {
 			opacity: 0.9;
@@ -160,7 +160,7 @@
 	&[data-arrow-position="outside"] {
 		padding: 0 80px;
 
-		.dsg-slider__arrow {
+		.dsgo-slider__arrow {
 
 			&--prev {
 				left: 0;
@@ -205,20 +205,20 @@
 		width: 12px;
 		height: 12px;
 		padding: 0;
-		background: var(--dsg-slider-dot-color, rgba(255, 255, 255, 0.5));
+		background: var(--dsgo-slider-dot-color, rgba(255, 255, 255, 0.5));
 		border: none;
 		border-radius: 50%;
 		cursor: pointer;
 		transition: all 0.3s ease;
 
 		&:hover {
-			background: var(--dsg-slider-dot-color, rgba(255, 255, 255, 0.8));
+			background: var(--dsgo-slider-dot-color, rgba(255, 255, 255, 0.8));
 			opacity: 0.8;
 			transform: scale(1.2);
 		}
 
 		&--active {
-			background: var(--dsg-slider-dot-color, rgba(255, 255, 255, 1));
+			background: var(--dsgo-slider-dot-color, rgba(255, 255, 255, 1));
 			transform: scale(1.3);
 		}
 
@@ -261,22 +261,22 @@
 }
 
 // Transition Effects
-.dsg-slider--effect-fade,
-.dsg-slider--effect-zoom {
-	--dsg-slider-slides-per-view: 1;
-	--dsg-slider-slides-per-view-tablet: 1;
-	--dsg-slider-slides-per-view-mobile: 1;
+.dsgo-slider--effect-fade,
+.dsgo-slider--effect-zoom {
+	--dsgo-slider-slides-per-view: 1;
+	--dsgo-slider-slides-per-view-tablet: 1;
+	--dsgo-slider-slides-per-view-mobile: 1;
 }
 
-.dsg-slider--effect-fade {
+.dsgo-slider--effect-fade {
 
-	.dsg-slider__track > .dsg-slide {
+	.dsgo-slider__track > .dsgo-slide {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		opacity: 0;
-		transition: opacity var(--dsg-slider-transition) ease-in-out;
+		transition: opacity var(--dsgo-slider-transition) ease-in-out;
 		pointer-events: none;
 
 		&--active {
@@ -287,17 +287,17 @@
 	}
 }
 
-.dsg-slider--effect-zoom {
+.dsgo-slider--effect-zoom {
 
-	.dsg-slider__track > .dsg-slide {
+	.dsgo-slider__track > .dsgo-slide {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		opacity: 0;
 		transform: scale(0.8);
-		transition: opacity var(--dsg-slider-transition) ease-in-out,
-			transform var(--dsg-slider-transition) ease-in-out;
+		transition: opacity var(--dsgo-slider-transition) ease-in-out,
+			transform var(--dsgo-slider-transition) ease-in-out;
 		pointer-events: none;
 
 		&--active {
@@ -310,54 +310,54 @@
 }
 
 // Style Variations
-.dsg-slider--classic {
+.dsgo-slider--classic {
 	border-radius: 8px;
 }
 
-.dsg-slider--minimal {
+.dsgo-slider--minimal {
 
-	.dsg-slider__arrows {
+	.dsgo-slider__arrows {
 		opacity: 0;
 		transition: opacity 0.3s ease;
 	}
 
-	&:hover .dsg-slider__arrows {
+	&:hover .dsgo-slider__arrows {
 		opacity: 1;
 	}
 
-	.dsg-slider__dots {
+	.dsgo-slider__dots {
 		background: transparent;
 		padding: 4px 8px;
 	}
 
-	.dsg-slider__dot {
+	.dsgo-slider__dot {
 		background: rgba(255, 255, 255, 0.3);
 	}
 }
 
-.dsg-slider--card {
+.dsgo-slider--card {
 	padding: 20px;
 	border-radius: 12px;
 
-	.dsg-slider__viewport {
+	.dsgo-slider__viewport {
 		border-radius: 8px;
 	}
 
-	.dsg-slide {
+	.dsgo-slide {
 		border-radius: 8px;
 	}
 }
 
-.dsg-slider--fullbleed {
+.dsgo-slider--fullbleed {
 	border-radius: 0;
 
-	.dsg-slider__viewport {
+	.dsgo-slider__viewport {
 		height: 100vh;
 	}
 
-	.dsg-slider__arrows {
+	.dsgo-slider__arrows {
 
-		.dsg-slider__arrow {
+		.dsgo-slider__arrow {
 			background: rgba(0, 0, 0, 0.5);
 			color: #fff;
 			border-radius: 0;
@@ -372,18 +372,18 @@
 // Responsive Breakpoints
 @media (max-width: 1024px) {
 
-	.dsg-slider__track > .dsg-slide {
-		flex: 0 0 calc((100% - (var(--dsg-slider-gap) * (var(--dsg-slider-slides-per-view-tablet) - 1))) / var(--dsg-slider-slides-per-view-tablet));
+	.dsgo-slider__track > .dsgo-slide {
+		flex: 0 0 calc((100% - (var(--dsgo-slider-gap) * (var(--dsgo-slider-slides-per-view-tablet) - 1))) / var(--dsgo-slider-slides-per-view-tablet));
 	}
 }
 
 @media (max-width: 768px) {
 
-	.dsg-slider__track > .dsg-slide {
-		flex: 0 0 calc((100% - (var(--dsg-slider-gap) * (var(--dsg-slider-slides-per-view-mobile) - 1))) / var(--dsg-slider-slides-per-view-mobile));
+	.dsgo-slider__track > .dsgo-slide {
+		flex: 0 0 calc((100% - (var(--dsgo-slider-gap) * (var(--dsgo-slider-slides-per-view-mobile) - 1))) / var(--dsgo-slider-slides-per-view-mobile));
 	}
 
-	.dsg-slider__arrow {
+	.dsgo-slider__arrow {
 		width: 40px;
 		height: 40px;
 		font-size: 20px;
@@ -397,7 +397,7 @@
 		}
 	}
 
-	.dsg-slider[data-arrow-position="inside"] .dsg-slider__arrow {
+	.dsgo-slider[data-arrow-position="inside"] .dsgo-slider__arrow {
 
 		&--prev {
 			left: 16px;
@@ -408,17 +408,17 @@
 		}
 	}
 
-	.dsg-slider__dots {
+	.dsgo-slider__dots {
 		bottom: 12px;
 		padding: 6px 10px;
 	}
 
-	.dsg-slider__dot {
+	.dsgo-slider__dot {
 		width: 10px;
 		height: 10px;
 	}
 
-	.dsg-slider--card {
+	.dsgo-slider--card {
 		padding: 12px;
 	}
 }
@@ -426,32 +426,32 @@
 // Accessibility
 @media (prefers-reduced-motion: reduce) {
 
-	.dsg-slider,
-	.dsg-slider__track,
-	.dsg-slider__track > .dsg-slide,
-	.dsg-slider__arrow,
-	.dsg-slider__dot {
+	.dsgo-slider,
+	.dsgo-slider__track,
+	.dsgo-slider__track > .dsgo-slide,
+	.dsgo-slider__arrow,
+	.dsgo-slider__dot {
 		transition: none !important;
 		animation: none !important;
 	}
 }
 
 // Loading state
-.dsg-slider.is-loading {
+.dsgo-slider.is-loading {
 
-	.dsg-slider__track {
+	.dsgo-slider__track {
 		opacity: 0.5;
 	}
 
-	.dsg-slider__arrows,
-	.dsg-slider__dots {
+	.dsgo-slider__arrows,
+	.dsgo-slider__dots {
 		pointer-events: none;
 	}
 }
 
 // Screen reader only text
 /* stylelint-disable-next-line selector-class-pattern */
-.dsg-slider .screen-reader-text {
+.dsgo-slider .screen-reader-text {
 	position: absolute;
 	width: 1px;
 	height: 1px;

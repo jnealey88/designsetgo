@@ -33,7 +33,7 @@ function convertPresetToCSSVar(value) {
 }
 
 // Version 2: Before width constraint styles were added to inner div
-// This version had dsg-has-max-width class from max-width extension
+// This version had dsgo-has-max-width class from max-width extension
 // but didn't output width constraints on inner div when constrainWidth was true
 const v2 = {
 	attributes: {
@@ -83,9 +83,9 @@ const v2 = {
 		} = attributes;
 
 		const className = [
-			'dsg-flex',
-			mobileStack && 'dsg-flex--mobile-stack',
-			overlayColor && 'dsg-flex--has-overlay',
+			'dsgo-flex',
+			mobileStack && 'dsgo-flex--mobile-stack',
+			overlayColor && 'dsgo-flex--has-overlay',
 		]
 			.filter(Boolean)
 			.join(' ');
@@ -94,20 +94,20 @@ const v2 = {
 			className,
 			style: {
 				...(hoverBackgroundColor && {
-					'--dsg-hover-bg-color': hoverBackgroundColor,
+					'--dsgo-hover-bg-color': hoverBackgroundColor,
 				}),
 				...(hoverTextColor && {
-					'--dsg-hover-text-color': hoverTextColor,
+					'--dsgo-hover-text-color': hoverTextColor,
 				}),
 				...(hoverIconBackgroundColor && {
-					'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
+					'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
 				}),
 				...(hoverButtonBackgroundColor && {
-					'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+					'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
 				}),
 				...(overlayColor && {
-					'--dsg-overlay-color': overlayColor,
-					'--dsg-overlay-opacity': '0.8',
+					'--dsgo-overlay-color': overlayColor,
+					'--dsgo-overlay-opacity': '0.8',
 				}),
 			},
 		});
@@ -131,7 +131,7 @@ const v2 = {
 		};
 
 		const innerBlocksProps = useInnerBlocksProps.save({
-			className: 'dsg-flex__inner',
+			className: 'dsgo-flex__inner',
 			style: innerStyle,
 		});
 
@@ -142,11 +142,11 @@ const v2 = {
 		);
 	},
 	migrate(oldAttributes) {
-		// Clean up dsg-has-max-width class that was added by old max-width extension
+		// Clean up dsgo-has-max-width class that was added by old max-width extension
 		const className = oldAttributes.className || '';
 		const cleanClassName = className
 			.split(' ')
-			.filter((cls) => cls !== 'dsg-has-max-width')
+			.filter((cls) => cls !== 'dsgo-has-max-width')
 			.join(' ')
 			.trim();
 
@@ -201,8 +201,8 @@ const v1 = {
 		}
 
 		const className = [
-			'dsg-flex',
-			!contentSize && 'dsg-no-width-constraint',
+			'dsgo-flex',
+			!contentSize && 'dsgo-no-width-constraint',
 		]
 			.filter(Boolean)
 			.join(' ');
@@ -211,16 +211,16 @@ const v1 = {
 			className,
 			style: {
 				...(hoverBackgroundColor && {
-					'--dsg-hover-bg-color': hoverBackgroundColor,
+					'--dsgo-hover-bg-color': hoverBackgroundColor,
 				}),
 				...(hoverTextColor && {
-					'--dsg-hover-text-color': hoverTextColor,
+					'--dsgo-hover-text-color': hoverTextColor,
 				}),
 				...(hoverIconBackgroundColor && {
-					'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
+					'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
 				}),
 				...(hoverButtonBackgroundColor && {
-					'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+					'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
 				}),
 			},
 		});
@@ -233,7 +233,7 @@ const v1 = {
 		}
 
 		const innerBlocksProps = useInnerBlocksProps.save({
-			className: 'dsg-flex__inner',
+			className: 'dsgo-flex__inner',
 			style: innerStyle,
 		});
 
@@ -254,14 +254,14 @@ const v1 = {
 			align = 'wide';
 		}
 
-		// Remove align classes and dsg-has-max-width from className
+		// Remove align classes and dsgo-has-max-width from className
 		const cleanClassName = className
 			.split(' ')
 			.filter(
 				(cls) =>
 					cls !== 'alignfull' &&
 					cls !== 'alignwide' &&
-					cls !== 'dsg-has-max-width'
+					cls !== 'dsgo-has-max-width'
 			)
 			.join(' ')
 			.trim();

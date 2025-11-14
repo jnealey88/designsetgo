@@ -70,9 +70,9 @@ const v1 = {
 			minHeight,
 		} = attributes;
 
-		const slideClasses = classnames('dsg-slide', {
-			'dsg-slide--has-background': backgroundImage?.url,
-			'dsg-slide--has-overlay': enableOverlay,
+		const slideClasses = classnames('dsgo-slide', {
+			'dsgo-slide--has-background': backgroundImage?.url,
+			'dsgo-slide--has-overlay': enableOverlay,
 		});
 
 		const backgroundStyles = backgroundImage?.url
@@ -86,14 +86,16 @@ const v1 = {
 
 		const overlayStyles = enableOverlay
 			? {
-					'--dsg-slide-overlay-color': overlayColor,
-					'--dsg-slide-overlay-opacity': String(overlayOpacity / 100),
+					'--dsgo-slide-overlay-color': overlayColor,
+					'--dsgo-slide-overlay-opacity': String(
+						overlayOpacity / 100
+					),
 				}
 			: {};
 
 		const alignmentStyles = {
-			'--dsg-slide-content-vertical-align': contentVerticalAlign,
-			'--dsg-slide-content-horizontal-align': contentHorizontalAlign,
+			'--dsgo-slide-content-vertical-align': contentVerticalAlign,
+			'--dsgo-slide-content-horizontal-align': contentHorizontalAlign,
 		};
 
 		const heightStyles = minHeight ? { minHeight } : {};
@@ -111,14 +113,14 @@ const v1 = {
 		});
 
 		const innerBlocksProps = useInnerBlocksProps.save({
-			className: 'dsg-slide__content',
+			className: 'dsgo-slide__content',
 		});
 
 		return (
 			<div {...blockProps}>
 				{enableOverlay && (
 					<div
-						className="dsg-slide__overlay"
+						className="dsgo-slide__overlay"
 						style={{
 							backgroundColor: overlayColor,
 							opacity: overlayOpacity / 100,

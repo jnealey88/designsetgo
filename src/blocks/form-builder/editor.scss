@@ -12,7 +12,7 @@
 // Editor-specific overrides and enhancements
 .editor-styles-wrapper {
 	// Form builder in editor
-	.dsg-form-builder {
+	.dsgo-form-builder {
 		// Add slight padding in editor for better block selection
 		padding: 1rem;
 		border: 1px dashed transparent;
@@ -25,7 +25,7 @@
 	}
 
 	// Submit button in editor should be disabled
-	.dsg-form__submit {
+	.dsgo-form__submit {
 		cursor: default;
 		pointer-events: none;
 
@@ -36,7 +36,7 @@
 	}
 
 	// Show editor message hint
-	.dsg-form__message--editor {
+	.dsgo-form__message--editor {
 		display: block !important;
 		opacity: 0.5;
 		font-style: italic;
@@ -46,7 +46,7 @@
 	}
 
 	// Empty state hint for form fields
-	.dsg-form__fields:empty::after {
+	.dsgo-form__fields:empty::after {
 		content: 'Add form fields using the block inserter (+) button';
 		display: block;
 		padding: 2rem;
@@ -55,6 +55,6 @@
 		font-style: italic;
 		background-color: #f9fafb;
 		border: 2px dashed #e5e7eb;
-		border-radius: var(--dsg-form-border-radius);
+		border-radius: var(--dsgo-form-border-radius);
 	}
 }

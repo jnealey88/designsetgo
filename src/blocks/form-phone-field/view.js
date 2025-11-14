@@ -7,7 +7,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 	// Find all phone field wrappers with auto-format enabled
 	const phoneWrappers = document.querySelectorAll(
-		'.dsg-form-field__phone-wrapper[data-auto-format="true"]'
+		'.dsgo-form-field__phone-wrapper[data-auto-format="true"]'
 	);
 
 	phoneWrappers.forEach((wrapper) => {

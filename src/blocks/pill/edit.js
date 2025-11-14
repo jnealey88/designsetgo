@@ -8,7 +8,7 @@ export default function PillEdit({ attributes, setAttributes }) {
 	const { content } = attributes;
 
 	const blockProps = useBlockProps({
-		className: 'dsg-pill',
+		className: 'dsgo-pill',
 	});
 
 	// Extract color/background styles from blockProps to apply to inner span
@@ -56,7 +56,7 @@ export default function PillEdit({ attributes, setAttributes }) {
 		<div {...blockProps}>
 			<RichText
 				tagName="span"
-				className="dsg-pill__content"
+				className="dsgo-pill__content"
 				value={content}
 				onChange={(newContent) =>
 					setAttributes({ content: newContent })

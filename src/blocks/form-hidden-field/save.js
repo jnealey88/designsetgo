@@ -10,7 +10,7 @@ export default function FormHiddenFieldSave({ attributes }) {
 	const { fieldName, value } = attributes;
 
 	const blockProps = useBlockProps.save({
-		className: 'dsg-form-field dsg-form-field--hidden',
+		className: 'dsgo-form-field dsgo-form-field--hidden',
 	});
 
 	return (

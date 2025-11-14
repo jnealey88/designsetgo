@@ -105,10 +105,10 @@ const v1 = {
 			...(bgColor && { backgroundColor: bgColor }),
 			...(txtColor && { color: txtColor }),
 			...(hoverBackgroundColor && {
-				'--dsg-button-hover-bg': hoverBackgroundColor,
+				'--dsgo-button-hover-bg': hoverBackgroundColor,
 			}),
 			...(hoverTextColor && {
-				'--dsg-button-hover-color': hoverTextColor,
+				'--dsgo-button-hover-color': hoverTextColor,
 			}),
 		};
 
@@ -125,11 +125,11 @@ const v1 = {
 		// Build animation class
 		const animationClass =
 			hoverAnimation && hoverAnimation !== 'none'
-				? ` dsg-icon-button--${hoverAnimation}`
+				? ` dsgo-icon-button--${hoverAnimation}`
 				: '';
 
 		const blockProps = useBlockProps.save({
-			className: `dsg-icon-button${animationClass}`,
+			className: `dsgo-icon-button${animationClass}`,
 			style: { display: width === '100%' ? 'block' : 'inline-block' },
 		});
 
@@ -137,7 +137,7 @@ const v1 = {
 		const ButtonWrapper = url ? 'a' : 'div';
 		const wrapperProps = url
 			? {
-					className: 'dsg-icon-button__wrapper',
+					className: 'dsgo-icon-button__wrapper',
 					style: buttonStyles,
 					href: url,
 					target: linkTarget,
@@ -147,7 +147,7 @@ const v1 = {
 							: rel || undefined,
 				}
 			: {
-					className: 'dsg-icon-button__wrapper',
+					className: 'dsgo-icon-button__wrapper',
 					style: buttonStyles,
 					role: 'button',
 				};
@@ -159,7 +159,7 @@ const v1 = {
 						iconPosition !== 'end' &&
 						icon && (
 							<span
-								className="dsg-icon-button__icon"
+								className="dsgo-icon-button__icon"
 								style={iconWrapperStyles}
 							>
 								{getIcon(icon)}
@@ -169,12 +169,12 @@ const v1 = {
 						<RichText.Content
 							tagName="span"
 							value={text}
-							className="dsg-icon-button__text"
+							className="dsgo-icon-button__text"
 						/>
 					)}
 					{iconPosition === 'end' && icon && (
 						<span
-							className="dsg-icon-button__icon"
+							className="dsgo-icon-button__icon"
 							style={iconWrapperStyles}
 						>
 							{getIcon(icon)}

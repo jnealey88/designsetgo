@@ -20,9 +20,9 @@ export default function FlipCardSave({ attributes }) {
 
 	// Block wrapper props
 	const blockProps = useBlockProps.save({
-		className: `dsg-flip-card dsg-flip-card--${flipTrigger} dsg-flip-card--effect-${flipEffect} dsg-flip-card--${flipDirection}`,
+		className: `dsgo-flip-card dsgo-flip-card--${flipTrigger} dsgo-flip-card--effect-${flipEffect} dsgo-flip-card--${flipDirection}`,
 		style: {
-			'--dsg-flip-duration': flipDuration,
+			'--dsgo-flip-duration': flipDuration,
 			width: '100%',
 		},
 		'data-flip-trigger': flipTrigger,
@@ -32,7 +32,7 @@ export default function FlipCardSave({ attributes }) {
 
 	// Inner blocks props
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-flip-card__container',
+		className: 'dsgo-flip-card__container',
 	});
 
 	return (

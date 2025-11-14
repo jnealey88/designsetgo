@@ -116,19 +116,19 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	const TagName = tagName || 'div';
 	const blockProps = useBlockProps({
-		className: `dsg-grid dsg-grid-cols-${desktopColumns} dsg-grid-cols-tablet-${tabletColumns} dsg-grid-cols-mobile-${mobileColumns}`,
+		className: `dsgo-grid dsgo-grid-cols-${desktopColumns} dsgo-grid-cols-tablet-${tabletColumns} dsgo-grid-cols-mobile-${mobileColumns}`,
 		style: {
 			...(hoverBackgroundColor && {
-				'--dsg-hover-bg-color': hoverBackgroundColor,
+				'--dsgo-hover-bg-color': hoverBackgroundColor,
 			}),
 			...(hoverTextColor && {
-				'--dsg-hover-text-color': hoverTextColor,
+				'--dsgo-hover-text-color': hoverTextColor,
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsg-parent-hover-icon-bg': hoverIconBackgroundColor,
+				'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsg-parent-hover-button-bg': hoverButtonBackgroundColor,
+				'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
 			}),
 		},
 	});
@@ -158,7 +158,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	// Merge inner blocks props with inner styles
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsg-grid__inner',
+			className: 'dsgo-grid__inner',
 			style: innerStyles,
 		},
 		{

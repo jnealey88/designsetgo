@@ -6,7 +6,7 @@
 /* global IntersectionObserver, requestAnimationFrame */
 
 function initScrollMarquees() {
-	const marquees = document.querySelectorAll('.dsg-scroll-marquee');
+	const marquees = document.querySelectorAll('.dsgo-scroll-marquee');
 
 	if (!marquees.length) {
 		return;
@@ -23,7 +23,7 @@ function initScrollMarquees() {
 
 	marquees.forEach((marquee) => {
 		const scrollSpeed = parseFloat(marquee.dataset.scrollSpeed) || 0.5;
-		const rows = marquee.querySelectorAll('.dsg-scroll-marquee__row');
+		const rows = marquee.querySelectorAll('.dsgo-scroll-marquee__row');
 
 		if (!rows.length) {
 			return;
@@ -32,9 +32,9 @@ function initScrollMarquees() {
 		// Calculate segment width for each row (for infinite loop)
 		const rowData = [];
 		rows.forEach((row) => {
-			const track = row.querySelector('.dsg-scroll-marquee__track');
+			const track = row.querySelector('.dsgo-scroll-marquee__track');
 			const segment = track?.querySelector(
-				'.dsg-scroll-marquee__track-segment'
+				'.dsgo-scroll-marquee__track-segment'
 			);
 			if (segment) {
 				// Get the width of one segment (one set of images)
@@ -84,7 +84,7 @@ function initScrollMarquees() {
 			const scrollY = window.scrollY || window.pageYOffset;
 
 			rows.forEach((row, index) => {
-				const track = row.querySelector('.dsg-scroll-marquee__track');
+				const track = row.querySelector('.dsgo-scroll-marquee__track');
 				if (!track) {
 					return;
 				}

@@ -35,14 +35,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Apply overlay styles when color is set
 	const overlayStyles = overlayColor
 		? {
-				'--dsg-overlay-color': overlayColor,
-				'--dsg-overlay-opacity': '0.8',
+				'--dsgo-overlay-color': overlayColor,
+				'--dsgo-overlay-opacity': '0.8',
 			}
 		: {};
 
 	const blockProps = useBlockProps({
-		className: classnames('dsg-scroll-accordion-item', {
-			'dsg-scroll-accordion-item--has-overlay': !!overlayColor,
+		className: classnames('dsgo-scroll-accordion-item', {
+			'dsgo-scroll-accordion-item--has-overlay': !!overlayColor,
 		}),
 		style: {
 			alignSelf: 'stretch',

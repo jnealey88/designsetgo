@@ -6,7 +6,7 @@
  * @package DesignSetGo
  */
 
-.dsg-flex {
+.dsgo-flex {
 	// Container display - WordPress handles flex layout through native layout support
 	// We only need to override specific behaviors
 
@@ -23,20 +23,20 @@
 	 * Background overlay
 	 * Only rendered when overlay color is set
 	 */
-	&.dsg-flex--has-overlay {
+	&.dsgo-flex--has-overlay {
 		overflow: hidden;
 
 		&::before {
 			content: '';
 			position: absolute;
 			inset: 0;
-			background-color: var(--dsg-overlay-color);
-			opacity: var(--dsg-overlay-opacity, 0.8);
+			background-color: var(--dsgo-overlay-color);
+			opacity: var(--dsgo-overlay-opacity, 0.8);
 			pointer-events: none;
 			z-index: 1;
 		}
 
-		> .dsg-flex__inner {
+		> .dsgo-flex__inner {
 			position: relative;
 			z-index: 2;
 		}
@@ -50,19 +50,19 @@
 
 	// CRITICAL: Inner container must be full width for justify-content to work
 	// When constrainWidth is enabled, inline styles will override with max-width
-	.dsg-flex__inner {
+	.dsgo-flex__inner {
 		width: 100%;
 	}
 
 	// CRITICAL: When Row/Flex is nested inside another container, force full width
 	// WordPress applies constrained layout which can limit width
 	// This ensures nested Rows take full width of their parent container
-	.dsg-stack__inner > &,
-	.dsg-flex__inner > &,
-	.dsg-grid__inner > & {
+	.dsgo-stack__inner > &,
+	.dsgo-flex__inner > &,
+	.dsgo-grid__inner > & {
 		width: 100% !important;
 
-		.dsg-flex__inner {
+		.dsgo-flex__inner {
 			max-width: none !important;
 			margin-left: 0 !important;
 			margin-right: 0 !important;
@@ -70,8 +70,8 @@
 	}
 
 	// CRITICAL: Fix flex children behavior
-	// With two-div structure, flex children are inside .dsg-flex__inner
-	.dsg-flex__inner > * {
+	// With two-div structure, flex children are inside .dsgo-flex__inner
+	.dsgo-flex__inner > * {
 		// Disable float - WordPress core CSS applies float: right/left for alignment classes
 		// This breaks flex layout, so we override it
 		float: none !important;
@@ -105,8 +105,8 @@
 	// CRITICAL: Override WordPress width constraints when constrainWidth is disabled
 	// The WordPress container class is on the INNER div, not the outer div
 	// We need higher specificity to override this
-	// IMPORTANT: Only apply when .dsg-no-width-constraint class is present (constrainWidth is disabled)
-	&.alignfull.dsg-no-width-constraint > .dsg-flex__inner[class*="wp-container-"] {
+	// IMPORTANT: Only apply when .dsgo-no-width-constraint class is present (constrainWidth is disabled)
+	&.alignfull.dsgo-no-width-constraint > .dsgo-flex__inner[class*="wp-container-"] {
 		// Target all direct children that aren't explicitly aligned
 		> :not(.alignleft):not(.alignright) {
 			max-width: none !important;
@@ -122,14 +122,14 @@
 		// Only apply background if hover background is set
 		// !important needed to override WordPress color classes and gradients
 		// Use 'background' instead of 'background-color' to override gradients
-		&[style*="--dsg-hover-bg-color"] {
-			background: var(--dsg-hover-bg-color) !important;
+		&[style*="--dsgo-hover-bg-color"] {
+			background: var(--dsgo-hover-bg-color) !important;
 		}
 
 		// Only apply text color if hover text color is set
 		// Use !important to override custom text colors set by users
-		&[style*="--dsg-hover-text-color"] {
-			color: var(--dsg-hover-text-color) !important;
+		&[style*="--dsgo-hover-text-color"] {
+			color: var(--dsgo-hover-text-color) !important;
 
 			// Apply text color to all text elements for consistency
 			// !important needed to override custom color classes/inline styles
@@ -147,7 +147,7 @@
 			th,
 			.wp-block-heading,
 			.wp-block-paragraph {
-				color: var(--dsg-hover-text-color) !important;
+				color: var(--dsgo-hover-text-color) !important;
 			}
 		}
 	}

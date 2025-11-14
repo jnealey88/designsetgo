@@ -4,7 +4,7 @@
  * Editor-specific styles (matches frontend for WYSIWYG)
  */
 
-.dsg-counter-group {
+.dsgo-counter-group {
 	box-sizing: border-box;
 	max-width: 100%; // Prevent overflow in containers and on small screens
 	// CRITICAL: Must be duplicated from style.scss for editor/frontend parity
@@ -29,8 +29,8 @@
 
 	&__inner {
 		display: grid;
-		grid-template-columns: repeat(var(--dsg-counter-columns-desktop, 3), 1fr);
-		gap: var(--dsg-counter-gap, 32px);
+		grid-template-columns: repeat(var(--dsgo-counter-columns-desktop, 3), 1fr);
+		gap: var(--dsgo-counter-gap, 32px);
 		width: 100%;
 		box-sizing: border-box;
 		pointer-events: auto;
@@ -82,7 +82,7 @@
 	@media (max-width: 1023px) {
 
 		&__inner {
-			grid-template-columns: repeat(var(--dsg-counter-columns-tablet, 2), 1fr);
+			grid-template-columns: repeat(var(--dsgo-counter-columns-tablet, 2), 1fr);
 		}
 	}
 
@@ -90,7 +90,7 @@
 	@media (max-width: 767px) {
 
 		&__inner {
-			grid-template-columns: repeat(var(--dsg-counter-columns-mobile, 1), 1fr);
+			grid-template-columns: repeat(var(--dsgo-counter-columns-mobile, 1), 1fr);
 		}
 	}
 }

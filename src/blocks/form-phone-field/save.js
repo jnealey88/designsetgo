@@ -22,7 +22,10 @@ export default function FormPhoneFieldSave({ attributes }) {
 		fieldWidth,
 	} = attributes;
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--phone');
+	const fieldClasses = classnames(
+		'dsgo-form-field',
+		'dsgo-form-field--phone'
+	);
 
 	const blockProps = useBlockProps.save({
 		className: fieldClasses,
@@ -31,11 +34,11 @@ export default function FormPhoneFieldSave({ attributes }) {
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -71,11 +74,11 @@ export default function FormPhoneFieldSave({ attributes }) {
 
 	return (
 		<div {...blockProps}>
-			<label htmlFor={fieldId} className="dsg-form-field__label">
+			<label htmlFor={fieldId} className="dsgo-form-field__label">
 				{label}
 				{required && (
 					<span
-						className="dsg-form-field__required"
+						className="dsgo-form-field__required"
 						aria-label="required"
 					>
 						*
@@ -84,14 +87,14 @@ export default function FormPhoneFieldSave({ attributes }) {
 			</label>
 
 			<div
-				className="dsg-form-field__phone-wrapper"
+				className="dsgo-form-field__phone-wrapper"
 				style={{ display: 'flex', gap: '0.5rem' }}
 				data-auto-format={autoFormat}
 			>
 				{showCountryCode && (
 					<select
 						name={`${fieldName}_country_code`}
-						className="dsg-form-field__country-code"
+						className="dsgo-form-field__country-code"
 						defaultValue={countryCode}
 						style={{ minWidth: '85px', flexShrink: 0 }}
 						aria-label="Country Code"
@@ -115,7 +118,7 @@ export default function FormPhoneFieldSave({ attributes }) {
 					type="tel"
 					id={fieldId}
 					name={fieldName}
-					className="dsg-form-field__input"
+					className="dsgo-form-field__input"
 					placeholder={getPlaceholder()}
 					required={required || undefined}
 					defaultValue={defaultValue || undefined}
@@ -129,7 +132,7 @@ export default function FormPhoneFieldSave({ attributes }) {
 			</div>
 
 			{helpText && (
-				<p id={`${fieldId}-help`} className="dsg-form-field__help">
+				<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 					{helpText}
 				</p>
 			)}

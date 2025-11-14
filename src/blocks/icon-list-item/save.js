@@ -69,19 +69,19 @@ export default function IconListItemSave({ attributes, context = {} }) {
 				}),
 		...(iconColor && {
 			color: iconColor,
-			'--dsg-icon-color': iconColor,
+			'--dsgo-icon-color': iconColor,
 		}),
 	};
 
 	// Get block wrapper props
 	const blockProps = useBlockProps.save({
-		className: `dsg-icon-list-item dsg-icon-list-item--icon-${iconPosition}`,
+		className: `dsgo-icon-list-item dsgo-icon-list-item--icon-${iconPosition}`,
 		style: itemStyles,
 	});
 
 	// Configure inner blocks props
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-icon-list-item__content',
+		className: 'dsgo-icon-list-item__content',
 		style: {
 			textAlign: getTextAlign(),
 			display: 'flex',
@@ -103,7 +103,10 @@ export default function IconListItemSave({ attributes, context = {} }) {
 
 	return (
 		<ItemWrapper {...wrapperProps}>
-			<div className="dsg-icon-list-item__icon" style={iconWrapperStyles}>
+			<div
+				className="dsgo-icon-list-item__icon"
+				style={iconWrapperStyles}
+			>
 				{getIcon(icon)}
 			</div>
 

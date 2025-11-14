@@ -4,7 +4,7 @@
  * Implements expandable panels with background images and overlays
  */
 
-.dsg-image-accordion-item {
+.dsgo-image-accordion-item {
 	// Position and layout
 	position: relative;
 	flex: 1;
@@ -24,8 +24,8 @@
 		content: '';
 		position: absolute;
 		inset: 0;
-		background-color: var(--dsg-overlay-color, rgba(0, 0, 0, 0.4));
-		opacity: var(--dsg-overlay-opacity, 0.4);
+		background-color: var(--dsgo-overlay-color, rgba(0, 0, 0, 0.4));
+		opacity: var(--dsgo-overlay-opacity, 0.4);
 		transition: opacity 0.3s ease;
 		pointer-events: none;
 		z-index: 1;
@@ -44,8 +44,8 @@
 		display: flex;
 		flex-direction: column;
 		// Use alignment from attributes
-		justify-content: var(--dsg-vertical-alignment, center);
-		align-items: var(--dsg-horizontal-alignment, center);
+		justify-content: var(--dsgo-vertical-alignment, center);
+		align-items: var(--dsgo-horizontal-alignment, center);
 		color: #fff;
 
 		// Smooth content opacity transition
@@ -83,11 +83,11 @@
 	&.is-expanded {
 		flex: var(--expanded-ratio, 3);
 
-		&.dsg-image-accordion-item--has-overlay::before {
-			opacity: var(--dsg-overlay-opacity-expanded, 0.2);
+		&.dsgo-image-accordion-item--has-overlay::before {
+			opacity: var(--dsgo-overlay-opacity-expanded, 0.2);
 		}
 
-		.dsg-image-accordion-item__content {
+		.dsgo-image-accordion-item__content {
 			opacity: 1;
 		}
 	}
@@ -96,11 +96,11 @@
 	&.is-collapsed {
 		flex: 1;
 
-		&.dsg-image-accordion-item--has-overlay::before {
-			opacity: calc(var(--dsg-overlay-opacity, 0.4) + 0.2); // Darker when collapsed
+		&.dsgo-image-accordion-item--has-overlay::before {
+			opacity: calc(var(--dsgo-overlay-opacity, 0.4) + 0.2); // Darker when collapsed
 		}
 
-		.dsg-image-accordion-item__content {
+		.dsgo-image-accordion-item__content {
 			opacity: 0.7;
 		}
 	}
@@ -116,7 +116,7 @@
 // Accessibility: Reduce motion
 @media (prefers-reduced-motion: reduce) {
 
-	.dsg-image-accordion-item {
+	.dsgo-image-accordion-item {
 		transition: flex 0.1s ease;
 
 		&--has-overlay::before {
@@ -132,7 +132,7 @@
 // Print styles: Expand all items
 @media print {
 
-	.dsg-image-accordion-item {
+	.dsgo-image-accordion-item {
 		flex: 1 !important;
 		page-break-inside: avoid;
 	}

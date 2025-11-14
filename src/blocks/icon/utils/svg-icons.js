@@ -1469,7 +1469,7 @@ export const getIcon = (name, style = 'filled', strokeWidth = 1.5) => {
 	// The CSS will handle converting fill to stroke
 	return (
 		<span
-			className="dsg-icon-outlined"
+			className="dsgo-icon-outlined"
 			style={{
 				display: 'contents',
 				'--icon-stroke-width': strokeWidth,

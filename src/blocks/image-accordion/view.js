@@ -14,7 +14,7 @@
 /* global navigator */
 
 document.addEventListener('DOMContentLoaded', function () {
-	const accordions = document.querySelectorAll('.dsg-image-accordion');
+	const accordions = document.querySelectorAll('.dsgo-image-accordion');
 
 	// Detect touch devices
 	const isTouchDevice =
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			accordion.getAttribute('data-trigger-type') || 'hover';
 		const defaultExpandedIndex =
 			parseInt(accordion.getAttribute('data-default-expanded'), 10) || 0;
-		const items = accordion.querySelectorAll('.dsg-image-accordion-item');
+		const items = accordion.querySelectorAll('.dsgo-image-accordion-item');
 
 		if (items.length === 0) {
 			return;

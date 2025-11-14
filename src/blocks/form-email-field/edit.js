@@ -45,12 +45,15 @@ export default function FormEmailFieldEdit({
 	const fieldBackgroundColor =
 		context['designsetgo/form/fieldBackgroundColor'];
 
-	const fieldClasses = classnames('dsg-form-field', 'dsg-form-field--email');
+	const fieldClasses = classnames(
+		'dsgo-form-field',
+		'dsgo-form-field--email'
+	);
 
 	const fieldStyles = {
-		'--dsg-field-label-color': fieldLabelColor,
-		'--dsg-field-border-color': fieldBorderColor,
-		'--dsg-form-field-bg': fieldBackgroundColor,
+		'--dsgo-field-label-color': fieldLabelColor,
+		'--dsgo-field-border-color': fieldBorderColor,
+		'--dsgo-form-field-bg': fieldBackgroundColor,
 	};
 
 	const blockProps = useBlockProps({
@@ -61,11 +64,11 @@ export default function FormEmailFieldEdit({
 			flexBasis:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 			maxWidth:
 				fieldWidth === '100'
 					? '100%'
-					: `calc(${fieldWidth}% - var(--dsg-form-field-spacing, 1.5rem) / 2)`,
+					: `calc(${fieldWidth}% - var(--dsgo-form-field-spacing, 1.5rem) / 2)`,
 		},
 	});
 
@@ -185,23 +188,25 @@ export default function FormEmailFieldEdit({
 			<div {...blockProps}>
 				<label
 					htmlFor={`field-${clientId}`}
-					className="dsg-form-field__label"
+					className="dsgo-form-field__label"
 				>
 					{label}
 					{required && (
-						<span className="dsg-form-field__required">*</span>
+						<span className="dsgo-form-field__required">*</span>
 					)}
 				</label>
 
 				<input
 					type="email"
 					id={`field-${clientId}`}
-					className="dsg-form-field__input"
+					className="dsgo-form-field__input"
 					placeholder={placeholder}
 					disabled
 				/>
 
-				{helpText && <p className="dsg-form-field__help">{helpText}</p>}
+				{helpText && (
+					<p className="dsgo-form-field__help">{helpText}</p>
+				)}
 			</div>
 		</>
 	);

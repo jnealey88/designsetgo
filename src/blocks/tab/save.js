@@ -25,7 +25,7 @@ export default function Save({ attributes }) {
 	const { uniqueId, title, anchor, icon, iconPosition } = attributes;
 
 	const blockProps = useBlockProps.save({
-		className: 'dsg-tab',
+		className: 'dsgo-tab',
 		role: 'tabpanel',
 		'aria-labelledby': `tab-${uniqueId}`,
 		'aria-label': title || `Tab ${uniqueId}`,
@@ -44,7 +44,7 @@ export default function Save({ attributes }) {
 
 	// Use useInnerBlocksProps.save() for consistency
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsg-tab__content',
+		className: 'dsgo-tab__content',
 	});
 
 	return (

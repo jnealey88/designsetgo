@@ -83,14 +83,14 @@ function getUnitLabel(unitType, value) {
  * @param {Object}  timeData - Time data object
  */
 function updateCountdownDisplay(timer, timeData) {
-	const units = timer.querySelectorAll('.dsg-countdown-timer__unit');
+	const units = timer.querySelectorAll('.dsgo-countdown-timer__unit');
 
 	units.forEach((unit) => {
 		const unitType = unit.dataset.unitType;
 		const numberElement = unit.querySelector(
-			'.dsg-countdown-timer__number'
+			'.dsgo-countdown-timer__number'
 		);
-		const labelElement = unit.querySelector('.dsg-countdown-timer__label');
+		const labelElement = unit.querySelector('.dsgo-countdown-timer__label');
 
 		if (numberElement && timeData[unitType] !== undefined) {
 			numberElement.textContent = formatTimeUnit(timeData[unitType]);
@@ -120,10 +120,10 @@ function handleCompletion(timer) {
 	} else if (completionAction === 'message') {
 		// Hide units and show completion message
 		const unitsContainer = timer.querySelector(
-			'.dsg-countdown-timer__units'
+			'.dsgo-countdown-timer__units'
 		);
 		const messageContainer = timer.querySelector(
-			'.dsg-countdown-timer__completion-message'
+			'.dsgo-countdown-timer__completion-message'
 		);
 
 		if (unitsContainer) {
@@ -187,7 +187,7 @@ function initCountdownTimer(timer) {
  * Initialize all countdown timers on the page
  */
 function initAllCountdownTimers() {
-	const timers = document.querySelectorAll('.dsg-countdown-timer');
+	const timers = document.querySelectorAll('.dsgo-countdown-timer');
 
 	timers.forEach((timer) => {
 		// Use Intersection Observer for lazy initialization

@@ -12,8 +12,8 @@ export default function FormCheckboxFieldSave({ attributes }) {
 		attributes;
 
 	const fieldClasses = classnames(
-		'dsg-form-field',
-		'dsg-form-field--checkbox'
+		'dsgo-form-field',
+		'dsgo-form-field--checkbox'
 	);
 
 	const blockProps = useBlockProps.save({
@@ -24,12 +24,12 @@ export default function FormCheckboxFieldSave({ attributes }) {
 
 	return (
 		<div {...blockProps}>
-			<div className="dsg-form-field__checkbox-wrapper">
+			<div className="dsgo-form-field__checkbox-wrapper">
 				<input
 					type="checkbox"
 					id={fieldId}
 					name={fieldName}
-					className="dsg-form-field__checkbox-input"
+					className="dsgo-form-field__checkbox-input"
 					value={value}
 					defaultChecked={checkedByDefault || undefined}
 					required={required || undefined}
@@ -39,12 +39,12 @@ export default function FormCheckboxFieldSave({ attributes }) {
 				/>
 				<label
 					htmlFor={fieldId}
-					className="dsg-form-field__checkbox-label"
+					className="dsgo-form-field__checkbox-label"
 				>
 					<RichText.Content tagName="span" value={label} />
 					{required && (
 						<span
-							className="dsg-form-field__required"
+							className="dsgo-form-field__required"
 							aria-label="required"
 						>
 							{' '}
@@ -55,7 +55,7 @@ export default function FormCheckboxFieldSave({ attributes }) {
 			</div>
 
 			{helpText && (
-				<p id={`${fieldId}-help`} className="dsg-form-field__help">
+				<p id={`${fieldId}-help`} className="dsgo-form-field__help">
 					{helpText}
 				</p>
 			)}

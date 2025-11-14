@@ -10,7 +10,7 @@
  * Initialize all scroll accordions on the page
  */
 function initScrollAccordions() {
-	const accordions = document.querySelectorAll('.dsg-scroll-accordion');
+	const accordions = document.querySelectorAll('.dsgo-scroll-accordion');
 
 	if (!accordions.length) {
 		return;
@@ -23,19 +23,19 @@ function initScrollAccordions() {
 
 	accordions.forEach((accordion) => {
 		// Get all items
-		const items = accordion.querySelectorAll('.dsg-scroll-accordion-item');
+		const items = accordion.querySelectorAll('.dsgo-scroll-accordion-item');
 
 		if (!items.length) {
 			return;
 		}
 
 		// Ensure parent Sections aren't clipping sticky children
-		let stackWrapper = accordion.closest('.dsg-stack');
+		let stackWrapper = accordion.closest('.dsgo-stack');
 
 		while (stackWrapper) {
-			stackWrapper.classList.add('dsg-stack--allow-overflow');
+			stackWrapper.classList.add('dsgo-stack--allow-overflow');
 			stackWrapper = stackWrapper.parentElement
-				? stackWrapper.parentElement.closest('.dsg-stack')
+				? stackWrapper.parentElement.closest('.dsgo-stack')
 				: null;
 		}
 
