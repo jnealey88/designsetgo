@@ -208,22 +208,12 @@ class Plugin {
 		}
 
 		// Hook into WordPress.
-		add_action( 'init', array( $this, 'load_textdomain' ) );
+		// Note: load_plugin_textdomain() is not needed for WordPress.org plugins since WP 4.6+.
+		// WordPress automatically loads translations from wordpress.org.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'editor_assets' ) );
 
 		// Add block category.
 		add_filter( 'block_categories_all', array( $this, 'register_block_category' ), 10, 2 );
-	}
-
-	/**
-	 * Load plugin textdomain.
-	 */
-	public function load_textdomain() {
-		load_plugin_textdomain(
-			'designsetgo',
-			false,
-			dirname( DESIGNSETGO_BASENAME ) . '/languages'
-		);
 	}
 
 	/**
@@ -244,6 +234,20 @@ class Plugin {
 				$asset['dependencies'],
 				$asset['version'],
 				true
+			);
+
+			// Localize sticky header global settings for FSE controls.
+			$settings        = \DesignSetGo\Admin\Settings::get_settings();
+			$sticky_settings = isset( $settings['sticky_header'] ) ? $settings['sticky_header'] : array();
+			$defaults        = \DesignSetGo\Admin\Settings::get_defaults();
+			$sticky_settings = wp_parse_args( $sticky_settings, $defaults['sticky_header'] );
+
+			wp_localize_script(
+				'designsetgo-block-category-filter',
+				'dsgoStickyHeaderGlobalSettings',
+				array(
+					'enabled' => (bool) $sticky_settings['enable'],
+				)
 			);
 		}
 	}

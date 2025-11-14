@@ -25,6 +25,30 @@ class Sticky_Header {
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'wp_head', array( $this, 'output_inline_styles' ), 20 );
+		add_filter( 'body_class', array( $this, 'add_body_class' ) );
+	}
+
+	/**
+	 * Add body class when sticky header is enabled
+	 *
+	 * @param array $classes Body classes.
+	 * @return array Modified body classes.
+	 */
+	public function add_body_class( $classes ) {
+		// Get settings.
+		$settings        = \DesignSetGo\Admin\Settings::get_settings();
+		$sticky_settings = isset( $settings['sticky_header'] ) ? $settings['sticky_header'] : array();
+
+		// Merge with defaults.
+		$defaults        = \DesignSetGo\Admin\Settings::get_defaults();
+		$sticky_settings = wp_parse_args( $sticky_settings, $defaults['sticky_header'] );
+
+		// Add class if enabled.
+		if ( $sticky_settings['enable'] ) {
+			$classes[] = 'dsgo-sticky-header-enabled';
+		}
+
+		return $classes;
 	}
 
 	/**
@@ -104,10 +128,10 @@ class Sticky_Header {
 
 		// Only output critical inline styles.
 		?>
-		<style id="dsg-sticky-header-critical">
+		<style id="dsgo-sticky-header-critical">
 			:root {
-				--dsg-sticky-header-z-index: <?php echo absint( $sticky_settings['z_index'] ); ?>;
-				--dsg-sticky-header-transition-speed: <?php echo absint( $sticky_settings['transition_speed'] ); ?>ms;
+				--dsgo-sticky-header-z-index: <?php echo absint( $sticky_settings['z_index'] ); ?>;
+				--dsgo-sticky-header-transition-speed: <?php echo absint( $sticky_settings['transition_speed'] ); ?>ms;
 			}
 		</style>
 		<?php

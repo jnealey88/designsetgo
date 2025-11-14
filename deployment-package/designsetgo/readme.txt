@@ -1,9 +1,9 @@
 === DesignSetGo ===
 Contributors: justinnealey
 Donate link: https://designsetgoblocks.com/donate
-Tags: blocks, gutenberg, form builder, page builder, tabs, accordion, slider, flex, grid, animations, countdown, sticky header, responsive, custom css
+Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
@@ -325,7 +325,7 @@ DesignSetGo is built using WordPress standards and shouldn't conflict with well-
 
 == Changelog ==
 
-= 1.0.0 - 2025-01-XX =
+= 1.0.0 - 2025-11-12 =
 **Initial Release - 47 Professional Blocks + 7 Universal Extensions**
 
 **Container System (5 Blocks)**
