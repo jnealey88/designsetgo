@@ -24,8 +24,33 @@
 		overflow: visible;
 	}
 
-	// Smooth transition for hover background color
-	transition: background-color 0.3s ease;
+	// Position relative for hover overlay pseudo-element
+	position: relative;
+
+	// Hover background overlay - works with both gradients and solid colors
+	// Using ::after pseudo-element allows smooth opacity transition
+	// z-index: 0 (below overlay ::before and content)
+	&[style*="--dsgo-hover-bg-color"]::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: var(--dsgo-hover-bg-color);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		pointer-events: none;
+		z-index: 0;
+		border-radius: inherit;
+	}
+
+	// Ensure content is above all overlays
+	// NOTE: This is overridden for overlay blocks (z-index: 2 on .dsgo-stack__inner)
+	> *:not(.dsgo-stack__inner) {
+		position: relative;
+		z-index: 3;
+	}
 
 	/**
 	 * Background overlay
@@ -94,94 +119,6 @@
 		// Match WordPress default: children stretch to container width unless the user explicitly sets alignment.
 		align-items: stretch;
 
-		// CRITICAL: Inline/shrink-wrap blocks should respect alignment
-		// These blocks should shrink to content width so they can be centered/aligned
-		> .dsgo-pill,
-		> .wp-block-button,
-		> .wp-block-buttons,
-		> .dsgo-icon-button,
-		> .wp-block-designsetgo-icon-button {
-			align-self: flex-start; // Override to allow alignment
-			width: auto !important; // Shrink to content
-			max-width: none !important; // Remove WordPress's 1200px contentSize constraint
-		}
-
-		// CRITICAL: Block-level elements take full width by default
-		// Text blocks, groups, and most WordPress blocks
-		> :where(
-			.wp-block-heading,
-			.wp-block-paragraph,
-			.wp-block-group,
-			.wp-block-image,
-			.wp-block-video,
-			.wp-block-embed,
-			.wp-block-table,
-			.wp-block-list,
-			.dsgo-grid,
-			.wp-block-designsetgo-grid,
-			.dsgo-stack,
-			.wp-block-designsetgo-stack,
-			.dsgo-flex,
-			.wp-block-designsetgo-flex,
-			.wp-block-designsetgo-row,
-			.dsgo-tabs,
-			.wp-block-designsetgo-tabs,
-			.dsgo-accordion,
-			.wp-block-designsetgo-accordion,
-			.dsgo-scroll-marquee,
-			.wp-block-designsetgo-scroll-marquee
-		):not(.alignleft):not(.alignright):not(.alignfull):not(.alignwide) {
-			width: 100% !important;
-			max-width: none !important;
-			margin-left: 0 !important;
-			margin-right: 0 !important;
-		}
-
-		// Section center alignment - apply to inline blocks WITHOUT their own alignment
-		&.is-content-justification-center {
-
-			> :where(
-				.dsgo-pill,
-				.wp-block-designsetgo-pill,
-				.wp-block-button,
-				.wp-block-buttons,
-				.dsgo-icon-button,
-				.wp-block-designsetgo-icon-button
-			):not(.alignleft):not(.alignright):not(.aligncenter) {
-				align-self: center;
-			}
-		}
-
-		// Section right alignment - apply to inline blocks WITHOUT their own alignment
-		&.is-content-justification-right {
-
-			> :where(
-				.dsgo-pill,
-				.wp-block-designsetgo-pill,
-				.wp-block-button,
-				.wp-block-buttons,
-				.dsgo-icon-button,
-				.wp-block-designsetgo-icon-button
-			):not(.alignleft):not(.alignright):not(.aligncenter) {
-				align-self: flex-end;
-			}
-		}
-
-		// Section left alignment - apply to inline blocks WITHOUT their own alignment
-		&.is-content-justification-left {
-
-			> :where(
-				.dsgo-pill,
-				.wp-block-designsetgo-pill,
-				.wp-block-button,
-				.wp-block-buttons,
-				.dsgo-icon-button,
-				.wp-block-designsetgo-icon-button
-			):not(.alignleft):not(.alignright):not(.aligncenter) {
-				align-self: flex-start;
-			}
-		}
-
 		// Inline blocks WITH explicit alignment - override section alignment
 		> :where(
 			.wp-block-designsetgo-icon,
@@ -228,6 +165,53 @@
 			align-self: stretch !important;
 			width: 100% !important;
 		}
+	}
+
+	// ONLY apply full-width forcing when section has NO width constraints
+	&.dsgo-no-width-constraint .dsgo-stack__inner.is-layout-flex {
+
+		// CRITICAL: Inline/shrink-wrap blocks should respect alignment
+		// These blocks should shrink to content width so they can be centered/aligned
+		> .dsgo-pill,
+		> .wp-block-button,
+		> .wp-block-buttons,
+		> .dsgo-icon-button,
+		> .wp-block-designsetgo-icon-button {
+			align-self: flex-start; // Override to allow alignment
+			width: auto !important; // Shrink to content
+			max-width: none !important; // Remove WordPress's 1200px contentSize constraint
+		}
+
+		// CRITICAL: Block-level elements take full width by default
+		// Text blocks, groups, and most WordPress blocks
+		> :where(
+			.wp-block-heading,
+			.wp-block-paragraph,
+			.wp-block-group,
+			.wp-block-image,
+			.wp-block-video,
+			.wp-block-embed,
+			.wp-block-table,
+			.wp-block-list,
+			.dsgo-grid,
+			.wp-block-designsetgo-grid,
+			.dsgo-stack,
+			.wp-block-designsetgo-stack,
+			.dsgo-flex,
+			.wp-block-designsetgo-flex,
+			.wp-block-designsetgo-row,
+			.dsgo-tabs,
+			.wp-block-designsetgo-tabs,
+			.dsgo-accordion,
+			.wp-block-designsetgo-accordion,
+			.dsgo-scroll-marquee,
+			.wp-block-designsetgo-scroll-marquee
+		):not(.alignleft):not(.alignright):not(.alignfull):not(.alignwide) {
+			width: 100% !important;
+			max-width: none !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
 
 		// Old group structure (pre-6.0) with __inner-container
 		> :where(.wp-block-group, .wp-block-designsetgo-stack, .dsgo-stack)
@@ -260,6 +244,64 @@
 		}
 
 		// Gap is handled by WordPress's blockGap support
+	}
+
+	// When width constraints ARE enabled, allow blocks to be constrained
+	&:not(.dsgo-no-width-constraint) .dsgo-stack__inner.is-layout-flex {
+		// Inline blocks still shrink to content
+		> .dsgo-pill,
+		> .wp-block-button,
+		> .wp-block-buttons,
+		> .dsgo-icon-button,
+		> .wp-block-designsetgo-icon-button {
+			align-self: flex-start;
+			width: auto !important;
+		}
+	}
+
+	// Section center alignment - apply to inline blocks WITHOUT their own alignment
+	.dsgo-stack__inner.is-layout-flex.is-content-justification-center {
+
+		> :where(
+			.dsgo-pill,
+			.wp-block-designsetgo-pill,
+			.wp-block-button,
+			.wp-block-buttons,
+			.dsgo-icon-button,
+			.wp-block-designsetgo-icon-button
+		):not(.alignleft):not(.alignright):not(.aligncenter) {
+			align-self: center;
+		}
+	}
+
+	// Section right alignment - apply to inline blocks WITHOUT their own alignment
+	.dsgo-stack__inner.is-layout-flex.is-content-justification-right {
+
+		> :where(
+			.dsgo-pill,
+			.wp-block-designsetgo-pill,
+			.wp-block-button,
+			.wp-block-buttons,
+			.dsgo-icon-button,
+			.wp-block-designsetgo-icon-button
+		):not(.alignleft):not(.alignright):not(.aligncenter) {
+			align-self: flex-end;
+		}
+	}
+
+	// Section left alignment - apply to inline blocks WITHOUT their own alignment
+	.dsgo-stack__inner.is-layout-flex.is-content-justification-left {
+
+		> :where(
+			.dsgo-pill,
+			.wp-block-designsetgo-pill,
+			.wp-block-button,
+			.wp-block-buttons,
+			.dsgo-icon-button,
+			.wp-block-designsetgo-icon-button
+		):not(.alignleft):not(.alignright):not(.aligncenter) {
+			align-self: flex-start;
+		}
 	}
 
 	// Text alignment helpers for inline-width children
@@ -315,11 +357,10 @@
 	// Hover background and text colors using CSS custom properties
 	// CRITICAL: Only apply hover when variables are actually set on THIS element
 	&:hover {
-		// Only apply background if hover background is set
-		// !important needed to override WordPress color classes and gradients
-		// Use 'background' instead of 'background-color' to override gradients
-		&[style*="--dsgo-hover-bg-color"] {
-			background: var(--dsgo-hover-bg-color) !important;
+		// Fade in the hover background overlay (::after pseudo-element)
+		// This allows smooth transition from gradient to solid color
+		&[style*="--dsgo-hover-bg-color"]::after {
+			opacity: 1;
 		}
 
 		// Only apply text color if hover text color is set

@@ -19,11 +19,31 @@
 		overflow: visible;
 	}
 
-	// Smooth transition for hover background color
-	transition: background-color 0.3s ease;
-
 	// Visual indicator in editor
 	position: relative;
+
+	// Hover background overlay - works with both gradients and solid colors
+	// Using ::after pseudo-element allows smooth opacity transition
+	&[style*="--dsgo-hover-bg-color"]::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: var(--dsgo-hover-bg-color);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		pointer-events: none;
+		z-index: 0;
+		border-radius: inherit;
+	}
+
+	// Ensure content is above hover overlay
+	> *:not(.dsgo-stack__inner) {
+		position: relative;
+		z-index: 3;
+	}
 
 	/**
 	 * Background overlay for editor
@@ -58,6 +78,18 @@
 		width: 100%;
 		// Ensure inner container doesn't create positioning context for absolute children
 		position: static;
+	}
+
+	// When width constraints ARE enabled (no dsgo-no-width-constraint class)
+	// Ensure child blocks don't exceed the inner container's max-width
+	&:not(.dsgo-no-width-constraint) .dsgo-stack__inner.is-layout-flex > [data-block] {
+		// Allow child blocks to be constrained by parent's max-width
+		max-width: 100%;
+
+		// Reset any forced full-width from WordPress or other sources
+		> * {
+			max-width: 100%;
+		}
 	}
 
 	// CRITICAL: When section has content, position appender at outer container corner
@@ -111,7 +143,8 @@
 
 	// CRITICAL: In editor, blocks are wrapped in [data-block] elements inside .dsgo-stack__inner
 	// NOTE: .is-layout-flex is on the dsgo-stack__inner element, not the outer wrapper
-	.dsgo-stack__inner.is-layout-flex > [data-block] {
+	// ONLY apply when section has NO width constraints (dsgo-no-width-constraint class)
+	&.dsgo-no-width-constraint .dsgo-stack__inner.is-layout-flex > [data-block] {
 		// Auto width by default for alignment to work
 		width: auto;
 		max-width: 100%;
@@ -208,11 +241,10 @@
 	// Hover background and text colors using CSS custom properties (must match style.scss)
 	// CRITICAL: Only apply hover when variables are actually set on THIS element
 	&:hover {
-		// Only apply background if hover background is set
-		// !important needed to override WordPress color classes and gradients
-		// Use 'background' instead of 'background-color' to override gradients
-		&[style*="--dsgo-hover-bg-color"] {
-			background: var(--dsgo-hover-bg-color) !important;
+		// Fade in the hover background overlay (::after pseudo-element)
+		// This allows smooth transition from gradient to solid color
+		&[style*="--dsgo-hover-bg-color"]::after {
+			opacity: 1;
 		}
 
 		// Only apply text color if hover text color is set
