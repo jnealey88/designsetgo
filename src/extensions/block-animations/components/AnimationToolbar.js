@@ -42,7 +42,7 @@ const AnimationIcon = () => (
  * @return {JSX.Element|null} Toolbar component
  */
 export default function AnimationToolbar({ attributes, setAttributes }) {
-	const { dsgAnimationEnabled, dsgEntranceAnimation } = attributes;
+	const { dsgoAnimationEnabled, dsgoEntranceAnimation } = attributes;
 
 	return (
 		<BlockControls group="block">
@@ -57,7 +57,7 @@ export default function AnimationToolbar({ attributes, setAttributes }) {
 							label={__('Animations', 'designsetgo')}
 							onClick={onToggle}
 							aria-expanded={isOpen}
-							isPressed={dsgAnimationEnabled}
+							isPressed={dsgoAnimationEnabled}
 						/>
 					)}
 					renderContent={() => (
@@ -67,11 +67,11 @@ export default function AnimationToolbar({ attributes, setAttributes }) {
 							<MenuItem
 								onClick={() =>
 									setAttributes({
-										dsgAnimationEnabled:
-											!dsgAnimationEnabled,
+										dsgoAnimationEnabled:
+											!dsgoAnimationEnabled,
 									})
 								}
-								isSelected={!dsgAnimationEnabled}
+								isSelected={!dsgoAnimationEnabled}
 							>
 								{__('None', 'designsetgo')}
 							</MenuItem>
@@ -83,15 +83,15 @@ export default function AnimationToolbar({ attributes, setAttributes }) {
 										key={animation.value}
 										onClick={() =>
 											setAttributes({
-												dsgAnimationEnabled: true,
-												dsgEntranceAnimation:
+												dsgoAnimationEnabled: true,
+												dsgoEntranceAnimation:
 													animation.value,
-												dsgAnimationTrigger: 'scroll',
+												dsgoAnimationTrigger: 'scroll',
 											})
 										}
 										isSelected={
-											dsgAnimationEnabled &&
-											dsgEntranceAnimation ===
+											dsgoAnimationEnabled &&
+											dsgoEntranceAnimation ===
 												animation.value
 										}
 									>

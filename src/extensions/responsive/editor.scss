@@ -11,7 +11,7 @@
  * Blocks with responsive visibility
  * Adds subtle outline for visual feedback
  */
-.dsg-has-responsive-visibility {
+.dsgo-has-responsive-visibility {
 	position: relative;
 	outline: 1px dashed rgba(0, 115, 170, 0.25);
 	outline-offset: -1px;
@@ -22,7 +22,7 @@
  * Shows which devices the block is hidden on using abbreviations:
  * D = Desktop, T = Tablet, M = Mobile
  */
-.dsg-has-responsive-visibility::before {
+.dsgo-has-responsive-visibility::before {
 	content: attr(data-hidden-devices);
 	position: absolute;
 	top: 4px;
@@ -43,7 +43,7 @@
 /**
  * Hover state - make badge more prominent
  */
-.dsg-has-responsive-visibility:hover::before {
+.dsgo-has-responsive-visibility:hover::before {
 	background-color: rgba(0, 115, 170, 1);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -51,7 +51,7 @@
 /**
  * Selected state - slightly stronger outline
  */
-.dsg-has-responsive-visibility.is-selected {
+.dsgo-has-responsive-visibility.is-selected {
 	outline-color: rgba(0, 115, 170, 0.4);
 	outline-width: 2px;
 }
@@ -60,10 +60,10 @@
  * Warning state when block is hidden on all devices
  * Changes badge color to red
  */
-.dsg-has-responsive-visibility[data-hidden-devices="DTM"]::before {
+.dsgo-has-responsive-visibility[data-hidden-devices="DTM"]::before {
 	background-color: rgba(214, 54, 56, 0.95);
 }
 
-.dsg-has-responsive-visibility[data-hidden-devices="DTM"]:hover::before {
+.dsgo-has-responsive-visibility[data-hidden-devices="DTM"]:hover::before {
 	background-color: rgba(214, 54, 56, 1);
 }

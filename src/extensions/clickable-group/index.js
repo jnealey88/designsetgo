@@ -54,15 +54,15 @@ function addLinkAttributes(settings, name) {
 		...settings,
 		attributes: {
 			...settings.attributes,
-			dsgLinkUrl: {
+			dsgoLinkUrl: {
 				type: 'string',
 				default: '',
 			},
-			dsgLinkTarget: {
+			dsgoLinkTarget: {
 				type: 'boolean',
 				default: false,
 			},
-			dsgLinkRel: {
+			dsgoLinkRel: {
 				type: 'string',
 				default: '',
 			},
@@ -87,7 +87,7 @@ const withLinkControls = createHigherOrderComponent((BlockEdit) => {
 			return <BlockEdit {...props} />;
 		}
 
-		const { dsgLinkUrl, dsgLinkTarget, dsgLinkRel } = attributes;
+		const { dsgoLinkUrl, dsgoLinkTarget, dsgoLinkRel } = attributes;
 
 		return (
 			<Fragment>
@@ -105,10 +105,10 @@ const withLinkControls = createHigherOrderComponent((BlockEdit) => {
 						</p>
 						<TextControl
 							label={__('URL', 'designsetgo')}
-							value={dsgLinkUrl}
+							value={dsgoLinkUrl}
 							onChange={(value) =>
 								setAttributes({
-									dsgLinkUrl: value?.trim() || '',
+									dsgoLinkUrl: value?.trim() || '',
 								})
 							}
 							placeholder="https://example.com"
@@ -118,13 +118,13 @@ const withLinkControls = createHigherOrderComponent((BlockEdit) => {
 							)}
 							__nextHasNoMarginBottom
 						/>
-						{dsgLinkUrl && (
+						{dsgoLinkUrl && (
 							<Fragment>
 								<ToggleControl
 									label={__('Open in new tab', 'designsetgo')}
-									checked={dsgLinkTarget}
+									checked={dsgoLinkTarget}
 									onChange={(value) =>
-										setAttributes({ dsgLinkTarget: value })
+										setAttributes({ dsgoLinkTarget: value })
 									}
 									help={__(
 										'Open link in a new browser tab',
@@ -134,9 +134,9 @@ const withLinkControls = createHigherOrderComponent((BlockEdit) => {
 								/>
 								<TextControl
 									label={__('Link Rel', 'designsetgo')}
-									value={dsgLinkRel}
+									value={dsgoLinkRel}
 									onChange={(value) =>
-										setAttributes({ dsgLinkRel: value })
+										setAttributes({ dsgoLinkRel: value })
 									}
 									placeholder="nofollow noopener"
 									help={__(
@@ -146,7 +146,7 @@ const withLinkControls = createHigherOrderComponent((BlockEdit) => {
 									__nextHasNoMarginBottom
 								/>
 								<div style={{ marginTop: '16px' }}>
-									<ExternalLink href={dsgLinkUrl}>
+									<ExternalLink href={dsgoLinkUrl}>
 										{__('Preview link', 'designsetgo')}
 									</ExternalLink>
 								</div>
@@ -176,13 +176,13 @@ const withClickableClass = createHigherOrderComponent((BlockListBlock) => {
 			return <BlockListBlock {...props} />;
 		}
 
-		const { dsgLinkUrl } = attributes;
+		const { dsgoLinkUrl } = attributes;
 
 		// Only add class if URL exists and is not empty after trimming
-		const hasValidUrl = dsgLinkUrl && dsgLinkUrl.trim().length > 0;
+		const hasValidUrl = dsgoLinkUrl && dsgoLinkUrl.trim().length > 0;
 
 		const classes = classnames({
-			'dsg-clickable': hasValidUrl,
+			'dsgo-clickable': hasValidUrl,
 		});
 
 		return <BlockListBlock {...props} className={classes} />;
@@ -208,27 +208,27 @@ function addLinkSaveProps(extraProps, blockType, attributes) {
 		return extraProps;
 	}
 
-	const { dsgLinkUrl, dsgLinkTarget, dsgLinkRel } = attributes;
+	const { dsgoLinkUrl, dsgoLinkTarget, dsgoLinkRel } = attributes;
 
 	// Only apply link functionality if URL exists and is not empty after trimming
-	if (!dsgLinkUrl || dsgLinkUrl.trim().length === 0) {
+	if (!dsgoLinkUrl || dsgoLinkUrl.trim().length === 0) {
 		return extraProps;
 	}
 
 	// Add clickable class
-	const classes = classnames(extraProps.className, 'dsg-clickable');
+	const classes = classnames(extraProps.className, 'dsgo-clickable');
 
 	// Add link data attributes for frontend rendering
 	const linkProps = {
-		'data-link-url': dsgLinkUrl,
+		'data-link-url': dsgoLinkUrl,
 	};
 
-	if (dsgLinkTarget) {
+	if (dsgoLinkTarget) {
 		linkProps['data-link-target'] = '_blank';
 	}
 
-	if (dsgLinkRel) {
-		linkProps['data-link-rel'] = dsgLinkRel;
+	if (dsgoLinkRel) {
+		linkProps['data-link-rel'] = dsgoLinkRel;
 	}
 
 	return {

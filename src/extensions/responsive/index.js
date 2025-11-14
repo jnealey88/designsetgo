@@ -31,15 +31,15 @@ function addResponsiveVisibilityAttributes(settings) {
 		...settings,
 		attributes: {
 			...settings.attributes,
-			dsgHideOnDesktop: {
+			dsgoHideOnDesktop: {
 				type: 'boolean',
 				default: false,
 			},
-			dsgHideOnTablet: {
+			dsgoHideOnTablet: {
 				type: 'boolean',
 				default: false,
 			},
-			dsgHideOnMobile: {
+			dsgoHideOnMobile: {
 				type: 'boolean',
 				default: false,
 			},
@@ -60,7 +60,7 @@ const withResponsiveVisibilityControl = createHigherOrderComponent(
 	(BlockEdit) => {
 		return (props) => {
 			const { attributes, setAttributes } = props;
-			const { dsgHideOnDesktop, dsgHideOnTablet, dsgHideOnMobile } =
+			const { dsgoHideOnDesktop, dsgoHideOnTablet, dsgoHideOnMobile } =
 				attributes;
 
 			return (
@@ -77,9 +77,9 @@ const withResponsiveVisibilityControl = createHigherOrderComponent(
 									'Hide this block on desktop devices (≥1024px)',
 									'designsetgo'
 								)}
-								checked={dsgHideOnDesktop}
+								checked={dsgoHideOnDesktop}
 								onChange={(value) =>
-									setAttributes({ dsgHideOnDesktop: value })
+									setAttributes({ dsgoHideOnDesktop: value })
 								}
 								__nextHasNoMarginBottom
 							/>
@@ -89,9 +89,9 @@ const withResponsiveVisibilityControl = createHigherOrderComponent(
 									'Hide this block on tablet devices (768px-1023px)',
 									'designsetgo'
 								)}
-								checked={dsgHideOnTablet}
+								checked={dsgoHideOnTablet}
 								onChange={(value) =>
-									setAttributes({ dsgHideOnTablet: value })
+									setAttributes({ dsgoHideOnTablet: value })
 								}
 								__nextHasNoMarginBottom
 							/>
@@ -101,9 +101,9 @@ const withResponsiveVisibilityControl = createHigherOrderComponent(
 									'Hide this block on mobile devices (<768px)',
 									'designsetgo'
 								)}
-								checked={dsgHideOnMobile}
+								checked={dsgoHideOnMobile}
 								onChange={(value) =>
-									setAttributes({ dsgHideOnMobile: value })
+									setAttributes({ dsgoHideOnMobile: value })
 								}
 								__nextHasNoMarginBottom
 							/>
@@ -131,18 +131,18 @@ const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 	(BlockListBlock) => {
 		return (props) => {
 			const { attributes, className, wrapperProps = {} } = props;
-			const { dsgHideOnDesktop, dsgHideOnTablet, dsgHideOnMobile } =
+			const { dsgoHideOnDesktop, dsgoHideOnTablet, dsgoHideOnMobile } =
 				attributes;
 
 			// Determine which devices the block is hidden on
 			const hiddenDevices = [];
-			if (dsgHideOnDesktop) {
+			if (dsgoHideOnDesktop) {
 				hiddenDevices.push('D');
 			}
-			if (dsgHideOnTablet) {
+			if (dsgoHideOnTablet) {
 				hiddenDevices.push('T');
 			}
-			if (dsgHideOnMobile) {
+			if (dsgoHideOnMobile) {
 				hiddenDevices.push('M');
 			}
 
@@ -153,7 +153,7 @@ const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 
 			// Add indicator class
 			const updatedClassName =
-				`${className || ''} dsg-has-responsive-visibility`.trim();
+				`${className || ''} dsgo-has-responsive-visibility`.trim();
 
 			// Create updated wrapper props with data attribute
 			const updatedWrapperProps = {
@@ -189,18 +189,19 @@ addFilter(
  * @return {Object} Modified props with responsive visibility classes
  */
 function applyResponsiveVisibilityClasses(props, blockType, attributes) {
-	const { dsgHideOnDesktop, dsgHideOnTablet, dsgHideOnMobile } = attributes;
+	const { dsgoHideOnDesktop, dsgoHideOnTablet, dsgoHideOnMobile } =
+		attributes;
 
 	// Build array of CSS classes to apply
 	const visibilityClasses = [];
-	if (dsgHideOnDesktop) {
-		visibilityClasses.push('dsg-hide-desktop');
+	if (dsgoHideOnDesktop) {
+		visibilityClasses.push('dsgo-hide-desktop');
 	}
-	if (dsgHideOnTablet) {
-		visibilityClasses.push('dsg-hide-tablet');
+	if (dsgoHideOnTablet) {
+		visibilityClasses.push('dsgo-hide-tablet');
 	}
-	if (dsgHideOnMobile) {
-		visibilityClasses.push('dsg-hide-mobile');
+	if (dsgoHideOnMobile) {
+		visibilityClasses.push('dsgo-hide-mobile');
 	}
 
 	// Only modify if we have classes to add

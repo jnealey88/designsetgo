@@ -68,7 +68,7 @@ export function generateSpacingCSS(selector, type, values) {
  * @return {string} Unique ID.
  */
 export function generateUniqueId() {
-	return `dsg-${Math.random().toString(36).substr(2, 9)}`;
+	return `dsgo-${Math.random().toString(36).substr(2, 9)}`;
 }
 
 /**

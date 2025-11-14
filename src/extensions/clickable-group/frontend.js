@@ -36,7 +36,7 @@ function isValidHttpUrl(url) {
 
 document.addEventListener('DOMContentLoaded', function () {
 	// Find all clickable groups
-	const clickableGroups = document.querySelectorAll('.dsg-clickable');
+	const clickableGroups = document.querySelectorAll('.dsgo-clickable');
 
 	clickableGroups.forEach((group) => {
 		const linkUrl = group.getAttribute('data-link-url');

@@ -35,9 +35,9 @@
  * - Most content blocks (Paragraph, Heading, Image, etc.)
  * - WordPress core blocks
  */
-.dsg-stack__inner,
-.dsg-flex__inner,
-.dsg-grid__inner {
+.dsgo-stack__inner,
+.dsgo-flex__inner,
+.dsgo-grid__inner {
 
 	> .wp-block {
 		width: 100%;
@@ -53,9 +53,9 @@
  * stretching to full width. Users can manually set width via alignment
  * or custom controls if needed.
  */
-.dsg-stack__inner,
-.dsg-flex__inner,
-.dsg-grid__inner {
+.dsgo-stack__inner,
+.dsgo-flex__inner,
+.dsgo-grid__inner {
 	// Icon blocks - inline by nature
 	> .wp-block-designsetgo-icon {
 		width: fit-content !important;
@@ -89,9 +89,9 @@
  * Respect WordPress alignment classes. These override default full-width
  * behavior when users explicitly set alignment.
  */
-.dsg-stack__inner,
-.dsg-flex__inner,
-.dsg-grid__inner {
+.dsgo-stack__inner,
+.dsgo-flex__inner,
+.dsgo-grid__inner {
 	// Left-aligned blocks
 	> .alignleft {
 		width: auto;
@@ -129,9 +129,9 @@
  * When a block inside a constrained container is set to alignfull,
  * it should break out to full viewport width if theme supports it.
  */
-.dsg-stack__inner,
-.dsg-flex__inner,
-.dsg-grid__inner {
+.dsgo-stack__inner,
+.dsgo-flex__inner,
+.dsgo-grid__inner {
 
 	> .alignfull {
 		width: 100vw;
@@ -179,9 +179,9 @@
  * should span full width of its parent (not inherit parent's width constraint).
  * This allows nested containers to have their own width settings.
  */
-.dsg-stack__inner,
-.dsg-flex__inner,
-.dsg-grid__inner {
+.dsgo-stack__inner,
+.dsgo-flex__inner,
+.dsgo-grid__inner {
 	// Force nested containers to full width
 	> .wp-block-designsetgo-section,
 	> .wp-block-designsetgo-row,
@@ -189,9 +189,9 @@
 		width: 100% !important;
 
 		// Reset inner width constraints so nested container can set its own
-		> .dsg-stack__inner,
-		> .dsg-flex__inner,
-		> .dsg-grid__inner {
+		> .dsgo-stack__inner,
+		> .dsgo-flex__inner,
+		> .dsgo-grid__inner {
 			max-width: none !important;
 			margin-left: 0 !important;
 			margin-right: 0 !important;
@@ -207,9 +207,9 @@
  * Interactive blocks should always fill parent container width.
  * Users should use Section/Row/Grid for layout if they want to constrain these.
  */
-.dsg-stack__inner,
-.dsg-flex__inner,
-.dsg-grid__inner {
+.dsgo-stack__inner,
+.dsgo-flex__inner,
+.dsgo-grid__inner {
 
 	> .wp-block-designsetgo-accordion,
 	> .wp-block-designsetgo-tabs {
@@ -223,16 +223,16 @@
  * NO WIDTH CONSTRAINT MODE
  * ============================================================================
  *
- * When a container has constrainWidth=false (dsg-no-width-constraint class),
+ * When a container has constrainWidth=false (dsgo-no-width-constraint class),
  * ensure all children can use full width without constraint.
  */
-.dsg-stack.dsg-no-width-constraint,
-.dsg-flex.dsg-no-width-constraint,
-.dsg-grid.dsg-no-width-constraint {
+.dsgo-stack.dsgo-no-width-constraint,
+.dsgo-flex.dsgo-no-width-constraint,
+.dsgo-grid.dsgo-no-width-constraint {
 
-	> .dsg-stack__inner,
-	> .dsg-flex__inner,
-	> .dsg-grid__inner {
+	> .dsgo-stack__inner,
+	> .dsgo-flex__inner,
+	> .dsgo-grid__inner {
 
 		> :not(.alignleft):not(.alignright) {
 			max-width: none !important;

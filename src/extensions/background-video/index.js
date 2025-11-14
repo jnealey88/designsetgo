@@ -60,31 +60,31 @@ function addBackgroundVideoAttributes(settings, name) {
 		...settings,
 		attributes: {
 			...settings.attributes,
-			dsgVideoUrl: {
+			dsgoVideoUrl: {
 				type: 'string',
 				default: '',
 			},
-			dsgVideoPoster: {
+			dsgoVideoPoster: {
 				type: 'string',
 				default: '',
 			},
-			dsgVideoMuted: {
+			dsgoVideoMuted: {
 				type: 'boolean',
 				default: true,
 			},
-			dsgVideoLoop: {
+			dsgoVideoLoop: {
 				type: 'boolean',
 				default: true,
 			},
-			dsgVideoAutoplay: {
+			dsgoVideoAutoplay: {
 				type: 'boolean',
 				default: true,
 			},
-			dsgVideoMobileHide: {
+			dsgoVideoMobileHide: {
 				type: 'boolean',
 				default: true,
 			},
-			dsgVideoOverlayColor: {
+			dsgoVideoOverlayColor: {
 				type: 'string',
 				default: '',
 			},
@@ -105,13 +105,13 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, name, clientId } = props;
 		const {
-			dsgVideoUrl,
-			dsgVideoPoster,
-			dsgVideoMuted,
-			dsgVideoLoop,
-			dsgVideoAutoplay,
-			dsgVideoMobileHide,
-			dsgVideoOverlayColor,
+			dsgoVideoUrl,
+			dsgoVideoPoster,
+			dsgoVideoMuted,
+			dsgoVideoLoop,
+			dsgoVideoAutoplay,
+			dsgoVideoMobileHide,
+			dsgoVideoOverlayColor,
 		} = attributes;
 
 		const colorGradientSettings = useMultipleOriginColorsAndGradients();
@@ -123,7 +123,7 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 		return (
 			<Fragment>
 				<BlockEdit {...props} />
-				{dsgVideoUrl && (
+				{dsgoVideoUrl && (
 					<InspectorControls group="color">
 						<ColorGradientSettingsDropdown
 							panelId={clientId}
@@ -134,10 +134,10 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 										'Video Overlay Color',
 										'designsetgo'
 									),
-									colorValue: dsgVideoOverlayColor,
+									colorValue: dsgoVideoOverlayColor,
 									onColorChange: (color) => {
 										setAttributes({
-											dsgVideoOverlayColor: color || '',
+											dsgoVideoOverlayColor: color || '',
 										});
 									},
 									clearable: true,
@@ -156,17 +156,17 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 							<MediaUpload
 								onSelect={(media) => {
 									setAttributes({
-										dsgVideoUrl: media.url,
+										dsgoVideoUrl: media.url,
 									});
 								}}
 								allowedTypes={['video']}
-								value={dsgVideoUrl}
+								value={dsgoVideoUrl}
 								render={({ open }) => (
-									<div className="dsg-video-upload">
-										{dsgVideoUrl ? (
+									<div className="dsgo-video-upload">
+										{dsgoVideoUrl ? (
 											<Fragment>
 												<video
-													src={dsgVideoUrl}
+													src={dsgoVideoUrl}
 													autoPlay
 													loop
 													muted
@@ -194,8 +194,8 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 												<Button
 													onClick={() =>
 														setAttributes({
-															dsgVideoUrl: '',
-															dsgVideoPoster: '',
+															dsgoVideoUrl: '',
+															dsgoVideoPoster: '',
 														})
 													}
 													variant="secondary"
@@ -224,20 +224,20 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 							/>
 						</MediaUploadCheck>
 
-						{dsgVideoUrl && (
+						{dsgoVideoUrl && (
 							<Fragment>
 								<div style={{ marginTop: '16px' }}>
 									<MediaUploadCheck>
 										<MediaUpload
 											onSelect={(media) => {
 												setAttributes({
-													dsgVideoPoster: media.url,
+													dsgoVideoPoster: media.url,
 												});
 											}}
 											allowedTypes={['image']}
-											value={dsgVideoPoster}
+											value={dsgoVideoPoster}
 											render={({ open }) => (
-												<div className="dsg-poster-upload">
+												<div className="dsgo-poster-upload">
 													<div
 														style={{
 															display: 'block',
@@ -253,11 +253,11 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 															'designsetgo'
 														)}
 													</div>
-													{dsgVideoPoster ? (
+													{dsgoVideoPoster ? (
 														<Fragment>
 															<img
 																src={
-																	dsgVideoPoster
+																	dsgoVideoPoster
 																}
 																alt={__(
 																	'Video poster',
@@ -293,7 +293,7 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 																onClick={() =>
 																	setAttributes(
 																		{
-																			dsgVideoPoster:
+																			dsgoVideoPoster:
 																				'',
 																		}
 																	)
@@ -328,10 +328,10 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 
 								<ToggleControl
 									label={__('Autoplay', 'designsetgo')}
-									checked={dsgVideoAutoplay}
+									checked={dsgoVideoAutoplay}
 									onChange={(value) =>
 										setAttributes({
-											dsgVideoAutoplay: value,
+											dsgoVideoAutoplay: value,
 										})
 									}
 									help={__(
@@ -343,9 +343,9 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 
 								<ToggleControl
 									label={__('Loop', 'designsetgo')}
-									checked={dsgVideoLoop}
+									checked={dsgoVideoLoop}
 									onChange={(value) =>
-										setAttributes({ dsgVideoLoop: value })
+										setAttributes({ dsgoVideoLoop: value })
 									}
 									help={__(
 										'Restart video when it ends',
@@ -356,9 +356,9 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 
 								<ToggleControl
 									label={__('Muted', 'designsetgo')}
-									checked={dsgVideoMuted}
+									checked={dsgoVideoMuted}
 									onChange={(value) =>
-										setAttributes({ dsgVideoMuted: value })
+										setAttributes({ dsgoVideoMuted: value })
 									}
 									help={__(
 										'Mute audio (required for autoplay)',
@@ -369,10 +369,10 @@ const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
 
 								<ToggleControl
 									label={__('Hide on Mobile', 'designsetgo')}
-									checked={dsgVideoMobileHide}
+									checked={dsgoVideoMobileHide}
 									onChange={(value) =>
 										setAttributes({
-											dsgVideoMobileHide: value,
+											dsgoVideoMobileHide: value,
 										})
 									}
 									help={__(
@@ -403,17 +403,17 @@ addFilter(
 const withBackgroundVideoEdit = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, name } = props;
-		const { dsgVideoUrl, dsgVideoPoster, dsgVideoOverlayColor } =
+		const { dsgoVideoUrl, dsgoVideoPoster, dsgoVideoOverlayColor } =
 			attributes;
 
-		if (!ALLOWED_BLOCKS.includes(name) || !dsgVideoUrl) {
+		if (!ALLOWED_BLOCKS.includes(name) || !dsgoVideoUrl) {
 			return <BlockListBlock {...props} />;
 		}
 
 		// Apply 70% opacity to overlay color if set
-		const overlayStyle = dsgVideoOverlayColor
+		const overlayStyle = dsgoVideoOverlayColor
 			? {
-					backgroundColor: dsgVideoOverlayColor,
+					backgroundColor: dsgoVideoOverlayColor,
 					opacity: 0.7,
 					position: 'absolute',
 					top: 0,
@@ -426,9 +426,9 @@ const withBackgroundVideoEdit = createHigherOrderComponent((BlockListBlock) => {
 			: null;
 
 		return (
-			<div className="dsg-has-video-background">
+			<div className="dsgo-has-video-background">
 				<div
-					className="dsg-video-background-editor"
+					className="dsgo-video-background-editor"
 					style={{
 						position: 'absolute',
 						top: 0,
@@ -441,8 +441,8 @@ const withBackgroundVideoEdit = createHigherOrderComponent((BlockListBlock) => {
 					}}
 				>
 					<video
-						src={dsgVideoUrl}
-						poster={dsgVideoPoster}
+						src={dsgoVideoUrl}
+						poster={dsgoVideoPoster}
 						autoPlay
 						loop
 						muted
@@ -476,24 +476,24 @@ addFilter(
  * @return {Object} Modified props.
  */
 function addBackgroundVideoSaveProps(props, blockType, attributes) {
-	const { dsgVideoUrl } = attributes;
+	const { dsgoVideoUrl } = attributes;
 
-	if (!dsgVideoUrl) {
+	if (!dsgoVideoUrl) {
 		return props;
 	}
 
 	return {
 		...props,
-		className: `${props.className || ''} dsg-has-video-background`.trim(),
-		'data-video-url': dsgVideoUrl,
-		'data-video-poster': attributes.dsgVideoPoster || '',
-		'data-video-muted': attributes.dsgVideoMuted ? 'true' : 'false',
-		'data-video-loop': attributes.dsgVideoLoop ? 'true' : 'false',
-		'data-video-autoplay': attributes.dsgVideoAutoplay ? 'true' : 'false',
-		'data-video-mobile-hide': attributes.dsgVideoMobileHide
+		className: `${props.className || ''} dsgo-has-video-background`.trim(),
+		'data-video-url': dsgoVideoUrl,
+		'data-video-poster': attributes.dsgoVideoPoster || '',
+		'data-video-muted': attributes.dsgoVideoMuted ? 'true' : 'false',
+		'data-video-loop': attributes.dsgoVideoLoop ? 'true' : 'false',
+		'data-video-autoplay': attributes.dsgoVideoAutoplay ? 'true' : 'false',
+		'data-video-mobile-hide': attributes.dsgoVideoMobileHide
 			? 'true'
 			: 'false',
-		'data-video-overlay-color': attributes.dsgVideoOverlayColor || '',
+		'data-video-overlay-color': attributes.dsgoVideoOverlayColor || '',
 	};
 }
 

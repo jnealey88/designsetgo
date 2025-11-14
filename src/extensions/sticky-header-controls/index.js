@@ -14,6 +14,7 @@ import {
 	ToggleControl,
 	RangeControl,
 	SelectControl,
+	Notice,
 } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { addFilter } from '@wordpress/hooks';
@@ -34,27 +35,27 @@ function addStickyHeaderAttributes(settings, name) {
 		...settings,
 		attributes: {
 			...settings.attributes,
-			dsgStickyEnabled: {
+			dsgoStickyEnabled: {
 				type: 'boolean',
 				default: false,
 			},
-			dsgStickyShadow: {
+			dsgoStickyShadow: {
 				type: 'string',
 				default: 'medium',
 			},
-			dsgStickyShrink: {
+			dsgoStickyShrink: {
 				type: 'boolean',
 				default: false,
 			},
-			dsgStickyShrinkAmount: {
+			dsgoStickyShrinkAmount: {
 				type: 'number',
 				default: 15,
 			},
-			dsgStickyHideOnScroll: {
+			dsgoStickyHideOnScroll: {
 				type: 'boolean',
 				default: false,
 			},
-			dsgStickyBackground: {
+			dsgoStickyBackground: {
 				type: 'boolean',
 				default: false,
 			},
@@ -90,6 +91,10 @@ const withStickyHeaderControls = createHigherOrderComponent((BlockEdit) => {
 			return <BlockEdit {...props} />;
 		}
 
+		// Check if global sticky header is enabled.
+		const globalEnabled =
+			window.dsgoStickyHeaderGlobalSettings?.enabled ?? true;
+
 		return (
 			<>
 				<BlockEdit {...props} />
@@ -98,6 +103,15 @@ const withStickyHeaderControls = createHigherOrderComponent((BlockEdit) => {
 						title={__('Sticky Header', 'designsetgo')}
 						initialOpen={false}
 					>
+						{!globalEnabled && (
+							<Notice status="warning" isDismissible={false}>
+								{__(
+									'Sticky header is disabled in DesignSetGo Settings. Enable it in Settings > DesignSetGo to use these controls.',
+									'designsetgo'
+								)}
+							</Notice>
+						)}
+
 						<p className="components-base-control__help">
 							{__(
 								'Configure sticky header behavior for this template part.',
@@ -111,18 +125,19 @@ const withStickyHeaderControls = createHigherOrderComponent((BlockEdit) => {
 								'Make this header stick to the top when scrolling.',
 								'designsetgo'
 							)}
-							checked={attributes.dsgStickyEnabled || false}
+							checked={attributes.dsgoStickyEnabled || false}
+							disabled={!globalEnabled}
 							onChange={(value) =>
-								setAttributes({ dsgStickyEnabled: value })
+								setAttributes({ dsgoStickyEnabled: value })
 							}
 						/>
 
-						{attributes.dsgStickyEnabled && (
+						{attributes.dsgoStickyEnabled && globalEnabled && (
 							<>
 								<SelectControl
 									label={__('Shadow Size', 'designsetgo')}
 									value={
-										attributes.dsgStickyShadow || 'medium'
+										attributes.dsgoStickyShadow || 'medium'
 									}
 									options={[
 										{
@@ -144,7 +159,7 @@ const withStickyHeaderControls = createHigherOrderComponent((BlockEdit) => {
 									]}
 									onChange={(value) =>
 										setAttributes({
-											dsgStickyShadow: value,
+											dsgoStickyShadow: value,
 										})
 									}
 									help={__(
@@ -159,28 +174,28 @@ const withStickyHeaderControls = createHigherOrderComponent((BlockEdit) => {
 										'designsetgo'
 									)}
 									checked={
-										attributes.dsgStickyShrink || false
+										attributes.dsgoStickyShrink || false
 									}
 									onChange={(value) =>
 										setAttributes({
-											dsgStickyShrink: value,
+											dsgoStickyShrink: value,
 										})
 									}
 								/>
 
-								{attributes.dsgStickyShrink && (
+								{attributes.dsgoStickyShrink && (
 									<RangeControl
 										label={__(
 											'Shrink Amount (%)',
 											'designsetgo'
 										)}
 										value={
-											attributes.dsgStickyShrinkAmount ||
+											attributes.dsgoStickyShrinkAmount ||
 											15
 										}
 										onChange={(value) =>
 											setAttributes({
-												dsgStickyShrinkAmount: value,
+												dsgoStickyShrinkAmount: value,
 											})
 										}
 										min={5}
@@ -195,12 +210,12 @@ const withStickyHeaderControls = createHigherOrderComponent((BlockEdit) => {
 										'designsetgo'
 									)}
 									checked={
-										attributes.dsgStickyHideOnScroll ||
+										attributes.dsgoStickyHideOnScroll ||
 										false
 									}
 									onChange={(value) =>
 										setAttributes({
-											dsgStickyHideOnScroll: value,
+											dsgoStickyHideOnScroll: value,
 										})
 									}
 									help={__(
@@ -215,11 +230,11 @@ const withStickyHeaderControls = createHigherOrderComponent((BlockEdit) => {
 										'designsetgo'
 									)}
 									checked={
-										attributes.dsgStickyBackground || false
+										attributes.dsgoStickyBackground || false
 									}
 									onChange={(value) =>
 										setAttributes({
-											dsgStickyBackground: value,
+											dsgoStickyBackground: value,
 										})
 									}
 									help={__(
@@ -265,36 +280,36 @@ function applyStickyHeaderClasses(extraProps, blockType, attributes) {
 		return extraProps;
 	}
 
-	if (!attributes.dsgStickyEnabled) {
+	if (!attributes.dsgoStickyEnabled) {
 		return extraProps;
 	}
 
-	const classes = ['dsg-sticky-header-enabled'];
+	const classes = ['dsgo-sticky-header-enabled'];
 
 	// Add shadow class if not 'none'
-	if (attributes.dsgStickyShadow && attributes.dsgStickyShadow !== 'none') {
-		classes.push(`dsg-sticky-shadow-${attributes.dsgStickyShadow}`);
+	if (attributes.dsgoStickyShadow && attributes.dsgoStickyShadow !== 'none') {
+		classes.push(`dsgo-sticky-shadow-${attributes.dsgoStickyShadow}`);
 	}
 
 	// Add shrink class
-	if (attributes.dsgStickyShrink) {
-		classes.push('dsg-sticky-shrink');
+	if (attributes.dsgoStickyShrink) {
+		classes.push('dsgo-sticky-shrink');
 	}
 
 	// Add hide on scroll class
-	if (attributes.dsgStickyHideOnScroll) {
-		classes.push('dsg-sticky-hide-on-scroll-down');
+	if (attributes.dsgoStickyHideOnScroll) {
+		classes.push('dsgo-sticky-hide-on-scroll-down');
 	}
 
 	// Add background on scroll class
-	if (attributes.dsgStickyBackground) {
-		classes.push('dsg-sticky-bg-on-scroll');
+	if (attributes.dsgoStickyBackground) {
+		classes.push('dsgo-sticky-bg-on-scroll');
 	}
 
 	return {
 		...extraProps,
 		className: `${extraProps.className || ''} ${classes.join(' ')}`.trim(),
-		'data-dsg-shrink-amount': attributes.dsgStickyShrinkAmount || 15,
+		'data-dsgo-shrink-amount': attributes.dsgoStickyShrinkAmount || 15,
 	};
 }
 

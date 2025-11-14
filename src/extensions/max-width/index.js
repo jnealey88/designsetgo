@@ -40,7 +40,7 @@ const EXCLUDED_BLOCKS = [
 
 /**
  * Add width attributes to blocks
- * Adds dsgMaxWidth to all blocks except excluded ones
+ * Adds dsgoMaxWidth to all blocks except excluded ones
  * Container blocks handle their own width via native attributes
  *
  * @param {Object} settings - Block settings
@@ -58,7 +58,7 @@ function addMaxWidthAttribute(settings, name) {
 		...settings,
 		attributes: {
 			...settings.attributes,
-			dsgMaxWidth: {
+			dsgoMaxWidth: {
 				type: 'string',
 				default: '',
 			},
@@ -80,7 +80,7 @@ addFilter(
 const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, name } = props;
-		const { dsgMaxWidth } = attributes;
+		const { dsgoMaxWidth } = attributes;
 
 		// Skip excluded blocks (including container blocks)
 		if (EXCLUDED_BLOCKS.includes(name)) {
@@ -110,9 +110,9 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 					>
 						<UnitControl
 							label={__('Max width', 'designsetgo')}
-							value={dsgMaxWidth || ''}
+							value={dsgoMaxWidth || ''}
 							onChange={(value) =>
-								setAttributes({ dsgMaxWidth: value || '' })
+								setAttributes({ dsgoMaxWidth: value || '' })
 							}
 							units={units}
 							help={__(
@@ -138,24 +138,24 @@ addFilter(
 
 /**
  * Apply max-width styles in editor using dynamic CSS generation
- * Handles dsgMaxWidth for regular blocks
+ * Handles dsgoMaxWidth for regular blocks
  * Container blocks handle their own width constraints
  */
 const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, name, clientId } = props;
-		const { dsgMaxWidth, align, textAlign } = attributes;
+		const { dsgoMaxWidth, align, textAlign } = attributes;
 
 		// Skip excluded blocks (including container blocks)
 		if (EXCLUDED_BLOCKS.includes(name)) {
 			return <BlockListBlock {...props} />;
 		}
 
-		// Use dsgMaxWidth for regular blocks
-		const maxWidth = dsgMaxWidth;
+		// Use dsgoMaxWidth for regular blocks
+		const maxWidth = dsgoMaxWidth;
 
 		// Generate dynamic CSS for this block
-		const styleId = `dsg-max-width-${clientId}`;
+		const styleId = `dsgo-max-width-${clientId}`;
 
 		// Inject dynamic CSS into editor
 		useEffect(() => {
@@ -212,7 +212,7 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 
 		// Add class for identification only when max-width is set
 		const className = maxWidth
-			? `${props.className || ''} dsg-has-max-width`.trim()
+			? `${props.className || ''} dsgo-has-max-width`.trim()
 			: props.className;
 
 		return <BlockListBlock {...props} className={className} />;
@@ -228,7 +228,7 @@ addFilter(
 
 /**
  * Apply max-width styles to block wrapper on frontend
- * Only handles dsgMaxWidth for regular blocks
+ * Only handles dsgoMaxWidth for regular blocks
  * Container blocks (Stack/Flex/Grid) handle their own width via save.js and PHP
  *
  * @param {Object} props      - Block wrapper props
@@ -237,7 +237,7 @@ addFilter(
  * @return {Object} Modified props with max-width styles
  */
 function applyMaxWidthStyles(props, blockType, attributes) {
-	const { dsgMaxWidth, align, textAlign } = attributes;
+	const { dsgoMaxWidth, align, textAlign } = attributes;
 
 	// Skip excluded blocks (includes container blocks that handle width internally)
 	if (EXCLUDED_BLOCKS.includes(blockType.name)) {
@@ -245,7 +245,7 @@ function applyMaxWidthStyles(props, blockType, attributes) {
 	}
 
 	// Skip if no max-width set
-	if (!dsgMaxWidth) {
+	if (!dsgoMaxWidth) {
 		return props;
 	}
 
@@ -265,10 +265,10 @@ function applyMaxWidthStyles(props, blockType, attributes) {
 	// Inline styles have higher specificity than most CSS rules
 	return {
 		...props,
-		className: `${props.className || ''} dsg-has-max-width`.trim(),
+		className: `${props.className || ''} dsgo-has-max-width`.trim(),
 		style: {
 			...props.style,
-			maxWidth: dsgMaxWidth,
+			maxWidth: dsgoMaxWidth,
 			marginLeft,
 			marginRight,
 		},

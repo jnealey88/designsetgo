@@ -7,14 +7,14 @@
  * @package DesignSetGo
  */
 
-.dsg-has-video-background {
+.dsgo-has-video-background {
 	position: relative;
 	overflow: hidden; // CRITICAL: Makes border radius work by clipping video
 	width: 100%; // CRITICAL: Ensure wrapper doesn't shrink nested containers
 
 	// CRITICAL: Must match style.scss for frontend parity
-	.dsg-video-background,
-	.dsg-video-background-editor {
+	.dsgo-video-background,
+	.dsgo-video-background-editor {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -31,7 +31,7 @@
 		}
 
 		// Video overlay color (70% opacity applied via inline styles)
-		.dsg-video-overlay {
+		.dsgo-video-overlay {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -43,7 +43,7 @@
 	}
 
 	// CRITICAL: Ensure content is above video - must match style.scss
-	> *:not(.dsg-video-background):not(.dsg-video-background-editor) {
+	> *:not(.dsgo-video-background):not(.dsgo-video-background-editor) {
 		position: relative;
 		z-index: 2;
 	}

@@ -3,21 +3,21 @@
  * CRITICAL: Must be duplicated from styles.scss for editor/frontend parity
  */
 
-.dsg-has-reveal {
+.dsgo-has-reveal {
 	position: relative;
 
 	// Fade animation (default)
-	&[data-reveal-animation="fade"] .dsg-reveal-item {
+	&[data-reveal-animation="fade"] .dsgo-reveal-item {
 		opacity: 0;
 		transition: opacity 300ms ease-in-out;
 	}
 
-	&[data-reveal-animation="fade"]:hover .dsg-reveal-item {
+	&[data-reveal-animation="fade"]:hover .dsgo-reveal-item {
 		opacity: 1;
 	}
 
 	// Collapse animation (smooth height/scale transition)
-	&[data-reveal-animation="collapse"] .dsg-reveal-item {
+	&[data-reveal-animation="collapse"] .dsgo-reveal-item {
 		opacity: 0;
 		max-height: 0;
 		overflow: hidden;
@@ -27,14 +27,14 @@
 			transform 300ms ease-in-out;
 	}
 
-	&[data-reveal-animation="collapse"]:hover .dsg-reveal-item {
+	&[data-reveal-animation="collapse"]:hover .dsgo-reveal-item {
 		opacity: 1;
 		max-height: 1000px; // Large enough for most content
 		transform: scaleY(1);
 	}
 
 	// Editor indicator for revealed items
-	.dsg-reveal-item::before {
+	.dsgo-reveal-item::before {
 		content: '👁️ Reveals on hover';
 		position: absolute;
 		top: -24px;

@@ -10,21 +10,21 @@
 @use 'utilities/sticky-header';
 
 // Responsive visibility
-.dsg-hide-desktop {
+.dsgo-hide-desktop {
 
 	@include desktop-up {
 		display: none !important;
 	}
 }
 
-.dsg-hide-tablet {
+.dsgo-hide-tablet {
 
 	@include tablet {
 		display: none !important;
 	}
 }
 
-.dsg-hide-mobile {
+.dsgo-hide-mobile {
 
 	@include mobile-only {
 		display: none !important;
@@ -32,7 +32,7 @@
 }
 
 // Accessibility
-.dsg-sr-only {
+.dsgo-sr-only {
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -45,11 +45,11 @@
 }
 
 // Focus styles: Only show outline for keyboard navigation (toggled via JS)
-body:not(.dsg-show-focus-outlines) :where(.wp-site-blocks *:focus) {
+body:not(.dsgo-show-focus-outlines) :where(.wp-site-blocks *:focus) {
 	outline: none;
 }
 
-body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
+body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 	outline-width: 2px;
 	outline-style: solid;
 	outline-color: var(--wp--preset--color--contrast, currentColor);
@@ -58,7 +58,7 @@ body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 
 @supports not selector(:focus-visible) {
 
-	body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus) {
+	body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus) {
 		outline-width: 2px;
 		outline-style: solid;
 		outline-color: var(--wp--preset--color--contrast, currentColor);
@@ -67,7 +67,7 @@ body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 }
 
 // Clearfix
-.dsg-clearfix::after {
+.dsgo-clearfix::after {
 	content: '';
 	display: table;
 	clear: both;
@@ -128,9 +128,9 @@ body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
  * A. Full-Width Blocks (Default Behavior)
  * All blocks inside container inner divs default to full width
  */
-.dsg-stack__inner,
-.dsg-flex__inner,
-.dsg-grid__inner {
+.dsgo-stack__inner,
+.dsgo-flex__inner,
+.dsgo-grid__inner {
 
 	> .wp-block {
 		width: 100%;
@@ -209,9 +209,9 @@ body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 	> .wp-block-designsetgo-grid {
 		width: 100% !important;
 
-		> .dsg-stack__inner,
-		> .dsg-flex__inner,
-		> .dsg-grid__inner {
+		> .dsgo-stack__inner,
+		> .dsgo-flex__inner,
+		> .dsgo-grid__inner {
 			max-width: none !important;
 			margin-left: 0 !important;
 			margin-right: 0 !important;
@@ -232,13 +232,13 @@ body.dsg-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
  * No Width Constraint Mode
  * When container has constrainWidth=false, ensure no artificial limits
  */
-.dsg-stack.dsg-no-width-constraint,
-.dsg-flex.dsg-no-width-constraint,
-.dsg-grid.dsg-no-width-constraint {
+.dsgo-stack.dsgo-no-width-constraint,
+.dsgo-flex.dsgo-no-width-constraint,
+.dsgo-grid.dsgo-no-width-constraint {
 
-	> .dsg-stack__inner,
-	> .dsg-flex__inner,
-	> .dsg-grid__inner {
+	> .dsgo-stack__inner,
+	> .dsgo-flex__inner,
+	> .dsgo-grid__inner {
 
 		> :not(.alignleft):not(.alignright) {
 			max-width: none !important;

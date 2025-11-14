@@ -48,7 +48,7 @@ function addRevealAttributes(settings) {
 	// Add reveal attribute to all blocks (for child blocks)
 	settings.attributes = {
 		...settings.attributes,
-		dsgRevealOnHover: {
+		dsgoRevealOnHover: {
 			type: 'boolean',
 			default: false,
 		},
@@ -78,7 +78,7 @@ addFilter(
 const withRevealControl = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, context = {}, name } = props;
-		const { dsgRevealOnHover, enableRevealOnHover, revealAnimationType } =
+		const { dsgoRevealOnHover, enableRevealOnHover, revealAnimationType } =
 			attributes;
 		const isInRevealContainer =
 			context['designsetgo/reveal/isRevealContainer'];
@@ -152,7 +152,7 @@ const withRevealControl = createHigherOrderComponent((BlockEdit) => {
 							<ToggleControl
 								label={__('Reveal on Hover', 'designsetgo')}
 								help={
-									dsgRevealOnHover
+									dsgoRevealOnHover
 										? __(
 												'This block will be hidden until you hover over the parent container.',
 												'designsetgo'
@@ -162,9 +162,9 @@ const withRevealControl = createHigherOrderComponent((BlockEdit) => {
 												'designsetgo'
 											)
 								}
-								checked={dsgRevealOnHover}
+								checked={dsgoRevealOnHover}
 								onChange={(value) =>
-									setAttributes({ dsgRevealOnHover: value })
+									setAttributes({ dsgoRevealOnHover: value })
 								}
 								__nextHasNoMarginBottom
 							/>
@@ -189,7 +189,7 @@ addFilter(
  * @param {Object} attributes - Block attributes
  */
 function addRevealClasses(props, blockType, attributes) {
-	const { dsgRevealOnHover, enableRevealOnHover, revealAnimationType } =
+	const { dsgoRevealOnHover, enableRevealOnHover, revealAnimationType } =
 		attributes;
 	const isContainerBlock = CONTAINER_BLOCKS.includes(blockType.name);
 
@@ -197,16 +197,16 @@ function addRevealClasses(props, blockType, attributes) {
 	if (isContainerBlock && enableRevealOnHover) {
 		return {
 			...props,
-			className: `${props.className || ''} dsg-has-reveal`.trim(),
+			className: `${props.className || ''} dsgo-has-reveal`.trim(),
 			'data-reveal-animation': revealAnimationType || 'fade',
 		};
 	}
 
 	// Add class to child blocks marked for reveal
-	if (dsgRevealOnHover) {
+	if (dsgoRevealOnHover) {
 		return {
 			...props,
-			className: `${props.className || ''} dsg-reveal-item`.trim(),
+			className: `${props.className || ''} dsgo-reveal-item`.trim(),
 		};
 	}
 
@@ -225,7 +225,7 @@ addFilter(
 const withRevealEditorClasses = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, context = {}, name } = props;
-		const { dsgRevealOnHover, enableRevealOnHover, revealAnimationType } =
+		const { dsgoRevealOnHover, enableRevealOnHover, revealAnimationType } =
 			attributes;
 		const isInRevealContainer =
 			context['designsetgo/reveal/isRevealContainer'];
@@ -236,18 +236,18 @@ const withRevealEditorClasses = createHigherOrderComponent((BlockListBlock) => {
 			return (
 				<BlockListBlock
 					{...props}
-					className={`${props.className || ''} dsg-has-reveal`.trim()}
+					className={`${props.className || ''} dsgo-has-reveal`.trim()}
 					data-reveal-animation={revealAnimationType || 'fade'}
 				/>
 			);
 		}
 
 		// Add class to child blocks marked for reveal
-		if (isInRevealContainer && dsgRevealOnHover && !isContainerBlock) {
+		if (isInRevealContainer && dsgoRevealOnHover && !isContainerBlock) {
 			return (
 				<BlockListBlock
 					{...props}
-					className={`${props.className || ''} dsg-reveal-item`.trim()}
+					className={`${props.className || ''} dsgo-reveal-item`.trim()}
 				/>
 			);
 		}

@@ -10,17 +10,133 @@
 // Base animation class - only hide on frontend, not in editor
 body:not(.block-editor-page):not(.wp-admin) {
 
-	.has-dsg-animation {
+	.has-dsgo-animation {
 		// Will be animated by JavaScript
 		// Hide elements until entrance animation is triggered
-		&:not(.dsg-entrance-active):not(.dsg-exit-active) {
+		&:not(.dsgo-entrance-active):not(.dsgo-exit-active) {
 			opacity: 0;
 		}
 
 		// Apply animation settings when active
-		&.dsg-entrance-active,
-		&.dsg-exit-active {
+		&.dsgo-entrance-active,
+		&.dsgo-exit-active {
 			animation-fill-mode: both;
+		}
+	}
+
+	// Entrance animations - apply animation names to active blocks
+	.dsgo-entrance-active {
+
+		&.dsgo-animation-fadeIn {
+			animation-name: dsgFadeIn;
+		}
+
+		&.dsgo-animation-fadeInUp {
+			animation-name: dsgFadeInUp;
+		}
+
+		&.dsgo-animation-fadeInDown {
+			animation-name: dsgFadeInDown;
+		}
+
+		&.dsgo-animation-fadeInLeft {
+			animation-name: dsgFadeInLeft;
+		}
+
+		&.dsgo-animation-fadeInRight {
+			animation-name: dsgFadeInRight;
+		}
+
+		&.dsgo-animation-slideInUp {
+			animation-name: dsgSlideInUp;
+		}
+
+		&.dsgo-animation-slideInDown {
+			animation-name: dsgSlideInDown;
+		}
+
+		&.dsgo-animation-slideInLeft {
+			animation-name: dsgSlideInLeft;
+		}
+
+		&.dsgo-animation-slideInRight {
+			animation-name: dsgSlideInRight;
+		}
+
+		&.dsgo-animation-zoomIn {
+			animation-name: dsgZoomIn;
+		}
+
+		&.dsgo-animation-bounceIn {
+			animation-name: dsgBounceIn;
+		}
+
+		&.dsgo-animation-flipInX {
+			animation-name: dsgFlipInX;
+		}
+
+		&.dsgo-animation-flipInY {
+			animation-name: dsgFlipInY;
+		}
+	}
+
+	// Exit animations - apply animation names to active blocks
+	.dsgo-exit-active {
+
+		&.dsgo-animation-exit-fadeOut {
+			animation-name: dsgFadeOut;
+		}
+
+		&.dsgo-animation-exit-fadeOutUp {
+			animation-name: dsgFadeOutUp;
+		}
+
+		&.dsgo-animation-exit-fadeOutDown {
+			animation-name: dsgFadeOutDown;
+		}
+
+		&.dsgo-animation-exit-fadeOutLeft {
+			animation-name: dsgFadeOutLeft;
+		}
+
+		&.dsgo-animation-exit-fadeOutRight {
+			animation-name: dsgFadeOutRight;
+		}
+
+		&.dsgo-animation-exit-slideOutUp {
+			animation-name: dsgSlideOutUp;
+		}
+
+		&.dsgo-animation-exit-slideOutDown {
+			animation-name: dsgSlideOutDown;
+		}
+
+		&.dsgo-animation-exit-slideOutLeft {
+			animation-name: dsgSlideOutLeft;
+		}
+
+		&.dsgo-animation-exit-slideOutRight {
+			animation-name: dsgSlideOutRight;
+		}
+
+		&.dsgo-animation-exit-zoomOut {
+			animation-name: dsgZoomOut;
+		}
+
+		&.dsgo-animation-exit-bounceOut {
+			animation-name: dsgBounceOut;
+		}
+
+		&.dsgo-animation-exit-flipOutX {
+			animation-name: dsgFlipOutX;
+		}
+
+		&.dsgo-animation-exit-flipOutY {
+			animation-name: dsgFlipOutY;
+		}
+
+		&.dsgo-animation-exit-rotateOut {
+			animation-name: dsgRotateOut;
 		}
 	}
 }
@@ -165,40 +281,37 @@ body:not(.block-editor-page):not(.wp-admin) {
 // Bounce In
 @keyframes dsgBounceIn {
 
-	from,
-	20%,
-	40%,
-	60%,
-	80%,
-	to {
-		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-	}
-
 	0% {
 		opacity: 0;
 		transform: scale3d(0.3, 0.3, 0.3);
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 	}
 
 	20% {
 		transform: scale3d(1.1, 1.1, 1.1);
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 	}
 
 	40% {
 		transform: scale3d(0.9, 0.9, 0.9);
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 	}
 
 	60% {
 		opacity: 1;
 		transform: scale3d(1.03, 1.03, 1.03);
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 	}
 
 	80% {
 		transform: scale3d(0.97, 0.97, 0.97);
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 	}
 
 	to {
 		opacity: 1;
 		transform: scale3d(1, 1, 1);
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 	}
 }
 
@@ -414,113 +527,3 @@ body:not(.block-editor-page):not(.wp-admin) {
 	}
 }
 
-// ============================================
-// ANIMATION CLASSES
-// ============================================
-
-// Apply animation name to active blocks (frontend only)
-body:not(.block-editor-page):not(.wp-admin) {
-	// Entrance animations
-	.dsg-entrance-active {
-
-		&.dsg-animation-fadeIn {
-			animation-name: dsgFadeIn;
-		}
-
-		&.dsg-animation-fadeInUp {
-			animation-name: dsgFadeInUp;
-		}
-
-		&.dsg-animation-fadeInDown {
-			animation-name: dsgFadeInDown;
-		}
-
-		&.dsg-animation-fadeInLeft {
-			animation-name: dsgFadeInLeft;
-		}
-
-		&.dsg-animation-fadeInRight {
-			animation-name: dsgFadeInRight;
-		}
-
-		&.dsg-animation-slideInUp {
-			animation-name: dsgSlideInUp;
-		}
-
-		&.dsg-animation-slideInDown {
-			animation-name: dsgSlideInDown;
-		}
-
-		&.dsg-animation-slideInLeft {
-			animation-name: dsgSlideInLeft;
-		}
-
-		&.dsg-animation-slideInRight {
-			animation-name: dsgSlideInRight;
-		}
-
-		&.dsg-animation-zoomIn {
-			animation-name: dsgZoomIn;
-		}
-
-		&.dsg-animation-bounceIn {
-			animation-name: dsgBounceIn;
-		}
-
-		&.dsg-animation-flipInX {
-			animation-name: dsgFlipInX;
-		}
-
-		&.dsg-animation-flipInY {
-			animation-name: dsgFlipInY;
-		}
-	}
-
-	// Exit animations
-	.dsg-exit-active {
-
-		&.dsg-animation-exit-fadeOut {
-			animation-name: dsgFadeOut;
-		}
-
-		&.dsg-animation-exit-fadeOutUp {
-			animation-name: dsgFadeOutUp;
-		}
-
-		&.dsg-animation-exit-fadeOutDown {
-			animation-name: dsgFadeOutDown;
-		}
-
-		&.dsg-animation-exit-fadeOutLeft {
-			animation-name: dsgFadeOutLeft;
-		}
-
-		&.dsg-animation-exit-fadeOutRight {
-			animation-name: dsgFadeOutRight;
-		}
-
-		&.dsg-animation-exit-slideOutUp {
-			animation-name: dsgSlideOutUp;
-		}
-
-		&.dsg-animation-exit-slideOutDown {
-			animation-name: dsgSlideOutDown;
-		}
-
-		&.dsg-animation-exit-slideOutLeft {
-			animation-name: dsgSlideOutLeft;
-		}
-
-		&.dsg-animation-exit-slideOutRight {
-			animation-name: dsgSlideOutRight;
-		}
-
-		&.dsg-animation-exit-zoomOut {
-			animation-name: dsgZoomOut;
-		}
-
-		&.dsg-animation-exit-bounceOut {
-			animation-name: dsgBounceOut;
-		}
-	}
-}

@@ -59,7 +59,7 @@ function addCustomCSSAttribute(settings, name) {
 		...settings,
 		attributes: {
 			...settings.attributes,
-			dsgCustomCSS: {
+			dsgoCustomCSS: {
 				type: 'string',
 				default: '',
 			},
@@ -79,7 +79,7 @@ addFilter(
 const withCustomCSSControl = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { name, attributes, setAttributes } = props;
-		const { dsgCustomCSS } = attributes;
+		const { dsgoCustomCSS } = attributes;
 
 		// Skip excluded blocks
 		if (EXCLUDED_BLOCKS.includes(name)) {
@@ -96,9 +96,9 @@ const withCustomCSSControl = createHigherOrderComponent((BlockEdit) => {
 					>
 						<TextareaControl
 							label={__('CSS Code', 'designsetgo')}
-							value={dsgCustomCSS || ''}
+							value={dsgoCustomCSS || ''}
 							onChange={(value) =>
-								setAttributes({ dsgCustomCSS: value || '' })
+								setAttributes({ dsgoCustomCSS: value || '' })
 							}
 							placeholder={`selector {\n  background: linear-gradient(45deg, #f00, #00f);\n  padding: 2rem;\n}\n\nselector h3 {\n  color: white;\n  font-size: 2rem;\n}`}
 							rows={12}
@@ -106,7 +106,7 @@ const withCustomCSSControl = createHigherOrderComponent((BlockEdit) => {
 								'Use "selector" to target this block. Write nested selectors like "selector h3" to target elements inside.',
 								'designsetgo'
 							)}
-							className="dsg-custom-css-textarea"
+							className="dsgo-custom-css-textarea"
 						/>
 						<p className="components-base-control__help">
 							<strong>{__('Examples:', 'designsetgo')}</strong>
@@ -148,16 +148,16 @@ const withCustomCSSClassAndStyles = createHigherOrderComponent(
 	(BlockListBlock) => {
 		return (props) => {
 			const { attributes, name, clientId } = props;
-			const { dsgCustomCSS } = attributes;
+			const { dsgoCustomCSS } = attributes;
 
 			// Skip if no custom CSS set or excluded block
-			if (!dsgCustomCSS || EXCLUDED_BLOCKS.includes(name)) {
+			if (!dsgoCustomCSS || EXCLUDED_BLOCKS.includes(name)) {
 				return <BlockListBlock {...props} />;
 			}
 
 			// Add custom CSS class to block wrapper
-			const customClassName = `dsg-custom-css-${clientId}`;
-			const styleId = `dsg-custom-css-style-${clientId}`;
+			const customClassName = `dsgo-custom-css-${clientId}`;
+			const styleId = `dsgo-custom-css-style-${clientId}`;
 
 			// Inject styles into editor with "selector" replaced by actual class
 			useEffect(() => {
@@ -173,12 +173,12 @@ const withCustomCSSClassAndStyles = createHigherOrderComponent(
 				}
 
 				// Create new style element if custom CSS is provided
-				if (dsgCustomCSS) {
+				if (dsgoCustomCSS) {
 					const styleElement = editorDocument.createElement('style');
 					styleElement.id = styleId;
 					// Replace "selector" with actual class name
 					styleElement.textContent = replaceSelector(
-						dsgCustomCSS,
+						dsgoCustomCSS,
 						customClassName
 					);
 					editorDocument.head.appendChild(styleElement);
@@ -192,7 +192,7 @@ const withCustomCSSClassAndStyles = createHigherOrderComponent(
 						styleToRemove.remove();
 					}
 				};
-			}, [dsgCustomCSS, clientId, styleId, customClassName]);
+			}, [dsgoCustomCSS, clientId, styleId, customClassName]);
 
 			return (
 				<BlockListBlock
@@ -219,10 +219,10 @@ addFilter(
  * @param {Object} attributes - Block attributes
  */
 function applyCustomCSSClass(props, blockType, attributes) {
-	const { dsgCustomCSS } = attributes;
+	const { dsgoCustomCSS } = attributes;
 
 	// Skip if no custom CSS set
-	if (!dsgCustomCSS) {
+	if (!dsgoCustomCSS) {
 		return props;
 	}
 
@@ -233,8 +233,8 @@ function applyCustomCSSClass(props, blockType, attributes) {
 
 	// Generate a unique class based on block attributes hash
 	// This ensures the same block always gets the same class
-	const hash = hashCode(dsgCustomCSS + blockType.name);
-	const customClassName = `dsg-custom-css-${hash}`;
+	const hash = hashCode(dsgoCustomCSS + blockType.name);
+	const customClassName = `dsgo-custom-css-${hash}`;
 
 	return {
 		...props,

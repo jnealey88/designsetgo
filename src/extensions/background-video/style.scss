@@ -6,12 +6,12 @@
  * @package DesignSetGo
  */
 
-.dsg-has-video-background {
+.dsgo-has-video-background {
 	position: relative;
 	overflow: hidden;
 	width: 100%; // CRITICAL: Ensure wrapper doesn't shrink nested containers
 
-	.dsg-video-background {
+	.dsgo-video-background {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -28,7 +28,7 @@
 		}
 
 		// Video overlay color (70% opacity applied via inline styles)
-		.dsg-video-overlay {
+		.dsgo-video-overlay {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -40,7 +40,7 @@
 	}
 
 	// Ensure content is above video
-	> *:not(.dsg-video-background) {
+	> *:not(.dsgo-video-background) {
 		position: relative;
 		z-index: 2;
 	}

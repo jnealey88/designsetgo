@@ -36,7 +36,7 @@
 	 */
 	function initBackgroundVideos() {
 		const videoBlocks = document.querySelectorAll(
-			'.dsg-has-video-background'
+			'.dsgo-has-video-background'
 		);
 
 		videoBlocks.forEach((block) => {
@@ -62,13 +62,13 @@
 			}
 
 			// Check if video already exists
-			if (block.querySelector('.dsg-video-background')) {
+			if (block.querySelector('.dsgo-video-background')) {
 				return;
 			}
 
 			// Create video wrapper
 			const videoWrapper = document.createElement('div');
-			videoWrapper.className = 'dsg-video-background';
+			videoWrapper.className = 'dsgo-video-background';
 			videoWrapper.style.position = 'absolute';
 			videoWrapper.style.top = '0';
 			videoWrapper.style.left = '0';
@@ -102,7 +102,7 @@
 			const overlayColor = block.getAttribute('data-video-overlay-color');
 			if (overlayColor) {
 				const overlay = document.createElement('div');
-				overlay.className = 'dsg-video-overlay';
+				overlay.className = 'dsgo-video-overlay';
 				overlay.style.position = 'absolute';
 				overlay.style.top = '0';
 				overlay.style.left = '0';
@@ -164,7 +164,7 @@
 		resizeTimeout = setTimeout(() => {
 			// Remove existing videos
 			document
-				.querySelectorAll('.dsg-video-background')
+				.querySelectorAll('.dsgo-video-background')
 				.forEach((video) => {
 					video.remove();
 				});

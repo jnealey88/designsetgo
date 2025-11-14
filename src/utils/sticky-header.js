@@ -69,11 +69,11 @@
 	 */
 	function applyCustomProperties(header) {
 		header.style.setProperty(
-			'--dsg-sticky-header-z-index',
+			'--dsgo-sticky-header-z-index',
 			settings.zIndex
 		);
 		header.style.setProperty(
-			'--dsg-sticky-header-transition-speed',
+			'--dsgo-sticky-header-transition-speed',
 			`${settings.transitionSpeed}ms`
 		);
 
@@ -86,7 +86,7 @@
 			// Calculate scale amount (shrink by X% = scale to (1 - X/100))
 			const shrinkDecimal = parseInt(blockShrinkAmount) / 100;
 			const scaleAmount = 1 - shrinkDecimal;
-			header.style.setProperty('--dsg-sticky-scale-amount', scaleAmount);
+			header.style.setProperty('--dsgo-sticky-scale-amount', scaleAmount);
 		}
 
 		if (settings.backgroundOnScroll && settings.backgroundScrollColor) {
@@ -99,7 +99,7 @@
 				const b = parseInt(bgColor.slice(5, 7), 16);
 				bgColor = `rgba(${r}, ${g}, ${b}, ${opacity})`;
 			}
-			header.style.setProperty('--dsg-sticky-scroll-bg-color', bgColor);
+			header.style.setProperty('--dsgo-sticky-scroll-bg-color', bgColor);
 		}
 	}
 
@@ -112,7 +112,7 @@
 	function applyConfigurationClasses(header) {
 		// Check if this header has FSE controls enabled
 		const hasFSEControls = header.classList.contains(
-			'dsg-sticky-header-enabled'
+			'dsgo-sticky-header-enabled'
 		);
 
 		// If FSE controls are active, classes are already applied in block save
@@ -121,28 +121,28 @@
 			// Shadow on scroll
 			if (settings.shadowOnScroll) {
 				header.classList.add(
-					`dsg-sticky-shadow-${settings.shadowSize}`
+					`dsgo-sticky-shadow-${settings.shadowSize}`
 				);
 			}
 
 			// Shrink on scroll
 			if (settings.shrinkOnScroll) {
-				header.classList.add('dsg-sticky-shrink');
+				header.classList.add('dsgo-sticky-shrink');
 			}
 
 			// Hide on scroll down
 			if (settings.hideOnScrollDown) {
-				header.classList.add('dsg-sticky-hide-on-scroll-down');
+				header.classList.add('dsgo-sticky-hide-on-scroll-down');
 			}
 
 			// Background on scroll
 			if (settings.backgroundOnScroll) {
-				header.classList.add('dsg-sticky-bg-on-scroll');
+				header.classList.add('dsgo-sticky-bg-on-scroll');
 			}
 
 			// Mobile disabled
 			if (!settings.mobileEnabled) {
-				header.classList.add('dsg-sticky-mobile-disabled');
+				header.classList.add('dsgo-sticky-mobile-disabled');
 			}
 		}
 	}
@@ -162,21 +162,21 @@
 
 		// Add/remove scrolled class based on threshold
 		if (scrollY > settings.scrollThreshold) {
-			header.classList.add('dsg-scrolled');
+			header.classList.add('dsgo-scrolled');
 		} else {
-			header.classList.remove('dsg-scrolled');
+			header.classList.remove('dsgo-scrolled');
 		}
 
 		// Handle hide on scroll down
 		if (settings.hideOnScrollDown && scrollY > settings.scrollThreshold) {
 			if (scrollY > lastScrollY) {
 				// Scrolling down
-				header.classList.add('dsg-scroll-down');
-				header.classList.remove('dsg-scroll-up');
+				header.classList.add('dsgo-scroll-down');
+				header.classList.remove('dsgo-scroll-up');
 			} else {
 				// Scrolling up
-				header.classList.add('dsg-scroll-up');
-				header.classList.remove('dsg-scroll-down');
+				header.classList.add('dsgo-scroll-up');
+				header.classList.remove('dsgo-scroll-down');
 			}
 		}
 

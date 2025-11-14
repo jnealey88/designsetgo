@@ -1,45 +1,45 @@
 /**
  * Max Width Extension - Editor Styles
  *
- * Applies max-width to blocks in the editor when the dsg-has-max-width class is present.
+ * Applies max-width to blocks in the editor when the dsgo-has-max-width class is present.
  * Uses !important to override WordPress layout system and theme/block styles.
  *
  * CRITICAL: Container block has very aggressive CSS that overrides max-width:
- * .dsg-container__inner.is-layout-constrained[style*="display: flex"] > * {
+ * .dsgo-container__inner.is-layout-constrained[style*="display: flex"] > * {
  *   max-width: none !important;
  * }
  *
  * We need HIGHER specificity (0,4,0) to beat this (0,3,0).
  */
 
-// Target blocks with dsg-has-max-width class
-// Uses CSS custom property --dsg-max-width set via inline styles
-.dsg-has-max-width {
-	max-width: var(--dsg-max-width) !important;
+// Target blocks with dsgo-has-max-width class
+// Uses CSS custom property --dsgo-max-width set via inline styles
+.dsgo-has-max-width {
+	max-width: var(--dsgo-max-width) !important;
 	margin-left: auto !important;
 	margin-right: auto !important;
 }
 
 // Higher specificity for blocks inside Container with flex/grid
 // This beats Container's (0,3,0) specificity rule
-.dsg-container__inner.is-layout-constrained > .dsg-has-max-width,
-.dsg-container__inner > .dsg-has-max-width {
-	max-width: var(--dsg-max-width) !important;
+.dsgo-container__inner.is-layout-constrained > .dsgo-has-max-width,
+.dsgo-container__inner > .dsgo-has-max-width {
+	max-width: var(--dsgo-max-width) !important;
 	margin-left: auto !important;
 	margin-right: auto !important;
 }
 
 // Even higher specificity for Container itself
-.dsg-container.dsg-has-max-width,
-.dsg-container.alignfull.dsg-has-max-width {
-	max-width: var(--dsg-max-width) !important;
+.dsgo-container.dsgo-has-max-width,
+.dsgo-container.alignfull.dsgo-has-max-width {
+	max-width: var(--dsgo-max-width) !important;
 	margin-left: auto !important;
 	margin-right: auto !important;
 }
 
 // Fallback with data attribute (if it works in editor)
-[data-dsg-max-width] {
-	max-width: var(--dsg-max-width) !important;
+[data-dsgo-max-width] {
+	max-width: var(--dsgo-max-width) !important;
 	margin-left: auto !important;
 	margin-right: auto !important;
 }

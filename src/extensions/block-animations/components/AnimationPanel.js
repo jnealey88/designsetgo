@@ -32,15 +32,15 @@ import {
  */
 export default function AnimationPanel({ attributes, setAttributes }) {
 	const {
-		dsgAnimationEnabled,
-		dsgEntranceAnimation,
-		dsgExitAnimation,
-		dsgAnimationTrigger,
-		dsgAnimationDuration,
-		dsgAnimationDelay,
-		dsgAnimationEasing,
-		dsgAnimationOffset,
-		dsgAnimationOnce,
+		dsgoAnimationEnabled,
+		dsgoEntranceAnimation,
+		dsgoExitAnimation,
+		dsgoAnimationTrigger,
+		dsgoAnimationDuration,
+		dsgoAnimationDelay,
+		dsgoAnimationEasing,
+		dsgoAnimationOffset,
+		dsgoAnimationOnce,
 	} = attributes;
 
 	return (
@@ -51,9 +51,9 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 		>
 			<ToggleControl
 				label={__('Enable Animations', 'designsetgo')}
-				checked={dsgAnimationEnabled}
+				checked={dsgoAnimationEnabled}
 				onChange={(value) =>
-					setAttributes({ dsgAnimationEnabled: value })
+					setAttributes({ dsgoAnimationEnabled: value })
 				}
 				help={__(
 					'Add entrance and exit animations to this block',
@@ -62,17 +62,17 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 				__nextHasNoMarginBottom
 			/>
 
-			{dsgAnimationEnabled && (
+			{dsgoAnimationEnabled && (
 				<>
 					<SelectControl
 						label={__('Entrance Animation', 'designsetgo')}
-						value={dsgEntranceAnimation}
+						value={dsgoEntranceAnimation}
 						options={[
 							{ label: __('None', 'designsetgo'), value: '' },
 							...ANIMATION_TYPES.entrance,
 						]}
 						onChange={(value) =>
-							setAttributes({ dsgEntranceAnimation: value })
+							setAttributes({ dsgoEntranceAnimation: value })
 						}
 						help={__('Animation when block appears', 'designsetgo')}
 						__next40pxDefaultSize
@@ -81,7 +81,7 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 
 					<SelectControl
 						label={__('Exit Animation (Optional)', 'designsetgo')}
-						value={dsgExitAnimation}
+						value={dsgoExitAnimation}
 						options={[
 							{ label: __('None', 'designsetgo'), value: '' },
 							...ANIMATION_TYPES.exit,
@@ -89,13 +89,13 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 						onChange={(value) => {
 							// When exit animation is selected with scroll trigger,
 							// disable "animate once" so the animation can repeat
-							if (value && dsgAnimationTrigger === 'scroll') {
+							if (value && dsgoAnimationTrigger === 'scroll') {
 								setAttributes({
-									dsgExitAnimation: value,
-									dsgAnimationOnce: false,
+									dsgoExitAnimation: value,
+									dsgoAnimationOnce: false,
 								});
 							} else {
-								setAttributes({ dsgExitAnimation: value });
+								setAttributes({ dsgoExitAnimation: value });
 							}
 						}}
 						help={__(
@@ -108,10 +108,10 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 
 					<SelectControl
 						label={__('Animation Trigger', 'designsetgo')}
-						value={dsgAnimationTrigger}
+						value={dsgoAnimationTrigger}
 						options={ANIMATION_TRIGGERS}
 						onChange={(value) =>
-							setAttributes({ dsgAnimationTrigger: value })
+							setAttributes({ dsgoAnimationTrigger: value })
 						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
@@ -119,11 +119,11 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 
 					<SelectControl
 						label={__('Duration', 'designsetgo')}
-						value={dsgAnimationDuration}
+						value={dsgoAnimationDuration}
 						options={ANIMATION_DURATIONS}
 						onChange={(value) =>
 							setAttributes({
-								dsgAnimationDuration: parseInt(value, 10),
+								dsgoAnimationDuration: parseInt(value, 10),
 							})
 						}
 						__next40pxDefaultSize
@@ -132,9 +132,9 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 
 					<RangeControl
 						label={__('Delay (ms)', 'designsetgo')}
-						value={dsgAnimationDelay}
+						value={dsgoAnimationDelay}
 						onChange={(value) =>
-							setAttributes({ dsgAnimationDelay: value })
+							setAttributes({ dsgoAnimationDelay: value })
 						}
 						min={0}
 						max={3000}
@@ -149,25 +149,27 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 
 					<SelectControl
 						label={__('Easing', 'designsetgo')}
-						value={dsgAnimationEasing}
+						value={dsgoAnimationEasing}
 						options={ANIMATION_EASINGS}
 						onChange={(value) =>
-							setAttributes({ dsgAnimationEasing: value })
+							setAttributes({ dsgoAnimationEasing: value })
 						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 
-					{dsgAnimationTrigger === 'scroll' && (
+					{dsgoAnimationTrigger === 'scroll' && (
 						<>
 							<RangeControl
 								label={__(
 									'Viewport Offset (px)',
 									'designsetgo'
 								)}
-								value={dsgAnimationOffset}
+								value={dsgoAnimationOffset}
 								onChange={(value) =>
-									setAttributes({ dsgAnimationOffset: value })
+									setAttributes({
+										dsgoAnimationOffset: value,
+									})
 								}
 								min={0}
 								max={500}
@@ -180,7 +182,7 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 								__nextHasNoMarginBottom
 							/>
 
-							{dsgExitAnimation && (
+							{dsgoExitAnimation && (
 								<Notice status="info" isDismissible={false}>
 									{__(
 										'Exit animations require repeating behavior. "Animate Once" is disabled.',
@@ -191,13 +193,13 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 
 							<ToggleControl
 								label={__('Animate Once', 'designsetgo')}
-								checked={dsgAnimationOnce}
+								checked={dsgoAnimationOnce}
 								onChange={(value) =>
-									setAttributes({ dsgAnimationOnce: value })
+									setAttributes({ dsgoAnimationOnce: value })
 								}
-								disabled={!!dsgExitAnimation}
+								disabled={!!dsgoExitAnimation}
 								help={
-									dsgExitAnimation
+									dsgoExitAnimation
 										? __(
 												'Disabled when exit animation is set',
 												'designsetgo'
@@ -212,7 +214,7 @@ export default function AnimationPanel({ attributes, setAttributes }) {
 						</>
 					)}
 
-					{!dsgEntranceAnimation && !dsgExitAnimation && (
+					{!dsgoEntranceAnimation && !dsgoExitAnimation && (
 						<Notice status="warning" isDismissible={false}>
 							{__(
 								'Please select at least one animation type.',

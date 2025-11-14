@@ -10,17 +10,18 @@
 
 /**
  * Core Sticky Header Support
- * Automatically makes header template parts sticky
+ * Only applies when enabled globally (body class) OR per-block (template part class)
  * Targets template parts that contain navigation or are headers
  */
-body:not(.block-editor-page) .wp-block-template-part:first-of-type,
-body:not(.block-editor-page) header.wp-block-template-part,
-body:not(.block-editor-page) .wp-block-template-part:has(.wp-block-navigation),
-body:not(.block-editor-page) .wp-block-template-part:has(.is-position-sticky) {
+body:not(.block-editor-page).dsgo-sticky-header-enabled .wp-block-template-part:first-of-type,
+body:not(.block-editor-page).dsgo-sticky-header-enabled header.wp-block-template-part,
+body:not(.block-editor-page).dsgo-sticky-header-enabled .wp-block-template-part:has(.wp-block-navigation),
+body:not(.block-editor-page).dsgo-sticky-header-enabled .wp-block-template-part:has(.is-position-sticky),
+body:not(.block-editor-page) .wp-block-template-part.dsgo-sticky-header-enabled {
 	position: sticky;
 	top: 0;
-	z-index: var(--dsg-sticky-header-z-index, 100);
-	transition: all var(--dsg-sticky-header-transition-speed, 300ms) ease-in-out;
+	z-index: var(--dsgo-sticky-header-z-index, 100);
+	transition: all var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
 }
 
 /**
@@ -28,19 +29,21 @@ body:not(.block-editor-page) .wp-block-template-part:has(.is-position-sticky) {
  * Account for WordPress admin bar when user is logged in
  */
 /* stylelint-disable selector-class-pattern */
-body:not(.block-editor-page).admin-bar .wp-block-template-part:first-of-type,
-body:not(.block-editor-page).admin-bar header.wp-block-template-part,
-body:not(.block-editor-page).admin-bar .wp-block-template-part:has(.wp-block-navigation),
-body:not(.block-editor-page).admin-bar .wp-block-template-part:has(.is-position-sticky) {
+body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:first-of-type,
+body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled header.wp-block-template-part,
+body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:has(.wp-block-navigation),
+body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:has(.is-position-sticky),
+body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-header-enabled {
 	top: 32px; /* WordPress admin bar height on desktop */
 }
 
 @media screen and (max-width: 782px) {
 
-	body:not(.block-editor-page).admin-bar .wp-block-template-part:first-of-type,
-	body:not(.block-editor-page).admin-bar header.wp-block-template-part,
-	body:not(.block-editor-page).admin-bar .wp-block-template-part:has(.wp-block-navigation),
-	body:not(.block-editor-page).admin-bar .wp-block-template-part:has(.is-position-sticky) {
+	body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:first-of-type,
+	body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled header.wp-block-template-part,
+	body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:has(.wp-block-navigation),
+	body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:has(.is-position-sticky),
+	body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-header-enabled {
 		top: 46px; /* WordPress admin bar height on mobile */
 	}
 }
@@ -55,63 +58,40 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part:has(.is-position-
  * Shadow on Scroll
  * Adds depth to the sticky header when scrolling
  */
-.dsg-sticky-shadow-small.wp-block-template-part.dsg-scrolled {
+.dsgo-sticky-shadow-small.wp-block-template-part.dsgo-scrolled {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
-.dsg-sticky-shadow-medium.wp-block-template-part.dsg-scrolled {
+.dsgo-sticky-shadow-medium.wp-block-template-part.dsgo-scrolled {
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.dsg-sticky-shadow-large.wp-block-template-part.dsg-scrolled {
+.dsgo-sticky-shadow-large.wp-block-template-part.dsgo-scrolled {
 	box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 /**
  * Shrink on Scroll
- * Scales down all inner content and reduces container height when scrolling
+ * Disabled - too complex to implement universally across different layouts
  */
-.dsg-sticky-shrink.wp-block-template-part {
-	overflow: hidden; /* Prevent scaled content from overflowing */
-	transition: transform var(--dsg-sticky-header-transition-speed, 300ms) ease-in-out,
-		padding var(--dsg-sticky-header-transition-speed, 300ms) ease-in-out;
-	transform-origin: top center;
-}
+.dsgo-sticky-shrink.wp-block-template-part {
 
-.dsg-sticky-shrink.wp-block-template-part.dsg-scrolled {
-
-	/* Scale the entire container vertically to reduce height */
-	transform: scaleY(var(--dsg-sticky-scale-amount, 0.8));
-
-	/* Also reduce padding proportionally */
-	padding-block: calc(var(--wp--preset--spacing--20, 0.5rem) * var(--dsg-sticky-scale-amount, 0.8));
-}
-
-.dsg-sticky-shrink.wp-block-template-part > * {
-	transition: transform var(--dsg-sticky-header-transition-speed, 300ms) ease-in-out;
-	transform-origin: top center;
-	width: 100%; /* Ensure full width */
-}
-
-.dsg-sticky-shrink.wp-block-template-part.dsg-scrolled > * {
-
-	/* Counter the container's scaleY to prevent vertical squashing of content */
-	transform: scaleY(calc(1 / var(--dsg-sticky-scale-amount, 0.8))) scale(var(--dsg-sticky-scale-amount, 0.8));
+	/* Feature disabled - classes preserved for backwards compatibility */
 }
 
 /**
  * Hide on Scroll Down
  * Auto-hides header when scrolling down, shows when scrolling up
  */
-.dsg-sticky-hide-on-scroll-down.wp-block-template-part {
-	transition: transform var(--dsg-sticky-header-transition-speed, 300ms) ease-in-out;
+.dsgo-sticky-hide-on-scroll-down.wp-block-template-part {
+	transition: transform var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
 }
 
-.dsg-sticky-hide-on-scroll-down.wp-block-template-part.dsg-scroll-down {
+.dsgo-sticky-hide-on-scroll-down.wp-block-template-part.dsgo-scroll-down {
 	transform: translateY(-100%);
 }
 
-.dsg-sticky-hide-on-scroll-down.wp-block-template-part.dsg-scroll-up {
+.dsgo-sticky-hide-on-scroll-down.wp-block-template-part.dsgo-scroll-up {
 	transform: translateY(0);
 }
 
@@ -119,12 +99,12 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part:has(.is-position-
  * Background on Scroll
  * Changes/adds background color when scrolling
  */
-.dsg-sticky-bg-on-scroll.wp-block-template-part {
-	transition: background-color var(--dsg-sticky-header-transition-speed, 300ms) ease-in-out;
+.dsgo-sticky-bg-on-scroll.wp-block-template-part {
+	transition: background-color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
 }
 
-.dsg-sticky-bg-on-scroll.wp-block-template-part.dsg-scrolled {
-	background-color: var(--dsg-sticky-scroll-bg-color, rgba(255, 255, 255, 0.95));
+.dsgo-sticky-bg-on-scroll.wp-block-template-part.dsgo-scrolled {
+	background-color: var(--dsgo-sticky-scroll-bg-color, rgba(255, 255, 255, 0.95));
 }
 
 /**
@@ -133,7 +113,7 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part:has(.is-position-
  */
 @media (max-width: 767px) {
 
-	.dsg-sticky-mobile-disabled.wp-block-template-part {
+	.dsgo-sticky-mobile-disabled.wp-block-template-part {
 		position: relative !important;
 	}
 }
@@ -144,9 +124,9 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part:has(.is-position-
 @media (prefers-reduced-motion: reduce) {
 
 	.wp-block-template-part,
-	.dsg-sticky-shrink.wp-block-template-part,
-	.dsg-sticky-hide-on-scroll-down.wp-block-template-part,
-	.dsg-sticky-bg-on-scroll.wp-block-template-part {
+	.dsgo-sticky-shrink.wp-block-template-part,
+	.dsgo-sticky-hide-on-scroll-down.wp-block-template-part,
+	.dsgo-sticky-bg-on-scroll.wp-block-template-part {
 		transition: none !important;
 	}
 }
@@ -156,20 +136,20 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part:has(.is-position-
  */
 @media (prefers-color-scheme: dark) {
 
-	.dsg-sticky-shadow-small.wp-block-template-part.dsg-scrolled {
+	.dsgo-sticky-shadow-small.wp-block-template-part.dsgo-scrolled {
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
-	.dsg-sticky-shadow-medium.wp-block-template-part.dsg-scrolled {
+	.dsgo-sticky-shadow-medium.wp-block-template-part.dsgo-scrolled {
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 	}
 
-	.dsg-sticky-shadow-large.wp-block-template-part.dsg-scrolled {
+	.dsgo-sticky-shadow-large.wp-block-template-part.dsgo-scrolled {
 		box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
 	}
 
-	.dsg-sticky-bg-on-scroll.wp-block-template-part.dsg-scrolled {
-		background-color: var(--dsg-sticky-scroll-bg-color, rgba(0, 0, 0, 0.95));
+	.dsgo-sticky-bg-on-scroll.wp-block-template-part.dsgo-scrolled {
+		background-color: var(--dsgo-sticky-scroll-bg-color, rgba(0, 0, 0, 0.95));
 	}
 }
 

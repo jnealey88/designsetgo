@@ -28,7 +28,7 @@ function addColumnSpanAttribute(settings) {
 		...settings,
 		attributes: {
 			...settings.attributes,
-			dsgColumnSpan: {
+			dsgoColumnSpan: {
 				type: 'number',
 				default: 1,
 			},
@@ -48,7 +48,7 @@ addFilter(
 const withColumnSpanControl = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, clientId } = props;
-		const { dsgColumnSpan } = attributes;
+		const { dsgoColumnSpan } = attributes;
 
 		// Check if this block is inside a Grid container
 		const parentBlock = useSelect(
@@ -83,9 +83,9 @@ const withColumnSpanControl = createHigherOrderComponent((BlockEdit) => {
 						>
 							<RangeControl
 								label={__('Column Span', 'designsetgo')}
-								value={dsgColumnSpan}
+								value={dsgoColumnSpan}
 								onChange={(value) =>
-									setAttributes({ dsgColumnSpan: value })
+									setAttributes({ dsgoColumnSpan: value })
 								}
 								min={1}
 								max={maxColumns}
@@ -117,7 +117,7 @@ addFilter(
 const withColumnSpanStyles = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, clientId } = props;
-		const { dsgColumnSpan } = attributes;
+		const { dsgoColumnSpan } = attributes;
 
 		// Check if this block is inside a Grid container
 		const isInGrid = useSelect(
@@ -138,7 +138,7 @@ const withColumnSpanStyles = createHigherOrderComponent((BlockListBlock) => {
 		);
 
 		// Generate dynamic CSS for column span in editor
-		const styleId = `dsg-grid-span-${clientId}`;
+		const styleId = `dsgo-grid-span-${clientId}`;
 
 		// Get parent grid's responsive column settings
 		const parentGridSettings = useSelect(
@@ -187,25 +187,25 @@ const withColumnSpanStyles = createHigherOrderComponent((BlockListBlock) => {
 			}
 
 			// Create new style element if columnSpan is set
-			if (dsgColumnSpan && dsgColumnSpan > 1) {
+			if (dsgoColumnSpan && dsgoColumnSpan > 1) {
 				const styleElement = editorDocument.createElement('style');
 				styleElement.id = styleId;
 
 				// Calculate effective spans for each breakpoint
 				// Constrain to parent's column count at each breakpoint
 				const effectiveTabletSpan = Math.min(
-					dsgColumnSpan,
+					dsgoColumnSpan,
 					parentGridSettings.tabletColumns
 				);
 				const effectiveMobileSpan = Math.min(
-					dsgColumnSpan,
+					dsgoColumnSpan,
 					parentGridSettings.mobileColumns
 				);
 
 				styleElement.textContent = `
 					/* Desktop */
 					[data-block="${clientId}"] {
-						grid-column: span ${dsgColumnSpan} !important;
+						grid-column: span ${dsgoColumnSpan} !important;
 					}
 
 					/* Tablet - constrain to parent tablet columns */
@@ -232,7 +232,7 @@ const withColumnSpanStyles = createHigherOrderComponent((BlockListBlock) => {
 					styleToRemove.remove();
 				}
 			};
-		}, [dsgColumnSpan, clientId, styleId, isInGrid, parentGridSettings]);
+		}, [dsgoColumnSpan, clientId, styleId, isInGrid, parentGridSettings]);
 
 		return <BlockListBlock {...props} />;
 	};
@@ -253,10 +253,10 @@ addFilter(
  * @return {Object} Modified props
  */
 function applyColumnSpanStyles(props, blockType, attributes) {
-	const { dsgColumnSpan } = attributes;
+	const { dsgoColumnSpan } = attributes;
 
 	// Only apply if columnSpan is set and > 1
-	if (!dsgColumnSpan || dsgColumnSpan === 1) {
+	if (!dsgoColumnSpan || dsgoColumnSpan === 1) {
 		return props;
 	}
 
@@ -264,7 +264,7 @@ function applyColumnSpanStyles(props, blockType, attributes) {
 		...props,
 		style: {
 			...props.style,
-			gridColumn: `span ${dsgColumnSpan}`,
+			gridColumn: `span ${dsgoColumnSpan}`,
 		},
 	};
 }

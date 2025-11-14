@@ -7,7 +7,7 @@
  * @package
  */
 
-const FOCUS_OUTLINE_CLASS = 'dsg-show-focus-outlines';
+const FOCUS_OUTLINE_CLASS = 'dsgo-show-focus-outlines';
 const TAB_KEY = 'Tab';
 
 const handlePointerInput = () => {

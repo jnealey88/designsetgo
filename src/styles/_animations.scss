@@ -141,38 +141,38 @@
 }
 
 // Animation Classes
-.dsg-animate {
+.dsgo-animate {
 	animation-fill-mode: both;
 
-	&.dsg-animate-fade-in {
+	&.dsgo-animate-fade-in {
 		animation-name: fadeIn;
 	}
 
-	&.dsg-animate-fade-in-up {
+	&.dsgo-animate-fade-in-up {
 		animation-name: fadeInUp;
 	}
 
-	&.dsg-animate-fade-in-down {
+	&.dsgo-animate-fade-in-down {
 		animation-name: fadeInDown;
 	}
 
-	&.dsg-animate-fade-in-left {
+	&.dsgo-animate-fade-in-left {
 		animation-name: fadeInLeft;
 	}
 
-	&.dsg-animate-fade-in-right {
+	&.dsgo-animate-fade-in-right {
 		animation-name: fadeInRight;
 	}
 
-	&.dsg-animate-zoom-in {
+	&.dsgo-animate-zoom-in {
 		animation-name: zoomIn;
 	}
 
-	&.dsg-animate-slide-up {
+	&.dsgo-animate-slide-up {
 		animation-name: slideUp;
 	}
 
-	&.dsg-animate-bounce-in {
+	&.dsgo-animate-bounce-in {
 		animation-name: bounceIn;
 	}
 }

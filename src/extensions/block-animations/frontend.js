@@ -12,7 +12,7 @@
  */
 document.addEventListener('DOMContentLoaded', () => {
 	const animatedElements = document.querySelectorAll(
-		'[data-dsg-animation-enabled="true"]'
+		'[data-dsgo-animation-enabled="true"]'
 	);
 
 	if (!animatedElements.length) {
@@ -21,10 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Process each animated element
 	animatedElements.forEach((element) => {
-		const trigger = element.dataset.dsgAnimationTrigger || 'scroll';
-		const duration = element.dataset.dsgAnimationDuration || '600';
-		const delay = element.dataset.dsgAnimationDelay || '0';
-		const easing = element.dataset.dsgAnimationEasing || 'ease-out';
+		const trigger = element.dataset.dsgoAnimationTrigger || 'scroll';
+		const duration = element.dataset.dsgoAnimationDuration || '600';
+		const delay = element.dataset.dsgoAnimationDelay || '0';
+		const easing = element.dataset.dsgoAnimationEasing || 'ease-out';
 
 		// Set animation styles
 		element.style.animationDuration = `${duration}ms`;
@@ -60,7 +60,7 @@ function animateOnLoad(element) {
 	// Trigger entrance animation immediately on page load
 	// eslint-disable-next-line no-undef
 	requestAnimationFrame(() => {
-		element.classList.add('dsg-entrance-active');
+		element.classList.add('dsgo-entrance-active');
 	});
 }
 
@@ -70,12 +70,12 @@ function animateOnLoad(element) {
  * @param {HTMLElement} element Element to animate
  */
 function animateOnScroll(element) {
-	const offset = parseInt(element.dataset.dsgAnimationOffset) || 100;
-	const once = element.dataset.dsgAnimationOnce === 'true';
+	const offset = parseInt(element.dataset.dsgoAnimationOffset) || 100;
+	const once = element.dataset.dsgoAnimationOnce === 'true';
 	const hasExitAnimation =
-		element.dataset.dsgExitAnimation &&
-		element.dataset.dsgExitAnimation !== '';
-	const duration = parseInt(element.dataset.dsgAnimationDuration) || 600;
+		element.dataset.dsgoExitAnimation &&
+		element.dataset.dsgoExitAnimation !== '';
+	const duration = parseInt(element.dataset.dsgoAnimationDuration) || 600;
 	let hasAnimated = false;
 	let isAnimating = false;
 	let wasIntersecting = false;
@@ -109,8 +109,8 @@ function animateOnScroll(element) {
 
 						// Force reset state for fast scroll handling
 						isAnimating = false;
-						element.classList.remove('dsg-exit-active');
-						element.classList.add('dsg-entrance-active');
+						element.classList.remove('dsgo-exit-active');
+						element.classList.add('dsgo-entrance-active');
 						hasAnimated = true;
 
 						// Set animating flag and schedule reset
@@ -140,12 +140,12 @@ function animateOnScroll(element) {
 						}
 
 						isAnimating = true;
-						element.classList.remove('dsg-entrance-active');
-						element.classList.add('dsg-exit-active');
+						element.classList.remove('dsgo-entrance-active');
+						element.classList.add('dsgo-exit-active');
 
 						// Reset after exit animation completes
 						animationTimeout = setTimeout(() => {
-							element.classList.remove('dsg-exit-active');
+							element.classList.remove('dsgo-exit-active');
 							isAnimating = false;
 							animationTimeout = null;
 						}, duration);
@@ -156,7 +156,7 @@ function animateOnScroll(element) {
 					!hasExitAnimation
 				) {
 					// Element left viewport and no exit animation - just clean up
-					element.classList.remove('dsg-entrance-active');
+					element.classList.remove('dsgo-entrance-active');
 				}
 
 				wasIntersecting = entry.isIntersecting;
@@ -178,17 +178,17 @@ function animateOnScroll(element) {
  * @param {HTMLElement} element Element to animate
  */
 function animateOnHover(element) {
-	const duration = parseInt(element.dataset.dsgAnimationDuration) || 600;
+	const duration = parseInt(element.dataset.dsgoAnimationDuration) || 600;
 	const hasExitAnimation =
-		element.dataset.dsgExitAnimation &&
-		element.dataset.dsgExitAnimation !== '';
+		element.dataset.dsgoExitAnimation &&
+		element.dataset.dsgoExitAnimation !== '';
 	let isAnimating = false;
 
 	element.addEventListener('mouseenter', () => {
 		if (!isAnimating) {
 			isAnimating = true;
-			element.classList.remove('dsg-exit-active');
-			element.classList.add('dsg-entrance-active');
+			element.classList.remove('dsgo-exit-active');
+			element.classList.add('dsgo-entrance-active');
 
 			// Reset after animation completes
 			setTimeout(() => {
@@ -201,15 +201,15 @@ function animateOnHover(element) {
 		// Trigger exit animation when mouse leaves
 		if (hasExitAnimation && !isAnimating) {
 			isAnimating = true;
-			element.classList.remove('dsg-entrance-active');
-			element.classList.add('dsg-exit-active');
+			element.classList.remove('dsgo-entrance-active');
+			element.classList.add('dsgo-exit-active');
 
 			setTimeout(() => {
-				element.classList.remove('dsg-exit-active');
+				element.classList.remove('dsgo-exit-active');
 				isAnimating = false;
 			}, duration);
 		} else {
-			element.classList.remove('dsg-entrance-active');
+			element.classList.remove('dsgo-entrance-active');
 		}
 	});
 }
@@ -220,7 +220,7 @@ function animateOnHover(element) {
  * @param {HTMLElement} element Element to animate
  */
 function animateOnClick(element) {
-	const duration = parseInt(element.dataset.dsgAnimationDuration) || 600;
+	const duration = parseInt(element.dataset.dsgoAnimationDuration) || 600;
 	let isAnimating = false;
 
 	element.addEventListener('click', (e) => {
@@ -231,12 +231,12 @@ function animateOnClick(element) {
 
 		if (!isAnimating) {
 			isAnimating = true;
-			element.classList.remove('dsg-exit-active');
-			element.classList.add('dsg-entrance-active');
+			element.classList.remove('dsgo-exit-active');
+			element.classList.add('dsgo-entrance-active');
 
 			// Reset after animation completes
 			setTimeout(() => {
-				element.classList.remove('dsg-entrance-active');
+				element.classList.remove('dsgo-entrance-active');
 				isAnimating = false;
 			}, duration + 100);
 		}

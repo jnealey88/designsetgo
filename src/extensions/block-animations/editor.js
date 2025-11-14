@@ -49,12 +49,15 @@ const withAnimationControls = createHigherOrderComponent((BlockEdit) => {
 const withAnimationClasses = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, name } = props;
-		const { dsgAnimationEnabled, dsgEntranceAnimation, dsgExitAnimation } =
-			attributes;
+		const {
+			dsgoAnimationEnabled,
+			dsgoEntranceAnimation,
+			dsgoExitAnimation,
+		} = attributes;
 
 		// Skip if animations not enabled or block not supported
 		if (
-			!dsgAnimationEnabled ||
+			!dsgoAnimationEnabled ||
 			name.startsWith('core-embed/') ||
 			name === 'core/freeform'
 		) {
@@ -64,13 +67,13 @@ const withAnimationClasses = createHigherOrderComponent((BlockListBlock) => {
 		// Build animation classes
 		let className = props.className || '';
 
-		if (dsgAnimationEnabled) {
-			className += ' has-dsg-animation';
-			if (dsgEntranceAnimation) {
-				className += ` dsg-animation-${dsgEntranceAnimation}`;
+		if (dsgoAnimationEnabled) {
+			className += ' has-dsgo-animation';
+			if (dsgoEntranceAnimation) {
+				className += ` dsgo-animation-${dsgoEntranceAnimation}`;
 			}
-			if (dsgExitAnimation) {
-				className += ` dsg-animation-exit-${dsgExitAnimation}`;
+			if (dsgoExitAnimation) {
+				className += ` dsgo-animation-exit-${dsgoExitAnimation}`;
 			}
 		}
 
@@ -88,44 +91,44 @@ const withAnimationClasses = createHigherOrderComponent((BlockListBlock) => {
  */
 function addAnimationSaveProps(extraProps, blockType, attributes) {
 	const {
-		dsgAnimationEnabled,
-		dsgEntranceAnimation,
-		dsgExitAnimation,
-		dsgAnimationTrigger,
-		dsgAnimationDuration,
-		dsgAnimationDelay,
-		dsgAnimationEasing,
-		dsgAnimationOffset,
-		dsgAnimationOnce,
+		dsgoAnimationEnabled,
+		dsgoEntranceAnimation,
+		dsgoExitAnimation,
+		dsgoAnimationTrigger,
+		dsgoAnimationDuration,
+		dsgoAnimationDelay,
+		dsgoAnimationEasing,
+		dsgoAnimationOffset,
+		dsgoAnimationOnce,
 	} = attributes;
 
 	// Skip if animations not enabled
-	if (!dsgAnimationEnabled) {
+	if (!dsgoAnimationEnabled) {
 		return extraProps;
 	}
 
 	// Add data attributes for frontend JavaScript
 	const dataAttributes = {
-		'data-dsg-animation-enabled': 'true',
-		'data-dsg-entrance-animation': dsgEntranceAnimation || '',
-		'data-dsg-exit-animation': dsgExitAnimation || '',
-		'data-dsg-animation-trigger': dsgAnimationTrigger,
-		'data-dsg-animation-duration': dsgAnimationDuration,
-		'data-dsg-animation-delay': dsgAnimationDelay,
-		'data-dsg-animation-easing': dsgAnimationEasing,
-		'data-dsg-animation-offset': dsgAnimationOffset,
-		'data-dsg-animation-once': dsgAnimationOnce ? 'true' : 'false',
+		'data-dsgo-animation-enabled': 'true',
+		'data-dsgo-entrance-animation': dsgoEntranceAnimation || '',
+		'data-dsgo-exit-animation': dsgoExitAnimation || '',
+		'data-dsgo-animation-trigger': dsgoAnimationTrigger,
+		'data-dsgo-animation-duration': dsgoAnimationDuration,
+		'data-dsgo-animation-delay': dsgoAnimationDelay,
+		'data-dsgo-animation-easing': dsgoAnimationEasing,
+		'data-dsgo-animation-offset': dsgoAnimationOffset,
+		'data-dsgo-animation-once': dsgoAnimationOnce ? 'true' : 'false',
 	};
 
 	// Build animation classes
 	let className = extraProps.className || '';
-	className += ' has-dsg-animation';
+	className += ' has-dsgo-animation';
 
-	if (dsgEntranceAnimation) {
-		className += ` dsg-animation-${dsgEntranceAnimation}`;
+	if (dsgoEntranceAnimation) {
+		className += ` dsgo-animation-${dsgoEntranceAnimation}`;
 	}
-	if (dsgExitAnimation) {
-		className += ` dsg-animation-exit-${dsgExitAnimation}`;
+	if (dsgoExitAnimation) {
+		className += ` dsgo-animation-exit-${dsgoExitAnimation}`;
 	}
 
 	return {

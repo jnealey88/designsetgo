@@ -28,39 +28,39 @@ function addAnimationAttributes(settings, name) {
 		...settings,
 		attributes: {
 			...settings.attributes,
-			dsgAnimationEnabled: {
+			dsgoAnimationEnabled: {
 				type: 'boolean',
 				default: DEFAULT_ANIMATION_SETTINGS.enabled,
 			},
-			dsgEntranceAnimation: {
+			dsgoEntranceAnimation: {
 				type: 'string',
 				default: DEFAULT_ANIMATION_SETTINGS.entranceAnimation,
 			},
-			dsgExitAnimation: {
+			dsgoExitAnimation: {
 				type: 'string',
 				default: DEFAULT_ANIMATION_SETTINGS.exitAnimation,
 			},
-			dsgAnimationTrigger: {
+			dsgoAnimationTrigger: {
 				type: 'string',
 				default: DEFAULT_ANIMATION_SETTINGS.trigger,
 			},
-			dsgAnimationDuration: {
+			dsgoAnimationDuration: {
 				type: 'number',
 				default: DEFAULT_ANIMATION_SETTINGS.duration,
 			},
-			dsgAnimationDelay: {
+			dsgoAnimationDelay: {
 				type: 'number',
 				default: DEFAULT_ANIMATION_SETTINGS.delay,
 			},
-			dsgAnimationEasing: {
+			dsgoAnimationEasing: {
 				type: 'string',
 				default: DEFAULT_ANIMATION_SETTINGS.easing,
 			},
-			dsgAnimationOffset: {
+			dsgoAnimationOffset: {
 				type: 'number',
 				default: DEFAULT_ANIMATION_SETTINGS.offset,
 			},
-			dsgAnimationOnce: {
+			dsgoAnimationOnce: {
 				type: 'boolean',
 				default: DEFAULT_ANIMATION_SETTINGS.once,
 			},
