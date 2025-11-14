@@ -153,49 +153,6 @@ New blocks must pass the "Jobs-to-be-Done" test:
 
 ---
 
-#### Social Share Block
-**Version:** v1.2.0
-**Priority:** Low | **Effort:** Low | **Impact:** Low
-
-**Problem:** Users want native share buttons without tracking scripts or external services.
-
-**Features:**
-- **Platforms:**
-  - Facebook
-  - Twitter/X
-  - LinkedIn
-  - Pinterest
-  - WhatsApp
-  - Email
-  - Copy Link
-  - Print
-
-- **Layouts:**
-  - Horizontal row
-  - Vertical stack
-  - Icon only
-  - Icon + text
-  - Icon + count (optional)
-
-- **Styling:**
-  - Official brand colors or custom
-  - Size control
-  - Spacing control
-  - Shape (circle, rounded, square)
-  - Hover effects
-
-- **Settings:**
-  - Share text customization
-  - Via @username (Twitter)
-  - Hashtags
-  - No tracking/analytics
-
-**Why:** Lightweight social sharing without privacy concerns or external dependencies.
-
-**JTBD:** "When I publish a blog post, I want readers to share easily without installing a social plugin that slows my site."
-
----
-
 ## Phase 2: Interactive & Engagement Blocks
 **Timeline:** v1.3.0 - v1.5.0 (Months 4-6)
 **Goal:** Blocks that drive user engagement and interactivity

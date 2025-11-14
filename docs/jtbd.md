@@ -369,3 +369,298 @@ Every feature decision should pass this test:
 5. Could we remove it tomorrow without breaking sites?
 
 If the answer to #5 is "no" - reconsider the approach.
+
+---
+
+## Feature Roadmap by Horizon
+
+This section translates the JTBD framework into concrete features organized by development horizons. Each horizon focuses on a specific user outcome and ties directly back to the jobs users hire DesignSetGo to do.
+
+### HORIZON 1 (NEXT 1–2 RELEASES)
+
+**Theme:** "Time-to-value and plugin replacement"
+
+**Goal:** Help users feel progress in the first week. Reduce the number of separate plugins they need for basic marketing sites.
+
+**Target Versions:** v1.1–v1.3
+
+#### A. Layout and Content Structure
+
+**Card Block**
+
+- **Role:** Reusable unit for pricing, features, services, and team members
+- **Why:** Every marketing page needs "cards." Designers see this in their head but hit the layout wall with core blocks
+- **JTBD Link:** "Add professional design features without fighting complex tools"
+
+**Details:**
+- Image, title, subtitle, body, CTA, badge
+- Layout presets for image top, left, or no image
+- Ties into Grid / Row blocks so users drop "Card" into existing layout tools
+
+**Card Group Preset Support** (enhancement, not a new block)
+- Role: Use existing Grid / Row blocks plus "Card" to build full sections fast
+- Section presets for 2, 3, 4 cards
+- Gap, alignment, and equal height controls tuned for this use
+
+**Outcome:** "First complex layout" and "first landing page" feel much faster to build.
+
+#### B. Conversion and Trust Blocks
+
+**Testimonial Block**
+
+- **Role:** Replace separate testimonial plugins
+- **Features:**
+  - Avatar or image, name, role, company, quote
+  - Rating option that stays presentational, not a review system
+  - Works inside Slider for "testimonial carousel" pattern
+
+**Pricing Table Block**
+
+- **Role:** Replace common pricing table plugins
+- **Features:**
+  - Columns for plans, with labels for "Most popular" etc.
+  - Plan name, price, period, feature list, CTA
+  - Built on Card or Grid internals for consistency
+
+**FAQ Block Preset** (Accordion enhancement)
+
+- **Role:** Turn existing Accordion into a "FAQ mode" with better defaults
+- **Features:**
+  - Question / answer schema-friendly markup where possible
+  - Toggle to show first item open
+  - FAQ pattern that site owners drop on pages without extra thinking
+
+**Outcome:** Users move from "I need 5 plugins" to "DesignSetGo covers testimonials, pricing, FAQ, and layout" for basic sites.
+
+#### C. Interaction and Motion
+
+**Modal / Popup Block**
+
+- **Role:** Replace lightweight modal plugins while staying in content scope
+- **Features:**
+  - Trigger options: button, link, or time / scroll percentage
+  - Works with any blocks inside
+  - Performance-first, no extra framework
+
+**Guardrail:** No site-wide popup manager. Keep it content-level. Users add it to a page like any other block.
+
+#### D. Forms: Polish and Trust
+
+**Form Presets**
+
+- **Role:** Reduce setup time for common forms
+- **Features:**
+  - Ready combinations inside Form Builder for Contact, Lead capture, Newsletter
+  - Opinionated spacing and layout presets that match Section / Row
+
+**Form Success Message Block** (or visual state)
+
+- **Role:** Make "First form submission" feel polished
+- **Features:**
+  - Clear success state above the fold
+  - Option to show summary of submitted values for reassurance
+
+#### Success Signals for Horizon 1
+
+- Fewer "I still need plugin X" comments
+- Shorter time from install to first full marketing page
+- More "replaced [plugin type]" stories in reviews and docs
+
+---
+
+### HORIZON 2 (3–6 MONTHS)
+
+**Theme:** "Return engagement and patterns built on blocks"
+
+**Goal:** Use blocks as building units for patterns and quicker site builds, without drifting into full theme or page-builder territory.
+
+**Target Versions:** v1.4–v1.8
+
+#### A. Pattern-Friendly "Section" Blocks
+
+These stay as blocks but ship with pattern-first intent.
+
+**Hero Section Presets** (Section + Row + Card + Button)
+
+- **Role:** Give users reliable hero layouts
+- **Features:**
+  - Text left / image right, centered, split with background overlay
+  - Smooth entry animations preconfigured through existing animation extension
+
+**Feature List Block**
+
+- **Role:** Compact middle ground between Icon List and full Card
+- **Features:**
+  - Icon, heading, short body
+  - Vertical or horizontal mode
+  - Optimized for "Three features under a hero" sections
+
+**Process / Steps Block**
+
+- **Role:** Replace "how it works" plugins
+- **Features:**
+  - Numbered steps with title and text
+  - Horizontal and vertical layouts
+  - Optional connector lines for timeline style
+
+**Note:** All of these rely on existing container and visual primitives, so maintenance stays low.
+
+#### B. "Second Site" and Agency Helper Blocks
+
+**Section Header Block**
+
+- **Role:** Consistent headings across sections and pages
+- **Features:**
+  - Eyebrow text, main heading, optional description, alignment controls
+  - Opinionated spacing so sections align across the page
+
+**Layout Presets for Common Pages** (pattern packs, not new block types)
+
+- **Role:** Drive return use
+- **Includes:**
+  - About page pattern collection built from existing blocks
+  - Services page pattern collection
+  - Contact page pattern with form, FAQs, and map placeholder
+
+**Note:** These live as pattern sets, but the roadmap here highlights the block readiness and presets those patterns depend on.
+
+#### C. "Safe Motion" and UX Polish
+
+**Scroll-Linked Sections** (enhancement to Scroll Accordion / reveal)
+
+- **Role:** Give users more control over progressive reveal
+- **Features:**
+  - Section intros that show as users scroll
+  - Opinionated defaults that still respect performance
+
+#### Success Signals for Horizon 2
+
+- More repeat usage on second and third sites
+- Higher retention after 30 and 90 days
+- Users talk about "I know which DesignSetGo blocks to reach for" in feedback
+
+---
+
+### HORIZON 3 (6–12 MONTHS)
+
+**Theme:** "Pro features that respect the anti-jobs"
+
+**Goal:** Serve power users and agencies with advanced blocks, while staying WordPress-native and within your scope.
+
+**Target Versions:** v2.x
+
+#### A. Dynamic Content Blocks
+
+**Query Card Block** (Pro tier)
+
+- **Role:** Styled presentation for posts, CPTs, users without replacing core Query Loop
+- **Features:**
+  - Works as an inner block template inside Query Loop
+  - Hooks into ACF and custom fields for meta display
+  - No custom query builder UI, rely on core controls
+
+**Dynamic List Block**
+
+- **Role:** Lightweight list of posts or CPTs with tight layout control
+- **Features:**
+  - Use core query APIs under the hood
+  - Focus on presentation and spacing
+
+#### B. WooCommerce Styling Helpers
+
+**Product Info Block Group** (Pro tier)
+
+- **Role:** Presentation layer on product pages
+- **Features:**
+  - Styled title, price, badges, and icon lists inside existing WooCommerce templates
+  - No checkout, inventory, or store logic
+
+**Product Highlights Block**
+
+- **Role:** Callout sections on product and landing pages
+- **Features:**
+  - Built from Card and Icon blocks
+
+#### C. Advanced Forms
+
+**Multi-Step Form Block**
+
+- **Role:** Replace external multi-step form plugins for marketing flows
+- **Features:**
+  - Split existing fields into steps
+  - Progress indicator at the top
+  - Keeps submission on your current AJAX engine
+
+**Conditional Fields** (Pro feature on top of current fields)
+
+- **Role:** Simple visibility rules
+- **Features:**
+  - Show field based on previous selection
+  - Defined through plain controls in the inspector
+
+#### D. Enterprise and Agency Safety
+
+These stay light and respect "not a management tool."
+
+**Client-Safe Mode Toggle** (extension)
+
+- **Role:** Hide advanced controls from clients
+- **Features:**
+  - Inspector sections for advanced settings behind a "Pro controls" toggle restricted by role
+  - Focus on form, animation, custom CSS, and motion features
+
+#### Success Signals for Horizon 3
+
+- More "replaced [page builder] on client sites" stories
+- Higher usage on WooCommerce and CPT-heavy sites
+- Agencies reporting lower plugin counts per build
+
+---
+
+## Release Mapping
+
+This section maps the horizons to specific version releases with clear targets.
+
+### Version 1.1–1.3 (Horizon 1)
+
+**Blocks:**
+- Card
+- Testimonial
+- Pricing Table
+- FAQ preset
+- Basic form presets
+- Modal
+
+**Target:** Reduce plugin count for basic marketing sites and improve first-week progress.
+
+### Version 1.4–1.8 (Horizon 2)
+
+**Blocks:**
+- Feature List
+- Process / Steps
+- Section Header
+- Hero and page patterns
+- Scroll UX polish
+
+**Target:** Better second-site experience and higher return engagement.
+
+### Version 2.x (Horizon 3)
+
+**Blocks:**
+- Dynamic content presentation blocks
+- WooCommerce styling helpers
+- Multi-step and conditional forms
+- Client-safe controls
+
+**Target:** Agencies who want to drop Elementor or Divi on new builds while staying WordPress-native.
+
+---
+
+## Next Steps
+
+The next step is creating a shorter "internal roadmap" table that maps each block to:
+- User story
+- Plugin types it replaces
+- Success metric
+
+This can be shared with engineering and marketing without the full JTBD text.
