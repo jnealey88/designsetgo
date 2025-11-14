@@ -206,14 +206,14 @@ Create patterns to showcase your blocks:
 /**
  * Title: Hero Section with Container
  * Slug: designsetgo/hero/container-hero
- * Categories: dsg-hero
+ * Categories: dsgo-hero
  * Description: Full-width hero section
  * Keywords: hero, header, banner
  */
 
 return array(
 	'title'      => __( 'Hero Section with Container', 'designsetgo' ),
-	'categories' => array( 'dsg-hero' ),
+	'categories' => array( 'dsgo-hero' ),
 	'content'    => '<!-- wp:designsetgo/container {...} -->...'
 );
 ```

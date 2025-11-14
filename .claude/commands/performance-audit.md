@@ -132,17 +132,17 @@ grep -A 5 "forEach\|for\|while" src/*/view.js | grep "querySelector\|getElementB
 **Performance Patterns:**
 ```javascript
 // ✅ GOOD - Event delegation, cached selectors
-const container = document.querySelector('[data-dsg-tabs]');
+const container = document.querySelector('[data-dsgo-tabs]');
 container?.addEventListener('click', (e) => {
-    const tab = e.target.closest('[data-dsg-tab]');
+    const tab = e.target.closest('[data-dsgo-tab]');
     if (!tab) return;
     handleTabClick(tab);
 });
 
 // ❌ BAD - Individual listeners, repeated queries
-document.querySelectorAll('[data-dsg-tab]').forEach(tab => {
+document.querySelectorAll('[data-dsgo-tab]').forEach(tab => {
     tab.addEventListener('click', () => {
-        document.querySelector('[data-dsg-tabs]').classList.add('active');
+        document.querySelector('[data-dsgo-tabs]').classList.add('active');
     });
 });
 

@@ -171,7 +171,7 @@ ls -lh build/*.js build/*.css
 
 **Force readable text when needed:**
 ```scss
-.has-dsg-overlay {
+.has-dsgo-overlay {
   color: #ffffff !important; // Accessibility > specificity
   h1, h2, h3, h4, h5, h6, p { color: #ffffff !important; }
 }
@@ -226,7 +226,7 @@ src/blocks/{block-name}/
 ```
 
 **Naming Conventions:**
-- CSS classes: `dsg-{block-name}__element--modifier` (BEM)
+- CSS classes: `dsgo-{block-name}__element--modifier` (BEM)
 - Attributes: Flat, descriptive names (`layoutType`, not `type` or `settings.layout`)
 - Components: PascalCase (`ContainerEdit`, not `edit` or `container_edit`)
 - Functions: camelCase, descriptive (`calculateInnerStyles`, not `getStyles`)
@@ -711,7 +711,7 @@ return <div {...innerBlocksProps} />;
 
 5. **Consistent Naming:**
    - Attributes: `layoutType`, `gridColumns`, `enableOverlay`
-   - CSS classes: `dsg-container`, `dsg-container__inner`, `dsg-container--hero`
+   - CSS classes: `dsgo-container`, `dsgo-container__inner`, `dsgo-container--hero`
    - Functions: `calculateStyles`, `handleLayoutChange`, `getResponsiveColumns`
 
 6. **Add Inline Comments for Complex Logic:**

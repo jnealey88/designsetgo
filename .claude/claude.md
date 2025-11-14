@@ -77,6 +77,37 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 ## Architecture
 
+### Naming Conventions
+
+**Prefix Standard**: Use `dsgo-` for ALL plugin identifiers (CSS classes, data attributes, JavaScript variables).
+
+**Format Guidelines**:
+- **CSS/HTML**: kebab-case → `.dsgo-block-name`, `data-dsgo-attribute`
+- **JavaScript**: camelCase → `dsgoAttributeName`, `dsgoStickyEnabled`
+- **PHP**: snake_case → `designsetgo_function_name`, `DesignSetGo\` namespace
+- **Filter hooks**: `designsetgo/hook-name`
+
+**Examples**:
+```javascript
+// ✅ CORRECT - dsgo prefix
+attributes: {
+  dsgoStickyEnabled: { type: 'boolean', default: false },
+  dsgoAnimationDuration: { type: 'number', default: 600 }
+}
+
+// CSS classes
+.dsgo-sticky-header
+.dsgo-animation-fadeIn
+data-dsgo-animation-enabled="true"
+
+// ❌ INCORRECT - dsg prefix (deprecated)
+attributes: {
+  dsgStickyEnabled: { type: 'boolean' }  // Wrong prefix
+}
+```
+
+**Note**: The `dsgo-` prefix was used in early development but has been standardized to `dsgo-` for consistency with the plugin name.
+
 ### Block Categories
 - **Use**: WordPress core categories in `block.json` (`"category": "design"`)
 - **Plus**: Custom collection via `registerBlockCollection('designsetgo', {...})`
@@ -88,7 +119,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 ```javascript
 // ✅ SAFE Extension Pattern
-addFilter('blocks.registerBlockType', 'dsg/filter', (settings, name) => {
+addFilter('blocks.registerBlockType', 'designsetgo/filter', (settings, name) => {
   const allowed = ['core/group', 'core/cover'];
   if (!allowed.includes(name)) return settings;
   // Modify settings
@@ -159,11 +190,11 @@ npm run build
 ### JavaScript Scope
 ```javascript
 // ✅ SAFEST - Data attributes
-document.querySelectorAll('[data-dsg-accordion]').forEach(el => {});
+document.querySelectorAll('[data-dsgo-accordion]').forEach(el => {});
 
 // ✅ Event delegation
 document.addEventListener('click', (e) => {
-  const item = e.target.closest('[data-dsg-item]');
+  const item = e.target.closest('[data-dsgo-item]');
   if (!item) return;
   handler(item);
 });
@@ -260,8 +291,8 @@ Only for: Accessibility, User expectation, WordPress core override
 
 ```jsx
 // ✅ CORRECT - Two-div pattern
-<div className="dsg-block">        // Outer: full-width, backgrounds
-  <div className="dsg-block__inner" style={innerStyle}>  // Inner: constrained
+<div className="dsgo-block">        // Outer: full-width, backgrounds
+  <div className="dsgo-block__inner" style={innerStyle}>  // Inner: constrained
     {children}
   </div>
 </div>
@@ -289,20 +320,20 @@ if (constrainWidth) {
 **Apply Conditional Classes:**
 ```javascript
 const className = [
-    'dsg-block',
-    !constrainWidth && 'dsg-no-width-constraint',
+    'dsgo-block',
+    !constrainWidth && 'dsgo-no-width-constraint',
 ].filter(Boolean).join(' ');
 ```
 
 **Handle Nested Containers (Required CSS):**
 ```scss
-.dsg-my-block {
+.dsgo-my-block {
     // When nested inside another container
-    .dsg-stack__inner > &,
-    .dsg-flex__inner > &,
-    .dsg-grid__inner > & {
+    .dsgo-stack__inner > &,
+    .dsgo-flex__inner > &,
+    .dsgo-grid__inner > & {
         width: 100% !important;
-        .dsg-my-block__inner {
+        .dsgo-my-block__inner {
             max-width: none !important;
             margin-left: 0 !important;
             margin-right: 0 !important;

@@ -217,7 +217,7 @@ await publishPost(page);
 Checks if a block has a specific CSS class.
 
 ```javascript
-const hasClass = await blockHasClass(page, 'core/group', 'dsg-grid-cols-3');
+const hasClass = await blockHasClass(page, 'core/group', 'dsgo-grid-cols-3');
 expect(hasClass).toBeTruthy();
 ```
 
@@ -253,7 +253,7 @@ test('should render correctly on frontend', async ({ page }) => {
   await page.goto(previewUrl);
 
   // Verify frontend rendering
-  const group = page.locator('.wp-block-group.dsg-grid-cols-3');
+  const group = page.locator('.wp-block-group.dsgo-grid-cols-3');
   await expect(group).toBeVisible();
 });
 ```

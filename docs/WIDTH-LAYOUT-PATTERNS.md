@@ -20,7 +20,7 @@
 
 ## Resolved Issues (2025-11-11)
 
-### ✅ Issue #1: Missing `dsg-no-width-constraint` Class
+### ✅ Issue #1: Missing `dsgo-no-width-constraint` Class
 **Status:** RESOLVED
 **Fix:** Added class application in [section/save.js:31-37](../src/blocks/section/save.js), [row/save.js](../src/blocks/row/save.js), [grid/save.js](../src/blocks/grid/save.js)
 **Commit:** 2765159 (2025-11-11)
@@ -73,8 +73,8 @@
 **All container blocks use this structure:**
 
 ```jsx
-<div className="dsg-{block}">        // Outer wrapper (full-width, alignfull)
-  <div className="dsg-{block}__inner"> // Inner container (constrained width)
+<div className="dsgo-{block}">        // Outer wrapper (full-width, alignfull)
+  <div className="dsgo-{block}__inner"> // Inner container (constrained width)
     <InnerBlocks />                   // Children
   </div>
 </div>
@@ -155,7 +155,7 @@ export default function Edit({ attributes, setAttributes }) {
 
     return (
         <div {...blockProps}>
-            <div className="dsg-block__inner" style={innerStyle}>
+            <div className="dsgo-block__inner" style={innerStyle}>
                 {/* children */}
             </div>
         </div>
@@ -189,7 +189,7 @@ if (constrainWidth) {
 **CSS Pattern for Alignment Classes:**
 
 ```scss
-.dsg-block {
+.dsgo-block {
     &.alignfull {
         max-width: none;
         width: 100%;
@@ -216,15 +216,15 @@ if (constrainWidth) {
 **Critical Pattern: Force full-width for nested containers**
 
 ```scss
-.dsg-section {
+.dsgo-section {
     // When this block is inside another container's inner div
-    .dsg-stack__inner > &,
-    .dsg-flex__inner > &,
-    .dsg-grid__inner > & {
+    .dsgo-stack__inner > &,
+    .dsgo-flex__inner > &,
+    .dsgo-grid__inner > & {
         width: 100% !important;
 
         // And force its own inner to be unconstrained
-        .dsg-section__inner {
+        .dsgo-section__inner {
             max-width: none !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
@@ -318,21 +318,21 @@ When containers nest, the inner container should:
 
 ## Known Conflicts
 
-### ✅ Issue #1: Missing `dsg-no-width-constraint` Class (**RESOLVED 2025-11-11**)
+### ✅ Issue #1: Missing `dsgo-no-width-constraint` Class (**RESOLVED 2025-11-11**)
 
 **Problem:** CSS references a class that's never applied.
 
 **History:**
-- **Deprecated version**: Applied `dsg-no-width-constraint` when `constrainWidth: false`
+- **Deprecated version**: Applied `dsgo-no-width-constraint` when `constrainWidth: false`
   - [section/deprecated.js](../src/blocks/section/deprecated.js) (lines 52-57)
-- **Current version**: Only uses base class `dsg-stack`
+- **Current version**: Only uses base class `dsgo-stack`
   - [section/save.js](../src/blocks/section/save.js) (line 30)
 
 **CSS Still Expects It:**
 
 ```scss
 // This selector never matches!
-.dsg-stack.alignfull.dsg-no-width-constraint > .dsg-stack__inner[class*="wp-container-"] {
+.dsgo-stack.alignfull.dsgo-no-width-constraint > .dsgo-stack__inner[class*="wp-container-"] {
     > :not(.alignleft):not(.alignright) {
         max-width: none !important;
         margin-left: 0 !important;
@@ -349,8 +349,8 @@ When containers nest, the inner container should:
 ```javascript
 // In save.js
 const className = [
-    'dsg-stack',
-    !constrainWidth && 'dsg-no-width-constraint',
+    'dsgo-stack',
+    !constrainWidth && 'dsgo-no-width-constraint',
 ].filter(Boolean).join(' ');
 ```
 
@@ -540,7 +540,7 @@ innerStyle.maxWidth = contentWidth || 'var(--wp--style--global--content-size, 11
 
 **Plugin Fights Back:**
 ```scss
-.dsg-stack.alignfull.dsg-no-width-constraint > .dsg-stack__inner[class*="wp-container-"] {
+.dsgo-stack.alignfull.dsgo-no-width-constraint > .dsgo-stack__inner[class*="wp-container-"] {
     > :not(.alignleft):not(.alignright) {
         max-width: none !important;  // ⚔️ Specificity war
         margin-left: 0 !important;
@@ -561,8 +561,8 @@ innerStyle.maxWidth = contentWidth || 'var(--wp--style--global--content-size, 11
 
 ```jsx
 // ✅ GOOD
-<div {...useBlockProps({ className: 'dsg-block' })}>
-  <div className="dsg-block__inner" style={innerStyle}>
+<div {...useBlockProps({ className: 'dsgo-block' })}>
+  <div className="dsgo-block__inner" style={innerStyle}>
     {children}
   </div>
 </div>
@@ -570,7 +570,7 @@ innerStyle.maxWidth = contentWidth || 'var(--wp--style--global--content-size, 11
 
 ```jsx
 // ❌ BAD - Single div can't separate background from content width
-<div {...useBlockProps({ className: 'dsg-block', style: innerStyle })}>
+<div {...useBlockProps({ className: 'dsgo-block', style: innerStyle })}>
   {children}
 </div>
 ```
@@ -625,14 +625,14 @@ const effectiveWidth = contentWidth || '1140px';
 
 ```scss
 // ✅ GOOD - Explicit nesting rules
-.dsg-my-block {
+.dsgo-my-block {
     // When nested inside other containers
-    .dsg-stack__inner > &,
-    .dsg-flex__inner > &,
-    .dsg-grid__inner > & {
+    .dsgo-stack__inner > &,
+    .dsgo-flex__inner > &,
+    .dsgo-grid__inner > & {
         width: 100% !important;
 
-        .dsg-my-block__inner {
+        .dsgo-my-block__inner {
             max-width: none !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
@@ -662,9 +662,9 @@ innerStyle.maxWidth = 'var(--wp--style--global--content-size)';
 ```javascript
 // ✅ GOOD - Apply classes based on attributes
 const className = [
-    'dsg-block',
-    !constrainWidth && 'dsg-no-width-constraint',
-    isNested && 'dsg-nested',
+    'dsgo-block',
+    !constrainWidth && 'dsgo-no-width-constraint',
+    isNested && 'dsgo-nested',
 ].filter(Boolean).join(' ');
 ```
 
@@ -743,12 +743,12 @@ rowGap: blockGap
 **Change:**
 ```javascript
 // Before
-const className = 'dsg-stack';
+const className = 'dsgo-stack';
 
 // After
 const className = [
-    'dsg-stack',
-    !constrainWidth && 'dsg-no-width-constraint',
+    'dsgo-stack',
+    !constrainWidth && 'dsgo-no-width-constraint',
 ].filter(Boolean).join(' ');
 ```
 
@@ -806,7 +806,7 @@ const innerStyle = {
 ```javascript
 // Let WordPress handle flex via layout classes
 const innerBlocksProps = useInnerBlocksProps.save({
-    className: 'dsg-row__inner',
+    className: 'dsgo-row__inner',
     style: innerStyle,  // Only width constraint, not flex properties
 });
 ```
@@ -925,8 +925,8 @@ When creating a new container block with width constraints:
 
 - [ ] **Two-div structure** in save.js:
   ```jsx
-  <div className="dsg-block">
-    <div className="dsg-block__inner" style={innerStyle}>
+  <div className="dsgo-block">
+    <div className="dsgo-block__inner" style={innerStyle}>
       {children}
     </div>
   </div>
@@ -935,19 +935,19 @@ When creating a new container block with width constraints:
 - [ ] **Conditional class** in save.js:
   ```javascript
   const className = [
-      'dsg-block',
-      !constrainWidth && 'dsg-no-width-constraint',
+      'dsgo-block',
+      !constrainWidth && 'dsgo-no-width-constraint',
   ].filter(Boolean).join(' ');
   ```
 
 - [ ] **CSS nesting rules** in style.scss:
   ```scss
-  .dsg-block {
-      .dsg-stack__inner > &,
-      .dsg-flex__inner > &,
-      .dsg-grid__inner > & {
+  .dsgo-block {
+      .dsgo-stack__inner > &,
+      .dsgo-flex__inner > &,
+      .dsgo-grid__inner > & {
           width: 100% !important;
-          .dsg-block__inner {
+          .dsgo-block__inner {
               max-width: none !important;
               margin-left: 0 !important;
               margin-right: 0 !important;

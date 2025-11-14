@@ -27,23 +27,23 @@ Design tokens are centralized values that ensure consistency across your entire 
 #### Color Tokens
 
 **Available Colors:**
-- `--wp--preset--color--dsg-primary` (#2563eb - Blue)
-- `--wp--preset--color--dsg-secondary` (#7c3aed - Purple)
-- `--wp--preset--color--dsg-accent` (#f59e0b - Orange)
-- `--wp--preset--color--dsg-success` (#10b981 - Green)
-- `--wp--preset--color--dsg-warning` (#f59e0b - Orange)
-- `--wp--preset--color--dsg-error` (#ef4444 - Red)
+- `--wp--preset--color--dsgo-primary` (#2563eb - Blue)
+- `--wp--preset--color--dsgo-secondary` (#7c3aed - Purple)
+- `--wp--preset--color--dsgo-accent` (#f59e0b - Orange)
+- `--wp--preset--color--dsgo-success` (#10b981 - Green)
+- `--wp--preset--color--dsgo-warning` (#f59e0b - Orange)
+- `--wp--preset--color--dsgo-error` (#ef4444 - Red)
 
 **Gradients:**
-- `--wp--preset--gradient--dsg-primary-to-secondary`
-- `--wp--preset--gradient--dsg-sunset`
-- `--wp--preset--gradient--dsg-ocean`
+- `--wp--preset--gradient--dsgo-primary-to-secondary`
+- `--wp--preset--gradient--dsgo-sunset`
+- `--wp--preset--gradient--dsgo-ocean`
 
 **Usage in CSS:**
 ```css
 .my-element {
-  background: var(--wp--preset--color--dsg-primary);
-  background: var(--wp--preset--gradient--dsg-sunset);
+  background: var(--wp--preset--color--dsgo-primary);
+  background: var(--wp--preset--gradient--dsgo-sunset);
 }
 ```
 
@@ -52,7 +52,7 @@ Design tokens are centralized values that ensure consistency across your entire 
 // In block.json or save.js
 style: {
   color: {
-    background: 'var:preset|color|dsg-primary'
+    background: 'var:preset|color|dsgo-primary'
   }
 }
 ```
@@ -168,71 +168,71 @@ Utility classes provide quick styling without custom CSS.
 
 **Hide on Specific Devices:**
 ```html
-<div class="dsg-hide-mobile">Hidden on mobile</div>
-<div class="dsg-hide-tablet">Hidden on tablet</div>
-<div class="dsg-hide-desktop">Hidden on desktop</div>
+<div class="dsgo-hide-mobile">Hidden on mobile</div>
+<div class="dsgo-hide-tablet">Hidden on tablet</div>
+<div class="dsgo-hide-desktop">Hidden on desktop</div>
 ```
 
 #### Spacing Utilities
 
 **Padding:**
 ```html
-<div class="dsg-p-xs">8px padding</div>
-<div class="dsg-p-sm">16px padding</div>
-<div class="dsg-p-md">24px padding</div>
-<div class="dsg-p-lg">32px padding</div>
-<div class="dsg-p-xl">48px padding</div>
+<div class="dsgo-p-xs">8px padding</div>
+<div class="dsgo-p-sm">16px padding</div>
+<div class="dsgo-p-md">24px padding</div>
+<div class="dsgo-p-lg">32px padding</div>
+<div class="dsgo-p-xl">48px padding</div>
 ```
 
 **Margin:**
 ```html
-<div class="dsg-m-sm">16px margin</div>
-<div class="dsg-m-md">24px margin</div>
-<div class="dsg-m-lg">32px margin</div>
+<div class="dsgo-m-sm">16px margin</div>
+<div class="dsgo-m-md">24px margin</div>
+<div class="dsgo-m-lg">32px margin</div>
 ```
 
 #### Color Utilities
 
 **Background Colors:**
 ```html
-<div class="dsg-bg-primary">Primary background</div>
-<div class="dsg-bg-secondary">Secondary background</div>
-<div class="dsg-bg-accent">Accent background</div>
+<div class="dsgo-bg-primary">Primary background</div>
+<div class="dsgo-bg-secondary">Secondary background</div>
+<div class="dsgo-bg-accent">Accent background</div>
 ```
 
 **Text Colors:**
 ```html
-<p class="dsg-text-primary">Primary text</p>
-<p class="dsg-text-secondary">Secondary text</p>
-<p class="dsg-text-accent">Accent text</p>
+<p class="dsgo-text-primary">Primary text</p>
+<p class="dsgo-text-secondary">Secondary text</p>
+<p class="dsgo-text-accent">Accent text</p>
 ```
 
 #### Border Radius Utilities
 
 ```html
-<div class="dsg-rounded-none">No radius</div>
-<div class="dsg-rounded-sm">Small radius</div>
-<div class="dsg-rounded-md">Medium radius</div>
-<div class="dsg-rounded-lg">Large radius</div>
-<div class="dsg-rounded-full">Fully rounded</div>
+<div class="dsgo-rounded-none">No radius</div>
+<div class="dsgo-rounded-sm">Small radius</div>
+<div class="dsgo-rounded-md">Medium radius</div>
+<div class="dsgo-rounded-lg">Large radius</div>
+<div class="dsgo-rounded-full">Fully rounded</div>
 ```
 
 #### Shadow Utilities
 
 ```html
-<div class="dsg-shadow-sm">Small shadow</div>
-<div class="dsg-shadow-md">Medium shadow</div>
-<div class="dsg-shadow-lg">Large shadow</div>
-<div class="dsg-shadow-xl">Extra large shadow</div>
+<div class="dsgo-shadow-sm">Small shadow</div>
+<div class="dsgo-shadow-md">Medium shadow</div>
+<div class="dsgo-shadow-lg">Large shadow</div>
+<div class="dsgo-shadow-xl">Extra large shadow</div>
 ```
 
 #### Animation Utilities
 
 **Entrance Animations:**
 ```html
-<div class="dsg-fade-in">Fades in</div>
-<div class="dsg-slide-up">Slides up</div>
-<div class="dsg-zoom-in">Zooms in</div>
+<div class="dsgo-fade-in">Fades in</div>
+<div class="dsgo-slide-up">Slides up</div>
+<div class="dsgo-zoom-in">Zooms in</div>
 ```
 
 **Note:** Respects `prefers-reduced-motion` user preference.
@@ -240,11 +240,11 @@ Utility classes provide quick styling without custom CSS.
 #### Layout Utilities
 
 ```html
-<div class="dsg-flex dsg-items-center dsg-justify-center dsg-gap-md">
+<div class="dsgo-flex dsgo-items-center dsgo-justify-center dsgo-gap-md">
   Flexbox centered with gap
 </div>
 
-<div class="dsg-grid dsg-gap-lg">
+<div class="dsgo-grid dsgo-gap-lg">
   Grid layout with gap
 </div>
 ```
@@ -284,7 +284,7 @@ These settings feed into the FSE global styles system.
 
 ```php
 add_filter( 'designsetgo_global_styles', function( $styles ) {
-  $styles['colors']['dsg-primary'] = '#your-color';
+  $styles['colors']['dsgo-primary'] = '#your-color';
   $styles['spacing']['lg'] = '2.5rem';
   return $styles;
 } );
@@ -301,7 +301,7 @@ Create a `theme.json` file in your theme with:
     "color": {
       "palette": [
         {
-          "slug": "dsg-primary",
+          "slug": "dsgo-primary",
           "color": "#your-color",
           "name": "DSG Primary"
         }
@@ -329,7 +329,7 @@ Your theme's `theme.json` takes precedence over plugin settings.
 ```css
 .my-block {
   padding: var(--wp--preset--spacing--md);
-  color: var(--wp--preset--color--dsg-primary);
+  color: var(--wp--preset--color--dsgo-primary);
 }
 ```
 
@@ -440,9 +440,9 @@ register_block_style(
 **2. Add styles (SCSS):**
 ```scss
 .wp-block-designsetgo-container.is-style-neon {
-  background: var(--wp--preset--color--dsg-primary);
-  border: 2px solid var(--wp--preset--color--dsg-accent);
-  box-shadow: 0 0 20px var(--wp--preset--color--dsg-primary);
+  background: var(--wp--preset--color--dsgo-primary);
+  border: 2px solid var(--wp--preset--color--dsgo-accent);
+  box-shadow: 0 0 20px var(--wp--preset--color--dsgo-primary);
   color: white;
 }
 ```
@@ -465,7 +465,7 @@ register_block_style(
           }
         },
         "color": {
-          "background": "var:preset|color|dsg-primary"
+          "background": "var:preset|color|dsgo-primary"
         }
       }
     }
@@ -477,7 +477,7 @@ register_block_style(
 // In edit.js
 const blockProps = useBlockProps({
   style: {
-    backgroundColor: 'var(--wp--preset--color--dsg-primary)',
+    backgroundColor: 'var(--wp--preset--color--dsgo-primary)',
     padding: 'var(--wp--preset--spacing--lg)'
   }
 });

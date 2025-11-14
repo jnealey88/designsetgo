@@ -9,11 +9,11 @@ Implemented several fixes to make the Scroll Accordion block behave like a deck 
 ## Key Changes
 
 1. **Section overflow opt-out**
-   - Added `dsg-stack--allow-overflow` modifier in `src/blocks/section/style.scss`.
-   - Scroll accordion JS now finds *all* ancestor `.dsg-stack` wrappers and adds this class to prevent overflow clipping that breaks `position: sticky`.
+   - Added `dsgo-stack--allow-overflow` modifier in `src/blocks/section/style.scss`.
+   - Scroll accordion JS now finds *all* ancestor `.dsgo-stack` wrappers and adds this class to prevent overflow clipping that breaks `position: sticky`.
 
 2. **Sticky offset tuning**
-   - Introduced `--dsg-scroll-accordion-sticky-offset` custom property in `src/blocks/scroll-accordion/style.scss`.
+   - Introduced `--dsgo-scroll-accordion-sticky-offset` custom property in `src/blocks/scroll-accordion/style.scss`.
    - Accordion items now use this variable (`top: clamp(6rem, 15vh, 12rem)`) so the stack “sticks” slightly below center instead of at the very top.
 
 3. **Min-height removal**

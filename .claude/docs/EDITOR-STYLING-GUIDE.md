@@ -13,7 +13,7 @@
 // Container block edit.js - ANTI-PATTERN
 useEffect(() => {
   const container = document.querySelector(`[data-block="${clientId}"]`);
-  const inner = container.querySelector('.dsg-container__inner');
+  const inner = container.querySelector('.dsgo-container__inner');
 
   // Manual DOM manipulation
   inner.style.display = 'grid';
@@ -35,7 +35,7 @@ useEffect(() => {
 **What We Were Doing (WRONG)**:
 ```javascript
 // Container block edit.js - ANTI-PATTERN
-<div className="dsg-container__inner" style={{ position: 'relative', zIndex: 2 }}>
+<div className="dsgo-container__inner" style={{ position: 'relative', zIndex: 2 }}>
   <InnerBlocks />
 </div>
 ```
@@ -95,7 +95,7 @@ export default function ContainerEdit({ attributes }) {
   // 2. Apply to block wrapper
   // ========================================
   const blockProps = useBlockProps({
-    className: 'dsg-container',
+    className: 'dsgo-container',
   });
 
   // ========================================
@@ -104,7 +104,7 @@ export default function ContainerEdit({ attributes }) {
   // ========================================
   const innerBlocksProps = useInnerBlocksProps(
     {
-      className: 'dsg-container__inner',
+      className: 'dsgo-container__inner',
       style: innerStyles, // ← Styles applied declaratively
     },
     {
@@ -122,8 +122,8 @@ export default function ContainerEdit({ attributes }) {
 
       <div {...blockProps}>
         {/* Background elements */}
-        {videoUrl && <div className="dsg-video-background">...</div>}
-        {enableOverlay && <div className="dsg-overlay">...</div>}
+        {videoUrl && <div className="dsgo-video-background">...</div>}
+        {enableOverlay && <div className="dsgo-overlay">...</div>}
 
         {/* Inner blocks - NO wrapper div, spread props directly */}
         <div {...innerBlocksProps} />
@@ -141,18 +141,18 @@ export default function ContainerSave({ attributes }) {
   const innerStyles = { /* ... same logic ... */ };
 
   const blockProps = useBlockProps.save({
-    className: 'dsg-container',
+    className: 'dsgo-container',
   });
 
   // Use .save() variant for consistency
   const innerBlocksProps = useInnerBlocksProps.save({
-    className: 'dsg-container__inner',
+    className: 'dsgo-container__inner',
     style: innerStyles,
   });
 
   return (
     <div {...blockProps}>
-      {enableOverlay && <div className="dsg-overlay">...</div>}
+      {enableOverlay && <div className="dsgo-overlay">...</div>}
       {/* NO wrapper div, spread props directly */}
       <div {...innerBlocksProps} />
     </div>
@@ -203,7 +203,7 @@ export default function ContainerSave({ attributes }) {
 
 **Before (Anti-Pattern)**:
 - ❌ `frontend.js` had `initLayouts()` function
-- ❌ Queried all `.dsg-container` elements
+- ❌ Queried all `.dsgo-container` elements
 - ❌ Applied layout styles via JavaScript
 - ❌ Listened for window resize events
 - ❌ Flash of unstyled content (FOUC) possible

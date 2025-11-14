@@ -163,10 +163,10 @@ const buttonStyles = {
 
   // Apply custom hover colors as CSS variables
   ...(hoverBackgroundColor && {
-    '--dsg-button-hover-bg': hoverBackgroundColor,
+    '--dsgo-button-hover-bg': hoverBackgroundColor,
   }),
   ...(hoverTextColor && {
-    '--dsg-button-hover-color': hoverTextColor,
+    '--dsgo-button-hover-color': hoverTextColor,
   }),
 };
 
@@ -200,13 +200,13 @@ Use `:not()` selector to apply defaults only when user hasn't set colors:
 Target elements with CSS variables and apply on hover:
 
 ```scss
-.my-block__wrapper[style*="--dsg-button-hover-bg"]:hover {
-  background-color: var(--dsg-button-hover-bg) !important;
+.my-block__wrapper[style*="--dsgo-button-hover-bg"]:hover {
+  background-color: var(--dsgo-button-hover-bg) !important;
   opacity: 1; // Override default opacity change
 }
 
-.my-block__wrapper[style*="--dsg-button-hover-color"]:hover {
-  color: var(--dsg-button-hover-color) !important;
+.my-block__wrapper[style*="--dsgo-button-hover-color"]:hover {
+  color: var(--dsgo-button-hover-color) !important;
 }
 ```
 
@@ -237,10 +237,10 @@ export default function MyBlockSave({ attributes }) {
     ...(bgColor && { backgroundColor: bgColor }),
     ...(txtColor && { color: txtColor }),
     ...(hoverBackgroundColor && {
-      '--dsg-button-hover-bg': hoverBackgroundColor,
+      '--dsgo-button-hover-bg': hoverBackgroundColor,
     }),
     ...(hoverTextColor && {
-      '--dsg-button-hover-color': hoverTextColor,
+      '--dsgo-button-hover-color': hoverTextColor,
     }),
   };
 
@@ -316,10 +316,10 @@ export default function IconButtonEdit({
     ...(bgColor && { backgroundColor: bgColor }),
     ...(txtColor && { color: txtColor }),
     ...(hoverBackgroundColor && {
-      '--dsg-button-hover-bg': hoverBackgroundColor,
+      '--dsgo-button-hover-bg': hoverBackgroundColor,
     }),
     ...(hoverTextColor && {
-      '--dsg-button-hover-color': hoverTextColor,
+      '--dsgo-button-hover-color': hoverTextColor,
     }),
   };
 
@@ -356,7 +356,7 @@ export default function IconButtonEdit({
       </InspectorControls>
 
       <div {...useBlockProps()}>
-        <div className="dsg-icon-button__wrapper" style={buttonStyles}>
+        <div className="dsgo-icon-button__wrapper" style={buttonStyles}>
           {/* Button content */}
         </div>
       </div>
@@ -368,7 +368,7 @@ export default function IconButtonEdit({
 ### style.scss
 
 ```scss
-.dsg-icon-button__wrapper {
+.dsgo-icon-button__wrapper {
   // Default colors only when no inline styles
   &:not([style*="background"]) {
     background-color: var(--wp--preset--color--primary, #2563eb);
@@ -384,13 +384,13 @@ export default function IconButtonEdit({
 }
 
 // Hover colors via CSS variables (override default hover)
-.dsg-icon-button__wrapper[style*="--dsg-button-hover-bg"]:hover {
-  background-color: var(--dsg-button-hover-bg) !important;
+.dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"]:hover {
+  background-color: var(--dsgo-button-hover-bg) !important;
   opacity: 1; // Override default opacity
 }
 
-.dsg-icon-button__wrapper[style*="--dsg-button-hover-color"]:hover {
-  color: var(--dsg-button-hover-color) !important;
+.dsgo-icon-button__wrapper[style*="--dsgo-button-hover-color"]:hover {
+  color: var(--dsgo-button-hover-color) !important;
 }
 ```
 

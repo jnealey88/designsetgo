@@ -21,7 +21,7 @@ Our Container block was experiencing editor/frontend inconsistency because we we
 // src/blocks/container/edit.js (lines 85-129)
 useEffect(() => {
   const container = document.querySelector(`[data-block="${clientId}"]`);
-  const inner = container.querySelector('.dsg-container__inner');
+  const inner = container.querySelector('.dsgo-container__inner');
 
   // Manual style manipulation
   inner.style.display = 'grid';
@@ -51,7 +51,7 @@ useEffect(() => {
 
 ```javascript
 // src/blocks/container/edit.js (line 660)
-<div className="dsg-container__inner" style={{ position: 'relative', zIndex: 2 }}>
+<div className="dsgo-container__inner" style={{ position: 'relative', zIndex: 2 }}>
   <InnerBlocks />
 </div>
 ```
@@ -112,7 +112,7 @@ export default function ContainerEdit({ attributes }) {
   // 2. Apply to block wrapper
   // ========================================
   const blockProps = useBlockProps({
-    className: classnames('dsg-container', {
+    className: classnames('dsgo-container', {
       'has-video-background': videoUrl,
       // ... other classes
     }),
@@ -124,7 +124,7 @@ export default function ContainerEdit({ attributes }) {
   // ========================================
   const innerBlocksProps = useInnerBlocksProps(
     {
-      className: 'dsg-container__inner',
+      className: 'dsgo-container__inner',
       style: innerStyles, // ← Styles applied declaratively
     },
     {
@@ -144,8 +144,8 @@ export default function ContainerEdit({ attributes }) {
 
       <div {...blockProps}>
         {/* Background elements */}
-        {videoUrl && <div className="dsg-video-background">...</div>}
-        {enableOverlay && <div className="dsg-overlay">...</div>}
+        {videoUrl && <div className="dsgo-video-background">...</div>}
+        {enableOverlay && <div className="dsgo-overlay">...</div>}
 
         {/* Inner blocks - NO wrapper div, spread props directly */}
         <div {...innerBlocksProps} />
@@ -186,20 +186,20 @@ export default function ContainerSave({ attributes }) {
   }
 
   const blockProps = useBlockProps.save({
-    className: classnames('dsg-container', {
+    className: classnames('dsgo-container', {
       // ... classes
     }),
   });
 
   // Use .save() variant for consistency
   const innerBlocksProps = useInnerBlocksProps.save({
-    className: 'dsg-container__inner',
+    className: 'dsgo-container__inner',
     style: innerStyles,
   });
 
   return (
     <div {...blockProps}>
-      {enableOverlay && <div className="dsg-overlay">...</div>}
+      {enableOverlay && <div className="dsgo-overlay">...</div>}
       {/* NO wrapper div, spread props directly */}
       <div {...innerBlocksProps} />
     </div>
@@ -229,12 +229,12 @@ export default function ContainerSave({ attributes }) {
 **JavaScript:**
 ```javascript
 const innerBlocksProps = useInnerBlocksProps({
-  className: 'dsg-container__inner',
+  className: 'dsgo-container__inner',
   style: {
-    '--dsg-cols-desktop': gridColumns,
-    '--dsg-cols-tablet': gridColumnsTablet,
-    '--dsg-cols-mobile': gridColumnsMobile,
-    '--dsg-gap': gap,
+    '--dsgo-cols-desktop': gridColumns,
+    '--dsgo-cols-tablet': gridColumnsTablet,
+    '--dsgo-cols-mobile': gridColumnsMobile,
+    '--dsgo-gap': gap,
     display: 'grid',
   }
 });
@@ -242,16 +242,16 @@ const innerBlocksProps = useInnerBlocksProps({
 
 **SCSS:**
 ```scss
-.dsg-container__inner {
-  grid-template-columns: repeat(var(--dsg-cols-desktop), 1fr);
-  gap: var(--dsg-gap);
+.dsgo-container__inner {
+  grid-template-columns: repeat(var(--dsgo-cols-desktop), 1fr);
+  gap: var(--dsgo-gap);
 
   @media (max-width: 1023px) {
-    grid-template-columns: repeat(var(--dsg-cols-tablet), 1fr);
+    grid-template-columns: repeat(var(--dsgo-cols-tablet), 1fr);
   }
 
   @media (max-width: 767px) {
-    grid-template-columns: repeat(var(--dsg-cols-mobile), 1fr);
+    grid-template-columns: repeat(var(--dsgo-cols-mobile), 1fr);
   }
 }
 ```
@@ -277,7 +277,7 @@ if (editorWidth < 768) {
 }
 
 const innerBlocksProps = useInnerBlocksProps({
-  className: 'dsg-container__inner',
+  className: 'dsgo-container__inner',
   style: {
     display: 'grid',
     gridTemplateColumns: `repeat(${currentCols}, 1fr)`,
@@ -308,7 +308,7 @@ const innerBlocksProps = useInnerBlocksProps({
 - Content width (user-defined)
 
 **CSS Classes:**
-- Responsive visibility (`dsg-hide-desktop`, etc.)
+- Responsive visibility (`dsgo-hide-desktop`, etc.)
 - Video background indicator
 - Clickable state indicator
 - Style variations (card, elevated, etc.)
@@ -320,7 +320,7 @@ const innerBlocksProps = useInnerBlocksProps({
 ### Before (Anti-Pattern):
 
 **frontend.js** needed to:
-1. Query all `.dsg-container` elements
+1. Query all `.dsgo-container` elements
 2. Read data attributes
 3. Apply layout styles via JavaScript
 4. Listen for window resize
@@ -394,14 +394,14 @@ const blockProps = useBlockProps({ /* ... */ });
 
 useEffect(() => {
   const container = document.querySelector(`[data-block="${clientId}"]`);
-  const inner = container.querySelector('.dsg-container__inner');
+  const inner = container.querySelector('.dsgo-container__inner');
   inner.style.display = 'grid';
   // ...
 }, [layoutType, gridColumns]);
 
 return (
   <div {...blockProps}>
-    <div className="dsg-container__inner">
+    <div className="dsgo-container__inner">
       <InnerBlocks />
     </div>
   </div>
@@ -420,7 +420,7 @@ const innerStyles = {
 
 const blockProps = useBlockProps({ /* ... */ });
 const innerBlocksProps = useInnerBlocksProps({
-  className: 'dsg-container__inner',
+  className: 'dsgo-container__inner',
   style: innerStyles,
 });
 
