@@ -1,35 +1,45 @@
-# .distignore - Files to exclude from wp-scripts plugin-zip
+# .distignore - Files to exclude from WordPress.org SVN deployment
 
 # Development files
-.git
-.github
-.gitignore
-.gitattributes
+/.git
+/.github
+/.gitignore
+/.gitattributes
 
 # Node and dependencies
-node_modules
-package-lock.json
-.npm
-.npmrc
+/node_modules
+/package-lock.json
+/.npm
+/.npmrc
 
 # Build source files (only include /build/)
-src
+/src
 
 # Testing
-tests
-playwright-report
-test-results
-.playwright
-playwright.config.js
-phpunit.xml
-.phpunit.result.cache
+/tests
+/playwright-report
+/test-results
+/.playwright
+/playwright.config.js
+/phpunit.xml
+/.phpunit.result.cache
 
 # WordPress environment
-.wp-env.json
-wordpress
+/.wp-env.json
+/wordpress
 
-# Documentation (development)
-docs/*.md
+# Claude AI files
+/.claude
+
+# Build artifacts and deployment
+/bin
+/deployment-package
+
+# Documentation (ALL .md files except readme.txt)
+/docs
+README.md
+*.md
+!readme.txt
 CLAUDE.md
 PRD.md
 DEVELOPMENT-STATUS.md
@@ -41,9 +51,6 @@ DEV-PHASE-*.md
 CONTROL-REORGANIZATION.md
 WORDPRESS-ORG-SUBMISSION-CHECKLIST.md
 SUBMISSION-TODO.md
-
-# Keep only user-facing README
-README.md
 
 # Backup files
 *.backup
@@ -123,9 +130,8 @@ package-lock.json
 composer.json
 composer.lock
 
-# Assets folder (handled separately by .wordpress-org)
-assets/fonts
-assets/images
+# Assets folder (handled separately by .wordpress-org, exclude from trunk)
+/assets
 
 # Translation source files (only include compiled .mo files)
 languages/*.po
