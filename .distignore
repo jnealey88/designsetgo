@@ -103,3 +103,42 @@ assets-src
 # Build scripts
 webpack.config.js
 tsconfig.json
+
+# Documentation files (keep only readme.txt for WordPress.org)
+README.md
+docs
+*.md
+
+# Environment and CI/CD
+.env
+.env.*
+.github
+.git
+.gitignore
+.gitattributes
+
+# Package files (not needed in distribution)
+package.json
+package-lock.json
+composer.json
+composer.lock
+
+# Assets folder (handled separately by .wordpress-org)
+assets/fonts
+assets/images
+
+# Translation source files (only include compiled .mo files)
+languages/*.po
+languages/*.pot
+
+# Development tools
+.husky
+.vscode
+.idea
+lint-staged.config.js
+.eslintrc*
+.stylelintrc*
+.prettierrc*
+phpcs.xml.dist
+phpstan.neon
+psalm.xml
