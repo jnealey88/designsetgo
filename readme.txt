@@ -5,11 +5,11 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Build professional WordPress sites without the bloat, complexity, or lock-in of traditional page builders. 47 native blocks + 7 universal extensions that work with ANY block.
+Professional WordPress blocks without page builder bloat. 47 blocks + 7 universal extensions that enhance ANY block.
 
 == Description ==
 
@@ -137,6 +137,11 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.0.1 - 2025-11-14 =
+* Docs: Streamlined readme.txt with JTBD-focused messaging for better scannability
+* Docs: Condensed description from 516 to 339 lines while keeping essential information
+* Docs: Reordered FAQ to address user anxiety barriers first
 
 = 1.0.0 - 2025-11-12 =
 
