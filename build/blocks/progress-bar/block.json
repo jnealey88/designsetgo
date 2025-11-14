@@ -1,0 +1,126 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/progress-bar",
+  "version": "1.0.0",
+  "title": "Progress Bar",
+  "category": "widgets",
+  "description": "Display progress or statistics with an animated bar",
+  "keywords": [
+    "progress",
+    "bar",
+    "stat",
+    "percentage",
+    "meter"
+  ],
+  "textdomain": "designsetgo",
+  "supports": {
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "inserter": true,
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "__experimentalDefaultControls": {
+        "margin": false,
+        "padding": false
+      }
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "__experimentalDefaultControls": {
+        "background": false,
+        "text": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      }
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true,
+      "__experimentalDefaultControls": {
+        "radius": true
+      }
+    }
+  },
+  "attributes": {
+    "percentage": {
+      "type": "number",
+      "default": 75
+    },
+    "barColor": {
+      "type": "string",
+      "default": ""
+    },
+    "barBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "height": {
+      "type": "string",
+      "default": "20px"
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": "4px"
+    },
+    "showLabel": {
+      "type": "boolean",
+      "default": true
+    },
+    "labelText": {
+      "type": "string",
+      "default": ""
+    },
+    "showPercentage": {
+      "type": "boolean",
+      "default": true
+    },
+    "labelPosition": {
+      "type": "string",
+      "default": "top"
+    },
+    "barStyle": {
+      "type": "string",
+      "default": "solid"
+    },
+    "animateOnScroll": {
+      "type": "boolean",
+      "default": true
+    },
+    "animationDuration": {
+      "type": "number",
+      "default": 1.5
+    },
+    "stripedAnimation": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "example": {
+    "attributes": {
+      "percentage": 85,
+      "barColor": "#2563eb",
+      "labelText": "Project Completion",
+      "showLabel": true,
+      "showPercentage": true,
+      "barStyle": "solid"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css",
+  "viewScript": "file:./view.js"
+}

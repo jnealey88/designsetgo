@@ -1,0 +1,95 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/scroll-marquee",
+  "version": "1.0.0",
+  "title": "Scrolling Gallery",
+  "category": "design",
+  "description": "Display rows of images that scroll horizontally in alternating directions based on page scroll. For best performance, use optimized images (WebP format recommended) and limit to 20 images or less.",
+  "keywords": [
+    "scrolling",
+    "gallery",
+    "images",
+    "parallax",
+    "scroll",
+    "infinite"
+  ],
+  "textdomain": "designsetgo",
+  "supports": {
+    "anchor": true,
+    "align": false,
+    "html": false,
+    "spacing": {
+      "margin": false,
+      "padding": false,
+      "blockGap": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "gradients": true
+    }
+  },
+  "attributes": {
+    "rows": {
+      "type": "array",
+      "default": [
+        {
+          "images": [],
+          "direction": "left"
+        }
+      ]
+    },
+    "scrollSpeed": {
+      "type": "number",
+      "default": 0.5
+    },
+    "imageHeight": {
+      "type": "string",
+      "default": "200px"
+    },
+    "imageWidth": {
+      "type": "string",
+      "default": "300px"
+    },
+    "gap": {
+      "type": "string",
+      "default": "20px"
+    },
+    "rowGap": {
+      "type": "string",
+      "default": "20px"
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": "8px"
+    }
+  },
+  "example": {
+    "attributes": {
+      "rows": [
+        {
+          "images": [
+            {
+              "url": "https://picsum.photos/300/200?random=1",
+              "alt": "Example image 1"
+            },
+            {
+              "url": "https://picsum.photos/300/200?random=2",
+              "alt": "Example image 2"
+            },
+            {
+              "url": "https://picsum.photos/300/200?random=3",
+              "alt": "Example image 3"
+            }
+          ],
+          "direction": "left"
+        }
+      ]
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css",
+  "viewScript": "file:./view.js"
+}

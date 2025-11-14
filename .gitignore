@@ -7,8 +7,11 @@
 composer.lock
 
 # Build output
-/build
+# NOTE: /build must be committed for WordPress.org distribution
+# Users install from .org and don't have node/npm to build
 /*.zip
+/deployment-package
+plugincheck.md
 
 # Bundle analyzer reports
 bundle-report.html

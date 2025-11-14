@@ -1,0 +1,108 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/accordion-item",
+  "version": "1.0.0",
+  "title": "Accordion Item",
+  "category": "designsetgo",
+  "parent": [
+    "designsetgo/accordion"
+  ],
+  "description": "An individual collapsible item within an accordion.",
+  "keywords": [
+    "accordion",
+    "item",
+    "panel",
+    "section"
+  ],
+  "textdomain": "designsetgo",
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Accordion Item"
+    },
+    "isOpen": {
+      "type": "boolean",
+      "default": false
+    },
+    "uniqueId": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "usesContext": [
+    "designsetgo/accordion/allowMultipleOpen",
+    "designsetgo/accordion/iconStyle",
+    "designsetgo/accordion/iconPosition",
+    "designsetgo/accordion/openBackgroundColor",
+    "designsetgo/accordion/openTextColor",
+    "designsetgo/accordion/hoverBackgroundColor",
+    "designsetgo/accordion/hoverTextColor"
+  ],
+  "example": {
+    "attributes": {
+      "title": "Frequently Asked Question",
+      "isOpen": false
+    },
+    "innerBlocks": [
+      {
+        "name": "core/paragraph",
+        "attributes": {
+          "content": "This is the answer to the frequently asked question. It can contain any block content including text, images, lists, and more."
+        }
+      }
+    ]
+  },
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "spacing": {
+      "padding": true,
+      "margin": false,
+      "__experimentalDefaultControls": {
+        "padding": true
+      }
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true
+      }
+    },
+    "background": {
+      "backgroundImage": true,
+      "backgroundSize": true,
+      "backgroundPosition": true,
+      "backgroundRepeat": true,
+      "__experimentalDefaultControls": {
+        "backgroundImage": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontFamily": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true,
+        "lineHeight": true,
+        "fontWeight": true
+      }
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true,
+      "__experimentalDefaultControls": {
+        "radius": true
+      }
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css"
+}

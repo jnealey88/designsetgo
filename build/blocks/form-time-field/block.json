@@ -1,0 +1,77 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/form-time-field",
+  "version": "1.0.0",
+  "title": "Time Field",
+  "category": "design",
+  "description": "A time picker input field for forms.",
+  "keywords": [
+    "form",
+    "time",
+    "clock",
+    "timepicker",
+    "hour"
+  ],
+  "parent": [
+    "designsetgo/form-builder"
+  ],
+  "textdomain": "designsetgo",
+  "supports": {
+    "html": false,
+    "anchor": false,
+    "customClassName": false,
+    "reusable": false
+  },
+  "usesContext": [
+    "designsetgo/form-builder/fieldSpacing",
+    "designsetgo/form-builder/fieldLabelColor",
+    "designsetgo/form-builder/fieldBorderColor",
+    "designsetgo/form-builder/fieldBorderRadius",
+    "designsetgo/form-builder/fieldFocusColor",
+    "designsetgo/form-builder/inputHeight",
+    "designsetgo/form-builder/inputPadding",
+    "designsetgo/form-builder/fieldBackgroundColor"
+  ],
+  "attributes": {
+    "fieldName": {
+      "type": "string",
+      "default": ""
+    },
+    "label": {
+      "type": "string",
+      "default": "Time"
+    },
+    "helpText": {
+      "type": "string",
+      "default": ""
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "defaultValue": {
+      "type": "string",
+      "default": ""
+    },
+    "minTime": {
+      "type": "string",
+      "default": ""
+    },
+    "maxTime": {
+      "type": "string",
+      "default": ""
+    },
+    "step": {
+      "type": "number",
+      "default": 60
+    },
+    "fieldWidth": {
+      "type": "string",
+      "default": "100"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

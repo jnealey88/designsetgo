@@ -1,0 +1,154 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/countdown-timer",
+  "version": "1.0.0",
+  "title": "Countdown Timer",
+  "category": "widgets",
+  "description": "Display a countdown timer to a specific date and time with customizable styling.",
+  "keywords": [
+    "countdown",
+    "timer",
+    "clock",
+    "deadline",
+    "event"
+  ],
+  "textdomain": "designsetgo",
+  "supports": {
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true,
+      "__experimentalDefaultControls": {
+        "padding": true
+      }
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "gradients": true,
+      "__experimentalDefaultControls": {
+        "background": false,
+        "text": false
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "fontWeight": true,
+      "__experimentalTextAlign": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true,
+        "textAlign": true
+      }
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true,
+      "__experimentalDefaultControls": {
+        "radius": true,
+        "width": true
+      }
+    }
+  },
+  "attributes": {
+    "targetDateTime": {
+      "type": "string",
+      "default": ""
+    },
+    "timezone": {
+      "type": "string",
+      "default": ""
+    },
+    "showDays": {
+      "type": "boolean",
+      "default": true
+    },
+    "showHours": {
+      "type": "boolean",
+      "default": true
+    },
+    "showMinutes": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSeconds": {
+      "type": "boolean",
+      "default": true
+    },
+    "layout": {
+      "type": "string",
+      "default": "boxed",
+      "enum": [
+        "boxed",
+        "inline",
+        "compact"
+      ]
+    },
+    "completionAction": {
+      "type": "string",
+      "default": "message",
+      "enum": [
+        "message",
+        "hide"
+      ]
+    },
+    "completionMessage": {
+      "type": "string",
+      "default": "The countdown has ended!"
+    },
+    "numberColor": {
+      "type": "string",
+      "default": ""
+    },
+    "labelColor": {
+      "type": "string",
+      "default": ""
+    },
+    "unitBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "unitBorder": {
+      "type": "object",
+      "default": {
+        "color": "",
+        "style": "solid",
+        "width": "2px"
+      }
+    },
+    "unitBorderRadius": {
+      "type": "number",
+      "default": 12
+    },
+    "unitGap": {
+      "type": "string",
+      "default": "1rem"
+    },
+    "unitPadding": {
+      "type": "string",
+      "default": "1.5rem"
+    }
+  },
+  "example": {
+    "attributes": {
+      "targetDateTime": "2025-12-31T23:59:59",
+      "showDays": true,
+      "showHours": true,
+      "showMinutes": true,
+      "showSeconds": true,
+      "layout": "boxed"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css",
+  "viewScript": "file:./view.js"
+}

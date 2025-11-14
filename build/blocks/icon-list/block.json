@@ -1,0 +1,140 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/icon-list",
+  "version": "1.0.0",
+  "title": "Icon List",
+  "category": "text",
+  "description": "Create a list of items with icons, titles, and descriptions.",
+  "keywords": [
+    "icon",
+    "list",
+    "features",
+    "benefits",
+    "services"
+  ],
+  "textdomain": "designsetgo",
+  "supports": {
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "__experimentalTextAlign": true,
+    "html": false,
+    "inserter": true,
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": false,
+      "__experimentalDefaultControls": {
+        "margin": true,
+        "padding": true
+      }
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true,
+        "lineHeight": true
+      }
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true,
+      "__experimentalDefaultControls": {
+        "radius": true
+      }
+    }
+  },
+  "providesContext": {
+    "designsetgo/iconList/layout": "layout",
+    "designsetgo/iconList/iconSize": "iconSize",
+    "designsetgo/iconList/iconColor": "iconColor",
+    "designsetgo/iconList/iconBackgroundColor": "iconBackgroundColor",
+    "designsetgo/iconList/gap": "gap",
+    "designsetgo/iconList/iconPosition": "iconPosition"
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "vertical"
+    },
+    "iconSize": {
+      "type": "number",
+      "default": 32
+    },
+    "iconColor": {
+      "type": "string",
+      "default": ""
+    },
+    "iconBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "gap": {
+      "type": "string",
+      "default": "24px"
+    },
+    "iconPosition": {
+      "type": "string",
+      "default": "left"
+    },
+    "columns": {
+      "type": "number",
+      "default": 1
+    },
+    "alignment": {
+      "type": "string",
+      "default": "left"
+    }
+  },
+  "example": {
+    "attributes": {
+      "layout": "vertical",
+      "iconSize": 32,
+      "gap": "24px"
+    },
+    "innerBlocks": [
+      {
+        "name": "designsetgo/icon-list-item",
+        "attributes": {
+          "icon": "check",
+          "title": "Feature One",
+          "description": "Description of the first feature"
+        }
+      },
+      {
+        "name": "designsetgo/icon-list-item",
+        "attributes": {
+          "icon": "star",
+          "title": "Feature Two",
+          "description": "Description of the second feature"
+        }
+      },
+      {
+        "name": "designsetgo/icon-list-item",
+        "attributes": {
+          "icon": "rocket",
+          "title": "Feature Three",
+          "description": "Description of the third feature"
+        }
+      }
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css"
+}
