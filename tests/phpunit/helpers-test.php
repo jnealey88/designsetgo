@@ -18,14 +18,14 @@ class Test_Helpers extends WP_UnitTestCase {
 	 */
 	public function test_get_block_class() {
 		// Test basic block class.
-		$this->assertEquals( 'dsg-stack', designsetgo_get_block_class( 'stack' ) );
+		$this->assertEquals( 'dsgo-stack', designsetgo_get_block_class( 'stack' ) );
 
 		// Test with unique ID.
 		$class = designsetgo_get_block_class( 'flex', 'abc123' );
-		$this->assertEquals( 'dsg-flex dsg-block-abc123', $class );
+		$this->assertEquals( 'dsgo-flex dsgo-block-abc123', $class );
 
 		// Test with empty unique ID.
-		$this->assertEquals( 'dsg-button', designsetgo_get_block_class( 'button', '' ) );
+		$this->assertEquals( 'dsgo-button', designsetgo_get_block_class( 'button', '' ) );
 	}
 
 	/**
@@ -34,10 +34,10 @@ class Test_Helpers extends WP_UnitTestCase {
 	public function test_generate_block_id() {
 		$id = designsetgo_generate_block_id();
 
-		// Should start with 'dsg-'.
-		$this->assertStringStartsWith( 'dsg-', $id );
+		// Should start with 'dsgo-'.
+		$this->assertStringStartsWith( 'dsgo-', $id );
 
-		// Should be longer than just 'dsg-'.
+		// Should be longer than just 'dsgo-'.
 		$this->assertGreaterThan( 4, strlen( $id ) );
 
 		// Should generate unique IDs.
@@ -147,7 +147,7 @@ class Test_Helpers extends WP_UnitTestCase {
 
 		// WordPress custom properties.
 		$this->assertEquals( 'var(--wp--preset--color--primary)', designsetgo_sanitize_css_color( 'var(--wp--preset--color--primary)' ) );
-		$this->assertEquals( 'var(--dsg--custom-color)', designsetgo_sanitize_css_color( 'var(--dsg--custom-color)' ) );
+		$this->assertEquals( 'var(--dsgo--custom-color)', designsetgo_sanitize_css_color( 'var(--dsgo--custom-color)' ) );
 	}
 
 	/**

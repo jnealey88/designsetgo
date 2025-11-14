@@ -59,7 +59,7 @@ test.describe('Group Block - Responsive Grid', () => {
 		const hasGridClass = await blockHasClass(
 			page,
 			'core/group',
-			'dsg-grid-cols-3'
+			'dsgo-grid-cols-3'
 		);
 		expect(hasGridClass).toBeTruthy();
 
@@ -131,7 +131,7 @@ test.describe('Group Block - Responsive Visibility', () => {
 		const hasMobileHiddenClass = await blockHasClass(
 			page,
 			'core/group',
-			'dsg-hide-mobile'
+			'dsgo-hide-mobile'
 		);
 		expect(hasMobileHiddenClass).toBeTruthy();
 
@@ -163,12 +163,12 @@ test.describe('Group Block - Responsive Visibility', () => {
 		const hasTabletHidden = await blockHasClass(
 			page,
 			'core/group',
-			'dsg-hide-tablet'
+			'dsgo-hide-tablet'
 		);
 		const hasMobileHidden = await blockHasClass(
 			page,
 			'core/group',
-			'dsg-hide-mobile'
+			'dsgo-hide-mobile'
 		);
 
 		expect(hasTabletHidden).toBeTruthy();
@@ -229,7 +229,7 @@ test.describe('Group Block - Clickable with Link', () => {
 
 		// Verify the group has the link attributes
 		const clickableGroup = page.locator(
-			'.wp-block-group.dsg-clickable-group'
+			'.wp-block-group.dsgo-clickable-group'
 		);
 		await expect(clickableGroup).toBeVisible();
 
@@ -273,7 +273,7 @@ test.describe('Group Block - Overlay', () => {
 		const hasOverlayClass = await blockHasClass(
 			page,
 			'core/group',
-			'has-dsg-overlay'
+			'has-dsgo-overlay'
 		);
 		expect(hasOverlayClass).toBeTruthy();
 
@@ -313,7 +313,7 @@ test.describe('Group Block - Overlay', () => {
 		await page.goto(previewUrl);
 
 		// Check that text inside overlay group is white
-		const overlayGroup = page.locator('.wp-block-group.has-dsg-overlay');
+		const overlayGroup = page.locator('.wp-block-group.has-dsgo-overlay');
 		await expect(overlayGroup).toBeVisible();
 
 		const textElement = overlayGroup.locator('p').first();
@@ -356,7 +356,7 @@ test.describe('Group Block - Frontend Behavior', () => {
 
 		// Visit on desktop (default viewport)
 		await page.goto(previewUrl);
-		const desktopGroup = page.locator('.wp-block-group.dsg-hide-mobile');
+		const desktopGroup = page.locator('.wp-block-group.dsgo-hide-mobile');
 		await expect(desktopGroup).toBeVisible();
 
 		// Create a new page with mobile viewport
@@ -366,7 +366,7 @@ test.describe('Group Block - Frontend Behavior', () => {
 
 		// Group should be hidden on mobile
 		const mobileGroup = mobilePage.locator(
-			'.wp-block-group.dsg-hide-mobile'
+			'.wp-block-group.dsgo-hide-mobile'
 		);
 		await expect(mobileGroup).toBeHidden();
 

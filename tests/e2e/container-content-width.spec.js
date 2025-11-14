@@ -77,9 +77,9 @@ test.describe('Container Block - Content Width Investigation', () => {
 
 		// Find the inner wrapper + container
 		const innerWrapper = containerBlock.locator(
-			'.dsg-container__inner-wrapper'
+			'.dsgo-container__inner-wrapper'
 		);
-		const innerContainer = containerBlock.locator('.dsg-container__inner');
+		const innerContainer = containerBlock.locator('.dsgo-container__inner');
 
 		// Get computed styles
 		const innerWrapperBox = await innerWrapper.boundingBox();
@@ -153,12 +153,12 @@ test.describe('Container Block - Content Width Investigation', () => {
 		await page.waitForTimeout(1000);
 
 		// Find the container block on frontend
-		const frontendContainer = page.locator('.dsg-container').first();
+		const frontendContainer = page.locator('.dsgo-container').first();
 		const frontendInnerWrapper = frontendContainer.locator(
-			'.dsg-container__inner-wrapper'
+			'.dsgo-container__inner-wrapper'
 		);
 		const frontendInnerContainer = frontendContainer.locator(
-			'.dsg-container__inner'
+			'.dsgo-container__inner'
 		);
 
 		// Check if it exists
@@ -220,7 +220,7 @@ test.describe('Container Block - Content Width Investigation', () => {
 			// Check for CSS rules that might override
 			const overridingRules = await page.evaluate(() => {
 				const innerWrapper = document.querySelector(
-					'.dsg-container__inner-wrapper'
+					'.dsgo-container__inner-wrapper'
 				);
 				if (!innerWrapper) {
 					return [];
@@ -260,7 +260,7 @@ test.describe('Container Block - Content Width Investigation', () => {
 				return allRules;
 			});
 
-			console.log('\nCSS Rules Affecting .dsg-container__inner-wrapper:');
+			console.log('\nCSS Rules Affecting .dsgo-container__inner-wrapper:');
 			console.log(JSON.stringify(overridingRules, null, 2));
 
 			// Get the actual rendered width
