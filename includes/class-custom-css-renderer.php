@@ -51,7 +51,7 @@ class Custom_CSS_Renderer {
 			$hash = $this->hash_code( $custom_css . $block['blockName'] );
 
 			// Generate the CSS class name.
-			$class_name = 'dsg-custom-css-' . $hash;
+			$class_name = 'dsgo-custom-css-' . $hash;
 
 			// Store CSS with hash as key to avoid duplicates.
 			$this->custom_css[ $hash ] = array(

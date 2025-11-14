@@ -103,7 +103,7 @@ class Admin_Menu {
 		$desired_order = array(
 			'designsetgo',              // Dashboard.
 			'designsetgo-blocks',       // Blocks & Extensions.
-			'edit.php?post_type=dsg_form_submission', // Form Submissions.
+			'edit.php?post_type=dsgo_form_submission', // Form Submissions.
 			'designsetgo-settings',     // Settings.
 		);
 
@@ -191,7 +191,7 @@ class Admin_Menu {
 			return 'blocks';
 		} elseif ( strpos( $hook, 'page_designsetgo-settings' ) !== false ) {
 			return 'settings';
-		} elseif ( strpos( $hook, 'dsg_form_submission' ) !== false ) {
+		} elseif ( strpos( $hook, 'dsgo_form_submission' ) !== false ) {
 			return 'submissions';
 		}
 		return 'dashboard';

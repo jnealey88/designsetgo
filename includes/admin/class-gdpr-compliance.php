@@ -89,7 +89,7 @@ class GDPR_Compliance {
 
 		// Find form submissions that contain this email address.
 		$args = array(
-			'post_type'      => 'dsg_form_submission',
+			'post_type'      => 'dsgo_form_submission',
 			'posts_per_page' => $items_per_page,
 			'paged'          => $page,
 			'post_status'    => 'private',
@@ -199,7 +199,7 @@ class GDPR_Compliance {
 
 		// Find form submissions that contain this email address.
 		$args = array(
-			'post_type'      => 'dsg_form_submission',
+			'post_type'      => 'dsgo_form_submission',
 			'posts_per_page' => $items_per_page,
 			'paged'          => $page,
 			'post_status'    => 'private',
@@ -505,7 +505,7 @@ We implement appropriate security measures to protect your personal data from un
 		$screen = get_current_screen();
 
 		// Only show on form submissions list.
-		if ( ! $screen || 'edit-dsg_form_submission' !== $screen->id ) {
+		if ( ! $screen || 'edit-dsgo_form_submission' !== $screen->id ) {
 			return;
 		}
 
@@ -516,7 +516,7 @@ We implement appropriate security measures to protect your personal data from un
 		}
 
 		?>
-		<div class="notice notice-info is-dismissible" data-dsg-notice="gdpr">
+		<div class="notice notice-info is-dismissible" data-dsgo-notice="gdpr">
 			<p>
 				<strong><?php esc_html_e( 'GDPR Compliance:', 'designsetgo' ); ?></strong>
 				<?php
@@ -545,7 +545,7 @@ We implement appropriate security measures to protect your personal data from un
 		$total = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s",
-				'dsg_form_submission'
+				'dsgo_form_submission'
 			)
 		);
 
@@ -554,7 +554,7 @@ We implement appropriate security measures to protect your personal data from un
 		$old_submissions = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s AND post_date < %s",
-				'dsg_form_submission',
+				'dsgo_form_submission',
 				$thirty_days_ago
 			)
 		);

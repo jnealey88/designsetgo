@@ -190,7 +190,7 @@ class Block_Inserter {
 	 */
 	private static function generate_designsetgo_wrapper_html( string $block_name, array $attributes ): ?array {
 		$block_slug  = str_replace( 'designsetgo/', '', $block_name );
-		$block_class = 'wp-block-designsetgo-' . $block_slug . ' dsg-' . $block_slug;
+		$block_class = 'wp-block-designsetgo-' . $block_slug . ' dsgo-' . $block_slug;
 
 		switch ( $block_name ) {
 			case 'designsetgo/stack':
@@ -208,7 +208,7 @@ class Block_Inserter {
 				}
 
 				return array(
-					'opening' => '<div class="' . esc_attr( $block_class ) . '" style="' . esc_attr( $outer_style ) . '"><div class="dsg-stack__inner" style="' . esc_attr( $inner_style ) . '">',
+					'opening' => '<div class="' . esc_attr( $block_class ) . '" style="' . esc_attr( $outer_style ) . '"><div class="dsgo-stack__inner" style="' . esc_attr( $inner_style ) . '">',
 					'closing' => '</div></div>',
 				);
 
@@ -230,7 +230,7 @@ class Block_Inserter {
 				}
 
 				return array(
-					'opening' => '<div class="' . esc_attr( $block_class ) . '" style="' . esc_attr( $outer_style ) . '"><div class="dsg-flex__inner" style="' . esc_attr( $inner_style ) . '">',
+					'opening' => '<div class="' . esc_attr( $block_class ) . '" style="' . esc_attr( $outer_style ) . '"><div class="dsgo-flex__inner" style="' . esc_attr( $inner_style ) . '">',
 					'closing' => '</div></div>',
 				);
 
@@ -250,19 +250,19 @@ class Block_Inserter {
 				}
 
 				return array(
-					'opening' => '<div class="' . esc_attr( $block_class ) . '" style="' . esc_attr( $outer_style ) . '"><div class="dsg-grid__inner" style="' . esc_attr( $inner_style ) . '">',
+					'opening' => '<div class="' . esc_attr( $block_class ) . '" style="' . esc_attr( $outer_style ) . '"><div class="dsgo-grid__inner" style="' . esc_attr( $inner_style ) . '">',
 					'closing' => '</div></div>',
 				);
 
 			case 'designsetgo/counter-group':
 				return array(
-					'opening' => '<div class="' . esc_attr( $block_class ) . '"><div class="dsg-counter-group__inner">',
+					'opening' => '<div class="' . esc_attr( $block_class ) . '"><div class="dsgo-counter-group__inner">',
 					'closing' => '</div></div>',
 				);
 
 			case 'designsetgo/accordion':
 				return array(
-					'opening' => '<div class="' . esc_attr( $block_class ) . '"><div class="dsg-accordion__items">',
+					'opening' => '<div class="' . esc_attr( $block_class ) . '"><div class="dsgo-accordion__items">',
 					'closing' => '</div></div>',
 				);
 
@@ -270,9 +270,9 @@ class Block_Inserter {
 				$unique_id   = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : wp_unique_id( 'tabs-' );
 				$orientation = isset( $attributes['orientation'] ) ? $attributes['orientation'] : 'horizontal';
 				$tab_style   = isset( $attributes['tabStyle'] ) ? $attributes['tabStyle'] : 'default';
-				$classes     = $block_class . ' dsg-tabs-' . $unique_id . ' dsg-tabs--' . $orientation . ' dsg-tabs--' . $tab_style;
+				$classes     = $block_class . ' dsgo-tabs-' . $unique_id . ' dsgo-tabs--' . $orientation . ' dsgo-tabs--' . $tab_style;
 				return array(
-					'opening' => '<div class="' . esc_attr( $classes ) . '"><div class="dsg-tabs__nav"></div><div class="dsg-tabs__panels">',
+					'opening' => '<div class="' . esc_attr( $classes ) . '"><div class="dsgo-tabs__nav"></div><div class="dsgo-tabs__panels">',
 					'closing' => '</div></div>',
 				);
 

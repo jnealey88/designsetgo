@@ -235,6 +235,20 @@ class Plugin {
 				$asset['version'],
 				true
 			);
+
+			// Localize sticky header global settings for FSE controls.
+			$settings        = \DesignSetGo\Admin\Settings::get_settings();
+			$sticky_settings = isset( $settings['sticky_header'] ) ? $settings['sticky_header'] : array();
+			$defaults        = \DesignSetGo\Admin\Settings::get_defaults();
+			$sticky_settings = wp_parse_args( $sticky_settings, $defaults['sticky_header'] );
+
+			wp_localize_script(
+				'designsetgo-block-category-filter',
+				'dsgoStickyHeaderGlobalSettings',
+				array(
+					'enabled' => (bool) $sticky_settings['enable'],
+				)
+			);
 		}
 	}
 

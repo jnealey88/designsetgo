@@ -21,8 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $icon_name Icon name (e.g., 'star', 'heart', 'check').
  * @return string SVG markup or empty string if not found.
  */
-function dsg_get_icon_svg( $icon_name ) {
-	$icons = dsg_get_all_icons();
+function dsgo_get_icon_svg( $icon_name ) {
+	$icons = dsgo_get_all_icons();
 	return isset( $icons[ $icon_name ] ) ? $icons[ $icon_name ] : '';
 }
 
@@ -31,7 +31,7 @@ function dsg_get_icon_svg( $icon_name ) {
  *
  * @return array Associative array of icon_name => svg_markup.
  */
-function dsg_get_all_icons() {
+function dsgo_get_all_icons() {
 	static $icons = null;
 
 	// Cache icons in static variable for performance.
@@ -168,7 +168,7 @@ function dsg_get_all_icons() {
  * @param string $icon Icon slug to sanitize.
  * @return string Sanitized icon slug.
  */
-function dsg_sanitize_icon_slug( $icon ) {
+function dsgo_sanitize_icon_slug( $icon ) {
 	if ( empty( $icon ) || ! is_string( $icon ) ) {
 		return '';
 	}
@@ -185,7 +185,7 @@ function dsg_sanitize_icon_slug( $icon ) {
  * @param bool   $is_open    Whether accordion item is open.
  * @return string Icon HTML markup.
  */
-function dsg_accordion_render_icon( $icon_style, $is_open ) {
+function dsgo_accordion_render_icon( $icon_style, $is_open ) {
 	if ( 'none' === $icon_style ) {
 		return '';
 	}
@@ -208,5 +208,5 @@ function dsg_accordion_render_icon( $icon_style, $is_open ) {
 			$icon_svg = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z" /></svg>';
 	}
 
-	return '<span class="dsg-accordion-item__icon" aria-hidden="true">' . $icon_svg . '</span>';
+	return '<span class="dsgo-accordion-item__icon" aria-hidden="true">' . $icon_svg . '</span>';
 }

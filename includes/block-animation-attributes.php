@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param array $attributes Block attributes array.
  * @return array Array of data attributes for animations.
  */
-function dsg_get_animation_attributes( $attributes ) {
+function dsgo_get_animation_attributes( $attributes ) {
 	$animation_attrs   = array();
 	$animation_classes = array();
 
@@ -37,60 +37,60 @@ function dsg_get_animation_attributes( $attributes ) {
 	}
 
 	// Add animation classes.
-	$animation_classes[] = 'has-dsg-animation';
+	$animation_classes[] = 'has-dsgo-animation';
 
 	// Add entrance animation class.
 	$entrance_animation = isset( $attributes['dsgEntranceAnimation'] ) ? $attributes['dsgEntranceAnimation'] : '';
 	if ( $entrance_animation ) {
-		$animation_classes[] = 'dsg-animation-' . esc_attr( $entrance_animation );
+		$animation_classes[] = 'dsgo-animation-' . esc_attr( $entrance_animation );
 	}
 
 	// Add exit animation class.
 	$exit_animation = isset( $attributes['dsgExitAnimation'] ) ? $attributes['dsgExitAnimation'] : '';
 	if ( $exit_animation ) {
-		$animation_classes[] = 'dsg-animation-exit-' . esc_attr( $exit_animation );
+		$animation_classes[] = 'dsgo-animation-exit-' . esc_attr( $exit_animation );
 	}
 
 	// Add data attributes.
-	$animation_attrs['data-dsg-animation-enabled'] = 'true';
+	$animation_attrs['data-dsgo-animation-enabled'] = 'true';
 
 	// Entrance animation.
 	if ( $entrance_animation ) {
-		$animation_attrs['data-dsg-entrance-animation'] = esc_attr( $entrance_animation );
+		$animation_attrs['data-dsgo-entrance-animation'] = esc_attr( $entrance_animation );
 	} else {
-		$animation_attrs['data-dsg-entrance-animation'] = '';
+		$animation_attrs['data-dsgo-entrance-animation'] = '';
 	}
 
 	// Exit animation.
 	if ( $exit_animation ) {
-		$animation_attrs['data-dsg-exit-animation'] = esc_attr( $exit_animation );
+		$animation_attrs['data-dsgo-exit-animation'] = esc_attr( $exit_animation );
 	} else {
-		$animation_attrs['data-dsg-exit-animation'] = '';
+		$animation_attrs['data-dsgo-exit-animation'] = '';
 	}
 
 	// Animation trigger.
 	$trigger                                       = isset( $attributes['dsgAnimationTrigger'] ) ? $attributes['dsgAnimationTrigger'] : 'scroll';
-	$animation_attrs['data-dsg-animation-trigger'] = esc_attr( $trigger );
+	$animation_attrs['data-dsgo-animation-trigger'] = esc_attr( $trigger );
 
 	// Animation duration.
 	$duration                                       = isset( $attributes['dsgAnimationDuration'] ) ? $attributes['dsgAnimationDuration'] : 600;
-	$animation_attrs['data-dsg-animation-duration'] = esc_attr( $duration );
+	$animation_attrs['data-dsgo-animation-duration'] = esc_attr( $duration );
 
 	// Animation delay.
 	$delay                                       = isset( $attributes['dsgAnimationDelay'] ) ? $attributes['dsgAnimationDelay'] : 0;
-	$animation_attrs['data-dsg-animation-delay'] = esc_attr( $delay );
+	$animation_attrs['data-dsgo-animation-delay'] = esc_attr( $delay );
 
 	// Animation easing.
 	$easing                                       = isset( $attributes['dsgAnimationEasing'] ) ? $attributes['dsgAnimationEasing'] : 'ease-out';
-	$animation_attrs['data-dsg-animation-easing'] = esc_attr( $easing );
+	$animation_attrs['data-dsgo-animation-easing'] = esc_attr( $easing );
 
 	// Animation offset (for scroll trigger).
 	$offset                                       = isset( $attributes['dsgAnimationOffset'] ) ? $attributes['dsgAnimationOffset'] : 100;
-	$animation_attrs['data-dsg-animation-offset'] = esc_attr( $offset );
+	$animation_attrs['data-dsgo-animation-offset'] = esc_attr( $offset );
 
 	// Animation once.
 	$once                                       = isset( $attributes['dsgAnimationOnce'] ) ? $attributes['dsgAnimationOnce'] : true;
-	$animation_attrs['data-dsg-animation-once'] = $once ? 'true' : 'false';
+	$animation_attrs['data-dsgo-animation-once'] = $once ? 'true' : 'false';
 
 	// Convert classes array to string.
 	$classes_string = implode( ' ', $animation_classes );
@@ -115,7 +115,7 @@ function dsg_get_animation_attributes( $attributes ) {
  * @param array $attributes Block attributes array.
  * @return array Array of data attributes for links.
  */
-function dsg_get_clickable_attributes( $attributes ) {
+function dsgo_get_clickable_attributes( $attributes ) {
 	$link_attrs   = array();
 	$link_classes = array();
 
@@ -129,7 +129,7 @@ function dsg_get_clickable_attributes( $attributes ) {
 	}
 
 	// Add clickable class.
-	$link_classes[] = 'dsg-clickable';
+	$link_classes[] = 'dsgo-clickable';
 
 	// Add link data attributes.
 	$link_attrs['data-link-url'] = esc_attr( $link_url );
@@ -169,12 +169,12 @@ function dsg_get_clickable_attributes( $attributes ) {
  * @param array  $attributes         Block attributes array.
  * @return string Modified wrapper attributes string.
  */
-function dsg_add_animation_to_wrapper( $wrapper_attributes, $attributes ) {
+function dsgo_add_animation_to_wrapper( $wrapper_attributes, $attributes ) {
 	// Get animation data.
-	$animation_data = dsg_get_animation_attributes( $attributes );
+	$animation_data = dsgo_get_animation_attributes( $attributes );
 
 	// Get clickable link data.
-	$clickable_data = dsg_get_clickable_attributes( $attributes );
+	$clickable_data = dsgo_get_clickable_attributes( $attributes );
 
 	// Combine all classes.
 	$all_classes = trim( $animation_data['classes'] . ' ' . $clickable_data['classes'] );

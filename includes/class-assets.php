@@ -127,7 +127,7 @@ class Assets {
 		// Check object cache first (faster if Redis/Memcached available).
 		// Include post modified time in key for automatic cache invalidation.
 		$modified_time = get_post_modified_time( 'U', false, $post_id );
-		$cache_key     = 'dsg_has_blocks_' . $post_id . '_' . $modified_time;
+		$cache_key     = 'dsgo_has_blocks_' . $post_id . '_' . $modified_time;
 		$cached        = wp_cache_get( $cache_key, 'designsetgo' );
 
 		if ( false !== $cached ) {
@@ -158,18 +158,18 @@ class Assets {
 
 		// Check for core blocks with our enhancements.
 		if ( ! $has_blocks && strpos( $content, 'wp:core/group' ) !== false ) {
-			// Only load if group has our enhancements (dsg- classes or animations).
-			if ( strpos( $content, 'dsg-' ) !== false ||
-				strpos( $content, 'data-dsg-animation' ) !== false ||
-				strpos( $content, 'has-dsg-animation' ) !== false ) {
+			// Only load if group has our enhancements (dsgo- classes or animations).
+			if ( strpos( $content, 'dsgo-' ) !== false ||
+				strpos( $content, 'data-dsgo-animation' ) !== false ||
+				strpos( $content, 'has-dsgo-animation' ) !== false ) {
 				$has_blocks = true;
 			}
 		}
 
 		// Check for animations applied to any block.
 		if ( ! $has_blocks && (
-			strpos( $content, 'data-dsg-animation-enabled' ) !== false ||
-			strpos( $content, 'has-dsg-animation' ) !== false
+			strpos( $content, 'data-dsgo-animation-enabled' ) !== false ||
+			strpos( $content, 'has-dsgo-animation' ) !== false
 		) ) {
 			$has_blocks = true;
 		}
@@ -209,7 +209,7 @@ class Assets {
 		// The modified time in the cache key handles automatic invalidation,
 		// so we don't strictly need to delete old entries (they'll expire).
 		// This is here for backwards compatibility with old transient-based cache.
-		delete_transient( 'dsg_has_blocks_' . $post_id );
+		delete_transient( 'dsgo_has_blocks_' . $post_id );
 
 		// Note: Object cache entries auto-invalidate on post update because
 		// the cache key includes the post's modified time.

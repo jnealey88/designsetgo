@@ -342,12 +342,6 @@ class Settings {
 						'description' => __( 'Hidden form field', 'designsetgo' ),
 						'performance' => 'low',
 					),
-					array(
-						'name'        => 'designsetgo/form-file-upload',
-						'title'       => __( 'File Upload', 'designsetgo' ),
-						'description' => __( 'File upload field', 'designsetgo' ),
-						'performance' => 'medium',
-					),
 				),
 			),
 		);
@@ -594,19 +588,19 @@ class Settings {
 		$enabled_blocks = empty( $settings['enabled_blocks'] ) ? $total_blocks : count( $settings['enabled_blocks'] );
 
 		// Count form submissions (with caching).
-		$form_submissions = get_transient( 'dsg_form_submissions_count' );
+		$form_submissions = get_transient( 'dsgo_form_submissions_count' );
 
 		if ( false === $form_submissions ) {
 			// Cache miss - run the database query.
 			$form_submissions = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s",
-					'dsg_form_submission'
+					'dsgo_form_submission'
 				)
 			);
 
 			// Cache for 5 minutes.
-			set_transient( 'dsg_form_submissions_count', $form_submissions, 5 * MINUTE_IN_SECONDS );
+			set_transient( 'dsgo_form_submissions_count', $form_submissions, 5 * MINUTE_IN_SECONDS );
 		}
 
 		return rest_ensure_response(

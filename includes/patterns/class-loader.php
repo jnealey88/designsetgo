@@ -30,14 +30,14 @@ class Loader {
 	 */
 	public function register_pattern_categories() {
 		$categories = array(
-			'dsg-hero'         => __( 'DesignSetGo: Hero', 'designsetgo' ),
-			'dsg-features'     => __( 'DesignSetGo: Features', 'designsetgo' ),
-			'dsg-pricing'      => __( 'DesignSetGo: Pricing', 'designsetgo' ),
-			'dsg-testimonials' => __( 'DesignSetGo: Testimonials', 'designsetgo' ),
-			'dsg-team'         => __( 'DesignSetGo: Team', 'designsetgo' ),
-			'dsg-cta'          => __( 'DesignSetGo: Call to Action', 'designsetgo' ),
-			'dsg-content'      => __( 'DesignSetGo: Content', 'designsetgo' ),
-			'dsg-faq'          => __( 'DesignSetGo: FAQ', 'designsetgo' ),
+			'dsgo-hero'         => __( 'DesignSetGo: Hero', 'designsetgo' ),
+			'dsgo-features'     => __( 'DesignSetGo: Features', 'designsetgo' ),
+			'dsgo-pricing'      => __( 'DesignSetGo: Pricing', 'designsetgo' ),
+			'dsgo-testimonials' => __( 'DesignSetGo: Testimonials', 'designsetgo' ),
+			'dsgo-team'         => __( 'DesignSetGo: Team', 'designsetgo' ),
+			'dsgo-cta'          => __( 'DesignSetGo: Call to Action', 'designsetgo' ),
+			'dsgo-content'      => __( 'DesignSetGo: Content', 'designsetgo' ),
+			'dsgo-faq'          => __( 'DesignSetGo: FAQ', 'designsetgo' ),
 		);
 
 		// Get pattern categories registry.

@@ -19,10 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string CSS class name.
  */
 function designsetgo_get_block_class( $block_name, $unique_id = '' ) {
-	$class = 'dsg-' . $block_name;
+	$class = 'dsgo-' . $block_name;
 
 	if ( $unique_id ) {
-		$class .= ' dsg-block-' . $unique_id;
+		$class .= ' dsgo-block-' . $unique_id;
 	}
 
 	return $class;
@@ -34,7 +34,7 @@ function designsetgo_get_block_class( $block_name, $unique_id = '' ) {
  * @return string Unique ID.
  */
 function designsetgo_generate_block_id() {
-	return 'dsg-' . wp_generate_uuid4();
+	return 'dsgo-' . wp_generate_uuid4();
 }
 
 /**
@@ -138,7 +138,7 @@ function designsetgo_sanitize_css_color( $value ) {
 	}
 
 	// Allow CSS custom properties for theme integration (e.g., "var(--wp--preset--color--primary)").
-	// Only allow WordPress-style custom properties (--wp--*, --dsg--*).
+	// Only allow WordPress-style custom properties (--wp--*, --dsgo--*).
 	if ( preg_match( '/^var\(\s*--(wp|dsg)--[\w\-]+\s*\)$/i', $value ) ) {
 		return $value;
 	}

@@ -26,8 +26,8 @@ class Form_Submissions {
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-		add_filter( 'manage_dsg_form_submission_posts_columns', array( $this, 'custom_columns' ) );
-		add_action( 'manage_dsg_form_submission_posts_custom_column', array( $this, 'custom_column_content' ), 10, 2 );
+		add_filter( 'manage_dsgo_form_submission_posts_columns', array( $this, 'custom_columns' ) );
+		add_action( 'manage_dsgo_form_submission_posts_custom_column', array( $this, 'custom_column_content' ), 10, 2 );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Form_Submissions {
 			'supports'           => array( 'title' ),
 		);
 
-		register_post_type( 'dsg_form_submission', $args );
+		register_post_type( 'dsgo_form_submission', $args );
 	}
 
 	/**
@@ -76,7 +76,7 @@ class Form_Submissions {
 			'dsg_submission_details',
 			__( 'Submission Details', 'designsetgo' ),
 			array( $this, 'render_submission_details' ),
-			'dsg_form_submission',
+			'dsgo_form_submission',
 			'normal',
 			'high'
 		);
@@ -85,7 +85,7 @@ class Form_Submissions {
 			'dsg_submission_meta',
 			__( 'Submission Information', 'designsetgo' ),
 			array( $this, 'render_submission_meta' ),
-			'dsg_form_submission',
+			'dsgo_form_submission',
 			'side',
 			'default'
 		);

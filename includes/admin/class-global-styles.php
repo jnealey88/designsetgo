@@ -45,7 +45,7 @@ class Global_Styles {
 					'gradients' => $this->get_gradients( $saved_styles ),
 					'duotone'   => array(
 						array(
-							'slug'   => 'dsg-blue-orange',
+							'slug'   => 'dsgo-blue-orange',
 							'colors' => array( '#2563eb', '#f59e0b' ),
 							'name'   => __( 'Blue and Orange', 'designsetgo' ),
 						),

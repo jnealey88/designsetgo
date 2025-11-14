@@ -423,7 +423,7 @@ class Form_Handler {
 	private function store_submission( $form_id, $fields ) {
 		$post_id = wp_insert_post(
 			array(
-				'post_type'   => 'dsg_form_submission',
+				'post_type'   => 'dsgo_form_submission',
 				'post_status' => 'private',
 				'post_title'  => sprintf(
 					/* translators: %s: form ID */
@@ -447,7 +447,7 @@ class Form_Handler {
 		update_post_meta( $post_id, '_dsg_submission_date', current_time( 'mysql' ) );
 
 		// Clear cached form submission count.
-		delete_transient( 'dsg_form_submissions_count' );
+		delete_transient( 'dsgo_form_submissions_count' );
 
 		return $post_id;
 	}
