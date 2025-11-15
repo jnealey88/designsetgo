@@ -132,9 +132,9 @@ const v1 = {
 		});
 
 		// Compute aria-label for map container
-		/* translators: %s: The address being shown on the map */
 		const mapAriaLabel = dsgoAddress
-			? sprintf(__('Map showing %s', 'designsetgo'), dsgoAddress)
+			? /* translators: %s: The address being shown on the map */
+				sprintf(__('Map showing %s', 'designsetgo'), dsgoAddress)
 			: __('Interactive map', 'designsetgo');
 
 		// Render privacy overlay or map container

@@ -169,8 +169,14 @@ const Dashboard = () => {
 											{extension.title}
 											<span className="designsetgo-extension-status">
 												{extension.enabled
-													? __('Enabled', 'designsetgo')
-													: __('Disabled', 'designsetgo')}
+													? __(
+															'Enabled',
+															'designsetgo'
+														)
+													: __(
+															'Disabled',
+															'designsetgo'
+														)}
 											</span>
 										</span>
 									))}

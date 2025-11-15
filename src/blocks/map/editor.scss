@@ -5,6 +5,7 @@
  */
 
 .editor-styles-wrapper {
+
 	.dsgo-map {
 		// Editor-specific container
 		position: relative;
@@ -64,11 +65,12 @@
 		}
 
 		&__preview-coords {
+
 			code {
 				background: rgba(255, 255, 255, 0.8);
 				padding: 0.25rem 0.5rem;
 				border-radius: 3px;
-				font-family: 'Monaco', 'Courier New', monospace;
+				font-family: Monaco, 'Courier New', monospace;
 				font-size: 0.9rem;
 				color: #667eea;
 			}
@@ -97,6 +99,7 @@
 
 		// Privacy mode preview in editor
 		&--privacy-mode {
+
 			.dsgo-map__privacy-overlay {
 				// Override z-index for editor
 				z-index: 1;
@@ -122,6 +125,7 @@
 		&--aspect-16-9,
 		&--aspect-4-3,
 		&--aspect-1-1 {
+
 			.dsgo-map__editor-preview {
 				position: absolute;
 			}
@@ -129,6 +133,7 @@
 
 		// Custom height in editor
 		&:not([class*='dsgo-map--aspect-']) {
+
 			.dsgo-map__editor-preview {
 				position: relative;
 				min-height: 300px;
@@ -138,13 +143,16 @@
 
 	// Responsive preview in editor
 	@media (max-width: 768px) {
+
 		.dsgo-map {
+
 			&__preview-icon {
 				width: 48px;
 				height: 48px;
 			}
 
 			&__preview-details {
+
 				strong {
 					font-size: 1rem;
 				}
@@ -159,6 +167,7 @@
 
 // Block inserter preview (example attribute)
 .block-editor-block-preview__content {
+
 	.dsgo-map {
 		min-height: 200px;
 

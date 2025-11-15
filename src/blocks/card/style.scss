@@ -118,6 +118,7 @@
 	&:not([style*="background"]) {
 		background-color: var(--wp--preset--color--contrast, #000);
 	}
+
 	&:not([style*="color"]) {
 		color: var(--wp--preset--color--base, #fff);
 	}
@@ -190,6 +191,7 @@
 // Layout Preset: Standard (Image Top)
 // ========================================
 .dsgo-card--standard {
+
 	.dsgo-card__inner {
 		flex-direction: column;
 	}
@@ -203,6 +205,7 @@
 // Layout Preset: Horizontal Left
 // ========================================
 .dsgo-card--horizontal-left {
+
 	.dsgo-card__inner {
 		flex-direction: row;
 		align-items: stretch;
@@ -220,6 +223,7 @@
 
 	// Stack on mobile
 	@media (max-width: 768px) {
+
 		.dsgo-card__inner {
 			flex-direction: column;
 		}
@@ -235,6 +239,7 @@
 // Layout Preset: Horizontal Right
 // ========================================
 .dsgo-card--horizontal-right {
+
 	.dsgo-card__inner {
 		flex-direction: row-reverse;
 		align-items: stretch;
@@ -252,6 +257,7 @@
 
 	// Stack on mobile
 	@media (max-width: 768px) {
+
 		.dsgo-card__inner {
 			flex-direction: column;
 		}
@@ -320,6 +326,7 @@
 // Layout Preset: Minimal (No Image)
 // ========================================
 .dsgo-card--minimal {
+
 	.dsgo-card__inner {
 		padding: 2rem;
 	}
@@ -330,6 +337,7 @@
 	}
 
 	@media (max-width: 768px) {
+
 		.dsgo-card__inner {
 			padding: 1.5rem;
 		}
@@ -340,11 +348,13 @@
 // Layout Preset: Featured (Large Image)
 // ========================================
 .dsgo-card--featured {
+
 	.dsgo-card__inner {
 		flex-direction: column;
 	}
 
 	.dsgo-card__image-wrapper {
+
 		.dsgo-card__image {
 			aspect-ratio: 2 / 1;
 			object-fit: cover;
@@ -364,6 +374,7 @@
 // Responsive adjustments
 // ========================================
 @media (max-width: 480px) {
+
 	.dsgo-card__title {
 		font-size: var(--wp--preset--font-size--medium, 1.5rem);
 	}
@@ -378,6 +389,7 @@
 	}
 
 	.dsgo-card__badge--floating {
+
 		&.dsgo-card__badge--top-left,
 		&.dsgo-card__badge--top-right {
 			top: 0.75rem;

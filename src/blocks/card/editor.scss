@@ -54,6 +54,7 @@
 
 	// RichText placeholders styling
 	.block-editor-rich-text__editable {
+
 		&[data-is-placeholder-visible="true"] {
 			opacity: 0.6;
 		}
@@ -63,6 +64,7 @@
 	.dsgo-card__title,
 	.dsgo-card__subtitle,
 	.dsgo-card__body {
+
 		&:focus {
 			outline: 1px dashed var(--wp--preset--color--contrast-3, #ccc);
 			outline-offset: 2px;
@@ -71,6 +73,7 @@
 
 	// CTA area hint
 	.dsgo-card__cta {
+
 		&:empty {
 			min-height: 40px;
 			border: 1px dashed var(--wp--preset--color--contrast-3, #ccc);

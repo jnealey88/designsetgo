@@ -138,13 +138,29 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 == Changelog ==
 
-= 1.1.0 - 2025-11-15 =
+= 1.1.0 - 2025-11-14 =
+**New Blocks:**
 * New: Card block with multiple layout presets (horizontal, vertical, overlay, compact, featured)
-* New: Map block with Google Maps integration for location displays
-* Enhancement: Improved UI for dashboard settings panel
+* New: Map block with Google Maps and OpenStreetMap support, privacy mode, and customizable markers
+
+**Admin Interface Overhaul:**
+* New: Completely redesigned admin dashboard with stat cards showing blocks, extensions, and form submissions
+* New: Enhanced dashboard displays blocks organized by category and extension status pills
+* New: Tabbed settings interface organized into Features, Optimization, and Integrations tabs
+* New: Google Maps API key management in Settings > Integrations with security guidance
+* Enhancement: Two-column grid layouts for improved settings panel space efficiency
+* Enhancement: Gradient icon stat cards with hover effects for better visual hierarchy
+* Enhancement: Collapsible sections for advanced settings to reduce vertical scroll
+
+**Translations:**
 * Enhancement: Added translation support for 9 languages (Spanish, French, German, Italian, Portuguese, Dutch, Russian, Chinese, Japanese)
+* Enhancement: Updated POT file with 100% translation coverage for all admin strings
+
+**Security & Bug Fixes:**
 * Security: Fixed js-yaml prototype pollution vulnerability (CVE-2023-2251)
 * Fix: Added missing ToggleControl import to Card block editor component
+* Fix: Google Maps API key now persists correctly after save/reload
+* Fix: API key properly exposed to frontend via data attributes with secure referrer-based protection
 
 = 1.0.1 - 2025-11-14 =
 * Docs: Streamlined readme.txt with JTBD-focused messaging for better scannability
