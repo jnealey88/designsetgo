@@ -10,9 +10,10 @@
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextareaControl } from '@wordpress/components';
+import { PanelBody } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useEffect } from '@wordpress/element';
+import { CodeEditor } from '@wordpress/components';
 
 /**
  * Replace "selector" keyword with actual CSS class
@@ -94,20 +95,38 @@ const withCustomCSSControl = createHigherOrderComponent((BlockEdit) => {
 						title={__('Custom CSS', 'designsetgo')}
 						initialOpen={false}
 					>
-						<TextareaControl
-							label={__('CSS Code', 'designsetgo')}
-							value={dsgoCustomCSS || ''}
-							onChange={(value) =>
-								setAttributes({ dsgoCustomCSS: value || '' })
-							}
-							placeholder={`selector {\n  background: linear-gradient(45deg, #f00, #00f);\n  padding: 2rem;\n}\n\nselector h3 {\n  color: white;\n  font-size: 2rem;\n}`}
-							rows={12}
-							help={__(
+						<div style={{ marginBottom: '12px' }}>
+							<CodeEditor
+								value={dsgoCustomCSS || ''}
+								onChange={(value) =>
+									setAttributes({ dsgoCustomCSS: value || '' })
+								}
+								settings={{
+									codemirror: {
+										mode: 'css',
+										lineNumbers: true,
+										lineWrapping: true,
+										indentUnit: 2,
+										tabSize: 2,
+										autoCloseBrackets: true,
+										matchBrackets: true,
+										lint: false,
+										theme: 'default',
+										styleActiveLine: true,
+										continueComments: true,
+										extraKeys: {
+											'Ctrl-Space': 'autocomplete',
+										},
+									},
+								}}
+							/>
+						</div>
+						<p className="components-base-control__help">
+							{__(
 								'Use "selector" to target this block. Write nested selectors like "selector h3" to target elements inside.',
 								'designsetgo'
 							)}
-							className="dsgo-custom-css-textarea"
-						/>
+						</p>
 						<p className="components-base-control__help">
 							<strong>{__('Examples:', 'designsetgo')}</strong>
 							<br />
