@@ -17,6 +17,65 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Custom CSS Renderer Class - Handles custom CSS output
+ *
+ * This class collects custom CSS from blocks during rendering and outputs
+ * it in the footer. It provides several filter hooks for developers to
+ * customize the CSS processing and output.
+ *
+ * Available Filter Hooks:
+ *
+ * 1. designsetgo/custom_css_block
+ *    - Filters individual block CSS during collection (before processing)
+ *    - Parameters: $custom_css, $block_name, $block
+ *    - Return null/empty to skip the block's CSS entirely
+ *    - Use case: Modify CSS per block, add preprocessing, conditional CSS
+ *
+ * 2. designsetgo/custom_css_class_name
+ *    - Filters the generated CSS class name
+ *    - Parameters: $class_name, $hash, $block_name, $custom_css
+ *    - Use case: Custom class naming schemes, integrate with existing systems
+ *
+ * 3. designsetgo/custom_css_sanitize
+ *    - Filters CSS after security sanitization
+ *    - Parameters: $css, $original_css
+ *    - Use case: Additional sanitization, allowlist specific CSS features
+ *    - WARNING: Ensure security is maintained when using this filter
+ *
+ * 4. designsetgo/custom_css_processed
+ *    - Filters processed CSS for each block (after sanitization)
+ *    - Parameters: $sanitized_css, $class_name, $block_name, $hash
+ *    - Use case: Minification, vendor prefixing, post-processing
+ *
+ * 5. designsetgo/custom_css_output
+ *    - Filters complete CSS output before rendering
+ *    - Parameters: $output_css, $custom_css_data
+ *    - Use case: Global minification, external file generation, caching
+ *    - Return empty string to prevent inline output
+ *
+ * Example Usage:
+ *
+ * ```php
+ * // Minify all CSS output
+ * add_filter( 'designsetgo/custom_css_output', function( $css ) {
+ *     return preg_replace( '/\s+/', ' ', $css );
+ * } );
+ *
+ * // Skip CSS for specific blocks
+ * add_filter( 'designsetgo/custom_css_block', function( $css, $block_name ) {
+ *     if ( 'core/paragraph' === $block_name ) {
+ *         return null; // Skip this block
+ *     }
+ *     return $css;
+ * }, 10, 2 );
+ *
+ * // Custom class naming
+ * add_filter( 'designsetgo/custom_css_class_name', function( $class_name, $hash ) {
+ *     return 'my-custom-prefix-' . $hash;
+ * }, 10, 2 );
+ * ```
+ *
+ * @since 1.0.0
+ * @since 1.2.0 Added filter hooks for CSS customization.
  */
 class Custom_CSS_Renderer {
 	/**
@@ -47,16 +106,50 @@ class Custom_CSS_Renderer {
 		if ( isset( $block['attrs']['dsgCustomCSS'] ) && ! empty( $block['attrs']['dsgCustomCSS'] ) ) {
 			$custom_css = $block['attrs']['dsgCustomCSS'];
 
+			/**
+			 * Filters individual block CSS during collection.
+			 *
+			 * Allows modification of CSS before it's processed and stored.
+			 *
+			 * @since 1.2.0
+			 *
+			 * @param string $custom_css The raw CSS from the block attribute.
+			 * @param string $block_name The full block name (e.g., 'core/paragraph').
+			 * @param array  $block      The complete block data array.
+			 *
+			 * @return string|null Modified CSS string, or null to skip this block's CSS entirely.
+			 */
+			$custom_css = apply_filters( 'designsetgo/custom_css_block', $custom_css, $block['blockName'], $block );
+
+			// Allow filter to skip CSS by returning null or empty string.
+			if ( empty( $custom_css ) ) {
+				return $block_content;
+			}
+
 			// Generate hash for this CSS (same algorithm as JavaScript).
 			$hash = $this->hash_code( $custom_css . $block['blockName'] );
 
-			// Generate the CSS class name.
-			$class_name = 'dsgo-custom-css-' . $hash;
+			/**
+			 * Filters the CSS class name generated for custom CSS.
+			 *
+			 * Allows customization of how class names are generated.
+			 *
+			 * @since 1.2.0
+			 *
+			 * @param string $class_name The generated class name (e.g., 'dsgo-custom-css-abc123').
+			 * @param string $hash       The hash generated from CSS content and block name.
+			 * @param string $block_name The full block name (e.g., 'core/paragraph').
+			 * @param string $custom_css The CSS content being processed.
+			 *
+			 * @return string Modified class name.
+			 */
+			$class_name = apply_filters( 'designsetgo/custom_css_class_name', 'dsgo-custom-css-' . $hash, $hash, $block['blockName'], $custom_css );
 
 			// Store CSS with hash as key to avoid duplicates.
 			$this->custom_css[ $hash ] = array(
 				'css'   => $custom_css,
 				'class' => $class_name,
+				'block' => $block['blockName'],
 			);
 		}
 
@@ -71,22 +164,62 @@ class Custom_CSS_Renderer {
 			return;
 		}
 
-		echo "\n<!-- DesignSetGo Custom CSS -->\n";
-		echo '<style id="designsetgo-custom-css">' . "\n";
+		$output_css = '';
 
-		foreach ( $this->custom_css as $data ) {
+		foreach ( $this->custom_css as $hash => $data ) {
 			$css        = $data['css'];
 			$class_name = $data['class'];
+			$block_name = $data['block'];
 
 			// Replace "selector" with actual class name.
 			$processed_css = $this->replace_selector( $css, $class_name );
 
 			// Sanitize CSS (remove <script> tags and other dangerous content).
 			$sanitized_css = $this->sanitize_css( $processed_css );
-			echo $sanitized_css . "\n";
+
+			/**
+			 * Filters the processed CSS for a single block before adding to output.
+			 *
+			 * This runs after selector replacement and sanitization, allowing final
+			 * modifications like minification, vendor prefixing, or custom processing.
+			 *
+			 * @since 1.2.0
+			 *
+			 * @param string $sanitized_css The processed and sanitized CSS.
+			 * @param string $class_name    The CSS class name being used.
+			 * @param string $block_name    The full block name (e.g., 'core/paragraph').
+			 * @param string $hash          The hash identifier for this CSS block.
+			 *
+			 * @return string Modified CSS string.
+			 */
+			$sanitized_css = apply_filters( 'designsetgo/custom_css_processed', $sanitized_css, $class_name, $block_name, $hash );
+
+			$output_css .= $sanitized_css . "\n";
 		}
 
-		echo '</style>' . "\n";
+		/**
+		 * Filters the complete CSS output before rendering.
+		 *
+		 * Allows modification of all collected CSS before it's output to the page.
+		 * Useful for minification, external file generation, or integration with
+		 * custom CSS systems.
+		 *
+		 * @since 1.2.0
+		 *
+		 * @param string $output_css     The complete CSS string to be output.
+		 * @param array  $custom_css_data All collected CSS data (hash => [css, class, block]).
+		 *
+		 * @return string Modified CSS output.
+		 */
+		$output_css = apply_filters( 'designsetgo/custom_css_output', $output_css, $this->custom_css );
+
+		// Only output if we have CSS after filtering.
+		if ( ! empty( $output_css ) ) {
+			echo "\n<!-- DesignSetGo Custom CSS -->\n";
+			echo '<style id="designsetgo-custom-css">' . "\n";
+			echo $output_css;
+			echo '</style>' . "\n";
+		}
 	}
 
 	/**
@@ -121,6 +254,8 @@ class Custom_CSS_Renderer {
 	 * @return string Sanitized CSS.
 	 */
 	private function sanitize_css( $css ) {
+		$original_css = $css;
+
 		// Remove script tags and all HTML tags.
 		$css = preg_replace( '/<script\b[^>]*>(.*?)<\/script>/is', '', $css );
 		$css = preg_replace( '/<[^>]+>/i', '', $css );
@@ -154,6 +289,21 @@ class Custom_CSS_Renderer {
 
 		// Additional WordPress-recommended sanitization.
 		$css = wp_strip_all_tags( $css );
+
+		/**
+		 * Filters the sanitized CSS output.
+		 *
+		 * Allows adding custom sanitization rules or modifying the default sanitization.
+		 * IMPORTANT: Use with caution - ensure any custom sanitization maintains security.
+		 *
+		 * @since 1.2.0
+		 *
+		 * @param string $css          The sanitized CSS after default security processing.
+		 * @param string $original_css The original CSS before sanitization.
+		 *
+		 * @return string Further sanitized or modified CSS.
+		 */
+		$css = apply_filters( 'designsetgo/custom_css_sanitize', $css, $original_css );
 
 		return $css;
 	}
