@@ -16,6 +16,7 @@ import {
 	PanelBody,
 	SelectControl,
 	RangeControl,
+	TextControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalDivider as Divider,
 } from '@wordpress/components';
