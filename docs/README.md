@@ -29,10 +29,23 @@ Complete reference documentation for developing blocks in the DesignSetGo WordPr
 2. Review [BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md](./BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) for deep understanding
 3. Check [FSE-COMPATIBILITY-GUIDE.md](./FSE-COMPATIBILITY-GUIDE.md) when creating new blocks
 
-### For Claude Agents (AI Development Tools)
-1. **ALWAYS read** [../.claude/CLAUDE.md](../.claude/CLAUDE.md) first - contains critical patterns and project context
-2. **Reference** [BEST-PRACTICES-SUMMARY.md](./BEST-PRACTICES-SUMMARY.md) for quick decision trees
-3. **Copy** [BLOCK-TEMPLATE-EDIT.js](./BLOCK-TEMPLATE-EDIT.js) when creating new blocks
+### For AI-Assisted Development
+**This plugin was built 100% with AI assistance!**
+
+1. **[AI-ASSISTED-DEVELOPMENT.md](./AI-ASSISTED-DEVELOPMENT.md)** ⭐ **Complete AI development guide!**
+   - How this plugin was built with Claude Code
+   - Available slash commands (/add-block, /lint, /test, etc.)
+   - Best practices for AI-assisted development
+   - Common workflows and examples
+   - Tips, tricks, and limitations
+
+2. **[../.claude/CLAUDE.md](../.claude/CLAUDE.md)** - Development patterns and context
+   - Critical patterns AI follows
+   - WordPress best practices
+   - Project-specific conventions
+
+3. **[BEST-PRACTICES-SUMMARY.md](./BEST-PRACTICES-SUMMARY.md)** - Quick reference
+4. **[BLOCK-TEMPLATE-EDIT.js](./BLOCK-TEMPLATE-EDIT.js)** - Block template to copy
 
 ## 📚 Documentation Structure
 
@@ -76,6 +89,19 @@ Complete contribution guide and workflow:
 - **Getting help**: Where to ask questions and report issues
 
 **When to use**: Ready to contribute code or submitting a pull request.
+
+#### [AI-ASSISTED-DEVELOPMENT.md](./AI-ASSISTED-DEVELOPMENT.md)
+Complete guide to AI-assisted development (how this plugin was built):
+- **Why AI-assisted development**: Benefits and use cases
+- **Getting started with Claude Code**: Installation and setup
+- **Available slash commands**: /add-block, /lint, /test, /deploy, and more
+- **Best practices**: Effective prompts, iteration, validation
+- **Common workflows**: Creating blocks, debugging, refactoring with AI
+- **Using other AI tools**: ChatGPT, GitHub Copilot, Abilities API
+- **Tips and tricks**: Context management, learning patterns
+- **Limitations and validation**: When AI makes mistakes, validation checklist
+
+**When to use**: Using AI tools (Claude Code, ChatGPT, Copilot) to contribute, or curious about how this entire plugin was built with AI.
 
 ### Critical Patterns (Read First!)
 

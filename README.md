@@ -272,8 +272,9 @@ Complete documentation for users and developers.
 - **[Extension vs Custom Blocks](docs/EXTENSION-VS-CUSTOM-BLOCKS.md)**
 - **[Abilities API](docs/ABILITIES-API.md)** - AI integration
 
-**For AI Agents (Claude Code, etc.):**
-- **[.claude/CLAUDE.md](.claude/CLAUDE.md)** - Complete development patterns and context
+**AI-Assisted Development:**
+- **[AI-Assisted Development Guide](docs/AI-ASSISTED-DEVELOPMENT.md)** - Complete guide to building with AI
+- **[.claude/CLAUDE.md](.claude/CLAUDE.md)** - Development patterns for AI agents
 
 ### 🗺️ Documentation Map
 
@@ -418,12 +419,25 @@ npm start         # Terminal 2
 
 ### For AI-Assisted Development
 
-DesignSetGo includes comprehensive documentation for AI development tools:
+**This plugin was built 100% with AI assistance (Claude Code).** We've documented everything:
 
-- **[.claude/CLAUDE.md](.claude/CLAUDE.md)** - Complete patterns and best practices for AI agents
-- **WordPress Abilities API** - AI-native programmatic access ([docs/ABILITIES-API.md](docs/ABILITIES-API.md))
+- **[AI-Assisted Development Guide](docs/AI-ASSISTED-DEVELOPMENT.md)** ⭐ **Complete guide!**
+  - How this entire plugin was built with AI
+  - Available slash commands (/add-block, /lint, /test, /deploy, etc.)
+  - Best practices and workflows
+  - Tips, tricks, and real examples
 
-**Using Claude Code or similar?** The AI will automatically reference these files to follow project conventions.
+- **[.claude/CLAUDE.md](.claude/CLAUDE.md)** - Development patterns for AI agents
+  - Critical patterns AI should follow
+  - WordPress best practices
+  - Project-specific conventions
+
+- **[WordPress Abilities API](docs/ABILITIES-API.md)** - AI-native programmatic access
+  - REST API for AI agents
+  - Block insertion and configuration
+  - Automation workflows
+
+**Using Claude Code, ChatGPT, or GitHub Copilot?** These guides will help you contribute effectively with AI assistance.
 
 ### Development Guidelines
 
