@@ -101,12 +101,17 @@ const withCustomCSSControl = createHigherOrderComponent((BlockEdit) => {
 								setAttributes({ dsgoCustomCSS: value || '' })
 							}
 							placeholder={`selector {\n  background: linear-gradient(45deg, #f00, #00f);\n  padding: 2rem;\n}\n\nselector h3 {\n  color: white;\n  font-size: 2rem;\n}`}
-							rows={12}
+							rows={15}
 							help={__(
 								'Use "selector" to target this block. Write nested selectors like "selector h3" to target elements inside.',
 								'designsetgo'
 							)}
 							className="dsgo-custom-css-textarea"
+							style={{
+								fontFamily: 'monospace',
+								fontSize: '13px',
+								lineHeight: '1.6',
+							}}
 						/>
 						<p className="components-base-control__help">
 							<strong>{__('Examples:', 'designsetgo')}</strong>
