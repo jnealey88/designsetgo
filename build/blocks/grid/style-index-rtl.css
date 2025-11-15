@@ -1,1 +1,181 @@
-.dsgo-grid{box-sizing:border-box;padding:var(--wp--preset--spacing--xl,3rem) var(--wp--preset--spacing--md,1.5rem);transition:background-color .3s ease}.dsgo-flex>.dsgo-grid,.dsgo-grid>.dsgo-grid,.dsgo-stack>.dsgo-grid{padding:0}.dsgo-grid.alignfull{margin-right:0;margin-left:0;max-width:none;width:100%}.dsgo-grid.alignwide{margin-right:auto;margin-left:auto;max-width:var(--wp--custom--layout--wide-size,1200px);width:100%}.dsgo-grid .dsgo-grid__inner>*{min-height:0;min-width:0}.dsgo-grid .dsgo-grid__inner>.wp-block-heading,.dsgo-grid .dsgo-grid__inner>.wp-block-paragraph,.dsgo-grid .dsgo-grid__inner>h1,.dsgo-grid .dsgo-grid__inner>h2,.dsgo-grid .dsgo-grid__inner>h3,.dsgo-grid .dsgo-grid__inner>h4,.dsgo-grid .dsgo-grid__inner>h5,.dsgo-grid .dsgo-grid__inner>h6,.dsgo-grid .dsgo-grid__inner>p{width:100%}.dsgo-flex__inner>.dsgo-grid,.dsgo-grid .dsgo-grid__inner>.dsgo-flex,.dsgo-grid .dsgo-grid__inner>.dsgo-grid,.dsgo-grid .dsgo-grid__inner>.dsgo-stack,.dsgo-grid__inner>.dsgo-grid,.dsgo-stack__inner>.dsgo-grid{width:100%!important}.dsgo-flex__inner>.dsgo-grid .dsgo-grid__inner,.dsgo-grid.alignfull.dsgo-no-width-constraint>.dsgo-grid__inner[class*=wp-container-]>:not(.alignleft):not(.alignright),.dsgo-grid__inner>.dsgo-grid .dsgo-grid__inner,.dsgo-stack__inner>.dsgo-grid .dsgo-grid__inner{margin-right:0!important;margin-left:0!important;max-width:none!important}@media(max-width:1024px){.dsgo-grid.dsgo-grid-cols-tablet-1 .dsgo-grid__inner{grid-template-columns:repeat(1,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-2 .dsgo-grid__inner{grid-template-columns:repeat(2,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-3 .dsgo-grid__inner{grid-template-columns:repeat(3,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-4 .dsgo-grid__inner{grid-template-columns:repeat(4,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-5 .dsgo-grid__inner{grid-template-columns:repeat(5,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-6 .dsgo-grid__inner{grid-template-columns:repeat(6,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-7 .dsgo-grid__inner{grid-template-columns:repeat(7,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-8 .dsgo-grid__inner{grid-template-columns:repeat(8,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-9 .dsgo-grid__inner{grid-template-columns:repeat(9,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-10 .dsgo-grid__inner{grid-template-columns:repeat(10,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-11 .dsgo-grid__inner{grid-template-columns:repeat(11,1fr)!important}.dsgo-grid.dsgo-grid-cols-tablet-12 .dsgo-grid__inner{grid-template-columns:repeat(12,1fr)!important}}@media(max-width:767px){.dsgo-grid.dsgo-grid-cols-mobile-1 .dsgo-grid__inner{grid-template-columns:repeat(1,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-2 .dsgo-grid__inner{grid-template-columns:repeat(2,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-3 .dsgo-grid__inner{grid-template-columns:repeat(3,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-4 .dsgo-grid__inner{grid-template-columns:repeat(4,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-5 .dsgo-grid__inner{grid-template-columns:repeat(5,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-6 .dsgo-grid__inner{grid-template-columns:repeat(6,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-7 .dsgo-grid__inner{grid-template-columns:repeat(7,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-8 .dsgo-grid__inner{grid-template-columns:repeat(8,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-9 .dsgo-grid__inner{grid-template-columns:repeat(9,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-10 .dsgo-grid__inner{grid-template-columns:repeat(10,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-11 .dsgo-grid__inner{grid-template-columns:repeat(11,1fr)!important}.dsgo-grid.dsgo-grid-cols-mobile-12 .dsgo-grid__inner{grid-template-columns:repeat(12,1fr)!important}}.dsgo-grid:hover[style*="--dsgo-hover-bg-color"]{background:var(--dsgo-hover-bg-color)!important}.dsgo-grid:hover[style*="--dsgo-hover-text-color"],.dsgo-grid:hover[style*="--dsgo-hover-text-color"] .wp-block-heading,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] .wp-block-paragraph,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] a,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] h1,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] h2,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] h3,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] h4,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] h5,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] h6,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] li,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] p,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] span,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] td,.dsgo-grid:hover[style*="--dsgo-hover-text-color"] th{color:var(--dsgo-hover-text-color)!important}@media(max-width:767px){.dsgo-grid__inner>[data-block],.dsgo-grid__inner>[data-block][style*=grid-column],.dsgo-grid__inner>[style*=grid-column]{grid-column:span 1!important}.dsgo-grid__inner>* .dsgo-grid{grid-template-columns:1fr!important}.dsgo-grid__inner>* .dsgo-flex{flex-direction:column!important}}.dsgo-grid__inner>*,.dsgo-grid__inner>[data-block]{margin-block-end:0!important;margin-block-start:0!important}
+/*!***************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/grid/style.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************/
+/**
+ * DSG Grid Block - Frontend Styles
+ *
+ * Frontend styles for the DSG Grid block with responsive columns.
+ *
+ * @package DesignSetGo
+ */
+.dsgo-grid {
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+  padding-top: var(--wp--preset--spacing--xl, 3rem);
+  padding-bottom: var(--wp--preset--spacing--xl, 3rem);
+  padding-right: var(--wp--preset--spacing--md, 1.5rem);
+  padding-left: var(--wp--preset--spacing--md, 1.5rem);
+}
+.dsgo-stack > .dsgo-grid, .dsgo-flex > .dsgo-grid, .dsgo-grid > .dsgo-grid {
+  padding: 0;
+}
+.dsgo-grid.alignfull {
+  max-width: none;
+  width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+}
+.dsgo-grid.alignwide {
+  max-width: var(--wp--custom--layout--wide-size, 1200px);
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+.dsgo-grid .dsgo-grid__inner > * {
+  min-width: 0;
+  min-height: 0;
+}
+.dsgo-grid .dsgo-grid__inner > h1,
+.dsgo-grid .dsgo-grid__inner > h2,
+.dsgo-grid .dsgo-grid__inner > h3,
+.dsgo-grid .dsgo-grid__inner > h4,
+.dsgo-grid .dsgo-grid__inner > h5,
+.dsgo-grid .dsgo-grid__inner > h6,
+.dsgo-grid .dsgo-grid__inner > p,
+.dsgo-grid .dsgo-grid__inner > .wp-block-heading,
+.dsgo-grid .dsgo-grid__inner > .wp-block-paragraph {
+  width: 100%;
+}
+.dsgo-grid .dsgo-grid__inner > .dsgo-flex,
+.dsgo-grid .dsgo-grid__inner > .dsgo-grid,
+.dsgo-grid .dsgo-grid__inner > .dsgo-stack {
+  width: 100% !important;
+}
+.dsgo-stack__inner > .dsgo-grid, .dsgo-flex__inner > .dsgo-grid, .dsgo-grid__inner > .dsgo-grid {
+  width: 100% !important;
+}
+.dsgo-stack__inner > .dsgo-grid .dsgo-grid__inner, .dsgo-flex__inner > .dsgo-grid .dsgo-grid__inner, .dsgo-grid__inner > .dsgo-grid .dsgo-grid__inner {
+  max-width: none !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+.dsgo-grid.alignfull.dsgo-no-width-constraint > .dsgo-grid__inner[class*=wp-container-] > :not(.alignleft):not(.alignright) {
+  max-width: none !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+@media (max-width: 1024px) {
+  .dsgo-grid.dsgo-grid-cols-tablet-1 .dsgo-grid__inner {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-2 .dsgo-grid__inner {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-3 .dsgo-grid__inner {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-4 .dsgo-grid__inner {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-5 .dsgo-grid__inner {
+    grid-template-columns: repeat(5, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-6 .dsgo-grid__inner {
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-7 .dsgo-grid__inner {
+    grid-template-columns: repeat(7, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-8 .dsgo-grid__inner {
+    grid-template-columns: repeat(8, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-9 .dsgo-grid__inner {
+    grid-template-columns: repeat(9, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-10 .dsgo-grid__inner {
+    grid-template-columns: repeat(10, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-11 .dsgo-grid__inner {
+    grid-template-columns: repeat(11, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-tablet-12 .dsgo-grid__inner {
+    grid-template-columns: repeat(12, 1fr) !important;
+  }
+}
+@media (max-width: 767px) {
+  .dsgo-grid.dsgo-grid-cols-mobile-1 .dsgo-grid__inner {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-2 .dsgo-grid__inner {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-3 .dsgo-grid__inner {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-4 .dsgo-grid__inner {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-5 .dsgo-grid__inner {
+    grid-template-columns: repeat(5, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-6 .dsgo-grid__inner {
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-7 .dsgo-grid__inner {
+    grid-template-columns: repeat(7, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-8 .dsgo-grid__inner {
+    grid-template-columns: repeat(8, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-9 .dsgo-grid__inner {
+    grid-template-columns: repeat(9, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-10 .dsgo-grid__inner {
+    grid-template-columns: repeat(10, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-11 .dsgo-grid__inner {
+    grid-template-columns: repeat(11, 1fr) !important;
+  }
+  .dsgo-grid.dsgo-grid-cols-mobile-12 .dsgo-grid__inner {
+    grid-template-columns: repeat(12, 1fr) !important;
+  }
+}
+.dsgo-grid:hover[style*="--dsgo-hover-bg-color"] {
+  background: var(--dsgo-hover-bg-color) !important;
+}
+.dsgo-grid:hover[style*="--dsgo-hover-text-color"] {
+  color: var(--dsgo-hover-text-color) !important;
+}
+.dsgo-grid:hover[style*="--dsgo-hover-text-color"] h1, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] h2, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] h3, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] h4, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] h5, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] h6, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] p, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] a, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] span, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] li, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] td, .dsgo-grid:hover[style*="--dsgo-hover-text-color"] th,
+.dsgo-grid:hover[style*="--dsgo-hover-text-color"] .wp-block-heading,
+.dsgo-grid:hover[style*="--dsgo-hover-text-color"] .wp-block-paragraph {
+  color: var(--dsgo-hover-text-color) !important;
+}
+@media (max-width: 767px) {
+  .dsgo-grid__inner > [style*=grid-column],
+  .dsgo-grid__inner > [data-block][style*=grid-column],
+  .dsgo-grid__inner > [data-block] {
+    grid-column: span 1 !important;
+  }
+  .dsgo-grid__inner > * .dsgo-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .dsgo-grid__inner > * .dsgo-flex {
+    flex-direction: column !important;
+  }
+}
+/**
+ * Layout-Constrained Margin Rules
+ * CRITICAL: Override WordPress's margin-based spacing for Grid layouts
+ * Grid uses CSS gap properties, not margins, for spacing
+ * Applied when layout support is enabled (type: constrained)
+ * With two-div structure: .dsgo-grid > .dsgo-grid__inner > items
+ */
+.dsgo-grid__inner > * {
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
+}
+.dsgo-grid__inner > [data-block] {
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
+}

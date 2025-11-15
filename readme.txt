@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,25 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.1.2 - 2025-11-15 =
+**New Features:**
+* New: Added five comprehensive filter hooks for Custom CSS customization
+  * `designsetgo/custom_css_block` - Modify CSS per block before processing
+  * `designsetgo/custom_css_class_name` - Customize CSS class name generation
+  * `designsetgo/custom_css_sanitize` - Additional sanitization rules
+  * `designsetgo/custom_css_processed` - Post-process CSS after sanitization
+  * `designsetgo/custom_css_output` - Control final CSS output
+* New: Comprehensive developer documentation with 16+ practical examples in docs/CUSTOM-CSS-FILTERS.md
+
+**Bug Fixes:**
+* Fix: Section hover background now correctly renders behind content instead of over text
+* Fix: Resolved z-index stacking issue where hover overlay appeared above section content
+
+**Enhancements:**
+* Enhancement: Improved Custom CSS textarea UX with better styling and increased height
+* Enhancement: Added block name tracking to Custom CSS data structure for better debugging
+* Documentation: Enhanced PHPDoc comments with detailed filter hook usage examples
 
 = 1.1.1 - 2025-11-15 =
 **Security Fixes:**
