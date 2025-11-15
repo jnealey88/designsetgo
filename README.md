@@ -1,6 +1,6 @@
 # DesignSetGo
 
-Professional Gutenberg block library with 42 blocks - complete Form Builder, container system, interactive elements, and animations. Built with WordPress standards for guaranteed editor/frontend parity.
+Professional Gutenberg block library with 43 blocks and 11 powerful extensions - complete Form Builder, container system, interactive elements, maps, and animations. Built with WordPress standards for guaranteed editor/frontend parity.
 
 ## 🤖 **First AI-Native WordPress Block Library**
 
@@ -16,11 +16,13 @@ DesignSetGo is the **first WordPress block plugin** to integrate with the WordPr
 - ✅ Project foundation and architecture complete
 - ✅ Build system configured (webpack + @wordpress/scripts)
 - ✅ PHP plugin architecture implemented
-- ✅ 42 custom blocks across 4 categories with FSE integration
-- ✅ Complete Form Builder system (13 blocks: builder + 11 field types + submit button)
-- ✅ Container system (Flex, Grid, Stack)
+- ✅ 43 custom blocks across 5 categories with FSE integration
+- ✅ Complete Form Builder system (13 blocks: builder + 12 field types)
+- ✅ Container system (Row, Section, Flex, Grid, Stack)
 - ✅ Interactive blocks (Tabs, Accordion, Flip Card, Reveal, Scroll effects, Slider, Counters, Progress)
-- ✅ Block Animations extension - 24 animations for ANY WordPress block
+- ✅ Content blocks (Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown, Blobs)
+- ✅ Location block (Map with OpenStreetMap & Google Maps support)
+- ✅ 11 Block Extensions - Animations, Sticky Header, Clickable Groups, Background Video, Responsive, Max Width, and more
 - ✅ Global styles system (theme.json integration)
 - ✅ Block patterns library
 - ✅ Comprehensive testing setup (E2E + Unit + PHP)
@@ -39,8 +41,8 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 | Category | Features |
 |----------|----------|
 | **🤖 AI Integration** | **WordPress Abilities API** - First plugin with AI-native programmatic access |
-| **Blocks** | **42 blocks** across 4 categories: **Container System (3)** - Flex, Grid, Stack; **Form Builder (13)** - Complete form system with AJAX, spam protection, 11 field types; **Interactive Blocks (10)** - Tabs, Accordion, Flip Card, Reveal, Scroll effects, Slider, Counters, Progress; **Visual/UI (16)** - Icon, Icon Button, Icon List, Pill, Blobs, plus child blocks |
-| **Extensions** | **Block Animations** - 24 entrance/exit animations for ANY WordPress block (core or third-party) |
+| **Blocks** | **43 blocks** across 5 categories: **Containers (5)** - Row, Section, Flex, Grid, Stack; **Form Builder (13)** - Complete form system with AJAX, spam protection, 12 field types; **Interactive (10)** - Tabs, Accordion, Flip Card, Reveal, Scroll effects, Slider, Counters, Progress; **Content/UI (14)** - Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown, Blobs, plus child blocks; **Location (1)** - Interactive Map with OpenStreetMap & Google Maps |
+| **Extensions** | **11 Extensions** - Block Animations (24 effects), Sticky Header, Clickable Groups, Background Video, Responsive Visibility, Max Width, Custom CSS, Grid Span, Reveal Control, Text Alignment |
 | **Patterns** | Pre-designed layouts (Hero, CTA, Features, FAQ) |
 | **FSE Ready** | Full Site Editing compatible, theme.json integration, dual categorization |
 | **Performance** | Optimized bundles, code-splitting, no jQuery, declarative styling, viewScript support |
@@ -129,55 +131,120 @@ npm run plugin-zip
 
 ## Current Features
 
-### 40 Custom Blocks
+### 43 Custom Blocks
 
 📚 **[View Complete Blocks Reference →](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)**
 
-#### Layout Containers (3 Blocks)
-- **Flex Container** - Horizontal/vertical layouts with wrapping
-- **Grid Container** - Responsive CSS Grid layouts
-- **Stack Container** - Vertical stacking with spacing control
+#### Layout Containers (5 Blocks)
+- **Row** - Horizontal layouts with flexible alignment and spacing
+- **Section** - Full-width sections with inner content width constraints
+- **Flex Container** - Advanced flexbox layouts with wrapping and gap control
+- **Grid Container** - Responsive CSS Grid with column/row controls
+- **Stack Container** - Vertical stacking with precise spacing control
 
-#### Interactive Content (7 Block Groups)
-- **Accordion** - Collapsible content panels
-- **Tabs** - Tabbed content interface with icons
-- **Slider** - Modern slider with multiple effects (slide, fade, zoom)
+#### Interactive Content (10 Blocks + Child Blocks)
+- **Accordion** - Collapsible content panels with customizable icons
+- **Tabs** - Tabbed content interface with icon support
+- **Slider** - Modern carousel with multiple effects (slide, fade, zoom)
 - **Flip Card** - Interactive cards that flip on hover/click
-- **Reveal** - Content that reveals on hover
+- **Reveal** - Content that reveals on hover with multiple effects
 - **Scroll Accordion** - Sticky stacking accordion triggered by scroll
 - **Image Accordion** - Expandable image panels for portfolios
+- **Counter Group** - Animated counting statistics
+- **Progress Bar** - Animated progress indicators with labels
+- **Scroll Marquee** - Horizontal scrolling galleries with parallax
+- Plus child blocks: Accordion Item, Tab, Slide, Flip Card Front/Back, Image Accordion Item, Scroll Accordion Item, Counter
 
-#### Content Elements (7 Blocks)
-- **Icon** - 500+ icons with shapes and animations
-- **Icon Button** - Icon-based buttons with styles
-- **Icon List** - Lists with custom icons
-- **Pill** - Badge/tag components
-- **Counter** - Animated counting numbers
-- **Progress Bar** - Animated progress indicators
-- **Blobs** - Organic shapes with morphing animations
+#### Content & UI Elements (14 Blocks)
+- **Icon** - 500+ icons with shapes, sizes, and animations
+- **Icon Button** - Icon-based buttons with extensive styling options
+- **Icon List** - Lists with custom icons and formatting
+- **Card** - Content cards with images, headers, and call-to-action buttons
+- **Pill** - Badge/tag components for labels and categories
+- **Divider** - Styleable content separators with multiple styles
+- **Countdown Timer** - Countdown to specific dates and times
+- **Blobs** - Organic animated background shapes
+- Plus child blocks: Icon List Item
 
-#### Advanced Interactions (1 Block)
-- **Scroll Marquee** - Horizontal scrolling image galleries with parallax
+#### Location (1 Block)
+- **Map** - Interactive maps with dual provider support:
+  - OpenStreetMap (no API key required, privacy-friendly)
+  - Google Maps (requires API key, advanced features)
+  - Custom markers, zoom control, height settings
+  - Multiple map styles and themes
+  - Responsive and accessible
 
-#### Form Builder (14+ Blocks)
+#### Form Builder (13 Blocks)
 - **Form Builder** - Complete form system with 12 field types:
   - Text, Email, Phone, URL fields
   - Date, Time, Number fields
   - Checkbox, Select, Textarea
   - File Upload, Hidden field
-- AJAX submission, spam protection, email notifications
+- AJAX submission with honeypot spam protection
+- Google reCAPTCHA v3 support
+- Email notifications with customizable templates
+- Success/error message customization
+- Form validation and error handling
 
-### Block Extensions
+### 11 Block Extensions
 
-**Responsive Extension** - Hide blocks on specific devices
-- Desktop, Tablet, Mobile visibility toggles
-- Works with any WordPress block
+Extensions work with **any WordPress block** (core, third-party, or DesignSetGo):
 
-**Animation Extension** - Entrance animations
-- 8+ animation types (fadeIn, fadeInUp, slideInLeft, etc.)
+**Block Animations Extension** - Professional entrance/exit animations
+- 24+ animation types (fadeIn, slideIn, bounce, zoom, flip, rotate, etc.)
+- Scroll-triggered animations
 - Configurable duration, delay, and easing
 - Respects `prefers-reduced-motion`
 - CSS-only implementation (no JS libraries)
+
+**Sticky Header Extension** - Make headers/navs stick on scroll
+- Smooth sticky behavior with customizable offset
+- Works with core Group, Row, Section blocks
+- Mobile-responsive with hide on scroll option
+- Z-index control for proper layering
+
+**Clickable Groups Extension** - Turn any group/container into a clickable link
+- Link entire cards or sections
+- Accessibility-friendly with proper ARIA labels
+- External link support with security (rel="noopener")
+- Prevents conflicts with inner interactive elements
+
+**Background Video Extension** - Add video backgrounds to containers
+- YouTube and self-hosted video support
+- Overlay color/opacity controls
+- Mobile fallback images
+- Autoplay, loop, and mute controls
+- Accessibility considerations
+
+**Responsive Visibility Extension** - Control block visibility by device
+- Hide/show on Desktop, Tablet, Mobile
+- Works with any WordPress block
+- CSS-based (no JavaScript)
+
+**Max Width Extension** - Constrain content width
+- Custom max-width controls
+- Auto-center alignment
+- Responsive width constraints
+- Works with containers and content blocks
+
+**Custom CSS Extension** - Add custom CSS to any block
+- Block-specific CSS editor
+- Advanced styling control
+- Scoped to individual blocks
+
+**Grid Span Extension** - Control grid item spanning
+- Column span (1-12 columns)
+- Row span controls
+- Works with Grid Container and core Columns block
+
+**Reveal Control Extension** - Advanced hover reveal settings
+- Timing and transition controls
+- Direction and distance settings
+- Works with Reveal block
+
+**Text Alignment Inheritance** - Inherit alignment from parent blocks
+- Consistent text alignment across nested blocks
+- Parent-child context awareness
 
 ### Block Patterns
 
@@ -297,12 +364,13 @@ Reference .claude/CLAUDE.md as you develop
 ## Roadmap
 
 ### ✅ Completed (Phase 1)
-- 40 custom blocks across 5 categories (Layout, Interactive, Content, Advanced, Forms)
-- Block extensions (Responsive, Animations, Scroll Effects)
-- Global styles integration
-- Animation system (8+ entrance animations)
+- 43 custom blocks across 5 categories (Containers, Interactive, Content/UI, Location, Forms)
+- 11 block extensions (Animations, Sticky Header, Clickable Groups, Background Video, Responsive, and more)
+- Global styles integration with theme.json
+- Animation system (24+ entrance/exit animations)
+- Map block with OpenStreetMap & Google Maps support
 - Block patterns (Hero, CTA, Features, FAQ)
-- Comprehensive documentation (5,000+ lines across wiki and docs)
+- Comprehensive documentation (15,000+ lines across wiki and docs)
 - Testing infrastructure (E2E + Unit + PHP)
 - FSE compatibility (Twenty Twenty-Five)
 - WordPress Abilities API integration
@@ -477,27 +545,33 @@ GPL-2.0-or-later - 100% Free Forever
 
 Blocks are organized in the WordPress block inserter:
 
-**DesignSetGo Collection** - All 40 blocks grouped together
-- Layout Containers: Flex, Grid, Stack
-- Interactive: Accordion, Tabs, Slider, Flip Card, Reveal, Scroll Accordion, Image Accordion
-- Content: Icon, Icon Button, Icon List, Pill, Counter, Progress Bar, Blobs
-- Advanced: Scroll Marquee
-- Forms: Form Builder + 12 field types
+**DesignSetGo Collection** - All 43 blocks grouped together
+- **Layout Containers**: Row, Section, Flex, Grid, Stack
+- **Interactive**: Accordion, Tabs, Slider, Flip Card, Reveal, Scroll Accordion, Image Accordion, Counter Group, Progress Bar, Scroll Marquee
+- **Content & UI**: Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown Timer, Blobs
+- **Location**: Map (OpenStreetMap & Google Maps)
+- **Forms**: Form Builder + 12 field types (Text, Email, Phone, URL, Date, Time, Number, Checkbox, Select, Textarea, File Upload, Hidden)
 
 **WordPress Core Categories** - Blocks also appear in native categories
-- **Design**: Most layout and interactive blocks
-- **Text**: Icon List
-- **Widgets**: Forms, Counters, Progress Bars
+- **Design**: Layout containers and interactive blocks
+- **Text**: Icon List, Card
+- **Widgets**: Forms, Counters, Progress Bars, Map, Countdown Timer
 
-**Extensions** - Available for all blocks
-- Responsive visibility toggles
-- Entrance animations (8+ effects)
-- Scroll effects
-- Overlay controls
-- Custom CSS
+**11 Block Extensions** - Available for ANY block (core, third-party, or DesignSetGo)
+- **Block Animations** - 24+ entrance/exit effects with scroll triggers
+- **Sticky Header** - Sticky navigation on scroll
+- **Clickable Groups** - Make containers clickable
+- **Background Video** - YouTube or self-hosted video backgrounds
+- **Responsive Visibility** - Hide/show by device
+- **Max Width** - Content width constraints
+- **Custom CSS** - Block-specific CSS
+- **Grid Span** - Column/row spanning for grids
+- **Reveal Control** - Advanced hover effects
+- **Text Alignment Inheritance** - Align with parent context
 
 **Patterns** - Pre-designed layouts
 - Look for the "DesignSetGo" category in the pattern inserter
+- Hero sections, CTAs, Features, FAQ layouts
 
 📚 **[Complete Blocks Reference](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)** - Detailed documentation for all blocks
 

@@ -9,7 +9,7 @@ Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Professional WordPress blocks without page builder bloat. 49 blocks + 7 universal extensions that enhance ANY block.
+Professional WordPress blocks without page builder bloat. 43 blocks + 11 universal extensions that enhance ANY block.
 
 == Description ==
 
@@ -20,8 +20,8 @@ DesignSetGo gives you the power of a page builder with the simplicity of WordPre
 = Why DesignSetGo? =
 
 ✓ **Works Like WordPress** - If you know blocks, you know DesignSetGo. No separate interface, no learning curve.
-✓ **49 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, and more.
-✓ **7 Universal Extensions** - Add animations, responsive visibility, sticky headers, and custom CSS to ANY WordPress block (including core blocks).
+✓ **43 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, and more.
+✓ **11 Universal Extensions** - Add animations, responsive visibility, sticky headers, clickable groups, max width, and more to ANY WordPress block (including core blocks).
 ✓ **Performance First** - Lightweight code, no jQuery, optimized bundles. Your site stays fast.
 ✓ **No Lock-In** - Built with WordPress standards. What you build works with or without the plugin.
 ✓ **Editor = Frontend** - What you see in the editor is exactly what appears on your site. No surprises.
@@ -37,18 +37,24 @@ Professional forms with AJAX submission, spam protection, and email notification
 **Interactive Elements (10 blocks)**
 Tabs, accordions, flip cards, sliders, scroll effects, counters, progress bars, and revealing content. All with smooth animations and mobile-responsive behavior.
 
-**Visual Components (15 blocks)**
-Icons (500+), icon buttons, icon lists, pills/badges, dividers (8 styles), countdown timers, organic blob shapes, content cards with multiple layout presets, and interactive maps with Google Maps and OpenStreetMap support.
+**Visual Components (8 blocks + child blocks)**
+Icons (500+), icon buttons, icon lists, pills/badges, dividers, countdown timers, organic blob shapes, and content cards with multiple layout presets.
 
-**Universal Extensions (7 extensions)**
+**Location (1 block)**
+Interactive maps with Google Maps and OpenStreetMap support, custom markers, and privacy-friendly options.
+
+**Universal Extensions (11 extensions)**
 These work with ANY WordPress block—including core blocks and third-party blocks:
-* **Block Animations** - 24 effects with scroll/hover/click triggers
-* **Responsive Visibility** - Hide blocks by device
-* **Background Video** - Add videos to containers
-* **Clickable Groups** - Turn containers into links
-* **Sticky Header** - Advanced sticky controls for FSE
-* **Custom CSS** - Per-block custom styling
-* **Grid Span** - Column control for grid layouts
+* **Block Animations** - 24+ effects with scroll/hover/click triggers
+* **Sticky Header** - Advanced sticky controls with offset and hide on scroll
+* **Clickable Groups** - Turn containers into accessible clickable links
+* **Background Video** - Add YouTube or self-hosted videos to containers
+* **Responsive Visibility** - Hide/show blocks by device (desktop, tablet, mobile)
+* **Max Width** - Constrain content width with auto-centering
+* **Custom CSS** - Per-block custom styling and advanced controls
+* **Grid Span** - Column and row spanning for grid layouts
+* **Reveal Control** - Advanced hover reveal timing and transitions
+* **Text Alignment Inheritance** - Inherit alignment from parent blocks
 
 = Perfect For =
 
@@ -171,21 +177,24 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 🚀 **Initial Release**
 
-**47 Professional Blocks:**
+**43 Professional Blocks:**
 * 5 Container blocks (Row, Section, Flex, Grid, Stack)
 * 13 Form Builder blocks (complete system with AJAX, spam protection, email notifications)
 * 10 Interactive blocks (Tabs, Accordion, Flip Card, Slider, Counters, Progress Bar, Scroll effects)
-* 13 Visual blocks (Icons, Icon Button, Icon List, Pill, Divider with 8 styles, Countdown Timer, Blobs)
-* 6 Child blocks (Tab, Accordion Item, Slide, etc.)
+* 8 Visual blocks (Icons, Icon Button, Icon List, Card, Pill, Divider, Countdown Timer, Blobs)
+* 9 Child blocks (Tab, Accordion Item, Slide, Flip Card Front/Back, Icon List Item, Image Accordion Item, Scroll Accordion Item, Counter)
 
-**7 Universal Extensions** (work with ANY block):
-* Block Animations (24 effects, 4 trigger types)
+**11 Universal Extensions** (work with ANY block):
+* Block Animations (24+ effects with scroll triggers)
+* Sticky Header (FSE-optimized with offset controls)
+* Clickable Groups (accessible card/container links)
+* Background Video (YouTube and self-hosted)
 * Responsive Visibility (hide by device)
-* Background Video (containers)
-* Clickable Groups (card links)
-* Sticky Header (FSE-optimized)
-* Custom CSS (per-block)
-* Grid Span (column control)
+* Max Width (content width constraints)
+* Custom CSS (per-block styling)
+* Grid Span (column/row control)
+* Reveal Control (advanced hover effects)
+* Text Alignment Inheritance (parent-child context)
 
 **Performance & Quality:**
 * Built with WordPress core patterns for guaranteed editor/frontend parity
@@ -196,8 +205,11 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 == Upgrade Notice ==
 
+= 1.1.0 =
+Major update with new Map and Card blocks, completely redesigned admin dashboard, 11 universal extensions, and 9 language translations. Enhanced security and bug fixes.
+
 = 1.0.0 =
-Initial release with 47 professional blocks + 7 universal extensions. Build stunning WordPress sites without page builders—native blocks with the power you need.
+Initial release with 43 professional blocks + 11 universal extensions. Build stunning WordPress sites without page builders—native blocks with the power you need.
 
 == Privacy & Security ==
 

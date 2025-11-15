@@ -1,7 +1,7 @@
 # DesignSetGo Blocks Roadmap
 
-**Last Updated:** 2025-11-14
-**Current Block Count:** 47 blocks
+**Last Updated:** 2025-11-15
+**Current Block Count:** 43 blocks
 **Target Year 1:** 70+ blocks
 
 ---
@@ -20,7 +20,7 @@ New blocks must pass the "Jobs-to-be-Done" test:
 
 ---
 
-## Current State (v1.0.1)
+## Current State (v1.1.0)
 
 ### Shipped Blocks by Category
 
@@ -46,7 +46,7 @@ New blocks must pass the "Jobs-to-be-Done" test:
 - File Upload Field
 - Hidden Field
 
-**Interactive Blocks (10)**
+**Interactive Blocks (10 + child blocks)**
 - Tabs
 - Accordion
 - Flip Card
@@ -57,24 +57,29 @@ New blocks must pass the "Jobs-to-be-Done" test:
 - Slider
 - Counter Group
 - Progress Bar
+- Plus child blocks: Tab, Accordion Item, Slide, Flip Card Front, Flip Card Back, Image Accordion Item, Scroll Accordion Item, Counter
 
-**Visual & UI Blocks (13)**
+**Content & UI Blocks (8 + child blocks)**
 - Icon
 - Icon Button
 - Icon List
+- Card
 - Pill
 - Divider
 - Countdown Timer
 - Blobs
-- Plus 6 child blocks (Tab, Accordion Item, Slide, Flip Card Front/Back, Icon List Item, Image Accordion Item, Scroll Accordion Item, Counter)
+- Plus child blocks: Icon List Item
 
-**Total:** 47 blocks
+**Location Blocks (1)**
+- Map
+
+**Total:** 43 blocks
 
 ### Gap Analysis
 
 **Missing but needed:**
-- ✗ Spacer (vertical spacing control)
-- ✗ Map (location display)
+- ✗ Spacer (vertical spacing control) - WordPress core has this
+- ✅ Map (location display) - SHIPPED in v1.1.0
 - ✗ Social Share (share buttons)
 - ✗ Video (enhanced video player)
 - ✗ Timeline (event chronology)

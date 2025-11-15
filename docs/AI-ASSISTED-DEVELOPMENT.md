@@ -17,7 +17,7 @@
 
 ### The DesignSetGo Story
 
-This entire plugin—42 blocks, complete documentation, testing infrastructure, and all features—was built using AI assistance (primarily Claude Code). This demonstrates that AI can be a powerful development partner when used correctly.
+This entire plugin—43 blocks, 11 extensions, complete documentation, testing infrastructure, and all features—was built using AI assistance (primarily Claude Code). This demonstrates that AI can be a powerful development partner when used correctly.
 
 ### Benefits
 
@@ -801,7 +801,7 @@ is preserved?"
 
 **Prompt:**
 ```
-"I need comprehensive documentation for all 42 blocks. For each block:
+"I need comprehensive documentation for all 43 blocks. For each block:
 1. User guide (what it does, how to use)
 2. Developer guide (architecture, extension points)
 3. Examples and screenshots placeholders

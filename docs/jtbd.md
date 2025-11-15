@@ -66,7 +66,7 @@ What frustrates the user today
 What about DesignSetGo feels attractive
 
 - Works exactly like WordPress - if you know blocks, you know this
-- 47 blocks + 7 extensions in one lightweight plugin (no subscriptions)
+- 43 blocks + 11 extensions in one lightweight plugin (no subscriptions)
 - Extensions enhance ANY block (even core WordPress blocks)
 - Built with WordPress standards - won't break on updates
 - Performance-focused - no bloat, no slow load times
@@ -164,7 +164,7 @@ Use a simple scale: Strong, Medium, Weak.
 | **Does the user see progress fast?** | **Strong** | Real-time preview, no refresh delays, built with WordPress patterns users already know |
 | **Does the user feel safe?** | **Strong** | Built with WP standards, proper deprecation system, editor/frontend parity means no surprises |
 | **Does the user stay in control?** | **Strong** | No proprietary markup, clean output, can inspect/customize everything, transparent CSS |
-| **Does the product remove friction?** | **Strong** | One plugin replaces many, works like native WordPress, 47 blocks + 7 extensions in one place |
+| **Does the product remove friction?** | **Strong** | One plugin replaces many, works like native WordPress, 43 blocks + 11 extensions in one place |
 | **Does the product reduce anxiety?** | **Medium** | Technical quality is strong BUT trust barriers exist (new plugin, no big community yet) |
 | **Does the product help them continue the job later?** | **Strong** | Native blocks = future-proof, FSE compatible, can remove plugin without losing structure |
 | **Does the user return because they see more progress?** | **Medium** | Core functionality complete BUT lacks patterns, templates, and discovery features that drive repeat engagement |
