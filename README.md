@@ -224,27 +224,74 @@ designsetgo/
 
 ## Documentation
 
-📚 **[Visit the DesignSetGo Wiki](https://github.com/jnealey88/designsetgo/wiki)** for complete documentation.
+Complete documentation for users and developers.
 
-### Quick Links
+### 📖 For Users
 
-**Getting Started**:
-- [Quick Start Guide](https://github.com/jnealey88/designsetgo/wiki/Quick-Start) - Get up and running in 5 minutes
-- [Installation](https://github.com/jnealey88/designsetgo/wiki/Installation) - All installation methods
-- [Troubleshooting](https://github.com/jnealey88/designsetgo/wiki/Troubleshooting) - Common issues
+**[Visit the DesignSetGo Wiki](https://github.com/jnealey88/designsetgo/wiki)** for user-facing documentation:
 
-**Block Guides**:
-- [Container Block](https://github.com/jnealey88/designsetgo/wiki/Container-Block) - Layouts, grids, video backgrounds
-- [Tabs](https://github.com/jnealey88/designsetgo/wiki/Tabs-Block), [Accordion](https://github.com/jnealey88/designsetgo/wiki/Accordion-Block), [Counter](https://github.com/jnealey88/designsetgo/wiki/Counter-Block), [Icon](https://github.com/jnealey88/designsetgo/wiki/Icon-Block), [Progress Bar](https://github.com/jnealey88/designsetgo/wiki/Progress-Bar), [Pill](https://github.com/jnealey88/designsetgo/wiki/Pill-Block)
+- **[Quick Start Guide](https://github.com/jnealey88/designsetgo/wiki/Quick-Start)** - Get up and running in 5 minutes
+- **[Installation Guide](https://github.com/jnealey88/designsetgo/wiki/Installation)** - All installation methods
+- **[Blocks Reference](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)** - Complete blocks documentation
+- **[Troubleshooting](https://github.com/jnealey88/designsetgo/wiki/Troubleshooting)** - Common issues and solutions
 
-**For Developers**:
-- [Development Guide](https://github.com/jnealey88/designsetgo/wiki/Development-Guide) - Complete reference
-- [Best Practices](https://github.com/jnealey88/designsetgo/wiki/Best-Practices) - WordPress block patterns
-- [Architecture Guide](https://github.com/jnealey88/designsetgo/wiki/Architecture-Guide) - Custom blocks vs extensions
-- [Testing Guide](https://github.com/jnealey88/designsetgo/wiki/Testing-Guide) - E2E and unit testing
-- [API Reference](https://github.com/jnealey88/designsetgo/wiki/API-Reference) - PHP and JavaScript APIs
+### 👨‍💻 For Contributors & Developers
 
-> **Note**: This repository's `/docs/` folder contains development documentation. User-facing docs are in the [Wiki](https://github.com/jnealey88/designsetgo/wiki).
+**[View Developer Documentation](docs/)** - Technical guides in the `/docs/` folder:
+
+**Getting Started:**
+- **[Getting Started Guide](docs/GETTING-STARTED.md)** ⭐ **Start here!**
+  - Complete setup walkthrough for new contributors
+  - Prerequisites and installation
+  - Making your first change
+  - Common workflows and troubleshooting
+
+- **[Architecture Overview](docs/ARCHITECTURE.md)** ⭐ **Understand the code!**
+  - Project structure and folder organization
+  - How blocks work (code → editor → frontend)
+  - Build system and asset pipeline
+  - Data flow and component architecture
+
+- **[Contributing Guide](CONTRIBUTING.md)** ⭐ **Ready to contribute!**
+  - Complete contribution workflow
+  - Code standards and best practices
+  - Pull request process
+  - Getting help
+
+**Development Guides:**
+- **[Best Practices Summary](docs/BEST-PRACTICES-SUMMARY.md)** - Quick reference patterns
+- **[Block Development (Comprehensive)](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md)** - Deep dive
+- **[WordPress Block Editor Best Practices](docs/WORDPRESS-BLOCK-EDITOR-BEST-PRACTICES.md)**
+- **[FSE Compatibility Guide](docs/FSE-COMPATIBILITY-GUIDE.md)** - Full Site Editing integration
+- **[Testing Guide](docs/TESTING.md)** - E2E and unit testing
+
+**Specialized Topics:**
+- **[Block Controls Organization](docs/BLOCK-CONTROLS-ORGANIZATION.md)**
+- **[Color Controls Pattern](docs/COLOR-CONTROLS-PATTERN.md)**
+- **[Width & Layout Patterns](docs/WIDTH-LAYOUT-PATTERNS.md)**
+- **[Extension vs Custom Blocks](docs/EXTENSION-VS-CUSTOM-BLOCKS.md)**
+- **[Abilities API](docs/ABILITIES-API.md)** - AI integration
+
+**For AI Agents (Claude Code, etc.):**
+- **[.claude/CLAUDE.md](.claude/CLAUDE.md)** - Complete development patterns and context
+
+### 🗺️ Documentation Map
+
+```
+New to the project?
+  ↓
+1. Read GETTING-STARTED.md (setup and first contribution)
+  ↓
+2. Read ARCHITECTURE.md (understand the codebase)
+  ↓
+3. Read CONTRIBUTING.md (contribution workflow)
+  ↓
+4. Pick a good-first-issue and start coding!
+  ↓
+Reference .claude/CLAUDE.md as you develop
+```
+
+> **Note**: The `/docs/` folder contains **developer documentation**. User-facing docs are in the [Wiki](https://github.com/jnealey88/designsetgo/wiki).
 
 ## Roadmap
 
@@ -313,30 +360,100 @@ designsetgo/
 
 This project is 100% free and open source (GPL v2+). Contributions welcome!
 
-### How to Contribute
+**⚠️ Important**: This repository requires Pull Requests for all changes. External contributors must create an issue first and link it to their PR. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/your-feature-name`
-3. **Follow WordPress coding standards**: Run linters before committing
-4. **Write tests**: Add unit and E2E tests for new features
-5. **Document your code**: Add JSDoc comments to all functions
-6. **Submit a pull request**: Include a clear description of changes
+### 🚀 New Contributors - Start Here!
+
+**Never contributed before?** We've created comprehensive guides to get you started:
+
+1. **[Getting Started Guide](docs/GETTING-STARTED.md)** - Complete step-by-step setup walkthrough
+   - Prerequisites and software installation
+   - Local environment setup with wp-env
+   - Making your first code change
+   - Development tools and workflows
+   - Troubleshooting common issues
+
+2. **[Architecture Overview](docs/ARCHITECTURE.md)** - Understanding the codebase
+   - Project structure and folder organization
+   - How blocks work (from code to browser)
+   - Build system and asset pipeline
+   - Data flow and state management
+   - Testing infrastructure
+
+3. **[Contributing Guide](CONTRIBUTING.md)** - Complete contribution workflow
+   - Development setup and prerequisites
+   - Code standards and best practices
+   - Testing requirements
+   - Pull request process
+   - Getting help and community support
+
+**Looking for something specific?**
+- **Setup help**: [docs/GETTING-STARTED.md](docs/GETTING-STARTED.md)
+- **Code structure**: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- **Development patterns**: [.claude/CLAUDE.md](.claude/CLAUDE.md)
+- **Testing guide**: [docs/TESTING.md](docs/TESTING.md)
+- **Common issues**: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
+
+### Quick Start for Developers
+
+Already familiar with WordPress block development? Here's the quick version:
+
+```bash
+# 1. Fork and clone
+git clone https://github.com/YOUR-USERNAME/designsetgo.git
+cd designsetgo
+
+# 2. Install and start
+npm install
+npx wp-env start  # Terminal 1
+npm start         # Terminal 2
+
+# 3. Access WordPress
+# http://localhost:8888/wp-admin (admin/password)
+
+# 4. Make changes, test, and submit PR!
+```
+
+**First contribution?** Look for issues labeled [`good-first-issue`](https://github.com/jnealey88/designsetgo/issues?q=is%3Aissue+is%3Aopen+label%3A%22good-first-issue%22).
+
+### For AI-Assisted Development
+
+DesignSetGo includes comprehensive documentation for AI development tools:
+
+- **[.claude/CLAUDE.md](.claude/CLAUDE.md)** - Complete patterns and best practices for AI agents
+- **WordPress Abilities API** - AI-native programmatic access ([docs/ABILITIES-API.md](docs/ABILITIES-API.md))
+
+**Using Claude Code or similar?** The AI will automatically reference these files to follow project conventions.
 
 ### Development Guidelines
 
-- Follow the patterns in [CLAUDE.md](.claude/CLAUDE.md)
-- Keep files under 300 lines (refactor when exceeded)
-- Use WordPress hooks (useBlockProps, useInnerBlocksProps)
-- No direct DOM manipulation (use React patterns)
-- Test in both editor and frontend
-- Ensure FSE compatibility (test with Twenty Twenty-Five)
+**Core Principles:**
+- ✅ Use WordPress defaults first (Block Supports, useBlockProps, theme.json)
+- ✅ Keep files under 300 lines (extract components/utils)
+- ✅ Test in both editor AND frontend
+- ✅ Internationalize all strings (`__('Text', 'designsetgo')`)
+- ✅ Follow WordPress coding standards
+
+See [.claude/CLAUDE.md](.claude/CLAUDE.md) for complete patterns.
 
 ### Reporting Issues
 
-- Use GitHub Issues for bug reports and feature requests
-- Include WordPress version, PHP version, and browser
-- Provide steps to reproduce for bugs
-- Share screenshots or videos when helpful
+**Found a bug or have a feature request?**
+
+1. Check [existing issues](https://github.com/jnealey88/designsetgo/issues) first
+2. If new, [create an issue](https://github.com/jnealey88/designsetgo/issues/new) with:
+   - WordPress version, PHP version, browser
+   - Steps to reproduce (for bugs)
+   - Use case and expected behavior (for features)
+   - Screenshots or videos (if helpful)
+
+### Getting Help
+
+**Questions?** We're here to help!
+
+- **Setup/Development**: See [docs/GETTING-STARTED.md](docs/GETTING-STARTED.md)
+- **Ask Questions**: [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions)
+- **Report Bugs**: [GitHub Issues](https://github.com/jnealey88/designsetgo/issues)
 
 ## License
 

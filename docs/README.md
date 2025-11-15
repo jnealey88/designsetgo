@@ -4,17 +4,78 @@ Complete reference documentation for developing blocks in the DesignSetGo WordPr
 
 ## 🚀 Quick Start
 
-### For Claude Agents
-1. **ALWAYS read** [../.claude/CLAUDE.md](../.claude/CLAUDE.md) first - contains critical patterns and project context
-2. **Reference** [BEST-PRACTICES-SUMMARY.md](./BEST-PRACTICES-SUMMARY.md) for quick decision trees
-3. **Copy** [BLOCK-TEMPLATE-EDIT.js](./BLOCK-TEMPLATE-EDIT.js) when creating new blocks
+### For New Contributors
+**Never contributed before?** Start with these guides in order:
 
-### For Human Developers
+1. **[GETTING-STARTED.md](./GETTING-STARTED.md)** ⭐ **Start here!**
+   - Complete setup walkthrough
+   - Prerequisites and installation
+   - Making your first change
+   - Common workflows
+
+2. **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Understand the codebase
+   - Project structure
+   - How blocks work
+   - Build system
+   - Data flow
+
+3. **[../CONTRIBUTING.md](../CONTRIBUTING.md)** - Contribution workflow
+   - Code standards
+   - Testing requirements
+   - Pull request process
+
+### For Experienced WordPress Developers
 1. Read [BEST-PRACTICES-SUMMARY.md](./BEST-PRACTICES-SUMMARY.md) for quick patterns
 2. Review [BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md](./BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) for deep understanding
 3. Check [FSE-COMPATIBILITY-GUIDE.md](./FSE-COMPATIBILITY-GUIDE.md) when creating new blocks
 
+### For Claude Agents (AI Development Tools)
+1. **ALWAYS read** [../.claude/CLAUDE.md](../.claude/CLAUDE.md) first - contains critical patterns and project context
+2. **Reference** [BEST-PRACTICES-SUMMARY.md](./BEST-PRACTICES-SUMMARY.md) for quick decision trees
+3. **Copy** [BLOCK-TEMPLATE-EDIT.js](./BLOCK-TEMPLATE-EDIT.js) when creating new blocks
+
 ## 📚 Documentation Structure
+
+### Getting Started (New Contributors)
+
+#### [GETTING-STARTED.md](./GETTING-STARTED.md)
+Complete step-by-step guide for new contributors:
+- **Software prerequisites**: Node.js, Git, Docker Desktop
+- **Understanding the stack**: What technologies we use and why
+- **Step-by-step setup**: From fork to first contribution
+- **Your first change**: Hands-on example walking through a real code change
+- **Development tools**: npm scripts, VS Code integration, browser DevTools
+- **Common workflows**: Daily development, updating fork, fixing issues
+- **Troubleshooting**: Solutions to common setup problems
+- **Next steps**: Learning resources and finding issues to work on
+
+**When to use**: First time setting up the project or helping someone else get started.
+
+#### [ARCHITECTURE.md](./ARCHITECTURE.md)
+Deep dive into project architecture and code organization:
+- **High-level overview**: Technology stack and core components
+- **Complete directory structure**: Every folder explained with purpose
+- **Block architecture**: Anatomy of a block, file-by-file breakdown
+- **Build system**: Webpack, asset compilation, dependency management
+- **Data flow**: How data moves from editor to database to frontend
+- **Extension system**: How extensions modify existing blocks
+- **PHP backend**: Server-side architecture and registration
+- **Testing infrastructure**: E2E and unit test setup
+- **AI integration**: WordPress Abilities API architecture
+
+**When to use**: Understanding how the codebase works, onboarding to the project, or making architectural decisions.
+
+#### [../CONTRIBUTING.md](../CONTRIBUTING.md)
+Complete contribution guide and workflow:
+- **Development setup**: Prerequisites and step-by-step installation
+- **Project architecture**: Quick overview with links to detailed docs
+- **Development workflow**: Creating branches, making changes, testing
+- **Code standards**: WordPress patterns, project-specific rules
+- **Testing requirements**: What to test before submitting
+- **Submitting changes**: Pull request process and checklist
+- **Getting help**: Where to ask questions and report issues
+
+**When to use**: Ready to contribute code or submitting a pull request.
 
 ### Critical Patterns (Read First!)
 
