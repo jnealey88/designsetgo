@@ -1,0 +1,401 @@
+/**
+ * Card Block Styles
+ * Supports 6 layout presets: standard, horizontal-left, horizontal-right, background, minimal, featured
+ */
+
+.dsgo-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+
+	// Default background when no inline styles
+	&:not([style*="background"]) {
+		background-color: var(--wp--preset--color--base, #fff);
+	}
+
+	// Nested container handling - cards inside other containers should be full width
+	:where(.dsgo-stack__inner, .dsgo-flex__inner, .dsgo-grid__inner) > & {
+		width: 100% !important;
+	}
+}
+
+// Inner wrapper
+.dsgo-card__inner {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	position: relative;
+	z-index: 1;
+}
+
+// Image wrapper and image
+.dsgo-card__image-wrapper {
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+}
+
+.dsgo-card__image {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+// Background image layout
+.dsgo-card__background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 0;
+}
+
+.dsgo-card__overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+// Content wrapper
+.dsgo-card__content {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	flex: 1;
+}
+
+// Content elements
+.dsgo-card__title {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--large, 1.75rem);
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+.dsgo-card__subtitle {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--medium, 1.125rem);
+	opacity: 0.8;
+}
+
+.dsgo-card__body {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--medium, 1rem);
+	line-height: 1.6;
+}
+
+.dsgo-card__cta {
+	margin-top: auto;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	align-items: center;
+
+	// Reduce spacing in background layout
+	.dsgo-card--background & {
+		margin-top: 1rem;
+	}
+}
+
+// Badge styles
+.dsgo-card__badge {
+	display: inline-block;
+	padding: 0.25rem 0.75rem;
+	font-size: var(--wp--preset--font-size--small, 0.875rem);
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	border-radius: var(--wp--custom--spacing--small, 0.25rem);
+
+	// Default badge colors when no inline styles
+	&:not([style*="background"]) {
+		background-color: var(--wp--preset--color--contrast, #000);
+	}
+	&:not([style*="color"]) {
+		color: var(--wp--preset--color--base, #fff);
+	}
+}
+
+// Floating badge
+.dsgo-card__badge--floating {
+	position: absolute;
+	z-index: 10;
+
+	&.dsgo-card__badge--top-left {
+		top: 1rem;
+		left: 1rem;
+	}
+
+	&.dsgo-card__badge--top-right {
+		top: 1rem;
+		right: 1rem;
+	}
+
+	&.dsgo-card__badge--bottom-left {
+		bottom: 1rem;
+		left: 1rem;
+	}
+
+	&.dsgo-card__badge--bottom-right {
+		bottom: 1rem;
+		right: 1rem;
+	}
+}
+
+// Inline badge
+.dsgo-card__badge--inline {
+	width: fit-content;
+}
+
+// ========================================
+// Visual Styles
+// ========================================
+
+// Default style - subtle border
+.dsgo-card--style-default {
+	border: 1px solid var(--wp--preset--color--contrast-2, #e5e5e5);
+}
+
+// Outlined style
+.dsgo-card--style-outlined {
+	border: 2px solid var(--wp--preset--color--contrast-2, #e0e0e0);
+	background: transparent;
+}
+
+// Filled style
+.dsgo-card--style-filled {
+	background-color: var(--wp--preset--color--accent-4, var(--wp--preset--color--accent-5, #e8f4f8)) !important;
+}
+
+// Shadow style
+.dsgo-card--style-shadow {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	border: 1px solid var(--wp--preset--color--contrast-2, #e0e0e0);
+}
+
+// Minimal style (clean, no decorations)
+.dsgo-card--style-minimal {
+	border: none;
+	box-shadow: none;
+}
+
+// ========================================
+// Layout Preset: Standard (Image Top)
+// ========================================
+.dsgo-card--standard {
+	.dsgo-card__inner {
+		flex-direction: column;
+	}
+
+	.dsgo-card__content {
+		padding: 1.5rem;
+	}
+}
+
+// ========================================
+// Layout Preset: Horizontal Left
+// ========================================
+.dsgo-card--horizontal-left {
+	.dsgo-card__inner {
+		flex-direction: row;
+		align-items: stretch;
+	}
+
+	.dsgo-card__image-wrapper {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+
+	.dsgo-card__content {
+		flex: 1;
+		padding: 1.5rem;
+	}
+
+	// Stack on mobile
+	@media (max-width: 768px) {
+		.dsgo-card__inner {
+			flex-direction: column;
+		}
+
+		.dsgo-card__image-wrapper {
+			flex: 1;
+			max-width: 100%;
+		}
+	}
+}
+
+// ========================================
+// Layout Preset: Horizontal Right
+// ========================================
+.dsgo-card--horizontal-right {
+	.dsgo-card__inner {
+		flex-direction: row-reverse;
+		align-items: stretch;
+	}
+
+	.dsgo-card__image-wrapper {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+
+	.dsgo-card__content {
+		flex: 1;
+		padding: 1.5rem;
+	}
+
+	// Stack on mobile
+	@media (max-width: 768px) {
+		.dsgo-card__inner {
+			flex-direction: column;
+		}
+
+		.dsgo-card__image-wrapper {
+			flex: 1;
+			max-width: 100%;
+		}
+	}
+}
+
+// ========================================
+// Layout Preset: Background
+// ========================================
+.dsgo-card--background {
+	min-height: 400px;
+
+	.dsgo-card__inner {
+		justify-content: center;
+		align-items: stretch;
+		padding: 0;
+	}
+
+	.dsgo-card__content {
+		position: relative;
+		z-index: 2;
+		color: var(--wp--preset--color--base, #fff);
+		width: 100%;
+		max-width: 100%;
+		padding: 2rem;
+		justify-content: center;
+
+		&.dsgo-card__content--left {
+			align-items: flex-start;
+			text-align: left;
+		}
+
+		&.dsgo-card__content--center {
+			align-items: center;
+			text-align: center;
+		}
+
+		&.dsgo-card__content--right {
+			align-items: flex-end;
+			text-align: right;
+		}
+	}
+
+	.dsgo-card__title,
+	.dsgo-card__subtitle,
+	.dsgo-card__body {
+		color: inherit;
+	}
+
+	// Reduce min-height on mobile
+	@media (max-width: 768px) {
+		min-height: 300px;
+
+		.dsgo-card__inner {
+			padding: 1.5rem;
+		}
+	}
+}
+
+// ========================================
+// Layout Preset: Minimal (No Image)
+// ========================================
+.dsgo-card--minimal {
+	.dsgo-card__inner {
+		padding: 2rem;
+	}
+
+	.dsgo-card__content {
+		text-align: center;
+		align-items: center;
+	}
+
+	@media (max-width: 768px) {
+		.dsgo-card__inner {
+			padding: 1.5rem;
+		}
+	}
+}
+
+// ========================================
+// Layout Preset: Featured (Large Image)
+// ========================================
+.dsgo-card--featured {
+	.dsgo-card__inner {
+		flex-direction: column;
+	}
+
+	.dsgo-card__image-wrapper {
+		.dsgo-card__image {
+			aspect-ratio: 2 / 1;
+			object-fit: cover;
+		}
+	}
+
+	.dsgo-card__content {
+		padding: 1.5rem;
+	}
+
+	.dsgo-card__title {
+		font-size: var(--wp--preset--font-size--x-large, 2.25rem);
+	}
+}
+
+// ========================================
+// Responsive adjustments
+// ========================================
+@media (max-width: 480px) {
+	.dsgo-card__title {
+		font-size: var(--wp--preset--font-size--medium, 1.5rem);
+	}
+
+	.dsgo-card__subtitle {
+		font-size: var(--wp--preset--font-size--small, 1rem);
+	}
+
+	.dsgo-card__badge {
+		font-size: 0.75rem;
+		padding: 0.2rem 0.6rem;
+	}
+
+	.dsgo-card__badge--floating {
+		&.dsgo-card__badge--top-left,
+		&.dsgo-card__badge--top-right {
+			top: 0.75rem;
+		}
+
+		&.dsgo-card__badge--top-left,
+		&.dsgo-card__badge--bottom-left {
+			left: 0.75rem;
+		}
+
+		&.dsgo-card__badge--top-right,
+		&.dsgo-card__badge--bottom-right {
+			right: 0.75rem;
+		}
+
+		&.dsgo-card__badge--bottom-left,
+		&.dsgo-card__badge--bottom-right {
+			bottom: 0.75rem;
+		}
+	}
+}

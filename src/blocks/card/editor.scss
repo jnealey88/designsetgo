@@ -1,0 +1,94 @@
+/**
+ * Card Block Editor Styles
+ * Editor-specific visual hints and overrides
+ */
+
+.dsgo-card {
+	// Ensure minimum height in editor for empty cards
+	&.dsgo-card--standard,
+	&.dsgo-card--horizontal-left,
+	&.dsgo-card--horizontal-right,
+	&.dsgo-card--minimal,
+	&.dsgo-card--featured {
+		min-height: 150px;
+	}
+
+	&.dsgo-card--background {
+		// Already has min-height in style.scss
+	}
+
+	// Image placeholder styling
+	.dsgo-card__image-wrapper--placeholder,
+	.dsgo-card__background--placeholder {
+		min-height: 200px;
+		background: var(--wp--preset--color--contrast-2, #f0f0f0);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.dsgo-card__background--placeholder {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 0;
+	}
+
+	.dsgo-card__placeholder-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+		color: var(--wp--preset--color--contrast-3, #999);
+		font-size: 0.875rem;
+
+		.dashicons {
+			font-size: 3rem;
+			width: 3rem;
+			height: 3rem;
+			opacity: 0.5;
+		}
+	}
+
+	// RichText placeholders styling
+	.block-editor-rich-text__editable {
+		&[data-is-placeholder-visible="true"] {
+			opacity: 0.6;
+		}
+	}
+
+	// Make RichText areas visible in editor
+	.dsgo-card__title,
+	.dsgo-card__subtitle,
+	.dsgo-card__body {
+		&:focus {
+			outline: 1px dashed var(--wp--preset--color--contrast-3, #ccc);
+			outline-offset: 2px;
+		}
+	}
+
+	// CTA area hint
+	.dsgo-card__cta {
+		&:empty {
+			min-height: 40px;
+			border: 1px dashed var(--wp--preset--color--contrast-3, #ccc);
+			border-radius: 4px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			&::before {
+				content: 'Add CTA button';
+				color: var(--wp--preset--color--contrast-3, #999);
+				font-size: 0.75rem;
+			}
+		}
+	}
+
+	// Image upload control styling
+	.dsgo-card-image-upload {
+		margin-bottom: 1rem;
+	}
+}
