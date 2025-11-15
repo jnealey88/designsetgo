@@ -61,11 +61,10 @@
   },
   "lint-staged": {
     "*.js": [
-      "wp-scripts lint-js --fix",
-      "wp-scripts format"
+      "wp-scripts lint-js"
     ],
     "*.scss": [
-      "wp-scripts lint-style --fix"
+      "wp-scripts lint-style"
     ],
     "*.php": [
       "composer run-script lint"

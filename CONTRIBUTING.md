@@ -89,12 +89,17 @@ gh pr merge --squash  # or --merge, --rebase
 Before creating a PR, ensure:
 
 - [ ] Code builds without errors: `npm run build`
-- [ ] Linters pass: `npm run lint:js`, `npm run lint:css`, `npm run lint:php`
+- [ ] **Linters pass (no auto-fix)**: `npm run lint:js`, `npm run lint:css`, `npm run lint:php`
+  - Linters will fail the build if there are errors
+  - Fix issues manually or run `npm run format` to auto-format
+  - Review all changes before committing
 - [ ] Tests pass (if applicable)
 - [ ] Changes tested in editor AND frontend
 - [ ] No console errors (browser + `npx wp-env logs`)
 - [ ] Responsive testing completed (375px/768px/1200px)
 - [ ] Documentation updated (if needed)
+
+**Note**: CI checks will fail if linting errors exist. They will NOT auto-fix code.
 
 ## 🛠️ Development Setup
 
@@ -346,12 +351,17 @@ export default function Edit({ attributes, setAttributes }) {
 
 #### 4. Run Linters and Tests
 
+**⚠️ Important**: Linters will **report errors but NOT auto-fix** them. This is intentional to ensure you understand and review all changes.
+
 ```bash
-# Lint JavaScript
+# Lint JavaScript (reports errors, no auto-fix)
 npm run lint:js
 
-# Lint CSS
+# Lint CSS (reports errors, no auto-fix)
 npm run lint:css
+
+# Format code manually if needed
+npm run format
 
 # Run unit tests
 npm run test:unit
@@ -359,6 +369,11 @@ npm run test:unit
 # Run E2E tests (if relevant)
 npm run test:e2e
 ```
+
+**If linters fail:**
+1. Review the errors carefully
+2. Fix them manually OR run `npm run format` to auto-format
+3. Understand what changed before committing
 
 #### 5. Commit Your Changes
 
