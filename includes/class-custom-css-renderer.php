@@ -103,8 +103,8 @@ class Custom_CSS_Renderer {
 	 */
 	public function collect_custom_css( $block_content, $block ) {
 		// Check if block has custom CSS attribute.
-		if ( isset( $block['attrs']['dsgCustomCSS'] ) && ! empty( $block['attrs']['dsgCustomCSS'] ) ) {
-			$custom_css = $block['attrs']['dsgCustomCSS'];
+		if ( isset( $block['attrs']['dsgoCustomCSS'] ) && ! empty( $block['attrs']['dsgoCustomCSS'] ) ) {
+			$custom_css = $block['attrs']['dsgoCustomCSS'];
 
 			/**
 			 * Filters individual block CSS during collection.
