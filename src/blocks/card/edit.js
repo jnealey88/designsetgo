@@ -12,7 +12,13 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import {
+	PanelBody,
+	SelectControl,
+	RangeControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalDivider as Divider,
+} from '@wordpress/components';
 
 /**
  * Edit component for Card block
