@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,16 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.1.1 - 2025-11-15 =
+**Security Fixes:**
+* Security: Fixed HIGH severity string escaping vulnerability in counter number formatting (CVE alerts #15-18)
+* Security: Added escapeReplacement() function to prevent injection via replacement string special sequences
+* Security: Enhanced GitHub Actions workflows with explicit permissions following principle of least privilege
+
+**Changes:**
+* Fix: Escape special characters in separator strings used by Counter and Counter Group blocks
+* Enhancement: Added explicit permissions blocks to all GitHub Actions workflows for improved security posture
 
 = 1.1.0 - 2025-11-14 =
 **New Blocks:**
