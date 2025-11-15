@@ -1,0 +1,126 @@
+# CodeRabbit AI Configuration for DesignSetGo WordPress Plugin
+# Learn more: https://docs.coderabbit.ai/guides/configure-coderabbit
+
+language: en-US
+early_access: false
+enable_free_tier: true
+
+# Review configuration
+reviews:
+  # Review profile
+  profile: assertive
+
+  # Request changes workflow
+  request_changes_workflow: false
+
+  # High level summary
+  high_level_summary: true
+
+  # Poem feature (fun but optional)
+  poem: false
+
+  # Review status comment
+  review_status: true
+
+  # Collapse walkthrough
+  collapse_walkthrough: false
+
+  # Auto review triggers
+  auto_review:
+    enabled: true
+    ignore_title_keywords:
+      - WIP
+      - DO NOT REVIEW
+      - DRAFT
+
+    # Auto-approve simple changes (disabled for security)
+    auto_approve: false
+
+  # Path-based instructions
+  path_instructions:
+    # PHP Files - WordPress Security Focus
+    - path: "**/*.php"
+      instructions: |
+        Focus on WordPress security patterns:
+        - Verify input sanitization (sanitize_text_field, wp_kses_post)
+        - Check output escaping (esc_html, esc_attr, esc_url)
+        - Verify nonce usage for forms/AJAX
+        - Check capability checks (current_user_can)
+        - SQL queries must use $wpdb->prepare()
+        - Check for direct file access prevention
+
+    # JavaScript Block Files
+    - path: "src/blocks/**/edit.js"
+      instructions: |
+        WordPress block editor best practices:
+        - MUST use useBlockProps() for wrapper
+        - Check for deprecated patterns
+        - Verify Block Supports instead of custom controls
+        - Check for ColorGradientSettingsDropdown (not PanelColorSettings)
+        - File must be under 300 lines - suggest refactoring if exceeded
+        - All strings must use __() for i18n
+        - Check for clientId in function signature if using color controls
+
+    # React Components
+    - path: "src/**/*.js"
+      instructions: |
+        React best practices:
+        - No direct DOM manipulation
+        - Proper dependency arrays in hooks
+        - Check for unnecessary re-renders
+        - Proper prop types/JSDoc
+        - Accessibility (ARIA, keyboard navigation)
+
+    # SCSS/CSS Files
+    - path: "**/*.scss"
+      instructions: |
+        WordPress styling best practices:
+        - Use :where() for low specificity
+        - Scope to .wp-block-designsetgo-* classes
+        - Check for dsgo- prefix on custom classes
+        - Verify accessibility (contrast, focus states)
+        - Check for responsive patterns
+
+    # Block.json Files
+    - path: "**/block.json"
+      instructions: |
+        Block registration best practices:
+        - Verify apiVersion is 3
+        - Check for proper Block Supports
+        - Verify textdomain is 'designsetgo'
+        - Check for example property (FSE compatibility)
+        - Verify attributes have proper types and defaults
+
+# What to ignore in reviews
+reviews:
+  ignore_patterns:
+    - "build/**"
+    - "node_modules/**"
+    - "vendor/**"
+    - ".wp-env/**"
+    - "**/*.min.js"
+    - "**/*.min.css"
+    - "**/*.asset.php"
+    - "package-lock.json"
+    - "composer.lock"
+    - "**/*.map"
+
+# Chat configuration
+chat:
+  # Auto-reply to common questions
+  auto_reply: true
+
+# Knowledge base
+knowledge_base:
+  # Project-specific patterns
+  - .claude/CLAUDE.md
+  - CONTRIBUTING.md
+  - docs/BEST-PRACTICES-SUMMARY.md
+  - docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md
+
+# Tone and style
+tone_instructions: |
+  Be constructive, educational, and encouraging. Provide specific code examples.
+  Reference WordPress documentation and project patterns (.claude/CLAUDE.md).
+  Acknowledge good patterns and improvements.
+  Mark security issues as HIGH PRIORITY with clear explanations.
