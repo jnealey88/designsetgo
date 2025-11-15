@@ -1,7 +1,7 @@
 /**
  * Dashboard Component
  *
- * Overview page with plugin stats and quick links.
+ * Overview page with plugin stats, blocks, extensions, and quick links.
  *
  * @package
  */
@@ -10,15 +10,24 @@ import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import { Card, CardHeader, CardBody, Spinner } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
+import { Icon, layout, plugins, edit } from '@wordpress/icons';
 
 const Dashboard = () => {
 	const [stats, setStats] = useState(null);
+	const [blocks, setBlocks] = useState([]);
+	const [extensions, setExtensions] = useState([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		apiFetch({ path: '/designsetgo/v1/stats' })
-			.then((data) => {
-				setStats(data);
+		Promise.all([
+			apiFetch({ path: '/designsetgo/v1/stats' }),
+			apiFetch({ path: '/designsetgo/v1/blocks' }),
+			apiFetch({ path: '/designsetgo/v1/extensions' }),
+		])
+			.then(([statsData, blocksData, extensionsData]) => {
+				setStats(statsData);
+				setBlocks(blocksData);
+				setExtensions(extensionsData);
 				setLoading(false);
 			})
 			.catch(() => {
@@ -33,6 +42,13 @@ const Dashboard = () => {
 			</div>
 		);
 	}
+
+	// Calculate block categories
+	const blocksByCategory = blocks.reduce((acc, block) => {
+		const category = block.category || 'other';
+		acc[category] = (acc[category] || 0) + 1;
+		return acc;
+	}, {});
 
 	return (
 		<div className="designsetgo-dashboard">
@@ -52,35 +68,120 @@ const Dashboard = () => {
 				</div>
 			</div>
 
+			{/* Stats Cards */}
 			<div className="designsetgo-dashboard__stats">
+				<div className="designsetgo-stat-card">
+					<div className="designsetgo-stat-card__icon designsetgo-stat-card__icon--blocks">
+						<Icon icon={layout} />
+					</div>
+					<div className="designsetgo-stat-card__content">
+						<div className="designsetgo-stat-card__value">
+							{stats?.total_blocks || blocks.length || 0}
+						</div>
+						<div className="designsetgo-stat-card__label">
+							{__('Blocks', 'designsetgo')}
+						</div>
+					</div>
+				</div>
+
+				<div className="designsetgo-stat-card">
+					<div className="designsetgo-stat-card__icon designsetgo-stat-card__icon--extensions">
+						<Icon icon={plugins} />
+					</div>
+					<div className="designsetgo-stat-card__content">
+						<div className="designsetgo-stat-card__value">
+							{extensions.length || 0}
+						</div>
+						<div className="designsetgo-stat-card__label">
+							{__('Extensions', 'designsetgo')}
+						</div>
+					</div>
+				</div>
+
+				<div className="designsetgo-stat-card">
+					<div className="designsetgo-stat-card__icon designsetgo-stat-card__icon--forms">
+						<Icon icon={edit} />
+					</div>
+					<div className="designsetgo-stat-card__content">
+						<div className="designsetgo-stat-card__value">
+							{stats?.form_submissions || 0}
+						</div>
+						<div className="designsetgo-stat-card__label">
+							{__('Form Submissions', 'designsetgo')}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* Blocks & Extensions Overview */}
+			<div className="designsetgo-dashboard__overview">
 				<Card>
 					<CardHeader>
-						<h2>{__('Plugin Statistics', 'designsetgo')}</h2>
+						<h2>{__('Blocks & Extensions', 'designsetgo')}</h2>
 					</CardHeader>
 					<CardBody>
-						<div className="designsetgo-stats-grid">
-							<div className="designsetgo-stat">
-								<div className="designsetgo-stat__value">
-									{stats?.enabled_blocks || 0}/
-									{stats?.total_blocks || 0}
-								</div>
-								<div className="designsetgo-stat__label">
-									{__('Enabled Blocks', 'designsetgo')}
+						{/* Block Categories */}
+						{Object.keys(blocksByCategory).length > 0 && (
+							<div className="designsetgo-blocks-categories">
+								<h3 className="designsetgo-section-heading">
+									{__('Blocks by Category', 'designsetgo')}
+								</h3>
+								<div className="designsetgo-categories-grid">
+									{Object.entries(blocksByCategory).map(
+										([category, count]) => (
+											<div
+												key={category}
+												className="designsetgo-category-item"
+											>
+												<span className="designsetgo-category-name">
+													{category
+														.replace(/-/g, ' ')
+														.replace(/\b\w/g, (l) =>
+															l.toUpperCase()
+														)}
+												</span>
+												<span className="designsetgo-category-count">
+													{count}
+												</span>
+											</div>
+										)
+									)}
 								</div>
 							</div>
-							<div className="designsetgo-stat">
-								<div className="designsetgo-stat__value">
-									{stats?.form_submissions || 0}
-								</div>
-								<div className="designsetgo-stat__label">
-									{__('Form Submissions', 'designsetgo')}
+						)}
+
+						{/* Extensions */}
+						{extensions.length > 0 && (
+							<div className="designsetgo-extensions-list">
+								<h3 className="designsetgo-section-heading">
+									{__('Extensions', 'designsetgo')}
+								</h3>
+								<div className="designsetgo-extension-pills">
+									{extensions.map((extension) => (
+										<span
+											key={extension.name}
+											className={`designsetgo-extension-pill ${
+												extension.enabled
+													? 'is-enabled'
+													: 'is-disabled'
+											}`}
+										>
+											{extension.title}
+											<span className="designsetgo-extension-status">
+												{extension.enabled
+													? __('Enabled', 'designsetgo')
+													: __('Disabled', 'designsetgo')}
+											</span>
+										</span>
+									))}
 								</div>
 							</div>
-						</div>
+						)}
 					</CardBody>
 				</Card>
 			</div>
 
+			{/* Quick Links */}
 			<div className="designsetgo-dashboard__quick-links">
 				<Card>
 					<CardHeader>
@@ -141,60 +242,6 @@ const Dashboard = () => {
 								</p>
 							</a>
 						</div>
-					</CardBody>
-				</Card>
-			</div>
-
-			<div className="designsetgo-dashboard__info">
-				<Card>
-					<CardHeader>
-						<h2>{__('Getting Started', 'designsetgo')}</h2>
-					</CardHeader>
-					<CardBody>
-						<p>
-							{__(
-								'DesignSetGo provides 41 powerful blocks and 10 extensions to enhance your WordPress editing experience.',
-								'designsetgo'
-							)}
-						</p>
-						<ul>
-							<li>
-								<strong>
-									{__('Container Blocks:', 'designsetgo')}
-								</strong>{' '}
-								{__(
-									'Flex, Grid, and Stack layouts for responsive designs',
-									'designsetgo'
-								)}
-							</li>
-							<li>
-								<strong>
-									{__('UI Elements:', 'designsetgo')}
-								</strong>{' '}
-								{__(
-									'Icons, tabs, accordions, and more',
-									'designsetgo'
-								)}
-							</li>
-							<li>
-								<strong>
-									{__('Interactive Blocks:', 'designsetgo')}
-								</strong>{' '}
-								{__(
-									'Sliders, flip cards, and animations',
-									'designsetgo'
-								)}
-							</li>
-							<li>
-								<strong>
-									{__('Form Builder:', 'designsetgo')}
-								</strong>{' '}
-								{__(
-									'Complete form system with 11 field types',
-									'designsetgo'
-								)}
-							</li>
-						</ul>
 					</CardBody>
 				</Card>
 			</div>

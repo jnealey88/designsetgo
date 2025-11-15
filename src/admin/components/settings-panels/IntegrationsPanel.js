@@ -1,7 +1,7 @@
 /**
  * Integrations Settings Panel
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -37,7 +37,7 @@ const IntegrationsPanel = ({ settings, updateSetting }) => {
 						help={
 							<>
 								{__(
-									'Enter your Google Maps JavaScript API key. ',
+									'Enter your Google Maps JavaScript API key.',
 									'designsetgo'
 								)}
 								<ExternalLink href="https://console.cloud.google.com/apis/credentials">
@@ -59,17 +59,14 @@ const IntegrationsPanel = ({ settings, updateSetting }) => {
 								value
 							)
 						}
-						placeholder={__('AIza...', 'designsetgo')}
+						placeholder={__('AIza…', 'designsetgo')}
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 					/>
 
 					<div className="designsetgo-settings-note">
 						<strong>
-							{__(
-								'⚠️ Important Security Notice:',
-								'designsetgo'
-							)}
+							{__('⚠️ Important Security Notice:', 'designsetgo')}
 						</strong>
 						<p>
 							{__(

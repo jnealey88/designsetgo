@@ -58,6 +58,9 @@ class Settings {
 				'log_user_agents'  => true,
 				'log_referrers'    => false,
 			),
+			'integrations'       => array(
+				'google_maps_api_key' => '',
+			),
 			'sticky_header'      => array(
 				'enable'                    => true,
 				'custom_selector'           => '',
@@ -664,6 +667,13 @@ class Settings {
 				'log_ip_addresses' => isset( $settings['security']['log_ip_addresses'] ) ? (bool) $settings['security']['log_ip_addresses'] : true,
 				'log_user_agents'  => isset( $settings['security']['log_user_agents'] ) ? (bool) $settings['security']['log_user_agents'] : true,
 				'log_referrers'    => isset( $settings['security']['log_referrers'] ) ? (bool) $settings['security']['log_referrers'] : false,
+			);
+		}
+
+		// Sanitize integrations settings.
+		if ( isset( $settings['integrations'] ) && is_array( $settings['integrations'] ) ) {
+			$sanitized['integrations'] = array(
+				'google_maps_api_key' => isset( $settings['integrations']['google_maps_api_key'] ) ? sanitize_text_field( $settings['integrations']['google_maps_api_key'] ) : '',
 			);
 		}
 

@@ -571,7 +571,9 @@ function CardEdit({
  */
 
 const isValidImageUrl = url => {
-  if (!url || typeof url !== 'string') return false;
+  if (!url || typeof url !== 'string') {
+    return false;
+  }
   // Only allow http(s) and data URLs, block javascript: and other protocols
   return /^(https?:\/\/|data:image\/)/.test(url);
 };
@@ -579,7 +581,7 @@ const isValidImageUrl = url => {
 /**
  * Save component for Card block
  *
- * @param {Object} props - Component props
+ * @param {Object} props            - Component props
  * @param {Object} props.attributes - Block attributes
  * @return {Element} Save component
  */
@@ -682,7 +684,9 @@ function CardSave({
 
   // Render badge
   const renderBadge = () => {
-    if (!showBadge || !badgeText) return null;
+    if (!showBadge || !badgeText) {
+      return null;
+    }
     const badgeClass = badgeStyle === 'floating' ? `dsgo-card__badge dsgo-card__badge--floating dsgo-card__badge--${badgeFloatingPosition}` : `dsgo-card__badge dsgo-card__badge--inline dsgo-card__badge--${badgeInlinePosition}`;
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
       className: badgeClass,

@@ -214,6 +214,9 @@ class Plugin {
 
 		// Add block category.
 		add_filter( 'block_categories_all', array( $this, 'register_block_category' ), 10, 2 );
+
+		// Inject API keys into Map block on render.
+		add_filter( 'render_block', array( $this, 'inject_map_api_key' ), 10, 2 );
 	}
 
 	/**
@@ -249,6 +252,19 @@ class Plugin {
 					'enabled' => (bool) $sticky_settings['enable'],
 				)
 			);
+
+			// Localize integrations settings (Google Maps API key, etc.).
+			$integrations_settings = isset( $settings['integrations'] ) ? $settings['integrations'] : array();
+			$integrations_defaults = isset( $defaults['integrations'] ) ? $defaults['integrations'] : array();
+			$integrations_settings = wp_parse_args( $integrations_settings, $integrations_defaults );
+
+			wp_localize_script(
+				'designsetgo-block-category-filter',
+				'dsgoIntegrations',
+				array(
+					'googleMapsApiKey' => ! empty( $integrations_settings['google_maps_api_key'] ) ? $integrations_settings['google_maps_api_key'] : '',
+				)
+			);
 		}
 	}
 
@@ -267,5 +283,54 @@ class Plugin {
 		);
 
 		return $categories;
+	}
+
+	/**
+	 * Inject Google Maps API key into Map block on render.
+	 *
+	 * Security Note: Google Maps JavaScript API keys are designed to be public
+	 * (client-side). Security is enforced through:
+	 * 1. HTTP referrer restrictions (configured in Google Cloud Console)
+	 * 2. API quotas and billing limits
+	 * 3. Rate limiting
+	 *
+	 * This is the standard recommended approach per Google's documentation.
+	 * Users are warned to configure referrer restrictions in the settings panel.
+	 *
+	 * @param string $block_content Block HTML content.
+	 * @param array  $block         Block data including name and attributes.
+	 * @return string Modified block content.
+	 */
+	public function inject_map_api_key( $block_content, $block ) {
+		// Only process the Map block.
+		if ( 'designsetgo/map' !== $block['blockName'] ) {
+			return $block_content;
+		}
+
+		// Get settings.
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+
+		// Get Google Maps API key from settings.
+		$api_key = isset( $settings['integrations']['google_maps_api_key'] )
+			? $settings['integrations']['google_maps_api_key']
+			: '';
+
+		// If no API key or not using Google Maps, return unmodified content.
+		if ( empty( $api_key ) ) {
+			return $block_content;
+		}
+
+		// Only inject if the block is using Google Maps provider.
+		$provider = isset( $block['attrs']['dsgoProvider'] ) ? $block['attrs']['dsgoProvider'] : 'openstreetmap';
+		if ( 'googlemaps' !== $provider ) {
+			return $block_content;
+		}
+
+		// Inject API key as a data attribute.
+		// Find the opening div tag with class dsgo-map.
+		$pattern     = '/(<div[^>]*class="[^"]*dsgo-map[^"]*"[^>]*)/';
+		$replacement = '$1 data-dsgo-api-key="' . esc_attr( $api_key ) . '"';
+
+		return preg_replace( $pattern, $replacement, $block_content, 1 );
 	}
 }

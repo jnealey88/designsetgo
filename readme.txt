@@ -5,11 +5,11 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Professional WordPress blocks without page builder bloat. 47 blocks + 7 universal extensions that enhance ANY block.
+Professional WordPress blocks without page builder bloat. 49 blocks + 7 universal extensions that enhance ANY block.
 
 == Description ==
 
@@ -20,7 +20,7 @@ DesignSetGo gives you the power of a page builder with the simplicity of WordPre
 = Why DesignSetGo? =
 
 ✓ **Works Like WordPress** - If you know blocks, you know DesignSetGo. No separate interface, no learning curve.
-✓ **47 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, and more.
+✓ **49 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, and more.
 ✓ **7 Universal Extensions** - Add animations, responsive visibility, sticky headers, and custom CSS to ANY WordPress block (including core blocks).
 ✓ **Performance First** - Lightweight code, no jQuery, optimized bundles. Your site stays fast.
 ✓ **No Lock-In** - Built with WordPress standards. What you build works with or without the plugin.
@@ -37,8 +37,8 @@ Professional forms with AJAX submission, spam protection, and email notification
 **Interactive Elements (10 blocks)**
 Tabs, accordions, flip cards, sliders, scroll effects, counters, progress bars, and revealing content. All with smooth animations and mobile-responsive behavior.
 
-**Visual Components (13 blocks)**
-Icons (500+), icon buttons, icon lists, pills/badges, dividers (8 styles), countdown timers, and organic blob shapes for modern designs.
+**Visual Components (15 blocks)**
+Icons (500+), icon buttons, icon lists, pills/badges, dividers (8 styles), countdown timers, organic blob shapes, content cards with multiple layout presets, and interactive maps with Google Maps and OpenStreetMap support.
 
 **Universal Extensions (7 extensions)**
 These work with ANY WordPress block—including core blocks and third-party blocks:
@@ -137,6 +137,14 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.1.0 - 2025-11-15 =
+* New: Card block with multiple layout presets (horizontal, vertical, overlay, compact, featured)
+* New: Map block with Google Maps integration for location displays
+* Enhancement: Improved UI for dashboard settings panel
+* Enhancement: Added translation support for 9 languages (Spanish, French, German, Italian, Portuguese, Dutch, Russian, Chinese, Japanese)
+* Security: Fixed js-yaml prototype pollution vulnerability (CVE-2023-2251)
+* Fix: Added missing ToggleControl import to Card block editor component
 
 = 1.0.1 - 2025-11-14 =
 * Docs: Streamlined readme.txt with JTBD-focused messaging for better scannability

@@ -8,8 +8,8 @@ import { PanelBody, ToggleControl } from '@wordpress/components';
  * Content Settings Panel Component
  * Controls which content elements are visible
  *
- * @param {Object} props - Component props
- * @param {Object} props.attributes - Block attributes
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to set attributes
  * @return {Element} Content settings panel
  */
@@ -25,7 +25,10 @@ export default function ContentSettingsPanel({ attributes, setAttributes }) {
 	} = attributes;
 
 	return (
-		<PanelBody title={__('Content Elements', 'designsetgo')} initialOpen={false}>
+		<PanelBody
+			title={__('Content Elements', 'designsetgo')}
+			initialOpen={false}
+		>
 			{layoutPreset !== 'minimal' && (
 				<ToggleControl
 					label={__('Show Image', 'designsetgo')}

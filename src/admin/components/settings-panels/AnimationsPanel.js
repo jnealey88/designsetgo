@@ -1,7 +1,7 @@
 /**
  * Animations Settings Panel
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -63,12 +63,18 @@ const AnimationsPanel = ({ settings, updateSetting }) => {
 							max={2000}
 							step={100}
 							marks={[
-								{ value: 300, label: __('Fast', 'designsetgo') },
+								{
+									value: 300,
+									label: __('Fast', 'designsetgo'),
+								},
 								{
 									value: 600,
 									label: __('Normal', 'designsetgo'),
 								},
-								{ value: 1000, label: __('Slow', 'designsetgo') },
+								{
+									value: 1000,
+									label: __('Slow', 'designsetgo'),
+								},
 							]}
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize

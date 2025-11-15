@@ -16,29 +16,101 @@ export const GOOGLE_MAP_STYLES = {
 		{ elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
 		{ elementType: 'labels.text.fill', stylers: [{ color: '#616161' }] },
 		{ elementType: 'labels.text.stroke', stylers: [{ color: '#f5f5f5' }] },
-		{ featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
-		{ featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#d6d6d6' }] },
-		{ featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#dadada' }] },
-		{ featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#b3b3b3' }] },
-		{ featureType: 'water', elementType: 'geometry', stylers: [{ color: '#c9c9c9' }] },
-		{ featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
-		{ featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#eeeeee' }] },
-		{ featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#e5e5e5' }] },
+		{
+			featureType: 'road',
+			elementType: 'geometry',
+			stylers: [{ color: '#ffffff' }],
+		},
+		{
+			featureType: 'road',
+			elementType: 'geometry.stroke',
+			stylers: [{ color: '#d6d6d6' }],
+		},
+		{
+			featureType: 'road.highway',
+			elementType: 'geometry',
+			stylers: [{ color: '#dadada' }],
+		},
+		{
+			featureType: 'road.highway',
+			elementType: 'geometry.stroke',
+			stylers: [{ color: '#b3b3b3' }],
+		},
+		{
+			featureType: 'water',
+			elementType: 'geometry',
+			stylers: [{ color: '#c9c9c9' }],
+		},
+		{
+			featureType: 'water',
+			elementType: 'labels.text.fill',
+			stylers: [{ color: '#9e9e9e' }],
+		},
+		{
+			featureType: 'poi',
+			elementType: 'geometry',
+			stylers: [{ color: '#eeeeee' }],
+		},
+		{
+			featureType: 'poi.park',
+			elementType: 'geometry',
+			stylers: [{ color: '#e5e5e5' }],
+		},
 	],
 	dark: [
 		{ elementType: 'geometry', stylers: [{ color: '#212121' }] },
 		{ elementType: 'labels.text.fill', stylers: [{ color: '#757575' }] },
 		{ elementType: 'labels.text.stroke', stylers: [{ color: '#212121' }] },
-		{ featureType: 'road', elementType: 'geometry', stylers: [{ color: '#2c2c2c' }] },
-		{ featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#212121' }] },
-		{ featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#8a8a8a' }] },
-		{ featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3c3c3c' }] },
-		{ featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#1c1c1c' }] },
-		{ featureType: 'water', elementType: 'geometry', stylers: [{ color: '#000000' }] },
-		{ featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#3d3d3d' }] },
-		{ featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#263238' }] },
-		{ featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#181818' }] },
-		{ featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: '#616161' }] },
+		{
+			featureType: 'road',
+			elementType: 'geometry',
+			stylers: [{ color: '#2c2c2c' }],
+		},
+		{
+			featureType: 'road',
+			elementType: 'geometry.stroke',
+			stylers: [{ color: '#212121' }],
+		},
+		{
+			featureType: 'road',
+			elementType: 'labels.text.fill',
+			stylers: [{ color: '#8a8a8a' }],
+		},
+		{
+			featureType: 'road.highway',
+			elementType: 'geometry',
+			stylers: [{ color: '#3c3c3c' }],
+		},
+		{
+			featureType: 'road.highway',
+			elementType: 'geometry.stroke',
+			stylers: [{ color: '#1c1c1c' }],
+		},
+		{
+			featureType: 'water',
+			elementType: 'geometry',
+			stylers: [{ color: '#000000' }],
+		},
+		{
+			featureType: 'water',
+			elementType: 'labels.text.fill',
+			stylers: [{ color: '#3d3d3d' }],
+		},
+		{
+			featureType: 'poi',
+			elementType: 'geometry',
+			stylers: [{ color: '#263238' }],
+		},
+		{
+			featureType: 'poi.park',
+			elementType: 'geometry',
+			stylers: [{ color: '#181818' }],
+		},
+		{
+			featureType: 'poi.park',
+			elementType: 'labels.text.fill',
+			stylers: [{ color: '#616161' }],
+		},
 	],
 };
 
@@ -55,7 +127,8 @@ export async function initGoogleMap(dsgMap) {
 
 	// Dynamically import the Maps and Marker libraries (modern async pattern)
 	const { Map } = await window.google.maps.importLibrary('maps');
-	const { AdvancedMarkerElement, PinElement } = await window.google.maps.importLibrary('marker');
+	const { AdvancedMarkerElement, PinElement } =
+		await window.google.maps.importLibrary('marker');
 
 	// Get or create map container
 	let container = dsgMap.element.querySelector('.dsgo-map__container');
@@ -75,7 +148,10 @@ export async function initGoogleMap(dsgMap) {
 	};
 
 	// Apply style if not standard
-	if (dsgMap.config.mapStyle !== 'standard' && GOOGLE_MAP_STYLES[dsgMap.config.mapStyle]) {
+	if (
+		dsgMap.config.mapStyle !== 'standard' &&
+		GOOGLE_MAP_STYLES[dsgMap.config.mapStyle]
+	) {
 		mapOptions.styles = GOOGLE_MAP_STYLES[dsgMap.config.mapStyle];
 	}
 

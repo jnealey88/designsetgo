@@ -1,7 +1,7 @@
 /**
  * Performance Settings Panel
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';

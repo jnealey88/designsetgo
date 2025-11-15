@@ -42,6 +42,7 @@ export async function geocodeAddress(address) {
 
 		return null;
 	} catch (error) {
+		// eslint-disable-next-line no-console
 		console.error('Geocoding error:', error);
 		return null;
 	}
@@ -80,6 +81,7 @@ export async function reverseGeocode(lat, lng) {
 
 		return null;
 	} catch (error) {
+		// eslint-disable-next-line no-console
 		console.error('Reverse geocoding error:', error);
 		return null;
 	}

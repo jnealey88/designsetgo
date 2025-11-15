@@ -1,7 +1,7 @@
 /**
  * Sticky Header Settings Panel
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -111,7 +111,10 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 						<div className="designsetgo-settings-grid">
 							<div>
 								<ToggleControl
-									label={__('Shadow on Scroll', 'designsetgo')}
+									label={__(
+										'Shadow on Scroll',
+										'designsetgo'
+									)}
 									help={__(
 										'Add shadow when scrolled.',
 										'designsetgo'
@@ -175,7 +178,10 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 
 							<div>
 								<ToggleControl
-									label={__('Shrink on Scroll', 'designsetgo')}
+									label={__(
+										'Shrink on Scroll',
+										'designsetgo'
+									)}
 									help={__(
 										'Reduce header height.',
 										'designsetgo'
@@ -222,7 +228,10 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 						</div>
 
 						<ToggleControl
-							label={__('Hide Header on Scroll Down', 'designsetgo')}
+							label={__(
+								'Hide Header on Scroll Down',
+								'designsetgo'
+							)}
 							help={__(
 								'Hide header when scrolling down, show when scrolling up.',
 								'designsetgo'
@@ -242,7 +251,10 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 						/>
 
 						<ToggleControl
-							label={__('Background Color on Scroll', 'designsetgo')}
+							label={__(
+								'Background Color on Scroll',
+								'designsetgo'
+							)}
 							help={__(
 								'Apply background color when scrolled.',
 								'designsetgo'
@@ -263,9 +275,9 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 
 						{settings?.sticky_header?.background_on_scroll && (
 							<div className="designsetgo-color-control-compact">
-								<label className="components-base-control__label">
+								<div className="components-base-control__label">
 									{__('Background Color', 'designsetgo')}
-								</label>
+								</div>
 								<ColorPalette
 									value={
 										settings?.sticky_header
@@ -426,7 +438,8 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 										__nextHasNoMarginBottom
 									/>
 
-									{settings?.sticky_header?.mobile_enabled && (
+									{settings?.sticky_header
+										?.mobile_enabled && (
 										<RangeControl
 											label={__(
 												'Mobile Breakpoint (px)',

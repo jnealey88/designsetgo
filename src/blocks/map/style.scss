@@ -176,6 +176,7 @@
 	}
 
 	// Leaflet attribution adjustment
+	/* stylelint-disable selector-class-pattern */
 	:where(.leaflet-control-attribution) {
 		font-size: 0.7rem;
 		opacity: 0.7;
@@ -193,6 +194,7 @@
 			outline-offset: 2px;
 		}
 	}
+	/* stylelint-enable selector-class-pattern */
 
 	// Respect prefers-reduced-motion
 	@media (prefers-reduced-motion: reduce) {

@@ -8,7 +8,9 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	InspectorControls,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import classnames from 'classnames';
@@ -19,7 +21,10 @@ import MapSettingsPanel from './components/inspector/MapSettingsPanel';
 /**
  * Edit component for Map block.
  *
- * @param {Object} props - Component props.
+ * @param {Object}   props               - Component props.
+ * @param {Object}   props.attributes    - Block attributes.
+ * @param {Function} props.setAttributes - Function to update attributes.
+ * @param {string}   props.clientId      - Block client ID.
  * @return {JSX.Element} Editor component.
  */
 export default function Edit({ attributes, setAttributes, clientId }) {
@@ -40,7 +45,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Compute block classes
 	const blockClasses = classnames('dsgo-map', {
 		'dsgo-map--privacy-mode': dsgoPrivacyMode,
-		[`dsgo-map--aspect-${dsgoAspectRatio.replace(':', '-')}`]: dsgoAspectRatio !== 'custom',
+		[`dsgo-map--aspect-${dsgoAspectRatio.replace(':', '-')}`]:
+			dsgoAspectRatio !== 'custom',
 	});
 
 	// Custom styles for the map container
@@ -61,7 +67,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	return (
 		<>
 			<InspectorControls>
-				<MapSettingsPanel attributes={attributes} setAttributes={setAttributes} />
+				<MapSettingsPanel
+					attributes={attributes}
+					setAttributes={setAttributes}
+				/>
 			</InspectorControls>
 
 			<InspectorControls group="color">
@@ -72,7 +81,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						{
 							label: __('Marker Color', 'designsetgo'),
 							colorValue: dsgoMarkerColor,
-							onColorChange: (color) => setAttributes({ dsgoMarkerColor: color || '#e74c3c' }),
+							onColorChange: (color) =>
+								setAttributes({
+									dsgoMarkerColor: color || '#e74c3c',
+								}),
 							clearable: true,
 						},
 					]}
@@ -99,7 +111,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									<circle cx="12" cy="10" r="3" />
 								</svg>
 								<p className="dsgo-map__privacy-text">
-									{dsgoPrivacyNotice || __('Click to load map', 'designsetgo')}
+									{dsgoPrivacyNotice ||
+										__('Click to load map', 'designsetgo')}
 								</p>
 								<button
 									className="dsgo-map__load-button"
@@ -109,7 +122,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									{__('Load Map', 'designsetgo')}
 								</button>
 								<p className="dsgo-map__preview-note">
-									{__('Preview: Privacy mode is enabled', 'designsetgo')}
+									{__(
+										'Preview: Privacy mode is enabled',
+										'designsetgo'
+									)}
 								</p>
 							</div>
 						</div>
@@ -130,22 +146,32 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									<circle cx="12" cy="10" r="3" />
 								</svg>
 								<div className="dsgo-map__preview-details">
-									<strong>{__('Map Preview', 'designsetgo')}</strong>
+									<strong>
+										{__('Map Preview', 'designsetgo')}
+									</strong>
 									<div className="dsgo-map__preview-coords">
 										<code>
-											{dsgoLatitude.toFixed(6)}, {dsgoLongitude.toFixed(6)}
+											{dsgoLatitude.toFixed(6)},{' '}
+											{dsgoLongitude.toFixed(6)}
 										</code>
 									</div>
 									<div className="dsgo-map__preview-meta">
 										{dsgoProvider === 'openstreetmap'
 											? __('OpenStreetMap', 'designsetgo')
-											: __('Google Maps', 'designsetgo')}{' '}
-										• {__('Zoom:', 'designsetgo')} {dsgoZoom}
+											: __(
+													'Google Maps',
+													'designsetgo'
+												)}{' '}
+										• {__('Zoom:', 'designsetgo')}{' '}
+										{dsgoZoom}
 									</div>
 								</div>
 							</div>
 							<div className="dsgo-map__preview-note">
-								{__('Interactive map will display on the frontend', 'designsetgo')}
+								{__(
+									'Interactive map will display on the frontend',
+									'designsetgo'
+								)}
 							</div>
 						</div>
 					)}

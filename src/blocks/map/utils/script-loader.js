@@ -110,18 +110,30 @@ export async function loadGoogleMaps(apiKey) {
 					(h = new Promise(async (f, n) => {
 						await (a = m.createElement('script'));
 						e.set('libraries', [...r] + '');
-						for (k in g) e.set(k.replace(/[A-Z]/g, (t) => '_' + t[0].toLowerCase()), g[k]);
+						for (k in g) {
+							e.set(
+								k.replace(
+									/[A-Z]/g,
+									(t) => '_' + t[0].toLowerCase()
+								),
+								g[k]
+							);
+						}
 						e.set('callback', c + '.maps.' + q);
 						a.src = `https://maps.googleapis.com/maps/api/js?` + e;
 						d[q] = f;
-						a.onerror = () => h = n(Error(p + ' could not load.'));
-						a.nonce = m.querySelector("script[nonce]")?.nonce || '';
+						a.onerror = () =>
+							(h = n(Error(p + ' could not load.')));
+						a.nonce = m.querySelector('script[nonce]')?.nonce || '';
 						m.head.append(a);
 					}));
 
+				// eslint-disable-next-line no-unused-expressions
 				d[l]
-					? console.warn(p + ' only loads once. Ignoring:', g)
-					: (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
+					? // eslint-disable-next-line no-console
+						console.warn(p + ' only loads once. Ignoring:', g)
+					: (d[l] = (f, ...n) =>
+							r.add(f) && u().then(() => d[l](f, ...n)));
 			})({
 				key: apiKey,
 				v: 'weekly',
@@ -130,7 +142,9 @@ export async function loadGoogleMaps(apiKey) {
 			// Resolve immediately - the actual library loads on-demand via importLibrary
 			resolve();
 		} catch (error) {
-			reject(new Error('Failed to initialize Google Maps: ' + error.message));
+			reject(
+				new Error('Failed to initialize Google Maps: ' + error.message)
+			);
 		}
 	});
 }

@@ -7,8 +7,8 @@ import { PanelBody, TextControl, SelectControl } from '@wordpress/components';
 /**
  * Badge Settings Panel Component
  *
- * @param {Object} props - Component props
- * @param {Object} props.attributes - Block attributes
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to set attributes
  * @return {Element} Badge settings panel
  */
@@ -55,7 +55,9 @@ export default function BadgeSettingsPanel({ attributes, setAttributes }) {
 						label={__('Badge Style', 'designsetgo')}
 						value={badgeStyle}
 						options={styleOptions}
-						onChange={(value) => setAttributes({ badgeStyle: value })}
+						onChange={(value) =>
+							setAttributes({ badgeStyle: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>

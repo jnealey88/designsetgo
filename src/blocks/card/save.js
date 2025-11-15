@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { useBlockProps, useInnerBlocksProps, RichText } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	useInnerBlocksProps,
+	RichText,
+} from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -11,7 +15,9 @@ import { __ } from '@wordpress/i18n';
  * @return {boolean} True if URL is safe
  */
 const isValidImageUrl = (url) => {
-	if (!url || typeof url !== 'string') return false;
+	if (!url || typeof url !== 'string') {
+		return false;
+	}
 	// Only allow http(s) and data URLs, block javascript: and other protocols
 	return /^(https?:\/\/|data:image\/)/.test(url);
 };
@@ -19,7 +25,7 @@ const isValidImageUrl = (url) => {
 /**
  * Save component for Card block
  *
- * @param {Object} props - Component props
+ * @param {Object} props            - Component props
  * @param {Object} props.attributes - Block attributes
  * @return {Element} Save component
  */
@@ -111,7 +117,8 @@ export default function CardSave({ attributes }) {
 			overlayStyles.opacity = overlayOpacity / 100;
 		} else {
 			// Use theme contrast color at full opacity, let overlayOpacity control transparency
-			overlayStyles.backgroundColor = 'var(--wp--preset--color--contrast, #000)';
+			overlayStyles.backgroundColor =
+				'var(--wp--preset--color--contrast, #000)';
 			overlayStyles.opacity = overlayOpacity / 100;
 		}
 	}
@@ -121,7 +128,9 @@ export default function CardSave({ attributes }) {
 
 	// Render badge
 	const renderBadge = () => {
-		if (!showBadge || !badgeText) return null;
+		if (!showBadge || !badgeText) {
+			return null;
+		}
 
 		const badgeClass =
 			badgeStyle === 'floating'
@@ -142,13 +151,21 @@ export default function CardSave({ attributes }) {
 
 	// Render image
 	const renderImage = () => {
-		if (!showImage || layoutPreset === 'minimal' || !imageUrl || !isValidImageUrl(imageUrl)) {
+		if (
+			!showImage ||
+			layoutPreset === 'minimal' ||
+			!imageUrl ||
+			!isValidImageUrl(imageUrl)
+		) {
 			return null;
 		}
 
 		if (layoutPreset === 'background') {
 			return (
-				<div className="dsgo-card__background" style={{ backgroundImage: `url(${imageUrl})` }}>
+				<div
+					className="dsgo-card__background"
+					style={{ backgroundImage: `url(${imageUrl})` }}
+				>
 					<div className="dsgo-card__overlay" style={overlayStyles} />
 				</div>
 			);
@@ -178,8 +195,12 @@ export default function CardSave({ attributes }) {
 
 	// Render content
 	const renderContent = () => (
-		<div className={`dsgo-card__content ${layoutPreset === 'background' ? contentAlignmentClass : ''}`}>
-			{badgeStyle === 'inline' && badgeInlinePosition === 'above-title' && renderBadge()}
+		<div
+			className={`dsgo-card__content ${layoutPreset === 'background' ? contentAlignmentClass : ''}`}
+		>
+			{badgeStyle === 'inline' &&
+				badgeInlinePosition === 'above-title' &&
+				renderBadge()}
 
 			{showTitle && title && (
 				<RichText.Content
@@ -189,7 +210,9 @@ export default function CardSave({ attributes }) {
 				/>
 			)}
 
-			{badgeStyle === 'inline' && badgeInlinePosition === 'below-title' && renderBadge()}
+			{badgeStyle === 'inline' &&
+				badgeInlinePosition === 'below-title' &&
+				renderBadge()}
 
 			{showSubtitle && subtitle && (
 				<RichText.Content

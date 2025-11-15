@@ -11,7 +11,8 @@ import classnames from 'classnames';
 /**
  * Save component for Map block.
  *
- * @param {Object} props - Component props.
+ * @param {Object} props            - Component props.
+ * @param {Object} props.attributes - Block attributes.
  * @return {JSX.Element} Saved HTML.
  */
 export default function Save({ attributes }) {
@@ -33,7 +34,8 @@ export default function Save({ attributes }) {
 	// Compute block classes (must match edit.js)
 	const blockClasses = classnames('dsgo-map', {
 		'dsgo-map--privacy-mode': dsgoPrivacyMode,
-		[`dsgo-map--aspect-${dsgoAspectRatio.replace(':', '-')}`]: dsgoAspectRatio !== 'custom',
+		[`dsgo-map--aspect-${dsgoAspectRatio.replace(':', '-')}`]:
+			dsgoAspectRatio !== 'custom',
 	});
 
 	// Custom styles
@@ -67,6 +69,12 @@ export default function Save({ attributes }) {
 		...dataAttributes,
 	});
 
+	// Compute aria-label for map container
+	/* translators: %s: The address being shown on the map */
+	const mapAriaLabel = dsgoAddress
+		? sprintf(__('Map showing %s', 'designsetgo'), dsgoAddress)
+		: __('Interactive map', 'designsetgo');
+
 	return (
 		<div {...blockProps}>
 			{dsgoPrivacyMode ? (
@@ -87,12 +95,16 @@ export default function Save({ attributes }) {
 							<circle cx="12" cy="10" r="3" />
 						</svg>
 						<p className="dsgo-map__privacy-text">
-							{dsgoPrivacyNotice || __('Click to load map', 'designsetgo')}
+							{dsgoPrivacyNotice ||
+								__('Click to load map', 'designsetgo')}
 						</p>
 						<button
 							className="dsgo-map__load-button"
 							type="button"
-							aria-label={__('Load map. This will connect to external map services.', 'designsetgo')}
+							aria-label={__(
+								'Load map. This will connect to external map services.',
+								'designsetgo'
+							)}
 						>
 							{__('Load Map', 'designsetgo')}
 						</button>
@@ -102,11 +114,7 @@ export default function Save({ attributes }) {
 				<div
 					className="dsgo-map__container"
 					role="region"
-					aria-label={
-						dsgoAddress
-							? sprintf(__('Map showing %s', 'designsetgo'), dsgoAddress)
-							: __('Interactive map', 'designsetgo')
-					}
+					aria-label={mapAriaLabel}
 				/>
 			)}
 		</div>

@@ -66,7 +66,9 @@ export default class DSGMap {
 	 */
 	setupPrivacyMode() {
 		const button = this.element.querySelector('.dsgo-map__load-button');
-		if (!button) return;
+		if (!button) {
+			return;
+		}
 
 		button.addEventListener('click', this.loadMapBound);
 	}
@@ -83,19 +85,24 @@ export default class DSGMap {
 			}
 
 			// Hide privacy overlay if present
-			const overlay = this.element.querySelector('.dsgo-map__privacy-overlay');
+			const overlay = this.element.querySelector(
+				'.dsgo-map__privacy-overlay'
+			);
 			if (overlay) {
 				overlay.style.display = 'none';
 			}
 
 			// Focus management for accessibility
-			const container = this.element.querySelector('.dsgo-map__container');
+			const container = this.element.querySelector(
+				'.dsgo-map__container'
+			);
 			if (container && this.config.privacyMode) {
 				// Make container focusable and move focus to it
 				container.setAttribute('tabindex', '-1');
 				container.focus();
 			}
 		} catch (error) {
+			// eslint-disable-next-line no-console
 			console.error('Failed to load map:', error);
 			this.showError('Failed to load map. Please check your settings.');
 		}
@@ -120,7 +127,9 @@ export default class DSGMap {
 		`;
 
 		// Hide privacy overlay if present
-		const overlay = this.element.querySelector('.dsgo-map__privacy-overlay');
+		const overlay = this.element.querySelector(
+			'.dsgo-map__privacy-overlay'
+		);
 		if (overlay) {
 			overlay.style.display = 'none';
 		}
@@ -145,15 +154,22 @@ export default class DSGMap {
 		if (this.mapInstance) {
 			try {
 				// Leaflet cleanup (OpenStreetMap)
-				if (this.config.provider === 'openstreetmap' && this.mapInstance.remove) {
+				if (
+					this.config.provider === 'openstreetmap' &&
+					this.mapInstance.remove
+				) {
 					this.mapInstance.remove();
 				}
 				// Google Maps cleanup
-				else if (this.config.provider === 'googlemaps' && window.google?.maps) {
+				else if (
+					this.config.provider === 'googlemaps' &&
+					window.google?.maps
+				) {
 					// Google Maps doesn't have a destroy method, just null the reference
 					// The garbage collector will handle cleanup
 				}
 			} catch (error) {
+				// eslint-disable-next-line no-console
 				console.error('Error cleaning up map:', error);
 			}
 

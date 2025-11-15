@@ -64,7 +64,8 @@ const v1 = {
 		},
 		dsgoPrivacyNotice: {
 			type: 'string',
-			default: 'This map will load content from external services. Click to load and view the map.',
+			default:
+				'This map will load content from external services. Click to load and view the map.',
 		},
 		dsgoMapStyle: {
 			type: 'string',
@@ -99,7 +100,8 @@ const v1 = {
 		const blockClasses = classnames('dsgo-map', {
 			'dsgo-map--grayscale': dsgoGrayscale,
 			'dsgo-map--privacy-mode': dsgoPrivacyMode,
-			[`dsgo-map--aspect-${dsgoAspectRatio.replace(':', '-')}`]: dsgoAspectRatio !== 'custom',
+			[`dsgo-map--aspect-${dsgoAspectRatio.replace(':', '-')}`]:
+				dsgoAspectRatio !== 'custom',
 		});
 
 		// Custom styles
@@ -129,6 +131,12 @@ const v1 = {
 			...dataAttributes,
 		});
 
+		// Compute aria-label for map container
+		/* translators: %s: The address being shown on the map */
+		const mapAriaLabel = dsgoAddress
+			? sprintf(__('Map showing %s', 'designsetgo'), dsgoAddress)
+			: __('Interactive map', 'designsetgo');
+
 		// Render privacy overlay or map container
 		if (dsgoPrivacyMode) {
 			return (
@@ -149,12 +157,16 @@ const v1 = {
 							<circle cx="12" cy="10" r="3" />
 						</svg>
 						<p className="dsgo-map__privacy-text">
-							{dsgoPrivacyNotice || __('Click to load map', 'designsetgo')}
+							{dsgoPrivacyNotice ||
+								__('Click to load map', 'designsetgo')}
 						</p>
 						<button
 							className="dsgo-map__load-button"
 							type="button"
-							aria-label={__('Load map. This will connect to external map services.', 'designsetgo')}
+							aria-label={__(
+								'Load map. This will connect to external map services.',
+								'designsetgo'
+							)}
 						>
 							{__('Load Map', 'designsetgo')}
 						</button>
@@ -168,11 +180,7 @@ const v1 = {
 				<div
 					className="dsgo-map__container"
 					role="region"
-					aria-label={
-						dsgoAddress
-							? sprintf(__('Map showing %s', 'designsetgo'), dsgoAddress)
-							: __('Interactive map', 'designsetgo')
-					}
+					aria-label={mapAriaLabel}
 				/>
 			</div>
 		);
@@ -180,11 +188,7 @@ const v1 = {
 
 	migrate(attributes) {
 		// Remove deprecated attributes (popup message and grayscale)
-		const {
-			dsgoMarkerPopup,
-			dsgoGrayscale,
-			...newAttributes
-		} = attributes;
+		const { dsgoMarkerPopup, dsgoGrayscale, ...newAttributes } = attributes;
 
 		return newAttributes;
 	},

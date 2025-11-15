@@ -139,6 +139,9 @@
     font-size: 0.85rem;
   }
 }
+.dsgo-map {
+  /* stylelint-disable selector-class-pattern */
+}
 .dsgo-map :where(.leaflet-control-attribution) {
   font-size: 0.7rem;
   opacity: 0.7;
@@ -150,6 +153,9 @@
 .dsgo-map :where(.leaflet-control) a:focus {
   outline: 2px solid currentColor;
   outline-offset: 2px;
+}
+.dsgo-map {
+  /* stylelint-enable selector-class-pattern */
 }
 @media (prefers-reduced-motion: reduce) {
   .dsgo-map__load-button {

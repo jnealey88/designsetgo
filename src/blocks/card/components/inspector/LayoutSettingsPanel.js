@@ -7,13 +7,14 @@ import { PanelBody, SelectControl, RangeControl } from '@wordpress/components';
 /**
  * Layout Settings Panel Component
  *
- * @param {Object} props - Component props
- * @param {Object} props.attributes - Block attributes
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to set attributes
  * @return {Element} Layout settings panel
  */
 export default function LayoutSettingsPanel({ attributes, setAttributes }) {
-	const { layoutPreset, overlayOpacity, contentAlignment, visualStyle } = attributes;
+	const { layoutPreset, overlayOpacity, contentAlignment, visualStyle } =
+		attributes;
 
 	const layoutOptions = [
 		{
@@ -72,7 +73,10 @@ export default function LayoutSettingsPanel({ attributes, setAttributes }) {
 				value={visualStyle}
 				options={visualStyleOptions}
 				onChange={(value) => setAttributes({ visualStyle: value })}
-				help={__('Choose a visual style for the card appearance.', 'designsetgo')}
+				help={__(
+					'Choose a visual style for the card appearance.',
+					'designsetgo'
+				)}
 				__next40pxDefaultSize
 				__nextHasNoMarginBottom
 			/>
@@ -82,11 +86,16 @@ export default function LayoutSettingsPanel({ attributes, setAttributes }) {
 					<RangeControl
 						label={__('Overlay Opacity', 'designsetgo')}
 						value={overlayOpacity}
-						onChange={(value) => setAttributes({ overlayOpacity: value })}
+						onChange={(value) =>
+							setAttributes({ overlayOpacity: value })
+						}
 						min={0}
 						max={100}
 						step={5}
-						help={__('Darkens the background image to improve text readability.', 'designsetgo')}
+						help={__(
+							'Darkens the background image to improve text readability.',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -95,8 +104,13 @@ export default function LayoutSettingsPanel({ attributes, setAttributes }) {
 						label={__('Content Alignment', 'designsetgo')}
 						value={contentAlignment}
 						options={alignmentOptions}
-						onChange={(value) => setAttributes({ contentAlignment: value })}
-						help={__('Horizontal alignment for content over background image.', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ contentAlignment: value })
+						}
+						help={__(
+							'Horizontal alignment for content over background image.',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>

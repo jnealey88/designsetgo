@@ -14,8 +14,8 @@ import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 /**
  * Image Settings Panel Component
  *
- * @param {Object} props - Component props
- * @param {Object} props.attributes - Block attributes
+ * @param {Object}   props               - Component props
+ * @param {Object}   props.attributes    - Block attributes
  * @param {Function} props.setAttributes - Function to set attributes
  * @return {Element} Image settings panel
  */
@@ -85,7 +85,10 @@ export default function ImageSettingsPanel({ attributes, setAttributes }) {
 											marginBottom: '12px',
 										}}
 									>
-										<Button onClick={open} variant="secondary">
+										<Button
+											onClick={open}
+											variant="secondary"
+										>
 											{__('Replace Image', 'designsetgo')}
 										</Button>
 										<Button
@@ -104,7 +107,11 @@ export default function ImageSettingsPanel({ attributes, setAttributes }) {
 									</div>
 								</>
 							) : (
-								<Button onClick={open} variant="primary" style={{ marginBottom: '12px' }}>
+								<Button
+									onClick={open}
+									variant="primary"
+									style={{ marginBottom: '12px' }}
+								>
 									{__('Select Image', 'designsetgo')}
 								</Button>
 							)}
@@ -119,7 +126,10 @@ export default function ImageSettingsPanel({ attributes, setAttributes }) {
 						label={__('Alt Text', 'designsetgo')}
 						value={imageAlt}
 						onChange={(value) => setAttributes({ imageAlt: value })}
-						help={__('Describe the image for screen readers and SEO.', 'designsetgo')}
+						help={__(
+							'Describe the image for screen readers and SEO.',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -128,7 +138,9 @@ export default function ImageSettingsPanel({ attributes, setAttributes }) {
 						label={__('Aspect Ratio', 'designsetgo')}
 						value={imageAspectRatio}
 						options={aspectRatioOptions}
-						onChange={(value) => setAttributes({ imageAspectRatio: value })}
+						onChange={(value) =>
+							setAttributes({ imageAspectRatio: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -137,9 +149,14 @@ export default function ImageSettingsPanel({ attributes, setAttributes }) {
 						<TextControl
 							label={__('Custom Aspect Ratio', 'designsetgo')}
 							value={imageCustomAspectRatio}
-							onChange={(value) => setAttributes({ imageCustomAspectRatio: value })}
+							onChange={(value) =>
+								setAttributes({ imageCustomAspectRatio: value })
+							}
 							placeholder="16 / 9"
-							help={__('Enter a CSS aspect-ratio value (e.g., "16 / 9" or "1.5").', 'designsetgo')}
+							help={__(
+								'Enter a CSS aspect-ratio value (e.g., "16 / 9" or "1.5").',
+								'designsetgo'
+							)}
 							__next40pxDefaultSize
 							__nextHasNoMarginBottom
 						/>
@@ -149,8 +166,13 @@ export default function ImageSettingsPanel({ attributes, setAttributes }) {
 						label={__('Object Fit', 'designsetgo')}
 						value={imageObjectFit}
 						options={objectFitOptions}
-						onChange={(value) => setAttributes({ imageObjectFit: value })}
-						help={__('How the image should fit within its container.', 'designsetgo')}
+						onChange={(value) =>
+							setAttributes({ imageObjectFit: value })
+						}
+						help={__(
+							'How the image should fit within its container.',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -160,8 +182,13 @@ export default function ImageSettingsPanel({ attributes, setAttributes }) {
 							label={__('Focal Point', 'designsetgo')}
 							url={imageUrl}
 							value={imageFocalPoint}
-							onChange={(value) => setAttributes({ imageFocalPoint: value })}
-							help={__('Click to adjust which part of the image is visible when cropped.', 'designsetgo')}
+							onChange={(value) =>
+								setAttributes({ imageFocalPoint: value })
+							}
+							help={__(
+								'Click to adjust which part of the image is visible when cropped.',
+								'designsetgo'
+							)}
 						/>
 					)}
 				</>

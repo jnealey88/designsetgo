@@ -38,7 +38,14 @@ registerBlockType(metadata.name, {
 					stroke="currentColor"
 					strokeWidth="1.5"
 				/>
-				<rect x="6" y="7" width="5" height="4" rx="1" fill="currentColor" />
+				<rect
+					x="6"
+					y="7"
+					width="5"
+					height="4"
+					rx="1"
+					fill="currentColor"
+				/>
 				<rect
 					x="6"
 					y="13"
