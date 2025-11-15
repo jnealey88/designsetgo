@@ -1,6 +1,10 @@
 ## Description
 <!-- Provide a clear description of the changes in this PR -->
 
+---
+**For Copilot Reviewers:** Please review ONLY the changed lines (diff) in this PR, not the entire files or unchanged code.
+---
+
 ## Type of Change
 <!-- Check the relevant box -->
 

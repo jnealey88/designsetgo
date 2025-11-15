@@ -2,6 +2,18 @@
 
 This repository is a WordPress Gutenberg block plugin. When reviewing code or providing suggestions, follow these guidelines:
 
+## ⚠️ REVIEW SCOPE - READ THIS FIRST
+
+**ONLY review the lines that were changed in this pull request (the diff).**
+
+- ✅ Review: New lines added (green +)
+- ✅ Review: Modified lines (red - / green +)
+- ❌ Do NOT review: Unchanged lines in the file
+- ❌ Do NOT review: Entire files or full context
+- ❌ Do NOT review: Files in the diff that have no meaningful changes
+
+**If there are no issues in the changed lines, do not leave a review.**
+
 ## WordPress Block Development Standards
 
 ### Critical Patterns
