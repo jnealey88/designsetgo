@@ -80,7 +80,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Custom_CSS_Renderer {
 	/**
 	 * Collected custom CSS from all blocks on the page.
-	 * Format: [ hash => [ 'css' => string, 'class' => string ] ]
+	 * Format: [ hash => [ 'css' => string, 'class' => string, 'block' => string ] ]
 	 *
 	 * @var array
 	 */
@@ -102,8 +102,8 @@ class Custom_CSS_Renderer {
 	 * @return string Block content.
 	 */
 	public function collect_custom_css( $block_content, $block ) {
-		// Check if block has custom CSS attribute.
-		if ( isset( $block['attrs']['dsgoCustomCSS'] ) && ! empty( $block['attrs']['dsgoCustomCSS'] ) ) {
+		// Check if block has custom CSS attribute and a valid block name.
+		if ( isset( $block['attrs']['dsgoCustomCSS'] ) && ! empty( $block['attrs']['dsgoCustomCSS'] ) && isset( $block['blockName'] ) ) {
 			$custom_css = $block['attrs']['dsgoCustomCSS'];
 
 			/**
