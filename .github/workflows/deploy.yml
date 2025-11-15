@@ -9,6 +9,8 @@ jobs:
   tag:
     name: New tag
     runs-on: ubuntu-latest
+    permissions:
+      contents: read  # Required for actions/checkout
     steps:
       - uses: actions/checkout@v3
 

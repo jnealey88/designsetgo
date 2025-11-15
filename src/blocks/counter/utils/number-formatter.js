@@ -8,6 +8,19 @@
  */
 
 /**
+ * Escape special characters in replacement strings for use with String.replace()
+ * Prevents injection via special sequences like $&, $`, $', $n
+ *
+ * @param {string} str - String to escape
+ * @return {string} Escaped string safe for use as replacement
+ */
+const escapeReplacement = (str) => {
+	// Escape $ characters by doubling them ($ becomes $$)
+	// This prevents special replacement patterns like $&, $`, $', $1, etc.
+	return String(str).replace(/\$/g, '$$$$');
+};
+
+/**
  * Format a number with thousands separator and decimal places.
  *
  * @param {number}  value               - The number to format
@@ -32,7 +45,10 @@ export const formatNumber = (value, options = {}) => {
 
 	// Add thousands separator if enabled
 	if (useGrouping) {
-		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+		// SECURITY: Escape special characters in separator to prevent injection
+		// via replacement string special sequences ($&, $`, $', $n, etc.)
+		const safeSeparator = escapeReplacement(separator);
+		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, safeSeparator);
 	}
 
 	// Join with decimal point
