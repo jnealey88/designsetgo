@@ -32,7 +32,7 @@ The Custom CSS Renderer provides five filter hooks that allow developers to cust
 - Conditionally skip CSS for specific blocks
 - Add block-specific transformations
 
-**Example 1: Skip CSS for Specific Blocks**
+#### Example 1: Skip CSS for Specific Blocks
 ```php
 add_filter( 'designsetgo/custom_css_block', function( $css, $block_name ) {
     // Don't output custom CSS for paragraph blocks
@@ -43,7 +43,7 @@ add_filter( 'designsetgo/custom_css_block', function( $css, $block_name ) {
 }, 10, 2 );
 ```
 
-**Example 2: Add Preprocessing**
+#### Example 2: Add Preprocessing
 ```php
 add_filter( 'designsetgo/custom_css_block', function( $css, $block_name, $block ) {
     // Replace custom variables before processing
@@ -53,7 +53,7 @@ add_filter( 'designsetgo/custom_css_block', function( $css, $block_name, $block 
 }, 10, 3 );
 ```
 
-**Example 3: Conditional CSS Based on Context**
+#### Example 3: Conditional CSS Based on Context
 ```php
 add_filter( 'designsetgo/custom_css_block', function( $css, $block_name ) {
     // Only apply custom CSS on frontend, not in admin
@@ -84,7 +84,7 @@ add_filter( 'designsetgo/custom_css_block', function( $css, $block_name ) {
 - Namespacing for multi-site setups
 - Debugging/logging
 
-**Example 1: Custom Prefix**
+#### Example 1: Custom Prefix
 ```php
 add_filter( 'designsetgo/custom_css_class_name', function( $class_name, $hash ) {
     // Use your own prefix instead of 'dsgo-custom-css-'
@@ -92,7 +92,7 @@ add_filter( 'designsetgo/custom_css_class_name', function( $class_name, $hash ) 
 }, 10, 2 );
 ```
 
-**Example 2: Include Block Type in Class Name**
+#### Example 2: Include Block Type in Class Name
 ```php
 add_filter( 'designsetgo/custom_css_class_name', function( $class_name, $hash, $block_name ) {
     // Extract block type (e.g., 'stack' from 'designsetgo/stack')
@@ -102,7 +102,7 @@ add_filter( 'designsetgo/custom_css_class_name', function( $class_name, $hash, $
 }, 10, 3 );
 ```
 
-**Example 3: Multi-Site Namespacing**
+#### Example 3: Multi-Site Namespacing
 ```php
 add_filter( 'designsetgo/custom_css_class_name', function( $class_name, $hash ) {
     $site_id = get_current_blog_id();
@@ -130,7 +130,7 @@ add_filter( 'designsetgo/custom_css_class_name', function( $class_name, $hash ) 
 
 **⚠️ WARNING:** Use with caution. Ensure any custom sanitization maintains security standards.
 
-**Example 1: Additional Sanitization**
+#### Example 1: Additional Sanitization
 ```php
 add_filter( 'designsetgo/custom_css_sanitize', function( $css, $original_css ) {
     // Remove !important declarations
@@ -139,7 +139,7 @@ add_filter( 'designsetgo/custom_css_sanitize', function( $css, $original_css ) {
 }, 10, 2 );
 ```
 
-**Example 2: Allowlist Specific Properties**
+#### Example 2: Allowlist Specific Properties
 ```php
 add_filter( 'designsetgo/custom_css_sanitize', function( $css ) {
     // Only allow specific CSS properties
@@ -154,7 +154,7 @@ add_filter( 'designsetgo/custom_css_sanitize', function( $css ) {
 } );
 ```
 
-**Example 3: Strip Vendor Prefixes**
+#### Example 3: Strip Vendor Prefixes
 ```php
 add_filter( 'designsetgo/custom_css_sanitize', function( $css ) {
     // Remove vendor prefixes (-webkit-, -moz-, -ms-, -o-)
@@ -162,6 +162,8 @@ add_filter( 'designsetgo/custom_css_sanitize', function( $css ) {
     return $css;
 } );
 ```
+
+**Note:** While this filter provides two parameters (`$css` and `$original_css`), you can declare only the parameters you need in your callback. Examples 2 and 3 demonstrate accepting just `$css`, which is sufficient when you don't need access to the original unsanitized CSS. If you need both parameters, use `function( $css, $original_css )` and specify `10, 2` for the `$accepted_args` parameter (as shown in Example 1).
 
 ---
 
@@ -183,7 +185,7 @@ add_filter( 'designsetgo/custom_css_sanitize', function( $css ) {
 - Post-processing
 - CSS optimization
 
-**Example 1: Add Vendor Prefixes**
+#### Example 1: Add Vendor Prefixes
 ```php
 add_filter( 'designsetgo/custom_css_processed', function( $css ) {
     // Add vendor prefixes for flexbox (simplified example)
@@ -192,7 +194,7 @@ add_filter( 'designsetgo/custom_css_processed', function( $css ) {
 } );
 ```
 
-**Example 2: Per-Block Optimization**
+#### Example 2: Per-Block Optimization
 ```php
 add_filter( 'designsetgo/custom_css_processed', function( $css, $class_name, $block_name ) {
     // Add specific optimizations for Stack blocks
@@ -204,7 +206,7 @@ add_filter( 'designsetgo/custom_css_processed', function( $css, $class_name, $bl
 }, 10, 3 );
 ```
 
-**Example 3: Basic Minification**
+#### Example 3: Basic Minification
 ```php
 add_filter( 'designsetgo/custom_css_processed', function( $css ) {
     // Remove comments
@@ -234,7 +236,7 @@ add_filter( 'designsetgo/custom_css_processed', function( $css ) {
 - CDN integration
 - Complete output control
 
-**Example 1: Global Minification**
+#### Example 1: Global Minification
 ```php
 add_filter( 'designsetgo/custom_css_output', function( $css ) {
     // Remove all whitespace and newlines
@@ -244,7 +246,7 @@ add_filter( 'designsetgo/custom_css_output', function( $css ) {
 } );
 ```
 
-**Example 2: Save to External File**
+#### Example 2: Save to External File
 ```php
 add_filter( 'designsetgo/custom_css_output', function( $css, $css_data ) {
     // Generate filename based on content hash
@@ -266,7 +268,7 @@ add_filter( 'designsetgo/custom_css_output', function( $css, $css_data ) {
 }, 10, 2 );
 ```
 
-**Example 3: Conditional Output**
+#### Example 3: Conditional Output
 ```php
 add_filter( 'designsetgo/custom_css_output', function( $css ) {
     // Only output CSS on specific pages
@@ -277,7 +279,7 @@ add_filter( 'designsetgo/custom_css_output', function( $css ) {
 } );
 ```
 
-**Example 4: Add Performance Hints**
+#### Example 4: Add Performance Hints
 ```php
 add_filter( 'designsetgo/custom_css_output', function( $css ) {
     // Add CSS containment for better performance
