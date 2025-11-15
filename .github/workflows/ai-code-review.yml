@@ -1,0 +1,115 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  ai-review:
+    name: AI Code Review
+    runs-on: ubuntu-latest
+
+    # Only run on external PRs, not your own
+    if: github.event.pull_request.user.login != 'jnealey88'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: AI Code Review
+        uses: coderabbitai/ai-pr-reviewer@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Debug mode for initial setup
+          debug: false
+
+          # Review configuration
+          review_simple_changes: false
+          review_comment_lgtm: false
+
+          # Path filters - exclude build artifacts
+          path_filters: |
+            !build/**
+            !node_modules/**
+            !vendor/**
+            !.wp-env/**
+            !*.lock
+            !*.min.js
+            !*.min.css
+            !*.asset.php
+
+          # Language settings
+          language: en-US
+
+          # Custom instructions for WordPress/Gutenberg plugin
+          system_message: |
+            You are an expert WordPress plugin reviewer focusing on Gutenberg block development.
+
+            CRITICAL REVIEW AREAS:
+
+            1. WordPress Standards:
+               - ALWAYS use useBlockProps() for block wrapper
+               - ALWAYS use useInnerBlocksProps() for inner blocks (NOT plain <InnerBlocks />)
+               - Check for deprecated patterns (PanelColorSettings, old color controls)
+               - Verify Block Supports usage instead of custom controls
+
+            2. Security (HIGH PRIORITY):
+               - Check input sanitization (sanitize_text_field, wp_kses_post)
+               - Check output escaping (esc_html, esc_attr, esc_url)
+               - Verify nonce usage for AJAX/forms
+               - Check for SQL injection vulnerabilities
+               - Verify capability checks (current_user_can)
+
+            3. Accessibility (REQUIRED):
+               - WCAG 2.1 AA compliance
+               - Proper ARIA labels and roles
+               - Keyboard navigation support
+               - Screen reader announcements
+               - Color contrast checks
+
+            4. Code Quality:
+               - File size limit: 300 lines (suggest refactoring if exceeded)
+               - Internationalization: ALL strings must use __() or _e()
+               - JSDoc comments for functions
+               - No direct DOM manipulation (use React patterns)
+               - Proper error handling
+
+            5. Performance:
+               - Check for unnecessary re-renders
+               - Verify code splitting
+               - Bundle size concerns
+               - Proper dependency arrays in hooks
+
+            6. WordPress Patterns (CHECK FIRST):
+               - Reference .claude/CLAUDE.md for project patterns
+               - Color controls: MUST use ColorGradientSettingsDropdown
+               - Width patterns: Use two-div pattern for containers
+               - Prefix: ALL identifiers must use 'dsgo-' prefix
+
+            7. Testing:
+               - Check if tests are included for new features
+               - Verify both editor and frontend testing mentioned
+               - Check responsive testing notes
+
+            REVIEW STYLE:
+            - Be constructive and educational
+            - Provide code examples for suggestions
+            - Link to WordPress documentation when relevant
+            - Mark security issues as HIGH PRIORITY
+            - Acknowledge good patterns
+            - Reference .claude/CLAUDE.md patterns when applicable
+
+            IGNORE:
+            - Build artifacts (*.asset.php, build/**, etc.)
+            - Dependency files (package-lock.json, composer.lock)
+            - Auto-generated files
