@@ -1,2 +1,109 @@
-.dsgo-tab.alignleft{text-align:right}.dsgo-tab.alignleft .dsgo-tab__content>*{margin-right:0;margin-left:auto}.dsgo-tab.aligncenter{text-align:center}.dsgo-tab.aligncenter .dsgo-tab__content>*{margin-right:auto;margin-left:auto}.dsgo-tab.alignright{text-align:left}.dsgo-tab.alignright .dsgo-tab__content>*{margin-right:auto;margin-left:0}
-.dsgo-tab.alignleft{text-align:right}.dsgo-tab.alignleft .dsgo-tab__content>*{margin-right:0;margin-left:auto}.dsgo-tab.aligncenter{text-align:center}.dsgo-tab.aligncenter .dsgo-tab__content>*{margin-right:auto;margin-left:auto}.dsgo-tab.alignright{text-align:left}.dsgo-tab.alignright .dsgo-tab__content>*{margin-right:auto;margin-left:0}.dsgo-tab{min-height:100px;position:relative}.dsgo-tab .dsgo-tab__inactive-notice{align-items:center;background:linear-gradient(-135deg,rgba(37,99,235,.05),rgba(124,58,237,.05));border:2px dashed rgba(37,99,235,.3);border-radius:12px;color:rgba(0,0,0,.7);cursor:pointer;display:flex;flex-direction:column;font-size:.9rem;gap:1rem;justify-content:center;padding:3rem 2rem;text-align:center;transition:all .2s ease}.dsgo-tab .dsgo-tab__inactive-notice svg{color:var(--wp--preset--color--accent-2,#2563eb);opacity:.6}.dsgo-tab .dsgo-tab__inactive-notice span{font-weight:500}.dsgo-tab .dsgo-tab__inactive-notice:hover{background:linear-gradient(-135deg,rgba(37,99,235,.08),rgba(124,58,237,.08));border-color:rgba(37,99,235,.5)}.dsgo-tab .dsgo-tab__inactive-notice:hover svg{opacity:1}.dsgo-tab .dsgo-tab__content:empty:before{background:rgba(0,0,0,.02);border:1px dashed rgba(0,0,0,.1);border-radius:8px;color:rgba(0,0,0,.4);content:"Click the + button below to add content to this tab";display:block;font-size:.875rem;font-style:italic;padding:2rem;text-align:center}.dsgo-tab.is-inactive,.dsgo-tab:not(.is-active){display:none!important}
+/*!**************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/tab/style.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************/
+/**
+ * Tab Block - Frontend Styles
+ */
+.dsgo-tab.alignleft {
+  text-align: right;
+}
+.dsgo-tab.alignleft .dsgo-tab__content > * {
+  margin-right: 0;
+  margin-left: auto;
+}
+.dsgo-tab.aligncenter {
+  text-align: center;
+}
+.dsgo-tab.aligncenter .dsgo-tab__content > * {
+  margin-right: auto;
+  margin-left: auto;
+}
+.dsgo-tab.alignright {
+  text-align: left;
+}
+.dsgo-tab.alignright .dsgo-tab__content > * {
+  margin-right: auto;
+  margin-left: 0;
+}
+/*!***************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/tab/editor.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************/
+/**
+ * Tab Block - Editor Styles
+ */
+/**
+ * Tab Block - Frontend Styles
+ */
+.dsgo-tab.alignleft {
+  text-align: right;
+}
+.dsgo-tab.alignleft .dsgo-tab__content > * {
+  margin-right: 0;
+  margin-left: auto;
+}
+.dsgo-tab.aligncenter {
+  text-align: center;
+}
+.dsgo-tab.aligncenter .dsgo-tab__content > * {
+  margin-right: auto;
+  margin-left: auto;
+}
+.dsgo-tab.alignright {
+  text-align: left;
+}
+.dsgo-tab.alignright .dsgo-tab__content > * {
+  margin-right: auto;
+  margin-left: 0;
+}
+.dsgo-tab {
+  position: relative;
+  min-height: 100px;
+}
+.dsgo-tab .dsgo-tab__inactive-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 2rem;
+  background: linear-gradient(-135deg, rgba(37, 99, 235, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+  border: 2px dashed rgba(37, 99, 235, 0.3);
+  border-radius: 12px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.dsgo-tab .dsgo-tab__inactive-notice svg {
+  color: var(--wp--preset--color--accent-2, #2563eb);
+  opacity: 0.6;
+}
+.dsgo-tab .dsgo-tab__inactive-notice span {
+  font-weight: 500;
+}
+.dsgo-tab .dsgo-tab__inactive-notice:hover {
+  background: linear-gradient(-135deg, rgba(37, 99, 235, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%);
+  border-color: rgba(37, 99, 235, 0.5);
+}
+.dsgo-tab .dsgo-tab__inactive-notice:hover svg {
+  opacity: 1;
+}
+.dsgo-tab .dsgo-tab__content:empty::before {
+  content: "Click the + button below to add content to this tab";
+  display: block;
+  padding: 2rem;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 0.875rem;
+  font-style: italic;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.dsgo-tab.is-inactive {
+  display: none !important;
+}
+.dsgo-tab:not(.is-active) {
+  display: none !important;
+}

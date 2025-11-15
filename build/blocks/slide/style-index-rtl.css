@@ -1,1 +1,111 @@
-.dsgo-slide{box-sizing:border-box;display:flex;flex-direction:column;height:100%;overflow:hidden;position:relative;width:100%;--dsgo-slide-overlay-color:#000;--dsgo-slide-overlay-opacity:0.4;--dsgo-slide-content-vertical-align:center;--dsgo-slide-content-horizontal-align:center;background-position:50%;background-repeat:no-repeat;background-size:cover}.dsgo-slide__overlay{background-color:var(--dsgo-slide-overlay-color);bottom:0;right:0;opacity:var(--dsgo-slide-overlay-opacity);pointer-events:none;position:absolute;left:0;top:0;z-index:1}.dsgo-slide__content{align-items:var(--dsgo-slide-content-horizontal-align);color:inherit;display:flex;flex:1;flex-direction:column;height:100%;justify-content:var(--dsgo-slide-content-vertical-align);position:relative;width:100%;z-index:2}.dsgo-slide__content>*{max-width:100%;width:100%}.dsgo-slide__content[style*="align-items: center"]>*{max-width:800px;width:auto}.dsgo-slide--has-background .dsgo-slide__content{text-shadow:0 1px 3px rgba(0,0,0,.3)}.dsgo-slide--active{z-index:1}.dsgo-slide a,.dsgo-slide button{position:relative;z-index:3}.dsgo-slider--fullbleed .dsgo-slide{min-height:100vh}@media(max-width:768px){.dsgo-slide__content{text-shadow:0 1px 2px rgba(0,0,0,.2)}.dsgo-slide__content>*{font-size:inherit}}@media(prefers-reduced-motion:reduce){.dsgo-slide{animation:none!important;transition:none!important}}.dsgo-slide.is-loading .dsgo-slide__content{opacity:0}.dsgo-slide.is-loading:after{animation:slide-spinner .8s linear infinite;border:3px solid hsla(0,0%,100%,.3);border-radius:50%;border-top-color:hsla(0,0%,100%,.8);content:"";height:40px;right:50%;position:absolute;top:50%;transform:translate(50%,-50%);width:40px}@keyframes slide-spinner{to{transform:translate(50%,-50%) rotate(-1turn)}}@media(prefers-contrast:high){.dsgo-slide__overlay{opacity:calc(var(--dsgo-slide-overlay-opacity)*1.2)}.dsgo-slide__content{text-shadow:0 2px 4px rgba(0,0,0,.8)}}
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/slide/style.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
+/**
+ * Slide Block - Frontend & Editor Styles
+ * CRITICAL: Must be duplicated to editor.scss for editor/frontend parity
+ */
+.dsgo-slide {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  --dsgo-slide-overlay-color: #000;
+  --dsgo-slide-overlay-opacity: 0.4;
+  --dsgo-slide-content-vertical-align: center;
+  --dsgo-slide-content-horizontal-align: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.dsgo-slide__overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--dsgo-slide-overlay-color);
+  opacity: var(--dsgo-slide-overlay-opacity);
+}
+.dsgo-slide__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: var(--dsgo-slide-content-vertical-align);
+  align-items: var(--dsgo-slide-content-horizontal-align);
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+}
+.dsgo-slide__content > * {
+  width: 100%;
+  max-width: 100%;
+}
+.dsgo-slide__content[style*="align-items: center"] > * {
+  width: auto;
+  max-width: 800px;
+}
+.dsgo-slide--has-background .dsgo-slide__content {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.dsgo-slide--active {
+  z-index: 1;
+}
+.dsgo-slide a,
+.dsgo-slide button {
+  position: relative;
+  z-index: 3;
+}
+.dsgo-slider--fullbleed .dsgo-slide {
+  min-height: 100vh;
+}
+@media (max-width: 768px) {
+  .dsgo-slide__content {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  .dsgo-slide__content > * {
+    font-size: inherit;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dsgo-slide {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+.dsgo-slide.is-loading .dsgo-slide__content {
+  opacity: 0;
+}
+.dsgo-slide.is-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: slide-spinner 0.8s linear infinite;
+}
+@keyframes slide-spinner {
+  to {
+    transform: translate(50%, -50%) rotate(-360deg);
+  }
+}
+@media (prefers-contrast: high) {
+  .dsgo-slide__overlay {
+    opacity: calc(var(--dsgo-slide-overlay-opacity) * 1.2);
+  }
+  .dsgo-slide__content {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  }
+}

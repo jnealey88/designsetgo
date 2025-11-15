@@ -1,1 +1,132 @@
-.dsgo-form-builder{--dsgo-form-field-spacing:1.5rem;--dsgo-form-label-color:inherit;--dsgo-form-border-color:#d1d5db;--dsgo-form-border-radius:0.375rem;--dsgo-form-focus-color:var(--wp--preset--color--primary,#2563eb);--dsgo-form-error-color:#dc2626;--dsgo-form-success-color:#16a34a;max-width:100%;width:100%}.dsgo-form{flex-direction:column;width:100%}.dsgo-form,.dsgo-form__fields{display:flex;gap:var(--dsgo-form-field-spacing)}.dsgo-form__fields{align-items:flex-start;flex-direction:row;flex-wrap:wrap}.dsgo-form__footer{display:flex;margin-top:var(--dsgo-form-field-spacing)}.dsgo-form__submit{cursor:pointer}.dsgo-form__submit:disabled{cursor:not-allowed;opacity:.5}.dsgo-form__submit--inline{flex:0 0 auto;width:auto}.dsgo-form__submit.dsgo-form__submit--loading{color:transparent;pointer-events:none;position:relative}.dsgo-form__submit.dsgo-form__submit--loading:after{animation:dsgo-form-spinner .6s linear infinite;border:2px solid;border-radius:50%;border-top:2px solid transparent;color:var(--dsgo-form-submit-color);content:"";height:16px;right:50%;margin-right:-8px;margin-top:-8px;position:absolute;top:50%;width:16px}.dsgo-form__message{border-radius:var(--dsgo-form-border-radius);font-size:.875rem;line-height:1.5;margin-top:1rem;padding:1rem}.dsgo-form__message--success{background-color:#dcfce7;border:1px solid var(--dsgo-form-success-color);color:var(--dsgo-form-success-color)}.dsgo-form__message--error{background-color:#fee2e2;border:1px solid var(--dsgo-form-error-color);color:var(--dsgo-form-error-color)}.dsgo-form__message--editor{display:none}.dsgo-form-builder--align-left .dsgo-form__footer{justify-content:flex-start}.dsgo-form-builder--align-center .dsgo-form__footer{justify-content:center}.dsgo-form-builder--align-right .dsgo-form__footer{justify-content:flex-end}.dsgo-form-builder--button-inline .dsgo-form__fields{align-items:flex-end}.dsgo-form-builder--button-inline .dsgo-form__submit--inline{flex:0 0 auto;width:auto}.dsgo-form-builder--button-inline .dsgo-form__footer{display:none}@keyframes dsgo-form-spinner{0%{transform:rotate(0deg)}to{transform:rotate(-1turn)}}@media(max-width:768px){.dsgo-form__submit{width:100%}.dsgo-form-builder--align-center .dsgo-form__footer,.dsgo-form-builder--align-left .dsgo-form__footer,.dsgo-form-builder--align-right .dsgo-form__footer{justify-content:stretch}}@media print{.dsgo-form__message,.dsgo-form__submit{display:none}}
+/*!***********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/form-builder/style.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************/
+/**
+ * Form Builder Block - Frontend Styles
+ *
+ * @since 1.0.0
+ */
+.dsgo-form-builder {
+  --dsgo-form-field-spacing: 1.5rem;
+  --dsgo-form-label-color: inherit;
+  --dsgo-form-border-color: #d1d5db;
+  --dsgo-form-border-radius: 0.375rem;
+  --dsgo-form-focus-color: var(--wp--preset--color--primary, #2563eb);
+  --dsgo-form-error-color: #dc2626;
+  --dsgo-form-success-color: #16a34a;
+  width: 100%;
+  max-width: 100%;
+}
+.dsgo-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dsgo-form-field-spacing);
+  width: 100%;
+}
+.dsgo-form__fields {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--dsgo-form-field-spacing);
+  align-items: flex-start;
+}
+.dsgo-form__footer {
+  display: flex;
+  margin-top: var(--dsgo-form-field-spacing);
+}
+.dsgo-form__submit {
+  cursor: pointer;
+}
+.dsgo-form__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.dsgo-form__submit--inline {
+  flex: 0 0 auto;
+  width: auto;
+}
+.dsgo-form__submit.dsgo-form__submit--loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+.dsgo-form__submit.dsgo-form__submit--loading::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  right: 50%;
+  margin-right: -8px;
+  margin-top: -8px;
+  border: 2px solid currentcolor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: dsgo-form-spinner 0.6s linear infinite;
+  color: var(--dsgo-form-submit-color);
+}
+.dsgo-form__message {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: var(--dsgo-form-border-radius);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.dsgo-form__message--success {
+  color: var(--dsgo-form-success-color);
+  background-color: rgb(220, 252, 231);
+  border: 1px solid var(--dsgo-form-success-color);
+}
+.dsgo-form__message--error {
+  color: var(--dsgo-form-error-color);
+  background-color: rgb(254, 226, 226);
+  border: 1px solid var(--dsgo-form-error-color);
+}
+.dsgo-form__message--editor {
+  display: none;
+}
+.dsgo-form-builder--align-left .dsgo-form__footer {
+  justify-content: flex-start;
+}
+.dsgo-form-builder--align-center .dsgo-form__footer {
+  justify-content: center;
+}
+.dsgo-form-builder--align-right .dsgo-form__footer {
+  justify-content: flex-end;
+}
+.dsgo-form-builder--button-inline .dsgo-form__fields {
+  align-items: flex-end;
+}
+.dsgo-form-builder--button-inline .dsgo-form__submit--inline {
+  flex: 0 0 auto;
+  width: auto;
+}
+.dsgo-form-builder--button-inline .dsgo-form__footer {
+  display: none;
+}
+@keyframes dsgo-form-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+@media (max-width: 768px) {
+  .dsgo-form__submit {
+    width: 100%;
+  }
+  .dsgo-form-builder--align-left .dsgo-form__footer,
+  .dsgo-form-builder--align-center .dsgo-form__footer,
+  .dsgo-form-builder--align-right .dsgo-form__footer {
+    justify-content: stretch;
+  }
+}
+@media print {
+  .dsgo-form__submit {
+    display: none;
+  }
+  .dsgo-form__message {
+    display: none;
+  }
+}

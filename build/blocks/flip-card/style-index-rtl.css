@@ -1,1 +1,157 @@
-.dsgo-flip-card,.dsgo-flip-card__container{position:relative;width:100%}.dsgo-flip-card__container{display:grid;grid-template-columns:1fr;grid-template-rows:minmax(0,1fr)}.dsgo-flip-card__container>*{align-self:start;box-sizing:border-box;grid-column:1;grid-row:1;height:100%;transition:opacity var(--dsgo-flip-duration,.6s) ease,transform var(--dsgo-flip-duration,.6s) ease;width:100%}.dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{opacity:1;transform:rotateY(0deg);z-index:2}.dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back{opacity:0;pointer-events:none;transform:rotateY(-180deg);z-index:1}.dsgo-flip-card.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{opacity:0;pointer-events:none;transform:rotateY(180deg)}.dsgo-flip-card.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back{opacity:1;pointer-events:auto;transform:rotateY(0deg);z-index:2}.dsgo-flip-card--vertical .dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card--vertical .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{transform:rotateX(0deg)}.dsgo-flip-card--vertical .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card--vertical .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back{transform:rotateX(180deg)}.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{transform:rotateX(-180deg)}.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back{transform:rotateX(0deg)}.dsgo-flip-card--click{cursor:pointer}.dsgo-flip-card--click:focus,.dsgo-flip-card--hover:focus{outline:none}.dsgo-flip-card--effect-fade .dsgo-flip-card__container>*,.dsgo-flip-card--effect-fade .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card--effect-fade .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back,.dsgo-flip-card--effect-fade.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card--effect-fade.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card--effect-fade.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back,.dsgo-flip-card--effect-fade.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{transform:none!important}.dsgo-flip-card--effect-slide .dsgo-flip-card__container{overflow:hidden}.dsgo-flip-card--effect-slide .dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card--effect-slide .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{transform:translateX(0)}.dsgo-flip-card--effect-slide .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card--effect-slide .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back{transform:translateX(-100%)}.dsgo-flip-card--effect-slide.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card--effect-slide.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{transform:translateX(100%)}.dsgo-flip-card--effect-slide.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card--effect-slide.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back{transform:translateX(0)}.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical .dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{transform:translateY(0)}.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back{transform:translateY(100%)}.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{transform:translateY(-100%)}.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back{transform:translateY(0)}.dsgo-flip-card--effect-zoom .dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card--effect-zoom .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{transform:scale(1)}.dsgo-flip-card--effect-zoom .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card--effect-zoom .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back{transform:scale(.8)}.dsgo-flip-card--effect-zoom.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__front,.dsgo-flip-card--effect-zoom.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-front{transform:scale(1.2)}.dsgo-flip-card--effect-zoom.is-flipped .dsgo-flip-card__container>.dsgo-flip-card__back,.dsgo-flip-card--effect-zoom.is-flipped .dsgo-flip-card__container>.wp-block-designsetgo-flip-card-back{transform:scale(1)}@media(prefers-reduced-motion:reduce){.dsgo-flip-card__container>*{transform:none!important;transition:opacity .1s ease}.dsgo-flip-card.is-flipped .dsgo-flip-card__container>[class*=flip-card-back],.dsgo-flip-card.is-flipped .dsgo-flip-card__container>[class*=flip-card-front]{transform:none}}
+/*!********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/flip-card/style.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************/
+/**
+ * Flip Card Block - Frontend Styles
+ *
+ * JavaScript-based flip animation (much more reliable than CSS 3D transforms)
+ *
+ * @since 1.0.0
+ */
+.dsgo-flip-card {
+  position: relative;
+  width: 100%;
+}
+.dsgo-flip-card__container {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(0, 1fr);
+}
+.dsgo-flip-card__container > * {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  transition: opacity var(--dsgo-flip-duration, 0.6s) ease, transform var(--dsgo-flip-duration, 0.6s) ease;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+}
+.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front, .dsgo-flip-card__container > .dsgo-flip-card__front {
+  opacity: 1;
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+.dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back, .dsgo-flip-card__container > .dsgo-flip-card__back {
+  opacity: 0;
+  transform: rotateY(-180deg);
+  z-index: 1;
+  pointer-events: none;
+}
+.dsgo-flip-card.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+.dsgo-flip-card.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__front {
+  opacity: 0;
+  transform: rotateY(180deg);
+  pointer-events: none;
+}
+.dsgo-flip-card.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__back {
+  opacity: 1;
+  transform: rotateY(0deg);
+  z-index: 2;
+  pointer-events: auto;
+}
+.dsgo-flip-card--vertical .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+.dsgo-flip-card--vertical .dsgo-flip-card__container > .dsgo-flip-card__front {
+  transform: rotateX(0deg);
+}
+.dsgo-flip-card--vertical .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card--vertical .dsgo-flip-card__container > .dsgo-flip-card__back {
+  transform: rotateX(180deg);
+}
+.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__front {
+  transform: rotateX(-180deg);
+}
+.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__back {
+  transform: rotateX(0deg);
+}
+.dsgo-flip-card--click {
+  cursor: pointer;
+}
+.dsgo-flip-card--click:focus {
+  outline: none;
+}
+.dsgo-flip-card--hover:focus {
+  outline: none;
+}
+.dsgo-flip-card--effect-fade .dsgo-flip-card__container > * {
+  transform: none !important;
+}
+.dsgo-flip-card--effect-fade .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card--effect-fade .dsgo-flip-card__container > .dsgo-flip-card__back {
+  transform: none !important;
+}
+.dsgo-flip-card--effect-fade.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+.dsgo-flip-card--effect-fade.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__front {
+  transform: none !important;
+}
+.dsgo-flip-card--effect-fade.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card--effect-fade.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__back {
+  transform: none !important;
+}
+.dsgo-flip-card--effect-slide .dsgo-flip-card__container {
+  overflow: hidden;
+}
+.dsgo-flip-card--effect-slide .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+.dsgo-flip-card--effect-slide .dsgo-flip-card__container > .dsgo-flip-card__front {
+  transform: translateX(0);
+}
+.dsgo-flip-card--effect-slide .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card--effect-slide .dsgo-flip-card__container > .dsgo-flip-card__back {
+  transform: translateX(-100%);
+}
+.dsgo-flip-card--effect-slide.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+.dsgo-flip-card--effect-slide.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__front {
+  transform: translateX(100%);
+}
+.dsgo-flip-card--effect-slide.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card--effect-slide.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__back {
+  transform: translateX(0);
+}
+.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical .dsgo-flip-card__container > .dsgo-flip-card__front {
+  transform: translateY(0);
+}
+.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical .dsgo-flip-card__container > .dsgo-flip-card__back {
+  transform: translateY(100%);
+}
+.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__front {
+  transform: translateY(-100%);
+}
+.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card--effect-slide.dsgo-flip-card--vertical.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__back {
+  transform: translateY(0);
+}
+.dsgo-flip-card--effect-zoom .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+.dsgo-flip-card--effect-zoom .dsgo-flip-card__container > .dsgo-flip-card__front {
+  transform: scale(1);
+}
+.dsgo-flip-card--effect-zoom .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card--effect-zoom .dsgo-flip-card__container > .dsgo-flip-card__back {
+  transform: scale(0.8);
+}
+.dsgo-flip-card--effect-zoom.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-front,
+.dsgo-flip-card--effect-zoom.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__front {
+  transform: scale(1.2);
+}
+.dsgo-flip-card--effect-zoom.is-flipped .dsgo-flip-card__container > .wp-block-designsetgo-flip-card-back,
+.dsgo-flip-card--effect-zoom.is-flipped .dsgo-flip-card__container > .dsgo-flip-card__back {
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dsgo-flip-card__container > * {
+    transition: opacity 0.1s ease;
+    transform: none !important;
+  }
+  .dsgo-flip-card.is-flipped .dsgo-flip-card__container > [class*=flip-card-front] {
+    transform: none;
+  }
+  .dsgo-flip-card.is-flipped .dsgo-flip-card__container > [class*=flip-card-back] {
+    transform: none;
+  }
+}

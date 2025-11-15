@@ -1,1 +1,120 @@
-.dsgo-icon{align-items:center;display:inline-flex;justify-content:center;max-width:-moz-fit-content;max-width:fit-content;width:-moz-fit-content;width:fit-content}.dsgo-icon__link{color:inherit;display:inline-flex;text-decoration:none;transition:transform .2s ease,opacity .2s ease}.dsgo-icon__link:hover{opacity:.8;transform:scale(1.1)}.dsgo-icon__link:focus{outline:none}.dsgo-icon__wrapper{align-items:center;color:currentcolor;display:inline-flex;justify-content:center;line-height:1;transition:background-color .2s ease,color .2s ease;width:-moz-fit-content;width:fit-content}.dsgo-icon__wrapper .dashicons{display:block;font-size:inherit;height:1em;line-height:1;transition:transform .2s ease;width:1em}.dsgo-icon__wrapper.shape-circle,.dsgo-icon__wrapper.shape-rounded,.dsgo-icon__wrapper.shape-square{aspect-ratio:1}.dsgo-icon__wrapper.shape-circle{border-radius:50%}.dsgo-icon__wrapper.shape-square{border-radius:0}.dsgo-icon__wrapper.shape-rounded{border-radius:8px}.dsgo-icon.alignleft{margin-left:1em}.dsgo-icon.alignright{margin-right:1em}.dsgo-icon.aligncenter{display:flex;justify-content:center;margin-right:auto;margin-left:auto}.dsgo-icon[style*=background-color]:not([style*=background-image]) .dsgo-icon__wrapper{background-color:inherit!important}.dsgo-icon[style*=background-image] .dsgo-icon__wrapper{background:inherit!important}.dsgo-icon.has-background .dsgo-icon__wrapper{background-color:transparent!important}@media(prefers-reduced-motion:reduce){.dsgo-icon .dashicons,.dsgo-icon__link,.dsgo-icon__wrapper{transition:none}.dsgo-icon__link:hover{transform:none}}.dsgo-icon-outlined svg{fill:none!important;stroke:currentcolor;stroke-linecap:round;stroke-linejoin:round;stroke-width:var(--icon-stroke-width,1.5)}.dsgo-icon-outlined svg *{fill:none!important;stroke:currentcolor}.dsgo-flex[style*="--dsgo-parent-hover-icon-bg"]:hover .dsgo-flex__inner>.dsgo-icon,.dsgo-grid[style*="--dsgo-parent-hover-icon-bg"]:hover .dsgo-grid__inner>.dsgo-icon,.dsgo-stack[style*="--dsgo-parent-hover-icon-bg"]:hover .dsgo-stack__inner>.dsgo-icon{background-color:var(--dsgo-parent-hover-icon-bg)!important;transition:background-color .3s ease}
+/*!***************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/icon/style.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************/
+/**
+ * Icon Block - Frontend Styles
+ *
+ * Dashicon display with optional shapes and links
+ */
+.dsgo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+}
+.dsgo-icon__link {
+  display: inline-flex;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.dsgo-icon__link:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+.dsgo-icon__link:focus {
+  outline: none;
+}
+.dsgo-icon__wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  color: currentcolor;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  width: -moz-fit-content;
+  width: fit-content;
+  /* stylelint-disable-next-line selector-class-pattern */
+}
+.dsgo-icon__wrapper .dashicons {
+  display: block;
+  width: 1em;
+  height: 1em;
+  font-size: inherit;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+.dsgo-icon__wrapper {
+  /* stylelint-disable selector-class-pattern */
+}
+.dsgo-icon__wrapper.shape-circle, .dsgo-icon__wrapper.shape-square, .dsgo-icon__wrapper.shape-rounded {
+  aspect-ratio: 1;
+}
+.dsgo-icon__wrapper.shape-circle {
+  border-radius: 50%;
+}
+.dsgo-icon__wrapper.shape-square {
+  border-radius: 0;
+}
+.dsgo-icon__wrapper.shape-rounded {
+  border-radius: 8px;
+}
+.dsgo-icon__wrapper {
+  /* stylelint-enable selector-class-pattern */
+}
+.dsgo-icon.alignleft {
+  margin-left: 1em;
+}
+.dsgo-icon.alignright {
+  margin-right: 1em;
+}
+.dsgo-icon.aligncenter {
+  display: flex;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+.dsgo-icon[style*=background-color]:not([style*=background-image]) .dsgo-icon__wrapper {
+  background-color: inherit !important;
+}
+.dsgo-icon[style*=background-image] .dsgo-icon__wrapper {
+  background: inherit !important;
+}
+.dsgo-icon.has-background .dsgo-icon__wrapper {
+  background-color: transparent !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dsgo-icon {
+    /* stylelint-disable selector-class-pattern */
+  }
+  .dsgo-icon__link, .dsgo-icon__wrapper,
+  .dsgo-icon .dashicons {
+    transition: none;
+  }
+  .dsgo-icon {
+    /* stylelint-enable selector-class-pattern */
+  }
+  .dsgo-icon__link:hover {
+    transform: none;
+  }
+}
+.dsgo-icon-outlined svg {
+  fill: none !important;
+  stroke: currentcolor;
+  stroke-width: var(--icon-stroke-width, 1.5);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.dsgo-icon-outlined svg * {
+  fill: none !important;
+  stroke: currentcolor;
+}
+.dsgo-flex[style*="--dsgo-parent-hover-icon-bg"]:hover .dsgo-flex__inner > .dsgo-icon,
+.dsgo-grid[style*="--dsgo-parent-hover-icon-bg"]:hover .dsgo-grid__inner > .dsgo-icon,
+.dsgo-stack[style*="--dsgo-parent-hover-icon-bg"]:hover .dsgo-stack__inner > .dsgo-icon {
+  background-color: var(--dsgo-parent-hover-icon-bg) !important;
+  transition: background-color 0.3s ease;
+}

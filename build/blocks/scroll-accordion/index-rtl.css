@@ -1,1 +1,28 @@
-.block-editor-block-list__block.wp-block-designsetgo-scroll-accordion{box-sizing:border-box!important}.dsgo-scroll-accordion{--dsgo-scroll-accordion-gap:var(--wp--preset--spacing--40,1.5rem);align-self:stretch;position:relative}.dsgo-scroll-accordion .dsgo-scroll-accordion__items{display:flex;flex-direction:column;gap:var(--dsgo-scroll-accordion-gap)}.dsgo-scroll-accordion__items>.block-list-appender{margin-top:var(--dsgo-scroll-accordion-gap)}
+/*!****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/scroll-accordion/editor.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************/
+/**
+ * Scroll Accordion - Editor Styles
+ * CRITICAL: Must be duplicated from style.scss for editor/frontend parity
+ */
+/* Ensure proper box model */
+.block-editor-block-list__block.wp-block-designsetgo-scroll-accordion {
+  box-sizing: border-box !important;
+}
+.dsgo-scroll-accordion {
+  --dsgo-scroll-accordion-gap: var(--wp--preset--spacing--40, 1.5rem);
+  position: relative;
+  align-self: stretch; /* Full width in editor */
+}
+.dsgo-scroll-accordion .dsgo-scroll-accordion__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dsgo-scroll-accordion-gap);
+  /* alignItems controlled via inline style from edit.js */
+}
+/**
+ * Block appender spacing
+ */
+.dsgo-scroll-accordion__items > .block-list-appender {
+  margin-top: var(--dsgo-scroll-accordion-gap);
+}
