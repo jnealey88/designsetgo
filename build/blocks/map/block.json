@@ -1,0 +1,124 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/map",
+  "version": "1.0.0",
+  "title": "Map",
+  "category": "widgets",
+  "description": "Display an interactive map using OpenStreetMap or Google Maps.",
+  "keywords": [
+    "map",
+    "location",
+    "address",
+    "openstreetmap",
+    "google maps",
+    "directions"
+  ],
+  "textdomain": "designsetgo",
+  "attributes": {
+    "dsgoProvider": {
+      "type": "string",
+      "default": "openstreetmap",
+      "enum": [
+        "openstreetmap",
+        "googlemaps"
+      ]
+    },
+    "dsgoLatitude": {
+      "type": "number",
+      "default": 40.7128
+    },
+    "dsgoLongitude": {
+      "type": "number",
+      "default": -74.006
+    },
+    "dsgoZoom": {
+      "type": "number",
+      "default": 13
+    },
+    "dsgoAddress": {
+      "type": "string",
+      "default": ""
+    },
+    "dsgoMarkerIcon": {
+      "type": "string",
+      "default": "📍"
+    },
+    "dsgoMarkerColor": {
+      "type": "string",
+      "default": "#e74c3c"
+    },
+    "dsgoHeight": {
+      "type": "string",
+      "default": "400px"
+    },
+    "dsgoAspectRatio": {
+      "type": "string",
+      "default": "custom",
+      "enum": [
+        "16:9",
+        "4:3",
+        "1:1",
+        "custom"
+      ]
+    },
+    "dsgoPrivacyMode": {
+      "type": "boolean",
+      "default": false
+    },
+    "dsgoPrivacyNotice": {
+      "type": "string",
+      "default": "This map will load content from external services. Click to load and view the map."
+    },
+    "dsgoMapStyle": {
+      "type": "string",
+      "default": "standard"
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": false,
+      "__experimentalDefaultControls": {
+        "padding": false,
+        "margin": false
+      }
+    },
+    "color": {
+      "background": true,
+      "text": false,
+      "link": false,
+      "__experimentalDefaultControls": {
+        "background": false
+      }
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true,
+      "__experimentalDefaultControls": {
+        "radius": true
+      }
+    }
+  },
+  "example": {
+    "attributes": {
+      "dsgoLatitude": 40.7128,
+      "dsgoLongitude": -74.006,
+      "dsgoZoom": 13,
+      "dsgoAddress": "New York, NY"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css",
+  "viewScript": "file:./view.js"
+}

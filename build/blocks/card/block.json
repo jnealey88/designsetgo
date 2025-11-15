@@ -1,0 +1,251 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/card",
+  "version": "1.0.0",
+  "title": "Card",
+  "category": "design",
+  "description": "Display content in a card layout with image, badge, title, subtitle, body text, and CTA button. Perfect for pricing, features, services, and team members.",
+  "keywords": [
+    "card",
+    "content",
+    "image",
+    "cta",
+    "pricing",
+    "feature"
+  ],
+  "textdomain": "designsetgo",
+  "supports": {
+    "anchor": true,
+    "align": [
+      "left",
+      "center",
+      "right",
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "inserter": true,
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true,
+      "__experimentalDefaultControls": {
+        "margin": false,
+        "padding": true,
+        "blockGap": false
+      }
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "gradients": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": false
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontFamily": true,
+      "__experimentalDefaultControls": {
+        "fontSize": false
+      }
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true,
+      "__experimentalDefaultControls": {
+        "radius": true,
+        "width": false
+      }
+    },
+    "shadow": true,
+    "interactivity": {
+      "clientNavigation": true
+    }
+  },
+  "attributes": {
+    "layoutPreset": {
+      "type": "string",
+      "default": "standard",
+      "enum": [
+        "standard",
+        "horizontal-left",
+        "horizontal-right",
+        "background",
+        "minimal",
+        "featured"
+      ]
+    },
+    "imageId": {
+      "type": "number",
+      "default": 0
+    },
+    "imageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "imageAlt": {
+      "type": "string",
+      "default": ""
+    },
+    "imageAspectRatio": {
+      "type": "string",
+      "default": "16-9",
+      "enum": [
+        "16-9",
+        "4-3",
+        "1-1",
+        "original",
+        "custom"
+      ]
+    },
+    "imageCustomAspectRatio": {
+      "type": "string",
+      "default": ""
+    },
+    "imageObjectFit": {
+      "type": "string",
+      "default": "cover",
+      "enum": [
+        "cover",
+        "contain",
+        "fill",
+        "scale-down"
+      ]
+    },
+    "imageFocalPoint": {
+      "type": "object",
+      "default": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "badgeText": {
+      "type": "string",
+      "default": ""
+    },
+    "badgeStyle": {
+      "type": "string",
+      "default": "floating",
+      "enum": [
+        "floating",
+        "inline"
+      ]
+    },
+    "badgeFloatingPosition": {
+      "type": "string",
+      "default": "top-right",
+      "enum": [
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom-right"
+      ]
+    },
+    "badgeInlinePosition": {
+      "type": "string",
+      "default": "above-title",
+      "enum": [
+        "above-title",
+        "below-title"
+      ]
+    },
+    "badgeBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "badgeTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "subtitle": {
+      "type": "string",
+      "default": ""
+    },
+    "bodyText": {
+      "type": "string",
+      "default": ""
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 80
+    },
+    "overlayColor": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "contentAlignment": {
+      "type": "string",
+      "default": "center",
+      "enum": [
+        "left",
+        "center",
+        "right"
+      ]
+    },
+    "visualStyle": {
+      "type": "string",
+      "default": "default",
+      "enum": [
+        "default",
+        "outlined",
+        "filled",
+        "shadow",
+        "minimal"
+      ]
+    },
+    "showImage": {
+      "type": "boolean",
+      "default": true
+    },
+    "showTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSubtitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "showBody": {
+      "type": "boolean",
+      "default": true
+    },
+    "showBadge": {
+      "type": "boolean",
+      "default": true
+    },
+    "showCta": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "providesContext": {
+    "designsetgo/card/layoutPreset": "layoutPreset"
+  },
+  "example": {
+    "attributes": {
+      "title": "Card Title",
+      "subtitle": "Card Subtitle",
+      "bodyText": "This is a sample card with all the features you need for pricing, features, services, and team members.",
+      "badgeText": "New",
+      "layoutPreset": "standard"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css"
+}
