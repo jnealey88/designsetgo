@@ -84,6 +84,10 @@
 	// Width constraints are applied via inline styles when constrainWidth is enabled
 	.dsgo-stack__inner {
 		width: 100%;
+		// CRITICAL: Position relative + z-index to ensure content stays above both overlays
+		// z-index: 2 (above ::before overlay at z-index: 1 and ::after hover at z-index: 0)
+		position: relative;
+		z-index: 2;
 	}
 
 	// CRITICAL: When Section is nested inside another container, force full width
