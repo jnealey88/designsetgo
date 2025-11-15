@@ -16,13 +16,51 @@ This repository is configured for automatic AI-powered code reviews on all Pull 
 
 ## Activation Options
 
-### Option 1: CodeRabbit AI (Free for Open Source) ⭐ **Recommended**
+### Option 1: GitHub Copilot (Truly Free for OSS) ⭐ **RECOMMENDED**
+
+**What it does:**
+- Official GitHub AI code reviewer
+- Integrated directly into PR interface
+- High-quality contextual reviews
+- **FREE for verified open source maintainers**
+
+**Cost:**
+- **FREE** for verified open source projects
+- $10/month for individuals (if not OSS-verified)
+- $19/user/month for teams
+
+**Activation Steps:**
+
+1. **Apply for GitHub Copilot for Open Source:**
+   - Visit: https://github.com/settings/copilot
+   - Look for "Apply for Copilot for Open Source"
+   - OR just subscribe ($10/mo if you want it immediately)
+
+2. **Enable Code Review:**
+   - Go to: https://github.com/settings/copilot
+   - Enable "Code review" feature
+   - Configure review triggers
+
+3. **Enable for Repository:**
+   - Repository Settings → Copilot
+   - Enable automatic reviews
+
+**Features:**
+- ✅ Integrated into GitHub natively
+- ✅ Line-by-line suggestions
+- ✅ Security vulnerability detection
+- ✅ Best practice recommendations
+- ✅ FREE for OSS maintainers
+- ✅ No third-party app installation needed
+
+### Option 2: CodeRabbit AI ⚠️ **PAID SERVICE**
 
 **What it does:**
 - Automatically reviews every PR
 - Provides inline comments with suggestions
 - Learns from your codebase and patterns
-- Free for public repositories
+
+**Cost:** $12/user/month (14-day free trial available)
 
 **Activation Steps:**
 
@@ -50,44 +88,41 @@ This repository is configured for automatic AI-powered code reviews on all Pull 
 - ✅ Responds to review comments
 - ✅ Summary of changes
 
-### Option 2: GitHub Copilot (Requires Subscription)
+### Option 3: Completely Free DIY Solution
 
-**What it does:**
-- Official GitHub AI reviewer
-- Integrated directly into PR interface
-- High-quality reviews
+**For when you want $0 cost:**
 
-**Activation Steps:**
+Use the existing workflow with manual triggers or create your own using free AI APIs:
 
-1. **Subscribe to GitHub Copilot:**
-   - Visit: https://github.com/settings/copilot
-   - Choose plan ($10-19/month)
+1. **Keep the current workflow** (already configured)
+2. **Manual review trigger:** Comment `/review` on PRs to trigger AI review
+3. **Or build custom solution** with:
+   - GitHub Actions (free)
+   - OpenAI API ($0.002/1K tokens - ~$0.10 per PR)
+   - Anthropic Claude API (similar pricing)
 
-2. **Enable for Repository:**
-   - Go to repository Settings → Copilot
-   - Enable "Code review"
-   - Configure review triggers
+**Example custom workflow** (costs ~$0.10 per PR):
+```yaml
+# .github/workflows/custom-ai-review.yml
+# Uses OpenAI API - need to add OPENAI_API_KEY secret
+on:
+  pull_request_target:
+    types: [opened, synchronize]
 
-3. **Optional: Add Instructions**
-   Create `.github/copilot-instructions.md`:
-   ```markdown
-   Review WordPress Gutenberg block code focusing on:
-   - WordPress coding standards
-   - Block editor best practices
-   - Security (sanitization, escaping, nonces)
-   - Accessibility (WCAG 2.1 AA)
-   - Reference .claude/CLAUDE.md for patterns
-   ```
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: AI Review with OpenAI
+        uses: anc95/ChatGPT-CodeReview@main
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LANGUAGE: en
+```
 
-**Cost:** $10-19/month (free for students/OSS maintainers)
-
-### Option 3: Multiple AI Reviewers (Advanced)
-
-Use both CodeRabbit (free) + GitHub Copilot for comprehensive reviews:
-
-1. Set up CodeRabbit (free for public repos)
-2. Add GitHub Copilot if you have a subscription
-3. Get reviews from both AI systems
+**Cost:** ~$5-10/month for typical usage
 
 ## What Gets Reviewed
 
@@ -213,15 +248,19 @@ reviews:
 
 Update `system_message` in `.github/workflows/ai-code-review.yml` or path_instructions in `.coderabbit.yaml`
 
-## Costs
+## Cost Comparison
 
-| Option | Public Repos | Private Repos |
-|--------|-------------|---------------|
-| CodeRabbit | **Free** | $12/user/mo |
-| GitHub Copilot | **Free** (for OSS) | $10-19/mo |
-| Both | **Free** | $22-31/mo |
+| Option | Initial Cost | Ongoing Cost | Best For |
+|--------|-------------|--------------|----------|
+| **GitHub Copilot** | Free (OSS) or $10/mo | Free (OSS) or $10/mo | ✅ **Best overall** - Free for OSS |
+| **CodeRabbit** | 14-day trial | $12/user/mo | Good features but paid |
+| **DIY OpenAI** | $0 setup | ~$5-10/mo usage | Budget-conscious, full control |
+| **Do Nothing** | $0 | $0 | Manual reviews only |
 
-**Recommendation for this project:** Use CodeRabbit (free for public repos)
+**Recommendation for this project:**
+1. **Best:** GitHub Copilot (apply for free OSS access)
+2. **Alternative:** DIY with OpenAI API (~$5-10/month)
+3. **Trial:** Try CodeRabbit (14 days free) to see if worth $12/mo
 
 ## Resources
 
@@ -231,10 +270,27 @@ Update `system_message` in `.github/workflows/ai-code-review.yml` or path_instru
 
 ---
 
-**Next Steps:**
-1. Install CodeRabbit app (link above)
-2. Create a test PR to verify setup
-3. Adjust configuration based on review quality
-4. Commit this setup to main branch
+## Current Status
 
-**Questions?** Check CodeRabbit docs or create an issue.
+⚠️ **No AI review currently active** - Templates are ready but not enabled
+
+## Next Steps
+
+**Choose your AI reviewer:**
+
+1. **GitHub Copilot** (Recommended for OSS):
+   - Apply at: https://github.com/settings/copilot
+   - Enable code review feature
+   - FREE for verified OSS projects
+
+2. **CodeRabbit** (14-day trial):
+   - Rename `.github/workflows/ai-code-review-coderabbit.yml.template` to `.yml`
+   - Install app at: https://github.com/apps/coderabbitai
+   - $12/month after trial
+
+3. **DIY OpenAI** (~$5-10/month):
+   - See `.github/workflows/README-AI-REVIEW.md` for setup
+   - Add OPENAI_API_KEY to repository secrets
+   - Full control over prompts
+
+**Questions?** Check the resources below or create an issue.
