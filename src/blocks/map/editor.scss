@@ -1,0 +1,188 @@
+/**
+ * Map Block - Editor-Only Styles
+ *
+ * Styles specific to the WordPress block editor (not shown on frontend).
+ */
+
+.editor-styles-wrapper {
+	.dsgo-map {
+		// Editor-specific container
+		position: relative;
+		min-height: 300px;
+
+		// Editor preview placeholder
+		&__editor-preview {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		// Preview placeholder (non-privacy mode)
+		&__preview-placeholder {
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			padding: 2rem;
+			text-align: center;
+			border-radius: inherit;
+		}
+
+		&__preview-icon {
+			width: 64px;
+			height: 64px;
+			margin-bottom: 1rem;
+			color: #667eea;
+			opacity: 0.8;
+		}
+
+		&__preview-info {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.75rem;
+		}
+
+		&__preview-details {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+			color: #2c3e50;
+
+			strong {
+				font-size: 1.1rem;
+				font-weight: 600;
+			}
+		}
+
+		&__preview-coords {
+			code {
+				background: rgba(255, 255, 255, 0.8);
+				padding: 0.25rem 0.5rem;
+				border-radius: 3px;
+				font-family: 'Monaco', 'Courier New', monospace;
+				font-size: 0.9rem;
+				color: #667eea;
+			}
+		}
+
+		&__preview-meta {
+			font-size: 0.9rem;
+			color: #7f8c8d;
+		}
+
+		&__preview-popup {
+			margin-top: 0.5rem;
+			padding: 0.5rem 0.75rem;
+			background: rgba(255, 255, 255, 0.9);
+			border-radius: 4px;
+			font-size: 0.9rem;
+			color: #34495e;
+		}
+
+		&__preview-note {
+			margin-top: 1rem;
+			font-size: 0.85rem;
+			color: #95a5a6;
+			font-style: italic;
+		}
+
+		// Privacy mode preview in editor
+		&--privacy-mode {
+			.dsgo-map__privacy-overlay {
+				// Override z-index for editor
+				z-index: 1;
+			}
+
+			.dsgo-map__privacy-content {
+				pointer-events: none; // Prevent interaction in editor
+			}
+
+			.dsgo-map__load-button {
+				cursor: default;
+				opacity: 0.8;
+			}
+		}
+
+		// Selected state
+		&.is-selected {
+			outline: 2px solid var(--wp-admin-theme-color, #007cba);
+			outline-offset: -2px;
+		}
+
+		// Aspect ratio preview adjustments for editor
+		&--aspect-16-9,
+		&--aspect-4-3,
+		&--aspect-1-1 {
+			.dsgo-map__editor-preview {
+				position: absolute;
+			}
+		}
+
+		// Custom height in editor
+		&:not([class*='dsgo-map--aspect-']) {
+			.dsgo-map__editor-preview {
+				position: relative;
+				min-height: 300px;
+			}
+		}
+	}
+
+	// Responsive preview in editor
+	@media (max-width: 768px) {
+		.dsgo-map {
+			&__preview-icon {
+				width: 48px;
+				height: 48px;
+			}
+
+			&__preview-details {
+				strong {
+					font-size: 1rem;
+				}
+			}
+
+			&__preview-coords code {
+				font-size: 0.8rem;
+			}
+		}
+	}
+}
+
+// Block inserter preview (example attribute)
+.block-editor-block-preview__content {
+	.dsgo-map {
+		min-height: 200px;
+
+		&__preview-placeholder {
+			padding: 1rem;
+		}
+
+		&__preview-icon {
+			width: 48px;
+			height: 48px;
+		}
+
+		&__preview-details {
+			gap: 0.25rem;
+
+			strong {
+				font-size: 0.9rem;
+			}
+		}
+
+		&__preview-coords,
+		&__preview-meta,
+		&__preview-popup {
+			display: none; // Hide details in block inserter preview
+		}
+	}
+}

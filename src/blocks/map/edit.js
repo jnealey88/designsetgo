@@ -1,0 +1,156 @@
+/**
+ * Map Block - Editor Component
+ *
+ * Renders the map block in the WordPress editor with inspector controls.
+ */
+
+import { __ } from '@wordpress/i18n';
+import {
+	useBlockProps,
+	InspectorControls,
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
+} from '@wordpress/block-editor';
+import classnames from 'classnames';
+
+// Inspector Panel
+import MapSettingsPanel from './components/inspector/MapSettingsPanel';
+
+/**
+ * Edit component for Map block.
+ *
+ * @param {Object} props - Component props.
+ * @return {JSX.Element} Editor component.
+ */
+export default function Edit({ attributes, setAttributes, clientId }) {
+	const {
+		dsgoProvider,
+		dsgoLatitude,
+		dsgoLongitude,
+		dsgoZoom,
+		dsgoMarkerColor,
+		dsgoAspectRatio,
+		dsgoHeight,
+		dsgoPrivacyMode,
+		dsgoPrivacyNotice,
+	} = attributes;
+
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+	// Compute block classes
+	const blockClasses = classnames('dsgo-map', {
+		'dsgo-map--privacy-mode': dsgoPrivacyMode,
+		[`dsgo-map--aspect-${dsgoAspectRatio.replace(':', '-')}`]: dsgoAspectRatio !== 'custom',
+	});
+
+	// Custom styles for the map container
+	const mapStyles = {};
+
+	// Apply aspect ratio or custom height
+	if (dsgoAspectRatio !== 'custom') {
+		// Aspect ratio will be handled by CSS
+	} else {
+		mapStyles.height = dsgoHeight;
+	}
+
+	const blockProps = useBlockProps({
+		className: blockClasses,
+		style: mapStyles,
+	});
+
+	return (
+		<>
+			<InspectorControls>
+				<MapSettingsPanel attributes={attributes} setAttributes={setAttributes} />
+			</InspectorControls>
+
+			<InspectorControls group="color">
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
+					title={__('Marker Color', 'designsetgo')}
+					settings={[
+						{
+							label: __('Marker Color', 'designsetgo'),
+							colorValue: dsgoMarkerColor,
+							onColorChange: (color) => setAttributes({ dsgoMarkerColor: color || '#e74c3c' }),
+							clearable: true,
+						},
+					]}
+					{...colorGradientSettings}
+				/>
+			</InspectorControls>
+
+			<div {...blockProps}>
+				<div className="dsgo-map__editor-preview">
+					{dsgoPrivacyMode ? (
+						<div className="dsgo-map__privacy-overlay">
+							<div className="dsgo-map__privacy-content">
+								<svg
+									className="dsgo-map__privacy-icon"
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								>
+									<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+									<circle cx="12" cy="10" r="3" />
+								</svg>
+								<p className="dsgo-map__privacy-text">
+									{dsgoPrivacyNotice || __('Click to load map', 'designsetgo')}
+								</p>
+								<button
+									className="dsgo-map__load-button"
+									type="button"
+									onClick={(e) => e.preventDefault()}
+								>
+									{__('Load Map', 'designsetgo')}
+								</button>
+								<p className="dsgo-map__preview-note">
+									{__('Preview: Privacy mode is enabled', 'designsetgo')}
+								</p>
+							</div>
+						</div>
+					) : (
+						<div className="dsgo-map__preview-placeholder">
+							<div className="dsgo-map__preview-info">
+								<svg
+									className="dsgo-map__preview-icon"
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								>
+									<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+									<circle cx="12" cy="10" r="3" />
+								</svg>
+								<div className="dsgo-map__preview-details">
+									<strong>{__('Map Preview', 'designsetgo')}</strong>
+									<div className="dsgo-map__preview-coords">
+										<code>
+											{dsgoLatitude.toFixed(6)}, {dsgoLongitude.toFixed(6)}
+										</code>
+									</div>
+									<div className="dsgo-map__preview-meta">
+										{dsgoProvider === 'openstreetmap'
+											? __('OpenStreetMap', 'designsetgo')
+											: __('Google Maps', 'designsetgo')}{' '}
+										• {__('Zoom:', 'designsetgo')} {dsgoZoom}
+									</div>
+								</div>
+							</div>
+							<div className="dsgo-map__preview-note">
+								{__('Interactive map will display on the frontend', 'designsetgo')}
+							</div>
+						</div>
+					)}
+				</div>
+			</div>
+		</>
+	);
+}

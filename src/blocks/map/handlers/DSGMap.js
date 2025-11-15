@@ -1,0 +1,166 @@
+/**
+ * DSGMap Class - Main map instance manager.
+ *
+ * Manages individual map instances, configuration parsing, privacy mode, and initialization.
+ */
+
+import { initOpenStreetMap } from './openstreetmap-handler';
+import { initGoogleMap } from './googlemaps-handler';
+
+/**
+ * DSGMap Class - Manages individual map instances.
+ */
+export default class DSGMap {
+	/**
+	 * Constructor.
+	 *
+	 * @param {HTMLElement} element - Map block element.
+	 */
+	constructor(element) {
+		this.element = element;
+		this.config = this.parseConfig();
+		this.mapInstance = null;
+		this.loadMapBound = this.loadMap.bind(this);
+
+		if (this.config.privacyMode) {
+			this.setupPrivacyMode();
+		} else {
+			this.loadMap();
+		}
+	}
+
+	/**
+	 * Parse configuration from data attributes with validation.
+	 *
+	 * @return {Object} Parsed and validated configuration.
+	 */
+	parseConfig() {
+		const dataset = this.element.dataset;
+
+		// Parse and validate coordinates
+		const lat = parseFloat(dataset.dsgoLat);
+		const lng = parseFloat(dataset.dsgoLng);
+		const zoom = parseInt(dataset.dsgoZoom);
+
+		return {
+			provider: dataset.dsgoProvider || 'openstreetmap',
+			// Clamp latitude between -90 and 90
+			lat: Number.isFinite(lat) ? Math.max(-90, Math.min(90, lat)) : 0,
+			// Clamp longitude between -180 and 180
+			lng: Number.isFinite(lng) ? Math.max(-180, Math.min(180, lng)) : 0,
+			// Clamp zoom between 1 and 20
+			zoom: Number.isInteger(zoom) && zoom >= 1 && zoom <= 20 ? zoom : 13,
+			address: dataset.dsgoAddress || '',
+			markerIcon: dataset.dsgoMarkerIcon || '📍',
+			markerColor: dataset.dsgoMarkerColor || '#e74c3c',
+			markerPopup: dataset.dsgoMarkerPopup || '',
+			grayscale: dataset.dsgoGrayscale === 'true',
+			privacyMode: dataset.dsgoPrivacyMode === 'true',
+			apiKey: dataset.dsgoApiKey || '',
+			mapStyle: dataset.dsgoMapStyle || 'standard',
+		};
+	}
+
+	/**
+	 * Setup privacy mode (click-to-load).
+	 */
+	setupPrivacyMode() {
+		const button = this.element.querySelector('.dsgo-map__load-button');
+		if (!button) return;
+
+		button.addEventListener('click', this.loadMapBound);
+	}
+
+	/**
+	 * Load and initialize the map.
+	 */
+	async loadMap() {
+		try {
+			if (this.config.provider === 'googlemaps') {
+				await initGoogleMap(this);
+			} else {
+				await initOpenStreetMap(this);
+			}
+
+			// Hide privacy overlay if present
+			const overlay = this.element.querySelector('.dsgo-map__privacy-overlay');
+			if (overlay) {
+				overlay.style.display = 'none';
+			}
+
+			// Focus management for accessibility
+			const container = this.element.querySelector('.dsgo-map__container');
+			if (container && this.config.privacyMode) {
+				// Make container focusable and move focus to it
+				container.setAttribute('tabindex', '-1');
+				container.focus();
+			}
+		} catch (error) {
+			console.error('Failed to load map:', error);
+			this.showError('Failed to load map. Please check your settings.');
+		}
+	}
+
+	/**
+	 * Show error message.
+	 *
+	 * @param {string} message - Error message to display.
+	 */
+	showError(message) {
+		const errorDiv = document.createElement('div');
+		errorDiv.className = 'dsgo-map__error';
+		errorDiv.textContent = message;
+		errorDiv.style.cssText = `
+			padding: 20px;
+			text-align: center;
+			color: #d63638;
+			background: #fef7f7;
+			border: 1px solid #f0c0c0;
+			border-radius: 4px;
+		`;
+
+		// Hide privacy overlay if present
+		const overlay = this.element.querySelector('.dsgo-map__privacy-overlay');
+		if (overlay) {
+			overlay.style.display = 'none';
+		}
+
+		this.element.appendChild(errorDiv);
+	}
+
+	/**
+	 * Cleanup and destroy the map instance.
+	 * Removes event listeners and frees memory.
+	 */
+	destroy() {
+		// Remove privacy mode event listener
+		if (this.config.privacyMode) {
+			const button = this.element.querySelector('.dsgo-map__load-button');
+			if (button) {
+				button.removeEventListener('click', this.loadMapBound);
+			}
+		}
+
+		// Clean up map instance
+		if (this.mapInstance) {
+			try {
+				// Leaflet cleanup (OpenStreetMap)
+				if (this.config.provider === 'openstreetmap' && this.mapInstance.remove) {
+					this.mapInstance.remove();
+				}
+				// Google Maps cleanup
+				else if (this.config.provider === 'googlemaps' && window.google?.maps) {
+					// Google Maps doesn't have a destroy method, just null the reference
+					// The garbage collector will handle cleanup
+				}
+			} catch (error) {
+				console.error('Error cleaning up map:', error);
+			}
+
+			this.mapInstance = null;
+		}
+
+		// Clear element reference
+		this.element = null;
+	}
+}

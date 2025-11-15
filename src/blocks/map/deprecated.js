@@ -1,0 +1,193 @@
+/**
+ * Map Block - Deprecated Versions
+ *
+ * Handles backward compatibility when block attributes or save format changes.
+ */
+
+import { useBlockProps } from '@wordpress/block-editor';
+import { __, sprintf } from '@wordpress/i18n';
+import classnames from 'classnames';
+
+/**
+ * Version 1: Original version with marker attributes
+ * Deprecated when markers were removed from the block
+ */
+const v1 = {
+	attributes: {
+		dsgoProvider: {
+			type: 'string',
+			default: 'openstreetmap',
+		},
+		dsgoLatitude: {
+			type: 'number',
+			default: 40.7128,
+		},
+		dsgoLongitude: {
+			type: 'number',
+			default: -74.006,
+		},
+		dsgoZoom: {
+			type: 'number',
+			default: 13,
+		},
+		dsgoAddress: {
+			type: 'string',
+			default: '',
+		},
+		dsgoMarkerIcon: {
+			type: 'string',
+			default: '📍',
+		},
+		dsgoMarkerColor: {
+			type: 'string',
+			default: '#e74c3c',
+		},
+		dsgoMarkerPopup: {
+			type: 'string',
+			default: '',
+		},
+		dsgoHeight: {
+			type: 'string',
+			default: '400px',
+		},
+		dsgoAspectRatio: {
+			type: 'string',
+			default: 'custom',
+		},
+		dsgoGrayscale: {
+			type: 'boolean',
+			default: false,
+		},
+		dsgoPrivacyMode: {
+			type: 'boolean',
+			default: false,
+		},
+		dsgoPrivacyNotice: {
+			type: 'string',
+			default: 'This map will load content from external services. Click to load and view the map.',
+		},
+		dsgoMapStyle: {
+			type: 'string',
+			default: 'standard',
+		},
+	},
+
+	save({ attributes }) {
+		const {
+			dsgoProvider,
+			dsgoLatitude,
+			dsgoLongitude,
+			dsgoZoom,
+			dsgoAddress,
+			dsgoMarkerIcon,
+			dsgoMarkerColor,
+			dsgoMarkerPopup,
+			dsgoHeight,
+			dsgoAspectRatio,
+			dsgoGrayscale,
+			dsgoPrivacyMode,
+			dsgoPrivacyNotice,
+			dsgoMapStyle,
+		} = attributes;
+
+		// Ensure coordinates are within valid ranges (security)
+		const safeLat = Math.max(-90, Math.min(90, dsgoLatitude || 0));
+		const safeLng = Math.max(-180, Math.min(180, dsgoLongitude || 0));
+		const safeZoom = Math.max(1, Math.min(20, dsgoZoom || 13));
+
+		// Block classes
+		const blockClasses = classnames('dsgo-map', {
+			'dsgo-map--grayscale': dsgoGrayscale,
+			'dsgo-map--privacy-mode': dsgoPrivacyMode,
+			[`dsgo-map--aspect-${dsgoAspectRatio.replace(':', '-')}`]: dsgoAspectRatio !== 'custom',
+		});
+
+		// Custom styles
+		const blockStyles = {};
+		if (dsgoAspectRatio === 'custom') {
+			blockStyles.height = dsgoHeight;
+		}
+
+		// Data attributes for view.js
+		const dataAttributes = {
+			'data-dsgo-provider': dsgoProvider,
+			'data-dsgo-lat': safeLat,
+			'data-dsgo-lng': safeLng,
+			'data-dsgo-zoom': safeZoom,
+			'data-dsgo-address': dsgoAddress || '',
+			'data-dsgo-marker-icon': dsgoMarkerIcon || '📍',
+			'data-dsgo-marker-color': dsgoMarkerColor || '#e74c3c',
+			'data-dsgo-marker-popup': dsgoMarkerPopup || '',
+			'data-dsgo-grayscale': dsgoGrayscale,
+			'data-dsgo-privacy-mode': dsgoPrivacyMode,
+			'data-dsgo-map-style': dsgoMapStyle || 'standard',
+		};
+
+		const blockProps = useBlockProps.save({
+			className: blockClasses,
+			style: blockStyles,
+			...dataAttributes,
+		});
+
+		// Render privacy overlay or map container
+		if (dsgoPrivacyMode) {
+			return (
+				<div {...blockProps}>
+					<div className="dsgo-map__privacy-overlay">
+						<svg
+							className="dsgo-map__privacy-icon"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+							<circle cx="12" cy="10" r="3" />
+						</svg>
+						<p className="dsgo-map__privacy-text">
+							{dsgoPrivacyNotice || __('Click to load map', 'designsetgo')}
+						</p>
+						<button
+							className="dsgo-map__load-button"
+							type="button"
+							aria-label={__('Load map. This will connect to external map services.', 'designsetgo')}
+						>
+							{__('Load Map', 'designsetgo')}
+						</button>
+					</div>
+				</div>
+			);
+		}
+
+		return (
+			<div {...blockProps}>
+				<div
+					className="dsgo-map__container"
+					role="region"
+					aria-label={
+						dsgoAddress
+							? sprintf(__('Map showing %s', 'designsetgo'), dsgoAddress)
+							: __('Interactive map', 'designsetgo')
+					}
+				/>
+			</div>
+		);
+	},
+
+	migrate(attributes) {
+		// Remove deprecated attributes (popup message and grayscale)
+		const {
+			dsgoMarkerPopup,
+			dsgoGrayscale,
+			...newAttributes
+		} = attributes;
+
+		return newAttributes;
+	},
+};
+
+export default [v1];

@@ -1,0 +1,212 @@
+/**
+ * Map Block - Frontend & Editor Styles
+ *
+ * Styles for the map block container, privacy overlay, and responsive behavior.
+ */
+
+.dsgo-map {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+
+	// Aspect ratio variants (using padding-bottom trick)
+	&--aspect-16-9 {
+		padding-bottom: 56.25%; // 9/16 = 56.25%
+	}
+
+	&--aspect-4-3 {
+		padding-bottom: 75%; // 3/4 = 75%
+	}
+
+	&--aspect-1-1 {
+		padding-bottom: 100%; // 1/1 = 100%
+	}
+
+	// Map container
+	&__container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+	}
+
+	// Custom height (no aspect ratio)
+	&:not([class*='dsgo-map--aspect-']) &__container {
+		position: relative;
+		height: 100%;
+	}
+
+	// Privacy overlay
+	&__privacy-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		z-index: 2;
+	}
+
+	&__privacy-content {
+		text-align: center;
+		padding: 2rem;
+		max-width: 400px;
+	}
+
+	&__privacy-icon {
+		width: 64px;
+		height: 64px;
+		margin: 0 auto 1rem;
+		color: #ffffff;
+		opacity: 0.9;
+	}
+
+	&__privacy-text {
+		color: #ffffff;
+		font-size: 1rem;
+		line-height: 1.5;
+		margin: 0 0 1.5rem;
+		opacity: 0.95;
+	}
+
+	&__load-button {
+		display: inline-block;
+		padding: 0.75rem 1.5rem;
+		background: #ffffff;
+		color: #667eea;
+		border: none;
+		border-radius: 4px;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s ease;
+
+		&:hover {
+			background: #f0f0f0;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+
+		&:focus {
+			outline: 2px solid #ffffff;
+			outline-offset: 2px;
+		}
+	}
+
+	// Custom marker styles (for Leaflet)
+	&__custom-marker {
+		background: transparent;
+		border: none;
+	}
+
+	// Error message
+	&__error {
+		padding: 20px;
+		text-align: center;
+		color: #d63638;
+		background: #fef7f7;
+		border: 1px solid #f0c0c0;
+		border-radius: 4px;
+	}
+
+	// Ensure map respects border radius from block supports
+	&,
+	&__container,
+	&__privacy-overlay {
+		border-radius: inherit;
+	}
+
+	// Handle nested containers (prevent width constraint conflicts)
+	.dsgo-stack__inner > &,
+	.dsgo-flex__inner > &,
+	.dsgo-grid__inner > & {
+		width: 100% !important;
+	}
+
+	// Responsive adjustments
+	@media (max-width: 768px) {
+		&__privacy-content {
+			padding: 1.5rem;
+		}
+
+		&__privacy-icon {
+			width: 48px;
+			height: 48px;
+		}
+
+		&__privacy-text {
+			font-size: 0.9rem;
+		}
+
+		&__load-button {
+			padding: 0.625rem 1.25rem;
+			font-size: 0.9rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		&__privacy-content {
+			padding: 1rem;
+		}
+
+		&__privacy-icon {
+			width: 40px;
+			height: 40px;
+			margin-bottom: 0.75rem;
+		}
+
+		&__privacy-text {
+			font-size: 0.85rem;
+			margin-bottom: 1rem;
+		}
+
+		&__load-button {
+			padding: 0.5rem 1rem;
+			font-size: 0.85rem;
+		}
+	}
+
+	// Leaflet attribution adjustment
+	:where(.leaflet-control-attribution) {
+		font-size: 0.7rem;
+		opacity: 0.7;
+		transition: opacity 0.2s ease;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	// Accessibility: Focus styles for map controls
+	:where(.leaflet-control) {
+		a:focus {
+			outline: 2px solid currentColor;
+			outline-offset: 2px;
+		}
+	}
+
+	// Respect prefers-reduced-motion
+	@media (prefers-reduced-motion: reduce) {
+		&__load-button {
+			transition: none;
+		}
+
+		&__load-button:hover {
+			transform: none;
+		}
+	}
+}
+
+// Low specificity wrapper to avoid conflicts
+:where(.wp-block-designsetgo-map) {
+	// Inherit from parent if needed
+}
