@@ -59,6 +59,12 @@ phpunit.xml.cache
 *.swo
 *~
 .cache
+console.txt
+
+# Duplicate files (macOS Finder copies, etc.)
+* copy.*
+* copy [0-9].*
+* [0-9].*
 
 # Lint caches
 .eslintcache
