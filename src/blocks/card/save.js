@@ -178,6 +178,7 @@ export default function CardSave({ attributes }) {
 			alt: altText,
 			className: 'dsgo-card__image',
 			style: imageStyles,
+			loading: 'lazy',
 		};
 
 		// Hide decorative images from screen readers

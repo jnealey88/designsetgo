@@ -7,6 +7,8 @@ import {
 	useInnerBlocksProps,
 	RichText,
 	InspectorControls,
+	MediaUpload,
+	MediaUploadCheck,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -18,6 +20,7 @@ import {
 	RangeControl,
 	TextControl,
 	ToggleControl,
+	Button,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalDivider as Divider,
 } from '@wordpress/components';
@@ -350,6 +353,221 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
+
+					{/* Image Upload */}
+					{layoutPreset !== 'minimal' && showImage && (
+						<>
+							<Divider />
+							<p style={{ marginBottom: '8px', fontWeight: 600 }}>
+								{__('Image', 'designsetgo')}
+							</p>
+							<MediaUploadCheck>
+								<MediaUpload
+									onSelect={(media) => {
+										setAttributes({
+											imageId: media.id,
+											imageUrl: media.url,
+											imageAlt: media.alt || '',
+										});
+									}}
+									allowedTypes={['image']}
+									value={imageUrl}
+									render={({ open }) => (
+										<>
+											{imageUrl ? (
+												<>
+													<img
+														src={imageUrl}
+														alt={imageAlt}
+														style={{
+															width: '100%',
+															height: 'auto',
+															marginBottom: '8px',
+															borderRadius: '4px',
+														}}
+													/>
+													<div
+														style={{
+															display: 'flex',
+															gap: '8px',
+														}}
+													>
+														<Button
+															onClick={open}
+															variant="secondary"
+															style={{ flex: 1 }}
+														>
+															{__(
+																'Replace Image',
+																'designsetgo'
+															)}
+														</Button>
+														<Button
+															onClick={() =>
+																setAttributes({
+																	imageId: 0,
+																	imageUrl: '',
+																	imageAlt: '',
+																})
+															}
+															variant="secondary"
+															isDestructive
+														>
+															{__(
+																'Remove',
+																'designsetgo'
+															)}
+														</Button>
+													</div>
+												</>
+											) : (
+												<Button
+													onClick={open}
+													variant="secondary"
+													style={{
+														width: '100%',
+														justifyContent: 'center',
+													}}
+												>
+													{__(
+														'Select Image',
+														'designsetgo'
+													)}
+												</Button>
+											)}
+										</>
+									)}
+								/>
+							</MediaUploadCheck>
+
+							{imageUrl && (
+								<>
+									<TextControl
+										label={__('Alt Text', 'designsetgo')}
+										value={imageAlt}
+										onChange={(value) =>
+											setAttributes({ imageAlt: value })
+										}
+										help={__(
+											'Describe the image for accessibility.',
+											'designsetgo'
+										)}
+										__next40pxDefaultSize
+										__nextHasNoMarginBottom
+										style={{ marginTop: '12px' }}
+									/>
+
+									<SelectControl
+										label={__(
+											'Aspect Ratio',
+											'designsetgo'
+										)}
+										value={imageAspectRatio}
+										options={[
+											{
+												label: __('16:9', 'designsetgo'),
+												value: '16-9',
+											},
+											{
+												label: __('4:3', 'designsetgo'),
+												value: '4-3',
+											},
+											{
+												label: __('1:1', 'designsetgo'),
+												value: '1-1',
+											},
+											{
+												label: __(
+													'Original',
+													'designsetgo'
+												),
+												value: 'original',
+											},
+											{
+												label: __(
+													'Custom',
+													'designsetgo'
+												),
+												value: 'custom',
+											},
+										]}
+										onChange={(value) =>
+											setAttributes({
+												imageAspectRatio: value,
+											})
+										}
+										__next40pxDefaultSize
+										__nextHasNoMarginBottom
+									/>
+
+									{imageAspectRatio === 'custom' && (
+										<TextControl
+											label={__(
+												'Custom Aspect Ratio',
+												'designsetgo'
+											)}
+											value={imageCustomAspectRatio}
+											onChange={(value) =>
+												setAttributes({
+													imageCustomAspectRatio:
+														value,
+												})
+											}
+											placeholder="16 / 9"
+											help={__(
+												'E.g., "16 / 9" or "2 / 1"',
+												'designsetgo'
+											)}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
+										/>
+									)}
+
+									<SelectControl
+										label={__(
+											'Object Fit',
+											'designsetgo'
+										)}
+										value={imageObjectFit}
+										options={[
+											{
+												label: __(
+													'Cover',
+													'designsetgo'
+												),
+												value: 'cover',
+											},
+											{
+												label: __(
+													'Contain',
+													'designsetgo'
+												),
+												value: 'contain',
+											},
+											{
+												label: __('Fill', 'designsetgo'),
+												value: 'fill',
+											},
+											{
+												label: __(
+													'Scale Down',
+													'designsetgo'
+												),
+												value: 'scale-down',
+											},
+										]}
+										onChange={(value) =>
+											setAttributes({
+												imageObjectFit: value,
+											})
+										}
+										__next40pxDefaultSize
+										__nextHasNoMarginBottom
+									/>
+								</>
+							)}
+						</>
+					)}
 
 					{layoutPreset === 'background' && (
 						<>
