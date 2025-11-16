@@ -86,9 +86,10 @@ public function defer_noncritical_css( $html, $handle, $href, $media ) {
     foreach ( $noncritical_blocks as $block ) {
         if ( strpos( $handle, $block ) !== false ) {
             // Use media="print" trick for defer
+            // Note: WordPress uses double quotes by default
             return str_replace(
-                "media='all'",
-                "media='print' onload=\"this.media='all'\"",
+                'media="all"',
+                'media="print" onload="this.media=\'all\'; this.onload=null;"',
                 $html
             );
         }
@@ -120,11 +121,44 @@ public function inline_critical_css() {
 add_action( 'wp_head', array( $this, 'inline_critical_css' ), 1 );
 ```
 
+**⚠️ IMPORTANT: Prevent Duplicate CSS Loading**
+
+When inlining critical CSS, you MUST dequeue the original block stylesheets to avoid loading the same CSS twice:
+
+```php
+/**
+ * Dequeue block stylesheets for critical blocks whose CSS is inlined.
+ *
+ * Prevents duplicate CSS loading - WordPress enqueues block CSS via block.json,
+ * but we're inlining critical CSS. This method dequeues the original stylesheets.
+ *
+ * Runs at priority 20 to ensure it runs after block styles are enqueued.
+ */
+public function dequeue_inlined_css() {
+    // Only on frontend and when our blocks are present
+    if ( is_admin() || ! $this->has_designsetgo_blocks() ) {
+        return;
+    }
+
+    // Critical blocks whose CSS is inlined (must match inline_critical_css)
+    $critical_blocks = array( 'grid', 'row', 'icon', 'pill' );
+
+    foreach ( $critical_blocks as $block ) {
+        // Dequeue the block's style-index.css that WordPress automatically enqueues
+        // Handle names match WordPress's automatic style handle generation
+        wp_dequeue_style( "designsetgo-{$block}-style" );
+        wp_deregister_style( "designsetgo-{$block}-style" );
+    }
+}
+add_action( 'wp_enqueue_scripts', array( $this, 'dequeue_inlined_css' ), 20 );
+```
+
 ### Option 3: Hybrid Approach (Best)
 Combine both strategies:
-1. **Inline critical CSS** for above-the-fold blocks (Section, Grid, Row, Card)
-2. **Defer non-critical CSS** using media attribute trick
-3. **Keep conditional loading** for unused blocks
+1. **Inline critical CSS** for above-the-fold blocks (Grid, Row, Icon, Pill)
+2. **Dequeue original stylesheets** for inlined blocks to prevent duplicate CSS
+3. **Defer non-critical CSS** using media attribute trick
+4. **Keep conditional loading** for unused blocks
 
 ## Tradeoffs
 
@@ -157,10 +191,12 @@ Combine both strategies:
 
 1. Add `style_loader_tag` filter to defer non-critical blocks
 2. Add critical CSS inlining for top blocks
-3. Test with PageSpeed Insights
-4. Verify no FOUC issues
-5. Test on slow 3G connection
-6. A/B test performance impact
+3. Add dequeue method to prevent duplicate CSS loading (priority 20)
+4. Test with PageSpeed Insights
+5. Verify no FOUC issues
+6. Verify no duplicate CSS in page source
+7. Test on slow 3G connection
+8. A/B test performance impact
 
 ## Expected Impact
 
@@ -171,8 +207,10 @@ Combine both strategies:
 ## Testing Checklist
 
 - [ ] No FOUC (flash of unstyled content)
+- [ ] No duplicate CSS in page source (check for both inlined and linked styles)
 - [ ] Critical blocks render immediately
 - [ ] Non-critical blocks load without visual issues
+- [ ] Noscript fallback works for deferred CSS
 - [ ] Caching works correctly
 - [ ] Works with FSE themes
 - [ ] Works on slow connections

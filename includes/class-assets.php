@@ -39,6 +39,7 @@ class Assets {
 		// Performance: CSS loading optimization.
 		add_filter( 'style_loader_tag', array( $this, 'optimize_css_loading' ), 10, 4 );
 		add_action( 'wp_head', array( $this, 'inline_critical_css' ), 1 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'dequeue_inlined_css' ), 20 );
 	}
 
 	/**
@@ -343,20 +344,38 @@ class Assets {
 			if ( strpos( $handle, $block ) !== false ) {
 				// Defer CSS using media attribute trick.
 				// Tells browser to load CSS async, then switch to 'all' media.
-				$html = str_replace(
-					"media='all'",
-					"media='print' onload=\"this.media='all'; this.onload=null;\"",
-					$html
-				);
+				// Handle both double quotes (WordPress default) and single quotes.
+				if ( strpos( $html, 'media="all"' ) !== false ) {
+					$html = str_replace(
+						'media="all"',
+						'media="print" onload="this.media=\'all\'; this.onload=null;"',
+						$html
+					);
 
-				// Add noscript fallback for users without JavaScript.
-				$noscript = '<noscript>' . str_replace(
-					"media='print' onload=\"this.media='all'; this.onload=null;\"",
-					"media='all'",
-					$html
-				) . '</noscript>';
+					// Add noscript fallback for users without JavaScript.
+					$noscript = '<noscript>' . str_replace(
+						'media="print" onload="this.media=\'all\'; this.onload=null;"',
+						'media="all"',
+						$html
+					) . '</noscript>';
 
-				return $html . $noscript;
+					return $html . $noscript;
+				} elseif ( strpos( $html, "media='all'" ) !== false ) {
+					$html = str_replace(
+						"media='all'",
+						"media='print' onload=\"this.media='all'; this.onload=null;\"",
+						$html
+					);
+
+					// Add noscript fallback for users without JavaScript.
+					$noscript = '<noscript>' . str_replace(
+						"media='print' onload=\"this.media='all'; this.onload=null;\"",
+						"media='all'",
+						$html
+					) . '</noscript>';
+
+					return $html . $noscript;
+				}
 			}
 		}
 
@@ -407,6 +426,32 @@ class Assets {
 			// Output raw CSS (safe - comes from our build files, not user input).
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<style id="designsetgo-critical-css">' . $critical_css . '</style>' . "\n";
+		}
+	}
+
+	/**
+	 * Dequeue block stylesheets for critical blocks whose CSS is inlined.
+	 *
+	 * Prevents duplicate CSS loading - WordPress enqueues block CSS via block.json,
+	 * but we're inlining critical CSS. This method dequeues the original stylesheets
+	 * to avoid loading the same CSS twice.
+	 *
+	 * Runs at priority 20 to ensure it runs after block styles are enqueued.
+	 */
+	public function dequeue_inlined_css() {
+		// Only on frontend and when our blocks are present.
+		if ( is_admin() || ! $this->has_designsetgo_blocks() ) {
+			return;
+		}
+
+		// Critical blocks whose CSS is inlined (must match inline_critical_css).
+		$critical_blocks = array( 'grid', 'row', 'icon', 'pill' );
+
+		foreach ( $critical_blocks as $block ) {
+			// Dequeue the block's style-index.css that WordPress automatically enqueues.
+			// Handle names match WordPress's automatic style handle generation.
+			wp_dequeue_style( "designsetgo-{$block}-style" );
+			wp_deregister_style( "designsetgo-{$block}-style" );
 		}
 	}
 
