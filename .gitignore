@@ -7,8 +7,9 @@
 composer.lock
 
 # Build output
-# NOTE: /build must be committed for WordPress.org distribution
-# Users install from .org and don't have node/npm to build
+# Build files are generated fresh by GitHub Actions during deployment
+# .distignore ensures /build/ goes to WordPress.org SVN (not /src/)
+/build
 /*.zip
 /deployment-package
 plugincheck.md

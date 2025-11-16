@@ -29,7 +29,7 @@
 			"gradients": true,
 			"__experimentalDefaultControls": {
 				"background": true,
-				"text": false
+				"text": true
 			}
 		},
 		"typography": {
