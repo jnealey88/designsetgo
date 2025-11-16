@@ -33,6 +33,10 @@ class DSGSlider {
 		this.cloneCount = 0;
 		this.realSlideCount = this.originalSlides.length;
 
+		// Performance: Cache slide dimensions (updated on resize only)
+		this.cachedSlideWidth = 0;
+		this.cachedGap = 0;
+
 		// Setup infinite loop clones if needed
 		if (this.config.loop && this.config.effect === 'slide') {
 			this.setupInfiniteLoop();
@@ -130,6 +134,9 @@ class DSGSlider {
 		// Add screen reader announcement region
 		this.buildAnnouncementRegion();
 
+		// Performance: Calculate and cache dimensions once
+		this.updateDimensions();
+
 		// Set initial slide
 		this.goToSlide(this.currentIndex, false);
 
@@ -149,6 +156,21 @@ class DSGSlider {
 
 		// Check reduced motion preference
 		this.respectReducedMotion();
+	}
+
+	/**
+	 * Update cached slide dimensions
+	 * Performance optimization: Only called on init and resize
+	 */
+	updateDimensions() {
+		if (this.slides.length === 0) {
+			return;
+		}
+
+		// Batch read all layout properties at once (prevents layout thrashing)
+		this.cachedSlideWidth = this.slides[0].offsetWidth;
+		this.cachedGap =
+			parseFloat(window.getComputedStyle(this.track).gap) || 0;
 	}
 
 	buildArrows() {
@@ -330,16 +352,18 @@ class DSGSlider {
 	}
 
 	applySlideTransition(animate = true) {
-		const slideWidth = this.slides[0].offsetWidth;
-		const gap = parseFloat(window.getComputedStyle(this.track).gap) || 0;
-		const offset = -(this.currentIndex * (slideWidth + gap));
+		// Performance: Use cached dimensions instead of reading layout
+		const offset = -(
+			this.currentIndex *
+			(this.cachedSlideWidth + this.cachedGap)
+		);
 
 		// Apply transition
 		if (!animate) {
 			this.track.style.transition = 'none';
 			this.track.style.transform = `translateX(${offset}px)`;
-			// eslint-disable-next-line no-unused-expressions
-			this.track.offsetHeight; // Force reflow
+			// Force browser to apply styles immediately
+			void this.track.offsetHeight;
 			this.track.style.transition = '';
 		} else {
 			this.track.style.transform = `translateX(${offset}px)`;
@@ -374,10 +398,14 @@ class DSGSlider {
 
 					if (needsJump) {
 						this.currentIndex = newIndex;
+						const jumpOffset = -(
+							newIndex *
+							(this.cachedSlideWidth + this.cachedGap)
+						);
 						this.track.style.transition = 'none';
-						this.track.style.transform = `translateX(${-(newIndex * (slideWidth + gap))}px)`;
-						// eslint-disable-next-line no-unused-expressions
-						this.track.offsetHeight; // Force reflow
+						this.track.style.transform = `translateX(${jumpOffset}px)`;
+						// Force browser to apply styles immediately
+						void this.track.offsetHeight;
 						this.track.style.transition = '';
 
 						// Update navigation after jump
@@ -607,6 +635,8 @@ class DSGSlider {
 			clearTimeout(resizeTimer);
 			resizeTimer = setTimeout(() => {
 				if (!this.isDestroyed) {
+					// Performance: Recalculate dimensions on resize
+					this.updateDimensions();
 					this.goToSlide(this.currentIndex, false);
 				}
 			}, 250);

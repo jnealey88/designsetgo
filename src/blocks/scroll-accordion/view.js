@@ -44,13 +44,26 @@ function initScrollAccordions() {
 			return;
 		}
 
+		// Performance: Cache viewport dimensions (updated on resize only)
+		let viewportHeight = window.innerHeight;
+		let viewportCenter = viewportHeight / 2;
+
+		/**
+		 * Update cached viewport dimensions
+		 * Performance optimization: Only called on resize
+		 */
+		function updateViewportDimensions() {
+			viewportHeight = window.innerHeight;
+			viewportCenter = viewportHeight / 2;
+		}
+
 		// Track scroll position and apply scaling
 		let ticking = false;
 
 		function updateCards() {
-			const viewportCenter = window.innerHeight / 2;
-
+			// Performance: Use cached viewport dimensions
 			items.forEach((item) => {
+				// getBoundingClientRect is necessary here as positions change on scroll
 				const itemRect = item.getBoundingClientRect();
 
 				// Calculate how far the item has scrolled relative to viewport center
@@ -62,7 +75,7 @@ function initScrollAccordions() {
 					// Item is below center - scale based on distance
 					const scaleValue = Math.max(
 						0.85,
-						1 - (distanceFromCenter / window.innerHeight) * 0.3
+						1 - (distanceFromCenter / viewportHeight) * 0.3
 					);
 					item.style.transform = `scale(${scaleValue})`;
 				} else {
@@ -82,9 +95,20 @@ function initScrollAccordions() {
 			}
 		}
 
+		// Handle resize with dimension recalculation
+		let resizeTimer;
+		function handleResize() {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(() => {
+				// Performance: Recalculate viewport dimensions on resize
+				updateViewportDimensions();
+				requestTick();
+			}, 150);
+		}
+
 		// Listen for scroll and resize events
 		window.addEventListener('scroll', requestTick, { passive: true });
-		window.addEventListener('resize', requestTick, { passive: true });
+		window.addEventListener('resize', handleResize, { passive: true });
 
 		// Initial check
 		updateCards();
