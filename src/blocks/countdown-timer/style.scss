@@ -5,9 +5,23 @@
 
 .dsgo-countdown-timer {
 	display: flex;
+	// Default to center, but allow text-align to override
 	justify-content: center;
 	align-items: center;
 	max-width: 100%; // Prevent overflow in containers and on small screens
+
+	// Text alignment support - respect WordPress textAlign attribute
+	&.has-text-align-left {
+		justify-content: flex-start;
+	}
+
+	&.has-text-align-center {
+		justify-content: center;
+	}
+
+	&.has-text-align-right {
+		justify-content: flex-end;
+	}
 
 	// Wide alignment - use negative margins to extend to wide width
 	&.alignwide {
@@ -26,7 +40,8 @@
 	&__units {
 		display: flex;
 		flex-wrap: wrap;
-		justify-content: center;
+		// Inherit alignment from parent
+		justify-content: inherit;
 		align-items: center;
 	}
 
