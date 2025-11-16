@@ -56,11 +56,6 @@
 		&__container > .wp-block-designsetgo-flip-card-back {
 			box-sizing: border-box;
 			position: relative;
-			// CRITICAL: Override frontend opacity to show both cards in editor
-			opacity: 1 !important;
-			transform: none !important;
-			pointer-events: auto !important;
-			z-index: auto !important;
 
 			// Add label in editor
 			&::before {
