@@ -19,10 +19,9 @@
 	/**
 	 * Background overlay
 	 * Only rendered when overlay color is set
+	 * Note: No position:relative needed - item already has position:sticky
 	 */
 	&--has-overlay {
-		position: relative;
-
 		&::before {
 			content: '';
 			position: absolute;

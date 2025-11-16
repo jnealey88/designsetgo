@@ -29,30 +29,54 @@ function initScrollMarquees() {
 			return;
 		}
 
-		// Calculate segment width for each row (for infinite loop)
-		const rowData = [];
-		rows.forEach((row) => {
-			const track = row.querySelector('.dsgo-scroll-marquee__track');
-			const segment = track?.querySelector(
-				'.dsgo-scroll-marquee__track-segment'
-			);
-			if (segment) {
-				// Get the width of one segment (one set of images)
-				const segmentWidth = segment.offsetWidth;
-				// Get gap from track (gap is between segments)
-				const gapStyle = window.getComputedStyle(track).gap || '20px';
-				const gap = parseFloat(gapStyle);
+		// Performance: Cache row data (segment widths and gaps)
+		let rowData = [];
 
-				// For seamless loop: we have 6 segments, loop every 1 segment
-				// This ensures we always have enough duplicates visible
-				rowData.push({
-					segmentWidth,
-					gap,
-				});
-			} else {
-				rowData.push({ segmentWidth: 0, gap: 0 });
-			}
-		});
+		/**
+		 * Calculate and cache dimensions for all rows
+		 * Performance optimization: Batches all layout reads together
+		 */
+		function calculateDimensions() {
+			// Batch all layout reads (prevents layout thrashing)
+			const newRowData = [];
+
+			rows.forEach((row) => {
+				const track = row.querySelector('.dsgo-scroll-marquee__track');
+				const segment = track?.querySelector(
+					'.dsgo-scroll-marquee__track-segment'
+				);
+
+				if (segment && track) {
+					// Read all layout properties at once
+					const segmentWidth = segment.offsetWidth;
+					const gapStyle = window.getComputedStyle(track).gap || '20px';
+					const gap = parseFloat(gapStyle);
+
+					newRowData.push({
+						segmentWidth,
+						gap,
+					});
+				} else {
+					newRowData.push({ segmentWidth: 0, gap: 0 });
+				}
+			});
+
+			// Update cached data after all reads are complete
+			rowData = newRowData;
+		}
+
+		// Initial dimension calculation
+		calculateDimensions();
+
+		// Recalculate on resize (debounced)
+		let resizeTimer;
+		const handleResize = () => {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(() => {
+				calculateDimensions();
+			}, 250);
+		};
+		window.addEventListener('resize', handleResize, { passive: true });
 
 		let isInViewport = false;
 
