@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,19 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.1.3 - 2025-11-16 =
+**Performance Improvements:**
+* Performance: Major CSS loading strategy optimization - improved enqueue logic and selective loading (#93)
+* Performance: Fixed forced reflows in JavaScript and optimized asset loading strategy (#91)
+* Performance: Eliminated layout thrashing by batching DOM reads/writes and deferring non-critical operations
+
+**Bug Fixes:**
+* Fix: Flip card back panel now correctly displays background color and text in editor (#94)
+* Fix: Added alignment options to countdown timer block for better layout control (#95)
+
+**Documentation:**
+* Docs: Updated WordPress.org screenshots to reflect current plugin features
 
 = 1.1.2 - 2025-11-15 =
 **New Features:**

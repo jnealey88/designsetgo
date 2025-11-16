@@ -22,6 +22,7 @@
 	 * Note: No position:relative needed - item already has position:sticky
 	 */
 	&--has-overlay {
+
 		&::before {
 			content: '';
 			position: absolute;

@@ -406,8 +406,10 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 															onClick={() =>
 																setAttributes({
 																	imageId: 0,
-																	imageUrl: '',
-																	imageAlt: '',
+																	imageUrl:
+																		'',
+																	imageAlt:
+																		'',
 																})
 															}
 															variant="secondary"
@@ -426,7 +428,8 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 													variant="secondary"
 													style={{
 														width: '100%',
-														justifyContent: 'center',
+														justifyContent:
+															'center',
 													}}
 												>
 													{__(
@@ -465,7 +468,10 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 										value={imageAspectRatio}
 										options={[
 											{
-												label: __('16:9', 'designsetgo'),
+												label: __(
+													'16:9',
+													'designsetgo'
+												),
 												value: '16-9',
 											},
 											{
@@ -524,10 +530,7 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 									)}
 
 									<SelectControl
-										label={__(
-											'Object Fit',
-											'designsetgo'
-										)}
+										label={__('Object Fit', 'designsetgo')}
 										value={imageObjectFit}
 										options={[
 											{
@@ -545,7 +548,10 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 												value: 'contain',
 											},
 											{
-												label: __('Fill', 'designsetgo'),
+												label: __(
+													'Fill',
+													'designsetgo'
+												),
 												value: 'fill',
 											},
 											{

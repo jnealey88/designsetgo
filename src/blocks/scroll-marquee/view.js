@@ -49,7 +49,8 @@ function initScrollMarquees() {
 				if (segment && track) {
 					// Read all layout properties at once
 					const segmentWidth = segment.offsetWidth;
-					const gapStyle = window.getComputedStyle(track).gap || '20px';
+					const gapStyle =
+						window.getComputedStyle(track).gap || '20px';
 					const gap = parseFloat(gapStyle);
 
 					newRowData.push({
