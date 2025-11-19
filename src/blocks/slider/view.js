@@ -755,6 +755,8 @@ const sliderTimeouts = new WeakMap();
  *
  * @param {HTMLElement} slider - The slider element to check
  * @return {Object} Object containing images array and loading state
+ * @return {HTMLImageElement[]} return.images - Array of image elements in the slider
+ * @return {boolean} return.allLoaded - Whether all images are loaded
  */
 function getImageLoadState(slider) {
 	const images = Array.from(slider.querySelectorAll('img'));
@@ -825,6 +827,11 @@ function initializeSliders() {
 					// This prevents a race condition where the image loads after the
 					// complete check but before the listener is attached
 					if (img.complete) {
+						// Remove listeners to prevent double-counting
+						// If image loaded after listener attachment, both the listener
+						// and this check would increment loadedCount for the same image
+						img.removeEventListener('load', onImageLoad);
+						img.removeEventListener('error', onImageLoad);
 						loadedCount++;
 					}
 				}
