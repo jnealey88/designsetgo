@@ -11,12 +11,11 @@
 /**
  * Core Sticky Header Support
  * Only applies when enabled globally (body class) OR per-block (template part class)
- * Targets template parts that contain navigation or are headers
+ * Targets semantic headers or explicitly enabled template parts
+ * Note: Excludes footer elements to prevent unintended stickiness
  */
-body:not(.block-editor-page).dsgo-sticky-header-enabled .wp-block-template-part:first-of-type,
+body:not(.block-editor-page).dsgo-sticky-header-enabled .wp-block-template-part:not(footer):first-of-type,
 body:not(.block-editor-page).dsgo-sticky-header-enabled header.wp-block-template-part,
-body:not(.block-editor-page).dsgo-sticky-header-enabled .wp-block-template-part:has(.wp-block-navigation),
-body:not(.block-editor-page).dsgo-sticky-header-enabled .wp-block-template-part:has(.is-position-sticky),
 body:not(.block-editor-page) .wp-block-template-part.dsgo-sticky-header-enabled {
 	position: sticky;
 	top: 0;
@@ -29,20 +28,16 @@ body:not(.block-editor-page) .wp-block-template-part.dsgo-sticky-header-enabled 
  * Account for WordPress admin bar when user is logged in
  */
 /* stylelint-disable selector-class-pattern */
-body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:first-of-type,
+body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:not(footer):first-of-type,
 body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled header.wp-block-template-part,
-body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:has(.wp-block-navigation),
-body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:has(.is-position-sticky),
 body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-header-enabled {
 	top: 32px; /* WordPress admin bar height on desktop */
 }
 
 @media screen and (max-width: 782px) {
 
-	body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:first-of-type,
+	body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:not(footer):first-of-type,
 	body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled header.wp-block-template-part,
-	body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:has(.wp-block-navigation),
-	body:not(.block-editor-page).admin-bar.dsgo-sticky-header-enabled .wp-block-template-part:has(.is-position-sticky),
 	body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-header-enabled {
 		top: 46px; /* WordPress admin bar height on mobile */
 	}
