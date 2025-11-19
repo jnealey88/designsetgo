@@ -757,13 +757,11 @@ const sliderTimeouts = new WeakMap();
  * @return {Object} Object containing images array and loading state
  */
 function getImageLoadState(slider) {
-	const images = slider.querySelectorAll('img');
+	const images = Array.from(slider.querySelectorAll('img'));
 	const allLoaded =
 		images.length === 0 ||
-		Array.from(images).every(
-			(img) => img.complete && img.naturalHeight !== 0
-		);
-	return { images: Array.from(images), allLoaded };
+		images.every((img) => img.complete && img.naturalHeight !== 0);
+	return { images, allLoaded };
 }
 
 /**
