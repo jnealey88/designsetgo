@@ -820,6 +820,8 @@ function initializeSliders() {
 				if (img.complete) {
 					loadedCount++;
 				} else {
+					// Attach both load and error listeners to ensure slider initializes
+					// even if images fail to load (broken images shouldn't prevent initialization)
 					img.addEventListener('load', onImageLoad, { once: true });
 					img.addEventListener('error', onImageLoad, { once: true });
 
