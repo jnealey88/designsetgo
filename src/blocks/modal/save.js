@@ -35,9 +35,8 @@ export default function save({ attributes }) {
 		id: modalId,
 		role: 'dialog',
 		'aria-modal': 'true',
-		// Use aria-labelledby if title element exists, with aria-label as fallback
-		'aria-labelledby': `${modalId}-title`,
-		'aria-label': __('Modal', 'designsetgo'), // Fallback if title element is removed
+		// Use aria-label for accessibility; do not set aria-labelledby unless title element is guaranteed
+		'aria-label': attributes.modalLabel ? attributes.modalLabel : __('Modal', 'designsetgo'),
 		'aria-hidden': 'true',
 		'data-dsgo-modal': 'true',
 		'data-modal-id': modalId,
