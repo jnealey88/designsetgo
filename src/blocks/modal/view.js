@@ -26,6 +26,7 @@
 			this.isOpen = false;
 			this.previouslyFocusedElement = null;
 			this.focusableElements = [];
+			this.focusableElementsCached = false;
 			this.scrollPosition = 0;
 
 			// Settings from data attributes
@@ -72,7 +73,10 @@
 			// Bind event handlers
 			this.bindEvents();
 
-			// Update focusable elements
+			// Set up MutationObserver to invalidate focusable elements cache when content changes
+			this.setupContentObserver();
+
+			// Update focusable elements initially
 			this.updateFocusableElements();
 		}
 
@@ -101,7 +105,7 @@
 				this.backdrop.addEventListener('click', this.handleBackdropClick);
 			}
 
-			// ESC key
+			// Define ESC key handler (will be attached/detached on modal open/close)
 			if (this.settings.closeOnEsc) {
 				this.handleEscKey = (e) => {
 					if (e.key === 'Escape' && this.isOpen) {
@@ -109,10 +113,9 @@
 						this.close();
 					}
 				};
-				document.addEventListener('keydown', this.handleEscKey);
 			}
 
-			// Focus trap
+			// Define focus trap handler (will be attached/detached on modal open/close)
 			this.handleFocusTrap = (e) => {
 				if (!this.isOpen || e.key !== 'Tab') {
 					return;
@@ -142,13 +145,60 @@
 					}
 				}
 			};
-			document.addEventListener('keydown', this.handleFocusTrap);
 		}
 
 		/**
-		 * Update list of focusable elements
+		 * Attach global keyboard listeners
+		 */
+		attachKeyboardListeners() {
+			if (this.handleEscKey) {
+				document.addEventListener('keydown', this.handleEscKey);
+			}
+			if (this.handleFocusTrap) {
+				document.addEventListener('keydown', this.handleFocusTrap);
+			}
+		}
+
+		/**
+		 * Detach global keyboard listeners
+		 */
+		detachKeyboardListeners() {
+			if (this.handleEscKey) {
+				document.removeEventListener('keydown', this.handleEscKey);
+			}
+			if (this.handleFocusTrap) {
+				document.removeEventListener('keydown', this.handleFocusTrap);
+			}
+		}
+
+		/**
+		 * Set up MutationObserver to watch for content changes
+		 */
+		setupContentObserver() {
+			if (!this.content) return;
+
+			// Invalidate cache when modal content changes
+			this.contentObserver = new MutationObserver(() => {
+				this.focusableElementsCached = false;
+			});
+
+			this.contentObserver.observe(this.content, {
+				childList: true,
+				subtree: true,
+				attributes: true,
+				attributeFilter: ['disabled', 'tabindex', 'aria-hidden'],
+			});
+		}
+
+		/**
+		 * Update list of focusable elements (with caching)
 		 */
 		updateFocusableElements() {
+			// Use cached elements if available and modal content hasn't changed
+			if (this.focusableElementsCached && this.focusableElements.length > 0) {
+				return;
+			}
+
 			const focusableSelectors = [
 				'a[href]',
 				'button:not([disabled])',
@@ -163,6 +213,8 @@
 			).filter((el) => {
 				return el.offsetParent !== null && !el.hasAttribute('aria-hidden');
 			});
+
+			this.focusableElementsCached = true;
 		}
 
 		/**
@@ -188,6 +240,9 @@
 
 			// Update focusable elements
 			this.updateFocusableElements();
+
+			// Attach keyboard listeners (ESC and Tab)
+			this.attachKeyboardListeners();
 
 			// Disable body scroll
 			if (this.settings.disableBodyScroll) {
@@ -300,6 +355,9 @@
 			this.modal.setAttribute('aria-hidden', 'true');
 			this.modal.classList.remove('dsgo-modal--closing');
 
+			// Detach keyboard listeners (ESC and Tab)
+			this.detachKeyboardListeners();
+
 			// Enable body scroll
 			if (this.settings.disableBodyScroll) {
 				this.enableBodyScroll();
@@ -357,11 +415,14 @@
 			if (this.backdrop && this.handleBackdropClick) {
 				this.backdrop.removeEventListener('click', this.handleBackdropClick);
 			}
-			if (this.handleEscKey) {
-				document.removeEventListener('keydown', this.handleEscKey);
-			}
-			if (this.handleFocusTrap) {
-				document.removeEventListener('keydown', this.handleFocusTrap);
+
+			// Ensure keyboard listeners are removed
+			this.detachKeyboardListeners();
+
+			// Disconnect MutationObserver to prevent memory leaks
+			if (this.contentObserver) {
+				this.contentObserver.disconnect();
+				this.contentObserver = null;
 			}
 
 			// Clear animation timeout to prevent memory leaks

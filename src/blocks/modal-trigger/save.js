@@ -38,6 +38,9 @@ export default function save({ attributes }) {
 		style: { display: width === 'full' ? 'block' : 'inline-block' },
 	});
 
+	// Get icon element with fallback
+	const iconElement = icon ? getIcon(icon) : null;
+
 	return (
 		<div {...blockProps}>
 			<button
@@ -46,12 +49,12 @@ export default function save({ attributes }) {
 				style={buttonStyles}
 				type="button"
 			>
-				{icon && iconPosition === 'start' && (
+				{iconElement && iconPosition === 'start' && (
 					<span
 						className="dsgo-modal-trigger__icon"
 						style={iconWrapperStyles}
 					>
-						{getIcon(icon)}
+						{iconElement}
 					</span>
 				)}
 				<RichText.Content
@@ -59,12 +62,12 @@ export default function save({ attributes }) {
 					value={text}
 					className="dsgo-modal-trigger__text"
 				/>
-				{icon && iconPosition === 'end' && (
+				{iconElement && iconPosition === 'end' && (
 					<span
 						className="dsgo-modal-trigger__icon"
 						style={iconWrapperStyles}
 					>
-						{getIcon(icon)}
+						{iconElement}
 					</span>
 				)}
 			</button>

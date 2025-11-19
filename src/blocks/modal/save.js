@@ -6,6 +6,7 @@
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+import { transferStylesToContent } from './utils/style-transfer';
 
 export default function save({ attributes }) {
 	const {
@@ -86,35 +87,14 @@ export default function save({ attributes }) {
 		</button>
 	) : null;
 
-	// Transfer ALL block support styles from wrapper to content (background, color, border, etc.)
-	const contentStyle = {
-		// Spread all block support styles first
-		...(blockProps.style || {}),
-		// Then override with modal-specific dimensions
-		width,
-		maxWidth,
-		height: height !== 'auto' ? height : undefined,
-		maxHeight: height !== 'auto' ? maxHeight : undefined,
-	};
-
-	// Remove styles and color classes from wrapper since we're applying them to content
-	const { style: _removedStyle, className, ...wrapperProps } = blockProps;
-
-	// Extract WordPress block support classes that should be transferred to content
-	const blockSupportClasses = className
-		.split(' ')
-		.filter(cls => cls.startsWith('has-') && cls !== 'has-inside-close-button');
-
-	// Filter out WordPress block support classes from wrapper
-	const filteredClassName = className
-		.split(' ')
-		.filter(cls => !cls.startsWith('has-') || cls === 'has-inside-close-button')
-		.join(' ');
-
-	wrapperProps.className = filteredClassName;
+	// Transfer block support styles from wrapper to content using shared utility
+	const { contentStyle, wrapperProps, contentClasses } = transferStylesToContent(
+		blockProps,
+		{ width, maxWidth, height, maxHeight }
+	);
 
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: ['dsgo-modal__content', ...blockSupportClasses].join(' '),
+		className: ['dsgo-modal__content', ...contentClasses].join(' '),
 		style: contentStyle,
 	});
 

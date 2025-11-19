@@ -17,7 +17,7 @@ import { useSelect } from '@wordpress/data';
 import { getIcon } from '../icon/utils/svg-icons';
 import { IconPicker } from '../icon/components/IconPicker';
 
-export default function ModalTriggerEdit({ attributes, setAttributes }) {
+export default function ModalTriggerEdit({ attributes, setAttributes, clientId }) {
 	const {
 		targetModalId,
 		text,
@@ -30,7 +30,7 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 	} = attributes;
 
 	// Get all modal blocks on the current page
-	// Optimized to only re-run when blocks actually change
+	// Only re-run when blocks actually change (not on every selection change)
 	const modals = useSelect((select) => {
 		const { getBlocks } = select('core/block-editor');
 		const allBlocks = getBlocks();
@@ -53,7 +53,7 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 		};
 
 		return findModals(allBlocks);
-	}, []); // Empty dependency array - will re-run when editor state changes
+	}); // No dependency array - useSelect optimizes to only re-run when returned data changes
 
 	// Create options for the select control
 	const modalOptions = [

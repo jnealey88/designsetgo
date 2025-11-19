@@ -4,6 +4,8 @@
  * @package DesignSetGo
  */
 
+@use '../../styles/variables' as *;
+
 // Modal Container
 .dsgo-modal {
 	position: fixed;
@@ -11,7 +13,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	z-index: 2147483647; // Maximum z-index value (32-bit signed integer max) - ensures modal appears above everything including sticky elements
+	z-index: $z-index-modal;
 	display: none;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
@@ -31,7 +33,7 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		z-index: 1;
+		z-index: 1; // Relative z-index within modal container (modal is z-index: 1050 globally)
 		transition: opacity 0.3s ease;
 	}
 
