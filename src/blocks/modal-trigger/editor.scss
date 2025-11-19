@@ -1,0 +1,13 @@
+/**
+ * Modal Trigger Block - Editor Styles
+ *
+ * @package DesignSetGo
+ */
+
+.dsgo-modal-trigger {
+	// Editor-specific styles
+	&__text {
+		cursor: pointer;
+		user-select: none; // Prevent text selection in editor
+	}
+}

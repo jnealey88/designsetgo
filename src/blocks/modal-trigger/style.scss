@@ -1,0 +1,150 @@
+/**
+ * Modal Trigger Block - Frontend Styles
+ *
+ * @package DesignSetGo
+ */
+
+.dsgo-modal-trigger {
+	// Block wrapper styles - display is set via inline styles
+	// (inline-block for auto width, block for full width)
+
+	&__button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		padding: 12px 24px;
+		border: 2px solid transparent;
+		border-radius: 4px;
+		background: #0073aa;
+		color: #fff;
+		font-size: 16px;
+		font-weight: 500;
+		line-height: 1.5;
+		text-decoration: none;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		user-select: none;
+		width: 100%; // Fill wrapper
+		font-family: inherit;
+
+		&:hover,
+		&:focus {
+			background: #005a87;
+			transform: translateY(-1px);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+		}
+
+		&:focus {
+			outline: none; // Focus is handled by the clickable element inside
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+	}
+
+	&__text {
+		display: inline-block;
+		cursor: pointer;
+		user-select: none; // Prevent text selection and I-beam cursor
+	}
+
+	&__icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+
+		svg {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	// Fill style (default)
+	&--fill &__button {
+		background: var(--wp--preset--color--primary, #0073aa);
+		color: #fff;
+		border-color: transparent;
+
+		&:hover,
+		&:focus {
+			background: var(--wp--preset--color--primary-dark, #005a87);
+			color: #fff;
+		}
+	}
+
+	// Outline style
+	&--outline &__button {
+		background: transparent;
+		color: var(--wp--preset--color--primary, #0073aa);
+		border-color: currentColor;
+
+		&:hover,
+		&:focus {
+			background: var(--wp--preset--color--primary, #0073aa);
+			color: #fff;
+		}
+	}
+
+	// Link style
+	&--link &__button {
+		background: transparent;
+		border-color: transparent;
+		color: var(--wp--preset--color--primary, #0073aa);
+		padding: 4px 8px;
+		text-decoration: underline;
+
+		&:hover,
+		&:focus {
+			background: transparent;
+			color: var(--wp--preset--color--primary-dark, #005a87);
+			transform: none;
+			box-shadow: none;
+		}
+	}
+
+	// Width variations
+	&--width-auto &__button {
+		width: auto;
+	}
+
+	&--width-full &__button {
+		width: 100%;
+		display: flex;
+	}
+}
+
+// Reduced Motion Support
+@media (prefers-reduced-motion: reduce) {
+	.dsgo-modal-trigger__button {
+		transition: none !important;
+
+		&:hover,
+		&:focus {
+			transform: none !important;
+		}
+	}
+}
+
+// Responsive Adjustments
+@media (max-width: 768px) {
+	.dsgo-modal-trigger__button {
+		padding: 10px 20px;
+		font-size: 15px;
+	}
+}
+
+// High Contrast Mode Support
+@media (prefers-contrast: high) {
+	.dsgo-modal-trigger__button {
+		border-width: 2px;
+		border-style: solid;
+	}
+
+	.dsgo-modal-trigger--fill .dsgo-modal-trigger__button {
+		border-color: currentColor;
+	}
+}
