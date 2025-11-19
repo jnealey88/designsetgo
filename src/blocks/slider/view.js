@@ -747,12 +747,88 @@ class DSGSlider {
 // Store slider instances for cleanup
 const sliderInstances = new WeakMap();
 
-// Initialize all sliders on page load
-document.addEventListener('DOMContentLoaded', () => {
+/**
+ * Check if all images in a slider are loaded
+ */
+function areImagesLoaded(slider) {
+	const images = slider.querySelectorAll('img');
+	if (images.length === 0) {
+		return true; // No images, consider loaded
+	}
+	return Array.from(images).every((img) => img.complete && img.naturalHeight !== 0);
+}
+
+/**
+ * Initialize a single slider instance
+ */
+function initializeSlider(slider) {
+	// Avoid double initialization
+	if (sliderInstances.has(slider)) {
+		return;
+	}
+
+	const instance = new DSGSlider(slider);
+	sliderInstances.set(slider, instance);
+}
+
+/**
+ * Initialize sliders after ensuring images are loaded
+ */
+function initializeSliders() {
+	const sliders = document.querySelectorAll('.dsgo-slider');
+
+	sliders.forEach((slider) => {
+		if (areImagesLoaded(slider)) {
+			// Images already loaded, initialize immediately
+			initializeSlider(slider);
+		} else {
+			// Wait for images to load
+			const images = slider.querySelectorAll('img');
+			let loadedCount = 0;
+			const totalImages = images.length;
+
+			const onImageLoad = () => {
+				loadedCount++;
+				if (loadedCount === totalImages) {
+					initializeSlider(slider);
+				}
+			};
+
+			images.forEach((img) => {
+				if (img.complete) {
+					loadedCount++;
+				} else {
+					img.addEventListener('load', onImageLoad, { once: true });
+					img.addEventListener('error', onImageLoad, { once: true }); // Initialize even if image fails
+				}
+			});
+
+			// Check if all were already complete
+			if (loadedCount === totalImages) {
+				initializeSlider(slider);
+			}
+
+			// Fallback: Initialize after timeout if images take too long
+			setTimeout(() => {
+				if (!sliderInstances.has(slider)) {
+					initializeSlider(slider);
+				}
+			}, 3000);
+		}
+	});
+}
+
+// Initialize on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initializeSliders);
+
+// Also initialize on load event as backup (ensures all resources loaded)
+window.addEventListener('load', () => {
+	// Initialize any sliders that weren't initialized yet
 	const sliders = document.querySelectorAll('.dsgo-slider');
 	sliders.forEach((slider) => {
-		const instance = new DSGSlider(slider);
-		sliderInstances.set(slider, instance);
+		if (!sliderInstances.has(slider)) {
+			initializeSlider(slider);
+		}
 	});
 });
 
