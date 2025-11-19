@@ -73,7 +73,7 @@ export default function GridSave({ attributes }) {
 	const innerStyles = {
 		display: 'grid',
 		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
-		alignItems: alignItems || 'stretch',
+		alignItems: alignItems || 'start',
 		rowGap: blockGap || rowGap || defaultGap,
 		columnGap: blockGap || columnGap || defaultGap,
 	};
