@@ -747,24 +747,41 @@ class DSGSlider {
 // Store slider instances for cleanup
 const sliderInstances = new WeakMap();
 
+// Store timeout IDs for cleanup
+const sliderTimeouts = new WeakMap();
+
 /**
- * Check if all images in a slider are loaded
+ * Get images and their loading state for a slider
+ *
+ * @param {HTMLElement} slider - The slider element to check
+ * @return {Object} Object containing images array and loading state
  */
-function areImagesLoaded(slider) {
+function getImageLoadState(slider) {
 	const images = slider.querySelectorAll('img');
-	if (images.length === 0) {
-		return true; // No images, consider loaded
-	}
-	return Array.from(images).every((img) => img.complete && img.naturalHeight !== 0);
+	const allLoaded =
+		images.length === 0 ||
+		Array.from(images).every(
+			(img) => img.complete && img.naturalHeight !== 0
+		);
+	return { images: Array.from(images), allLoaded };
 }
 
 /**
  * Initialize a single slider instance
+ *
+ * @param {HTMLElement} slider - The slider element to initialize
  */
 function initializeSlider(slider) {
 	// Avoid double initialization
 	if (sliderInstances.has(slider)) {
 		return;
+	}
+
+	// Clear any pending timeout for this slider
+	const timeoutId = sliderTimeouts.get(slider);
+	if (timeoutId) {
+		clearTimeout(timeoutId);
+		sliderTimeouts.delete(slider);
 	}
 
 	const instance = new DSGSlider(slider);
@@ -778,20 +795,25 @@ function initializeSliders() {
 	const sliders = document.querySelectorAll('.dsgo-slider');
 
 	sliders.forEach((slider) => {
-		if (areImagesLoaded(slider)) {
+		const { images, allLoaded } = getImageLoadState(slider);
+
+		if (allLoaded) {
 			// Images already loaded, initialize immediately
 			initializeSlider(slider);
 		} else {
 			// Wait for images to load
-			const images = slider.querySelectorAll('img');
 			let loadedCount = 0;
 			const totalImages = images.length;
 
-			const onImageLoad = () => {
-				loadedCount++;
+			const checkAndInitialize = () => {
 				if (loadedCount === totalImages) {
 					initializeSlider(slider);
 				}
+			};
+
+			const onImageLoad = () => {
+				loadedCount++;
+				checkAndInitialize();
 			};
 
 			images.forEach((img) => {
@@ -799,21 +821,29 @@ function initializeSliders() {
 					loadedCount++;
 				} else {
 					img.addEventListener('load', onImageLoad, { once: true });
-					img.addEventListener('error', onImageLoad, { once: true }); // Initialize even if image fails
+					img.addEventListener('error', onImageLoad, { once: true });
+
+					// Re-check in case image loaded between check and listener attachment
+					// This prevents a race condition where the image loads after the
+					// complete check but before the listener is attached
+					if (img.complete) {
+						loadedCount++;
+					}
 				}
 			});
 
-			// Check if all were already complete
-			if (loadedCount === totalImages) {
-				initializeSlider(slider);
-			}
+			// Initialize if all images completed during listener setup
+			checkAndInitialize();
 
 			// Fallback: Initialize after timeout if images take too long
-			setTimeout(() => {
+			const timeoutId = setTimeout(() => {
 				if (!sliderInstances.has(slider)) {
 					initializeSlider(slider);
 				}
 			}, 3000);
+
+			// Store timeout ID for cleanup
+			sliderTimeouts.set(slider, timeoutId);
 		}
 	});
 }
