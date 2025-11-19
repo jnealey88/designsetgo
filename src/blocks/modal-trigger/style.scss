@@ -24,6 +24,7 @@
 	// Prevent full-width expansion in flex/grid containers
 	max-width: 100%;
 	width: fit-content;
+	align-self: flex-start; // Prevent stretching in flex containers
 
 	&:hover,
 	&:focus {

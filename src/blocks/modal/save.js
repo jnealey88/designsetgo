@@ -41,9 +41,6 @@ export default function save({ attributes }) {
 		'data-close-on-backdrop': closeOnBackdrop,
 		'data-close-on-esc': closeOnEsc,
 		'data-disable-body-scroll': disableBodyScroll,
-		style: {
-			display: 'none',
-		},
 	});
 
 	const overlayStyle = {
