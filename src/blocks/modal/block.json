@@ -36,7 +36,10 @@
 			"style": true,
 			"width": true,
 			"__experimentalDefaultControls": {
-				"radius": true
+				"color": true,
+				"radius": true,
+				"style": true,
+				"width": true
 			}
 		}
 	},
@@ -55,7 +58,7 @@
 		},
 		"maxWidth": {
 			"type": "string",
-			"default": "90%"
+			"default": "90vw"
 		},
 		"height": {
 			"type": "string",

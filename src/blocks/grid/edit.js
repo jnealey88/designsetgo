@@ -142,7 +142,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	const innerStyles = {
 		display: 'grid',
 		gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
-		alignItems: alignItems || 'start',
+		alignItems: alignItems || 'stretch',
 		rowGap: blockGap || rowGap || defaultGap,
 		columnGap: blockGap || columnGap || defaultGap,
 	};

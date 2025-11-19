@@ -428,18 +428,6 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 			</InspectorControls>
 
 			<div {...wrapperProps}>
-				<div className="dsgo-modal-editor-preview__label">
-					<span>
-						{__('Modal:', 'designsetgo')} <code>{modalId}</code>
-					</span>
-					<span className="dsgo-modal-editor-preview__note">
-						{__(
-							'Hidden by default. Use a Modal Trigger to open it.',
-							'designsetgo'
-						)}
-					</span>
-				</div>
-
 				<div
 					className="dsgo-modal-editor-preview__backdrop"
 					style={{

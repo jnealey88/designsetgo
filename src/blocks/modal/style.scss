@@ -52,25 +52,15 @@
 		position: relative;
 		background: #fff;
 		border-radius: 8px;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 		overflow: auto;
 		max-height: 90vh;
 		padding: 24px;
 
-		// Ensure proper spacing for inner blocks
-		> * {
-			margin-top: 0;
-			margin-bottom: 1em;
-
-			&:last-child {
-				margin-bottom: 0;
-			}
-		}
-
-		// Fix excessive H2 margin
-		> h2,
-		> .wp-block-heading {
-			margin-bottom: 0.5em;
+		// Remove WordPress global padding from inner blocks
+		// Modal is a contained context separate from page layout
+		.has-global-padding {
+			padding-left: 0 !important;
+			padding-right: 0 !important;
 		}
 
 		// Allow horizontal scrolling if needed
@@ -308,13 +298,13 @@ body.dsgo-modal-open {
 @media (max-width: 768px) {
 	.dsgo-modal {
 		&__dialog {
-			margin: 10px;
-			align-items: flex-start;
-			padding-top: 40px;
+			margin: 12px;
+			align-items: center; // Center vertically on tablets
+			padding-top: 20px;
 		}
 
 		&__content {
-			max-height: calc(100vh - 80px);
+			max-height: calc(100vh - 100px);
 			width: 100%;
 		}
 
@@ -339,14 +329,13 @@ body.dsgo-modal-open {
 @media (max-width: 480px) {
 	.dsgo-modal {
 		&__dialog {
-			margin: 0;
+			margin: 8px;
 			padding-top: 20px;
 		}
 
 		&__content {
-			border-radius: 0;
-			max-height: 100vh;
-			min-height: 100vh;
+			max-height: calc(100vh - 60px);
+			border-radius: 12px; // Slightly larger radius on mobile for modern look
 		}
 	}
 }

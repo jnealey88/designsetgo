@@ -12,33 +12,6 @@
 	background: #f9f9f9;
 	min-height: 200px;
 
-	&__label {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 16px;
-		padding: 8px 12px;
-		background: #fff;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 13px;
-		color: #666;
-
-		code {
-			padding: 2px 6px;
-			background: #f0f0f0;
-			border-radius: 3px;
-			font-family: monospace;
-			font-size: 12px;
-			color: #000;
-		}
-	}
-
-	&__note {
-		font-size: 12px;
-		color: #999;
-	}
-
 	&__backdrop {
 		position: absolute;
 		top: 0;
@@ -64,15 +37,14 @@
 		background: #fff;
 		border: 1px solid #ddd;
 		border-radius: 8px;
-		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 	}
 
 	.dsgo-modal__close {
 		position: absolute;
 		z-index: 2;
-		background: #fff;
-		border: 1px solid #ddd;
-		border-radius: 50%;
+		background: transparent;
+		border: none;
+		border-radius: 0;
 		cursor: not-allowed;
 		color: #666;
 		transition: all 0.2s ease;
@@ -102,7 +74,7 @@
 		}
 
 		&:hover {
-			background: #f9f9f9;
+			opacity: 0.8;
 		}
 
 		svg {

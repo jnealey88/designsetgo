@@ -47,6 +47,8 @@
 
 	&__text {
 		display: inline-block;
+		cursor: pointer;
+		user-select: none;
 	}
 
 	&__icon {
