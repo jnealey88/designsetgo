@@ -105,6 +105,14 @@
 			"type": "number",
 			"default": 24
 		},
+		"closeButtonIconColor": {
+			"type": "string",
+			"default": ""
+		},
+		"closeButtonBgColor": {
+			"type": "string",
+			"default": ""
+		},
 		"disableBodyScroll": {
 			"type": "boolean",
 			"default": true

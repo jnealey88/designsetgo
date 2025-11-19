@@ -171,6 +171,14 @@
 			// Store the element that triggered the modal
 			this.previouslyFocusedElement = trigger || document.activeElement;
 
+			// Move modal to body to avoid z-index stacking context issues
+			// Store original parent for potential cleanup
+			if (!this.originalParent && this.modal.parentElement !== document.body) {
+				this.originalParent = this.modal.parentElement;
+				this.originalNextSibling = this.modal.nextSibling;
+				document.body.appendChild(this.modal);
+			}
+
 			// Update focusable elements
 			this.updateFocusableElements();
 

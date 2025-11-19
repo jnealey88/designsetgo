@@ -84,7 +84,7 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 
 	const blockProps = useBlockProps({
 		className: `dsgo-modal-trigger dsgo-modal-trigger--${buttonStyle} dsgo-modal-trigger--width-${width}`,
-		style: buttonStyles,
+		style: { display: width === 'full' ? 'block' : 'inline-block' },
 	});
 
 	return (
@@ -249,20 +249,25 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 			</InspectorControls>
 
 			<div {...blockProps}>
-				{icon && iconPosition === 'start' && iconPosition !== 'none' && (
-					<span style={iconWrapperStyles}>{getIcon(icon)}</span>
-				)}
-				<RichText
-					tagName="span"
-					value={text}
-					onChange={(value) => setAttributes({ text: value })}
-					placeholder={__('Button text...', 'designsetgo')}
-					allowedFormats={['core/bold', 'core/italic']}
-					className="dsgo-modal-trigger__text"
-				/>
-				{icon && iconPosition === 'end' && iconPosition !== 'none' && (
-					<span style={iconWrapperStyles}>{getIcon(icon)}</span>
-				)}
+				<div
+					className="dsgo-modal-trigger__button"
+					style={buttonStyles}
+				>
+					{icon && iconPosition === 'start' && iconPosition !== 'none' && (
+						<span style={iconWrapperStyles}>{getIcon(icon)}</span>
+					)}
+					<RichText
+						tagName="span"
+						value={text}
+						onChange={(value) => setAttributes({ text: value })}
+						placeholder={__('Button text...', 'designsetgo')}
+						allowedFormats={['core/bold', 'core/italic']}
+						className="dsgo-modal-trigger__text"
+					/>
+					{icon && iconPosition === 'end' && iconPosition !== 'none' && (
+						<span style={iconWrapperStyles}>{getIcon(icon)}</span>
+					)}
+				</div>
 			</div>
 		</>
 	);

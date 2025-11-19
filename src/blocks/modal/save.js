@@ -24,6 +24,8 @@ export default function save({ attributes }) {
 		showCloseButton,
 		closeButtonPosition,
 		closeButtonSize,
+		closeButtonIconColor,
+		closeButtonBgColor,
 		disableBodyScroll,
 	} = attributes;
 
@@ -57,6 +59,8 @@ export default function save({ attributes }) {
 			style={{
 				width: `${closeButtonSize}px`,
 				height: `${closeButtonSize}px`,
+				color: closeButtonIconColor || undefined,
+				backgroundColor: closeButtonBgColor || undefined,
 			}}
 			type="button"
 			aria-label={__('Close modal', 'designsetgo')}
@@ -80,31 +84,40 @@ export default function save({ attributes }) {
 		</button>
 	) : null;
 
-	// Transfer background styles from block wrapper to content
+	// Transfer ALL block support styles from wrapper to content (background, color, border, etc.)
 	const contentStyle = {
+		// Spread all block support styles first
+		...(blockProps.style || {}),
+		// Then override with modal-specific dimensions
 		width,
 		maxWidth,
 		height: height !== 'auto' ? height : undefined,
 		maxHeight: height !== 'auto' ? maxHeight : undefined,
 	};
 
-	// Extract background/color styles from blockProps and apply to content
-	if (blockProps.style) {
-		if (blockProps.style.backgroundColor) {
-			contentStyle.backgroundColor = blockProps.style.backgroundColor;
-		}
-		if (blockProps.style.color) {
-			contentStyle.color = blockProps.style.color;
-		}
-	}
+	// Remove styles and color classes from wrapper since we're applying them to content
+	const { style: _removedStyle, className, ...wrapperProps } = blockProps;
+
+	// Extract WordPress block support classes that should be transferred to content
+	const blockSupportClasses = className
+		.split(' ')
+		.filter(cls => cls.startsWith('has-') && cls !== 'has-inside-close-button');
+
+	// Filter out WordPress block support classes from wrapper
+	const filteredClassName = className
+		.split(' ')
+		.filter(cls => !cls.startsWith('has-') || cls === 'has-inside-close-button')
+		.join(' ');
+
+	wrapperProps.className = filteredClassName;
 
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsgo-modal__content',
+		className: ['dsgo-modal__content', ...blockSupportClasses].join(' '),
 		style: contentStyle,
 	});
 
 	return (
-		<div {...blockProps}>
+		<div {...wrapperProps}>
 			<div
 				className="dsgo-modal__backdrop"
 				style={overlayStyle}
@@ -113,6 +126,7 @@ export default function save({ attributes }) {
 			<div className="dsgo-modal__dialog">
 				{!closeButtonIsInside && closeButton}
 				<div {...innerBlocksProps}>
+					{innerBlocksProps.children}
 					{closeButtonIsInside && closeButton}
 				</div>
 			</div>

@@ -11,7 +11,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	z-index: 999999;
+	z-index: 2147483647; // Maximum safe integer - ensures modal appears above everything including sticky elements
 	display: none;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
@@ -81,9 +81,9 @@
 	&__close {
 		position: absolute;
 		z-index: 10;
-		background: #fff;
+		background: transparent;
 		border: none;
-		border-radius: 50%;
+		border-radius: 0;
 		cursor: pointer;
 		color: #000;
 		transition: all 0.2s ease;
@@ -91,13 +91,11 @@
 		align-items: center;
 		justify-content: center;
 		padding: 0;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+		box-shadow: none;
 
 		&:hover,
 		&:focus {
-			background: #f9f9f9;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-			transform: scale(1.05);
+			opacity: 0.8;
 		}
 
 		&:focus {
@@ -281,10 +279,8 @@
 // Body Scroll Lock
 body.dsgo-modal-open {
 	overflow: hidden;
-
-	// iOS scroll lock fix
-	position: fixed;
-	width: 100%;
+	// Note: position: fixed was removed to prevent stacking context issues with sticky elements
+	// If iOS scroll issues occur, consider using touch-action: none instead
 }
 
 // Reduced Motion Support
@@ -359,7 +355,8 @@ body.dsgo-modal-open {
 @media (prefers-contrast: high) {
 	.dsgo-modal {
 		&__close {
-			border: 2px solid currentColor;
+			outline: 2px solid currentColor;
+			outline-offset: 2px;
 		}
 	}
 }

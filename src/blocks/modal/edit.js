@@ -39,6 +39,8 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 		showCloseButton,
 		closeButtonPosition,
 		closeButtonSize,
+		closeButtonIconColor,
+		closeButtonBgColor,
 		disableBodyScroll,
 	} = attributes;
 
@@ -55,15 +57,37 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 		className: 'dsgo-modal-editor-preview',
 	});
 
+	// Transfer ALL block support styles from wrapper to content (background, color, border, etc.)
+	const contentStyle = {
+		// Spread all block support styles first
+		...(blockProps.style || {}),
+		// Then override with modal-specific dimensions
+		width,
+		maxWidth,
+		height: height !== 'auto' ? height : undefined,
+		maxHeight: height !== 'auto' ? maxHeight : undefined,
+	};
+
+	// Remove styles and color classes from wrapper since we're applying them to content
+	const { style: _removedStyle, className, ...wrapperProps } = blockProps;
+
+	// Extract WordPress block support classes that should be transferred to content
+	const blockSupportClasses = className
+		.split(' ')
+		.filter(cls => cls.startsWith('has-') && cls !== 'has-inside-close-button');
+
+	// Filter out WordPress block support classes from wrapper
+	const filteredClassName = className
+		.split(' ')
+		.filter(cls => !cls.startsWith('has-') || cls === 'has-inside-close-button')
+		.join(' ');
+
+	wrapperProps.className = filteredClassName;
+
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'dsgo-modal__content',
-			style: {
-				width,
-				maxWidth,
-				height: height !== 'auto' ? height : undefined,
-				maxHeight: height !== 'auto' ? maxHeight : undefined,
-			},
+			className: ['dsgo-modal__content', ...blockSupportClasses].join(' '),
+			style: contentStyle,
 		},
 		{
 			template: [
@@ -366,7 +390,7 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 			<InspectorControls group="color">
 				<ColorGradientSettingsDropdown
 					panelId={clientId}
-					title={__('Overlay Color', 'designsetgo')}
+					title={__('Colors', 'designsetgo')}
 					settings={[
 						{
 							label: __('Overlay Color', 'designsetgo'),
@@ -376,13 +400,34 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 									overlayColor: color || '#000000',
 								}),
 							clearable: false,
+							enableAlpha: true,
+						},
+						{
+							label: __('Close Button Icon', 'designsetgo'),
+							colorValue: closeButtonIconColor,
+							onColorChange: (color) =>
+								setAttributes({
+									closeButtonIconColor: color || '',
+								}),
+							clearable: true,
+							enableAlpha: true,
+						},
+						{
+							label: __('Close Button Background', 'designsetgo'),
+							colorValue: closeButtonBgColor,
+							onColorChange: (color) =>
+								setAttributes({
+									closeButtonBgColor: color || '',
+								}),
+							clearable: true,
+							enableAlpha: true,
 						},
 					]}
 					{...colorGradientSettings}
 				/>
 			</InspectorControls>
 
-			<div {...blockProps}>
+			<div {...wrapperProps}>
 				<div className="dsgo-modal-editor-preview__label">
 					<span>
 						{__('Modal:', 'designsetgo')} <code>{modalId}</code>
@@ -411,6 +456,8 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 								style={{
 									width: `${closeButtonSize}px`,
 									height: `${closeButtonSize}px`,
+									color: closeButtonIconColor || undefined,
+									backgroundColor: closeButtonBgColor || undefined,
 								}}
 								aria-label={__('Close modal', 'designsetgo')}
 								disabled
@@ -450,6 +497,8 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 									style={{
 										width: `${closeButtonSize}px`,
 										height: `${closeButtonSize}px`,
+										color: closeButtonIconColor || undefined,
+										backgroundColor: closeButtonBgColor || undefined,
 									}}
 									aria-label={__(
 										'Close modal',

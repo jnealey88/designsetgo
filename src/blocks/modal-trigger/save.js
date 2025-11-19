@@ -35,33 +35,39 @@ export default function save({ attributes }) {
 
 	const blockProps = useBlockProps.save({
 		className: `dsgo-modal-trigger dsgo-modal-trigger--${buttonStyle} dsgo-modal-trigger--width-${width}`,
-		'data-dsgo-modal-trigger': targetModalId,
-		style: buttonStyles,
+		style: { display: width === 'full' ? 'block' : 'inline-block' },
 	});
 
 	return (
-		<button {...blockProps} type="button">
-			{icon && iconPosition === 'start' && iconPosition !== 'none' && (
-				<span
-					className="dsgo-modal-trigger__icon"
-					style={iconWrapperStyles}
-				>
-					{getIcon(icon)}
-				</span>
-			)}
-			<RichText.Content
-				tagName="span"
-				value={text}
-				className="dsgo-modal-trigger__text"
-			/>
-			{icon && iconPosition === 'end' && iconPosition !== 'none' && (
-				<span
-					className="dsgo-modal-trigger__icon"
-					style={iconWrapperStyles}
-				>
-					{getIcon(icon)}
-				</span>
-			)}
-		</button>
+		<div {...blockProps}>
+			<button
+				className="dsgo-modal-trigger__button"
+				data-dsgo-modal-trigger={targetModalId}
+				style={buttonStyles}
+				type="button"
+			>
+				{icon && iconPosition === 'start' && iconPosition !== 'none' && (
+					<span
+						className="dsgo-modal-trigger__icon"
+						style={iconWrapperStyles}
+					>
+						{getIcon(icon)}
+					</span>
+				)}
+				<RichText.Content
+					tagName="span"
+					value={text}
+					className="dsgo-modal-trigger__text"
+				/>
+				{icon && iconPosition === 'end' && iconPosition !== 'none' && (
+					<span
+						className="dsgo-modal-trigger__icon"
+						style={iconWrapperStyles}
+					>
+						{getIcon(icon)}
+					</span>
+				)}
+			</button>
+		</div>
 	);
 }
