@@ -11,7 +11,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	z-index: 2147483647; // Maximum safe integer - ensures modal appears above everything including sticky elements
+	z-index: 2147483647; // Maximum z-index value (32-bit signed integer max) - ensures modal appears above everything including sticky elements
 	display: none;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
@@ -52,7 +52,7 @@
 		position: relative;
 		background: #fff;
 		border-radius: 8px;
-		overflow: auto;
+		overflow: auto; // Allows scrolling in both directions
 		max-height: 90vh;
 		padding: 24px;
 
@@ -62,9 +62,6 @@
 			padding-left: 0 !important;
 			padding-right: 0 !important;
 		}
-
-		// Allow horizontal scrolling if needed
-		overflow-x: auto;
 	}
 
 	// Close Button

@@ -122,11 +122,26 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 					<TextControl
 						label={__('Modal ID', 'designsetgo')}
 						value={modalId}
-						onChange={(value) =>
-							setAttributes({ modalId: value })
-						}
+						onChange={(value) => {
+							// Sanitize to valid HTML ID format
+							// Only allow alphanumeric, hyphens, and underscores
+							const sanitized = value
+								.toLowerCase()
+								.replace(/[^a-z0-9-_]/gi, '-')
+								.replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+								.replace(/-{2,}/g, '-'); // Replace multiple hyphens with single
+
+							// Ensure it starts with dsgo-modal- prefix
+							const finalId = sanitized.startsWith('dsgo-modal-')
+								? sanitized
+								: sanitized
+								? `dsgo-modal-${sanitized}`
+								: 'dsgo-modal-';
+
+							setAttributes({ modalId: finalId });
+						}}
 						help={__(
-							'Unique identifier for this modal. Used by triggers.',
+							'Unique identifier for this modal. Only letters, numbers, hyphens, and underscores allowed.',
 							'designsetgo'
 						)}
 						__next40pxDefaultSize

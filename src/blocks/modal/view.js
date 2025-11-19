@@ -80,20 +80,25 @@
 		 * Bind event handlers
 		 */
 		bindEvents() {
+			// Store bound handlers for cleanup
+			this.handleCloseClick = (e) => {
+				e.preventDefault();
+				this.close();
+			};
+
+			this.handleBackdropClick = (e) => {
+				e.preventDefault();
+				this.close();
+			};
+
 			// Close button
 			if (this.closeButton) {
-				this.closeButton.addEventListener('click', (e) => {
-					e.preventDefault();
-					this.close();
-				});
+				this.closeButton.addEventListener('click', this.handleCloseClick);
 			}
 
 			// Backdrop click
 			if (this.settings.closeOnBackdrop && this.backdrop) {
-				this.backdrop.addEventListener('click', (e) => {
-					e.preventDefault();
-					this.close();
-				});
+				this.backdrop.addEventListener('click', this.handleBackdropClick);
 			}
 
 			// ESC key
@@ -113,8 +118,10 @@
 					return;
 				}
 
+				// If no focusable elements, allow Tab to close modal for accessibility
 				if (this.focusableElements.length === 0) {
 					e.preventDefault();
+					this.close();
 					return;
 				}
 
@@ -203,8 +210,14 @@
 					this.modal.classList.remove('dsgo-modal--opening');
 					this.modal.classList.add('dsgo-modal--open');
 
+					// Clear any pending animation timeout to prevent race conditions
+					if (this.animationTimeout) {
+						clearTimeout(this.animationTimeout);
+					}
+
 					// Wait for animation to complete
-					setTimeout(() => {
+					this.animationTimeout = setTimeout(() => {
+						this.animationTimeout = null;
 						this.onOpenComplete();
 					}, this.settings.animationDuration);
 				});
@@ -251,8 +264,14 @@
 				this.modal.classList.remove('dsgo-modal--open');
 				this.modal.classList.add('dsgo-modal--closing');
 
+				// Clear any pending animation timeout to prevent race conditions
+				if (this.animationTimeout) {
+					clearTimeout(this.animationTimeout);
+				}
+
 				// Wait for animation to complete
-				setTimeout(() => {
+				this.animationTimeout = setTimeout(() => {
+					this.animationTimeout = null;
 					this.onCloseComplete();
 				}, this.settings.animationDuration);
 			} else {
@@ -301,9 +320,17 @@
 			// Store current scroll position
 			this.scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
+			// Calculate scrollbar width to prevent layout shift
+			const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
 			// Add class to body
 			document.body.classList.add('dsgo-modal-open');
 			document.body.style.top = `-${this.scrollPosition}px`;
+
+			// Compensate for scrollbar disappearance to prevent content shift
+			if (scrollbarWidth > 0) {
+				document.body.style.paddingRight = `${scrollbarWidth}px`;
+			}
 		}
 
 		/**
@@ -313,6 +340,7 @@
 			// Remove class from body
 			document.body.classList.remove('dsgo-modal-open');
 			document.body.style.top = '';
+			document.body.style.paddingRight = ''; // Remove scrollbar compensation
 
 			// Restore scroll position
 			window.scrollTo(0, this.scrollPosition);
@@ -323,11 +351,32 @@
 		 */
 		destroy() {
 			// Remove event listeners
+			if (this.closeButton && this.handleCloseClick) {
+				this.closeButton.removeEventListener('click', this.handleCloseClick);
+			}
+			if (this.backdrop && this.handleBackdropClick) {
+				this.backdrop.removeEventListener('click', this.handleBackdropClick);
+			}
 			if (this.handleEscKey) {
 				document.removeEventListener('keydown', this.handleEscKey);
 			}
 			if (this.handleFocusTrap) {
 				document.removeEventListener('keydown', this.handleFocusTrap);
+			}
+
+			// Clear animation timeout to prevent memory leaks
+			if (this.animationTimeout) {
+				clearTimeout(this.animationTimeout);
+				this.animationTimeout = null;
+			}
+
+			// Restore modal to original parent if it was moved
+			if (this.originalParent && this.modal.parentElement === document.body) {
+				if (this.originalNextSibling) {
+					this.originalParent.insertBefore(this.modal, this.originalNextSibling);
+				} else {
+					this.originalParent.appendChild(this.modal);
+				}
 			}
 
 			// Close if open

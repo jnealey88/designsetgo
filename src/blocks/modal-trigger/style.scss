@@ -36,8 +36,7 @@
 		}
 
 		&:focus {
-			outline: 2px solid #007cba;
-			outline-offset: 2px;
+			outline: none; // Focus is handled by the clickable element inside
 		}
 
 		&:active {
@@ -48,7 +47,7 @@
 	&__text {
 		display: inline-block;
 		cursor: pointer;
-		user-select: none;
+		user-select: none; // Prevent text selection and I-beam cursor
 	}
 
 	&__icon {

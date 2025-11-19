@@ -46,7 +46,7 @@ export default function save({ attributes }) {
 				style={buttonStyles}
 				type="button"
 			>
-				{icon && iconPosition === 'start' && iconPosition !== 'none' && (
+				{icon && iconPosition === 'start' && (
 					<span
 						className="dsgo-modal-trigger__icon"
 						style={iconWrapperStyles}
@@ -59,7 +59,7 @@ export default function save({ attributes }) {
 					value={text}
 					className="dsgo-modal-trigger__text"
 				/>
-				{icon && iconPosition === 'end' && iconPosition !== 'none' && (
+				{icon && iconPosition === 'end' && (
 					<span
 						className="dsgo-modal-trigger__icon"
 						style={iconWrapperStyles}

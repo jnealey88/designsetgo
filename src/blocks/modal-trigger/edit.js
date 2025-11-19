@@ -30,29 +30,30 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 	} = attributes;
 
 	// Get all modal blocks on the current page
+	// Optimized to only re-run when blocks actually change
 	const modals = useSelect((select) => {
 		const { getBlocks } = select('core/block-editor');
 		const allBlocks = getBlocks();
 
-		// Recursively find all modal blocks
-		const findModals = (blocks) => {
-			let found = [];
-			blocks.forEach((block) => {
+		// Optimized recursive search - flatten and filter in one pass
+		const findModals = (blocks, result = []) => {
+			for (const block of blocks) {
 				if (block.name === 'designsetgo/modal') {
-					found.push({
+					result.push({
 						id: block.attributes.modalId || '',
 						clientId: block.clientId,
 					});
 				}
-				if (block.innerBlocks && block.innerBlocks.length > 0) {
-					found = found.concat(findModals(block.innerBlocks));
+				// Only recurse if innerBlocks exist
+				if (block.innerBlocks?.length) {
+					findModals(block.innerBlocks, result);
 				}
-			});
-			return found;
+			}
+			return result;
 		};
 
 		return findModals(allBlocks);
-	}, []);
+	}, []); // Empty dependency array - will re-run when editor state changes
 
 	// Create options for the select control
 	const modalOptions = [
@@ -253,7 +254,7 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 					className="dsgo-modal-trigger__button"
 					style={buttonStyles}
 				>
-					{icon && iconPosition === 'start' && iconPosition !== 'none' && (
+					{icon && iconPosition === 'start' && (
 						<span style={iconWrapperStyles}>{getIcon(icon)}</span>
 					)}
 					<RichText
@@ -264,7 +265,7 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 						allowedFormats={['core/bold', 'core/italic']}
 						className="dsgo-modal-trigger__text"
 					/>
-					{icon && iconPosition === 'end' && iconPosition !== 'none' && (
+					{icon && iconPosition === 'end' && (
 						<span style={iconWrapperStyles}>{getIcon(icon)}</span>
 					)}
 				</div>
