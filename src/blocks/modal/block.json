@@ -1,0 +1,138 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/modal",
+	"version": "1.0.0",
+	"title": "Modal",
+	"category": "widgets",
+	"description": "Create accessible modal dialogs with customizable triggers and content.",
+	"keywords": ["modal", "popup", "dialog", "overlay", "lightbox"],
+	"textdomain": "designsetgo",
+	"icon": "feedback",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"spacing": {
+			"margin": false,
+			"padding": true,
+			"blockGap": false
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalLetterSpacing": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"radius": true
+			}
+		}
+	},
+	"providesContext": {
+		"designsetgo/modal/modalId": "modalId",
+		"designsetgo/modal/closeOnBackdrop": "closeOnBackdrop"
+	},
+	"attributes": {
+		"modalId": {
+			"type": "string",
+			"default": ""
+		},
+		"width": {
+			"type": "string",
+			"default": "600px"
+		},
+		"maxWidth": {
+			"type": "string",
+			"default": "90%"
+		},
+		"height": {
+			"type": "string",
+			"default": "auto"
+		},
+		"maxHeight": {
+			"type": "string",
+			"default": "90vh"
+		},
+		"animationType": {
+			"type": "string",
+			"default": "fade"
+		},
+		"animationDuration": {
+			"type": "number",
+			"default": 300
+		},
+		"overlayOpacity": {
+			"type": "number",
+			"default": 80
+		},
+		"overlayColor": {
+			"type": "string",
+			"default": "#000000"
+		},
+		"overlayBlur": {
+			"type": "number",
+			"default": 0
+		},
+		"closeOnBackdrop": {
+			"type": "boolean",
+			"default": true
+		},
+		"closeOnEsc": {
+			"type": "boolean",
+			"default": true
+		},
+		"showCloseButton": {
+			"type": "boolean",
+			"default": true
+		},
+		"closeButtonPosition": {
+			"type": "string",
+			"default": "inside-top-right"
+		},
+		"closeButtonSize": {
+			"type": "number",
+			"default": 24
+		},
+		"disableBodyScroll": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"example": {
+		"attributes": {
+			"width": "500px",
+			"overlayOpacity": 80
+		},
+		"innerBlocks": [
+			{
+				"name": "core/heading",
+				"attributes": {
+					"content": "Welcome!",
+					"level": 2
+				}
+			},
+			{
+				"name": "core/paragraph",
+				"attributes": {
+					"content": "This is a modal dialog. You can add any content here using the block editor."
+				}
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css",
+	"viewScript": "file:./view.js"
+}

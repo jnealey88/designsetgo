@@ -1,0 +1,365 @@
+/**
+ * Modal Block - Frontend Styles
+ *
+ * @package DesignSetGo
+ */
+
+// Modal Container
+.dsgo-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 999999;
+	display: none;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	// Remove background from wrapper (WordPress adds it via block supports)
+	background: none !important;
+
+	&[aria-hidden="false"] {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	// Backdrop
+	&__backdrop {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1;
+		transition: opacity 0.3s ease;
+	}
+
+	// Dialog Container
+	&__dialog {
+		position: relative;
+		z-index: 2;
+		width: auto;
+		max-width: 100%;
+		margin: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	// Modal Content
+	&__content {
+		position: relative;
+		background: #fff;
+		border-radius: 8px;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		overflow: auto;
+		max-height: 90vh;
+		padding: 24px;
+
+		// Ensure proper spacing for inner blocks
+		> * {
+			margin-top: 0;
+			margin-bottom: 1em;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+		// Fix excessive H2 margin
+		> h2,
+		> .wp-block-heading {
+			margin-bottom: 0.5em;
+		}
+
+		// Allow horizontal scrolling if needed
+		overflow-x: auto;
+	}
+
+	// Close Button
+	&__close {
+		position: absolute;
+		z-index: 10;
+		background: #fff;
+		border: none;
+		border-radius: 50%;
+		cursor: pointer;
+		color: #000;
+		transition: all 0.2s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+		&:hover,
+		&:focus {
+			background: #f9f9f9;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+			transform: scale(1.05);
+		}
+
+		&:focus {
+			outline: 2px solid #007cba;
+			outline-offset: 2px;
+		}
+
+		svg {
+			display: block;
+		}
+
+		// Positions
+		&--top-right {
+			top: -12px;
+			right: -12px;
+		}
+
+		&--top-left {
+			top: -12px;
+			left: -12px;
+		}
+
+		&--inside-top-right {
+			top: 12px;
+			right: 12px;
+		}
+
+		&--inside-top-left {
+			top: 12px;
+			left: 12px;
+		}
+	}
+}
+
+// Animation States
+.dsgo-modal {
+	// Fade Animation
+	&--animation-fade {
+		&.dsgo-modal--opening {
+			.dsgo-modal__backdrop {
+				opacity: 0;
+			}
+
+			.dsgo-modal__dialog {
+				opacity: 0;
+			}
+		}
+
+		&.dsgo-modal--open {
+			.dsgo-modal__backdrop,
+			.dsgo-modal__dialog {
+				opacity: 1;
+			}
+		}
+
+		&.dsgo-modal--closing {
+			.dsgo-modal__backdrop,
+			.dsgo-modal__dialog {
+				opacity: 0;
+			}
+		}
+	}
+
+	// Slide Up Animation
+	&--animation-slide-up {
+		&.dsgo-modal--opening {
+			.dsgo-modal__backdrop {
+				opacity: 0;
+			}
+
+			.dsgo-modal__dialog {
+				opacity: 0;
+				transform: translateY(50px);
+			}
+		}
+
+		&.dsgo-modal--open {
+			.dsgo-modal__backdrop {
+				opacity: 1;
+			}
+
+			.dsgo-modal__dialog {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		&.dsgo-modal--closing {
+			.dsgo-modal__backdrop {
+				opacity: 0;
+			}
+
+			.dsgo-modal__dialog {
+				opacity: 0;
+				transform: translateY(50px);
+			}
+		}
+	}
+
+	// Slide Down Animation
+	&--animation-slide-down {
+		&.dsgo-modal--opening {
+			.dsgo-modal__backdrop {
+				opacity: 0;
+			}
+
+			.dsgo-modal__dialog {
+				opacity: 0;
+				transform: translateY(-50px);
+			}
+		}
+
+		&.dsgo-modal--open {
+			.dsgo-modal__backdrop {
+				opacity: 1;
+			}
+
+			.dsgo-modal__dialog {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		&.dsgo-modal--closing {
+			.dsgo-modal__backdrop {
+				opacity: 0;
+			}
+
+			.dsgo-modal__dialog {
+				opacity: 0;
+				transform: translateY(-50px);
+			}
+		}
+	}
+
+	// Zoom Animation
+	&--animation-zoom {
+		&.dsgo-modal--opening {
+			.dsgo-modal__backdrop {
+				opacity: 0;
+			}
+
+			.dsgo-modal__dialog {
+				opacity: 0;
+				transform: scale(0.7);
+			}
+		}
+
+		&.dsgo-modal--open {
+			.dsgo-modal__backdrop {
+				opacity: 1;
+			}
+
+			.dsgo-modal__dialog {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+
+		&.dsgo-modal--closing {
+			.dsgo-modal__backdrop {
+				opacity: 0;
+			}
+
+			.dsgo-modal__dialog {
+				opacity: 0;
+				transform: scale(0.7);
+			}
+		}
+	}
+
+	// No Animation
+	&--animation-none {
+		.dsgo-modal__backdrop,
+		.dsgo-modal__dialog {
+			transition: none !important;
+		}
+	}
+}
+
+// Body Scroll Lock
+body.dsgo-modal-open {
+	overflow: hidden;
+
+	// iOS scroll lock fix
+	position: fixed;
+	width: 100%;
+}
+
+// Reduced Motion Support
+@media (prefers-reduced-motion: reduce) {
+	.dsgo-modal {
+		.dsgo-modal__backdrop,
+		.dsgo-modal__dialog {
+			transition: none !important;
+			transform: none !important;
+		}
+
+		&__close {
+			transition: none !important;
+			transform: none !important;
+
+			&:hover,
+			&:focus {
+				transform: none !important;
+			}
+		}
+	}
+}
+
+// Responsive Adjustments
+@media (max-width: 768px) {
+	.dsgo-modal {
+		&__dialog {
+			margin: 10px;
+			align-items: flex-start;
+			padding-top: 40px;
+		}
+
+		&__content {
+			max-height: calc(100vh - 80px);
+			width: 100%;
+		}
+
+		&__close {
+			// Slightly larger on mobile for better touch targets
+			&--top-right,
+			&--top-left {
+				top: 0;
+			}
+
+			&--top-right {
+				right: 0;
+			}
+
+			&--top-left {
+				left: 0;
+			}
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.dsgo-modal {
+		&__dialog {
+			margin: 0;
+			padding-top: 20px;
+		}
+
+		&__content {
+			border-radius: 0;
+			max-height: 100vh;
+			min-height: 100vh;
+		}
+	}
+}
+
+// High Contrast Mode Support
+@media (prefers-contrast: high) {
+	.dsgo-modal {
+		&__close {
+			border: 2px solid currentColor;
+		}
+	}
+}

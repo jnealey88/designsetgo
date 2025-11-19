@@ -25,6 +25,9 @@ import './blocks/progress-bar/view.js';
 // Flip Card block - interactive flip animations
 import './blocks/flip-card/frontend.js';
 
+// Modal block - accessible modal dialogs with focus trap
+import './blocks/modal/view.js';
+
 // ===== EXTENSIONS FRONTEND =====
 // Block animations - scroll-triggered, hover, click animations
 import './extensions/block-animations/frontend.js';
