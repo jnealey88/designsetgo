@@ -754,9 +754,7 @@ const sliderTimeouts = new WeakMap();
  * Get images and their loading state for a slider
  *
  * @param {HTMLElement} slider - The slider element to check
- * @return {Object} Object containing images array and loading state
- * @return {HTMLImageElement[]} return.images - Array of image elements in the slider
- * @return {boolean} return.allLoaded - Whether all images are loaded
+ * @return {{images: HTMLImageElement[], allLoaded: boolean}} Object containing images array and loading state
  */
 function getImageLoadState(slider) {
 	const images = Array.from(slider.querySelectorAll('img'));

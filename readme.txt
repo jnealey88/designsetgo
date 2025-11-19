@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,21 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.1.4 - 2025-11-19 =
+**Bug Fixes:**
+* Fix: Slider initialization on uncached first load - sliders now display correctly on first page visit
+* Fix: Critical race condition in image loading detection that could cause 3-second initialization delays
+* Fix: Memory leak from uncleaned setTimeout timers in slider initialization
+* Fix: Double-counting bug in slider image load detection that could prevent initialization
+
+**Performance Improvements:**
+* Performance: Eliminated redundant DOM queries in slider initialization
+* Performance: Optimized Array.from conversions for better memory efficiency
+
+**Code Quality:**
+* Docs: Added comprehensive JSDoc documentation for slider initialization functions
+* Docs: Enhanced inline comments explaining race condition prevention and error handling
 
 = 1.1.3 - 2025-11-16 =
 **Performance Improvements:**
