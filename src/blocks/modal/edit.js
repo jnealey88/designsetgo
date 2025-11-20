@@ -21,6 +21,9 @@ import AnimationSettings from './components/AnimationSettings';
 import OverlaySettings from './components/OverlaySettings';
 import CloseButtonSettings from './components/CloseButtonSettings';
 import BehaviorSettings from './components/BehaviorSettings';
+import TriggerSettings from './components/TriggerSettings';
+import GallerySettings from './components/GallerySettings';
+import ModalPlaceholder from './components/ModalPlaceholder';
 
 export default function ModalEdit({ attributes, setAttributes, clientId }) {
 	const {
@@ -51,33 +54,42 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 		}
 	}, [modalId, clientId, setAttributes]);
 
-	// Check for duplicate modal IDs
-	const hasDuplicateId = useSelect(
+	// Check if this block has inner blocks and for duplicate modal IDs
+	const { hasInnerBlocks, hasDuplicateId } = useSelect(
 		(select) => {
-			if (!modalId) return false;
+			const { getBlock, getBlocks } = select('core/block-editor');
+			const block = getBlock(clientId);
+			const hasBlocks = block?.innerBlocks?.length > 0;
 
-			const { getBlocks } = select('core/block-editor');
-			const allBlocks = getBlocks();
+			let duplicateId = false;
+			if (modalId) {
+				const allBlocks = getBlocks();
 
-			// Find all modal blocks with matching ID (excluding this block)
-			const findDuplicates = (blocks) => {
-				let count = 0;
-				for (const block of blocks) {
-					if (
-						block.name === 'designsetgo/modal' &&
-						block.clientId !== clientId &&
-						block.attributes.modalId === modalId
-					) {
-						count++;
+				// Find all modal blocks with matching ID (excluding this block)
+				const findDuplicates = (blocks) => {
+					let count = 0;
+					for (const b of blocks) {
+						if (
+							b.name === 'designsetgo/modal' &&
+							b.clientId !== clientId &&
+							b.attributes.modalId === modalId
+						) {
+							count++;
+						}
+						if (b.innerBlocks?.length) {
+							count += findDuplicates(b.innerBlocks);
+						}
 					}
-					if (block.innerBlocks?.length) {
-						count += findDuplicates(block.innerBlocks);
-					}
-				}
-				return count;
+					return count;
+				};
+
+				duplicateId = findDuplicates(allBlocks) > 0;
+			}
+
+			return {
+				hasInnerBlocks: hasBlocks,
+				hasDuplicateId: duplicateId,
 			};
-
-			return findDuplicates(allBlocks) > 0;
 		},
 		[modalId, clientId]
 	);
@@ -100,28 +112,21 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 			style: contentStyle,
 		},
 		{
-			template: [
-				[
-					'core/heading',
-					{
-						level: 2,
-						placeholder: __('Modal Title', 'designsetgo'),
-					},
-				],
-				[
-					'core/paragraph',
-					{
-						placeholder: __(
-							'Add your modal content here...',
-							'designsetgo'
-						),
-					},
-				],
-			],
+			// No default template - user selects from template chooser
 			templateLock: false,
 		}
 	);
 
+	// Show template chooser if there are no inner blocks
+	if (!hasInnerBlocks) {
+		return (
+			<div {...blockProps}>
+				<ModalPlaceholder clientId={clientId} setAttributes={setAttributes} />
+			</div>
+		);
+	}
+
+	// Normal modal editor view
 	return (
 		<>
 			<InspectorControls>
@@ -151,6 +156,14 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 					setAttributes={setAttributes}
 				/>
 				<BehaviorSettings
+					attributes={attributes}
+					setAttributes={setAttributes}
+				/>
+				<TriggerSettings
+					attributes={attributes}
+					setAttributes={setAttributes}
+				/>
+				<GallerySettings
 					attributes={attributes}
 					setAttributes={setAttributes}
 				/>

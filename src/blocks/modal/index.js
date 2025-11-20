@@ -15,6 +15,7 @@ import './editor.scss';
 import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
+import variations from './variations';
 
 /**
  * Register the Modal block.
@@ -25,4 +26,5 @@ registerBlockType(metadata.name, {
 	...metadata,
 	edit: Edit,
 	save,
+	variations,
 });

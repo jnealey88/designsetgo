@@ -194,6 +194,14 @@ class Abilities_Registry {
 			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Scroll_Marquee() );
 		}
 
+		// Inserter abilities - Modal elements.
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Modal' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Modal() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Modal_Trigger' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Modal_Trigger() );
+		}
+
 		// Configurator abilities.
 		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Counter_Animation' ) ) {
 			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Counter_Animation() );

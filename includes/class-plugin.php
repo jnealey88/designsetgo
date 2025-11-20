@@ -39,6 +39,13 @@ class Plugin {
 	public $blocks;
 
 	/**
+	 * Modal Hooks instance.
+	 *
+	 * @var Blocks\Modal_Hooks
+	 */
+	public $modal_hooks;
+
+	/**
 	 * Form Handler instance.
 	 *
 	 * @var Blocks\Form_Handler
@@ -150,6 +157,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-loader.php';
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-form-handler.php';
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-form-submissions.php';
+		require_once DESIGNSETGO_PATH . 'includes/blocks/class-modal-hooks.php';
 		require_once DESIGNSETGO_PATH . 'includes/patterns/class-loader.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-global-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-settings.php';
@@ -185,6 +193,7 @@ class Plugin {
 		// Initialize components.
 		$this->assets              = new Assets();
 		$this->blocks              = new Blocks\Loader();
+		$this->modal_hooks         = new Blocks\Modal_Hooks();
 		$this->form_handler        = new Blocks\Form_Handler();
 		$this->form_submissions    = new Blocks\Form_Submissions();
 		$this->patterns            = new Patterns\Loader();

@@ -13,23 +13,47 @@
 		"anchor": true,
 		"align": false,
 		"html": false,
+		"customClassName": true,
+		"className": true,
 		"spacing": {
 			"margin": false,
 			"padding": true,
-			"blockGap": false
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"padding": true,
+				"blockGap": true
+			}
 		},
 		"color": {
 			"background": true,
 			"text": true,
-			"link": true
+			"link": true,
+			"gradients": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
 		},
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
 			"__experimentalFontFamily": true,
 			"__experimentalFontWeight": true,
-			"__experimentalLetterSpacing": true
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
 		},
+		"dimensions": {
+			"minHeight": true,
+			"__experimentalDefaultControls": {
+				"minHeight": false
+			}
+		},
+		"shadow": true,
 		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
@@ -41,6 +65,9 @@
 				"style": true,
 				"width": true
 			}
+		},
+		"interactivity": {
+			"clientNavigation": true
 		}
 	},
 	"providesContext": {
@@ -51,6 +78,74 @@
 		"modalId": {
 			"type": "string",
 			"default": ""
+		},
+		"allowHashTrigger": {
+			"type": "boolean",
+			"default": true
+		},
+		"updateUrlOnOpen": {
+			"type": "boolean",
+			"default": false
+		},
+		"autoTriggerType": {
+			"type": "string",
+			"default": "none"
+		},
+		"autoTriggerDelay": {
+			"type": "number",
+			"default": 0
+		},
+		"autoTriggerFrequency": {
+			"type": "string",
+			"default": "always"
+		},
+		"cookieDuration": {
+			"type": "number",
+			"default": 7
+		},
+		"exitIntentSensitivity": {
+			"type": "string",
+			"default": "medium"
+		},
+		"exitIntentMinTime": {
+			"type": "number",
+			"default": 5
+		},
+		"exitIntentExcludeMobile": {
+			"type": "boolean",
+			"default": true
+		},
+		"scrollDepth": {
+			"type": "number",
+			"default": 50
+		},
+		"scrollDirection": {
+			"type": "string",
+			"default": "down"
+		},
+		"timeOnPage": {
+			"type": "number",
+			"default": 30
+		},
+		"galleryGroupId": {
+			"type": "string",
+			"default": ""
+		},
+		"galleryIndex": {
+			"type": "number",
+			"default": 0
+		},
+		"showGalleryNavigation": {
+			"type": "boolean",
+			"default": true
+		},
+		"navigationStyle": {
+			"type": "string",
+			"default": "arrows"
+		},
+		"navigationPosition": {
+			"type": "string",
+			"default": "sides"
 		},
 		"width": {
 			"type": "string",
