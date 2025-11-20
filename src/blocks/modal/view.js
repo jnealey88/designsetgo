@@ -10,6 +10,11 @@
 (function () {
 	'use strict';
 
+	// Debug mode - checks if WP_DEBUG is enabled or if debug parameter is in URL
+	const DEBUG_MODE =
+		(typeof window.dsgoModalDebug !== 'undefined' && window.dsgoModalDebug) ||
+		window.location.search.includes('dsgo_debug=1');
+
 	/**
 	 * Modal Manager Class
 	 *
@@ -29,35 +34,122 @@
 			this.focusableElementsCached = false;
 			this.scrollPosition = 0;
 
-			// Settings from data attributes
+			// Settings from data attributes (with validation)
 			this.settings = {
-				animationType: element.getAttribute('data-animation-type') || 'fade',
-				animationDuration: parseInt(element.getAttribute('data-animation-duration')) || 300,
-				closeOnBackdrop: element.getAttribute('data-close-on-backdrop') === 'true',
-				closeOnEsc: element.getAttribute('data-close-on-esc') === 'true',
-				disableBodyScroll: element.getAttribute('data-disable-body-scroll') === 'true',
-				allowHashTrigger: element.getAttribute('data-allow-hash-trigger') !== 'false',
-				updateUrlOnOpen: element.getAttribute('data-update-url-on-open') === 'true',
-				autoTriggerType: element.getAttribute('data-auto-trigger-type') || 'none',
-				autoTriggerDelay: parseInt(element.getAttribute('data-auto-trigger-delay')) || 0,
-				autoTriggerFrequency: element.getAttribute('data-auto-trigger-frequency') || 'always',
-				cookieDuration: parseInt(element.getAttribute('data-cookie-duration')) || 7,
-				exitIntentSensitivity: element.getAttribute('data-exit-intent-sensitivity') || 'medium',
-				exitIntentMinTime: parseInt(element.getAttribute('data-exit-intent-min-time')) || 5,
-				exitIntentExcludeMobile: element.getAttribute('data-exit-intent-exclude-mobile') !== 'false',
-				scrollDepth: parseInt(element.getAttribute('data-scroll-depth')) || 50,
-				scrollDirection: element.getAttribute('data-scroll-direction') || 'down',
-				timeOnPage: parseInt(element.getAttribute('data-time-on-page')) || 30,
+				animationType: this.validateEnum(
+					element.getAttribute('data-animation-type'),
+					['fade', 'slide-up', 'slide-down', 'zoom', 'none'],
+					'fade'
+				),
+				animationDuration: this.validateNumber(
+					element.getAttribute('data-animation-duration'),
+					300,
+					0,
+					2000
+				),
+				closeOnBackdrop: this.validateBoolean(
+					element.getAttribute('data-close-on-backdrop'),
+					true
+				),
+				closeOnEsc: this.validateBoolean(
+					element.getAttribute('data-close-on-esc'),
+					true
+				),
+				disableBodyScroll: this.validateBoolean(
+					element.getAttribute('data-disable-body-scroll'),
+					true
+				),
+				allowHashTrigger: this.validateBoolean(
+					element.getAttribute('data-allow-hash-trigger'),
+					true
+				),
+				updateUrlOnOpen: this.validateBoolean(
+					element.getAttribute('data-update-url-on-open'),
+					false
+				),
+				autoTriggerType: this.validateEnum(
+					element.getAttribute('data-auto-trigger-type'),
+					['none', 'pageLoad', 'exitIntent', 'scroll', 'time'],
+					'none'
+				),
+				autoTriggerDelay: this.validateNumber(
+					element.getAttribute('data-auto-trigger-delay'),
+					0,
+					0,
+					300
+				),
+				autoTriggerFrequency: this.validateEnum(
+					element.getAttribute('data-auto-trigger-frequency'),
+					['always', 'session', 'once'],
+					'always'
+				),
+				cookieDuration: this.validateNumber(
+					element.getAttribute('data-cookie-duration'),
+					7,
+					1,
+					365
+				),
+				exitIntentSensitivity: this.validateEnum(
+					element.getAttribute('data-exit-intent-sensitivity'),
+					['low', 'medium', 'high'],
+					'medium'
+				),
+				exitIntentMinTime: this.validateNumber(
+					element.getAttribute('data-exit-intent-min-time'),
+					5,
+					0,
+					300
+				),
+				exitIntentExcludeMobile: this.validateBoolean(
+					element.getAttribute('data-exit-intent-exclude-mobile'),
+					true
+				),
+				scrollDepth: this.validateNumber(
+					element.getAttribute('data-scroll-depth'),
+					50,
+					0,
+					100
+				),
+				scrollDirection: this.validateEnum(
+					element.getAttribute('data-scroll-direction'),
+					['down', 'both'],
+					'down'
+				),
+				timeOnPage: this.validateNumber(
+					element.getAttribute('data-time-on-page'),
+					30,
+					0,
+					600
+				),
 				galleryGroupId: element.getAttribute('data-gallery-group-id') || '',
-				galleryIndex: parseInt(element.getAttribute('data-gallery-index')) || 0,
-				showGalleryNavigation: element.getAttribute('data-show-gallery-navigation') !== 'false',
-				navigationStyle: element.getAttribute('data-navigation-style') || 'arrows',
-				navigationPosition: element.getAttribute('data-navigation-position') || 'sides',
+				galleryIndex: this.validateNumber(
+					element.getAttribute('data-gallery-index'),
+					0,
+					0,
+					50
+				),
+				showGalleryNavigation: this.validateBoolean(
+					element.getAttribute('data-show-gallery-navigation'),
+					true
+				),
+				navigationStyle: this.validateEnum(
+					element.getAttribute('data-navigation-style'),
+					['arrows', 'chevrons', 'text'],
+					'arrows'
+				),
+				navigationPosition: this.validateEnum(
+					element.getAttribute('data-navigation-position'),
+					['sides', 'bottom', 'top'],
+					'sides'
+				),
 			};
 
 			// Gallery state
 			this.galleryModals = [];
 			this.currentGalleryIndex = -1;
+			this.galleryModalsCache = null;
+			this.galleryCacheTimestamp = 0;
+			this.galleryCacheDuration = 5000; // 5 seconds
 
 			// Check for reduced motion preference
 			this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -483,7 +575,7 @@
 			const targetDepth = this.settings.scrollDepth;
 			let lastScrollTop = 0;
 
-			this.handleScroll = () => {
+			const scrollHandler = () => {
 				if (hasTriggered || this.isOpen) {
 					return;
 				}
@@ -510,6 +602,9 @@
 					window.removeEventListener('scroll', this.handleScroll);
 				}
 			};
+
+			// Debounce scroll handler for better performance (100ms delay)
+			this.handleScroll = this.debounce(scrollHandler, 100);
 
 			window.addEventListener('scroll', this.handleScroll, { passive: true });
 		}
@@ -538,6 +633,83 @@
 		}
 
 		/**
+		 * Debounce utility for performance optimization
+		 *
+		 * @param {Function} func Function to debounce
+		 * @param {number} wait Wait time in milliseconds
+		 * @return {Function} Debounced function
+		 */
+		debounce(func, wait) {
+			let timeout;
+			return function executedFunction(...args) {
+				const later = () => {
+					clearTimeout(timeout);
+					func(...args);
+				};
+				clearTimeout(timeout);
+				timeout = setTimeout(later, wait);
+			};
+		}
+
+		/**
+		 * Validate number attribute
+		 *
+		 * @param {*} value Value to validate
+		 * @param {number} defaultValue Default value if validation fails
+		 * @param {number} min Minimum value
+		 * @param {number} max Maximum value
+		 * @return {number} Validated number
+		 */
+		validateNumber(value, defaultValue, min = -Infinity, max = Infinity) {
+			const parsed = parseInt(value, 10);
+			if (isNaN(parsed) || parsed < min || parsed > max) {
+				return defaultValue;
+			}
+			return parsed;
+		}
+
+		/**
+		 * Validate enum attribute
+		 *
+		 * @param {*} value Value to validate
+		 * @param {Array} validValues Array of valid values
+		 * @param {string} defaultValue Default value if validation fails
+		 * @return {string} Validated enum value
+		 */
+		validateEnum(value, validValues, defaultValue) {
+			if (validValues.includes(value)) {
+				return value;
+			}
+			return defaultValue;
+		}
+
+		/**
+		 * Validate boolean attribute
+		 *
+		 * @param {*} value Value to validate
+		 * @param {boolean} defaultValue Default value if validation fails
+		 * @return {boolean} Validated boolean
+		 */
+		validateBoolean(value, defaultValue) {
+			if (value === 'true') return true;
+			if (value === 'false') return false;
+			if (value === true || value === false) return value;
+			return defaultValue;
+		}
+
+		/**
+		 * Safe logging - only logs when debug mode is enabled
+		 *
+		 * @param {string} level Log level (warn, error, log)
+		 * @param {...*} args Arguments to log
+		 */
+		log(level, ...args) {
+			if (DEBUG_MODE && console[level]) {
+				console[level]('[DSGModal]', ...args);
+			}
+		}
+
+		/**
 		 * Set up gallery navigation
 		 */
 		setupGallery() {
@@ -552,9 +724,23 @@
 		}
 
 		/**
-		 * Update the list of gallery modals
+		 * Update the list of gallery modals (with caching)
 		 */
 		updateGalleryModals() {
+			const now = Date.now();
+
+			// Return cached results if still valid
+			if (
+				this.galleryModalsCache &&
+				now - this.galleryCacheTimestamp < this.galleryCacheDuration
+			) {
+				this.galleryModals = this.galleryModalsCache;
+				this.currentGalleryIndex = this.galleryModals.findIndex(
+					(item) => item.modalId === this.modalId
+				);
+				return;
+			}
+
 			const groupId = this.settings.galleryGroupId;
 			const allModals = document.querySelectorAll(`[data-gallery-group-id="${groupId}"]`);
 
@@ -569,10 +755,22 @@
 				.filter((item) => item.instance) // Only include initialized modals
 				.sort((a, b) => a.index - b.index);
 
+			// Cache the results
+			this.galleryModalsCache = this.galleryModals;
+			this.galleryCacheTimestamp = now;
+
 			// Find this modal's position in the gallery
 			this.currentGalleryIndex = this.galleryModals.findIndex(
 				(item) => item.modalId === this.modalId
 			);
+		}
+
+		/**
+		 * Invalidate gallery modals cache
+		 */
+		invalidateGalleryCache() {
+			this.galleryModalsCache = null;
+			this.galleryCacheTimestamp = 0;
 		}
 
 		/**
@@ -1194,7 +1392,9 @@
 		open(modalId, options = {}) {
 			const modalElement = document.getElementById(modalId);
 			if (!modalElement || !modalElement.dsgoModalInstance) {
-				console.warn(`Modal with ID "${modalId}" not found`);
+				if (DEBUG_MODE) {
+					console.warn(`[DSGModal] Modal with ID "${modalId}" not found`);
+				}
 				return false;
 			}
 
@@ -1215,7 +1415,9 @@
 
 			const modalElement = document.getElementById(modalId);
 			if (!modalElement || !modalElement.dsgoModalInstance) {
-				console.warn(`Modal with ID "${modalId}" not found`);
+				if (DEBUG_MODE) {
+					console.warn(`[DSGModal] Modal with ID "${modalId}" not found`);
+				}
 				return false;
 			}
 
@@ -1300,12 +1502,16 @@
 		 */
 		on(event, callback) {
 			if (!eventListeners[event]) {
-				console.warn(`Unknown event: ${event}`);
+				if (DEBUG_MODE) {
+					console.warn(`[DSGModal] Unknown event: ${event}`);
+				}
 				return () => {};
 			}
 
 			if (typeof callback !== 'function') {
-				console.warn('Callback must be a function');
+				if (DEBUG_MODE) {
+					console.warn('[DSGModal] Callback must be a function');
+				}
 				return () => {};
 			}
 
@@ -1351,7 +1557,9 @@
 				try {
 					callback(data);
 				} catch (error) {
-					console.error(`Error in ${event} callback:`, error);
+					if (DEBUG_MODE) {
+						console.error(`[DSGModal] Error in ${event} callback:`, error);
+					}
 				}
 			});
 

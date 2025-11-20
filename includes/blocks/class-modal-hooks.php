@@ -231,17 +231,10 @@ class Modal_Hooks {
 		);
 
 		foreach ( $attributes as $key => $value ) {
-			if ( isset( $validators[ $key ] ) ) {
-				$validator = $validators[ $key ];
-
-				if ( is_callable( $validator ) ) {
-					$sanitized[ $key ] = call_user_func( $validator, $value, $key );
-				} else {
-					// If validator not callable, sanitize as text.
-					$sanitized[ $key ] = sanitize_text_field( $value );
-				}
+			if ( isset( $validators[ $key ] ) && is_callable( $validators[ $key ] ) ) {
+				$sanitized[ $key ] = call_user_func( $validators[ $key ], $value, $key );
 			} else {
-				// Unknown attribute - sanitize as text field.
+				// If validator not callable or unknown attribute, sanitize as text.
 				$sanitized[ $key ] = sanitize_text_field( $value );
 			}
 		}

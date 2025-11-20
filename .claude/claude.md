@@ -2,241 +2,49 @@
 
 **Core Principle**: Use WordPress defaults first. Ask "Does WordPress already provide this?" before building custom solutions.
 
-## Critical Patterns
+## Code Standards
 
-### WordPress Hooks & APIs (ALWAYS USE)
-```javascript
-// Block Props
-useBlockProps()                    // Main wrapper
-useInnerBlocksProps()              // NOT plain <InnerBlocks />
-useBlockProps.save()               // Save function
-useInnerBlocksProps.save()         // Inner blocks save
-
-// Settings (WP 6.5+)
-const [contentSize] = useSettings('layout.contentSize');
-const [palette] = useSettings('color.palette');
-```
-
-### Color Controls (MANDATORY Pattern)
-```javascript
-// Import
-import {
-    InspectorControls,
-    __experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
-    __experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
-} from '@wordpress/block-editor';
-
-// Add clientId to signature (REQUIRED)
-export default function Edit({ attributes, setAttributes, clientId }) {
-    const colorGradientSettings = useMultipleOriginColorsAndGradients();
-
-    return (
-        <InspectorControls group="color">
-            <ColorGradientSettingsDropdown
-                panelId={clientId}
-                title={__('Colors', 'designsetgo')}
-                settings={[{
-                    label: __('Text Color', 'designsetgo'),
-                    colorValue: textColor,
-                    onColorChange: (color) => setAttributes({ textColor: color || '' }),
-                    clearable: true,
-                }]}
-                {...colorGradientSettings}
-            />
-        </InspectorControls>
-    );
-}
-```
-
-**Why**: `PanelColorSettings` is deprecated. Use `ColorGradientSettingsDropdown` in Styles tab (`group="color"`).
-
-### Block Supports Over Custom Controls
-```json
-{
-  "supports": {
-    "color": { "text": true, "background": true },
-    "typography": { "fontSize": true, "textAlign": true },
-    "spacing": { "padding": true, "margin": true },
-    "__experimentalBorder": { "radius": true },
-    "dimensions": { "minHeight": true }
-  }
-}
-```
-📖 See [BLOCK-SUPPORTS-AUDIT.md](../docs/BLOCK-SUPPORTS-AUDIT.md), [BLOCK-CONTROLS-ORGANIZATION.md](../docs/BLOCK-CONTROLS-ORGANIZATION.md)
-
-### Future-Proof Components
-```javascript
-// Add to ALL form components
-<RangeControl
-  __next40pxDefaultSize
-  __nextHasNoMarginBottom
-  // ... other props
-/>
-```
-**Affected**: `SelectControl`, `RangeControl`, `UnitControl`, `ToggleGroupControl`, `TextControl`
+- **Indentation**: Spaces (4 for JS/SCSS/PHP, 2 for JSON), never tabs
+- **Prefix**: `dsgo-` for CSS/data attributes, `dsgoAttributeName` for JS, `designsetgo_` for PHP
+- **File Size**: Max 300 lines (excluding data/constants)
+- **Block Props**: Always use `useBlockProps()` and `useInnerBlocksProps()`
+- **Color Controls**: Use `ColorGradientSettingsDropdown` in `<InspectorControls group="color">` (requires `clientId` prop)
+- **Future-Proof**: Add `__next40pxDefaultSize` and `__nextHasNoMarginBottom` to form components
+- **Block Supports**: Use `supports` in block.json before custom controls
 
 ## Architecture
 
-### Naming Conventions
+- **Categories**: Use WordPress core categories (`"category": "design"`), plus custom collection
+- **Extensions**: Use `addFilter()` with explicit block name allowlist
+- **File Structure**: `src/blocks/{block}/` → index.js (registration), edit.js, save.js, components/, utils/
+- **Asset Loading**: Enqueue in `enqueue_block_assets` with `is_admin()` check
 
-**Prefix Standard**: Use `dsgo-` for ALL plugin identifiers (CSS classes, data attributes, JavaScript variables).
+📖 [REFACTORING-GUIDE.md](docs/REFACTORING-GUIDE.md)
 
-**Format Guidelines**:
-- **CSS/HTML**: kebab-case → `.dsgo-block-name`, `data-dsgo-attribute`
-- **JavaScript**: camelCase → `dsgoAttributeName`, `dsgoStickyEnabled`
-- **PHP**: snake_case → `designsetgo_function_name`, `DesignSetGo\` namespace
-- **Filter hooks**: `designsetgo/hook-name`
+## Safety Rules
 
-**Examples**:
+### Shared Code Changes
+1. `grep -r "ComponentName" src/` to find ALL usages
+2. Test affected blocks (Container: Stack/Flex/Grid, Interactive: Accordion/Tabs, Styled: Icon/Pill, List: Icon List)
+3. `npm run build` + check console (editor + frontend)
+
+### CSS/JS Scope
+- **CSS**: Use `:where()` for low specificity, scope to `.wp-block-designsetgo-{block}`
+- **JS**: Use `[data-dsgo-*]` selectors, event delegation with `.closest()`
+
+### Deprecations
+Required when changing: attribute schema, HTML structure, or removing attributes
 ```javascript
-// ✅ CORRECT - dsgo prefix
-attributes: {
-  dsgoStickyEnabled: { type: 'boolean', default: false },
-  dsgoAnimationDuration: { type: 'number', default: 600 }
-}
-
-// CSS classes
-.dsgo-sticky-header
-.dsgo-animation-fadeIn
-data-dsgo-animation-enabled="true"
-
-// ❌ INCORRECT - dsg prefix (deprecated)
-attributes: {
-  dsgStickyEnabled: { type: 'boolean' }  // Wrong prefix
-}
-```
-
-**Note**: The `dsgo-` prefix was used in early development but has been standardized to `dsgo-` for consistency with the plugin name.
-
-### Block Categories
-- **Use**: WordPress core categories in `block.json` (`"category": "design"`)
-- **Plus**: Custom collection via `registerBlockCollection('designsetgo', {...})`
-- **Mapping**: Design (containers/UI), Text (content), Widgets (dynamic)
-
-### Extensions vs Custom Blocks
-- **Extensions**: Simple enhancements via `addFilter()` - MUST check block name
-- **Custom Blocks**: Unique functionality
-
-```javascript
-// ✅ SAFE Extension Pattern
-addFilter('blocks.registerBlockType', 'designsetgo/filter', (settings, name) => {
-  const allowed = ['core/group', 'core/cover'];
-  if (!allowed.includes(name)) return settings;
-  // Modify settings
-  return settings;
-});
-```
-
-### Asset Loading
-```php
-// ✅ CORRECT
-add_action('enqueue_block_assets', array($this, 'enqueue_editor_assets'));
-public function enqueue_editor_assets() {
-    if (!is_admin()) return;
-    // Enqueue...
-}
-```
-
-## File Organization & Limits
-
-**Hard Rule**: Max **300 lines** per file (excluding data/constants)
-
-```
-src/blocks/{block}/
-├── index.js (40-60)      # Registration only
-├── edit.js (100-150)     # Focused component
-├── save.js               # Usually good
-├── components/inspector/ # One file per panel
-└── utils/                # Pure functions
-```
-
-📖 See [REFACTORING-GUIDE.md](docs/REFACTORING-GUIDE.md) - ROI: 140+ hrs/year saved
-
-## Critical Safety Rules
-
-### BEFORE Changing Shared Code
-```bash
-# 1. Find ALL usages
-grep -r "ComponentName\|functionName" src/
-
-# 2. Test EVERY affected block (see checklist below)
-
-# 3. Build
-npm run build
-
-# 4. Check console (editor + frontend)
-```
-
-### Cross-Block Testing Checklist
-**Container**: Stack, Flex, Grid
-**Interactive**: Accordion, Tabs, Counter Group
-**Styled**: Icon, Icon Button, Pill, Progress Bar
-**List**: Icon List
-
-**Per Block**: Insert → Modify controls → Save → Frontend → Responsive → Console
-
-### CSS Specificity Pattern
-```scss
-// ✅ LOW SPECIFICITY - Use :where()
-:where(.wp-block-designsetgo-stack.custom) { display: flex; }
-
-// ✅ SCOPED - Plugin blocks only
-.wp-block[class*="wp-block-designsetgo-"] { /* safe */ }
-
-// ✅ SAFEST - Specific block
-.wp-block-designsetgo-stack { /* only affects Stack */ }
-```
-
-### JavaScript Scope
-```javascript
-// ✅ SAFEST - Data attributes
-document.querySelectorAll('[data-dsgo-accordion]').forEach(el => {});
-
-// ✅ Event delegation
-document.addEventListener('click', (e) => {
-  const item = e.target.closest('[data-dsgo-item]');
-  if (!item) return;
-  handler(item);
-});
-```
-
-### Block Deprecations (CRITICAL)
-**Required when changing**:
-- Attribute name/type/default
-- Block HTML structure
-- Removing attributes
-
-```javascript
-// src/blocks/my-block/deprecated.js
-const v1 = {
-  attributes: { /* OLD schema */ },
-  save: ({ attributes }) => { /* OLD save */ },
-  migrate: (attrs) => ({ /* transform to new */ }),
-};
+const v1 = { attributes: {}, save: () => {}, migrate: (attrs) => ({}) };
 export default [v1];
 ```
 
 ### Style Imports (MANDATORY)
-```scss
-// src/styles/style.scss (frontend)
-@import '../blocks/my-block/style';
-@import '../extensions/my-extension/styles';
+Add to `src/styles/style.scss` (frontend) AND `src/styles/editor.scss` (editor)
+Verify: `grep -i "class-name" build/style-index.css`
 
-// src/styles/editor.scss (editor)
-@import '../blocks/my-block/editor';
-@import '../extensions/my-extension/editor';
-```
-
-**Verify**: `grep -i "class-name" build/style-index.css`
-
-## Pre-Commit Checklist
-```bash
-npm run build                    # Must succeed
-# Check console (editor + frontend)
-# Test changed blocks + related blocks
-# Test responsive (375/768/1200px)
-git status                       # No unexpected changes
-```
+### Pre-Commit
+`npm run build` → Test editor + frontend + responsive → Check console
 
 ## Top 10 Common Pitfalls
 
