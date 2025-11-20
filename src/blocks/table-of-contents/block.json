@@ -1,0 +1,146 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "designsetgo/table-of-contents",
+    "version": "1.0.0",
+    "title": "Table of Contents",
+    "category": "design",
+    "description": "Auto-generate a table of contents from page headings with smooth scroll navigation and scroll spy.",
+    "keywords": [
+        "toc",
+        "contents",
+        "navigation",
+        "headings",
+        "anchor",
+        "outline"
+    ],
+    "textdomain": "designsetgo",
+    "attributes": {
+        "uniqueId": {
+            "type": "string",
+            "default": ""
+        },
+        "includeH2": {
+            "type": "boolean",
+            "default": true
+        },
+        "includeH3": {
+            "type": "boolean",
+            "default": true
+        },
+        "includeH4": {
+            "type": "boolean",
+            "default": false
+        },
+        "includeH5": {
+            "type": "boolean",
+            "default": false
+        },
+        "includeH6": {
+            "type": "boolean",
+            "default": false
+        },
+        "displayMode": {
+            "type": "string",
+            "default": "hierarchical",
+            "enum": [
+                "hierarchical",
+                "flat"
+            ]
+        },
+        "listStyle": {
+            "type": "string",
+            "default": "unordered",
+            "enum": [
+                "ordered",
+                "unordered"
+            ]
+        },
+        "showTitle": {
+            "type": "boolean",
+            "default": true
+        },
+        "titleText": {
+            "type": "string",
+            "default": "Table of Contents"
+        },
+        "scrollSmooth": {
+            "type": "boolean",
+            "default": true
+        },
+        "scrollOffset": {
+            "type": "number",
+            "default": 150
+        },
+        "linkColor": {
+            "type": "string",
+            "default": ""
+        },
+        "activeLinkColor": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "anchor": true,
+        "align": [
+            "wide",
+            "full"
+        ],
+        "html": false,
+        "inserter": true,
+        "position": {
+            "sticky": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true,
+            "blockGap": true,
+            "__experimentalDefaultControls": {
+                "padding": true,
+                "blockGap": true
+            }
+        },
+        "color": {
+            "background": true,
+            "text": true,
+            "link": true,
+            "__experimentalDefaultControls": {
+                "background": true,
+                "text": true
+            }
+        },
+        "typography": {
+            "fontSize": true,
+            "lineHeight": true,
+            "__experimentalFontFamily": true,
+            "__experimentalFontWeight": true,
+            "__experimentalDefaultControls": {
+                "fontSize": true
+            }
+        },
+        "__experimentalBorder": {
+            "color": true,
+            "radius": true,
+            "style": true,
+            "width": true,
+            "__experimentalDefaultControls": {
+                "radius": true
+            }
+        }
+    },
+    "example": {
+        "attributes": {
+            "showTitle": true,
+            "titleText": "Table of Contents",
+            "includeH2": true,
+            "includeH3": true,
+            "displayMode": "hierarchical",
+            "scrollSmooth": true
+        }
+    },
+    "viewScript": "file:./view.js",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./index.css"
+}
