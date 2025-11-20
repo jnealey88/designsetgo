@@ -94,8 +94,9 @@ class DSGTableOfContents {
 			// Handle URL hash on page load
 			this.handleInitialHash();
 		} catch (error) {
-		}
-         // Silently fail - show empty message to user
+		// Silently fail - show empty message to user
+		this.showEmptyMessage();
+	}
 	}
 
 	scanHeadings() {
@@ -270,10 +271,12 @@ class DSGTableOfContents {
 							target.focus();
 						}
 					} catch (error) {
+					// Silently fail on scroll errors
 					}
 				});
 			});
 		} catch (error) {
+		// Silently fail on link handler setup errors
 		}
 	}
 
