@@ -64,22 +64,21 @@ export const modalTemplates = [
 				},
 			],
 			[
-				'core/paragraph',
+				'designsetgo/form-builder',
 				{
-					content: __('<strong>Email:</strong> <input type="email" placeholder="your@email.com" style="width: 100%; padding: 8px; margin: 8px 0;" />', 'designsetgo'),
-				},
-			],
-			[
-				'core/buttons',
-				{
-					layout: { type: 'flex', justifyContent: 'center' },
+					submitButtonText: __('Subscribe', 'designsetgo'),
+					submitButtonAlignment: 'center',
+					ajaxSubmit: true,
+					successMessage: __('Thank you for subscribing!', 'designsetgo'),
 				},
 				[
 					[
-						'core/button',
+						'designsetgo/form-email-field',
 						{
-							text: __('Subscribe', 'designsetgo'),
-							width: 100,
+							label: __('Email Address', 'designsetgo'),
+							placeholder: 'your@email.com',
+							required: true,
+							fieldName: 'email',
 						},
 					],
 				],
@@ -118,19 +117,13 @@ export const modalTemplates = [
 				},
 			],
 			[
-				'core/buttons',
+				'designsetgo/icon-button',
 				{
-					layout: { type: 'flex', justifyContent: 'center' },
+					text: __('Shop Now', 'designsetgo'),
+					width: 'full',
+					icon: 'cart',
+					iconPosition: 'end',
 				},
-				[
-					[
-						'core/button',
-						{
-							text: __('Shop Now', 'designsetgo'),
-							width: 100,
-						},
-					],
-				],
 			],
 		],
 	},
@@ -223,31 +216,39 @@ export const modalTemplates = [
 				},
 			],
 			[
-				'core/paragraph',
+				'designsetgo/form-builder',
 				{
-					content: __('<strong>Name:</strong><br><input type="text" placeholder="Your name" style="width: 100%; padding: 8px; margin: 4px 0 12px;" />', 'designsetgo'),
+					submitButtonText: __('Send Message', 'designsetgo'),
+					submitButtonAlignment: 'left',
+					ajaxSubmit: true,
+					successMessage: __('Thank you! Your message has been sent.', 'designsetgo'),
 				},
-			],
-			[
-				'core/paragraph',
-				{
-					content: __('<strong>Email:</strong><br><input type="email" placeholder="your@email.com" style="width: 100%; padding: 8px; margin: 4px 0 12px;" />', 'designsetgo'),
-				},
-			],
-			[
-				'core/paragraph',
-				{
-					content: __('<strong>Message:</strong><br><textarea placeholder="Your message..." style="width: 100%; padding: 8px; margin: 4px 0 12px; min-height: 100px;"></textarea>', 'designsetgo'),
-				},
-			],
-			[
-				'core/buttons',
-				{},
 				[
 					[
-						'core/button',
+						'designsetgo/form-text-field',
 						{
-							text: __('Send Message', 'designsetgo'),
+							label: __('Name', 'designsetgo'),
+							placeholder: 'Your name',
+							required: true,
+							fieldName: 'name',
+						},
+					],
+					[
+						'designsetgo/form-email-field',
+						{
+							label: __('Email', 'designsetgo'),
+							placeholder: 'your@email.com',
+							required: true,
+							fieldName: 'email',
+						},
+					],
+					[
+						'designsetgo/form-textarea',
+						{
+							label: __('Message', 'designsetgo'),
+							placeholder: 'Your message...',
+							required: true,
+							fieldName: 'message',
 						},
 					],
 				],
@@ -314,16 +315,13 @@ export const modalTemplates = [
 								},
 							],
 							[
-								'core/buttons',
-								{},
-								[
-									[
-										'core/button',
-										{
-											text: __('Add to Cart', 'designsetgo'),
-										},
-									],
-								],
+								'designsetgo/icon-button',
+								{
+									text: __('Add to Cart', 'designsetgo'),
+									width: 'auto',
+									icon: 'cart',
+									iconPosition: 'start',
+								},
 							],
 						],
 					],
@@ -367,20 +365,25 @@ export const modalTemplates = [
 			[
 				'core/buttons',
 				{
-					layout: { type: 'flex', justifyContent: 'space-between' },
+					layout: { type: 'flex', justifyContent: 'left' },
 				},
 				[
 					[
-						'core/button',
+						'designsetgo/icon-button',
 						{
 							text: __('Learn More', 'designsetgo'),
-							className: 'is-style-outline',
+							width: 'auto',
+							icon: 'info',
+							iconPosition: 'start',
 						},
 					],
 					[
-						'core/button',
+						'designsetgo/icon-button',
 						{
 							text: __('Accept', 'designsetgo'),
+							width: 'auto',
+							icon: 'yes',
+							iconPosition: 'end',
 						},
 					],
 				],

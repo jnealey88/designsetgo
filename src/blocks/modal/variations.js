@@ -238,20 +238,25 @@ const variations = [
 			[
 				'core/buttons',
 				{
-					layout: { type: 'flex', justifyContent: 'space-between' },
+					layout: { type: 'flex', justifyContent: 'left' },
 				},
 				[
 					[
-						'core/button',
+						'designsetgo/icon-button',
 						{
 							text: __('Learn More', 'designsetgo'),
-							className: 'is-style-outline',
+							width: 'auto',
+							icon: 'info',
+							iconPosition: 'start',
 						},
 					],
 					[
-						'core/button',
+						'designsetgo/icon-button',
 						{
 							text: __('Accept', 'designsetgo'),
+							width: 'auto',
+							icon: 'yes',
+							iconPosition: 'end',
 						},
 					],
 				],

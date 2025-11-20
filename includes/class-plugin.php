@@ -185,6 +185,7 @@ class Plugin {
 		// Initialize components.
 		$this->assets              = new Assets();
 		$this->blocks              = new Blocks\Loader();
+		$this->modal_hooks         = new Blocks\Modal_Hooks();
 		$this->form_handler        = new Blocks\Form_Handler();
 		$this->form_submissions    = new Blocks\Form_Submissions();
 		$this->patterns            = new Patterns\Loader();

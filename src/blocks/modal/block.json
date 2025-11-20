@@ -13,23 +13,47 @@
 		"anchor": true,
 		"align": false,
 		"html": false,
+		"customClassName": true,
+		"className": true,
 		"spacing": {
 			"margin": false,
 			"padding": true,
-			"blockGap": false
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"padding": true,
+				"blockGap": true
+			}
 		},
 		"color": {
 			"background": true,
 			"text": true,
-			"link": true
+			"link": true,
+			"gradients": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
 		},
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
 			"__experimentalFontFamily": true,
 			"__experimentalFontWeight": true,
-			"__experimentalLetterSpacing": true
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
 		},
+		"dimensions": {
+			"minHeight": true,
+			"__experimentalDefaultControls": {
+				"minHeight": false
+			}
+		},
+		"shadow": true,
 		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
@@ -41,6 +65,9 @@
 				"style": true,
 				"width": true
 			}
+		},
+		"interactivity": {
+			"clientNavigation": true
 		}
 	},
 	"providesContext": {
