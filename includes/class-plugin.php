@@ -150,6 +150,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-loader.php';
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-form-handler.php';
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-form-submissions.php';
+		require_once DESIGNSETGO_PATH . 'includes/blocks/class-modal-hooks.php';
 		require_once DESIGNSETGO_PATH . 'includes/patterns/class-loader.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-global-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-settings.php';
