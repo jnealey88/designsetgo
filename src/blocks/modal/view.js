@@ -378,24 +378,49 @@
 			}
 		}
 
-		/**
-		 * Get cookie value
-		 */
-		getCookie(name) {
-			const matches = document.cookie.match(
-				new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)')
-			);
-			return matches ? decodeURIComponent(matches[1]) : undefined;
+	/**
+	 * Get cookie value
+	 *
+	 * Uses a safe string-splitting approach to avoid ReDoS vulnerabilities.
+	 */
+	getCookie(name) {
+		// Use safer string splitting instead of complex regex
+		const cookieString = `; ${document.cookie}`;
+		const parts = cookieString.split(`; ${name}=`);
+
+		if (parts.length === 2) {
+			const value = parts.pop().split(';').shift();
+			try {
+				return decodeURIComponent(value);
+			} catch (e) {
+				// If decoding fails, return raw value
+				return value;
+			}
 		}
 
-		/**
-		 * Set cookie
-		 */
-		setCookie(name, value, days) {
-			const expires = new Date();
-			expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-			document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
-		}
+		return undefined;
+	}
+
+	/**
+	 * Set cookie with secure flags
+	 *
+	 * Uses SameSite=Strict and Secure (on HTTPS) for enhanced security.
+	 */
+	setCookie(name, value, days) {
+		const expires = new Date();
+		expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+
+		// Encode value to handle special characters
+		const encodedValue = encodeURIComponent(value);
+
+		// Use SameSite=Strict for frequency tracking (no cross-site needs)
+		const sameSite = 'Strict';
+
+		// Add Secure flag when using HTTPS
+		const secure = window.location.protocol === 'https:' ? ';Secure' : '';
+
+		document.cookie = `${name}=${encodedValue};expires=${expires.toUTCString()};path=/;SameSite=${sameSite}${secure}`;
+	}
 
 		/**
 		 * Set up page load trigger
@@ -769,6 +794,15 @@
 				return;
 			}
 
+			// Trigger beforeOpen event
+			if (window.dsgoModal) {
+				window.dsgoModal.trigger('modalBeforeOpen', {
+					modalId: this.modalId,
+					element: this.modal,
+					trigger,
+				});
+			}
+
 			// Store the element that triggered the modal
 			this.previouslyFocusedElement = trigger || document.activeElement;
 
@@ -844,6 +878,15 @@
 					detail: { modalId: this.modalId },
 				})
 			);
+
+			// Trigger API event
+			if (window.dsgoModal) {
+				window.dsgoModal.trigger('modalOpen', {
+					modalId: this.modalId,
+					element: this.modal,
+					trigger,
+				});
+			}
 		}
 
 		/**
@@ -870,6 +913,14 @@
 		close() {
 			if (!this.isOpen) {
 				return;
+			}
+
+			// Trigger beforeClose event
+			if (window.dsgoModal) {
+				window.dsgoModal.trigger('modalBeforeClose', {
+					modalId: this.modalId,
+					element: this.modal,
+				});
 			}
 
 			// Trigger closing animation
@@ -912,6 +963,14 @@
 					detail: { modalId: this.modalId },
 				})
 			);
+
+			// Trigger API event
+			if (window.dsgoModal) {
+				window.dsgoModal.trigger('modalClose', {
+					modalId: this.modalId,
+					element: this.modal,
+				});
+			}
 		}
 
 		/**
@@ -1111,9 +1170,207 @@
 	});
 
 	/**
+	 * Event listeners registry for custom events
+	 */
+	const eventListeners = {
+		modalOpen: [],
+		modalClose: [],
+		modalBeforeOpen: [],
+		modalBeforeClose: [],
+	};
+
+	/**
+	 * Public API for modal control
+	 */
+	const publicAPI = {
+		/**
+		 * Open a modal by ID
+		 *
+		 * @param {string} modalId Modal ID to open
+		 * @param {Object} options Optional configuration
+		 * @param {HTMLElement} options.trigger Element that triggered the modal
+		 * @return {boolean} Success status
+		 */
+		open(modalId, options = {}) {
+			const modalElement = document.getElementById(modalId);
+			if (!modalElement || !modalElement.dsgoModalInstance) {
+				console.warn(`Modal with ID "${modalId}" not found`);
+				return false;
+			}
+
+			modalElement.dsgoModalInstance.open(options.trigger || null);
+			return true;
+		},
+
+		/**
+		 * Close a modal by ID
+		 *
+		 * @param {string} modalId Modal ID to close (if not provided, closes all)
+		 * @return {boolean} Success status
+		 */
+		close(modalId) {
+			if (!modalId) {
+				return this.closeAll();
+			}
+
+			const modalElement = document.getElementById(modalId);
+			if (!modalElement || !modalElement.dsgoModalInstance) {
+				console.warn(`Modal with ID "${modalId}" not found`);
+				return false;
+			}
+
+			modalElement.dsgoModalInstance.close();
+			return true;
+		},
+
+		/**
+		 * Close all open modals
+		 *
+		 * @return {number} Number of modals closed
+		 */
+		closeAll() {
+			const openModals = document.querySelectorAll('[data-dsgo-modal].is-open');
+			let count = 0;
+
+			openModals.forEach((modal) => {
+				if (modal.dsgoModalInstance) {
+					modal.dsgoModalInstance.close();
+					count++;
+				}
+			});
+
+			return count;
+		},
+
+		/**
+		 * Check if a modal is currently open
+		 *
+		 * @param {string} modalId Modal ID to check
+		 * @return {boolean} Whether the modal is open
+		 */
+		isOpen(modalId) {
+			const modalElement = document.getElementById(modalId);
+			if (!modalElement || !modalElement.dsgoModalInstance) {
+				return false;
+			}
+
+			return modalElement.dsgoModalInstance.isOpen;
+		},
+
+		/**
+		 * Get modal instance by ID
+		 *
+		 * @param {string} modalId Modal ID
+		 * @return {DSGModal|null} Modal instance or null
+		 */
+		getInstance(modalId) {
+			const modalElement = document.getElementById(modalId);
+			return modalElement?.dsgoModalInstance || null;
+		},
+
+		/**
+		 * Get all modal instances on the page
+		 *
+		 * @return {Array<Object>} Array of modal info objects
+		 */
+		getAllModals() {
+			const modals = document.querySelectorAll('[data-dsgo-modal]');
+			const result = [];
+
+			modals.forEach((modal) => {
+				if (modal.dsgoModalInstance) {
+					result.push({
+						id: modal.dsgoModalInstance.modalId,
+						element: modal,
+						instance: modal.dsgoModalInstance,
+						isOpen: modal.dsgoModalInstance.isOpen,
+					});
+				}
+			});
+
+			return result;
+		},
+
+		/**
+		 * Register event listener
+		 *
+		 * @param {string} event Event name (modalOpen, modalClose, modalBeforeOpen, modalBeforeClose)
+		 * @param {Function} callback Callback function
+		 * @return {Function} Unsubscribe function
+		 */
+		on(event, callback) {
+			if (!eventListeners[event]) {
+				console.warn(`Unknown event: ${event}`);
+				return () => {};
+			}
+
+			if (typeof callback !== 'function') {
+				console.warn('Callback must be a function');
+				return () => {};
+			}
+
+			eventListeners[event].push(callback);
+
+			// Return unsubscribe function
+			return () => this.off(event, callback);
+		},
+
+		/**
+		 * Remove event listener
+		 *
+		 * @param {string} event Event name
+		 * @param {Function} callback Callback function to remove
+		 * @return {boolean} Success status
+		 */
+		off(event, callback) {
+			if (!eventListeners[event]) {
+				return false;
+			}
+
+			const index = eventListeners[event].indexOf(callback);
+			if (index > -1) {
+				eventListeners[event].splice(index, 1);
+				return true;
+			}
+
+			return false;
+		},
+
+		/**
+		 * Trigger custom event
+		 *
+		 * @param {string} event Event name
+		 * @param {Object} data Event data
+		 */
+		trigger(event, data) {
+			if (!eventListeners[event]) {
+				return;
+			}
+
+			eventListeners[event].forEach((callback) => {
+				try {
+					callback(data);
+				} catch (error) {
+					console.error(`Error in ${event} callback:`, error);
+				}
+			});
+
+			// Also dispatch native DOM event
+			const customEvent = new CustomEvent(`dsgo-${event}`, {
+				detail: data,
+				bubbles: true,
+				cancelable: true,
+			});
+			document.dispatchEvent(customEvent);
+		},
+	};
+
+	/**
 	 * Expose to window for external access
 	 */
 	window.DSGModal = DSGModal;
 	window.dsgoInitModals = initModals;
 	window.dsgoInitModalTriggers = initTriggers;
+	window.dsgoModal = publicAPI;
+	window.dsgoModalAPI = publicAPI; // Alias for backwards compatibility
 })();
