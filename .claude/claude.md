@@ -46,152 +46,57 @@ Verify: `grep -i "class-name" build/style-index.css`
 ### Pre-Commit
 `npm run build` → Test editor + frontend + responsive → Check console
 
-## Top 10 Common Pitfalls
+## Common Pitfalls
 
-1. **Frontend imports missing** → Add to `src/styles/style.scss`
-2. **style.scss ≠ editor.scss** → Edit BOTH for visual styles
-3. **Plain `<InnerBlocks />`** → Use `useInnerBlocksProps()`
-4. **Custom width on alignfull** → Let WordPress handle sizing
-5. **Only test editor** → ALWAYS test frontend too
-6. **No blockGap default in dynamic blocks** → Add to block.json attributes
-7. **Change shared utility** → Test ALL consumers (`grep -r`)
-8. **Broad CSS selectors** → Scope to `.wp-block-designsetgo-{block}`
-9. **addFilter without name check** → Use explicit allowlist
-10. **Change attributes** → Create deprecation first
+1. Frontend imports missing → Add to `src/styles/style.scss`
+2. style.scss ≠ editor.scss → Edit BOTH
+3. Plain `<InnerBlocks />` → Use `useInnerBlocksProps()`
+4. Only test editor → Test frontend too
+5. Change shared utility → Test ALL consumers
+6. Broad CSS selectors → Scope to block
+7. Change attributes → Create deprecation first
 
-## Technical Patterns
+## Key Patterns
 
-### Clickable Groups
-```javascript
-group.addEventListener('click', (e) => {
-    const isInteractive = e.target.matches('a, button') ||
-                         e.target.closest('a, button');
-    if (!isInteractive) window.location.href = linkUrl;
-});
-```
+- **Clickable Groups**: Check `!e.target.closest('a, button')` before navigation
+- **External Links**: `window.open(url, '_blank'); win.opener = null`
+- **Context**: `providesContext` in parent, `usesContext` in child
+- **!important**: Only for accessibility, user expectation, or WP core override
 
-### External Link Security
-```javascript
-if (linkTarget === '_blank') {
-    const win = window.open(linkUrl, '_blank');
-    if (win) win.opener = null;
-}
-```
+## Container Width Pattern
 
-### Parent-Child Context
-```json
-// Parent
-"providesContext": { "ns/parent/color": "color" }
-
-// Child
-"usesContext": ["ns/parent/color"]
-```
-```javascript
-const effectiveColor = color || parentColor || defaultColor;
-```
-
-### When to Use `!important`
-Only for: Accessibility, User expectation, WordPress core override
-
-### Width & Layout Patterns (Container Blocks)
-
-**⚠️ CRITICAL: Always use two-div pattern for container blocks**
-
+**Two-div structure** (outer: full-width/backgrounds, inner: constrained):
 ```jsx
-// ✅ CORRECT - Two-div pattern
-<div className="dsgo-block">        // Outer: full-width, backgrounds
-  <div className="dsgo-block__inner" style={innerStyle}>  // Inner: constrained
-    {children}
-  </div>
-</div>
+<div className="dsgo-block">
+  <div className="dsgo-block__inner" style={innerStyle}>
 ```
 
-**Width Constraint Pattern:**
-```javascript
-// In edit.js
-const [themeContentSize] = useSettings('layout.contentSize');
-const innerStyle = {};
-if (constrainWidth) {
-    innerStyle.maxWidth = contentWidth || themeContentSize;
-    innerStyle.marginLeft = 'auto';
-    innerStyle.marginRight = 'auto';
-}
+**Width constraints**:
+- Edit: `maxWidth: contentWidth || themeContentSize`
+- Save: `maxWidth: contentWidth || 'var(--wp--style--global--content-size, 1140px)'`
+- Nested: Reset constraints via CSS (`.dsgo-stack__inner > &`)
 
-// In save.js
-if (constrainWidth) {
-    innerStyle.maxWidth = contentWidth || 'var(--wp--style--global--content-size, 1140px)';
-    innerStyle.marginLeft = 'auto';
-    innerStyle.marginRight = 'auto';
-}
-```
+📖 [WIDTH-LAYOUT-PATTERNS.md](docs/WIDTH-LAYOUT-PATTERNS.md)
 
-**Apply Conditional Classes:**
-```javascript
-const className = [
-    'dsgo-block',
-    !constrainWidth && 'dsgo-no-width-constraint',
-].filter(Boolean).join(' ');
-```
+## FSE & Debugging
 
-**Handle Nested Containers (Required CSS):**
-```scss
-.dsgo-my-block {
-    // When nested inside another container
-    .dsgo-stack__inner > &,
-    .dsgo-flex__inner > &,
-    .dsgo-grid__inner > & {
-        width: 100% !important;
-        .dsgo-my-block__inner {
-            max-width: none !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
-    }
-}
-```
+**FSE Checklist**: Comprehensive `supports`, `example` property, WordPress presets only, test Twenty Twenty-Five
+📖 [FSE-COMPATIBILITY-GUIDE.md](docs/FSE-COMPATIBILITY-GUIDE.md)
 
-**📖 See [WIDTH-LAYOUT-PATTERNS.md](docs/WIDTH-LAYOUT-PATTERNS.md) for:**
-- Complete width/contentSize documentation
-- Known conflicts with nested items (7 identified issues)
-- Testing matrix for container nesting
-- Migration guide for fixing existing issues
+**Debug**: `npx wp-env logs` (500 errors), `grep -i "class" build/style-index.css` (missing CSS)
 
-## FSE Compatibility
+## Documentation
 
-📖 See [FSE-COMPATIBILITY-GUIDE.md](docs/FSE-COMPATIBILITY-GUIDE.md)
-
-- [ ] Comprehensive `supports` in block.json
-- [ ] `example` property
-- [ ] WordPress presets (no hardcoded values)
-- [ ] Test Twenty Twenty-Five theme
-- [ ] Block patterns
-
-## Debugging
-
-**500 Error**: `npx wp-env logs`
-**CSS Missing**: `grep -i "class" build/style-index.css`
-**Build Verify**: `ls -lh build/ && cat build/style-index.css`
-
-## Resources
-
-📖 **Detailed Guides** (in `docs/`):
-- [BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) - Complete reference
-- [BEST-PRACTICES-SUMMARY.md](docs/BEST-PRACTICES-SUMMARY.md) - Quick patterns
-- [EDITOR-STYLING-GUIDE.md](docs/EDITOR-STYLING-GUIDE.md) - Styling patterns
-- [WIDTH-LAYOUT-PATTERNS.md](docs/WIDTH-LAYOUT-PATTERNS.md) - Width/layout patterns & nesting conflicts
-
-**Official**:
-- [Block Editor Handbook](https://developer.wordpress.org/block-editor/)
-- [Block Supports](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/)
-- [Theme.json](https://developer.wordpress.org/themes/global-settings-and-styles/settings/)
+📖 [BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md)
+📖 [BEST-PRACTICES-SUMMARY.md](docs/BEST-PRACTICES-SUMMARY.md)
+📖 [EDITOR-STYLING-GUIDE.md](docs/EDITOR-STYLING-GUIDE.md)
+📖 [Block Editor Handbook](https://developer.wordpress.org/block-editor/)
 
 ## Version Control
 
-**Commit Format**: `type: description`
-**Types**: `feat`, `fix`, `refactor`, `style`, `docs`, `chore`
-
+**Format**: `type: description` (`feat`, `fix`, `refactor`, `style`, `docs`, `chore`)
 **Commit**: `src/`, `includes/`, `*.php`, `package.json`, `block.json`, `*.md`
-**Don't Commit**: `build/`, `node_modules/`, `wp-env/`
+**Ignore**: `build/`, `node_modules/`, `wp-env/`
 
 ---
 **Updated**: 2025-11-11 | **Version**: 1.0.1 | **WP**: 6.4+

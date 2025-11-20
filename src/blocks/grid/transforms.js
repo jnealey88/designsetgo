@@ -10,7 +10,7 @@ const transforms = {
 	from: [
 		{
 			type: 'block',
-			blocks: ['designsetgo/stack'],
+			blocks: ['designsetgo/section'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
 					'designsetgo/grid',
@@ -31,14 +31,14 @@ const transforms = {
 		},
 		{
 			type: 'block',
-			blocks: ['designsetgo/flex'],
+			blocks: ['designsetgo/row'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
 					'designsetgo/grid',
 					{
 						// Preserve all attributes including layout
 						...attributes,
-						// Remove Flex-specific attributes
+						// Remove Row-specific attributes
 						mobileStack: undefined,
 						// Set Grid-specific defaults
 						rowGap: '',
@@ -81,10 +81,10 @@ const transforms = {
 	to: [
 		{
 			type: 'block',
-			blocks: ['designsetgo/stack'],
+			blocks: ['designsetgo/section'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
-					'designsetgo/stack',
+					'designsetgo/section',
 					{
 						// Preserve all attributes including layout
 						...attributes,
@@ -103,10 +103,10 @@ const transforms = {
 		},
 		{
 			type: 'block',
-			blocks: ['designsetgo/flex'],
+			blocks: ['designsetgo/row'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
-					'designsetgo/flex',
+					'designsetgo/row',
 					{
 						// Preserve all attributes including layout
 						...attributes,
@@ -118,7 +118,7 @@ const transforms = {
 						columnGap: undefined,
 						alignItems: undefined,
 						textAlign: undefined,
-						// Set Flex-specific defaults
+						// Set Row-specific defaults
 						mobileStack: false,
 					},
 					innerBlocks

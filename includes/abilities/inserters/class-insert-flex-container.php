@@ -179,7 +179,7 @@ class Insert_Flex_Container extends Abstract_Ability {
 		// Insert the block.
 		return Block_Inserter::insert_block(
 			$post_id,
-			'designsetgo/flex',
+			'designsetgo/row',
 			$attributes,
 			$inner_blocks,
 			$position
