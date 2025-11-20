@@ -39,6 +39,13 @@ class Plugin {
 	public $blocks;
 
 	/**
+	 * Modal Hooks instance.
+	 *
+	 * @var Blocks\Modal_Hooks
+	 */
+	public $modal_hooks;
+
+	/**
 	 * Form Handler instance.
 	 *
 	 * @var Blocks\Form_Handler
