@@ -48,7 +48,16 @@
 				scrollDepth: parseInt(element.getAttribute('data-scroll-depth')) || 50,
 				scrollDirection: element.getAttribute('data-scroll-direction') || 'down',
 				timeOnPage: parseInt(element.getAttribute('data-time-on-page')) || 30,
+				galleryGroupId: element.getAttribute('data-gallery-group-id') || '',
+				galleryIndex: parseInt(element.getAttribute('data-gallery-index')) || 0,
+				showGalleryNavigation: element.getAttribute('data-show-gallery-navigation') !== 'false',
+				navigationStyle: element.getAttribute('data-navigation-style') || 'arrows',
+				navigationPosition: element.getAttribute('data-navigation-position') || 'sides',
 			};
+
+			// Gallery state
+			this.galleryModals = [];
+			this.currentGalleryIndex = -1;
 
 			// Check for reduced motion preference
 			this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -99,6 +108,11 @@
 			// Set up auto-trigger if enabled
 			if (this.settings.autoTriggerType !== 'none') {
 				this.setupAutoTrigger();
+			}
+
+			// Set up gallery navigation if part of a gallery
+			if (this.settings.galleryGroupId) {
+				this.setupGallery();
 			}
 		}
 
@@ -387,7 +401,8 @@
 		 * Set up page load trigger
 		 */
 		setupPageLoadTrigger() {
-			const delay = this.settings.autoTriggerDelay;
+			// Convert seconds to milliseconds
+		const delay = this.settings.autoTriggerDelay * 1000;
 
 			this.pageLoadTimeout = setTimeout(() => {
 				if (!this.isOpen) {
@@ -498,6 +513,253 @@
 		}
 
 		/**
+		 * Set up gallery navigation
+		 */
+		setupGallery() {
+			// Find all modals with the same gallery group ID
+			this.updateGalleryModals();
+
+			// Set up keyboard navigation for gallery
+			if (this.settings.showGalleryNavigation) {
+				this.setupGalleryKeyboardNavigation();
+			this.setupSwipeGestures();
+			}
+		}
+
+		/**
+		 * Update the list of gallery modals
+		 */
+		updateGalleryModals() {
+			const groupId = this.settings.galleryGroupId;
+			const allModals = document.querySelectorAll(`[data-gallery-group-id="${groupId}"]`);
+
+			// Convert to array and sort by gallery index
+			this.galleryModals = Array.from(allModals)
+				.map((modalEl) => ({
+					element: modalEl,
+					instance: modalEl.dsgoModalInstance,
+					index: parseInt(modalEl.getAttribute('data-gallery-index')) || 0,
+					modalId: modalEl.getAttribute('data-modal-id'),
+				}))
+				.filter((item) => item.instance) // Only include initialized modals
+				.sort((a, b) => a.index - b.index);
+
+			// Find this modal's position in the gallery
+			this.currentGalleryIndex = this.galleryModals.findIndex(
+				(item) => item.modalId === this.modalId
+			);
+		}
+
+		/**
+		 * Navigate to next modal in gallery
+		 */
+		navigateToNext() {
+			if (this.galleryModals.length === 0) return;
+
+			const nextIndex = (this.currentGalleryIndex + 1) % this.galleryModals.length;
+			this.navigateToModal(nextIndex);
+		}
+
+		/**
+		 * Navigate to previous modal in gallery
+		 */
+		navigateToPrevious() {
+			if (this.galleryModals.length === 0) return;
+
+			const prevIndex =
+				(this.currentGalleryIndex - 1 + this.galleryModals.length) %
+				this.galleryModals.length;
+			this.navigateToModal(prevIndex);
+		}
+
+		/**
+		 * Navigate to specific modal in gallery
+		 */
+		navigateToModal(targetIndex) {
+			if (targetIndex < 0 || targetIndex >= this.galleryModals.length) return;
+
+			const targetModal = this.galleryModals[targetIndex];
+			if (!targetModal || !targetModal.instance) return;
+
+			// Close current modal and open target modal
+			this.close();
+
+			// Small delay to ensure smooth transition
+			setTimeout(() => {
+				targetModal.instance.open();
+			}, 50);
+		}
+
+		/**
+		 * Set up keyboard navigation for gallery
+		 */
+		setupGalleryKeyboardNavigation() {
+			this.handleGalleryKeydown = (e) => {
+				if (!this.isOpen || this.galleryModals.length <= 1) return;
+
+				// Left arrow - previous
+				if (e.key === 'ArrowLeft') {
+					e.preventDefault();
+					this.navigateToPrevious();
+				}
+
+				// Right arrow - next
+				if (e.key === 'ArrowRight') {
+					e.preventDefault();
+					this.navigateToNext();
+				}
+			};
+
+			document.addEventListener('keydown', this.handleGalleryKeydown);
+		}
+
+	/**
+	 * Set up swipe gestures for gallery navigation on touch devices
+	 */
+	setupSwipeGestures() {
+		if (!this.dialog || this.galleryModals.length <= 1) return;
+
+		let touchStartX = 0;
+		let touchStartY = 0;
+		let touchEndX = 0;
+		let touchEndY = 0;
+
+		// Minimum swipe distance in pixels
+		const minSwipeDistance = 50;
+
+		this.handleTouchStart = (e) => {
+			if (!this.isOpen) return;
+
+			touchStartX = e.changedTouches[0].screenX;
+			touchStartY = e.changedTouches[0].screenY;
+		};
+
+		this.handleTouchMove = (e) => {
+			if (!this.isOpen) return;
+
+			touchEndX = e.changedTouches[0].screenX;
+			touchEndY = e.changedTouches[0].screenY;
+		};
+
+		this.handleTouchEnd = () => {
+			if (!this.isOpen) return;
+
+			const swipeDistanceX = touchEndX - touchStartX;
+			const swipeDistanceY = touchEndY - touchStartY;
+
+			// Check if horizontal swipe distance is greater than vertical (to distinguish from scrolling)
+			if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
+				// Swipe left - next
+				if (swipeDistanceX < -minSwipeDistance) {
+					this.navigateToNext();
+				}
+				// Swipe right - previous
+				else if (swipeDistanceX > minSwipeDistance) {
+					this.navigateToPrevious();
+				}
+			}
+
+			// Reset values
+			touchStartX = 0;
+			touchStartY = 0;
+			touchEndX = 0;
+			touchEndY = 0;
+		};
+
+		// Add touch event listeners
+		this.dialog.addEventListener('touchstart', this.handleTouchStart, { passive: true });
+		this.dialog.addEventListener('touchmove', this.handleTouchMove, { passive: true });
+		this.dialog.addEventListener('touchend', this.handleTouchEnd, { passive: true });
+	}
+
+		/**
+		 * Render navigation buttons in the modal
+		 */
+		renderNavigationButtons() {
+			if (!this.settings.showGalleryNavigation || this.galleryModals.length <= 1) {
+				return;
+			}
+
+			// Remove existing buttons first
+			this.removeNavigationButtons();
+
+			const dialog = this.modal.querySelector('.dsgo-modal__dialog');
+			if (!dialog) return;
+
+			// Create navigation container
+			const navContainer = document.createElement('div');
+			navContainer.className = `dsgo-modal__gallery-nav dsgo-modal__gallery-nav--${this.settings.navigationPosition}`;
+
+			// Previous button
+			const prevButton = document.createElement('button');
+			prevButton.className = 'dsgo-modal__gallery-prev';
+			prevButton.setAttribute('type', 'button');
+			prevButton.setAttribute('aria-label', 'Previous');
+			prevButton.innerHTML = this.getNavigationIcon('prev');
+			prevButton.addEventListener('click', (e) => {
+				e.preventDefault();
+				this.navigateToPrevious();
+			});
+
+			// Next button
+			const nextButton = document.createElement('button');
+			nextButton.className = 'dsgo-modal__gallery-next';
+			nextButton.setAttribute('type', 'button');
+			nextButton.setAttribute('aria-label', 'Next');
+			nextButton.innerHTML = this.getNavigationIcon('next');
+			nextButton.addEventListener('click', (e) => {
+				e.preventDefault();
+				this.navigateToNext();
+			});
+
+			// Add buttons to container
+			navContainer.appendChild(prevButton);
+			navContainer.appendChild(nextButton);
+
+			// Add to dialog
+			dialog.appendChild(navContainer);
+
+			// Store references for cleanup
+			this.galleryNavContainer = navContainer;
+			this.galleryPrevButton = prevButton;
+			this.galleryNextButton = nextButton;
+		}
+
+		/**
+		 * Get navigation icon HTML based on style
+		 */
+		getNavigationIcon(direction) {
+			const isNext = direction === 'next';
+
+			if (this.settings.navigationStyle === 'arrows') {
+				// SVG arrows
+				return `
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M${isNext ? '9' : '15'} 6l${isNext ? '6' : '-6'} 6l${isNext ? '-6' : '6'} 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				`;
+			} else if (this.settings.navigationStyle === 'text') {
+				// Text labels
+				return isNext ? 'Next' : 'Previous';
+			} else {
+				// Chevrons (default)
+				return isNext ? '›' : '‹';
+			}
+		}
+
+		/**
+		 * Remove navigation buttons
+		 */
+		removeNavigationButtons() {
+			if (this.galleryNavContainer && this.galleryNavContainer.parentNode) {
+				this.galleryNavContainer.remove();
+			}
+			this.galleryNavContainer = null;
+			this.galleryPrevButton = null;
+			this.galleryNextButton = null;
+		}
+
+		/**
 		 * Open the modal
 		 *
 		 * @param {Element} trigger - The element that triggered the modal (optional)
@@ -588,6 +850,11 @@
 		 * Called when opening animation completes
 		 */
 		onOpenComplete() {
+			// Render gallery navigation if applicable
+			if (this.settings.galleryGroupId) {
+				this.renderNavigationButtons();
+			}
+
 			// Focus the first focusable element or the content
 			if (this.focusableElements.length > 0) {
 				this.focusableElements[0].focus();
@@ -725,6 +992,21 @@
 			if (this.handleScroll) {
 				window.removeEventListener('scroll', this.handleScroll);
 			}
+			if (this.handleGalleryKeydown) {
+				document.removeEventListener('keydown', this.handleGalleryKeydown);
+			}
+		if (this.handleTouchStart && this.dialog) {
+			this.dialog.removeEventListener('touchstart', this.handleTouchStart);
+		}
+		if (this.handleTouchMove && this.dialog) {
+			this.dialog.removeEventListener('touchmove', this.handleTouchMove);
+		}
+		if (this.handleTouchEnd && this.dialog) {
+			this.dialog.removeEventListener('touchend', this.handleTouchEnd);
+		}
+
+			// Remove gallery navigation buttons
+			this.removeNavigationButtons();
 
 			// Clear auto-trigger timeouts
 			if (this.pageLoadTimeout) {

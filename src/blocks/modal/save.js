@@ -23,6 +23,11 @@ export default function save({ attributes }) {
 		scrollDepth,
 		scrollDirection,
 		timeOnPage,
+		galleryGroupId,
+		galleryIndex,
+		showGalleryNavigation,
+		navigationStyle,
+		navigationPosition,
 		width,
 		maxWidth,
 		height,
@@ -69,6 +74,11 @@ export default function save({ attributes }) {
 		'data-scroll-depth': scrollDepth,
 		'data-scroll-direction': scrollDirection,
 		'data-time-on-page': timeOnPage,
+		'data-gallery-group-id': galleryGroupId,
+		'data-gallery-index': galleryIndex,
+		'data-show-gallery-navigation': showGalleryNavigation,
+		'data-navigation-style': navigationStyle,
+		'data-navigation-position': navigationPosition,
 	});
 
 	const overlayStyle = {

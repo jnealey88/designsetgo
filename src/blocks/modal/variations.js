@@ -259,6 +259,313 @@ const variations = [
 		],
 		scope: ['block'],
 	},
+	{
+		name: 'gallery-image',
+		title: __('Image Gallery Item', 'designsetgo'),
+		description: __('Modal optimized for image galleries with navigation controls.', 'designsetgo'),
+		icon: 'images-alt2',
+		attributes: {
+			width: 'auto',
+			maxWidth: '95vw',
+			height: 'auto',
+			maxHeight: '95vh',
+			overlayColor: '#000000',
+			overlayOpacity: 95,
+			overlayBlur: 3,
+			animationType: 'fade',
+			closeButtonPosition: 'top-right',
+			closeButtonSize: 32,
+			closeButtonIconColor: '#ffffff',
+			closeButtonBgColor: 'rgba(0, 0, 0, 0.7)',
+			galleryGroupId: 'image-gallery',
+			galleryIndex: 0,
+			showGalleryNavigation: true,
+			navigationStyle: 'arrows',
+			navigationPosition: 'sides',
+		},
+		innerBlocks: [
+			[
+				'core/image',
+				{
+					url: '',
+					alt: '',
+					sizeSlug: 'full',
+					linkDestination: 'none',
+				},
+			],
+			[
+				'core/paragraph',
+				{
+					content: __('Add image caption or description...', 'designsetgo'),
+					align: 'center',
+					style: {
+						color: {
+							text: '#ffffff',
+						},
+					},
+				},
+			],
+		],
+		scope: ['block'],
+	},
+	{
+		name: 'gallery-product',
+		title: __('Product Gallery', 'designsetgo'),
+		description: __('Modal for product image galleries with details.', 'designsetgo'),
+		icon: 'cart',
+		attributes: {
+			width: '900px',
+			maxWidth: '95vw',
+			height: 'auto',
+			maxHeight: '90vh',
+			overlayColor: '#000000',
+			overlayOpacity: 85,
+			animationType: 'slide-up',
+			closeButtonPosition: 'inside-top-right',
+			galleryGroupId: 'product-gallery',
+			galleryIndex: 0,
+			showGalleryNavigation: true,
+			navigationStyle: 'arrows',
+			navigationPosition: 'sides',
+		},
+		innerBlocks: [
+			[
+				'core/columns',
+				{
+					verticalAlignment: 'center',
+				},
+				[
+					[
+						'core/column',
+						{
+							width: '60%',
+						},
+						[
+							[
+								'core/image',
+								{
+									url: '',
+									alt: '',
+									sizeSlug: 'large',
+									linkDestination: 'none',
+								},
+							],
+						],
+					],
+					[
+						'core/column',
+						{
+							width: '40%',
+						},
+						[
+							[
+								'core/heading',
+								{
+									level: 3,
+									content: __('Product Name', 'designsetgo'),
+								},
+							],
+							[
+								'core/paragraph',
+								{
+									content: __(
+										'Product description and details go here...',
+										'designsetgo'
+									),
+								},
+							],
+							[
+								'core/buttons',
+								{},
+								[
+									[
+										'core/button',
+										{
+											text: __('View Product', 'designsetgo'),
+										},
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+		],
+		scope: ['block'],
+	},
+	{
+		name: 'gallery-portfolio',
+		title: __('Portfolio Item', 'designsetgo'),
+		description: __('Modal for portfolio galleries with project details.', 'designsetgo'),
+		icon: 'portfolio',
+		attributes: {
+			width: '1000px',
+			maxWidth: '95vw',
+			height: 'auto',
+			maxHeight: '90vh',
+			overlayColor: '#000000',
+			overlayOpacity: 90,
+			animationType: 'zoom',
+			closeButtonPosition: 'top-right',
+			closeButtonSize: 28,
+			closeButtonIconColor: '#ffffff',
+			closeButtonBgColor: 'rgba(0, 0, 0, 0.6)',
+			galleryGroupId: 'portfolio',
+			galleryIndex: 0,
+			showGalleryNavigation: true,
+			navigationStyle: 'chevrons',
+			navigationPosition: 'bottom',
+		},
+		innerBlocks: [
+			[
+				'core/image',
+				{
+					url: '',
+					alt: '',
+					sizeSlug: 'large',
+					linkDestination: 'none',
+				},
+			],
+			[
+				'core/heading',
+				{
+					level: 2,
+					content: __('Project Title', 'designsetgo'),
+					textAlign: 'center',
+				},
+			],
+			[
+				'core/paragraph',
+				{
+					content: __(
+						'Project description, technologies used, and key highlights...',
+						'designsetgo'
+					),
+					align: 'center',
+				},
+			],
+			[
+				'core/buttons',
+				{
+					layout: { type: 'flex', justifyContent: 'center' },
+				},
+				[
+					[
+						'core/button',
+						{
+							text: __('View Live Site', 'designsetgo'),
+						},
+					],
+					[
+						'core/button',
+						{
+							text: __('View Case Study', 'designsetgo'),
+							className: 'is-style-outline',
+						},
+					],
+				],
+			],
+		],
+		scope: ['block'],
+	},
+	{
+		name: 'gallery-team',
+		title: __('Team Member Gallery', 'designsetgo'),
+		description: __('Modal for team member galleries with bio and contact info.', 'designsetgo'),
+		icon: 'groups',
+		attributes: {
+			width: '700px',
+			maxWidth: '90vw',
+			height: 'auto',
+			maxHeight: '90vh',
+			overlayColor: '#000000',
+			overlayOpacity: 75,
+			animationType: 'slide-down',
+			closeButtonPosition: 'inside-top-right',
+			galleryGroupId: 'team',
+			galleryIndex: 0,
+			showGalleryNavigation: true,
+			navigationStyle: 'text',
+			navigationPosition: 'bottom',
+		},
+		innerBlocks: [
+			[
+				'core/columns',
+				{
+					verticalAlignment: 'top',
+				},
+				[
+					[
+						'core/column',
+						{
+							width: '35%',
+						},
+						[
+							[
+								'core/image',
+								{
+									url: '',
+									alt: '',
+									sizeSlug: 'medium',
+									linkDestination: 'none',
+									className: 'is-style-rounded',
+								},
+							],
+						],
+					],
+					[
+						'core/column',
+						{
+							width: '65%',
+						},
+						[
+							[
+								'core/heading',
+								{
+									level: 3,
+									content: __('Team Member Name', 'designsetgo'),
+								},
+							],
+							[
+								'core/paragraph',
+								{
+									content: __(
+										'<strong>Position / Title</strong>',
+										'designsetgo'
+									),
+									style: {
+										color: {
+											text: '#666666',
+										},
+									},
+								},
+							],
+							[
+								'core/paragraph',
+								{
+									content: __(
+										'Brief bio and background information about the team member...',
+										'designsetgo'
+									),
+								},
+							],
+							[
+								'core/paragraph',
+								{
+									content: __(
+										'📧 email@example.com<br>🔗 linkedin.com/in/profile',
+										'designsetgo'
+									),
+									fontSize: 'small',
+								},
+							],
+						],
+					],
+				],
+			],
+		],
+		scope: ['block'],
+	},
 ];
 
 export default variations;

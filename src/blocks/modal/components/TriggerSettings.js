@@ -97,14 +97,14 @@ export default function TriggerSettings({ attributes, setAttributes }) {
 
 					{autoTriggerType === 'pageLoad' && (
 						<RangeControl
-							label={__('Delay (milliseconds)', 'designsetgo')}
+							label={__('Delay (seconds)', 'designsetgo')}
 							value={autoTriggerDelay}
 							onChange={(value) =>
 								setAttributes({ autoTriggerDelay: value })
 							}
 							min={0}
-							max={30000}
-							step={100}
+							max={300}
+							step={1}
 							help={__(
 								'Wait time before opening the modal after page loads.',
 								'designsetgo'

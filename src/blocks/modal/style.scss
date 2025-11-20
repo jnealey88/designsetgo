@@ -64,6 +64,11 @@
 			padding-left: 0 !important;
 			padding-right: 0 !important;
 		}
+
+		// Remove outline when programmatically focused (e.g., on auto-trigger)
+		&[tabindex="-1"]:focus {
+			outline: none;
+		}
 	}
 
 	// Close Button
@@ -345,6 +350,129 @@ body.dsgo-modal-open {
 		&__close {
 			outline: 2px solid currentColor;
 			outline-offset: 2px;
+		}
+	}
+}
+
+// Gallery Navigation
+.dsgo-modal__gallery-nav {
+	position: absolute;
+	z-index: 20;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+
+	// Sides positioning (left/right)
+	&--sides {
+		width: 100%;
+		justify-content: space-between;
+		pointer-events: none;
+
+		button {
+			pointer-events: all;
+		}
+	}
+
+	// Bottom positioning
+	&--bottom {
+		bottom: 20px;
+		left: 50%;
+		transform: translateX(-50%);
+		justify-content: center;
+	}
+
+	// Top positioning
+	&--top {
+		top: 20px;
+		left: 50%;
+		transform: translateX(-50%);
+		justify-content: center;
+	}
+}
+
+// Gallery Navigation Buttons
+.dsgo-modal__gallery-prev,
+.dsgo-modal__gallery-next {
+	background: rgba(0, 0, 0, 0.5);
+	color: #fff;
+	border: none;
+	border-radius: 50%;
+	width: 48px;
+	height: 48px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+	&:hover,
+	&:focus {
+		background: rgba(0, 0, 0, 0.7);
+		transform: scale(1.1);
+	}
+
+	&:focus {
+		outline: 2px solid #007cba;
+		outline-offset: 2px;
+	}
+
+	&:active {
+		transform: scale(0.95);
+	}
+
+	svg {
+		display: block;
+		flex-shrink: 0;
+	}
+
+	// Text style
+	.dsgo-modal__gallery-nav--text & {
+		border-radius: 4px;
+		width: auto;
+		padding: 8px 16px;
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	// Chevron style
+	.dsgo-modal__gallery-nav--chevrons & {
+		font-size: 32px;
+		font-weight: 300;
+		line-height: 1;
+	}
+}
+
+// Responsive adjustments for gallery navigation
+@media (max-width: 768px) {
+	.dsgo-modal__gallery-prev,
+	.dsgo-modal__gallery-next {
+		width: 40px;
+		height: 40px;
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	.dsgo-modal__gallery-nav {
+		&--bottom,
+		&--top {
+			gap: 8px;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.dsgo-modal__gallery-prev,
+	.dsgo-modal__gallery-next {
+		width: 36px;
+		height: 36px;
+
+		svg {
+			width: 18px;
+			height: 18px;
 		}
 	}
 }

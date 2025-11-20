@@ -100,6 +100,26 @@
 			"type": "number",
 			"default": 30
 		},
+		"galleryGroupId": {
+			"type": "string",
+			"default": ""
+		},
+		"galleryIndex": {
+			"type": "number",
+			"default": 0
+		},
+		"showGalleryNavigation": {
+			"type": "boolean",
+			"default": true
+		},
+		"navigationStyle": {
+			"type": "string",
+			"default": "arrows"
+		},
+		"navigationPosition": {
+			"type": "string",
+			"default": "sides"
+		},
 		"width": {
 			"type": "string",
 			"default": "600px"
