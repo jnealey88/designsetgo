@@ -10,6 +10,13 @@
 .dsgo-icon-button {
 	// Editor-specific styles
 
+	// CRITICAL: Ensure fit-content width works in editor (matches icon block pattern)
+	// WordPress editor tries to force blocks to full width by default
+	&[style*="fit-content"] {
+		width: fit-content !important;
+		max-width: fit-content !important;
+	}
+
 	.dsgo-icon-button__wrapper {
 		// Make wrapper visually appear as a button in the editor
 		position: relative;

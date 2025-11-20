@@ -16,6 +16,7 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 import { getIcon } from '../icon/utils/svg-icons';
 import { ButtonSettingsPanel } from './components/inspector/ButtonSettingsPanel';
 
@@ -51,7 +52,20 @@ export default function IconButtonEdit({
 		style,
 		backgroundColor,
 		textColor,
+		modalCloseId,
 	} = attributes;
+
+	// Check if button is inside a modal
+	const isInsideModal = useSelect(
+		(select) => {
+			const { getBlockParents, getBlock } = select('core/block-editor');
+			const parents = getBlockParents(clientId);
+			return parents.some(
+				(parentId) => getBlock(parentId)?.name === 'designsetgo/modal'
+			);
+		},
+		[clientId]
+	);
 
 	// Get hover button background from parent container context
 	const parentHoverButtonBg =
@@ -108,6 +122,10 @@ export default function IconButtonEdit({
 		className: `dsgo-icon-button${animationClass}`,
 		style: {
 			display: width === '100%' ? 'block' : 'inline-block',
+			...(width === 'auto' && {
+				width: 'fit-content',
+				maxWidth: 'fit-content',
+			}),
 			...(parentHoverButtonBg && {
 				'--dsgo-parent-hover-button-bg': parentHoverButtonBg,
 			}),
@@ -153,6 +171,8 @@ export default function IconButtonEdit({
 					iconGap={iconGap}
 					width={width}
 					hoverAnimation={hoverAnimation}
+					modalCloseId={modalCloseId}
+					isInsideModal={isInsideModal}
 					setAttributes={setAttributes}
 				/>
 			</InspectorControls>

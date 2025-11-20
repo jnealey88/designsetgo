@@ -375,6 +375,7 @@ export const modalTemplates = [
 							width: 'auto',
 							icon: 'info',
 							iconPosition: 'start',
+							url: '#privacy-policy',
 						},
 					],
 					[
@@ -384,7 +385,136 @@ export const modalTemplates = [
 							width: 'auto',
 							icon: 'yes',
 							iconPosition: 'end',
+							modalCloseId: 'true',
 						},
+					],
+				],
+			],
+		],
+	},
+	{
+		name: 'promo-split',
+		title: __('Promo Split', 'designsetgo'),
+		description: __('Two-column promo with image', 'designsetgo'),
+		icon: 'megaphone',
+		attributes: {
+			width: '800px',
+			maxWidth: '90vw',
+			overlayOpacity: 80,
+			overlayBlur: 8,
+			animationType: 'slide-up',
+			autoTriggerType: 'exitIntent',
+			autoTriggerDelay: 1900,
+			autoTriggerFrequency: 'always',
+			exitIntentSensitivity: 'medium',
+			closeButtonPosition: 'inside-top-right',
+			closeButtonIconColor: '#ffffff',
+			backgroundColor: 'accent-1',
+			style: {
+				spacing: {
+					padding: {
+						top: '0',
+						bottom: '0',
+						left: '0',
+						right: '0',
+					},
+				},
+			},
+		},
+		innerBlocks: [
+			[
+				'designsetgo/grid',
+				{
+					desktopColumns: 2,
+					alignItems: 'center',
+					style: {
+						spacing: {
+							blockGap: 'var(--wp--preset--spacing--50)',
+							padding: {
+								top: '0',
+								bottom: '0',
+								left: '0',
+								right: '0',
+							},
+						},
+					},
+				},
+				[
+					[
+						'designsetgo/section',
+						{
+							style: {
+								spacing: {
+									padding: {
+										top: 'var(--wp--preset--spacing--xl)',
+										bottom: 'var(--wp--preset--spacing--xl)',
+										left: 'var(--wp--preset--spacing--xl)',
+										right: 'var(--wp--preset--spacing--xl)',
+									},
+								},
+							},
+							layout: {
+								type: 'flex',
+								orientation: 'vertical',
+								verticalAlignment: 'center',
+								justifyContent: 'left',
+							},
+						},
+						[
+							[
+								'core/heading',
+								{
+									level: 2,
+									content: __('Special Offer', 'designsetgo'),
+								},
+							],
+							[
+								'core/paragraph',
+								{
+									content: __(
+										'Here\'s a message about the special offer',
+										'designsetgo'
+									),
+								},
+							],
+							[
+								'designsetgo/icon-button',
+								{
+									text: __('Download', 'designsetgo'),
+									icon: 'download',
+									align: 'left',
+								},
+							],
+						],
+					],
+					[
+						'designsetgo/section',
+						{
+							style: {
+								spacing: {
+									padding: {
+										top: 'var(--wp--preset--spacing--xl)',
+										bottom: 'var(--wp--preset--spacing--xl)',
+										left: 'var(--wp--preset--spacing--md)',
+										right: 'var(--wp--preset--spacing--md)',
+									},
+								},
+							},
+						},
+						[
+							[
+								'core/spacer',
+								{
+									height: '274px',
+									style: {
+										layout: {
+											flexSize: '274px',
+											selfStretch: 'fixed',
+										},
+									},
+								},
+							],
+						],
 					],
 				],
 			],

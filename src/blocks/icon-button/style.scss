@@ -10,6 +10,28 @@
 	// CRITICAL: Border-radius default - WordPress border controls override this via inline styles
 	border-radius: 4px;
 
+	// WordPress alignment support: Make alignment classes work with inline-block display
+	// CRITICAL: aligncenter requires block display to work with margin: auto
+	&.aligncenter {
+		display: block !important;
+		text-align: center;
+
+		.dsgo-icon-button__wrapper {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	&.alignleft {
+		display: block !important;
+		text-align: left;
+	}
+
+	&.alignright {
+		display: block !important;
+		text-align: right;
+	}
+
 	&__wrapper {
 		// Layout styles applied via inline styles (display, gap, flex-direction, width)
 		padding: 12px 24px;
@@ -54,7 +76,8 @@
 		}
 
 		// When it's a div (no link), remove cursor pointer
-		&:not(a) {
+		// EXCEPT for modal close buttons which need pointer cursor
+		&:not(a):not([data-dsgo-modal-close]) {
 			cursor: default;
 		}
 	}

@@ -31,6 +31,8 @@ import { IconPicker } from '../../../icon/components/IconPicker';
  * @param {string}   props.iconGap        - Gap between icon and text
  * @param {string}   props.width          - Button width
  * @param {string}   props.hoverAnimation - Hover animation style
+ * @param {string}   props.modalCloseId   - Modal ID to close (or "true" for parent modal)
+ * @param {boolean}  props.isInsideModal  - Whether button is inside a modal
  * @param {Function} props.setAttributes  - Function to update attributes
  * @return {JSX.Element} Button Settings Panel component
  */
@@ -44,6 +46,8 @@ export const ButtonSettingsPanel = ({
 	iconGap,
 	width,
 	hoverAnimation,
+	modalCloseId,
+	isInsideModal,
 	setAttributes,
 }) => {
 	return (
@@ -224,6 +228,52 @@ export const ButtonSettingsPanel = ({
 							__nextHasNoMarginBottom
 						/>
 					</>
+				)}
+			</PanelBody>
+
+			<PanelBody
+				title={__('Modal Close', 'designsetgo')}
+				initialOpen={false}
+			>
+				<ToggleControl
+					label={__('Close modal on click', 'designsetgo')}
+					checked={!!modalCloseId}
+					onChange={(value) =>
+						setAttributes({
+							modalCloseId: value ? 'true' : '',
+						})
+					}
+					help={
+						isInsideModal
+							? __(
+									'Close the parent modal when this button is clicked',
+									'designsetgo'
+							  )
+							: __(
+									'Close a modal when this button is clicked (enter modal ID below)',
+									'designsetgo'
+							  )
+					}
+					__nextHasNoMarginBottom
+				/>
+
+				{modalCloseId && !isInsideModal && (
+					<TextControl
+						label={__('Modal ID', 'designsetgo')}
+						value={modalCloseId === 'true' ? '' : modalCloseId}
+						onChange={(value) =>
+							setAttributes({
+								modalCloseId: value || 'true',
+							})
+						}
+						placeholder={__('Enter modal ID', 'designsetgo')}
+						help={__(
+							'Enter the ID of the modal to close',
+							'designsetgo'
+						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
 				)}
 			</PanelBody>
 		</>

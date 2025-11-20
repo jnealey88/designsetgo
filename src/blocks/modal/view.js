@@ -1347,16 +1347,51 @@
 	}
 
 	/**
+	 * Initialize modal close triggers
+	 */
+	function initCloseTriggers() {
+		const closeTriggers = document.querySelectorAll('[data-dsgo-modal-close]:not([data-dsgo-close-trigger-initialized])');
+
+		closeTriggers.forEach((trigger) => {
+			const modalId = trigger.getAttribute('data-dsgo-modal-close');
+
+			// Prevent duplicate initialization
+			trigger.setAttribute('data-dsgo-close-trigger-initialized', 'true');
+
+			// Add click handler
+			trigger.addEventListener('click', (e) => {
+				e.preventDefault();
+
+				// If modalId is specified, close that modal
+				if (modalId && modalId !== 'true') {
+					const modal = document.getElementById(modalId);
+					if (modal && modal.dsgoModalInstance) {
+						modal.dsgoModalInstance.close();
+					}
+				} else {
+					// Otherwise, find the closest parent modal and close it
+					const parentModal = trigger.closest('[data-dsgo-modal]');
+					if (parentModal && parentModal.dsgoModalInstance) {
+						parentModal.dsgoModalInstance.close();
+					}
+				}
+			});
+		});
+	}
+
+	/**
 	 * Initialize on DOM ready
 	 */
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', () => {
 			initModals();
 			initTriggers();
+			initCloseTriggers();
 		});
 	} else {
 		initModals();
 		initTriggers();
+		initCloseTriggers();
 	}
 
 	/**
@@ -1365,6 +1400,7 @@
 	document.addEventListener('dsgo-content-loaded', () => {
 		initModals();
 		initTriggers();
+		initCloseTriggers();
 	});
 
 	/**
@@ -1579,6 +1615,7 @@
 	window.DSGModal = DSGModal;
 	window.dsgoInitModals = initModals;
 	window.dsgoInitModalTriggers = initTriggers;
+	window.dsgoInitModalCloseTriggers = initCloseTriggers;
 	window.dsgoModal = publicAPI;
 	window.dsgoModalAPI = publicAPI; // Alias for backwards compatibility
 })();

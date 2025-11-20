@@ -33,6 +33,7 @@ export default function IconButtonSave({ attributes }) {
 		style,
 		backgroundColor,
 		textColor,
+		modalCloseId,
 	} = attributes;
 
 	// Extract WordPress color values (must match edit.js)
@@ -81,7 +82,13 @@ export default function IconButtonSave({ attributes }) {
 
 	const blockProps = useBlockProps.save({
 		className: `dsgo-icon-button${animationClass}`,
-		style: { display: width === '100%' ? 'block' : 'inline-block' },
+		style: {
+			display: width === '100%' ? 'block' : 'inline-block',
+			...(width === 'auto' && {
+				width: 'fit-content',
+				maxWidth: 'fit-content',
+			}),
+		},
 	});
 
 	// Wrap in link if URL is provided
@@ -96,10 +103,16 @@ export default function IconButtonSave({ attributes }) {
 					linkTarget === '_blank'
 						? rel || 'noopener noreferrer'
 						: rel || undefined,
+				...(modalCloseId && {
+					'data-dsgo-modal-close': modalCloseId || 'true',
+				}),
 			}
 		: {
 				className: 'dsgo-icon-button__wrapper',
 				style: buttonStyles,
+				...(modalCloseId && {
+					'data-dsgo-modal-close': modalCloseId || 'true',
+				}),
 			};
 
 	return (

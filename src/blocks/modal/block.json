@@ -75,6 +75,15 @@
 		"designsetgo/modal/closeOnBackdrop": "closeOnBackdrop"
 	},
 	"attributes": {
+		"style": {
+			"type": "object",
+			"default": {
+				"border": {
+					"width": "0px",
+					"style": "none"
+				}
+			}
+		},
 		"modalId": {
 			"type": "string",
 			"default": ""
