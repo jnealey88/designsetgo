@@ -94,12 +94,9 @@ class DSGTableOfContents {
 			// Handle URL hash on page load
 			this.handleInitialHash();
 		} catch (error) {
-			console.error(
-				'[DSG TOC] Error initializing table of contents:',
-				error
-			);
-			this.showEmptyMessage();
-		}
+		// Silently fail - show empty message to user
+		this.showEmptyMessage();
+	}
 	}
 
 	scanHeadings() {
@@ -274,15 +271,12 @@ class DSGTableOfContents {
 							target.focus();
 						}
 					} catch (error) {
-						console.error(
-							'[DSG TOC] Error handling link click:',
-							error
-						);
+					// Silently fail on scroll errors
 					}
 				});
 			});
 		} catch (error) {
-			console.error('[DSG TOC] Error setting up link handlers:', error);
+		// Silently fail on link handler setup errors
 		}
 	}
 
@@ -452,7 +446,6 @@ class DSGTableOfContents {
 				}, 1000);
 			}, 300);
 		} catch (error) {
-			console.error('[DSG TOC] Error handling initial hash:', error);
 			// Ensure flag is reset even if there's an error
 			this.isInitialHashNavigation = false;
 		}
