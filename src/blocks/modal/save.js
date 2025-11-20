@@ -11,6 +11,18 @@ import { transferStylesToContent } from './utils/style-transfer';
 export default function save({ attributes }) {
 	const {
 		modalId,
+		allowHashTrigger,
+		updateUrlOnOpen,
+		autoTriggerType,
+		autoTriggerDelay,
+		autoTriggerFrequency,
+		cookieDuration,
+		exitIntentSensitivity,
+		exitIntentMinTime,
+		exitIntentExcludeMobile,
+		scrollDepth,
+		scrollDirection,
+		timeOnPage,
 		width,
 		maxWidth,
 		height,
@@ -45,6 +57,18 @@ export default function save({ attributes }) {
 		'data-close-on-backdrop': closeOnBackdrop,
 		'data-close-on-esc': closeOnEsc,
 		'data-disable-body-scroll': disableBodyScroll,
+		'data-allow-hash-trigger': allowHashTrigger,
+		'data-update-url-on-open': updateUrlOnOpen,
+		'data-auto-trigger-type': autoTriggerType,
+		'data-auto-trigger-delay': autoTriggerDelay,
+		'data-auto-trigger-frequency': autoTriggerFrequency,
+		'data-cookie-duration': cookieDuration,
+		'data-exit-intent-sensitivity': exitIntentSensitivity,
+		'data-exit-intent-min-time': exitIntentMinTime,
+		'data-exit-intent-exclude-mobile': exitIntentExcludeMobile,
+		'data-scroll-depth': scrollDepth,
+		'data-scroll-direction': scrollDirection,
+		'data-time-on-page': timeOnPage,
 	});
 
 	const overlayStyle = {

@@ -21,6 +21,7 @@ import AnimationSettings from './components/AnimationSettings';
 import OverlaySettings from './components/OverlaySettings';
 import CloseButtonSettings from './components/CloseButtonSettings';
 import BehaviorSettings from './components/BehaviorSettings';
+import TriggerSettings from './components/TriggerSettings';
 
 export default function ModalEdit({ attributes, setAttributes, clientId }) {
 	const {
@@ -151,6 +152,10 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 					setAttributes={setAttributes}
 				/>
 				<BehaviorSettings
+					attributes={attributes}
+					setAttributes={setAttributes}
+				/>
+				<TriggerSettings
 					attributes={attributes}
 					setAttributes={setAttributes}
 				/>

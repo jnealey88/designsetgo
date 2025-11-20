@@ -52,6 +52,54 @@
 			"type": "string",
 			"default": ""
 		},
+		"allowHashTrigger": {
+			"type": "boolean",
+			"default": true
+		},
+		"updateUrlOnOpen": {
+			"type": "boolean",
+			"default": false
+		},
+		"autoTriggerType": {
+			"type": "string",
+			"default": "none"
+		},
+		"autoTriggerDelay": {
+			"type": "number",
+			"default": 0
+		},
+		"autoTriggerFrequency": {
+			"type": "string",
+			"default": "always"
+		},
+		"cookieDuration": {
+			"type": "number",
+			"default": 7
+		},
+		"exitIntentSensitivity": {
+			"type": "string",
+			"default": "medium"
+		},
+		"exitIntentMinTime": {
+			"type": "number",
+			"default": 5
+		},
+		"exitIntentExcludeMobile": {
+			"type": "boolean",
+			"default": true
+		},
+		"scrollDepth": {
+			"type": "number",
+			"default": 50
+		},
+		"scrollDirection": {
+			"type": "string",
+			"default": "down"
+		},
+		"timeOnPage": {
+			"type": "number",
+			"default": 30
+		},
 		"width": {
 			"type": "string",
 			"default": "600px"

@@ -254,15 +254,17 @@ do_action('designsetgo/modal/after_render', $attributes, $block);
 
 ## Implementation Timeline
 
-### Immediate (v1.1.0) - Next 2 Weeks
-- [ ] URL hash triggering
-- [ ] Page load auto-trigger
-- [ ] Basic modal patterns (3-5 variations)
+### Immediate (v1.1.0) - ✅ COMPLETED
+- [x] URL hash triggering
+- [x] Page load auto-trigger
+- [x] Basic modal patterns (5 variations)
+- [x] Exit intent trigger
+- [x] Scroll depth trigger
+- [x] Time-based trigger
+- [x] Frequency tracking (session/once per user)
+- [x] Cookie/localStorage management
 
 ### Short Term (v1.2.0) - 1 Month
-- [ ] Exit intent trigger
-- [ ] Scroll depth trigger
-- [ ] Time-based trigger
 - [ ] JavaScript API (core methods)
 
 ### Medium Term (v1.3.0) - 2-3 Months

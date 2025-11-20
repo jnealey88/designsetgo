@@ -36,6 +36,18 @@
 				closeOnBackdrop: element.getAttribute('data-close-on-backdrop') === 'true',
 				closeOnEsc: element.getAttribute('data-close-on-esc') === 'true',
 				disableBodyScroll: element.getAttribute('data-disable-body-scroll') === 'true',
+				allowHashTrigger: element.getAttribute('data-allow-hash-trigger') !== 'false',
+				updateUrlOnOpen: element.getAttribute('data-update-url-on-open') === 'true',
+				autoTriggerType: element.getAttribute('data-auto-trigger-type') || 'none',
+				autoTriggerDelay: parseInt(element.getAttribute('data-auto-trigger-delay')) || 0,
+				autoTriggerFrequency: element.getAttribute('data-auto-trigger-frequency') || 'always',
+				cookieDuration: parseInt(element.getAttribute('data-cookie-duration')) || 7,
+				exitIntentSensitivity: element.getAttribute('data-exit-intent-sensitivity') || 'medium',
+				exitIntentMinTime: parseInt(element.getAttribute('data-exit-intent-min-time')) || 5,
+				exitIntentExcludeMobile: element.getAttribute('data-exit-intent-exclude-mobile') !== 'false',
+				scrollDepth: parseInt(element.getAttribute('data-scroll-depth')) || 50,
+				scrollDirection: element.getAttribute('data-scroll-direction') || 'down',
+				timeOnPage: parseInt(element.getAttribute('data-time-on-page')) || 30,
 			};
 
 			// Check for reduced motion preference
@@ -78,6 +90,16 @@
 
 			// Update focusable elements initially
 			this.updateFocusableElements();
+
+			// Set up hash triggering if enabled
+			if (this.settings.allowHashTrigger && this.modalId) {
+				this.setupHashTrigger();
+			}
+
+			// Set up auto-trigger if enabled
+			if (this.settings.autoTriggerType !== 'none') {
+				this.setupAutoTrigger();
+			}
 		}
 
 		/**
@@ -218,6 +240,264 @@
 		}
 
 		/**
+		 * Set up hash triggering
+		 */
+		setupHashTrigger() {
+			// Define hash change handler
+			this.handleHashChange = () => {
+				// Ignore if we're the one updating the hash
+				if (this.isUpdatingHash) {
+					return;
+				}
+
+				const hash = window.location.hash.replace('#', '');
+
+				// Check if hash matches this modal's ID
+				if (hash === this.modalId) {
+					if (!this.isOpen) {
+						this.open();
+					}
+				} else if (this.isOpen && this.settings.updateUrlOnOpen) {
+					// Close if we were opened by hash and hash changed
+					this.close();
+				}
+			};
+
+			// Listen for hash changes
+			window.addEventListener('hashchange', this.handleHashChange);
+
+			// Check initial hash on page load
+			const currentHash = window.location.hash.replace('#', '');
+			if (currentHash === this.modalId) {
+				// Small delay to ensure all modals are initialized
+				setTimeout(() => {
+					if (!this.isOpen) {
+						this.open();
+					}
+				}, 100);
+			}
+		}
+
+		/**
+		 * Set up auto-trigger
+		 */
+		setupAutoTrigger() {
+			// Check if we should trigger based on frequency
+			if (!this.checkTriggerFrequency()) {
+				return;
+			}
+
+			switch (this.settings.autoTriggerType) {
+				case 'pageLoad':
+					this.setupPageLoadTrigger();
+					break;
+				case 'exitIntent':
+					this.setupExitIntentTrigger();
+					break;
+				case 'scroll':
+					this.setupScrollTrigger();
+					break;
+				case 'time':
+					this.setupTimeOnPageTrigger();
+					break;
+			}
+		}
+
+		/**
+		 * Check if modal should trigger based on frequency settings
+		 */
+		checkTriggerFrequency() {
+			const frequency = this.settings.autoTriggerFrequency;
+
+			// Always show
+			if (frequency === 'always') {
+				return true;
+			}
+
+			const storageKey = `dsgo_modal_${this.modalId}_shown`;
+
+			// Check session storage for session frequency
+			if (frequency === 'session') {
+				if (sessionStorage.getItem(storageKey)) {
+					return false;
+				}
+			}
+
+			// Check localStorage/cookie for once frequency
+			if (frequency === 'once') {
+				// Try localStorage first
+				if (localStorage.getItem(storageKey)) {
+					return false;
+				}
+
+				// Fallback to cookie
+				if (this.getCookie(storageKey)) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/**
+		 * Mark modal as shown for frequency tracking
+		 */
+		markAsShown() {
+			const frequency = this.settings.autoTriggerFrequency;
+
+			if (frequency === 'always') {
+				return;
+			}
+
+			const storageKey = `dsgo_modal_${this.modalId}_shown`;
+
+			if (frequency === 'session') {
+				sessionStorage.setItem(storageKey, 'true');
+			}
+
+			if (frequency === 'once') {
+				// Save to localStorage
+				localStorage.setItem(storageKey, 'true');
+
+				// Also save to cookie as fallback
+				this.setCookie(storageKey, 'true', this.settings.cookieDuration);
+			}
+		}
+
+		/**
+		 * Get cookie value
+		 */
+		getCookie(name) {
+			const matches = document.cookie.match(
+				new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)')
+			);
+			return matches ? decodeURIComponent(matches[1]) : undefined;
+		}
+
+		/**
+		 * Set cookie
+		 */
+		setCookie(name, value, days) {
+			const expires = new Date();
+			expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+			document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+		}
+
+		/**
+		 * Set up page load trigger
+		 */
+		setupPageLoadTrigger() {
+			const delay = this.settings.autoTriggerDelay;
+
+			this.pageLoadTimeout = setTimeout(() => {
+				if (!this.isOpen) {
+					this.open();
+					this.markAsShown();
+				}
+			}, delay);
+		}
+
+		/**
+		 * Set up exit intent trigger
+		 */
+		setupExitIntentTrigger() {
+			// Don't trigger on mobile if excluded
+			if (this.settings.exitIntentExcludeMobile && this.isMobileDevice()) {
+				return;
+			}
+
+			const minTime = this.settings.exitIntentMinTime * 1000;
+			const pageLoadTime = Date.now();
+			let hasTriggered = false;
+
+			// Sensitivity settings (distance from top in pixels)
+			const sensitivityMap = {
+				low: 100,
+				medium: 50,
+				high: 20,
+			};
+			const threshold = sensitivityMap[this.settings.exitIntentSensitivity] || 50;
+
+			this.handleExitIntent = (e) => {
+				// Check if enough time has passed
+				if (Date.now() - pageLoadTime < minTime) {
+					return;
+				}
+
+				// Check if mouse is leaving from top
+				if (e.clientY <= threshold && !hasTriggered && !this.isOpen) {
+					hasTriggered = true;
+					this.open();
+					this.markAsShown();
+				}
+			};
+
+			document.addEventListener('mouseout', this.handleExitIntent);
+		}
+
+		/**
+		 * Set up scroll depth trigger
+		 */
+		setupScrollTrigger() {
+			let hasTriggered = false;
+			const targetDepth = this.settings.scrollDepth;
+			let lastScrollTop = 0;
+
+			this.handleScroll = () => {
+				if (hasTriggered || this.isOpen) {
+					return;
+				}
+
+				const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+				const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+				const scrollPercent = (scrollTop / scrollHeight) * 100;
+
+				// Check direction if needed
+				if (this.settings.scrollDirection === 'down') {
+					if (scrollTop < lastScrollTop) {
+						lastScrollTop = scrollTop;
+						return; // Scrolling up, ignore
+					}
+				}
+
+				lastScrollTop = scrollTop;
+
+				// Check if we've reached the target depth
+				if (scrollPercent >= targetDepth) {
+					hasTriggered = true;
+					this.open();
+					this.markAsShown();
+					window.removeEventListener('scroll', this.handleScroll);
+				}
+			};
+
+			window.addEventListener('scroll', this.handleScroll, { passive: true });
+		}
+
+		/**
+		 * Set up time on page trigger
+		 */
+		setupTimeOnPageTrigger() {
+			const delay = this.settings.timeOnPage * 1000;
+
+			this.timeOnPageTimeout = setTimeout(() => {
+				if (!this.isOpen) {
+					this.open();
+					this.markAsShown();
+				}
+			}, delay);
+		}
+
+		/**
+		 * Check if device is mobile
+		 */
+		isMobileDevice() {
+			return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+				navigator.userAgent
+			);
+		}
+
+		/**
 		 * Open the modal
 		 *
 		 * @param {Element} trigger - The element that triggered the modal (optional)
@@ -284,6 +564,17 @@
 
 			this.isOpen = true;
 
+			// Update URL hash if enabled
+			if (this.settings.updateUrlOnOpen && this.modalId) {
+				// Store that we're programmatically changing the hash to avoid triggering hash change listener
+				this.isUpdatingHash = true;
+				window.location.hash = this.modalId;
+				// Reset flag after a short delay
+				setTimeout(() => {
+					this.isUpdatingHash = false;
+				}, 100);
+			}
+
 			// Dispatch custom event
 			this.modal.dispatchEvent(
 				new CustomEvent('dsgo-modal-open', {
@@ -336,6 +627,16 @@
 			}
 
 			this.isOpen = false;
+
+			// Clear URL hash if we set it on open
+			if (this.settings.updateUrlOnOpen && window.location.hash === `#${this.modalId}`) {
+				this.isUpdatingHash = true;
+				history.replaceState(null, null, ' ');
+				// Reset flag after a short delay
+				setTimeout(() => {
+					this.isUpdatingHash = false;
+				}, 100);
+			}
 
 			// Dispatch custom event
 			this.modal.dispatchEvent(
@@ -414,6 +715,23 @@
 			}
 			if (this.backdrop && this.handleBackdropClick) {
 				this.backdrop.removeEventListener('click', this.handleBackdropClick);
+			}
+			if (this.handleHashChange) {
+				window.removeEventListener('hashchange', this.handleHashChange);
+			}
+			if (this.handleExitIntent) {
+				document.removeEventListener('mouseout', this.handleExitIntent);
+			}
+			if (this.handleScroll) {
+				window.removeEventListener('scroll', this.handleScroll);
+			}
+
+			// Clear auto-trigger timeouts
+			if (this.pageLoadTimeout) {
+				clearTimeout(this.pageLoadTimeout);
+			}
+			if (this.timeOnPageTimeout) {
+				clearTimeout(this.timeOnPageTimeout);
 			}
 
 			// Ensure keyboard listeners are removed
