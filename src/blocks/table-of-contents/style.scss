@@ -7,8 +7,34 @@
     --dsgo-toc-link-color: currentColor;
     --dsgo-toc-active-link-color: var(--wp--preset--color--primary, #0073aa);
     --dsgo-toc-indent: 1.5rem;
+    --dsgo-toc-sticky-offset: 0px;
 
     position: relative;
+
+    // Ensure block respects container bounds (grid, flex, columns)
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    box-sizing: border-box;
+
+    // When inside grid/flex/stack containers, ensure width includes padding/borders
+    .dsgo-flex__inner > &,
+    .dsgo-grid__inner > &,
+    .dsgo-stack__inner > & {
+        box-sizing: border-box;
+    }
+
+    // When sticky, ensure it works within grid items
+    // Note: For sticky to work within a grid item, the grid item needs to have
+    // overflow and a defined height. Otherwise, sticky will be relative to viewport.
+    &.is-position-sticky,
+    &.has-position-sticky {
+        // Align to top of container when sticky
+        align-self: start;
+        // Apply custom top offset for sticky positioning (prevents overlap with sticky headers)
+        top: var(--dsgo-toc-sticky-offset);
+    }
 
     &__content {
         position: relative;
@@ -34,6 +60,9 @@
         flex-direction: column;
         // Inherit gap from content wrapper (which gets WordPress block gap)
         gap: inherit;
+        // Ensure list respects container width
+        min-width: 0;
+        max-width: 100%;
 
         // Nested sublists
         &.dsgo-table-of-contents__sublist {
@@ -57,7 +86,9 @@
         color: var(--dsgo-toc-link-color);
         text-decoration: none;
         transition: color 0.2s ease, text-decoration 0.2s ease;
-        display: inline-block;
+        display: inline;
+        word-break: break-word;
+        overflow-wrap: break-word;
 
         &:hover {
             text-decoration: underline;
@@ -76,7 +107,7 @@
     }
 
     &__empty {
-        color: #666;
+        color: var(--wp--preset--color--contrast-2, #666);
         font-style: italic;
     }
 
@@ -154,9 +185,9 @@
     }
 }
 
-// Note: Smooth scroll is handled via JavaScript (view.js:299-302)
-// using window.scrollTo({ behavior: 'smooth' }) for better control
-// and compatibility with scroll offset settings
+// Note: Smooth scroll is handled via JavaScript (view.js:281-321)
+// using custom requestAnimationFrame animation for consistent behavior
+// across all scroll distances and compatibility with scroll offset settings
 
 // Accessibility: Skip link for screen readers
 .dsgo-table-of-contents__skip-link {

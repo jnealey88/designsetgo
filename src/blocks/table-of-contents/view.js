@@ -7,6 +7,27 @@
 /* global IntersectionObserver */
 
 import { __ } from '@wordpress/i18n';
+import {
+    parseHeadingLevels,
+    parseDisplayMode,
+    parseScrollOffset,
+    getResponsiveScrollOffset,
+} from './utils/validation';
+import { generatePrettyId } from './utils/id-generator';
+import { buildHierarchy } from './utils/hierarchy';
+
+// Prevent browser's default hash scroll if hash is present
+// This ensures our custom smooth scroll and offset work correctly
+if (window.location.hash) {
+	// Store the hash for later use
+	window.dsgoInitialHash = window.location.hash;
+	// Prevent default scroll restoration
+	if ('scrollRestoration' in history) {
+		history.scrollRestoration = 'manual';
+	}
+	// Reset scroll position immediately (before layout)
+	window.scrollTo(0, 0);
+}
 
 document.addEventListener('DOMContentLoaded', function () {
 	initTableOfContents();
@@ -18,24 +39,27 @@ class DSGTableOfContents {
 		this.uniqueId = element.dataset.uniqueId || '';
 
 		// Validate and parse heading levels
-		this.headingLevels = this.parseHeadingLevels(
+		this.headingLevels = parseHeadingLevels(
 			element.dataset.headingLevels
 		);
 
 		// Validate display mode
-		this.displayMode = this.parseDisplayMode(element.dataset.displayMode);
+		this.displayMode = parseDisplayMode(element.dataset.displayMode);
 
 		// Validate scroll smooth boolean
 		this.scrollSmooth = element.dataset.scrollSmooth === 'true';
 
-		// Responsive scroll offset: 150px desktop, 60px mobile
-		const baseOffset = this.parseScrollOffset(element.dataset.scrollOffset);
-		this.scrollOffset = this.getResponsiveScrollOffset(baseOffset);
+		// Responsive scroll offset: configurable desktop (default 0px), 60px mobile
+		const baseOffset = parseScrollOffset(element.dataset.scrollOffset);
+		this.scrollOffset = getResponsiveScrollOffset(baseOffset);
 
 		this.listElement = element.querySelector(
 			'.dsgo-table-of-contents__list'
 		);
 		this.observedHeadings = [];
+
+		// Flag to prevent URL updates during initial hash navigation
+		this.isInitialHashNavigation = false;
 
 		// Prevent duplicate initialization
 		if (element.hasAttribute('data-dsgo-initialized')) {
@@ -44,88 +68,6 @@ class DSGTableOfContents {
 		element.setAttribute('data-dsgo-initialized', 'true');
 
 		this.init();
-	}
-
-	/**
-	 * Parse and validate heading levels from data attribute.
-	 *
-	 * @param {string} levelsString - Comma-separated heading levels (e.g., "h2,h3,h4")
-	 * @return {string[]} Array of valid heading levels
-	 */
-	parseHeadingLevels(levelsString) {
-		const VALID_LEVELS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-		const DEFAULT_LEVELS = ['h2', 'h3'];
-
-		if (!levelsString) {
-			return DEFAULT_LEVELS;
-		}
-
-		const rawLevels = levelsString
-			.split(',')
-			.map((level) => level.trim().toLowerCase());
-		const validLevels = rawLevels.filter((level) =>
-			VALID_LEVELS.includes(level)
-		);
-
-		// If no valid levels found, return defaults
-		return validLevels.length > 0 ? validLevels : DEFAULT_LEVELS;
-	}
-
-	/**
-	 * Parse and validate display mode from data attribute.
-	 *
-	 * @param {string} mode - Display mode ("hierarchical" or "flat")
-	 * @return {string} Valid display mode
-	 */
-	parseDisplayMode(mode) {
-		const VALID_MODES = ['hierarchical', 'flat'];
-		const DEFAULT_MODE = 'hierarchical';
-
-		if (!mode || !VALID_MODES.includes(mode.toLowerCase())) {
-			return DEFAULT_MODE;
-		}
-
-		return mode.toLowerCase();
-	}
-
-	/**
-	 * Parse and validate scroll offset from data attribute.
-	 *
-	 * @param {string} offsetString - Scroll offset in pixels
-	 * @return {number} Valid scroll offset (0-500px)
-	 */
-	parseScrollOffset(offsetString) {
-		const DEFAULT_OFFSET = 150;
-		const MIN_OFFSET = 0;
-		const MAX_OFFSET = 500;
-
-		const offset = parseInt(offsetString, 10);
-
-		if (isNaN(offset)) {
-			return DEFAULT_OFFSET;
-		}
-
-		// Clamp offset to valid range
-		return Math.max(MIN_OFFSET, Math.min(MAX_OFFSET, offset));
-	}
-
-	/**
-	 * Get responsive scroll offset based on viewport width.
-	 * Uses mobile offset (60px) on screens < 782px, otherwise uses base offset.
-	 *
-	 * @param {number} baseOffset - The desktop scroll offset from block settings
-	 * @return {number} Adjusted scroll offset for current viewport
-	 */
-	getResponsiveScrollOffset(baseOffset) {
-		const MOBILE_BREAKPOINT = 782; // WordPress admin bar breakpoint
-		const MOBILE_OFFSET = 60;
-
-		// Use mobile offset on small screens, desktop offset otherwise
-		if (window.innerWidth < MOBILE_BREAKPOINT) {
-			return MOBILE_OFFSET;
-		}
-
-		return baseOffset;
 	}
 
 	init() {
@@ -148,6 +90,9 @@ class DSGTableOfContents {
 			if (this.scrollSmooth) {
 				this.setupScrollSpy(headings);
 			}
+
+			// Handle URL hash on page load
+			this.handleInitialHash();
 		} catch (error) {
 			console.error(
 				'[DSG TOC] Error initializing table of contents:',
@@ -220,7 +165,7 @@ class DSGTableOfContents {
 
 			// Generate pretty ID from heading text if missing
 			if (!heading.id) {
-				heading.id = this.generatePrettyId(text, usedIds);
+				heading.id = generatePrettyId(text, usedIds);
 			} else {
 				// Track existing IDs to avoid duplicates
 				usedIds.add(heading.id);
@@ -235,41 +180,6 @@ class DSGTableOfContents {
 		});
 
 		return headings;
-	}
-
-	generatePrettyId(text, usedIds) {
-		// Convert heading text to URL-friendly slug
-		let slug = text
-			.toLowerCase()
-			.trim()
-			// Replace apostrophes and quotes
-			.replace(/['']/g, '')
-			// Replace any non-alphanumeric characters (except hyphens) with hyphens
-			.replace(/[^a-z0-9-]+/g, '-')
-			// Replace multiple hyphens with single hyphen
-			.replace(/-+/g, '-')
-			// Remove leading/trailing hyphens
-			.replace(/^-+|-+$/g, '')
-			// Limit length to 50 characters
-			.substring(0, 50)
-			// Remove trailing hyphen if substring cut in the middle
-			.replace(/-+$/, '');
-
-		// Ensure slug is not empty
-		if (!slug) {
-			slug = 'section';
-		}
-
-		// Make unique if already used
-		let uniqueSlug = slug;
-		let counter = 1;
-		while (usedIds.has(uniqueSlug)) {
-			uniqueSlug = `${slug}-${counter}`;
-			counter++;
-		}
-
-		usedIds.add(uniqueSlug);
-		return uniqueSlug;
 	}
 
 	showEmptyMessage() {
@@ -309,62 +219,13 @@ class DSGTableOfContents {
 		}
 
 		const minLevel = Math.min(...headings.map((h) => h.level));
-		const items = this.buildHierarchy(headings, minLevel);
+		const items = buildHierarchy(
+			headings,
+			minLevel,
+			this.createListItem.bind(this),
+			this.listElement
+		);
 		items.forEach((item) => this.listElement.appendChild(item));
-	}
-
-	buildHierarchy(headings, currentLevel) {
-		const items = [];
-		let i = 0;
-
-		while (i < headings.length) {
-			const heading = headings[i];
-
-			if (heading.level === currentLevel) {
-				const li = this.createListItem(heading);
-
-				// Collect children
-				const children = [];
-				let j = i + 1;
-
-				while (
-					j < headings.length &&
-					headings[j].level > currentLevel
-				) {
-					children.push(headings[j]);
-					j++;
-				}
-
-				// Add nested list if there are children
-				if (children.length > 0) {
-					const isOrdered =
-						this.listElement.tagName.toLowerCase() === 'ol';
-					const subList = document.createElement(
-						isOrdered ? 'ol' : 'ul'
-					);
-					subList.className = 'dsgo-table-of-contents__sublist';
-
-					const childItems = this.buildHierarchy(
-						children,
-						currentLevel + 1
-					);
-					childItems.forEach((child) => subList.appendChild(child));
-
-					li.appendChild(subList);
-				}
-
-				items.push(li);
-				i = j;
-			} else if (heading.level < currentLevel) {
-				// This heading belongs to a parent level
-				break;
-			} else {
-				// Skip headings at deeper levels (they'll be handled as children)
-				i++;
-			}
-		}
-
-		return items;
 	}
 
 	createListItem(heading) {
@@ -427,16 +288,55 @@ class DSGTableOfContents {
 
 	scrollToTarget(target) {
 		const rect = target.getBoundingClientRect();
-		const scrollTop = window.scrollY + rect.top - this.scrollOffset;
+		const targetPosition = window.scrollY + rect.top - this.scrollOffset;
 
 		if (this.scrollSmooth) {
-			window.scrollTo({
-				top: scrollTop,
-				behavior: 'smooth',
-			});
+			this.smoothScrollTo(targetPosition);
 		} else {
-			window.scrollTo(0, scrollTop);
+			window.scrollTo(0, targetPosition);
 		}
+	}
+
+	smoothScrollTo(targetPosition) {
+		// Respect user's motion preferences
+		const prefersReducedMotion = window.matchMedia(
+			'(prefers-reduced-motion: reduce)'
+		).matches;
+
+		if (prefersReducedMotion) {
+			window.scrollTo(0, targetPosition);
+			return;
+		}
+
+		const startPosition = window.scrollY;
+		const distance = targetPosition - startPosition;
+		const duration = 800; // milliseconds
+		let startTime = null;
+
+		// Easing function (ease-in-out cubic)
+		const easeInOutCubic = (t) => {
+			return t < 0.5
+				? 4 * t * t * t
+				: 1 - Math.pow(-2 * t + 2, 3) / 2;
+		};
+
+		const animation = (currentTime) => {
+			if (startTime === null) {
+				startTime = currentTime;
+			}
+
+			const timeElapsed = currentTime - startTime;
+			const progress = Math.min(timeElapsed / duration, 1);
+			const ease = easeInOutCubic(progress);
+
+			window.scrollTo(0, startPosition + distance * ease);
+
+			if (progress < 1) {
+				requestAnimationFrame(animation);
+			}
+		};
+
+		requestAnimationFrame(animation);
 	}
 
 	setupScrollSpy(headings) {
@@ -464,6 +364,18 @@ class DSGTableOfContents {
 					);
 					if (link) {
 						this.updateActiveLink(link);
+						// Update URL hash when scrolling through sections
+						// (but not during initial hash navigation to prevent override)
+						if (
+							!this.isInitialHashNavigation &&
+							window.history.replaceState
+						) {
+							window.history.replaceState(
+								null,
+								null,
+								`#${entry.target.id}`
+							);
+						}
 					}
 				}
 			});
@@ -497,6 +409,52 @@ class DSGTableOfContents {
 			if (li) {
 				li.classList.add('dsgo-table-of-contents__item--active');
 			}
+		}
+	}
+
+	handleInitialHash() {
+		// Check if there's a hash in the URL
+		const hash = window.location.hash;
+		if (!hash) {
+			return;
+		}
+
+		try {
+			// Get the target element (remove the # from hash)
+			const targetId = hash.substring(1);
+			const target = document.getElementById(targetId);
+
+			if (!target) {
+				return;
+			}
+
+			// Set flag to prevent scroll spy from updating URL during initial navigation
+			this.isInitialHashNavigation = true;
+
+			// Delay to ensure page is fully loaded and rendered
+			// Longer delay for direct navigation to ensure all content is ready
+			setTimeout(() => {
+				// Scroll to the target
+				this.scrollToTarget(target);
+
+				// Update active link in TOC
+				const link = this.element.querySelector(
+					`.dsgo-table-of-contents__link[href="${hash}"]`
+				);
+				if (link) {
+					this.updateActiveLink(link);
+				}
+
+				// Re-enable URL updates after scroll animation completes
+				// (800ms animation + 200ms buffer)
+				setTimeout(() => {
+					this.isInitialHashNavigation = false;
+				}, 1000);
+			}, 300);
+		} catch (error) {
+			console.error('[DSG TOC] Error handling initial hash:', error);
+			// Ensure flag is reset even if there's an error
+			this.isInitialHashNavigation = false;
 		}
 	}
 

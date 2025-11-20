@@ -15,6 +15,7 @@ export default function Save({ attributes }) {
 		titleText,
 		scrollSmooth,
 		scrollOffset,
+		stickyOffset,
 		linkColor,
 		activeLinkColor,
 	} = attributes;
@@ -44,6 +45,9 @@ export default function Save({ attributes }) {
 	}
 	if (activeLinkColor) {
 		customStyles['--dsgo-toc-active-link-color'] = activeLinkColor;
+	}
+	if (stickyOffset) {
+		customStyles['--dsgo-toc-sticky-offset'] = `${stickyOffset}px`;
 	}
 
 	const ListTag = listStyle === 'ordered' ? 'ol' : 'ul';

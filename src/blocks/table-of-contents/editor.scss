@@ -5,21 +5,22 @@
 .editor-styles-wrapper,
 .block-editor-block-preview__content {
     .dsgo-table-of-contents {
-        border: 1px dashed #999;
+        // CSS custom properties for user-controlled values (editor)
+        --dsgo-toc-sticky-offset: 0px;
+
         padding: 1.5rem;
-        background: rgba(0, 0, 0, 0.02);
-        border-radius: 4px;
         min-height: 100px;
 
-        // When block is selected
-        &.is-selected {
-            background: rgba(0, 0, 0, 0.04);
-            border-color: #000;
+        // Sticky positioning in editor
+        &.is-position-sticky,
+        &.has-position-sticky {
+            align-self: start;
+            top: var(--dsgo-toc-sticky-offset);
         }
 
         // Title in editor
         &__title {
-            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 2px solid var(--wp-admin-border-width-focus, rgba(0, 0, 0, 0.1));
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
         }
@@ -55,18 +56,8 @@
         &__empty {
             padding: 1rem;
             text-align: center;
-            background: rgba(0, 0, 0, 0.03);
             border-radius: 4px;
         }
     }
 }
 
-// Block toolbar styles
-.block-editor-block-list__block[data-type="designsetgo/table-of-contents"] {
-    // Ensure block is easily selectable
-    &.is-selected {
-        .dsgo-table-of-contents {
-            box-shadow: 0 0 0 1px var(--wp-admin-theme-color);
-        }
-    }
-}

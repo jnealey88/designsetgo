@@ -122,7 +122,8 @@ If you have a sticky header:
 
 ### Performance
 
-- Lightweight: ~20KB unminified JavaScript
+- Lightweight: ~15KB total JavaScript (5.4KB frontend + 10.4KB editor, unminified)
+- Frontend: Only 2.1KB gzipped
 - Uses IntersectionObserver (not scroll events) for performance
 - Single initialization per block (prevents duplicate instances)
 - Efficient DOM queries with data attribute caching
@@ -165,14 +166,9 @@ Initialize or re-initialize the block:
 window.dispatchEvent(new Event('dsgo-reinit-toc'));
 ```
 
-### Utilities
+### Implementation Note
 
-Reusable heading scanner utilities are available in `utils/heading-scanner.js`:
-
-- `scanHeadings(levels, container, excludeSelector)` - Scan for headings
-- `generateHeadingId(text, index)` - Generate URL-safe ID
-- `buildHierarchy(headings)` - Build nested structure
-- `flattenHierarchy(hierarchy)` - Flatten nested structure
+All heading scanning and hierarchy building functionality is handled internally by the `DSGTableOfContents` class in [view.js](view.js). No external utilities are required.
 
 ## Limitations
 

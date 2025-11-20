@@ -70,7 +70,11 @@
         },
         "scrollOffset": {
             "type": "number",
-            "default": 150
+            "default": 0
+        },
+        "stickyOffset": {
+            "type": "number",
+            "default": 0
         },
         "linkColor": {
             "type": "string",
