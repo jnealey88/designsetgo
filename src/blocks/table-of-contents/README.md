@@ -154,8 +154,7 @@ The block uses CSS custom properties for styling:
 
 - `--dsgo-toc-link-color` - Color for links
 - `--dsgo-toc-active-link-color` - Color for active link
-- `--dsgo-toc-spacing` - Spacing between list items
-- `--dsgo-toc-indent` - Indentation for nested lists
+- `--dsgo-toc-indent` - Indentation for nested lists (default: 1.5rem desktop, 1rem mobile)
 
 ### JavaScript API
 
