@@ -72,8 +72,8 @@ describe('DSGModal - Core Functionality', () => {
 
 		test('should prevent duplicate initialization', () => {
 			const modal = createMockModal();
-			const instance1 = new window.DSGModal(modal);
-			const instance2 = new window.DSGModal(modal);
+			new window.DSGModal(modal);
+			new window.DSGModal(modal);
 
 			// Second init should return early (check by verifying data attribute)
 			expect(modal.getAttribute('data-dsgo-initialized')).toBe('true');
@@ -340,7 +340,8 @@ describe('DSGModal - Core Functionality', () => {
 			const modal = createMockModal();
 			const instance = new window.DSGModal(modal);
 
-			const observer = instance.contentObserver;
+			// Verify observer exists before destroy
+			expect(instance.contentObserver).toBeDefined();
 
 			instance.destroy();
 
