@@ -4,9 +4,10 @@
 
 .editor-styles-wrapper,
 .block-editor-block-preview__content {
+
     .dsgo-table-of-contents {
         // CSS custom properties for user-controlled values (editor)
-        --dsgo-toc-sticky-offset: 0px;
+        --dsgo-toc-sticky-offset: 0;
 
         padding: 1.5rem;
         min-height: 100px;
@@ -38,7 +39,7 @@
                 left: 0;
                 right: 0;
                 height: 1px;
-                background: currentColor;
+                background: currentcolor;
                 opacity: 0.3;
             }
         }

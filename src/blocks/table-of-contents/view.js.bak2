@@ -95,7 +95,6 @@ class DSGTableOfContents {
 			this.handleInitialHash();
 		} catch (error) {
 		}
-         // Silently fail - show empty message to user
 	}
 
 	scanHeadings() {

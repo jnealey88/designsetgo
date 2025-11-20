@@ -16,6 +16,9 @@
 @use '../extensions/grid-span/editor' as grid-span;
 @use '../extensions/reveal-control/editor' as reveal-control;
 
+// Block Editor Styles
+@use '../blocks/table-of-contents/editor' as table-of-contents;
+
 // ===================================================================
 // PERFORMANCE OPTIMIZATION (2025-11-11)
 // ===================================================================
