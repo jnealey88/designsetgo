@@ -24,13 +24,12 @@
 		overflow: visible;
 	}
 
-	// CRITICAL: Allow sticky positioned blocks to work properly
-	// Sticky positioning doesn't work inside overflow:hidden containers
+	// CRITICAL: Allow sticky positioned elements to work correctly
+	// Sticky positioning requires overflow: visible on all ancestors
 	&:has(.is-position-sticky),
-	&:has(.has-position-sticky) {
+	&:has([style*="position:sticky"]),
+	&:has([style*="position: sticky"]) {
 		overflow: visible;
-		// Don't stretch to fill grid row - use natural height for sticky to work
-		align-self: start;
 	}
 
 	// Position relative for hover overlay pseudo-element

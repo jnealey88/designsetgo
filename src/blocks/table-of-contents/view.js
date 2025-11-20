@@ -61,6 +61,9 @@ class DSGTableOfContents {
 		// Flag to prevent URL updates during initial hash navigation
 		this.isInitialHashNavigation = false;
 
+		// Flag to prevent scroll spy updates during manual link clicks
+		this.isManualNavigation = false;
+
 		// Prevent duplicate initialization
 		if (element.hasAttribute('data-dsgo-initialized')) {
 			return;
@@ -362,6 +365,7 @@ class DSGTableOfContents {
 						// (but not during initial hash navigation to prevent override)
 						if (
 							!this.isInitialHashNavigation &&
+						!this.isManualNavigation &&
 							window.history.replaceState
 						) {
 							window.history.replaceState(
@@ -436,7 +440,11 @@ class DSGTableOfContents {
 					`.dsgo-table-of-contents__link[href="${hash}"]`
 				);
 				if (link) {
-					this.updateActiveLink(link);
+					// Skip updates during manual navigation or initial hash navigation
+					if (!this.isManualNavigation) {
+											this.updateActiveLink(link);
+					}
+
 				}
 
 				// Re-enable URL updates after scroll animation completes
