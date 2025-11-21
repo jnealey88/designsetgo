@@ -44,6 +44,11 @@ require_once DESIGNSETGO_PATH . 'includes/block-animation-attributes.php';
 require_once DESIGNSETGO_PATH . 'includes/icon-svg-library.php';
 
 /**
+ * Load breadcrumbs helper functions (used by breadcrumbs block).
+ */
+require_once DESIGNSETGO_PATH . 'includes/breadcrumbs-functions.php';
+
+/**
  * Initialize the plugin.
  */
 function designsetgo_init() {
