@@ -12,58 +12,58 @@
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
-// Check if we should hide breadcrumbs on homepage
+// Check if we should hide breadcrumbs on homepage.
 if ( ! empty( $attributes['hideOnHome'] ) && is_front_page() ) {
-    return '';
+	return '';
 }
 
-// Get breadcrumb trail (function defined in includes/breadcrumbs-functions.php)
+// Get breadcrumb trail (function defined in includes/breadcrumbs-functions.php).
 $trail = designsetgo_get_breadcrumb_trail( $block, $attributes );
 
-// If no breadcrumbs, return empty
+// If no breadcrumbs, return empty.
 if ( empty( $trail ) ) {
-    return '';
+	return '';
 }
 
-// Get separator (function defined in includes/breadcrumbs-functions.php)
+// Get separator (function defined in includes/breadcrumbs-functions.php).
 $separator = designsetgo_get_breadcrumb_separator( $attributes );
 
-// Build wrapper attributes
+// Build wrapper attributes.
 $wrapper_attributes = get_block_wrapper_attributes(
-    array(
-        'class'                 => 'dsgo-breadcrumbs',
-        'aria-label'            => __( 'Breadcrumb', 'designsetgo' ),
-        'data-dsgo-breadcrumbs' => wp_json_encode( $trail ),
-    )
+	array(
+		'class'                 => 'dsgo-breadcrumbs',
+		'aria-label'            => __( 'Breadcrumb', 'designsetgo' ),
+		'data-dsgo-breadcrumbs' => wp_json_encode( $trail ),
+	)
 );
 
-// Output directly (WordPress captures echo'd output from render callbacks)
+// Output directly (WordPress captures echo'd output from render callbacks).
 ?>
 <nav <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-    <?php if ( ! empty( $attributes['prefixText'] ) ) : ?>
-        <span class="dsgo-breadcrumbs__prefix"><?php echo esc_html( $attributes['prefixText'] ); ?></span>
-    <?php endif; ?>
+	<?php if ( ! empty( $attributes['prefixText'] ) ) : ?>
+		<span class="dsgo-breadcrumbs__prefix"><?php echo esc_html( $attributes['prefixText'] ); ?></span>
+	<?php endif; ?>
 
-    <ol class="dsgo-breadcrumbs__list">
-        <?php foreach ( $trail as $index => $item ) : ?>
-            <li class="dsgo-breadcrumbs__item<?php echo ! empty( $item['is_current'] ) ? ' dsgo-breadcrumbs__item--current' : ''; ?>">
-                <?php if ( empty( $item['is_current'] ) || ! empty( $attributes['linkCurrent'] ) ) : ?>
-                    <a href="<?php echo esc_url( $item['url'] ); ?>" class="dsgo-breadcrumbs__link">
-                        <?php echo esc_html( $item['title'] ); ?>
-                    </a>
-                <?php else : ?>
-                    <span class="dsgo-breadcrumbs__text">
-                        <?php echo esc_html( $item['title'] ); ?>
-                    </span>
-                <?php endif; ?>
-            </li>
+	<ol class="dsgo-breadcrumbs__list">
+		<?php foreach ( $trail as $index => $item ) : ?>
+			<li class="dsgo-breadcrumbs__item<?php echo ! empty( $item['is_current'] ) ? ' dsgo-breadcrumbs__item--current' : ''; ?>">
+				<?php if ( empty( $item['is_current'] ) || ! empty( $attributes['linkCurrent'] ) ) : ?>
+					<a href="<?php echo esc_url( $item['url'] ); ?>" class="dsgo-breadcrumbs__link">
+						<?php echo esc_html( $item['title'] ); ?>
+					</a>
+				<?php else : ?>
+					<span class="dsgo-breadcrumbs__text">
+						<?php echo esc_html( $item['title'] ); ?>
+					</span>
+				<?php endif; ?>
+			</li>
 
-            <?php if ( $index < count( $trail ) - 1 ) : ?>
-                <li class="dsgo-breadcrumbs__separator" aria-hidden="true"><?php echo esc_html( $separator ); ?></li>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    </ol>
+			<?php if ( $index < count( $trail ) - 1 ) : ?>
+				<li class="dsgo-breadcrumbs__separator" aria-hidden="true"><?php echo esc_html( $separator ); ?></li>
+			<?php endif; ?>
+		<?php endforeach; ?>
+	</ol>
 </nav><?php

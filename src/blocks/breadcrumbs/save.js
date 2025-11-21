@@ -7,5 +7,5 @@
  * @return {null} Null because this is a dynamic block.
  */
 export default function save() {
-    return null;
+	return null;
 }

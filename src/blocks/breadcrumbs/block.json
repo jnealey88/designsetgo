@@ -23,10 +23,6 @@
       "type": "string",
       "default": "Home"
     },
-    "homeIcon": {
-      "type": "string",
-      "default": ""
-    },
     "separator": {
       "type": "string",
       "default": "slash",
@@ -35,13 +31,8 @@
         "chevron",
         "greater",
         "bullet",
-        "arrow-right",
-        "custom"
+        "arrow-right"
       ]
-    },
-    "separatorIcon": {
-      "type": "string",
-      "default": ""
     },
     "showCurrent": {
       "type": "boolean",
@@ -58,10 +49,6 @@
     "hideOnHome": {
       "type": "boolean",
       "default": true
-    },
-    "customBreadcrumbs": {
-      "type": "array",
-      "default": []
     }
   },
   "supports": {

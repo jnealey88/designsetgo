@@ -43,6 +43,7 @@
 
         // Current page item styling
         &--current {
+
             :where(.dsgo-breadcrumbs__text) {
                 font-weight: 600;
             }
@@ -64,7 +65,7 @@
         }
 
         &:focus {
-            outline: 2px solid currentColor;
+            outline: 2px solid currentcolor;
             outline-offset: 2px;
         }
     }
@@ -109,7 +110,9 @@
  * Responsive adjustments
  */
 @media (max-width: 600px) {
+
     .dsgo-breadcrumbs {
+
         &__separator {
             margin: 0 0.35em;
         }
@@ -124,7 +127,9 @@
  * High contrast mode support
  */
 @media (prefers-contrast: high) {
+
     .dsgo-breadcrumbs {
+
         &__separator {
             opacity: 1;
         }
@@ -135,7 +140,9 @@
  * Reduced motion support
  */
 @media (prefers-reduced-motion: reduce) {
+
     .dsgo-breadcrumbs {
+
         &__link {
             transition: none;
         }

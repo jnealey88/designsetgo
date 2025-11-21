@@ -5,45 +5,45 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-    initBreadcrumbs();
+	initBreadcrumbs();
 });
 
 /**
  * Initialize all breadcrumb blocks on the page
  */
 function initBreadcrumbs() {
-    const breadcrumbBlocks = document.querySelectorAll(
-        '.dsgo-breadcrumbs[data-breadcrumbs]'
-    );
+	const breadcrumbBlocks = document.querySelectorAll(
+		'.dsgo-breadcrumbs[data-dsgo-breadcrumbs]'
+	);
 
-    if (!breadcrumbBlocks || breadcrumbBlocks.length === 0) {
-        return;
-    }
+	if (!breadcrumbBlocks || breadcrumbBlocks.length === 0) {
+		return;
+	}
 
-    breadcrumbBlocks.forEach((block) => {
-        try {
-            // Prevent duplicate initialization
-            if (block.hasAttribute('data-dsgo-schema-injected')) {
-                return;
-            }
-            block.setAttribute('data-dsgo-schema-injected', 'true');
+	breadcrumbBlocks.forEach((block) => {
+		try {
+			// Prevent duplicate initialization
+			if (block.hasAttribute('data-dsgo-schema-injected')) {
+				return;
+			}
+			block.setAttribute('data-dsgo-schema-injected', 'true');
 
-            // Parse breadcrumb data
-            const breadcrumbData = JSON.parse(
-                block.getAttribute('data-breadcrumbs')
-            );
+			// Parse breadcrumb data
+			const breadcrumbData = JSON.parse(
+				block.getAttribute('data-dsgo-breadcrumbs')
+			);
 
-            if (!breadcrumbData || breadcrumbData.length === 0) {
-                return;
-            }
+			if (!breadcrumbData || breadcrumbData.length === 0) {
+				return;
+			}
 
-            // Generate and inject Schema.org JSON-LD
-            injectSchemaMarkup(breadcrumbData);
-        } catch (error) {
-            // Silently fail - breadcrumbs still work without Schema.org
-            console.error('DesignSetGo Breadcrumbs: Schema.org error', error);
-        }
-    });
+			// Generate and inject Schema.org JSON-LD
+			injectSchemaMarkup(breadcrumbData);
+		} catch (error) {
+			// Silently fail - breadcrumbs still work without Schema.org
+			console.error('DesignSetGo Breadcrumbs: Schema.org error', error);
+		}
+	});
 }
 
 /**
@@ -52,52 +52,52 @@ function initBreadcrumbs() {
  * @param {Array} breadcrumbs - Array of breadcrumb items
  */
 function injectSchemaMarkup(breadcrumbs) {
-    // Build Schema.org BreadcrumbList structure
-    const schemaData = {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: breadcrumbs.map((item, index) => {
-            const listItem = {
-                '@type': 'ListItem',
-                position: item.position || index + 1,
-                name: item.title,
-            };
+	// Build Schema.org BreadcrumbList structure
+	const schemaData = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: breadcrumbs.map((item, index) => {
+			const listItem = {
+				'@type': 'ListItem',
+				position: item.position || index + 1,
+				name: item.title,
+			};
 
-            // Only add item URL if it exists (current page might not have URL)
-            if (item.url) {
-                listItem.item = item.url;
-            }
+			// Only add item URL if it exists (current page might not have URL)
+			if (item.url) {
+				listItem.item = item.url;
+			}
 
-            return listItem;
-        }),
-    };
+			return listItem;
+		}),
+	};
 
-    // Check if Schema.org markup already exists for breadcrumbs
-    const existingSchema = document.querySelector(
-        'script[type="application/ld+json"][data-dsgo-breadcrumbs-schema]'
-    );
+	// Check if Schema.org markup already exists for breadcrumbs
+	const existingSchema = document.querySelector(
+		'script[type="application/ld+json"][data-dsgo-breadcrumbs-schema]'
+	);
 
-    if (existingSchema) {
-        // Update existing schema
-        existingSchema.textContent = JSON.stringify(schemaData);
-    } else {
-        // Create new schema script tag
-        const scriptTag = document.createElement('script');
-        scriptTag.type = 'application/ld+json';
-        scriptTag.setAttribute('data-dsgo-breadcrumbs-schema', 'true');
-        scriptTag.textContent = JSON.stringify(schemaData);
+	if (existingSchema) {
+		// Update existing schema
+		existingSchema.textContent = JSON.stringify(schemaData);
+	} else {
+		// Create new schema script tag
+		const scriptTag = document.createElement('script');
+		scriptTag.type = 'application/ld+json';
+		scriptTag.setAttribute('data-dsgo-breadcrumbs-schema', 'true');
+		scriptTag.textContent = JSON.stringify(schemaData);
 
-        // Inject before closing </body> tag (or append to head if body not found)
-        const targetElement = document.body || document.head;
-        if (targetElement) {
-            targetElement.appendChild(scriptTag);
-        }
-    }
+		// Inject before closing </body> tag (or append to head if body not found)
+		const targetElement = document.body || document.head;
+		if (targetElement) {
+			targetElement.appendChild(scriptTag);
+		}
+	}
 }
 
 /**
  * Export for potential reuse (if module system is available)
  */
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { initBreadcrumbs, injectSchemaMarkup };
+	module.exports = { initBreadcrumbs, injectSchemaMarkup };
 }
