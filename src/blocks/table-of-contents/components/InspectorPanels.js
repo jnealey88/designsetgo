@@ -30,26 +30,31 @@ export function HeadingLevelsPanel({ attributes, setAttributes }) {
                 label={__('Include H2', 'designsetgo')}
                 checked={includeH2}
                 onChange={(value) => setAttributes({ includeH2: value })}
+                __nextHasNoMarginBottom
             />
             <CheckboxControl
                 label={__('Include H3', 'designsetgo')}
                 checked={includeH3}
                 onChange={(value) => setAttributes({ includeH3: value })}
+                __nextHasNoMarginBottom
             />
             <CheckboxControl
                 label={__('Include H4', 'designsetgo')}
                 checked={includeH4}
                 onChange={(value) => setAttributes({ includeH4: value })}
+                __nextHasNoMarginBottom
             />
             <CheckboxControl
                 label={__('Include H5', 'designsetgo')}
                 checked={includeH5}
                 onChange={(value) => setAttributes({ includeH5: value })}
+                __nextHasNoMarginBottom
             />
             <CheckboxControl
                 label={__('Include H6', 'designsetgo')}
                 checked={includeH6}
                 onChange={(value) => setAttributes({ includeH6: value })}
+                __nextHasNoMarginBottom
             />
         </PanelBody>
     );
@@ -74,6 +79,7 @@ export function DisplaySettingsPanel({ attributes, setAttributes }) {
                     },
                 ]}
                 onChange={(value) => setAttributes({ displayMode: value })}
+                __nextHasNoMarginBottom
             />
             <RadioControl
                 label={__('List Style', 'designsetgo')}
@@ -89,6 +95,7 @@ export function DisplaySettingsPanel({ attributes, setAttributes }) {
                     },
                 ]}
                 onChange={(value) => setAttributes({ listStyle: value })}
+                __nextHasNoMarginBottom
             />
         </PanelBody>
     );
@@ -103,6 +110,7 @@ export function TitleSettingsPanel({ attributes, setAttributes }) {
                 label={__('Show Title', 'designsetgo')}
                 checked={showTitle}
                 onChange={(value) => setAttributes({ showTitle: value })}
+                __nextHasNoMarginBottom
             />
             {showTitle && (
                 <TextControl
@@ -110,6 +118,8 @@ export function TitleSettingsPanel({ attributes, setAttributes }) {
                     value={titleText}
                     onChange={(value) => setAttributes({ titleText: value })}
                     placeholder={__('Table of Contents', 'designsetgo')}
+                    __next40pxDefaultSize
+                    __nextHasNoMarginBottom
                 />
             )}
         </PanelBody>
@@ -129,6 +139,7 @@ export function ScrollSettingsPanel({ attributes, setAttributes }) {
                 )}
                 checked={scrollSmooth}
                 onChange={(value) => setAttributes({ scrollSmooth: value })}
+                __nextHasNoMarginBottom
             />
             <RangeControl
                 label={__('Scroll Offset', 'designsetgo')}
@@ -141,6 +152,8 @@ export function ScrollSettingsPanel({ attributes, setAttributes }) {
                 min={0}
                 max={200}
                 step={10}
+                __next40pxDefaultSize
+                __nextHasNoMarginBottom
             />
             <RangeControl
                 label={__('Sticky Position Offset', 'designsetgo')}
@@ -153,6 +166,8 @@ export function ScrollSettingsPanel({ attributes, setAttributes }) {
                 min={0}
                 max={200}
                 step={10}
+                __next40pxDefaultSize
+                __nextHasNoMarginBottom
             />
         </PanelBody>
     );

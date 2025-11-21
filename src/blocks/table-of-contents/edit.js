@@ -30,7 +30,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		showTitle,
 		titleText,
 		scrollSmooth,
-		scrollOffset,
 		stickyOffset,
 		linkColor,
 		activeLinkColor,

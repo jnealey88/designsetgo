@@ -4,10 +4,10 @@
 
 .dsgo-table-of-contents {
     // CSS custom properties for user-controlled values
-    --dsgo-toc-link-color: currentColor;
+    --dsgo-toc-link-color: currentcolor;
     --dsgo-toc-active-link-color: var(--wp--preset--color--primary, #0073aa);
     --dsgo-toc-indent: 1.5rem;
-    --dsgo-toc-sticky-offset: 0px;
+    --dsgo-toc-sticky-offset: 0;
 
     position: relative;
 
@@ -76,6 +76,7 @@
 
         // Active item styling
         &--active {
+
             > .dsgo-table-of-contents__link {
                 font-weight: 600;
             }
@@ -113,6 +114,7 @@
 
     // Ordered list styling
     &--ordered {
+
         .dsgo-table-of-contents__list {
             list-style: decimal;
             padding-left: 1.5rem;
@@ -125,6 +127,7 @@
 
     // Flat display mode - no indentation for sublists
     &--flat {
+
         .dsgo-table-of-contents__sublist {
             padding-left: 0;
         }
@@ -132,6 +135,7 @@
 
     // Hierarchical display mode - maintain indentation
     &--hierarchical {
+
         .dsgo-table-of-contents__sublist {
             padding-left: var(--dsgo-toc-indent);
         }
@@ -139,6 +143,7 @@
 
     // Mobile: Collapsible TOC
     @media (max-width: 782px) {
+
         &__content {
             max-height: 400px;
             overflow-y: auto;
@@ -206,7 +211,9 @@
 
 // High contrast mode support
 @media (prefers-contrast: high) {
+
     .dsgo-table-of-contents {
+
         &__link {
             text-decoration: underline;
 
@@ -220,7 +227,9 @@
 
 // Reduced motion support
 @media (prefers-reduced-motion: reduce) {
+
     .dsgo-table-of-contents {
+
         &__link {
             transition: none;
         }
