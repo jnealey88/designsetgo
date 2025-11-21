@@ -24,6 +24,7 @@ class Loader {
 		add_action( 'init', array( $this, 'register_shared_chunks' ), 5 ); // Register shared chunks first.
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_action( 'init', array( $this, 'register_block_styles' ) );
+		add_action( 'init', array( $this, 'setup_script_translations' ), 15 ); // After blocks are registered.
 		add_filter( 'block_type_metadata', array( $this, 'add_shared_dependencies' ) );
 	}
 
@@ -137,6 +138,24 @@ class Loader {
 					register_block_type( $block_dir );
 				}
 			}
+		}
+	}
+
+	/**
+	 * Setup script translations for blocks with viewScript.
+	 *
+	 * Enables i18n for frontend JavaScript files.
+	 *
+	 * @since 1.1.5
+	 */
+	public function setup_script_translations() {
+		// Table of Contents block has translatable frontend strings.
+		if ( wp_script_is( 'designsetgo-table-of-contents-view-script', 'registered' ) ) {
+			wp_set_script_translations(
+				'designsetgo-table-of-contents-view-script',
+				'designsetgo',
+				DESIGNSETGO_PATH . 'languages'
+			);
 		}
 	}
 

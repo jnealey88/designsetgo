@@ -82,7 +82,8 @@ export function useHeadingScanner(levelFlags) {
 
                 setPreviewHeadings(headings);
             } catch (error) {
-                // Return empty array on error
+                console.error('[DSG TOC] Error scanning headings:', error);
+                setPreviewHeadings([]);
             }
         };
 

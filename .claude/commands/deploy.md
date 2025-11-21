@@ -26,6 +26,7 @@ Prepare the plugin for deployment to WordPress.org via automated GitHub Actions 
    - Fix any issues found
 
 5. **Pre-deployment checklist**
+   - Do we need to update any documentation?
    - All tests passing?
    - No console errors in browser (editor + frontend)?
    - Works with latest WordPress version?

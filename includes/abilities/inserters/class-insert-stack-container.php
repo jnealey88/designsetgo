@@ -162,7 +162,7 @@ class Insert_Stack_Container extends Abstract_Ability {
 		// Insert the block.
 		return Block_Inserter::insert_block(
 			$post_id,
-			'designsetgo/stack',
+			'designsetgo/section',
 			$attributes,
 			$inner_blocks,
 			$position
