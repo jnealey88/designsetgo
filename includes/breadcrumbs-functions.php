@@ -40,7 +40,7 @@ if ( ! function_exists( 'designsetgo_get_breadcrumb_trail' ) ) {
 		// Add home link if enabled.
 		if ( ! empty( $attributes['showHome'] ) ) {
 			$trail[] = array(
-				'title' => ! empty( $attributes['homeText'] ) ? $attributes['homeText'] : __( 'Home', 'designsetgo' ),
+				'title' => ! empty( $attributes['homeText'] ) ? sanitize_text_field( $attributes['homeText'] ) : __( 'Home', 'designsetgo' ),
 				'url'   => home_url( '/' ),
 			);
 		}

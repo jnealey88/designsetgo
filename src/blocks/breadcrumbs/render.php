@@ -49,7 +49,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 
 	<ol class="dsgo-breadcrumbs__list">
 		<?php foreach ( $trail as $index => $item ) : ?>
-			<li class="dsgo-breadcrumbs__item<?php echo ! empty( $item['is_current'] ) ? ' dsgo-breadcrumbs__item--current' : ''; ?>">
+			<li class="<?php echo esc_attr( 'dsgo-breadcrumbs__item' . ( ! empty( $item['is_current'] ) ? ' dsgo-breadcrumbs__item--current' : '' ) ); ?>">
 				<?php if ( empty( $item['is_current'] ) || ! empty( $attributes['linkCurrent'] ) ) : ?>
 					<a href="<?php echo esc_url( $item['url'] ); ?>" class="dsgo-breadcrumbs__link">
 						<?php echo esc_html( $item['title'] ); ?>

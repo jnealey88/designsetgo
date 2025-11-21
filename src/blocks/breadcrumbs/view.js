@@ -63,7 +63,7 @@ function injectSchemaMarkup(breadcrumbs) {
 				name: item.title,
 			};
 
-			// Only add item URL if it exists (current page might not have URL)
+			// Add item URL to schema (all breadcrumb items have URLs).
 			if (item.url) {
 				listItem.item = item.url;
 			}

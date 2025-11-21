@@ -12,7 +12,7 @@ import {
 } from '@wordpress/block-editor';
 import { Notice } from '@wordpress/components';
 import classnames from 'classnames';
-import { useMemo } from '@wordpress/element';
+import { useMemo, Fragment } from '@wordpress/element';
 import { DisplaySettingsPanel } from './components/InspectorPanels';
 import { useBreadcrumbData } from './hooks/useBreadcrumbData';
 
@@ -197,9 +197,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 						<ol className="dsgo-breadcrumbs__list">
 							{previewTrail.map((item, index) => (
-								<>
+								<Fragment key={index}>
 									<li
-										key={index}
 										className={classnames(
 											'dsgo-breadcrumbs__item',
 											{
@@ -227,14 +226,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 									{index < previewTrail.length - 1 && (
 										<li
-											key={`sep-${index}`}
 											className="dsgo-breadcrumbs__separator"
 											aria-hidden="true"
 										>
 											{separatorChar}
 										</li>
 									)}
-								</>
+								</Fragment>
 							))}
 						</ol>
 					</>
