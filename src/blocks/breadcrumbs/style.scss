@@ -1,0 +1,150 @@
+/**
+ * Breadcrumbs Block - Styles
+ *
+ * Frontend and editor styles for the breadcrumbs block.
+ * Uses low-specificity selectors with :where() for easy overriding.
+ */
+
+.dsgo-breadcrumbs {
+    // Block container
+    display: block;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    // Prefix text
+    &__prefix {
+        display: inline-block;
+        margin-right: 0.5em;
+        opacity: 0.8;
+    }
+
+    // Breadcrumb list
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 0;
+        max-width: 100%;
+    }
+
+    // Individual breadcrumb item
+    &__item {
+        display: inline-flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        // Current page item styling
+        &--current {
+
+            :where(.dsgo-breadcrumbs__text) {
+                font-weight: 600;
+            }
+        }
+    }
+
+    // Breadcrumb link
+    &__link {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.2s ease, text-decoration 0.2s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        &:focus {
+            outline: 2px solid currentcolor;
+            outline-offset: 2px;
+        }
+    }
+
+    // Current page text (non-linked)
+    &__text {
+        color: inherit;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    // Separator between items
+    &__separator {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 0.5em;
+        opacity: 0.6;
+        user-select: none;
+        pointer-events: none;
+        flex-shrink: 0;
+    }
+
+    // Home icon (if used)
+    &__home-icon {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 0.25em;
+        flex-shrink: 0;
+    }
+
+    // Separator icon (if custom icon used)
+    &__separator-icon {
+        display: inline-flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+}
+
+/**
+ * Responsive adjustments
+ */
+@media (max-width: 600px) {
+
+    .dsgo-breadcrumbs {
+
+        &__separator {
+            margin: 0 0.35em;
+        }
+
+        &__prefix {
+            margin-right: 0.35em;
+        }
+    }
+}
+
+/**
+ * High contrast mode support
+ */
+@media (prefers-contrast: high) {
+
+    .dsgo-breadcrumbs {
+
+        &__separator {
+            opacity: 1;
+        }
+    }
+}
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+
+    .dsgo-breadcrumbs {
+
+        &__link {
+            transition: none;
+        }
+    }
+}

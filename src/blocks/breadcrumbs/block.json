@@ -1,0 +1,103 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "designsetgo/breadcrumbs",
+  "version": "1.0.0",
+  "title": "Breadcrumbs",
+  "category": "design",
+  "description": "Display navigation breadcrumbs with Schema.org markup for improved UX and SEO.",
+  "keywords": [
+    "breadcrumb",
+    "navigation",
+    "hierarchy",
+    "seo"
+  ],
+  "textdomain": "designsetgo",
+  "usesContext": ["postId", "postType"],
+  "attributes": {
+    "showHome": {
+      "type": "boolean",
+      "default": true
+    },
+    "homeText": {
+      "type": "string",
+      "default": "Home"
+    },
+    "separator": {
+      "type": "string",
+      "default": "slash",
+      "enum": [
+        "slash",
+        "chevron",
+        "greater",
+        "bullet",
+        "arrow-right"
+      ]
+    },
+    "showCurrent": {
+      "type": "boolean",
+      "default": true
+    },
+    "linkCurrent": {
+      "type": "boolean",
+      "default": false
+    },
+    "prefixText": {
+      "type": "string",
+      "default": ""
+    },
+    "hideOnHome": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "color": {
+      "text": true,
+      "link": true,
+      "background": true,
+      "__experimentalDefaultControls": {
+        "link": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "fontWeight": true,
+      "lineHeight": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      }
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    }
+  },
+  "example": {
+    "attributes": {
+      "showHome": true,
+      "homeText": "Home",
+      "separator": "chevron",
+      "showCurrent": true,
+      "linkCurrent": false
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

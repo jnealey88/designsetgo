@@ -18,6 +18,7 @@
 
 // Block Editor Styles
 @use '../blocks/table-of-contents/editor' as table-of-contents;
+@use '../blocks/breadcrumbs/editor' as breadcrumbs;
 
 // ===================================================================
 // PERFORMANCE OPTIMIZATION (2025-11-11)
