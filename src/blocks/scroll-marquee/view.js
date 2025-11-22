@@ -79,7 +79,10 @@ function initScrollMarquees() {
 		};
 		window.addEventListener('resize', handleResize, { passive: true });
 
-		let isInViewport = false;
+		// Check if element is in viewport initially
+		const rect = marquee.getBoundingClientRect();
+		const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+		let isInViewport = rect.top < viewportHeight && rect.bottom > 0;
 
 		// Use Intersection Observer to only animate when visible
 		const observer = new IntersectionObserver(
