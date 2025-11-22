@@ -3,7 +3,7 @@
  *
  * Creates accessible modal dialogs with customizable triggers and content.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { registerBlockType } from '@wordpress/blocks';

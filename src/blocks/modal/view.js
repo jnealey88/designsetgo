@@ -4,7 +4,7 @@
  * Handles modal open/close, focus trapping, keyboard navigation,
  * and accessibility features.
  *
- * @package DesignSetGo
+ * @package
  */
 
 (function () {
@@ -12,7 +12,8 @@
 
 	// Debug mode - checks if WP_DEBUG is enabled or if debug parameter is in URL
 	const DEBUG_MODE =
-		(typeof window.dsgoModalDebug !== 'undefined' && window.dsgoModalDebug) ||
+		(typeof window.dsgoModalDebug !== 'undefined' &&
+			window.dsgoModalDebug) ||
 		window.location.search.includes('dsgo_debug=1');
 
 	/**
@@ -121,7 +122,8 @@
 					0,
 					600
 				),
-				galleryGroupId: element.getAttribute('data-gallery-group-id') || '',
+				galleryGroupId:
+					element.getAttribute('data-gallery-group-id') || '',
 				galleryIndex: this.validateNumber(
 					element.getAttribute('data-gallery-index'),
 					0,
@@ -152,7 +154,9 @@
 			this.galleryCacheDuration = 5000; // 5 seconds
 
 			// Check for reduced motion preference
-			this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			this.prefersReducedMotion = window.matchMedia(
+				'(prefers-reduced-motion: reduce)'
+			).matches;
 
 			this.init();
 		}
@@ -168,8 +172,13 @@
 			this.modal.setAttribute('data-dsgo-initialized', 'true');
 
 			// Add animation class
-			if (this.settings.animationType !== 'none' && !this.prefersReducedMotion) {
-				this.modal.classList.add(`dsgo-modal--animation-${this.settings.animationType}`);
+			if (
+				this.settings.animationType !== 'none' &&
+				!this.prefersReducedMotion
+			) {
+				this.modal.classList.add(
+					`dsgo-modal--animation-${this.settings.animationType}`
+				);
 			}
 
 			// Set transition duration
@@ -225,12 +234,18 @@
 
 			// Close button
 			if (this.closeButton) {
-				this.closeButton.addEventListener('click', this.handleCloseClick);
+				this.closeButton.addEventListener(
+					'click',
+					this.handleCloseClick
+				);
 			}
 
 			// Backdrop click
 			if (this.settings.closeOnBackdrop && this.backdrop) {
-				this.backdrop.addEventListener('click', this.handleBackdropClick);
+				this.backdrop.addEventListener(
+					'click',
+					this.handleBackdropClick
+				);
 			}
 
 			// Define ESC key handler (will be attached/detached on modal open/close)
@@ -257,7 +272,8 @@
 				}
 
 				const firstElement = this.focusableElements[0];
-				const lastElement = this.focusableElements[this.focusableElements.length - 1];
+				const lastElement =
+					this.focusableElements[this.focusableElements.length - 1];
 
 				if (e.shiftKey) {
 					// Shift + Tab
@@ -303,7 +319,9 @@
 		 * Set up MutationObserver to watch for content changes
 		 */
 		setupContentObserver() {
-			if (!this.content) return;
+			if (!this.content) {
+				return;
+			}
 
 			// Invalidate cache when modal content changes
 			this.contentObserver = new MutationObserver(() => {
@@ -323,7 +341,10 @@
 		 */
 		updateFocusableElements() {
 			// Use cached elements if available and modal content hasn't changed
-			if (this.focusableElementsCached && this.focusableElements.length > 0) {
+			if (
+				this.focusableElementsCached &&
+				this.focusableElements.length > 0
+			) {
 				return;
 			}
 
@@ -339,7 +360,9 @@
 			this.focusableElements = Array.from(
 				this.modal.querySelectorAll(focusableSelectors.join(','))
 			).filter((el) => {
-				return el.offsetParent !== null && !el.hasAttribute('aria-hidden');
+				return (
+					el.offsetParent !== null && !el.hasAttribute('aria-hidden')
+				);
 			});
 
 			this.focusableElementsCached = true;
@@ -466,60 +489,69 @@
 				localStorage.setItem(storageKey, 'true');
 
 				// Also save to cookie as fallback
-				this.setCookie(storageKey, 'true', this.settings.cookieDuration);
+				this.setCookie(
+					storageKey,
+					'true',
+					this.settings.cookieDuration
+				);
 			}
 		}
 
-	/**
-	 * Get cookie value
-	 *
-	 * Uses a safe string-splitting approach to avoid ReDoS vulnerabilities.
-	 */
-	getCookie(name) {
-		// Use safer string splitting instead of complex regex
-		const cookieString = `; ${document.cookie}`;
-		const parts = cookieString.split(`; ${name}=`);
+		/**
+		 * Get cookie value
+		 *
+		 * Uses a safe string-splitting approach to avoid ReDoS vulnerabilities.
+		 * @param name
+		 */
+		getCookie(name) {
+			// Use safer string splitting instead of complex regex
+			const cookieString = `; ${document.cookie}`;
+			const parts = cookieString.split(`; ${name}=`);
 
-		if (parts.length === 2) {
-			const value = parts.pop().split(';').shift();
-			try {
-				return decodeURIComponent(value);
-			} catch (e) {
-				// If decoding fails, return raw value
-				return value;
+			if (parts.length === 2) {
+				const value = parts.pop().split(';').shift();
+				try {
+					return decodeURIComponent(value);
+				} catch (e) {
+					// If decoding fails, return raw value
+					return value;
+				}
 			}
+
+			return undefined;
 		}
 
-		return undefined;
-	}
+		/**
+		 * Set cookie with secure flags
+		 *
+		 * Uses SameSite=Strict and Secure (on HTTPS) for enhanced security.
+		 * @param name
+		 * @param value
+		 * @param days
+		 */
+		setCookie(name, value, days) {
+			const expires = new Date();
+			expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
 
-	/**
-	 * Set cookie with secure flags
-	 *
-	 * Uses SameSite=Strict and Secure (on HTTPS) for enhanced security.
-	 */
-	setCookie(name, value, days) {
-		const expires = new Date();
-		expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+			// Encode value to handle special characters
+			const encodedValue = encodeURIComponent(value);
 
-		// Encode value to handle special characters
-		const encodedValue = encodeURIComponent(value);
+			// Use SameSite=Strict for frequency tracking (no cross-site needs)
+			const sameSite = 'Strict';
 
-		// Use SameSite=Strict for frequency tracking (no cross-site needs)
-		const sameSite = 'Strict';
+			// Add Secure flag when using HTTPS
+			const secure =
+				window.location.protocol === 'https:' ? ';Secure' : '';
 
-		// Add Secure flag when using HTTPS
-		const secure = window.location.protocol === 'https:' ? ';Secure' : '';
-
-		document.cookie = `${name}=${encodedValue};expires=${expires.toUTCString()};path=/;SameSite=${sameSite}${secure}`;
-	}
+			document.cookie = `${name}=${encodedValue};expires=${expires.toUTCString()};path=/;SameSite=${sameSite}${secure}`;
+		}
 
 		/**
 		 * Set up page load trigger
 		 */
 		setupPageLoadTrigger() {
 			// Convert seconds to milliseconds
-		const delay = this.settings.autoTriggerDelay * 1000;
+			const delay = this.settings.autoTriggerDelay * 1000;
 
 			this.pageLoadTimeout = setTimeout(() => {
 				if (!this.isOpen) {
@@ -534,7 +566,10 @@
 		 */
 		setupExitIntentTrigger() {
 			// Don't trigger on mobile if excluded
-			if (this.settings.exitIntentExcludeMobile && this.isMobileDevice()) {
+			if (
+				this.settings.exitIntentExcludeMobile &&
+				this.isMobileDevice()
+			) {
 				return;
 			}
 
@@ -548,7 +583,8 @@
 				medium: 50,
 				high: 20,
 			};
-			const threshold = sensitivityMap[this.settings.exitIntentSensitivity] || 50;
+			const threshold =
+				sensitivityMap[this.settings.exitIntentSensitivity] || 50;
 
 			this.handleExitIntent = (e) => {
 				// Check if enough time has passed
@@ -580,8 +616,10 @@
 					return;
 				}
 
-				const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-				const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+				const scrollTop =
+					window.pageYOffset || document.documentElement.scrollTop;
+				const scrollHeight =
+					document.documentElement.scrollHeight - window.innerHeight;
 				const scrollPercent = (scrollTop / scrollHeight) * 100;
 
 				// Check direction if needed
@@ -606,7 +644,9 @@
 			// Debounce scroll handler for better performance (100ms delay)
 			this.handleScroll = this.debounce(scrollHandler, 100);
 
-			window.addEventListener('scroll', this.handleScroll, { passive: true });
+			window.addEventListener('scroll', this.handleScroll, {
+				passive: true,
+			});
 		}
 
 		/**
@@ -636,7 +676,7 @@
 		 * Debounce utility for performance optimization
 		 *
 		 * @param {Function} func Function to debounce
-		 * @param {number} wait Wait time in milliseconds
+		 * @param {number}   wait Wait time in milliseconds
 		 * @return {Function} Debounced function
 		 */
 		debounce(func, wait) {
@@ -654,10 +694,10 @@
 		/**
 		 * Validate number attribute
 		 *
-		 * @param {*} value Value to validate
+		 * @param {*}      value        Value to validate
 		 * @param {number} defaultValue Default value if validation fails
-		 * @param {number} min Minimum value
-		 * @param {number} max Maximum value
+		 * @param {number} min          Minimum value
+		 * @param {number} max          Maximum value
 		 * @return {number} Validated number
 		 */
 		validateNumber(value, defaultValue, min = -Infinity, max = Infinity) {
@@ -671,8 +711,8 @@
 		/**
 		 * Validate enum attribute
 		 *
-		 * @param {*} value Value to validate
-		 * @param {Array} validValues Array of valid values
+		 * @param {*}      value        Value to validate
+		 * @param {Array}  validValues  Array of valid values
 		 * @param {string} defaultValue Default value if validation fails
 		 * @return {string} Validated enum value
 		 */
@@ -686,14 +726,20 @@
 		/**
 		 * Validate boolean attribute
 		 *
-		 * @param {*} value Value to validate
+		 * @param {*}       value        Value to validate
 		 * @param {boolean} defaultValue Default value if validation fails
 		 * @return {boolean} Validated boolean
 		 */
 		validateBoolean(value, defaultValue) {
-			if (value === 'true') return true;
-			if (value === 'false') return false;
-			if (value === true || value === false) return value;
+			if (value === 'true') {
+				return true;
+			}
+			if (value === 'false') {
+				return false;
+			}
+			if (value === true || value === false) {
+				return value;
+			}
 			return defaultValue;
 		}
 
@@ -701,7 +747,7 @@
 		 * Safe logging - only logs when debug mode is enabled
 		 *
 		 * @param {string} level Log level (warn, error, log)
-		 * @param {...*} args Arguments to log
+		 * @param {...*}   args  Arguments to log
 		 */
 		log(level, ...args) {
 			if (DEBUG_MODE && console[level]) {
@@ -719,7 +765,7 @@
 			// Set up keyboard navigation for gallery
 			if (this.settings.showGalleryNavigation) {
 				this.setupGalleryKeyboardNavigation();
-			this.setupSwipeGestures();
+				this.setupSwipeGestures();
 			}
 		}
 
@@ -742,14 +788,18 @@
 			}
 
 			const groupId = this.settings.galleryGroupId;
-			const allModals = document.querySelectorAll(`[data-gallery-group-id="${groupId}"]`);
+			const allModals = document.querySelectorAll(
+				`[data-gallery-group-id="${groupId}"]`
+			);
 
 			// Convert to array and sort by gallery index
 			this.galleryModals = Array.from(allModals)
 				.map((modalEl) => ({
 					element: modalEl,
 					instance: modalEl.dsgoModalInstance,
-					index: parseInt(modalEl.getAttribute('data-gallery-index')) || 0,
+					index:
+						parseInt(modalEl.getAttribute('data-gallery-index')) ||
+						0,
 					modalId: modalEl.getAttribute('data-modal-id'),
 				}))
 				.filter((item) => item.instance) // Only include initialized modals
@@ -777,9 +827,12 @@
 		 * Navigate to next modal in gallery
 		 */
 		navigateToNext() {
-			if (this.galleryModals.length === 0) return;
+			if (this.galleryModals.length === 0) {
+				return;
+			}
 
-			const nextIndex = (this.currentGalleryIndex + 1) % this.galleryModals.length;
+			const nextIndex =
+				(this.currentGalleryIndex + 1) % this.galleryModals.length;
 			this.navigateToModal(nextIndex);
 		}
 
@@ -787,7 +840,9 @@
 		 * Navigate to previous modal in gallery
 		 */
 		navigateToPrevious() {
-			if (this.galleryModals.length === 0) return;
+			if (this.galleryModals.length === 0) {
+				return;
+			}
 
 			const prevIndex =
 				(this.currentGalleryIndex - 1 + this.galleryModals.length) %
@@ -797,12 +852,17 @@
 
 		/**
 		 * Navigate to specific modal in gallery
+		 * @param targetIndex
 		 */
 		navigateToModal(targetIndex) {
-			if (targetIndex < 0 || targetIndex >= this.galleryModals.length) return;
+			if (targetIndex < 0 || targetIndex >= this.galleryModals.length) {
+				return;
+			}
 
 			const targetModal = this.galleryModals[targetIndex];
-			if (!targetModal || !targetModal.instance) return;
+			if (!targetModal || !targetModal.instance) {
+				return;
+			}
 
 			// Close current modal and open target modal
 			this.close();
@@ -818,7 +878,9 @@
 		 */
 		setupGalleryKeyboardNavigation() {
 			this.handleGalleryKeydown = (e) => {
-				if (!this.isOpen || this.galleryModals.length <= 1) return;
+				if (!this.isOpen || this.galleryModals.length <= 1) {
+					return;
+				}
 
 				// Left arrow - previous
 				if (e.key === 'ArrowLeft') {
@@ -836,70 +898,87 @@
 			document.addEventListener('keydown', this.handleGalleryKeydown);
 		}
 
-	/**
-	 * Set up swipe gestures for gallery navigation on touch devices
-	 */
-	setupSwipeGestures() {
-		if (!this.dialog || this.galleryModals.length <= 1) return;
-
-		let touchStartX = 0;
-		let touchStartY = 0;
-		let touchEndX = 0;
-		let touchEndY = 0;
-
-		// Minimum swipe distance in pixels
-		const minSwipeDistance = 50;
-
-		this.handleTouchStart = (e) => {
-			if (!this.isOpen) return;
-
-			touchStartX = e.changedTouches[0].screenX;
-			touchStartY = e.changedTouches[0].screenY;
-		};
-
-		this.handleTouchMove = (e) => {
-			if (!this.isOpen) return;
-
-			touchEndX = e.changedTouches[0].screenX;
-			touchEndY = e.changedTouches[0].screenY;
-		};
-
-		this.handleTouchEnd = () => {
-			if (!this.isOpen) return;
-
-			const swipeDistanceX = touchEndX - touchStartX;
-			const swipeDistanceY = touchEndY - touchStartY;
-
-			// Check if horizontal swipe distance is greater than vertical (to distinguish from scrolling)
-			if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
-				// Swipe left - next
-				if (swipeDistanceX < -minSwipeDistance) {
-					this.navigateToNext();
-				}
-				// Swipe right - previous
-				else if (swipeDistanceX > minSwipeDistance) {
-					this.navigateToPrevious();
-				}
+		/**
+		 * Set up swipe gestures for gallery navigation on touch devices
+		 */
+		setupSwipeGestures() {
+			if (!this.dialog || this.galleryModals.length <= 1) {
+				return;
 			}
 
-			// Reset values
-			touchStartX = 0;
-			touchStartY = 0;
-			touchEndX = 0;
-			touchEndY = 0;
-		};
+			let touchStartX = 0;
+			let touchStartY = 0;
+			let touchEndX = 0;
+			let touchEndY = 0;
 
-		// Add touch event listeners
-		this.dialog.addEventListener('touchstart', this.handleTouchStart, { passive: true });
-		this.dialog.addEventListener('touchmove', this.handleTouchMove, { passive: true });
-		this.dialog.addEventListener('touchend', this.handleTouchEnd, { passive: true });
-	}
+			// Minimum swipe distance in pixels
+			const minSwipeDistance = 50;
+
+			this.handleTouchStart = (e) => {
+				if (!this.isOpen) {
+					return;
+				}
+
+				touchStartX = e.changedTouches[0].screenX;
+				touchStartY = e.changedTouches[0].screenY;
+			};
+
+			this.handleTouchMove = (e) => {
+				if (!this.isOpen) {
+					return;
+				}
+
+				touchEndX = e.changedTouches[0].screenX;
+				touchEndY = e.changedTouches[0].screenY;
+			};
+
+			this.handleTouchEnd = () => {
+				if (!this.isOpen) {
+					return;
+				}
+
+				const swipeDistanceX = touchEndX - touchStartX;
+				const swipeDistanceY = touchEndY - touchStartY;
+
+				// Check if horizontal swipe distance is greater than vertical (to distinguish from scrolling)
+				if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
+					// Swipe left - next
+					if (swipeDistanceX < -minSwipeDistance) {
+						this.navigateToNext();
+					}
+					// Swipe right - previous
+					else if (swipeDistanceX > minSwipeDistance) {
+						this.navigateToPrevious();
+					}
+				}
+
+				// Reset values
+				touchStartX = 0;
+				touchStartY = 0;
+				touchEndX = 0;
+				touchEndY = 0;
+			};
+
+			// Add touch event listeners
+			this.dialog.addEventListener('touchstart', this.handleTouchStart, {
+				passive: true,
+			});
+			this.dialog.addEventListener('touchmove', this.handleTouchMove, {
+				passive: true,
+			});
+			this.dialog.addEventListener('touchend', this.handleTouchEnd, {
+				passive: true,
+			});
+		}
 
 		/**
 		 * Render navigation buttons in the modal
 		 */
 		renderNavigationButtons() {
-			if (!this.settings.showGalleryNavigation || this.galleryModals.length <= 1) {
+			if (
+				!this.settings.showGalleryNavigation ||
+				this.galleryModals.length <= 1
+			) {
 				return;
 			}
 
@@ -907,7 +986,9 @@
 			this.removeNavigationButtons();
 
 			const dialog = this.modal.querySelector('.dsgo-modal__dialog');
-			if (!dialog) return;
+			if (!dialog) {
+				return;
+			}
 
 			// Create navigation container
 			const navContainer = document.createElement('div');
@@ -950,6 +1031,7 @@
 
 		/**
 		 * Get navigation icon HTML based on style
+		 * @param direction
 		 */
 		getNavigationIcon(direction) {
 			const isNext = direction === 'next';
@@ -964,17 +1046,19 @@
 			} else if (this.settings.navigationStyle === 'text') {
 				// Text labels
 				return isNext ? 'Next' : 'Previous';
-			} else {
-				// Chevrons (default)
-				return isNext ? '›' : '‹';
 			}
+			// Chevrons (default)
+			return isNext ? '›' : '‹';
 		}
 
 		/**
 		 * Remove navigation buttons
 		 */
 		removeNavigationButtons() {
-			if (this.galleryNavContainer && this.galleryNavContainer.parentNode) {
+			if (
+				this.galleryNavContainer &&
+				this.galleryNavContainer.parentNode
+			) {
 				this.galleryNavContainer.remove();
 			}
 			this.galleryNavContainer = null;
@@ -1006,7 +1090,10 @@
 
 			// Move modal to body to avoid z-index stacking context issues
 			// Store original parent for potential cleanup
-			if (!this.originalParent && this.modal.parentElement !== document.body) {
+			if (
+				!this.originalParent &&
+				this.modal.parentElement !== document.body
+			) {
 				this.originalParent = this.modal.parentElement;
 				this.originalNextSibling = this.modal.nextSibling;
 				document.body.appendChild(this.modal);
@@ -1028,7 +1115,10 @@
 			this.modal.setAttribute('aria-hidden', 'false');
 
 			// Trigger opening animation
-			if (!this.prefersReducedMotion && this.settings.animationType !== 'none') {
+			if (
+				!this.prefersReducedMotion &&
+				this.settings.animationType !== 'none'
+			) {
 				this.modal.classList.add('dsgo-modal--opening');
 
 				// Force reflow to trigger animation
@@ -1122,7 +1212,10 @@
 			}
 
 			// Trigger closing animation
-			if (!this.prefersReducedMotion && this.settings.animationType !== 'none') {
+			if (
+				!this.prefersReducedMotion &&
+				this.settings.animationType !== 'none'
+			) {
 				this.modal.classList.remove('dsgo-modal--open');
 				this.modal.classList.add('dsgo-modal--closing');
 
@@ -1145,7 +1238,10 @@
 			this.isOpen = false;
 
 			// Clear URL hash if we set it on open
-			if (this.settings.updateUrlOnOpen && window.location.hash === `#${this.modalId}`) {
+			if (
+				this.settings.updateUrlOnOpen &&
+				window.location.hash === `#${this.modalId}`
+			) {
 				this.isUpdatingHash = true;
 				history.replaceState(null, null, ' ');
 				// Reset flag after a short delay
@@ -1189,7 +1285,10 @@
 			}
 
 			// Return focus to trigger element
-			if (this.previouslyFocusedElement && this.previouslyFocusedElement.focus) {
+			if (
+				this.previouslyFocusedElement &&
+				this.previouslyFocusedElement.focus
+			) {
 				this.previouslyFocusedElement.focus();
 			}
 
@@ -1201,10 +1300,12 @@
 		 */
 		disableBodyScroll() {
 			// Store current scroll position
-			this.scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+			this.scrollPosition =
+				window.pageYOffset || document.documentElement.scrollTop;
 
 			// Calculate scrollbar width to prevent layout shift
-			const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+			const scrollbarWidth =
+				window.innerWidth - document.documentElement.clientWidth;
 
 			// Add class to body
 			document.body.classList.add('dsgo-modal-open');
@@ -1235,10 +1336,16 @@
 		destroy() {
 			// Remove event listeners
 			if (this.closeButton && this.handleCloseClick) {
-				this.closeButton.removeEventListener('click', this.handleCloseClick);
+				this.closeButton.removeEventListener(
+					'click',
+					this.handleCloseClick
+				);
 			}
 			if (this.backdrop && this.handleBackdropClick) {
-				this.backdrop.removeEventListener('click', this.handleBackdropClick);
+				this.backdrop.removeEventListener(
+					'click',
+					this.handleBackdropClick
+				);
 			}
 			if (this.handleHashChange) {
 				window.removeEventListener('hashchange', this.handleHashChange);
@@ -1250,17 +1357,29 @@
 				window.removeEventListener('scroll', this.handleScroll);
 			}
 			if (this.handleGalleryKeydown) {
-				document.removeEventListener('keydown', this.handleGalleryKeydown);
+				document.removeEventListener(
+					'keydown',
+					this.handleGalleryKeydown
+				);
 			}
-		if (this.handleTouchStart && this.dialog) {
-			this.dialog.removeEventListener('touchstart', this.handleTouchStart);
-		}
-		if (this.handleTouchMove && this.dialog) {
-			this.dialog.removeEventListener('touchmove', this.handleTouchMove);
-		}
-		if (this.handleTouchEnd && this.dialog) {
-			this.dialog.removeEventListener('touchend', this.handleTouchEnd);
-		}
+			if (this.handleTouchStart && this.dialog) {
+				this.dialog.removeEventListener(
+					'touchstart',
+					this.handleTouchStart
+				);
+			}
+			if (this.handleTouchMove && this.dialog) {
+				this.dialog.removeEventListener(
+					'touchmove',
+					this.handleTouchMove
+				);
+			}
+			if (this.handleTouchEnd && this.dialog) {
+				this.dialog.removeEventListener(
+					'touchend',
+					this.handleTouchEnd
+				);
+			}
 
 			// Remove gallery navigation buttons
 			this.removeNavigationButtons();
@@ -1289,9 +1408,15 @@
 			}
 
 			// Restore modal to original parent if it was moved
-			if (this.originalParent && this.modal.parentElement === document.body) {
+			if (
+				this.originalParent &&
+				this.modal.parentElement === document.body
+			) {
 				if (this.originalNextSibling) {
-					this.originalParent.insertBefore(this.modal, this.originalNextSibling);
+					this.originalParent.insertBefore(
+						this.modal,
+						this.originalNextSibling
+					);
 				} else {
 					this.originalParent.appendChild(this.modal);
 				}
@@ -1311,7 +1436,9 @@
 	 * Initialize all modals on the page
 	 */
 	function initModals() {
-		const modals = document.querySelectorAll('[data-dsgo-modal]:not([data-dsgo-initialized])');
+		const modals = document.querySelectorAll(
+			'[data-dsgo-modal]:not([data-dsgo-initialized])'
+		);
 
 		modals.forEach((modal) => {
 			const instance = new DSGModal(modal);
@@ -1325,7 +1452,9 @@
 	 * Initialize modal triggers
 	 */
 	function initTriggers() {
-		const triggers = document.querySelectorAll('[data-dsgo-modal-trigger]:not([data-dsgo-trigger-initialized])');
+		const triggers = document.querySelectorAll(
+			'[data-dsgo-modal-trigger]:not([data-dsgo-trigger-initialized])'
+		);
 
 		triggers.forEach((trigger) => {
 			const modalId = trigger.getAttribute('data-dsgo-modal-trigger');
@@ -1350,7 +1479,9 @@
 	 * Initialize modal close triggers
 	 */
 	function initCloseTriggers() {
-		const closeTriggers = document.querySelectorAll('[data-dsgo-modal-close]:not([data-dsgo-close-trigger-initialized])');
+		const closeTriggers = document.querySelectorAll(
+			'[data-dsgo-modal-close]:not([data-dsgo-close-trigger-initialized])'
+		);
 
 		closeTriggers.forEach((trigger) => {
 			const modalId = trigger.getAttribute('data-dsgo-modal-close');
@@ -1420,8 +1551,8 @@
 		/**
 		 * Open a modal by ID
 		 *
-		 * @param {string} modalId Modal ID to open
-		 * @param {Object} options Optional configuration
+		 * @param {string}      modalId         Modal ID to open
+		 * @param {Object}      options         Optional configuration
 		 * @param {HTMLElement} options.trigger Element that triggered the modal
 		 * @return {boolean} Success status
 		 */
@@ -1429,7 +1560,9 @@
 			const modalElement = document.getElementById(modalId);
 			if (!modalElement || !modalElement.dsgoModalInstance) {
 				if (DEBUG_MODE) {
-					console.warn(`[DSGModal] Modal with ID "${modalId}" not found`);
+					console.warn(
+						`[DSGModal] Modal with ID "${modalId}" not found`
+					);
 				}
 				return false;
 			}
@@ -1452,7 +1585,9 @@
 			const modalElement = document.getElementById(modalId);
 			if (!modalElement || !modalElement.dsgoModalInstance) {
 				if (DEBUG_MODE) {
-					console.warn(`[DSGModal] Modal with ID "${modalId}" not found`);
+					console.warn(
+						`[DSGModal] Modal with ID "${modalId}" not found`
+					);
 				}
 				return false;
 			}
@@ -1467,7 +1602,9 @@
 		 * @return {number} Number of modals closed
 		 */
 		closeAll() {
-			const openModals = document.querySelectorAll('[data-dsgo-modal].is-open');
+			const openModals = document.querySelectorAll(
+				'[data-dsgo-modal].is-open'
+			);
 			let count = 0;
 
 			openModals.forEach((modal) => {
@@ -1532,7 +1669,7 @@
 		/**
 		 * Register event listener
 		 *
-		 * @param {string} event Event name (modalOpen, modalClose, modalBeforeOpen, modalBeforeClose)
+		 * @param {string}   event    Event name (modalOpen, modalClose, modalBeforeOpen, modalBeforeClose)
 		 * @param {Function} callback Callback function
 		 * @return {Function} Unsubscribe function
 		 */
@@ -1560,7 +1697,7 @@
 		/**
 		 * Remove event listener
 		 *
-		 * @param {string} event Event name
+		 * @param {string}   event    Event name
 		 * @param {Function} callback Callback function to remove
 		 * @return {boolean} Success status
 		 */
@@ -1582,7 +1719,7 @@
 		 * Trigger custom event
 		 *
 		 * @param {string} event Event name
-		 * @param {Object} data Event data
+		 * @param {Object} data  Event data
 		 */
 		trigger(event, data) {
 			if (!eventListeners[event]) {
@@ -1594,7 +1731,10 @@
 					callback(data);
 				} catch (error) {
 					if (DEBUG_MODE) {
-						console.error(`[DSGModal] Error in ${event} callback:`, error);
+						console.error(
+							`[DSGModal] Error in ${event} callback:`,
+							error
+						);
 					}
 				}
 			});

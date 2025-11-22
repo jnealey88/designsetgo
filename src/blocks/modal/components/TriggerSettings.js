@@ -1,7 +1,7 @@
 /**
  * Auto-Trigger Settings Panel Component
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -28,15 +28,27 @@ export default function TriggerSettings({ attributes, setAttributes }) {
 	} = attributes;
 
 	return (
-		<PanelBody title={__('Auto Trigger', 'designsetgo')} initialOpen={false}>
+		<PanelBody
+			title={__('Auto Trigger', 'designsetgo')}
+			initialOpen={false}
+		>
 			<SelectControl
 				label={__('Trigger Type', 'designsetgo')}
 				value={autoTriggerType}
 				options={[
 					{ label: __('None', 'designsetgo'), value: 'none' },
-					{ label: __('Page Load', 'designsetgo'), value: 'pageLoad' },
-					{ label: __('Exit Intent', 'designsetgo'), value: 'exitIntent' },
-					{ label: __('Scroll Depth', 'designsetgo'), value: 'scroll' },
+					{
+						label: __('Page Load', 'designsetgo'),
+						value: 'pageLoad',
+					},
+					{
+						label: __('Exit Intent', 'designsetgo'),
+						value: 'exitIntent',
+					},
+					{
+						label: __('Scroll Depth', 'designsetgo'),
+						value: 'scroll',
+					},
 					{ label: __('Time on Page', 'designsetgo'), value: 'time' },
 				]}
 				onChange={(value) => setAttributes({ autoTriggerType: value })}
@@ -61,12 +73,18 @@ export default function TriggerSettings({ attributes, setAttributes }) {
 						label={__('Frequency', 'designsetgo')}
 						value={autoTriggerFrequency}
 						options={[
-							{ label: __('Every Visit', 'designsetgo'), value: 'always' },
+							{
+								label: __('Every Visit', 'designsetgo'),
+								value: 'always',
+							},
 							{
 								label: __('Once per Session', 'designsetgo'),
 								value: 'session',
 							},
-							{ label: __('Once per User', 'designsetgo'), value: 'once' },
+							{
+								label: __('Once per User', 'designsetgo'),
+								value: 'once',
+							},
 						]}
 						onChange={(value) =>
 							setAttributes({ autoTriggerFrequency: value })
@@ -83,7 +101,9 @@ export default function TriggerSettings({ attributes, setAttributes }) {
 						<RangeControl
 							label={__('Cookie Duration (days)', 'designsetgo')}
 							value={cookieDuration}
-							onChange={(value) => setAttributes({ cookieDuration: value })}
+							onChange={(value) =>
+								setAttributes({ cookieDuration: value })
+							}
 							min={1}
 							max={365}
 							help={__(
@@ -120,12 +140,23 @@ export default function TriggerSettings({ attributes, setAttributes }) {
 								label={__('Sensitivity', 'designsetgo')}
 								value={exitIntentSensitivity}
 								options={[
-									{ label: __('Low', 'designsetgo'), value: 'low' },
-									{ label: __('Medium', 'designsetgo'), value: 'medium' },
-									{ label: __('High', 'designsetgo'), value: 'high' },
+									{
+										label: __('Low', 'designsetgo'),
+										value: 'low',
+									},
+									{
+										label: __('Medium', 'designsetgo'),
+										value: 'medium',
+									},
+									{
+										label: __('High', 'designsetgo'),
+										value: 'high',
+									},
 								]}
 								onChange={(value) =>
-									setAttributes({ exitIntentSensitivity: value })
+									setAttributes({
+										exitIntentSensitivity: value,
+									})
 								}
 								help={__(
 									'How close to the top edge triggers exit intent.',
@@ -136,7 +167,10 @@ export default function TriggerSettings({ attributes, setAttributes }) {
 							/>
 
 							<RangeControl
-								label={__('Minimum Time (seconds)', 'designsetgo')}
+								label={__(
+									'Minimum Time (seconds)',
+									'designsetgo'
+								)}
 								value={exitIntentMinTime}
 								onChange={(value) =>
 									setAttributes({ exitIntentMinTime: value })
@@ -152,10 +186,15 @@ export default function TriggerSettings({ attributes, setAttributes }) {
 							/>
 
 							<ToggleControl
-								label={__('Exclude Mobile Devices', 'designsetgo')}
+								label={__(
+									'Exclude Mobile Devices',
+									'designsetgo'
+								)}
 								checked={exitIntentExcludeMobile}
 								onChange={(value) =>
-									setAttributes({ exitIntentExcludeMobile: value })
+									setAttributes({
+										exitIntentExcludeMobile: value,
+									})
 								}
 								help={__(
 									"Don't trigger exit intent on mobile devices.",
@@ -171,7 +210,9 @@ export default function TriggerSettings({ attributes, setAttributes }) {
 							<RangeControl
 								label={__('Scroll Depth (%)', 'designsetgo')}
 								value={scrollDepth}
-								onChange={(value) => setAttributes({ scrollDepth: value })}
+								onChange={(value) =>
+									setAttributes({ scrollDepth: value })
+								}
 								min={0}
 								max={100}
 								help={__(
@@ -212,7 +253,9 @@ export default function TriggerSettings({ attributes, setAttributes }) {
 						<RangeControl
 							label={__('Time on Page (seconds)', 'designsetgo')}
 							value={timeOnPage}
-							onChange={(value) => setAttributes({ timeOnPage: value })}
+							onChange={(value) =>
+								setAttributes({ timeOnPage: value })
+							}
 							min={0}
 							max={300}
 							help={__(

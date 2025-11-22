@@ -128,7 +128,9 @@
 .dsgo-modal {
 	// Fade Animation
 	&--animation-fade {
+
 		&.dsgo-modal--opening {
+
 			.dsgo-modal__backdrop {
 				opacity: 0;
 			}
@@ -139,6 +141,7 @@
 		}
 
 		&.dsgo-modal--open {
+
 			.dsgo-modal__backdrop,
 			.dsgo-modal__dialog {
 				opacity: 1;
@@ -146,6 +149,7 @@
 		}
 
 		&.dsgo-modal--closing {
+
 			.dsgo-modal__backdrop,
 			.dsgo-modal__dialog {
 				opacity: 0;
@@ -155,7 +159,9 @@
 
 	// Slide Up Animation
 	&--animation-slide-up {
+
 		&.dsgo-modal--opening {
+
 			.dsgo-modal__backdrop {
 				opacity: 0;
 			}
@@ -167,6 +173,7 @@
 		}
 
 		&.dsgo-modal--open {
+
 			.dsgo-modal__backdrop {
 				opacity: 1;
 			}
@@ -178,6 +185,7 @@
 		}
 
 		&.dsgo-modal--closing {
+
 			.dsgo-modal__backdrop {
 				opacity: 0;
 			}
@@ -191,7 +199,9 @@
 
 	// Slide Down Animation
 	&--animation-slide-down {
+
 		&.dsgo-modal--opening {
+
 			.dsgo-modal__backdrop {
 				opacity: 0;
 			}
@@ -203,6 +213,7 @@
 		}
 
 		&.dsgo-modal--open {
+
 			.dsgo-modal__backdrop {
 				opacity: 1;
 			}
@@ -214,6 +225,7 @@
 		}
 
 		&.dsgo-modal--closing {
+
 			.dsgo-modal__backdrop {
 				opacity: 0;
 			}
@@ -227,7 +239,9 @@
 
 	// Zoom Animation
 	&--animation-zoom {
+
 		&.dsgo-modal--opening {
+
 			.dsgo-modal__backdrop {
 				opacity: 0;
 			}
@@ -239,6 +253,7 @@
 		}
 
 		&.dsgo-modal--open {
+
 			.dsgo-modal__backdrop {
 				opacity: 1;
 			}
@@ -250,6 +265,7 @@
 		}
 
 		&.dsgo-modal--closing {
+
 			.dsgo-modal__backdrop {
 				opacity: 0;
 			}
@@ -263,6 +279,7 @@
 
 	// No Animation
 	&--animation-none {
+
 		.dsgo-modal__backdrop,
 		.dsgo-modal__dialog {
 			transition: none !important;
@@ -279,7 +296,9 @@ body.dsgo-modal-open {
 
 // Reduced Motion Support
 @media (prefers-reduced-motion: reduce) {
+
 	.dsgo-modal {
+
 		.dsgo-modal__backdrop,
 		.dsgo-modal__dialog {
 			transition: none !important;
@@ -300,7 +319,9 @@ body.dsgo-modal-open {
 
 // Responsive Adjustments
 @media (max-width: 768px) {
+
 	.dsgo-modal {
+
 		&__dialog {
 			margin: 12px;
 			align-items: center; // Center vertically on tablets
@@ -331,7 +352,9 @@ body.dsgo-modal-open {
 }
 
 @media (max-width: 480px) {
+
 	.dsgo-modal {
+
 		&__dialog {
 			margin: 8px;
 			padding-top: 20px;
@@ -346,9 +369,11 @@ body.dsgo-modal-open {
 
 // High Contrast Mode Support
 @media (prefers-contrast: high) {
+
 	.dsgo-modal {
+
 		&__close {
-			outline: 2px solid currentColor;
+			outline: 2px solid currentcolor;
 			outline-offset: 2px;
 		}
 	}
@@ -445,6 +470,7 @@ body.dsgo-modal-open {
 
 // Responsive adjustments for gallery navigation
 @media (max-width: 768px) {
+
 	.dsgo-modal__gallery-prev,
 	.dsgo-modal__gallery-next {
 		width: 40px;
@@ -457,6 +483,7 @@ body.dsgo-modal-open {
 	}
 
 	.dsgo-modal__gallery-nav {
+
 		&--bottom,
 		&--top {
 			gap: 8px;
@@ -465,6 +492,7 @@ body.dsgo-modal-open {
 }
 
 @media (max-width: 480px) {
+
 	.dsgo-modal__gallery-prev,
 	.dsgo-modal__gallery-next {
 		width: 36px;

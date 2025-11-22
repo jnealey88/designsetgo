@@ -1,7 +1,7 @@
 /**
  * Close Button Settings Panel Component
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';

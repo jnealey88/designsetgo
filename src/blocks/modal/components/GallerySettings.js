@@ -1,20 +1,34 @@
 /**
  * Gallery Settings Panel Component
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
-import { PanelBody, TextControl, RangeControl, ToggleControl, SelectControl } from '@wordpress/components';
+import {
+	PanelBody,
+	TextControl,
+	RangeControl,
+	ToggleControl,
+	SelectControl,
+} from '@wordpress/components';
 
 export default function GallerySettings({ attributes, setAttributes }) {
-	const { galleryGroupId, galleryIndex, showGalleryNavigation, navigationStyle, navigationPosition } =
-		attributes;
+	const {
+		galleryGroupId,
+		galleryIndex,
+		showGalleryNavigation,
+		navigationStyle,
+		navigationPosition,
+	} = attributes;
 
 	const isGalleryEnabled = !!galleryGroupId;
 
 	return (
-		<PanelBody title={__('Gallery Navigation', 'designsetgo')} initialOpen={false}>
+		<PanelBody
+			title={__('Gallery Navigation', 'designsetgo')}
+			initialOpen={false}
+		>
 			<TextControl
 				label={__('Gallery Group ID', 'designsetgo')}
 				value={galleryGroupId}
@@ -33,7 +47,9 @@ export default function GallerySettings({ attributes, setAttributes }) {
 					<RangeControl
 						label={__('Gallery Index', 'designsetgo')}
 						value={galleryIndex}
-						onChange={(value) => setAttributes({ galleryIndex: value })}
+						onChange={(value) =>
+							setAttributes({ galleryIndex: value })
+						}
 						min={0}
 						max={50}
 						help={__(
@@ -63,9 +79,18 @@ export default function GallerySettings({ attributes, setAttributes }) {
 								label={__('Navigation Style', 'designsetgo')}
 								value={navigationStyle}
 								options={[
-									{ label: __('Arrows', 'designsetgo'), value: 'arrows' },
-									{ label: __('Chevrons', 'designsetgo'), value: 'chevrons' },
-									{ label: __('Text', 'designsetgo'), value: 'text' },
+									{
+										label: __('Arrows', 'designsetgo'),
+										value: 'arrows',
+									},
+									{
+										label: __('Chevrons', 'designsetgo'),
+										value: 'chevrons',
+									},
+									{
+										label: __('Text', 'designsetgo'),
+										value: 'text',
+									},
 								]}
 								onChange={(value) =>
 									setAttributes({ navigationStyle: value })

@@ -34,7 +34,9 @@ Quick reference for all slash commands in the DesignSetGo WordPress plugin proje
 |---------|-------------|-------------|
 | `/plugin-review` | Comprehensive plugin audit | Before major release |
 | `/security-audit` | Security-focused audit | Before any release |
+| `/performance-audit` | Deep performance and optimization audit | Before releases, performance issues |
 | `/check-compat` | WordPress/Gutenberg compatibility | Before releases, quarterly |
+| `/review-pr` | Review pull request for plugin standards | Before merging PRs |
 
 ## Deployment & Internationalization
 
@@ -412,6 +414,42 @@ Check compatibility with WordPress and Gutenberg versions.
 
 ---
 
+#### `/review-pr`
+
+Review pull request against DesignSetGo plugin standards.
+
+**Checks:**
+- Code standards (indentation, prefixes, file size)
+- Common pitfalls from CLAUDE.md
+- WordPress best practices
+- Security vulnerabilities
+- Accessibility compliance
+- Performance issues
+- Testing requirements
+- Documentation updates
+
+**Process:**
+1. Fetches PR details via gh CLI
+2. Reads all changed files
+3. Reviews against plugin standards
+4. Checks WordPress best practices
+5. Verifies testing checklist
+6. Provides actionable feedback
+
+**Output:**
+- Structured PR review
+- Priority-sorted issues (Critical/Important/Suggestions)
+- Specific code fixes with file references
+- Standards compliance checklist
+- Testing checklist for author
+
+**Use before:**
+- Merging any PR
+- Deploying changes
+- After significant refactoring
+
+---
+
 ### Deployment Commands
 
 #### `/deploy`
@@ -566,6 +604,6 @@ When adding new commands:
 
 ---
 
-**Last Updated:** 2025-11-08
+**Last Updated:** 2025-11-20
 **Plugin Version:** 1.0.0
-**Total Commands:** 17
+**Total Commands:** 18

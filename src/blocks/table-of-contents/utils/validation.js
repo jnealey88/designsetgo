@@ -9,22 +9,22 @@
  * @return {string[]} Array of valid heading levels
  */
 export function parseHeadingLevels(levelsString) {
-    const VALID_LEVELS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-    const DEFAULT_LEVELS = ['h2', 'h3'];
+	const VALID_LEVELS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+	const DEFAULT_LEVELS = ['h2', 'h3'];
 
-    if (!levelsString) {
-        return DEFAULT_LEVELS;
-    }
+	if (!levelsString) {
+		return DEFAULT_LEVELS;
+	}
 
-    const rawLevels = levelsString
-        .split(',')
-        .map((level) => level.trim().toLowerCase());
-    const validLevels = rawLevels.filter((level) =>
-        VALID_LEVELS.includes(level)
-    );
+	const rawLevels = levelsString
+		.split(',')
+		.map((level) => level.trim().toLowerCase());
+	const validLevels = rawLevels.filter((level) =>
+		VALID_LEVELS.includes(level)
+	);
 
-    // If no valid levels found, return defaults
-    return validLevels.length > 0 ? validLevels : DEFAULT_LEVELS;
+	// If no valid levels found, return defaults
+	return validLevels.length > 0 ? validLevels : DEFAULT_LEVELS;
 }
 
 /**
@@ -34,14 +34,14 @@ export function parseHeadingLevels(levelsString) {
  * @return {string} Valid display mode
  */
 export function parseDisplayMode(mode) {
-    const VALID_MODES = ['hierarchical', 'flat'];
-    const DEFAULT_MODE = 'hierarchical';
+	const VALID_MODES = ['hierarchical', 'flat'];
+	const DEFAULT_MODE = 'hierarchical';
 
-    if (!mode || !VALID_MODES.includes(mode.toLowerCase())) {
-        return DEFAULT_MODE;
-    }
+	if (!mode || !VALID_MODES.includes(mode.toLowerCase())) {
+		return DEFAULT_MODE;
+	}
 
-    return mode.toLowerCase();
+	return mode.toLowerCase();
 }
 
 /**
@@ -51,18 +51,18 @@ export function parseDisplayMode(mode) {
  * @return {number} Valid scroll offset (0-500px)
  */
 export function parseScrollOffset(offsetString) {
-    const DEFAULT_OFFSET = 0;
-    const MIN_OFFSET = 0;
-    const MAX_OFFSET = 500;
+	const DEFAULT_OFFSET = 0;
+	const MIN_OFFSET = 0;
+	const MAX_OFFSET = 500;
 
-    const offset = parseInt(offsetString, 10);
+	const offset = parseInt(offsetString, 10);
 
-    if (isNaN(offset)) {
-        return DEFAULT_OFFSET;
-    }
+	if (isNaN(offset)) {
+		return DEFAULT_OFFSET;
+	}
 
-    // Clamp offset to valid range
-    return Math.max(MIN_OFFSET, Math.min(MAX_OFFSET, offset));
+	// Clamp offset to valid range
+	return Math.max(MIN_OFFSET, Math.min(MAX_OFFSET, offset));
 }
 
 /**
@@ -73,13 +73,13 @@ export function parseScrollOffset(offsetString) {
  * @return {number} Adjusted scroll offset for current viewport
  */
 export function getResponsiveScrollOffset(baseOffset) {
-    const MOBILE_BREAKPOINT = 782; // WordPress admin bar breakpoint
-    const MOBILE_OFFSET = 60;
+	const MOBILE_BREAKPOINT = 782; // WordPress admin bar breakpoint
+	const MOBILE_OFFSET = 60;
 
-    // Use mobile offset on small screens, desktop offset otherwise
-    if (window.innerWidth < MOBILE_BREAKPOINT) {
-        return MOBILE_OFFSET;
-    }
+	// Use mobile offset on small screens, desktop offset otherwise
+	if (window.innerWidth < MOBILE_BREAKPOINT) {
+		return MOBILE_OFFSET;
+	}
 
-    return baseOffset;
+	return baseOffset;
 }

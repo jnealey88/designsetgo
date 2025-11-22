@@ -8,10 +8,10 @@
 
 import { __ } from '@wordpress/i18n';
 import {
-    parseHeadingLevels,
-    parseDisplayMode,
-    parseScrollOffset,
-    getResponsiveScrollOffset,
+	parseHeadingLevels,
+	parseDisplayMode,
+	parseScrollOffset,
+	getResponsiveScrollOffset,
 } from './utils/validation';
 import { generatePrettyId } from './utils/id-generator';
 import { buildHierarchy } from './utils/hierarchy';
@@ -39,9 +39,7 @@ class DSGTableOfContents {
 		this.uniqueId = element.dataset.uniqueId || '';
 
 		// Validate and parse heading levels
-		this.headingLevels = parseHeadingLevels(
-			element.dataset.headingLevels
-		);
+		this.headingLevels = parseHeadingLevels(element.dataset.headingLevels);
 
 		// Validate display mode
 		this.displayMode = parseDisplayMode(element.dataset.displayMode);
@@ -312,9 +310,7 @@ class DSGTableOfContents {
 
 		// Easing function (ease-in-out cubic)
 		const easeInOutCubic = (t) => {
-			return t < 0.5
-				? 4 * t * t * t
-				: 1 - Math.pow(-2 * t + 2, 3) / 2;
+			return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 		};
 
 		const animation = (currentTime) => {
@@ -365,7 +361,7 @@ class DSGTableOfContents {
 						// (but not during initial hash navigation to prevent override)
 						if (
 							!this.isInitialHashNavigation &&
-						!this.isManualNavigation &&
+							!this.isManualNavigation &&
 							window.history.replaceState
 						) {
 							window.history.replaceState(
@@ -442,9 +438,8 @@ class DSGTableOfContents {
 				if (link) {
 					// Skip updates during manual navigation or initial hash navigation
 					if (!this.isManualNavigation) {
-											this.updateActiveLink(link);
+						this.updateActiveLink(link);
 					}
-
 				}
 
 				// Re-enable URL updates after scroll animation completes

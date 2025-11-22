@@ -3,7 +3,7 @@
  *
  * Pre-configured modal patterns for common use cases.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -12,7 +12,10 @@ const variations = [
 	{
 		name: 'newsletter',
 		title: __('Newsletter Signup', 'designsetgo'),
-		description: __('Modal optimized for newsletter signup forms with exit intent trigger.', 'designsetgo'),
+		description: __(
+			'Modal optimized for newsletter signup forms with exit intent trigger.',
+			'designsetgo'
+		),
 		icon: 'email',
 		attributes: {
 			width: '500px',
@@ -77,7 +80,10 @@ const variations = [
 	{
 		name: 'video',
 		title: __('Video Player', 'designsetgo'),
-		description: __('Modal optimized for video content with 16:9 aspect ratio.', 'designsetgo'),
+		description: __(
+			'Modal optimized for video content with 16:9 aspect ratio.',
+			'designsetgo'
+		),
 		icon: 'video-alt3',
 		attributes: {
 			width: '800px',
@@ -106,7 +112,10 @@ const variations = [
 	{
 		name: 'lightbox',
 		title: __('Image Lightbox', 'designsetgo'),
-		description: __('Full-screen modal for displaying images with minimal chrome.', 'designsetgo'),
+		description: __(
+			'Full-screen modal for displaying images with minimal chrome.',
+			'designsetgo'
+		),
 		icon: 'format-image',
 		attributes: {
 			width: 'auto',
@@ -135,7 +144,7 @@ const variations = [
 			[
 				'core/paragraph',
 				{
-					content: __('Image caption goes here...', 'designsetgo'),
+					content: __('Image caption goes here…', 'designsetgo'),
 					align: 'center',
 					fontSize: 'small',
 				},
@@ -146,7 +155,10 @@ const variations = [
 	{
 		name: 'announcement',
 		title: __('Announcement / Promo', 'designsetgo'),
-		description: __('Eye-catching modal for announcements and promotional content.', 'designsetgo'),
+		description: __(
+			'Eye-catching modal for announcements and promotional content.',
+			'designsetgo'
+		),
 		icon: 'megaphone',
 		attributes: {
 			width: '600px',
@@ -200,7 +212,10 @@ const variations = [
 	{
 		name: 'cookie-notice',
 		title: __('Cookie Notice', 'designsetgo'),
-		description: __('Modal for cookie consent and privacy notices.', 'designsetgo'),
+		description: __(
+			'Modal for cookie consent and privacy notices.',
+			'designsetgo'
+		),
 		icon: 'shield',
 		attributes: {
 			width: '500px',
@@ -267,7 +282,10 @@ const variations = [
 	{
 		name: 'gallery-image',
 		title: __('Image Gallery Item', 'designsetgo'),
-		description: __('Modal optimized for image galleries with navigation controls.', 'designsetgo'),
+		description: __(
+			'Modal optimized for image galleries with navigation controls.',
+			'designsetgo'
+		),
 		icon: 'images-alt2',
 		attributes: {
 			width: 'auto',
@@ -301,7 +319,10 @@ const variations = [
 			[
 				'core/paragraph',
 				{
-					content: __('Add image caption or description...', 'designsetgo'),
+					content: __(
+						'Add image caption or description…',
+						'designsetgo'
+					),
 					align: 'center',
 					style: {
 						color: {
@@ -316,7 +337,10 @@ const variations = [
 	{
 		name: 'gallery-product',
 		title: __('Product Gallery', 'designsetgo'),
-		description: __('Modal for product image galleries with details.', 'designsetgo'),
+		description: __(
+			'Modal for product image galleries with details.',
+			'designsetgo'
+		),
 		icon: 'cart',
 		attributes: {
 			width: '900px',
@@ -374,7 +398,7 @@ const variations = [
 								'core/paragraph',
 								{
 									content: __(
-										'Product description and details go here...',
+										'Product description and details go here…',
 										'designsetgo'
 									),
 								},
@@ -386,7 +410,10 @@ const variations = [
 									[
 										'core/button',
 										{
-											text: __('View Product', 'designsetgo'),
+											text: __(
+												'View Product',
+												'designsetgo'
+											),
 										},
 									],
 								],
@@ -401,7 +428,10 @@ const variations = [
 	{
 		name: 'gallery-portfolio',
 		title: __('Portfolio Item', 'designsetgo'),
-		description: __('Modal for portfolio galleries with project details.', 'designsetgo'),
+		description: __(
+			'Modal for portfolio galleries with project details.',
+			'designsetgo'
+		),
 		icon: 'portfolio',
 		attributes: {
 			width: '1000px',
@@ -443,7 +473,7 @@ const variations = [
 				'core/paragraph',
 				{
 					content: __(
-						'Project description, technologies used, and key highlights...',
+						'Project description, technologies used, and key highlights…',
 						'designsetgo'
 					),
 					align: 'center',
@@ -476,7 +506,10 @@ const variations = [
 	{
 		name: 'gallery-team',
 		title: __('Team Member Gallery', 'designsetgo'),
-		description: __('Modal for team member galleries with bio and contact info.', 'designsetgo'),
+		description: __(
+			'Modal for team member galleries with bio and contact info.',
+			'designsetgo'
+		),
 		icon: 'groups',
 		attributes: {
 			width: '700px',
@@ -528,7 +561,10 @@ const variations = [
 								'core/heading',
 								{
 									level: 3,
-									content: __('Team Member Name', 'designsetgo'),
+									content: __(
+										'Team Member Name',
+										'designsetgo'
+									),
 								},
 							],
 							[
@@ -549,7 +585,7 @@ const variations = [
 								'core/paragraph',
 								{
 									content: __(
-										'Brief bio and background information about the team member...',
+										'Brief bio and background information about the team member…',
 										'designsetgo'
 									),
 								},

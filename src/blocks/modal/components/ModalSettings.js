@@ -1,7 +1,7 @@
 /**
  * Modal Settings Panel Component
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -36,8 +36,8 @@ export default function ModalSettings({ attributes, setAttributes }) {
 					const finalId = sanitized.startsWith('dsgo-modal-')
 						? sanitized
 						: sanitized
-						? `dsgo-modal-${sanitized}`
-						: 'dsgo-modal-';
+							? `dsgo-modal-${sanitized}`
+							: 'dsgo-modal-';
 
 					setAttributes({ modalId: finalId });
 				}}

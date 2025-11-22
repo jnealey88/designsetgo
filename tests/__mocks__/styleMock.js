@@ -3,7 +3,7 @@
  *
  * Mocks CSS/SCSS imports.
  *
- * @package DesignSetGo
+ * @package
  */
 
 module.exports = {};

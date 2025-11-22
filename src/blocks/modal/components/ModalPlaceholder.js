@@ -3,7 +3,7 @@
  *
  * Displays template chooser when modal is first inserted.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -24,7 +24,9 @@ export default function ModalPlaceholder({ clientId, setAttributes }) {
 
 		// Insert template inner blocks
 		if (template.innerBlocks && template.innerBlocks.length > 0) {
-			const blocks = createBlocksFromInnerBlocksTemplate(template.innerBlocks);
+			const blocks = createBlocksFromInnerBlocksTemplate(
+				template.innerBlocks
+			);
 			replaceInnerBlocks(clientId, blocks, false);
 		}
 	};
@@ -33,7 +35,10 @@ export default function ModalPlaceholder({ clientId, setAttributes }) {
 		<Placeholder
 			icon="feedback"
 			label={__('Modal', 'designsetgo')}
-			instructions={__('Choose a template to get started, or start with a blank modal.', 'designsetgo')}
+			instructions={__(
+				'Choose a template to get started, or start with a blank modal.',
+				'designsetgo'
+			)}
 			className="dsgo-modal-placeholder"
 		>
 			<div className="dsgo-modal-placeholder__templates">

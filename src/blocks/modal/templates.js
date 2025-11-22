@@ -4,7 +4,7 @@
  * Pre-configured modal templates for quick setup.
  * These are used in the template chooser when a modal is first inserted.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -27,7 +27,10 @@ export const modalTemplates = [
 			[
 				'core/paragraph',
 				{
-					placeholder: __('Add your modal content here...', 'designsetgo'),
+					placeholder: __(
+						'Add your modal content here…',
+						'designsetgo'
+					),
 				},
 			],
 		],
@@ -59,7 +62,10 @@ export const modalTemplates = [
 			[
 				'core/paragraph',
 				{
-					content: __('Get the latest updates and exclusive content delivered to your inbox.', 'designsetgo'),
+					content: __(
+						'Get the latest updates and exclusive content delivered to your inbox.',
+						'designsetgo'
+					),
 					align: 'center',
 				},
 			],
@@ -69,7 +75,10 @@ export const modalTemplates = [
 					submitButtonText: __('Subscribe', 'designsetgo'),
 					submitButtonAlignment: 'center',
 					ajaxSubmit: true,
-					successMessage: __('Thank you for subscribing!', 'designsetgo'),
+					successMessage: __(
+						'Thank you for subscribing!',
+						'designsetgo'
+					),
 				},
 				[
 					[
@@ -111,7 +120,10 @@ export const modalTemplates = [
 			[
 				'core/paragraph',
 				{
-					content: __('Get 20% off your first purchase. Use code <strong>WELCOME20</strong> at checkout.', 'designsetgo'),
+					content: __(
+						'Get 20% off your first purchase. Use code <strong>WELCOME20</strong> at checkout.',
+						'designsetgo'
+					),
 					align: 'center',
 					fontSize: 'medium',
 				},
@@ -183,7 +195,7 @@ export const modalTemplates = [
 			[
 				'core/paragraph',
 				{
-					content: __('Image caption...', 'designsetgo'),
+					content: __('Image caption…', 'designsetgo'),
 					align: 'center',
 					fontSize: 'small',
 				},
@@ -212,7 +224,10 @@ export const modalTemplates = [
 			[
 				'core/paragraph',
 				{
-					content: __('Have a question? We\'d love to hear from you.', 'designsetgo'),
+					content: __(
+						"Have a question? We'd love to hear from you.",
+						'designsetgo'
+					),
 				},
 			],
 			[
@@ -221,7 +236,10 @@ export const modalTemplates = [
 					submitButtonText: __('Send Message', 'designsetgo'),
 					submitButtonAlignment: 'left',
 					ajaxSubmit: true,
-					successMessage: __('Thank you! Your message has been sent.', 'designsetgo'),
+					successMessage: __(
+						'Thank you! Your message has been sent.',
+						'designsetgo'
+					),
 				},
 				[
 					[
@@ -305,13 +323,19 @@ export const modalTemplates = [
 							[
 								'core/paragraph',
 								{
-									content: __('Product description and key features go here...', 'designsetgo'),
+									content: __(
+										'Product description and key features go here…',
+										'designsetgo'
+									),
 								},
 							],
 							[
 								'core/paragraph',
 								{
-									content: __('<strong style="font-size: 1.5em; color: #2d7a4c;">$99.00</strong>', 'designsetgo'),
+									content: __(
+										'<strong style="font-size: 1.5em; color: #2d7a4c;">$99.00</strong>',
+										'designsetgo'
+									),
 								},
 							],
 							[
@@ -358,7 +382,10 @@ export const modalTemplates = [
 			[
 				'core/paragraph',
 				{
-					content: __('We use cookies to enhance your browsing experience and analyze our traffic. By clicking "Accept", you consent to our use of cookies.', 'designsetgo'),
+					content: __(
+						'We use cookies to enhance your browsing experience and analyze our traffic. By clicking "Accept", you consent to our use of cookies.',
+						'designsetgo'
+					),
 					fontSize: 'small',
 				},
 			],
@@ -472,7 +499,7 @@ export const modalTemplates = [
 								'core/paragraph',
 								{
 									content: __(
-										'Here\'s a message about the special offer',
+										"Here's a message about the special offer",
 										'designsetgo'
 									),
 								},

@@ -3,7 +3,7 @@
  *
  * A button or link that opens a modal dialog.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { registerBlockType } from '@wordpress/blocks';

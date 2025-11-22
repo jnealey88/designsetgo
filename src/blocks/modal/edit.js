@@ -1,7 +1,7 @@
 /**
  * Modal Block - Editor Component
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -101,10 +101,13 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 	});
 
 	// Transfer block support styles from wrapper to content using shared utility
-	const { contentStyle, wrapperProps, contentClasses } = transferStylesToContent(
-		blockProps,
-		{ width, maxWidth, height, maxHeight }
-	);
+	const { contentStyle, wrapperProps, contentClasses } =
+		transferStylesToContent(blockProps, {
+			width,
+			maxWidth,
+			height,
+			maxHeight,
+		});
 
 	const innerBlocksProps = useInnerBlocksProps(
 		{
@@ -121,7 +124,10 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 	if (!hasInnerBlocks) {
 		return (
 			<div {...blockProps}>
-				<ModalPlaceholder clientId={clientId} setAttributes={setAttributes} />
+				<ModalPlaceholder
+					clientId={clientId}
+					setAttributes={setAttributes}
+				/>
 			</div>
 		);
 	}
@@ -227,7 +233,8 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 									width: `${closeButtonSize}px`,
 									height: `${closeButtonSize}px`,
 									color: closeButtonIconColor || undefined,
-									backgroundColor: closeButtonBgColor || undefined,
+									backgroundColor:
+										closeButtonBgColor || undefined,
 								}}
 								aria-label={__('Close modal', 'designsetgo')}
 								disabled
@@ -267,8 +274,10 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 									style={{
 										width: `${closeButtonSize}px`,
 										height: `${closeButtonSize}px`,
-										color: closeButtonIconColor || undefined,
-										backgroundColor: closeButtonBgColor || undefined,
+										color:
+											closeButtonIconColor || undefined,
+										backgroundColor:
+											closeButtonBgColor || undefined,
 									}}
 									aria-label={__(
 										'Close modal',

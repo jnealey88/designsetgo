@@ -4,7 +4,7 @@
  * Utilities for transferring WordPress block support styles from the wrapper
  * to the modal content element.
  *
- * @package DesignSetGo
+ * @package
  */
 
 /**
@@ -14,11 +14,11 @@
  * wrapper element, but for modals, we want these styles on the content div instead.
  * This function extracts those styles and classes for transfer.
  *
- * @param {Object} blockProps - The block props object from useBlockProps()
- * @param {Object} dimensions - Modal-specific dimension overrides
- * @param {string} dimensions.width - Modal width
- * @param {string} dimensions.maxWidth - Modal max width
- * @param {string} dimensions.height - Modal height
+ * @param {Object} blockProps           - The block props object from useBlockProps()
+ * @param {Object} dimensions           - Modal-specific dimension overrides
+ * @param {string} dimensions.width     - Modal width
+ * @param {string} dimensions.maxWidth  - Modal max width
+ * @param {string} dimensions.height    - Modal height
  * @param {string} dimensions.maxHeight - Modal max height
  * @return {Object} Object with contentStyle, wrapperProps, and contentClasses
  */
@@ -33,7 +33,8 @@ export function transferStylesToContent(blockProps, dimensions = {}) {
 		width: dimensions.width,
 		maxWidth: dimensions.maxWidth,
 		height: dimensions.height !== 'auto' ? dimensions.height : undefined,
-		maxHeight: dimensions.height !== 'auto' ? dimensions.maxHeight : undefined,
+		maxHeight:
+			dimensions.height !== 'auto' ? dimensions.maxHeight : undefined,
 	};
 
 	// Extract WordPress block support classes that should be transferred to content
@@ -41,13 +42,18 @@ export function transferStylesToContent(blockProps, dimensions = {}) {
 	// Exception: 'has-inside-close-button' is a modal-specific class that stays on wrapper
 	const blockSupportClasses = className
 		.split(' ')
-		.filter(cls => cls.startsWith('has-') && cls !== 'has-inside-close-button');
+		.filter(
+			(cls) => cls.startsWith('has-') && cls !== 'has-inside-close-button'
+		);
 
 	// Filter out WordPress block support classes from wrapper
 	// Keep modal-specific classes like 'has-inside-close-button'
 	const filteredClassName = className
 		.split(' ')
-		.filter(cls => !cls.startsWith('has-') || cls === 'has-inside-close-button')
+		.filter(
+			(cls) =>
+				!cls.startsWith('has-') || cls === 'has-inside-close-button'
+		)
 		.join(' ');
 
 	wrapperProps.className = filteredClassName;

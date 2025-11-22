@@ -248,11 +248,11 @@ export const ButtonSettingsPanel = ({
 							? __(
 									'Close the parent modal when this button is clicked',
 									'designsetgo'
-							  )
+								)
 							: __(
 									'Close a modal when this button is clicked (enter modal ID below)',
 									'designsetgo'
-							  )
+								)
 					}
 					__nextHasNoMarginBottom
 				/>

@@ -1,7 +1,7 @@
 /**
  * Animation Settings Panel Component
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -33,7 +33,9 @@ export default function AnimationSettings({ attributes, setAttributes }) {
 			<RangeControl
 				label={__('Animation Duration (ms)', 'designsetgo')}
 				value={animationDuration}
-				onChange={(value) => setAttributes({ animationDuration: value })}
+				onChange={(value) =>
+					setAttributes({ animationDuration: value })
+				}
 				min={0}
 				max={1000}
 				step={50}

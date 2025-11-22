@@ -4,7 +4,6 @@
 
 ## Code Standards
 
-- **Indentation**: Spaces (4 for JS/SCSS/PHP, 2 for JSON), never tabs
 - **Prefix**: `dsgo-` for CSS/data attributes, `dsgoAttributeName` for JS, `designsetgo_` for PHP
 - **File Size**: Max 300 lines (excluding data/constants)
 - **Block Props**: Always use `useBlockProps()` and `useInnerBlocksProps()`

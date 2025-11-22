@@ -1,7 +1,7 @@
 /**
  * Modal Trigger Block - Save Component
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { useBlockProps, RichText } from '@wordpress/block-editor';

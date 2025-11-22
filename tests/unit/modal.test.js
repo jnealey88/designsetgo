@@ -3,11 +3,12 @@
  *
  * Tests for critical paths in modal functionality.
  *
- * @package DesignSetGo
+ * @package
  */
 
 /**
  * Mock DOM elements for testing
+ * @param options
  */
 function createMockModal(options = {}) {
 	const modal = document.createElement('div');
@@ -15,10 +16,22 @@ function createMockModal(options = {}) {
 	modal.setAttribute('data-dsgo-modal', 'true');
 	modal.setAttribute('data-modal-id', options.id || 'dsgo-modal-test');
 	modal.setAttribute('data-animation-type', options.animationType || 'fade');
-	modal.setAttribute('data-animation-duration', options.animationDuration || '300');
-	modal.setAttribute('data-close-on-backdrop', options.closeOnBackdrop !== false ? 'true' : 'false');
-	modal.setAttribute('data-close-on-esc', options.closeOnEsc !== false ? 'true' : 'false');
-	modal.setAttribute('data-disable-body-scroll', options.disableBodyScroll !== false ? 'true' : 'false');
+	modal.setAttribute(
+		'data-animation-duration',
+		options.animationDuration || '300'
+	);
+	modal.setAttribute(
+		'data-close-on-backdrop',
+		options.closeOnBackdrop !== false ? 'true' : 'false'
+	);
+	modal.setAttribute(
+		'data-close-on-esc',
+		options.closeOnEsc !== false ? 'true' : 'false'
+	);
+	modal.setAttribute(
+		'data-disable-body-scroll',
+		options.disableBodyScroll !== false ? 'true' : 'false'
+	);
 
 	// Create modal structure
 	const backdrop = document.createElement('div');
@@ -48,7 +61,7 @@ function createMockModal(options = {}) {
  * Clean up test modals
  */
 function cleanupModals() {
-	document.querySelectorAll('[data-dsgo-modal]').forEach(el => el.remove());
+	document.querySelectorAll('[data-dsgo-modal]').forEach((el) => el.remove());
 	document.body.classList.remove('dsgo-modal-open');
 	document.body.style.top = '';
 	document.body.style.paddingRight = '';
@@ -81,11 +94,11 @@ describe('DSGModal - Core Functionality', () => {
 
 		test('should respect reduced motion preference', () => {
 			// Mock matchMedia
-			const mockMatchMedia = jest.fn().mockImplementation(query => ({
+			const mockMatchMedia = jest.fn().mockImplementation((query) => ({
 				matches: query === '(prefers-reduced-motion: reduce)',
 				media: query,
 				addEventListener: jest.fn(),
-				removeEventListener: jest.fn()
+				removeEventListener: jest.fn(),
 			}));
 			global.matchMedia = mockMatchMedia;
 
@@ -99,8 +112,13 @@ describe('DSGModal - Core Functionality', () => {
 	describe('Cookie Methods - Security Fixes', () => {
 		beforeEach(() => {
 			// Clear all cookies
-			document.cookie.split(';').forEach(c => {
-				document.cookie = c.replace(/^ +/, '').replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
+			document.cookie.split(';').forEach((c) => {
+				document.cookie = c
+					.replace(/^ +/, '')
+					.replace(
+						/=.*/,
+						`=;expires=${new Date().toUTCString()};path=/`
+					);
 			});
 		});
 
@@ -198,7 +216,9 @@ describe('DSGModal - Core Functionality', () => {
 
 			instance.open();
 
-			expect(document.body.classList.contains('dsgo-modal-open')).toBe(true);
+			expect(document.body.classList.contains('dsgo-modal-open')).toBe(
+				true
+			);
 			expect(document.body.style.top).toBeTruthy();
 		});
 
@@ -252,7 +272,9 @@ describe('DSGModal - Core Functionality', () => {
 			// Update focusable elements
 			instance.updateFocusableElements();
 
-			expect(instance.focusableElements.length).toBeGreaterThan(initialCount);
+			expect(instance.focusableElements.length).toBeGreaterThan(
+				initialCount
+			);
 		});
 	});
 
@@ -333,7 +355,9 @@ describe('DSGModal - Core Functionality', () => {
 			instance.destroy();
 
 			// Timeout should be cleared (can't directly test, but check that destroy completes)
-			expect(instance.modal.hasAttribute('data-dsgo-initialized')).toBe(false);
+			expect(instance.modal.hasAttribute('data-dsgo-initialized')).toBe(
+				false
+			);
 		});
 
 		test('should disconnect MutationObserver on destroy', () => {
@@ -410,9 +434,11 @@ describe('Public API (window.dsgoModal)', () => {
 
 		instance.open();
 
-		expect(callback).toHaveBeenCalledWith(expect.objectContaining({
-			modalId: 'test-api'
-		}));
+		expect(callback).toHaveBeenCalledWith(
+			expect.objectContaining({
+				modalId: 'test-api',
+			})
+		);
 
 		unsubscribe();
 	});

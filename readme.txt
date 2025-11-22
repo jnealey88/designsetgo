@@ -5,11 +5,11 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.4
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Professional WordPress blocks without page builder bloat. 43 blocks + 11 universal extensions that enhance ANY block.
+Professional WordPress blocks without page builder bloat. 46 blocks + 11 universal extensions that enhance ANY block.
 
 == Description ==
 
@@ -20,7 +20,7 @@ DesignSetGo gives you the power of a page builder with the simplicity of WordPre
 = Why DesignSetGo? =
 
 ✓ **Works Like WordPress** - If you know blocks, you know DesignSetGo. No separate interface, no learning curve.
-✓ **43 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, and more.
+✓ **46 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, modals, breadcrumbs, and more.
 ✓ **11 Universal Extensions** - Add animations, responsive visibility, sticky headers, clickable groups, max width, and more to ANY WordPress block (including core blocks).
 ✓ **Performance First** - Lightweight code, no jQuery, optimized bundles. Your site stays fast.
 ✓ **No Lock-In** - Built with WordPress standards. What you build works with or without the plugin.
@@ -34,8 +34,11 @@ Build responsive layouts without code: flex, grid, stacks, rows, and full-width 
 **Complete Form Builder (13 blocks)**
 Professional forms with AJAX submission, spam protection, and email notifications. Includes text, email, phone, textarea, number, URL, date, time, select, checkbox, file upload, and hidden fields. No external services required.
 
-**Interactive Elements (10 blocks)**
-Tabs, accordions, flip cards, sliders, scroll effects, counters, progress bars, and revealing content. All with smooth animations and mobile-responsive behavior.
+**Interactive Elements (11 blocks)**
+Tabs, accordions, modals/popups, flip cards, sliders, scroll effects, counters, progress bars, and revealing content. All with smooth animations and mobile-responsive behavior.
+
+**Navigation & Structure (2 blocks)**
+Breadcrumbs with Schema.org markup and Table of Contents with automatic heading detection, smooth scrolling, and sticky positioning.
 
 **Visual Components (8 blocks + child blocks)**
 Icons (500+), icon buttons, icon lists, pills/badges, dividers, countdown timers, organic blob shapes, and content cards with multiple layout presets.
@@ -143,6 +146,34 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.2.0 - 2025-11-21 =
+**New Features:**
+* New: Breadcrumbs block with Schema.org markup for improved SEO and navigation
+* New: Table of Contents block with automatic heading detection, smooth scrolling, and sticky positioning
+* New: Modal/Popup block with accessible triggers, animations, and gallery support
+* Enhancement: Modal close triggers and improved icon-button UX with better accessibility
+
+**Bug Fixes:**
+* Fix: Table of Contents critical production readiness fixes for stable performance
+* Fix: Table of Contents sticky positioning and scroll spy highlighting functionality
+* Fix: Table of Contents error handling in view.js for better reliability
+* Fix: Prevent sticky header from affecting footer template parts
+
+**Security:**
+* Security: Fixed 3 critical vulnerabilities in Modal block + performance optimizations
+
+**Internationalization:**
+* i18n: Added modal block translations to all language files
+* i18n: Updated translation strings for modal close functionality
+
+**Documentation:**
+* Docs: Reorganized and created comprehensive block/extension documentation
+
+**Maintenance:**
+* Maintenance: Updated dependencies (glob 10.4.5 → 10.5.0)
+* Maintenance: Optimized screenshot-1.gif (24MB → 5.7MB)
+* Maintenance: Updated WordPress.org assets and screenshots
 
 = 1.1.4 - 2025-11-19 =
 **Bug Fixes:**

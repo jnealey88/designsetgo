@@ -1,11 +1,15 @@
 /**
  * Modal Trigger Block - Editor Component
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, InspectorControls, RichText } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InspectorControls,
+	RichText,
+} from '@wordpress/block-editor';
 import {
 	PanelBody,
 	SelectControl,
@@ -17,7 +21,11 @@ import { useSelect } from '@wordpress/data';
 import { getIcon } from '../icon/utils/svg-icons';
 import { IconPicker } from '../icon/components/IconPicker';
 
-export default function ModalTriggerEdit({ attributes, setAttributes, clientId }) {
+export default function ModalTriggerEdit({
+	attributes,
+	setAttributes,
+	clientId,
+}) {
 	const {
 		targetModalId,
 		text,
@@ -57,7 +65,7 @@ export default function ModalTriggerEdit({ attributes, setAttributes, clientId }
 
 	// Create options for the select control
 	const modalOptions = [
-		{ label: __('Select a modal...', 'designsetgo'), value: '' },
+		{ label: __('Select a modal…', 'designsetgo'), value: '' },
 		...modals.map((modal) => ({
 			label: modal.id || __('(Unnamed Modal)', 'designsetgo'),
 			value: modal.id,
@@ -227,10 +235,7 @@ export default function ModalTriggerEdit({ attributes, setAttributes, clientId }
 									/>
 
 									<UnitControl
-										label={__(
-											'Icon Gap',
-											'designsetgo'
-										)}
+										label={__('Icon Gap', 'designsetgo')}
 										value={iconGap}
 										onChange={(value) =>
 											setAttributes({ iconGap: value })
@@ -261,7 +266,7 @@ export default function ModalTriggerEdit({ attributes, setAttributes, clientId }
 						tagName="span"
 						value={text}
 						onChange={(value) => setAttributes({ text: value })}
-						placeholder={__('Button text...', 'designsetgo')}
+						placeholder={__('Button text…', 'designsetgo')}
 						allowedFormats={['core/bold', 'core/italic']}
 						className="dsgo-modal-trigger__text"
 					/>

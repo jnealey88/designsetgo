@@ -1,15 +1,20 @@
 /**
  * Behavior Settings Panel Component
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 
 export default function BehaviorSettings({ attributes, setAttributes }) {
-	const { closeOnBackdrop, closeOnEsc, disableBodyScroll, allowHashTrigger, updateUrlOnOpen } =
-		attributes;
+	const {
+		closeOnBackdrop,
+		closeOnEsc,
+		disableBodyScroll,
+		allowHashTrigger,
+		updateUrlOnOpen,
+	} = attributes;
 
 	return (
 		<PanelBody title={__('Behavior', 'designsetgo')} initialOpen={false}>
@@ -51,9 +56,7 @@ export default function BehaviorSettings({ attributes, setAttributes }) {
 			<ToggleControl
 				label={__('Allow Hash Trigger', 'designsetgo')}
 				checked={allowHashTrigger}
-				onChange={(value) =>
-					setAttributes({ allowHashTrigger: value })
-				}
+				onChange={(value) => setAttributes({ allowHashTrigger: value })}
 				help={__(
 					'Open modal when URL hash matches modal ID (e.g., #dsgo-modal-123).',
 					'designsetgo'

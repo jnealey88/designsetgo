@@ -72,7 +72,7 @@
 		color: #666;
 
 		svg {
-			fill: currentColor;
+			fill: currentcolor;
 		}
 	}
 
@@ -97,6 +97,7 @@
 
 // Responsive adjustments
 @media (max-width: 782px) {
+
 	.dsgo-modal-placeholder {
 		padding: 20px;
 
@@ -131,7 +132,9 @@
 }
 
 @media (max-width: 600px) {
+
 	.dsgo-modal-placeholder {
+
 		&__templates {
 			grid-template-columns: 1fr 1fr;
 		}

@@ -1,7 +1,7 @@
 /**
  * Modal Block - Save Component
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
@@ -53,7 +53,9 @@ export default function save({ attributes }) {
 		role: 'dialog',
 		'aria-modal': 'true',
 		// Use aria-label for accessibility; do not set aria-labelledby unless title element is guaranteed
-		'aria-label': attributes.modalLabel ? attributes.modalLabel : __('Modal', 'designsetgo'),
+		'aria-label': attributes.modalLabel
+			? attributes.modalLabel
+			: __('Modal', 'designsetgo'),
 		'aria-hidden': 'true',
 		'data-dsgo-modal': 'true',
 		'data-modal-id': modalId,
@@ -121,10 +123,13 @@ export default function save({ attributes }) {
 	) : null;
 
 	// Transfer block support styles from wrapper to content using shared utility
-	const { contentStyle, wrapperProps, contentClasses } = transferStylesToContent(
-		blockProps,
-		{ width, maxWidth, height, maxHeight }
-	);
+	const { contentStyle, wrapperProps, contentClasses } =
+		transferStylesToContent(blockProps, {
+			width,
+			maxWidth,
+			height,
+			maxHeight,
+		});
 
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: ['dsgo-modal__content', ...contentClasses].join(' '),
