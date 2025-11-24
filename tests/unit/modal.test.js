@@ -6,9 +6,11 @@
  * @package
  */
 
+/* global sessionStorage, localStorage */
+
 /**
  * Mock DOM elements for testing
- * @param options
+ * @param {Object} options
  */
 function createMockModal(options = {}) {
 	const modal = document.createElement('div');

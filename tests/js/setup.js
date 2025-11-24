@@ -6,6 +6,8 @@
  * @package
  */
 
+/* global sessionStorage, localStorage */
+
 // Mock matchMedia
 global.matchMedia =
 	global.matchMedia ||
@@ -330,6 +332,7 @@ global.window.dsgoModal = {
 			try {
 				callback(data);
 			} catch (error) {
+				// eslint-disable-next-line no-console
 				console.error(`Error in ${event} callback:`, error);
 			}
 		});

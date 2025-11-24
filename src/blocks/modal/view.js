@@ -7,6 +7,8 @@
  * @package
  */
 
+/* global MutationObserver, sessionStorage, localStorage, navigator, history, requestAnimationFrame */
+
 (function () {
 	'use strict';
 
@@ -751,6 +753,7 @@
 		 */
 		log(level, ...args) {
 			if (DEBUG_MODE && console[level]) {
+				// eslint-disable-next-line no-console
 				console[level]('[DSGModal]', ...args);
 			}
 		}
@@ -1560,6 +1563,7 @@
 			const modalElement = document.getElementById(modalId);
 			if (!modalElement || !modalElement.dsgoModalInstance) {
 				if (DEBUG_MODE) {
+					// eslint-disable-next-line no-console
 					console.warn(
 						`[DSGModal] Modal with ID "${modalId}" not found`
 					);
@@ -1585,6 +1589,7 @@
 			const modalElement = document.getElementById(modalId);
 			if (!modalElement || !modalElement.dsgoModalInstance) {
 				if (DEBUG_MODE) {
+					// eslint-disable-next-line no-console
 					console.warn(
 						`[DSGModal] Modal with ID "${modalId}" not found`
 					);
@@ -1676,6 +1681,7 @@
 		on(event, callback) {
 			if (!eventListeners[event]) {
 				if (DEBUG_MODE) {
+					// eslint-disable-next-line no-console
 					console.warn(`[DSGModal] Unknown event: ${event}`);
 				}
 				return () => {};
@@ -1683,6 +1689,7 @@
 
 			if (typeof callback !== 'function') {
 				if (DEBUG_MODE) {
+					// eslint-disable-next-line no-console
 					console.warn('[DSGModal] Callback must be a function');
 				}
 				return () => {};
@@ -1731,6 +1738,7 @@
 					callback(data);
 				} catch (error) {
 					if (DEBUG_MODE) {
+						// eslint-disable-next-line no-console
 						console.error(
 							`[DSGModal] Error in ${event} callback:`,
 							error

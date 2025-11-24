@@ -41,6 +41,7 @@ function initBreadcrumbs() {
 			injectSchemaMarkup(breadcrumbData);
 		} catch (error) {
 			// Silently fail - breadcrumbs still work without Schema.org
+			// eslint-disable-next-line no-console
 			console.error('DesignSetGo Breadcrumbs: Schema.org error', error);
 		}
 	});
