@@ -1,0 +1,42 @@
+parameters:
+	# Level 5 provides strong type checking without being overly strict
+	level: 5
+
+	# Paths to analyze
+	paths:
+		- includes
+		- designsetgo.php
+
+	# Excluded paths
+	excludePaths:
+		- vendor
+		- node_modules
+		- build
+		- tests
+		- .wp-env
+
+	# Bootstrap files for WordPress functions
+	bootstrapFiles:
+		- vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+
+	# Ignore errors from WordPress globals and functions
+	ignoreErrors:
+		# WordPress globals
+		- '#Undefined variable: \$wpdb#'
+		- '#Undefined variable: \$wp_#'
+
+		# WordPress functions that PHPStan doesn't understand
+		- '#Function wp_[a-z_]+ not found#'
+		- '#Function get_[a-z_]+ not found#'
+		- '#Function add_[a-z_]+ not found#'
+		- '#Function register_[a-z_]+ not found#'
+
+		# Allow dynamic properties (common in WordPress)
+		- '#Access to an undefined property#'
+
+	# Check for unused parameters (helps clean up code)
+	checkMissingIterableValueType: false
+	checkGenericClassInNonGenericObjectType: false
+
+	# Report unmatched ignored errors
+	reportUnmatchedIgnoredErrors: false

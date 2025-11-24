@@ -73,6 +73,15 @@ jobs:
       - name: Run CSS linter
         run: npm run lint:css --if-present || echo "⚠️ CSS linting not configured"
 
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Run PHP linter (PHPCS)
+        run: composer run-script lint
+
+      - name: Run PHPStan static analysis
+        run: composer run-script analyse
+
       - name: Check PHP syntax
         run: |
           echo "Checking PHP syntax..."
@@ -86,6 +95,21 @@ jobs:
             exit 1
           fi
           echo "✅ No PHP syntax errors"
+
+      - name: Run PHP unit tests
+        run: composer run-script test
+
+      - name: Run JavaScript unit tests
+        run: npm run test:unit -- --coverage --ci
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        if: matrix.php-version == '8.2'
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+        continue-on-error: true
 
       - name: Check file sizes
         run: |
@@ -237,3 +261,74 @@ jobs:
           else
             echo "✅ No obvious untranslated strings found"
           fi
+
+  wordpress-compatibility:
+    name: WordPress ${{ matrix.wordpress }} / PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.0', '8.2']
+        wordpress: ['6.4', '6.5', '6.6', 'latest']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          composer install --no-interaction --prefer-dist
+
+      - name: Build plugin
+        run: npm run build
+
+      - name: Configure wp-env for WordPress ${{ matrix.wordpress }}
+        run: |
+          # Create custom .wp-env.override.json for this WP version
+          cat > .wp-env.override.json <<EOF
+          {
+            "core": "WordPress/WordPress#${{ matrix.wordpress == 'latest' && 'trunk' || matrix.wordpress }}",
+            "phpVersion": "${{ matrix.php }}",
+            "plugins": [ "." ]
+          }
+          EOF
+          cat .wp-env.override.json
+
+      - name: Start wp-env
+        run: npm run wp-env start
+
+      - name: Check WordPress version
+        run: |
+          npx wp-env run cli wp core version
+          npx wp-env run cli wp plugin list
+
+      - name: Run PHP tests in WordPress environment
+        run: |
+          # Run tests inside wp-env
+          npx wp-env run tests-cli --env-cwd=wp-content/plugins/designsetgo "composer run-script test"
+        continue-on-error: true
+
+      - name: Check plugin activation
+        run: |
+          npx wp-env run cli wp plugin activate designsetgo
+          npx wp-env run cli wp plugin list --status=active
+
+      - name: Stop wp-env
+        if: always()
+        run: npm run wp-env stop

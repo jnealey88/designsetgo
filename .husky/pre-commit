@@ -1,2 +1,10 @@
-# Disabled to prevent auto-stashing behavior
-# npx lint-staged
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run lint-staged but don't block commits
+# This shows linting issues but allows all changes to be committed
+npx lint-staged || true
+
+echo ""
+echo "ℹ️  Pre-commit checks completed (non-blocking)"
+echo "   Any linting issues will be caught in CI"
