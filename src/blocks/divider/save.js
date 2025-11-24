@@ -10,7 +10,6 @@
  */
 
 import { useBlockProps } from '@wordpress/block-editor';
-import { getIcon } from '../icon/utils/svg-icons';
 
 /**
  * Divider Save Function
@@ -46,9 +45,10 @@ export default function DividerSave({ attributes }) {
 							className="dsgo-divider__line dsgo-divider__line--left"
 							style={lineStyle}
 						/>
-						<span className="dsgo-divider__icon">
-							{getIcon(iconName)}
-						</span>
+						<span
+							className="dsgo-divider__icon dsgo-lazy-icon"
+							data-icon-name={iconName}
+						/>
 						<span
 							className="dsgo-divider__line dsgo-divider__line--right"
 							style={lineStyle}

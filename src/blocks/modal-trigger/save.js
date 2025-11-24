@@ -5,7 +5,6 @@
  */
 
 import { useBlockProps, RichText } from '@wordpress/block-editor';
-import { getIcon } from '../icon/utils/svg-icons';
 
 export default function save({ attributes }) {
 	const {
@@ -38,9 +37,6 @@ export default function save({ attributes }) {
 		style: { display: width === 'full' ? 'block' : 'inline-block' },
 	});
 
-	// Get icon element with fallback
-	const iconElement = icon ? getIcon(icon) : null;
-
 	return (
 		<div {...blockProps}>
 			<button
@@ -49,26 +45,24 @@ export default function save({ attributes }) {
 				style={buttonStyles}
 				type="button"
 			>
-				{iconElement && iconPosition === 'start' && (
+				{icon && iconPosition === 'start' && (
 					<span
-						className="dsgo-modal-trigger__icon"
+						className="dsgo-modal-trigger__icon dsgo-lazy-icon"
 						style={iconWrapperStyles}
-					>
-						{iconElement}
-					</span>
+						data-icon-name={icon}
+					/>
 				)}
 				<RichText.Content
 					tagName="span"
 					value={text}
 					className="dsgo-modal-trigger__text"
 				/>
-				{iconElement && iconPosition === 'end' && (
+				{icon && iconPosition === 'end' && (
 					<span
-						className="dsgo-modal-trigger__icon"
+						className="dsgo-modal-trigger__icon dsgo-lazy-icon"
 						style={iconWrapperStyles}
-					>
-						{iconElement}
-					</span>
+						data-icon-name={icon}
+					/>
 				)}
 			</button>
 		</div>

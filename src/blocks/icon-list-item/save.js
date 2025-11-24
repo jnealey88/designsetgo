@@ -7,7 +7,6 @@
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { getIcon } from '../icon/utils/svg-icons';
 
 /**
  * Icon List Item Save Component
@@ -104,11 +103,10 @@ export default function IconListItemSave({ attributes, context = {} }) {
 	return (
 		<ItemWrapper {...wrapperProps}>
 			<div
-				className="dsgo-icon-list-item__icon"
+				className="dsgo-icon-list-item__icon dsgo-lazy-icon"
 				style={iconWrapperStyles}
-			>
-				{getIcon(icon)}
-			</div>
+				data-icon-name={icon}
+			/>
 
 			<div {...innerBlocksProps} />
 		</ItemWrapper>
