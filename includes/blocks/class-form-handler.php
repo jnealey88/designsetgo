@@ -486,36 +486,134 @@ class Form_Handler {
 	}
 
 	/**
-	 * Get client IP address.
+	 * Get client IP address with trusted proxy support.
+	 *
+	 * Security: By default, only uses REMOTE_ADDR to prevent IP spoofing.
+	 * Proxy headers (X-Forwarded-For, etc.) are only trusted if the request
+	 * comes from a configured trusted proxy.
+	 *
+	 * Configure trusted proxies via filter (supports individual IPs and CIDR ranges):
+	 * ```php
+	 * add_filter( 'designsetgo_trusted_proxies', function() {
+	 *     return array(
+	 *         '10.0.0.1',              // Individual IP
+	 *         '192.168.1.0/24',        // CIDR range
+	 *         '173.245.48.0/20',       // Cloudflare range
+	 *     );
+	 * } );
+	 * ```
 	 *
 	 * @return string IP address.
 	 */
 	private function get_client_ip() {
-		$ip_keys = array(
+		// Get direct connection IP (always trustworthy).
+		$remote_addr = isset( $_SERVER['REMOTE_ADDR'] )
+			? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) )
+			: 'unknown';
+
+		// Cannot resolve IP - return early.
+		if ( 'unknown' === $remote_addr ) {
+			return 'unknown';
+		}
+
+		// Get trusted proxy list (filterable).
+		$trusted_proxies = apply_filters( 'designsetgo_trusted_proxies', array() );
+
+		// If no trusted proxies configured, use direct IP only (secure default).
+		if ( empty( $trusted_proxies ) || ! is_array( $trusted_proxies ) ) {
+			return $remote_addr;
+		}
+
+		// Verify REMOTE_ADDR is in trusted proxy list (supports CIDR).
+		if ( ! $this->is_trusted_proxy( $remote_addr, $trusted_proxies ) ) {
+			// Request not from trusted proxy - use direct IP.
+			return $remote_addr;
+		}
+
+		// Request IS from trusted proxy - check proxy headers.
+		$proxy_headers = array(
+			'HTTP_X_FORWARDED_FOR',     // Standard proxy header.
+			'HTTP_X_REAL_IP',            // Nginx proxy.
+			'HTTP_CF_CONNECTING_IP',     // Cloudflare.
+			'HTTP_X_CLUSTER_CLIENT_IP',  // AWS ELB.
 			'HTTP_CLIENT_IP',
-			'HTTP_X_FORWARDED_FOR',
-			'HTTP_X_FORWARDED',
-			'HTTP_X_CLUSTER_CLIENT_IP',
-			'HTTP_FORWARDED_FOR',
-			'HTTP_FORWARDED',
-			'REMOTE_ADDR',
 		);
 
-		foreach ( $ip_keys as $key ) {
-			if ( ! empty( $_SERVER[ $key ] ) ) {
-				$ip = sanitize_text_field( wp_unslash( $_SERVER[ $key ] ) );
-				// Handle multiple IPs (take first one).
-				if ( strpos( $ip, ',' ) !== false ) {
-					$ip = explode( ',', $ip )[0];
-				}
-				$ip = trim( $ip );
-				if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
-					return $ip;
-				}
+		foreach ( $proxy_headers as $header ) {
+			if ( empty( $_SERVER[ $header ] ) ) {
+				continue;
+			}
+
+			$ip = sanitize_text_field( wp_unslash( $_SERVER[ $header ] ) );
+
+			// X-Forwarded-For can contain multiple IPs (client, proxy1, proxy2...).
+			// Take the leftmost (client) IP.
+			if ( strpos( $ip, ',' ) !== false ) {
+				$ip = explode( ',', $ip )[0];
+			}
+
+			$ip = trim( $ip );
+
+			// Validate IP format.
+			if ( filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+				return $ip;
 			}
 		}
 
-		return 'unknown';
+		// No valid proxy header found - use direct IP.
+		return $remote_addr;
+	}
+
+	/**
+	 * Check if IP address is in trusted proxy list (supports CIDR notation).
+	 *
+	 * @param string $ip IP address to check.
+	 * @param array  $trusted_proxies List of trusted IPs/CIDR ranges.
+	 * @return bool True if trusted, false otherwise.
+	 */
+	private function is_trusted_proxy( $ip, $trusted_proxies ) {
+		foreach ( $trusted_proxies as $trusted ) {
+			// Check if it's CIDR notation (e.g., '192.168.1.0/24').
+			if ( strpos( $trusted, '/' ) !== false ) {
+				if ( $this->ip_in_range( $ip, $trusted ) ) {
+					return true;
+				}
+			} else {
+				// Exact IP match.
+				if ( $ip === $trusted ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if IP is in CIDR range.
+	 *
+	 * Supports IPv4 CIDR notation (e.g., '192.168.1.0/24').
+	 *
+	 * @param string $ip IP address to check.
+	 * @param string $cidr CIDR notation (e.g., '192.168.1.0/24').
+	 * @return bool True if IP is in range.
+	 */
+	private function ip_in_range( $ip, $cidr ) {
+		list( $subnet, $mask ) = explode( '/', $cidr );
+
+		// Convert IPs to long integers for bitwise comparison.
+		$ip_long     = ip2long( $ip );
+		$subnet_long = ip2long( $subnet );
+
+		// Invalid IP addresses return false from ip2long().
+		if ( false === $ip_long || false === $subnet_long ) {
+			return false;
+		}
+
+		// Create netmask from CIDR prefix length.
+		$mask_long = -1 << ( 32 - (int) $mask );
+
+		// Check if IP is in subnet by comparing network portions.
+		return ( $ip_long & $mask_long ) === ( $subnet_long & $mask_long );
 	}
 
 	/**
