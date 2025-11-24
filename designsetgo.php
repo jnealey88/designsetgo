@@ -57,3 +57,30 @@ function designsetgo_init() {
 
 // Kick off the plugin.
 designsetgo_init();
+
+/**
+ * Plugin activation hook.
+ *
+ * Schedules cron jobs for data retention cleanup.
+ */
+function designsetgo_activate() {
+	// Schedule daily cleanup of old form submissions.
+	if ( ! wp_next_scheduled( 'designsetgo_cleanup_old_submissions' ) ) {
+		wp_schedule_event( time(), 'daily', 'designsetgo_cleanup_old_submissions' );
+	}
+}
+register_activation_hook( __FILE__, 'DesignSetGo\designsetgo_activate' );
+
+/**
+ * Plugin deactivation hook.
+ *
+ * Unschedules all cron jobs.
+ */
+function designsetgo_deactivate() {
+	// Clear scheduled cleanup job.
+	$timestamp = wp_next_scheduled( 'designsetgo_cleanup_old_submissions' );
+	if ( $timestamp ) {
+		wp_unschedule_event( $timestamp, 'designsetgo_cleanup_old_submissions' );
+	}
+}
+register_deactivation_hook( __FILE__, 'DesignSetGo\designsetgo_deactivate' );

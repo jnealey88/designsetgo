@@ -83,6 +83,25 @@ class Form_Handler {
 	public function __construct() {
 		add_action( 'rest_api_init', array( $this, 'register_rest_endpoint' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'localize_form_script' ) );
+
+		// Register cron callback (scheduling handled by activation hook).
+		add_action( 'designsetgo_cleanup_old_submissions', array( $this, 'cleanup_old_submissions' ) );
+	}
+
+	/**
+	 * Get form settings.
+	 *
+	 * @return array Form settings with defaults applied.
+	 */
+	private function get_form_settings() {
+		$settings = get_option( 'designsetgo_settings', array() );
+		$defaults = array(
+			'enable_honeypot'      => true,
+			'enable_rate_limiting' => true,
+			'retention_days'       => 30,
+		);
+
+		return isset( $settings['forms'] ) ? wp_parse_args( $settings['forms'], $defaults ) : $defaults;
 	}
 
 	/**
@@ -92,9 +111,9 @@ class Form_Handler {
 	 * because it needs to accept form submissions from non-logged-in users.
 	 *
 	 * Security measures in place:
-	 * - Honeypot field check (detects spam bots)
+	 * - Honeypot field check (detects spam bots) - configurable via settings
 	 * - Time-based submission check (< 3 seconds = likely bot)
-	 * - Rate limiting (3 submissions per 60 seconds per IP address)
+	 * - Rate limiting (3 submissions per 60 seconds per IP address) - configurable via settings
 	 * - Comprehensive field validation (email, url, phone, number types)
 	 * - Type-specific sanitization for all field values
 	 * - Email header injection prevention (strips newlines from email parameters)
@@ -204,13 +223,14 @@ class Form_Handler {
 			);
 		}
 
-		$form_id   = $request->get_param( 'formId' );
-		$fields    = $request->get_param( 'fields' );
-		$honeypot  = $request->get_param( 'honeypot' );
-		$timestamp = $request->get_param( 'timestamp' );
+		$form_id       = $request->get_param( 'formId' );
+		$fields        = $request->get_param( 'fields' );
+		$honeypot      = $request->get_param( 'honeypot' );
+		$timestamp     = $request->get_param( 'timestamp' );
+		$form_settings = $this->get_form_settings();
 
-		// Honeypot spam check - if filled, it's a bot.
-		if ( ! empty( $honeypot ) ) {
+		// Honeypot spam check - if filled, it's a bot (only if enabled in settings).
+		if ( $form_settings['enable_honeypot'] && ! empty( $honeypot ) ) {
 			// Security monitoring hook for honeypot spam detection.
 			do_action( 'designsetgo_form_spam_detected', $form_id, 'honeypot', $this->get_client_ip() );
 
@@ -236,10 +256,12 @@ class Form_Handler {
 			}
 		}
 
-		// Rate limiting check.
-		$rate_limit_check = $this->check_rate_limit( $form_id );
-		if ( is_wp_error( $rate_limit_check ) ) {
-			return $rate_limit_check;
+		// Rate limiting check (only if enabled in settings).
+		if ( $form_settings['enable_rate_limiting'] ) {
+			$rate_limit_check = $this->check_rate_limit( $form_id );
+			if ( is_wp_error( $rate_limit_check ) ) {
+				return $rate_limit_check;
+			}
 		}
 
 		// Sanitize and validate all fields.
@@ -646,5 +668,70 @@ class Form_Handler {
 
 		// Send email.
 		wp_mail( $email_to, $email_subject, $email_body, $headers );
+	}
+
+	/**
+	 * Clean up old form submissions based on retention settings.
+	 *
+	 * Called daily by cron job to delete submissions older than the configured retention period.
+	 * Respects the retention_days setting (default: 30 days).
+	 *
+	 * Processes in batches to prevent timeout issues on sites with large numbers of submissions.
+	 * Use 'designsetgo_cleanup_batch_size' filter to adjust batch size (default: 100).
+	 *
+	 * @since 1.2.0
+	 */
+	public function cleanup_old_submissions() {
+		$form_settings  = $this->get_form_settings();
+		$retention_days = absint( $form_settings['retention_days'] );
+
+		// If retention is 0, keep submissions indefinitely (disable cleanup).
+		if ( 0 === $retention_days ) {
+			return;
+		}
+
+		global $wpdb;
+
+		// Calculate cutoff date.
+		$cutoff_date = gmdate( 'Y-m-d H:i:s', strtotime( "-{$retention_days} days" ) );
+
+		// Batch size to prevent timeout (filterable).
+		$batch_size = apply_filters( 'designsetgo_cleanup_batch_size', 100 );
+
+		// Find old submissions (limited batch to prevent timeout).
+		$old_submissions = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT ID FROM {$wpdb->posts}
+				WHERE post_type = %s
+				AND post_date < %s
+				LIMIT %d",
+				'dsgo_form_submission',
+				$cutoff_date,
+				$batch_size
+			)
+		);
+
+		if ( empty( $old_submissions ) ) {
+			return;
+		}
+
+		// Delete submissions and their metadata.
+		foreach ( $old_submissions as $submission_id ) {
+			wp_delete_post( $submission_id, true ); // Force delete (bypass trash).
+		}
+
+		// Clear form submissions count cache.
+		delete_transient( 'dsgo_form_submissions_count' );
+
+		// Log cleanup for debugging.
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log(
+				sprintf(
+					'DesignSetGo: Deleted %d form submissions older than %d days.',
+					count( $old_submissions ),
+					$retention_days
+				)
+			);
+		}
 	}
 }
