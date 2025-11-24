@@ -54,9 +54,23 @@ class Form_Submissions {
 			'show_in_menu'       => 'designsetgo', // Show under DesignSetGo menu.
 			'query_var'          => true,
 			'rewrite'            => false,
-			'capability_type'    => 'post',
+			'show_in_rest'       => false, // Prevent REST API access.
+			'capability_type'    => 'dsgo_form_submission',
 			'capabilities'       => array(
-				'create_posts' => 'do_not_allow', // Prevent manual creation.
+				'edit_post'              => 'manage_options',
+				'read_post'              => 'manage_options',
+				'delete_post'            => 'manage_options',
+				'edit_posts'             => 'manage_options',
+				'edit_others_posts'      => 'manage_options',
+				'edit_private_posts'     => 'manage_options',
+				'edit_published_posts'   => 'manage_options',
+				'delete_posts'           => 'manage_options',
+				'delete_others_posts'    => 'manage_options',
+				'delete_private_posts'   => 'manage_options',
+				'delete_published_posts' => 'manage_options',
+				'publish_posts'          => 'manage_options',
+				'read_private_posts'     => 'manage_options',
+				'create_posts'           => 'do_not_allow', // Prevent manual creation - only via form submission.
 			),
 			'map_meta_cap'       => true,
 			'has_archive'        => false,
