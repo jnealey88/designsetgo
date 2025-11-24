@@ -21,8 +21,8 @@ function sanitizeIconSlug(icon) {
 
 /**
  * Version 1: Before adding "none" icon position option
- * - iconPosition default was "left"
- * - iconPosition enum: ["left", "right", "top"]
+ * - iconPosition attribute didn't exist (was always "left" implicitly)
+ * - Blocks with icons always output data-icon-position="left"
  */
 const v1 = {
 	attributes: {
@@ -38,11 +38,7 @@ const v1 = {
 			type: 'string',
 			default: '',
 		},
-		iconPosition: {
-			type: 'string',
-			default: 'left',
-			enum: ['left', 'right', 'top'],
-		},
+		// iconPosition attribute didn't exist in v1
 		anchor: {
 			type: 'string',
 			default: '',
@@ -63,7 +59,7 @@ const v1 = {
 	},
 
 	save({ attributes }) {
-		const { uniqueId, title, anchor, icon, iconPosition } = attributes;
+		const { uniqueId, title, anchor, icon } = attributes;
 
 		const blockProps = useBlockProps.save({
 			className: 'dsgo-tab',
@@ -72,13 +68,10 @@ const v1 = {
 			'aria-label': title || `Tab ${uniqueId}`,
 			id: `panel-${anchor || uniqueId}`,
 			hidden: true,
+			// v1 always output icon data with position="left" when icon exists
 			...(icon && {
 				'data-icon': sanitizeIconSlug(icon),
-				'data-icon-position': ['left', 'right', 'top'].includes(
-					iconPosition
-				)
-					? iconPosition
-					: 'left',
+				'data-icon-position': 'left',
 			}),
 		});
 
@@ -94,14 +87,12 @@ const v1 = {
 	},
 
 	migrate(attributes) {
-		// If no icon is set, migrate to iconPosition: "none"
-		// Otherwise keep the existing iconPosition
+		// Migrate to new structure with iconPosition attribute
 		return {
 			...attributes,
-			iconPosition:
-				!attributes.icon || attributes.icon === ''
-					? 'none'
-					: attributes.iconPosition || 'left',
+			// If icon exists, set iconPosition to "left" (old default)
+			// If no icon, set to "none" (new default)
+			iconPosition: attributes.icon ? 'left' : 'none',
 		};
 	},
 };
