@@ -124,9 +124,9 @@ class List_Blocks extends Abstract_Ability {
 	 * Execute the ability.
 	 *
 	 * @param array<string, mixed> $input Input parameters.
-	 * @return array<int, array<string, mixed>>
+	 * @return array<string, mixed>|WP_Error
 	 */
-	public function execute( array $input ): array {
+	public function execute( array $input ) {
 		$category = $input['category'] ?? 'all';
 
 		// Get all DesignSetGo blocks.
@@ -142,7 +142,10 @@ class List_Blocks extends Abstract_Ability {
 			);
 		}
 
-		return array_values( $all_blocks );
+		return array(
+			'blocks' => array_values( $all_blocks ),
+			'total'  => count( $all_blocks ),
+		);
 	}
 
 	/**
