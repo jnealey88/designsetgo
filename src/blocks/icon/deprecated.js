@@ -38,10 +38,11 @@ function sanitizeUrl(url) {
  * - Editor still uses getIcon() from shared library
  */
 const v1 = {
-	isEligible() {
-		// v1 is eligible for all blocks saved before lazy loading
-		// Always try this deprecation since it's the only one
-		return true;
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 is eligible if the block DOES NOT have dsgo-lazy-icon class
+		// New blocks use dsgo-lazy-icon for frontend injection
+		// Old blocks have inline SVG without this class
+		return innerHTML && !innerHTML.includes('dsgo-lazy-icon');
 	},
 
 	attributes: {
