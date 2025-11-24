@@ -18,19 +18,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Assets {
 	/**
-	 * Track which blocks are used on the current page.
-	 *
-	 * @var array
-	 */
-	private $used_blocks = array();
-
-	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_editor_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
-		add_filter( 'render_block', array( $this, 'track_block_usage' ), 10, 2 );
 
 		// Clear block detection cache when post is saved.
 		add_action( 'save_post', array( $this, 'clear_block_cache' ) );
@@ -40,21 +32,6 @@ class Assets {
 		add_filter( 'style_loader_tag', array( $this, 'optimize_css_loading' ), 10, 4 );
 		add_action( 'wp_head', array( $this, 'inline_critical_css' ), 1 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'dequeue_inlined_css' ), 20 );
-	}
-
-	/**
-	 * Track which blocks are used on the page for conditional loading.
-	 *
-	 * @param string $block_content Block content.
-	 * @param array  $block         Block data.
-	 * @return string Block content.
-	 */
-	public function track_block_usage( $block_content, $block ) {
-		if ( isset( $block['blockName'] ) && strpos( $block['blockName'], 'designsetgo/' ) === 0 ) {
-			$block_name          = str_replace( 'designsetgo/', '', $block['blockName'] );
-			$this->used_blocks[] = $block_name;
-		}
-		return $block_content;
 	}
 
 	/**

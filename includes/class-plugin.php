@@ -20,7 +20,7 @@ class Plugin {
 	/**
 	 * Instance of this class.
 	 *
-	 * @var Plugin
+	 * @var Plugin|null
 	 */
 	private static $instance = null;
 

@@ -48,8 +48,8 @@ class Section_Styles {
 	 * section styles defined by the theme. Section styles typically have
 	 * slugs like "section-1", "section-2", etc.
 	 *
-	 * @param WP_Theme_JSON_Data $theme_json The theme.json data object.
-	 * @return WP_Theme_JSON_Data Modified theme.json data.
+	 * @param \WP_Theme_JSON_Data $theme_json The theme.json data object.
+	 * @return \WP_Theme_JSON_Data Modified theme.json data.
 	 */
 	public function extend_section_styles( $theme_json ) {
 		// Get the theme data as an array.

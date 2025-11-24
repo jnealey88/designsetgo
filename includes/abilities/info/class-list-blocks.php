@@ -77,34 +77,43 @@ class List_Blocks extends Abstract_Ability {
 	 */
 	private function get_output_schema(): array {
 		return array(
-			'type'  => 'array',
-			'items' => array(
-				'type'       => 'object',
-				'properties' => array(
-					'name'        => array(
-						'type'        => 'string',
-						'description' => __( 'Block name', 'designsetgo' ),
+			'type'       => 'object',
+			'properties' => array(
+				'blocks' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type'       => 'object',
+						'properties' => array(
+							'name'        => array(
+								'type'        => 'string',
+								'description' => __( 'Block name', 'designsetgo' ),
+							),
+							'title'       => array(
+								'type'        => 'string',
+								'description' => __( 'Human-readable title', 'designsetgo' ),
+							),
+							'description' => array(
+								'type'        => 'string',
+								'description' => __( 'Block description', 'designsetgo' ),
+							),
+							'category'    => array(
+								'type'        => 'string',
+								'description' => __( 'Block category', 'designsetgo' ),
+							),
+							'attributes'  => array(
+								'type'        => 'object',
+								'description' => __( 'Available block attributes', 'designsetgo' ),
+							),
+							'supports'    => array(
+								'type'        => 'object',
+								'description' => __( 'Block support features', 'designsetgo' ),
+							),
+						),
 					),
-					'title'       => array(
-						'type'        => 'string',
-						'description' => __( 'Human-readable title', 'designsetgo' ),
-					),
-					'description' => array(
-						'type'        => 'string',
-						'description' => __( 'Block description', 'designsetgo' ),
-					),
-					'category'    => array(
-						'type'        => 'string',
-						'description' => __( 'Block category', 'designsetgo' ),
-					),
-					'attributes'  => array(
-						'type'        => 'object',
-						'description' => __( 'Available block attributes', 'designsetgo' ),
-					),
-					'supports'    => array(
-						'type'        => 'object',
-						'description' => __( 'Block support features', 'designsetgo' ),
-					),
+				),
+				'total'  => array(
+					'type'        => 'integer',
+					'description' => __( 'Total number of blocks returned', 'designsetgo' ),
 				),
 			),
 		);
@@ -124,7 +133,7 @@ class List_Blocks extends Abstract_Ability {
 	 * Execute the ability.
 	 *
 	 * @param array<string, mixed> $input Input parameters.
-	 * @return array<int, array<string, mixed>>
+	 * @return array<string, mixed>
 	 */
 	public function execute( array $input ): array {
 		$category = $input['category'] ?? 'all';
@@ -142,7 +151,10 @@ class List_Blocks extends Abstract_Ability {
 			);
 		}
 
-		return array_values( $all_blocks );
+		return array(
+			'blocks' => array_values( $all_blocks ),
+			'total'  => count( $all_blocks ),
+		);
 	}
 
 	/**

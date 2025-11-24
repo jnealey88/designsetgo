@@ -220,12 +220,12 @@ class Loader {
 				// Register the style for each block type.
 				foreach ( $block_types as $block_type ) {
 					// Register the block style variation.
+					// Note: No separate stylesheet needed, so style_handle is omitted.
 					register_block_style(
 						$block_type,
 						array(
-							'name'         => $style_data['slug'],
-							'label'        => $style_data['title'],
-							'style_handle' => null, // No separate stylesheet needed.
+							'name'  => $style_data['slug'],
+							'label' => $style_data['title'],
 						)
 					);
 

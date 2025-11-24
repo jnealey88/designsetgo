@@ -538,10 +538,6 @@ class Settings {
 		// Sanitize settings.
 		$sanitized = $this->sanitize_settings( $new_settings );
 
-		if ( is_wp_error( $sanitized ) ) {
-			return $sanitized;
-		}
-
 		update_option( self::OPTION_NAME, $sanitized );
 
 		return rest_ensure_response(
@@ -619,9 +615,9 @@ class Settings {
 	 * Sanitize settings
 	 *
 	 * @param array $settings Settings to sanitize.
-	 * @return array|\WP_Error Sanitized settings or error.
+	 * @return array Sanitized settings.
 	 */
-	private function sanitize_settings( $settings ) {
+	private function sanitize_settings( $settings ): array {
 		$sanitized = array();
 
 		// Sanitize enabled blocks.
