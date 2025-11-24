@@ -180,9 +180,10 @@ class Form_Submissions {
 
 		// Email delivery status.
 		if ( $email_sent !== '' ) {
-			echo '<div style="margin-bottom: 1em; padding: 10px; background: ' . ( $email_sent ? '#d4edda' : '#f8d7da' ) . '; border-left: 3px solid ' . ( $email_sent ? '#28a745' : '#dc3545' ) . ';">';
+			$is_sent = ( 'yes' === $email_sent );
+			echo '<div style="margin-bottom: 1em; padding: 10px; background: ' . ( $is_sent ? '#d4edda' : '#f8d7da' ) . '; border-left: 3px solid ' . ( $is_sent ? '#28a745' : '#dc3545' ) . ';">';
 			echo '<strong>' . esc_html__( 'Email Status:', 'designsetgo' ) . '</strong><br>';
-			if ( $email_sent ) {
+			if ( $is_sent ) {
 				echo '<span style="color: #155724;">✓ ' . esc_html__( 'Sent Successfully', 'designsetgo' ) . '</span>';
 				if ( $email_to ) {
 					echo '<br><small>' . esc_html__( 'To:', 'designsetgo' ) . ' ' . esc_html( $email_to ) . '</small>';
@@ -257,7 +258,7 @@ class Form_Submissions {
 				$email_sent = get_post_meta( $post_id, '_dsg_email_sent', true );
 				if ( $email_sent === '' ) {
 					echo '<span style="color: #999;">—</span>';
-				} elseif ( $email_sent ) {
+				} elseif ( 'yes' === $email_sent ) {
 					echo '<span style="color: #46b450;" title="' . esc_attr__( 'Email sent successfully', 'designsetgo' ) . '">✓ ' . esc_html__( 'Sent', 'designsetgo' ) . '</span>';
 				} else {
 					echo '<span style="color: #dc3232;" title="' . esc_attr__( 'Email failed to send', 'designsetgo' ) . '">✗ ' . esc_html__( 'Failed', 'designsetgo' ) . '</span>';
