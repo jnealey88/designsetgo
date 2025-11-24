@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -146,6 +146,45 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.2.1 - 2025-11-24 =
+**New Features:**
+* New: Form submissions admin now displays email delivery status (sent/failed) with visual indicators
+* New: Detailed email delivery information in submission sidebar (recipient, date, status)
+* New: Data retention enforcement and configurable anti-abuse settings for form submissions
+* New: Missing blocks and extensions now properly display in admin Dashboard
+* New: Phase 1 CI/CD improvements for automated testing and deployment
+
+**Security Fixes:**
+* Security: Added CSRF protection for form submissions to prevent cross-site request forgery attacks
+* Security: Restricted form submissions to admin-only access for better data protection
+* Security: Implemented trusted proxy IP resolution to prevent IP spoofing in rate limiting
+* Security: Aligned uninstall.php prefixes with codebase standards to prevent conflicts
+
+**Performance Improvements:**
+* Performance: Implemented lazy loading for icon library - critical optimization reducing initial bundle size
+* Performance: Optimized local development environment for faster builds
+* Performance: Prevented webpack cache corruption and build hangs
+
+**Bug Fixes:**
+* Fix: Form email deliverability - changed From address default from admin email to wordpress@{sitedomain} to match WordPress core and prevent SPF/DKIM/DMARC failures
+* Fix: Form validation, rate limiting, and email tracking issues resolved
+* Fix: Email status display bug where 'yes'/'no' strings were incorrectly checked as booleans
+* Fix: Admin dashboard capability check error (map_meta_cap) preventing proper access control
+* Fix: Admin dashboard non-array blocks data handling preventing crashes
+* Fix: WordPress compatibility matrix updated for current versions
+* Fix: CI/CD pipeline issues (PHPCS configuration, wp-env violations)
+
+**Enhancements:**
+* Enhancement: Added debug logging to track email notification flow and diagnose sending issues
+* Enhancement: Domain extraction using wp_parse_url() with automatic www. prefix removal
+* Enhancement: Updated From Email helper text to reflect new domain-matched email default
+* Enhancement: PHP 7.4+ compatible email handling with proper fallbacks
+* Enhancement: Configured PHPCS to only fail on errors, not warnings
+
+**Documentation:**
+* Docs: Consolidated three independent security audits into comprehensive report
+* Docs: Updated PHPStan configuration for better code quality analysis
 
 = 1.2.0 - 2025-11-21 =
 **New Features:**

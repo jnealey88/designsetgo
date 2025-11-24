@@ -179,7 +179,7 @@ class Form_Submissions {
 		}
 
 		// Email delivery status.
-		if ( $email_sent !== '' ) {
+		if ( '' !== $email_sent ) {
 			$is_sent = ( 'yes' === $email_sent );
 			echo '<div style="margin-bottom: 1em; padding: 10px; background: ' . ( $is_sent ? '#d4edda' : '#f8d7da' ) . '; border-left: 3px solid ' . ( $is_sent ? '#28a745' : '#dc3545' ) . ';">';
 			echo '<strong>' . esc_html__( 'Email Status:', 'designsetgo' ) . '</strong><br>';
@@ -256,7 +256,7 @@ class Form_Submissions {
 
 			case 'email_status':
 				$email_sent = get_post_meta( $post_id, '_dsg_email_sent', true );
-				if ( $email_sent === '' ) {
+				if ( '' === $email_sent ) {
 					echo '<span style="color: #999;">—</span>';
 				} elseif ( 'yes' === $email_sent ) {
 					echo '<span style="color: #46b450;" title="' . esc_attr__( 'Email sent successfully', 'designsetgo' ) . '">✓ ' . esc_html__( 'Sent', 'designsetgo' ) . '</span>';
