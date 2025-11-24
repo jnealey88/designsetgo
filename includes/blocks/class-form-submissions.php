@@ -157,11 +157,14 @@ class Form_Submissions {
 	 * @param \WP_Post $post Post object.
 	 */
 	public function render_submission_meta( $post ) {
-		$form_id    = get_post_meta( $post->ID, '_dsg_form_id', true );
-		$ip_address = get_post_meta( $post->ID, '_dsg_submission_ip', true );
-		$user_agent = get_post_meta( $post->ID, '_dsg_submission_user_agent', true );
-		$referer    = get_post_meta( $post->ID, '_dsg_submission_referer', true );
-		$date       = get_post_meta( $post->ID, '_dsg_submission_date', true );
+		$form_id         = get_post_meta( $post->ID, '_dsg_form_id', true );
+		$ip_address      = get_post_meta( $post->ID, '_dsg_submission_ip', true );
+		$user_agent      = get_post_meta( $post->ID, '_dsg_submission_user_agent', true );
+		$referer         = get_post_meta( $post->ID, '_dsg_submission_referer', true );
+		$date            = get_post_meta( $post->ID, '_dsg_submission_date', true );
+		$email_sent      = get_post_meta( $post->ID, '_dsg_email_sent', true );
+		$email_to        = get_post_meta( $post->ID, '_dsg_email_to', true );
+		$email_sent_date = get_post_meta( $post->ID, '_dsg_email_sent_date', true );
 
 		echo '<div style="margin-bottom: 1em;">';
 		echo '<strong>' . esc_html__( 'Form ID:', 'designsetgo' ) . '</strong><br>';
@@ -172,6 +175,27 @@ class Form_Submissions {
 			echo '<div style="margin-bottom: 1em;">';
 			echo '<strong>' . esc_html__( 'Submitted:', 'designsetgo' ) . '</strong><br>';
 			echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $date ) ) );
+			echo '</div>';
+		}
+
+		// Email delivery status.
+		if ( $email_sent !== '' ) {
+			echo '<div style="margin-bottom: 1em; padding: 10px; background: ' . ( $email_sent ? '#d4edda' : '#f8d7da' ) . '; border-left: 3px solid ' . ( $email_sent ? '#28a745' : '#dc3545' ) . ';">';
+			echo '<strong>' . esc_html__( 'Email Status:', 'designsetgo' ) . '</strong><br>';
+			if ( $email_sent ) {
+				echo '<span style="color: #155724;">✓ ' . esc_html__( 'Sent Successfully', 'designsetgo' ) . '</span>';
+				if ( $email_to ) {
+					echo '<br><small>' . esc_html__( 'To:', 'designsetgo' ) . ' ' . esc_html( $email_to ) . '</small>';
+				}
+				if ( $email_sent_date ) {
+					echo '<br><small>' . esc_html__( 'Sent:', 'designsetgo' ) . ' ' . esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $email_sent_date ) ) . '</small>';
+				}
+			} else {
+				echo '<span style="color: #721c24;">✗ ' . esc_html__( 'Failed to Send', 'designsetgo' ) . '</span>';
+				if ( $email_to ) {
+					echo '<br><small>' . esc_html__( 'Attempted to:', 'designsetgo' ) . ' ' . esc_html( $email_to ) . '</small>';
+				}
+			}
 			echo '</div>';
 		}
 
@@ -205,11 +229,12 @@ class Form_Submissions {
 	 */
 	public function custom_columns( $columns ) {
 		$new_columns = array(
-			'cb'         => $columns['cb'],
-			'title'      => __( 'Submission', 'designsetgo' ),
-			'form_id'    => __( 'Form ID', 'designsetgo' ),
-			'ip_address' => __( 'IP Address', 'designsetgo' ),
-			'date'       => __( 'Date', 'designsetgo' ),
+			'cb'           => $columns['cb'],
+			'title'        => __( 'Submission', 'designsetgo' ),
+			'form_id'      => __( 'Form ID', 'designsetgo' ),
+			'email_status' => __( 'Email', 'designsetgo' ),
+			'ip_address'   => __( 'IP Address', 'designsetgo' ),
+			'date'         => __( 'Date', 'designsetgo' ),
 		);
 
 		return $new_columns;
@@ -226,6 +251,17 @@ class Form_Submissions {
 			case 'form_id':
 				$form_id = get_post_meta( $post_id, '_dsg_form_id', true );
 				echo $form_id ? '<code>' . esc_html( $form_id ) . '</code>' : '—';
+				break;
+
+			case 'email_status':
+				$email_sent = get_post_meta( $post_id, '_dsg_email_sent', true );
+				if ( $email_sent === '' ) {
+					echo '<span style="color: #999;">—</span>';
+				} elseif ( $email_sent ) {
+					echo '<span style="color: #46b450;" title="' . esc_attr__( 'Email sent successfully', 'designsetgo' ) . '">✓ ' . esc_html__( 'Sent', 'designsetgo' ) . '</span>';
+				} else {
+					echo '<span style="color: #dc3232;" title="' . esc_attr__( 'Email failed to send', 'designsetgo' ) . '">✗ ' . esc_html__( 'Failed', 'designsetgo' ) . '</span>';
+				}
 				break;
 
 			case 'ip_address':
