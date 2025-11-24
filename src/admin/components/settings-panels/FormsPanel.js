@@ -61,6 +61,23 @@ const FormsPanel = ({ settings, updateSetting }) => {
 						}
 						__nextHasNoMarginBottom
 					/>
+
+					<ToggleControl
+						label={__('Enable Email Logging', 'designsetgo')}
+						help={__(
+							'Log email delivery status to PHP error log. Useful for debugging email issues.',
+							'designsetgo'
+						)}
+						checked={settings?.forms?.enable_email_logging || false}
+						onChange={(value) =>
+							updateSetting(
+								'forms',
+								'enable_email_logging',
+								value
+							)
+						}
+						__nextHasNoMarginBottom
+					/>
 				</div>
 
 				<div className="designsetgo-settings-section">

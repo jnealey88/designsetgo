@@ -38,6 +38,14 @@
  *    @param string $form_id         Form identifier
  *    @param array  $sanitized_fields Sanitized form fields
  *
+ * 5. designsetgo_form_email_sent
+ *    Fired after email notification is sent (or attempted)
+ *    @param int    $submission_id   Submission post ID
+ *    @param string $form_id         Form identifier
+ *    @param bool   $email_sent      Whether email was sent successfully
+ *    @param string $email_to        Recipient email address
+ *    @param string $email_subject   Email subject line
+ *
  * Example Usage:
  * ```php
  * // Log spam attempts
@@ -257,8 +265,9 @@ class Form_Handler {
 		}
 
 		// Rate limiting check (only if enabled in settings).
+		// Note: We only CHECK here, not increment. Increment happens after successful submission.
 		if ( $form_settings['enable_rate_limiting'] ) {
-			$rate_limit_check = $this->check_rate_limit( $form_id );
+			$rate_limit_check = $this->check_rate_limit( $form_id, false );
 			if ( is_wp_error( $rate_limit_check ) ) {
 				return $rate_limit_check;
 			}
@@ -316,6 +325,11 @@ class Form_Handler {
 		// Send email notification if enabled.
 		$this->send_email_notification( $request, $form_id, $sanitized_fields, $submission_id );
 
+		// Increment rate limit counter ONLY after successful submission.
+		if ( $form_settings['enable_rate_limiting'] ) {
+			$this->increment_rate_limit( $form_id );
+		}
+
 		// Trigger action hook for email notifications, integrations, etc.
 		do_action( 'designsetgo_form_submitted', $submission_id, $form_id, $sanitized_fields );
 
@@ -333,9 +347,10 @@ class Form_Handler {
 	 * Check rate limiting for form submissions.
 	 *
 	 * @param string $form_id Form ID.
+	 * @param bool   $increment Whether to increment the counter (default: true for backwards compatibility).
 	 * @return true|WP_Error True if allowed, WP_Error if rate limited.
 	 */
-	private function check_rate_limit( $form_id ) {
+	private function check_rate_limit( $form_id, $increment = true ) {
 		$ip_address = $this->get_client_ip();
 		$key        = 'form_submit_' . $form_id . '_' . md5( $ip_address );
 		$count      = get_transient( $key );
@@ -345,8 +360,10 @@ class Form_Handler {
 		$time_window     = apply_filters( 'designsetgo_form_rate_limit_window', 60, $form_id );
 
 		if ( false === $count ) {
-			// First submission, start tracking.
-			set_transient( $key, 1, $time_window );
+			// First submission, start tracking only if incrementing.
+			if ( $increment ) {
+				set_transient( $key, 1, $time_window );
+			}
 			return true;
 		}
 
@@ -361,9 +378,33 @@ class Form_Handler {
 			);
 		}
 
-		// Increment count.
-		set_transient( $key, $count + 1, $time_window );
+		// Increment count only if requested.
+		if ( $increment ) {
+			set_transient( $key, $count + 1, $time_window );
+		}
 		return true;
+	}
+
+	/**
+	 * Increment rate limit counter after successful submission.
+	 *
+	 * @param string $form_id Form ID.
+	 */
+	private function increment_rate_limit( $form_id ) {
+		$ip_address = $this->get_client_ip();
+		$key        = 'form_submit_' . $form_id . '_' . md5( $ip_address );
+		$count      = get_transient( $key );
+
+		// Get rate limit settings.
+		$time_window = apply_filters( 'designsetgo_form_rate_limit_window', 60, $form_id );
+
+		if ( false === $count ) {
+			// First submission.
+			set_transient( $key, 1, $time_window );
+		} else {
+			// Increment existing count.
+			set_transient( $key, $count + 1, $time_window );
+		}
 	}
 
 	/**
@@ -374,6 +415,12 @@ class Form_Handler {
 	 * @return true|WP_Error True if valid, WP_Error if invalid.
 	 */
 	private function validate_field( $value, $type ) {
+		// Skip validation for empty values (optional fields).
+		// Required fields are validated by HTML5 on the frontend.
+		if ( empty( $value ) && '0' !== $value ) {
+			return true;
+		}
+
 		switch ( $type ) {
 			case 'email':
 				if ( ! is_email( $value ) ) {
@@ -763,8 +810,32 @@ class Form_Handler {
 			}
 		}
 
-		// Send email.
-		wp_mail( $email_to, $email_subject, $email_body, $headers );
+		// Send email and log the result.
+		$email_sent = wp_mail( $email_to, $email_subject, $email_body, $headers );
+
+		// Store email delivery status in submission meta.
+		update_post_meta( $submission_id, '_dsg_email_sent', $email_sent ? 'yes' : 'no' );
+		update_post_meta( $submission_id, '_dsg_email_to', $email_to );
+		update_post_meta( $submission_id, '_dsg_email_sent_date', current_time( 'mysql' ) );
+
+		// Log email delivery if enabled in settings.
+		$form_settings      = $this->get_form_settings();
+		$enable_email_logging = isset( $form_settings['enable_email_logging'] ) ? $form_settings['enable_email_logging'] : false;
+
+		if ( $enable_email_logging ) {
+			error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional logging when enabled in settings.
+				sprintf(
+					'DesignSetGo Form: Email %s for submission #%d (To: %s, Subject: %s)',
+					$email_sent ? 'sent successfully' : 'FAILED to send',
+					$submission_id,
+					$email_to,
+					$email_subject
+				)
+			);
+		}
+
+		// Fire action hook for email monitoring/integration.
+		do_action( 'designsetgo_form_email_sent', $submission_id, $form_id, $email_sent, $email_to, $email_subject );
 	}
 
 	/**

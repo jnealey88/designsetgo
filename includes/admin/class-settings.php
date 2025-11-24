@@ -45,6 +45,7 @@ class Settings {
 			'forms'              => array(
 				'enable_honeypot'      => true,
 				'enable_rate_limiting' => true,
+				'enable_email_logging' => false,
 				'retention_days'       => 30,
 			),
 			'animations'         => array(
