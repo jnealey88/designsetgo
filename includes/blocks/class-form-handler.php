@@ -464,7 +464,8 @@ class Form_Handler {
 					$form_id
 				),
 				'post_date'   => current_time( 'mysql' ),
-			)
+			),
+			true
 		);
 
 		if ( is_wp_error( $post_id ) ) {

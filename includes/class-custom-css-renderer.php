@@ -325,6 +325,6 @@ class Custom_CSS_Renderer {
 			$hash = $hash & 0xFFFFFFFF; // Convert to 32bit integer.
 		}
 
-		return base_convert( abs( $hash ), 10, 36 );
+		return base_convert( (string) abs( $hash ), 10, 36 );
 	}
 }

@@ -477,7 +477,7 @@ We implement appropriate security measures to protect your personal data from un
 	 * Check admin permission for REST API.
 	 *
 	 * @param \WP_REST_Request $request Request object.
-	 * @return bool True if user has permission.
+	 * @return bool|\WP_Error True if user has permission, WP_Error on failure.
 	 */
 	public function check_admin_permission( $request ) {
 		// Check capability first.

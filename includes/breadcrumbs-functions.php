@@ -24,7 +24,7 @@ if ( ! function_exists( 'designsetgo_get_breadcrumb_trail' ) ) {
 
 		// Get post from block context.
 		$post_id = null;
-		if ( $block && isset( $block->context['postId'] ) ) {
+		if ( isset( $block->context['postId'] ) ) {
 			$post_id = $block->context['postId'];
 		}
 

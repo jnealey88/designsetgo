@@ -75,7 +75,6 @@ class Form_Submissions {
 			'map_meta_cap'       => true,
 			'has_archive'        => false,
 			'hierarchical'       => false,
-			'menu_position'      => null,
 			'supports'           => array( 'title' ),
 		);
 
