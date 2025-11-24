@@ -153,38 +153,25 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * New: Detailed email delivery information in submission sidebar (recipient, date, status)
 * New: Data retention enforcement and configurable anti-abuse settings for form submissions
 * New: Missing blocks and extensions now properly display in admin Dashboard
-* New: Phase 1 CI/CD improvements for automated testing and deployment
 
 **Security Fixes:**
 * Security: Added CSRF protection for form submissions to prevent cross-site request forgery attacks
 * Security: Restricted form submissions to admin-only access for better data protection
 * Security: Implemented trusted proxy IP resolution to prevent IP spoofing in rate limiting
-* Security: Aligned uninstall.php prefixes with codebase standards to prevent conflicts
 
-**Performance Improvements:**
+**Performance:**
 * Performance: Implemented lazy loading for icon library - critical optimization reducing initial bundle size
-* Performance: Optimized local development environment for faster builds
-* Performance: Prevented webpack cache corruption and build hangs
 
 **Bug Fixes:**
 * Fix: Form email deliverability - changed From address default from admin email to wordpress@{sitedomain} to match WordPress core and prevent SPF/DKIM/DMARC failures
 * Fix: Form validation, rate limiting, and email tracking issues resolved
-* Fix: Email status display bug where 'yes'/'no' strings were incorrectly checked as booleans
-* Fix: Admin dashboard capability check error (map_meta_cap) preventing proper access control
-* Fix: Admin dashboard non-array blocks data handling preventing crashes
-* Fix: WordPress compatibility matrix updated for current versions
-* Fix: CI/CD pipeline issues (PHPCS configuration, wp-env violations)
+* Fix: Email status display bug in admin dashboard
+* Fix: Admin dashboard capability check error preventing proper access control
+* Fix: Admin dashboard handling of blocks data preventing crashes
 
 **Enhancements:**
 * Enhancement: Added debug logging to track email notification flow and diagnose sending issues
-* Enhancement: Domain extraction using wp_parse_url() with automatic www. prefix removal
 * Enhancement: Updated From Email helper text to reflect new domain-matched email default
-* Enhancement: PHP 7.4+ compatible email handling with proper fallbacks
-* Enhancement: Configured PHPCS to only fail on errors, not warnings
-
-**Documentation:**
-* Docs: Consolidated three independent security audits into comprehensive report
-* Docs: Updated PHPStan configuration for better code quality analysis
 
 = 1.2.0 - 2025-11-21 =
 **New Features:**
@@ -196,7 +183,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 **Bug Fixes:**
 * Fix: Table of Contents critical production readiness fixes for stable performance
 * Fix: Table of Contents sticky positioning and scroll spy highlighting functionality
-* Fix: Table of Contents error handling in view.js for better reliability
+* Fix: Table of Contents error handling for better reliability
 * Fix: Prevent sticky header from affecting footer template parts
 
 **Security:**
@@ -206,11 +193,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * i18n: Added modal block translations to all language files
 * i18n: Updated translation strings for modal close functionality
 
-**Documentation:**
-* Docs: Reorganized and created comprehensive block/extension documentation
-
 **Maintenance:**
-* Maintenance: Updated dependencies (glob 10.4.5 → 10.5.0)
 * Maintenance: Optimized screenshot-1.gif (24MB → 5.7MB)
 * Maintenance: Updated WordPress.org assets and screenshots
 
@@ -221,36 +204,23 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Fix: Memory leak from uncleaned setTimeout timers in slider initialization
 * Fix: Double-counting bug in slider image load detection that could prevent initialization
 
-**Performance Improvements:**
+**Performance:**
 * Performance: Eliminated redundant DOM queries in slider initialization
 * Performance: Optimized Array.from conversions for better memory efficiency
 
-**Code Quality:**
-* Docs: Added comprehensive JSDoc documentation for slider initialization functions
-* Docs: Enhanced inline comments explaining race condition prevention and error handling
-
 = 1.1.3 - 2025-11-16 =
-**Performance Improvements:**
-* Performance: Major CSS loading strategy optimization - improved enqueue logic and selective loading (#93)
-* Performance: Fixed forced reflows in JavaScript and optimized asset loading strategy (#91)
+**Performance:**
+* Performance: Major CSS loading strategy optimization - improved enqueue logic and selective loading
+* Performance: Fixed forced reflows in JavaScript and optimized asset loading strategy
 * Performance: Eliminated layout thrashing by batching DOM reads/writes and deferring non-critical operations
 
 **Bug Fixes:**
-* Fix: Flip card back panel now correctly displays background color and text in editor (#94)
-* Fix: Added alignment options to countdown timer block for better layout control (#95)
-
-**Documentation:**
-* Docs: Updated WordPress.org screenshots to reflect current plugin features
+* Fix: Flip card back panel now correctly displays background color and text in editor
+* Fix: Added alignment options to countdown timer block for better layout control
 
 = 1.1.2 - 2025-11-15 =
 **New Features:**
-* New: Added five comprehensive filter hooks for Custom CSS customization
-  * `designsetgo/custom_css_block` - Modify CSS per block before processing
-  * `designsetgo/custom_css_class_name` - Customize CSS class name generation
-  * `designsetgo/custom_css_sanitize` - Additional sanitization rules
-  * `designsetgo/custom_css_processed` - Post-process CSS after sanitization
-  * `designsetgo/custom_css_output` - Control final CSS output
-* New: Comprehensive developer documentation with 16+ practical examples in docs/CUSTOM-CSS-FILTERS.md
+* New: Added developer filter hooks for advanced Custom CSS customization
 
 **Bug Fixes:**
 * Fix: Section hover background now correctly renders behind content instead of over text
@@ -258,18 +228,14 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 **Enhancements:**
 * Enhancement: Improved Custom CSS textarea UX with better styling and increased height
-* Enhancement: Added block name tracking to Custom CSS data structure for better debugging
-* Documentation: Enhanced PHPDoc comments with detailed filter hook usage examples
 
 = 1.1.1 - 2025-11-15 =
 **Security Fixes:**
-* Security: Fixed HIGH severity string escaping vulnerability in counter number formatting (CVE alerts #15-18)
+* Security: Fixed HIGH severity string escaping vulnerability in counter number formatting
 * Security: Added escapeReplacement() function to prevent injection via replacement string special sequences
-* Security: Enhanced GitHub Actions workflows with explicit permissions following principle of least privilege
 
-**Changes:**
+**Bug Fixes:**
 * Fix: Escape special characters in separator strings used by Counter and Counter Group blocks
-* Enhancement: Added explicit permissions blocks to all GitHub Actions workflows for improved security posture
 
 = 1.1.0 - 2025-11-14 =
 **New Blocks:**
