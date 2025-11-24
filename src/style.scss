@@ -21,6 +21,7 @@
 @use './extensions/grid-span/style' as grid-span;
 @use './extensions/reveal-control/styles' as reveal-control;
 @use './extensions/clickable-group/styles' as clickable-group;
+@use './extensions/expanding-background/style' as expanding-background;
 
 // ===================================================================
 // PERFORMANCE OPTIMIZATION (2025-11-11)

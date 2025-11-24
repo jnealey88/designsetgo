@@ -1,0 +1,48 @@
+/**
+ * Expanding Background Extension - Frontend Styles
+ *
+ * @package DesignSetGo
+ */
+
+.has-dsgo-expanding-background {
+	// Ensure relative positioning for pseudo-element
+	position: relative;
+
+	// Create the expanding circle background
+	&::before {
+		content: '';
+		position: absolute;
+		top: var(--dsgo-expanding-bg-top, 50%);
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: -1;
+		pointer-events: none;
+
+		// Circle shape
+		border-radius: 50%;
+
+		// Dynamic properties set by JavaScript
+		width: var(--dsgo-expanding-bg-size, 50px);
+		height: var(--dsgo-expanding-bg-size, 50px);
+		background-color: var(--dsgo-expanding-bg-color, #e8e8e8);
+		filter: blur(var(--dsgo-expanding-bg-blur, 30px));
+
+		// Smooth transitions (top excluded to avoid sliding effect)
+		transition:
+			width 0.1s ease-out,
+			height 0.1s ease-out,
+			filter 0.1s ease-out;
+
+		// GPU acceleration for better performance
+		will-change: transform, filter;
+	}
+
+	// Respect reduced motion preference
+	@media (prefers-reduced-motion: reduce) {
+
+		&::before {
+			// Disable the effect entirely
+			display: none;
+		}
+	}
+}
