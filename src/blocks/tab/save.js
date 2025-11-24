@@ -32,7 +32,9 @@ export default function Save({ attributes }) {
 		id: `panel-${anchor || uniqueId}`,
 		hidden: true, // All tabs hidden by default, JS will show active
 		// ✅ SECURITY: Sanitized icon data for frontend JS
+		// Only output data attributes if iconPosition is explicitly set (not undefined) and not 'none'
 		...(icon &&
+			iconPosition &&
 			iconPosition !== 'none' && {
 				'data-icon': sanitizeIconSlug(icon),
 				'data-icon-position': ['left', 'right'].includes(iconPosition)
