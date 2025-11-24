@@ -97,39 +97,49 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 							__nextHasNoMarginBottom
 						/>
 
-						<IconPicker
-							value={icon}
-							onChange={(value) => setAttributes({ icon: value })}
-							label={__('Tab Icon', 'designsetgo')}
+						<SelectControl
+							label={__('Icon Position', 'designsetgo')}
+							value={iconPosition}
+							options={[
+								{
+									label: __('None', 'designsetgo'),
+									value: 'none',
+								},
+								{
+									label: __('Left', 'designsetgo'),
+									value: 'left',
+								},
+								{
+									label: __('Right', 'designsetgo'),
+									value: 'right',
+								},
+								{
+									label: __('Top', 'designsetgo'),
+									value: 'top',
+								},
+							]}
+							onChange={(value) =>
+								setAttributes({ iconPosition: value })
+							}
 							help={__(
-								'Choose an icon to display with the tab',
+								'Choose where to display an icon with the tab',
 								'designsetgo'
 							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 
-						{icon && (
-							<SelectControl
-								label={__('Icon Position', 'designsetgo')}
-								value={iconPosition}
-								options={[
-									{
-										label: __('Left', 'designsetgo'),
-										value: 'left',
-									},
-									{
-										label: __('Right', 'designsetgo'),
-										value: 'right',
-									},
-									{
-										label: __('Top', 'designsetgo'),
-										value: 'top',
-									},
-								]}
+						{iconPosition !== 'none' && (
+							<IconPicker
+								value={icon}
 								onChange={(value) =>
-									setAttributes({ iconPosition: value })
+									setAttributes({ icon: value })
 								}
-								__next40pxDefaultSize
-								__nextHasNoMarginBottom
+								label={__('Tab Icon', 'designsetgo')}
+								help={__(
+									'Choose an icon to display with the tab',
+									'designsetgo'
+								)}
 							/>
 						)}
 
@@ -195,39 +205,47 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 						__nextHasNoMarginBottom
 					/>
 
-					<IconPicker
-						value={icon}
-						onChange={(value) => setAttributes({ icon: value })}
-						label={__('Tab Icon', 'designsetgo')}
+					<SelectControl
+						label={__('Icon Position', 'designsetgo')}
+						value={iconPosition}
+						options={[
+							{
+								label: __('None', 'designsetgo'),
+								value: 'none',
+							},
+							{
+								label: __('Left', 'designsetgo'),
+								value: 'left',
+							},
+							{
+								label: __('Right', 'designsetgo'),
+								value: 'right',
+							},
+							{
+								label: __('Top', 'designsetgo'),
+								value: 'top',
+							},
+						]}
+						onChange={(value) =>
+							setAttributes({ iconPosition: value })
+						}
 						help={__(
-							'Choose an icon to display with the tab',
+							'Choose where to display an icon with the tab',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 
-					{icon && (
-						<SelectControl
-							label={__('Icon Position', 'designsetgo')}
-							value={iconPosition}
-							options={[
-								{
-									label: __('Left', 'designsetgo'),
-									value: 'left',
-								},
-								{
-									label: __('Right', 'designsetgo'),
-									value: 'right',
-								},
-								{
-									label: __('Top', 'designsetgo'),
-									value: 'top',
-								},
-							]}
-							onChange={(value) =>
-								setAttributes({ iconPosition: value })
-							}
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
+					{iconPosition !== 'none' && (
+						<IconPicker
+							value={icon}
+							onChange={(value) => setAttributes({ icon: value })}
+							label={__('Tab Icon', 'designsetgo')}
+							help={__(
+								'Choose an icon to display with the tab',
+								'designsetgo'
+							)}
 						/>
 					)}
 

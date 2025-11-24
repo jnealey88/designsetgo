@@ -29,8 +29,9 @@
 		},
 		"iconPosition": {
 			"type": "string",
-			"default": "left",
+			"default": "none",
 			"enum": [
+				"none",
 				"left",
 				"right",
 				"top"
