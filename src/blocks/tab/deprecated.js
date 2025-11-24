@@ -5,21 +5,6 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
- * Sanitize icon slug to prevent XSS.
- * Allow only: lowercase letters, numbers, hyphens
- *
- * @param {string} icon - Icon slug to sanitize
- * @return {string} Sanitized icon slug
- */
-function sanitizeIconSlug(icon) {
-	if (!icon || typeof icon !== 'string') {
-		return '';
-	}
-	// Only allow safe characters for dashicon class names
-	return icon.toLowerCase().replace(/[^a-z0-9\-]/g, '');
-}
-
-/**
  * Version 1: Before adding "none" icon position option
  * - iconPosition attribute didn't exist (was always "left" implicitly)
  * - Blocks with icons always output data-icon-position="left"
