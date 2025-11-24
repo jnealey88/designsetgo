@@ -9,6 +9,13 @@
 // Track active scroll listeners for cleanup
 const activeElements = new Map();
 
+// Track observed elements to prevent duplicate observations
+const observedElements = new WeakSet();
+let intersectionObserver = null;
+
+// Store initial element positions to ensure consistent animation across viewport exits/re-entries
+const elementInitialPositions = new WeakMap();
+
 /**
  * Check if user prefers reduced motion
  *
@@ -16,6 +23,30 @@ const activeElements = new Map();
  */
 function prefersReducedMotion() {
 	return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/**
+ * Validate if a string is a valid CSS color value
+ *
+ * @param {string} color The color value to validate
+ * @return {boolean} True if the color is valid
+ */
+function isValidColor(color) {
+	if (!color || typeof color !== 'string') {
+		return false;
+	}
+
+	// Check for common CSS color formats
+	const validFormats = [
+		/^#[0-9A-Fa-f]{3,8}$/, // Hex colors (#fff, #ffffff, #ffffffff)
+		/^rgb\([^)]+\)$/, // RGB format
+		/^rgba\([^)]+\)$/, // RGBA format
+		/^hsl\([^)]+\)$/, // HSL format
+		/^hsla\([^)]+\)$/, // HSLA format
+		/^[a-z]+$/i, // Named colors (red, blue, etc.)
+	];
+
+	return validFormats.some((format) => format.test(color.trim()));
 }
 
 /**
@@ -75,7 +106,7 @@ function updateExpandingBackground(element, settings, initialElementTop) {
 	);
 
 	// Scale progress so it reaches 100% at the user-defined completion point
-	const completionFraction = completionPoint / 100;
+	const completionFraction = Math.max(0.01, completionPoint / 100); // Prevent division by zero
 	progress = Math.min(1, (progress / completionFraction) * speed);
 
 	// Get element dimensions and position
@@ -117,8 +148,9 @@ function setupScrollListener(element) {
 	}
 
 	// Get settings from data attributes
+	const rawColor = element.dataset.dsgoExpandingBgColor || '#e8e8e8';
 	const settings = {
-		color: element.dataset.dsgoExpandingBgColor || '#e8e8e8',
+		color: isValidColor(rawColor) ? rawColor : '#e8e8e8', // Validate color for security
 		initialSize:
 			parseInt(element.dataset.dsgoExpandingBgInitialSize, 10) || 50,
 		blur: parseInt(element.dataset.dsgoExpandingBgBlur, 10) || 30,
@@ -130,7 +162,14 @@ function setupScrollListener(element) {
 	};
 
 	// Track initial element position for progress calculation
-	const initialElementTop = element.getBoundingClientRect().top;
+	// Store position only once to maintain consistent animation across viewport exits/re-entries
+	if (!elementInitialPositions.has(element)) {
+		elementInitialPositions.set(
+			element,
+			element.getBoundingClientRect().top
+		);
+	}
+	const initialElementTop = elementInitialPositions.get(element);
 
 	// Animation frame request ID for throttling
 	let rafId = null;
@@ -183,29 +222,34 @@ function initExpandingBackgrounds() {
 		return;
 	}
 
-	// Create intersection observer to track when elements enter/leave viewport
-	const observer = new IntersectionObserver(
-		(entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					// Element entered viewport, start tracking
-					setupScrollListener(entry.target);
-				} else {
-					// Element left viewport, stop tracking for performance
-					removeScrollListener(entry.target);
-				}
-			});
-		},
-		{
-			// Start tracking slightly before element enters viewport
-			rootMargin: '100px 0px',
-			threshold: 0,
-		}
-	);
+	// Create intersection observer only once (reuse for all elements)
+	if (!intersectionObserver) {
+		intersectionObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						// Element entered viewport, start tracking
+						setupScrollListener(entry.target);
+					} else {
+						// Element left viewport, stop tracking for performance
+						removeScrollListener(entry.target);
+					}
+				});
+			},
+			{
+				// Start tracking slightly before element enters viewport
+				rootMargin: '100px 0px',
+				threshold: 0,
+			}
+		);
+	}
 
-	// Observe all elements
+	// Observe all elements (but skip already-observed ones)
 	elements.forEach((element) => {
-		observer.observe(element);
+		if (!observedElements.has(element)) {
+			intersectionObserver.observe(element);
+			observedElements.add(element);
+		}
 	});
 }
 

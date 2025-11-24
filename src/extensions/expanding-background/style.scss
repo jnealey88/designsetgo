@@ -34,7 +34,8 @@
 			filter 0.1s ease-out;
 
 		// GPU acceleration for better performance
-		will-change: transform, filter;
+		// Only hint about filter since transform is static
+		will-change: filter;
 	}
 
 	// Respect reduced motion preference
