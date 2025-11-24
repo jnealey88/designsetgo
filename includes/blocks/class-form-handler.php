@@ -84,11 +84,8 @@ class Form_Handler {
 		add_action( 'rest_api_init', array( $this, 'register_rest_endpoint' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'localize_form_script' ) );
 
-		// Schedule data retention cleanup cron job.
+		// Register cron callback (scheduling handled by activation hook).
 		add_action( 'designsetgo_cleanup_old_submissions', array( $this, 'cleanup_old_submissions' ) );
-		if ( ! wp_next_scheduled( 'designsetgo_cleanup_old_submissions' ) ) {
-			wp_schedule_event( time(), 'daily', 'designsetgo_cleanup_old_submissions' );
-		}
 	}
 
 	/**
