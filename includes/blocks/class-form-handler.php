@@ -745,11 +745,32 @@ class Form_Handler {
 		}
 
 		if ( empty( $email_from ) ) {
-			$email_from = get_option( 'admin_email' );
+			// Use domain-matched email address for better deliverability.
+			// This matches WordPress core and other plugins like CoBlocks.
+			$sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+			if ( null !== $sitename ) {
+				// Remove www prefix if present.
+				if ( 'www.' === substr( $sitename, 0, 4 ) ) {
+					$sitename = substr( $sitename, 4 );
+				}
+				$email_from = 'wordpress@' . $sitename;
+			} else {
+				// Fallback to admin email if we can't parse the domain.
+				$email_from = get_option( 'admin_email' );
+			}
 		} else {
 			$email_from = sanitize_email( $email_from );
 			if ( ! is_email( $email_from ) ) {
-				$email_from = get_option( 'admin_email' );
+				// Use domain-matched email address as fallback.
+				$sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+				if ( null !== $sitename ) {
+					if ( 'www.' === substr( $sitename, 0, 4 ) ) {
+						$sitename = substr( $sitename, 4 );
+					}
+					$email_from = 'wordpress@' . $sitename;
+				} else {
+					$email_from = get_option( 'admin_email' );
+				}
 			}
 		}
 
