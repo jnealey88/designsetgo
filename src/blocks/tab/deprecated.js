@@ -88,6 +88,9 @@ const v1 = {
 
 	migrate(attributes) {
 		// Migrate to new structure with iconPosition attribute
+		// Note: Existing blocks with icons default to 'left' position
+		// to preserve their appearance, while new blocks default to 'none'
+		// to provide a cleaner UX where users must explicitly choose to show icons
 		return {
 			...attributes,
 			// If icon exists, set iconPosition to "left" (old default)

@@ -37,6 +37,23 @@ class Icon_Injector {
 	);
 
 	/**
+	 * Blocks that have been converted to lazy loading.
+	 *
+	 * These blocks use data attributes and PHP icon injection.
+	 * Blocks NOT in this list still use the static icon library.
+	 *
+	 * @var array
+	 */
+	private $converted_blocks = array(
+		'designsetgo/icon',
+		'designsetgo/icon-button',
+		'designsetgo/icon-list-item',
+		'designsetgo/divider',
+		'designsetgo/modal-trigger',
+		'designsetgo/tabs',
+	);
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -55,9 +72,9 @@ class Icon_Injector {
 			return;
 		}
 
-		// Enqueue shared icon library for unconverted blocks (static imports).
-		// TODO: Remove this once all blocks are converted to lazy loading.
-		if ( file_exists( DESIGNSETGO_PATH . 'build/shared-icon-library-static.js' ) ) {
+		// ✅ PERFORMANCE: Only load static library if unconverted blocks are present.
+		// This avoids loading 51KB of icons twice (static + lazy) on the same page.
+		if ( $this->has_unconverted_blocks() && file_exists( DESIGNSETGO_PATH . 'build/shared-icon-library-static.js' ) ) {
 			wp_enqueue_script(
 				'designsetgo-icon-library-static',
 				DESIGNSETGO_URL . 'build/shared-icon-library-static.js',
@@ -67,7 +84,7 @@ class Icon_Injector {
 			);
 		}
 
-		// Enqueue the icon injector script.
+		// Enqueue the icon injector script for converted blocks.
 		$asset_file = DESIGNSETGO_PATH . 'build/frontend/lazy-icon-injector.asset.php';
 
 		if ( ! file_exists( $asset_file ) ) {
@@ -130,6 +147,39 @@ class Icon_Injector {
 
 		// Check if any icon-using blocks are present.
 		foreach ( $this->icon_blocks as $block_name ) {
+			if ( has_block( $block_name, $post ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if any unconverted (non-lazy-loading) icon blocks are present.
+	 *
+	 * Unconverted blocks still use the static icon library import.
+	 * Only load the static library if these blocks are actually present.
+	 *
+	 * @return bool True if unconverted blocks are present.
+	 */
+	private function has_unconverted_blocks() {
+		// Only check on singular pages (posts, pages, CPTs).
+		if ( ! is_singular() ) {
+			return false;
+		}
+
+		$post = get_post();
+
+		if ( ! $post || ! has_blocks( $post->post_content ) ) {
+			return false;
+		}
+
+		// Get list of unconverted blocks (blocks in $icon_blocks but NOT in $converted_blocks).
+		$unconverted_blocks = array_diff( $this->icon_blocks, $this->converted_blocks );
+
+		// Check if any unconverted blocks are present.
+		foreach ( $unconverted_blocks as $block_name ) {
 			if ( has_block( $block_name, $post ) ) {
 				return true;
 			}

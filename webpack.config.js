@@ -133,12 +133,13 @@ module.exports = {
 	],
 	optimization: {
 		...defaultConfig.optimization,
-		// Enable code splitting for shared components
-		// WordPress externals system provides WordPress packages
+		// TEMPORARY: Code splitting for icon library during migration
+		// TODO: Remove this entire splitChunks configuration once all blocks
+		// are converted to lazy loading (currently 6/6 converted in PR #111)
 		splitChunks: {
 			cacheGroups: {
-				// Extract icon library for blocks not yet converted to lazy loading
-				// TODO: Remove this once all 15 blocks are converted to lazy loading
+				// Extract icon library for editor use only
+				// Frontend uses PHP wp_localize_script for lazy loading
 				iconLibrary: {
 					test: /svg-icons\.js$/,
 					name: 'shared-icon-library-static',

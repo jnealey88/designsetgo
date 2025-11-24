@@ -158,14 +158,14 @@ const v2 = {
 							? rel || 'noopener noreferrer'
 							: rel || undefined,
 					...(modalCloseId && {
-						'data-dsgo-modal-close': modalCloseId || 'true',
+						'data-dsgo-modal-close': modalCloseId,
 					}),
 				}
 			: {
 					className: 'dsgo-icon-button__wrapper',
 					style: buttonStyles,
 					...(modalCloseId && {
-						'data-dsgo-modal-close': modalCloseId || 'true',
+						'data-dsgo-modal-close': modalCloseId,
 					}),
 				};
 

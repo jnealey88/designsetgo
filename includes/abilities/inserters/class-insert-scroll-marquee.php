@@ -189,7 +189,7 @@ class Insert_Scroll_Marquee extends Abstract_Ability {
 			$post_id,
 			'designsetgo/scroll-marquee',
 			$attributes,
-			array(), // No inner blocks
+			array(), // No inner blocks.
 			$position
 		);
 	}

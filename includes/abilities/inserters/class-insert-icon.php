@@ -158,7 +158,7 @@ class Insert_Icon extends Abstract_Ability {
 			$post_id,
 			'designsetgo/icon',
 			$attributes,
-			array(), // Icons don't have inner blocks
+			array(), // Icons don't have inner blocks.
 			$position
 		);
 	}

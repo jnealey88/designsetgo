@@ -38,6 +38,12 @@ function sanitizeUrl(url) {
  * - Editor still uses getIcon() from shared library
  */
 const v1 = {
+	isEligible() {
+		// v1 is eligible for all blocks saved before lazy loading
+		// Always try this deprecation since it's the only one
+		return true;
+	},
+
 	attributes: {
 		icon: {
 			type: 'string',

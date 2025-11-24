@@ -10,6 +10,8 @@
  * @since 1.2.0
  */
 
+/* global DOMParser */
+
 /**
  * Initialize icon injection on page load or for specific container.
  *
@@ -49,17 +51,39 @@ function initIconInjection(container = document) {
 			// Get SVG markup
 			const iconSvg = window.dsgoIcons[iconName];
 
+			// ✅ SECURITY: Use DOMParser instead of innerHTML to prevent XSS
+			// Parse SVG string safely without executing any potential scripts
+			const parser = new DOMParser();
+			const doc = parser.parseFromString(iconSvg, 'image/svg+xml');
+			const svgElement = doc.documentElement;
+
+			// Check for parsing errors
+			const parserError = doc.querySelector('parsererror');
+			if (parserError) {
+				throw new Error('Invalid SVG markup');
+			}
+
+			// ✅ ACCESSIBILITY: Copy ARIA attributes from placeholder to SVG
+			// Preserve accessibility labels and roles set in save.js
+			const ariaAttributes = ['role', 'aria-label', 'aria-hidden'];
+			ariaAttributes.forEach((attr) => {
+				const value = placeholder.getAttribute(attr);
+				if (value) {
+					svgElement.setAttribute(attr, value);
+				}
+			});
+
 			// For outlined style, wrap with styling span
 			if (iconStyle === 'outlined') {
 				const wrapper = document.createElement('span');
 				wrapper.className = 'dsgo-icon-outlined';
 				wrapper.style.display = 'contents';
 				wrapper.style.setProperty('--icon-stroke-width', strokeWidth);
-				wrapper.innerHTML = iconSvg;
+				wrapper.appendChild(svgElement);
 				placeholder.appendChild(wrapper);
 			} else {
-				// Inject SVG markup directly
-				placeholder.innerHTML = iconSvg;
+				// Inject SVG element directly
+				placeholder.appendChild(svgElement);
 			}
 
 			// Mark as injected
