@@ -814,8 +814,9 @@ class Form_Handler {
 			}
 		}
 
-		// Debug: Log email attempt.
-		error_log( sprintf( 'DesignSetGo Form: Attempting to send email - To: %s, Subject: %s', $email_to, $email_subject ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		// Debug: Log email attempt with full details.
+		error_log( sprintf( 'DesignSetGo Form: Sending email - To: %s, From: %s <%s>, Subject: %s', $email_to, $email_from_name, $email_from, $email_subject ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		error_log( sprintf( 'DesignSetGo Form: Headers: %s', implode( ' | ', $headers ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 
 		// Send email and log the result.
 		$email_sent = wp_mail( $email_to, $email_subject, $email_body, $headers );
