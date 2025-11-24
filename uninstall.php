@@ -66,6 +66,12 @@ $wpdb->query(
 // 6. Clear object cache.
 wp_cache_delete_group( 'designsetgo' );
 
+// 7. Clear scheduled cron jobs.
+$timestamp = wp_next_scheduled( 'designsetgo_cleanup_old_submissions' );
+if ( $timestamp ) {
+	wp_unschedule_event( $timestamp, 'designsetgo_cleanup_old_submissions' );
+}
+
 // Log uninstallation for debugging.
 if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	error_log( 'DesignSetGo: Plugin data cleaned up successfully.' );

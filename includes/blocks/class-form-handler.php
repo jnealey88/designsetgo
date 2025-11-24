@@ -676,10 +676,13 @@ class Form_Handler {
 	 * Called daily by cron job to delete submissions older than the configured retention period.
 	 * Respects the retention_days setting (default: 30 days).
 	 *
-	 * @since 1.2.1
+	 * Processes in batches to prevent timeout issues on sites with large numbers of submissions.
+	 * Use 'designsetgo_cleanup_batch_size' filter to adjust batch size (default: 100).
+	 *
+	 * @since 1.2.0
 	 */
 	public function cleanup_old_submissions() {
-		$form_settings = $this->get_form_settings();
+		$form_settings  = $this->get_form_settings();
 		$retention_days = absint( $form_settings['retention_days'] );
 
 		// If retention is 0, keep submissions indefinitely (disable cleanup).
@@ -692,14 +695,19 @@ class Form_Handler {
 		// Calculate cutoff date.
 		$cutoff_date = gmdate( 'Y-m-d H:i:s', strtotime( "-{$retention_days} days" ) );
 
-		// Find old submissions.
+		// Batch size to prevent timeout (filterable).
+		$batch_size = apply_filters( 'designsetgo_cleanup_batch_size', 100 );
+
+		// Find old submissions (limited batch to prevent timeout).
 		$old_submissions = $wpdb->get_col(
 			$wpdb->prepare(
 				"SELECT ID FROM {$wpdb->posts}
 				WHERE post_type = %s
-				AND post_date < %s",
+				AND post_date < %s
+				LIMIT %d",
 				'dsgo_form_submission',
-				$cutoff_date
+				$cutoff_date,
+				$batch_size
 			)
 		);
 
