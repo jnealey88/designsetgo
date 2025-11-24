@@ -17,7 +17,7 @@ import {
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
-import { getIcon } from '../icon/utils/svg-icons';
+import { useLazyIcon } from '../../utils/lazy-icon-library';
 import { ButtonSettingsPanel } from './components/inspector/ButtonSettingsPanel';
 
 /**
@@ -66,6 +66,9 @@ export default function IconButtonEdit({
 		},
 		[clientId]
 	);
+
+	// Lazy load icon
+	const iconElement = useLazyIcon(icon, iconSize, iconSize);
 
 	// Get hover button background from parent container context
 	const parentHoverButtonBg =
@@ -179,12 +182,12 @@ export default function IconButtonEdit({
 
 			<div {...blockProps}>
 				<div className="dsgo-icon-button__wrapper" style={buttonStyles}>
-					{iconPosition !== 'none' && icon && (
+					{iconPosition !== 'none' && icon && iconElement && (
 						<span
 							className="dsgo-icon-button__icon"
 							style={iconWrapperStyles}
 						>
-							{getIcon(icon)}
+							{iconElement}
 						</span>
 					)}
 					<RichText

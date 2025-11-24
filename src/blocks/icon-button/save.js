@@ -7,7 +7,6 @@
  */
 
 import { useBlockProps, RichText } from '@wordpress/block-editor';
-import { getIcon } from '../icon/utils/svg-icons';
 
 /**
  * Icon Button Save Component
@@ -120,11 +119,11 @@ export default function IconButtonSave({ attributes }) {
 			<ButtonWrapper {...wrapperProps}>
 				{iconPosition !== 'none' && icon && (
 					<span
-						className="dsgo-icon-button__icon"
+						className="dsgo-icon-button__icon dsgo-lazy-icon"
 						style={iconWrapperStyles}
-					>
-						{getIcon(icon)}
-					</span>
+						data-icon-name={icon}
+						data-icon-size={iconSize}
+					/>
 				)}
 				<RichText.Content
 					tagName="span"
