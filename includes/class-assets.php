@@ -179,6 +179,14 @@ class Assets {
 			$has_blocks = true;
 		}
 
+		// Check for expanding background applied to any block.
+		if ( ! $has_blocks && (
+			strpos( $content, 'data-dsgo-expanding-bg-enabled' ) !== false ||
+			strpos( $content, 'has-dsgo-expanding-background' ) !== false
+		) ) {
+			$has_blocks = true;
+		}
+
 		// Cache result for 1 hour using object cache (faster than transients).
 		// Falls back to non-persistent cache if Redis/Memcached not available.
 		wp_cache_set( $cache_key, (int) $has_blocks, 'designsetgo', HOUR_IN_SECONDS );

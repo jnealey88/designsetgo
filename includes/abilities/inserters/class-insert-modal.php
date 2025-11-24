@@ -313,10 +313,42 @@ class Insert_Modal extends Abstract_Ability {
 	/**
 	 * Execute the ability.
 	 *
-	 * @param array<string, mixed> $params Input parameters.
+	 * @param array<string, mixed> $input Input parameters.
 	 * @return array<string, mixed>|WP_Error
 	 */
-	public function execute( array $params ) {
-		return Block_Inserter::insert_block( 'designsetgo/modal', $params );
+	public function execute( array $input ) {
+		$post_id      = (int) ( $input['post_id'] ?? 0 );
+		$position     = (int) ( $input['position'] ?? -1 );
+		$attributes   = $input['attributes'] ?? array();
+		$inner_blocks = $input['innerBlocks'] ?? array();
+
+		// Validate post.
+		if ( ! $post_id ) {
+			return new WP_Error(
+				'missing_post_id',
+				__( 'Post ID is required.', 'designsetgo' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		// Sanitize attributes.
+		$attributes = Block_Inserter::sanitize_attributes( $attributes );
+
+		// Validate inner blocks if provided.
+		if ( ! empty( $inner_blocks ) ) {
+			$validation = Block_Inserter::validate_inner_blocks( $inner_blocks );
+			if ( is_wp_error( $validation ) ) {
+				return $validation;
+			}
+		}
+
+		// Insert the block.
+		return Block_Inserter::insert_block(
+			$post_id,
+			'designsetgo/modal',
+			$attributes,
+			$inner_blocks,
+			$position
+		);
 	}
 }

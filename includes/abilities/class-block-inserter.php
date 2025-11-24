@@ -329,7 +329,7 @@ class Block_Inserter {
 		}
 
 		// Check if block has a render callback.
-		return ! empty( $block_type->render_callback );
+		return null !== $block_type->render_callback;
 	}
 
 	/**
