@@ -8,6 +8,9 @@
 
 /* global sessionStorage, localStorage */
 
+// Import modal functionality
+import '../../src/blocks/modal/view.js';
+
 /**
  * Mock DOM elements for testing
  * @param {Object} options

@@ -31,3 +31,40 @@ global.sprintf = jest.fn((format) => format);
 global.testUtils = {
 	// Add common test utilities here
 };
+
+// Mock browser APIs not implemented in JSDOM
+window.scrollTo = jest.fn();
+window.scroll = jest.fn();
+
+// Mock matchMedia
+Object.defineProperty(window, 'matchMedia', {
+	writable: true,
+	value: jest.fn().mockImplementation((query) => ({
+		matches: false,
+		media: query,
+		onchange: null,
+		addListener: jest.fn(),
+		removeListener: jest.fn(),
+		addEventListener: jest.fn(),
+		removeEventListener: jest.fn(),
+		dispatchEvent: jest.fn(),
+	})),
+});
+
+// Mock IntersectionObserver
+global.IntersectionObserver = class IntersectionObserver {
+	constructor() {
+		this.observe = jest.fn();
+		this.unobserve = jest.fn();
+		this.disconnect = jest.fn();
+	}
+};
+
+// Mock ResizeObserver
+global.ResizeObserver = class ResizeObserver {
+	constructor() {
+		this.observe = jest.fn();
+		this.unobserve = jest.fn();
+		this.disconnect = jest.fn();
+	}
+};
