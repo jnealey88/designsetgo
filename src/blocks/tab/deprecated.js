@@ -25,6 +25,12 @@ function sanitizeIconSlug(icon) {
  * - Blocks with icons always output data-icon-position="left"
  */
 const v1 = {
+	isEligible(attributes) {
+		// v1 is eligible if iconPosition attribute doesn't exist
+		// This was added in the current version
+		return typeof attributes.iconPosition === 'undefined';
+	},
+
 	attributes: {
 		uniqueId: {
 			type: 'string',
