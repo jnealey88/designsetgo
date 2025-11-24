@@ -135,22 +135,22 @@
 			font-weight: 600;
 		}
 
-	.dsgo-tabs__tab-icon {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 20px;
-		height: 20px;
-		flex-shrink: 0;
-		color: currentcolor;
-
-		svg {
-			width: 100%;
-			height: 100%;
-			fill: currentcolor;
+		.dsgo-tabs__tab-icon {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 20px;
+			height: 20px;
+			flex-shrink: 0;
 			color: currentcolor;
+
+			svg {
+				width: 100%;
+				height: 100%;
+				fill: currentcolor;
+				color: currentcolor;
+			}
 		}
-	}
 
 		.dsgo-tabs__tab-icon-top {
 			display: flex;
