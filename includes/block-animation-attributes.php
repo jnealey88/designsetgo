@@ -69,27 +69,27 @@ function dsgo_get_animation_attributes( $attributes ) {
 	}
 
 	// Animation trigger.
-	$trigger                                       = isset( $attributes['dsgAnimationTrigger'] ) ? $attributes['dsgAnimationTrigger'] : 'scroll';
+	$trigger                                        = isset( $attributes['dsgAnimationTrigger'] ) ? $attributes['dsgAnimationTrigger'] : 'scroll';
 	$animation_attrs['data-dsgo-animation-trigger'] = esc_attr( $trigger );
 
 	// Animation duration.
-	$duration                                       = isset( $attributes['dsgAnimationDuration'] ) ? $attributes['dsgAnimationDuration'] : 600;
+	$duration                                        = isset( $attributes['dsgAnimationDuration'] ) ? $attributes['dsgAnimationDuration'] : 600;
 	$animation_attrs['data-dsgo-animation-duration'] = esc_attr( $duration );
 
 	// Animation delay.
-	$delay                                       = isset( $attributes['dsgAnimationDelay'] ) ? $attributes['dsgAnimationDelay'] : 0;
+	$delay                                        = isset( $attributes['dsgAnimationDelay'] ) ? $attributes['dsgAnimationDelay'] : 0;
 	$animation_attrs['data-dsgo-animation-delay'] = esc_attr( $delay );
 
 	// Animation easing.
-	$easing                                       = isset( $attributes['dsgAnimationEasing'] ) ? $attributes['dsgAnimationEasing'] : 'ease-out';
+	$easing                                        = isset( $attributes['dsgAnimationEasing'] ) ? $attributes['dsgAnimationEasing'] : 'ease-out';
 	$animation_attrs['data-dsgo-animation-easing'] = esc_attr( $easing );
 
 	// Animation offset (for scroll trigger).
-	$offset                                       = isset( $attributes['dsgAnimationOffset'] ) ? $attributes['dsgAnimationOffset'] : 100;
+	$offset                                        = isset( $attributes['dsgAnimationOffset'] ) ? $attributes['dsgAnimationOffset'] : 100;
 	$animation_attrs['data-dsgo-animation-offset'] = esc_attr( $offset );
 
 	// Animation once.
-	$once                                       = isset( $attributes['dsgAnimationOnce'] ) ? $attributes['dsgAnimationOnce'] : true;
+	$once                                        = isset( $attributes['dsgAnimationOnce'] ) ? $attributes['dsgAnimationOnce'] : true;
 	$animation_attrs['data-dsgo-animation-once'] = $once ? 'true' : 'false';
 
 	// Convert classes array to string.

@@ -127,6 +127,7 @@ class Block_Inserter {
 	 * @return array<string, mixed> WordPress block array.
 	 */
 	private static function convert_to_block_array( string $block_name, array $attributes = array(), array $inner_blocks = array() ): array {
+		// phpcs:disable WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase -- WordPress block format requires camelCase.
 		$innerHTML     = '';
 		$innerContent  = array();
 		$parsed_inners = array();
@@ -177,6 +178,7 @@ class Block_Inserter {
 			'innerHTML'    => $innerHTML,
 			'innerContent' => ! empty( $innerContent ) ? $innerContent : array( $innerHTML ),
 		);
+		// phpcs:enable WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
 	}
 
 	/**

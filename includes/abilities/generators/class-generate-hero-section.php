@@ -165,7 +165,7 @@ class Generate_Hero_Section extends Abstract_Ability {
 			'attributes' => array(
 				'level'     => 1,
 				'content'   => $heading,
-				'textAlign' => $layout === 'centered' ? 'center' : 'left',
+				'textAlign' => 'centered' === $layout ? 'center' : 'left',
 			),
 		);
 
@@ -174,7 +174,7 @@ class Generate_Hero_Section extends Abstract_Ability {
 			'name'       => 'core/paragraph',
 			'attributes' => array(
 				'content' => $description,
-				'align'   => $layout === 'centered' ? 'center' : 'left',
+				'align'   => 'centered' === $layout ? 'center' : 'left',
 			),
 		);
 
@@ -211,7 +211,7 @@ class Generate_Hero_Section extends Abstract_Ability {
 				'name'        => 'designsetgo/flex',
 				'attributes'  => array(
 					'direction'      => 'row',
-					'justifyContent' => $layout === 'centered' ? 'center' : 'flex-start',
+					'justifyContent' => 'centered' === $layout ? 'center' : 'flex-start',
 					'wrap'           => true,
 				),
 				'innerBlocks' => $buttons,
@@ -220,8 +220,8 @@ class Generate_Hero_Section extends Abstract_Ability {
 
 		// Create Stack container attributes.
 		$stack_attributes = array(
-			'alignItems'     => $layout === 'centered' ? 'center' : 'flex-start',
-			'textAlign'      => $layout === 'centered' ? 'center' : 'left',
+			'alignItems'     => 'centered' === $layout ? 'center' : 'flex-start',
+			'textAlign'      => 'centered' === $layout ? 'center' : 'left',
 			'constrainWidth' => true,
 		);
 

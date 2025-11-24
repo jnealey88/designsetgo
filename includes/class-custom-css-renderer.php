@@ -217,6 +217,7 @@ class Custom_CSS_Renderer {
 		if ( ! empty( $output_css ) ) {
 			echo "\n<!-- DesignSetGo Custom CSS -->\n";
 			echo '<style id="designsetgo-custom-css">' . "\n";
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS is sanitized through safecss_filter_attr.
 			echo $output_css;
 			echo '</style>' . "\n";
 		}

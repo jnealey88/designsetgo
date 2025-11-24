@@ -70,49 +70,49 @@ class Insert_Modal extends Abstract_Ability {
 						'description' => __( 'Modal attributes', 'designsetgo' ),
 						'properties'  => array(
 							// Identity & Behavior.
-							'modalId'            => array(
+							'modalId'                 => array(
 								'type'        => 'string',
 								'description' => __( 'Unique modal ID (auto-generated if empty)', 'designsetgo' ),
 							),
-							'allowHashTrigger'   => array(
+							'allowHashTrigger'        => array(
 								'type'        => 'boolean',
 								'description' => __( 'Allow opening via URL hash (#modal-id)', 'designsetgo' ),
 								'default'     => true,
 							),
-							'updateUrlOnOpen'    => array(
+							'updateUrlOnOpen'         => array(
 								'type'        => 'boolean',
 								'description' => __( 'Update URL hash when modal opens', 'designsetgo' ),
 								'default'     => false,
 							),
 							// Dimensions.
-							'width'              => array(
+							'width'                   => array(
 								'type'        => 'string',
 								'description' => __( 'Modal width (e.g., "600px", "50vw")', 'designsetgo' ),
 								'default'     => '600px',
 							),
-							'maxWidth'           => array(
+							'maxWidth'                => array(
 								'type'        => 'string',
 								'description' => __( 'Maximum width (e.g., "90vw", "1200px")', 'designsetgo' ),
 								'default'     => '90vw',
 							),
-							'height'             => array(
+							'height'                  => array(
 								'type'        => 'string',
 								'description' => __( 'Modal height (e.g., "auto", "80vh")', 'designsetgo' ),
 								'default'     => 'auto',
 							),
-							'maxHeight'          => array(
+							'maxHeight'               => array(
 								'type'        => 'string',
 								'description' => __( 'Maximum height (e.g., "90vh", "800px")', 'designsetgo' ),
 								'default'     => '90vh',
 							),
 							// Animation.
-							'animationType'      => array(
+							'animationType'           => array(
 								'type'        => 'string',
 								'description' => __( 'Animation type', 'designsetgo' ),
 								'enum'        => array( 'fade', 'slide-up', 'slide-down', 'zoom', 'none' ),
 								'default'     => 'fade',
 							),
-							'animationDuration'  => array(
+							'animationDuration'       => array(
 								'type'        => 'number',
 								'description' => __( 'Animation duration in milliseconds', 'designsetgo' ),
 								'default'     => 300,
@@ -120,19 +120,19 @@ class Insert_Modal extends Abstract_Ability {
 								'maximum'     => 2000,
 							),
 							// Overlay.
-							'overlayOpacity'     => array(
+							'overlayOpacity'          => array(
 								'type'        => 'number',
 								'description' => __( 'Overlay opacity (0-100)', 'designsetgo' ),
 								'default'     => 80,
 								'minimum'     => 0,
 								'maximum'     => 100,
 							),
-							'overlayColor'       => array(
+							'overlayColor'            => array(
 								'type'        => 'string',
 								'description' => __( 'Overlay color (hex, rgb, rgba)', 'designsetgo' ),
 								'default'     => '#000000',
 							),
-							'overlayBlur'        => array(
+							'overlayBlur'             => array(
 								'type'        => 'number',
 								'description' => __( 'Backdrop blur in pixels (0-20)', 'designsetgo' ),
 								'default'     => 0,
@@ -140,68 +140,68 @@ class Insert_Modal extends Abstract_Ability {
 								'maximum'     => 20,
 							),
 							// Close Behavior.
-							'closeOnBackdrop'    => array(
+							'closeOnBackdrop'         => array(
 								'type'        => 'boolean',
 								'description' => __( 'Close when clicking overlay', 'designsetgo' ),
 								'default'     => true,
 							),
-							'closeOnEsc'         => array(
+							'closeOnEsc'              => array(
 								'type'        => 'boolean',
 								'description' => __( 'Close when pressing Escape key', 'designsetgo' ),
 								'default'     => true,
 							),
-							'showCloseButton'    => array(
+							'showCloseButton'         => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show close button', 'designsetgo' ),
 								'default'     => true,
 							),
-							'closeButtonPosition' => array(
+							'closeButtonPosition'     => array(
 								'type'        => 'string',
 								'description' => __( 'Close button position', 'designsetgo' ),
 								'enum'        => array( 'inside-top-right', 'inside-top-left', 'top-right', 'top-left' ),
 								'default'     => 'inside-top-right',
 							),
-							'closeButtonSize'    => array(
+							'closeButtonSize'         => array(
 								'type'        => 'number',
 								'description' => __( 'Close button size in pixels', 'designsetgo' ),
 								'default'     => 24,
 								'minimum'     => 16,
 								'maximum'     => 48,
 							),
-							'closeButtonIconColor' => array(
+							'closeButtonIconColor'    => array(
 								'type'        => 'string',
 								'description' => __( 'Close button icon color', 'designsetgo' ),
 							),
-							'closeButtonBgColor' => array(
+							'closeButtonBgColor'      => array(
 								'type'        => 'string',
 								'description' => __( 'Close button background color', 'designsetgo' ),
 							),
-							'disableBodyScroll'  => array(
+							'disableBodyScroll'       => array(
 								'type'        => 'boolean',
 								'description' => __( 'Disable body scroll when modal is open', 'designsetgo' ),
 								'default'     => true,
 							),
 							// Auto-Triggers.
-							'autoTriggerType'    => array(
+							'autoTriggerType'         => array(
 								'type'        => 'string',
 								'description' => __( 'Auto-trigger type', 'designsetgo' ),
 								'enum'        => array( 'none', 'pageLoad', 'exitIntent', 'scroll', 'time' ),
 								'default'     => 'none',
 							),
-							'autoTriggerDelay'   => array(
+							'autoTriggerDelay'        => array(
 								'type'        => 'number',
 								'description' => __( 'Delay in seconds before triggering', 'designsetgo' ),
 								'default'     => 0,
 								'minimum'     => 0,
 								'maximum'     => 300,
 							),
-							'autoTriggerFrequency' => array(
+							'autoTriggerFrequency'    => array(
 								'type'        => 'string',
 								'description' => __( 'How often to show modal', 'designsetgo' ),
 								'enum'        => array( 'always', 'session', 'once' ),
 								'default'     => 'always',
 							),
-							'cookieDuration'     => array(
+							'cookieDuration'          => array(
 								'type'        => 'number',
 								'description' => __( 'Cookie duration in days (for "once" frequency)', 'designsetgo' ),
 								'default'     => 7,
@@ -209,13 +209,13 @@ class Insert_Modal extends Abstract_Ability {
 								'maximum'     => 365,
 							),
 							// Exit Intent Settings.
-							'exitIntentSensitivity' => array(
+							'exitIntentSensitivity'   => array(
 								'type'        => 'string',
 								'description' => __( 'Exit intent sensitivity', 'designsetgo' ),
 								'enum'        => array( 'low', 'medium', 'high' ),
 								'default'     => 'medium',
 							),
-							'exitIntentMinTime'  => array(
+							'exitIntentMinTime'       => array(
 								'type'        => 'number',
 								'description' => __( 'Minimum time on page before exit intent triggers (seconds)', 'designsetgo' ),
 								'default'     => 5,
@@ -228,21 +228,21 @@ class Insert_Modal extends Abstract_Ability {
 								'default'     => true,
 							),
 							// Scroll Trigger Settings.
-							'scrollDepth'        => array(
+							'scrollDepth'             => array(
 								'type'        => 'number',
 								'description' => __( 'Scroll depth percentage to trigger (0-100)', 'designsetgo' ),
 								'default'     => 50,
 								'minimum'     => 0,
 								'maximum'     => 100,
 							),
-							'scrollDirection'    => array(
+							'scrollDirection'         => array(
 								'type'        => 'string',
 								'description' => __( 'Scroll direction to trigger', 'designsetgo' ),
 								'enum'        => array( 'down', 'both' ),
 								'default'     => 'down',
 							),
 							// Time Trigger Settings.
-							'timeOnPage'         => array(
+							'timeOnPage'              => array(
 								'type'        => 'number',
 								'description' => __( 'Time on page in seconds before triggering', 'designsetgo' ),
 								'default'     => 30,
@@ -250,29 +250,29 @@ class Insert_Modal extends Abstract_Ability {
 								'maximum'     => 600,
 							),
 							// Gallery Navigation.
-							'galleryGroupId'     => array(
+							'galleryGroupId'          => array(
 								'type'        => 'string',
 								'description' => __( 'Gallery group ID (link modals for navigation)', 'designsetgo' ),
 							),
-							'galleryIndex'       => array(
+							'galleryIndex'            => array(
 								'type'        => 'number',
 								'description' => __( 'Position in gallery (0-50)', 'designsetgo' ),
 								'default'     => 0,
 								'minimum'     => 0,
 								'maximum'     => 50,
 							),
-							'showGalleryNavigation' => array(
+							'showGalleryNavigation'   => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show prev/next navigation buttons', 'designsetgo' ),
 								'default'     => true,
 							),
-							'navigationStyle'    => array(
+							'navigationStyle'         => array(
 								'type'        => 'string',
 								'description' => __( 'Navigation button style', 'designsetgo' ),
 								'enum'        => array( 'arrows', 'chevrons', 'text' ),
 								'default'     => 'arrows',
 							),
-							'navigationPosition' => array(
+							'navigationPosition'      => array(
 								'type'        => 'string',
 								'description' => __( 'Navigation button position', 'designsetgo' ),
 								'enum'        => array( 'sides', 'bottom', 'top' ),

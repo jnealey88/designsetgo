@@ -162,7 +162,7 @@ class Generate_FAQ_Section extends Abstract_Ability {
 				'name'        => 'designsetgo/accordion-item',
 				'attributes'  => array(
 					'title'  => $question,
-					'isOpen' => 0 === $index, // First item open by default
+					'isOpen' => 0 === $index, // First item open by default.
 				),
 				'innerBlocks' => array(
 					array(
