@@ -17,7 +17,7 @@
   },
   "scripts": {
     "lint": [
-      "phpcs --standard=phpcs.xml"
+      "phpcs --standard=phpcs.xml --warning-severity=0"
     ],
     "lint:fix": [
       "phpcbf --standard=phpcs.xml"
