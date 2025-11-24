@@ -6,6 +6,9 @@
  * @package
  */
 
+/* global sessionStorage, localStorage */
+/* eslint-disable @wordpress/no-global-active-element */
+
 // Mock matchMedia
 global.matchMedia =
 	global.matchMedia ||
@@ -330,6 +333,7 @@ global.window.dsgoModal = {
 			try {
 				callback(data);
 			} catch (error) {
+				// eslint-disable-next-line no-console
 				console.error(`Error in ${event} callback:`, error);
 			}
 		});

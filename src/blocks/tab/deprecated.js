@@ -1,0 +1,91 @@
+/**
+ * Tab Block - Deprecated Versions
+ */
+
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+
+/**
+ * Version 1: Before adding "none" icon position option
+ * - iconPosition attribute didn't exist (was always "left" implicitly)
+ * - Blocks with icons always output data-icon-position="left"
+ */
+const v1 = {
+	isEligible(attributes) {
+		// v1 is eligible if iconPosition attribute doesn't exist
+		// This was added in the current version
+		return typeof attributes.iconPosition === 'undefined';
+	},
+
+	attributes: {
+		uniqueId: {
+			type: 'string',
+			default: '',
+		},
+		title: {
+			type: 'string',
+			default: 'Tab',
+		},
+		icon: {
+			type: 'string',
+			default: '',
+		},
+		// iconPosition attribute didn't exist in v1
+		anchor: {
+			type: 'string',
+			default: '',
+		},
+		style: {
+			type: 'object',
+			default: {
+				spacing: {
+					padding: {
+						top: 'var:preset|spacing|40',
+						right: 'var:preset|spacing|40',
+						bottom: 'var:preset|spacing|40',
+						left: 'var:preset|spacing|40',
+					},
+				},
+			},
+		},
+	},
+
+	save({ attributes }) {
+		const { uniqueId, title, anchor } = attributes;
+
+		const blockProps = useBlockProps.save({
+			className: 'dsgo-tab',
+			role: 'tabpanel',
+			'aria-labelledby': `tab-${uniqueId}`,
+			'aria-label': title || `Tab ${uniqueId}`,
+			id: `panel-${anchor || uniqueId}`,
+			hidden: true,
+			// v1 had NO data-icon attributes - icons were rendered by frontend JS
+			// using the icon stored in block attributes, not data attributes
+		});
+
+		const innerBlocksProps = useInnerBlocksProps.save({
+			className: 'dsgo-tab__content',
+		});
+
+		return (
+			<div {...blockProps}>
+				<div {...innerBlocksProps} />
+			</div>
+		);
+	},
+
+	migrate(attributes) {
+		// Migrate to new structure with iconPosition attribute
+		// Note: Existing blocks with icons default to 'left' position
+		// to preserve their appearance, while new blocks default to 'none'
+		// to provide a cleaner UX where users must explicitly choose to show icons
+		return {
+			...attributes,
+			// If icon exists, set iconPosition to "left" (old default)
+			// If no icon, set to "none" (new default)
+			iconPosition: attributes.icon ? 'left' : 'none',
+		};
+	},
+};
+
+export default [v1];

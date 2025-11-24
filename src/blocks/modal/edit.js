@@ -9,7 +9,9 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import { Notice } from '@wordpress/components';
@@ -32,19 +34,13 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 		maxWidth,
 		height,
 		maxHeight,
-		animationType,
-		animationDuration,
 		overlayOpacity,
 		overlayColor,
-		overlayBlur,
-		closeOnBackdrop,
-		closeOnEsc,
 		showCloseButton,
 		closeButtonPosition,
 		closeButtonSize,
 		closeButtonIconColor,
 		closeButtonBgColor,
-		disableBodyScroll,
 	} = attributes;
 
 	// Generate unique modal ID on first load

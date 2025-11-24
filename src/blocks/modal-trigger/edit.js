@@ -15,17 +15,14 @@ import {
 	SelectControl,
 	Notice,
 	RangeControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { getIcon } from '../icon/utils/svg-icons';
 import { IconPicker } from '../icon/components/IconPicker';
 
-export default function ModalTriggerEdit({
-	attributes,
-	setAttributes,
-	clientId,
-}) {
+export default function ModalTriggerEdit({ attributes, setAttributes }) {
 	const {
 		targetModalId,
 		text,

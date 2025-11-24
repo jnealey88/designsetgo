@@ -434,13 +434,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							>
 								{icon && iconPosition === 'left' && (
 									<span className="dsgo-tabs__tab-icon">
-										{getIcon(icon, 20, 20)}
+										{getIcon(icon)}
 									</span>
 								)}
 
 								{icon && iconPosition === 'top' && (
 									<span className="dsgo-tabs__tab-icon-top">
-										{getIcon(icon, 20, 20)}
+										{getIcon(icon)}
 									</span>
 								)}
 
@@ -450,7 +450,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 								{icon && iconPosition === 'right' && (
 									<span className="dsgo-tabs__tab-icon">
-										{getIcon(icon, 20, 20)}
+										{getIcon(icon)}
 									</span>
 								)}
 							</button>

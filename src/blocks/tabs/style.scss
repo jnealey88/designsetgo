@@ -138,9 +138,15 @@
 		.dsgo-tabs__tab-icon {
 			display: inline-flex;
 			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
 			color: currentcolor;
 
 			svg {
+				// Size SVG directly for better flexibility
+				// Allows icons to respond to font-size changes if needed
+				width: 20px;
+				height: 20px;
 				fill: currentcolor;
 				color: currentcolor;
 			}

@@ -75,6 +75,13 @@ module.exports = {
 			'utils',
 			'sticky-header.js'
 		),
+		// Icon injector frontend script
+		'frontend/lazy-icon-injector': path.resolve(
+			process.cwd(),
+			'src',
+			'frontend',
+			'lazy-icon-injector.js'
+		),
 		// Block-specific entries (auto-detected from src/blocks/*/index.js)
 		...blockEntries,
 		// Block-specific view scripts (auto-detected from src/blocks/*/view.js)
@@ -126,16 +133,17 @@ module.exports = {
 	],
 	optimization: {
 		...defaultConfig.optimization,
-		// Enable code splitting for shared icon library
-		// WordPress externals system provides WordPress packages
-		// This extracts OUR shared code (icon library) into separate chunks
+		// TEMPORARY: Code splitting for icon library during migration
+		// TODO: Remove this entire splitChunks configuration once all blocks
+		// are converted to lazy loading (currently 6/6 converted in PR #111)
 		splitChunks: {
 			cacheGroups: {
-				// Extract icon library used by multiple blocks
+				// Extract icon library for editor use only
+				// Frontend uses PHP wp_localize_script for lazy loading
 				iconLibrary: {
 					test: /svg-icons\.js$/,
-					name: 'shared-icon-library',
-					chunks: 'all',
+					name: 'shared-icon-library-static',
+					chunks: 'initial', // Only extract from initial chunks (not lazy loaded)
 					enforce: true,
 					priority: 20,
 				},

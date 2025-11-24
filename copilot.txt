@@ -1,0 +1,545 @@
+Pull request overview
+This PR implements a lazy loading system for the icon library to address critical performance issues where the 51KB icon library was being bundled into every block that uses icons. The changes introduce a PHP-based icon injection system via wp_localize_script and convert 6 out of 15 icon-using blocks to use data attributes instead of direct SVG output.
+
+Key changes:
+
+Created frontend icon injection infrastructure (lazy-icon-injector.js and Icon_Injector PHP class)
+Converted 6 blocks to lazy loading (icon, icon-button, icon-list-item, divider, modal-trigger, tabs)
+Added deprecation support for all converted blocks to maintain backward compatibility
+Improved tab block UX by adding "none" icon position option as the new default
+Fixed 60 ESLint errors across multiple files to pass CI builds
+Reviewed changes
+Copilot reviewed 40 out of 40 changed files in this pull request and generated 15 comments.
+
+Show a summary per file
+webpack.config.js
+Comment on lines +136 to +141
+		// Enable code splitting for shared components
+		// WordPress externals system provides WordPress packages
+		// This extracts OUR shared code (icon library) into separate chunks
+		splitChunks: {
+			cacheGroups: {
+				// Extract icon library used by multiple blocks
+				// Extract icon library for blocks not yet converted to lazy loading
+				// TODO: Remove this once all 15 blocks are converted to lazy loading
+Copilot AI
+9 hours ago
+[nitpick] Performance issue: Webpack configuration comment is outdated
+
+The comment on line 136 says "Enable code splitting for shared components" but the configuration is specifically for the icon library with a TODO to remove it (line 141). The comment should reflect the temporary nature of this configuration.
+
+Recommendation:
+Update the comment to match the code's purpose:
+
+// TEMPORARY: Code splitting for icon library during migration
+// TODO: Remove this entire splitChunks configuration once all 15 blocks
+// are converted to lazy loading (currently 2/15 converted)
+This makes it clearer that this is temporary migration code.
+
+Copilot uses AI. Check for mistakes.
+@jnealey88	Reply...
+src/blocks/tabs/style.scss
+Comment on lines 138 to +144
+		.dsgo-tabs__tab-icon {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 20px;
+			height: 20px;
+			flex-shrink: 0;
+Copilot AI
+9 hours ago
+[nitpick] CSS sizing may conflict with fixed width/height on icon wrapper
+
+The new CSS (lines 142-144) sets fixed width: 20px and height: 20px on .dsgo-tabs__tab-icon, but the icon size is already controlled by the parent button's font-size and the SVG's viewBox. Adding fixed dimensions here could:
+
+Prevent icons from responding to font-size changes
+Cause aspect ratio issues if non-square icons are added later
+Override any custom sizing users might want via CSS
+Recommendation:
+Consider using min-width and min-height instead, or rely on the SVG's natural sizing:
+
+.dsgo-tabs__tab-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    // width: 20px;  // Remove - let SVG control size
+    // height: 20px; // Remove - let SVG control size
+    flex-shrink: 0;
+    color: currentcolor;
+
+    svg {
+        width: 20px;  // Move sizing to SVG element
+        height: 20px;
+        fill: currentcolor;
+        color: currentcolor;
+    }
+}
+This gives more flexibility while still enforcing a default size.
+
+Copilot uses AI. Check for mistakes.
+@jnealey88	Reply...
+src/blocks/icon-button/deprecated.js
+Comment on lines +20 to +196
+const v2 = {
+	attributes: {
+		text: {
+			type: 'string',
+			default: '',
+		},
+		url: {
+			type: 'string',
+			default: '',
+		},
+		linkTarget: {
+			type: 'string',
+			default: '_self',
+		},
+		rel: {
+			type: 'string',
+			default: '',
+		},
+		icon: {
+			type: 'string',
+			default: 'lightbulb',
+		},
+		iconPosition: {
+			type: 'string',
+			default: 'start',
+		},
+		iconSize: {
+			type: 'number',
+			default: 20,
+		},
+		iconGap: {
+			type: 'string',
+			default: '8px',
+		},
+		width: {
+			type: 'string',
+			default: 'auto',
+		},
+		hoverAnimation: {
+			type: 'string',
+			default: 'none',
+		},
+		hoverBackgroundColor: {
+			type: 'string',
+			default: '',
+		},
+		hoverTextColor: {
+			type: 'string',
+			default: '',
+		},
+		modalCloseId: {
+			type: 'string',
+			default: '',
+		},
+	},
+	save({ attributes }) {
+		const {
+			text,
+			url,
+			linkTarget,
+			rel,
+			icon,
+			iconPosition,
+			iconSize,
+			iconGap,
+			width,
+			hoverAnimation,
+			hoverBackgroundColor,
+			hoverTextColor,
+			style,
+			backgroundColor,
+			textColor,
+			modalCloseId,
+		} = attributes;
+
+		// Extract WordPress color values
+		const bgColor =
+			style?.color?.background ||
+			(backgroundColor && `var(--wp--preset--color--${backgroundColor})`);
+		const txtColor =
+			style?.color?.text ||
+			(textColor && `var(--wp--preset--color--${textColor})`);
+
+		// Calculate button styles
+		const buttonStyles = {
+			display: 'inline-flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			gap: iconPosition !== 'none' && icon ? iconGap : 0,
+			width: width === 'auto' ? 'auto' : width,
+			flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
+			...(bgColor && { backgroundColor: bgColor }),
+			...(txtColor && { color: txtColor }),
+			...(hoverBackgroundColor && {
+				'--dsgo-button-hover-bg': hoverBackgroundColor,
+			}),
+			...(hoverTextColor && {
+				'--dsgo-button-hover-color': hoverTextColor,
+			}),
+		};
+
+		// Calculate icon wrapper styles
+		const iconWrapperStyles = {
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			width: `${iconSize}px`,
+			height: `${iconSize}px`,
+			flexShrink: 0,
+		};
+
+		// Build animation class
+		const animationClass =
+			hoverAnimation && hoverAnimation !== 'none'
+				? ` dsgo-icon-button--${hoverAnimation}`
+				: '';
+
+		const blockProps = useBlockProps.save({
+			className: `dsgo-icon-button${animationClass}`,
+			style: {
+				display: width === '100%' ? 'block' : 'inline-block',
+				...(width === 'auto' && {
+					width: 'fit-content',
+					maxWidth: 'fit-content',
+				}),
+			},
+		});
+
+		// Wrap in link if URL is provided
+		const ButtonWrapper = url ? 'a' : 'div';
+		const wrapperProps = url
+			? {
+					className: 'dsgo-icon-button__wrapper',
+					style: buttonStyles,
+					href: url,
+					target: linkTarget,
+					rel:
+						linkTarget === '_blank'
+							? rel || 'noopener noreferrer'
+							: rel || undefined,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId || 'true',
+					}),
+				}
+			: {
+					className: 'dsgo-icon-button__wrapper',
+					style: buttonStyles,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId || 'true',
+					}),
+				};
+
+		return (
+			<div {...blockProps}>
+				<ButtonWrapper {...wrapperProps}>
+					{iconPosition !== 'none' && icon && (
+						<span
+							className="dsgo-icon-button__icon"
+							style={iconWrapperStyles}
+						>
+							{getIcon(icon)}
+						</span>
+					)}
+					<RichText.Content
+						tagName="span"
+						className="dsgo-icon-button__text"
+						value={text}
+					/>
+				</ButtonWrapper>
+			</div>
+		);
+	},
+	migrate(attributes) {
+		// No attribute changes needed - only save function changed
+		return attributes;
+	},
+};
+Copilot AI
+9 hours ago
+[nitpick] Missing isEligible function in deprecation configurations
+
+The deprecation objects for icon-button, icon, icon-list-item, divider, modal-trigger, and tab blocks don't include an isEligible function to determine when to use each deprecated version. WordPress will attempt to match deprecations in order, which works but is inefficient.
+
+Recommendation:
+Add an isEligible function to each deprecation to make version matching more explicit and performant:
+
+const v2 = {
+    attributes: { /* ... */ },
+
+    // Add this function
+    isEligible(attributes, innerBlocks) {
+        // v2 is eligible if the block was saved before lazy loading
+        // We can detect this by checking if certain attributes exist
+        return true; // Since this is the most recent deprecation, always try it first
+    },
+
+    save({ attributes }) { /* ... */ },
+    migrate(attributes) { /* ... */ },
+};
+This is especially important for blocks like icon-button which now has 2 deprecated versions (v1 and v2). See: https://developer.wordpress.org/block-editor/reference-guides/block-api/block-deprecation/#iseligible
+
+Copilot uses AI. Check for mistakes.
+@jnealey88	Reply...
+src/blocks/modal/style.scss
+
+// Animation States
+.dsgo-modal {
+	// Animation States
+Copilot AI
+9 hours ago
+[nitpick] Inconsistent SCSS nesting fix: Missing closing brace comment
+
+Line 124 closes a selector block (removed closing brace for .dsgo-modal), but line 126 starts what appears to be nested SCSS without clear indication that it's still within .dsgo-modal. This makes the nesting structure harder to understand.
+
+Recommendation:
+Add a comment to clarify that the animation states are still nested within .dsgo-modal:
+
+    }
+
+    // Animation States (still within .dsgo-modal)
+    // Fade Animation
+    &--animation-fade {
+This improves code readability and prevents confusion about the nesting structure.
+
+Suggested change
+	// Animation States
+	// Animation States (still within .dsgo-modal)
+Copilot uses AI. Check for mistakes.
+@jnealey88	Reply...
+src/frontend/lazy-icon-injector.js
+Comment on lines +48 to +63
+		try {
+			// Get SVG markup
+			const iconSvg = window.dsgoIcons[iconName];
+
+			// For outlined style, wrap with styling span
+			if (iconStyle === 'outlined') {
+				const wrapper = document.createElement('span');
+				wrapper.className = 'dsgo-icon-outlined';
+				wrapper.style.display = 'contents';
+				wrapper.style.setProperty('--icon-stroke-width', strokeWidth);
+				wrapper.innerHTML = iconSvg;
+				placeholder.appendChild(wrapper);
+			} else {
+				// Inject SVG markup directly
+				placeholder.innerHTML = iconSvg;
+			}
+Copilot AI
+9 hours ago
+Security Risk: Potential XSS vulnerability through innerHTML injection
+
+The icon injector uses innerHTML to inject SVG markup from window.dsgoIcons (lines 58, 62). While the PHP function dsgo_get_all_icons() provides hardcoded SVG strings, there's no runtime sanitization to ensure window.dsgoIcons hasn't been tampered with before this script runs.
+
+Recommendation:
+
+Use DOMParser instead of innerHTML to create SVG elements safely:
+const parser = new DOMParser();
+const doc = parser.parseFromString(iconSvg, 'image/svg+xml');
+const svgElement = doc.documentElement;
+
+if (iconStyle === 'outlined') {
+    const wrapper = document.createElement('span');
+    wrapper.className = 'dsgo-icon-outlined';
+    wrapper.style.display = 'contents';
+    wrapper.style.setProperty('--icon-stroke-width', strokeWidth);
+    wrapper.appendChild(svgElement);
+    placeholder.appendChild(wrapper);
+} else {
+    placeholder.appendChild(svgElement);
+}
+Add validation that window.dsgoIcons values are actually SVG strings before parsing.
+This prevents potential XSS if window.dsgoIcons is modified by malicious scripts that execute before this script.
+
+Copilot uses AI. Check for mistakes.
+@jnealey88	Reply...
+5 hidden conversations
+Load more…
+includes/class-icon-injector.php
+Comment on lines +52 to +68
+	public function enqueue_icon_injector() {
+		// Check if any icon-using blocks are present.
+		if ( ! $this->has_icon_blocks() ) {
+			return;
+		}
+
+		// Enqueue shared icon library for unconverted blocks (static imports).
+		// TODO: Remove this once all blocks are converted to lazy loading.
+		if ( file_exists( DESIGNSETGO_PATH . 'build/shared-icon-library-static.js' ) ) {
+			wp_enqueue_script(
+				'designsetgo-icon-library-static',
+				DESIGNSETGO_URL . 'build/shared-icon-library-static.js',
+				array(),
+				DESIGNSETGO_VERSION,
+				true
+			);
+		}
+Copilot AI
+9 hours ago
+Performance issue: Icon library loaded twice on frontend
+
+Both the legacy static library AND the lazy icon injector script are being loaded simultaneously (lines 58-68 and 70-85). This defeats the purpose of lazy loading since you're still bundling the 51KB library via shared-icon-library-static.js.
+
+According to the PR description, only 2 out of 15 blocks have been converted, but this approach loads both systems for ALL pages that have ANY icon block.
+
+Recommendation:
+Track which blocks have been converted and only load the static library if unconverted blocks are present:
+
+// Track converted blocks separately
+private $converted_blocks = array(
+    'designsetgo/icon',
+    'designsetgo/icon-button',
+);
+
+// Only load static library if unconverted blocks are present
+$has_unconverted = false;
+foreach ($this->icon_blocks as $block_name) {
+    if (!in_array($block_name, $this->converted_blocks) && has_block($block_name, $post)) {
+        $has_unconverted = true;
+        break;
+    }
+}
+
+if ($has_unconverted) {
+    // Load static library
+}
+This ensures you actually get the performance benefit during the migration phase.
+
+Copilot uses AI. Check for mistakes.
+@jnealey88	Reply...
+src/blocks/icon/save.js
+			style={iconWrapperStyle}
+			data-icon-name={icon}
+			data-icon-style={iconStyle}
+			data-icon-stroke-width={strokeWidth}
+Copilot AI
+9 hours ago
+Accessibility issue: Missing ARIA attributes after lazy icon injection
+
+Icons that had ARIA attributes in the save function (like the icon block's role="img" and aria-label) are lost when using lazy loading because the data attributes only store icon name/style/strokeWidth, not accessibility properties.
+
+For example, the icon block's save.js previously output ARIA attributes (line 103 in deprecated.js shows {...ariaAttributes}), but the new lazy loading version (line 100-104) doesn't preserve these.
+
+Recommendation:
+Add data attributes for accessibility in save functions and apply them during injection:
+
+// In save.js
+data-icon-aria-label={ariaLabel}
+data-icon-decorative={isDecorative}
+
+// In lazy-icon-injector.js
+if (placeholder.dataset.iconAriaLabel) {
+    placeholder.setAttribute('aria-label', placeholder.dataset.iconAriaLabel);
+    placeholder.setAttribute('role', 'img');
+} else if (placeholder.dataset.iconDecorative === 'true') {
+    placeholder.setAttribute('aria-hidden', 'true');
+    placeholder.setAttribute('role', 'presentation');
+}
+This ensures screen reader users get proper announcements for icons.
+
+Suggested change
+			data-icon-stroke-width={strokeWidth}
+			data-icon-stroke-width={strokeWidth}
+			data-icon-aria-label={ariaLabel ? ariaLabel : undefined}
+			data-icon-decorative={isDecorative ? 'true' : undefined}
+Copilot uses AI. Check for mistakes.
+@jnealey88	Reply...
+src/blocks/tab/deprecated.js
+Comment on lines +89 to +97
+	migrate(attributes) {
+		// Migrate to new structure with iconPosition attribute
+		return {
+			...attributes,
+			// If icon exists, set iconPosition to "left" (old default)
+			// If no icon, set to "none" (new default)
+			iconPosition: attributes.icon ? 'left' : 'none',
+		};
+	},
+Copilot AI
+9 hours ago
+[nitpick] Inconsistent migration logic in tab deprecated.js
+
+The migration function (line 95) sets iconPosition to "left" if an icon exists, but the new default is "none". This means blocks that had icons will still show them after migration, but new blocks won't show the icon picker by default.
+
+While this preserves existing behavior, it creates an inconsistent UX where:
+
+Existing tab blocks: icons visible by default if set
+New tab blocks: no icon picker shown (must select position first)
+Recommendation:
+This is likely intentional for backward compatibility, but consider adding a comment in the migration function explaining this design decision:
+
+// Migrate to new structure with iconPosition attribute
+// Note: Existing blocks with icons default to 'left' position
+// to preserve their appearance, while new blocks default to 'none'
+This clarifies the intentional UX difference for future maintainers.
+
+Copilot uses AI. Check for mistakes.
+@jnealey88	Reply...
+src/blocks/icon-button/deprecated.js
+Comment on lines +161 to +168
+						'data-dsgo-modal-close': modalCloseId || 'true',
+					}),
+				}
+			: {
+					className: 'dsgo-icon-button__wrapper',
+					style: buttonStyles,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId || 'true',
+Copilot AI
+9 hours ago
+This use of variable 'modalCloseId' always evaluates to true.
+
+Suggested change
+						'data-dsgo-modal-close': modalCloseId || 'true',
+					}),
+				}
+			: {
+					className: 'dsgo-icon-button__wrapper',
+					style: buttonStyles,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId || 'true',
+						'data-dsgo-modal-close': modalCloseId,
+					}),
+				}
+			: {
+					className: 'dsgo-icon-button__wrapper',
+					style: buttonStyles,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId,
+Copilot uses AI. Check for mistakes.
+@jnealey88	Reply...
+src/blocks/icon-button/deprecated.js
+Comment on lines +161 to +168
+						'data-dsgo-modal-close': modalCloseId || 'true',
+					}),
+				}
+			: {
+					className: 'dsgo-icon-button__wrapper',
+					style: buttonStyles,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId || 'true',
+Copilot AI
+9 hours ago
+This use of variable 'modalCloseId' always evaluates to true.
+
+Suggested change
+						'data-dsgo-modal-close': modalCloseId || 'true',
+					}),
+				}
+			: {
+					className: 'dsgo-icon-button__wrapper',
+					style: buttonStyles,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId || 'true',
+						'data-dsgo-modal-close': modalCloseId,
+					}),
+				}
+			: {
+					className: 'dsgo-icon-button__wrapper',
+					style: buttonStyles,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId,
+Copilot uses AI. Check for mistakes.

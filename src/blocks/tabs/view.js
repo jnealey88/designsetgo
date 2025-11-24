@@ -22,22 +22,20 @@
 		}
 
 		/**
-		 * Create a Dashicon element securely (no innerHTML)
+		 * Create an icon element with lazy loading support securely (no innerHTML)
 		 *
-		 * @param {string} iconSlug - Sanitized dashicon slug
-		 * @return {HTMLElement} Dashicon span element
+		 * @param {string} iconSlug - Sanitized icon slug
+		 * @return {HTMLElement} Icon span element
 		 */
-		createDashicon(iconSlug) {
+		createIcon(iconSlug) {
 			const iconWrapper = document.createElement('span');
-			iconWrapper.className = 'dsgo-tabs__tab-icon';
+			iconWrapper.className = 'dsgo-tabs__tab-icon dsgo-lazy-icon';
 
-			const dashicon = document.createElement('span');
 			// Icon slug is already sanitized in save.js, but validate again
 			// Only allow: lowercase letters, numbers, hyphens
 			const safeIcon = iconSlug.replace(/[^a-z0-9\-]/g, '');
-			dashicon.className = `dashicons dashicons-${safeIcon}`;
+			iconWrapper.setAttribute('data-icon-name', safeIcon);
 
-			iconWrapper.appendChild(dashicon);
 			return iconWrapper;
 		}
 
@@ -134,10 +132,10 @@
 					if (iconPosition === 'top') {
 						const iconTopWrapper = document.createElement('span');
 						iconTopWrapper.className = 'dsgo-tabs__tab-icon-top';
-						iconTopWrapper.appendChild(this.createDashicon(icon));
+						iconTopWrapper.appendChild(this.createIcon(icon));
 						button.appendChild(iconTopWrapper);
 					} else if (iconPosition === 'left') {
-						button.appendChild(this.createDashicon(icon));
+						button.appendChild(this.createIcon(icon));
 					}
 				}
 
@@ -149,7 +147,7 @@
 
 				// Add right icon if needed (✅ SECURITY: Using createElement, not innerHTML)
 				if (icon && iconPosition === 'right') {
-					button.appendChild(this.createDashicon(icon));
+					button.appendChild(this.createIcon(icon));
 				}
 
 				// ✅ PERFORMANCE: No individual listeners - use event delegation below
@@ -181,6 +179,11 @@
 					this.handleKeyboard(e, index);
 				}
 			});
+
+			// Inject icons after navigation is built
+			if (typeof window.dsgoInjectIcons === 'function') {
+				window.dsgoInjectIcons(this.nav);
+			}
 		}
 
 		getTabTitle(panel) {

@@ -92,6 +92,7 @@ export function useHeadingScanner(levelFlags) {
 
 				setPreviewHeadings(headings);
 			} catch (error) {
+				// eslint-disable-next-line no-console
 				console.error('[DSG TOC] Error scanning headings:', error);
 				setPreviewHeadings([]);
 			}

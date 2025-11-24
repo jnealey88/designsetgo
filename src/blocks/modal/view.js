@@ -7,6 +7,9 @@
  * @package
  */
 
+/* global MutationObserver, sessionStorage, localStorage, navigator, history, requestAnimationFrame */
+/* eslint-disable @wordpress/no-global-active-element, no-lonely-if, jsdoc/require-param-type, jsdoc/no-undefined-types */
+
 (function () {
 	'use strict';
 
@@ -750,7 +753,9 @@
 		 * @param {...*}   args  Arguments to log
 		 */
 		log(level, ...args) {
+			// eslint-disable-next-line no-console
 			if (DEBUG_MODE && console[level]) {
+				// eslint-disable-next-line no-console
 				console[level]('[DSGModal]', ...args);
 			}
 		}
@@ -1560,6 +1565,7 @@
 			const modalElement = document.getElementById(modalId);
 			if (!modalElement || !modalElement.dsgoModalInstance) {
 				if (DEBUG_MODE) {
+					// eslint-disable-next-line no-console
 					console.warn(
 						`[DSGModal] Modal with ID "${modalId}" not found`
 					);
@@ -1585,6 +1591,7 @@
 			const modalElement = document.getElementById(modalId);
 			if (!modalElement || !modalElement.dsgoModalInstance) {
 				if (DEBUG_MODE) {
+					// eslint-disable-next-line no-console
 					console.warn(
 						`[DSGModal] Modal with ID "${modalId}" not found`
 					);
@@ -1676,6 +1683,7 @@
 		on(event, callback) {
 			if (!eventListeners[event]) {
 				if (DEBUG_MODE) {
+					// eslint-disable-next-line no-console
 					console.warn(`[DSGModal] Unknown event: ${event}`);
 				}
 				return () => {};
@@ -1683,6 +1691,7 @@
 
 			if (typeof callback !== 'function') {
 				if (DEBUG_MODE) {
+					// eslint-disable-next-line no-console
 					console.warn('[DSGModal] Callback must be a function');
 				}
 				return () => {};
@@ -1731,6 +1740,7 @@
 					callback(data);
 				} catch (error) {
 					if (DEBUG_MODE) {
+						// eslint-disable-next-line no-console
 						console.error(
 							`[DSGModal] Error in ${event} callback:`,
 							error

@@ -4,7 +4,7 @@
  * Scans page for headings and populates TOC list with smooth scroll and scroll spy.
  */
 
-/* global IntersectionObserver */
+/* global IntersectionObserver, history, requestAnimationFrame */
 
 import { __ } from '@wordpress/i18n';
 import {

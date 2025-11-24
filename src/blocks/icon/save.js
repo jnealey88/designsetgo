@@ -5,7 +5,6 @@
  */
 
 import { useBlockProps } from '@wordpress/block-editor';
-import { getIcon } from './utils/svg-icons';
 
 /**
  * Sanitize URL to prevent XSS attacks
@@ -96,12 +95,13 @@ export default function IconSave({ attributes }) {
 
 	const iconElement = (
 		<div
-			className="dsgo-icon__wrapper"
+			className="dsgo-icon__wrapper dsgo-lazy-icon"
 			style={iconWrapperStyle}
+			data-icon-name={icon}
+			data-icon-style={iconStyle}
+			data-icon-stroke-width={strokeWidth}
 			{...ariaAttributes}
-		>
-			{getIcon(icon, iconStyle, strokeWidth)}
-		</div>
+		/>
 	);
 
 	// Sanitize URL for security
