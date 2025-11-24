@@ -567,7 +567,7 @@ export default function FormBuilderEdit({
 								type="email"
 								placeholder="wordpress@example.com"
 								help={__(
-									'Email address shown as sender (leave empty for admin email)',
+									'Email address shown as sender (leave empty for wordpress@yourdomain.com)',
 									'designsetgo'
 								)}
 								__next40pxDefaultSize
