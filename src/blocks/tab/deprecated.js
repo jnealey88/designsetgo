@@ -65,7 +65,7 @@ const v1 = {
 	},
 
 	save({ attributes }) {
-		const { uniqueId, title, anchor, icon } = attributes;
+		const { uniqueId, title, anchor } = attributes;
 
 		const blockProps = useBlockProps.save({
 			className: 'dsgo-tab',
@@ -74,11 +74,8 @@ const v1 = {
 			'aria-label': title || `Tab ${uniqueId}`,
 			id: `panel-${anchor || uniqueId}`,
 			hidden: true,
-			// v1 always output icon data with position="left" when icon exists
-			...(icon && {
-				'data-icon': sanitizeIconSlug(icon),
-				'data-icon-position': 'left',
-			}),
+			// v1 had NO data-icon attributes - icons were rendered by frontend JS
+			// using the icon stored in block attributes, not data attributes
 		});
 
 		const innerBlocksProps = useInnerBlocksProps.save({
