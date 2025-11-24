@@ -53,6 +53,14 @@ const styleEntries = glob
 
 module.exports = {
 	...defaultConfig,
+	// Enable persistent filesystem caching for faster rebuilds
+	cache: {
+		type: 'filesystem',
+		cacheDirectory: path.resolve(__dirname, 'node_modules/.cache/webpack'),
+		buildDependencies: {
+			config: [__filename],
+		},
+	},
 	entry: {
 		// Main entry point for extensions and variations (editor)
 		index: path.resolve(process.cwd(), 'src', 'index.js'),
@@ -136,35 +144,39 @@ module.exports = {
 		// TEMPORARY: Code splitting for icon library during migration
 		// TODO: Remove this entire splitChunks configuration once all blocks
 		// are converted to lazy loading (currently 6/6 converted in PR #111)
-		splitChunks: {
-			cacheGroups: {
-				// Extract icon library for editor use only
-				// Frontend uses PHP wp_localize_script for lazy loading
-				iconLibrary: {
-					test: /svg-icons\.js$/,
-					name: 'shared-icon-library-static',
-					chunks: 'initial', // Only extract from initial chunks (not lazy loaded)
-					enforce: true,
-					priority: 20,
-				},
-				// Extract IconPicker component
-				iconPicker: {
-					test: /IconPicker\.js$/,
-					name: 'shared-icon-picker',
-					chunks: 'all',
-					enforce: true,
-					priority: 15,
-				},
-				// Extract other shared utilities if needed
-				sharedUtils: {
-					test: /[\\/]src[\\/]blocks[\\/][^\/]+[\\/](utils|components)[\\/]/,
-					name: 'shared-block-utils',
-					chunks: 'all',
-					minChunks: 3, // Only extract if used by 3+ blocks
-					priority: 10,
-				},
-			},
-		},
+		// PERFORMANCE: Only enable code splitting in production mode
+		splitChunks:
+			defaultConfig.mode === 'production'
+				? {
+						cacheGroups: {
+							// Extract icon library for editor use only
+							// Frontend uses PHP wp_localize_script for lazy loading
+							iconLibrary: {
+								test: /svg-icons\.js$/,
+								name: 'shared-icon-library-static',
+								chunks: 'initial', // Only extract from initial chunks (not lazy loaded)
+								enforce: true,
+								priority: 20,
+							},
+							// Extract IconPicker component
+							iconPicker: {
+								test: /IconPicker\.js$/,
+								name: 'shared-icon-picker',
+								chunks: 'all',
+								enforce: true,
+								priority: 15,
+							},
+							// Extract other shared utilities if needed
+							sharedUtils: {
+								test: /[\\/]src[\\/]blocks[\\/][^\/]+[\\/](utils|components)[\\/]/,
+								name: 'shared-block-utils',
+								chunks: 'all',
+								minChunks: 3, // Only extract if used by 3+ blocks
+								priority: 10,
+							},
+						},
+					}
+				: false,
 		// Enable aggressive tree shaking
 		usedExports: true,
 		sideEffects: false,

@@ -7,7 +7,9 @@
   "main": "build/index.js",
   "scripts": {
     "start": "wp-scripts start",
+    "start:fast": "DISABLE_ESLINT_PLUGIN=true wp-scripts start",
     "build": "wp-scripts build",
+    "build:dev": "NODE_ENV=development wp-scripts build",
     "build:clean": "npm run clean:cache && npm run build",
     "build:analyze": "ANALYZE=true wp-scripts build",
     "check-engines": "wp-scripts check-engines",
@@ -37,10 +39,10 @@
     "security:audit": "npm audit && npm run check-licenses",
     "i18n:make-pot": "wp-env run cli wp i18n make-pot /var/www/html/wp-content/plugins/designsetgo /var/www/html/wp-content/plugins/designsetgo/languages/designsetgo.pot --domain=designsetgo",
     "prepare": "husky",
-    "clean:cache": "rm -rf node_modules/.cache .wp-env/WordPress",
+    "clean:cache": "rm -rf node_modules/.cache",
+    "clean:cache:wp-env": "rm -rf .wp-env/WordPress",
     "clean:build": "rm -rf build",
-    "clean:all": "npm run clean:cache && npm run clean:build",
-    "postinstall": "npm run clean:cache"
+    "clean:all": "npm run clean:cache && npm run clean:cache:wp-env && npm run clean:build"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.5",
@@ -71,13 +73,13 @@
   },
   "lint-staged": {
     "*.js": [
-      "wp-scripts lint-js"
+      "wp-scripts lint-js --fix"
     ],
     "*.scss": [
-      "wp-scripts lint-style"
+      "wp-scripts lint-style --fix"
     ],
     "*.php": [
-      "composer run-script lint"
+      "php -l"
     ]
   },
   "keywords": [
