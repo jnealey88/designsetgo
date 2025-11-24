@@ -43,12 +43,15 @@ const Dashboard = () => {
 		);
 	}
 
-	// Calculate block categories
-	const blocksByCategory = blocks.reduce((acc, block) => {
-		const category = block.category || 'other';
-		acc[category] = (acc[category] || 0) + 1;
-		return acc;
-	}, {});
+	// Calculate block categories (ensure blocks is an array)
+	const blocksByCategory = (Array.isArray(blocks) ? blocks : []).reduce(
+		(acc, block) => {
+			const category = block.category || 'other';
+			acc[category] = (acc[category] || 0) + 1;
+			return acc;
+		},
+		{}
+	);
 
 	return (
 		<div className="designsetgo-dashboard">
