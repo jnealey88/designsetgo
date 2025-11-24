@@ -179,6 +179,11 @@
 					this.handleKeyboard(e, index);
 				}
 			});
+
+		// Inject icons after navigation is built
+		if (typeof window.dsgoInjectIcons === 'function') {
+			window.dsgoInjectIcons(this.nav);
+		}
 		}
 
 		getTabTitle(panel) {

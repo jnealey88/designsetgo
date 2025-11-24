@@ -11,16 +11,18 @@
  */
 
 /**
- * Initialize icon injection on page load.
+ * Initialize icon injection on page load or for specific container.
+ *
+ * @param {HTMLElement} container - Optional container to search within
  */
-function initIconInjection() {
+function initIconInjection(container = document) {
 	// Check if icon library is available (provided by PHP)
 	if (typeof window.dsgoIcons === 'undefined') {
 		return;
 	}
 
 	// Find all icon placeholders
-	const iconPlaceholders = document.querySelectorAll(
+	const iconPlaceholders = container.querySelectorAll(
 		'.dsgo-lazy-icon[data-icon-name]'
 	);
 
@@ -30,6 +32,11 @@ function initIconInjection() {
 
 	// Inject icons into all placeholders
 	iconPlaceholders.forEach((placeholder) => {
+		// Skip if already injected
+		if (placeholder.dataset.iconInjected === 'true') {
+			return;
+		}
+
 		const iconName = placeholder.dataset.iconName;
 		const iconStyle = placeholder.dataset.iconStyle || 'filled';
 		const strokeWidth = placeholder.dataset.iconStrokeWidth || '1.5';
@@ -54,12 +61,18 @@ function initIconInjection() {
 				// Inject SVG markup directly
 				placeholder.innerHTML = iconSvg;
 			}
+
+			// Mark as injected
+			placeholder.dataset.iconInjected = 'true';
 		} catch (error) {
 			// eslint-disable-next-line no-console
 			console.error(`Failed to inject icon "${iconName}":`, error);
 		}
 	});
 }
+
+// Expose globally for dynamic content
+window.dsgoInjectIcons = initIconInjection;
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
