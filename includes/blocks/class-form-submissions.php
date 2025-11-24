@@ -72,7 +72,7 @@ class Form_Submissions {
 				'read_private_posts'     => 'manage_options',
 				'create_posts'           => 'do_not_allow', // Prevent manual creation - only via form submission.
 			),
-			'map_meta_cap'       => true,
+			'map_meta_cap'       => false, // Disabled - all capabilities explicitly mapped to manage_options.
 			'has_archive'        => false,
 			'hierarchical'       => false,
 			'supports'           => array( 'title' ),
