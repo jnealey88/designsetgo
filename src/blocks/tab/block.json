@@ -33,8 +33,7 @@
 			"enum": [
 				"none",
 				"left",
-				"right",
-				"top"
+				"right"
 			]
 		},
 		"anchor": {
