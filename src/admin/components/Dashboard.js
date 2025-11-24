@@ -23,11 +23,44 @@ const Dashboard = () => {
 			apiFetch({ path: '/designsetgo/v1/stats' }),
 			apiFetch({ path: '/designsetgo/v1/blocks' }),
 			apiFetch({ path: '/designsetgo/v1/extensions' }),
+			apiFetch({ path: '/designsetgo/v1/settings' }),
 		])
-			.then(([statsData, blocksData, extensionsData]) => {
+			.then(([statsData, blocksData, extensionsData, settingsData]) => {
+				// Flatten blocks object into array with category info
+				const flatBlocks = [];
+				if (blocksData && typeof blocksData === 'object') {
+					Object.entries(blocksData).forEach(
+						([categoryKey, categoryData]) => {
+							if (
+								categoryData.blocks &&
+								Array.isArray(categoryData.blocks)
+							) {
+								categoryData.blocks.forEach((block) => {
+									flatBlocks.push({
+										...block,
+										category: categoryKey,
+									});
+								});
+							}
+						}
+					);
+				}
+
+				// Enrich extensions with enabled status
+				const enrichedExtensions = Array.isArray(extensionsData)
+					? extensionsData.map((ext) => ({
+							...ext,
+							enabled:
+								settingsData.enabled_extensions.length === 0 ||
+								settingsData.enabled_extensions.includes(
+									ext.name
+								),
+						}))
+					: [];
+
 				setStats(statsData);
-				setBlocks(blocksData);
-				setExtensions(extensionsData);
+				setBlocks(flatBlocks);
+				setExtensions(enrichedExtensions);
 				setLoading(false);
 			})
 			.catch(() => {

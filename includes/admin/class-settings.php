@@ -105,6 +105,18 @@ class Settings {
 						'performance' => 'low',
 					),
 					array(
+						'name'        => 'designsetgo/row',
+						'title'       => __( 'Row', 'designsetgo' ),
+						'description' => __( 'Flexible horizontal or vertical layouts with wrapping', 'designsetgo' ),
+						'performance' => 'low',
+					),
+					array(
+						'name'        => 'designsetgo/section',
+						'title'       => __( 'Section', 'designsetgo' ),
+						'description' => __( 'Vertical stacking container for sections and content areas', 'designsetgo' ),
+						'performance' => 'low',
+					),
+					array(
 						'name'        => 'designsetgo/stack',
 						'title'       => __( 'Stack Container', 'designsetgo' ),
 						'description' => __( 'Vertical stacking layouts', 'designsetgo' ),
@@ -143,6 +155,18 @@ class Settings {
 						'name'        => 'designsetgo/pill',
 						'title'       => __( 'Pill', 'designsetgo' ),
 						'description' => __( 'Badge/tag style elements', 'designsetgo' ),
+						'performance' => 'low',
+					),
+					array(
+						'name'        => 'designsetgo/card',
+						'title'       => __( 'Card', 'designsetgo' ),
+						'description' => __( 'Display content in a card layout with image, badge, title, and CTA', 'designsetgo' ),
+						'performance' => 'low',
+					),
+					array(
+						'name'        => 'designsetgo/divider',
+						'title'       => __( 'Divider', 'designsetgo' ),
+						'description' => __( 'Visual separator with multiple style options', 'designsetgo' ),
 						'performance' => 'low',
 					),
 					array(
@@ -246,6 +270,18 @@ class Settings {
 						'description' => __( 'Animated blob shapes', 'designsetgo' ),
 						'performance' => 'high',
 					),
+					array(
+						'name'        => 'designsetgo/modal',
+						'title'       => __( 'Modal', 'designsetgo' ),
+						'description' => __( 'Accessible modal dialogs with customizable triggers', 'designsetgo' ),
+						'performance' => 'medium',
+					),
+					array(
+						'name'        => 'designsetgo/modal-trigger',
+						'title'       => __( 'Modal Trigger', 'designsetgo' ),
+						'description' => __( 'Button or link that opens a modal dialog', 'designsetgo' ),
+						'performance' => 'low',
+					),
 				),
 			),
 			'widgets'     => array(
@@ -267,6 +303,30 @@ class Settings {
 						'name'        => 'designsetgo/progress-bar',
 						'title'       => __( 'Progress Bar', 'designsetgo' ),
 						'description' => __( 'Animated progress indicators', 'designsetgo' ),
+						'performance' => 'medium',
+					),
+					array(
+						'name'        => 'designsetgo/countdown-timer',
+						'title'       => __( 'Countdown Timer', 'designsetgo' ),
+						'description' => __( 'Display a countdown timer to a specific date and time', 'designsetgo' ),
+						'performance' => 'medium',
+					),
+					array(
+						'name'        => 'designsetgo/map',
+						'title'       => __( 'Map', 'designsetgo' ),
+						'description' => __( 'Interactive map using OpenStreetMap or Google Maps', 'designsetgo' ),
+						'performance' => 'high',
+					),
+					array(
+						'name'        => 'designsetgo/breadcrumbs',
+						'title'       => __( 'Breadcrumbs', 'designsetgo' ),
+						'description' => __( 'Navigation breadcrumbs with Schema.org markup', 'designsetgo' ),
+						'performance' => 'low',
+					),
+					array(
+						'name'        => 'designsetgo/table-of-contents',
+						'title'       => __( 'Table of Contents', 'designsetgo' ),
+						'description' => __( 'Auto-generate table of contents from page headings', 'designsetgo' ),
 						'performance' => 'medium',
 					),
 				),
@@ -359,14 +419,9 @@ class Settings {
 	public static function get_available_extensions() {
 		return array(
 			array(
-				'name'        => 'block-animations',
-				'title'       => __( 'Block Animations', 'designsetgo' ),
-				'description' => __( 'Entrance/exit animations for all blocks', 'designsetgo' ),
-			),
-			array(
-				'name'        => 'overlay',
-				'title'       => __( 'Overlay', 'designsetgo' ),
-				'description' => __( 'Add overlay to any block', 'designsetgo' ),
+				'name'        => 'animation',
+				'title'       => __( 'Animation', 'designsetgo' ),
+				'description' => __( 'Base animation framework', 'designsetgo' ),
 			),
 			array(
 				'name'        => 'background-video',
@@ -374,14 +429,19 @@ class Settings {
 				'description' => __( 'Video backgrounds for blocks', 'designsetgo' ),
 			),
 			array(
+				'name'        => 'block-animations',
+				'title'       => __( 'Block Animations', 'designsetgo' ),
+				'description' => __( 'Entrance/exit animations for all blocks', 'designsetgo' ),
+			),
+			array(
+				'name'        => 'clickable-group',
+				'title'       => __( 'Clickable Group', 'designsetgo' ),
+				'description' => __( 'Make container blocks clickable with link functionality', 'designsetgo' ),
+			),
+			array(
 				'name'        => 'custom-css',
 				'title'       => __( 'Custom CSS', 'designsetgo' ),
 				'description' => __( 'Per-block custom CSS', 'designsetgo' ),
-			),
-			array(
-				'name'        => 'max-width',
-				'title'       => __( 'Max Width', 'designsetgo' ),
-				'description' => __( 'Content width constraints', 'designsetgo' ),
 			),
 			array(
 				'name'        => 'grid-span',
@@ -389,14 +449,9 @@ class Settings {
 				'description' => __( 'Grid layout span controls', 'designsetgo' ),
 			),
 			array(
-				'name'        => 'reveal-control',
-				'title'       => __( 'Reveal Control', 'designsetgo' ),
-				'description' => __( 'Controls for reveal animations', 'designsetgo' ),
-			),
-			array(
-				'name'        => 'text-alignment-inheritance',
-				'title'       => __( 'Text Alignment Inheritance', 'designsetgo' ),
-				'description' => __( 'Cascading text alignment', 'designsetgo' ),
+				'name'        => 'max-width',
+				'title'       => __( 'Max Width', 'designsetgo' ),
+				'description' => __( 'Content width constraints', 'designsetgo' ),
 			),
 			array(
 				'name'        => 'responsive',
@@ -404,9 +459,19 @@ class Settings {
 				'description' => __( 'Responsive visibility/settings', 'designsetgo' ),
 			),
 			array(
-				'name'        => 'animation',
-				'title'       => __( 'Animation', 'designsetgo' ),
-				'description' => __( 'Base animation framework', 'designsetgo' ),
+				'name'        => 'reveal-control',
+				'title'       => __( 'Reveal Control', 'designsetgo' ),
+				'description' => __( 'Controls for reveal animations', 'designsetgo' ),
+			),
+			array(
+				'name'        => 'sticky-header-controls',
+				'title'       => __( 'Sticky Header Controls', 'designsetgo' ),
+				'description' => __( 'Sticky header configuration for template parts', 'designsetgo' ),
+			),
+			array(
+				'name'        => 'text-alignment-inheritance',
+				'title'       => __( 'Text Alignment Inheritance', 'designsetgo' ),
+				'description' => __( 'Cascading text alignment', 'designsetgo' ),
 			),
 		);
 	}
@@ -644,6 +709,7 @@ class Settings {
 			$sanitized['forms'] = array(
 				'enable_honeypot'      => isset( $settings['forms']['enable_honeypot'] ) ? (bool) $settings['forms']['enable_honeypot'] : true,
 				'enable_rate_limiting' => isset( $settings['forms']['enable_rate_limiting'] ) ? (bool) $settings['forms']['enable_rate_limiting'] : true,
+				'enable_email_logging' => isset( $settings['forms']['enable_email_logging'] ) ? (bool) $settings['forms']['enable_email_logging'] : false,
 				'retention_days'       => isset( $settings['forms']['retention_days'] ) ? absint( $settings['forms']['retention_days'] ) : 30,
 			);
 		}
