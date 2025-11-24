@@ -486,36 +486,73 @@ class Form_Handler {
 	}
 
 	/**
-	 * Get client IP address.
+	 * Get client IP address with trusted proxy support.
+	 *
+	 * Security: By default, only uses REMOTE_ADDR to prevent IP spoofing.
+	 * Proxy headers (X-Forwarded-For, etc.) are only trusted if the request
+	 * comes from a configured trusted proxy.
+	 *
+	 * Configure trusted proxies via filter:
+	 * ```php
+	 * add_filter( 'designsetgo_trusted_proxies', function() {
+	 *     return array( '10.0.0.1', '192.168.1.1' ); // Your load balancer IPs
+	 * } );
+	 * ```
 	 *
 	 * @return string IP address.
 	 */
 	private function get_client_ip() {
-		$ip_keys = array(
+		// Get direct connection IP (always trustworthy).
+		$remote_addr = isset( $_SERVER['REMOTE_ADDR'] )
+			? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) )
+			: 'unknown';
+
+		// Get trusted proxy list (filterable).
+		$trusted_proxies = apply_filters( 'designsetgo_trusted_proxies', array() );
+
+		// If no trusted proxies configured, use direct IP only (secure default).
+		if ( empty( $trusted_proxies ) || ! is_array( $trusted_proxies ) ) {
+			return $remote_addr;
+		}
+
+		// Verify REMOTE_ADDR is in trusted proxy list.
+		if ( ! in_array( $remote_addr, $trusted_proxies, true ) ) {
+			// Request not from trusted proxy - use direct IP.
+			return $remote_addr;
+		}
+
+		// Request IS from trusted proxy - check proxy headers.
+		$proxy_headers = array(
+			'HTTP_X_FORWARDED_FOR',     // Standard proxy header.
+			'HTTP_X_REAL_IP',            // Nginx proxy.
+			'HTTP_CF_CONNECTING_IP',     // Cloudflare.
+			'HTTP_X_CLUSTER_CLIENT_IP',  // AWS ELB.
 			'HTTP_CLIENT_IP',
-			'HTTP_X_FORWARDED_FOR',
-			'HTTP_X_FORWARDED',
-			'HTTP_X_CLUSTER_CLIENT_IP',
-			'HTTP_FORWARDED_FOR',
-			'HTTP_FORWARDED',
-			'REMOTE_ADDR',
 		);
 
-		foreach ( $ip_keys as $key ) {
-			if ( ! empty( $_SERVER[ $key ] ) ) {
-				$ip = sanitize_text_field( wp_unslash( $_SERVER[ $key ] ) );
-				// Handle multiple IPs (take first one).
-				if ( strpos( $ip, ',' ) !== false ) {
-					$ip = explode( ',', $ip )[0];
-				}
-				$ip = trim( $ip );
-				if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
-					return $ip;
-				}
+		foreach ( $proxy_headers as $header ) {
+			if ( empty( $_SERVER[ $header ] ) ) {
+				continue;
+			}
+
+			$ip = sanitize_text_field( wp_unslash( $_SERVER[ $header ] ) );
+
+			// X-Forwarded-For can contain multiple IPs (client, proxy1, proxy2...).
+			// Take the leftmost (client) IP.
+			if ( strpos( $ip, ',' ) !== false ) {
+				$ip = explode( ',', $ip )[0];
+			}
+
+			$ip = trim( $ip );
+
+			// Validate IP format.
+			if ( filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+				return $ip;
 			}
 		}
 
-		return 'unknown';
+		// No valid proxy header found - use direct IP.
+		return $remote_addr;
 	}
 
 	/**
