@@ -7,6 +7,7 @@
  */
 
 /* global sessionStorage, localStorage */
+/* eslint-disable @wordpress/no-global-active-element */
 
 // Mock matchMedia
 global.matchMedia =

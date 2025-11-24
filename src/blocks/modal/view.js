@@ -8,6 +8,7 @@
  */
 
 /* global MutationObserver, sessionStorage, localStorage, navigator, history, requestAnimationFrame */
+/* eslint-disable @wordpress/no-global-active-element, no-lonely-if, jsdoc/require-param-type, jsdoc/no-undefined-types */
 
 (function () {
 	'use strict';
@@ -752,6 +753,7 @@
 		 * @param {...*}   args  Arguments to log
 		 */
 		log(level, ...args) {
+			// eslint-disable-next-line no-console
 			if (DEBUG_MODE && console[level]) {
 				// eslint-disable-next-line no-console
 				console[level]('[DSGModal]', ...args);

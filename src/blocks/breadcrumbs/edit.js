@@ -3,6 +3,7 @@
  *
  * Shows a preview of breadcrumbs in the editor based on current page context.
  */
+/* eslint-disable no-nested-ternary, jsx-a11y/anchor-is-valid */
 import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,

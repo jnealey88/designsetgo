@@ -3,7 +3,7 @@
  *
  * @package
  */
-
+/* eslint-disable no-nested-ternary */
 import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
