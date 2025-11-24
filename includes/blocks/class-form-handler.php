@@ -193,6 +193,17 @@ class Form_Handler {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error on failure.
 	 */
 	public function handle_form_submission( $request ) {
+		// CSRF Protection: Verify nonce for logged-in users
+		// For non-logged-in users, rely on honeypot + rate limiting + time-based checks
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( $nonce && ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return new WP_Error(
+				'invalid_nonce',
+				__( 'Security verification failed. Please refresh the page and try again.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
 		$form_id   = $request->get_param( 'formId' );
 		$fields    = $request->get_param( 'fields' );
 		$honeypot  = $request->get_param( 'honeypot' );
@@ -530,7 +541,8 @@ class Form_Handler {
 	 */
 	private function send_email_notification( $request, $form_id, $fields, $submission_id ) {
 		// Get email settings from request body.
-		$enable_email = $request->get_param( 'enable_email' ) === 'true';
+		// Note: enable_email is already sanitized to boolean by rest_sanitize_boolean
+		$enable_email = $request->get_param( 'enable_email' );
 
 		if ( ! $enable_email ) {
 			return;
