@@ -41,6 +41,7 @@ class Icon_Injector {
 	 */
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_icon_injector' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_shared_icon_library' ) );
 	}
 
 	/**
@@ -52,6 +53,18 @@ class Icon_Injector {
 		// Check if any icon-using blocks are present.
 		if ( ! $this->has_icon_blocks() ) {
 			return;
+		}
+
+		// Enqueue shared icon library for unconverted blocks (static imports).
+		// TODO: Remove this once all blocks are converted to lazy loading.
+		if ( file_exists( DESIGNSETGO_PATH . 'build/shared-icon-library-static.js' ) ) {
+			wp_enqueue_script(
+				'designsetgo-icon-library-static',
+				DESIGNSETGO_URL . 'build/shared-icon-library-static.js',
+				array(),
+				DESIGNSETGO_VERSION,
+				true
+			);
 		}
 
 		// Enqueue the icon injector script.
@@ -78,6 +91,24 @@ class Icon_Injector {
 			'dsgoIcons',
 			dsgo_get_all_icons()
 		);
+	}
+
+	/**
+	 * Enqueue shared icon library for editor (unconverted blocks).
+	 *
+	 * TODO: Remove this once all blocks are converted to lazy loading.
+	 */
+	public function enqueue_shared_icon_library() {
+		// Always enqueue in editor for unconverted blocks.
+		if ( file_exists( DESIGNSETGO_PATH . 'build/shared-icon-library-static.js' ) ) {
+			wp_enqueue_script(
+				'designsetgo-icon-library-static',
+				DESIGNSETGO_URL . 'build/shared-icon-library-static.js',
+				array(),
+				DESIGNSETGO_VERSION,
+				true
+			);
+		}
 	}
 
 	/**

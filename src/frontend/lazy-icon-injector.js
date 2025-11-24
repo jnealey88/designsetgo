@@ -31,14 +31,29 @@ function initIconInjection() {
 	// Inject icons into all placeholders
 	iconPlaceholders.forEach((placeholder) => {
 		const iconName = placeholder.dataset.iconName;
+		const iconStyle = placeholder.dataset.iconStyle || 'filled';
+		const strokeWidth = placeholder.dataset.iconStrokeWidth || '1.5';
 
 		if (!iconName || !window.dsgoIcons[iconName]) {
 			return;
 		}
 
 		try {
-			// Inject SVG markup
-			placeholder.innerHTML = window.dsgoIcons[iconName];
+			// Get SVG markup
+			const iconSvg = window.dsgoIcons[iconName];
+
+			// For outlined style, wrap with styling span
+			if (iconStyle === 'outlined') {
+				const wrapper = document.createElement('span');
+				wrapper.className = 'dsgo-icon-outlined';
+				wrapper.style.display = 'contents';
+				wrapper.style.setProperty('--icon-stroke-width', strokeWidth);
+				wrapper.innerHTML = iconSvg;
+				placeholder.appendChild(wrapper);
+			} else {
+				// Inject SVG markup directly
+				placeholder.innerHTML = iconSvg;
+			}
 		} catch (error) {
 			// eslint-disable-next-line no-console
 			console.error(`Failed to inject icon "${iconName}":`, error);

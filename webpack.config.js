@@ -135,9 +135,17 @@ module.exports = {
 		...defaultConfig.optimization,
 		// Enable code splitting for shared components
 		// WordPress externals system provides WordPress packages
-		// Note: Icon library is lazy-loaded via dynamic imports, not extracted here
 		splitChunks: {
 			cacheGroups: {
+				// Extract icon library for blocks not yet converted to lazy loading
+				// TODO: Remove this once all 15 blocks are converted to lazy loading
+				iconLibrary: {
+					test: /svg-icons\.js$/,
+					name: 'shared-icon-library-static',
+					chunks: 'initial', // Only extract from initial chunks (not lazy loaded)
+					enforce: true,
+					priority: 20,
+				},
 				// Extract IconPicker component
 				iconPicker: {
 					test: /IconPicker\.js$/,
