@@ -542,7 +542,7 @@ class Form_Handler {
 	private function send_email_notification( $request, $form_id, $fields, $submission_id ) {
 		// Get email settings from request body.
 		// Note: enable_email is already sanitized to boolean by rest_sanitize_boolean
-		$enable_email = (bool) $request->get_param( 'enable_email' );
+		$enable_email = $request->get_param( 'enable_email' );
 
 		if ( ! $enable_email ) {
 			return;
