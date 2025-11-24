@@ -38,4 +38,7 @@ import './extensions/clickable-group/frontend.js';
 // Background video - video background initialization
 import './extensions/background-video/frontend.js';
 
+// Expanding background - scroll-driven expanding background effect
+import './extensions/expanding-background/frontend.js';
+
 // Additional frontend scripts can be imported here

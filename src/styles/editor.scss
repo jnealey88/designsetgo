@@ -15,6 +15,7 @@
 @use '../extensions/background-video/editor' as background-video;
 @use '../extensions/grid-span/editor' as grid-span;
 @use '../extensions/reveal-control/editor' as reveal-control;
+@use '../extensions/expanding-background/editor' as expanding-background;
 
 // Block Editor Styles
 @use '../blocks/table-of-contents/editor' as table-of-contents;

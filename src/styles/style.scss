@@ -15,6 +15,9 @@
 // Block animations extension (frontend)
 @use '../extensions/block-animations/animations' as block-animations;
 
+// Expanding background extension (frontend)
+@use '../extensions/expanding-background/style' as expanding-background;
+
 // Custom blocks (frontend)
 @use '../blocks/accordion/style' as accordion;
 @use '../blocks/accordion-item/style' as accordion-item;
