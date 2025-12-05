@@ -1,19 +1,19 @@
 {
-	"core": "WordPress/WordPress#6.8",
+	"core": "WordPress/WordPress#6.9",
 	"phpVersion": "8.3",
 	"plugins": [
 		"."
 	],
 	"themes": [
 		"https://downloads.wordpress.org/theme/twentytwentyfour.1.3.zip",
-		"https://downloads.wordpress.org/theme/twentytwentyfive.1.0.zip"
+		"https://downloads.wordpress.org/theme/twentytwentyfive.1.4.zip"
 	],
 	"mappings": {},
 	"env": {
 		"development": {
 			"themes": [
 				"https://downloads.wordpress.org/theme/twentytwentyfour.1.3.zip",
-				"https://downloads.wordpress.org/theme/twentytwentyfive.1.0.zip"
+				"https://downloads.wordpress.org/theme/twentytwentyfive.1.4.zip"
 			]
 		}
 	},
