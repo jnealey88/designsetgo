@@ -11,11 +11,6 @@
 /* global NodeFilter, IntersectionObserver, requestAnimationFrame */
 
 /**
- * Store for active scroll handlers to enable cleanup
- */
-const activeHandlers = new WeakMap();
-
-/**
  * Check if user prefers reduced motion
  *
  * @return {boolean} True if user prefers reduced motion
@@ -185,9 +180,6 @@ function initTextReveal(element) {
 			ticking = true;
 		}
 	};
-
-	// Store handler for cleanup
-	activeHandlers.set(element, scrollHandler);
 
 	// Set up Intersection Observer to only track scroll when visible
 	const observer = new IntersectionObserver(

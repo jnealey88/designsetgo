@@ -21,8 +21,6 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { SPLIT_MODE_OPTIONS, TRANSITION_DURATION_OPTIONS } from '../constants';
-
 /**
  * Text Reveal Settings Panel
  *
@@ -46,6 +44,19 @@ export default function TextRevealPanel({
 
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
+	// Define options inline for proper i18n (can't use __() at module level)
+	const splitModeOptions = [
+		{ label: __('Word', 'designsetgo'), value: 'word' },
+		{ label: __('Character', 'designsetgo'), value: 'character' },
+	];
+
+	const transitionDurationOptions = [
+		{ label: __('Fast (100ms)', 'designsetgo'), value: 100 },
+		{ label: __('Normal (150ms)', 'designsetgo'), value: 150 },
+		{ label: __('Slow (250ms)', 'designsetgo'), value: 250 },
+		{ label: __('Very Slow (400ms)', 'designsetgo'), value: 400 },
+	];
+
 	return (
 		<>
 			{/* Main settings panel */}
@@ -66,6 +77,7 @@ export default function TextRevealPanel({
 							'designsetgo'
 						)}
 						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 
 					{dsgoTextRevealEnabled && (
@@ -73,7 +85,7 @@ export default function TextRevealPanel({
 							<SelectControl
 								label={__('Split Mode', 'designsetgo')}
 								value={dsgoTextRevealSplitMode}
-								options={SPLIT_MODE_OPTIONS}
+								options={splitModeOptions}
 								onChange={(value) =>
 									setAttributes({
 										dsgoTextRevealSplitMode: value,
@@ -90,7 +102,7 @@ export default function TextRevealPanel({
 							<SelectControl
 								label={__('Transition Speed', 'designsetgo')}
 								value={dsgoTextRevealTransition}
-								options={TRANSITION_DURATION_OPTIONS}
+								options={transitionDurationOptions}
 								onChange={(value) =>
 									setAttributes({
 										dsgoTextRevealTransition: parseInt(

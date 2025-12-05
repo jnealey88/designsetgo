@@ -15,9 +15,6 @@
 // Block animations extension (frontend)
 @use '../extensions/block-animations/animations' as block-animations;
 
-// Text reveal extension (frontend)
-@use '../extensions/text-reveal/style' as text-reveal;
-
 // Custom blocks (frontend)
 @use '../blocks/accordion/style' as accordion;
 @use '../blocks/accordion-item/style' as accordion-item;
