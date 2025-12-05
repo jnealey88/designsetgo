@@ -38,4 +38,7 @@ import './extensions/clickable-group/frontend.js';
 // Background video - video background initialization
 import './extensions/background-video/frontend.js';
 
+// Text reveal - scroll-triggered text color animation
+import './extensions/text-reveal/frontend.js';
+
 // Additional frontend scripts can be imported here
