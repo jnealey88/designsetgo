@@ -23,20 +23,20 @@ export const DEFAULT_PARALLAX_SETTINGS = {
 };
 
 /**
- * Direction options for parallax movement
+ * Direction values for parallax movement
  */
-export const DIRECTION_OPTIONS = [
-	{ label: 'Up', value: 'up' },
-	{ label: 'Down', value: 'down' },
-];
+export const DIRECTION_VALUES = {
+	UP: 'up',
+	DOWN: 'down',
+};
 
 /**
- * Reference point options for parallax calculation
+ * Reference point values for parallax calculation
  */
-export const RELATIVE_TO_OPTIONS = [
-	{ label: 'Viewport', value: 'viewport' },
-	{ label: 'Entire Page', value: 'page' },
-];
+export const RELATIVE_TO_VALUES = {
+	VIEWPORT: 'viewport',
+	PAGE: 'page',
+};
 
 /**
  * Blocks that support vertical scroll parallax

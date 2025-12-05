@@ -18,20 +18,36 @@ import {
 	Notice,
 } from '@wordpress/components';
 import {
-	DIRECTION_OPTIONS,
-	RELATIVE_TO_OPTIONS,
+	DIRECTION_VALUES,
+	RELATIVE_TO_VALUES,
 	DEFAULT_PARALLAX_SETTINGS,
 } from '../constants';
 
 /**
  * Parallax Panel Component
  *
- * @param {Object} props Component props
- * @param {Object} props.attributes Block attributes
+ * @param {Object}   props               Component props
+ * @param {Object}   props.attributes    Block attributes
  * @param {Function} props.setAttributes Function to update attributes
  * @return {JSX.Element} Panel component
  */
-export default function ParallaxPanel( { attributes, setAttributes } ) {
+export default function ParallaxPanel({ attributes, setAttributes }) {
+	// Translatable options - defined here where __ is available
+	const directionOptions = [
+		{ label: __('Up', 'designsetgo'), value: DIRECTION_VALUES.UP },
+		{ label: __('Down', 'designsetgo'), value: DIRECTION_VALUES.DOWN },
+	];
+
+	const relativeToOptions = [
+		{
+			label: __('Viewport', 'designsetgo'),
+			value: RELATIVE_TO_VALUES.VIEWPORT,
+		},
+		{
+			label: __('Entire Page', 'designsetgo'),
+			value: RELATIVE_TO_VALUES.PAGE,
+		},
+	];
 	const {
 		dsgoParallaxEnabled = DEFAULT_PARALLAX_SETTINGS.enabled,
 		dsgoParallaxDirection = DEFAULT_PARALLAX_SETTINGS.direction,
@@ -46,155 +62,157 @@ export default function ParallaxPanel( { attributes, setAttributes } ) {
 
 	return (
 		<PanelBody
-			title={ __( 'Vertical Scroll Parallax', 'designsetgo' ) }
-			initialOpen={ false }
+			title={__('Vertical Scroll Parallax', 'designsetgo')}
+			initialOpen={false}
 		>
 			<ToggleControl
-				label={ __( 'Enable Vertical Scroll Effect', 'designsetgo' ) }
-				checked={ dsgoParallaxEnabled }
-				onChange={ ( value ) =>
-					setAttributes( { dsgoParallaxEnabled: value } )
+				label={__('Enable Vertical Scroll Effect', 'designsetgo')}
+				checked={dsgoParallaxEnabled}
+				onChange={(value) =>
+					setAttributes({ dsgoParallaxEnabled: value })
 				}
 				__nextHasNoMarginBottom
 			/>
 
-			{ dsgoParallaxEnabled && (
+			{dsgoParallaxEnabled && (
 				<>
 					<SelectControl
-						label={ __( 'Direction', 'designsetgo' ) }
-						value={ dsgoParallaxDirection }
-						options={ DIRECTION_OPTIONS }
-						onChange={ ( value ) =>
-							setAttributes( { dsgoParallaxDirection: value } )
+						label={__('Direction', 'designsetgo')}
+						value={dsgoParallaxDirection}
+						options={directionOptions}
+						onChange={(value) =>
+							setAttributes({ dsgoParallaxDirection: value })
 						}
-						help={ __(
+						help={__(
 							'Direction the element moves while scrolling down.',
 							'designsetgo'
-						) }
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 
 					<RangeControl
-						label={ __( 'Speed', 'designsetgo' ) }
-						value={ dsgoParallaxSpeed }
-						onChange={ ( value ) =>
-							setAttributes( { dsgoParallaxSpeed: value } )
+						label={__('Speed', 'designsetgo')}
+						value={dsgoParallaxSpeed}
+						onChange={(value) =>
+							setAttributes({ dsgoParallaxSpeed: value })
 						}
-						min={ 0 }
-						max={ 10 }
-						step={ 1 }
-						marks={ [
-							{ value: 0, label: __( 'None', 'designsetgo' ) },
+						min={0}
+						max={10}
+						step={1}
+						marks={[
+							{ value: 0, label: __('None', 'designsetgo') },
 							{ value: 5, label: '' },
-							{ value: 10, label: __( 'Max', 'designsetgo' ) },
-						] }
+							{ value: 10, label: __('Max', 'designsetgo') },
+						]}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 
 					<RangeControl
-						label={ __( 'Viewport Start (%)', 'designsetgo' ) }
-						value={ dsgoParallaxViewportStart }
-						onChange={ ( value ) =>
-							setAttributes( { dsgoParallaxViewportStart: value } )
+						label={__('Viewport Start (%)', 'designsetgo')}
+						value={dsgoParallaxViewportStart}
+						onChange={(value) =>
+							setAttributes({ dsgoParallaxViewportStart: value })
 						}
-						min={ 0 }
-						max={ 100 }
-						step={ 5 }
-						help={ __(
+						min={0}
+						max={100}
+						step={5}
+						help={__(
 							'Effect starts when element reaches this viewport position.',
 							'designsetgo'
-						) }
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 
 					<RangeControl
-						label={ __( 'Viewport End (%)', 'designsetgo' ) }
-						value={ dsgoParallaxViewportEnd }
-						onChange={ ( value ) =>
-							setAttributes( { dsgoParallaxViewportEnd: value } )
+						label={__('Viewport End (%)', 'designsetgo')}
+						value={dsgoParallaxViewportEnd}
+						onChange={(value) =>
+							setAttributes({ dsgoParallaxViewportEnd: value })
 						}
-						min={ 0 }
-						max={ 100 }
-						step={ 5 }
-						help={ __(
+						min={0}
+						max={100}
+						step={5}
+						help={__(
 							'Effect ends when element reaches this viewport position.',
 							'designsetgo'
-						) }
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 
 					<SelectControl
-						label={ __( 'Effects Relative To', 'designsetgo' ) }
-						value={ dsgoParallaxRelativeTo }
-						options={ RELATIVE_TO_OPTIONS }
-						onChange={ ( value ) =>
-							setAttributes( { dsgoParallaxRelativeTo: value } )
+						label={__('Effects Relative To', 'designsetgo')}
+						value={dsgoParallaxRelativeTo}
+						options={relativeToOptions}
+						onChange={(value) =>
+							setAttributes({ dsgoParallaxRelativeTo: value })
 						}
-						help={ __(
+						help={__(
 							'Calculate scroll position relative to viewport or entire page.',
 							'designsetgo'
-						) }
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 
 					<p
-						style={ {
+						style={{
 							marginTop: '16px',
 							marginBottom: '8px',
 							fontWeight: 500,
-						} }
+						}}
 					>
-						{ __( 'Apply Effects On', 'designsetgo' ) }
+						{__('Apply Effects On', 'designsetgo')}
 					</p>
 
 					<Flex wrap>
 						<FlexItem>
 							<ToggleControl
-								label={ __( 'Desktop', 'designsetgo' ) }
-								checked={ dsgoParallaxDesktop }
-								onChange={ ( value ) =>
-									setAttributes( { dsgoParallaxDesktop: value } )
+								label={__('Desktop', 'designsetgo')}
+								checked={dsgoParallaxDesktop}
+								onChange={(value) =>
+									setAttributes({
+										dsgoParallaxDesktop: value,
+									})
 								}
 								__nextHasNoMarginBottom
 							/>
 						</FlexItem>
 						<FlexItem>
 							<ToggleControl
-								label={ __( 'Tablet', 'designsetgo' ) }
-								checked={ dsgoParallaxTablet }
-								onChange={ ( value ) =>
-									setAttributes( { dsgoParallaxTablet: value } )
+								label={__('Tablet', 'designsetgo')}
+								checked={dsgoParallaxTablet}
+								onChange={(value) =>
+									setAttributes({ dsgoParallaxTablet: value })
 								}
 								__nextHasNoMarginBottom
 							/>
 						</FlexItem>
 						<FlexItem>
 							<ToggleControl
-								label={ __( 'Mobile', 'designsetgo' ) }
-								checked={ dsgoParallaxMobile }
-								onChange={ ( value ) =>
-									setAttributes( { dsgoParallaxMobile: value } )
+								label={__('Mobile', 'designsetgo')}
+								checked={dsgoParallaxMobile}
+								onChange={(value) =>
+									setAttributes({ dsgoParallaxMobile: value })
 								}
 								__nextHasNoMarginBottom
 							/>
 						</FlexItem>
 					</Flex>
 
-					{ ! dsgoParallaxMobile && (
-						<Notice status="info" isDismissible={ false }>
-							{ __(
+					{!dsgoParallaxMobile && (
+						<Notice status="info" isDismissible={false}>
+							{__(
 								'Mobile is disabled by default for better performance.',
 								'designsetgo'
-							) }
+							)}
 						</Notice>
-					) }
+					)}
 				</>
-			) }
+			)}
 		</PanelBody>
 	);
 }
