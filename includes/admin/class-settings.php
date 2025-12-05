@@ -60,7 +60,9 @@ class Settings {
 				'log_referrers'    => false,
 			),
 			'integrations'       => array(
-				'google_maps_api_key' => '',
+				'google_maps_api_key'    => '',
+				'turnstile_site_key'     => '',
+				'turnstile_secret_key'   => '',
 			),
 			'sticky_header'      => array(
 				'enable'                    => true,
@@ -736,7 +738,9 @@ class Settings {
 		// Sanitize integrations settings.
 		if ( isset( $settings['integrations'] ) && is_array( $settings['integrations'] ) ) {
 			$sanitized['integrations'] = array(
-				'google_maps_api_key' => isset( $settings['integrations']['google_maps_api_key'] ) ? sanitize_text_field( $settings['integrations']['google_maps_api_key'] ) : '',
+				'google_maps_api_key'  => isset( $settings['integrations']['google_maps_api_key'] ) ? sanitize_text_field( $settings['integrations']['google_maps_api_key'] ) : '',
+				'turnstile_site_key'   => isset( $settings['integrations']['turnstile_site_key'] ) ? sanitize_text_field( $settings['integrations']['turnstile_site_key'] ) : '',
+				'turnstile_secret_key' => isset( $settings['integrations']['turnstile_secret_key'] ) ? sanitize_text_field( $settings['integrations']['turnstile_secret_key'] ) : '',
 			);
 		}
 

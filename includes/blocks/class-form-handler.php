@@ -46,6 +46,12 @@
  *    @param string $email_to        Recipient email address
  *    @param string $email_subject   Email subject line
  *
+ * 6. designsetgo_form_turnstile_failed
+ *    Fired when Cloudflare Turnstile verification fails
+ *    @param string $form_id     Form identifier
+ *    @param string $ip_address  Client IP address
+ *    @param string $error_code  Error code from verification
+ *
  * Example Usage:
  * ```php
  * // Log spam attempts
@@ -127,11 +133,10 @@ class Form_Handler {
 	 * - Email header injection prevention (strips newlines from email parameters)
 	 * - REST API parameter validation for email configuration
 	 *
-	 * If abuse occurs, consider adding:
-	 * - Google reCAPTCHA integration
-	 * - More aggressive rate limiting
-	 * - IP blocklist functionality
-	 * - Cloudflare Turnstile or similar
+	 * Additional protection available:
+	 * - Cloudflare Turnstile integration (configurable per-form)
+	 * - More aggressive rate limiting via filters
+	 * - IP blocklist functionality via security monitoring hooks
 	 *
 	 * Extensibility:
 	 * - Use 'designsetgo_form_rate_limit_count' filter to adjust rate limit
@@ -208,6 +213,11 @@ class Form_Handler {
 						'type'              => 'string',
 						'sanitize_callback' => 'sanitize_textarea_field',
 					),
+					'turnstile_token'  => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
 				),
 			)
 		);
@@ -270,6 +280,18 @@ class Form_Handler {
 			$rate_limit_check = $this->check_rate_limit( $form_id, false );
 			if ( is_wp_error( $rate_limit_check ) ) {
 				return $rate_limit_check;
+			}
+		}
+
+		// Turnstile verification (if token provided).
+		// Graceful degradation: If no token, skip verification (form submitted without Turnstile or widget failed).
+		$turnstile_token = $request->get_param( 'turnstile_token' );
+		if ( ! empty( $turnstile_token ) ) {
+			$turnstile_result = $this->verify_turnstile( $turnstile_token );
+			if ( is_wp_error( $turnstile_result ) ) {
+				// Fire action hook for monitoring.
+				do_action( 'designsetgo_form_turnstile_failed', $form_id, $this->get_client_ip(), $turnstile_result->get_error_code() );
+				return $turnstile_result;
 			}
 		}
 
@@ -405,6 +427,78 @@ class Form_Handler {
 			// Increment existing count.
 			set_transient( $key, $count + 1, $time_window );
 		}
+	}
+
+	/**
+	 * Verify Cloudflare Turnstile token.
+	 *
+	 * Makes a server-side request to Cloudflare's siteverify endpoint
+	 * to validate the Turnstile response token.
+	 *
+	 * @param string $token The Turnstile response token from the frontend.
+	 * @return true|WP_Error True if valid, WP_Error if invalid or verification failed.
+	 */
+	private function verify_turnstile( $token ) {
+		// Get secret key from settings.
+		$settings   = get_option( 'designsetgo_settings', array() );
+		$secret_key = isset( $settings['integrations']['turnstile_secret_key'] )
+			? $settings['integrations']['turnstile_secret_key']
+			: '';
+
+		// If no secret key configured, skip verification (graceful degradation).
+		if ( empty( $secret_key ) ) {
+			return true;
+		}
+
+		// Make verification request to Cloudflare.
+		$response = wp_remote_post(
+			'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+			array(
+				'timeout' => 5,
+				'body'    => array(
+					'secret'   => $secret_key,
+					'response' => $token,
+					'remoteip' => $this->get_client_ip(),
+				),
+			)
+		);
+
+		// Handle HTTP errors.
+		if ( is_wp_error( $response ) ) {
+			// Log the error but allow submission (graceful degradation).
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'DesignSetGo Turnstile: HTTP error - ' . $response->get_error_message() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
+			return true; // Graceful degradation - don't block on network errors.
+		}
+
+		$body = wp_remote_retrieve_body( $response );
+		$data = json_decode( $body, true );
+
+		// Handle invalid response.
+		if ( ! is_array( $data ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'DesignSetGo Turnstile: Invalid response from Cloudflare' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
+			return true; // Graceful degradation.
+		}
+
+		// Check verification result.
+		if ( ! isset( $data['success'] ) || true !== $data['success'] ) {
+			$error_codes = isset( $data['error-codes'] ) ? implode( ', ', $data['error-codes'] ) : 'unknown';
+
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'DesignSetGo Turnstile: Verification failed - ' . $error_codes ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
+
+			return new WP_Error(
+				'turnstile_failed',
+				__( 'Security verification failed. Please try again.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		return true;
 	}
 
 	/**
@@ -693,6 +787,18 @@ class Form_Handler {
 			array(
 				'nonce'   => wp_create_nonce( 'wp_rest' ),
 				'restUrl' => rest_url( 'designsetgo/v1/form/submit' ),
+			)
+		);
+
+		// Localize integrations settings for Turnstile.
+		$settings              = get_option( 'designsetgo_settings', array() );
+		$integrations_settings = isset( $settings['integrations'] ) ? $settings['integrations'] : array();
+
+		wp_localize_script(
+			$handle,
+			'dsgoIntegrations',
+			array(
+				'turnstileSiteKey' => ! empty( $integrations_settings['turnstile_site_key'] ) ? $integrations_settings['turnstile_site_key'] : '',
 			)
 		);
 	}
