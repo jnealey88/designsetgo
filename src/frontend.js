@@ -38,4 +38,7 @@ import './extensions/clickable-group/frontend.js';
 // Background video - video background initialization
 import './extensions/background-video/frontend.js';
 
+// Vertical scroll parallax - scroll-based vertical movement
+import './extensions/vertical-scroll-parallax/frontend.js';
+
 // Additional frontend scripts can be imported here
