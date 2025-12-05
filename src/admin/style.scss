@@ -296,7 +296,8 @@
 	background: #fff;
 	border-top: 1px solid #dcdcde;
 	box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-	margin: 24px -20px -10px;
+	margin-top: 24px;
+	margin-bottom: -10px;
 	z-index: 10;
 
 	.components-button {
@@ -307,6 +308,11 @@
 // Notice Styles
 .components-notice {
 	margin: 0 0 24px;
+}
+
+// Fixed position notices (toast style)
+[style*="position: fixed"] > .components-notice {
+	margin: 0;
 }
 
 // Enhanced Stat Cards
