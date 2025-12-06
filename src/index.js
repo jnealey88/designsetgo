@@ -49,6 +49,12 @@ import './extensions/sticky-header-controls';
 // Responsive Visibility - adds device-based visibility controls to all blocks
 import './extensions/responsive';
 
+// Text Reveal - scroll-triggered reading progress effect for text blocks
+import './extensions/text-reveal';
+
+// Expanding Background - adds scroll-driven expanding background effect
+import './extensions/expanding-background';
+
 // Vertical Scroll Parallax - adds scroll-based vertical movement to blocks
 import './extensions/vertical-scroll-parallax';
 
