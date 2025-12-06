@@ -41,4 +41,7 @@ import './extensions/background-video/frontend.js';
 // Text reveal - scroll-triggered text color animation
 import './extensions/text-reveal/frontend.js';
 
+// Expanding background - scroll-driven expanding background effect
+import './extensions/expanding-background/frontend.js';
+
 // Additional frontend scripts can be imported here

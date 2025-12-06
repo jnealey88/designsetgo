@@ -111,6 +111,12 @@
 	}
 }
 
+// Turnstile widget container
+.dsgo-turnstile-widget {
+	margin-top: var(--dsgo-form-field-spacing);
+	width: 100%;
+}
+
 // Button alignment modifiers
 .dsgo-form-builder--align-left {
 

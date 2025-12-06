@@ -56,6 +56,7 @@ export default function FormBuilderEdit({
 		enableRateLimit,
 		rateLimitCount,
 		rateLimitWindow,
+		enableTurnstile,
 		enableEmail,
 		emailTo,
 		emailSubject,
@@ -491,6 +492,47 @@ export default function FormBuilderEdit({
 								__nextHasNoMarginBottom
 							/>
 						</>
+					)}
+
+					<ToggleControl
+						label={__('Enable Cloudflare Turnstile', 'designsetgo')}
+						checked={enableTurnstile}
+						onChange={(value) =>
+							setAttributes({ enableTurnstile: value })
+						}
+						help={__(
+							'Privacy-friendly CAPTCHA alternative',
+							'designsetgo'
+						)}
+						__nextHasNoMarginBottom
+					/>
+
+					{enableTurnstile && (
+						<p className="dsgo-form-builder__turnstile-note">
+							{__(
+								'Configure your Turnstile keys in',
+								'designsetgo'
+							)}{' '}
+							<a
+								href={
+									window.designSetGoAdmin?.adminUrl +
+									'admin.php?page=designsetgo-settings'
+								}
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label={__(
+									'Settings → Integrations (opens in new tab)',
+									'designsetgo'
+								)}
+							>
+								{__('Settings → Integrations', 'designsetgo')}
+							</a>
+							.{' '}
+							{__(
+								'Widget mode (Managed, Non-interactive, Invisible) is configured in your Cloudflare dashboard.',
+								'designsetgo'
+							)}
+						</p>
 					)}
 				</PanelBody>
 
