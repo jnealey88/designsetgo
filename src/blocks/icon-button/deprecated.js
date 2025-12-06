@@ -10,6 +10,193 @@ import { useBlockProps, RichText } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
 
 /**
+ * Version 3: Before CSS-based width handling
+ *
+ * Changes in current version:
+ * - Removed inline display/width styles from block wrapper
+ * - Added CSS classes for width control (--width-auto, --width-full)
+ * - Block wrapper is now block-level by default to respect WordPress content width
+ */
+const v3 = {
+	attributes: {
+		text: {
+			type: 'string',
+			default: '',
+		},
+		url: {
+			type: 'string',
+			default: '',
+		},
+		linkTarget: {
+			type: 'string',
+			default: '_self',
+		},
+		rel: {
+			type: 'string',
+			default: '',
+		},
+		icon: {
+			type: 'string',
+			default: 'lightbulb',
+		},
+		iconPosition: {
+			type: 'string',
+			default: 'start',
+		},
+		iconSize: {
+			type: 'number',
+			default: 20,
+		},
+		iconGap: {
+			type: 'string',
+			default: '8px',
+		},
+		width: {
+			type: 'string',
+			default: 'auto',
+		},
+		hoverAnimation: {
+			type: 'string',
+			default: 'none',
+		},
+		hoverBackgroundColor: {
+			type: 'string',
+			default: '',
+		},
+		hoverTextColor: {
+			type: 'string',
+			default: '',
+		},
+		modalCloseId: {
+			type: 'string',
+			default: '',
+		},
+	},
+	save({ attributes }) {
+		const {
+			text,
+			url,
+			linkTarget,
+			rel,
+			icon,
+			iconPosition,
+			iconSize,
+			iconGap,
+			width,
+			hoverAnimation,
+			hoverBackgroundColor,
+			hoverTextColor,
+			style,
+			backgroundColor,
+			textColor,
+			modalCloseId,
+		} = attributes;
+
+		// Extract WordPress color values
+		const bgColor =
+			style?.color?.background ||
+			(backgroundColor && `var(--wp--preset--color--${backgroundColor})`);
+		const txtColor =
+			style?.color?.text ||
+			(textColor && `var(--wp--preset--color--${textColor})`);
+
+		// Calculate button styles
+		const buttonStyles = {
+			display: 'inline-flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			gap: iconPosition !== 'none' && icon ? iconGap : 0,
+			width: width === 'auto' ? 'auto' : width,
+			flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
+			...(bgColor && { backgroundColor: bgColor }),
+			...(txtColor && { color: txtColor }),
+			...(hoverBackgroundColor && {
+				'--dsgo-button-hover-bg': hoverBackgroundColor,
+			}),
+			...(hoverTextColor && {
+				'--dsgo-button-hover-color': hoverTextColor,
+			}),
+		};
+
+		// Calculate icon wrapper styles
+		const iconWrapperStyles = {
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			width: `${iconSize}px`,
+			height: `${iconSize}px`,
+			flexShrink: 0,
+		};
+
+		// Build animation class
+		const animationClass =
+			hoverAnimation && hoverAnimation !== 'none'
+				? ` dsgo-icon-button--${hoverAnimation}`
+				: '';
+
+		// OLD: Inline display/width styles on block wrapper
+		const blockProps = useBlockProps.save({
+			className: `dsgo-icon-button${animationClass}`,
+			style: {
+				display: width === '100%' ? 'block' : 'inline-block',
+				...(width === 'auto' && {
+					width: 'fit-content',
+					maxWidth: 'fit-content',
+				}),
+			},
+		});
+
+		// Wrap in link if URL is provided
+		const ButtonWrapper = url ? 'a' : 'div';
+		const wrapperProps = url
+			? {
+					className: 'dsgo-icon-button__wrapper',
+					style: buttonStyles,
+					href: url,
+					target: linkTarget,
+					rel:
+						linkTarget === '_blank'
+							? rel || 'noopener noreferrer'
+							: rel || undefined,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId || 'true',
+					}),
+				}
+			: {
+					className: 'dsgo-icon-button__wrapper',
+					style: buttonStyles,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId || 'true',
+					}),
+				};
+
+		return (
+			<div {...blockProps}>
+				<ButtonWrapper {...wrapperProps}>
+					{iconPosition !== 'none' && icon && (
+						<span
+							className="dsgo-icon-button__icon dsgo-lazy-icon"
+							style={iconWrapperStyles}
+							data-icon-name={icon}
+							data-icon-size={iconSize}
+						/>
+					)}
+					<RichText.Content
+						tagName="span"
+						className="dsgo-icon-button__text"
+						value={text}
+					/>
+				</ButtonWrapper>
+			</div>
+		);
+	},
+	migrate(attributes) {
+		// No attribute changes needed - only save function changed
+		return attributes;
+	},
+};
+
+/**
  * Version 2: Before lazy loading icon library
  *
  * Changes in current version:
@@ -376,4 +563,4 @@ const v1 = {
 	},
 };
 
-export default [v2, v1];
+export default [v3, v2, v1];

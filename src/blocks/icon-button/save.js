@@ -79,22 +79,27 @@ export default function IconButtonSave({ attributes }) {
 			? ` dsgo-icon-button--${hoverAnimation}`
 			: '';
 
+	// Build width class for CSS-based width handling (must match edit.js)
+	// Default to auto width for any non-100% value
+	const widthClass =
+		width === '100%'
+			? ' dsgo-icon-button--width-full'
+			: ' dsgo-icon-button--width-auto';
+
+	// wp-block-button class enables theme.json button styles to cascade to wp-block-button__link
 	const blockProps = useBlockProps.save({
-		className: `dsgo-icon-button${animationClass}`,
-		style: {
-			display: width === '100%' ? 'block' : 'inline-block',
-			...(width === 'auto' && {
-				width: 'fit-content',
-				maxWidth: 'fit-content',
-			}),
-		},
+		className: `dsgo-icon-button wp-block-button${animationClass}${widthClass}`,
+		// Let block wrapper be block-level to respect WordPress content width constraints
+		// Width styling is now handled via CSS classes on both wrapper and inner element
 	});
 
 	// Wrap in link if URL is provided
+	// wp-element-button + wp-block-button__link classes inherit theme.json button styles
 	const ButtonWrapper = url ? 'a' : 'div';
 	const wrapperProps = url
 		? {
-				className: 'dsgo-icon-button__wrapper',
+				className:
+					'dsgo-icon-button__wrapper wp-element-button wp-block-button__link',
 				style: buttonStyles,
 				href: url,
 				target: linkTarget,
@@ -107,7 +112,8 @@ export default function IconButtonSave({ attributes }) {
 				}),
 			}
 		: {
-				className: 'dsgo-icon-button__wrapper',
+				className:
+					'dsgo-icon-button__wrapper wp-element-button wp-block-button__link',
 				style: buttonStyles,
 				...(modalCloseId && {
 					'data-dsgo-modal-close': modalCloseId || 'true',
