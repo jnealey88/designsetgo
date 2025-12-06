@@ -44,4 +44,7 @@ import './extensions/text-reveal/frontend.js';
 // Expanding background - scroll-driven expanding background effect
 import './extensions/expanding-background/frontend.js';
 
+// Vertical scroll parallax - scroll-based vertical movement
+import './extensions/vertical-scroll-parallax/frontend.js';
+
 // Additional frontend scripts can be imported here

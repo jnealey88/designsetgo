@@ -55,6 +55,9 @@ import './extensions/text-reveal';
 // Expanding Background - adds scroll-driven expanding background effect
 import './extensions/expanding-background';
 
+// Vertical Scroll Parallax - adds scroll-based vertical movement to blocks
+import './extensions/vertical-scroll-parallax';
+
 // ===== DEFAULT PADDING FOR ROOT CONTAINERS =====
 // Set default padding for container blocks, but only when inserted at root level
 import { addFilter } from '@wordpress/hooks';
