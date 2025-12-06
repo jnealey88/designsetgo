@@ -182,12 +182,15 @@ class Plugin {
 			require_once DESIGNSETGO_PATH . 'vendor/autoload.php';
 		}
 
-		// Load WordPress Abilities API if available.
-		if ( file_exists( DESIGNSETGO_PATH . 'vendor/wordpress/abilities-api/includes/bootstrap.php' ) ) {
-			if ( ! defined( 'WP_ABILITIES_API_DIR' ) ) {
-				define( 'WP_ABILITIES_API_DIR', DESIGNSETGO_PATH . 'vendor/wordpress/abilities-api/' );
+		// Load WordPress Abilities API polyfill for WordPress < 6.9.
+		// WordPress 6.9+ includes the Abilities API natively.
+		if ( ! function_exists( 'wp_register_ability' ) ) {
+			if ( file_exists( DESIGNSETGO_PATH . 'vendor/wordpress/abilities-api/includes/bootstrap.php' ) ) {
+				if ( ! defined( 'WP_ABILITIES_API_DIR' ) ) {
+					define( 'WP_ABILITIES_API_DIR', DESIGNSETGO_PATH . 'vendor/wordpress/abilities-api/' );
+				}
+				require_once DESIGNSETGO_PATH . 'vendor/wordpress/abilities-api/includes/bootstrap.php';
 			}
-			require_once DESIGNSETGO_PATH . 'vendor/wordpress/abilities-api/includes/bootstrap.php';
 		}
 
 		// Load Abilities Registry.

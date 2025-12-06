@@ -20,7 +20,12 @@ The WordPress Abilities API is a new core initiative that creates a structured w
 
 ## Available Abilities
 
-DesignSetGo currently provides **5 core abilities** across 3 categories:
+DesignSetGo currently provides **50 abilities** across 4 categories:
+
+- **1 Discovery** - List available blocks
+- **29 Inserters** - Insert specific blocks (containers, interactive, visual, dynamic, content, modal, media, forms, navigation)
+- **10 Configurators** - Apply animations, scroll effects, responsive visibility, and other enhancements to existing blocks
+- **10 Generators** - Generate complete page sections (hero, features, stats, FAQ, contact, pricing, team, testimonials, CTA, gallery)
 
 ### 1. Discovery Abilities
 
@@ -263,6 +268,227 @@ curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/a
 
 ---
 
+#### `designsetgo/apply-scroll-parallax` (v1.3.0)
+
+Applies Elementor-style scroll parallax effects to container and visual blocks.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "block_name": "core/group",
+  "parallax": {
+    "enabled": true,
+    "direction": "up",
+    "speed": 5,
+    "viewportStart": 0,
+    "viewportEnd": 100,
+    "relativeTo": "viewport",
+    "enableDesktop": true,
+    "enableTablet": true,
+    "enableMobile": false
+  }
+}
+```
+
+---
+
+#### `designsetgo/apply-text-reveal` (v1.3.0)
+
+Applies scroll-triggered text color reveal effect to paragraphs and headings.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "block_name": "core/heading",
+  "textReveal": {
+    "enabled": true,
+    "revealColor": "#2563eb",
+    "splitMode": "word",
+    "transitionDuration": 150
+  }
+}
+```
+
+---
+
+#### `designsetgo/apply-expanding-background` (v1.3.0)
+
+Applies scroll-driven expanding background effect to Group and Section blocks.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "block_name": "core/group",
+  "expandingBackground": {
+    "enabled": true,
+    "color": "#e8e8e8",
+    "initialSize": 50,
+    "blur": 30,
+    "speed": 1,
+    "triggerOffset": 0,
+    "completionPoint": 80
+  }
+}
+```
+
+---
+
+### 4. Generator Abilities (v1.3.0)
+
+#### `designsetgo/generate-contact-section`
+
+Generates a complete contact section with form, optional map, and contact info.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "heading": "Get In Touch",
+  "description": "Have a question? Fill out the form below.",
+  "layout": "form-left",
+  "formFields": ["name", "email", "phone", "message"],
+  "submitText": "Send Message",
+  "includeMap": true,
+  "mapLocation": {
+    "lat": 40.7128,
+    "lng": -74.006,
+    "zoom": 14,
+    "address": "New York, NY"
+  },
+  "contactInfo": {
+    "email": "hello@example.com",
+    "phone": "+1 (555) 123-4567",
+    "address": "123 Main St, New York, NY",
+    "hours": "Mon-Fri 9am-5pm"
+  }
+}
+```
+
+**Layout Options:** `form-only`, `form-left`, `form-right`, `form-top`
+
+---
+
+### 5. Additional Inserter Abilities (v1.3.0)
+
+#### `designsetgo/insert-slider`
+
+Inserts a Slider block for hero carousels and galleries.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "attributes": {
+    "slidesPerView": 1,
+    "height": "500px",
+    "effect": "slide",
+    "autoplay": true,
+    "autoplayInterval": 3000,
+    "showArrows": true,
+    "showDots": true,
+    "loop": true
+  }
+}
+```
+
+---
+
+#### `designsetgo/insert-card`
+
+Inserts a Card block for pricing, features, team members, etc.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "attributes": {
+    "layoutPreset": "standard",
+    "title": "Card Title",
+    "subtitle": "Card Subtitle",
+    "bodyText": "Description text",
+    "badgeText": "New",
+    "imageUrl": "https://example.com/image.jpg",
+    "visualStyle": "shadow",
+    "contentAlignment": "center"
+  }
+}
+```
+
+**Layout Presets:** `standard`, `horizontal-left`, `horizontal-right`, `background`, `minimal`, `featured`
+
+---
+
+### 6. Complete Abilities Reference
+
+#### Inserter Abilities (29 total)
+
+| Ability | Description |
+|---------|-------------|
+| `insert-flex-container` | Horizontal/vertical flexbox layout |
+| `insert-grid-container` | Responsive CSS grid layout |
+| `insert-stack-container` | Vertical stack layout |
+| `insert-section` | Full-width page section |
+| `insert-divider` | Visual separator/divider |
+| `insert-breadcrumbs` | Navigation breadcrumbs |
+| `insert-table-of-contents` | Auto-generated ToC from headings |
+| `insert-icon` | Lucide icon display |
+| `insert-icon-button` | Icon with button styling |
+| `insert-icon-list` | List with icons |
+| `insert-icon-list-item` | Single icon list item |
+| `insert-pill` | Badge/tag element |
+| `insert-counter` | Animated number counter |
+| `insert-counter-group` | Multiple counters in layout |
+| `insert-countdown-timer` | Countdown to target date |
+| `insert-progress-bar` | Animated progress indicator |
+| `insert-tabs` | Tabbed content |
+| `insert-accordion` | Expandable content panels |
+| `insert-flip-card` | 3D flip card |
+| `insert-reveal` | Scroll reveal animation container |
+| `insert-scroll-accordion` | Scroll-triggered accordion |
+| `insert-scroll-marquee` | Infinite scrolling marquee |
+| `insert-slider` | Carousel/slideshow |
+| `insert-card` | Styled content card |
+| `insert-image-accordion` | Expandable image gallery |
+| `insert-map` | Interactive OpenStreetMap |
+| `insert-modal` | Modal/popup dialog |
+| `insert-modal-trigger` | Modal trigger button |
+| `insert-form-builder` | Contact form with fields |
+
+#### Configurator Abilities (10 total)
+
+| Ability | Description |
+|---------|-------------|
+| `apply-animation` | Entrance/exit animations |
+| `configure-counter-animation` | Counter animation settings |
+| `apply-scroll-parallax` | Vertical scroll parallax effect |
+| `apply-text-reveal` | Scroll-triggered text color reveal |
+| `apply-expanding-background` | Expanding background effect |
+| `configure-background-video` | Background video for containers |
+| `configure-clickable-group` | Make containers clickable |
+| `configure-custom-css` | Custom CSS per block |
+| `configure-responsive-visibility` | Show/hide by device |
+| `configure-max-width` | Max width constraints |
+
+#### Generator Abilities (10 total)
+
+| Ability | Description |
+|---------|-------------|
+| `generate-hero-section` | Hero with heading, description, CTA |
+| `generate-feature-grid` | Feature cards in grid layout |
+| `generate-stats-section` | Statistics/counters display |
+| `generate-faq-section` | FAQ accordion |
+| `generate-contact-section` | Contact form with map/info |
+| `generate-pricing-section` | Pricing table with tiers |
+| `generate-team-section` | Team member cards |
+| `generate-testimonial-section` | Customer testimonials |
+| `generate-cta-section` | Call-to-action section |
+| `generate-gallery-section` | Image gallery (grid/slider) |
+
+---
+
 ## Authentication
 
 All abilities require proper WordPress authentication. You can use:
@@ -410,15 +636,16 @@ Each ability has specific permission requirements:
 
 ## Roadmap
 
-### Phase 2 (Next Release)
+### Completed in v2.0.0
 
-- [ ] Additional inserter abilities (Accordion, Tabs, Counter Group, etc.)
-- [ ] Layout generator abilities (hero sections, feature grids)
-- [ ] Batch operation abilities
-- [ ] Icon/color configuration abilities
+- [x] Additional inserter abilities (Section, Map, Countdown Timer, Form Builder, etc.)
+- [x] Layout generator abilities (hero, features, stats, FAQ, contact, pricing, team, testimonials, CTA, gallery)
+- [x] Extension configurators (background video, clickable groups, custom CSS, responsive visibility)
+- [x] WordPress 6.9 native Abilities API support
 
 ### Phase 3 (Future)
 
+- [ ] Batch operation abilities (apply changes to multiple blocks)
 - [ ] Pattern template generation
 - [ ] Full-page layout generation from descriptions
 - [ ] Advanced animation sequencing
@@ -478,11 +705,20 @@ if (class_exists('DesignSetGo\Abilities\Custom\My_Custom_Ability')) {
 
 ---
 
+## Requirements
+
+- **WordPress 6.9+** (recommended) - Abilities API is included natively in WordPress 6.9
+- **WordPress 6.0-6.8** - Requires the [wordpress/abilities-api](https://github.com/WordPress/abilities-api) Composer package (optional polyfill)
+
+DesignSetGo automatically detects whether the native Abilities API is available and gracefully degrades on older WordPress versions.
+
+---
+
 ## Credits
 
 DesignSetGo's Abilities API integration is built on:
 
-- [WordPress Abilities API](https://github.com/WordPress/abilities-api) (v0.4.0)
+- [WordPress Abilities API](https://make.wordpress.org/core/2025/11/10/abilities-api-in-wordpress-6-9/) (native in WP 6.9+)
 - [Model Context Protocol](https://github.com/WordPress/mcp-adapter)
 
 **Making WordPress AI-Native Since 2025** 🤖
