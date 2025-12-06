@@ -10,6 +10,9 @@
 
 /* global NodeFilter, IntersectionObserver, requestAnimationFrame */
 
+// Store observers for cleanup
+const activeObservers = new WeakMap();
+
 /**
  * Check if user prefers reduced motion
  *
@@ -26,6 +29,9 @@ function prefersReducedMotion() {
  * @param {string}      splitMode 'word' or 'character'
  */
 function wrapTextNodes(element, splitMode) {
+	// Preserve original text content for screen readers
+	const originalText = element.textContent;
+	element.setAttribute('aria-label', originalText);
 	// Use TreeWalker to find all text nodes while preserving HTML structure
 	const walker = document.createTreeWalker(
 		element,
@@ -58,6 +64,7 @@ function wrapTextNodes(element, splitMode) {
 				} else {
 					const span = document.createElement('span');
 					span.className = 'dsgo-text-reveal-unit';
+					span.setAttribute('aria-hidden', 'true');
 					span.textContent = char;
 					fragment.appendChild(span);
 				}
@@ -72,6 +79,7 @@ function wrapTextNodes(element, splitMode) {
 				} else if (word) {
 					const span = document.createElement('span');
 					span.className = 'dsgo-text-reveal-unit';
+					span.setAttribute('aria-hidden', 'true');
 					span.textContent = word;
 					fragment.appendChild(span);
 				}
@@ -200,17 +208,25 @@ function initTextReveal(element) {
 		},
 		{
 			threshold: [0, 0.1],
-			rootMargin: '50px 0px', // Start slightly before entering viewport
+			rootMargin: '50px 0px 50px 0px', // Start slightly before entering viewport
 		}
 	);
 
+	// Store observer for cleanup
+	activeObservers.set(element, observer);
 	observer.observe(element);
+}
 
-	// Initial check in case element is already in viewport
-	const rect = element.getBoundingClientRect();
-	if (rect.top < window.innerHeight && rect.bottom > 0) {
-		window.addEventListener('scroll', scrollHandler, { passive: true });
-		scrollHandler();
+/**
+ * Destroy text reveal for an element (cleanup)
+ *
+ * @param {HTMLElement} element The element to clean up
+ */
+function destroyTextReveal(element) {
+	const observer = activeObservers.get(element);
+	if (observer) {
+		observer.disconnect();
+		activeObservers.delete(element);
 	}
 }
 
@@ -218,6 +234,12 @@ function initTextReveal(element) {
  * Initialize all text reveal elements on page load
  */
 function initAllTextReveal() {
+	// Prevent multiple initializations
+	if (window.dsgoTextRevealInitialized) {
+		return;
+	}
+	window.dsgoTextRevealInitialized = true;
+
 	const elements = document.querySelectorAll(
 		'[data-dsgo-text-reveal-enabled="true"]'
 	);
@@ -232,16 +254,21 @@ function initAllTextReveal() {
 /**
  * Re-initialize text reveal (for dynamic content)
  * Can be called from external scripts: window.dsgoTextReveal.reinit()
+ * Only initializes elements that haven't been initialized yet
  */
 function reinitTextReveal() {
-	initAllTextReveal();
+	const elements = document.querySelectorAll(
+		'[data-dsgo-text-reveal-enabled="true"]:not([data-dsgo-text-reveal-initialized="true"])'
+	);
+	elements.forEach(initTextReveal);
 }
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', initAllTextReveal);
 
-// Expose reinit function for dynamic content
+// Expose functions for external use
 window.dsgoTextReveal = {
 	reinit: reinitTextReveal,
 	init: initTextReveal,
+	destroy: destroyTextReveal,
 };
