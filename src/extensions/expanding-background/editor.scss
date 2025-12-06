@@ -1,0 +1,53 @@
+/**
+ * Expanding Background Extension - Editor Styles
+ *
+ * @package DesignSetGo
+ */
+
+.has-dsgo-expanding-background {
+	// Ensure relative positioning for pseudo-element
+	position: relative;
+
+	// Create a static preview in the editor (mid-expanded state)
+	&::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: -1;
+		pointer-events: none;
+
+		// Circle shape
+		border-radius: 50%;
+
+		// Static preview size (approximately 50% expanded)
+		width: 400px;
+		height: 400px;
+
+		// Get color from block attributes if available, otherwise default
+		background-color: var(--dsgo-expanding-bg-color, #e8e8e8);
+
+		// Show partial blur for preview
+		filter: blur(15px);
+
+		// Visual indicator that this is a preview
+		opacity: 0.7;
+	}
+
+	// Add subtle indicator for the editor
+	&::after {
+		content: 'Expanding background preview (scroll effect on frontend)';
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		padding: 4px 8px;
+		background-color: rgba(0, 0, 0, 0.6);
+		color: #fff;
+		font-size: 11px;
+		border-radius: 3px;
+		z-index: 1;
+		pointer-events: none;
+		opacity: 0.8;
+	}
+}
