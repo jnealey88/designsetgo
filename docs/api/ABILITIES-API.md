@@ -20,12 +20,12 @@ The WordPress Abilities API is a new core initiative that creates a structured w
 
 ## Available Abilities
 
-DesignSetGo currently provides **34 abilities** across 4 categories:
+DesignSetGo currently provides **50 abilities** across 4 categories:
 
 - **1 Discovery** - List available blocks
-- **19 Inserters** - Insert specific blocks (containers, interactive, visual, dynamic, content, modal, media)
-- **5 Configurators** - Apply animations and scroll effects to existing blocks
-- **5 Generators** - Generate complete page sections
+- **29 Inserters** - Insert specific blocks (containers, interactive, visual, dynamic, content, modal, media, forms, navigation)
+- **10 Configurators** - Apply animations, scroll effects, responsive visibility, and other enhancements to existing blocks
+- **10 Generators** - Generate complete page sections (hero, features, stats, FAQ, contact, pricing, team, testimonials, CTA, gallery)
 
 ### 1. Discovery Abilities
 
@@ -421,6 +421,74 @@ Inserts a Card block for pricing, features, team members, etc.
 
 ---
 
+### 6. Complete Abilities Reference
+
+#### Inserter Abilities (29 total)
+
+| Ability | Description |
+|---------|-------------|
+| `insert-flex-container` | Horizontal/vertical flexbox layout |
+| `insert-grid-container` | Responsive CSS grid layout |
+| `insert-stack-container` | Vertical stack layout |
+| `insert-section` | Full-width page section |
+| `insert-divider` | Visual separator/divider |
+| `insert-breadcrumbs` | Navigation breadcrumbs |
+| `insert-table-of-contents` | Auto-generated ToC from headings |
+| `insert-icon` | Lucide icon display |
+| `insert-icon-button` | Icon with button styling |
+| `insert-icon-list` | List with icons |
+| `insert-icon-list-item` | Single icon list item |
+| `insert-pill` | Badge/tag element |
+| `insert-counter` | Animated number counter |
+| `insert-counter-group` | Multiple counters in layout |
+| `insert-countdown-timer` | Countdown to target date |
+| `insert-progress-bar` | Animated progress indicator |
+| `insert-tabs` | Tabbed content |
+| `insert-accordion` | Expandable content panels |
+| `insert-flip-card` | 3D flip card |
+| `insert-reveal` | Scroll reveal animation container |
+| `insert-scroll-accordion` | Scroll-triggered accordion |
+| `insert-scroll-marquee` | Infinite scrolling marquee |
+| `insert-slider` | Carousel/slideshow |
+| `insert-card` | Styled content card |
+| `insert-image-accordion` | Expandable image gallery |
+| `insert-map` | Interactive OpenStreetMap |
+| `insert-modal` | Modal/popup dialog |
+| `insert-modal-trigger` | Modal trigger button |
+| `insert-form-builder` | Contact form with fields |
+
+#### Configurator Abilities (10 total)
+
+| Ability | Description |
+|---------|-------------|
+| `apply-animation` | Entrance/exit animations |
+| `configure-counter-animation` | Counter animation settings |
+| `apply-scroll-parallax` | Vertical scroll parallax effect |
+| `apply-text-reveal` | Scroll-triggered text color reveal |
+| `apply-expanding-background` | Expanding background effect |
+| `configure-background-video` | Background video for containers |
+| `configure-clickable-group` | Make containers clickable |
+| `configure-custom-css` | Custom CSS per block |
+| `configure-responsive-visibility` | Show/hide by device |
+| `configure-max-width` | Max width constraints |
+
+#### Generator Abilities (10 total)
+
+| Ability | Description |
+|---------|-------------|
+| `generate-hero-section` | Hero with heading, description, CTA |
+| `generate-feature-grid` | Feature cards in grid layout |
+| `generate-stats-section` | Statistics/counters display |
+| `generate-faq-section` | FAQ accordion |
+| `generate-contact-section` | Contact form with map/info |
+| `generate-pricing-section` | Pricing table with tiers |
+| `generate-team-section` | Team member cards |
+| `generate-testimonial-section` | Customer testimonials |
+| `generate-cta-section` | Call-to-action section |
+| `generate-gallery-section` | Image gallery (grid/slider) |
+
+---
+
 ## Authentication
 
 All abilities require proper WordPress authentication. You can use:
@@ -568,15 +636,16 @@ Each ability has specific permission requirements:
 
 ## Roadmap
 
-### Phase 2 (Next Release)
+### Completed in v2.0.0
 
-- [ ] Additional inserter abilities (Accordion, Tabs, Counter Group, etc.)
-- [ ] Layout generator abilities (hero sections, feature grids)
-- [ ] Batch operation abilities
-- [ ] Icon/color configuration abilities
+- [x] Additional inserter abilities (Section, Map, Countdown Timer, Form Builder, etc.)
+- [x] Layout generator abilities (hero, features, stats, FAQ, contact, pricing, team, testimonials, CTA, gallery)
+- [x] Extension configurators (background video, clickable groups, custom CSS, responsive visibility)
+- [x] WordPress 6.9 native Abilities API support
 
 ### Phase 3 (Future)
 
+- [ ] Batch operation abilities (apply changes to multiple blocks)
 - [ ] Pattern template generation
 - [ ] Full-page layout generation from descriptions
 - [ ] Advanced animation sequencing

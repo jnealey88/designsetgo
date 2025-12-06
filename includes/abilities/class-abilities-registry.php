@@ -209,6 +209,42 @@ class Abilities_Registry {
 		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Card' ) ) {
 			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Card() );
 		}
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Image_Accordion' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Image_Accordion() );
+		}
+
+		// Inserter abilities - Page structure.
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Section' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Section() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Divider' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Divider() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Breadcrumbs' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Breadcrumbs() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Table_Of_Contents' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Table_Of_Contents() );
+		}
+
+		// Inserter abilities - Data display.
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Counter' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Counter() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Countdown_Timer' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Countdown_Timer() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Map' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Map() );
+		}
+
+		// Inserter abilities - UI elements.
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Pill' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Pill() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Form_Builder' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Form_Builder() );
+		}
 
 		// Configurator abilities.
 		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Counter_Animation' ) ) {
@@ -229,6 +265,23 @@ class Abilities_Registry {
 			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Apply_Expanding_Background() );
 		}
 
+		// Configurator abilities - Extension controls.
+		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Background_Video' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Background_Video() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Clickable_Group' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Clickable_Group() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Custom_CSS' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Custom_CSS() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Responsive_Visibility' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Responsive_Visibility() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Max_Width' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Max_Width() );
+		}
+
 		// Generator abilities.
 		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Hero_Section' ) ) {
 			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Hero_Section() );
@@ -244,6 +297,23 @@ class Abilities_Registry {
 		}
 		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Contact_Section' ) ) {
 			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Contact_Section() );
+		}
+
+		// Generator abilities - Additional section types.
+		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Pricing_Section' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Pricing_Section() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Team_Section' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Team_Section() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Testimonial_Section' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Testimonial_Section() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_CTA_Section' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_CTA_Section() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Gallery_Section' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Gallery_Section() );
 		}
 	}
 
