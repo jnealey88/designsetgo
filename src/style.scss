@@ -22,6 +22,9 @@
 @use './extensions/reveal-control/styles' as reveal-control;
 @use './extensions/clickable-group/styles' as clickable-group;
 
+// Rich text formats (frontend)
+@use './formats/text-style/style' as text-style;
+
 // ===================================================================
 // PERFORMANCE OPTIMIZATION (2025-11-11)
 // ===================================================================

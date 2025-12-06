@@ -16,6 +16,9 @@
 @use '../extensions/grid-span/editor' as grid-span;
 @use '../extensions/reveal-control/editor' as reveal-control;
 
+// Rich text formats (editor)
+@use '../formats/text-style/editor' as text-style;
+
 // Block Editor Styles
 @use '../blocks/table-of-contents/editor' as table-of-contents;
 @use '../blocks/breadcrumbs/editor' as breadcrumbs;

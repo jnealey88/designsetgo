@@ -49,6 +49,10 @@ import './extensions/sticky-header-controls';
 // Responsive Visibility - adds device-based visibility controls to all blocks
 import './extensions/responsive';
 
+// ===== RICH TEXT FORMATS =====
+// Text Style - adds inline text styling (color, gradient, size) to selected text
+import './formats/text-style';
+
 // ===== DEFAULT PADDING FOR ROOT CONTAINERS =====
 // Set default padding for container blocks, but only when inserted at root level
 import { addFilter } from '@wordpress/hooks';

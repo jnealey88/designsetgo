@@ -156,6 +156,11 @@ class Assets {
 			$has_blocks = true;
 		}
 
+		// Check for text-style format applied to any content.
+		if ( ! $has_blocks && strpos( $content, 'dsgo-text-style' ) !== false ) {
+			$has_blocks = true;
+		}
+
 		// Cache result for 1 hour using object cache (faster than transients).
 		// Falls back to non-persistent cache if Redis/Memcached not available.
 		wp_cache_set( $cache_key, (int) $has_blocks, 'designsetgo', HOUR_IN_SECONDS );

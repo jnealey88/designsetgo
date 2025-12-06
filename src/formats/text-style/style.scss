@@ -1,0 +1,44 @@
+/**
+ * Text Style Format - Frontend Styles
+ *
+ * Styles for rendered text with custom styling applied.
+ *
+ * @since 1.3.0
+ */
+
+// Base style - ensure proper display
+.dsgo-text-style {
+	// Inline display for text formatting
+	display: inline;
+}
+
+// Gradient text effect
+// Uses background-clip: text to fill text with gradient
+.dsgo-text-style--gradient-text {
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	// Ensure display remains inline
+	display: inline;
+	// Prevent background from extending beyond text bounds
+	background-size: 100%;
+	background-repeat: no-repeat;
+}
+
+// Gradient highlight effect
+.dsgo-text-style--gradient-highlight {
+	// Keep inline display
+	display: inline;
+	// Ensure text remains readable across line breaks
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+	// Padding and border-radius are controlled via inline styles
+}
+
+// Ensure styled text doesn't break layout in various contexts
+:where(.wp-block-heading, .wp-block-paragraph, .wp-block-list) {
+	.dsgo-text-style {
+		// Inherit parent line-height to prevent layout shifts
+		line-height: inherit;
+	}
+}
