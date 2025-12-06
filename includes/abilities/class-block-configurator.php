@@ -279,6 +279,22 @@ class Block_Configurator {
 	}
 
 	/**
+	 * Configure a block with new attributes.
+	 *
+	 * Alias for update_block_attributes() for API consistency.
+	 *
+	 * @param int                  $post_id Post ID.
+	 * @param string               $block_name Block name to update (e.g., 'designsetgo/row').
+	 * @param array<string, mixed> $attributes New attributes to merge.
+	 * @param string|null          $client_id Optional. Specific block client ID to update.
+	 * @param bool                 $update_all Whether to update all matching blocks or just the first.
+	 * @return array<string, mixed>|WP_Error Success data or error.
+	 */
+	public static function configure_block( int $post_id, string $block_name, array $attributes, ?string $client_id = null, bool $update_all = false ) {
+		return self::update_block_attributes( $post_id, $block_name, $attributes, $client_id, $update_all );
+	}
+
+	/**
 	 * Get default configuration output schema.
 	 *
 	 * @return array<string, mixed> Output schema.
