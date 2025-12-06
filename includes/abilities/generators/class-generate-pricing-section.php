@@ -270,7 +270,10 @@ class Generate_Pricing_Section extends Abstract_Ability {
 			$card_inner[] = array(
 				'name'       => 'core/buttons',
 				'attributes' => array(
-					'layout' => array( 'type' => 'flex', 'justifyContent' => 'center' ),
+					'layout' => array(
+						'type'           => 'flex',
+						'justifyContent' => 'center',
+					),
 				),
 				'innerBlocks' => array(
 					array(
