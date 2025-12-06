@@ -5,11 +5,11 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Professional WordPress blocks without page builder bloat. 46 blocks + 11 universal extensions that enhance ANY block.
+Professional WordPress blocks without page builder bloat. 46 blocks + 14 universal extensions that enhance ANY block.
 
 == Description ==
 
@@ -21,7 +21,8 @@ DesignSetGo gives you the power of a page builder with the simplicity of WordPre
 
 ✓ **Works Like WordPress** - If you know blocks, you know DesignSetGo. No separate interface, no learning curve.
 ✓ **46 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, modals, breadcrumbs, and more.
-✓ **11 Universal Extensions** - Add animations, responsive visibility, sticky headers, clickable groups, max width, and more to ANY WordPress block (including core blocks).
+✓ **14 Universal Extensions** - Add animations, scroll effects, parallax, responsive visibility, sticky headers, clickable groups, max width, and more to ANY WordPress block (including core blocks).
+✓ **Text Style Format** - Apply custom colors, gradients, font sizes, and highlights to selected text inline, just like bold or italic.
 ✓ **Performance First** - Lightweight code, no jQuery, optimized bundles. Your site stays fast.
 ✓ **No Lock-In** - Built with WordPress standards. What you build works with or without the plugin.
 ✓ **Editor = Frontend** - What you see in the editor is exactly what appears on your site. No surprises.
@@ -46,9 +47,12 @@ Icons (500+), icon buttons, icon lists, pills/badges, dividers, countdown timers
 **Location (1 block)**
 Interactive maps with Google Maps and OpenStreetMap support, custom markers, and privacy-friendly options.
 
-**Universal Extensions (11 extensions)**
+**Universal Extensions (14 extensions)**
 These work with ANY WordPress block—including core blocks and third-party blocks:
 * **Block Animations** - 24+ effects with scroll/hover/click triggers
+* **Scroll Parallax** - Elementor-style vertical/horizontal parallax effects with device controls
+* **Text Reveal** - Scroll-triggered text color animation that simulates reading progression
+* **Expanding Background** - Scroll-driven background that expands from a circle to fill sections
 * **Sticky Header** - Advanced sticky controls with offset and hide on scroll
 * **Clickable Groups** - Turn containers into accessible clickable links
 * **Background Video** - Add YouTube or self-hosted videos to containers
@@ -58,6 +62,13 @@ These work with ANY WordPress block—including core blocks and third-party bloc
 * **Grid Span** - Column and row spanning for grid layouts
 * **Reveal Control** - Advanced hover reveal timing and transitions
 * **Text Alignment Inheritance** - Inherit alignment from parent blocks
+
+**Text Style Format**
+Apply custom inline styles to selected text, just like bold or italic:
+* Text color (solid + gradient fill)
+* Background highlight (solid + gradient)
+* Font size presets (S/M/L/XL) + custom values
+* Padding and border radius for pill/badge styles
 
 = Perfect For =
 
@@ -146,6 +157,27 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.3.0 - 2025-12-06 =
+**New Features:**
+* New: Text Style inline format - apply colors, gradients, font sizes, and highlights to selected text like bold/italic
+* New: Scroll Parallax extension - Elementor-style vertical and horizontal parallax effects with per-device controls
+* New: Text Reveal extension - scroll-triggered text color animation that simulates natural reading progression
+* New: Expanding Background extension - scroll-driven background that expands from a small circle to fill sections
+* New: Cloudflare Turnstile integration for form spam protection - modern, privacy-friendly alternative to reCAPTCHA
+
+**Improvements:**
+* Enhancement: Icon Button now respects WordPress width constraints and inherits theme.json button styles
+* Enhancement: Icon Button properly integrates with FSE button settings (colors, padding, border-radius)
+* Enhancement: Admin settings page now properly displays translations for all supported languages
+
+**Bug Fixes:**
+* Fix: Icon Button display and width issues in constrained layouts
+* Fix: Admin settings page translation loading with proper JSON translation file generation
+* Fix: Added missing wp_set_script_translations() call for admin JavaScript bundle
+
+**Documentation:**
+* Docs: Added comprehensive documentation for all new extensions and formats
 
 = 1.2.1 - 2025-11-24 =
 **New Features:**
@@ -297,6 +329,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Comprehensive documentation and developer guides
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Major update with 3 new scroll-driven extensions (Scroll Parallax, Text Reveal, Expanding Background), new Text Style inline format for custom text styling, Cloudflare Turnstile spam protection, and Icon Button theme.json integration.
 
 = 1.1.0 =
 Major update with new Map and Card blocks, completely redesigned admin dashboard, 11 universal extensions, and 9 language translations. Enhanced security and bug fixes.
