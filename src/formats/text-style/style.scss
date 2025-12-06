@@ -37,6 +37,7 @@
 
 // Ensure styled text doesn't break layout in various contexts
 :where(.wp-block-heading, .wp-block-paragraph, .wp-block-list) {
+
 	.dsgo-text-style {
 		// Inherit parent line-height to prevent layout shifts
 		line-height: inherit;

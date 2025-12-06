@@ -25,11 +25,7 @@ import { Popover, ToolbarGroup, ToolbarButton } from '@wordpress/components';
 import { textColor as textColorIcon } from '@wordpress/icons';
 
 import { FORMAT_NAME, CSS_CLASSES } from './constants';
-import {
-	generateStyleString,
-	parseStyleString,
-	hasAnyStyle,
-} from './utils';
+import { generateStyleString, parseStyleString, hasAnyStyle } from './utils';
 import TextStylePopover from './components/TextStylePopover';
 
 /**
@@ -41,15 +37,14 @@ import TextStylePopover from './components/TextStylePopover';
  * @param {boolean}  props.isActive - Whether the format is currently active
  * @param {Object}   props.value    - RichText value object
  * @param {Function} props.onChange - Callback to update RichText value
- * @param {Object}   props.contentRef - Reference to the editable content
  * @return {JSX.Element} The edit component
  */
-function TextStyleEdit( { isActive, value, onChange, contentRef } ) {
-	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false );
-	const buttonRef = useRef( null );
+function TextStyleEdit({ isActive, value, onChange }) {
+	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+	const buttonRef = useRef(null);
 
 	// Get current format attributes if active
-	const activeFormat = getActiveFormat( value, FORMAT_NAME );
+	const activeFormat = getActiveFormat(value, FORMAT_NAME);
 	const currentStyles = parseStyleString(
 		activeFormat?.attributes?.style || '',
 		activeFormat?.attributes?.class || ''
@@ -59,70 +54,70 @@ function TextStyleEdit( { isActive, value, onChange, contentRef } ) {
 	 * Apply styles to selected text
 	 */
 	const applyStyles = useCallback(
-		( newStyles ) => {
-			const { style, class: className } = generateStyleString( newStyles );
+		(newStyles) => {
+			const { style, class: className } = generateStyleString(newStyles);
 
-			if ( ! hasAnyStyle( newStyles ) ) {
+			if (!hasAnyStyle(newStyles)) {
 				// Remove format if no styles
-				onChange( removeFormat( value, FORMAT_NAME ) );
+				onChange(removeFormat(value, FORMAT_NAME));
 			} else {
 				// Apply format with new styles
 				onChange(
-					applyFormat( value, {
+					applyFormat(value, {
 						type: FORMAT_NAME,
 						attributes: {
 							style,
 							class: className,
 						},
-					} )
+					})
 				);
 			}
 		},
-		[ value, onChange ]
+		[value, onChange]
 	);
 
 	/**
 	 * Clear all styles
 	 */
-	const clearStyles = useCallback( () => {
-		onChange( removeFormat( value, FORMAT_NAME ) );
-		setIsPopoverOpen( false );
-	}, [ value, onChange ] );
+	const clearStyles = useCallback(() => {
+		onChange(removeFormat(value, FORMAT_NAME));
+		setIsPopoverOpen(false);
+	}, [value, onChange]);
 
 	/**
 	 * Toggle popover
 	 */
-	const togglePopover = useCallback( () => {
-		setIsPopoverOpen( ( prev ) => ! prev );
-	}, [] );
+	const togglePopover = useCallback(() => {
+		setIsPopoverOpen((prev) => !prev);
+	}, []);
 
 	return (
 		<BlockControls group="inline">
 			<ToolbarGroup>
 				<ToolbarButton
-					ref={ buttonRef }
-					icon={ textColorIcon }
-					title={ __( 'Text Style', 'designsetgo' ) }
-					onClick={ togglePopover }
-					isActive={ isActive || isPopoverOpen }
+					ref={buttonRef}
+					icon={textColorIcon}
+					title={__('Text Style', 'designsetgo')}
+					onClick={togglePopover}
+					isActive={isActive || isPopoverOpen}
 				/>
 			</ToolbarGroup>
-			{ isPopoverOpen && (
+			{isPopoverOpen && (
 				<Popover
 					className="dsgo-text-style-popover"
-					anchor={ buttonRef.current }
+					anchor={buttonRef.current}
 					placement="bottom-start"
-					onClose={ () => setIsPopoverOpen( false ) }
+					onClose={() => setIsPopoverOpen(false)}
 					focusOnMount="firstElement"
 				>
 					<TextStylePopover
-						styles={ currentStyles }
-						onChange={ applyStyles }
-						onClear={ clearStyles }
-						onClose={ () => setIsPopoverOpen( false ) }
+						styles={currentStyles}
+						onChange={applyStyles}
+						onClear={clearStyles}
+						onClose={() => setIsPopoverOpen(false)}
 					/>
 				</Popover>
-			) }
+			)}
 		</BlockControls>
 	);
 }
@@ -130,8 +125,8 @@ function TextStyleEdit( { isActive, value, onChange, contentRef } ) {
 /**
  * Register the Text Style format type
  */
-registerFormatType( FORMAT_NAME, {
-	title: __( 'Text Style', 'designsetgo' ),
+registerFormatType(FORMAT_NAME, {
+	title: __('Text Style', 'designsetgo'),
 	tagName: 'span',
 	className: CSS_CLASSES.BASE,
 	attributes: {
@@ -139,4 +134,4 @@ registerFormatType( FORMAT_NAME, {
 		class: 'class',
 	},
 	edit: TextStyleEdit,
-} );
+});

@@ -33,21 +33,24 @@ import {
  * @param {Function} props.onBorderRadiusChange - Callback when border radius changes
  * @return {JSX.Element} The size section
  */
-export default function SizeSection( {
+export default function SizeSection({
 	fontSize,
 	onFontSizeChange,
 	padding,
 	onPaddingChange,
 	borderRadius,
 	onBorderRadiusChange,
-} ) {
+}) {
 	/**
 	 * Check if a font size preset is active
+	 *
+	 * @param {string|null} presetValue - The preset value to check
+	 * @return {boolean} Whether the preset is active
 	 */
-	const isSizePresetActive = ( presetValue ) => {
-		if ( presetValue === null ) {
+	const isSizePresetActive = (presetValue) => {
+		if (presetValue === null) {
 			// "Normal" preset is active when no font size is set
-			return ! fontSize;
+			return !fontSize;
 		}
 		return fontSize === presetValue;
 	};
@@ -56,131 +59,133 @@ export default function SizeSection( {
 	 * Check if a custom size value is set (not a preset)
 	 */
 	const isCustomSizeValue = () => {
-		if ( ! fontSize ) {
+		if (!fontSize) {
 			return false;
 		}
-		return ! SIZE_PRESETS.some( ( preset ) => preset.value === fontSize );
+		return !SIZE_PRESETS.some((preset) => preset.value === fontSize);
 	};
 
 	/**
 	 * Check if a padding preset is active
+	 *
+	 * @param {string|null} presetValue - The preset value to check
+	 * @return {boolean} Whether the preset is active
 	 */
-	const isPaddingPresetActive = ( presetValue ) => {
-		if ( presetValue === null ) {
-			return ! padding;
+	const isPaddingPresetActive = (presetValue) => {
+		if (presetValue === null) {
+			return !padding;
 		}
 		return padding === presetValue;
 	};
 
 	/**
 	 * Check if a border radius preset is active
+	 *
+	 * @param {string|null} presetValue - The preset value to check
+	 * @return {boolean} Whether the preset is active
 	 */
-	const isBorderRadiusPresetActive = ( presetValue ) => {
-		if ( presetValue === null ) {
-			return ! borderRadius;
+	const isBorderRadiusPresetActive = (presetValue) => {
+		if (presetValue === null) {
+			return !borderRadius;
 		}
 		return borderRadius === presetValue;
 	};
 
 	return (
 		<div className="dsgo-text-style-popover__section">
-			{ /* Font Size */ }
+			{/* Font Size */}
 			<div className="dsgo-text-style-popover__section-title">
-				{ __( 'Size', 'designsetgo' ) }
+				{__('Size', 'designsetgo')}
 			</div>
 
 			<div className="dsgo-text-style-popover__size-controls">
 				<ButtonGroup className="dsgo-text-style-popover__size-presets">
-					{ SIZE_PRESETS.map( ( preset ) => (
+					{SIZE_PRESETS.map((preset) => (
 						<Button
-							key={ preset.label }
+							key={preset.label}
 							size="compact"
 							variant={
-								isSizePresetActive( preset.value )
+								isSizePresetActive(preset.value)
 									? 'primary'
 									: 'secondary'
 							}
-							onClick={ () =>
-								onFontSizeChange( preset.value || '' )
-							}
-							title={ preset.title }
+							onClick={() => onFontSizeChange(preset.value || '')}
+							title={preset.title}
 						>
-							{ preset.label }
+							{preset.label}
 						</Button>
-					) ) }
+					))}
 				</ButtonGroup>
 
 				<UnitControl
 					className="dsgo-text-style-popover__size-custom"
-					label={ __( 'Custom', 'designsetgo' ) }
+					label={__('Custom', 'designsetgo')}
 					hideLabelFromVision
-					value={ isCustomSizeValue() ? fontSize : '' }
-					onChange={ ( value ) => onFontSizeChange( value || '' ) }
-					units={ SIZE_UNITS }
-					placeholder={ __( 'Custom', 'designsetgo' ) }
+					value={isCustomSizeValue() ? fontSize : ''}
+					onChange={(value) => onFontSizeChange(value || '')}
+					units={SIZE_UNITS}
+					placeholder={__('Custom', 'designsetgo')}
 					size="__unstable-large"
 					__next40pxDefaultSize
 					__nextHasNoMarginBottom
 				/>
 			</div>
 
-			{ /* Padding */ }
+			{/* Padding */}
 			<div
 				className="dsgo-text-style-popover__section-title"
-				style={ { marginTop: '12px' } }
+				style={{ marginTop: '12px' }}
 			>
-				{ __( 'Padding', 'designsetgo' ) }
+				{__('Padding', 'designsetgo')}
 			</div>
 
 			<div className="dsgo-text-style-popover__size-controls">
 				<ButtonGroup className="dsgo-text-style-popover__size-presets">
-					{ PADDING_PRESETS.map( ( preset ) => (
+					{PADDING_PRESETS.map((preset) => (
 						<Button
-							key={ preset.label }
+							key={preset.label}
 							size="compact"
 							variant={
-								isPaddingPresetActive( preset.value )
+								isPaddingPresetActive(preset.value)
 									? 'primary'
 									: 'secondary'
 							}
-							onClick={ () =>
-								onPaddingChange( preset.value || '' )
-							}
-							title={ preset.title }
+							onClick={() => onPaddingChange(preset.value || '')}
+							title={preset.title}
 						>
-							{ preset.label }
+							{preset.label}
 						</Button>
-					) ) }
+					))}
 				</ButtonGroup>
 			</div>
 
-			{ /* Border Radius */ }
+			{/* Border Radius */}
 			<div
 				className="dsgo-text-style-popover__section-title"
-				style={ { marginTop: '12px' } }
+				style={{ marginTop: '12px' }}
 			>
-				{ __( 'Radius', 'designsetgo' ) }
+				{__('Radius', 'designsetgo')}
 			</div>
 
 			<div className="dsgo-text-style-popover__size-controls">
 				<ButtonGroup className="dsgo-text-style-popover__size-presets">
-					{ BORDER_RADIUS_PRESETS.map( ( preset ) => (
+					{BORDER_RADIUS_PRESETS.map((preset) => (
 						<Button
-							key={ preset.label }
+							key={preset.label}
 							size="compact"
 							variant={
-								isBorderRadiusPresetActive( preset.value )
+								isBorderRadiusPresetActive(preset.value)
 									? 'primary'
 									: 'secondary'
 							}
-							onClick={ () =>
-								onBorderRadiusChange( preset.value || '' )
+							onClick={() =>
+								onBorderRadiusChange(preset.value || '')
 							}
-							title={ preset.title }
+							title={preset.title}
 						>
-							{ preset.label }
+							{preset.label}
 						</Button>
-					) ) }
+					))}
 				</ButtonGroup>
 			</div>
 		</div>
