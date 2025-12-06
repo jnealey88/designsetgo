@@ -6,7 +6,61 @@
  * @since 1.0.0
  */
 
-/* global designsetgoForm */
+/* global designsetgoForm, dsgoIntegrations */
+
+// Track Turnstile script loading state
+let turnstileScriptLoaded = false;
+let turnstileScriptLoading = false;
+const turnstileLoadCallbacks = [];
+
+/**
+ * Load Turnstile script dynamically
+ *
+ * @return {Promise} Resolves when script is loaded
+ */
+function loadTurnstileScript() {
+	return new Promise((resolve, reject) => {
+		// Already loaded
+		if (turnstileScriptLoaded && window.turnstile) {
+			resolve();
+			return;
+		}
+
+		// Currently loading - queue callback
+		if (turnstileScriptLoading) {
+			turnstileLoadCallbacks.push({ resolve, reject });
+			return;
+		}
+
+		turnstileScriptLoading = true;
+
+		const script = document.createElement('script');
+		script.src =
+			'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+		script.async = true;
+		script.defer = true;
+
+		script.onload = () => {
+			turnstileScriptLoaded = true;
+			turnstileScriptLoading = false;
+			resolve();
+			// Resolve queued callbacks
+			turnstileLoadCallbacks.forEach((cb) => cb.resolve());
+			turnstileLoadCallbacks.length = 0;
+		};
+
+		script.onerror = () => {
+			turnstileScriptLoading = false;
+			const error = new Error('Failed to load Turnstile script');
+			reject(error);
+			// Reject queued callbacks
+			turnstileLoadCallbacks.forEach((cb) => cb.reject(error));
+			turnstileLoadCallbacks.length = 0;
+		};
+
+		document.head.appendChild(script);
+	});
+}
 
 document.addEventListener('DOMContentLoaded', function () {
 	const forms = document.querySelectorAll('.dsgo-form-builder');
@@ -28,6 +82,66 @@ document.addEventListener('DOMContentLoaded', function () {
 		timestampField.name = 'dsg_timestamp';
 		timestampField.value = Date.now();
 		formElement.appendChild(timestampField);
+
+		// Turnstile state for this form
+		let turnstileToken = null;
+		let turnstileWidgetId = null;
+
+		// Check if Turnstile is enabled for this form
+		const turnstileEnabled =
+			formContainer.getAttribute('data-dsgo-turnstile') === 'true';
+		const turnstileContainer = formElement.querySelector(
+			'[data-dsgo-turnstile-container]'
+		);
+		const turnstileSiteKey =
+			typeof dsgoIntegrations !== 'undefined'
+				? dsgoIntegrations.turnstileSiteKey
+				: null;
+
+		// Initialize Turnstile if enabled
+		if (turnstileEnabled && turnstileContainer && turnstileSiteKey) {
+			loadTurnstileScript()
+				.then(() => {
+					if (!window.turnstile) {
+						throw new Error('Turnstile not available');
+					}
+
+					turnstileWidgetId = window.turnstile.render(
+						turnstileContainer,
+						{
+							sitekey: turnstileSiteKey,
+							theme: 'auto',
+							size: 'normal',
+							// Mode (managed/non-interactive/invisible) is configured in Cloudflare dashboard
+							callback: (token) => {
+								turnstileToken = token;
+							},
+							'expired-callback': () => {
+								turnstileToken = null;
+								// Reset widget for new token
+								if (
+									turnstileWidgetId !== null &&
+									window.turnstile
+								) {
+									window.turnstile.reset(turnstileWidgetId);
+								}
+							},
+							'error-callback': () => {
+								// Graceful degradation - form will submit without Turnstile token
+								// eslint-disable-next-line no-console -- Log for debugging
+								console.warn(
+									'Turnstile widget error - form will submit without verification'
+								);
+							},
+						}
+					);
+				})
+				.catch((error) => {
+					// Graceful degradation - form will submit without Turnstile token
+					// eslint-disable-next-line no-console -- Log for debugging
+					console.warn('Turnstile failed to load:', error.message);
+				});
+		}
 
 		// Check if AJAX is enabled
 		const ajaxEnabled =
@@ -130,6 +244,8 @@ document.addEventListener('DOMContentLoaded', function () {
 						email_from_email: emailFromEmail,
 						email_reply_to: emailReplyTo,
 						email_body: emailBody,
+						// Include Turnstile token if available (graceful degradation: empty if failed)
+						turnstile_token: turnstileToken || '',
 					}),
 				});
 

@@ -109,6 +109,10 @@
 			"type": "number",
 			"default": 60
 		},
+		"enableTurnstile": {
+			"type": "boolean",
+			"default": false
+		},
 		"enableEmail": {
 			"type": "boolean",
 			"default": false

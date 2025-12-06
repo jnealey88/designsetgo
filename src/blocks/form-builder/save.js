@@ -29,6 +29,7 @@ export default function FormBuilderSave({ attributes }) {
 		submitButtonFontSize,
 		submitButtonHeight,
 		enableHoneypot,
+		enableTurnstile,
 		enableEmail,
 		emailTo,
 		emailSubject,
@@ -71,6 +72,9 @@ export default function FormBuilderSave({ attributes }) {
 		'data-email-from-email': emailFromEmail,
 		'data-email-reply-to': emailReplyTo,
 		'data-email-body': emailBody,
+		...(enableTurnstile && {
+			'data-dsgo-turnstile': 'true',
+		}),
 	});
 
 	// Extract children from innerBlocksProps so we can add button inside fields container
@@ -132,6 +136,14 @@ export default function FormBuilderSave({ attributes }) {
 				<input type="hidden" name="dsg_form_id" value={formId} />
 
 				{/* Timestamp added via JavaScript in view.js to avoid validation errors */}
+
+				{/* Turnstile widget container - rendered by JS */}
+				{enableTurnstile && (
+					<div
+						className="dsgo-turnstile-widget"
+						data-dsgo-turnstile-container="true"
+					/>
+				)}
 
 				{submitButtonPosition === 'below' && (
 					<div className="dsgo-form__footer">
