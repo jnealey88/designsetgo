@@ -110,17 +110,23 @@ function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
 	}
 
 	// Apply viewport range limits (user-defined start/end percentages)
-	const totalRange = scrollEnd - scrollStart;
-	const adjustedStart =
-		scrollStart + (totalRange * settings.viewportStart) / 100;
-	const adjustedEnd = scrollStart + (totalRange * settings.viewportEnd) / 100;
-
-	// Calculate progress within range (0 to 1)
-	const progress = clamp(
-		(scrollY - adjustedStart) / (adjustedEnd - adjustedStart),
-		0,
-		1
+	// Ensure viewportStart is not greater than viewportEnd
+	const viewportStart = Math.min(
+		settings.viewportStart,
+		settings.viewportEnd
 	);
+	const viewportEnd = Math.max(settings.viewportStart, settings.viewportEnd);
+
+	const totalRange = scrollEnd - scrollStart;
+	const adjustedStart = scrollStart + (totalRange * viewportStart) / 100;
+	const adjustedEnd = scrollStart + (totalRange * viewportEnd) / 100;
+
+	// Calculate progress within range (0 to 1), guard against division by zero
+	const rangeDiff = adjustedEnd - adjustedStart;
+	const progress =
+		rangeDiff === 0
+			? 0.5
+			: clamp((scrollY - adjustedStart) / rangeDiff, 0, 1);
 
 	// Convert speed (0-10) to max pixel offset
 	// Speed 10 = 200px max movement, Speed 0 = 0px
@@ -158,6 +164,12 @@ function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
  * Initialize parallax effects
  */
 function initParallax() {
+	// Prevent multiple initializations
+	if (window.dsgoParallaxInitialized) {
+		return;
+	}
+	window.dsgoParallaxInitialized = true;
+
 	// Check for reduced motion preference
 	const prefersReducedMotion = window.matchMedia(
 		'(prefers-reduced-motion: reduce)'
@@ -197,7 +209,7 @@ function initParallax() {
 			});
 		},
 		{
-			rootMargin: '50% 0px', // Extend observation area
+			rootMargin: '50% 0px 50% 0px', // Extend observation area (top, right, bottom, left)
 			threshold: 0,
 		}
 	);

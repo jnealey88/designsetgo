@@ -93,13 +93,14 @@ function addParallaxSaveProps(extraProps, blockType, attributes) {
 	};
 
 	// Add class for CSS targeting
-	let className = extraProps.className || '';
-	className += ' dsgo-has-parallax';
+	const className = [extraProps.className, 'dsgo-has-parallax']
+		.filter(Boolean)
+		.join(' ');
 
 	return {
 		...extraProps,
 		...dataAttributes,
-		className: className.trim(),
+		className,
 	};
 }
 
