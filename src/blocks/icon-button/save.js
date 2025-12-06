@@ -80,12 +80,11 @@ export default function IconButtonSave({ attributes }) {
 			: '';
 
 	// Build width class for CSS-based width handling (must match edit.js)
+	// Default to auto width for any non-100% value
 	const widthClass =
-		width === 'auto'
-			? ' dsgo-icon-button--width-auto'
-			: width === '100%'
-				? ' dsgo-icon-button--width-full'
-				: '';
+		width === '100%'
+			? ' dsgo-icon-button--width-full'
+			: ' dsgo-icon-button--width-auto';
 
 	// wp-block-button class enables theme.json button styles to cascade to wp-block-button__link
 	const blockProps = useBlockProps.save({

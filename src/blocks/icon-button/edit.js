@@ -119,12 +119,11 @@ export default function IconButtonEdit({
 			: '';
 
 	// Build width class for CSS-based width handling
+	// Default to auto width for any non-100% value
 	const widthClass =
-		width === 'auto'
-			? ' dsgo-icon-button--width-auto'
-			: width === '100%'
-				? ' dsgo-icon-button--width-full'
-				: '';
+		width === '100%'
+			? ' dsgo-icon-button--width-full'
+			: ' dsgo-icon-button--width-auto';
 
 	// wp-block-button class enables theme.json button styles to cascade to wp-block-button__link
 	const blockProps = useBlockProps({
@@ -184,7 +183,10 @@ export default function IconButtonEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="dsgo-icon-button__wrapper wp-element-button wp-block-button__link" style={buttonStyles}>
+				<div
+					className="dsgo-icon-button__wrapper wp-element-button wp-block-button__link"
+					style={buttonStyles}
+				>
 					{iconPosition !== 'none' && icon && (
 						<span
 							className="dsgo-icon-button__icon"

@@ -27,6 +27,7 @@
 
 	// Full width: Button spans the full container width
 	&--width-full {
+
 		.dsgo-icon-button__wrapper {
 			display: flex; // Block-level flex instead of inline-flex
 			width: 100%;
@@ -57,11 +58,11 @@
 
 	&__wrapper {
 		// wp-element-button class inherits theme.json button styles (colors, padding, border-radius, etc.)
-		// Priority order:
-		// 1. FSE customizations to Icon Button specifically (highest priority)
-		// 2. FSE customizations to core Button element (styles.elements.button)
-		// 3. Theme defaults from theme.json
-		// 4. WordPress block controls (inline styles) override all of the above
+		// Priority order (highest to lowest):
+		// 1. WordPress block controls (inline styles) - highest priority
+		// 2. FSE customizations to Icon Button specifically
+		// 3. FSE customizations to core Button element (styles.elements.button)
+		// 4. Theme defaults from theme.json - lowest priority
 
 		// When user sets border-radius via WordPress block controls, inherit from parent
 		.dsgo-icon-button[style*="border-radius"] > & {
@@ -89,6 +90,8 @@
 
 		&:focus {
 			text-decoration: none !important;
+			outline: 2px solid currentcolor;
+			outline-offset: 2px;
 		}
 
 		// When it's a div (no link), remove cursor pointer
