@@ -5,6 +5,7 @@
  */
 
 import { __ } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
 import {
 	PanelBody,
 	ToggleControl,
@@ -48,7 +49,7 @@ export default function ExpandingBackgroundPanel({
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	return (
-		<>
+		<Fragment>
 			{/* Color Settings - In Styles > Color Panel */}
 			{dsgoExpandingBgEnabled && (
 				<InspectorControls group="color">
@@ -186,6 +187,6 @@ export default function ExpandingBackgroundPanel({
 					)}
 				</PanelBody>
 			</InspectorControls>
-		</>
+		</Fragment>
 	);
 }

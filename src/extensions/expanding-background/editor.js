@@ -6,6 +6,7 @@
 
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
+import { Fragment } from '@wordpress/element';
 import ExpandingBackgroundPanel from './components/ExpandingBackgroundPanel';
 import { SUPPORTED_BLOCKS } from './constants';
 
@@ -23,10 +24,10 @@ const withExpandingBackgroundControls = createHigherOrderComponent(
 			}
 
 			return (
-				<>
+				<Fragment>
 					<BlockEdit {...props} />
 					<ExpandingBackgroundPanel {...props} />
-				</>
+				</Fragment>
 			);
 		};
 	},
