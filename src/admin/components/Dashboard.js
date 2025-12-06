@@ -245,7 +245,7 @@ const Dashboard = () => {
 								</p>
 							</a>
 							<a
-								href="?page=edit.php&post_type=dsg_form_submission"
+								href="edit.php?post_type=dsgo_form_submission"
 								className="designsetgo-quick-link"
 							>
 								<span className="dashicons dashicons-feedback"></span>

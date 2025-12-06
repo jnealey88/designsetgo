@@ -349,7 +349,7 @@ add_action( 'init', function() {
 
 add_action( 'designsetgo_cleanup_old_submissions', function() {
     $args = array(
-        'post_type'      => 'dsg_form_submission',
+        'post_type'      => 'dsgo_form_submission',
         'posts_per_page' => 100,
         'post_status'    => 'private',
         'date_query'     => array(

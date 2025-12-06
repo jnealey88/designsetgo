@@ -50,7 +50,7 @@ class Test_Security_Fixes extends WP_UnitTestCase {
 		// Create a test form submission.
 		$post_id = $this->factory->post->create(
 			array(
-				'post_type'   => 'dsg_form_submission',
+				'post_type'   => 'dsgo_form_submission',
 				'post_status' => 'private',
 			)
 		);
@@ -82,7 +82,7 @@ class Test_Security_Fixes extends WP_UnitTestCase {
 	 */
 	public function test_form_submissions_count_caching() {
 		// Clear any existing cache.
-		delete_transient( 'dsg_form_submissions_count' );
+		delete_transient( 'dsgo_form_submissions_count' );
 
 		// Create Settings instance.
 		$settings = new \DesignSetGo\Includes\Admin\Settings();
@@ -99,7 +99,7 @@ class Test_Security_Fixes extends WP_UnitTestCase {
 		$count1    = $response1->data['form_submissions'];
 
 		// Verify cache is set.
-		$cached_value = get_transient( 'dsg_form_submissions_count' );
+		$cached_value = get_transient( 'dsgo_form_submissions_count' );
 		$this->assertNotFalse( $cached_value, 'Cache should be set after first query' );
 		$this->assertEquals( $count1, $cached_value );
 
@@ -123,14 +123,14 @@ class Test_Security_Fixes extends WP_UnitTestCase {
 		);
 
 		// Verify cache is cleared after new submission.
-		$cached_after = get_transient( 'dsg_form_submissions_count' );
+		$cached_after = get_transient( 'dsgo_form_submissions_count' );
 		$this->assertFalse( $cached_after, 'Cache should be cleared after new submission' );
 
 		// Clean up.
 		if ( ! is_wp_error( $post_id ) ) {
 			wp_delete_post( $post_id, true );
 		}
-		delete_transient( 'dsg_form_submissions_count' );
+		delete_transient( 'dsgo_form_submissions_count' );
 	}
 
 	/**
