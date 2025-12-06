@@ -100,7 +100,7 @@ window.dsgoInjectIcons = initIconInjection;
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-	document.addEventListener('DOMContentLoaded', initIconInjection);
+	document.addEventListener('DOMContentLoaded', () => initIconInjection());
 } else {
 	initIconInjection();
 }
