@@ -33,7 +33,7 @@ import {
  * @param {Function} props.onHighlightGradientChange - Callback when highlight gradient changes
  * @return {JSX.Element} The color section
  */
-export default function ColorSection( {
+export default function ColorSection({
 	textColor,
 	textGradient,
 	highlightColor,
@@ -42,75 +42,75 @@ export default function ColorSection( {
 	onTextGradientChange,
 	onHighlightColorChange,
 	onHighlightGradientChange,
-} ) {
+}) {
 	// Determine initial main tab based on current values
 	const getInitialMainTab = () => {
-		if ( highlightColor || highlightGradient ) {
+		if (highlightColor || highlightGradient) {
 			return 'background';
 		}
 		return 'text';
 	};
 
 	// Determine initial type tab based on current values
-	const getInitialTypeTab = ( mainTab ) => {
-		if ( mainTab === 'text' ) {
+	const getInitialTypeTab = (mainTab) => {
+		if (mainTab === 'text') {
 			return textGradient ? 'gradient' : 'solid';
 		}
 		return highlightGradient ? 'gradient' : 'solid';
 	};
 
-	const [ mainTab, setMainTab ] = useState( () => getInitialMainTab() );
-	const [ textTypeTab, setTextTypeTab ] = useState( () =>
-		getInitialTypeTab( 'text' )
+	const [mainTab, setMainTab] = useState(() => getInitialMainTab());
+	const [textTypeTab, setTextTypeTab] = useState(() =>
+		getInitialTypeTab('text')
 	);
-	const [ bgTypeTab, setBgTypeTab ] = useState( () =>
-		getInitialTypeTab( 'background' )
+	const [bgTypeTab, setBgTypeTab] = useState(() =>
+		getInitialTypeTab('background')
 	);
 
 	// Get theme colors and gradients
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
-	const allColors = ( colorGradientSettings?.colors || [] ).flatMap(
-		( origin ) => origin.colors || []
+	const allColors = (colorGradientSettings?.colors || []).flatMap(
+		(origin) => origin.colors || []
 	);
-	const allGradients = ( colorGradientSettings?.gradients || [] ).flatMap(
-		( origin ) => origin.gradients || []
+	const allGradients = (colorGradientSettings?.gradients || []).flatMap(
+		(origin) => origin.gradients || []
 	);
 
 	// Check if gradient text is active (disables ALL background options)
 	// Gradient text uses background-clip: text which clips all backgrounds
-	const hasGradientText = Boolean( textGradient );
+	const hasGradientText = Boolean(textGradient);
 
 	return (
 		<div className="dsgo-text-style-popover__section">
-			{ /* Main Tabs: Text / Background */ }
+			{/* Main Tabs: Text / Background */}
 			<div className="dsgo-text-style-popover__section-header">
 				<span className="dsgo-text-style-popover__section-title">
-					{ __( 'Color', 'designsetgo' ) }
+					{__('Color', 'designsetgo')}
 				</span>
 				<ButtonGroup className="dsgo-text-style-popover__tabs">
 					<Button
 						size="small"
-						variant={ mainTab === 'text' ? 'primary' : 'secondary' }
-						onClick={ () => setMainTab( 'text' ) }
+						variant={mainTab === 'text' ? 'primary' : 'secondary'}
+						onClick={() => setMainTab('text')}
 					>
-						{ __( 'Text', 'designsetgo' ) }
+						{__('Text', 'designsetgo')}
 					</Button>
 					<Button
 						size="small"
 						variant={
 							mainTab === 'background' ? 'primary' : 'secondary'
 						}
-						onClick={ () => setMainTab( 'background' ) }
+						onClick={() => setMainTab('background')}
 					>
-						{ __( 'Background', 'designsetgo' ) }
+						{__('Background', 'designsetgo')}
 					</Button>
 				</ButtonGroup>
 			</div>
 
-			{ /* Text Color Controls */ }
-			{ mainTab === 'text' && (
+			{/* Text Color Controls */}
+			{mainTab === 'text' && (
 				<>
-					{ /* Solid/Gradient Toggle */ }
+					{/* Solid/Gradient Toggle */}
 					<div className="dsgo-text-style-popover__type-tabs">
 						<ButtonGroup>
 							<Button
@@ -120,9 +120,9 @@ export default function ColorSection( {
 										? 'primary'
 										: 'tertiary'
 								}
-								onClick={ () => setTextTypeTab( 'solid' ) }
+								onClick={() => setTextTypeTab('solid')}
 							>
-								{ __( 'Solid', 'designsetgo' ) }
+								{__('Solid', 'designsetgo')}
 							</Button>
 							<Button
 								size="small"
@@ -131,54 +131,52 @@ export default function ColorSection( {
 										? 'primary'
 										: 'tertiary'
 								}
-								onClick={ () => setTextTypeTab( 'gradient' ) }
+								onClick={() => setTextTypeTab('gradient')}
 							>
-								{ __( 'Gradient', 'designsetgo' ) }
+								{__('Gradient', 'designsetgo')}
 							</Button>
 						</ButtonGroup>
 					</div>
 
-					{ textTypeTab === 'solid' && (
+					{textTypeTab === 'solid' && (
 						<ColorPalette
-							colors={ allColors }
-							value={ textColor }
-							onChange={ ( value ) =>
-								onTextColorChange( value || '' )
-							}
+							colors={allColors}
+							value={textColor}
+							onChange={(value) => onTextColorChange(value || '')}
 							clearable
 							enableAlpha
 						/>
-					) }
+					)}
 
-					{ textTypeTab === 'gradient' && (
+					{textTypeTab === 'gradient' && (
 						<GradientPicker
-							gradients={ allGradients }
-							value={ textGradient || undefined }
-							onChange={ ( value ) =>
-								onTextGradientChange( value || '' )
+							gradients={allGradients}
+							value={textGradient || undefined}
+							onChange={(value) =>
+								onTextGradientChange(value || '')
 							}
 						/>
-					) }
+					)}
 				</>
-			) }
+			)}
 
-			{ /* Background/Highlight Controls */ }
-			{ mainTab === 'background' && (
+			{/* Background/Highlight Controls */}
+			{mainTab === 'background' && (
 				<>
-					{ /* Notice when gradient text is active */ }
-					{ hasGradientText && (
+					{/* Notice when gradient text is active */}
+					{hasGradientText && (
 						<p className="dsgo-text-style-popover__notice">
-							{ __(
+							{__(
 								'Background unavailable with gradient text. Gradient text uses background-clip which affects all backgrounds.',
 								'designsetgo'
-							) }
+							)}
 						</p>
-					) }
+					)}
 
-					{ /* Only show controls when gradient text is NOT active */ }
-					{ ! hasGradientText && (
+					{/* Only show controls when gradient text is NOT active */}
+					{!hasGradientText && (
 						<>
-							{ /* Solid/Gradient Toggle */ }
+							{/* Solid/Gradient Toggle */}
 							<div className="dsgo-text-style-popover__type-tabs">
 								<ButtonGroup>
 									<Button
@@ -188,9 +186,9 @@ export default function ColorSection( {
 												? 'primary'
 												: 'tertiary'
 										}
-										onClick={ () => setBgTypeTab( 'solid' ) }
+										onClick={() => setBgTypeTab('solid')}
 									>
-										{ __( 'Solid', 'designsetgo' ) }
+										{__('Solid', 'designsetgo')}
 									</Button>
 									<Button
 										size="small"
@@ -199,40 +197,38 @@ export default function ColorSection( {
 												? 'primary'
 												: 'tertiary'
 										}
-										onClick={ () =>
-											setBgTypeTab( 'gradient' )
-										}
+										onClick={() => setBgTypeTab('gradient')}
 									>
-										{ __( 'Gradient', 'designsetgo' ) }
+										{__('Gradient', 'designsetgo')}
 									</Button>
 								</ButtonGroup>
 							</div>
 
-							{ bgTypeTab === 'solid' && (
+							{bgTypeTab === 'solid' && (
 								<ColorPalette
-									colors={ allColors }
-									value={ highlightColor }
-									onChange={ ( value ) =>
-										onHighlightColorChange( value || '' )
+									colors={allColors}
+									value={highlightColor}
+									onChange={(value) =>
+										onHighlightColorChange(value || '')
 									}
 									clearable
 									enableAlpha
 								/>
-							) }
+							)}
 
-							{ bgTypeTab === 'gradient' && (
+							{bgTypeTab === 'gradient' && (
 								<GradientPicker
-									gradients={ allGradients }
-									value={ highlightGradient || undefined }
-									onChange={ ( value ) =>
-										onHighlightGradientChange( value || '' )
+									gradients={allGradients}
+									value={highlightGradient || undefined}
+									onChange={(value) =>
+										onHighlightGradientChange(value || '')
 									}
 								/>
-							) }
+							)}
 						</>
-					) }
+					)}
 				</>
-			) }
+			)}
 		</div>
 	);
 }

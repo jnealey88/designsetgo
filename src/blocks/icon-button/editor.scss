@@ -13,6 +13,7 @@
 	// Width auto: Ensure the button wrapper stays fit-content in the editor
 	// WordPress editor may try to force blocks to full width by default
 	&--width-auto {
+
 		.dsgo-icon-button__wrapper {
 			width: fit-content !important;
 			max-width: fit-content !important;

@@ -160,11 +160,17 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 = 1.3.0 - 2025-12-06 =
 **New Features:**
+* New: WordPress 6.9 Abilities API support - 50 AI abilities for block insertion, configuration, and section generation
 * New: Text Style inline format - apply colors, gradients, font sizes, and highlights to selected text like bold/italic
 * New: Scroll Parallax extension - Elementor-style vertical and horizontal parallax effects with per-device controls
 * New: Text Reveal extension - scroll-triggered text color animation that simulates natural reading progression
 * New: Expanding Background extension - scroll-driven background that expands from a small circle to fill sections
 * New: Cloudflare Turnstile integration for form spam protection - modern, privacy-friendly alternative to reCAPTCHA
+
+**WordPress 6.9 Compatibility:**
+* Enhancement: Conditionally load Abilities API polyfill only for WordPress < 6.9 (6.9+ includes it natively)
+* Enhancement: 26 new abilities added including inserters, configurators, and section generators
+* Enhancement: Updated "Tested up to" to WordPress 6.9
 
 **Improvements:**
 * Enhancement: Icon Button now respects WordPress width constraints and inherits theme.json button styles
@@ -178,6 +184,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 **Documentation:**
 * Docs: Added comprehensive documentation for all new extensions and formats
+* Docs: Updated Abilities API documentation with complete reference for all 50 abilities
 
 = 1.2.1 - 2025-11-24 =
 **New Features:**
@@ -331,7 +338,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 == Upgrade Notice ==
 
 = 1.3.0 =
-Major update with 3 new scroll-driven extensions (Scroll Parallax, Text Reveal, Expanding Background), new Text Style inline format for custom text styling, Cloudflare Turnstile spam protection, and Icon Button theme.json integration.
+Major update with WordPress 6.9 Abilities API support (50 AI abilities), 3 new scroll-driven extensions (Scroll Parallax, Text Reveal, Expanding Background), new Text Style inline format for custom text styling, Cloudflare Turnstile spam protection, and Icon Button theme.json integration.
 
 = 1.1.0 =
 Major update with new Map and Card blocks, completely redesigned admin dashboard, 11 universal extensions, and 9 language translations. Enhanced security and bug fixes.
