@@ -118,14 +118,20 @@ export default function IconButtonEdit({
 			? ` dsgo-icon-button--${hoverAnimation}`
 			: '';
 
+	// Build width class for CSS-based width handling
+	const widthClass =
+		width === 'auto'
+			? ' dsgo-icon-button--width-auto'
+			: width === '100%'
+				? ' dsgo-icon-button--width-full'
+				: '';
+
+	// wp-block-button class enables theme.json button styles to cascade to wp-block-button__link
 	const blockProps = useBlockProps({
-		className: `dsgo-icon-button${animationClass}`,
+		className: `dsgo-icon-button wp-block-button${animationClass}${widthClass}`,
 		style: {
-			display: width === '100%' ? 'block' : 'inline-block',
-			...(width === 'auto' && {
-				width: 'fit-content',
-				maxWidth: 'fit-content',
-			}),
+			// Let block wrapper be block-level to respect WordPress content width constraints
+			// Width styling is now handled via CSS classes on both wrapper and inner element
 			...(parentHoverButtonBg && {
 				'--dsgo-parent-hover-button-bg': parentHoverButtonBg,
 			}),
@@ -178,7 +184,7 @@ export default function IconButtonEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="dsgo-icon-button__wrapper" style={buttonStyles}>
+				<div className="dsgo-icon-button__wrapper wp-element-button wp-block-button__link" style={buttonStyles}>
 					{iconPosition !== 'none' && icon && (
 						<span
 							className="dsgo-icon-button__icon"

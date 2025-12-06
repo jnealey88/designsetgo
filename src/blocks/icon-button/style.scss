@@ -5,12 +5,35 @@
  */
 
 .dsgo-icon-button {
-	// Block wrapper styles applied via inline styles
-	// (display: inline-block or block depending on width setting)
-	// CRITICAL: Border-radius default - WordPress border controls override this via inline styles
-	border-radius: 4px;
+	// Block wrapper is now block-level by default to respect WordPress content width constraints
+	// Width behavior is controlled via modifier classes on both wrapper and inner element
+	// NOTE: Border-radius is now inherited from theme.json via wp-element-button on the wrapper
+	// WordPress border controls will add inline styles to this element, which the wrapper inherits
 
-	// WordPress alignment support: Make alignment classes work with inline-block display
+	// ============================================================================
+	// WIDTH MODIFIERS
+	// ============================================================================
+	// These classes control the width behavior of the button
+	// The outer wrapper stays block-level, inner wrapper handles inline display
+
+	// Auto width: Button only takes up the space it needs (default behavior)
+	&--width-auto {
+		// Outer wrapper is block-level, constrained by WordPress content width
+		// Inner wrapper is inline-flex with fit-content
+		.dsgo-icon-button__wrapper {
+			width: fit-content;
+		}
+	}
+
+	// Full width: Button spans the full container width
+	&--width-full {
+		.dsgo-icon-button__wrapper {
+			display: flex; // Block-level flex instead of inline-flex
+			width: 100%;
+		}
+	}
+
+	// WordPress alignment support: Make alignment classes work
 	// CRITICAL: aligncenter requires block display to work with margin: auto
 	&.aligncenter {
 		display: block !important;
@@ -33,46 +56,39 @@
 	}
 
 	&__wrapper {
-		// Layout styles applied via inline styles (display, gap, flex-direction, width)
-		padding: 12px 24px;
-		border-radius: inherit; // CRITICAL: Inherit border-radius from parent (.dsgo-icon-button) so WordPress border controls work
+		// wp-element-button class inherits theme.json button styles (colors, padding, border-radius, etc.)
+		// Priority order:
+		// 1. FSE customizations to Icon Button specifically (highest priority)
+		// 2. FSE customizations to core Button element (styles.elements.button)
+		// 3. Theme defaults from theme.json
+		// 4. WordPress block controls (inline styles) override all of the above
+
+		// When user sets border-radius via WordPress block controls, inherit from parent
+		.dsgo-icon-button[style*="border-radius"] > & {
+			border-radius: inherit;
+		}
+
+		// Structural styles only - visual styles come from wp-element-button (theme.json)
 		overflow: hidden; // CRITICAL: Clip background to border-radius
-		font-weight: 500;
 		text-decoration: none !important;
 		transition: all 0.2s ease;
 		cursor: pointer;
-		border: none;
 		font-family: inherit;
 		font-size: inherit;
-		line-height: 1.5;
-
-		// Default colors (applied via inline styles from edit.js/save.js)
-		// Only set defaults if no colors are specified
-		&:not([style*="background"]) {
-			background-color: var(--wp--preset--color--primary, #2563eb);
-		}
-
-		&:not([style*="color"]) {
-			color: var(--wp--preset--color--base, #fff);
-		}
 
 		&:hover {
 			opacity: 0.9;
 			transform: translateY(-1px);
 			text-decoration: none !important;
-			border: none !important; // Prevent theme/WordPress from adding borders
 		}
 
 		&:active {
 			transform: translateY(0);
 			text-decoration: none !important;
-			border: none !important; // Prevent theme/WordPress from adding borders
 		}
 
 		&:focus {
-			outline: none;
 			text-decoration: none !important;
-			border: none !important; // Prevent theme/WordPress from adding borders
 		}
 
 		// When it's a div (no link), remove cursor pointer
