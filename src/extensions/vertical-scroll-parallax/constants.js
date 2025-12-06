@@ -28,6 +28,8 @@ export const DEFAULT_PARALLAX_SETTINGS = {
 export const DIRECTION_VALUES = {
 	UP: 'up',
 	DOWN: 'down',
+	LEFT: 'left',
+	RIGHT: 'right',
 };
 
 /**

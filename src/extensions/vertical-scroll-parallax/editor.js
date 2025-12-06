@@ -18,28 +18,28 @@ import { ALLOWED_BLOCKS, DEFAULT_PARALLAX_SETTINGS } from './constants';
 /**
  * Add parallax controls to block inspector
  */
-const withParallaxControls = createHigherOrderComponent( ( BlockEdit ) => {
-	return ( props ) => {
+const withParallaxControls = createHigherOrderComponent((BlockEdit) => {
+	return (props) => {
 		const { name, attributes, setAttributes } = props;
 
 		// Only render for allowed blocks
-		if ( ! ALLOWED_BLOCKS.includes( name ) ) {
-			return <BlockEdit { ...props } />;
+		if (!ALLOWED_BLOCKS.includes(name)) {
+			return <BlockEdit {...props} />;
 		}
 
 		return (
 			<Fragment>
-				<BlockEdit { ...props } />
+				<BlockEdit {...props} />
 				<InspectorControls>
 					<ParallaxPanel
-						attributes={ attributes }
-						setAttributes={ setAttributes }
+						attributes={attributes}
+						setAttributes={setAttributes}
 					/>
 				</InspectorControls>
 			</Fragment>
 		);
 	};
-}, 'withParallaxControls' );
+}, 'withParallaxControls');
 
 addFilter(
 	'editor.BlockEdit',
@@ -56,9 +56,9 @@ addFilter(
  * @param {Object} attributes Block attributes
  * @return {Object} Modified props
  */
-function addParallaxSaveProps( extraProps, blockType, attributes ) {
+function addParallaxSaveProps(extraProps, blockType, attributes) {
 	// Only process allowed blocks
-	if ( ! ALLOWED_BLOCKS.includes( blockType.name ) ) {
+	if (!ALLOWED_BLOCKS.includes(blockType.name)) {
 		return extraProps;
 	}
 
@@ -75,7 +75,7 @@ function addParallaxSaveProps( extraProps, blockType, attributes ) {
 	} = attributes;
 
 	// Only add attributes if parallax is enabled
-	if ( ! dsgoParallaxEnabled ) {
+	if (!dsgoParallaxEnabled) {
 		return extraProps;
 	}
 
@@ -83,9 +83,9 @@ function addParallaxSaveProps( extraProps, blockType, attributes ) {
 	const dataAttributes = {
 		'data-dsgo-parallax-enabled': 'true',
 		'data-dsgo-parallax-direction': dsgoParallaxDirection,
-		'data-dsgo-parallax-speed': String( dsgoParallaxSpeed ),
-		'data-dsgo-parallax-viewport-start': String( dsgoParallaxViewportStart ),
-		'data-dsgo-parallax-viewport-end': String( dsgoParallaxViewportEnd ),
+		'data-dsgo-parallax-speed': String(dsgoParallaxSpeed),
+		'data-dsgo-parallax-viewport-start': String(dsgoParallaxViewportStart),
+		'data-dsgo-parallax-viewport-end': String(dsgoParallaxViewportEnd),
 		'data-dsgo-parallax-relative-to': dsgoParallaxRelativeTo,
 		'data-dsgo-parallax-desktop': dsgoParallaxDesktop ? 'true' : 'false',
 		'data-dsgo-parallax-tablet': dsgoParallaxTablet ? 'true' : 'false',

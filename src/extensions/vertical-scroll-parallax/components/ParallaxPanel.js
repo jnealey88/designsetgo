@@ -1,7 +1,8 @@
 /**
- * Vertical Scroll Parallax - Inspector Panel Component
+ * Scroll Parallax - Inspector Panel Component
  *
- * UI controls for configuring vertical scroll parallax effects
+ * UI controls for configuring scroll parallax effects.
+ * Supports vertical (up/down) and horizontal (left/right) movement.
  *
  * @package
  * @since 1.0.0
@@ -36,6 +37,8 @@ export default function ParallaxPanel({ attributes, setAttributes }) {
 	const directionOptions = [
 		{ label: __('Up', 'designsetgo'), value: DIRECTION_VALUES.UP },
 		{ label: __('Down', 'designsetgo'), value: DIRECTION_VALUES.DOWN },
+		{ label: __('Left', 'designsetgo'), value: DIRECTION_VALUES.LEFT },
+		{ label: __('Right', 'designsetgo'), value: DIRECTION_VALUES.RIGHT },
 	];
 
 	const relativeToOptions = [
@@ -62,11 +65,11 @@ export default function ParallaxPanel({ attributes, setAttributes }) {
 
 	return (
 		<PanelBody
-			title={__('Vertical Scroll Parallax', 'designsetgo')}
+			title={__('Scroll Parallax', 'designsetgo')}
 			initialOpen={false}
 		>
 			<ToggleControl
-				label={__('Enable Vertical Scroll Effect', 'designsetgo')}
+				label={__('Enable Scroll Parallax Effect', 'designsetgo')}
 				checked={dsgoParallaxEnabled}
 				onChange={(value) =>
 					setAttributes({ dsgoParallaxEnabled: value })

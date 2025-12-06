@@ -17,9 +17,9 @@ import { DEFAULT_PARALLAX_SETTINGS, ALLOWED_BLOCKS } from './constants';
  * @param {string} name     Block name
  * @return {Object} Modified settings
  */
-function addParallaxAttributes( settings, name ) {
+function addParallaxAttributes(settings, name) {
 	// Only add to allowed blocks
-	if ( ! ALLOWED_BLOCKS.includes( name ) ) {
+	if (!ALLOWED_BLOCKS.includes(name)) {
 		return settings;
 	}
 

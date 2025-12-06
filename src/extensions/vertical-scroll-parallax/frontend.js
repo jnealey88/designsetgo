@@ -1,7 +1,8 @@
 /**
- * Vertical Scroll Parallax - Frontend
+ * Scroll Parallax - Frontend
  *
- * Handles scroll-based parallax effects on the frontend
+ * Handles scroll-based parallax effects on the frontend.
+ * Supports vertical (up/down) and horizontal (left/right) movement.
  *
  * @package
  * @since 1.0.0
@@ -88,7 +89,7 @@ function clamp(value, min, max) {
  * @param {Object}      settings       Parsed settings
  * @param {number}      scrollY        Current scroll position
  * @param {number}      viewportHeight Viewport height
- * @return {number} TranslateY value in pixels
+ * @return {Object} Object with x and y offset values in pixels
  */
 function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
 	const rect = element.getBoundingClientRect();
@@ -125,11 +126,32 @@ function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
 	// Speed 10 = 200px max movement, Speed 0 = 0px
 	const maxOffset = settings.speed * 20;
 
-	// Calculate offset based on direction
+	// Calculate base offset
 	// Progress 0.5 = center position (no offset)
-	const offset = (progress - 0.5) * maxOffset * 2;
+	const baseOffset = (progress - 0.5) * maxOffset * 2;
 
-	return settings.direction === 'up' ? -offset : offset;
+	// Calculate x and y offsets based on direction
+	let offsetX = 0;
+	let offsetY = 0;
+
+	switch (settings.direction) {
+		case 'up':
+			offsetY = -baseOffset;
+			break;
+		case 'down':
+			offsetY = baseOffset;
+			break;
+		case 'left':
+			offsetX = -baseOffset;
+			break;
+		case 'right':
+			offsetX = baseOffset;
+			break;
+		default:
+			offsetY = -baseOffset;
+	}
+
+	return { x: offsetX, y: offsetY };
 }
 
 /**
@@ -209,7 +231,7 @@ function initParallax() {
 			);
 
 			// Apply transform using translate3d for GPU acceleration
-			element.style.transform = `translate3d(0, ${offset}px, 0)`;
+			element.style.transform = `translate3d(${offset.x}px, ${offset.y}px, 0)`;
 		});
 
 		ticking = false;
