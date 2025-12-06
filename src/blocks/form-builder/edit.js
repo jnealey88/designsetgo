@@ -520,6 +520,10 @@ export default function FormBuilderEdit({
 								}
 								target="_blank"
 								rel="noopener noreferrer"
+								aria-label={__(
+									'Settings → Integrations (opens in new tab)',
+									'designsetgo'
+								)}
 							>
 								{__('Settings → Integrations', 'designsetgo')}
 							</a>

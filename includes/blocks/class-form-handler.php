@@ -217,6 +217,20 @@ class Form_Handler {
 						'type'              => 'string',
 						'default'           => '',
 						'sanitize_callback' => 'sanitize_text_field',
+						'validate_callback' => function ( $value ) {
+							// Empty is valid (graceful degradation).
+							if ( empty( $value ) ) {
+								return true;
+							}
+							// Turnstile tokens are alphanumeric with hyphens/underscores.
+							if ( ! preg_match( '/^[a-zA-Z0-9_-]+$/', $value ) ) {
+								return new \WP_Error(
+									'invalid_turnstile_token',
+									__( 'Invalid Turnstile token format.', 'designsetgo' )
+								);
+							}
+							return true;
+						},
 					),
 				),
 			)
@@ -289,7 +303,14 @@ class Form_Handler {
 		if ( ! empty( $turnstile_token ) ) {
 			$turnstile_result = $this->verify_turnstile( $turnstile_token );
 			if ( is_wp_error( $turnstile_result ) ) {
-				// Fire action hook for monitoring.
+				/**
+				 * Fires when Cloudflare Turnstile verification fails.
+				 *
+				 * @since 1.0.0
+				 * @param string $form_id     Form identifier.
+				 * @param string $ip_address  Client IP address.
+				 * @param string $error_code  Error code from verification.
+				 */
 				do_action( 'designsetgo_form_turnstile_failed', $form_id, $this->get_client_ip(), $turnstile_result->get_error_code() );
 				return $turnstile_result;
 			}
@@ -436,7 +457,9 @@ class Form_Handler {
 	 * to validate the Turnstile response token.
 	 *
 	 * @param string $token The Turnstile response token from the frontend.
-	 * @return true|WP_Error True if valid, WP_Error if invalid or verification failed.
+	 * @return true|WP_Error True on success, WP_Error on verification failure.
+	 *                       Returns true (graceful degradation) if secret key is missing
+	 *                       or on network/API errors.
 	 */
 	private function verify_turnstile( $token ) {
 		// Get secret key from settings.
@@ -798,7 +821,7 @@ class Form_Handler {
 			$handle,
 			'dsgoIntegrations',
 			array(
-				'turnstileSiteKey' => ! empty( $integrations_settings['turnstile_site_key'] ) ? $integrations_settings['turnstile_site_key'] : '',
+				'turnstileSiteKey' => ! empty( $integrations_settings['turnstile_site_key'] ) ? esc_js( $integrations_settings['turnstile_site_key'] ) : '',
 			)
 		);
 	}
