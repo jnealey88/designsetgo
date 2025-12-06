@@ -58,6 +58,10 @@ import './extensions/expanding-background';
 // Vertical Scroll Parallax - adds scroll-based vertical movement to blocks
 import './extensions/vertical-scroll-parallax';
 
+// ===== RICH TEXT FORMATS =====
+// Text Style - adds inline text styling (color, gradient, size) to selected text
+import './formats/text-style';
+
 // ===== DEFAULT PADDING FOR ROOT CONTAINERS =====
 // Set default padding for container blocks, but only when inserted at root level
 import { addFilter } from '@wordpress/hooks';

@@ -24,6 +24,9 @@
 @use './extensions/text-reveal/style' as text-reveal;
 @use './extensions/expanding-background/style' as expanding-background;
 
+// Rich text formats (frontend)
+@use './formats/text-style/style' as text-style;
+
 // ===================================================================
 // PERFORMANCE OPTIMIZATION (2025-11-11)
 // ===================================================================
