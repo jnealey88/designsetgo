@@ -4,8 +4,10 @@
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": ">=7.4",
-    "wordpress/abilities-api": "^0.4.0"
+    "php": ">=7.4"
+  },
+  "suggest": {
+    "wordpress/abilities-api": "^0.4.0 - Only needed for WordPress < 6.9 (6.9+ includes Abilities API natively)"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.0",

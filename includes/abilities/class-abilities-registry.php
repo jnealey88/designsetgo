@@ -202,12 +202,31 @@ class Abilities_Registry {
 			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Modal_Trigger() );
 		}
 
+		// Inserter abilities - Media elements.
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Slider' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Slider() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Card' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Card() );
+		}
+
 		// Configurator abilities.
 		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Counter_Animation' ) ) {
 			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Counter_Animation() );
 		}
 		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Apply_Animation' ) ) {
 			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Apply_Animation() );
+		}
+
+		// Configurator abilities - Scroll effects (v1.3.0).
+		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Apply_Scroll_Parallax' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Apply_Scroll_Parallax() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Apply_Text_Reveal' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Apply_Text_Reveal() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Apply_Expanding_Background' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Apply_Expanding_Background() );
 		}
 
 		// Generator abilities.
@@ -222,6 +241,9 @@ class Abilities_Registry {
 		}
 		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_FAQ_Section' ) ) {
 			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_FAQ_Section() );
+		}
+		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Contact_Section' ) ) {
+			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Contact_Section() );
 		}
 	}
 

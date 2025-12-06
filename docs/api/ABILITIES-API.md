@@ -20,7 +20,12 @@ The WordPress Abilities API is a new core initiative that creates a structured w
 
 ## Available Abilities
 
-DesignSetGo currently provides **5 core abilities** across 3 categories:
+DesignSetGo currently provides **34 abilities** across 4 categories:
+
+- **1 Discovery** - List available blocks
+- **19 Inserters** - Insert specific blocks (containers, interactive, visual, dynamic, content, modal, media)
+- **5 Configurators** - Apply animations and scroll effects to existing blocks
+- **5 Generators** - Generate complete page sections
 
 ### 1. Discovery Abilities
 
@@ -263,6 +268,159 @@ curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/a
 
 ---
 
+#### `designsetgo/apply-scroll-parallax` (v1.3.0)
+
+Applies Elementor-style scroll parallax effects to container and visual blocks.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "block_name": "core/group",
+  "parallax": {
+    "enabled": true,
+    "direction": "up",
+    "speed": 5,
+    "viewportStart": 0,
+    "viewportEnd": 100,
+    "relativeTo": "viewport",
+    "enableDesktop": true,
+    "enableTablet": true,
+    "enableMobile": false
+  }
+}
+```
+
+---
+
+#### `designsetgo/apply-text-reveal` (v1.3.0)
+
+Applies scroll-triggered text color reveal effect to paragraphs and headings.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "block_name": "core/heading",
+  "textReveal": {
+    "enabled": true,
+    "revealColor": "#2563eb",
+    "splitMode": "word",
+    "transitionDuration": 150
+  }
+}
+```
+
+---
+
+#### `designsetgo/apply-expanding-background` (v1.3.0)
+
+Applies scroll-driven expanding background effect to Group and Section blocks.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "block_name": "core/group",
+  "expandingBackground": {
+    "enabled": true,
+    "color": "#e8e8e8",
+    "initialSize": 50,
+    "blur": 30,
+    "speed": 1,
+    "triggerOffset": 0,
+    "completionPoint": 80
+  }
+}
+```
+
+---
+
+### 4. Generator Abilities (v1.3.0)
+
+#### `designsetgo/generate-contact-section`
+
+Generates a complete contact section with form, optional map, and contact info.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "heading": "Get In Touch",
+  "description": "Have a question? Fill out the form below.",
+  "layout": "form-left",
+  "formFields": ["name", "email", "phone", "message"],
+  "submitText": "Send Message",
+  "includeMap": true,
+  "mapLocation": {
+    "lat": 40.7128,
+    "lng": -74.006,
+    "zoom": 14,
+    "address": "New York, NY"
+  },
+  "contactInfo": {
+    "email": "hello@example.com",
+    "phone": "+1 (555) 123-4567",
+    "address": "123 Main St, New York, NY",
+    "hours": "Mon-Fri 9am-5pm"
+  }
+}
+```
+
+**Layout Options:** `form-only`, `form-left`, `form-right`, `form-top`
+
+---
+
+### 5. Additional Inserter Abilities (v1.3.0)
+
+#### `designsetgo/insert-slider`
+
+Inserts a Slider block for hero carousels and galleries.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "attributes": {
+    "slidesPerView": 1,
+    "height": "500px",
+    "effect": "slide",
+    "autoplay": true,
+    "autoplayInterval": 3000,
+    "showArrows": true,
+    "showDots": true,
+    "loop": true
+  }
+}
+```
+
+---
+
+#### `designsetgo/insert-card`
+
+Inserts a Card block for pricing, features, team members, etc.
+
+**Input:**
+```json
+{
+  "post_id": 123,
+  "attributes": {
+    "layoutPreset": "standard",
+    "title": "Card Title",
+    "subtitle": "Card Subtitle",
+    "bodyText": "Description text",
+    "badgeText": "New",
+    "imageUrl": "https://example.com/image.jpg",
+    "visualStyle": "shadow",
+    "contentAlignment": "center"
+  }
+}
+```
+
+**Layout Presets:** `standard`, `horizontal-left`, `horizontal-right`, `background`, `minimal`, `featured`
+
+---
+
 ## Authentication
 
 All abilities require proper WordPress authentication. You can use:
@@ -478,11 +636,20 @@ if (class_exists('DesignSetGo\Abilities\Custom\My_Custom_Ability')) {
 
 ---
 
+## Requirements
+
+- **WordPress 6.9+** (recommended) - Abilities API is included natively in WordPress 6.9
+- **WordPress 6.0-6.8** - Requires the [wordpress/abilities-api](https://github.com/WordPress/abilities-api) Composer package (optional polyfill)
+
+DesignSetGo automatically detects whether the native Abilities API is available and gracefully degrades on older WordPress versions.
+
+---
+
 ## Credits
 
 DesignSetGo's Abilities API integration is built on:
 
-- [WordPress Abilities API](https://github.com/WordPress/abilities-api) (v0.4.0)
+- [WordPress Abilities API](https://make.wordpress.org/core/2025/11/10/abilities-api-in-wordpress-6-9/) (native in WP 6.9+)
 - [Model Context Protocol](https://github.com/WordPress/mcp-adapter)
 
 **Making WordPress AI-Native Since 2025** 🤖
