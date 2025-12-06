@@ -28,7 +28,7 @@ class Block_Inserter {
 	 * Insert a block into a post at the specified position.
 	 *
 	 * @param int                              $post_id Post ID.
-	 * @param string                           $block_name Block name (e.g., 'designsetgo/flex').
+	 * @param string                           $block_name Block name (e.g., 'designsetgo/row').
 	 * @param array<string, mixed>             $attributes Block attributes.
 	 * @param array<int, array<string, mixed>> $inner_blocks Inner blocks.
 	 * @param int                              $position Position to insert (-1 for append, 0 for prepend, or specific index).
@@ -195,7 +195,7 @@ class Block_Inserter {
 		$block_class = 'wp-block-designsetgo-' . $block_slug . ' dsgo-' . $block_slug;
 
 		switch ( $block_name ) {
-			case 'designsetgo/stack':
+			case 'designsetgo/section':
 				$align_items     = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'flex-start';
 				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : false;
 				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '1200px';
@@ -214,7 +214,7 @@ class Block_Inserter {
 					'closing' => '</div></div>',
 				);
 
-			case 'designsetgo/flex':
+			case 'designsetgo/row':
 				$direction       = isset( $attributes['direction'] ) ? $attributes['direction'] : 'row';
 				$justify         = isset( $attributes['justifyContent'] ) ? $attributes['justifyContent'] : 'flex-start';
 				$align           = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'center';
@@ -317,7 +317,7 @@ class Block_Inserter {
 	 * Dynamic blocks are rendered server-side via PHP and should not have
 	 * wrapper HTML generated during insertion.
 	 *
-	 * @param string $block_name Block name (e.g., 'designsetgo/stack').
+	 * @param string $block_name Block name (e.g., 'designsetgo/section').
 	 * @return bool True if block has a render callback, false otherwise.
 	 */
 	private static function is_dynamic_block( string $block_name ): bool {

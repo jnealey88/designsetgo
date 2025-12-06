@@ -95,12 +95,6 @@ class Settings {
 				'label'  => __( 'Container Blocks', 'designsetgo' ),
 				'blocks' => array(
 					array(
-						'name'        => 'designsetgo/flex',
-						'title'       => __( 'Flex Container', 'designsetgo' ),
-						'description' => __( 'Flexible layouts with wrapping and alignment', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
 						'name'        => 'designsetgo/grid',
 						'title'       => __( 'Grid Container', 'designsetgo' ),
 						'description' => __( 'CSS Grid-based responsive layouts', 'designsetgo' ),
@@ -116,12 +110,6 @@ class Settings {
 						'name'        => 'designsetgo/section',
 						'title'       => __( 'Section', 'designsetgo' ),
 						'description' => __( 'Vertical stacking container for sections and content areas', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/stack',
-						'title'       => __( 'Stack Container', 'designsetgo' ),
-						'description' => __( 'Vertical stacking layouts', 'designsetgo' ),
 						'performance' => 'low',
 					),
 				),
@@ -474,6 +462,21 @@ class Settings {
 				'name'        => 'text-alignment-inheritance',
 				'title'       => __( 'Text Alignment Inheritance', 'designsetgo' ),
 				'description' => __( 'Cascading text alignment', 'designsetgo' ),
+			),
+			array(
+				'name'        => 'expanding-background',
+				'title'       => __( 'Expanding Background', 'designsetgo' ),
+				'description' => __( 'Scroll-driven expanding background effect', 'designsetgo' ),
+			),
+			array(
+				'name'        => 'text-reveal',
+				'title'       => __( 'Text Reveal', 'designsetgo' ),
+				'description' => __( 'Scroll-triggered text color reveal effect', 'designsetgo' ),
+			),
+			array(
+				'name'        => 'vertical-scroll-parallax',
+				'title'       => __( 'Vertical Scroll Parallax', 'designsetgo' ),
+				'description' => __( 'Parallax scrolling effects for blocks', 'designsetgo' ),
 			),
 		);
 	}

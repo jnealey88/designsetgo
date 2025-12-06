@@ -208,7 +208,7 @@ class Generate_Hero_Section extends Abstract_Ability {
 		// Add button group if buttons exist.
 		if ( ! empty( $buttons ) ) {
 			$inner_blocks[] = array(
-				'name'        => 'designsetgo/flex',
+				'name'        => 'designsetgo/row',
 				'attributes'  => array(
 					'direction'      => 'row',
 					'justifyContent' => 'centered' === $layout ? 'center' : 'flex-start',
@@ -228,7 +228,7 @@ class Generate_Hero_Section extends Abstract_Ability {
 		// Insert the hero section.
 		return Block_Inserter::insert_block(
 			$post_id,
-			'designsetgo/stack',
+			'designsetgo/section',
 			$stack_attributes,
 			$inner_blocks,
 			$position

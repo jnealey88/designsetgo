@@ -150,9 +150,9 @@ class Generate_Feature_Grid extends Abstract_Ability {
 			$title       = sanitize_text_field( $feature['title'] ?? 'Feature Title' );
 			$description = sanitize_textarea_field( $feature['description'] ?? 'Feature description goes here.' );
 
-			// Create a Stack container for each feature.
+			// Create a Section container for each feature.
 			$feature_blocks[] = array(
-				'name'        => 'designsetgo/stack',
+				'name'        => 'designsetgo/section',
 				'attributes'  => array(
 					'alignItems' => 'center',
 					'textAlign'  => 'center',

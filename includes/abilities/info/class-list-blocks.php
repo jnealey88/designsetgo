@@ -166,8 +166,8 @@ class List_Blocks extends Abstract_Ability {
 		return array(
 			// Layout Containers.
 			array(
-				'name'        => 'designsetgo/flex',
-				'title'       => __( 'Flex Container', 'designsetgo' ),
+				'name'        => 'designsetgo/row',
+				'title'       => __( 'Row Container', 'designsetgo' ),
 				'description' => __( 'Flexible horizontal or vertical layout container with customizable alignment, gap, and wrapping.', 'designsetgo' ),
 				'category'    => 'layout',
 				'attributes'  => array(
@@ -198,8 +198,8 @@ class List_Blocks extends Abstract_Ability {
 				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
 			),
 			array(
-				'name'        => 'designsetgo/stack',
-				'title'       => __( 'Stack Container', 'designsetgo' ),
+				'name'        => 'designsetgo/section',
+				'title'       => __( 'Section Container', 'designsetgo' ),
 				'description' => __( 'Vertical stacking container with consistent spacing between elements.', 'designsetgo' ),
 				'category'    => 'layout',
 				'attributes'  => array(

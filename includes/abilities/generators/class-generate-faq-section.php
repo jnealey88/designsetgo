@@ -186,10 +186,10 @@ class Generate_FAQ_Section extends Abstract_Ability {
 			'innerBlocks' => $accordion_items,
 		);
 
-		// Wrap in Stack container.
+		// Wrap in Section container.
 		return Block_Inserter::insert_block(
 			$post_id,
-			'designsetgo/stack',
+			'designsetgo/section',
 			array(
 				'constrainWidth' => true,
 			),

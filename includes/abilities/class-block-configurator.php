@@ -27,7 +27,7 @@ class Block_Configurator {
 	 * Update block attributes by block name or client ID.
 	 *
 	 * @param int                  $post_id Post ID.
-	 * @param string               $block_name Block name to update (e.g., 'designsetgo/flex').
+	 * @param string               $block_name Block name to update (e.g., 'designsetgo/row').
 	 * @param array<string, mixed> $attributes New attributes to merge.
 	 * @param string|null          $client_id Optional. Specific block client ID to update.
 	 * @param bool                 $update_all Whether to update all matching blocks or just the first.

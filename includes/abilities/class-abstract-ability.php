@@ -227,7 +227,7 @@ abstract class Abstract_Ability {
 	/**
 	 * Build block markup from block name and attributes.
 	 *
-	 * @param string                           $block_name Block name (e.g., 'designsetgo/flex').
+	 * @param string                           $block_name Block name (e.g., 'designsetgo/row').
 	 * @param array<string, mixed>             $attributes Block attributes.
 	 * @param array<int, array<string, mixed>> $inner_blocks Inner blocks.
 	 * @return string
