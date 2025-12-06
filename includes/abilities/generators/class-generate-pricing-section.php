@@ -65,12 +65,19 @@ class Generate_Pricing_Section extends Abstract_Ability {
 			'properties'           => array_merge(
 				$common,
 				array(
-					'heading'     => array(
+					'heading'      => array(
 						'type'        => 'string',
 						'description' => __( 'Section heading text', 'designsetgo' ),
 						'default'     => 'Choose Your Plan',
 					),
-					'description' => array(
+					'headingLevel' => array(
+						'type'        => 'integer',
+						'description' => __( 'Heading level (1-6)', 'designsetgo' ),
+						'minimum'     => 1,
+						'maximum'     => 6,
+						'default'     => 2,
+					),
+					'description'  => array(
 						'type'        => 'string',
 						'description' => __( 'Section description text', 'designsetgo' ),
 						'default'     => 'Select the plan that best fits your needs.',
@@ -153,19 +160,24 @@ class Generate_Pricing_Section extends Abstract_Ability {
 	 * @return array<string, mixed>|WP_Error
 	 */
 	public function execute( array $input ) {
-		$post_id     = (int) ( $input['post_id'] ?? 0 );
-		$position    = (int) ( $input['position'] ?? -1 );
-		$heading     = sanitize_text_field( $input['heading'] ?? 'Choose Your Plan' );
-		$description = sanitize_textarea_field( $input['description'] ?? 'Select the plan that best fits your needs.' );
-		$tiers       = $input['tiers'] ?? array();
+		$post_id       = (int) ( $input['post_id'] ?? 0 );
+		$position      = (int) ( $input['position'] ?? -1 );
+		$heading       = sanitize_text_field( $input['heading'] ?? 'Choose Your Plan' );
+		$heading_level = (int) ( $input['headingLevel'] ?? 2 );
+		$description   = sanitize_textarea_field( $input['description'] ?? 'Select the plan that best fits your needs.' );
+		$tiers         = $input['tiers'] ?? array();
 
 		// Validate post.
 		if ( ! $post_id ) {
 			return $this->error(
 				'missing_post_id',
-				__( 'Post ID is required.', 'designsetgo' )
+				__( 'Post ID is required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
+
+		// Validate heading level.
+		$heading_level = max( 1, min( 6, $heading_level ) );
 
 		// Default tiers if none provided.
 		if ( empty( $tiers ) ) {
@@ -302,7 +314,7 @@ class Generate_Pricing_Section extends Abstract_Ability {
 		$inner_blocks[] = array(
 			'name'       => 'core/heading',
 			'attributes' => array(
-				'level'     => 2,
+				'level'     => $heading_level,
 				'content'   => $heading,
 				'textAlign' => 'center',
 			),

@@ -70,6 +70,13 @@ class Generate_Hero_Section extends Abstract_Ability {
 						'description' => __( 'Hero heading text', 'designsetgo' ),
 						'default'     => 'Welcome to Our Website',
 					),
+					'headingLevel'    => array(
+						'type'        => 'integer',
+						'description' => __( 'Heading level (1-6)', 'designsetgo' ),
+						'minimum'     => 1,
+						'maximum'     => 6,
+						'default'     => 1,
+					),
 					'description'     => array(
 						'type'        => 'string',
 						'description' => __( 'Hero description text', 'designsetgo' ),
@@ -140,21 +147,26 @@ class Generate_Hero_Section extends Abstract_Ability {
 	 * @return array<string, mixed>|WP_Error
 	 */
 	public function execute( array $input ) {
-		$post_id     = (int) ( $input['post_id'] ?? 0 );
-		$position    = (int) ( $input['position'] ?? -1 );
-		$heading     = sanitize_text_field( $input['heading'] ?? 'Welcome to Our Website' );
-		$description = sanitize_textarea_field( $input['description'] ?? 'We help you build amazing websites with powerful blocks and components.' );
-		$primary     = $input['primaryButton'] ?? array();
-		$secondary   = $input['secondaryButton'] ?? array();
-		$layout      = $input['layout'] ?? 'centered';
+		$post_id       = (int) ( $input['post_id'] ?? 0 );
+		$position      = (int) ( $input['position'] ?? -1 );
+		$heading       = sanitize_text_field( $input['heading'] ?? 'Welcome to Our Website' );
+		$heading_level = (int) ( $input['headingLevel'] ?? 1 );
+		$description   = sanitize_textarea_field( $input['description'] ?? 'We help you build amazing websites with powerful blocks and components.' );
+		$primary       = $input['primaryButton'] ?? array();
+		$secondary     = $input['secondaryButton'] ?? array();
+		$layout        = $input['layout'] ?? 'centered';
 
 		// Validate post.
 		if ( ! $post_id ) {
 			return $this->error(
 				'missing_post_id',
-				__( 'Post ID is required.', 'designsetgo' )
+				__( 'Post ID is required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
+
+		// Validate heading level.
+		$heading_level = max( 1, min( 6, $heading_level ) );
 
 		// Build inner blocks for hero section.
 		$inner_blocks = array();
@@ -163,7 +175,7 @@ class Generate_Hero_Section extends Abstract_Ability {
 		$inner_blocks[] = array(
 			'name'       => 'core/heading',
 			'attributes' => array(
-				'level'     => 1,
+				'level'     => $heading_level,
 				'content'   => $heading,
 				'textAlign' => 'centered' === $layout ? 'center' : 'left',
 			),

@@ -68,7 +68,6 @@ class Apply_Scroll_Parallax extends Abstract_Ability {
 					'block_name' => array(
 						'type'        => 'string',
 						'description' => __( 'Block name to apply parallax to (e.g., "core/group", "core/image", "designsetgo/section")', 'designsetgo' ),
-						'required'    => true,
 					),
 					'parallax'   => array(
 						'type'        => 'object',
@@ -161,7 +160,8 @@ class Apply_Scroll_Parallax extends Abstract_Ability {
 		if ( ! $post_id ) {
 			return $this->error(
 				'missing_post_id',
-				__( 'Post ID is required.', 'designsetgo' )
+				__( 'Post ID is required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 
@@ -169,7 +169,8 @@ class Apply_Scroll_Parallax extends Abstract_Ability {
 		if ( empty( $block_name ) ) {
 			return $this->error(
 				'missing_block_name',
-				__( 'Block name is required.', 'designsetgo' )
+				__( 'Block name is required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 
@@ -177,7 +178,8 @@ class Apply_Scroll_Parallax extends Abstract_Ability {
 		if ( empty( $parallax ) ) {
 			return $this->error(
 				'missing_parallax',
-				__( 'Parallax settings are required.', 'designsetgo' )
+				__( 'Parallax settings are required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 

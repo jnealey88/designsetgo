@@ -69,7 +69,6 @@ class Apply_Expanding_Background extends Abstract_Ability {
 						'type'        => 'string',
 						'description' => __( 'Block name to apply expanding background to (must be "core/group" or "designsetgo/section")', 'designsetgo' ),
 						'enum'        => array( 'core/group', 'designsetgo/section' ),
-						'required'    => true,
 					),
 					'expandingBackground' => array(
 						'type'        => 'object',
@@ -154,7 +153,8 @@ class Apply_Expanding_Background extends Abstract_Ability {
 		if ( ! $post_id ) {
 			return $this->error(
 				'missing_post_id',
-				__( 'Post ID is required.', 'designsetgo' )
+				__( 'Post ID is required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 
@@ -162,7 +162,8 @@ class Apply_Expanding_Background extends Abstract_Ability {
 		if ( empty( $block_name ) ) {
 			return $this->error(
 				'missing_block_name',
-				__( 'Block name is required.', 'designsetgo' )
+				__( 'Block name is required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 
@@ -171,7 +172,8 @@ class Apply_Expanding_Background extends Abstract_Ability {
 		if ( ! in_array( $block_name, $supported, true ) ) {
 			return $this->error(
 				'unsupported_block',
-				__( 'Expanding background only supports Group and Section blocks.', 'designsetgo' )
+				__( 'Expanding background only supports Group and Section blocks.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 
@@ -179,7 +181,8 @@ class Apply_Expanding_Background extends Abstract_Ability {
 		if ( empty( $expanding_background ) ) {
 			return $this->error(
 				'missing_expanding_background',
-				__( 'Expanding background settings are required.', 'designsetgo' )
+				__( 'Expanding background settings are required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 

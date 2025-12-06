@@ -65,12 +65,19 @@ class Generate_Contact_Section extends Abstract_Ability {
 			'properties'           => array_merge(
 				$common,
 				array(
-					'heading'     => array(
+					'heading'      => array(
 						'type'        => 'string',
 						'description' => __( 'Section heading text', 'designsetgo' ),
 						'default'     => 'Get In Touch',
 					),
-					'description' => array(
+					'headingLevel' => array(
+						'type'        => 'integer',
+						'description' => __( 'Heading level (1-6)', 'designsetgo' ),
+						'minimum'     => 1,
+						'maximum'     => 6,
+						'default'     => 2,
+					),
+					'description'  => array(
 						'type'        => 'string',
 						'description' => __( 'Section description text', 'designsetgo' ),
 						'default'     => 'Have a question or want to work together? Fill out the form below and we\'ll get back to you as soon as possible.',
@@ -175,25 +182,30 @@ class Generate_Contact_Section extends Abstract_Ability {
 	 * @return array<string, mixed>|WP_Error
 	 */
 	public function execute( array $input ) {
-		$post_id     = (int) ( $input['post_id'] ?? 0 );
-		$position    = (int) ( $input['position'] ?? -1 );
-		$heading     = sanitize_text_field( $input['heading'] ?? 'Get In Touch' );
-		$description = sanitize_textarea_field( $input['description'] ?? 'Have a question or want to work together? Fill out the form below and we\'ll get back to you as soon as possible.' );
-		$layout      = $input['layout'] ?? 'form-left';
-		$form_fields = $input['formFields'] ?? array( 'name', 'email', 'message' );
-		$submit_text = sanitize_text_field( $input['submitText'] ?? 'Send Message' );
-		$recipient   = sanitize_email( $input['recipientEmail'] ?? '' );
-		$include_map = (bool) ( $input['includeMap'] ?? false );
-		$map_loc     = $input['mapLocation'] ?? array();
-		$contact     = $input['contactInfo'] ?? array();
+		$post_id       = (int) ( $input['post_id'] ?? 0 );
+		$position      = (int) ( $input['position'] ?? -1 );
+		$heading       = sanitize_text_field( $input['heading'] ?? 'Get In Touch' );
+		$heading_level = (int) ( $input['headingLevel'] ?? 2 );
+		$description   = sanitize_textarea_field( $input['description'] ?? 'Have a question or want to work together? Fill out the form below and we\'ll get back to you as soon as possible.' );
+		$layout        = $input['layout'] ?? 'form-left';
+		$form_fields   = $input['formFields'] ?? array( 'name', 'email', 'message' );
+		$submit_text   = sanitize_text_field( $input['submitText'] ?? 'Send Message' );
+		$recipient     = sanitize_email( $input['recipientEmail'] ?? '' );
+		$include_map   = (bool) ( $input['includeMap'] ?? false );
+		$map_loc       = $input['mapLocation'] ?? array();
+		$contact       = $input['contactInfo'] ?? array();
 
 		// Validate post.
 		if ( ! $post_id ) {
 			return $this->error(
 				'missing_post_id',
-				__( 'Post ID is required.', 'designsetgo' )
+				__( 'Post ID is required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
+
+		// Validate heading level.
+		$heading_level = max( 1, min( 6, $heading_level ) );
 
 		// Build form fields.
 		$form_inner_blocks = array();
@@ -347,7 +359,7 @@ class Generate_Contact_Section extends Abstract_Ability {
 		$inner_blocks[] = array(
 			'name'       => 'core/heading',
 			'attributes' => array(
-				'level'     => 2,
+				'level'     => $heading_level,
 				'content'   => $heading,
 				'textAlign' => 'form-top' === $layout ? 'center' : 'left',
 			),

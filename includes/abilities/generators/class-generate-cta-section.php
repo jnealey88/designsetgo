@@ -70,6 +70,13 @@ class Generate_CTA_Section extends Abstract_Ability {
 						'description' => __( 'Main headline', 'designsetgo' ),
 						'default'     => 'Ready to Get Started?',
 					),
+					'headingLevel'    => array(
+						'type'        => 'integer',
+						'description' => __( 'Heading level (1-6)', 'designsetgo' ),
+						'minimum'     => 1,
+						'maximum'     => 6,
+						'default'     => 2,
+					),
 					'description'     => array(
 						'type'        => 'string',
 						'description' => __( 'Supporting description text', 'designsetgo' ),
@@ -150,6 +157,7 @@ class Generate_CTA_Section extends Abstract_Ability {
 		$post_id          = (int) ( $input['post_id'] ?? 0 );
 		$position         = (int) ( $input['position'] ?? -1 );
 		$heading          = sanitize_text_field( $input['heading'] ?? 'Ready to Get Started?' );
+		$heading_level    = (int) ( $input['headingLevel'] ?? 2 );
 		$description      = sanitize_textarea_field( $input['description'] ?? 'Join thousands of satisfied customers and transform your business today.' );
 		$layout           = $input['layout'] ?? 'centered';
 		$primary_button   = $input['primaryButton'] ?? array( 'text' => 'Get Started' );
@@ -162,9 +170,13 @@ class Generate_CTA_Section extends Abstract_Ability {
 		if ( ! $post_id ) {
 			return $this->error(
 				'missing_post_id',
-				__( 'Post ID is required.', 'designsetgo' )
+				__( 'Post ID is required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
+
+		// Validate heading level.
+		$heading_level = max( 1, min( 6, $heading_level ) );
 
 		// Build buttons.
 		$button_blocks = array();
@@ -200,7 +212,7 @@ class Generate_CTA_Section extends Abstract_Ability {
 				array(
 					'name'       => 'core/heading',
 					'attributes' => array(
-						'level'   => 2,
+						'level'   => $heading_level,
 						'content' => $heading,
 					),
 				),
@@ -257,7 +269,7 @@ class Generate_CTA_Section extends Abstract_Ability {
 			$inner_blocks[] = array(
 				'name'       => 'core/heading',
 				'attributes' => array(
-					'level'     => 2,
+					'level'     => $heading_level,
 					'content'   => $heading,
 					'textAlign' => 'center',
 				),

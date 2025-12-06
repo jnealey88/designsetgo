@@ -69,7 +69,6 @@ class Apply_Text_Reveal extends Abstract_Ability {
 						'type'        => 'string',
 						'description' => __( 'Block name to apply text reveal to (must be "core/paragraph" or "core/heading")', 'designsetgo' ),
 						'enum'        => array( 'core/paragraph', 'core/heading' ),
-						'required'    => true,
 					),
 					'textReveal' => array(
 						'type'        => 'object',
@@ -132,7 +131,8 @@ class Apply_Text_Reveal extends Abstract_Ability {
 		if ( ! $post_id ) {
 			return $this->error(
 				'missing_post_id',
-				__( 'Post ID is required.', 'designsetgo' )
+				__( 'Post ID is required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 
@@ -140,7 +140,8 @@ class Apply_Text_Reveal extends Abstract_Ability {
 		if ( empty( $block_name ) ) {
 			return $this->error(
 				'missing_block_name',
-				__( 'Block name is required.', 'designsetgo' )
+				__( 'Block name is required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 
@@ -149,7 +150,8 @@ class Apply_Text_Reveal extends Abstract_Ability {
 		if ( ! in_array( $block_name, $supported, true ) ) {
 			return $this->error(
 				'unsupported_block',
-				__( 'Text reveal only supports paragraph and heading blocks.', 'designsetgo' )
+				__( 'Text reveal only supports paragraph and heading blocks.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 
@@ -157,7 +159,8 @@ class Apply_Text_Reveal extends Abstract_Ability {
 		if ( empty( $text_reveal ) ) {
 			return $this->error(
 				'missing_text_reveal',
-				__( 'Text reveal settings are required.', 'designsetgo' )
+				__( 'Text reveal settings are required.', 'designsetgo' ),
+				array( 'status' => 400 )
 			);
 		}
 

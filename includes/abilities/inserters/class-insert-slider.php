@@ -234,18 +234,10 @@ class Insert_Slider extends Abstract_Ability {
 	/**
 	 * Permission callback.
 	 *
-	 * @return bool|WP_Error
+	 * @return bool
 	 */
-	public function check_permission_callback() {
-		if ( ! current_user_can( 'edit_posts' ) ) {
-			return new WP_Error(
-				'rest_forbidden',
-				__( 'Sorry, you are not allowed to insert sliders.', 'designsetgo' ),
-				array( 'status' => rest_authorization_required_code() )
-			);
-		}
-
-		return true;
+	public function check_permission_callback(): bool {
+		return $this->check_permission( 'edit_posts' );
 	}
 
 	/**
