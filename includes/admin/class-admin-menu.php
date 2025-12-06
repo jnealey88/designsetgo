@@ -157,6 +157,13 @@ class Admin_Menu {
 			true
 		);
 
+		// Set up script translations for admin JavaScript.
+		wp_set_script_translations(
+			'designsetgo-admin',
+			'designsetgo',
+			DESIGNSETGO_PATH . 'languages'
+		);
+
 		// Enqueue admin styles.
 		wp_enqueue_style(
 			'designsetgo-admin',
