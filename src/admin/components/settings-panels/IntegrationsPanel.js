@@ -76,6 +76,105 @@ const IntegrationsPanel = ({ settings, updateSetting }) => {
 						</p>
 					</div>
 				</div>
+
+				<div className="designsetgo-settings-section">
+					<h3 className="designsetgo-section-heading">
+						{__('Cloudflare Turnstile', 'designsetgo')}
+					</h3>
+
+					<p className="designsetgo-section-description">
+						{__(
+							'Turnstile is a privacy-preserving CAPTCHA alternative that protects your forms from spam without user interaction.',
+							'designsetgo'
+						)}
+					</p>
+
+					<TextControl
+						label={__('Site Key', 'designsetgo')}
+						help={
+							<>
+								{__(
+									'Your Turnstile site key (public).',
+									'designsetgo'
+								)}{' '}
+								<ExternalLink href="https://dash.cloudflare.com/?to=/:account/turnstile">
+									{__(
+										'Get your keys from Cloudflare Dashboard',
+										'designsetgo'
+									)}
+								</ExternalLink>
+							</>
+						}
+						value={settings?.integrations?.turnstile_site_key || ''}
+						onChange={(value) =>
+							updateSetting(
+								'integrations',
+								'turnstile_site_key',
+								value
+							)
+						}
+						placeholder={__('0x4AAAAAAA…', 'designsetgo')}
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
+					/>
+
+					<TextControl
+						label={__('Secret Key', 'designsetgo')}
+						help={__(
+							'Your Turnstile secret key (private, used for server-side verification).',
+							'designsetgo'
+						)}
+						type="password"
+						value={
+							settings?.integrations?.turnstile_secret_key || ''
+						}
+						onChange={(value) =>
+							updateSetting(
+								'integrations',
+								'turnstile_secret_key',
+								value
+							)
+						}
+						placeholder={__('0x4AAAAAAA…', 'designsetgo')}
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
+					/>
+
+					<div className="designsetgo-settings-note">
+						<strong>
+							{__(
+								'How to get your Turnstile keys:',
+								'designsetgo'
+							)}
+						</strong>
+						<ol>
+							<li>
+								{__(
+									'Log in to your Cloudflare Dashboard',
+									'designsetgo'
+								)}
+							</li>
+							<li>
+								{__(
+									'Navigate to Turnstile in the sidebar',
+									'designsetgo'
+								)}
+							</li>
+							<li>
+								{__(
+									'Click "Add Site" and enter your domain',
+									'designsetgo'
+								)}
+							</li>
+							<li>
+								{__(
+									'Copy both the Site Key and Secret Key',
+									'designsetgo'
+								)}
+							</li>
+						</ol>
+					</div>
+				</div>
 			</CardBody>
 		</Card>
 	);

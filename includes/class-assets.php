@@ -156,6 +156,14 @@ class Assets {
 			$has_blocks = true;
 		}
 
+		// Check for expanding background applied to any block.
+		if ( ! $has_blocks && (
+			strpos( $content, 'data-dsgo-expanding-bg-enabled' ) !== false ||
+			strpos( $content, 'has-dsgo-expanding-background' ) !== false
+		) ) {
+			$has_blocks = true;
+		}
+
 		// Check for text-style format applied to any content.
 		if ( ! $has_blocks && strpos( $content, 'dsgo-text-style' ) !== false ) {
 			$has_blocks = true;

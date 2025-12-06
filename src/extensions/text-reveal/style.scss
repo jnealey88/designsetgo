@@ -1,0 +1,31 @@
+/**
+ * Text Reveal Extension - Frontend Styles
+ *
+ * Styles for the scroll-triggered text reveal effect
+ *
+ * @package
+ * @since 1.0.0
+ */
+
+// Text reveal container
+.has-dsgo-text-reveal {
+	// Ensure text reveal units inherit font styles
+	.dsgo-text-reveal-unit {
+		// Base state - inherits from block's text color
+		color: inherit;
+		transition: color var(--dsgo-text-reveal-transition, 150ms) ease-out;
+
+		// Revealed state
+		&.is-revealed {
+			color: var(--dsgo-text-reveal-color, #2563eb);
+		}
+	}
+}
+
+// Reduced motion: instant transition
+@media (prefers-reduced-motion: reduce) {
+
+	.has-dsgo-text-reveal .dsgo-text-reveal-unit {
+		transition: none;
+	}
+}
