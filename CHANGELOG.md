@@ -5,6 +5,91 @@ All notable changes to the DesignSetGo plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-12-06
+
+### New Features - WordPress Abilities API
+- New: **50 AI abilities** for programmatic block manipulation via WordPress 6.9 Abilities API
+- New: First WordPress block plugin to fully integrate with the Abilities API
+
+### Abilities API - Discovery (1)
+- `designsetgo/list-blocks` - List all available blocks with schemas
+
+### Abilities API - Inserters (29)
+**Containers:** insert-flex-container, insert-grid-container, insert-stack-container
+**Visual:** insert-icon, insert-icon-button
+**Dynamic:** insert-progress-bar, insert-counter-group
+**Interactive:** insert-tabs, insert-accordion, insert-flip-card, insert-reveal, insert-scroll-accordion
+**Content:** insert-icon-list, insert-icon-list-item, insert-scroll-marquee
+**Modal:** insert-modal, insert-modal-trigger
+**Media:** insert-slider, insert-card, insert-image-accordion
+**Page Structure:** insert-section, insert-divider, insert-breadcrumbs, insert-table-of-contents
+**Data Display:** insert-counter, insert-countdown-timer, insert-map
+**UI Elements:** insert-pill, insert-form-builder
+
+### Abilities API - Configurators (10)
+**Animations:** apply-animation, configure-counter-animation
+**Scroll Effects:** apply-scroll-parallax, apply-text-reveal, apply-expanding-background
+**Extensions:** configure-background-video, configure-clickable-group, configure-custom-css, configure-responsive-visibility, configure-max-width
+
+### Abilities API - Generators (10)
+- generate-hero-section, generate-feature-grid, generate-stats-section, generate-faq-section, generate-contact-section
+- generate-pricing-section, generate-team-section, generate-testimonial-section, generate-cta-section, generate-gallery-section
+
+### New Extensions
+- New: Scroll Parallax extension - Elementor-style vertical/horizontal parallax effects with per-device controls
+- New: Text Reveal extension - scroll-triggered text color animation that simulates natural reading progression
+- New: Expanding Background extension - scroll-driven background that expands from a small circle to fill sections
+
+### New Features
+- New: Text Style inline format - apply colors, gradients, font sizes, and highlights to selected text
+- New: Cloudflare Turnstile integration for form spam protection
+
+### WordPress 6.9 Compatibility
+- Enhancement: Conditionally load Abilities API polyfill only for WordPress < 6.9
+- Enhancement: Updated "Tested up to" to WordPress 6.9
+
+### Improvements
+- Enhancement: Icon Button now respects WordPress width constraints and inherits theme.json button styles
+- Enhancement: Icon Button properly integrates with FSE button settings (colors, padding, border-radius)
+- Enhancement: Admin settings page now properly displays translations for all supported languages
+
+### Bug Fixes
+- Fix: Icon Button display and width issues in constrained layouts
+- Fix: Admin settings page translation loading
+- Fix: Added missing wp_set_script_translations() call for admin JavaScript bundle
+- Fix: Correct form submissions link URL and post type prefix
+
+### Documentation
+- Docs: Added comprehensive documentation for all new extensions and formats
+- Docs: Updated Abilities API documentation with complete reference for all 50 abilities
+
+## [1.2.1] - 2025-11-24
+
+### New Features
+- New: Form submissions admin now displays email delivery status (sent/failed) with visual indicators
+- New: Detailed email delivery information in submission sidebar (recipient, date, status)
+- New: Data retention enforcement and configurable anti-abuse settings for form submissions
+- New: Missing blocks and extensions now properly display in admin Dashboard
+
+### Security Fixes
+- Security: Added CSRF protection for form submissions to prevent cross-site request forgery attacks
+- Security: Restricted form submissions to admin-only access for better data protection
+- Security: Implemented trusted proxy IP resolution to prevent IP spoofing in rate limiting
+
+### Performance
+- Performance: Implemented lazy loading for icon library - critical optimization reducing initial bundle size
+
+### Bug Fixes
+- Fix: Form email deliverability - changed From address default from admin email to wordpress@{sitedomain} to match WordPress core and prevent SPF/DKIM/DMARC failures
+- Fix: Form validation, rate limiting, and email tracking issues resolved
+- Fix: Email status display bug in admin dashboard
+- Fix: Admin dashboard capability check error preventing proper access control
+- Fix: Admin dashboard handling of blocks data preventing crashes
+
+### Enhancements
+- Enhancement: Added debug logging to track email notification flow and diagnose sending issues
+- Enhancement: Updated From Email helper text to reflect new domain-matched email default
+
 ## [1.2.0] - 2025-11-21
 
 ### New Features
@@ -165,6 +250,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[1.3.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.3.0
+[1.2.1]: https://github.com/jnealey88/designsetgo/releases/tag/v1.2.1
 [1.2.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.2.0
 [1.1.4]: https://github.com/jnealey88/designsetgo/releases/tag/v1.1.4
 [1.1.3]: https://github.com/jnealey88/designsetgo/releases/tag/v1.1.3

@@ -6,7 +6,7 @@ Professional Gutenberg block library with 43 blocks and 11 powerful extensions -
 
 DesignSetGo is the **first WordPress block plugin** to integrate with the WordPress 6.9 Abilities API, making it fully accessible to AI agents and automation tools. Build pages programmatically with Claude, ChatGPT, or custom AI workflows.
 
-> **[📖 Read the Abilities API Documentation →](docs/ABILITIES-API.md)**
+> **[📖 Read the Abilities API Documentation →](docs/api/ABILITIES-API.md)**
 
 ## Status
 
@@ -337,7 +337,7 @@ Complete documentation for users and developers.
 - **[Color Controls Pattern](docs/COLOR-CONTROLS-PATTERN.md)**
 - **[Width & Layout Patterns](docs/WIDTH-LAYOUT-PATTERNS.md)**
 - **[Extension vs Custom Blocks](docs/EXTENSION-VS-CUSTOM-BLOCKS.md)**
-- **[Abilities API](docs/ABILITIES-API.md)** - AI integration
+- **[Abilities API](docs/api/ABILITIES-API.md)** - AI integration
 
 **AI-Assisted Development:**
 - **[AI-Assisted Development Guide](docs/AI-ASSISTED-DEVELOPMENT.md)** - Complete guide to building with AI
@@ -500,7 +500,7 @@ npm start         # Terminal 2
   - WordPress best practices
   - Project-specific conventions
 
-- **[WordPress Abilities API](docs/ABILITIES-API.md)** - AI-native programmatic access
+- **[WordPress Abilities API](docs/api/ABILITIES-API.md)** - AI-native programmatic access
   - REST API for AI agents
   - Block insertion and configuration
   - Automation workflows
@@ -579,18 +579,40 @@ Blocks are organized in the WordPress block inserter:
 
 DesignSetGo is the **first WordPress block plugin** to fully integrate with the WordPress 6.9 Abilities API, enabling AI agents and automation tools to programmatically interact with blocks.
 
-### Available Abilities (v2.0)
+### Available Abilities (50 Total)
 
-**Discovery:**
-- `designsetgo/list-blocks` - List all available blocks with schemas
+| Category | Count | Examples |
+|----------|-------|----------|
+| **Discovery** | 1 | `list-blocks` - List all available blocks with schemas |
+| **Inserters** | 29 | Insert any DesignSetGo block programmatically |
+| **Configurators** | 10 | Apply animations, scroll effects, responsive settings |
+| **Generators** | 10 | Generate complete page sections in one call |
 
-**Block Insertion:**
-- `designsetgo/insert-flex-container` - Insert Flex layout
-- `designsetgo/insert-grid-container` - Insert responsive Grid
+#### Inserter Abilities (29)
+- **Containers:** flex-container, grid-container, stack-container, section
+- **Interactive:** tabs, accordion, flip-card, reveal, scroll-accordion, modal, slider
+- **Content:** icon, icon-button, icon-list, pill, card, divider
+- **Data Display:** counter, counter-group, countdown-timer, progress-bar, map
+- **Navigation:** breadcrumbs, table-of-contents
+- **Forms:** form-builder
 
-**Configuration:**
-- `designsetgo/configure-counter-animation` - Update counter settings
-- `designsetgo/apply-animation` - Apply animations to any block
+#### Configurator Abilities (10)
+- **Animations:** apply-animation, configure-counter-animation
+- **Scroll Effects:** apply-scroll-parallax, apply-text-reveal, apply-expanding-background
+- **Extensions:** configure-background-video, configure-clickable-group, configure-custom-css, configure-responsive-visibility, configure-max-width
+
+#### Generator Abilities (10)
+Build complete page sections with one API call:
+- `generate-hero-section` - Hero with heading, description, CTA buttons
+- `generate-feature-grid` - Feature cards in responsive grid
+- `generate-stats-section` - Animated statistics/counters
+- `generate-faq-section` - FAQ accordion
+- `generate-contact-section` - Contact form with optional map
+- `generate-pricing-section` - Pricing table with tiers
+- `generate-team-section` - Team member cards
+- `generate-testimonial-section` - Customer testimonials
+- `generate-cta-section` - Call-to-action section
+- `generate-gallery-section` - Image gallery (grid/slider)
 
 ### Quick Example
 
@@ -600,15 +622,14 @@ curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/l
   -u "username:password" \
   -d '{"category": "all"}'
 
-# Insert a Flex container
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/insert-flex-container/execute \
+# Generate a complete hero section
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/generate-hero-section/execute \
   -u "username:password" \
   -d '{
     "post_id": 123,
-    "attributes": {
-      "direction": "row",
-      "justifyContent": "center"
-    }
+    "heading": "Welcome to Our Site",
+    "description": "Build stunning pages with AI assistance",
+    "primaryButton": {"text": "Get Started", "url": "/start"}
   }'
 ```
 
@@ -618,7 +639,7 @@ curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/i
 - ✅ **ChatGPT** (via REST API)
 - ✅ **Custom Automation Tools**
 
-**[📖 Full Abilities API Documentation →](docs/ABILITIES-API.md)**
+**[📖 Full Abilities API Documentation →](docs/api/ABILITIES-API.md)**
 
 ---
 
@@ -649,4 +670,4 @@ Built with ❤️ for the WordPress community by developers who believe in:
 
 ---
 
-**License**: GPL-2.0-or-later | **Version**: 1.0.0 | **Requires WordPress**: 6.4+ | **Requires PHP**: 7.4+
+**License**: GPL-2.0-or-later | **Version**: 1.3.0 | **Requires WordPress**: 6.4+ | **Requires PHP**: 7.4+
