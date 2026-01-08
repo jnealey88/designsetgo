@@ -135,10 +135,22 @@ class DSGSlider {
 		this.buildAnnouncementRegion();
 
 		// Performance: Calculate and cache dimensions once
-		this.updateDimensions();
+		// Use requestAnimationFrame to ensure layout is complete
+		requestAnimationFrame(() => {
+			this.updateDimensions();
 
-		// Set initial slide
-		this.goToSlide(this.currentIndex, false);
+			// Set initial slide
+			this.goToSlide(this.currentIndex, false);
+
+			// If dimensions are still 0, recalculate after a short delay
+			// This handles cases where CSS hasn't fully applied yet
+			if (this.cachedSlideWidth === 0) {
+				setTimeout(() => {
+					this.updateDimensions();
+					this.goToSlide(this.currentIndex, false);
+				}, 100);
+			}
+		});
 
 		// Initialize features
 		if (this.config.swipeable) {

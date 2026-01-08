@@ -30,26 +30,77 @@ const BlocksExtensions = () => {
 	const [notice, setNotice] = useState(null);
 	const [searchTerm, setSearchTerm] = useState('');
 
-	// Fetch initial data
+	// Fetch initial data with resilient error handling
 	useEffect(() => {
-		Promise.all([
-			apiFetch({ path: '/designsetgo/v1/blocks' }),
-			apiFetch({ path: '/designsetgo/v1/extensions' }),
-			apiFetch({ path: '/designsetgo/v1/settings' }),
-		])
-			.then(([blocksData, extensionsData, settingsData]) => {
-				setBlocks(blocksData);
-				setExtensions(extensionsData);
-				setSettings(settingsData);
-				setLoading(false);
-			})
-			.catch(() => {
+		const fetchData = async () => {
+			const endpoints = [
+				{ key: 'blocks', path: '/designsetgo/v1/blocks' },
+				{ key: 'extensions', path: '/designsetgo/v1/extensions' },
+				{ key: 'settings', path: '/designsetgo/v1/settings' },
+			];
+
+			const results = await Promise.allSettled(
+				endpoints.map((endpoint) => apiFetch({ path: endpoint.path }))
+			);
+
+			const data = {};
+			const failedEndpoints = [];
+
+			results.forEach((result, index) => {
+				if (result.status === 'fulfilled') {
+					data[endpoints[index].key] = result.value;
+				} else {
+					failedEndpoints.push(endpoints[index].key);
+				}
+			});
+
+			// Set data for successful fetches
+			if (data.blocks) {
+				setBlocks(data.blocks);
+			}
+			if (data.extensions) {
+				setExtensions(data.extensions);
+			}
+			if (data.settings) {
+				setSettings(data.settings);
+			}
+
+			// Handle errors
+			if (failedEndpoints.length > 0) {
+				let errorMessage = __(
+					'Failed to load data. Some features may not work correctly.',
+					'designsetgo'
+				);
+
+				// Check for known conflicting plugins
+				const conflictPlugins =
+					window.designSetGoAdmin?.conflictPlugins || [];
+				if (conflictPlugins.length > 0) {
+					const pluginNames = conflictPlugins
+						.map((p) => p.name)
+						.join(', ');
+					errorMessage = `${__(
+						'Failed to load data.',
+						'designsetgo'
+					)} ${__(
+						'A plugin conflict was detected with:',
+						'designsetgo'
+					)} ${pluginNames}. ${__(
+						'Try temporarily deactivating conflicting plugins to use this page.',
+						'designsetgo'
+					)}`;
+				}
+
 				setNotice({
 					status: 'error',
-					message: __('Failed to load data.', 'designsetgo'),
+					message: errorMessage,
 				});
-				setLoading(false);
-			});
+			}
+
+			setLoading(false);
+		};
+
+		fetchData();
 	}, []);
 
 	/**
@@ -259,6 +310,9 @@ const BlocksExtensions = () => {
 		);
 	}
 
+	// Check for known conflicting plugins
+	const conflictPlugins = window.designSetGoAdmin?.conflictPlugins || [];
+
 	return (
 		<div className="designsetgo-blocks-extensions">
 			<div className="designsetgo-blocks-extensions__header">
@@ -270,6 +324,20 @@ const BlocksExtensions = () => {
 					)}
 				</p>
 			</div>
+
+			{conflictPlugins.length > 0 && !notice && (
+				<Notice status="warning" isDismissible={false}>
+					{__(
+						'Potential plugin conflict detected:',
+						'designsetgo'
+					)}{' '}
+					{conflictPlugins.map((p) => p.name).join(', ')}.{' '}
+					{__(
+						'If you experience issues on this page, try temporarily deactivating the conflicting plugin.',
+						'designsetgo'
+					)}
+				</Notice>
+			)}
 
 			{notice && (
 				<Notice
@@ -479,12 +547,20 @@ const BlocksExtensions = () => {
 					variant="primary"
 					onClick={saveSettings}
 					isBusy={saving}
-					disabled={saving}
+					disabled={saving || !settings}
 				>
 					{saving
 						? __('Saving…', 'designsetgo')
 						: __('Save Changes', 'designsetgo')}
 				</Button>
+				{!settings && (
+					<p className="description">
+						{__(
+							'Settings could not be loaded. Saving is disabled.',
+							'designsetgo'
+						)}
+					</p>
+				)}
 			</div>
 		</div>
 	);

@@ -177,12 +177,13 @@ class Admin_Menu {
 			'designsetgo-admin',
 			'designSetGoAdmin',
 			array(
-				'apiUrl'      => esc_url_raw( rest_url( 'designsetgo/v1' ) ),
-				'nonce'       => wp_create_nonce( 'wp_rest' ),
-				'currentPage' => $this->get_current_page( $hook ),
-				'siteUrl'     => esc_url( home_url() ),
-				'adminUrl'    => esc_url( admin_url() ),
-				'logoUrl'     => esc_url( DESIGNSETGO_URL . 'build/admin/assets/logo.png' ),
+				'apiUrl'          => esc_url_raw( rest_url( 'designsetgo/v1' ) ),
+				'nonce'           => wp_create_nonce( 'wp_rest' ),
+				'currentPage'     => $this->get_current_page( $hook ),
+				'siteUrl'         => esc_url( home_url() ),
+				'adminUrl'        => esc_url( admin_url() ),
+				'logoUrl'         => esc_url( DESIGNSETGO_URL . 'build/admin/assets/logo.png' ),
+				'conflictPlugins' => $this->detect_conflicting_plugins(),
 			)
 		);
 	}
@@ -202,6 +203,26 @@ class Admin_Menu {
 			return 'submissions';
 		}
 		return 'dashboard';
+	}
+
+	/**
+	 * Detect plugins known to conflict with DesignSetGo REST API
+	 *
+	 * @return array List of detected conflicting plugins.
+	 */
+	private function detect_conflicting_plugins() {
+		$conflicts = array();
+
+		// Spectra (Ultimate Addons for Gutenberg).
+		if ( defined( 'UAGB_VER' ) || defined( 'SPECTRA_VERSION' ) || class_exists( 'UAGB_Loader' ) ) {
+			$conflicts[] = array(
+				'name'    => 'Spectra',
+				'slug'    => 'spectra',
+				'message' => __( 'Spectra may interfere with the REST API. If you see errors, try temporarily deactivating Spectra.', 'designsetgo' ),
+			);
+		}
+
+		return $conflicts;
 	}
 
 	/**
