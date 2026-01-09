@@ -3,6 +3,8 @@
  * Handles all slider interactions: navigation, auto-play, swipe, drag, keyboard
  */
 
+/* global requestAnimationFrame */
+
 const SINGLE_SLIDE_EFFECTS = ['fade', 'zoom'];
 
 class DSGSlider {

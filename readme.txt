@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,6 +157,12 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.3.1 - 2025-01-09 =
+**Bug Fixes:**
+* Fix: Slider initialization timing - fixed first-load issues where sliders showed gaps or incorrect positioning before reload
+* Fix: Scroll Gallery (Marquee) initialization timing - fixed first-load issues where gallery wouldn't scroll until page reload
+* Fix: Both blocks now properly wait for images to load and CSS to apply before calculating dimensions
 
 = 1.3.0 - 2025-12-06 =
 **New Features:**
@@ -336,6 +342,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Comprehensive documentation and developer guides
 
 == Upgrade Notice ==
+
+= 1.3.1 =
+Bug fix release: Fixes slider and scroll gallery initialization timing issues on first page load.
 
 = 1.3.0 =
 Major update with WordPress 6.9 Abilities API support (50 AI abilities), 3 new scroll-driven extensions (Scroll Parallax, Text Reveal, Expanding Background), new Text Style inline format for custom text styling, Cloudflare Turnstile spam protection, and Icon Button theme.json integration.
