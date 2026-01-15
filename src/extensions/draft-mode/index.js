@@ -11,17 +11,11 @@
 
 import { registerPlugin } from '@wordpress/plugins';
 import DraftModePanel from './DraftModePanel';
-import DraftModeHeader from './DraftModeHeader';
 
 import './editor.scss';
 
-// Register the draft mode panel plugin (sidebar + auto-detection).
+// Register the draft mode panel plugin (sidebar + auto-detection + controls).
 registerPlugin('dsgo-draft-mode', {
 	render: DraftModePanel,
 	icon: 'edit-page',
-});
-
-// Register the draft mode header plugin (header bar when viewing drafts).
-registerPlugin('dsgo-draft-mode-header', {
-	render: DraftModeHeader,
 });

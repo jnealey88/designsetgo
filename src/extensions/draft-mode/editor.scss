@@ -5,57 +5,6 @@
  * @since 1.4.0
  */
 
-// Header bar shown when editing a draft.
-.dsgo-draft-mode-header {
-	position: sticky;
-	top: 0;
-	z-index: 100;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 16px;
-	padding: 8px 16px;
-	background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
-	border-bottom: 1px solid #e5c15f;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-
-	&__content {
-		display: flex;
-		align-items: center;
-		gap: 16px;
-		flex: 1;
-		min-width: 0;
-	}
-
-	&__label {
-		font-weight: 600;
-		font-size: 13px;
-		color: #6c5700;
-		white-space: nowrap;
-	}
-
-	&__link {
-		font-size: 12px;
-		color: #2271b1;
-		text-decoration: none;
-
-		&:hover {
-			text-decoration: underline;
-		}
-	}
-
-	&__actions {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		flex-shrink: 0;
-
-		.components-spinner {
-			margin: 0;
-		}
-	}
-}
-
 // Sidebar panel styles.
 .dsgo-draft-mode-panel {
 	&__loading {
@@ -123,10 +72,33 @@
 		}
 	}
 
+	&__auto-save {
+		margin: 16px 0;
+		padding: 12px;
+		background: #f6f7f7;
+		border-radius: 4px;
+
+		.components-toggle-control {
+			margin-bottom: 0;
+		}
+
+		.components-input-control {
+			margin-top: 12px;
+		}
+
+		.dsgo-draft-mode-panel__meta {
+			margin: 8px 0 0;
+			font-size: 11px;
+		}
+	}
+
 	&__actions {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
+		margin-top: 16px;
+		padding-top: 16px;
+		border-top: 1px solid #e0e0e0;
 
 		.components-button {
 			justify-content: center;
