@@ -16,6 +16,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect, useCallback, useRef, createPortal } from '@wordpress/element';
 import { Button } from '@wordpress/components';
 import { getDraftStatus, publishDraft, createDraft } from './api';
+import { clearDirtyState } from './utils';
 
 /**
  * Find the editor header settings container.
@@ -79,22 +80,6 @@ export default function DraftModeControls() {
 	// Get editor dispatch functions.
 	const { savePost } = useDispatch('core/editor');
 
-	/**
-	 * Clear editor dirty state to prevent "Leave site?" warning.
-	 * Resets reference blocks to current blocks so WordPress thinks
-	 * the current state IS the saved state (no dirty changes).
-	 */
-	const clearDirtyState = useCallback(() => {
-		try {
-			const currentBlocks = wp.data.select('core/block-editor').getBlocks();
-			wp.data.dispatch('core/editor').resetEditorBlocks(currentBlocks, {
-				__unstableShouldCreateUndoLevel: false,
-			});
-		} catch (e) {
-			// Silent fail - navigation will proceed anyway.
-		}
-	}, []);
-
 	// Handle custom publish (merge draft to original).
 	const handlePublishDraft = useCallback(
 		async (e) => {
@@ -131,7 +116,7 @@ export default function DraftModeControls() {
 				setIsPublishing(false);
 			}
 		},
-		[postId, hasEdits, savePost, isPublishing, clearDirtyState]
+		[postId, hasEdits, savePost, isPublishing]
 	);
 
 	// Find the header container on mount.

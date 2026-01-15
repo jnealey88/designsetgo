@@ -8,10 +8,10 @@ Draft Mode allows users to create working copies of published pages, edit them s
 
 When a page is published in WordPress, any edits are immediately live. Draft Mode solves this by:
 
-1. **Automatic draft creation**: When you start editing a published page, a draft is created automatically
+1. **On-demand draft creation**: Click "Create Draft" to start working on a copy
 2. **Seamless editing**: Your changes are captured and transferred to the draft
 3. **Safe editing**: All subsequent saves go to the draft, not the live page
-4. **Auto-save**: Drafts are automatically saved at configurable intervals
+4. **Visual indicators**: Header controls and bottom banner show you're in draft mode
 5. **One-click publishing**: Merge the draft back into the original when ready
 6. **URL preservation**: The original URL and SEO value are preserved
 
@@ -20,38 +20,53 @@ When a page is published in WordPress, any edits are immediately live. Draft Mod
 ### Editing a Published Page
 
 1. Navigate to any published page in the block editor
-2. Make any edit (type text, add a block, change a setting)
-3. A draft is **automatically created** with your changes
-4. You're redirected to the draft editor to continue working
-5. The "Draft Mode" panel in the sidebar shows you're editing a draft
+2. Click **"Create Draft"** in the sidebar panel or editor header
+3. You're redirected to the draft editor to continue working
+4. The "Draft Mode" panel in the sidebar shows you're editing a draft
+5. A **bottom banner** indicates you're in draft mode with a link to view the live page
 
 ### Working with Drafts
 
-When editing a draft, the sidebar panel provides:
+When editing a draft, you'll see:
+
+**Editor Header:**
+
+- **Save Draft link**: Appears when you have unsaved changes (saves without publishing)
+
+**Sidebar Panel:**
+
 - **Warning notice**: "You are editing a draft version"
 - **View live page link**: Opens the published page in a new tab
-- **Auto-save toggle**: Enable/disable automatic saving
-- **Auto-save interval**: Configure how often to save (10-300 seconds)
-- **Last auto-save time**: Shows when the draft was last auto-saved
-- **Publish Changes button**: Merge changes to the live page
-- **Discard Draft button**: Delete the draft without publishing
+- **Publish Changes button**: Merge changes to the live page (with confirmation)
+- **Discard Draft button**: Delete the draft without publishing (with confirmation)
+
+**Bottom Banner:**
+
+- **Draft indicator**: Shows you're editing a draft with the original page title
+- **View live page link**: Quick access to the published version
 
 ### Publishing Changes
 
 When your draft is ready:
-1. Click **"Publish Changes"** in the Draft Mode sidebar panel
-2. Confirm the action
-3. Your changes are merged into the live page
-4. The draft is deleted
-5. You're redirected to the published page
+
+1. Click **"Publish Changes"** in the Draft Mode sidebar panel (or click the standard "Publish" button - it's intercepted automatically)
+2. A confirmation modal appears: "This will replace the current live content with your draft changes."
+3. Click **"Publish"** to confirm
+4. Any unsaved changes are saved first
+5. Your changes are merged into the live page
+6. The draft is deleted
+7. You're redirected to the published page editor
 
 ### Discarding Changes
 
 To abandon your draft:
+
 1. Click **"Discard Draft"** in the Draft Mode sidebar panel
-2. Confirm the action
-3. The draft is deleted
-4. The live page remains unchanged
+2. A confirmation modal appears: "All changes will be lost and cannot be recovered."
+3. Click **"Discard"** to confirm
+4. The draft is deleted
+5. You're redirected to the original page editor
+6. The live page remains unchanged
 
 ---
 
@@ -62,8 +77,6 @@ Draft Mode can be configured in DesignSetGo settings:
 | Setting | Default | Description |
 |---------|---------|-------------|
 | `enable` | `true` | Enable/disable draft mode entirely |
-| `auto_save_enabled` | `true` | Default auto-save state for new drafts |
-| `auto_save_interval` | `60` | Default auto-save interval in seconds (10-300) |
 | `show_page_list_actions` | `true` | Show Create/Edit Draft row actions in page list |
 | `show_page_list_column` | `true` | Show Draft Status column in page list |
 
@@ -437,12 +450,62 @@ curl -X POST "https://example.com/wp-json/designsetgo/v1/draft-mode/$DRAFT_ID/pu
 
 Draft Mode is integrated into:
 
-1. **Block Editor**: "Draft Mode" panel in the document sidebar with:
-   - Draft status indicator
-   - Auto-save toggle and interval settings
-   - Publish Changes / Discard Draft buttons
-   - Link to view the live page
+1. **Block Editor Header**: Context-aware controls positioned at the left:
+   - **For published pages**: "Create Draft" or "Edit Draft" link
+   - **For drafts**: "Save Draft" link (appears when there are unsaved changes)
 
-2. **Page List**: "Create Draft" / "Edit Draft" row actions (can be disabled in settings)
+2. **Block Editor Sidebar**: "Draft Mode" panel in the document settings with:
+   - Draft status indicator with warning/info notices
+   - View live page link (when editing a draft)
+   - Publish Changes button with confirmation modal
+   - Discard Draft button with confirmation modal
+   - Create Draft button (for published pages without a draft)
 
-3. **Page List**: "Draft Status" column showing draft state (can be disabled in settings)
+3. **Bottom Banner**: Fixed banner at the bottom of the editor (when editing a draft):
+   - Visual indicator that you're editing a draft version
+   - Original page title display
+   - Quick link to view the live page
+
+4. **Page List**: "Create Draft" / "Edit Draft" / "View Live" row actions (can be disabled in settings)
+
+5. **Page List**: "Draft Status" column showing draft state (can be disabled in settings)
+
+---
+
+## Technical Notes
+
+### Publish Button Interception
+
+When editing a draft, the native WordPress "Publish" button is intercepted to use the custom `publishDraft()` API instead of the standard WordPress publish action. This ensures:
+
+- Changes are merged back to the original published page
+- The draft is deleted after publishing
+- The user is redirected to the original page editor
+
+The interception uses a capture-phase event listener to run before WordPress's native handler.
+
+### Navigation Without "Leave Site?" Warnings
+
+Draft Mode clears the editor's dirty state before navigation to prevent browser "Leave site?" warnings. This is done by resetting the editor's reference blocks to match the current state:
+
+```javascript
+const currentBlocks = wp.data.select('core/block-editor').getBlocks();
+wp.data.dispatch('core/editor').resetEditorBlocks(currentBlocks, {
+  __unstableShouldCreateUndoLevel: false,
+});
+```
+
+This affects navigation after:
+
+- Creating a draft (redirect to draft editor)
+- Publishing changes (redirect to original page)
+- Discarding a draft (redirect to original page)
+
+### CSS Classes
+
+The following CSS classes are added for styling:
+
+- `.dsgo-draft-mode-active` - Added to `<body>` when editing a draft (hides native "Save draft" button)
+- `.dsgo-draft-mode-save-draft` - Header "Save Draft" link styling
+- `.dsgo-draft-mode-panel` - Sidebar panel styling
+- `.dsgo-draft-mode-banner` - Bottom banner styling

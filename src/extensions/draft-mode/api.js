@@ -1,7 +1,7 @@
 /**
  * Draft Mode API Helpers
  *
- * @package DesignSetGo
+ * @package
  * @since 1.4.0
  */
 
@@ -23,8 +23,8 @@ export async function getDraftStatus(postId) {
 /**
  * Create a draft of a published page
  *
- * @param {number} postId    - The published page ID.
- * @param {Object} overrides - Optional content overrides to capture unsaved edits.
+ * @param {number} postId            - The published page ID.
+ * @param {Object} overrides         - Optional content overrides to capture unsaved edits.
  * @param {string} overrides.content - Post content.
  * @param {string} overrides.title   - Post title.
  * @param {string} overrides.excerpt - Post excerpt.

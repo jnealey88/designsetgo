@@ -82,11 +82,9 @@ class Settings {
 				'background_scroll_opacity' => 100,
 			),
 			'draft_mode'         => array(
-				'enable'                  => true,
-				'auto_save_enabled'       => true,
-				'auto_save_interval'      => 60, // seconds
-				'show_page_list_actions'  => true,
-				'show_page_list_column'   => true,
+				'enable'                 => true,
+				'show_page_list_actions' => true,
+				'show_page_list_column'  => true,
 			),
 		);
 	}
@@ -784,8 +782,6 @@ class Settings {
 		if ( isset( $settings['draft_mode'] ) && is_array( $settings['draft_mode'] ) ) {
 			$sanitized['draft_mode'] = array(
 				'enable'                 => isset( $settings['draft_mode']['enable'] ) ? (bool) $settings['draft_mode']['enable'] : true,
-				'auto_save_enabled'      => isset( $settings['draft_mode']['auto_save_enabled'] ) ? (bool) $settings['draft_mode']['auto_save_enabled'] : true,
-				'auto_save_interval'     => isset( $settings['draft_mode']['auto_save_interval'] ) ? max( 10, min( 300, absint( $settings['draft_mode']['auto_save_interval'] ) ) ) : 60,
 				'show_page_list_actions' => isset( $settings['draft_mode']['show_page_list_actions'] ) ? (bool) $settings['draft_mode']['show_page_list_actions'] : true,
 				'show_page_list_column'  => isset( $settings['draft_mode']['show_page_list_column'] ) ? (bool) $settings['draft_mode']['show_page_list_column'] : true,
 			);
