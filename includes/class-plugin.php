@@ -137,6 +137,13 @@ class Plugin {
 	public $icon_injector;
 
 	/**
+	 * Draft Mode instance.
+	 *
+	 * @var Admin\Draft_Mode
+	 */
+	public $draft_mode;
+
+	/**
 	 * Returns the instance.
 	 *
 	 * @return Plugin
@@ -171,6 +178,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-block-manager.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-gdpr-compliance.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-admin-menu.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
@@ -222,6 +230,9 @@ class Plugin {
 		if ( is_admin() ) {
 			$this->admin_menu = new Admin\Admin_Menu();
 		}
+
+		// Initialize draft mode (works on both admin and REST API).
+		$this->draft_mode = new Admin\Draft_Mode();
 
 		// Initialize Abilities Registry (AI-native API).
 		if ( class_exists( 'DesignSetGo\Abilities\Abilities_Registry' ) ) {

@@ -1,0 +1,135 @@
+/**
+ * Draft Mode Editor Styles
+ *
+ * @package DesignSetGo
+ * @since 1.4.0
+ */
+
+// Header bar shown when editing a draft.
+.dsgo-draft-mode-header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 8px 16px;
+	background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+	border-bottom: 1px solid #e5c15f;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+	&__content {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		flex: 1;
+		min-width: 0;
+	}
+
+	&__label {
+		font-weight: 600;
+		font-size: 13px;
+		color: #6c5700;
+		white-space: nowrap;
+	}
+
+	&__link {
+		font-size: 12px;
+		color: #2271b1;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		flex-shrink: 0;
+
+		.components-spinner {
+			margin: 0;
+		}
+	}
+}
+
+// Sidebar panel styles.
+.dsgo-draft-mode-panel {
+	&__loading {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 0;
+		color: #757575;
+	}
+
+	&__notice {
+		margin-bottom: 12px !important;
+
+		// Remove default margin from notice content.
+		p {
+			margin: 0;
+		}
+	}
+
+	&__content {
+		// Specific styling for draft status.
+		&--is-draft {
+			.dsgo-draft-mode-panel__notice {
+				background-color: #fff3cd;
+				border-left-color: #ffb900;
+			}
+		}
+
+		&--has-draft {
+			.dsgo-draft-mode-panel__notice {
+				background-color: #e7f5ff;
+				border-left-color: #0073aa;
+			}
+		}
+	}
+
+	&__description {
+		margin: 0 0 12px;
+		color: #1e1e1e;
+		font-size: 13px;
+		line-height: 1.5;
+
+		&--muted {
+			color: #757575;
+			font-style: italic;
+		}
+	}
+
+	&__meta {
+		margin: 0 0 12px;
+		color: #757575;
+		font-size: 12px;
+	}
+
+	&__link {
+		margin: 0 0 12px;
+
+		a {
+			color: #2271b1;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	&__actions {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		.components-button {
+			justify-content: center;
+		}
+	}
+}
