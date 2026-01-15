@@ -2,38 +2,51 @@
  * Draft Mode Panel Component
  *
  * Handles auto-detection of first edit on published pages and
- * automatic draft creation. Also displays draft info in sidebar.
+ * automatic draft creation. Also displays draft info in sidebar
+ * with auto-save functionality and draft management controls.
  *
  * @package DesignSetGo
  * @since 1.4.0
  */
 
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch, subscribe } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect, useCallback, useRef } from '@wordpress/element';
 import {
 	Notice,
 	Spinner,
+	Button,
 	ExternalLink,
+	__experimentalNumberControl as NumberControl,
+	ToggleControl,
 } from '@wordpress/components';
 import { PluginDocumentSettingPanel } from '@wordpress/editor';
-import { getDraftStatus, createDraft } from './api';
+import { getDraftStatus, createDraft, publishDraft, discardDraft } from './api';
 
 /**
  * Draft Mode Panel Component
  *
  * Auto-creates draft on first edit of published pages.
  */
+// Default auto-save interval in seconds.
+const DEFAULT_AUTO_SAVE_INTERVAL = 60;
+
 export default function DraftModePanel() {
 	const [status, setStatus] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isCreatingDraft, setIsCreatingDraft] = useState(false);
+	const [isActionLoading, setIsActionLoading] = useState(false);
 	const [error, setError] = useState(null);
+	const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
+	const [autoSaveInterval, setAutoSaveInterval] = useState(DEFAULT_AUTO_SAVE_INTERVAL);
+	const [lastAutoSave, setLastAutoSave] = useState(null);
 	const hasTriggeredDraft = useRef(false);
 	const initialContentRef = useRef(null);
+	const autoSaveTimerRef = useRef(null);
+	const draftCreationDebounceRef = useRef(null);
 
 	// Get current post data from the editor store.
-	const { postId, postType, postStatus, hasEdits, currentContent, currentTitle, currentExcerpt } = useSelect((select) => {
+	const { postId, postType, postStatus, hasEdits, currentContent, currentTitle, currentExcerpt, isSavingPost, isAutosavingPost } = useSelect((select) => {
 		const editor = select('core/editor');
 		return {
 			postId: editor.getCurrentPostId(),
@@ -43,8 +56,16 @@ export default function DraftModePanel() {
 			currentContent: editor.getEditedPostContent(),
 			currentTitle: editor.getEditedPostAttribute('title'),
 			currentExcerpt: editor.getEditedPostAttribute('excerpt'),
+			isSavingPost: editor.isSavingPost(),
+			isAutosavingPost: editor.isAutosavingPost(),
 		};
 	}, []);
+
+	// Get the savePost function from the editor dispatch.
+	const { savePost } = useDispatch('core/editor');
+
+	// Track if we've initialized settings from API.
+	const settingsInitialized = useRef(false);
 
 	// Fetch draft status when post ID changes.
 	const fetchStatus = useCallback(async () => {
@@ -56,6 +77,13 @@ export default function DraftModePanel() {
 		try {
 			const result = await getDraftStatus(postId);
 			setStatus(result);
+
+			// Initialize auto-save settings from API response (only once).
+			if (!settingsInitialized.current && result.settings) {
+				settingsInitialized.current = true;
+				setAutoSaveEnabled(result.settings.auto_save_enabled ?? true);
+				setAutoSaveInterval(result.settings.auto_save_interval ?? DEFAULT_AUTO_SAVE_INTERVAL);
+			}
 
 			// Store initial content for comparison.
 			if (!initialContentRef.current) {
@@ -77,16 +105,24 @@ export default function DraftModePanel() {
 	}, [fetchStatus]);
 
 	// Auto-create draft when user makes first edit on a published page.
+	// Debounced to prevent rapid API calls on every keystroke.
 	useEffect(() => {
+		// Clear any pending debounce timer.
+		if (draftCreationDebounceRef.current) {
+			clearTimeout(draftCreationDebounceRef.current);
+			draftCreationDebounceRef.current = null;
+		}
+
 		// Skip if:
+		// - Draft mode is disabled
 		// - Not a page
 		// - Not published
 		// - Already has a draft
 		// - This IS a draft
 		// - Already triggered draft creation
 		// - Still loading status
-		// - No edits made yet
 		if (
+			!status?.settings?.enabled ||
 			postType !== 'page' ||
 			postStatus !== 'publish' ||
 			isLoading ||
@@ -112,37 +148,55 @@ export default function DraftModePanel() {
 			return;
 		}
 
-		// User has made changes to a published page - auto-create draft.
-		hasTriggeredDraft.current = true;
-		setIsCreatingDraft(true);
+		// Debounce draft creation to avoid rapid API calls while user is typing.
+		// Wait 500ms after the last change before creating the draft.
+		draftCreationDebounceRef.current = setTimeout(() => {
+			// Double-check we haven't already triggered (could change during debounce).
+			if (hasTriggeredDraft.current || isCreatingDraft) {
+				return;
+			}
 
-		const doCreateDraft = async () => {
-			try {
-				const result = await createDraft(postId, {
-					content: currentContent,
-					title: currentTitle,
-					excerpt: currentExcerpt,
-				});
+			// User has made changes to a published page - auto-create draft.
+			hasTriggeredDraft.current = true;
+			setIsCreatingDraft(true);
 
-				if (result.success && result.edit_url) {
-					// Redirect to the draft editor.
-					window.location.href = result.edit_url;
+			const doCreateDraft = async () => {
+				try {
+					const result = await createDraft(postId, {
+						content: currentContent,
+						title: currentTitle,
+						excerpt: currentExcerpt,
+					});
+
+					if (result.success && result.edit_url) {
+						// Redirect to the draft editor.
+						window.location.href = result.edit_url;
+					}
+				} catch (err) {
+					// If draft creation failed because one already exists, redirect to it.
+					if (err.data?.draft_id) {
+						// Use server-provided edit_url for subdirectory support.
+						const draftEditUrl = err.data.edit_url || `post.php?post=${err.data.draft_id}&action=edit`;
+						window.location.href = draftEditUrl;
+						return;
+					}
+
+					setError(err.message || __('Failed to create draft.', 'designsetgo'));
+					setIsCreatingDraft(false);
+					hasTriggeredDraft.current = false;
 				}
-			} catch (err) {
-				// If draft creation failed because one already exists, redirect to it.
-				if (err.data?.draft_id) {
-					const draftEditUrl = `/wp-admin/post.php?post=${err.data.draft_id}&action=edit`;
-					window.location.href = draftEditUrl;
-					return;
-				}
+			};
 
-				setError(err.message || __('Failed to create draft.', 'designsetgo'));
-				setIsCreatingDraft(false);
-				hasTriggeredDraft.current = false;
+			doCreateDraft();
+		}, 500);
+
+		// Cleanup: clear debounce timer on unmount or before next effect run.
+		return () => {
+			if (draftCreationDebounceRef.current) {
+				clearTimeout(draftCreationDebounceRef.current);
+				draftCreationDebounceRef.current = null;
 			}
 		};
-
-		doCreateDraft();
 	}, [
 		postType,
 		postStatus,
@@ -155,8 +209,91 @@ export default function DraftModePanel() {
 		currentExcerpt,
 	]);
 
+	// Auto-save effect for drafts.
+	useEffect(() => {
+		// Only auto-save if:
+		// - Auto-save is enabled
+		// - This IS a draft
+		// - There are unsaved edits
+		// - Not currently saving
+		if (
+			!autoSaveEnabled ||
+			!status?.is_draft ||
+			!hasEdits ||
+			isSavingPost ||
+			isAutosavingPost
+		) {
+			// Clear timer if conditions not met.
+			if (autoSaveTimerRef.current) {
+				clearInterval(autoSaveTimerRef.current);
+				autoSaveTimerRef.current = null;
+			}
+			return;
+		}
+
+		// Set up auto-save interval.
+		autoSaveTimerRef.current = setInterval(() => {
+			if (hasEdits && !isSavingPost && !isAutosavingPost) {
+				savePost();
+				setLastAutoSave(new Date().toLocaleTimeString());
+			}
+		}, autoSaveInterval * 1000);
+
+		return () => {
+			if (autoSaveTimerRef.current) {
+				clearInterval(autoSaveTimerRef.current);
+				autoSaveTimerRef.current = null;
+			}
+		};
+	}, [autoSaveEnabled, autoSaveInterval, status?.is_draft, hasEdits, isSavingPost, isAutosavingPost, savePost]);
+
+	// Handle publish draft action.
+	const handlePublishDraft = async () => {
+		if (!window.confirm(__('Publish these changes to the live page? This will replace the current live content.', 'designsetgo'))) {
+			return;
+		}
+
+		setIsActionLoading(true);
+		setError(null);
+
+		try {
+			const result = await publishDraft(postId);
+			if (result.success && result.edit_url) {
+				window.location.href = result.edit_url;
+			}
+		} catch (err) {
+			setError(err.message || __('Failed to publish changes.', 'designsetgo'));
+			setIsActionLoading(false);
+		}
+	};
+
+	// Handle discard draft action.
+	const handleDiscardDraft = async () => {
+		if (!window.confirm(__('Discard this draft? All changes will be lost and cannot be recovered.', 'designsetgo'))) {
+			return;
+		}
+
+		setIsActionLoading(true);
+		setError(null);
+
+		try {
+			const result = await discardDraft(postId);
+			if (result.success && status?.original_edit_url) {
+				window.location.href = status.original_edit_url;
+			}
+		} catch (err) {
+			setError(err.message || __('Failed to discard draft.', 'designsetgo'));
+			setIsActionLoading(false);
+		}
+	};
+
 	// Only show for pages.
 	if (postType !== 'page') {
+		return null;
+	}
+
+	// Don't show if draft mode is disabled (after loading).
+	if (!isLoading && status?.settings?.enabled === false) {
 		return null;
 	}
 
@@ -213,7 +350,7 @@ export default function DraftModePanel() {
 					</Notice>
 
 					<p className="dsgo-draft-mode-panel__description">
-						{__('Changes you make here will not affect the live page until you publish them. Use the header controls to publish or discard.', 'designsetgo')}
+						{__('Changes here won\'t affect the live page until you publish them.', 'designsetgo')}
 					</p>
 
 					{status.original_view_url && (
@@ -223,6 +360,55 @@ export default function DraftModePanel() {
 							</ExternalLink>
 						</p>
 					)}
+
+					{/* Auto-save settings */}
+					<div className="dsgo-draft-mode-panel__auto-save">
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={__('Auto-save', 'designsetgo')}
+							checked={autoSaveEnabled}
+							onChange={setAutoSaveEnabled}
+						/>
+
+						{autoSaveEnabled && (
+							<NumberControl
+								__next40pxDefaultSize
+								label={__('Save every (seconds)', 'designsetgo')}
+								value={autoSaveInterval}
+								onChange={(value) => setAutoSaveInterval(parseInt(value, 10) || DEFAULT_AUTO_SAVE_INTERVAL)}
+								min={10}
+								max={300}
+								step={10}
+							/>
+						)}
+
+						{lastAutoSave && (
+							<p className="dsgo-draft-mode-panel__meta">
+								{__('Last auto-save:', 'designsetgo')} {lastAutoSave}
+							</p>
+						)}
+					</div>
+
+					{/* Action buttons */}
+					<div className="dsgo-draft-mode-panel__actions">
+						<Button
+							variant="primary"
+							onClick={handlePublishDraft}
+							disabled={isActionLoading}
+							isBusy={isActionLoading}
+						>
+							{__('Publish Changes', 'designsetgo')}
+						</Button>
+
+						<Button
+							variant="secondary"
+							isDestructive
+							onClick={handleDiscardDraft}
+							disabled={isActionLoading}
+						>
+							{__('Discard Draft', 'designsetgo')}
+						</Button>
+					</div>
 				</div>
 			)}
 

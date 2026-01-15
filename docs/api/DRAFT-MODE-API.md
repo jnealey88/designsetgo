@@ -11,8 +11,9 @@ When a page is published in WordPress, any edits are immediately live. Draft Mod
 1. **Automatic draft creation**: When you start editing a published page, a draft is created automatically
 2. **Seamless editing**: Your changes are captured and transferred to the draft
 3. **Safe editing**: All subsequent saves go to the draft, not the live page
-4. **One-click publishing**: Merge the draft back into the original when ready
-5. **URL preservation**: The original URL and SEO value are preserved
+4. **Auto-save**: Drafts are automatically saved at configurable intervals
+5. **One-click publishing**: Merge the draft back into the original when ready
+6. **URL preservation**: The original URL and SEO value are preserved
 
 ## User Experience
 
@@ -22,12 +23,23 @@ When a page is published in WordPress, any edits are immediately live. Draft Mod
 2. Make any edit (type text, add a block, change a setting)
 3. A draft is **automatically created** with your changes
 4. You're redirected to the draft editor to continue working
-5. A yellow header bar shows you're in "Draft Mode"
+5. The "Draft Mode" panel in the sidebar shows you're editing a draft
+
+### Working with Drafts
+
+When editing a draft, the sidebar panel provides:
+- **Warning notice**: "You are editing a draft version"
+- **View live page link**: Opens the published page in a new tab
+- **Auto-save toggle**: Enable/disable automatic saving
+- **Auto-save interval**: Configure how often to save (10-300 seconds)
+- **Last auto-save time**: Shows when the draft was last auto-saved
+- **Publish Changes button**: Merge changes to the live page
+- **Discard Draft button**: Delete the draft without publishing
 
 ### Publishing Changes
 
 When your draft is ready:
-1. Click **"Publish Changes"** in the header bar
+1. Click **"Publish Changes"** in the Draft Mode sidebar panel
 2. Confirm the action
 3. Your changes are merged into the live page
 4. The draft is deleted
@@ -36,10 +48,35 @@ When your draft is ready:
 ### Discarding Changes
 
 To abandon your draft:
-1. Click **"Discard Draft"** in the header bar
+1. Click **"Discard Draft"** in the Draft Mode sidebar panel
 2. Confirm the action
 3. The draft is deleted
 4. The live page remains unchanged
+
+---
+
+## Plugin Settings
+
+Draft Mode can be configured in DesignSetGo settings:
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `enable` | `true` | Enable/disable draft mode entirely |
+| `auto_save_enabled` | `true` | Default auto-save state for new drafts |
+| `auto_save_interval` | `60` | Default auto-save interval in seconds (10-300) |
+| `show_page_list_actions` | `true` | Show Create/Edit Draft row actions in page list |
+| `show_page_list_column` | `true` | Show Draft Status column in page list |
+
+### Accessing Settings
+
+Settings are stored in the `designsetgo_settings` option under the `draft_mode` key:
+
+```php
+$settings = get_option( 'designsetgo_settings' );
+$draft_mode = $settings['draft_mode'];
+```
+
+---
 
 ## REST API Endpoints
 
@@ -59,7 +96,7 @@ All endpoints require authentication with `publish_posts` capability (Authors, E
 
 ### Get Draft Status
 
-Check the draft status of any page.
+Check the draft status of any page. Also returns current settings.
 
 **Endpoint**: `GET /draft-mode/status/{post_id}`
 
@@ -71,6 +108,11 @@ Check the draft status of any page.
 **Response** (page with no draft):
 ```json
 {
+  "settings": {
+    "enabled": true,
+    "auto_save_enabled": true,
+    "auto_save_interval": 60
+  },
   "exists": true,
   "is_draft": false,
   "has_draft": false,
@@ -83,6 +125,11 @@ Check the draft status of any page.
 **Response** (page has a pending draft):
 ```json
 {
+  "settings": {
+    "enabled": true,
+    "auto_save_enabled": true,
+    "auto_save_interval": 60
+  },
   "exists": true,
   "is_draft": false,
   "has_draft": true,
@@ -96,6 +143,11 @@ Check the draft status of any page.
 **Response** (this IS a draft):
 ```json
 {
+  "settings": {
+    "enabled": true,
+    "auto_save_enabled": true,
+    "auto_save_interval": 60
+  },
   "exists": true,
   "is_draft": true,
   "has_draft": false,
@@ -125,7 +177,10 @@ Create a draft copy of a published page.
 **Request Body**:
 ```json
 {
-  "post_id": 123
+  "post_id": 123,
+  "content": "<!-- wp:paragraph --><p>Optional content</p><!-- /wp:paragraph -->",
+  "title": "Optional title",
+  "excerpt": "Optional excerpt"
 }
 ```
 
@@ -133,6 +188,9 @@ Create a draft copy of a published page.
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
 | `post_id` | integer | Yes | The published page ID |
+| `content` | string | No | Content to use instead of published content (captures unsaved edits) |
+| `title` | string | No | Title to use instead of published title |
+| `excerpt` | string | No | Excerpt to use instead of published excerpt |
 
 **Response** (success):
 ```json
@@ -149,6 +207,7 @@ Create a draft copy of a published page.
 **Errors**:
 | Code | Message |
 |------|---------|
+| `draft_mode_disabled` | Draft mode is disabled |
 | `invalid_post` | Post not found |
 | `invalid_post_type` | Draft mode is only available for pages |
 | `invalid_status` | Only published pages can have a draft version |
@@ -291,16 +350,26 @@ For use within the WordPress admin (with proper nonce):
 ```javascript
 import apiFetch from '@wordpress/api-fetch';
 
-// Get status
+// Get status (includes settings)
 const status = await apiFetch({
   path: `/designsetgo/v1/draft-mode/status/${postId}`,
 });
 
-// Create draft
+// Check if draft mode is enabled
+if (status.settings.enabled) {
+  // Draft mode features available
+}
+
+// Create draft with content overrides
 const result = await apiFetch({
   path: '/designsetgo/v1/draft-mode/create',
   method: 'POST',
-  data: { post_id: postId },
+  data: {
+    post_id: postId,
+    content: currentContent,  // Capture unsaved edits
+    title: currentTitle,
+    excerpt: currentExcerpt,
+  },
 });
 
 // Publish draft
@@ -323,9 +392,15 @@ await apiFetch({
 Example workflow for an automated system:
 
 ```bash
-# 1. Check if page has a draft
+# 1. Check if page has a draft and if draft mode is enabled
 STATUS=$(curl -s -X GET "https://example.com/wp-json/designsetgo/v1/draft-mode/status/123" \
   -H "Authorization: Basic $AUTH")
+
+# Check if draft mode is enabled
+if [ "$(echo $STATUS | jq -r '.settings.enabled')" = "false" ]; then
+  echo "Draft mode is disabled"
+  exit 1
+fi
 
 # 2. Create draft if none exists
 if [ "$(echo $STATUS | jq -r '.has_draft')" = "false" ]; then
@@ -362,6 +437,12 @@ curl -X POST "https://example.com/wp-json/designsetgo/v1/draft-mode/$DRAFT_ID/pu
 
 Draft Mode is integrated into:
 
-1. **Block Editor**: "Draft Mode" panel in the document sidebar
-2. **Page List**: "Create Draft" / "Edit Draft" row actions
-3. **Page List**: "Draft Status" column showing draft state
+1. **Block Editor**: "Draft Mode" panel in the document sidebar with:
+   - Draft status indicator
+   - Auto-save toggle and interval settings
+   - Publish Changes / Discard Draft buttons
+   - Link to view the live page
+
+2. **Page List**: "Create Draft" / "Edit Draft" row actions (can be disabled in settings)
+
+3. **Page List**: "Draft Status" column showing draft state (can be disabled in settings)

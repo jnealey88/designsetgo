@@ -39,12 +39,53 @@ class Draft_Mode {
 	 * Constructor
 	 */
 	public function __construct() {
+		// Always register REST routes (they check if enabled internally).
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
-		add_filter( 'page_row_actions', array( $this, 'add_row_actions' ), 10, 2 );
-		add_filter( 'manage_pages_columns', array( $this, 'add_draft_status_column' ) );
-		add_action( 'manage_pages_custom_column', array( $this, 'render_draft_status_column' ), 10, 2 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+
+		// Only add hooks if draft mode is enabled.
+		if ( $this->is_enabled() ) {
+			$settings = $this->get_settings();
+
+			// Page list actions and column (can be individually disabled).
+			if ( $settings['show_page_list_actions'] ) {
+				add_filter( 'page_row_actions', array( $this, 'add_row_actions' ), 10, 2 );
+			}
+			if ( $settings['show_page_list_column'] ) {
+				add_filter( 'manage_pages_columns', array( $this, 'add_draft_status_column' ) );
+				add_action( 'manage_pages_custom_column', array( $this, 'render_draft_status_column' ), 10, 2 );
+			}
+
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		}
+
+		// Always clean up meta when posts are deleted.
 		add_action( 'before_delete_post', array( $this, 'cleanup_draft_meta' ) );
+	}
+
+	/**
+	 * Get draft mode settings
+	 *
+	 * @return array Draft mode settings.
+	 */
+	public function get_settings() {
+		$all_settings = Settings::get_settings();
+		return isset( $all_settings['draft_mode'] ) ? $all_settings['draft_mode'] : array(
+			'enable'                 => true,
+			'auto_save_enabled'      => true,
+			'auto_save_interval'     => 60,
+			'show_page_list_actions' => true,
+			'show_page_list_column'  => true,
+		);
+	}
+
+	/**
+	 * Check if draft mode is enabled
+	 *
+	 * @return bool True if enabled.
+	 */
+	public function is_enabled() {
+		$settings = $this->get_settings();
+		return ! empty( $settings['enable'] );
 	}
 
 	/**
@@ -69,6 +110,7 @@ class Draft_Mode {
 					'content' => array(
 						'required'          => false,
 						'type'              => 'string',
+						'sanitize_callback' => 'wp_kses_post',
 						'description'       => __( 'Optional content to use instead of published content (captures unsaved edits).', 'designsetgo' ),
 					),
 					'title' => array(
@@ -80,6 +122,7 @@ class Draft_Mode {
 					'excerpt' => array(
 						'required'          => false,
 						'type'              => 'string',
+						'sanitize_callback' => 'wp_kses_post',
 						'description'       => __( 'Optional excerpt to use instead of published excerpt.', 'designsetgo' ),
 					),
 				),
@@ -159,15 +202,9 @@ class Draft_Mode {
 			);
 		}
 
-		// Verify nonce for write operations.
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return new \WP_Error(
-				'rest_invalid_nonce',
-				__( 'Invalid security token.', 'designsetgo' ),
-				array( 'status' => 403 )
-			);
-		}
+		// Note: Nonce verification is handled automatically by WordPress REST API
+		// for cookie-based authentication. Manual verification here would break
+		// application passwords and other authentication methods.
 
 		return true;
 	}
@@ -188,6 +225,15 @@ class Draft_Mode {
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function create_draft_endpoint( $request ) {
+		// Check if draft mode is enabled.
+		if ( ! $this->is_enabled() ) {
+			return new \WP_Error(
+				'draft_mode_disabled',
+				__( 'Draft mode is disabled.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
 		$post_id = $request->get_param( 'post_id' );
 
 		// Optional content overrides (captures unsaved edits).
@@ -198,7 +244,12 @@ class Draft_Mode {
 		);
 
 		// Remove null values.
-		$overrides = array_filter( $overrides, function( $v ) { return null !== $v; } );
+		$overrides = array_filter(
+			$overrides,
+			function ( $v ) {
+				return null !== $v;
+			}
+		);
 
 		$result = $this->create_draft( $post_id, $overrides );
 
@@ -277,17 +328,30 @@ class Draft_Mode {
 	 * @return \WP_REST_Response
 	 */
 	public function get_status_endpoint( $request ) {
-		$post_id = $request->get_param( 'post_id' );
-		$post    = get_post( $post_id );
+		$post_id  = $request->get_param( 'post_id' );
+		$post     = get_post( $post_id );
+		$settings = $this->get_settings();
+
+		// Always include settings in response so JS knows the configuration.
+		$base_response = array(
+			'settings' => array(
+				'enabled'            => $settings['enable'],
+				'auto_save_enabled'  => $settings['auto_save_enabled'],
+				'auto_save_interval' => $settings['auto_save_interval'],
+			),
+		);
 
 		if ( ! $post ) {
 			return rest_ensure_response(
-				array(
-					'exists'     => false,
-					'is_draft'   => false,
-					'has_draft'  => false,
-					'draft_id'   => null,
-					'original_id' => null,
+				array_merge(
+					$base_response,
+					array(
+						'exists'      => false,
+						'is_draft'    => false,
+						'has_draft'   => false,
+						'draft_id'    => null,
+						'original_id' => null,
+					)
 				)
 			);
 		}
@@ -299,16 +363,19 @@ class Draft_Mode {
 			// This IS a draft.
 			$original = get_post( $original_id );
 			return rest_ensure_response(
-				array(
-					'exists'            => true,
-					'is_draft'          => true,
-					'has_draft'         => false,
-					'draft_id'          => $post_id,
-					'original_id'       => (int) $original_id,
-					'original_title'    => $original ? $original->post_title : '',
-					'original_edit_url' => $original ? get_edit_post_link( $original_id, 'raw' ) : '',
-					'original_view_url' => $original ? get_permalink( $original_id ) : '',
-					'draft_created'     => get_post_meta( $post_id, self::META_DRAFT_CREATED, true ),
+				array_merge(
+					$base_response,
+					array(
+						'exists'            => true,
+						'is_draft'          => true,
+						'has_draft'         => false,
+						'draft_id'          => $post_id,
+						'original_id'       => (int) $original_id,
+						'original_title'    => $original ? $original->post_title : '',
+						'original_edit_url' => $original ? get_edit_post_link( $original_id, 'raw' ) : '',
+						'original_view_url' => $original ? get_permalink( $original_id ) : '',
+						'draft_created'     => get_post_meta( $post_id, self::META_DRAFT_CREATED, true ),
+					)
 				)
 			);
 		}
@@ -321,14 +388,17 @@ class Draft_Mode {
 			// Verify the draft still exists and is actually a draft.
 			if ( $draft && 'draft' === $draft->post_status ) {
 				return rest_ensure_response(
-					array(
-						'exists'         => true,
-						'is_draft'       => false,
-						'has_draft'      => true,
-						'draft_id'       => (int) $draft_id,
-						'draft_edit_url' => get_edit_post_link( $draft_id, 'raw' ),
-						'original_id'    => $post_id,
-						'draft_created'  => get_post_meta( $draft_id, self::META_DRAFT_CREATED, true ),
+					array_merge(
+						$base_response,
+						array(
+							'exists'         => true,
+							'is_draft'       => false,
+							'has_draft'      => true,
+							'draft_id'       => (int) $draft_id,
+							'draft_edit_url' => get_edit_post_link( $draft_id, 'raw' ),
+							'original_id'    => $post_id,
+							'draft_created'  => get_post_meta( $draft_id, self::META_DRAFT_CREATED, true ),
+						)
 					)
 				);
 			} else {
@@ -339,13 +409,16 @@ class Draft_Mode {
 
 		// This is a regular post with no draft relationship.
 		return rest_ensure_response(
-			array(
-				'exists'         => true,
-				'is_draft'       => false,
-				'has_draft'      => false,
-				'draft_id'       => null,
-				'original_id'    => null,
-				'can_create'     => 'page' === $post->post_type && 'publish' === $post->post_status,
+			array_merge(
+				$base_response,
+				array(
+					'exists'      => true,
+					'is_draft'    => false,
+					'has_draft'   => false,
+					'draft_id'    => null,
+					'original_id' => null,
+					'can_create'  => $settings['enable'] && 'page' === $post->post_type && 'publish' === $post->post_status,
+				)
 			)
 		);
 	}
@@ -394,6 +467,7 @@ class Draft_Mode {
 				array(
 					'status'   => 400,
 					'draft_id' => $existing_draft_id,
+					'edit_url' => get_edit_post_link( $existing_draft_id, 'raw' ),
 				)
 			);
 		}
@@ -790,6 +864,7 @@ class Draft_Mode {
 			if ( $original ) {
 				printf(
 					'<span class="dsgo-draft-badge dsgo-draft-badge--is-draft" title="%s">%s</span>',
+					// translators: %s is the original post title.
 					esc_attr( sprintf( __( 'Draft of: %s', 'designsetgo' ), $original->post_title ) ),
 					esc_html__( 'Draft Version', 'designsetgo' )
 				);
@@ -804,6 +879,7 @@ class Draft_Mode {
 				$created = get_post_meta( $draft->ID, self::META_DRAFT_CREATED, true );
 				printf(
 					'<span class="dsgo-draft-badge dsgo-draft-badge--has-draft" title="%s">%s</span>',
+					// translators: %s is the date the draft was created.
 					esc_attr( sprintf( __( 'Draft created: %s', 'designsetgo' ), $created ) ),
 					esc_html__( 'Has Draft', 'designsetgo' )
 				);
