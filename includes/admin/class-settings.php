@@ -81,6 +81,11 @@ class Settings {
 				'background_scroll_color'   => '',
 				'background_scroll_opacity' => 100,
 			),
+			'draft_mode'         => array(
+				'enable'                 => true,
+				'show_page_list_actions' => true,
+				'show_page_list_column'  => true,
+			),
 		);
 	}
 
@@ -478,6 +483,11 @@ class Settings {
 				'title'       => __( 'Vertical Scroll Parallax', 'designsetgo' ),
 				'description' => __( 'Parallax scrolling effects for blocks', 'designsetgo' ),
 			),
+			array(
+				'name'        => 'draft-mode',
+				'title'       => __( 'Draft Mode', 'designsetgo' ),
+				'description' => __( 'Create draft versions of published pages for safe editing', 'designsetgo' ),
+			),
 		);
 	}
 
@@ -765,6 +775,15 @@ class Settings {
 				'background_on_scroll'      => isset( $settings['sticky_header']['background_on_scroll'] ) ? (bool) $settings['sticky_header']['background_on_scroll'] : false,
 				'background_scroll_color'   => isset( $settings['sticky_header']['background_scroll_color'] ) ? sanitize_hex_color( $settings['sticky_header']['background_scroll_color'] ) : '',
 				'background_scroll_opacity' => isset( $settings['sticky_header']['background_scroll_opacity'] ) ? absint( $settings['sticky_header']['background_scroll_opacity'] ) : 100,
+			);
+		}
+
+		// Sanitize draft mode settings.
+		if ( isset( $settings['draft_mode'] ) && is_array( $settings['draft_mode'] ) ) {
+			$sanitized['draft_mode'] = array(
+				'enable'                 => isset( $settings['draft_mode']['enable'] ) ? (bool) $settings['draft_mode']['enable'] : true,
+				'show_page_list_actions' => isset( $settings['draft_mode']['show_page_list_actions'] ) ? (bool) $settings['draft_mode']['show_page_list_actions'] : true,
+				'show_page_list_column'  => isset( $settings['draft_mode']['show_page_list_column'] ) ? (bool) $settings['draft_mode']['show_page_list_column'] : true,
 			);
 		}
 
