@@ -144,6 +144,13 @@ class Plugin {
 	public $draft_mode;
 
 	/**
+	 * Revision Comparison instance.
+	 *
+	 * @var Admin\Revision_Comparison
+	 */
+	public $revision_comparison;
+
+	/**
 	 * Returns the instance.
 	 *
 	 * @return Plugin
@@ -181,6 +188,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode-rest.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode-admin.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-comparison.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
@@ -228,7 +236,10 @@ class Plugin {
 		$this->sticky_header = new Sticky_Header();
 		$this->icon_injector = new Icon_Injector();
 
-		// Initialize admin menu (only in admin area).
+		// Initialize revision comparison (needs REST routes registered for all contexts).
+		$this->revision_comparison = new Admin\Revision_Comparison();
+
+		// Initialize admin-only features.
 		if ( is_admin() ) {
 			$this->admin_menu = new Admin\Admin_Menu();
 		}
