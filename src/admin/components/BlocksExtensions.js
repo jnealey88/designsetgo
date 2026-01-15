@@ -327,10 +327,7 @@ const BlocksExtensions = () => {
 
 			{conflictPlugins.length > 0 && !notice && (
 				<Notice status="warning" isDismissible={false}>
-					{__(
-						'Potential plugin conflict detected:',
-						'designsetgo'
-					)}{' '}
+					{__('Potential plugin conflict detected:', 'designsetgo')}{' '}
 					{conflictPlugins.map((p) => p.name).join(', ')}.{' '}
 					{__(
 						'If you experience issues on this page, try temporarily deactivating the conflicting plugin.',

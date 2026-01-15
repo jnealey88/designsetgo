@@ -178,6 +178,8 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-block-manager.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-gdpr-compliance.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-admin-menu.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode-rest.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode-admin.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';

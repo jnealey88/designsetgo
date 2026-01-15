@@ -5,12 +5,13 @@
  * to create draft versions of published pages. Drafts are created
  * automatically when editing published pages.
  *
- * @package DesignSetGo
+ * @package
  * @since 1.4.0
  */
 
 import { registerPlugin } from '@wordpress/plugins';
 import DraftModePanel from './DraftModePanel';
+import DraftModeControls from './DraftModeControls';
 
 import './editor.scss';
 
@@ -18,4 +19,9 @@ import './editor.scss';
 registerPlugin('dsgo-draft-mode', {
 	render: DraftModePanel,
 	icon: 'edit-page',
+});
+
+// Register the draft mode controls plugin (post status info area controls).
+registerPlugin('dsgo-draft-mode-controls', {
+	render: DraftModeControls,
 });

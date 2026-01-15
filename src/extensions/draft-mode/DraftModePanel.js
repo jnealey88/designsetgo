@@ -22,6 +22,7 @@ import {
 } from '@wordpress/components';
 import { PluginDocumentSettingPanel } from '@wordpress/editor';
 import { getDraftStatus, createDraft, publishDraft, discardDraft } from './api';
+import { clearDirtyState } from './utils';
 
 /**
  * Draft Mode Panel Component
@@ -60,23 +61,7 @@ export default function DraftModePanel() {
 	}, []);
 
 	// Get editor dispatch functions.
-	const { savePost, resetEditorBlocks } = useDispatch('core/editor');
-
-	/**
-	 * Clear editor dirty state to prevent "Leave site?" warning.
-	 * Resets reference blocks to current blocks so WordPress thinks
-	 * the current state IS the saved state (no dirty changes).
-	 */
-	const clearDirtyState = useCallback(() => {
-		try {
-			const currentBlocks = wp.data.select('core/block-editor').getBlocks();
-			wp.data.dispatch('core/editor').resetEditorBlocks(currentBlocks, {
-				__unstableShouldCreateUndoLevel: false,
-			});
-		} catch (e) {
-			// Silent fail - navigation will proceed anyway.
-		}
-	}, []);
+	const { savePost } = useDispatch('core/editor');
 
 	// Fetch draft status when post ID changes.
 	const fetchStatus = useCallback(async () => {
@@ -97,7 +82,7 @@ export default function DraftModePanel() {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [postId, currentContent, currentTitle, currentExcerpt]);
+	}, [postId]);
 
 	useEffect(() => {
 		fetchStatus();
@@ -367,12 +352,8 @@ export default function DraftModePanel() {
 							<Button
 								variant="primary"
 								onClick={handleCreateDraft}
-								disabled={isCreatingDraft}
-								isBusy={isCreatingDraft}
 							>
-								{isCreatingDraft
-									? __('Creating Draft…', 'designsetgo')
-									: __('Create Draft', 'designsetgo')}
+								{__('Create Draft', 'designsetgo')}
 							</Button>
 						</div>
 					</div>
