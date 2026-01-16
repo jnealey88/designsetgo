@@ -355,27 +355,6 @@ $dsgo-preview-bg: #f0f0f1;
 		align-items: center;
 		gap: 6px;
 		font-size: 13px;
-
-		&--added {
-			.dsgo-diff-summary__badge {
-				background: $dsgo-diff-added;
-				color: #155724;
-			}
-		}
-
-		&--removed {
-			.dsgo-diff-summary__badge {
-				background: $dsgo-diff-removed;
-				color: #721c24;
-			}
-		}
-
-		&--modified {
-			.dsgo-diff-summary__badge {
-				background: $dsgo-diff-modified;
-				color: #856404;
-			}
-		}
 	}
 
 	&__badge {
@@ -388,6 +367,8 @@ $dsgo-preview-bg: #f0f0f1;
 		border-radius: 12px;
 		font-weight: 600;
 		font-size: 12px;
+		background: #007cba;
+		color: #fff;
 	}
 }
 

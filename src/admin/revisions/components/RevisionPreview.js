@@ -38,46 +38,11 @@ const buildIframeDocument = (content, styles) => {
 			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 			background: #fff;
 		}
-		/* Highlight styles */
-		[data-dsgo-block-index][data-dsgo-diff="added"] {
-			outline: 3px solid #28a745;
+		/* Highlight style for changed blocks */
+		[data-dsgo-block-index][data-dsgo-diff="changed"] {
+			outline: 3px solid #007cba;
 			outline-offset: 2px;
 			position: relative;
-		}
-		[data-dsgo-block-index][data-dsgo-diff="removed"] {
-			outline: 3px solid #dc3545;
-			outline-offset: 2px;
-			position: relative;
-			opacity: 0.7;
-		}
-		[data-dsgo-block-index][data-dsgo-diff="modified"] {
-			outline: 3px solid #ffc107;
-			outline-offset: 2px;
-			position: relative;
-		}
-		[data-dsgo-block-index][data-dsgo-diff]::before {
-			content: attr(data-dsgo-diff-label);
-			position: absolute;
-			top: -24px;
-			left: 0;
-			padding: 2px 8px;
-			font-size: 11px;
-			font-weight: 600;
-			border-radius: 3px;
-			text-transform: capitalize;
-			z-index: 1000;
-		}
-		[data-dsgo-block-index][data-dsgo-diff="added"]::before {
-			background: #28a745;
-			color: #fff;
-		}
-		[data-dsgo-block-index][data-dsgo-diff="removed"]::before {
-			background: #dc3545;
-			color: #fff;
-		}
-		[data-dsgo-block-index][data-dsgo-diff="modified"]::before {
-			background: #ffc107;
-			color: #212529;
 		}
 	</style>
 </head>
@@ -101,23 +66,12 @@ const applyDiffHighlights = (iframeDoc, diffData, diffType) => {
 	}
 
 	diffData.changes.forEach((change) => {
-		let index;
-		let diffClass;
-		let label;
+		// Determine which index to use based on the panel type.
+		const index =
+			diffType === 'from' ? change.from_index : change.to_index;
 
-		if (change.type === 'added' && diffType === 'to') {
-			index = change.to_index;
-			diffClass = 'added';
-			label = __('Added', 'designsetgo');
-		} else if (change.type === 'removed' && diffType === 'from') {
-			index = change.from_index;
-			diffClass = 'removed';
-			label = __('Removed', 'designsetgo');
-		} else if (change.type === 'modified') {
-			index = diffType === 'from' ? change.from_index : change.to_index;
-			diffClass = 'modified';
-			label = __('Modified', 'designsetgo');
-		} else {
+		// Skip if this change doesn't apply to this panel.
+		if (index === undefined) {
 			return;
 		}
 
@@ -126,8 +80,7 @@ const applyDiffHighlights = (iframeDoc, diffData, diffType) => {
 		);
 
 		if (element) {
-			element.setAttribute('data-dsgo-diff', diffClass);
-			element.setAttribute('data-dsgo-diff-label', label);
+			element.setAttribute('data-dsgo-diff', 'changed');
 		}
 	});
 };

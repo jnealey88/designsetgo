@@ -19,10 +19,9 @@ const DiffSummary = ({ diffData }) => {
 		return null;
 	}
 
-	const { added, removed, modified } = diffData.summary;
-	const totalChanges = added + removed + modified;
+	const { total } = diffData.summary;
 
-	if (totalChanges === 0) {
+	if (total === 0) {
 		return (
 			<div className="dsgo-diff-summary">
 				<span>{__('No visual changes detected.', 'designsetgo')}</span>
@@ -32,36 +31,14 @@ const DiffSummary = ({ diffData }) => {
 
 	return (
 		<div className="dsgo-diff-summary">
-			{added > 0 && (
-				<div className="dsgo-diff-summary__item dsgo-diff-summary__item--added">
-					<span className="dsgo-diff-summary__badge">{added}</span>
-					<span>
-						{added === 1
-							? __('block added', 'designsetgo')
-							: __('blocks added', 'designsetgo')}
-					</span>
-				</div>
-			)}
-			{removed > 0 && (
-				<div className="dsgo-diff-summary__item dsgo-diff-summary__item--removed">
-					<span className="dsgo-diff-summary__badge">{removed}</span>
-					<span>
-						{removed === 1
-							? __('block removed', 'designsetgo')
-							: __('blocks removed', 'designsetgo')}
-					</span>
-				</div>
-			)}
-			{modified > 0 && (
-				<div className="dsgo-diff-summary__item dsgo-diff-summary__item--modified">
-					<span className="dsgo-diff-summary__badge">{modified}</span>
-					<span>
-						{modified === 1
-							? __('block modified', 'designsetgo')
-							: __('blocks modified', 'designsetgo')}
-					</span>
-				</div>
-			)}
+			<div className="dsgo-diff-summary__item">
+				<span className="dsgo-diff-summary__badge">{total}</span>
+				<span>
+					{total === 1
+						? __('block changed', 'designsetgo')
+						: __('blocks changed', 'designsetgo')}
+				</span>
+			</div>
 		</div>
 	);
 };

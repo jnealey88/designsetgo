@@ -1,7 +1,8 @@
 /**
  * Revision Slider Component
  *
- * WordPress-style slider for selecting two revisions to compare.
+ * Slider for selecting which revision to compare against current state.
+ * The "after" (current state) is always locked to the newest revision.
  *
  * @package DesignSetGo
  */
@@ -46,59 +47,37 @@ const formatTooltip = (revision) => {
  * RevisionSlider Component
  *
  * @param {Object}   props              Component props.
- * @param {Array}    props.revisions    List of revisions.
+ * @param {Array}    props.revisions    List of revisions (newest first).
  * @param {Object}   props.fromRevision Currently selected "from" revision.
- * @param {Object}   props.toRevision   Currently selected "to" revision.
+ * @param {Object}   props.toRevision   Current state revision (always newest).
  * @param {Function} props.onFromChange Callback when "from" changes.
- * @param {Function} props.onToChange   Callback when "to" changes.
  */
-const RevisionSlider = ({
-	revisions,
-	fromRevision,
-	toRevision,
-	onFromChange,
-	onToChange,
-}) => {
+const RevisionSlider = ({ revisions, fromRevision, toRevision, onFromChange }) => {
 	const sliderRef = useRef(null);
-	const [isDragging, setIsDragging] = useState(null); // 'from' or 'to'
+	const [isDragging, setIsDragging] = useState(false);
 
 	// Revisions are ordered newest first, reverse for slider display (oldest left, newest right).
 	const orderedRevisions = [...revisions].reverse();
+	const maxIndex = orderedRevisions.length - 1;
 
-	// Find indices.
+	// Find the selected revision index.
 	const fromIndex = fromRevision
 		? orderedRevisions.findIndex((r) => r.id === fromRevision.id)
 		: 0;
-	const toIndex = toRevision
-		? orderedRevisions.findIndex((r) => r.id === toRevision.id)
-		: orderedRevisions.length - 1;
 
-	// Handle tick click.
+	// Handle tick click - can select any revision except the newest (current state).
 	const handleTickClick = (index) => {
-		const revision = orderedRevisions[index];
-
-		// If clicking between from and to, update the closer one.
-		if (index < fromIndex) {
-			onFromChange(revision);
-		} else if (index > toIndex) {
-			onToChange(revision);
-		} else if (index > fromIndex && index < toIndex) {
-			// Click is between - update whichever is closer.
-			const distToFrom = index - fromIndex;
-			const distToTo = toIndex - index;
-
-			if (distToFrom <= distToTo) {
-				onFromChange(revision);
-			} else {
-				onToChange(revision);
-			}
+		// Don't allow selecting the newest revision as "from"
+		if (index >= maxIndex) {
+			return;
 		}
+		onFromChange(orderedRevisions[index]);
 	};
 
 	// Handle dragging.
-	const handleMouseDown = (handle) => (e) => {
+	const handleMouseDown = (e) => {
 		e.preventDefault();
-		setIsDragging(handle);
+		setIsDragging(true);
 	};
 
 	const handleMouseMove = useCallback(
@@ -110,27 +89,18 @@ const RevisionSlider = ({
 			const rect = sliderRef.current.getBoundingClientRect();
 			const x = e.clientX - rect.left;
 			const percent = Math.max(0, Math.min(1, x / rect.width));
-			const index = Math.round(percent * (orderedRevisions.length - 1));
-			const revision = orderedRevisions[index];
+			const index = Math.round(percent * maxIndex);
 
-			if (isDragging === 'from' && index < toIndex) {
-				onFromChange(revision);
-			} else if (isDragging === 'to' && index > fromIndex) {
-				onToChange(revision);
+			// Don't allow selecting the newest revision as "from"
+			if (index < maxIndex) {
+				onFromChange(orderedRevisions[index]);
 			}
 		},
-		[
-			isDragging,
-			orderedRevisions,
-			fromIndex,
-			toIndex,
-			onFromChange,
-			onToChange,
-		]
+		[isDragging, orderedRevisions, maxIndex, onFromChange]
 	);
 
 	const handleMouseUp = useCallback(() => {
-		setIsDragging(null);
+		setIsDragging(false);
 	}, []);
 
 	useEffect(() => {
@@ -145,37 +115,26 @@ const RevisionSlider = ({
 		}
 	}, [isDragging, handleMouseMove, handleMouseUp]);
 
-	// Previous/Next navigation.
+	// Previous/Next navigation - only moves the "from" revision.
 	const handlePrevious = () => {
 		if (fromIndex > 0) {
 			onFromChange(orderedRevisions[fromIndex - 1]);
-			if (toIndex > fromIndex) {
-				onToChange(orderedRevisions[toIndex - 1]);
-			}
 		}
 	};
 
 	const handleNext = () => {
-		if (toIndex < orderedRevisions.length - 1) {
-			onToChange(orderedRevisions[toIndex + 1]);
-			if (fromIndex < toIndex) {
-				onFromChange(orderedRevisions[fromIndex + 1]);
-			}
+		// Can move up to but not including the newest
+		if (fromIndex < maxIndex - 1) {
+			onFromChange(orderedRevisions[fromIndex + 1]);
 		}
 	};
 
 	const canGoPrevious = fromIndex > 0;
-	const canGoNext = toIndex < orderedRevisions.length - 1;
+	const canGoNext = fromIndex < maxIndex - 1;
 
-	// Calculate handle positions.
+	// Calculate handle position.
 	const fromPercent =
-		orderedRevisions.length > 1
-			? (fromIndex / (orderedRevisions.length - 1)) * 100
-			: 0;
-	const toPercent =
-		orderedRevisions.length > 1
-			? (toIndex / (orderedRevisions.length - 1)) * 100
-			: 100;
+		orderedRevisions.length > 1 ? (fromIndex / maxIndex) * 100 : 0;
 
 	return (
 		<div className="dsgo-revision-slider">
@@ -205,12 +164,12 @@ const RevisionSlider = ({
 
 			<div className="dsgo-revision-slider__track-container">
 				<div className="dsgo-revision-slider__track" ref={sliderRef}>
-					{/* Selection range highlight */}
+					{/* Selection range highlight - from selected to newest */}
 					<div
 						className="dsgo-revision-slider__range"
 						style={{
 							left: `${fromPercent}%`,
-							width: `${toPercent - fromPercent}%`,
+							width: `${100 - fromPercent}%`,
 						}}
 					/>
 
@@ -218,15 +177,15 @@ const RevisionSlider = ({
 					{orderedRevisions.map((revision, index) => {
 						const percent =
 							orderedRevisions.length > 1
-								? (index / (orderedRevisions.length - 1)) * 100
+								? (index / maxIndex) * 100
 								: 50;
-						const isFrom = index === fromIndex;
-						const isTo = index === toIndex;
-						const isInRange = index >= fromIndex && index <= toIndex;
+						const isSelected = index === fromIndex;
+						const isCurrent = index === maxIndex;
+						const isInRange = index >= fromIndex;
 
 						let tickClass = 'dsgo-revision-slider__tick';
 
-						if (isFrom || isTo) {
+						if (isSelected || isCurrent) {
 							tickClass += ' dsgo-revision-slider__tick--selected';
 						} else if (isInRange) {
 							tickClass += ' dsgo-revision-slider__tick--in-range';
@@ -244,35 +203,23 @@ const RevisionSlider = ({
 									style={{ left: `${percent}%` }}
 									onClick={() => handleTickClick(index)}
 									aria-label={formatTooltip(revision)}
+									disabled={isCurrent}
 								/>
 							</Tooltip>
 						);
 					})}
 
-					{/* From handle */}
+					{/* Single draggable handle for "from" revision */}
 					<div
 						className="dsgo-revision-slider__handle dsgo-revision-slider__handle--from"
 						style={{ left: `${fromPercent}%` }}
-						onMouseDown={handleMouseDown('from')}
+						onMouseDown={handleMouseDown}
 						role="slider"
 						tabIndex={0}
-						aria-label={__('From revision', 'designsetgo')}
+						aria-label={__('Select revision', 'designsetgo')}
 						aria-valuenow={fromIndex}
 						aria-valuemin={0}
-						aria-valuemax={toIndex - 1}
-					/>
-
-					{/* To handle */}
-					<div
-						className="dsgo-revision-slider__handle dsgo-revision-slider__handle--to"
-						style={{ left: `${toPercent}%` }}
-						onMouseDown={handleMouseDown('to')}
-						role="slider"
-						tabIndex={0}
-						aria-label={__('To revision', 'designsetgo')}
-						aria-valuenow={toIndex}
-						aria-valuemin={fromIndex + 1}
-						aria-valuemax={orderedRevisions.length - 1}
+						aria-valuemax={maxIndex - 1}
 					/>
 				</div>
 
@@ -282,7 +229,7 @@ const RevisionSlider = ({
 						{__('Oldest', 'designsetgo')}
 					</span>
 					<span className="dsgo-revision-slider__label dsgo-revision-slider__label--newest">
-						{__('Newest', 'designsetgo')}
+						{__('Current', 'designsetgo')}
 					</span>
 				</div>
 			</div>
@@ -291,7 +238,7 @@ const RevisionSlider = ({
 			<div className="dsgo-revision-slider__info">
 				<div className="dsgo-revision-slider__info-item dsgo-revision-slider__info-item--from">
 					<span className="dsgo-revision-slider__info-label">
-						{__('From:', 'designsetgo')}
+						{__('Comparing:', 'designsetgo')}
 					</span>
 					<span className="dsgo-revision-slider__info-date">
 						{fromRevision && formatRevisionDate(fromRevision)}
@@ -306,11 +253,9 @@ const RevisionSlider = ({
 					</span>
 					<span className="dsgo-revision-slider__info-date">
 						{toRevision && formatRevisionDate(toRevision)}
-						{toRevision?.is_current && (
-							<span className="dsgo-revision-slider__current-badge">
-								{__('Current', 'designsetgo')}
-							</span>
-						)}
+						<span className="dsgo-revision-slider__current-badge">
+							{__('Current', 'designsetgo')}
+						</span>
 					</span>
 					<span className="dsgo-revision-slider__info-author">
 						{toRevision?.author?.name}

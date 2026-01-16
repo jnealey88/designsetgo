@@ -28,7 +28,9 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 	const [diffData, setDiffData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [diffLoading, setDiffLoading] = useState(false);
+	const [restoring, setRestoring] = useState(false);
 	const [error, setError] = useState(null);
+	const [hasUserInteracted, setHasUserInteracted] = useState(false);
 
 	// Fetch revisions list on mount
 	useEffect(() => {
@@ -53,23 +55,24 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 
 				setRevisions(data.revisions);
 
-				// Set initial selection
-				// If initialRevisionId is provided, use it as "to" and previous as "from"
+				// Set initial selection - always default to comparing the newest revision.
+				// The "to" revision should always be the newest (index 0).
+				// If initialRevisionId is provided, use it as the "from" revision for context.
+				setToRevision(data.revisions[0]);
+
 				if (initialRevisionId) {
-					const toIndex = data.revisions.findIndex(
+					const fromIndex = data.revisions.findIndex(
 						(r) => r.id === parseInt(initialRevisionId, 10)
 					);
-					if (toIndex !== -1 && toIndex < data.revisions.length - 1) {
-						setToRevision(data.revisions[toIndex]);
-						setFromRevision(data.revisions[toIndex + 1]);
+					// If the initialRevisionId is found and it's not the newest, use it as "from".
+					if (fromIndex > 0) {
+						setFromRevision(data.revisions[fromIndex]);
 					} else {
-						// Default to comparing most recent two
-						setToRevision(data.revisions[0]);
+						// Default "from" to the second newest revision.
 						setFromRevision(data.revisions[1]);
 					}
 				} else {
-					// Default to comparing most recent two
-					setToRevision(data.revisions[0]);
+					// Default to comparing the two most recent revisions.
 					setFromRevision(data.revisions[1]);
 				}
 
@@ -111,12 +114,40 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 
 	// Handle revision selection changes
 	const handleFromChange = (revision) => {
+		setHasUserInteracted(true);
 		setFromRevision(revision);
 	};
 
-	const handleToChange = (revision) => {
-		setToRevision(revision);
-	};
+	// Update URL and header links when revision selection changes (only after user interaction)
+	useEffect(() => {
+		if (!fromRevision || !postId) {
+			return;
+		}
+
+		const { adminUrl } = window.designSetGoRevisions || {};
+		if (!adminUrl) {
+			return;
+		}
+
+		// Only update URL after user has interacted with the slider
+		// This prevents overwriting the initial revision from the URL
+		if (hasUserInteracted) {
+			const newUrl = new URL(window.location.href);
+			newUrl.searchParams.set('revision', fromRevision.id);
+			window.history.replaceState({}, '', newUrl.toString());
+		}
+
+		// Always update the "Code Changes" link in the header to preserve selected revision
+		const codeChangesLink = document.querySelector(
+			'.dsgo-revisions-tabs a[href*="revision.php"]'
+		);
+		if (codeChangesLink) {
+			const codeUrl = new URL(adminUrl + 'revision.php');
+			codeUrl.searchParams.set('revision', fromRevision.id);
+			codeUrl.searchParams.set('view', 'standard');
+			codeChangesLink.href = codeUrl.toString();
+		}
+	}, [fromRevision, postId, hasUserInteracted]);
 
 	// Back to editor
 	const handleBackToEditor = () => {
@@ -126,16 +157,33 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 		}
 	};
 
-	// Get restore URL for a revision
-	const getRestoreUrl = (revision) => {
-		if (!revision || revision.is_current) {
-			return null;
+	// Check if a revision can be restored
+	const canRestore = (revision) => {
+		return revision && !revision.is_current;
+	};
+
+	// Handle restore button click
+	const handleRestore = async () => {
+		if (!fromRevision || fromRevision.is_current || restoring) {
+			return;
 		}
-		const { restoreBaseUrl } = window.designSetGoRevisions || {};
-		if (!restoreBaseUrl) {
-			return null;
+
+		setRestoring(true);
+
+		try {
+			const response = await apiFetch({
+				path: `/designsetgo/v1/revisions/restore/${fromRevision.id}`,
+				method: 'POST',
+			});
+
+			if (response.success && response.edit_url) {
+				// Redirect to the editor
+				window.location.href = response.edit_url;
+			}
+		} catch (err) {
+			setError(err.message || __('Failed to restore revision.', 'designsetgo'));
+			setRestoring(false);
 		}
-		return `${restoreBaseUrl}&revision=${revision.id}`;
 	};
 
 	// Loading state
@@ -177,8 +225,6 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 		);
 	}
 
-	const restoreUrl = getRestoreUrl(fromRevision);
-
 	return (
 		<div className="dsgo-revision-comparison">
 			{/* Top action bar */}
@@ -193,9 +239,16 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 					</Button>
 				</div>
 				<div className="dsgo-revision-actions__right">
-					{restoreUrl && (
-						<Button variant="primary" href={restoreUrl}>
-							{__('Restore This Revision', 'designsetgo')}
+					{canRestore(fromRevision) && (
+						<Button
+							variant="primary"
+							onClick={handleRestore}
+							isBusy={restoring}
+							disabled={restoring}
+						>
+							{restoring
+								? __('Restoring…', 'designsetgo')
+								: __('Restore This Revision', 'designsetgo')}
 						</Button>
 					)}
 				</div>
@@ -206,7 +259,6 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 				fromRevision={fromRevision}
 				toRevision={toRevision}
 				onFromChange={handleFromChange}
-				onToChange={handleToChange}
 			/>
 
 			{diffData && !diffLoading && <DiffSummary diffData={diffData} />}

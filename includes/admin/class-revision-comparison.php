@@ -28,6 +28,60 @@ class Revision_Comparison {
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'setup_revision_button' ) );
+
+		// Redirect to visual comparison by default.
+		add_action( 'admin_init', array( $this, 'maybe_redirect_to_visual_comparison' ) );
+	}
+
+	/**
+	 * Maybe redirect to visual comparison page
+	 *
+	 * Redirects users from the standard revision.php page to visual comparison by default.
+	 */
+	public function maybe_redirect_to_visual_comparison() {
+		// Only redirect on revision.php page.
+		global $pagenow;
+
+		if ( 'revision.php' !== $pagenow ) {
+			return;
+		}
+
+		// Check if user explicitly wants standard view.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only URL parameter check.
+		if ( isset( $_GET['view'] ) && 'standard' === $_GET['view'] ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only URL parameter check.
+		$revision_id = isset( $_GET['revision'] ) ? absint( $_GET['revision'] ) : 0;
+
+		if ( ! $revision_id ) {
+			return;
+		}
+
+		$revision = wp_get_post_revision( $revision_id );
+
+		if ( ! $revision ) {
+			return;
+		}
+
+		$post = get_post( $revision->post_parent );
+
+		if ( ! $post || ! current_user_can( 'edit_post', $post->ID ) ) {
+			return;
+		}
+
+		$visual_url = add_query_arg(
+			array(
+				'page'     => 'designsetgo-revisions',
+				'post_id'  => $post->ID,
+				'revision' => $revision_id,
+			),
+			admin_url( 'admin.php' )
+		);
+
+		wp_safe_redirect( $visual_url );
+		exit;
 	}
 
 	/**
@@ -59,7 +113,7 @@ class Revision_Comparison {
 	}
 
 	/**
-	 * Output the script that adds the visual comparison button
+	 * Output the script that adds the visual comparison tab navigation
 	 */
 	public function output_revision_button_script() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only URL parameter check.
@@ -91,57 +145,132 @@ class Revision_Comparison {
 		);
 
 		?>
+		<style>
+			.dsgo-revisions-tabs {
+				display: inline-flex;
+				gap: 4px;
+				position: absolute;
+				right: 20px;
+				top: 12px;
+			}
+			.wrap {
+				position: relative;
+			}
+			.dsgo-revisions-tab {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				padding: 6px 12px;
+				background: #f0f0f1;
+				border: 1px solid #c3c4c7;
+				border-radius: 4px;
+				color: #50575e;
+				text-decoration: none;
+				font-size: 13px;
+				font-weight: 500;
+				cursor: pointer;
+				transition: all 0.15s ease;
+			}
+			.dsgo-revisions-tab:hover {
+				background: #fff;
+				border-color: #2271b1;
+				color: #2271b1;
+			}
+			.dsgo-revisions-tab--active {
+				background: #2271b1;
+				border-color: #2271b1;
+				color: #fff;
+				cursor: default;
+			}
+			.dsgo-revisions-tab--active:hover {
+				background: #2271b1;
+				border-color: #2271b1;
+				color: #fff;
+			}
+			.dsgo-revisions-tab .dashicons {
+				font-size: 14px;
+				width: 14px;
+				height: 14px;
+				line-height: 14px;
+			}
+		</style>
 		<script>
 		(function() {
-			function addVisualComparisonButton() {
-				// Check if button already exists.
-				if (document.getElementById('dsgo-visual-comparison-btn')) {
+			var postId = <?php echo wp_json_encode( $post->ID ); ?>;
+			var adminUrl = <?php echo wp_json_encode( admin_url( 'admin.php' ) ); ?>;
+
+			function getVisualComparisonUrl() {
+				// Get current revision from URL (WordPress updates this when slider moves)
+				var urlParams = new URLSearchParams(window.location.search);
+				var revisionId = urlParams.get('revision') || <?php echo wp_json_encode( $revision_id ); ?>;
+				return adminUrl + '?page=designsetgo-revisions&post_id=' + postId + '&revision=' + revisionId;
+			}
+
+			function updateVisualTabHref() {
+				var visualTab = document.querySelector('#dsgo-revisions-tabs a[href*="designsetgo-revisions"]');
+				if (visualTab) {
+					visualTab.href = getVisualComparisonUrl();
+				}
+			}
+
+			function addVisualComparisonTabs() {
+				// Check if tabs already exist.
+				if (document.getElementById('dsgo-revisions-tabs')) {
 					return;
 				}
 
-				var btn = document.createElement('a');
-				btn.id = 'dsgo-visual-comparison-btn';
-				btn.href = <?php echo wp_json_encode( esc_url_raw( $visual_url ) ); ?>;
-				btn.className = 'page-title-action';
-				btn.textContent = <?php echo wp_json_encode( __( 'Visual Comparison', 'designsetgo' ) ); ?>;
+				var tabsNav = document.createElement('nav');
+				tabsNav.id = 'dsgo-revisions-tabs';
+				tabsNav.className = 'dsgo-revisions-tabs';
+				tabsNav.setAttribute('role', 'tablist');
 
-				// Try to find the best insertion point.
-				// Priority 1: Next to the "Go to editor" link.
-				var goToEditor = document.querySelector('.wrap a[href*="post.php"]');
-				if (goToEditor && goToEditor.textContent.includes('editor')) {
-					goToEditor.parentNode.insertBefore(btn, goToEditor);
-					return;
-				}
+				// Code Changes tab (active on this page)
+				var codeTab = document.createElement('span');
+				codeTab.className = 'dsgo-revisions-tab dsgo-revisions-tab--active';
+				codeTab.setAttribute('role', 'tab');
+				codeTab.setAttribute('aria-selected', 'true');
+				codeTab.innerHTML = '<span class="dashicons dashicons-editor-code"></span>' + <?php echo wp_json_encode( __( 'Code Changes', 'designsetgo' ) ); ?>;
 
-				// Priority 2: After the page title.
-				var pageTitle = document.querySelector('.wrap h1');
-				if (pageTitle) {
-					// Insert after the h1.
-					if (pageTitle.nextSibling) {
-						pageTitle.parentNode.insertBefore(btn, pageTitle.nextSibling);
-					} else {
-						pageTitle.parentNode.appendChild(btn);
-					}
-					return;
-				}
+				// Visual Comparison tab - dynamically get URL
+				var visualTab = document.createElement('a');
+				visualTab.href = getVisualComparisonUrl();
+				visualTab.className = 'dsgo-revisions-tab';
+				visualTab.setAttribute('role', 'tab');
+				visualTab.innerHTML = '<span class="dashicons dashicons-visibility"></span>' + <?php echo wp_json_encode( __( 'Visual Comparison', 'designsetgo' ) ); ?>;
 
-				// Priority 3: In the revisions control frame.
-				var controlFrame = document.querySelector('.revisions-control-frame');
-				if (controlFrame) {
-					controlFrame.appendChild(btn);
+				tabsNav.appendChild(codeTab);
+				tabsNav.appendChild(visualTab);
+
+				// Append to .wrap container (tabs are absolutely positioned to the right)
+				var wrap = document.querySelector('.wrap');
+				if (wrap) {
+					wrap.appendChild(tabsNav);
 				}
 			}
 
 			// Try immediately and also on DOMContentLoaded.
 			if (document.readyState === 'loading') {
-				document.addEventListener('DOMContentLoaded', addVisualComparisonButton);
+				document.addEventListener('DOMContentLoaded', addVisualComparisonTabs);
 			} else {
-				addVisualComparisonButton();
+				addVisualComparisonTabs();
 			}
 
 			// Also try after a short delay for React-based revision screen.
-			setTimeout(addVisualComparisonButton, 500);
-			setTimeout(addVisualComparisonButton, 1500);
+			setTimeout(addVisualComparisonTabs, 500);
+			setTimeout(addVisualComparisonTabs, 1500);
+
+			// Listen for URL changes (WordPress updates URL when slider moves)
+			// Use popstate for back/forward and also poll for pushState/replaceState changes
+			window.addEventListener('popstate', updateVisualTabHref);
+
+			// Poll for URL changes since WordPress uses replaceState which doesn't fire popstate
+			var lastUrl = window.location.href;
+			setInterval(function() {
+				if (window.location.href !== lastUrl) {
+					lastUrl = window.location.href;
+					updateVisualTabHref();
+				}
+			}, 500);
 		})();
 		</script>
 		<?php
@@ -205,26 +334,16 @@ class Revision_Comparison {
 			}
 		}
 
-		// Build restore URL base with nonce (revision ID will be appended by JS).
-		$restore_base_url = '';
-		if ( $post_id ) {
-			$restore_base_url = wp_nonce_url(
-				admin_url( 'revision.php?action=restore' ),
-				'restore-post_'
-			);
-		}
-
 		wp_localize_script(
 			'designsetgo-revisions',
 			'designSetGoRevisions',
 			array(
-				'apiUrl'         => esc_url_raw( rest_url( 'designsetgo/v1' ) ),
-				'nonce'          => wp_create_nonce( 'wp_rest' ),
-				'postId'         => $post_id,
-				'revisionId'     => $revision_id,
-				'adminUrl'       => esc_url( admin_url() ),
-				'editUrl'        => $post_id ? esc_url( get_edit_post_link( $post_id, 'raw' ) ) : '',
-				'restoreBaseUrl' => $restore_base_url,
+				'apiUrl'     => esc_url_raw( rest_url( 'designsetgo/v1' ) ),
+				'nonce'      => wp_create_nonce( 'wp_rest' ),
+				'postId'     => $post_id,
+				'revisionId' => $revision_id,
+				'adminUrl'   => esc_url( admin_url() ),
+				'editUrl'    => $post_id ? esc_url( get_edit_post_link( $post_id, 'raw' ) ) : '',
 			)
 		);
 	}
@@ -266,20 +385,122 @@ class Revision_Comparison {
 			wp_die( esc_html__( 'Post not found.', 'designsetgo' ) );
 		}
 
+		// Build URLs for navigation.
+		$standard_url = add_query_arg(
+			array(
+				'revision' => $revision_id ? $revision_id : '',
+				'view'     => 'standard',
+			),
+			admin_url( 'revision.php' )
+		);
+
+		$edit_url = get_edit_post_link( $post_id, 'raw' );
+
 		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'Visual Revision Comparison', 'designsetgo' ); ?></h1>
-			<p class="description">
-				<?php
-				printf(
-					/* translators: %s: post title */
-					esc_html__( 'Comparing revisions for: %s', 'designsetgo' ),
-					'<strong>' . esc_html( $post->post_title ) . '</strong>'
-				);
-				?>
-			</p>
+		<div class="wrap dsgo-revisions-wrap">
+			<div class="dsgo-revisions-header">
+				<h1 class="dsgo-revisions-title">
+					<?php
+					printf(
+						/* translators: %s: post title with link */
+						esc_html__( 'Compare Revisions of "%s"', 'designsetgo' ),
+						'<a href="' . esc_url( $edit_url ) . '">' . esc_html( $post->post_title ) . '</a>'
+					);
+					?>
+				</h1>
+				<a href="<?php echo esc_url( $edit_url ); ?>" class="dsgo-revisions-editor-link">
+					<?php esc_html_e( '← Go to editor', 'designsetgo' ); ?>
+				</a>
+				<nav class="dsgo-revisions-tabs" role="tablist">
+					<a href="<?php echo esc_url( $standard_url ); ?>" class="dsgo-revisions-tab" role="tab">
+						<span class="dashicons dashicons-editor-code"></span>
+						<?php esc_html_e( 'Code Changes', 'designsetgo' ); ?>
+					</a>
+					<span class="dsgo-revisions-tab dsgo-revisions-tab--active" role="tab" aria-selected="true">
+						<span class="dashicons dashicons-visibility"></span>
+						<?php esc_html_e( 'Visual Comparison', 'designsetgo' ); ?>
+					</span>
+				</nav>
+			</div>
 			<div id="designsetgo-revisions-root"></div>
 		</div>
+		<style>
+			.dsgo-revisions-wrap {
+				max-width: 100%;
+			}
+			.dsgo-revisions-header {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 16px;
+				margin-bottom: 20px;
+				padding-bottom: 16px;
+				border-bottom: 1px solid #c3c4c7;
+			}
+			.dsgo-revisions-title {
+				margin: 0;
+				padding: 0;
+				font-size: 23px;
+				font-weight: 400;
+				line-height: 1.3;
+			}
+			.dsgo-revisions-title a {
+				text-decoration: none;
+			}
+			.dsgo-revisions-title a:hover {
+				text-decoration: underline;
+			}
+			.dsgo-revisions-editor-link {
+				color: #2271b1;
+				text-decoration: none;
+				font-size: 13px;
+			}
+			.dsgo-revisions-editor-link:hover {
+				color: #135e96;
+				text-decoration: underline;
+			}
+			.dsgo-revisions-tabs {
+				display: flex;
+				gap: 4px;
+				margin-left: auto;
+			}
+			.dsgo-revisions-tab {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				padding: 8px 16px;
+				background: #f0f0f1;
+				border: 1px solid #c3c4c7;
+				border-radius: 4px;
+				color: #50575e;
+				text-decoration: none;
+				font-size: 13px;
+				font-weight: 500;
+				cursor: pointer;
+				transition: all 0.15s ease;
+			}
+			.dsgo-revisions-tab:hover {
+				background: #fff;
+				border-color: #2271b1;
+				color: #2271b1;
+			}
+			.dsgo-revisions-tab--active {
+				background: #2271b1;
+				border-color: #2271b1;
+				color: #fff;
+				cursor: default;
+			}
+			.dsgo-revisions-tab--active:hover {
+				background: #2271b1;
+				border-color: #2271b1;
+				color: #fff;
+			}
+			.dsgo-revisions-tab .dashicons {
+				font-size: 16px;
+				width: 16px;
+				height: 16px;
+			}
+		</style>
 		<?php
 	}
 
@@ -341,6 +562,25 @@ class Revision_Comparison {
 						},
 					),
 					'to_id'   => array(
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							return is_numeric( $param );
+						},
+					),
+				),
+			)
+		);
+
+		// Restore a revision.
+		register_rest_route(
+			'designsetgo/v1',
+			'/revisions/restore/(?P<revision_id>\d+)',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'restore_revision' ),
+				'permission_callback' => array( $this, 'check_restore_permission' ),
+				'args'                => array(
+					'revision_id' => array(
 						'required'          => true,
 						'validate_callback' => function ( $param ) {
 							return is_numeric( $param );
@@ -415,6 +655,63 @@ class Revision_Comparison {
 	}
 
 	/**
+	 * Check permission for restore endpoint
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 * @return bool True if user has permission.
+	 */
+	public function check_restore_permission( $request ) {
+		$revision_id = $request->get_param( 'revision_id' );
+		$revision    = wp_get_post_revision( $revision_id );
+
+		if ( ! $revision ) {
+			return false;
+		}
+
+		return current_user_can( 'edit_post', $revision->post_parent );
+	}
+
+	/**
+	 * Restore a revision
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function restore_revision( $request ) {
+		$revision_id = $request->get_param( 'revision_id' );
+		$revision    = wp_get_post_revision( $revision_id );
+
+		if ( ! $revision ) {
+			return new \WP_Error(
+				'revision_not_found',
+				__( 'Revision not found.', 'designsetgo' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		$post_id = $revision->post_parent;
+
+		// Use WordPress core function to restore the revision.
+		$restored = wp_restore_post_revision( $revision_id );
+
+		if ( ! $restored ) {
+			return new \WP_Error(
+				'restore_failed',
+				__( 'Failed to restore revision.', 'designsetgo' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		return rest_ensure_response(
+			array(
+				'success'  => true,
+				'post_id'  => $post_id,
+				'edit_url' => get_edit_post_link( $post_id, 'raw' ),
+			)
+		);
+	}
+
+	/**
 	 * Get parent post ID for a revision or post
 	 *
 	 * @param int $id Post or revision ID.
@@ -461,6 +758,12 @@ class Revision_Comparison {
 		foreach ( $revisions as $revision ) {
 			$author = get_userdata( $revision->post_author );
 
+			// Generate restore URL with proper nonce for this specific revision.
+			$restore_url = wp_nonce_url(
+				admin_url( 'revision.php?action=restore&revision=' . $revision->ID ),
+				'restore-post_' . $revision->ID
+			);
+
 			$revision_data[] = array(
 				'id'          => $revision->ID,
 				'date'        => $revision->post_date,
@@ -472,6 +775,7 @@ class Revision_Comparison {
 					'avatar' => get_avatar_url( $revision->post_author, array( 'size' => 32 ) ),
 				),
 				'is_autosave' => wp_is_post_autosave( $revision->ID ) !== false,
+				'restore_url' => $restore_url,
 			);
 		}
 
@@ -540,7 +844,7 @@ class Revision_Comparison {
 
 			$block_count++;
 
-			// Add data attribute for diff highlighting.
+			// Render block and add index attribute for diff highlighting.
 			$rendered_block = render_block( $block );
 			$rendered_block = $this->add_block_index_attribute( $rendered_block, $index );
 
@@ -631,9 +935,7 @@ class Revision_Comparison {
 				'to_id'   => $to_id,
 				'changes' => $changes,
 				'summary' => array(
-					'added'    => count( array_filter( $changes, fn( $c ) => 'added' === $c['type'] ) ),
-					'removed'  => count( array_filter( $changes, fn( $c ) => 'removed' === $c['type'] ) ),
-					'modified' => count( array_filter( $changes, fn( $c ) => 'modified' === $c['type'] ) ),
+					'total' => count( $changes ),
 				),
 			)
 		);
@@ -651,6 +953,9 @@ class Revision_Comparison {
 
 	/**
 	 * Compute differences between two block arrays
+	 *
+	 * Compares top-level blocks and highlights any block that has changes
+	 * (including changes to nested innerBlocks).
 	 *
 	 * @param array $from_blocks From revision blocks.
 	 * @param array $to_blocks   To revision blocks.
@@ -715,36 +1020,32 @@ class Revision_Comparison {
 				$matched_from[ $from_idx ] = $best_match;
 				$matched_to[ $best_match ] = $from_idx;
 
-				// This is a modified block.
+				// This is a changed block.
 				$changes[] = array(
-					'type'              => 'modified',
-					'from_index'        => $from_idx,
-					'to_index'          => $best_match,
-					'block_name'        => $from_block['blockName'],
-					'attribute_changes' => $this->compare_block_content(
-						$from_block,
-						$to_blocks[ $best_match ]
-					),
+					'type'       => 'changed',
+					'from_index' => $from_idx,
+					'to_index'   => $best_match,
+					'block_name' => $from_block['blockName'],
 				);
 			}
 		}
 
-		// Find removed blocks (in from but not matched).
+		// Find removed blocks (in from but not matched) - mark as changed.
 		foreach ( $from_blocks as $idx => $block ) {
 			if ( ! isset( $matched_from[ $idx ] ) ) {
 				$changes[] = array(
-					'type'       => 'removed',
+					'type'       => 'changed',
 					'from_index' => $idx,
 					'block_name' => $block['blockName'],
 				);
 			}
 		}
 
-		// Find added blocks (in to but not matched).
+		// Find added blocks (in to but not matched) - mark as changed.
 		foreach ( $to_blocks as $idx => $block ) {
 			if ( ! isset( $matched_to[ $idx ] ) ) {
 				$changes[] = array(
-					'type'       => 'added',
+					'type'       => 'changed',
 					'to_index'   => $idx,
 					'block_name' => $block['blockName'],
 				);
@@ -777,7 +1078,28 @@ class Revision_Comparison {
 		$attrs_b = $block_b['attrs'] ?? array();
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
-		return serialize( $attrs_a ) === serialize( $attrs_b );
+		if ( serialize( $attrs_a ) !== serialize( $attrs_b ) ) {
+			return false;
+		}
+
+		// Compare innerBlocks recursively.
+		$inner_a = $block_a['innerBlocks'] ?? array();
+		$inner_b = $block_b['innerBlocks'] ?? array();
+
+		if ( count( $inner_a ) !== count( $inner_b ) ) {
+			return false;
+		}
+
+		foreach ( $inner_a as $idx => $inner_block_a ) {
+			if ( ! isset( $inner_b[ $idx ] ) ) {
+				return false;
+			}
+			if ( ! $this->blocks_are_identical( $inner_block_a, $inner_b[ $idx ] ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
