@@ -144,7 +144,8 @@ class LLMS_Txt {
 			Admin\Settings::get_defaults()['llms_txt']
 		);
 
-		$lines = array();
+		$lines    = array();
+		$rest_url = rest_url( 'designsetgo/v1/llms-txt/markdown/' );
 
 		// H1 - Site name (required).
 		$lines[] = '# ' . $this->escape_markdown( get_bloginfo( 'name' ) );
@@ -156,6 +157,10 @@ class LLMS_Txt {
 			$lines[] = '> ' . $this->escape_markdown( $description );
 			$lines[] = '';
 		}
+
+		// Add API info for LLMs.
+		$lines[] = '> For clean markdown content, use the API: `GET ' . $rest_url . '{post_id}`';
+		$lines[] = '';
 
 		// Get enabled post types.
 		$post_types = $llms_settings['post_types'] ?? array( 'page', 'post' );
@@ -177,9 +182,10 @@ class LLMS_Txt {
 			$lines[] = '';
 
 			foreach ( $posts as $post ) {
-				$title = $this->escape_markdown_link( $post->post_title );
-				$url   = get_permalink( $post );
-				$lines[] = '- [' . $title . '](' . $url . ')';
+				$title       = $this->escape_markdown_link( $post->post_title );
+				$url         = get_permalink( $post );
+				$markdown_url = $rest_url . $post->ID;
+				$lines[]     = '- [' . $title . '](' . $url . ') ([markdown](' . $markdown_url . '))';
 			}
 
 			$lines[] = '';
