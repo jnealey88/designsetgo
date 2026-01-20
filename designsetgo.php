@@ -61,13 +61,18 @@ designsetgo_init();
 /**
  * Plugin activation hook.
  *
- * Schedules cron jobs for data retention cleanup.
+ * Schedules cron jobs for data retention cleanup and flushes rewrite rules.
  */
 function designsetgo_activate() {
 	// Schedule daily cleanup of old form submissions.
 	if ( ! wp_next_scheduled( 'designsetgo_cleanup_old_submissions' ) ) {
 		wp_schedule_event( time(), 'daily', 'designsetgo_cleanup_old_submissions' );
 	}
+
+	// Schedule rewrite rules flush for llms.txt feature.
+	// Uses transient-based approach since rewrite rules aren't registered yet.
+	require_once DESIGNSETGO_PATH . 'includes/class-llms-txt.php';
+	\DesignSetGo\LLMS_Txt::schedule_flush_rewrite_rules();
 }
 register_activation_hook( __FILE__, 'DesignSetGo\designsetgo_activate' );
 
