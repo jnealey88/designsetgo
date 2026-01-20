@@ -92,6 +92,10 @@ class Settings {
 				'enable_visual_comparison' => true,
 				'default_to_visual'        => true,
 			),
+			'llms_txt'           => array(
+				'enable'     => false,
+				'post_types' => array( 'page', 'post' ),
+			),
 		);
 	}
 
@@ -800,6 +804,16 @@ class Settings {
 			$sanitized['revisions'] = array(
 				'enable_visual_comparison' => isset( $settings['revisions']['enable_visual_comparison'] ) ? (bool) $settings['revisions']['enable_visual_comparison'] : true,
 				'default_to_visual'        => isset( $settings['revisions']['default_to_visual'] ) ? (bool) $settings['revisions']['default_to_visual'] : true,
+			);
+		}
+
+		// Sanitize llms.txt settings.
+		if ( isset( $settings['llms_txt'] ) && is_array( $settings['llms_txt'] ) ) {
+			$sanitized['llms_txt'] = array(
+				'enable'     => isset( $settings['llms_txt']['enable'] ) ? (bool) $settings['llms_txt']['enable'] : false,
+				'post_types' => isset( $settings['llms_txt']['post_types'] ) && is_array( $settings['llms_txt']['post_types'] )
+					? array_map( 'sanitize_key', $settings['llms_txt']['post_types'] )
+					: array( 'page', 'post' ),
 			);
 		}
 
