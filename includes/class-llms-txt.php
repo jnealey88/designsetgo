@@ -51,6 +51,8 @@ class LLMS_Txt {
 		add_action( 'save_post', array( $this, 'invalidate_cache' ) );
 		add_action( 'delete_post', array( $this, 'invalidate_cache' ) );
 		add_action( 'transition_post_status', array( $this, 'invalidate_cache' ) );
+		// Invalidate cache when settings are updated.
+		add_action( 'update_option_designsetgo_settings', array( $this, 'invalidate_cache' ) );
 
 		// Register post meta for exclusion.
 		add_action( 'init', array( $this, 'register_post_meta' ) );
@@ -64,6 +66,22 @@ class LLMS_Txt {
 	 */
 	public function add_rewrite_rule() {
 		add_rewrite_rule( '^llms\.txt$', 'index.php?llms_txt=1', 'top' );
+
+		// Flush rewrite rules once after feature is first initialized.
+		// This ensures llms.txt URL works without manual permalink save.
+		if ( get_transient( 'designsetgo_llms_txt_flush_rules' ) ) {
+			delete_transient( 'designsetgo_llms_txt_flush_rules' );
+			flush_rewrite_rules();
+		}
+	}
+
+	/**
+	 * Schedule rewrite rules flush.
+	 *
+	 * Call this method when the feature is first enabled or after plugin activation.
+	 */
+	public static function schedule_flush_rewrite_rules() {
+		set_transient( 'designsetgo_llms_txt_flush_rules', true, HOUR_IN_SECONDS );
 	}
 
 	/**
@@ -129,13 +147,13 @@ class LLMS_Txt {
 		$lines = array();
 
 		// H1 - Site name (required).
-		$lines[] = '# ' . get_bloginfo( 'name' );
+		$lines[] = '# ' . $this->escape_markdown( get_bloginfo( 'name' ) );
 		$lines[] = '';
 
 		// Blockquote - Site description (optional).
 		$description = get_bloginfo( 'description' );
 		if ( ! empty( $description ) ) {
-			$lines[] = '> ' . $description;
+			$lines[] = '> ' . $this->escape_markdown( $description );
 			$lines[] = '';
 		}
 
@@ -155,11 +173,11 @@ class LLMS_Txt {
 				continue;
 			}
 
-			$lines[] = '## ' . $post_type_obj->labels->name;
+			$lines[] = '## ' . $this->escape_markdown( $post_type_obj->labels->name );
 			$lines[] = '';
 
 			foreach ( $posts as $post ) {
-				$title = $post->post_title;
+				$title = $this->escape_markdown_link( $post->post_title );
 				$url   = get_permalink( $post );
 				$lines[] = '- [' . $title . '](' . $url . ')';
 			}
@@ -171,30 +189,81 @@ class LLMS_Txt {
 	}
 
 	/**
+	 * Escape special markdown characters in text.
+	 *
+	 * @param string $text Text to escape.
+	 * @return string Escaped text.
+	 */
+	private function escape_markdown( $text ) {
+		// Escape common markdown special characters.
+		$special_chars = array( '\\', '`', '*', '_', '{', '}', '[', ']', '(', ')', '#', '+', '-', '.', '!', '|' );
+		foreach ( $special_chars as $char ) {
+			$text = str_replace( $char, '\\' . $char, $text );
+		}
+		return $text;
+	}
+
+	/**
+	 * Escape special characters in markdown link text.
+	 *
+	 * Only escapes characters that would break link syntax.
+	 *
+	 * @param string $text Link text to escape.
+	 * @return string Escaped text.
+	 */
+	private function escape_markdown_link( $text ) {
+		// Only escape characters that break link syntax: [ ] ( ).
+		$text = str_replace( '\\', '\\\\', $text );
+		$text = str_replace( '[', '\\[', $text );
+		$text = str_replace( ']', '\\]', $text );
+		$text = str_replace( '(', '\\(', $text );
+		$text = str_replace( ')', '\\)', $text );
+		return $text;
+	}
+
+	/**
 	 * Get public content for a post type, excluding marked posts.
 	 *
 	 * @param string $post_type Post type name.
 	 * @return array Array of WP_Post objects.
 	 */
 	private function get_public_content( $post_type ) {
-		$args = array(
-			'post_type'      => $post_type,
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'orderby'        => 'menu_order date',
-			'order'          => 'ASC',
-			'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-				'relation' => 'OR',
-				array(
-					'key'     => self::EXCLUDE_META_KEY,
-					'compare' => 'NOT EXISTS',
-				),
-				array(
-					'key'     => self::EXCLUDE_META_KEY,
-					'value'   => '1',
-					'compare' => '!=',
+		/**
+		 * Filter the query arguments for fetching public content.
+		 *
+		 * Note: Uses posts_per_page => -1 which fetches all posts. For sites with
+		 * thousands of posts, results are cached via transients to mitigate performance.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param array  $args      Query arguments.
+		 * @param string $post_type Post type being queried.
+		 */
+		$args = apply_filters(
+			'designsetgo_llms_txt_query_args',
+			array(
+				'post_type'      => $post_type,
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'orderby'        => 'menu_order date',
+				'order'          => 'ASC',
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Required for exclusion feature.
+				'meta_query'     => array(
+					'relation' => 'OR',
+					// Include posts without the meta key (not explicitly excluded).
+					array(
+						'key'     => self::EXCLUDE_META_KEY,
+						'compare' => 'NOT EXISTS',
+					),
+					// Include posts where meta is explicitly false/0/empty.
+					array(
+						'key'     => self::EXCLUDE_META_KEY,
+						'value'   => array( '', '0', 'false' ),
+						'compare' => 'IN',
+					),
 				),
 			),
+			$post_type
 		);
 
 		return get_posts( $args );
@@ -247,6 +316,9 @@ class LLMS_Txt {
 			array(
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'get_post_types_endpoint' ),
+				// Note: Uses 'manage_options' (admin-only) because this endpoint is for
+				// settings configuration. The per-post exclusion meta uses 'edit_posts'
+				// so editors can exclude their own content without accessing settings.
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},

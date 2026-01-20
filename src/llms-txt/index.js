@@ -69,13 +69,7 @@ const LLMSTxtPanel = () => {
 				checked={excludeFromLLMS}
 				onChange={updateExclusion}
 			/>
-			<p
-				style={{
-					fontSize: '12px',
-					color: '#757575',
-					marginTop: '8px',
-				}}
-			>
+			<p className="dsgo-llms-txt-description">
 				{__(
 					'llms.txt helps AI language models understand your site content.',
 					'designsetgo'

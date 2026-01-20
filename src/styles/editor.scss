@@ -89,3 +89,16 @@
 	margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
 	margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
 }
+
+/**
+ * llms.txt Panel Styles
+ * Styles for the AI & LLMs sidebar panel
+ */
+.designsetgo-llms-txt-panel {
+
+	.dsgo-llms-txt-description {
+		font-size: 12px;
+		color: #757575;
+		margin-top: 8px;
+	}
+}

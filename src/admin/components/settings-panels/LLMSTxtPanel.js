@@ -28,7 +28,11 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 				setPostTypes(data);
 				setLoading(false);
 			})
-			.catch(() => setLoading(false));
+			.catch((error) => {
+				// eslint-disable-next-line no-console
+				console.error('DesignSetGo: Failed to fetch post types for llms.txt settings', error);
+				setLoading(false);
+			});
 	}, []);
 
 	const isEnabled = settings?.llms_txt?.enable || false;
