@@ -204,6 +204,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-icon-injector.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-llms-txt.php';
+		require_once DESIGNSETGO_PATH . 'includes/class-markdown-converter.php';
 		require_once DESIGNSETGO_PATH . 'includes/helpers.php';
 
 		// Load Composer autoloader if available.
