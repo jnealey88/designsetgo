@@ -271,9 +271,17 @@ class LLMS_Txt {
 
 	/**
 	 * Invalidate the llms.txt cache.
+	 *
+	 * @param int|null $post_id Optional post ID for individual markdown cache.
 	 */
-	public function invalidate_cache() {
+	public function invalidate_cache( $post_id = null ) {
+		// Always invalidate the main llms.txt cache.
 		delete_transient( self::CACHE_KEY );
+
+		// If post_id provided, also invalidate its markdown cache.
+		if ( $post_id && is_numeric( $post_id ) ) {
+			$this->invalidate_markdown_cache( absint( $post_id ) );
+		}
 	}
 
 	/**
@@ -324,6 +332,28 @@ class LLMS_Txt {
 				},
 			)
 		);
+
+		// Markdown endpoint for individual posts.
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/markdown/(?P<post_id>\d+)',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_post_markdown_endpoint' ),
+				// Public endpoint - allows LLMs to fetch content without authentication.
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id' => array(
+						'description'       => __( 'Post ID to convert to markdown.', 'designsetgo' ),
+						'type'              => 'integer',
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							return is_numeric( $param ) && $param > 0;
+						},
+					),
+				),
+			)
+		);
 	}
 
 	/**
@@ -351,5 +381,98 @@ class LLMS_Txt {
 		}
 
 		return rest_ensure_response( $result );
+	}
+
+	/**
+	 * Get post content as markdown endpoint.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response|\WP_Error Response or error.
+	 */
+	public function get_post_markdown_endpoint( $request ) {
+		$post_id = absint( $request->get_param( 'post_id' ) );
+		$post    = get_post( $post_id );
+
+		// Validate post exists.
+		if ( ! $post ) {
+			return new \WP_Error(
+				'not_found',
+				__( 'Post not found.', 'designsetgo' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Validate post is published.
+		if ( 'publish' !== $post->post_status ) {
+			return new \WP_Error(
+				'not_published',
+				__( 'Post is not published.', 'designsetgo' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Check if post is excluded from llms.txt.
+		$excluded = get_post_meta( $post_id, self::EXCLUDE_META_KEY, true );
+		if ( $excluded ) {
+			return new \WP_Error(
+				'excluded',
+				__( 'This post is excluded from llms.txt.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		// Check if feature is enabled.
+		$settings = Admin\Settings::get_settings();
+		if ( empty( $settings['llms_txt']['enable'] ) ) {
+			return new \WP_Error(
+				'feature_disabled',
+				__( 'llms.txt feature is not enabled.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		// Check if post type is enabled.
+		$enabled_post_types = $settings['llms_txt']['post_types'] ?? array( 'page', 'post' );
+		if ( ! in_array( $post->post_type, $enabled_post_types, true ) ) {
+			return new \WP_Error(
+				'post_type_disabled',
+				__( 'This post type is not enabled for llms.txt.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		// Try cache first.
+		$cache_key = 'designsetgo_llms_md_' . $post_id;
+		$cached    = get_transient( $cache_key );
+
+		if ( false !== $cached ) {
+			return rest_ensure_response( $cached );
+		}
+
+		// Convert to markdown.
+		$converter = new Markdown_Converter();
+		$markdown  = $converter->convert( $post );
+
+		$result = array(
+			'id'       => $post->ID,
+			'title'    => $post->post_title,
+			'url'      => get_permalink( $post ),
+			'updated'  => get_post_modified_time( 'c', true, $post ),
+			'markdown' => $markdown,
+		);
+
+		// Cache the result.
+		set_transient( $cache_key, $result, self::CACHE_EXPIRATION );
+
+		return rest_ensure_response( $result );
+	}
+
+	/**
+	 * Invalidate markdown cache for a specific post.
+	 *
+	 * @param int $post_id Post ID.
+	 */
+	public function invalidate_markdown_cache( $post_id ) {
+		delete_transient( 'designsetgo_llms_md_' . $post_id );
 	}
 }
