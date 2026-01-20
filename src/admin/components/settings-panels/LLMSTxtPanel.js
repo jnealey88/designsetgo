@@ -14,12 +14,16 @@ import {
 	CheckboxControl,
 	ExternalLink,
 	Spinner,
+	Button,
+	Notice,
 } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 
 const LLMSTxtPanel = ({ settings, updateSetting }) => {
 	const [postTypes, setPostTypes] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [flushing, setFlushing] = useState(false);
+	const [flushNotice, setFlushNotice] = useState(null);
 
 	// Fetch available post types.
 	useEffect(() => {
@@ -49,6 +53,36 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 			? [...enabledPostTypes, postType]
 			: enabledPostTypes.filter((t) => t !== postType);
 		updateSetting('llms_txt', 'post_types', newTypes);
+	};
+
+	/**
+	 * Flush the llms.txt cache.
+	 */
+	const flushCache = () => {
+		setFlushing(true);
+		setFlushNotice(null);
+
+		apiFetch({
+			path: '/designsetgo/v1/llms-txt/flush-cache',
+			method: 'POST',
+		})
+			.then(() => {
+				setFlushNotice({
+					status: 'success',
+					message: __('Cache cleared successfully.', 'designsetgo'),
+				});
+			})
+			.catch((error) => {
+				// eslint-disable-next-line no-console
+				console.error('DesignSetGo: Failed to flush llms.txt cache', error);
+				setFlushNotice({
+					status: 'error',
+					message: __('Failed to clear cache.', 'designsetgo'),
+				});
+			})
+			.finally(() => {
+				setFlushing(false);
+			});
 	};
 
 	// Get site URL for display.
@@ -137,6 +171,39 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 									'designsetgo'
 								)}
 							</p>
+						</div>
+
+						<div className="designsetgo-settings-section">
+							<h3 className="designsetgo-section-heading">
+								{__('Cache', 'designsetgo')}
+							</h3>
+							<p className="designsetgo-section-description">
+								{__(
+									'The llms.txt file is cached for performance. Clear the cache to regenerate it with the latest content.',
+									'designsetgo'
+								)}
+							</p>
+
+							{flushNotice && (
+								<Notice
+									status={flushNotice.status}
+									isDismissible={true}
+									onRemove={() => setFlushNotice(null)}
+								>
+									{flushNotice.message}
+								</Notice>
+							)}
+
+							<Button
+								variant="secondary"
+								onClick={flushCache}
+								isBusy={flushing}
+								disabled={flushing}
+							>
+								{flushing
+									? __('Clearing…', 'designsetgo')
+									: __('Clear Cache', 'designsetgo')}
+							</Button>
 						</div>
 					</div>
 				)}

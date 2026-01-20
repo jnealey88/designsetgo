@@ -339,6 +339,19 @@ class LLMS_Txt {
 			)
 		);
 
+		// Flush cache endpoint.
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/flush-cache',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'flush_cache_endpoint' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
 		// Markdown endpoint for individual posts.
 		register_rest_route(
 			'designsetgo/v1',
@@ -387,6 +400,38 @@ class LLMS_Txt {
 		}
 
 		return rest_ensure_response( $result );
+	}
+
+	/**
+	 * Flush llms.txt cache endpoint.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function flush_cache_endpoint() {
+		// Clear the main llms.txt cache.
+		delete_transient( self::CACHE_KEY );
+
+		// Clear all individual markdown caches.
+		global $wpdb;
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+				'_transient_designsetgo_llms_md_%'
+			)
+		);
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+				'_transient_timeout_designsetgo_llms_md_%'
+			)
+		);
+
+		return rest_ensure_response(
+			array(
+				'success' => true,
+				'message' => __( 'llms.txt cache has been cleared.', 'designsetgo' ),
+			)
+		);
 	}
 
 	/**
