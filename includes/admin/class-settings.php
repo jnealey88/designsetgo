@@ -81,6 +81,10 @@ class Settings {
 				'background_scroll_color'   => '',
 				'background_scroll_opacity' => 100,
 			),
+			'llms_txt'           => array(
+				'enable'     => false,
+				'post_types' => array( 'page', 'post' ),
+			),
 		);
 	}
 
@@ -765,6 +769,16 @@ class Settings {
 				'background_on_scroll'      => isset( $settings['sticky_header']['background_on_scroll'] ) ? (bool) $settings['sticky_header']['background_on_scroll'] : false,
 				'background_scroll_color'   => isset( $settings['sticky_header']['background_scroll_color'] ) ? sanitize_hex_color( $settings['sticky_header']['background_scroll_color'] ) : '',
 				'background_scroll_opacity' => isset( $settings['sticky_header']['background_scroll_opacity'] ) ? absint( $settings['sticky_header']['background_scroll_opacity'] ) : 100,
+			);
+		}
+
+		// Sanitize llms.txt settings.
+		if ( isset( $settings['llms_txt'] ) && is_array( $settings['llms_txt'] ) ) {
+			$sanitized['llms_txt'] = array(
+				'enable'     => isset( $settings['llms_txt']['enable'] ) ? (bool) $settings['llms_txt']['enable'] : false,
+				'post_types' => isset( $settings['llms_txt']['post_types'] ) && is_array( $settings['llms_txt']['post_types'] )
+					? array_map( 'sanitize_key', $settings['llms_txt']['post_types'] )
+					: array( 'page', 'post' ),
 			);
 		}
 
