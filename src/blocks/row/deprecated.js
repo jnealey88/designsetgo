@@ -152,7 +152,8 @@ const v3 = {
 		// Apply width constraints if enabled
 		if (constrainWidth) {
 			innerStyle.maxWidth =
-				contentWidth || 'var(--wp--style--global--content-size, 1140px)';
+				contentWidth ||
+				'var(--wp--style--global--content-size, 1140px)';
 			innerStyle.marginLeft = 'auto';
 			innerStyle.marginRight = 'auto';
 		}

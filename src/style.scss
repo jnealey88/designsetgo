@@ -59,9 +59,11 @@
 .has-global-padding.is-layout-constrained > .alignfull.wp-block-designsetgo-section,
 .has-global-padding.is-layout-constrained > .alignfull.wp-block-designsetgo-row,
 .has-global-padding.is-layout-constrained > .alignfull.wp-block-designsetgo-grid {
+
 	/* Extend width to account for parent padding (32px * 2 = 64px total) */
 	width: calc(100% + 64px);
 	max-width: calc(100% + 64px);
+
 	/* Negative margins to pull block outward */
 	margin-left: -32px;
 	margin-right: -32px;

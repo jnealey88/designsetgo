@@ -111,6 +111,7 @@ body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 .entry-content.alignfull.is-layout-constrained.has-global-padding,
 .wp-block-post-content.alignfull.is-layout-constrained.has-global-padding {
 	box-sizing: border-box;
+
 	/* max-width: 100%; - Removed to allow DSG blocks to achieve full width */
 }
 /* stylelint-enable selector-class-pattern */

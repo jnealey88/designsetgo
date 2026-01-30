@@ -133,7 +133,8 @@ const v2 = {
 		// Apply width constraints to inner container
 		if (constrainWidth) {
 			innerStyles.maxWidth =
-				contentWidth || 'var(--wp--style--global--content-size, 1140px)';
+				contentWidth ||
+				'var(--wp--style--global--content-size, 1140px)';
 			innerStyles.marginLeft = 'auto';
 			innerStyles.marginRight = 'auto';
 		}
