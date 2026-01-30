@@ -30,6 +30,9 @@ class Global_Styles {
 	/**
 	 * Extend theme.json with DesignSetGo presets.
 	 *
+	 * Only adds presets as fallbacks when the theme doesn't define them.
+	 * This respects theme settings while providing defaults for blocks.
+	 *
 	 * @param \WP_Theme_JSON_Data $theme_json Theme JSON object.
 	 * @return \WP_Theme_JSON_Data Modified theme JSON.
 	 */
@@ -37,31 +40,17 @@ class Global_Styles {
 		// Get user-saved global styles (if any).
 		$saved_styles = get_option( 'designsetgo_global_styles', array() );
 
+		// Get existing theme data to check what's already defined.
+		$theme_data = $theme_json->get_data();
+
+		// Build settings array, only adding presets as fallbacks.
 		$dsg_settings = array(
 			'version'  => 2,
 			'settings' => array(
-				'color'      => array(
-					'palette'   => $this->get_color_palette( $saved_styles ),
-					'gradients' => $this->get_gradients( $saved_styles ),
-					'duotone'   => array(
-						array(
-							'slug'   => 'dsgo-blue-orange',
-							'colors' => array( '#2563eb', '#f59e0b' ),
-							'name'   => __( 'Blue and Orange', 'designsetgo' ),
-						),
-					),
+				'spacing' => array(
+					'units' => array( 'px', 'em', 'rem', 'vh', 'vw', '%' ),
 				),
-				'spacing'    => array(
-					'spacingScale' => array(
-						'steps' => 0,
-					),
-					'spacingSizes' => $this->get_spacing_sizes( $saved_styles ),
-					'units'        => array( 'px', 'em', 'rem', 'vh', 'vw', '%' ),
-				),
-				'typography' => array(
-					'fontSizes' => $this->get_font_sizes( $saved_styles ),
-				),
-				'custom'     => array(
+				'custom'  => array(
 					'designsetgo' => array(
 						'borderRadius' => array(
 							'none'   => '0',
@@ -88,135 +77,40 @@ class Global_Styles {
 			),
 		);
 
+		// Only add spacing sizes if theme doesn't define them.
+		if ( ! $this->theme_has_spacing_sizes( $theme_data ) ) {
+			$dsg_settings['settings']['spacing']['spacingSizes'] = $this->get_spacing_sizes( $saved_styles );
+			$dsg_settings['settings']['spacing']['spacingScale'] = array( 'steps' => 0 );
+		}
+
+		// Only add font sizes if theme doesn't define them.
+		if ( ! $this->theme_has_font_sizes( $theme_data ) ) {
+			$dsg_settings['settings']['typography'] = array(
+				'fontSizes' => $this->get_font_sizes( $saved_styles ),
+			);
+		}
+
 		return $theme_json->update_with( $dsg_settings );
 	}
 
 	/**
-	 * Get color palette with user customizations.
+	 * Check if theme defines spacing sizes.
 	 *
-	 * Uses Twenty Twenty-Five (TT5) semantic color system:
-	 * - Base: Default background (usually white/light)
-	 * - Contrast: Text color (usually black/dark)
-	 * - Accent 1-6: Semantic purpose colors
-	 *
-	 * @param array $saved_styles Saved user styles.
-	 * @return array Color palette.
+	 * @param array $theme_data Theme JSON data.
+	 * @return bool True if theme has spacing sizes.
 	 */
-	private function get_color_palette( $saved_styles ) {
-		$defaults = array(
-			// Core semantic colors.
-			array(
-				'slug'  => 'base',
-				'color' => '#ffffff',
-				'name'  => __( 'Base / Background', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'contrast',
-				'color' => '#000000',
-				'name'  => __( 'Contrast / Text', 'designsetgo' ),
-			),
-
-			// Accent colors - semantic purposes.
-			array(
-				'slug'  => 'accent-1',
-				'color' => '#f5f5f5',
-				'name'  => __( 'Accent 1 / Light Background', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'accent-2',
-				'color' => '#2563eb',
-				'name'  => __( 'Accent 2 / Primary Brand', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'accent-3',
-				'color' => '#1e293b',
-				'name'  => __( 'Accent 3 / Dark Background', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'accent-4',
-				'color' => '#334155',
-				'name'  => __( 'Accent 4 / Dark Variant', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'accent-5',
-				'color' => '#94a3b8',
-				'name'  => __( 'Accent 5 / Neutral', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'accent-6',
-				'color' => 'rgba(37, 99, 235, 0.1)',
-				'name'  => __( 'Accent 6 / Transparent', 'designsetgo' ),
-			),
-
-			// Utility colors (for backwards compatibility).
-			array(
-				'slug'  => 'success',
-				'color' => '#10b981',
-				'name'  => __( 'Success', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'warning',
-				'color' => '#f59e0b',
-				'name'  => __( 'Warning', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'error',
-				'color' => '#ef4444',
-				'name'  => __( 'Error', 'designsetgo' ),
-			),
-		);
-
-		// Merge with saved colors if available.
-		if ( isset( $saved_styles['colors'] ) && is_array( $saved_styles['colors'] ) ) {
-			foreach ( $saved_styles['colors'] as $slug => $color ) {
-				foreach ( $defaults as $key => $default ) {
-					if ( $default['slug'] === $slug ) {
-						$defaults[ $key ]['color'] = $color;
-					}
-				}
-			}
-		}
-
-		return $defaults;
+	private function theme_has_spacing_sizes( $theme_data ) {
+		return ! empty( $theme_data['settings']['spacing']['spacingSizes'] );
 	}
 
 	/**
-	 * Get gradients with user customizations.
+	 * Check if theme defines font sizes.
 	 *
-	 * Uses TT5 semantic color system for dynamic gradients.
-	 *
-	 * @param array $saved_styles Saved user styles.
-	 * @return array Gradients.
+	 * @param array $theme_data Theme JSON data.
+	 * @return bool True if theme has font sizes.
 	 */
-	private function get_gradients( $saved_styles ) {
-		return array(
-			// Primary gradients using accent colors.
-			array(
-				'slug'     => 'primary-gradient',
-				'gradient' => 'linear-gradient(135deg, var(--wp--preset--color--accent-2) 0%, var(--wp--preset--color--accent-4) 100%)',
-				'name'     => __( 'Primary Gradient', 'designsetgo' ),
-			),
-			array(
-				'slug'     => 'dark-overlay',
-				'gradient' => 'linear-gradient(180deg, transparent 0%, var(--wp--preset--color--accent-3) 100%)',
-				'name'     => __( 'Dark Overlay', 'designsetgo' ),
-			),
-			array(
-				'slug'     => 'subtle-light',
-				'gradient' => 'linear-gradient(135deg, var(--wp--preset--color--base) 0%, var(--wp--preset--color--accent-1) 100%)',
-				'name'     => __( 'Subtle Light', 'designsetgo' ),
-			),
-			array(
-				'slug'     => 'brand-fade',
-				'gradient' => 'linear-gradient(90deg, var(--wp--preset--color--accent-2) 0%, var(--wp--preset--color--accent-6) 100%)',
-				'name'     => __( 'Brand Fade', 'designsetgo' ),
-			),
-			array(
-				'slug'     => 'vivid',
-				'gradient' => 'linear-gradient(135deg, var(--wp--preset--color--accent-2) 0%, var(--wp--preset--color--success) 100%)',
-				'name'     => __( 'Vivid', 'designsetgo' ),
-			),
-		);
+	private function theme_has_font_sizes( $theme_data ) {
+		return ! empty( $theme_data['settings']['typography']['fontSizes'] );
 	}
 
 	/**
@@ -342,12 +236,12 @@ class Global_Styles {
 		return array(
 			'spacing' => array(
 				'padding'  => array(
-					'top'    => 'var(--wp--preset--spacing--lg)',
-					'bottom' => 'var(--wp--preset--spacing--lg)',
-					'left'   => 'var(--wp--preset--spacing--xs)',
-					'right'  => 'var(--wp--preset--spacing--xs)',
+					'top'    => 'var(--wp--preset--spacing--40)',
+					'bottom' => 'var(--wp--preset--spacing--40)',
+					'left'   => 'var(--wp--preset--spacing--20)',
+					'right'  => 'var(--wp--preset--spacing--20)',
 				),
-				'blockGap' => 'var(--wp--preset--spacing--md)',
+				'blockGap' => 'var(--wp--preset--spacing--30)',
 			),
 			'border'  => array(
 				'radius' => 'var(--wp--custom--designsetgo--border-radius--medium)',
@@ -373,8 +267,8 @@ class Global_Styles {
 		return array(
 			'spacing'    => array(
 				'margin' => array(
-					'top'    => 'var(--wp--preset--spacing--lg)',
-					'bottom' => 'var(--wp--preset--spacing--lg)',
+					'top'    => 'var(--wp--preset--spacing--40)',
+					'bottom' => 'var(--wp--preset--spacing--40)',
 				),
 			),
 			'typography' => array(
@@ -425,12 +319,12 @@ class Global_Styles {
 		return array(
 			'spacing' => array(
 				'padding'  => array(
-					'top'    => 'var(--wp--preset--spacing--xl)',
-					'bottom' => 'var(--wp--preset--spacing--xl)',
-					'left'   => 'var(--wp--preset--spacing--lg)',
-					'right'  => 'var(--wp--preset--spacing--lg)',
+					'top'    => 'var(--wp--preset--spacing--50)',
+					'bottom' => 'var(--wp--preset--spacing--50)',
+					'left'   => 'var(--wp--preset--spacing--40)',
+					'right'  => 'var(--wp--preset--spacing--40)',
 				),
-				'blockGap' => 'var(--wp--preset--spacing--md)',
+				'blockGap' => 'var(--wp--preset--spacing--30)',
 			),
 			'color'   => array(
 				'background' => 'transparent',
