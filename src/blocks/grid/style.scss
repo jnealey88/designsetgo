@@ -7,12 +7,29 @@
  */
 
 .dsgo-grid {
-	// CRITICAL: Ensure width includes borders to prevent overflow
-	// NOTE: Padding is applied to .dsgo-grid__inner via inline styles, not here
+	// CRITICAL: Ensure width includes padding to prevent overflow
+	// When width: 100% is set, padding must be included in the total width
 	box-sizing: border-box;
 
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
+
+	// Default padding using WP standard spacing slugs
+	// Users can override via WordPress padding controls
+	// When padding is set to "Default", these theme values apply
+	// Fallback values match block.json defaults for consistency
+	padding-top: var(--wp--preset--spacing--50, 2rem);
+	padding-bottom: var(--wp--preset--spacing--50, 2rem);
+	padding-left: var(--wp--preset--spacing--30, 1rem);
+	padding-right: var(--wp--preset--spacing--30, 1rem);
+
+	// CRITICAL: Nested containers should have no padding to prevent overflow
+	// Only parent containers should have padding
+	.dsgo-stack > &,
+	.dsgo-flex > &,
+	.dsgo-grid > & {
+		padding: 0;
+	}
 
 	// CRITICAL: Handle full-width and wide alignment
 	// WordPress automatically adds .alignfull and .alignwide classes when user selects alignment
@@ -31,12 +48,9 @@
 		margin-right: auto;
 	}
 
-	// Inner container handles all grid styling and padding
+	// Inner container handles all grid styling
 	// With two-div structure: .dsgo-grid > .dsgo-grid__inner
-	// Padding is applied via inline styles to this element
 	.dsgo-grid__inner {
-		// CRITICAL: Ensure padding is included in width calculation
-		box-sizing: border-box;
 		// CRITICAL: Prevent grid items from overflowing their cells
 		// Grid items automatically fill their grid cell, so we only need to prevent overflow
 		> * {

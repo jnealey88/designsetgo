@@ -7,8 +7,7 @@
  */
 
 .dsgo-stack {
-	// CRITICAL: Ensure width includes borders to prevent overflow
-	// NOTE: Padding is applied to .dsgo-stack__inner via inline styles, not here
+	// CRITICAL: Ensure width includes padding to prevent overflow
 	box-sizing: border-box;
 
 	// Ensure background images respect border radius
@@ -90,11 +89,9 @@
 	}
 
 	// CRITICAL: Inner container must be full width for layout to work
-	// Width constraints and padding are applied via inline styles when constrainWidth is enabled
+	// Width constraints are applied via inline styles when constrainWidth is enabled
 	.dsgo-stack__inner {
 		width: 100%;
-		// CRITICAL: Ensure padding is included in width calculation
-		box-sizing: border-box;
 		// CRITICAL: Position relative + z-index to ensure content stays above both overlays
 		// z-index: 2 (above ::before overlay at z-index: 1 and ::after hover at z-index: 0)
 		position: relative;
