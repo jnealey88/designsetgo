@@ -33,6 +33,7 @@
 			"background": true,
 			"text": true,
 			"gradients": true,
+			"__experimentalSkipSerialization": true,
 			"__experimentalDefaultControls": {
 				"background": true,
 				"text": true
