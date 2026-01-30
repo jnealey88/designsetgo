@@ -18,6 +18,7 @@ import {
 } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { addFilter } from '@wordpress/hooks';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 /**
  * Add sticky header attributes to template parts
@@ -27,6 +28,11 @@ import { addFilter } from '@wordpress/hooks';
  * @return {Object} Modified settings object
  */
 function addStickyHeaderAttributes(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	if (name !== 'core/template-part') {
 		return settings;
 	}

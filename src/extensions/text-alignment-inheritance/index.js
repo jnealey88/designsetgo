@@ -12,6 +12,7 @@
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useEffect, useRef } from '@wordpress/element';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 /**
  * Track which blocks have already had alignment initialized
@@ -40,6 +41,11 @@ addFilter(
 	'blocks.registerBlockType',
 	'designsetgo/add-alignment-inheritance-attributes',
 	(settings, name) => {
+		// Check user exclusion list first
+		if (!shouldExtendBlock(name)) {
+			return settings;
+		}
+
 		// Only apply to text blocks that support alignment
 		if (!TEXT_BLOCKS.includes(name)) {
 			return settings;

@@ -9,6 +9,7 @@
 
 import { addFilter } from '@wordpress/hooks';
 import { DEFAULT_TEXT_REVEAL_SETTINGS, SUPPORTED_BLOCKS } from './constants';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 /**
  * Add text reveal attributes to supported blocks
@@ -18,6 +19,11 @@ import { DEFAULT_TEXT_REVEAL_SETTINGS, SUPPORTED_BLOCKS } from './constants';
  * @return {Object} Modified settings
  */
 function addTextRevealAttributes(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	// Only add attributes to supported blocks
 	if (!SUPPORTED_BLOCKS.includes(name)) {
 		return settings;

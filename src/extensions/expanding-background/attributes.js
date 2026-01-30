@@ -6,6 +6,7 @@
 
 import { addFilter } from '@wordpress/hooks';
 import { SUPPORTED_BLOCKS, DEFAULTS } from './constants';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 /**
  * Add expanding background attributes to supported blocks
@@ -15,6 +16,11 @@ import { SUPPORTED_BLOCKS, DEFAULTS } from './constants';
  * @return {Object} Modified settings
  */
 function addExpandingBackgroundAttributes(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	// Only add attributes to supported blocks
 	if (!SUPPORTED_BLOCKS.includes(name)) {
 		return settings;

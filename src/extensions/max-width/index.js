@@ -12,6 +12,7 @@ import './style.scss';
 
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 import { InspectorControls, useSettings } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -48,6 +49,11 @@ const EXCLUDED_BLOCKS = [
  * @return {Object} Modified settings
  */
 function addMaxWidthAttribute(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	// Skip excluded blocks (includes container blocks with native width controls)
 	if (EXCLUDED_BLOCKS.includes(name)) {
 		return settings;
@@ -81,6 +87,11 @@ const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, name } = props;
 		const { dsgoMaxWidth } = attributes;
+
+		// Check user exclusion list first
+		if (!shouldExtendBlock(name)) {
+			return <BlockEdit {...props} />;
+		}
 
 		// Skip excluded blocks (including container blocks)
 		if (EXCLUDED_BLOCKS.includes(name)) {
@@ -145,6 +156,11 @@ const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, name, clientId } = props;
 		const { dsgoMaxWidth, align, textAlign } = attributes;
+
+		// Check user exclusion list first
+		if (!shouldExtendBlock(name)) {
+			return <BlockListBlock {...props} />;
+		}
 
 		// Skip excluded blocks (including container blocks)
 		if (EXCLUDED_BLOCKS.includes(name)) {
@@ -238,6 +254,11 @@ addFilter(
  */
 function applyMaxWidthStyles(props, blockType, attributes) {
 	const { dsgoMaxWidth, align, textAlign } = attributes;
+
+	// Check user exclusion list first
+	if (!shouldExtendBlock(blockType.name)) {
+		return props;
+	}
 
 	// Skip excluded blocks (includes container blocks that handle width internally)
 	if (EXCLUDED_BLOCKS.includes(blockType.name)) {

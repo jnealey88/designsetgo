@@ -647,6 +647,97 @@
 	}
 }
 
+// Exclusions UI Styles
+.designsetgo-exclusion-input-wrapper {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.designsetgo-exclusion-input-row {
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+}
+
+.designsetgo-exclusion-input-field {
+	flex: 1;
+
+	input {
+		width: 100%;
+	}
+
+	.description {
+		margin-top: 8px;
+	}
+}
+
+.designsetgo-excluded-blocks-section {
+	margin-top: 20px;
+}
+
+.designsetgo-excluded-blocks-heading {
+	font-size: 14px;
+	font-weight: 600;
+	margin-bottom: 12px;
+}
+
+.designsetgo-excluded-block-list {
+	margin: 0;
+	padding: 0;
+}
+
+.designsetgo-excluded-block-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 12px;
+	margin-bottom: 8px;
+	background: #f0f0f1;
+	border-radius: 4px;
+	list-style: none;
+
+	code {
+		font-size: 13px;
+	}
+}
+
+.designsetgo-no-exclusions-message {
+	margin-top: 20px;
+	font-style: italic;
+}
+
+.designsetgo-info-box {
+	margin-top: 24px;
+	padding: 16px;
+	background: #f0f6fc;
+	border-left: 4px solid #0073aa;
+	border-radius: 4px;
+
+	h4 {
+		margin: 0 0 8px;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	ul {
+		margin: 8px 0 0;
+		padding-left: 20px;
+		font-size: 13px;
+
+		li {
+			margin-bottom: 4px;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	code {
+		font-weight: 600;
+	}
+}
+
 // Responsive
 @media (max-width: 782px) {
 
