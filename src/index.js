@@ -109,10 +109,10 @@ addFilter(
 					spacing: {
 						...attributes?.style?.spacing,
 						padding: {
-							top: 'var(--wp--preset--spacing--xxxl)',
-							bottom: 'var(--wp--preset--spacing--xxxl)',
-							left: 'var(--wp--preset--spacing--md)',
-							right: 'var(--wp--preset--spacing--md)',
+							top: 'var(--wp--preset--spacing--70)',
+							bottom: 'var(--wp--preset--spacing--70)',
+							left: 'var(--wp--preset--spacing--30)',
+							right: 'var(--wp--preset--spacing--30)',
 						},
 					},
 				},

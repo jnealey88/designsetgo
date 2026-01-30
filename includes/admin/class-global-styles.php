@@ -30,8 +30,13 @@ class Global_Styles {
 	/**
 	 * Extend theme.json with DesignSetGo presets.
 	 *
-	 * Only adds presets as fallbacks when the theme doesn't define them.
-	 * This respects theme settings while providing defaults for blocks.
+	 * Adds DesignSetGo-specific settings and spacing presets:
+	 * - Standard WP spacing slugs (20, 30, 40, etc.) are ALWAYS added to ensure
+	 *   block styles work reliably, even when themes use different slug names.
+	 * - Legacy DSG slugs (xs, sm, md, etc.) are only added when the theme doesn't
+	 *   define custom spacing, for backward compatibility with existing content.
+	 * - Font sizes are only added when theme doesn't define them.
+	 * - Color palette, gradients, and duotone are NOT added (respects theme colors).
 	 *
 	 * @param \WP_Theme_JSON_Data $theme_json Theme JSON object.
 	 * @return \WP_Theme_JSON_Data Modified theme JSON.
@@ -77,10 +82,19 @@ class Global_Styles {
 			),
 		);
 
-		// Only add spacing sizes if theme doesn't define them.
+		// Always provide WP standard spacing slugs so block styles work reliably.
+		// These are added even if theme has custom spacing, to ensure blocks have
+		// consistent defaults. Legacy DSG slugs are only added when theme doesn't
+		// define spacing, for backward compatibility with existing content.
+		$dsg_settings['settings']['spacing']['spacingSizes'] = $this->get_standard_spacing_sizes();
+		$dsg_settings['settings']['spacing']['spacingScale'] = array( 'steps' => 0 );
+
+		// Add legacy DSG slugs only if theme doesn't define spacing (for backward compatibility).
 		if ( ! $this->theme_has_spacing_sizes( $theme_data ) ) {
-			$dsg_settings['settings']['spacing']['spacingSizes'] = $this->get_spacing_sizes( $saved_styles );
-			$dsg_settings['settings']['spacing']['spacingScale'] = array( 'steps' => 0 );
+			$dsg_settings['settings']['spacing']['spacingSizes'] = array_merge(
+				$dsg_settings['settings']['spacing']['spacingSizes'],
+				$this->get_legacy_spacing_sizes()
+			);
 		}
 
 		// Only add font sizes if theme doesn't define them.
@@ -114,75 +128,122 @@ class Global_Styles {
 	}
 
 	/**
-	 * Get spacing sizes with user customizations.
+	 * Get WordPress standard spacing sizes.
 	 *
-	 * Expanded spacing scale for flexible layouts.
-	 * Follows a consistent scale for predictable sizing.
+	 * These are always provided to ensure block styles work reliably,
+	 * even when themes define custom spacing with different slug names.
 	 *
-	 * @param array $saved_styles Saved user styles.
-	 * @return array Spacing sizes.
+	 * @return array Standard spacing sizes.
 	 */
-	private function get_spacing_sizes( $saved_styles ) {
+	private function get_standard_spacing_sizes() {
+		return array(
+			array(
+				'slug' => '20',
+				'size' => '0.5rem',
+				'name' => __( '1 — 8px', 'designsetgo' ),
+			),
+			array(
+				'slug' => '30',
+				'size' => '1rem',
+				'name' => __( '2 — 16px', 'designsetgo' ),
+			),
+			array(
+				'slug' => '40',
+				'size' => '1.5rem',
+				'name' => __( '3 — 24px', 'designsetgo' ),
+			),
+			array(
+				'slug' => '50',
+				'size' => '2rem',
+				'name' => __( '4 — 32px', 'designsetgo' ),
+			),
+			array(
+				'slug' => '60',
+				'size' => '3rem',
+				'name' => __( '5 — 48px', 'designsetgo' ),
+			),
+			array(
+				'slug' => '70',
+				'size' => '4rem',
+				'name' => __( '6 — 64px', 'designsetgo' ),
+			),
+			array(
+				'slug' => '80',
+				'size' => '5rem',
+				'name' => __( '7 — 80px', 'designsetgo' ),
+			),
+		);
+	}
+
+	/**
+	 * Get legacy DSG spacing sizes for backward compatibility.
+	 *
+	 * Only added when theme doesn't define custom spacing, to support
+	 * existing content using DSG slugs without polluting the spacing picker.
+	 *
+	 * @return array Legacy spacing sizes.
+	 */
+	private function get_legacy_spacing_sizes() {
 		return array(
 			array(
 				'slug' => 'xxs',
 				'size' => '0.25rem',
-				'name' => __( '2XS — 4px', 'designsetgo' ),
+				'name' => __( '2XS — 4px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xs',
 				'size' => '0.5rem',
-				'name' => __( 'XS — 8px', 'designsetgo' ),
+				'name' => __( 'XS — 8px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'sm',
 				'size' => '0.75rem',
-				'name' => __( 'S — 12px', 'designsetgo' ),
+				'name' => __( 'S — 12px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'md',
 				'size' => '1rem',
-				'name' => __( 'M — 16px', 'designsetgo' ),
+				'name' => __( 'M — 16px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'lg',
 				'size' => '1.5rem',
-				'name' => __( 'L — 24px', 'designsetgo' ),
+				'name' => __( 'L — 24px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xl',
 				'size' => '2rem',
-				'name' => __( 'XL — 32px', 'designsetgo' ),
+				'name' => __( 'XL — 32px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xxl',
 				'size' => '3rem',
-				'name' => __( '2XL — 48px', 'designsetgo' ),
+				'name' => __( '2XL — 48px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xxxl',
 				'size' => '4rem',
-				'name' => __( '3XL — 64px', 'designsetgo' ),
+				'name' => __( '3XL — 64px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xxxxl',
 				'size' => '5rem',
-				'name' => __( '4XL — 80px', 'designsetgo' ),
+				'name' => __( '4XL — 80px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xxxxxl',
 				'size' => '6rem',
-				'name' => __( '5XL — 96px', 'designsetgo' ),
+				'name' => __( '5XL — 96px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'jumbo',
 				'size' => '8rem',
-				'name' => __( 'Jumbo — 128px', 'designsetgo' ),
+				'name' => __( 'Jumbo — 128px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'mega',
 				'size' => '10rem',
-				'name' => __( 'Mega — 160px', 'designsetgo' ),
+				'name' => __( 'Mega — 160px (legacy)', 'designsetgo' ),
 			),
 		);
 	}
