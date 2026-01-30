@@ -29,7 +29,7 @@
 	.dsgo-tabs__nav {
 		display: flex;
 		gap: var(--dsgo-tabs-gap, 8px);
-		margin-bottom: var(--wp--preset--spacing--lg, 1.5rem);
+		margin-bottom: var(--wp--preset--spacing--40, 1.5rem);
 		padding: 0;
 		overflow-x: auto;
 		-webkit-overflow-scrolling: touch;
@@ -166,12 +166,12 @@
 	 */
 	&.dsgo-tabs--vertical {
 		display: flex;
-		gap: var(--wp--preset--spacing--md, 1.5rem);
+		gap: var(--wp--preset--spacing--40, 1.5rem);
 
 		.dsgo-tabs__nav {
 			flex-direction: column;
 			margin-bottom: 0;
-			padding-right: var(--wp--preset--spacing--md, 1.5rem);
+			padding-right: var(--wp--preset--spacing--40, 1.5rem);
 			min-width: 200px;
 			overflow: visible; // Remove horizontal scrollbar for vertical tabs
 		}
@@ -183,8 +183,8 @@
 		.dsgo-tabs__tab {
 			justify-content: flex-start;
 			margin-bottom: 0;
-			margin-right: calc(var(--wp--preset--spacing--md, 1.5rem) * -1);
-			padding-right: var(--wp--preset--spacing--md, 1.5rem);
+			margin-right: calc(var(--wp--preset--spacing--40, 1.5rem) * -1);
+			padding-right: var(--wp--preset--spacing--40, 1.5rem);
 		}
 	}
 

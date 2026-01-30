@@ -101,10 +101,10 @@
 			"default": {
 				"spacing": {
 					"padding": {
-						"top": "var(--wp--preset--spacing--xl)",
-						"bottom": "var(--wp--preset--spacing--xl)",
-						"left": "var(--wp--preset--spacing--md)",
-						"right": "var(--wp--preset--spacing--md)"
+						"top": "var(--wp--preset--spacing--50)",
+						"bottom": "var(--wp--preset--spacing--50)",
+						"left": "var(--wp--preset--spacing--30)",
+						"right": "var(--wp--preset--spacing--30)"
 					}
 				}
 			}

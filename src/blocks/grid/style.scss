@@ -14,13 +14,14 @@
 	// Smooth transition for hover background color
 	transition: background-color 0.3s ease;
 
-	// Default padding (theme-level): xl top/bottom, m left/right
+	// Default padding using WP standard spacing slugs
 	// Users can override via WordPress padding controls
 	// When padding is set to "Default", these theme values apply
-	padding-top: var(--wp--preset--spacing--xl, 3rem);
-	padding-bottom: var(--wp--preset--spacing--xl, 3rem);
-	padding-left: var(--wp--preset--spacing--md, 1.5rem);
-	padding-right: var(--wp--preset--spacing--md, 1.5rem);
+	// Fallback values match block.json defaults for consistency
+	padding-top: var(--wp--preset--spacing--50, 2rem);
+	padding-bottom: var(--wp--preset--spacing--50, 2rem);
+	padding-left: var(--wp--preset--spacing--30, 1rem);
+	padding-right: var(--wp--preset--spacing--30, 1rem);
 
 	// CRITICAL: Nested containers should have no padding to prevent overflow
 	// Only parent containers should have padding

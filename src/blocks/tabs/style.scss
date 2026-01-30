@@ -28,7 +28,7 @@
 
 	// CSS custom properties for easy customization
 	--dsgo-tabs-gap: 8px;
-	--dsgo-tab-padding: var(--wp--preset--spacing--md, 1rem);
+	--dsgo-tab-padding: var(--wp--preset--spacing--30, 1rem);
 	--dsgo-tab-bg: transparent;
 	--dsgo-tab-color: var(--wp--preset--color--contrast, #000);
 	--dsgo-tab-bg-active: var(--wp--preset--color--accent-2, #2563eb);
@@ -70,7 +70,7 @@
 	.dsgo-tabs__nav {
 		display: flex;
 		gap: var(--dsgo-tabs-gap);
-		margin-bottom: var(--wp--preset--spacing--md, 1.5rem);
+		margin-bottom: var(--wp--preset--spacing--40, 1.5rem);
 		overflow-x: auto;
 		-webkit-overflow-scrolling: touch;
 
@@ -240,12 +240,12 @@
 	 */
 	&.dsgo-tabs--vertical {
 		display: flex;
-		gap: var(--wp--preset--spacing--md, 1.5rem);
+		gap: var(--wp--preset--spacing--40, 1.5rem);
 
 		.dsgo-tabs__nav {
 			flex-direction: column;
 			margin-bottom: 0;
-			padding-right: var(--wp--preset--spacing--md, 1.5rem);
+			padding-right: var(--wp--preset--spacing--40, 1.5rem);
 			min-width: 200px;
 			overflow: visible; // Remove horizontal scrollbar for vertical tabs
 		}
@@ -468,7 +468,7 @@
 			background: var(--dsgo-tab-bg);
 			color: var(--dsgo-tab-color);
 			cursor: pointer;
-			margin-bottom: var(--wp--preset--spacing--md, 1.5rem);
+			margin-bottom: var(--wp--preset--spacing--40, 1.5rem);
 
 			&:focus-visible {
 				outline: none;
@@ -552,7 +552,7 @@
 			border-right: none;
 			border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 			padding-right: 0;
-			margin-bottom: var(--wp--preset--spacing--md, 1.5rem);
+			margin-bottom: var(--wp--preset--spacing--40, 1.5rem);
 			min-width: 0;
 		}
 	}

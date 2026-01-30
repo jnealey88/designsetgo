@@ -16,7 +16,7 @@
 	background: var(--wp--preset--color--base, #fff) !important;
 	border-radius: var(--wp--custom--designsetgo--border-radius--medium, 0.5rem) !important;
 	box-shadow: var(--wp--custom--designsetgo--shadow--medium, 0 4px 6px -1px rgba(0, 0, 0, 0.1)) !important;
-	padding: var(--wp--preset--spacing--lg, 2rem) !important;
+	padding: var(--wp--preset--spacing--50, 2rem) !important;
 }
 
 /* Elevated Style - Stronger shadow for more depth */
@@ -24,7 +24,7 @@
 	background: var(--wp--preset--color--base, #fff) !important;
 	border-radius: var(--wp--custom--designsetgo--border-radius--large, 1rem) !important;
 	box-shadow: var(--wp--custom--designsetgo--shadow--xlarge, 0 20px 25px -5px rgba(0, 0, 0, 0.1)) !important;
-	padding: var(--wp--preset--spacing--xl, 3rem) !important;
+	padding: var(--wp--preset--spacing--60, 3rem) !important;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 
 	&:hover {
@@ -37,7 +37,7 @@
 .wp-block-designsetgo-container.is-style-bordered {
 	border: 2px solid var(--wp--preset--color--accent-2, #2563eb) !important;
 	border-radius: var(--wp--custom--designsetgo--border-radius--medium, 0.5rem) !important;
-	padding: var(--wp--preset--spacing--lg, 2rem) !important;
+	padding: var(--wp--preset--spacing--50, 2rem) !important;
 	background: transparent !important;
 }
 
@@ -45,7 +45,7 @@
 .wp-block-designsetgo-container.is-style-gradient {
 	background: var(--wp--preset--gradient--primary-gradient, linear-gradient(135deg, #2563eb 0%, #334155 100%)) !important;
 	border-radius: var(--wp--custom--designsetgo--border-radius--large, 1rem) !important;
-	padding: var(--wp--preset--spacing--xl, 3rem) !important;
+	padding: var(--wp--preset--spacing--60, 3rem) !important;
 	color: var(--wp--preset--color--base, #fff) !important;
 
 	/* Ensure text is readable on gradient */
@@ -62,7 +62,7 @@
 	border: 1px solid rgba(255, 255, 255, 0.2) !important;
 	border-radius: var(--wp--custom--designsetgo--border-radius--large, 1rem) !important;
 	box-shadow: var(--wp--custom--designsetgo--shadow--medium, 0 4px 6px -1px rgba(0, 0, 0, 0.1)) !important;
-	padding: var(--wp--preset--spacing--lg, 2rem) !important;
+	padding: var(--wp--preset--spacing--50, 2rem) !important;
 }
 
 /**

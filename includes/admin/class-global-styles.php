@@ -30,6 +30,14 @@ class Global_Styles {
 	/**
 	 * Extend theme.json with DesignSetGo presets.
 	 *
+	 * Adds DesignSetGo-specific settings and spacing presets:
+	 * - Standard WP spacing slugs (20, 30, 40, etc.) are ALWAYS added to ensure
+	 *   block styles work reliably, even when themes use different slug names.
+	 * - Legacy DSG slugs (xs, sm, md, etc.) are only added when the theme doesn't
+	 *   define custom spacing, for backward compatibility with existing content.
+	 * - Font sizes are only added when theme doesn't define them.
+	 * - Color palette, gradients, and duotone are NOT added (respects theme colors).
+	 *
 	 * @param \WP_Theme_JSON_Data $theme_json Theme JSON object.
 	 * @return \WP_Theme_JSON_Data Modified theme JSON.
 	 */
@@ -37,31 +45,17 @@ class Global_Styles {
 		// Get user-saved global styles (if any).
 		$saved_styles = get_option( 'designsetgo_global_styles', array() );
 
+		// Get existing theme data to check what's already defined.
+		$theme_data = $theme_json->get_data();
+
+		// Build settings array, only adding presets as fallbacks.
 		$dsg_settings = array(
 			'version'  => 2,
 			'settings' => array(
-				'color'      => array(
-					'palette'   => $this->get_color_palette( $saved_styles ),
-					'gradients' => $this->get_gradients( $saved_styles ),
-					'duotone'   => array(
-						array(
-							'slug'   => 'dsgo-blue-orange',
-							'colors' => array( '#2563eb', '#f59e0b' ),
-							'name'   => __( 'Blue and Orange', 'designsetgo' ),
-						),
-					),
+				'spacing' => array(
+					'units' => array( 'px', 'em', 'rem', 'vh', 'vw', '%' ),
 				),
-				'spacing'    => array(
-					'spacingScale' => array(
-						'steps' => 0,
-					),
-					'spacingSizes' => $this->get_spacing_sizes( $saved_styles ),
-					'units'        => array( 'px', 'em', 'rem', 'vh', 'vw', '%' ),
-				),
-				'typography' => array(
-					'fontSizes' => $this->get_font_sizes( $saved_styles ),
-				),
-				'custom'     => array(
+				'custom'  => array(
 					'designsetgo' => array(
 						'borderRadius' => array(
 							'none'   => '0',
@@ -88,207 +82,168 @@ class Global_Styles {
 			),
 		);
 
+		// Always provide WP standard spacing slugs so block styles work reliably.
+		// These are added even if theme has custom spacing, to ensure blocks have
+		// consistent defaults. Legacy DSG slugs are only added when theme doesn't
+		// define spacing, for backward compatibility with existing content.
+		$dsg_settings['settings']['spacing']['spacingSizes'] = $this->get_standard_spacing_sizes();
+		$dsg_settings['settings']['spacing']['spacingScale'] = array( 'steps' => 0 );
+
+		// Add legacy DSG slugs only if theme doesn't define spacing (for backward compatibility).
+		if ( ! $this->theme_has_spacing_sizes( $theme_data ) ) {
+			$dsg_settings['settings']['spacing']['spacingSizes'] = array_merge(
+				$dsg_settings['settings']['spacing']['spacingSizes'],
+				$this->get_legacy_spacing_sizes()
+			);
+		}
+
+		// Only add font sizes if theme doesn't define them.
+		if ( ! $this->theme_has_font_sizes( $theme_data ) ) {
+			$dsg_settings['settings']['typography'] = array(
+				'fontSizes' => $this->get_font_sizes( $saved_styles ),
+			);
+		}
+
 		return $theme_json->update_with( $dsg_settings );
 	}
 
 	/**
-	 * Get color palette with user customizations.
+	 * Check if theme defines spacing sizes.
 	 *
-	 * Uses Twenty Twenty-Five (TT5) semantic color system:
-	 * - Base: Default background (usually white/light)
-	 * - Contrast: Text color (usually black/dark)
-	 * - Accent 1-6: Semantic purpose colors
-	 *
-	 * @param array $saved_styles Saved user styles.
-	 * @return array Color palette.
+	 * @param array $theme_data Theme JSON data.
+	 * @return bool True if theme has spacing sizes.
 	 */
-	private function get_color_palette( $saved_styles ) {
-		$defaults = array(
-			// Core semantic colors.
-			array(
-				'slug'  => 'base',
-				'color' => '#ffffff',
-				'name'  => __( 'Base / Background', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'contrast',
-				'color' => '#000000',
-				'name'  => __( 'Contrast / Text', 'designsetgo' ),
-			),
-
-			// Accent colors - semantic purposes.
-			array(
-				'slug'  => 'accent-1',
-				'color' => '#f5f5f5',
-				'name'  => __( 'Accent 1 / Light Background', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'accent-2',
-				'color' => '#2563eb',
-				'name'  => __( 'Accent 2 / Primary Brand', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'accent-3',
-				'color' => '#1e293b',
-				'name'  => __( 'Accent 3 / Dark Background', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'accent-4',
-				'color' => '#334155',
-				'name'  => __( 'Accent 4 / Dark Variant', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'accent-5',
-				'color' => '#94a3b8',
-				'name'  => __( 'Accent 5 / Neutral', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'accent-6',
-				'color' => 'rgba(37, 99, 235, 0.1)',
-				'name'  => __( 'Accent 6 / Transparent', 'designsetgo' ),
-			),
-
-			// Utility colors (for backwards compatibility).
-			array(
-				'slug'  => 'success',
-				'color' => '#10b981',
-				'name'  => __( 'Success', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'warning',
-				'color' => '#f59e0b',
-				'name'  => __( 'Warning', 'designsetgo' ),
-			),
-			array(
-				'slug'  => 'error',
-				'color' => '#ef4444',
-				'name'  => __( 'Error', 'designsetgo' ),
-			),
-		);
-
-		// Merge with saved colors if available.
-		if ( isset( $saved_styles['colors'] ) && is_array( $saved_styles['colors'] ) ) {
-			foreach ( $saved_styles['colors'] as $slug => $color ) {
-				foreach ( $defaults as $key => $default ) {
-					if ( $default['slug'] === $slug ) {
-						$defaults[ $key ]['color'] = $color;
-					}
-				}
-			}
-		}
-
-		return $defaults;
+	private function theme_has_spacing_sizes( $theme_data ) {
+		return ! empty( $theme_data['settings']['spacing']['spacingSizes'] );
 	}
 
 	/**
-	 * Get gradients with user customizations.
+	 * Check if theme defines font sizes.
 	 *
-	 * Uses TT5 semantic color system for dynamic gradients.
-	 *
-	 * @param array $saved_styles Saved user styles.
-	 * @return array Gradients.
+	 * @param array $theme_data Theme JSON data.
+	 * @return bool True if theme has font sizes.
 	 */
-	private function get_gradients( $saved_styles ) {
+	private function theme_has_font_sizes( $theme_data ) {
+		return ! empty( $theme_data['settings']['typography']['fontSizes'] );
+	}
+
+	/**
+	 * Get WordPress standard spacing sizes.
+	 *
+	 * These are always provided to ensure block styles work reliably,
+	 * even when themes define custom spacing with different slug names.
+	 *
+	 * @return array Standard spacing sizes.
+	 */
+	private function get_standard_spacing_sizes() {
 		return array(
-			// Primary gradients using accent colors.
 			array(
-				'slug'     => 'primary-gradient',
-				'gradient' => 'linear-gradient(135deg, var(--wp--preset--color--accent-2) 0%, var(--wp--preset--color--accent-4) 100%)',
-				'name'     => __( 'Primary Gradient', 'designsetgo' ),
+				'slug' => '20',
+				'size' => '0.5rem',
+				'name' => __( '1 — 8px', 'designsetgo' ),
 			),
 			array(
-				'slug'     => 'dark-overlay',
-				'gradient' => 'linear-gradient(180deg, transparent 0%, var(--wp--preset--color--accent-3) 100%)',
-				'name'     => __( 'Dark Overlay', 'designsetgo' ),
+				'slug' => '30',
+				'size' => '1rem',
+				'name' => __( '2 — 16px', 'designsetgo' ),
 			),
 			array(
-				'slug'     => 'subtle-light',
-				'gradient' => 'linear-gradient(135deg, var(--wp--preset--color--base) 0%, var(--wp--preset--color--accent-1) 100%)',
-				'name'     => __( 'Subtle Light', 'designsetgo' ),
+				'slug' => '40',
+				'size' => '1.5rem',
+				'name' => __( '3 — 24px', 'designsetgo' ),
 			),
 			array(
-				'slug'     => 'brand-fade',
-				'gradient' => 'linear-gradient(90deg, var(--wp--preset--color--accent-2) 0%, var(--wp--preset--color--accent-6) 100%)',
-				'name'     => __( 'Brand Fade', 'designsetgo' ),
+				'slug' => '50',
+				'size' => '2rem',
+				'name' => __( '4 — 32px', 'designsetgo' ),
 			),
 			array(
-				'slug'     => 'vivid',
-				'gradient' => 'linear-gradient(135deg, var(--wp--preset--color--accent-2) 0%, var(--wp--preset--color--success) 100%)',
-				'name'     => __( 'Vivid', 'designsetgo' ),
+				'slug' => '60',
+				'size' => '3rem',
+				'name' => __( '5 — 48px', 'designsetgo' ),
+			),
+			array(
+				'slug' => '70',
+				'size' => '4rem',
+				'name' => __( '6 — 64px', 'designsetgo' ),
+			),
+			array(
+				'slug' => '80',
+				'size' => '5rem',
+				'name' => __( '7 — 80px', 'designsetgo' ),
 			),
 		);
 	}
 
 	/**
-	 * Get spacing sizes with user customizations.
+	 * Get legacy DSG spacing sizes for backward compatibility.
 	 *
-	 * Expanded spacing scale for flexible layouts.
-	 * Follows a consistent scale for predictable sizing.
+	 * Only added when theme doesn't define custom spacing, to support
+	 * existing content using DSG slugs without polluting the spacing picker.
 	 *
-	 * @param array $saved_styles Saved user styles.
-	 * @return array Spacing sizes.
+	 * @return array Legacy spacing sizes.
 	 */
-	private function get_spacing_sizes( $saved_styles ) {
+	private function get_legacy_spacing_sizes() {
 		return array(
 			array(
 				'slug' => 'xxs',
 				'size' => '0.25rem',
-				'name' => __( '2XS — 4px', 'designsetgo' ),
+				'name' => __( '2XS — 4px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xs',
 				'size' => '0.5rem',
-				'name' => __( 'XS — 8px', 'designsetgo' ),
+				'name' => __( 'XS — 8px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'sm',
 				'size' => '0.75rem',
-				'name' => __( 'S — 12px', 'designsetgo' ),
+				'name' => __( 'S — 12px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'md',
 				'size' => '1rem',
-				'name' => __( 'M — 16px', 'designsetgo' ),
+				'name' => __( 'M — 16px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'lg',
 				'size' => '1.5rem',
-				'name' => __( 'L — 24px', 'designsetgo' ),
+				'name' => __( 'L — 24px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xl',
 				'size' => '2rem',
-				'name' => __( 'XL — 32px', 'designsetgo' ),
+				'name' => __( 'XL — 32px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xxl',
 				'size' => '3rem',
-				'name' => __( '2XL — 48px', 'designsetgo' ),
+				'name' => __( '2XL — 48px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xxxl',
 				'size' => '4rem',
-				'name' => __( '3XL — 64px', 'designsetgo' ),
+				'name' => __( '3XL — 64px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xxxxl',
 				'size' => '5rem',
-				'name' => __( '4XL — 80px', 'designsetgo' ),
+				'name' => __( '4XL — 80px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'xxxxxl',
 				'size' => '6rem',
-				'name' => __( '5XL — 96px', 'designsetgo' ),
+				'name' => __( '5XL — 96px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'jumbo',
 				'size' => '8rem',
-				'name' => __( 'Jumbo — 128px', 'designsetgo' ),
+				'name' => __( 'Jumbo — 128px (legacy)', 'designsetgo' ),
 			),
 			array(
 				'slug' => 'mega',
 				'size' => '10rem',
-				'name' => __( 'Mega — 160px', 'designsetgo' ),
+				'name' => __( 'Mega — 160px (legacy)', 'designsetgo' ),
 			),
 		);
 	}
@@ -342,12 +297,12 @@ class Global_Styles {
 		return array(
 			'spacing' => array(
 				'padding'  => array(
-					'top'    => 'var(--wp--preset--spacing--lg)',
-					'bottom' => 'var(--wp--preset--spacing--lg)',
-					'left'   => 'var(--wp--preset--spacing--xs)',
-					'right'  => 'var(--wp--preset--spacing--xs)',
+					'top'    => 'var(--wp--preset--spacing--40)',
+					'bottom' => 'var(--wp--preset--spacing--40)',
+					'left'   => 'var(--wp--preset--spacing--20)',
+					'right'  => 'var(--wp--preset--spacing--20)',
 				),
-				'blockGap' => 'var(--wp--preset--spacing--md)',
+				'blockGap' => 'var(--wp--preset--spacing--30)',
 			),
 			'border'  => array(
 				'radius' => 'var(--wp--custom--designsetgo--border-radius--medium)',
@@ -373,8 +328,8 @@ class Global_Styles {
 		return array(
 			'spacing'    => array(
 				'margin' => array(
-					'top'    => 'var(--wp--preset--spacing--lg)',
-					'bottom' => 'var(--wp--preset--spacing--lg)',
+					'top'    => 'var(--wp--preset--spacing--40)',
+					'bottom' => 'var(--wp--preset--spacing--40)',
 				),
 			),
 			'typography' => array(
@@ -425,12 +380,12 @@ class Global_Styles {
 		return array(
 			'spacing' => array(
 				'padding'  => array(
-					'top'    => 'var(--wp--preset--spacing--xl)',
-					'bottom' => 'var(--wp--preset--spacing--xl)',
-					'left'   => 'var(--wp--preset--spacing--lg)',
-					'right'  => 'var(--wp--preset--spacing--lg)',
+					'top'    => 'var(--wp--preset--spacing--50)',
+					'bottom' => 'var(--wp--preset--spacing--50)',
+					'left'   => 'var(--wp--preset--spacing--40)',
+					'right'  => 'var(--wp--preset--spacing--40)',
 				),
-				'blockGap' => 'var(--wp--preset--spacing--md)',
+				'blockGap' => 'var(--wp--preset--spacing--30)',
 			),
 			'color'   => array(
 				'background' => 'transparent',
