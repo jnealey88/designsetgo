@@ -94,7 +94,43 @@ body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 	}
 }
 
-// No custom alignfull overrides - let WordPress handle it natively
+/**
+ * ============================================================================
+ * CONTAINER ALIGNMENT SYSTEM
+ * ============================================================================
+ *
+ * Custom alignment system for DSG container blocks (Section, Row, Grid).
+ * Uses DSG-specific classes instead of WordPress core alignment to avoid conflicts.
+ */
+
+.dsgo-stack,
+.dsgo-flex,
+.dsgo-grid {
+	// Full-width alignment: break out to viewport edges
+	// Uses the standard full-width breakout technique
+	&.dsgo-align-full {
+		width: 100vw !important;
+		max-width: 100vw !important;
+		// Break out of any parent container using the 50vw technique
+		margin-left: calc(50% - 50vw) !important;
+		margin-right: calc(50% - 50vw) !important;
+	}
+
+	// Wide alignment: centered within parent, limited to theme's wide-size
+	// Intentionally does NOT break out like alignfull - stays within parent constraints
+	&.dsgo-align-wide {
+		width: var(--wp--style--global--wide-size, 1280px) !important;
+		max-width: 100% !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+	}
+
+	// Default alignment: respects parent container width
+	&.dsgo-align-default {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+}
 
 /**
  * WordPress Core Post Content Fix
@@ -111,6 +147,36 @@ body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 	max-width: 100%;
 }
 /* stylelint-enable selector-class-pattern */
+
+/**
+ * Full-Width Blocks Inside Post Content
+ * Blocks inside .entry-content or .wp-block-post-content use the same breakout
+ * technique as top-level blocks. The calc(50% - 50vw) technique works correctly
+ * regardless of nesting depth.
+ */
+/* stylelint-disable selector-class-pattern */
+.entry-content,
+.wp-block-post-content {
+
+	> .dsgo-stack.dsgo-align-full,
+	> .dsgo-flex.dsgo-align-full,
+	> .dsgo-grid.dsgo-align-full {
+		// Use standard breakout formula - works at any nesting level
+		margin-left: calc(50% - 50vw) !important;
+		margin-right: calc(50% - 50vw) !important;
+	}
+}
+/* stylelint-enable selector-class-pattern */
+
+/**
+ * Prevent Horizontal Scroll from 100vw on Elements with Scrollbar
+ * When a vertical scrollbar is present, 100vw includes the scrollbar width,
+ * which can cause horizontal overflow. This prevents that overflow.
+ */
+body,
+html {
+	overflow-x: clip;
+}
 
 /**
  * ============================================================================

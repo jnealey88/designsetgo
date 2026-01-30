@@ -44,6 +44,7 @@ function convertPresetToCSSVar(value) {
  */
 export default function RowSave({ attributes }) {
 	const {
+		dsgoAlign,
 		tagName = 'div',
 		constrainWidth,
 		contentWidth,
@@ -59,6 +60,7 @@ export default function RowSave({ attributes }) {
 	// Build className with conditional classes
 	const className = [
 		'dsgo-flex',
+		dsgoAlign && `dsgo-align-${dsgoAlign}`,
 		mobileStack && 'dsgo-flex--mobile-stack',
 		!constrainWidth && 'dsgo-no-width-constraint',
 		overlayColor && 'dsgo-flex--has-overlay',
@@ -157,10 +159,18 @@ export default function RowSave({ attributes }) {
 	}
 
 	// Merge inner blocks props
-	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsgo-flex__inner',
-		style: innerStyle,
-	});
+	// CRITICAL: Disable layout class names to prevent WordPress from adding
+	// is-layout-flex and other layout classes to the saved HTML.
+	// These classes interfere with alignfull/alignwide behavior in the two-div architecture.
+	const innerBlocksProps = useInnerBlocksProps.save(
+		{
+			className: 'dsgo-flex__inner',
+			style: innerStyle,
+		},
+		{
+			__unstableDisableLayoutClassNames: true,
+		}
+	);
 
 	return (
 		<TagName {...blockProps}>

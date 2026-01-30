@@ -18,6 +18,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 export default function SectionSave({ attributes }) {
 	const {
+		dsgoAlign,
 		tagName = 'div',
 		constrainWidth,
 		contentWidth,
@@ -31,6 +32,7 @@ export default function SectionSave({ attributes }) {
 	// Build className with conditional no-width-constraint and overlay classes
 	const className = [
 		'dsgo-stack',
+		dsgoAlign && `dsgo-align-${dsgoAlign}`,
 		!constrainWidth && 'dsgo-no-width-constraint',
 		overlayColor && 'dsgo-stack--has-overlay',
 	]
@@ -105,10 +107,18 @@ export default function SectionSave({ attributes }) {
 	}
 
 	// Merge inner blocks props without the outer block props
-	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsgo-stack__inner',
-		style: innerStyle,
-	});
+	// CRITICAL: Disable layout class names to prevent WordPress from adding
+	// is-layout-flex and other layout classes to the saved HTML.
+	// These classes interfere with alignfull/alignwide behavior in the two-div architecture.
+	const innerBlocksProps = useInnerBlocksProps.save(
+		{
+			className: 'dsgo-stack__inner',
+			style: innerStyle,
+		},
+		{
+			__unstableDisableLayoutClassNames: true,
+		}
+	);
 
 	return (
 		<TagName {...blockProps}>

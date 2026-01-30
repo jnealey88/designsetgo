@@ -26,6 +26,8 @@ import {
 	RangeControl,
 	SelectControl,
 	ToggleControl,
+	ToolbarGroup,
+	ToolbarButton,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -45,6 +47,7 @@ import { useSelect } from '@wordpress/data';
  */
 export default function GridEdit({ attributes, setAttributes, clientId }) {
 	const {
+		dsgoAlign,
 		align,
 		className,
 		tagName = 'div',
@@ -64,31 +67,15 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		style,
 	} = attributes;
 
-	// Auto-migrate old blocks that use className for alignment
+	// Auto-migrate old blocks from align to dsgoAlign
 	useEffect(() => {
-		if (!align && className) {
-			let newAlign;
-			if (className.includes('alignfull')) {
-				newAlign = 'full';
-			} else if (className.includes('alignwide')) {
-				newAlign = 'wide';
-			}
-
-			if (newAlign) {
-				const cleanClassName = className
-					.split(' ')
-					.filter((cls) => cls !== 'alignfull' && cls !== 'alignwide')
-					.join(' ')
-					.trim();
-
-				setAttributes({
-					align: newAlign,
-					className: cleanClassName || undefined,
-				});
-			}
+		if (align && !dsgoAlign) {
+			setAttributes({
+				dsgoAlign: align,
+				align: undefined, // Clear old attribute
+			});
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []); // Run only once on mount
+	}, [align, dsgoAlign, setAttributes]);
 
 	// Get theme settings (WP 6.5+)
 	const [themeContentSize] = useSettings('layout.contentSize');
@@ -115,8 +102,18 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	const TagName = tagName || 'div';
+	const blockClassName = [
+		'dsgo-grid',
+		dsgoAlign && `dsgo-align-${dsgoAlign}`,
+		`dsgo-grid-cols-${desktopColumns}`,
+		`dsgo-grid-cols-tablet-${tabletColumns}`,
+		`dsgo-grid-cols-mobile-${mobileColumns}`,
+	]
+		.filter(Boolean)
+		.join(' ');
+
 	const blockProps = useBlockProps({
-		className: `dsgo-grid dsgo-grid-cols-${desktopColumns} dsgo-grid-cols-tablet-${tabletColumns} dsgo-grid-cols-mobile-${mobileColumns}`,
+		className: blockClassName,
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsgo-hover-bg-color': hoverBackgroundColor,
@@ -188,6 +185,9 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	}
 
 	// Merge inner blocks props with inner styles
+	// CRITICAL: Disable layout class names to prevent WordPress from adding
+	// is-layout-flex and other layout classes to the inner div.
+	// These classes interfere with alignfull/alignwide behavior in the two-div architecture.
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: 'dsgo-grid__inner',
@@ -198,12 +198,33 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 			renderAppender: hasInnerBlocks
 				? undefined
 				: InnerBlocks.ButtonBlockAppender,
+			__unstableDisableLayoutClassNames: true,
 		}
 	);
 
 	return (
 		<>
 			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon="align-center"
+						label={__('Default width', 'designsetgo')}
+						onClick={() => setAttributes({ dsgoAlign: 'default' })}
+						isPressed={dsgoAlign === 'default'}
+					/>
+					<ToolbarButton
+						icon="align-wide"
+						label={__('Wide width', 'designsetgo')}
+						onClick={() => setAttributes({ dsgoAlign: 'wide' })}
+						isPressed={dsgoAlign === 'wide'}
+					/>
+					<ToolbarButton
+						icon="align-full-width"
+						label={__('Full width', 'designsetgo')}
+						onClick={() => setAttributes({ dsgoAlign: 'full' })}
+						isPressed={dsgoAlign === 'full'}
+					/>
+				</ToolbarGroup>
 				<AlignmentControl
 					value={textAlign}
 					onChange={(newAlign) =>

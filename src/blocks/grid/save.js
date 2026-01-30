@@ -17,6 +17,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 export default function GridSave({ attributes }) {
 	const {
+		dsgoAlign,
 		tagName = 'div',
 		constrainWidth,
 		contentWidth,
@@ -36,6 +37,7 @@ export default function GridSave({ attributes }) {
 	// Build className with conditional classes
 	const className = [
 		'dsgo-grid',
+		dsgoAlign && `dsgo-align-${dsgoAlign}`,
 		`dsgo-grid-cols-${desktopColumns}`,
 		`dsgo-grid-cols-tablet-${tabletColumns}`,
 		`dsgo-grid-cols-mobile-${mobileColumns}`,
@@ -120,10 +122,18 @@ export default function GridSave({ attributes }) {
 	}
 
 	// Merge inner blocks props
-	const innerBlocksProps = useInnerBlocksProps.save({
-		className: 'dsgo-grid__inner',
-		style: innerStyles,
-	});
+	// CRITICAL: Disable layout class names to prevent WordPress from adding
+	// is-layout-flex and other layout classes to the saved HTML.
+	// These classes interfere with alignfull/alignwide behavior in the two-div architecture.
+	const innerBlocksProps = useInnerBlocksProps.save(
+		{
+			className: 'dsgo-grid__inner',
+			style: innerStyles,
+		},
+		{
+			__unstableDisableLayoutClassNames: true,
+		}
+	);
 
 	return (
 		<TagName {...blockProps}>

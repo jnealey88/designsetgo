@@ -10,7 +10,6 @@
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
-		"align": ["wide", "full"],
 		"html": false,
 		"inserter": true,
 		"layout": {
@@ -74,9 +73,13 @@
 		}
 	},
 	"attributes": {
-		"align": {
+		"dsgoAlign": {
 			"type": "string",
-			"default": "full"
+			"default": "full",
+			"enum": ["default", "wide", "full"]
+		},
+		"align": {
+			"type": "string"
 		},
 		"tagName": {
 			"type": "string",
