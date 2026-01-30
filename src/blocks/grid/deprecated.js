@@ -19,7 +19,7 @@ const v2 = {
 		},
 		constrainWidth: {
 			type: 'boolean',
-			default: true,
+			default: false,
 		},
 		contentWidth: {
 			type: 'string',
@@ -170,6 +170,28 @@ const v1 = {
 		contentWidth: {
 			type: 'string',
 		},
+		desktopColumns: {
+			type: 'number',
+			default: 3,
+		},
+		tabletColumns: {
+			type: 'number',
+			default: 2,
+		},
+		mobileColumns: {
+			type: 'number',
+			default: 1,
+		},
+		rowGap: {
+			type: 'string',
+		},
+		columnGap: {
+			type: 'string',
+		},
+		alignItems: {
+			type: 'string',
+			default: 'stretch',
+		},
 		hoverBackgroundColor: {
 			type: 'string',
 		},
@@ -185,12 +207,19 @@ const v1 = {
 	},
 	save({ attributes }) {
 		const {
+			desktopColumns = 3,
+			tabletColumns = 2,
+			mobileColumns = 1,
+			rowGap,
+			columnGap,
+			alignItems = 'stretch',
 			hoverBackgroundColor,
 			hoverTextColor,
 			hoverIconBackgroundColor,
 			hoverButtonBackgroundColor,
 			layout,
 			contentWidth,
+			style,
 		} = attributes;
 
 		let contentSize;
@@ -201,7 +230,10 @@ const v1 = {
 		}
 
 		const className = [
-			'dsgo-stack',
+			'dsgo-grid',
+			`dsgo-grid-cols-${desktopColumns}`,
+			`dsgo-grid-cols-tablet-${tabletColumns}`,
+			`dsgo-grid-cols-mobile-${mobileColumns}`,
 			!contentSize && 'dsgo-no-width-constraint',
 		]
 			.filter(Boolean)
@@ -225,7 +257,18 @@ const v1 = {
 			},
 		});
 
-		const innerStyle = {};
+		// Calculate inner styles with grid properties
+		const blockGap = style?.spacing?.blockGap;
+		const defaultGap = 'var(--wp--preset--spacing--50)';
+
+		const innerStyle = {
+			display: 'grid',
+			gridTemplateColumns: `repeat(${desktopColumns || 3}, 1fr)`,
+			alignItems: alignItems || 'stretch',
+			rowGap: blockGap || rowGap || defaultGap,
+			columnGap: blockGap || columnGap || defaultGap,
+		};
+
 		if (contentSize) {
 			innerStyle.maxWidth = contentSize;
 			innerStyle.marginLeft = 'auto';
@@ -233,7 +276,7 @@ const v1 = {
 		}
 
 		const innerBlocksProps = useInnerBlocksProps.save({
-			className: 'dsgo-stack__inner',
+			className: 'dsgo-grid__inner',
 			style: innerStyle,
 		});
 

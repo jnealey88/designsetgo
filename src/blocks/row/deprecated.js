@@ -45,7 +45,7 @@ const v3 = {
 		},
 		constrainWidth: {
 			type: 'boolean',
-			default: true,
+			default: false,
 		},
 		contentWidth: {
 			type: 'string',

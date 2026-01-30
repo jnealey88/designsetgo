@@ -6,3 +6,4 @@
 
 export * from './breakpoints';
 export * from './css-generator';
+export * from './padding-utils';

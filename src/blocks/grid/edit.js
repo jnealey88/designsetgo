@@ -33,6 +33,7 @@ import {
 } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
+import { extractPaddingFromBlockProps } from '../../utils';
 
 /**
  * Grid Container Edit Component
@@ -114,9 +115,20 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 	);
 
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
+	// Build className with conditional classes
+	const blockClassName = [
+		'dsgo-grid',
+		`dsgo-grid-cols-${desktopColumns}`,
+		`dsgo-grid-cols-tablet-${tabletColumns}`,
+		`dsgo-grid-cols-mobile-${mobileColumns}`,
+		!constrainWidth && 'dsgo-no-width-constraint',
+	]
+		.filter(Boolean)
+		.join(' ');
+
 	const TagName = tagName || 'div';
 	const blockProps = useBlockProps({
-		className: `dsgo-grid dsgo-grid-cols-${desktopColumns} dsgo-grid-cols-tablet-${tabletColumns} dsgo-grid-cols-mobile-${mobileColumns}`,
+		className: blockClassName,
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsgo-hover-bg-color': hoverBackgroundColor,
@@ -135,29 +147,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 
 	// Extract padding from blockProps to apply to inner div instead
 	// This ensures alignfull/alignwide work correctly without padding interfering with width calculations
-	// WordPress spacing support applies padding to blockProps, but we need it on the inner div
-	const paddingTop = blockProps.style?.paddingTop;
-	const paddingRight = blockProps.style?.paddingRight;
-	const paddingBottom = blockProps.style?.paddingBottom;
-	const paddingLeft = blockProps.style?.paddingLeft;
-	const padding = blockProps.style?.padding;
-
-	// Remove padding from outer div - it should only be on inner div
-	if (blockProps.style?.padding) {
-		delete blockProps.style.padding;
-	}
-	if (blockProps.style?.paddingTop) {
-		delete blockProps.style.paddingTop;
-	}
-	if (blockProps.style?.paddingRight) {
-		delete blockProps.style.paddingRight;
-	}
-	if (blockProps.style?.paddingBottom) {
-		delete blockProps.style.paddingBottom;
-	}
-	if (blockProps.style?.paddingLeft) {
-		delete blockProps.style.paddingLeft;
-	}
+	const { paddingStyles } = extractPaddingFromBlockProps(blockProps);
 
 	// Calculate inner styles declaratively with padding (must match save.js EXACTLY)
 	// IMPORTANT: Always provide a default gap to prevent overlapping items
@@ -172,11 +162,7 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		rowGap: blockGap || rowGap || defaultGap,
 		columnGap: blockGap || columnGap || defaultGap,
 		// Apply padding to inner div (extracted from blockProps)
-		...(padding && { padding }),
-		...(paddingTop && { paddingTop }),
-		...(paddingRight && { paddingRight }),
-		...(paddingBottom && { paddingBottom }),
-		...(paddingLeft && { paddingLeft }),
+		...paddingStyles,
 	};
 
 	// Apply width constraints if enabled

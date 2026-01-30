@@ -32,6 +32,7 @@ import {
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
+import { extractPaddingFromBlockProps } from '../../utils';
 
 /**
  * Section Container Edit Component
@@ -145,6 +146,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 	// Build className
 	const blockClassName = [
 		'dsgo-stack',
+		!constrainWidth && 'dsgo-no-width-constraint',
 		overlayColor && 'dsgo-stack--has-overlay',
 	]
 		.filter(Boolean)
@@ -178,39 +180,12 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 
 	// Extract padding from blockProps to apply to inner div instead
 	// This ensures alignfull/alignwide work correctly without padding interfering with width calculations
-	// WordPress spacing support applies padding to blockProps, but we need it on the inner div
-	const paddingTop = blockProps.style?.paddingTop;
-	const paddingRight = blockProps.style?.paddingRight;
-	const paddingBottom = blockProps.style?.paddingBottom;
-	const paddingLeft = blockProps.style?.paddingLeft;
-	const padding = blockProps.style?.padding;
-
-	// Remove padding from outer div - it should only be on inner div
-	if (blockProps.style?.padding) {
-		delete blockProps.style.padding;
-	}
-	if (blockProps.style?.paddingTop) {
-		delete blockProps.style.paddingTop;
-	}
-	if (blockProps.style?.paddingRight) {
-		delete blockProps.style.paddingRight;
-	}
-	if (blockProps.style?.paddingBottom) {
-		delete blockProps.style.paddingBottom;
-	}
-	if (blockProps.style?.paddingLeft) {
-		delete blockProps.style.paddingLeft;
-	}
+	const { paddingStyles } = extractPaddingFromBlockProps(blockProps);
 
 	// Inner container props with width constraints AND padding (must match save.js EXACTLY)
 	// Use custom contentWidth if set, otherwise fallback to theme's contentSize, then default
 	const innerStyle = {
-		// Apply padding to inner div (extracted from blockProps)
-		...(padding && { padding }),
-		...(paddingTop && { paddingTop }),
-		...(paddingRight && { paddingRight }),
-		...(paddingBottom && { paddingBottom }),
-		...(paddingLeft && { paddingLeft }),
+		...paddingStyles, // Apply padding to inner div (extracted from blockProps)
 	};
 	if (constrainWidth) {
 		innerStyle.maxWidth = contentWidth || themeContentSize || '1140px';

@@ -49,3 +49,30 @@
 // - scroll-accordion, scroll-accordion-item
 // - blobs, slider, slide, form-builder
 // ===================================================================
+
+/**
+ * Fix for alignfull/alignwide blocks to achieve true full/wide width
+ * When inside constrained containers with global padding
+ */
+
+/* Alignfull - Extend beyond parent padding to achieve full viewport width */
+.has-global-padding.is-layout-constrained > .alignfull.wp-block-designsetgo-section,
+.has-global-padding.is-layout-constrained > .alignfull.wp-block-designsetgo-row,
+.has-global-padding.is-layout-constrained > .alignfull.wp-block-designsetgo-grid {
+	/* Extend width to account for parent padding (32px * 2 = 64px total) */
+	width: calc(100% + 64px);
+	max-width: calc(100% + 64px);
+	/* Negative margins to pull block outward */
+	margin-left: -32px;
+	margin-right: -32px;
+}
+
+/* Alignwide - Standard WordPress alignwide behavior */
+.has-global-padding.is-layout-constrained > .alignwide.wp-block-designsetgo-section,
+.has-global-padding.is-layout-constrained > .alignwide.wp-block-designsetgo-row,
+.has-global-padding.is-layout-constrained > .alignwide.wp-block-designsetgo-grid {
+	width: 100%;
+	max-width: var(--wp--custom--layout--wide-size, 1200px);
+	margin-left: auto;
+	margin-right: auto;
+}
