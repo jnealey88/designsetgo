@@ -288,6 +288,17 @@ class Plugin {
 					'turnstileConfigured' => ! empty( $integrations_settings['turnstile_site_key'] ) && ! empty( $integrations_settings['turnstile_secret_key'] ),
 				)
 			);
+
+			// Localize excluded blocks setting for extension filtering.
+			$excluded_blocks = isset( $settings['excluded_blocks'] ) ? $settings['excluded_blocks'] : array();
+
+			wp_localize_script(
+				'designsetgo-block-category-filter',
+				'dsgoSettings',
+				array(
+					'excludedBlocks' => $excluded_blocks,
+				)
+			);
 		}
 	}
 

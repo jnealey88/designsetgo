@@ -9,6 +9,7 @@
 
 import { addFilter } from '@wordpress/hooks';
 import { DEFAULT_ANIMATION_SETTINGS } from './constants';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 /**
  * Add animation attributes to all blocks
@@ -18,6 +19,11 @@ import { DEFAULT_ANIMATION_SETTINGS } from './constants';
  * @return {Object} Modified settings
  */
 function addAnimationAttributes(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	// Skip core embed blocks and other blocks that shouldn't have animations
 	if (name.startsWith('core-embed/') || name === 'core/freeform') {
 		return settings;

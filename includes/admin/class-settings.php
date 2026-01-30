@@ -38,6 +38,13 @@ class Settings {
 		return array(
 			'enabled_blocks'     => array(), // Empty = all enabled.
 			'enabled_extensions' => array(), // Empty = all enabled.
+			'excluded_blocks'    => array(
+				// Common third-party blocks known to have REST API conflicts.
+				'gravityforms/*',
+				'mailpoet/*',
+				'woocommerce/*',
+				'jetpack/*',
+			),
 			'performance'        => array(
 				'conditional_loading' => true,
 				'cache_duration'      => 3600, // 1 hour.
@@ -699,6 +706,11 @@ class Settings {
 		// Sanitize enabled extensions.
 		if ( isset( $settings['enabled_extensions'] ) && is_array( $settings['enabled_extensions'] ) ) {
 			$sanitized['enabled_extensions'] = array_map( 'sanitize_text_field', $settings['enabled_extensions'] );
+		}
+
+		// Sanitize excluded blocks.
+		if ( isset( $settings['excluded_blocks'] ) && is_array( $settings['excluded_blocks'] ) ) {
+			$sanitized['excluded_blocks'] = array_map( 'sanitize_text_field', $settings['excluded_blocks'] );
 		}
 
 		// Sanitize performance settings.

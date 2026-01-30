@@ -10,6 +10,7 @@
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 import {
 	InspectorControls,
 	MediaUpload,
@@ -52,6 +53,11 @@ const ALLOWED_BLOCKS = [
  * @return {Object} Modified settings
  */
 function addBackgroundVideoAttributes(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	if (!ALLOWED_BLOCKS.includes(name)) {
 		return settings;
 	}
