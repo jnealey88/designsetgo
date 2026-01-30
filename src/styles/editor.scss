@@ -87,3 +87,23 @@
 	margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
 	margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
 }
+
+/**
+ * Nested Container Alignment in Editor
+ * When DSG containers are nested inside other DSG containers, use parent-relative widths
+ * Must match _utilities.scss for editor/frontend parity
+ */
+.dsgo-stack__inner,
+.dsgo-flex__inner,
+.dsgo-grid__inner {
+
+	// Full-width in nested context: 100% of parent container
+	> .dsgo-stack.dsgo-align-full,
+	> .dsgo-flex.dsgo-align-full,
+	> .dsgo-grid.dsgo-align-full {
+		width: 100% !important;
+		max-width: 100% !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+	}
+}

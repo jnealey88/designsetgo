@@ -125,11 +125,37 @@ body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 		margin-right: auto !important;
 	}
 
-	// Default alignment: respects parent container width
+	// Default alignment: uses theme's content-size, centered
+	// This matches WordPress core behavior for blocks without alignment
 	&.dsgo-align-default {
+		width: var(--wp--style--global--content-size, 100%) !important;
+		max-width: 100% !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+	}
+}
+
+/**
+ * Nested Container Alignment
+ * When DSG containers are nested inside other DSG containers, use parent-relative widths
+ * instead of viewport-relative breakouts. This matches WordPress core Group block behavior.
+ */
+.dsgo-stack__inner,
+.dsgo-flex__inner,
+.dsgo-grid__inner {
+
+	// Full-width in nested context: 100% of parent container
+	> .dsgo-stack.dsgo-align-full,
+	> .dsgo-flex.dsgo-align-full,
+	> .dsgo-grid.dsgo-align-full {
 		width: 100% !important;
 		max-width: 100% !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
 	}
+
+	// Wide and default alignments work correctly as-is (they already use CSS variables)
+	// No override needed - they'll naturally center within the parent
 }
 
 /**
