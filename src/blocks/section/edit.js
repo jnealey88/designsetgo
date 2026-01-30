@@ -176,9 +176,42 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		},
 	});
 
-	// Inner container props with width constraints (must match save.js EXACTLY)
+	// Extract padding from blockProps to apply to inner div instead
+	// This ensures alignfull/alignwide work correctly without padding interfering with width calculations
+	// WordPress spacing support applies padding to blockProps, but we need it on the inner div
+	const paddingTop = blockProps.style?.paddingTop;
+	const paddingRight = blockProps.style?.paddingRight;
+	const paddingBottom = blockProps.style?.paddingBottom;
+	const paddingLeft = blockProps.style?.paddingLeft;
+	const padding = blockProps.style?.padding;
+
+	// Remove padding from outer div - it should only be on inner div
+	if (blockProps.style?.padding) {
+		delete blockProps.style.padding;
+	}
+	if (blockProps.style?.paddingTop) {
+		delete blockProps.style.paddingTop;
+	}
+	if (blockProps.style?.paddingRight) {
+		delete blockProps.style.paddingRight;
+	}
+	if (blockProps.style?.paddingBottom) {
+		delete blockProps.style.paddingBottom;
+	}
+	if (blockProps.style?.paddingLeft) {
+		delete blockProps.style.paddingLeft;
+	}
+
+	// Inner container props with width constraints AND padding (must match save.js EXACTLY)
 	// Use custom contentWidth if set, otherwise fallback to theme's contentSize, then default
-	const innerStyle = {};
+	const innerStyle = {
+		// Apply padding to inner div (extracted from blockProps)
+		...(padding && { padding }),
+		...(paddingTop && { paddingTop }),
+		...(paddingRight && { paddingRight }),
+		...(paddingBottom && { paddingBottom }),
+		...(paddingLeft && { paddingLeft }),
+	};
 	if (constrainWidth) {
 		innerStyle.maxWidth = contentWidth || themeContentSize || '1140px';
 		innerStyle.marginLeft = 'auto';
