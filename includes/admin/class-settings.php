@@ -35,16 +35,29 @@ class Settings {
 	 * @return array Default settings.
 	 */
 	public static function get_defaults() {
-		return array(
-			'enabled_blocks'     => array(), // Empty = all enabled.
-			'enabled_extensions' => array(), // Empty = all enabled.
-			'excluded_blocks'    => array(
+		// Determine whether this is a fresh installation or an existing one.
+		// For existing installations, avoid introducing new default exclusions
+		// that could change behavior without explicit user consent.
+		$existing_settings = get_option( self::OPTION_NAME, false );
+
+		if ( false === $existing_settings ) {
+			// Fresh install: apply conservative defaults with known conflict exclusions.
+			$excluded_blocks_default = array(
 				// Common third-party blocks known to have REST API conflicts.
 				'gravityforms/*',
 				'mailpoet/*',
 				'woocommerce/*',
 				'jetpack/*',
-			),
+			);
+		} else {
+			// Existing install: do not add new exclusions automatically.
+			$excluded_blocks_default = array();
+		}
+
+		return array(
+			'enabled_blocks'     => array(), // Empty = all enabled.
+			'enabled_extensions' => array(), // Empty = all enabled.
+			'excluded_blocks'    => $excluded_blocks_default,
 			'performance'        => array(
 				'conditional_loading' => true,
 				'cache_duration'      => 3600, // 1 hour.

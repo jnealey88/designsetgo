@@ -293,7 +293,7 @@ class Plugin {
 			$excluded_blocks = isset( $settings['excluded_blocks'] ) ? $settings['excluded_blocks'] : array();
 
 			wp_localize_script(
-				'designsetgo-block-category-filter',
+				'designsetgo-extensions',
 				'dsgoSettings',
 				array(
 					'excludedBlocks' => $excluded_blocks,

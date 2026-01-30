@@ -6,7 +6,7 @@
  * @package
  */
 
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import {
 	Card,
@@ -311,8 +311,23 @@ const BlocksExtensions = () => {
 			return;
 		}
 
+		const blockName = newExcludedBlock.trim();
+
+		// Validate block name format: namespace/blockname or namespace/*
+		const blockNamePattern = /^[a-z0-9-]+\/([a-z0-9-]+|\*)$/;
+		if (!blockNamePattern.test(blockName)) {
+			setNotice({
+				status: 'error',
+				message: __(
+					'Invalid block name format. Please use "namespace/blockname" (e.g., gravityforms/form) or "namespace/*" for wildcards.',
+					'designsetgo'
+				),
+			});
+			return;
+		}
+
 		const currentExcluded = settings.excluded_blocks || [];
-		if (currentExcluded.includes(newExcludedBlock.trim())) {
+		if (currentExcluded.includes(blockName)) {
 			setNotice({
 				status: 'warning',
 				message: __('This block is already in the exclusion list.', 'designsetgo'),
@@ -322,9 +337,19 @@ const BlocksExtensions = () => {
 
 		setSettings({
 			...settings,
-			excluded_blocks: [...currentExcluded, newExcludedBlock.trim()],
+			excluded_blocks: [...currentExcluded, blockName],
 		});
 		setNewExcludedBlock('');
+
+		// Show success notice
+		setNotice({
+			status: 'success',
+			message: sprintf(
+				/* translators: %s: block name */
+				__('Successfully added %s to the exclusion list.', 'designsetgo'),
+				blockName
+			),
+		});
 	};
 
 	/**
@@ -592,10 +617,16 @@ const BlocksExtensions = () => {
 											'designsetgo'
 										)}
 									</p>
+									<p className="description" style={{ marginTop: '8px', fontStyle: 'italic' }}>
+										{__(
+											'Note: Make sure the block plugin is active before adding it to the exclusion list. DSG will validate the format but cannot verify if the block exists.',
+											'designsetgo'
+										)}
+									</p>
 
-									<div style={{ marginTop: '20px', marginBottom: '20px' }}>
-										<div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-											<div style={{ flex: 1 }}>
+									<div className="designsetgo-exclusion-input-wrapper">
+										<div className="designsetgo-exclusion-input-row">
+											<div className="designsetgo-exclusion-input-field">
 												<input
 													type="text"
 													className="components-text-control__input"
@@ -607,9 +638,13 @@ const BlocksExtensions = () => {
 														}
 													}}
 													placeholder={__('e.g., gravityforms/form or gravityforms/*', 'designsetgo')}
-													style={{ width: '100%' }}
+													aria-label={__('Block name to exclude', 'designsetgo')}
+													aria-describedby="excluded-block-input-description"
 												/>
-												<p className="description" style={{ marginTop: '8px' }}>
+												<p
+													id="excluded-block-input-description"
+													className="description"
+												>
 													{__(
 														'Enter block name (e.g., gravityforms/form) or namespace wildcard (e.g., gravityforms/*)',
 														'designsetgo'
@@ -627,26 +662,17 @@ const BlocksExtensions = () => {
 									</div>
 
 									{settings?.excluded_blocks && settings.excluded_blocks.length > 0 ? (
-										<div style={{ marginTop: '20px' }}>
-											<h3 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '12px' }}>
+										<div className="designsetgo-excluded-blocks-section">
+											<h3 className="designsetgo-excluded-blocks-heading">
 												{__('Currently Excluded:', 'designsetgo')}
 											</h3>
-											<ul style={{ margin: 0, padding: 0 }}>
+											<ul className="designsetgo-excluded-block-list" aria-live="polite" aria-relevant="additions removals">
 												{settings.excluded_blocks.map((blockName) => (
 													<li
 														key={blockName}
-														style={{
-															display: 'flex',
-															alignItems: 'center',
-															justifyContent: 'space-between',
-															padding: '10px 12px',
-															marginBottom: '8px',
-															backgroundColor: '#f0f0f1',
-															borderRadius: '4px',
-															listStyle: 'none',
-														}}
+														className="designsetgo-excluded-block-item"
 													>
-														<code style={{ fontSize: '13px' }}>{blockName}</code>
+														<code>{blockName}</code>
 														<Button
 															isDestructive
 															variant="secondary"
@@ -660,7 +686,7 @@ const BlocksExtensions = () => {
 											</ul>
 										</div>
 									) : (
-										<p className="description" style={{ marginTop: '20px', fontStyle: 'italic' }}>
+										<p className="description designsetgo-no-exclusions-message">
 											{__(
 												'No blocks are currently excluded. Add blocks above to prevent DSG extensions from being applied to them.',
 												'designsetgo'
@@ -668,11 +694,11 @@ const BlocksExtensions = () => {
 										</p>
 									)}
 
-									<div style={{ marginTop: '24px', padding: '16px', backgroundColor: '#f0f6fc', borderLeft: '4px solid #0073aa', borderRadius: '4px' }}>
-										<h4 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600 }}>
+									<div className="designsetgo-info-box">
+										<h4>
 											{__('Common Blocks to Exclude:', 'designsetgo')}
 										</h4>
-										<ul style={{ margin: '8px 0 0 0', paddingLeft: '20px', fontSize: '13px' }}>
+										<ul>
 											<li><code>gravityforms/*</code> - {__('All Gravity Forms blocks', 'designsetgo')}</li>
 											<li><code>mailpoet/*</code> - {__('All MailPoet blocks', 'designsetgo')}</li>
 											<li><code>woocommerce/*</code> - {__('All WooCommerce blocks', 'designsetgo')}</li>
