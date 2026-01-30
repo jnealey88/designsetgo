@@ -19,6 +19,7 @@ import {
 import { useSelect } from '@wordpress/data';
 import { getIcon } from '../icon/utils/svg-icons';
 import { ButtonSettingsPanel } from './components/inspector/ButtonSettingsPanel';
+import { convertPaddingValue } from './utils/padding';
 
 /**
  * Icon Button Edit Component
@@ -52,6 +53,7 @@ export default function IconButtonEdit({
 		style,
 		backgroundColor,
 		textColor,
+		fontSize,
 		modalCloseId,
 	} = attributes;
 
@@ -84,6 +86,16 @@ export default function IconButtonEdit({
 		style?.color?.text ||
 		(textColor && `var(--wp--preset--color--${textColor})`);
 
+	// Extract font size
+	// Custom font sizes come from style.typography.fontSize (px/rem/em)
+	// Preset font sizes come from fontSize (slug that needs conversion)
+	const fontSizeValue =
+		style?.typography?.fontSize ||
+		(fontSize && `var(--wp--preset--font-size--${fontSize})`);
+
+	// Extract padding - WordPress stores it in style.spacing.padding
+	const paddingValue = style?.spacing?.padding;
+
 	// Calculate button styles
 	const buttonStyles = {
 		display: 'inline-flex',
@@ -94,6 +106,13 @@ export default function IconButtonEdit({
 		flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
 		...(bgColor && { backgroundColor: bgColor }),
 		...(txtColor && { color: txtColor }),
+		...(fontSizeValue && { fontSize: fontSizeValue }),
+		...(paddingValue && {
+			paddingTop: convertPaddingValue(paddingValue.top),
+			paddingRight: convertPaddingValue(paddingValue.right),
+			paddingBottom: convertPaddingValue(paddingValue.bottom),
+			paddingLeft: convertPaddingValue(paddingValue.left),
+		}),
 		...(hoverBackgroundColor && {
 			'--dsgo-button-hover-bg': hoverBackgroundColor,
 		}),

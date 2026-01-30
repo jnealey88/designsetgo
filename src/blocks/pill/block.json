@@ -14,6 +14,10 @@
 	],
 	"textdomain": "designsetgo",
 	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "center"
+		},
 		"content": {
 			"type": "string",
 			"default": ""

@@ -64,11 +64,6 @@
 		// 3. FSE customizations to core Button element (styles.elements.button)
 		// 4. Theme defaults from theme.json - lowest priority
 
-		// When user sets border-radius via WordPress block controls, inherit from parent
-		.dsgo-icon-button[style*="border-radius"] > & {
-			border-radius: inherit;
-		}
-
 		// Structural styles only - visual styles come from wp-element-button (theme.json)
 		overflow: hidden; // CRITICAL: Clip background to border-radius
 		text-decoration: none !important;
@@ -76,6 +71,7 @@
 		cursor: pointer;
 		font-family: inherit;
 		font-size: inherit;
+		// Border-radius is inherited from wp-element-button class (no explicit value needed)
 
 		&:hover {
 			opacity: 0.9;
@@ -115,6 +111,16 @@
 		// Text content
 		flex: 1 0 auto;
 		white-space: nowrap;
+	}
+
+	// CRITICAL: Inherit border-radius from parent when set via WordPress block controls
+	// WordPress applies border-radius to the outer wrapper, but background is on inner wrapper
+	&[style*="border-radius"] .dsgo-icon-button__wrapper,
+	&[style*="border-top-left-radius"] .dsgo-icon-button__wrapper,
+	&[style*="border-top-right-radius"] .dsgo-icon-button__wrapper,
+	&[style*="border-bottom-left-radius"] .dsgo-icon-button__wrapper,
+	&[style*="border-bottom-right-radius"] .dsgo-icon-button__wrapper {
+		border-radius: inherit;
 	}
 }
 

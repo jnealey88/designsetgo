@@ -18,15 +18,17 @@
 	"usesContext": ["designsetgo/hoverButtonBackgroundColor"],
 	"supports": {
 		"anchor": true,
-		"align": true,
+		"align": ["left", "center", "right"],
 		"alignWide": false,
 		"html": false,
 		"inserter": true,
 		"spacing": {
 			"margin": true,
-			"padding": false,
+			"padding": true,
+			"__experimentalSkipSerialization": ["padding"],
 			"__experimentalDefaultControls": {
-				"margin": true
+				"margin": true,
+				"padding": true
 			}
 		},
 		"color": {
@@ -62,6 +64,10 @@
 		"shadow": true
 	},
 	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "center"
+		},
 		"text": {
 			"type": "string",
 			"default": ""
