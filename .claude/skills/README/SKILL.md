@@ -1,71 +1,9 @@
-# DesignSetGo Claude Commands
-
-Quick reference for all slash commands in the DesignSetGo WordPress plugin project.
-
-## Development Workflow
-
-| Command | Description | When to Use |
-|---------|-------------|-------------|
-| `/build` | Build plugin and watch for changes | During development |
-| `/test` | Run all tests (Jest, E2E) | Before commits |
-| `/lint` | Lint and auto-fix JS/CSS/PHP | Before commits |
-| `/quick-fix` | Fix common issues | When something breaks |
-
-## Block Development
-
-| Command | Description | When to Use |
-|---------|-------------|-------------|
-| `/add-block` | Create new Gutenberg block | Adding unique functionality |
-| `/add-extension` | Extend core WordPress block | Simple enhancements (≤3 controls) |
-| `/add-variation` | Create block variation | Preset configurations |
-
-## Code Quality & Refactoring
-
-| Command | Description | When to Use |
-|---------|-------------|-------------|
-| `/refactor` | Refactor code following best practices | Files > 300 lines, anti-patterns |
-| `/review-extension` | Review extension for best practices | After creating extension |
-| `/block-supports-audit` | Find Block Supports opportunities | Quarterly optimization |
-| `/color-controls-migrate` | Migrate to modern color controls | During refactoring |
-
-## Audits & Reviews
-
-| Command | Description | When to Use |
-|---------|-------------|-------------|
-| `/plugin-review` | Comprehensive plugin audit | Before major release |
-| `/security-audit` | Security-focused audit | Before any release |
-| `/performance-audit` | Deep performance and optimization audit | Before releases, performance issues |
-| `/check-compat` | WordPress/Gutenberg compatibility | Before releases, quarterly |
-| `/review-pr` | Review pull request for plugin standards | Before merging PRs |
-
-## Deployment & Internationalization
-
-| Command | Description | When to Use |
-|---------|-------------|-------------|
-| `/deploy` | Prepare for WordPress.org | Before submission |
-| `/i18n-update` | Update translations | Before releases, after string changes |
-
-## Information
-
-| Command | Description | When to Use |
-|---------|-------------|-------------|
-| `/plugin-info` | Display plugin architecture | Onboarding, reference |
-
+---
+name: README
+description: 
+allowed-tools: Read, Glob
 ---
 
-## Recommended Workflows
-
-### Daily Development
-
-```
-/build → code → /lint → /test → commit
-```
-
-**When to use:**
-- Every development session
-- Before pushing code
-
----
 
 ### After Creating a New Block
 
@@ -80,7 +18,6 @@ Quick reference for all slash commands in the DesignSetGo WordPress plugin proje
 - [ ] All strings use `__()` for translation
 - [ ] Tested in editor and frontend
 
----
 
 ### After Creating an Extension
 
@@ -95,7 +32,6 @@ Quick reference for all slash commands in the DesignSetGo WordPress plugin proje
 - [ ] Uses proper filter hooks
 - [ ] Includes responsive considerations
 
----
 
 ### Before Any Release
 
@@ -111,7 +47,6 @@ Quick reference for all slash commands in the DesignSetGo WordPress plugin proje
 - [ ] Translations updated
 - [ ] Deployment package created
 
----
 
 ### Quarterly Maintenance
 
@@ -125,7 +60,6 @@ Quick reference for all slash commands in the DesignSetGo WordPress plugin proje
 - [ ] Technical debt addressed
 - [ ] Performance optimizations applied
 
----
 
 ## Quick Reference by Problem
 
@@ -173,7 +107,6 @@ Quick reference for all slash commands in the DesignSetGo WordPress plugin proje
 
 → `/plugin-review`
 
----
 
 ## Command Details
 
@@ -199,7 +132,6 @@ npm run build
 - Enables hot reloading (dev mode)
 - Minifies assets (production mode)
 
----
 
 #### `/test`
 
@@ -220,7 +152,6 @@ npm run test:watch
 npm run test:coverage
 ```
 
----
 
 #### `/lint`
 
@@ -239,7 +170,6 @@ npm run lint:js -- --fix
 npm run lint:css -- --fix
 ```
 
----
 
 ### Block Development Commands
 
@@ -260,7 +190,6 @@ Create a new Gutenberg block with complete scaffolding.
 - Modern color controls
 - Internationalization
 
----
 
 #### `/add-extension`
 
@@ -277,7 +206,6 @@ Create an extension to enhance WordPress core blocks.
 - Unique UI patterns
 - Interactive components (tabs, accordion)
 
----
 
 #### `/add-variation`
 
@@ -293,7 +221,6 @@ Create a block variation with preset configurations.
 - Theme spacing/color presets
 - Meaningful defaults
 
----
 
 ### Code Quality Commands
 
@@ -314,7 +241,6 @@ Refactor code following WordPress and project best practices.
 - Performance metrics
 - Migration guide (if breaking changes)
 
----
 
 #### `/block-supports-audit`
 
@@ -331,7 +257,6 @@ Find opportunities to replace custom controls with WordPress Block Supports.
 - Better UX with familiar WordPress controls
 - Automatic theme.json integration
 
----
 
 #### `/color-controls-migrate`
 
@@ -349,7 +274,6 @@ Migrate from deprecated `PanelColorSettings` to modern `ColorGradientSettingsDro
 - Replaces component
 - Moves to Styles tab
 
----
 
 ### Audit Commands
 
@@ -373,7 +297,6 @@ Comprehensive plugin audit covering all aspects.
 - Code fixes
 - Action plan
 
----
 
 #### `/security-audit`
 
@@ -394,7 +317,6 @@ Security-focused audit.
 - Code fixes
 - Pre-deployment checklist
 
----
 
 #### `/check-compat`
 
@@ -412,7 +334,6 @@ Check compatibility with WordPress and Gutenberg versions.
 - Deprecated code list
 - Recommended updates
 
----
 
 #### `/review-pr`
 
@@ -448,7 +369,6 @@ Review pull request against DesignSetGo plugin standards.
 - Deploying changes
 - After significant refactoring
 
----
 
 ### Deployment Commands
 
@@ -468,7 +388,6 @@ Prepare plugin for WordPress.org deployment.
 - Deployment zip file
 - Next steps for SVN upload
 
----
 
 #### `/i18n-update`
 
@@ -486,7 +405,6 @@ Update translation files.
 - Spanish (es_ES)
 - Add more as needed
 
----
 
 ### Information Commands
 
@@ -503,7 +421,6 @@ Display plugin architecture and structure.
 - File structure
 - Key principles
 
----
 
 ## Pro Tips
 
@@ -520,7 +437,6 @@ Configure your editor to auto-fix on save:
 - VSCode: Install ESLint and Stylelint extensions
 - Enable "Format on Save"
 
----
 
 ### Better Code Quality
 
@@ -537,7 +453,6 @@ Add to `.git/hooks/pre-commit`:
 npm run lint:js && npm run lint:css && npm test
 ```
 
----
 
 ### Debugging Tips
 
@@ -557,7 +472,6 @@ cat build/style-index.css | grep "your-class"
 - Using plain `<InnerBlocks />` instead of `useInnerBlocksProps`
 - Edit and save markup don't match
 
----
 
 ## Contributing
 
@@ -583,7 +497,6 @@ When adding new commands:
    - Add to workflows if applicable
    - Add to "Quick Reference by Problem" if applicable
 
----
 
 ## Getting Help
 
@@ -602,7 +515,6 @@ When adding new commands:
 - [Gutenberg GitHub](https://github.com/WordPress/gutenberg)
 - [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/)
 
----
 
 **Last Updated:** 2025-11-20
 **Plugin Version:** 1.0.0

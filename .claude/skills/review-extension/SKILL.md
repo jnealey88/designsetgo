@@ -1,6 +1,11 @@
 ---
+name: review-extension
 description: Review block extension for WordPress best practices
+context: fork
+agent: Explore
+allowed-tools: Read, Glob, Grep, Bash(git *), Bash(npm run *)
 ---
+
 
 Review a block extension for best practices.
 

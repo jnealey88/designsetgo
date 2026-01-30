@@ -1,6 +1,10 @@
 ---
+name: i18n-update
 description: Update translation files and check for untranslated strings
+disable-model-invocation: true
+allowed-tools: Bash(npm run *), Bash(npx wp-env *), Bash(git *), Read, Glob
 ---
+
 
 Manage internationalization for the DesignSetGo plugin.
 

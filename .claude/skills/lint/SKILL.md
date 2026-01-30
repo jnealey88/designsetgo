@@ -1,6 +1,10 @@
 ---
+name: lint
 description: Lint and auto-fix JavaScript, CSS, and PHP files
+disable-model-invocation: true
+allowed-tools: Bash(npm run *), Bash(npx wp-env *), Bash(git *), Read, Glob
 ---
+
 
 Lint JavaScript, CSS, and PHP files for code quality and standards compliance.
 

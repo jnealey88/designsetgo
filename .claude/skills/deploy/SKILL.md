@@ -1,6 +1,10 @@
 ---
+name: deploy
 description: Prepare plugin for WordPress.org deployment
+disable-model-invocation: true
+allowed-tools: Bash(npm run *), Bash(npx wp-env *), Bash(git *), Read, Glob
 ---
+
 
 Prepare the plugin for deployment to WordPress.org via automated GitHub Actions workflow.
 

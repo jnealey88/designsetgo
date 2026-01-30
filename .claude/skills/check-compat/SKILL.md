@@ -1,6 +1,11 @@
 ---
+name: check-compat
 description: Check compatibility with WordPress and Gutenberg versions
+context: fork
+agent: Explore
+allowed-tools: Read, Glob, Grep, Bash(npm *), Bash(npx *)
 ---
+
 
 Check compatibility with current WordPress and Gutenberg versions.
 

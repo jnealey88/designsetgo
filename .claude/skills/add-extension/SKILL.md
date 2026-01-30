@@ -1,6 +1,10 @@
 ---
+name: add-extension
 description: Create a block extension to enhance core WordPress blocks
+argument-hint: [block-name]
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(mkdir *), Bash(npm run *)
 ---
+
 
 Create a new block extension to enhance a WordPress core block.
 

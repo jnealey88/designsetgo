@@ -1,6 +1,10 @@
 ---
+name: add-variation
 description: Create a block variation with preset configurations
+argument-hint: [block-name]
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(mkdir *), Bash(npm run *)
 ---
+
 
 Create a new block variation for a WordPress core block.
 

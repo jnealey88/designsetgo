@@ -1,6 +1,9 @@
 ---
+name: quick-fix
 description: Quick fixes for common issues (build errors, missing styles, validation)
+allowed-tools: Read, Glob, Grep, Bash(ls *), Bash(cat *), Bash(npm *)
 ---
+
 
 Quickly diagnose and fix common DesignSetGo plugin issues.
 
@@ -15,7 +18,6 @@ Quickly diagnose and fix common DesignSetGo plugin issues.
 7. **Translation missing** - Strings not translating
 8. **wp-env not starting** - Local development environment issues
 
----
 
 ## Fix 1: Build Errors
 
@@ -40,7 +42,6 @@ npm run lint:php
 # - Typos in function names
 ```
 
----
 
 ## Fix 2: Styles Not Applying
 
@@ -78,7 +79,6 @@ npm run build
 
 **CRITICAL:** Both `style.scss` and `editor.scss` must import block styles.
 
----
 
 ## Fix 3: Block Validation Error
 
@@ -134,7 +134,6 @@ const innerBlocksProps = useInnerBlocksProps();
 <div {...innerBlocksProps} />
 ```
 
----
 
 ## Fix 4: Console Errors
 
@@ -184,7 +183,6 @@ if (condition && value) {
 }
 ```
 
----
 
 ## Fix 5: Layout Not Working
 
@@ -225,7 +223,6 @@ const innerBlocksProps = useInnerBlocksProps.save({
 return <div {...blockProps}><div {...innerBlocksProps} /></div>;
 ```
 
----
 
 ## Fix 6: Colors Not Showing
 
@@ -245,7 +242,6 @@ grep -r "PanelColorSettings" src/blocks/your-block/
 # /color-controls-migrate
 ```
 
----
 
 ## Fix 7: Translation Missing
 
@@ -276,7 +272,6 @@ grep -r "'[A-Z][a-z]" src/ --include="*.js" | grep -v "__("
 
 See `/i18n-update` for complete workflow.
 
----
 
 ## Fix 8: wp-env Not Starting
 
@@ -305,7 +300,6 @@ lsof -i :8889
 kill -9 PID
 ```
 
----
 
 ## General Troubleshooting
 
@@ -333,7 +327,6 @@ npx wp-env start
 3. Check Network tab for failed requests
 4. Look for specific error messages
 
----
 
 ## Before Asking for Help
 
@@ -358,7 +351,6 @@ npm test
 npx wp-env start
 ```
 
----
 
 ## Reference Commands
 

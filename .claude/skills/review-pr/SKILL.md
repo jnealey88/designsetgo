@@ -1,6 +1,11 @@
 ---
+name: review-pr
 description: Review pull request for DesignSetGo WordPress plugin standards
+context: fork
+agent: Explore
+allowed-tools: Read, Glob, Grep, Bash(git *), Bash(npm run *)
 ---
+
 
 Act as a senior WordPress plugin developer reviewing a pull request for the DesignSetGo WordPress plugin. Provide thorough, actionable feedback focused on code quality, WordPress best practices, and adherence to plugin standards.
 
@@ -151,7 +156,6 @@ Generate review feedback in this structure:
 **Branch:** `[branch-name]` → `[target-branch]`
 **Status:** [Approve ✅ | Request Changes ❌ | Comment 💬]
 
----
 
 ## Summary
 
@@ -159,7 +163,6 @@ Generate review feedback in this structure:
 
 **Changed Files:** [X] files, [+XXX -XXX] lines
 
----
 
 ## ✅ What's Good
 
@@ -168,7 +171,6 @@ Generate review feedback in this structure:
 1. [Specific positive feedback with file reference]
 2. [Specific positive feedback with file reference]
 
----
 
 ## ❌ Issues to Address (Required)
 
@@ -197,13 +199,11 @@ Generate review feedback in this structure:
 
 **Reference:** [Link to relevant doc or standard]
 
----
 
 ### 🟡 Important (Should Fix)
 
 [Same format as critical, but for non-blocking issues]
 
----
 
 ## 💡 Suggestions (Optional Improvements)
 
@@ -213,7 +213,6 @@ Generate review feedback in this structure:
    - [Brief description]
    - [Optional code example]
 
----
 
 ## 📋 Standards Compliance
 
@@ -241,7 +240,6 @@ Generate review feedback in this structure:
 - [✅/❌] Responsive design tested
 - [✅/❌] No console errors
 
----
 
 ## 🧪 Testing Checklist for Author
 
@@ -271,7 +269,6 @@ grep -i "class-name" build/style-index.css
 - [ ] Test keyboard navigation
 - [ ] Verify accessibility
 
----
 
 ## 🔍 Files Reviewed
 
@@ -280,7 +277,6 @@ grep -i "class-name" build/style-index.css
 - [filename.js](path/to/file.js) - [Brief note about changes]
 - [filename.scss](path/to/file.scss) - [Brief note about changes]
 
----
 
 ## 📚 Related Documentation
 
@@ -291,7 +287,6 @@ grep -i "class-name" build/style-index.css
 - [WIDTH-LAYOUT-PATTERNS.md](/docs/WIDTH-LAYOUT-PATTERNS.md) (if layout changes)
 - [FSE-COMPATIBILITY-GUIDE.md](/docs/FSE-COMPATIBILITY-GUIDE.md) (if block changes)
 
----
 
 ## 🎯 Next Steps
 
@@ -303,13 +298,11 @@ grep -i "class-name" build/style-index.css
 **For Reviewer:**
 - [Any follow-up needed]
 
----
 
 ## 💬 Additional Comments
 
 [Any other feedback, questions, or discussion points]
 
----
 
 **Review Status:** [Approve ✅ | Request Changes ❌ | Comment 💬]
 

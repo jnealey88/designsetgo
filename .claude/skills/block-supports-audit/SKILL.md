@@ -1,6 +1,11 @@
 ---
+name: block-supports-audit
 description: Audit blocks for WordPress Block Supports optimization opportunities
+context: fork
+agent: Explore
+allowed-tools: Read, Glob, Grep, Bash(git *), Bash(npm run *)
 ---
+
 
 Analyze all blocks to identify opportunities to replace custom controls with WordPress Block Supports.
 

@@ -1,6 +1,10 @@
 ---
+name: add-block
 description: Create a new Gutenberg block with scaffolding
+argument-hint: [block-name]
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(mkdir *), Bash(npm run *)
 ---
+
 
 Create a new Gutenberg block following WordPress best practices.
 

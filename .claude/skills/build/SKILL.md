@@ -1,6 +1,10 @@
 ---
+name: build
 description: Build plugin and watch for changes
+disable-model-invocation: true
+allowed-tools: Bash(npm run *), Bash(npx wp-env *), Bash(git *), Read, Glob
 ---
+
 
 Build the DesignSetGo plugin for development or production.
 

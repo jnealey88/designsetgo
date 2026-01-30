@@ -1,6 +1,10 @@
 ---
+name: color-controls-migrate
 description: Migrate blocks from PanelColorSettings to ColorGradientSettingsDropdown
+argument-hint: [block-name]
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(npm run build)
 ---
+
 
 Migrate blocks to use the modern `ColorGradientSettingsDropdown` component instead of deprecated `PanelColorSettings`.
 

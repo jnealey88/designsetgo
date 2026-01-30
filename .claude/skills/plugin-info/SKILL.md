@@ -1,6 +1,9 @@
 ---
+name: plugin-info
 description: Display DesignSetGo plugin architecture and structure
+allowed-tools: Read, Glob, Grep, Bash(ls *), Bash(cat *), Bash(npm *)
 ---
+
 
 Display key information about the DesignSetGo plugin.
 

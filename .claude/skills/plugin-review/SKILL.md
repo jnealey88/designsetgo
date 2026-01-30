@@ -1,6 +1,11 @@
 ---
+name: plugin-review
 description: Comprehensive WordPress plugin audit by experienced developer
+context: fork
+agent: Explore
+allowed-tools: Read, Glob, Grep, Bash(npm run *), Bash(find *), Bash(grep *), Bash(ls *)
 ---
+
 
 Act as a senior WordPress plugin developer with 10+ years of experience building production-ready plugins. Review the DesignSetGo WordPress plugin comprehensively, evaluating code quality, architecture, WordPress best practices, and production readiness.
 
@@ -441,7 +446,6 @@ Generate a comprehensive **PLUGIN-REVIEW.md** file with the following structure:
 **WordPress Version Tested:** X.X
 **Reviewer Role:** Senior WordPress Plugin Developer
 
----
 
 ## Executive Summary
 
@@ -467,7 +471,6 @@ Generate a comprehensive **PLUGIN-REVIEW.md** file with the following structure:
 - Low Priority: XX
 - Suggestions: XX
 
----
 
 ## 🔴 CRITICAL ISSUES (Must Fix Before Production)
 
@@ -493,25 +496,21 @@ Generate a comprehensive **PLUGIN-REVIEW.md** file with the following structure:
 
 **Effort:** [15 minutes | 1 hour | 4 hours | 1 day]
 
----
 
 ## 🟡 HIGH PRIORITY ISSUES (Fix Before 1.0)
 
 [Same format as critical issues]
 
----
 
 ## 🟢 MEDIUM PRIORITY (Quality Improvements)
 
 [Grouped by category: Performance, UX, Documentation, etc.]
 
----
 
 ## 🔵 LOW PRIORITY (Nice to Have)
 
 [Code quality, refactoring suggestions, future enhancements]
 
----
 
 ## 📊 Code Quality Metrics
 
@@ -535,7 +534,6 @@ PHP: XX% coverage
 JavaScript: XX% coverage
 ```
 
----
 
 ## ✅ WHAT YOU'RE DOING WELL
 
@@ -551,7 +549,6 @@ JavaScript: XX% coverage
 ### User Experience
 - [Specific things done right]
 
----
 
 ## 🎯 RECOMMENDED PRIORITIES
 
@@ -572,7 +569,6 @@ JavaScript: XX% coverage
 - [ ] Test coverage
 - [ ] Performance monitoring
 
----
 
 ## 📚 BEST PRACTICES REFERENCE
 
@@ -584,7 +580,6 @@ JavaScript: XX% coverage
 ### Suggested Reading
 - [Specific documentation based on issues found]
 
----
 
 ## 🏁 PRODUCTION READINESS CHECKLIST
 
@@ -601,7 +596,6 @@ JavaScript: XX% coverage
 - [ ] Translation ready
 - [ ] Documentation complete
 
----
 
 ## 🔄 NEXT STEPS
 
@@ -617,7 +611,6 @@ JavaScript: XX% coverage
    - Add pre-commit hooks
    - Establish code review process
 
----
 
 **End of Review**
 ```

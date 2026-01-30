@@ -1,6 +1,10 @@
 ---
+name: test
 description: Run all plugin tests (Jest, E2E)
+disable-model-invocation: true
+allowed-tools: Bash(npm run *), Bash(npx wp-env *), Bash(git *), Read, Glob
 ---
+
 
 Run all plugin tests for blocks and extensions.
 

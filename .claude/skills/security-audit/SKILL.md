@@ -1,6 +1,11 @@
 ---
+name: security-audit
 description: Run comprehensive security audit for the WordPress plugin
+context: fork
+agent: Explore
+allowed-tools: Read, Glob, Grep, Bash(npm run *), Bash(find *), Bash(grep *), Bash(ls *)
 ---
+
 
 Act as a senior WordPress plugin developer. Review the DesignSetGo WordPress plugin for best practices, security vulnerabilities, and performance optimization opportunities.
 

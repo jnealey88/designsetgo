@@ -1,6 +1,11 @@
 ---
+name: performance-audit
 description: Deep performance and optimization audit by senior WordPress developer
+context: fork
+agent: Explore
+allowed-tools: Read, Glob, Grep, Bash(npm run *), Bash(find *), Bash(grep *), Bash(ls *)
 ---
+
 
 Act as a senior WordPress plugin developer with expertise in web performance optimization, Core Web Vitals, and React performance patterns. Conduct a comprehensive performance audit of the DesignSetGo WordPress plugin, identifying bottlenecks, optimization opportunities, and providing actionable fixes.
 
@@ -514,7 +519,6 @@ Generate a comprehensive **PERFORMANCE-AUDIT.md** file with this structure:
 **Auditor Role:** Senior WordPress Performance Engineer
 **Environment:** WordPress X.X, PHP X.X
 
----
 
 ## Executive Summary
 
@@ -537,7 +541,6 @@ Generate a comprehensive **PERFORMANCE-AUDIT.md** file with this structure:
 2. [Optimization that provides biggest benefit for least work]
 3. [Optimization that provides biggest benefit for least work]
 
----
 
 ## 🔴 CRITICAL PERFORMANCE ISSUES
 
@@ -572,13 +575,11 @@ Generate a comprehensive **PERFORMANCE-AUDIT.md** file with this structure:
 **Implementation Time:** [15 min | 1 hour | 4 hours | 1 day]
 **Priority:** Critical - Fix immediately
 
----
 
 ## 🟡 HIGH PRIORITY OPTIMIZATIONS
 
 [Same detailed format as critical issues]
 
----
 
 ## 🟢 MEDIUM PRIORITY OPTIMIZATIONS
 
@@ -591,7 +592,6 @@ Generate a comprehensive **PERFORMANCE-AUDIT.md** file with this structure:
 ### React Performance
 [List unnecessary re-renders, missing memoization]
 
----
 
 ## 🔵 LOW PRIORITY IMPROVEMENTS
 
@@ -601,7 +601,6 @@ Generate a comprehensive **PERFORMANCE-AUDIT.md** file with this structure:
 ### Future Optimizations
 [Ideas for future consideration]
 
----
 
 ## 📊 Performance Metrics Dashboard
 
@@ -646,7 +645,6 @@ Editor after 10min use      | 180 MB      | 15 MB growth | 🔴 Leak
 Frontend with 20 blocks     | 25 MB       | None         | ✅ Good
 ```
 
----
 
 ## 🎯 OPTIMIZATION ROADMAP
 
@@ -699,7 +697,6 @@ Frontend with 20 blocks     | 25 MB       | None         | ✅ Good
 - [ ] Regular Lighthouse audits
 - [ ] Memory leak testing
 
----
 
 ## ✅ PERFORMANCE BEST PRACTICES (What You're Doing Well)
 
@@ -715,7 +712,6 @@ Frontend with 20 blocks     | 25 MB       | None         | ✅ Good
 ### CSS Performance
 - [Specific good practices found]
 
----
 
 ## 🛠️ PERFORMANCE TOOLING RECOMMENDATIONS
 
@@ -750,7 +746,6 @@ Frontend with 20 blocks     | 25 MB       | None         | ✅ Good
 - [ ] Performance regression testing
 - [ ] Memory profiling in tests
 
----
 
 ## 🔄 CONTINUOUS PERFORMANCE OPTIMIZATION
 
@@ -774,7 +769,6 @@ Frontend with 20 blocks     | 25 MB       | None         | ✅ Good
 - [ ] Optimize slowest blocks
 - [ ] Implement new performance patterns
 
----
 
 ## 📚 PERFORMANCE RESOURCES
 
@@ -793,7 +787,6 @@ Frontend with 20 blocks     | 25 MB       | None         | ✅ Good
 - [Lighthouse Performance Scoring](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/)
 - Bundle size optimization techniques
 
----
 
 **End of Performance Audit**
 ```
