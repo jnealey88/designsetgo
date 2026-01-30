@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,6 +157,16 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.3.2 - 2025-01-30 =
+**Bug Fixes:**
+* Fix: Icon Button no longer displays double background layer when using rounded corners
+* Fix: Stop overriding theme.json color palette, spacing presets, and font families - better theme compatibility
+* Fix: Temporarily disable post content alignfull padding fix pending comprehensive solution
+
+**Developer Experience:**
+* Enhancement: Migrate commands to modern Claude Code skills format for improved automation
+* Enhancement: Add Claude Code GitHub Workflow for CI/CD improvements
 
 = 1.3.1 - 2025-01-09 =
 **Bug Fixes:**
