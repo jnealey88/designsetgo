@@ -50,11 +50,8 @@
 
 	// CRITICAL: Inner container must be full width for justify-content to work
 	// When constrainWidth is enabled, inline styles will override with max-width
-	// Padding is applied via inline styles to this element
 	.dsgo-flex__inner {
 		width: 100%;
-		// CRITICAL: Ensure padding is included in width calculation
-		box-sizing: border-box;
 	}
 
 	// CRITICAL: When Row/Flex is nested inside another container, force full width
