@@ -150,38 +150,17 @@ body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 
 /**
  * Full-Width Blocks Inside Post Content
- * Account for WordPress Group block padding and post content padding.
- *
- * WordPress FSE templates typically nest content inside Group blocks with padding:
- * Group (32px) > Post Content (32px) > DSG Block
- * This creates 64px of total padding that the breakout needs to account for.
+ * Use the same approach as WordPress core Group blocks
+ * Target blocks inside parents with has-global-padding
  */
 /* stylelint-disable selector-class-pattern */
-
-// Remove padding from Group blocks that wrap post content with full-width children
-.wp-block-group.has-global-padding {
-	> .wp-block-post-content.has-global-padding {
-		// When post content has full-width DSG blocks, remove its padding
-		// The blocks will handle their own breakout from the Group padding
-		&:has(> .dsgo-stack.dsgo-align-full),
-		&:has(> .dsgo-flex.dsgo-align-full),
-		&:has(> .dsgo-grid.dsgo-align-full) {
-			padding-left: 0 !important;
-			padding-right: 0 !important;
-		}
-	}
-}
-
-.entry-content,
-.wp-block-post-content {
+.has-global-padding {
 
 	> .dsgo-stack.dsgo-align-full,
 	> .dsgo-flex.dsgo-align-full,
 	> .dsgo-grid.dsgo-align-full {
-		// Account for parent Group padding (typically 32px on each side)
-		// Plus post content padding if still present
-		margin-left: calc(50% - 50vw - var(--wp--style--root--padding-left, 32px)) !important;
-		margin-right: calc(50% - 50vw - var(--wp--style--root--padding-right, 32px)) !important;
+		margin-left: calc(var(--wp--style--root--padding-left, 0px) * -1) !important;
+		margin-right: calc(var(--wp--style--root--padding-right, 0px) * -1) !important;
 	}
 }
 /* stylelint-enable selector-class-pattern */
