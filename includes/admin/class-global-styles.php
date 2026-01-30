@@ -59,14 +59,7 @@ class Global_Styles {
 					'units'        => array( 'px', 'em', 'rem', 'vh', 'vw', '%' ),
 				),
 				'typography' => array(
-					'fontSizes'    => $this->get_font_sizes( $saved_styles ),
-					'fontFamilies' => array(
-						array(
-							'slug'       => 'system',
-							'fontFamily' => '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
-							'name'       => __( 'System Font', 'designsetgo' ),
-						),
-					),
+					'fontSizes' => $this->get_font_sizes( $saved_styles ),
 				),
 				'custom'     => array(
 					'designsetgo' => array(
