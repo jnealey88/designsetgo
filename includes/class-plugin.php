@@ -288,7 +288,6 @@ class Plugin {
 					'turnstileConfigured' => ! empty( $integrations_settings['turnstile_site_key'] ) && ! empty( $integrations_settings['turnstile_secret_key'] ),
 				)
 			);
-
 		}
 
 		// Localize excluded blocks setting for extension filtering.
