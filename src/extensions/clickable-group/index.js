@@ -21,6 +21,7 @@ import {
 } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 // Import editor styles only (frontend styles imported in src/styles/style.scss)
 import './editor.scss';
@@ -46,6 +47,11 @@ const SUPPORTED_BLOCKS = [
  * @return {Object} Modified settings
  */
 function addLinkAttributes(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	if (!SUPPORTED_BLOCKS.includes(name)) {
 		return settings;
 	}

@@ -30,14 +30,45 @@ class Settings {
 	}
 
 	/**
+	 * Cached fresh-install detection result.
+	 * Prevents multiple database queries per request.
+	 *
+	 * @var bool|null
+	 */
+	private static $is_fresh_install = null;
+
+	/**
 	 * Get default settings
 	 *
 	 * @return array Default settings.
 	 */
 	public static function get_defaults() {
+		// Determine whether this is a fresh installation or an existing one.
+		// For existing installations, avoid introducing new default exclusions
+		// that could change behavior without explicit user consent.
+		// Cache the result to avoid multiple database queries per request.
+		if ( null === self::$is_fresh_install ) {
+			self::$is_fresh_install = ( false === get_option( self::OPTION_NAME, false ) );
+		}
+
+		if ( self::$is_fresh_install ) {
+			// Fresh install: apply conservative defaults with known conflict exclusions.
+			$excluded_blocks_default = array(
+				// Common third-party blocks known to have REST API conflicts.
+				'gravityforms/*',
+				'mailpoet/*',
+				'woocommerce/*',
+				'jetpack/*',
+			);
+		} else {
+			// Existing install: do not add new exclusions automatically.
+			$excluded_blocks_default = array();
+		}
+
 		return array(
 			'enabled_blocks'     => array(), // Empty = all enabled.
 			'enabled_extensions' => array(), // Empty = all enabled.
+			'excluded_blocks'    => $excluded_blocks_default,
 			'performance'        => array(
 				'conditional_loading' => true,
 				'cache_duration'      => 3600, // 1 hour.
@@ -715,6 +746,11 @@ class Settings {
 		// Sanitize enabled extensions.
 		if ( isset( $settings['enabled_extensions'] ) && is_array( $settings['enabled_extensions'] ) ) {
 			$sanitized['enabled_extensions'] = array_map( 'sanitize_text_field', $settings['enabled_extensions'] );
+		}
+
+		// Sanitize excluded blocks.
+		if ( isset( $settings['excluded_blocks'] ) && is_array( $settings['excluded_blocks'] ) ) {
+			$sanitized['excluded_blocks'] = array_map( 'sanitize_text_field', $settings['excluded_blocks'] );
 		}
 
 		// Sanitize performance settings.

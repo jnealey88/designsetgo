@@ -12,6 +12,7 @@ import './style.scss';
 
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 import { InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, RangeControl } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
@@ -21,9 +22,15 @@ import { useEffect } from '@wordpress/element';
 /**
  * Add columnSpan attribute to all blocks
  * @param {Object} settings Block settings
+ * @param {string} name     Block name
  * @return {Object} Modified block settings
  */
-function addColumnSpanAttribute(settings) {
+function addColumnSpanAttribute(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	return {
 		...settings,
 		attributes: {

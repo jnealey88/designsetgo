@@ -19,14 +19,20 @@ import { addFilter } from '@wordpress/hooks';
 import { InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 /**
  * Add responsive visibility attributes to all blocks
  *
  * @param {Object} settings - Block settings
+ * @param {string} name     - Block name
  * @return {Object} Modified block settings
  */
-function addResponsiveVisibilityAttributes(settings) {
+function addResponsiveVisibilityAttributes(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
 	return {
 		...settings,
 		attributes: {
@@ -59,9 +65,14 @@ addFilter(
 const withResponsiveVisibilityControl = createHigherOrderComponent(
 	(BlockEdit) => {
 		return (props) => {
-			const { attributes, setAttributes } = props;
+			const { attributes, setAttributes, name } = props;
 			const { dsgoHideOnDesktop, dsgoHideOnTablet, dsgoHideOnMobile } =
 				attributes;
+
+			// Check user exclusion list first
+			if (!shouldExtendBlock(name)) {
+				return <BlockEdit {...props} />;
+			}
 
 			return (
 				<>
@@ -130,9 +141,14 @@ addFilter(
 const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 	(BlockListBlock) => {
 		return (props) => {
-			const { attributes, className, wrapperProps = {} } = props;
+			const { attributes, className, wrapperProps = {}, name } = props;
 			const { dsgoHideOnDesktop, dsgoHideOnTablet, dsgoHideOnMobile } =
 				attributes;
+
+			// Check user exclusion list first
+			if (!shouldExtendBlock(name)) {
+				return <BlockListBlock {...props} />;
+			}
 
 			// Determine which devices the block is hidden on
 			const hiddenDevices = [];
@@ -191,6 +207,11 @@ addFilter(
 function applyResponsiveVisibilityClasses(props, blockType, attributes) {
 	const { dsgoHideOnDesktop, dsgoHideOnTablet, dsgoHideOnMobile } =
 		attributes;
+
+	// Check user exclusion list first
+	if (!shouldExtendBlock(blockType.name)) {
+		return props;
+	}
 
 	// Build array of CSS classes to apply
 	const visibilityClasses = [];

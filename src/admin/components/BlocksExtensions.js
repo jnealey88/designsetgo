@@ -6,7 +6,7 @@
  * @package
  */
 
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import {
 	Card,
@@ -29,6 +29,7 @@ const BlocksExtensions = () => {
 	const [saving, setSaving] = useState(false);
 	const [notice, setNotice] = useState(null);
 	const [searchTerm, setSearchTerm] = useState('');
+	const [newExcludedBlock, setNewExcludedBlock] = useState('');
 
 	// Fetch initial data with resilient error handling
 	useEffect(() => {
@@ -302,6 +303,71 @@ const BlocksExtensions = () => {
 		);
 	};
 
+	/**
+	 * Add a block to the exclusion list
+	 */
+	const addExcludedBlock = () => {
+		if (!newExcludedBlock.trim() || !settings) {
+			return;
+		}
+
+		const blockName = newExcludedBlock.trim();
+
+		// Validate block name format: namespace/blockname or namespace/*
+		// Allow underscores as they are valid in WordPress block names
+		const blockNamePattern = /^[a-z0-9_-]+\/([a-z0-9_-]+|\*)$/;
+		if (!blockNamePattern.test(blockName)) {
+			setNotice({
+				status: 'error',
+				message: __(
+					'Invalid block name format. Please use "namespace/blockname" (e.g., gravityforms/form) or "namespace/*" for wildcards.',
+					'designsetgo'
+				),
+			});
+			return;
+		}
+
+		const currentExcluded = settings.excluded_blocks || [];
+		if (currentExcluded.includes(blockName)) {
+			setNotice({
+				status: 'warning',
+				message: __('This block is already in the exclusion list.', 'designsetgo'),
+			});
+			return;
+		}
+
+		setSettings({
+			...settings,
+			excluded_blocks: [...currentExcluded, blockName],
+		});
+		setNewExcludedBlock('');
+
+		// Show success notice
+		setNotice({
+			status: 'success',
+			message: sprintf(
+				/* translators: %s: block name */
+				__('Successfully added %s to the exclusion list.', 'designsetgo'),
+				blockName
+			),
+		});
+	};
+
+	/**
+	 * Remove a block from the exclusion list
+	 */
+	const removeExcludedBlock = (blockName) => {
+		if (!settings) {
+			return;
+		}
+
+		const currentExcluded = settings.excluded_blocks || [];
+		setSettings({
+			...settings,
+			excluded_blocks: currentExcluded.filter((name) => name !== blockName),
+		});
+	};
+
 	if (loading) {
 		return (
 			<div className="designsetgo-admin-loading">
@@ -357,6 +423,10 @@ const BlocksExtensions = () => {
 					{
 						name: 'extensions',
 						title: __('Extensions', 'designsetgo'),
+					},
+					{
+						name: 'exclusions',
+						title: __('Exclusions', 'designsetgo'),
 					},
 				]}
 			>
@@ -531,6 +601,110 @@ const BlocksExtensions = () => {
 												/>
 											</div>
 										))}
+									</div>
+								</CardBody>
+							</Card>
+						)}
+
+						{tab.name === 'exclusions' && (
+							<Card>
+								<CardHeader>
+									<h2>{__('Excluded Blocks', 'designsetgo')}</h2>
+								</CardHeader>
+								<CardBody>
+									<p className="description">
+										{__(
+											'Prevent DSG extensions from being applied to specific third-party blocks. This is useful for blocks that have compatibility issues with DSG features (e.g., Gravity Forms).',
+											'designsetgo'
+										)}
+									</p>
+									<p className="description" style={{ marginTop: '8px', fontStyle: 'italic' }}>
+										{__(
+											'Note: Make sure the block plugin is active before adding it to the exclusion list. DSG will validate the format but cannot verify if the block exists.',
+											'designsetgo'
+										)}
+									</p>
+
+									<div className="designsetgo-exclusion-input-wrapper">
+										<div className="designsetgo-exclusion-input-row">
+											<div className="designsetgo-exclusion-input-field">
+												<input
+													type="text"
+													className="components-text-control__input"
+													value={newExcludedBlock}
+													onChange={(e) => setNewExcludedBlock(e.target.value)}
+													onKeyDown={(e) => {
+														if (e.key === 'Enter') {
+															addExcludedBlock();
+														}
+													}}
+													placeholder={__('e.g., gravityforms/form or gravityforms/*', 'designsetgo')}
+													aria-label={__('Block name to exclude', 'designsetgo')}
+													aria-describedby="excluded-block-input-description"
+												/>
+												<p
+													id="excluded-block-input-description"
+													className="description"
+												>
+													{__(
+														'Enter block name (e.g., gravityforms/form) or namespace wildcard (e.g., gravityforms/*)',
+														'designsetgo'
+													)}
+												</p>
+											</div>
+											<Button
+												variant="primary"
+												onClick={addExcludedBlock}
+												disabled={!newExcludedBlock.trim()}
+											>
+												{__('Add', 'designsetgo')}
+											</Button>
+										</div>
+									</div>
+
+									{settings?.excluded_blocks && settings.excluded_blocks.length > 0 ? (
+										<div className="designsetgo-excluded-blocks-section">
+											<h3 className="designsetgo-excluded-blocks-heading">
+												{__('Currently Excluded:', 'designsetgo')}
+											</h3>
+											<ul className="designsetgo-excluded-block-list" aria-live="polite" aria-relevant="additions removals">
+												{settings.excluded_blocks.map((blockName) => (
+													<li
+														key={blockName}
+														className="designsetgo-excluded-block-item"
+													>
+														<code>{blockName}</code>
+														<Button
+															isDestructive
+															variant="secondary"
+															onClick={() => removeExcludedBlock(blockName)}
+															size="small"
+														>
+															{__('Remove', 'designsetgo')}
+														</Button>
+													</li>
+												))}
+											</ul>
+										</div>
+									) : (
+										<p className="description designsetgo-no-exclusions-message">
+											{__(
+												'No blocks are currently excluded. Add blocks above to prevent DSG extensions from being applied to them.',
+												'designsetgo'
+											)}
+										</p>
+									)}
+
+									<div className="designsetgo-info-box">
+										<h4>
+											{__('Common Blocks to Exclude:', 'designsetgo')}
+										</h4>
+										<ul>
+											<li><code>gravityforms/*</code> - {__('All Gravity Forms blocks', 'designsetgo')}</li>
+											<li><code>mailpoet/*</code> - {__('All MailPoet blocks', 'designsetgo')}</li>
+											<li><code>woocommerce/*</code> - {__('All WooCommerce blocks', 'designsetgo')}</li>
+											<li><code>jetpack/*</code> - {__('All Jetpack blocks', 'designsetgo')}</li>
+										</ul>
 									</div>
 								</CardBody>
 							</Card>
