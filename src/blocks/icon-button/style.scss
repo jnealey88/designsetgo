@@ -33,18 +33,22 @@
 
 	// WordPress alignment support
 	// Constrain button width and use margin for alignment
+	// CRITICAL: Must override inline display: inline-flex with display: flex for auto margins to work
 	&.aligncenter {
+		display: flex !important;
 		width: fit-content !important;
 		margin-left: auto !important;
 		margin-right: auto !important;
 	}
 
 	&.alignleft {
+		display: flex !important;
 		width: fit-content !important;
 		margin-right: auto !important;
 	}
 
 	&.alignright {
+		display: flex !important;
 		width: fit-content !important;
 		margin-left: auto !important;
 	}
@@ -67,7 +71,8 @@
 		text-decoration: none !important;
 	}
 
-	&:focus {
+	&:focus,
+	&:focus-within {
 		text-decoration: none !important;
 		outline: 2px solid currentcolor;
 		outline-offset: 2px;
@@ -75,6 +80,21 @@
 
 	// Single element structure
 	// All visual and layout styles are on the main button element
+
+	// Legacy v4 structure: inner wrapper is the focusable element
+	&__wrapper {
+
+		&:focus {
+			text-decoration: none !important;
+			outline: 2px solid currentcolor;
+			outline-offset: 2px;
+		}
+
+		&:active {
+			transform: translateY(0);
+			text-decoration: none !important;
+		}
+	}
 
 	&__icon {
 		// Size and layout styles applied via inline styles
@@ -90,19 +110,6 @@
 		// Text content
 		flex: 1 0 auto;
 		white-space: nowrap;
-	}
-
-	// Ensure outer wrapper keeps border-radius when border is set
-	// WordPress may reset border-radius when applying borders
-	&[style*="border-width"],
-	&[style*="border-style"],
-	&[class*="has-border-color"] {
-		border-radius: var(--wp--style--elements--button--border--radius, 9999px); // Maintain theme border-radius
-	}
-
-	// If border-radius is explicitly set, preserve it
-	&[style*="border-radius"] {
-		// Border-radius already set by WordPress controls, do nothing
 	}
 }
 
@@ -125,44 +132,51 @@
 // Apply custom hover colors set via CSS variables
 // These override default hover styles when specified
 // Only apply instant background change when there's no animation (animations handle it themselves)
+// BACKWARD COMPATIBILITY: v4 had variables on .dsgo-icon-button__wrapper, v5+ has them on .dsgo-icon-button
 
 // No animation - just background color transition
-.dsgo-icon-button[style*="--dsgo-button-hover-bg"]:not([class*="dsgo-icon-button--"]):hover {
+.dsgo-icon-button[style*="--dsgo-button-hover-bg"]:not([class*="dsgo-icon-button--"]):hover,
+.dsgo-icon-button:not([class*="dsgo-icon-button--"]):hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"] {
 	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1;
 	transition: background-color 0.3s ease;
 }
 
 // Zoom In - preserve transform transition
-.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--zoom-in:hover {
+.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--zoom-in:hover,
+.dsgo-icon-button.dsgo-icon-button--zoom-in:hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"] {
 	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1;
 	transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 // Lift - preserve transform and box-shadow transitions
-.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--lift:hover {
+.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--lift:hover,
+.dsgo-icon-button.dsgo-icon-button--lift:hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"] {
 	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1;
 	transition: transform 0.5s ease, box-shadow 0.5s ease, background-color 0.3s ease;
 }
 
 // Shrink - preserve transform transition
-.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--shrink:hover {
+.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--shrink:hover,
+.dsgo-icon-button.dsgo-icon-button--shrink:hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"] {
 	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1;
 	transition: transform 0.4s ease, background-color 0.3s ease;
 }
 
 // Border Pulse - preserve border-width transition
-.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--border-pulse:hover {
+.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--border-pulse:hover,
+.dsgo-icon-button.dsgo-icon-button--border-pulse:hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"] {
 	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1;
 	transition: border-width 0.3s ease, background-color 0.3s ease;
 }
 
 // Border Glow - preserve box-shadow transition
-.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--border-glow:hover {
+.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--border-glow:hover,
+.dsgo-icon-button.dsgo-icon-button--border-glow:hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"] {
 	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1;
 	transition: all 0.3s ease, background-color 0.3s ease;
@@ -172,34 +186,40 @@
 // The pseudo-element creates the fill effect by sliding across and staying in place
 
 // Slide Left - apply background color after slide animation completes
-.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--slide-left:hover {
+.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--slide-left:hover,
+.dsgo-icon-button.dsgo-icon-button--slide-left:hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"] {
 	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1;
 	transition: background-color 0.1s ease 0.3s; // Fade in after slide completes
 }
 
 // Slide Right - apply background color after slide animation completes
-.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--slide-right:hover {
+.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--slide-right:hover,
+.dsgo-icon-button.dsgo-icon-button--slide-right:hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"] {
 	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1;
 	transition: background-color 0.1s ease 0.3s; // Fade in after slide completes
 }
 
 // Slide Down - apply background color after slide animation completes
-.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--slide-down:hover {
+.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--slide-down:hover,
+.dsgo-icon-button.dsgo-icon-button--slide-down:hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"] {
 	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1;
 	transition: background-color 0.1s ease 0.3s; // Fade in after slide completes
 }
 
 // Slide Up - apply background color after slide animation completes
-.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--slide-up:hover {
+.dsgo-icon-button[style*="--dsgo-button-hover-bg"].dsgo-icon-button--slide-up:hover,
+.dsgo-icon-button.dsgo-icon-button--slide-up:hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-bg"] {
 	background-color: var(--dsgo-button-hover-bg) !important;
 	opacity: 1;
 	transition: background-color 0.1s ease 0.3s; // Fade in after slide completes
 }
 
-.dsgo-icon-button[style*="--dsgo-button-hover-color"]:hover {
+// Hover text color - supports both v4 (wrapper) and v5+ (button) structures
+.dsgo-icon-button[style*="--dsgo-button-hover-color"]:hover,
+.dsgo-icon-button:hover .dsgo-icon-button__wrapper[style*="--dsgo-button-hover-color"] {
 	color: var(--dsgo-button-hover-color) !important;
 	transition: color 0.3s ease; // Add smooth transition
 }

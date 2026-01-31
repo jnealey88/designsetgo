@@ -151,6 +151,9 @@ export default function IconButtonEdit({
 	// Single element with all classes and styles combined
 	// wp-block-button and wp-element-button enable theme.json button styles
 	// wp-block-button__link ensures theme compatibility
+	// Match save.js: render as actual element type for better editor/frontend parity
+	const ButtonElement = 'div'; // Always div in editor to preserve editability
+
 	const blockProps = useBlockProps({
 		className: `dsgo-icon-button wp-block-button wp-block-button__link wp-element-button${animationClass}${widthClass}`,
 		style: buttonStyles,
@@ -201,7 +204,7 @@ export default function IconButtonEdit({
 				/>
 			</InspectorControls>
 
-			<div {...blockProps}>
+			<ButtonElement {...blockProps}>
 				{iconPosition !== 'none' && icon && (
 					<span
 						className="dsgo-icon-button__icon"
@@ -219,7 +222,7 @@ export default function IconButtonEdit({
 					allowedFormats={['core/bold', 'core/italic']}
 					withoutInteractiveFormatting
 				/>
-			</div>
+			</ButtonElement>
 		</>
 	);
 }

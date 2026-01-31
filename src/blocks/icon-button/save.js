@@ -109,22 +109,30 @@ export default function IconButtonSave({ attributes }) {
 	// Single element with all classes and styles combined
 	// wp-block-button and wp-element-button enable theme.json button styles
 	// wp-block-button__link ensures theme compatibility
+	// Conditionally render as <a> (with URL) or <button> (without URL)
+	const ButtonElement = url ? 'a' : 'button';
+
 	const blockProps = useBlockProps.save({
 		className: `dsgo-icon-button wp-block-button wp-block-button__link wp-element-button${animationClass}${widthClass}`,
 		style: buttonStyles,
-		href: url,
-		target: linkTarget,
-		rel:
-			linkTarget === '_blank'
-				? rel || 'noopener noreferrer'
-				: rel || undefined,
+		...(url && {
+			href: url,
+			target: linkTarget,
+			rel:
+				linkTarget === '_blank'
+					? rel || 'noopener noreferrer'
+					: rel || undefined,
+		}),
+		...(!url && {
+			type: 'button',
+		}),
 		...(modalCloseId && {
-			'data-dsgo-modal-close': modalCloseId || 'true',
+			'data-dsgo-modal-close': modalCloseId,
 		}),
 	});
 
 	return (
-		<a {...blockProps}>
+		<ButtonElement {...blockProps}>
 			{iconPosition !== 'none' && icon && (
 				<span
 					className="dsgo-icon-button__icon dsgo-lazy-icon"
@@ -138,6 +146,6 @@ export default function IconButtonSave({ attributes }) {
 				className="dsgo-icon-button__text"
 				value={text}
 			/>
-		</a>
+		</ButtonElement>
 	);
 }
