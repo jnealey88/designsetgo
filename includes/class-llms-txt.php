@@ -32,6 +32,14 @@ class LLMS_Txt {
 	const CACHE_EXPIRATION = DAY_IN_SECONDS;
 
 	/**
+	 * Default maximum posts per post type.
+	 *
+	 * Limits query size to prevent memory issues on large sites.
+	 * Can be filtered via 'designsetgo_llms_txt_posts_limit'.
+	 */
+	const DEFAULT_POSTS_LIMIT = 500;
+
+	/**
 	 * Post meta key for exclusion.
 	 */
 	const EXCLUDE_META_KEY = '_designsetgo_exclude_llms';
@@ -235,10 +243,23 @@ class LLMS_Txt {
 	 */
 	private function get_public_content( $post_type ) {
 		/**
-		 * Filter the query arguments for fetching public content.
+		 * Filter the maximum number of posts to include per post type.
 		 *
-		 * Note: Uses posts_per_page => -1 which fetches all posts. For sites with
-		 * thousands of posts, results are cached via transients to mitigate performance.
+		 * Use -1 for unlimited (not recommended for large sites).
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param int    $limit     Maximum posts per post type. Default 500.
+		 * @param string $post_type Post type being queried.
+		 */
+		$posts_limit = apply_filters(
+			'designsetgo_llms_txt_posts_limit',
+			self::DEFAULT_POSTS_LIMIT,
+			$post_type
+		);
+
+		/**
+		 * Filter the query arguments for fetching public content.
 		 *
 		 * @since 1.4.0
 		 *
@@ -250,7 +271,7 @@ class LLMS_Txt {
 			array(
 				'post_type'      => $post_type,
 				'post_status'    => 'publish',
-				'posts_per_page' => -1,
+				'posts_per_page' => $posts_limit,
 				'orderby'        => 'menu_order date',
 				'order'          => 'ASC',
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Required for exclusion feature.

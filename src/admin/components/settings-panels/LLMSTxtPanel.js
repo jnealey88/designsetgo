@@ -22,6 +22,7 @@ import apiFetch from '@wordpress/api-fetch';
 const LLMSTxtPanel = ({ settings, updateSetting }) => {
 	const [postTypes, setPostTypes] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [loadError, setLoadError] = useState(null);
 	const [flushing, setFlushing] = useState(false);
 	const [flushNotice, setFlushNotice] = useState(null);
 
@@ -34,7 +35,16 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 			})
 			.catch((error) => {
 				// eslint-disable-next-line no-console
-				console.error('DesignSetGo: Failed to fetch post types for llms.txt settings', error);
+				console.error(
+					'DesignSetGo: Failed to fetch post types for llms.txt settings',
+					error
+				);
+				setLoadError(
+					__(
+						'Failed to load content types. Please refresh the page.',
+						'designsetgo'
+					)
+				);
 				setLoading(false);
 			});
 	}, []);
@@ -74,7 +84,10 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 			})
 			.catch((error) => {
 				// eslint-disable-next-line no-console
-				console.error('DesignSetGo: Failed to flush llms.txt cache', error);
+				console.error(
+					'DesignSetGo: Failed to flush llms.txt cache',
+					error
+				);
 				setFlushNotice({
 					status: 'error',
 					message: __('Failed to clear cache.', 'designsetgo'),
@@ -87,6 +100,35 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 
 	// Get site URL for display.
 	const siteUrl = window.designSetGoAdmin?.siteUrl || '';
+
+	/**
+	 * Render the post types list or appropriate state.
+	 *
+	 * @return {JSX.Element} Post types UI.
+	 */
+	const renderPostTypes = () => {
+		if (loading) {
+			return <Spinner />;
+		}
+
+		if (loadError) {
+			return (
+				<Notice status="error" isDismissible={false}>
+					{loadError}
+				</Notice>
+			);
+		}
+
+		return postTypes.map((postType) => (
+			<CheckboxControl
+				__nextHasNoMarginBottom
+				key={postType.name}
+				label={postType.label}
+				checked={enabledPostTypes.includes(postType.name)}
+				onChange={(checked) => togglePostType(postType.name, checked)}
+			/>
+		));
+	};
 
 	return (
 		<Card className="designsetgo-settings-panel">
@@ -143,23 +185,7 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 							)}
 						</p>
 
-						{loading ? (
-							<Spinner />
-						) : (
-							postTypes.map((postType) => (
-								<CheckboxControl
-									__nextHasNoMarginBottom
-									key={postType.name}
-									label={postType.label}
-									checked={enabledPostTypes.includes(
-										postType.name
-									)}
-									onChange={(checked) =>
-										togglePostType(postType.name, checked)
-									}
-								/>
-							))
-						)}
+						{renderPostTypes()}
 
 						<div className="designsetgo-settings-note">
 							<strong>

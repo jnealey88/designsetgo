@@ -93,7 +93,7 @@ module.exports = {
 			'lazy-icon-injector.js'
 		),
 		// llms.txt editor panel
-		'llms-txt': path.resolve( process.cwd(), 'src', 'llms-txt', 'index.js' ),
+		'llms-txt': path.resolve(process.cwd(), 'src', 'llms-txt', 'index.js'),
 		// Block-specific entries (auto-detected from src/blocks/*/index.js)
 		...blockEntries,
 		// Block-specific view scripts (auto-detected from src/blocks/*/view.js)
