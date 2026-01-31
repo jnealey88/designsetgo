@@ -8,6 +8,8 @@
  * @since 1.4.0
  */
 
+/* global MutationObserver */
+
 import { useEffect, useRef, useCallback } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
@@ -25,6 +27,7 @@ import { clearDirtyState } from '../utils';
 export function usePublishIntercept(postId, isDraft, onError) {
 	const publishInterceptRef = useRef(null);
 	const isPublishingRef = useRef(false);
+	const handlerRef = useRef(null);
 
 	const { hasEdits } = useSelect((select) => {
 		const editor = select('core/editor');
@@ -74,6 +77,14 @@ export function usePublishIntercept(postId, isDraft, onError) {
 		[postId, hasEdits, savePost, onError]
 	);
 
+	// Update the handler ref whenever handlePublishDraft changes.
+	handlerRef.current = handlePublishDraft;
+
+	// Create a stable wrapper that calls the current handler.
+	const stableHandler = useCallback((e) => {
+		handlerRef.current?.(e);
+	}, []);
+
 	// Intercept the native Publish button to use our custom merge API.
 	useEffect(() => {
 		// Only intercept when this is a draft of another page.
@@ -102,43 +113,59 @@ export function usePublishIntercept(postId, isDraft, onError) {
 				return;
 			}
 
-			// Remove any existing listener.
-			if (publishInterceptRef.current) {
-				publishInterceptRef.current.button?.removeEventListener(
+			// If we're already attached to this button, don't re-attach.
+			if (publishInterceptRef.current?.button === publishButton) {
+				return;
+			}
+
+			// Remove any existing listener from previous button.
+			if (publishInterceptRef.current?.button) {
+				publishInterceptRef.current.button.removeEventListener(
 					'click',
-					publishInterceptRef.current.handler,
+					stableHandler,
 					true
 				);
 			}
 
-			// Store reference to button and handler for cleanup.
+			// Store reference to button for cleanup.
 			publishInterceptRef.current = {
 				button: publishButton,
-				handler: handlePublishDraft,
 			};
 
 			// Add our intercept listener with capture phase to run before WordPress.
-			publishButton.addEventListener('click', handlePublishDraft, true);
+			publishButton.addEventListener('click', stableHandler, true);
 		};
 
 		// Initial setup.
 		interceptPublish();
 
-		// Re-check periodically as WordPress may re-render the button.
-		const interval = setInterval(interceptPublish, 1000);
+		// Use MutationObserver to watch for DOM changes instead of polling.
+		// WordPress may re-render the button when switching between visual/code editors,
+		// when the post status changes, or during other editor state updates.
+		const editorHeader =
+			document.querySelector('.editor-header') || document.body;
+
+		const observer = new MutationObserver(() => {
+			interceptPublish();
+		});
+
+		observer.observe(editorHeader, {
+			childList: true,
+			subtree: true,
+		});
 
 		return () => {
-			clearInterval(interval);
-			if (publishInterceptRef.current) {
-				publishInterceptRef.current.button?.removeEventListener(
+			observer.disconnect();
+			if (publishInterceptRef.current?.button) {
+				publishInterceptRef.current.button.removeEventListener(
 					'click',
-					publishInterceptRef.current.handler,
+					stableHandler,
 					true
 				);
 				publishInterceptRef.current = null;
 			}
 		};
-	}, [isDraft, handlePublishDraft]);
+	}, [isDraft, stableHandler]);
 
 	return {
 		isPublishing: isPublishingRef.current,

@@ -11,6 +11,8 @@
  * @since 1.4.0
  */
 
+/* global navigator */
+
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import {
@@ -162,26 +164,51 @@ export default function DraftModeControls() {
 				// Clear dirty state before navigating to prevent "Leave site?" warning.
 				clearDirtyState();
 				window.location.href = result.edit_url;
+			} else {
+				// Success but no edit URL - unexpected response.
+				setErrorMessage(
+					__(
+						'Draft created but unable to navigate. Please refresh the page.',
+						'designsetgo'
+					)
+				);
+				setShowErrorModal(true);
+				setIsCreatingDraft(false);
 			}
 		} catch (err) {
 			// If draft already exists, redirect to it.
-			if (err.data?.draft_id) {
-				// Prefer API-provided edit_url, fall back to constructing from current admin path.
-				const draftEditUrl =
-					err.data.edit_url ||
-					`${window.location.origin}${
-						window.location.pathname.split('/wp-admin/')[0]
-					}/wp-admin/post.php?post=${err.data.draft_id}&action=edit`;
-
-				// Clear dirty state before navigating.
+			if (err.data?.draft_id && err.data?.edit_url) {
 				clearDirtyState();
-				window.location.href = draftEditUrl;
+				window.location.href = err.data.edit_url;
 				return;
 			}
 
-			setErrorMessage(
-				err.message || __('Failed to create draft.', 'designsetgo')
-			);
+			// Categorize error types for better user feedback.
+			let messageText = __('Failed to create draft.', 'designsetgo');
+
+			if (err.data?.status === 403) {
+				messageText = __(
+					'You do not have permission to create drafts.',
+					'designsetgo'
+				);
+			} else if (err.data?.status === 404) {
+				messageText = __(
+					'The original page was not found.',
+					'designsetgo'
+				);
+			} else if (
+				err.message &&
+				err.message !== 'Failed to create draft.'
+			) {
+				messageText = err.message;
+			} else if (!navigator.onLine) {
+				messageText = __(
+					'Network error. Please check your connection and try again.',
+					'designsetgo'
+				);
+			}
+
+			setErrorMessage(messageText);
 			setShowErrorModal(true);
 			setIsCreatingDraft(false);
 		}

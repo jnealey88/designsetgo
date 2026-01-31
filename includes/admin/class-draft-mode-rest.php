@@ -318,9 +318,7 @@ class Draft_Mode_REST {
 
 		$base_response = array(
 			'settings' => array(
-				'enabled'            => $settings['enable'],
-				'auto_save_enabled'  => isset( $settings['auto_save_enabled'] ) ? $settings['auto_save_enabled'] : true,
-				'auto_save_interval' => isset( $settings['auto_save_interval'] ) ? $settings['auto_save_interval'] : 60,
+				'enabled' => $settings['enable'],
 			),
 		);
 

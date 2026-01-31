@@ -8,6 +8,8 @@
  * @since 1.4.0
  */
 
+/* global navigator */
+
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect, useCallback } from '@wordpress/element';
@@ -120,23 +122,50 @@ export default function DraftModePanel() {
 				// Clear dirty state before navigating to prevent "Leave site?" warning.
 				clearDirtyState();
 				window.location.href = result.edit_url;
+			} else {
+				// Success but no edit URL - unexpected response.
+				setError(
+					__(
+						'Draft created but unable to navigate. Please refresh the page.',
+						'designsetgo'
+					)
+				);
+				setIsCreatingDraft(false);
 			}
 		} catch (err) {
 			// If draft creation failed because one already exists, redirect to it.
-			if (err.data?.draft_id) {
-				const draftEditUrl =
-					err.data.edit_url ||
-					`post.php?post=${err.data.draft_id}&action=edit`;
-
-				// Clear dirty state before navigating.
+			if (err.data?.draft_id && err.data?.edit_url) {
 				clearDirtyState();
-				window.location.href = draftEditUrl;
+				window.location.href = err.data.edit_url;
 				return;
 			}
 
-			setError(
-				err.message || __('Failed to create draft.', 'designsetgo')
-			);
+			// Categorize error types for better user feedback.
+			let errorMessage = __('Failed to create draft.', 'designsetgo');
+
+			if (err.data?.status === 403) {
+				errorMessage = __(
+					'You do not have permission to create drafts.',
+					'designsetgo'
+				);
+			} else if (err.data?.status === 404) {
+				errorMessage = __(
+					'The original page was not found.',
+					'designsetgo'
+				);
+			} else if (
+				err.message &&
+				err.message !== 'Failed to create draft.'
+			) {
+				errorMessage = err.message;
+			} else if (!navigator.onLine) {
+				errorMessage = __(
+					'Network error. Please check your connection and try again.',
+					'designsetgo'
+				);
+			}
+
+			setError(errorMessage);
 			setIsCreatingDraft(false);
 		}
 	};
@@ -163,11 +192,43 @@ export default function DraftModePanel() {
 				// Clear dirty state before navigating to prevent "Leave site?" warning.
 				clearDirtyState();
 				window.location.href = result.edit_url;
+			} else {
+				// Success but no edit URL - unexpected response.
+				setError(
+					__(
+						'Changes published but unable to navigate. Please refresh the page.',
+						'designsetgo'
+					)
+				);
+				setIsActionLoading(false);
 			}
 		} catch (err) {
-			setError(
-				err.message || __('Failed to publish changes.', 'designsetgo')
-			);
+			// Categorize error types for better user feedback.
+			let errorMessage = __('Failed to publish changes.', 'designsetgo');
+
+			if (err.data?.status === 403) {
+				errorMessage = __(
+					'You do not have permission to publish this draft.',
+					'designsetgo'
+				);
+			} else if (err.data?.status === 404) {
+				errorMessage = __(
+					'Draft or original page not found.',
+					'designsetgo'
+				);
+			} else if (
+				err.message &&
+				err.message !== 'Failed to publish changes.'
+			) {
+				errorMessage = err.message;
+			} else if (!navigator.onLine) {
+				errorMessage = __(
+					'Network error. Please check your connection and try again.',
+					'designsetgo'
+				);
+			}
+
+			setError(errorMessage);
 			setIsActionLoading(false);
 		}
 	};
@@ -189,11 +250,40 @@ export default function DraftModePanel() {
 				// Clear dirty state before navigating to prevent "Leave site?" warning.
 				clearDirtyState();
 				window.location.href = status.original_edit_url;
+			} else if (result.success) {
+				// Success but no original URL - unexpected response.
+				setError(
+					__(
+						'Draft discarded but unable to navigate. Please refresh the page.',
+						'designsetgo'
+					)
+				);
+				setIsActionLoading(false);
 			}
 		} catch (err) {
-			setError(
-				err.message || __('Failed to discard draft.', 'designsetgo')
-			);
+			// Categorize error types for better user feedback.
+			let errorMessage = __('Failed to discard draft.', 'designsetgo');
+
+			if (err.data?.status === 403) {
+				errorMessage = __(
+					'You do not have permission to discard this draft.',
+					'designsetgo'
+				);
+			} else if (err.data?.status === 404) {
+				errorMessage = __('Draft not found.', 'designsetgo');
+			} else if (
+				err.message &&
+				err.message !== 'Failed to discard draft.'
+			) {
+				errorMessage = err.message;
+			} else if (!navigator.onLine) {
+				errorMessage = __(
+					'Network error. Please check your connection and try again.',
+					'designsetgo'
+				);
+			}
+
+			setError(errorMessage);
 			setIsActionLoading(false);
 		}
 	};
