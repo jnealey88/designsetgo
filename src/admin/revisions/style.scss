@@ -1,0 +1,59 @@
+/**
+ * Visual Revision Comparison Styles
+ *
+ * Main stylesheet - imports all partials.
+ *
+ * @package DesignSetGo
+ */
+
+@use "variables" as *;
+@use "slider";
+@use "preview";
+@use "diff";
+@use "actions";
+
+// Main container
+.dsgo-revision-comparison {
+	margin-top: 20px;
+
+	// Loading state
+	&__loading {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 400px;
+		background: $dsgo-preview-bg;
+		border-radius: 4px;
+	}
+
+	// Error state
+	&__error {
+		padding: 20px;
+		background: $dsgo-diff-removed;
+		border: 1px solid $dsgo-diff-removed-dark;
+		border-radius: 4px;
+		color: #721c24;
+
+		h3 {
+			margin: 0 0 10px;
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+
+	// No revisions state
+	&__no-revisions {
+		padding: 40px;
+		text-align: center;
+		background: $dsgo-preview-bg;
+		border-radius: 4px;
+
+		p {
+			margin: 0 0 20px;
+			font-size: 14px;
+			color: #50575e;
+		}
+	}
+}

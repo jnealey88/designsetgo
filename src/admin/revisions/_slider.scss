@@ -1,0 +1,194 @@
+/**
+ * Revision Slider Styles
+ *
+ * @package DesignSetGo
+ */
+
+@use "variables" as *;
+
+.dsgo-revision-slider {
+	margin-bottom: 24px;
+	padding: 20px;
+	background: #fff;
+	border: 1px solid $dsgo-border-color;
+	border-radius: 4px;
+
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+
+		h3 {
+			margin: 0;
+			font-size: 14px;
+			font-weight: 600;
+		}
+	}
+
+	&__nav {
+		display: flex;
+		gap: 8px;
+	}
+
+	&__track-container {
+		margin-bottom: 16px;
+	}
+
+	&__track {
+		position: relative;
+		height: 8px;
+		background: #dcdcde;
+		border-radius: 4px;
+		margin: 20px 0;
+		cursor: pointer;
+	}
+
+	&__range {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		background: #2271b1;
+		border-radius: 4px;
+		pointer-events: none;
+	}
+
+	&__tick {
+		position: absolute;
+		top: 50%;
+		width: 12px;
+		height: 12px;
+		background: #fff;
+		border: 2px solid #dcdcde;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		cursor: pointer;
+		transition: all 0.15s ease;
+		padding: 0;
+		z-index: 1;
+
+		&:hover {
+			border-color: #2271b1;
+			transform: translate(-50%, -50%) scale(1.2);
+		}
+
+		&--selected {
+			background: #2271b1;
+			border-color: #2271b1;
+			z-index: 2;
+		}
+
+		&--in-range {
+			border-color: #2271b1;
+		}
+
+		&--current {
+			border-color: #00a32a;
+
+			&.dsgo-revision-slider__tick--selected {
+				background: #00a32a;
+				border-color: #00a32a;
+			}
+		}
+	}
+
+	&__handle {
+		position: absolute;
+		top: 50%;
+		width: 20px;
+		height: 20px;
+		background: #2271b1;
+		border: 2px solid #fff;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		cursor: grab;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		z-index: 3;
+
+		&:hover {
+			transform: translate(-50%, -50%) scale(1.1);
+		}
+
+		&:active {
+			cursor: grabbing;
+		}
+
+		&:focus {
+			outline: 2px solid #2271b1;
+			outline-offset: 2px;
+		}
+
+		&--from {
+			background: $dsgo-diff-removed-dark;
+		}
+
+		&--to {
+			background: #00a32a;
+		}
+	}
+
+	&__labels {
+		display: flex;
+		justify-content: space-between;
+		font-size: 11px;
+		color: #50575e;
+		text-transform: uppercase;
+	}
+
+	&__info {
+		display: flex;
+		justify-content: space-between;
+		gap: 20px;
+		padding-top: 16px;
+		border-top: 1px solid $dsgo-border-color;
+	}
+
+	&__info-item {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+
+		&--from {
+
+			.dsgo-revision-slider__info-label {
+				color: #721c24;
+			}
+		}
+
+		&--to {
+			text-align: right;
+
+			.dsgo-revision-slider__info-label {
+				color: #155724;
+			}
+		}
+	}
+
+	&__info-label {
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+	&__info-date {
+		font-size: 13px;
+		font-weight: 500;
+	}
+
+	&__info-author {
+		font-size: 12px;
+		color: #50575e;
+	}
+
+	&__current-badge {
+		display: inline-block;
+		margin-left: 8px;
+		padding: 2px 6px;
+		background: #00a32a;
+		color: #fff;
+		font-size: 10px;
+		font-weight: 600;
+		border-radius: 3px;
+		text-transform: uppercase;
+	}
+}
