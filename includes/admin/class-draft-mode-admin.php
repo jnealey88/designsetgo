@@ -225,51 +225,105 @@ class Draft_Mode_Admin {
 		$creating_text     = esc_js( __( 'Creating...', 'designsetgo' ) );
 		$create_draft_text = esc_js( __( 'Create Draft', 'designsetgo' ) );
 		$failed_text       = esc_js( __( 'Failed to create draft.', 'designsetgo' ) );
-		$confirm_text      = esc_js( __( 'Create a draft version of this page with any current edits?', 'designsetgo' ) );
+		$dismiss_notice    = esc_js( __( 'Dismiss this notice.', 'designsetgo' ) );
 		$rest_url          = esc_url( rest_url( 'designsetgo/v1/draft-mode/create' ) );
 
 		return "
-			document.addEventListener('click', function(e) {
-				if (!e.target.classList.contains('dsgo-create-draft')) return;
-				e.preventDefault();
+			(function() {
+				/**
+				 * Show accessible admin notice instead of alert()
+				 *
+				 * @param {string} message The message to display.
+				 * @param {string} type The notice type (error, success, warning, info).
+				 */
+				function dsgoShowAdminNotice(message, type) {
+					type = type || 'error';
+					var wpbody = document.getElementById('wpbody-content');
+					if (!wpbody) {
+						return;
+					}
 
-				var link = e.target;
-				if (link.classList.contains('loading')) return;
+					var containerId = 'dsgo-draft-mode-notices';
+					var container = document.getElementById(containerId);
+					if (!container) {
+						container = document.createElement('div');
+						container.id = containerId;
+						container.setAttribute('aria-live', 'polite');
+						container.setAttribute('aria-atomic', 'true');
+						wpbody.insertBefore(container, wpbody.firstChild);
+					}
 
-				if (!confirm('{$confirm_text}')) {
-					return;
+					var notice = document.createElement('div');
+					notice.className = 'notice notice-' + type + ' is-dismissible';
+					notice.setAttribute('role', 'alert');
+
+					var p = document.createElement('p');
+					p.textContent = message;
+					notice.appendChild(p);
+
+					var button = document.createElement('button');
+					button.type = 'button';
+					button.className = 'notice-dismiss';
+					button.innerHTML = '<span class=\"screen-reader-text\">{$dismiss_notice}</span>';
+					button.addEventListener('click', function() {
+						if (notice.parentNode) {
+							notice.parentNode.removeChild(notice);
+						}
+					});
+					notice.appendChild(button);
+
+					container.appendChild(notice);
+
+					// Use WordPress accessibility speak if available.
+					if (window.wp && wp.a11y && typeof wp.a11y.speak === 'function') {
+						wp.a11y.speak(message, 'assertive');
+					}
 				}
 
-				var postId = link.dataset.postId;
-				var nonce = link.dataset.nonce;
+				document.addEventListener('click', function(e) {
+					if (!e.target.classList.contains('dsgo-create-draft')) {
+						return;
+					}
+					e.preventDefault();
 
-				link.classList.add('loading');
-				link.textContent = '{$creating_text}';
+					var link = e.target;
+					if (link.classList.contains('loading')) {
+						return;
+					}
 
-				fetch('{$rest_url}', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-WP-Nonce': nonce
-					},
-					body: JSON.stringify({ post_id: parseInt(postId) })
-				})
-				.then(function(response) { return response.json(); })
-				.then(function(data) {
-					if (data.success && data.edit_url) {
-						window.location.href = data.edit_url;
-					} else {
-						alert(data.message || '{$failed_text}');
+					var postId = link.dataset.postId;
+					var nonce = link.dataset.nonce;
+
+					link.classList.add('loading');
+					link.textContent = '{$creating_text}';
+
+					fetch('{$rest_url}', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'X-WP-Nonce': nonce
+						},
+						body: JSON.stringify({ post_id: parseInt(postId, 10) })
+					})
+					.then(function(response) {
+						return response.json();
+					})
+					.then(function(data) {
+						if (data && data.success && data.edit_url) {
+							window.location.href = data.edit_url;
+						} else {
+							dsgoShowAdminNotice(data && data.message ? data.message : '{$failed_text}', 'error');
+							link.classList.remove('loading');
+							link.textContent = '{$create_draft_text}';
+						}
+					})
+					.catch(function() {
+						dsgoShowAdminNotice('{$failed_text}', 'error');
 						link.classList.remove('loading');
 						link.textContent = '{$create_draft_text}';
-					}
-				})
-				.catch(function() {
-					alert('{$failed_text}');
-					link.classList.remove('loading');
-					link.textContent = '{$create_draft_text}';
+					});
 				});
-			});
+			})();
 		";
 	}
 }

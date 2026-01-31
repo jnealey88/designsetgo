@@ -443,7 +443,7 @@ curl -X POST "https://example.com/wp-json/designsetgo/v1/draft-mode/$DRAFT_ID/pu
 - **Pages only**: Draft mode is currently limited to pages (not posts or custom post types)
 - **One draft per page**: Only one draft can exist for each published page
 - **No scheduling**: Drafts must be published manually (no scheduled publishing)
-- **Authors and above**: Requires `publish_posts` capability
+- **Role requirements**: Requires the `publish_pages` capability (typically Editors and Administrators)
 
 ---
 

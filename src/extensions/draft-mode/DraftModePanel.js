@@ -11,18 +11,21 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect, useCallback } from '@wordpress/element';
-import {
-	Notice,
-	Spinner,
-	Button,
-	ExternalLink,
-	Modal,
-	Flex,
-	FlexItem,
-} from '@wordpress/components';
+import { Notice, Spinner } from '@wordpress/components';
 import { PluginDocumentSettingPanel } from '@wordpress/editor';
 import { getDraftStatus, createDraft, publishDraft, discardDraft } from './api';
 import { clearDirtyState } from './utils';
+import {
+	PublishConfirmModal,
+	DiscardConfirmModal,
+	CreateConfirmModal,
+} from './components/DraftModeModals';
+import {
+	IsDraftView,
+	HasDraftView,
+	CanCreateDraftView,
+	UnavailableView,
+} from './components/DraftStatusViews';
 
 /**
  * Draft Mode Panel Component
@@ -256,245 +259,49 @@ export default function DraftModePanel() {
 
 			{/* State 1: This IS a draft of another page */}
 			{status?.is_draft && (
-				<div className="dsgo-draft-mode-panel__content dsgo-draft-mode-panel__content--is-draft">
-					<Notice
-						status="warning"
-						isDismissible={false}
-						className="dsgo-draft-mode-panel__notice"
-					>
-						{__('You are editing a draft version.', 'designsetgo')}
-					</Notice>
-
-					<p className="dsgo-draft-mode-panel__description">
-						{__(
-							"Changes here won't affect the live page until you publish them.",
-							'designsetgo'
-						)}
-					</p>
-
-					{status.original_view_url && (
-						<p className="dsgo-draft-mode-panel__link">
-							<ExternalLink href={status.original_view_url}>
-								{__('View live page', 'designsetgo')}
-							</ExternalLink>
-						</p>
-					)}
-
-					{/* Action buttons */}
-					<div className="dsgo-draft-mode-panel__actions">
-						<Button
-							variant="primary"
-							onClick={handlePublishDraft}
-							disabled={isActionLoading}
-							isBusy={isActionLoading}
-						>
-							{__('Publish Changes', 'designsetgo')}
-						</Button>
-
-						<Button
-							variant="secondary"
-							isDestructive
-							onClick={handleDiscardDraft}
-							disabled={isActionLoading}
-						>
-							{__('Discard Draft', 'designsetgo')}
-						</Button>
-					</div>
-				</div>
+				<IsDraftView
+					status={status}
+					onPublish={handlePublishDraft}
+					onDiscard={handleDiscardDraft}
+					isLoading={isActionLoading}
+				/>
 			)}
 
 			{/* State 2: This page HAS a pending draft */}
 			{!status?.is_draft && status?.has_draft && (
-				<div className="dsgo-draft-mode-panel__content dsgo-draft-mode-panel__content--has-draft">
-					<Notice
-						status="info"
-						isDismissible={false}
-						className="dsgo-draft-mode-panel__notice"
-					>
-						{__(
-							'A draft version exists for this page.',
-							'designsetgo'
-						)}
-					</Notice>
-
-					<p className="dsgo-draft-mode-panel__description">
-						{__(
-							'Edit the draft to make changes without affecting the live page.',
-							'designsetgo'
-						)}
-					</p>
-
-					{status.draft_created && (
-						<p className="dsgo-draft-mode-panel__meta">
-							{__('Created:', 'designsetgo')}{' '}
-							{status.draft_created}
-						</p>
-					)}
-
-					{status.draft_edit_url && (
-						<div className="dsgo-draft-mode-panel__actions">
-							<Button
-								variant="primary"
-								href={status.draft_edit_url}
-							>
-								{__('Edit Draft', 'designsetgo')}
-							</Button>
-						</div>
-					)}
-				</div>
+				<HasDraftView status={status} />
 			)}
 
 			{/* State 3: Published page with no draft - show Create Draft button */}
 			{!status?.is_draft &&
 				!status?.has_draft &&
 				postStatus === 'publish' && (
-					<div className="dsgo-draft-mode-panel__content dsgo-draft-mode-panel__content--can-create">
-						<p className="dsgo-draft-mode-panel__description">
-							{__(
-								'Create a draft to make changes without affecting the live page.',
-								'designsetgo'
-							)}
-						</p>
-
-						<div className="dsgo-draft-mode-panel__actions">
-							<Button
-								variant="primary"
-								onClick={handleCreateDraft}
-							>
-								{__('Create Draft', 'designsetgo')}
-							</Button>
-						</div>
-					</div>
+					<CanCreateDraftView onCreate={handleCreateDraft} />
 				)}
 
 			{/* State 4: Not a published page - feature not available */}
 			{!status?.is_draft &&
 				!status?.has_draft &&
-				postStatus !== 'publish' && (
-					<div className="dsgo-draft-mode-panel__content dsgo-draft-mode-panel__content--unavailable">
-						<p className="dsgo-draft-mode-panel__description dsgo-draft-mode-panel__description--muted">
-							{__(
-								'Draft mode is only available for published pages.',
-								'designsetgo'
-							)}
-						</p>
-					</div>
-				)}
+				postStatus !== 'publish' && <UnavailableView />}
 
-			{/* Publish confirmation modal */}
-			{showPublishConfirm && (
-				<Modal
-					title={__('Publish Changes?', 'designsetgo')}
-					onRequestClose={() => setShowPublishConfirm(false)}
-					size="small"
-				>
-					<Flex direction="column" gap={4}>
-						<FlexItem>
-							<p style={{ margin: 0 }}>
-								{__(
-									'This will replace the current live content with your draft changes.',
-									'designsetgo'
-								)}
-							</p>
-						</FlexItem>
-						<Flex justify="flex-end" gap={3}>
-							<FlexItem>
-								<Button
-									variant="tertiary"
-									onClick={() => setShowPublishConfirm(false)}
-								>
-									{__('Cancel', 'designsetgo')}
-								</Button>
-							</FlexItem>
-							<FlexItem>
-								<Button
-									variant="primary"
-									onClick={confirmPublishDraft}
-								>
-									{__('Publish', 'designsetgo')}
-								</Button>
-							</FlexItem>
-						</Flex>
-					</Flex>
-				</Modal>
-			)}
+			{/* Confirmation modals */}
+			<PublishConfirmModal
+				isOpen={showPublishConfirm}
+				onConfirm={confirmPublishDraft}
+				onCancel={() => setShowPublishConfirm(false)}
+			/>
 
-			{/* Discard confirmation modal */}
-			{showDiscardConfirm && (
-				<Modal
-					title={__('Discard Draft?', 'designsetgo')}
-					onRequestClose={() => setShowDiscardConfirm(false)}
-					size="small"
-				>
-					<Flex direction="column" gap={4}>
-						<FlexItem>
-							<p style={{ margin: 0 }}>
-								{__(
-									'All changes will be lost and cannot be recovered. The live page will remain unchanged.',
-									'designsetgo'
-								)}
-							</p>
-						</FlexItem>
-						<Flex justify="flex-end" gap={3}>
-							<FlexItem>
-								<Button
-									variant="tertiary"
-									onClick={() => setShowDiscardConfirm(false)}
-								>
-									{__('Cancel', 'designsetgo')}
-								</Button>
-							</FlexItem>
-							<FlexItem>
-								<Button
-									variant="primary"
-									isDestructive
-									onClick={confirmDiscardDraft}
-								>
-									{__('Discard', 'designsetgo')}
-								</Button>
-							</FlexItem>
-						</Flex>
-					</Flex>
-				</Modal>
-			)}
+			<DiscardConfirmModal
+				isOpen={showDiscardConfirm}
+				onConfirm={confirmDiscardDraft}
+				onCancel={() => setShowDiscardConfirm(false)}
+			/>
 
-			{/* Create draft confirmation modal */}
-			{showCreateConfirm && (
-				<Modal
-					title={__('Create Draft?', 'designsetgo')}
-					onRequestClose={() => setShowCreateConfirm(false)}
-					size="small"
-				>
-					<Flex direction="column" gap={4}>
-						<FlexItem>
-							<p style={{ margin: 0 }}>
-								{__(
-									'This will create a draft version of this page with your current edits. The live page will remain unchanged.',
-									'designsetgo'
-								)}
-							</p>
-						</FlexItem>
-						<Flex justify="flex-end" gap={3}>
-							<FlexItem>
-								<Button
-									variant="tertiary"
-									onClick={() => setShowCreateConfirm(false)}
-								>
-									{__('Cancel', 'designsetgo')}
-								</Button>
-							</FlexItem>
-							<FlexItem>
-								<Button
-									variant="primary"
-									onClick={confirmCreateDraft}
-								>
-									{__('Create Draft', 'designsetgo')}
-								</Button>
-							</FlexItem>
-						</Flex>
-					</Flex>
-				</Modal>
-			)}
+			<CreateConfirmModal
+				isOpen={showCreateConfirm}
+				onConfirm={confirmCreateDraft}
+				onCancel={() => setShowCreateConfirm(false)}
+			/>
 		</PluginDocumentSettingPanel>
 	);
 }

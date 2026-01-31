@@ -405,15 +405,30 @@ class Draft_Mode {
 	 * @param int $post_id Post ID being deleted.
 	 */
 	public function cleanup_draft_meta( $post_id ) {
+		// If this post is a draft, clean up the original's meta.
 		$original_id = get_post_meta( $post_id, self::META_DRAFT_OF, true );
 		if ( $original_id ) {
 			delete_post_meta( $original_id, self::META_HAS_DRAFT );
 		}
 
+		// If this post has a draft, validate and delete it.
 		$draft_id = get_post_meta( $post_id, self::META_HAS_DRAFT, true );
 		if ( $draft_id ) {
-			delete_post_meta( $draft_id, self::META_DRAFT_OF );
-			wp_delete_post( $draft_id, true );
+			// Security: Validate the draft relationship before deleting.
+			$draft_post = get_post( $draft_id );
+
+			// Only delete if:
+			// 1. The draft post exists.
+			// 2. The draft post is actually a draft status.
+			// 3. The draft's META_DRAFT_OF meta points back to this post.
+			if ( $draft_post && 'draft' === $draft_post->post_status ) {
+				$draft_original_id = get_post_meta( $draft_id, self::META_DRAFT_OF, true );
+
+				if ( (int) $draft_original_id === (int) $post_id ) {
+					delete_post_meta( $draft_id, self::META_DRAFT_OF );
+					wp_delete_post( $draft_id, true );
+				}
+			}
 		}
 	}
 }
