@@ -350,6 +350,12 @@ $dsgo-preview-bg: #f0f0f1;
 	border-radius: 4px;
 	margin-bottom: 20px;
 
+	&--warning {
+		background: $dsgo-diff-modified;
+		border-color: #d4a317;
+		color: #856404;
+	}
+
 	&__item {
 		display: flex;
 		align-items: center;

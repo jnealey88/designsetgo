@@ -343,7 +343,7 @@ class Revision_Comparison {
 				'postId'     => $post_id,
 				'revisionId' => $revision_id,
 				'adminUrl'   => esc_url( admin_url() ),
-				'editUrl'    => $post_id ? esc_url( get_edit_post_link( $post_id, 'raw' ) ) : '',
+				'editUrl'    => $post_id ? esc_url( get_edit_post_link( $post_id, 'raw' ) ?? '' ) : '',
 			)
 		);
 	}
@@ -394,7 +394,7 @@ class Revision_Comparison {
 			admin_url( 'revision.php' )
 		);
 
-		$edit_url = get_edit_post_link( $post_id, 'raw' );
+		$edit_url = get_edit_post_link( $post_id, 'raw' ) ?? '';
 
 		?>
 		<div class="wrap dsgo-revisions-wrap">
@@ -404,13 +404,15 @@ class Revision_Comparison {
 					printf(
 						/* translators: %s: post title with link */
 						esc_html__( 'Compare Revisions of "%s"', 'designsetgo' ),
-						'<a href="' . esc_url( $edit_url ) . '">' . esc_html( $post->post_title ) . '</a>'
+						$edit_url ? '<a href="' . esc_url( $edit_url ) . '">' . esc_html( $post->post_title ) . '</a>' : esc_html( $post->post_title )
 					);
 					?>
 				</h1>
+				<?php if ( $edit_url ) : ?>
 				<a href="<?php echo esc_url( $edit_url ); ?>" class="dsgo-revisions-editor-link">
 					<?php esc_html_e( '← Go to editor', 'designsetgo' ); ?>
 				</a>
+				<?php endif; ?>
 				<nav class="dsgo-revisions-tabs" role="tablist">
 					<a href="<?php echo esc_url( $standard_url ); ?>" class="dsgo-revisions-tab" role="tab">
 						<span class="dashicons dashicons-editor-code"></span>
@@ -522,6 +524,7 @@ class Revision_Comparison {
 						'validate_callback' => function ( $param ) {
 							return is_numeric( $param );
 						},
+						'sanitize_callback' => 'absint',
 					),
 				),
 			)
@@ -541,6 +544,7 @@ class Revision_Comparison {
 						'validate_callback' => function ( $param ) {
 							return is_numeric( $param );
 						},
+						'sanitize_callback' => 'absint',
 					),
 				),
 			)
@@ -560,12 +564,14 @@ class Revision_Comparison {
 						'validate_callback' => function ( $param ) {
 							return is_numeric( $param );
 						},
+						'sanitize_callback' => 'absint',
 					),
 					'to_id'   => array(
 						'required'          => true,
 						'validate_callback' => function ( $param ) {
 							return is_numeric( $param );
 						},
+						'sanitize_callback' => 'absint',
 					),
 				),
 			)
@@ -585,6 +591,7 @@ class Revision_Comparison {
 						'validate_callback' => function ( $param ) {
 							return is_numeric( $param );
 						},
+						'sanitize_callback' => 'absint',
 					),
 				),
 			)
@@ -706,7 +713,7 @@ class Revision_Comparison {
 			array(
 				'success'  => true,
 				'post_id'  => $post_id,
-				'edit_url' => get_edit_post_link( $post_id, 'raw' ),
+				'edit_url' => get_edit_post_link( $post_id, 'raw' ) ?? '',
 			)
 		);
 	}
@@ -1077,8 +1084,7 @@ class Revision_Comparison {
 		$attrs_a = $block_a['attrs'] ?? array();
 		$attrs_b = $block_b['attrs'] ?? array();
 
-		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
-		if ( serialize( $attrs_a ) !== serialize( $attrs_b ) ) {
+		if ( wp_json_encode( $attrs_a ) !== wp_json_encode( $attrs_b ) ) {
 			return false;
 		}
 

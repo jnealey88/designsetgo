@@ -132,6 +132,36 @@ const RevisionSlider = ({ revisions, fromRevision, toRevision, onFromChange }) =
 	const canGoPrevious = fromIndex > 0;
 	const canGoNext = fromIndex < maxIndex - 1;
 
+	// Handle keyboard navigation for accessibility.
+	const handleKeyDown = (e) => {
+		switch (e.key) {
+			case 'ArrowLeft':
+			case 'ArrowDown':
+				e.preventDefault();
+				handlePrevious();
+				break;
+			case 'ArrowRight':
+			case 'ArrowUp':
+				e.preventDefault();
+				handleNext();
+				break;
+			case 'Home':
+				e.preventDefault();
+				if (orderedRevisions.length > 0) {
+					onFromChange(orderedRevisions[0]);
+				}
+				break;
+			case 'End':
+				e.preventDefault();
+				if (maxIndex > 0) {
+					onFromChange(orderedRevisions[maxIndex - 1]);
+				}
+				break;
+			default:
+				break;
+		}
+	};
+
 	// Calculate handle position.
 	const fromPercent =
 		orderedRevisions.length > 1 ? (fromIndex / maxIndex) * 100 : 0;
@@ -214,6 +244,7 @@ const RevisionSlider = ({ revisions, fromRevision, toRevision, onFromChange }) =
 						className="dsgo-revision-slider__handle dsgo-revision-slider__handle--from"
 						style={{ left: `${fromPercent}%` }}
 						onMouseDown={handleMouseDown}
+						onKeyDown={handleKeyDown}
 						role="slider"
 						tabIndex={0}
 						aria-label={__('Select revision', 'designsetgo')}

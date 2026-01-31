@@ -19,9 +19,24 @@ import RevisionMeta from './RevisionMeta';
  * @param {Array}  styles  Array of stylesheet URLs.
  * @return {string} Complete HTML document.
  */
+/**
+ * Escape HTML special characters for safe attribute insertion
+ *
+ * @param {string} str String to escape.
+ * @return {string} Escaped string.
+ */
+const escapeAttr = (str) => {
+	return str
+		.replace(/&/g, '&amp;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;');
+};
+
 const buildIframeDocument = (content, styles) => {
 	const styleLinks = styles
-		.map((url) => `<link rel="stylesheet" href="${url}" />`)
+		.map((url) => `<link rel="stylesheet" href="${escapeAttr(url)}" />`)
 		.join('\n');
 
 	return `

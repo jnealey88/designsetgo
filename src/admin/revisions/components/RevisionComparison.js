@@ -28,6 +28,7 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 	const [diffData, setDiffData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [diffLoading, setDiffLoading] = useState(false);
+	const [diffError, setDiffError] = useState(false);
 	const [restoring, setRestoring] = useState(false);
 	const [error, setError] = useState(null);
 	const [hasUserInteracted, setHasUserInteracted] = useState(false);
@@ -94,6 +95,7 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 		}
 
 		setDiffLoading(true);
+		setDiffError(false);
 
 		apiFetch({
 			path: `/designsetgo/v1/revisions/diff/${fromRevision.id}/${toRevision.id}`,
@@ -102,8 +104,15 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 				setDiffData(data);
 				setDiffLoading(false);
 			})
-			.catch(() => {
+			.catch((err) => {
+				// Log error for debugging but don't block the UI.
+				// eslint-disable-next-line no-console
+				console.warn(
+					'Failed to load diff data:',
+					err.message || err
+				);
 				setDiffData(null);
+				setDiffError(true);
 				setDiffLoading(false);
 			});
 	}, [fromRevision, toRevision]);
@@ -151,9 +160,15 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 
 	// Back to editor
 	const handleBackToEditor = () => {
-		const { editUrl } = window.designSetGoRevisions || {};
+		const { editUrl, adminUrl } = window.designSetGoRevisions || {};
 		if (editUrl) {
 			window.location.href = editUrl;
+		} else if (adminUrl && postId) {
+			// Fallback: construct edit URL from adminUrl and postId.
+			window.location.href = `${adminUrl}post.php?post=${postId}&action=edit`;
+		} else {
+			// Last resort: use browser history.
+			window.history.back();
 		}
 	};
 
@@ -262,6 +277,16 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 			/>
 
 			{diffData && !diffLoading && <DiffSummary diffData={diffData} />}
+			{diffError && !diffLoading && (
+				<div className="dsgo-diff-summary dsgo-diff-summary--warning">
+					<span className="dsgo-diff-summary__item">
+						{__(
+							'Unable to highlight changes. Previews are still available.',
+							'designsetgo'
+						)}
+					</span>
+				</div>
+			)}
 
 			<div className="dsgo-revision-panels">
 				<RevisionPreview
