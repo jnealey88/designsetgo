@@ -4,6 +4,13 @@
  * @since 1.0.0
  */
 
+// Default button styles with low specificity (matches WordPress core button block)
+// :where() has 0 specificity, allowing theme.json and block controls to override
+// This ensures buttons get default rounded appearance even if WP core button block isn't loaded
+:where(.dsgo-icon-button__wrapper.wp-block-button__link) {
+	border-radius: 9999px; // Default pill shape (WordPress standard)
+}
+
 .dsgo-icon-button {
 	// Block wrapper is now block-level by default to respect WordPress content width constraints
 	// Width behavior is controlled via modifier classes on both wrapper and inner element
@@ -71,7 +78,6 @@
 		cursor: pointer;
 		font-family: inherit;
 		font-size: inherit;
-		// Border-radius is inherited from wp-element-button class (no explicit value needed)
 
 		&:hover {
 			opacity: 0.9;
