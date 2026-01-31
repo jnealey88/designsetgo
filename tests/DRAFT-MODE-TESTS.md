@@ -51,36 +51,31 @@ Tests the `Draft_Mode_Admin` class UI functionality:
 Located in `tests/unit/`:
 
 #### 4. `draft-mode-panel.test.js` - Sidebar Panel Component
-Tests the `DraftModePanel` React component:
-- ✅ Initial loading state
-- ✅ Post type filtering
-- ✅ Draft mode enabled/disabled state
-- ✅ Published page without draft UI
-- ✅ Published page with draft UI
-- ✅ Draft page editing UI
-- ✅ Create draft action
-- ✅ Publish draft action with confirmation
-- ✅ Discard draft action with confirmation
-- ✅ Error handling and display
-- ✅ View live page link
 
-**Total Tests: 13**
+Tests the `DraftModePanel` React component:
+
+- ✅ Post type filtering (non-page types)
+- ✅ Draft mode enabled/disabled state
+- ✅ Published page without draft (create button)
+- ✅ Published page with draft (notice and edit button)
+- ✅ Draft page editing (publish and discard buttons)
+
+Total Tests: 7
 
 #### 5. `draft-mode-controls.test.js` - Editor Controls Component
-Tests the `DraftModeControls` React component:
-- ✅ Post type filtering
-- ✅ Draft mode enabled/disabled state
-- ✅ Create Draft button for published pages
-- ✅ Edit Draft button when draft exists
-- ✅ Save Draft button when editing draft
-- ✅ Draft editing banner with view live link
-- ✅ Creating/Saving state indicators
-- ✅ Error modal display and dismissal
-- ✅ Subdirectory WordPress install URL handling
-- ✅ Redirect to existing draft on conflict
-- ✅ Accessibility (aria-labels)
 
-**Total Tests: 13**
+Tests the `DraftModeControls` React component:
+
+- ✅ Post type filtering (non-page types)
+- ✅ Draft mode enabled/disabled state
+- ✅ Edit Draft button when draft exists
+- ✅ Save Draft button visibility (with/without edits)
+- ✅ Saving state indicators
+- ✅ Draft editing banner with view live link
+- ✅ Accessibility (aria-labels for external links)
+- ✅ Save draft action on button click
+
+Total Tests: 9
 
 ## Running Tests
 

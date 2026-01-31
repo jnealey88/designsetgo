@@ -178,6 +178,15 @@ class Draft_Mode_REST {
 
 		$post_id = $request->get_param( 'post_id' );
 
+		// Check object-level permission for the specific post.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return new \WP_Error(
+				'rest_forbidden',
+				__( 'You do not have permission to edit this page.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
 		$overrides = array_filter(
 			array(
 				'content' => $request->get_param( 'content' ),
@@ -217,7 +226,26 @@ class Draft_Mode_REST {
 	 */
 	public function publish_draft_endpoint( $request ) {
 		$draft_id = $request->get_param( 'id' );
-		$result   = $this->draft_mode->publish_draft( $draft_id );
+
+		// Check object-level permissions for the draft and original posts.
+		if ( ! current_user_can( 'delete_post', $draft_id ) ) {
+			return new \WP_Error(
+				'rest_forbidden',
+				__( 'You do not have permission to manage this draft.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		$original_id = get_post_meta( $draft_id, Draft_Mode::META_DRAFT_OF, true );
+		if ( $original_id && ! current_user_can( 'publish_post', $original_id ) ) {
+			return new \WP_Error(
+				'rest_forbidden',
+				__( 'You do not have permission to publish changes to this page.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		$result = $this->draft_mode->publish_draft( $draft_id );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
@@ -242,7 +270,17 @@ class Draft_Mode_REST {
 	 */
 	public function discard_draft_endpoint( $request ) {
 		$draft_id = $request->get_param( 'id' );
-		$result   = $this->draft_mode->discard_draft( $draft_id );
+
+		// Check object-level permission for the specific draft.
+		if ( ! current_user_can( 'delete_post', $draft_id ) ) {
+			return new \WP_Error(
+				'rest_forbidden',
+				__( 'You do not have permission to delete this draft.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		$result = $this->draft_mode->discard_draft( $draft_id );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
@@ -261,16 +299,28 @@ class Draft_Mode_REST {
 	 * Get status endpoint
 	 *
 	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_REST_Response
+	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function get_status_endpoint( $request ) {
 		$post_id  = $request->get_param( 'post_id' );
 		$post     = get_post( $post_id );
+
+		// Check object-level permission for the specific post.
+		if ( $post && ! current_user_can( 'edit_post', $post_id ) ) {
+			return new \WP_Error(
+				'rest_forbidden',
+				__( 'You do not have permission to view this page.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
 		$settings = $this->draft_mode->get_settings();
 
 		$base_response = array(
 			'settings' => array(
-				'enabled' => $settings['enable'],
+				'enabled'            => $settings['enable'],
+				'auto_save_enabled'  => isset( $settings['auto_save_enabled'] ) ? $settings['auto_save_enabled'] : true,
+				'auto_save_interval' => isset( $settings['auto_save_interval'] ) ? $settings['auto_save_interval'] : 60,
 			),
 		);
 

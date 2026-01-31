@@ -98,7 +98,11 @@ $draft_mode = $settings['draft_mode'];
 
 ### Authentication
 
-All endpoints require authentication with `publish_posts` capability (Authors, Editors, Administrators).
+All endpoints require authentication with appropriate capabilities:
+
+- **Create/Publish/Discard Draft**: Requires `publish_pages` capability (Editors, Administrators)
+- **Get Status**: Requires `edit_pages` capability (Authors, Editors, Administrators)
+- **Object-Level Permissions**: Users must have permission to edit/publish/delete the specific page/draft in question
 
 **Methods**:
 - Basic Authentication: `Authorization: Basic base64(username:password)`
@@ -344,9 +348,6 @@ do_action( 'designsetgo_draft_discarded', int $draft_id, int $original_id );
 ### Filters
 
 ```php
-// Enable/disable draft mode globally
-apply_filters( 'designsetgo_draft_mode_enabled', bool $enabled );
-
 // Control which meta keys are excluded when creating a draft
 apply_filters( 'designsetgo_draft_excluded_meta_keys', array $keys, int $source_id );
 

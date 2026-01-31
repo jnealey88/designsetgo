@@ -60,6 +60,8 @@ class Draft_Mode {
 			'enable'                 => true,
 			'show_page_list_actions' => true,
 			'show_page_list_column'  => true,
+			'auto_save_enabled'      => true,
+			'auto_save_interval'     => 60,
 		);
 	}
 
