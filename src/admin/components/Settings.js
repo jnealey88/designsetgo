@@ -182,6 +182,10 @@ const Settings = () => {
 										settings={settings}
 										updateSetting={updateSetting}
 									/>
+									<LLMSTxtPanel
+										settings={settings}
+										updateSetting={updateSetting}
+									/>
 								</>
 							)}
 
@@ -201,10 +205,6 @@ const Settings = () => {
 							{tab.name === 'integrations' && (
 								<>
 									<IntegrationsPanel
-										settings={settings}
-										updateSetting={updateSetting}
-									/>
-									<LLMSTxtPanel
 										settings={settings}
 										updateSetting={updateSetting}
 									/>

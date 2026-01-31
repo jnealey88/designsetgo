@@ -237,6 +237,16 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 							</p>
 						</div>
 
+						<div className="designsetgo-settings-note">
+							<strong>{__('Performance:', 'designsetgo')}</strong>
+							<p>
+								{__(
+									'For performance, llms.txt includes up to 500 posts per content type. Developers can adjust this limit using the designsetgo_llms_txt_posts_limit filter.',
+									'designsetgo'
+								)}
+							</p>
+						</div>
+
 						<div className="designsetgo-settings-section">
 							<h3 className="designsetgo-section-heading">
 								{__('Static Markdown Files', 'designsetgo')}
