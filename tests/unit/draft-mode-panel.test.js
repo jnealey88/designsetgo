@@ -36,7 +36,14 @@ jest.mock('@wordpress/element', () => ({
 jest.mock('@wordpress/components', () => ({
 	Notice: ({ children }) => <div data-testid="notice">{children}</div>,
 	Spinner: () => <div data-testid="spinner">Loading...</div>,
-	Button: ({ children, onClick, variant, isBusy, isDestructive, ...props }) => (
+	Button: ({
+		children,
+		onClick,
+		variant,
+		isBusy,
+		isDestructive,
+		...props
+	}) => (
 		<button onClick={onClick} data-variant={variant} {...props}>
 			{children}
 		</button>
@@ -133,7 +140,9 @@ describe('DraftModePanel', () => {
 			});
 
 			await waitFor(() => {
-				expect(screen.queryByTestId('plugin-panel')).not.toBeInTheDocument();
+				expect(
+					screen.queryByTestId('plugin-panel')
+				).not.toBeInTheDocument();
 			});
 		});
 	});

@@ -11,6 +11,7 @@
 	// Hide the default WordPress "Save draft" button since we provide our own
 	// "Save Draft" link that's more prominently positioned in the header.
 	// !important required to override WordPress core inline styles.
+	// stylelint-disable-next-line selector-class-pattern -- WordPress core class
 	.editor-post-save-draft {
 		display: none !important;
 	}
@@ -165,6 +166,7 @@
 	}
 
 	&__text {
+
 		strong {
 			font-weight: 600;
 		}
@@ -180,6 +182,7 @@
 		}
 
 		// External link icon.
+
 		&::after {
 			content: " \2197";
 			font-size: 12px;

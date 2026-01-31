@@ -52,17 +52,14 @@ const DraftModePanel = ({ settings, updateSetting }) => {
 						</h3>
 
 						<ToggleControl
-							label={__(
-								'Show Page List Actions',
-								'designsetgo'
-							)}
+							label={__('Show Page List Actions', 'designsetgo')}
 							help={__(
 								'Display "Create Draft" and "Edit Draft" links in the Pages list.',
 								'designsetgo'
 							)}
 							checked={
-								settings?.draft_mode
-									?.show_page_list_actions ?? true
+								settings?.draft_mode?.show_page_list_actions ??
+								true
 							}
 							onChange={(value) =>
 								updateSetting(
@@ -84,8 +81,8 @@ const DraftModePanel = ({ settings, updateSetting }) => {
 								'designsetgo'
 							)}
 							checked={
-								settings?.draft_mode
-									?.show_page_list_column ?? true
+								settings?.draft_mode?.show_page_list_column ??
+								true
 							}
 							onChange={(value) =>
 								updateSetting(

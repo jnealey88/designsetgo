@@ -6,7 +6,13 @@
  * @package
  */
 
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import {
+	render,
+	screen,
+	fireEvent,
+	waitFor,
+	act,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DraftModeControls from '../../src/extensions/draft-mode/DraftModeControls';
 import * as api from '../../src/extensions/draft-mode/api';
@@ -35,7 +41,16 @@ jest.mock('@wordpress/element', () => ({
 }));
 
 jest.mock('@wordpress/components', () => ({
-	Button: ({ children, onClick, variant, disabled, href, isBusy, isDestructive, ...props }) =>
+	Button: ({
+		children,
+		onClick,
+		variant,
+		disabled,
+		href,
+		isBusy,
+		isDestructive,
+		...props
+	}) =>
 		href ? (
 			<a href={href} data-variant={variant} {...props}>
 				{children}
@@ -146,7 +161,9 @@ describe('DraftModeControls', () => {
 			});
 
 			await waitFor(() => {
-				expect(screen.queryByText('Create Draft')).not.toBeInTheDocument();
+				expect(
+					screen.queryByText('Create Draft')
+				).not.toBeInTheDocument();
 			});
 		});
 	});
@@ -231,7 +248,9 @@ describe('DraftModeControls', () => {
 			});
 
 			await waitFor(() => {
-				expect(screen.queryByText('Save Draft')).not.toBeInTheDocument();
+				expect(
+					screen.queryByText('Save Draft')
+				).not.toBeInTheDocument();
 			});
 		});
 

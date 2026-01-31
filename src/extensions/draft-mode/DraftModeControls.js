@@ -23,8 +23,8 @@ import {
 } from '@wordpress/element';
 import { getDraftStatus, createDraft } from './api';
 import { clearDirtyState } from './utils';
-import { findHeaderSettingsContainer } from './utils/dom-helpers';
 import { usePublishIntercept } from './hooks/usePublishIntercept';
+import { useHeaderContainer } from './hooks/useHeaderContainer';
 import DraftModeHeaderControl from './components/DraftModeHeaderControl';
 import DraftModeBanner from './components/DraftModeBanner';
 import ErrorModal from './components/ErrorModal';
@@ -39,11 +39,13 @@ import { CreateConfirmModal } from './components/DraftModeModals';
 export default function DraftModeControls() {
 	const [status, setStatus] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
-	const [headerContainer, setHeaderContainer] = useState(null);
 	const [isCreatingDraft, setIsCreatingDraft] = useState(false);
 	const [errorMessage, setErrorMessage] = useState(null);
 	const [showErrorModal, setShowErrorModal] = useState(false);
 	const [showCreateConfirm, setShowCreateConfirm] = useState(false);
+
+	// Find header container for portaling controls.
+	const headerContainer = useHeaderContainer();
 
 	// Get current post data from the editor store.
 	const {
@@ -79,24 +81,6 @@ export default function DraftModeControls() {
 	}, []);
 
 	usePublishIntercept(postId, status?.is_draft, handlePublishError);
-
-	// Find the header container on mount.
-	useEffect(() => {
-		let container = findHeaderSettingsContainer();
-		if (container) {
-			setHeaderContainer(container);
-			return;
-		}
-
-		const timer = setTimeout(() => {
-			container = findHeaderSettingsContainer();
-			if (container) {
-				setHeaderContainer(container);
-			}
-		}, 500);
-
-		return () => clearTimeout(timer);
-	}, []);
 
 	// Fetch draft status.
 	const fetchStatus = useCallback(async () => {
