@@ -259,7 +259,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Requirements
 - WordPress 6.0 or higher
-- PHP 7.4 or higher
+- PHP 8.0 or higher
 - Modern browser with JavaScript enabled
 
 ---

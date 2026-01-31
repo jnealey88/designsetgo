@@ -5,7 +5,7 @@
  * Description:       Professional Gutenberg block library with 46 blocks and 14 powerful extensions - complete Form Builder, container system, interactive elements, maps, modals, breadcrumbs, scroll effects, and animations. Built with WordPress standards for guaranteed editor/frontend parity.
  * Version:           1.3.4
  * Requires at least: 6.0
- * Requires PHP:      7.4
+ * Requires PHP:      8.0
  * Author:            DesignSetGo
  * Author URI:        https://designsetgoblocks.com/nealey
  * License:           GPL-2.0-or-later
