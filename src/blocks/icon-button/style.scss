@@ -7,11 +7,8 @@
 .dsgo-icon-button {
 	// Block wrapper is now block-level by default to respect WordPress content width constraints
 	// Width behavior is controlled via modifier classes on both wrapper and inner element
-	// NOTE: Border-radius is now inherited from theme.json via wp-element-button on the wrapper
-	// WordPress border controls will add inline styles to this element, which the wrapper inherits
-
-	// Default border-radius uses theme.json button value or falls back to pill shape
-	// Will be overridden by WordPress block controls
+	// Border-radius: Uses theme.json button value or defaults to pill shape (9999px)
+	// Override priority: 1) WordPress border controls (inline styles) 2) theme.json button styles
 	border-radius: var(--wp--style--elements--button--border--radius, 9999px);
 	overflow: hidden; // Clip contents to border-radius
 
