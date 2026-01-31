@@ -57,14 +57,10 @@ export default function IconButtonSave({ attributes }) {
 	// Extract padding (must match edit.js)
 	const paddingValue = style?.spacing?.padding;
 
-	// Calculate button styles (must match edit.js)
-	const buttonStyles = {
-		display: 'inline-flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		gap: iconPosition !== 'none' && icon ? iconGap : 0,
-		width: width === 'auto' ? 'auto' : width,
-		flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
+	// Visual styles applied to outer wrapper (must match edit.js)
+	// Colors, padding, font size, and hover effects go on the outer wrapper
+	// This ensures background and border apply to the same element
+	const visualStyles = {
 		...(bgColor && { backgroundColor: bgColor }),
 		...(txtColor && { color: txtColor }),
 		...(fontSizeValue && { fontSize: fontSizeValue }),
@@ -80,6 +76,17 @@ export default function IconButtonSave({ attributes }) {
 		...(hoverTextColor && {
 			'--dsgo-button-hover-color': hoverTextColor,
 		}),
+	};
+
+	// Layout styles for inner wrapper (must match edit.js)
+	// Only structural/layout properties, no visual styles
+	const layoutStyles = {
+		display: 'inline-flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		gap: iconPosition !== 'none' && icon ? iconGap : 0,
+		width: width === 'auto' ? 'auto' : width,
+		flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
 	};
 
 	// Calculate icon wrapper styles (must match edit.js)
@@ -106,20 +113,19 @@ export default function IconButtonSave({ attributes }) {
 			: ' dsgo-icon-button--width-auto';
 
 	// wp-block-button class enables theme.json button styles to cascade to wp-block-button__link
+	// Visual styles (colors, padding, hover) applied to outer wrapper to align with WordPress border controls
 	const blockProps = useBlockProps.save({
-		className: `dsgo-icon-button wp-block-button${animationClass}${widthClass}`,
-		// Let block wrapper be block-level to respect WordPress content width constraints
-		// Width styling is now handled via CSS classes on both wrapper and inner element
+		className: `dsgo-icon-button wp-block-button wp-element-button${animationClass}${widthClass}`,
+		style: visualStyles,
 	});
 
 	// Wrap in link if URL is provided
-	// wp-element-button + wp-block-button__link classes inherit theme.json button styles
+	// Inner wrapper only handles layout, no visual classes needed
 	const ButtonWrapper = url ? 'a' : 'div';
 	const wrapperProps = url
 		? {
-				className:
-					'dsgo-icon-button__wrapper wp-element-button wp-block-button__link',
-				style: buttonStyles,
+				className: 'dsgo-icon-button__wrapper',
+				style: layoutStyles,
 				href: url,
 				target: linkTarget,
 				rel:
@@ -131,9 +137,8 @@ export default function IconButtonSave({ attributes }) {
 				}),
 			}
 		: {
-				className:
-					'dsgo-icon-button__wrapper wp-element-button wp-block-button__link',
-				style: buttonStyles,
+				className: 'dsgo-icon-button__wrapper',
+				style: layoutStyles,
 				...(modalCloseId && {
 					'data-dsgo-modal-close': modalCloseId || 'true',
 				}),
