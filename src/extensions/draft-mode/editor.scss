@@ -1,0 +1,191 @@
+/**
+ * Draft Mode Editor Styles
+ *
+ * @package DesignSetGo
+ * @since 1.4.0
+ */
+
+// Adjust editor UI when draft mode is active.
+.dsgo-draft-mode-active {
+
+	// Hide the default WordPress "Save draft" button since we provide our own
+	// "Save Draft" link that's more prominently positioned in the header.
+	// !important required to override WordPress core inline styles.
+	// stylelint-disable-next-line selector-class-pattern -- WordPress core class
+	.editor-post-save-draft {
+		display: none !important;
+	}
+}
+
+// Save Draft link in header - positioned at the left.
+.dsgo-draft-mode-save-draft {
+	order: -100; // Move to the very left of the flex container.
+	color: #2271b1;
+	text-decoration: none;
+	margin-right: auto; // Push everything else to the right.
+
+	&:hover:not(:disabled) {
+		color: #135e96;
+	}
+
+	&:disabled {
+		color: #a7aaad;
+	}
+}
+
+// Sidebar panel styles.
+.dsgo-draft-mode-panel {
+
+	&__loading {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 0;
+		color: #757575;
+	}
+
+	&__notice {
+		margin-bottom: 12px !important;
+
+		// Remove default margin from notice content.
+		p {
+			margin: 0;
+		}
+	}
+
+	&__content {
+		// Specific styling for draft status.
+		&--is-draft {
+
+			.dsgo-draft-mode-panel__notice {
+				background-color: #fff3cd;
+				border-left-color: #ffb900;
+			}
+
+			// Add bottom padding to prevent overlap with draft mode banner.
+			.dsgo-draft-mode-panel__actions {
+				padding-bottom: 48px;
+			}
+		}
+
+		&--has-draft {
+
+			.dsgo-draft-mode-panel__notice {
+				background-color: #e7f5ff;
+				border-left-color: #0073aa;
+			}
+		}
+	}
+
+	&__description {
+		margin: 0 0 12px;
+		color: #1e1e1e;
+		font-size: 13px;
+		line-height: 1.5;
+
+		&--muted {
+			color: #757575;
+			font-style: italic;
+		}
+	}
+
+	&__meta {
+		margin: 0 0 12px;
+		color: #757575;
+		font-size: 12px;
+	}
+
+	&__link {
+		margin: 0 0 12px;
+
+		a {
+			color: #2271b1;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	&__auto-save {
+		margin: 16px 0;
+		padding: 12px;
+		background: #f6f7f7;
+		border-radius: 4px;
+
+		.components-toggle-control {
+			margin-bottom: 0;
+		}
+
+		.components-input-control {
+			margin-top: 12px;
+		}
+
+		.dsgo-draft-mode-panel__meta {
+			margin: 8px 0 0;
+			font-size: 11px;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		margin-top: 16px;
+		padding-top: 16px;
+		border-top: 1px solid #e0e0e0;
+
+		.components-button {
+			justify-content: center;
+		}
+	}
+}
+
+// Bottom banner for draft mode indicator.
+.dsgo-draft-mode-banner {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 99999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	padding: 12px 24px;
+	background: linear-gradient(135deg, #ffb900 0%, #f0b000 100%);
+	color: #1e1e1e;
+	font-size: 14px;
+	font-weight: 500;
+	box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+
+	&__icon {
+		font-size: 18px;
+		line-height: 1;
+	}
+
+	&__text {
+
+		strong {
+			font-weight: 600;
+		}
+	}
+
+	&__link {
+		color: #1e1e1e;
+		text-decoration: underline;
+		margin-left: 8px;
+
+		&:hover {
+			color: #000;
+		}
+
+		// External link icon.
+
+		&::after {
+			content: " \2197";
+			font-size: 12px;
+		}
+	}
+}

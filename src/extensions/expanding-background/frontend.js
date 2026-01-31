@@ -253,15 +253,19 @@ function initExpandingBackgrounds() {
 	});
 }
 
-// Initialize on DOM ready
-if (document.readyState === 'loading') {
-	document.addEventListener('DOMContentLoaded', initExpandingBackgrounds);
-} else {
-	initExpandingBackgrounds();
-}
+/**
+ * Setup MutationObserver to detect dynamically added elements
+ */
+function setupMutationObserver() {
+	if (typeof window === 'undefined' || !('MutationObserver' in window)) {
+		return;
+	}
 
-// Re-initialize on dynamic content changes (e.g., infinite scroll)
-if (typeof window !== 'undefined' && 'MutationObserver' in window) {
+	// Ensure document.body exists before observing
+	if (!document.body) {
+		return;
+	}
+
 	const bodyObserver = new MutationObserver((mutations) => {
 		let shouldReinit = false;
 
@@ -286,4 +290,19 @@ if (typeof window !== 'undefined' && 'MutationObserver' in window) {
 		childList: true,
 		subtree: true,
 	});
+}
+
+/**
+ * Initialize both expanding backgrounds and mutation observer
+ */
+function init() {
+	initExpandingBackgrounds();
+	setupMutationObserver();
+}
+
+// Initialize on DOM ready
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', init);
+} else {
+	init();
 }

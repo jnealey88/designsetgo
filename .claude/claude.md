@@ -97,5 +97,9 @@ Verify: `grep -i "class-name" build/style-index.css`
 **Commit**: `src/`, `includes/`, `*.php`, `package.json`, `block.json`, `*.md`
 **Ignore**: `build/`, `node_modules/`, `wp-env/`
 
+
+## Branches
+
+Branch prefixes should start with claude/
 ---
 **Updated**: 2025-11-11 | **Version**: 1.0.1 | **WP**: 6.4+

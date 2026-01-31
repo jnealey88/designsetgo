@@ -18,6 +18,7 @@ import FormsPanel from './settings-panels/FormsPanel';
 import AnimationsPanel from './settings-panels/AnimationsPanel';
 import SecurityPanel from './settings-panels/SecurityPanel';
 import IntegrationsPanel from './settings-panels/IntegrationsPanel';
+import DraftModePanel from './settings-panels/DraftModePanel';
 
 const Settings = () => {
 	const [settings, setSettings] = useState(null);
@@ -165,6 +166,10 @@ const Settings = () => {
 							{tab.name === 'features' && (
 								<>
 									<StickyHeaderPanel
+										settings={settings}
+										updateSetting={updateSetting}
+									/>
+									<DraftModePanel
 										settings={settings}
 										updateSetting={updateSetting}
 									/>
