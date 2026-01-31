@@ -57,7 +57,8 @@ export default function IconButtonSave({ attributes }) {
 	// Extract padding (must match edit.js)
 	const paddingValue = style?.spacing?.padding;
 
-	// Calculate button styles (must match edit.js)
+	// Combined styles for single element (must match edit.js)
+	// Visual styles (colors, padding, font size, hover) + layout styles (flexbox)
 	const buttonStyles = {
 		display: 'inline-flex',
 		alignItems: 'center',
@@ -105,57 +106,46 @@ export default function IconButtonSave({ attributes }) {
 			? ' dsgo-icon-button--width-full'
 			: ' dsgo-icon-button--width-auto';
 
-	// wp-block-button class enables theme.json button styles to cascade to wp-block-button__link
+	// Single element with all classes and styles combined
+	// wp-block-button and wp-element-button enable theme.json button styles
+	// wp-block-button__link ensures theme compatibility
+	// Conditionally render as <a> (with URL) or <button> (without URL)
+	const ButtonElement = url ? 'a' : 'button';
+
 	const blockProps = useBlockProps.save({
-		className: `dsgo-icon-button wp-block-button${animationClass}${widthClass}`,
-		// Let block wrapper be block-level to respect WordPress content width constraints
-		// Width styling is now handled via CSS classes on both wrapper and inner element
+		className: `dsgo-icon-button wp-block-button wp-block-button__link wp-element-button${animationClass}${widthClass}`,
+		style: buttonStyles,
+		...(url && {
+			href: url,
+			target: linkTarget,
+			rel:
+				linkTarget === '_blank'
+					? rel || 'noopener noreferrer'
+					: rel || undefined,
+		}),
+		...(!url && {
+			type: 'button',
+		}),
+		...(modalCloseId && {
+			'data-dsgo-modal-close': modalCloseId,
+		}),
 	});
 
-	// Wrap in link if URL is provided
-	// wp-element-button + wp-block-button__link classes inherit theme.json button styles
-	const ButtonWrapper = url ? 'a' : 'div';
-	const wrapperProps = url
-		? {
-				className:
-					'dsgo-icon-button__wrapper wp-element-button wp-block-button__link',
-				style: buttonStyles,
-				href: url,
-				target: linkTarget,
-				rel:
-					linkTarget === '_blank'
-						? rel || 'noopener noreferrer'
-						: rel || undefined,
-				...(modalCloseId && {
-					'data-dsgo-modal-close': modalCloseId || 'true',
-				}),
-			}
-		: {
-				className:
-					'dsgo-icon-button__wrapper wp-element-button wp-block-button__link',
-				style: buttonStyles,
-				...(modalCloseId && {
-					'data-dsgo-modal-close': modalCloseId || 'true',
-				}),
-			};
-
 	return (
-		<div {...blockProps}>
-			<ButtonWrapper {...wrapperProps}>
-				{iconPosition !== 'none' && icon && (
-					<span
-						className="dsgo-icon-button__icon dsgo-lazy-icon"
-						style={iconWrapperStyles}
-						data-icon-name={icon}
-						data-icon-size={iconSize}
-					/>
-				)}
-				<RichText.Content
-					tagName="span"
-					className="dsgo-icon-button__text"
-					value={text}
+		<ButtonElement {...blockProps}>
+			{iconPosition !== 'none' && icon && (
+				<span
+					className="dsgo-icon-button__icon dsgo-lazy-icon"
+					style={iconWrapperStyles}
+					data-icon-name={icon}
+					data-icon-size={iconSize}
 				/>
-			</ButtonWrapper>
-		</div>
+			)}
+			<RichText.Content
+				tagName="span"
+				className="dsgo-icon-button__text"
+				value={text}
+			/>
+		</ButtonElement>
 	);
 }

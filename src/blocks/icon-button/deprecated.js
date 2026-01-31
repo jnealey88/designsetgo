@@ -8,6 +8,216 @@
 
 import { useBlockProps, RichText } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
+import { convertPaddingValue } from './utils/padding';
+
+/**
+ * Version 4: Before collapsing to single element structure
+ *
+ * Changes in current version:
+ * - Removed inner wrapper div/a element
+ * - Merged all classes and styles onto single element
+ * - Button is now single <a> tag instead of <div><a>...</a></div>
+ * - Fixes wp-block-button__link class conflicts with theme.json
+ * - Visual styles moved to outer wrapper (border-radius fix)
+ */
+const v4 = {
+	attributes: {
+		text: {
+			type: 'string',
+			default: '',
+		},
+		url: {
+			type: 'string',
+			default: '',
+		},
+		linkTarget: {
+			type: 'string',
+			default: '_self',
+		},
+		rel: {
+			type: 'string',
+			default: '',
+		},
+		icon: {
+			type: 'string',
+			default: 'lightbulb',
+		},
+		iconPosition: {
+			type: 'string',
+			default: 'start',
+		},
+		iconSize: {
+			type: 'number',
+			default: 20,
+		},
+		iconGap: {
+			type: 'string',
+			default: '8px',
+		},
+		width: {
+			type: 'string',
+			default: 'auto',
+		},
+		hoverAnimation: {
+			type: 'string',
+			default: 'none',
+		},
+		hoverBackgroundColor: {
+			type: 'string',
+			default: '',
+		},
+		hoverTextColor: {
+			type: 'string',
+			default: '',
+		},
+		modalCloseId: {
+			type: 'string',
+			default: '',
+		},
+	},
+	save({ attributes }) {
+		const {
+			text,
+			url,
+			linkTarget,
+			rel,
+			icon,
+			iconPosition,
+			iconSize,
+			iconGap,
+			width,
+			hoverAnimation,
+			hoverBackgroundColor,
+			hoverTextColor,
+			style,
+			backgroundColor,
+			textColor,
+			fontSize,
+			modalCloseId,
+		} = attributes;
+
+		// Extract WordPress color values
+		const bgColor =
+			style?.color?.background ||
+			(backgroundColor && `var(--wp--preset--color--${backgroundColor})`);
+		const txtColor =
+			style?.color?.text ||
+			(textColor && `var(--wp--preset--color--${textColor})`);
+
+		// Extract font size
+		const fontSizeValue =
+			style?.typography?.fontSize ||
+			(fontSize && `var(--wp--preset--font-size--${fontSize})`);
+
+		// Extract padding
+		const paddingValue = style?.spacing?.padding;
+
+		// Visual styles applied to outer wrapper
+		const visualStyles = {
+			...(bgColor && { backgroundColor: bgColor }),
+			...(txtColor && { color: txtColor }),
+			...(fontSizeValue && { fontSize: fontSizeValue }),
+			...(paddingValue && {
+				paddingTop: convertPaddingValue(paddingValue.top),
+				paddingRight: convertPaddingValue(paddingValue.right),
+				paddingBottom: convertPaddingValue(paddingValue.bottom),
+				paddingLeft: convertPaddingValue(paddingValue.left),
+			}),
+			...(hoverBackgroundColor && {
+				'--dsgo-button-hover-bg': hoverBackgroundColor,
+			}),
+			...(hoverTextColor && {
+				'--dsgo-button-hover-color': hoverTextColor,
+			}),
+		};
+
+		// Layout styles for inner wrapper
+		const layoutStyles = {
+			display: 'inline-flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			gap: iconPosition !== 'none' && icon ? iconGap : 0,
+			width: width === 'auto' ? 'auto' : width,
+			flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
+		};
+
+		// Calculate icon wrapper styles
+		const iconWrapperStyles = {
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			width: `${iconSize}px`,
+			height: `${iconSize}px`,
+			flexShrink: 0,
+		};
+
+		// Build animation class
+		const animationClass =
+			hoverAnimation && hoverAnimation !== 'none'
+				? ` dsgo-icon-button--${hoverAnimation}`
+				: '';
+
+		// Build width class
+		const widthClass =
+			width === '100%'
+				? ' dsgo-icon-button--width-full'
+				: ' dsgo-icon-button--width-auto';
+
+		// OLD: Two-div structure with outer wrapper and inner wrapper
+		const blockProps = useBlockProps.save({
+			className: `dsgo-icon-button wp-block-button wp-element-button${animationClass}${widthClass}`,
+			style: visualStyles,
+		});
+
+		// OLD: Inner wrapper with wp-block-button__link class
+		const ButtonWrapper = url ? 'a' : 'div';
+		const wrapperProps = url
+			? {
+					className: 'dsgo-icon-button__wrapper wp-block-button__link',
+					style: layoutStyles,
+					href: url,
+					target: linkTarget,
+					rel:
+						linkTarget === '_blank'
+							? rel || 'noopener noreferrer'
+							: rel || undefined,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId || 'true',
+					}),
+				}
+			: {
+					className: 'dsgo-icon-button__wrapper wp-block-button__link',
+					style: layoutStyles,
+					...(modalCloseId && {
+						'data-dsgo-modal-close': modalCloseId || 'true',
+					}),
+				};
+
+		return (
+			<div {...blockProps}>
+				<ButtonWrapper {...wrapperProps}>
+					{iconPosition !== 'none' && icon && (
+						<span
+							className="dsgo-icon-button__icon dsgo-lazy-icon"
+							style={iconWrapperStyles}
+							data-icon-name={icon}
+							data-icon-size={iconSize}
+						/>
+					)}
+					<RichText.Content
+						tagName="span"
+						className="dsgo-icon-button__text"
+						value={text}
+					/>
+				</ButtonWrapper>
+			</div>
+		);
+	},
+	migrate(attributes) {
+		// No attribute changes needed - only save function changed
+		return attributes;
+	},
+};
 
 /**
  * Version 3: Before CSS-based width handling
@@ -563,4 +773,4 @@ const v1 = {
 	},
 };
 
-export default [v3, v2, v1];
+export default [v4, v3, v2, v1];

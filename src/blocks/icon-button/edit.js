@@ -96,7 +96,8 @@ export default function IconButtonEdit({
 	// Extract padding - WordPress stores it in style.spacing.padding
 	const paddingValue = style?.spacing?.padding;
 
-	// Calculate button styles
+	// Combined styles for single element (must match save.js)
+	// Visual styles (colors, padding, font size, hover) + layout styles (flexbox)
 	const buttonStyles = {
 		display: 'inline-flex',
 		alignItems: 'center',
@@ -118,6 +119,9 @@ export default function IconButtonEdit({
 		}),
 		...(hoverTextColor && {
 			'--dsgo-button-hover-color': hoverTextColor,
+		}),
+		...(parentHoverButtonBg && {
+			'--dsgo-parent-hover-button-bg': parentHoverButtonBg,
 		}),
 	};
 
@@ -144,16 +148,15 @@ export default function IconButtonEdit({
 			? ' dsgo-icon-button--width-full'
 			: ' dsgo-icon-button--width-auto';
 
-	// wp-block-button class enables theme.json button styles to cascade to wp-block-button__link
+	// Single element with all classes and styles combined
+	// wp-block-button and wp-element-button enable theme.json button styles
+	// wp-block-button__link ensures theme compatibility
+	// Match save.js: render as actual element type for better editor/frontend parity
+	const ButtonElement = 'div'; // Always div in editor to preserve editability
+
 	const blockProps = useBlockProps({
-		className: `dsgo-icon-button wp-block-button${animationClass}${widthClass}`,
-		style: {
-			// Let block wrapper be block-level to respect WordPress content width constraints
-			// Width styling is now handled via CSS classes on both wrapper and inner element
-			...(parentHoverButtonBg && {
-				'--dsgo-parent-hover-button-bg': parentHoverButtonBg,
-			}),
-		},
+		className: `dsgo-icon-button wp-block-button wp-block-button__link wp-element-button${animationClass}${widthClass}`,
+		style: buttonStyles,
 	});
 
 	return (
@@ -201,30 +204,25 @@ export default function IconButtonEdit({
 				/>
 			</InspectorControls>
 
-			<div {...blockProps}>
-				<div
-					className="dsgo-icon-button__wrapper wp-element-button wp-block-button__link"
-					style={buttonStyles}
-				>
-					{iconPosition !== 'none' && icon && (
-						<span
-							className="dsgo-icon-button__icon"
-							style={iconWrapperStyles}
-						>
-							{getIcon(icon)}
-						</span>
-					)}
-					<RichText
-						tagName="span"
-						className="dsgo-icon-button__text"
-						value={text}
-						onChange={(value) => setAttributes({ text: value })}
-						placeholder={__('Button text…', 'designsetgo')}
-						allowedFormats={['core/bold', 'core/italic']}
-						withoutInteractiveFormatting
-					/>
-				</div>
-			</div>
+			<ButtonElement {...blockProps}>
+				{iconPosition !== 'none' && icon && (
+					<span
+						className="dsgo-icon-button__icon"
+						style={iconWrapperStyles}
+					>
+						{getIcon(icon)}
+					</span>
+				)}
+				<RichText
+					tagName="span"
+					className="dsgo-icon-button__text"
+					value={text}
+					onChange={(value) => setAttributes({ text: value })}
+					placeholder={__('Button text…', 'designsetgo')}
+					allowedFormats={['core/bold', 'core/italic']}
+					withoutInteractiveFormatting
+				/>
+			</ButtonElement>
 		</>
 	);
 }
