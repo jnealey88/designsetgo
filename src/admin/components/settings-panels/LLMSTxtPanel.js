@@ -25,6 +25,8 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 	const [loadError, setLoadError] = useState(null);
 	const [flushing, setFlushing] = useState(false);
 	const [flushNotice, setFlushNotice] = useState(null);
+	const [generating, setGenerating] = useState(false);
+	const [generateNotice, setGenerateNotice] = useState(null);
 
 	// Fetch available post types.
 	useEffect(() => {
@@ -63,6 +65,42 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 			? [...enabledPostTypes, postType]
 			: enabledPostTypes.filter((t) => t !== postType);
 		updateSetting('llms_txt', 'post_types', newTypes);
+	};
+
+	/**
+	 * Generate static markdown files.
+	 */
+	const generateFiles = () => {
+		setGenerating(true);
+		setGenerateNotice(null);
+
+		apiFetch({
+			path: '/designsetgo/v1/llms-txt/generate-files',
+			method: 'POST',
+		})
+			.then((response) => {
+				setGenerateNotice({
+					status: response.success ? 'success' : 'warning',
+					message: response.message,
+				});
+			})
+			.catch((error) => {
+				// eslint-disable-next-line no-console
+				console.error(
+					'DesignSetGo: Failed to generate markdown files',
+					error
+				);
+				setGenerateNotice({
+					status: 'error',
+					message: __(
+						'Failed to generate markdown files.',
+						'designsetgo'
+					),
+				});
+			})
+			.finally(() => {
+				setGenerating(false);
+			});
 	};
 
 	/**
@@ -197,6 +235,42 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 									'designsetgo'
 								)}
 							</p>
+						</div>
+
+						<div className="designsetgo-settings-section">
+							<h3 className="designsetgo-section-heading">
+								{__('Static Markdown Files', 'designsetgo')}
+							</h3>
+							<p className="designsetgo-section-description">
+								{__(
+									'Generate static .md files for all your content. These files will be linked directly in llms.txt for faster access. Files are automatically regenerated when posts are saved.',
+									'designsetgo'
+								)}
+							</p>
+
+							{generateNotice && (
+								<Notice
+									status={generateNotice.status}
+									isDismissible={true}
+									onRemove={() => setGenerateNotice(null)}
+								>
+									{generateNotice.message}
+								</Notice>
+							)}
+
+							<Button
+								variant="primary"
+								onClick={generateFiles}
+								isBusy={generating}
+								disabled={generating}
+							>
+								{generating
+									? __('Generating…', 'designsetgo')
+									: __(
+											'Generate Markdown Files',
+											'designsetgo'
+										)}
+							</Button>
 						</div>
 
 						<div className="designsetgo-settings-section">

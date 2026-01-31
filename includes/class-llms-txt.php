@@ -45,6 +45,11 @@ class LLMS_Txt {
 	const EXCLUDE_META_KEY = '_designsetgo_exclude_llms';
 
 	/**
+	 * Directory for static markdown files (relative to uploads).
+	 */
+	const MARKDOWN_DIR = 'designsetgo/llms';
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -55,9 +60,9 @@ class LLMS_Txt {
 		// Handle llms.txt requests.
 		add_action( 'template_redirect', array( $this, 'handle_request' ) );
 
-		// Cache invalidation hooks.
-		add_action( 'save_post', array( $this, 'invalidate_cache' ) );
-		add_action( 'delete_post', array( $this, 'invalidate_cache' ) );
+		// Cache invalidation and file regeneration hooks.
+		add_action( 'save_post', array( $this, 'handle_post_save' ), 10, 2 );
+		add_action( 'delete_post', array( $this, 'handle_post_delete' ) );
 		add_action( 'transition_post_status', array( $this, 'invalidate_cache' ) );
 		// Invalidate cache when settings are updated.
 		add_action( 'update_option_designsetgo_settings', array( $this, 'invalidate_cache' ) );
@@ -67,6 +72,9 @@ class LLMS_Txt {
 
 		// Register REST endpoint for post types.
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
+
+		// Admin notice for file conflicts.
+		add_action( 'admin_notices', array( $this, 'maybe_show_conflict_notice' ) );
 	}
 
 	/**
@@ -190,10 +198,17 @@ class LLMS_Txt {
 			$lines[] = '';
 
 			foreach ( $posts as $post ) {
-				$title       = $this->escape_markdown_link( $post->post_title );
-				$url         = get_permalink( $post );
-				$markdown_url = $rest_url . $post->ID;
-				$lines[]     = '- [' . $title . '](' . $url . ') ([markdown](' . $markdown_url . '))';
+				$title = $this->escape_markdown_link( $post->post_title );
+				$url   = get_permalink( $post );
+
+				// Use static file URL if it exists, otherwise fall back to API.
+				if ( $this->markdown_file_exists( $post->ID ) ) {
+					$markdown_url = $this->get_markdown_url( $post->ID );
+				} else {
+					$markdown_url = $rest_url . $post->ID;
+				}
+
+				$lines[] = '- [' . $title . '](' . $url . ') ([markdown](' . $markdown_url . '))';
 			}
 
 			$lines[] = '';
@@ -297,6 +312,35 @@ class LLMS_Txt {
 	}
 
 	/**
+	 * Handle post save - invalidate cache and regenerate markdown file.
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post    Post object.
+	 */
+	public function handle_post_save( $post_id, $post ) {
+		// Skip autosaves and revisions.
+		if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		// Invalidate caches.
+		$this->invalidate_cache( $post_id );
+
+		// Regenerate markdown file (will delete if post doesn't qualify).
+		$this->generate_markdown_file( $post_id );
+	}
+
+	/**
+	 * Handle post delete - remove markdown file and invalidate cache.
+	 *
+	 * @param int $post_id Post ID.
+	 */
+	public function handle_post_delete( $post_id ) {
+		$this->invalidate_cache( $post_id );
+		$this->delete_markdown_file( $post_id );
+	}
+
+	/**
 	 * Invalidate the llms.txt cache.
 	 *
 	 * @param int|null $post_id Optional post ID for individual markdown cache.
@@ -373,6 +417,19 @@ class LLMS_Txt {
 			)
 		);
 
+		// Generate all markdown files endpoint.
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/generate-files',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'generate_files_endpoint' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
 		// Markdown endpoint for individual posts.
 		register_rest_route(
 			'designsetgo/v1',
@@ -392,6 +449,19 @@ class LLMS_Txt {
 						},
 					),
 				),
+			)
+		);
+
+		// Status endpoint - includes conflict detection.
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/status',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_status_endpoint' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 			)
 		);
 	}
@@ -424,6 +494,36 @@ class LLMS_Txt {
 	}
 
 	/**
+	 * Generate all markdown files endpoint.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function generate_files_endpoint() {
+		$result = $this->generate_all_markdown_files();
+
+		// Clear the llms.txt cache so it regenerates with new file URLs.
+		delete_transient( self::CACHE_KEY );
+
+		return rest_ensure_response(
+			array(
+				'success'         => $result['success'],
+				'generated_count' => $result['generated_count'],
+				'errors'          => $result['errors'],
+				'message'         => sprintf(
+					/* translators: %d: Number of files generated */
+					_n(
+						'Generated %d markdown file.',
+						'Generated %d markdown files.',
+						$result['generated_count'],
+						'designsetgo'
+					),
+					$result['generated_count']
+				),
+			)
+		);
+	}
+
+	/**
 	 * Flush llms.txt cache endpoint.
 	 *
 	 * @return \WP_REST_Response
@@ -451,6 +551,27 @@ class LLMS_Txt {
 			array(
 				'success' => true,
 				'message' => __( 'llms.txt cache has been cleared.', 'designsetgo' ),
+			)
+		);
+	}
+
+	/**
+	 * Get llms.txt status endpoint.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function get_status_endpoint() {
+		$settings      = Admin\Settings::get_settings();
+		$is_enabled    = ! empty( $settings['llms_txt']['enable'] );
+		$has_conflict  = self::has_file_conflict();
+		$conflict_info = $has_conflict ? self::get_conflict_info() : null;
+
+		return rest_ensure_response(
+			array(
+				'enabled'       => $is_enabled,
+				'url'           => home_url( '/llms.txt' ),
+				'has_conflict'  => $has_conflict,
+				'conflict_info' => $conflict_info,
 			)
 		);
 	}
@@ -546,5 +667,256 @@ class LLMS_Txt {
 	 */
 	public function invalidate_markdown_cache( $post_id ) {
 		delete_transient( 'designsetgo_llms_md_' . $post_id );
+	}
+
+	/**
+	 * Get the full path to the markdown files directory.
+	 *
+	 * @return string Directory path.
+	 */
+	public function get_markdown_directory() {
+		$upload_dir = wp_upload_dir();
+		return trailingslashit( $upload_dir['basedir'] ) . self::MARKDOWN_DIR;
+	}
+
+	/**
+	 * Get the URL for a markdown file.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return string File URL.
+	 */
+	public function get_markdown_url( $post_id ) {
+		$upload_dir = wp_upload_dir();
+		return trailingslashit( $upload_dir['baseurl'] ) . self::MARKDOWN_DIR . '/' . $post_id . '.md';
+	}
+
+	/**
+	 * Check if a static markdown file exists for a post.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return bool True if file exists.
+	 */
+	public function markdown_file_exists( $post_id ) {
+		$file_path = $this->get_markdown_directory() . '/' . $post_id . '.md';
+		return file_exists( $file_path );
+	}
+
+	/**
+	 * Ensure the markdown directory exists.
+	 *
+	 * @return bool True if directory exists or was created.
+	 */
+	private function ensure_markdown_directory() {
+		$dir = $this->get_markdown_directory();
+
+		if ( ! file_exists( $dir ) ) {
+			return wp_mkdir_p( $dir );
+		}
+
+		return is_dir( $dir ) && is_writable( $dir );
+	}
+
+	/**
+	 * Generate a static markdown file for a post.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return bool|WP_Error True on success, WP_Error on failure.
+	 */
+	public function generate_markdown_file( $post_id ) {
+		$post = get_post( $post_id );
+
+		if ( ! $post ) {
+			return new \WP_Error( 'not_found', __( 'Post not found.', 'designsetgo' ) );
+		}
+
+		if ( 'publish' !== $post->post_status ) {
+			// Delete file if it exists for unpublished posts.
+			$this->delete_markdown_file( $post_id );
+			return new \WP_Error( 'not_published', __( 'Post is not published.', 'designsetgo' ) );
+		}
+
+		// Check if post is excluded.
+		$excluded = get_post_meta( $post_id, self::EXCLUDE_META_KEY, true );
+		if ( $excluded ) {
+			$this->delete_markdown_file( $post_id );
+			return new \WP_Error( 'excluded', __( 'Post is excluded from llms.txt.', 'designsetgo' ) );
+		}
+
+		// Check if feature is enabled.
+		$settings = Admin\Settings::get_settings();
+		if ( empty( $settings['llms_txt']['enable'] ) ) {
+			return new \WP_Error( 'feature_disabled', __( 'llms.txt feature is not enabled.', 'designsetgo' ) );
+		}
+
+		// Check if post type is enabled.
+		$enabled_post_types = $settings['llms_txt']['post_types'] ?? array( 'page', 'post' );
+		if ( ! in_array( $post->post_type, $enabled_post_types, true ) ) {
+			$this->delete_markdown_file( $post_id );
+			return new \WP_Error( 'post_type_disabled', __( 'Post type is not enabled.', 'designsetgo' ) );
+		}
+
+		// Ensure directory exists.
+		if ( ! $this->ensure_markdown_directory() ) {
+			return new \WP_Error( 'directory_error', __( 'Could not create markdown directory.', 'designsetgo' ) );
+		}
+
+		// Convert to markdown.
+		$converter = new Markdown_Converter();
+		$markdown  = $converter->convert( $post );
+
+		// Write the file.
+		$file_path = $this->get_markdown_directory() . '/' . $post_id . '.md';
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct file write required for performance.
+		$result = file_put_contents( $file_path, $markdown );
+
+		if ( false === $result ) {
+			return new \WP_Error( 'write_error', __( 'Could not write markdown file.', 'designsetgo' ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Delete a static markdown file for a post.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return bool True if file was deleted or didn't exist.
+	 */
+	public function delete_markdown_file( $post_id ) {
+		$file_path = $this->get_markdown_directory() . '/' . $post_id . '.md';
+
+		if ( file_exists( $file_path ) ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
+			return unlink( $file_path );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Generate markdown files for all enabled posts.
+	 *
+	 * @return array Result with generated count and errors.
+	 */
+	public function generate_all_markdown_files() {
+		$settings = Admin\Settings::get_settings();
+
+		if ( empty( $settings['llms_txt']['enable'] ) ) {
+			return array(
+				'success'         => false,
+				'generated_count' => 0,
+				'errors'          => array( __( 'llms.txt feature is not enabled.', 'designsetgo' ) ),
+			);
+		}
+
+		$post_types = $settings['llms_txt']['post_types'] ?? array( 'page', 'post' );
+		$generated  = 0;
+		$errors     = array();
+
+		foreach ( $post_types as $post_type ) {
+			$posts = $this->get_public_content( $post_type );
+
+			foreach ( $posts as $post ) {
+				$result = $this->generate_markdown_file( $post->ID );
+
+				if ( is_wp_error( $result ) ) {
+					$errors[] = sprintf(
+						/* translators: 1: Post title, 2: Error message */
+						__( 'Failed to generate %1$s: %2$s', 'designsetgo' ),
+						$post->post_title,
+						$result->get_error_message()
+					);
+				} else {
+					++$generated;
+				}
+			}
+		}
+
+		return array(
+			'success'         => empty( $errors ),
+			'generated_count' => $generated,
+			'errors'          => $errors,
+		);
+	}
+
+	/**
+	 * Check if a physical llms.txt file exists that would conflict.
+	 *
+	 * When a physical file exists in the site root, the web server serves it
+	 * directly before WordPress can handle the request via rewrite rules.
+	 *
+	 * @return bool True if a conflicting file exists.
+	 */
+	public static function has_file_conflict() {
+		return file_exists( ABSPATH . 'llms.txt' );
+	}
+
+	/**
+	 * Get information about the conflicting file.
+	 *
+	 * @return array|null File info or null if no conflict.
+	 */
+	public static function get_conflict_info() {
+		$file_path = ABSPATH . 'llms.txt';
+
+		if ( ! file_exists( $file_path ) ) {
+			return null;
+		}
+
+		return array(
+			'path'     => $file_path,
+			'size'     => filesize( $file_path ),
+			'modified' => filemtime( $file_path ),
+			'writable' => is_writable( $file_path ),
+		);
+	}
+
+	/**
+	 * Display admin notice when a file conflict is detected.
+	 */
+	public function maybe_show_conflict_notice() {
+		// Only show to users who can manage options.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		// Only show if feature is enabled.
+		$settings = Admin\Settings::get_settings();
+		if ( empty( $settings['llms_txt']['enable'] ) ) {
+			return;
+		}
+
+		// Check for conflict.
+		if ( ! self::has_file_conflict() ) {
+			return;
+		}
+
+		// Only show on relevant admin pages.
+		$screen = get_current_screen();
+		if ( ! $screen || ! in_array( $screen->id, array( 'dashboard', 'settings_page_designsetgo', 'plugins' ), true ) ) {
+			return;
+		}
+
+		$conflict_info = self::get_conflict_info();
+		?>
+		<div class="notice notice-warning">
+			<p>
+				<strong><?php esc_html_e( 'DesignSetGo: llms.txt File Conflict Detected', 'designsetgo' ); ?></strong>
+			</p>
+			<p>
+				<?php
+				printf(
+					/* translators: %s: File path */
+					esc_html__( 'A physical llms.txt file exists at %s. This file is being served by your web server instead of the dynamic version generated by DesignSetGo.', 'designsetgo' ),
+					'<code>' . esc_html( $conflict_info['path'] ) . '</code>'
+				);
+				?>
+			</p>
+			<p>
+				<?php esc_html_e( 'To use the dynamic llms.txt feature, you need to rename or delete the existing file. It may have been created by your hosting provider or another plugin.', 'designsetgo' ); ?>
+			</p>
+		</div>
+		<?php
 	}
 }
