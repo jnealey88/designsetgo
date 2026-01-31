@@ -334,7 +334,7 @@ class Plugin {
 			$llms_asset = include $llms_asset_file;
 
 			wp_enqueue_script(
-				'designsetgo-llms-txt-panel',
+				'dsgo-llms-txt-panel',
 				DESIGNSETGO_URL . 'build/llms-txt.js',
 				$llms_asset['dependencies'],
 				$llms_asset['version'],

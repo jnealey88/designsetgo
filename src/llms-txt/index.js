@@ -50,7 +50,7 @@ const LLMSTxtPanel = () => {
 		<PluginDocumentSettingPanel
 			name="designsetgo-llms-txt"
 			title={__('AI & LLMs', 'designsetgo')}
-			className="designsetgo-llms-txt-panel"
+			className="dsgo-llms-txt-panel"
 		>
 			<ToggleControl
 				__nextHasNoMarginBottom
