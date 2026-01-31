@@ -1,9 +1,27 @@
 /**
  * Revision Preview Component
  *
- * Displays a rendered preview of a revision.
+ * Displays a rendered preview of a revision in a sandboxed iframe.
  *
- * @package DesignSetGo
+ * ## Iframe Sandbox Restrictions
+ *
+ * The preview iframe uses `sandbox="allow-same-origin"` which enables:
+ * - JavaScript access to the iframe's document (required for diff highlighting)
+ * - CSS styling from parent stylesheets
+ *
+ * The sandbox explicitly DISABLES:
+ * - `allow-scripts`: No JavaScript execution in preview content (security)
+ * - `allow-forms`: No form submissions
+ * - `allow-popups`: No popup windows
+ * - `allow-top-navigation`: Cannot navigate the parent window
+ *
+ * This means:
+ * - Interactive blocks (accordions, tabs) will NOT function in previews
+ * - Form blocks will display but not submit
+ * - External script dependencies will not load
+ * - This is intentional for security - previews show static visual state only
+ *
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -82,8 +100,7 @@ const applyDiffHighlights = (iframeDoc, diffData, diffType) => {
 
 	diffData.changes.forEach((change) => {
 		// Determine which index to use based on the panel type.
-		const index =
-			diffType === 'from' ? change.from_index : change.to_index;
+		const index = diffType === 'from' ? change.from_index : change.to_index;
 
 		// Skip if this change doesn't apply to this panel.
 		if (index === undefined) {
@@ -103,14 +120,13 @@ const applyDiffHighlights = (iframeDoc, diffData, diffType) => {
 /**
  * RevisionPreview Component
  *
- * @param {Object} props           Component props.
- * @param {Object} props.revision  Revision object.
- * @param {string} props.label     Label for this preview (Before/After).
- * @param {Object} props.diffData  Diff data from API.
- * @param {string} props.diffType  Either "from" or "to".
- * @param {number} props.postId    Post ID.
+ * @param {Object} props          Component props.
+ * @param {Object} props.revision Revision object.
+ * @param {string} props.label    Label for this preview (Before/After).
+ * @param {Object} props.diffData Diff data from API.
+ * @param {string} props.diffType Either "from" or "to".
  */
-const RevisionPreview = ({ revision, label, diffData, diffType, postId }) => {
+const RevisionPreview = ({ revision, label, diffData, diffType }) => {
 	const iframeRef = useRef(null);
 	const [renderedContent, setRenderedContent] = useState(null);
 	const [styles, setStyles] = useState([]);
@@ -175,13 +191,21 @@ const RevisionPreview = ({ revision, label, diffData, diffType, postId }) => {
 				{revision && <RevisionMeta revision={revision} />}
 			</div>
 			<div className="dsgo-revision-preview__content">
-				{loading ? (
+				{loading && (
 					<div className="dsgo-revision-preview__loading">
 						<Spinner />
 					</div>
-				) : error ? (
+				)}
+				{!loading && error && (
 					<div className="dsgo-revision-preview__error">{error}</div>
-				) : (
+				)}
+				{!loading && !error && (
+					/*
+					 * Sandboxed iframe for secure revision preview.
+					 * Uses allow-same-origin for diff highlighting access.
+					 * Scripts disabled for security - interactive blocks won't function.
+					 * See component docblock for full sandbox documentation.
+					 */
 					<iframe
 						ref={iframeRef}
 						className="dsgo-revision-preview__iframe"

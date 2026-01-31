@@ -188,6 +188,9 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode-rest.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode-admin.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-block-differ.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-renderer.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-rest-api.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-comparison.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';

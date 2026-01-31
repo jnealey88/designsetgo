@@ -20,8 +20,9 @@ const DiffSummary = ({ diffData }) => {
 	}
 
 	const { total } = diffData.summary;
+	const { performance_warning: performanceWarning } = diffData;
 
-	if (total === 0) {
+	if (total === 0 && !performanceWarning) {
 		return (
 			<div className="dsgo-diff-summary">
 				<span>{__('No visual changes detected.', 'designsetgo')}</span>
@@ -30,16 +31,25 @@ const DiffSummary = ({ diffData }) => {
 	}
 
 	return (
-		<div className="dsgo-diff-summary">
-			<div className="dsgo-diff-summary__item">
-				<span className="dsgo-diff-summary__badge">{total}</span>
-				<span>
-					{total === 1
-						? __('block changed', 'designsetgo')
-						: __('blocks changed', 'designsetgo')}
-				</span>
+		<>
+			{performanceWarning && (
+				<div className="dsgo-diff-summary dsgo-diff-summary--warning">
+					<span className="dsgo-diff-summary__item">
+						{performanceWarning}
+					</span>
+				</div>
+			)}
+			<div className="dsgo-diff-summary">
+				<div className="dsgo-diff-summary__item">
+					<span className="dsgo-diff-summary__badge">{total}</span>
+					<span>
+						{total === 1
+							? __('block changed', 'designsetgo')
+							: __('blocks changed', 'designsetgo')}
+					</span>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

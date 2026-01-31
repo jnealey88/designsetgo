@@ -1,0 +1,31 @@
+/**
+ * Revision Actions Bar Styles
+ *
+ * @package DesignSetGo
+ */
+
+@use "variables" as *;
+
+.dsgo-revision-actions {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px solid $dsgo-border-color;
+
+	&--top {
+		margin-top: 0;
+		margin-bottom: 20px;
+		padding-top: 0;
+		padding-bottom: 20px;
+		border-top: none;
+		border-bottom: 1px solid $dsgo-border-color;
+	}
+
+	&__left,
+	&__right {
+		display: flex;
+		gap: 8px;
+	}
+}

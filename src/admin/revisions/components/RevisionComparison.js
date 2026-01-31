@@ -3,7 +3,7 @@
  *
  * Main container for visual revision comparison.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -17,8 +17,8 @@ import DiffSummary from './DiffSummary';
 /**
  * RevisionComparison Component
  *
- * @param {Object} props               Component props.
- * @param {number} props.postId        Post ID to compare revisions for.
+ * @param {Object} props                   Component props.
+ * @param {number} props.postId            Post ID to compare revisions for.
  * @param {number} props.initialRevisionId Initial revision ID from URL.
  */
 const RevisionComparison = ({ postId, initialRevisionId }) => {
@@ -107,10 +107,7 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 			.catch((err) => {
 				// Log error for debugging but don't block the UI.
 				// eslint-disable-next-line no-console
-				console.warn(
-					'Failed to load diff data:',
-					err.message || err
-				);
+				console.warn('Failed to load diff data:', err.message || err);
 				setDiffData(null);
 				setDiffError(true);
 				setDiffLoading(false);
@@ -196,7 +193,9 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 				window.location.href = response.edit_url;
 			}
 		} catch (err) {
-			setError(err.message || __('Failed to restore revision.', 'designsetgo'));
+			setError(
+				err.message || __('Failed to restore revision.', 'designsetgo')
+			);
 			setRestoring(false);
 		}
 	};
@@ -294,14 +293,12 @@ const RevisionComparison = ({ postId, initialRevisionId }) => {
 					label={__('Before', 'designsetgo')}
 					diffData={diffData}
 					diffType="from"
-					postId={postId}
 				/>
 				<RevisionPreview
 					revision={toRevision}
 					label={__('After', 'designsetgo')}
 					diffData={diffData}
 					diffType="to"
-					postId={postId}
 				/>
 			</div>
 		</div>

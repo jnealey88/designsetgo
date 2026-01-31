@@ -1,0 +1,94 @@
+/**
+ * Diff Summary and Highlight Styles
+ *
+ * @package DesignSetGo
+ */
+
+@use "variables" as *;
+
+// Diff summary
+.dsgo-diff-summary {
+	display: flex;
+	gap: 16px;
+	padding: 16px;
+	background: $dsgo-preview-bg;
+	border: 1px solid $dsgo-border-color;
+	border-radius: 4px;
+	margin-bottom: 20px;
+
+	&--warning {
+		background: $dsgo-diff-modified;
+		border-color: #d4a317;
+		color: #856404;
+	}
+
+	&__item {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 13px;
+	}
+
+	&__badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 24px;
+		height: 24px;
+		padding: 0 8px;
+		border-radius: 12px;
+		font-weight: 600;
+		font-size: 12px;
+		background: #007cba;
+		color: #fff;
+	}
+}
+
+// Diff highlights in iframe
+.dsgo-diff-highlight {
+	position: absolute;
+	pointer-events: none;
+	border-radius: 4px;
+	transition: opacity 0.2s;
+
+	&--added {
+		background: rgba(40, 167, 69, 0.2);
+		border: 2px solid #28a745;
+	}
+
+	&--removed {
+		background: rgba(220, 53, 69, 0.2);
+		border: 2px solid #dc3545;
+	}
+
+	&--modified {
+		background: rgba(255, 193, 7, 0.2);
+		border: 2px solid #ffc107;
+	}
+
+	&__label {
+		position: absolute;
+		top: -24px;
+		left: 0;
+		padding: 2px 8px;
+		font-size: 11px;
+		font-weight: 600;
+		border-radius: 3px;
+		white-space: nowrap;
+	}
+
+	&--added &__label {
+		background: #28a745;
+		color: #fff;
+	}
+
+	&--removed &__label {
+		background: #dc3545;
+		color: #fff;
+	}
+
+	&--modified &__label {
+		background: #ffc107;
+		color: #212529;
+	}
+}
