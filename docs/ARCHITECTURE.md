@@ -32,7 +32,7 @@ Complete guide to DesignSetGo's architecture, code organization, and how everyth
 └─────────────────────────────────────────┘
 
 Frontend:                Backend:
-- React 18              - PHP 7.4+
+- React 18              - PHP 8.0+
 - WordPress Packages    - WordPress APIs
 - SCSS/CSS             - MySQL
 ```
