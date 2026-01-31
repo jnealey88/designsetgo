@@ -36,28 +36,14 @@ class Draft_Mode {
 	const META_DRAFT_CREATED = '_dsgo_draft_created';
 
 	/**
-	 * REST API handler.
-	 *
-	 * @var Draft_Mode_REST
-	 */
-	private $rest;
-
-	/**
-	 * Admin UI handler.
-	 *
-	 * @var Draft_Mode_Admin
-	 */
-	private $admin;
-
-	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		// Initialize REST API handler.
-		$this->rest = new Draft_Mode_REST( $this );
+		// Initialize REST API handler (hooks registered in constructor).
+		new Draft_Mode_REST( $this );
 
-		// Initialize admin UI handler.
-		$this->admin = new Draft_Mode_Admin( $this );
+		// Initialize admin UI handler (hooks registered in constructor).
+		new Draft_Mode_Admin( $this );
 
 		// Always clean up meta when posts are deleted.
 		add_action( 'before_delete_post', array( $this, 'cleanup_draft_meta' ) );
