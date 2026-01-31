@@ -289,7 +289,13 @@ class Plugin {
 				)
 			);
 
-			// Localize excluded blocks setting for extension filtering.
+		}
+
+		// Localize excluded blocks setting for extension filtering.
+		// This is done outside the block-category-filter conditional because
+		// the 'designsetgo-extensions' script is registered separately in the Assets class.
+		if ( wp_script_is( 'designsetgo-extensions', 'registered' ) || wp_script_is( 'designsetgo-extensions', 'enqueued' ) ) {
+			$settings        = $settings ?? \DesignSetGo\Admin\Settings::get_settings();
 			$excluded_blocks = isset( $settings['excluded_blocks'] ) ? $settings['excluded_blocks'] : array();
 
 			wp_localize_script(

@@ -25,7 +25,7 @@ Use the exclusion system when you encounter:
 
 ### Via Admin UI
 
-1. Navigate to **WordPress Admin > DSG Settings > Extensions**
+1. Navigate to **WordPress Admin > DSG Settings > Blocks & Extensions**
 2. Click the **Exclusions** tab
 3. Enter the block name in one of two formats:
    - **Exact match**: `gravityforms/form` (excludes only this specific block)

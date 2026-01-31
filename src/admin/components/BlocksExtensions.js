@@ -314,7 +314,8 @@ const BlocksExtensions = () => {
 		const blockName = newExcludedBlock.trim();
 
 		// Validate block name format: namespace/blockname or namespace/*
-		const blockNamePattern = /^[a-z0-9-]+\/([a-z0-9-]+|\*)$/;
+		// Allow underscores as they are valid in WordPress block names
+		const blockNamePattern = /^[a-z0-9_-]+\/([a-z0-9_-]+|\*)$/;
 		if (!blockNamePattern.test(blockName)) {
 			setNotice({
 				status: 'error',
@@ -632,7 +633,7 @@ const BlocksExtensions = () => {
 													className="components-text-control__input"
 													value={newExcludedBlock}
 													onChange={(e) => setNewExcludedBlock(e.target.value)}
-													onKeyPress={(e) => {
+													onKeyDown={(e) => {
 														if (e.key === 'Enter') {
 															addExcludedBlock();
 														}

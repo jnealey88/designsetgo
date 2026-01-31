@@ -30,6 +30,14 @@ class Settings {
 	}
 
 	/**
+	 * Cached fresh-install detection result.
+	 * Prevents multiple database queries per request.
+	 *
+	 * @var bool|null
+	 */
+	private static $is_fresh_install = null;
+
+	/**
 	 * Get default settings
 	 *
 	 * @return array Default settings.
@@ -38,9 +46,12 @@ class Settings {
 		// Determine whether this is a fresh installation or an existing one.
 		// For existing installations, avoid introducing new default exclusions
 		// that could change behavior without explicit user consent.
-		$existing_settings = get_option( self::OPTION_NAME, false );
+		// Cache the result to avoid multiple database queries per request.
+		if ( null === self::$is_fresh_install ) {
+			self::$is_fresh_install = ( false === get_option( self::OPTION_NAME, false ) );
+		}
 
-		if ( false === $existing_settings ) {
+		if ( self::$is_fresh_install ) {
 			// Fresh install: apply conservative defaults with known conflict exclusions.
 			$excluded_blocks_default = array(
 				// Common third-party blocks known to have REST API conflicts.
