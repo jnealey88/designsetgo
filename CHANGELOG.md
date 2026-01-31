@@ -5,6 +5,20 @@ All notable changes to the DesignSetGo plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Block Exclusion System** - User-configurable system to prevent DSG extensions from being applied to specific third-party blocks
+  - Added `shouldExtendBlock()` utility with memoization for performance (supports exact match and namespace wildcards like `gravityforms/*`)
+  - New "Exclusions" admin UI tab for managing excluded blocks with validation and helpful examples
+  - Smart defaults: Fresh installations exclude known problematic blocks (Gravity Forms, MailPoet, WooCommerce, Jetpack)
+  - Existing installations maintain current behavior (no automatic exclusions)
+  - All 13 extensions updated to check exclusion list before adding attributes
+  - Comprehensive test coverage (13 new unit tests)
+
+### Fixed
+- REST API validation conflicts with server-side rendered blocks like Gravity Forms
+
 ## [1.3.0] - 2025-12-06
 
 ### New Features - WordPress Abilities API
@@ -245,7 +259,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Requirements
 - WordPress 6.0 or higher
-- PHP 7.4 or higher
+- PHP 8.0 or higher
 - Modern browser with JavaScript enabled
 
 ---

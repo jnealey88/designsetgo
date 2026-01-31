@@ -9,6 +9,7 @@
 
 import { addFilter } from '@wordpress/hooks';
 import { DEFAULT_PARALLAX_SETTINGS, ALLOWED_BLOCKS } from './constants';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 /**
  * Add parallax attributes to allowed blocks
@@ -18,6 +19,11 @@ import { DEFAULT_PARALLAX_SETTINGS, ALLOWED_BLOCKS } from './constants';
  * @return {Object} Modified settings
  */
 function addParallaxAttributes(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	// Only add to allowed blocks
 	if (!ALLOWED_BLOCKS.includes(name)) {
 		return settings;

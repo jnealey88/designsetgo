@@ -10,6 +10,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 const CONTAINER_BLOCKS = [
 	'designsetgo/section', // Section block (vertical stack)
@@ -21,10 +22,16 @@ const CONTAINER_BLOCKS = [
 /**
  * Add reveal control attributes to all blocks
  * @param {Object} settings - Block settings
+ * @param {string} name     - Block name
  */
-function addRevealAttributes(settings) {
+function addRevealAttributes(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	// Add reveal toggle to container blocks
-	if (CONTAINER_BLOCKS.includes(settings.name)) {
+	if (CONTAINER_BLOCKS.includes(name)) {
 		settings.attributes = {
 			...settings.attributes,
 			enableRevealOnHover: {
@@ -55,7 +62,7 @@ function addRevealAttributes(settings) {
 	};
 
 	// Add usesContext to all blocks so they can receive reveal container context
-	if (!CONTAINER_BLOCKS.includes(settings.name)) {
+	if (!CONTAINER_BLOCKS.includes(name)) {
 		settings.usesContext = [
 			...(settings.usesContext || []),
 			'designsetgo/reveal/isRevealContainer',

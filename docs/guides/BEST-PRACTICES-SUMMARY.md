@@ -454,6 +454,55 @@ export default function Edit({ context }) {
 
 ---
 
+## Block Extensions
+
+### When to Use Extensions vs Custom Blocks
+
+Extensions enhance existing blocks with additional functionality. Use extensions when:
+- Functionality applies to multiple block types (not block-specific)
+- Feature can be implemented with ≤3 controls + pure CSS
+- No DOM restructuring needed
+- No complex state management required
+
+**Examples:** Custom CSS, Max Width, Responsive Visibility, Scroll Parallax
+
+### Extension Exclusion System
+
+Some third-party blocks (especially server-side rendered blocks) may conflict with DSG extensions. Use the exclusion system to prevent extensions from being applied:
+
+```javascript
+import { shouldExtendBlock } from '../../utils/should-extend-block';
+
+// In attribute registration
+export const extendBlockAttributes = (settings, name) => {
+  if (!shouldExtendBlock(name)) {
+    return settings;
+  }
+  // Add attributes...
+};
+
+// In edit controls, editor styles, and save props
+if (!shouldExtendBlock(blockName)) {
+  return null; // or return original component
+}
+```
+
+**Admin UI:** Users can exclude blocks via Settings > Extensions > Exclusions tab
+**Format:** Exact match (`gravityforms/form`) or namespace wildcard (`gravityforms/*`)
+**Performance:** Results are cached automatically via memoization
+
+### Extension Development Checklist
+
+- [ ] Check `shouldExtendBlock()` before adding attributes
+- [ ] Check `shouldExtendBlock()` in edit controls
+- [ ] Check `shouldExtendBlock()` in editor styles
+- [ ] Check `shouldExtendBlock()` in save props
+- [ ] Use explicit allowlist (never `!== 'core/block'`)
+- [ ] Test with excluded blocks to ensure no errors
+- [ ] Document which blocks the extension works best with
+
+---
+
 ## Security Checklist
 
 ### Always Sanitize & Escape

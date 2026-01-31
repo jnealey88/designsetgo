@@ -13,6 +13,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, TextareaControl } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useEffect } from '@wordpress/element';
+import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 /**
  * Replace "selector" keyword with actual CSS class
@@ -49,6 +50,11 @@ const EXCLUDED_BLOCKS = [
  * @return {Object} Modified settings
  */
 function addCustomCSSAttribute(settings, name) {
+	// Check user exclusion list first
+	if (!shouldExtendBlock(name)) {
+		return settings;
+	}
+
 	// Skip excluded blocks
 	if (EXCLUDED_BLOCKS.includes(name)) {
 		return settings;
@@ -80,6 +86,11 @@ const withCustomCSSControl = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { name, attributes, setAttributes } = props;
 		const { dsgoCustomCSS } = attributes;
+
+		// Check user exclusion list first
+		if (!shouldExtendBlock(name)) {
+			return <BlockEdit {...props} />;
+		}
 
 		// Skip excluded blocks
 		if (EXCLUDED_BLOCKS.includes(name)) {
@@ -155,6 +166,11 @@ const withCustomCSSClassAndStyles = createHigherOrderComponent(
 			const { attributes, name, clientId } = props;
 			const { dsgoCustomCSS } = attributes;
 
+			// Check user exclusion list first
+			if (!shouldExtendBlock(name)) {
+				return <BlockListBlock {...props} />;
+			}
+
 			// Skip if no custom CSS set or excluded block
 			if (!dsgoCustomCSS || EXCLUDED_BLOCKS.includes(name)) {
 				return <BlockListBlock {...props} />;
@@ -225,6 +241,11 @@ addFilter(
  */
 function applyCustomCSSClass(props, blockType, attributes) {
 	const { dsgoCustomCSS } = attributes;
+
+	// Check user exclusion list first
+	if (!shouldExtendBlock(blockType.name)) {
+		return props;
+	}
 
 	// Skip if no custom CSS set
 	if (!dsgoCustomCSS) {

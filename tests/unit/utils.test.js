@@ -6,6 +6,11 @@
  * @package
  */
 
+import {
+	shouldExtendBlock,
+	clearExclusionCache,
+} from '../../src/utils/should-extend-block';
+
 describe('Utility Functions', () => {
 	describe('classNames helper', () => {
 		const classNames = (...classes) => {
@@ -151,6 +156,153 @@ describe('Utility Functions', () => {
 				'(min-width: 768px) and (max-width: 1023px)'
 			);
 			expect(getMediaQuery('desktop')).toBe('(min-width: 1024px)');
+		});
+	});
+
+	describe('shouldExtendBlock', () => {
+		let originalDsgoSettings;
+
+		beforeEach(() => {
+			// Store original window.dsgoSettings
+			originalDsgoSettings = window.dsgoSettings;
+		});
+
+		afterEach(() => {
+			// Restore original window.dsgoSettings
+			window.dsgoSettings = originalDsgoSettings;
+			// Clear cache to prevent test interference
+			clearExclusionCache();
+		});
+
+		test('returns true when dsgoSettings is undefined', () => {
+			delete window.dsgoSettings;
+			expect(shouldExtendBlock('core/paragraph')).toBe(true);
+		});
+
+		test('returns true when excludedBlocks is undefined', () => {
+			window.dsgoSettings = {};
+			expect(shouldExtendBlock('core/paragraph')).toBe(true);
+		});
+
+		test('returns true when excludedBlocks is empty', () => {
+			window.dsgoSettings = { excludedBlocks: [] };
+			expect(shouldExtendBlock('core/paragraph')).toBe(true);
+		});
+
+		test('returns false for exact block name match', () => {
+			window.dsgoSettings = {
+				excludedBlocks: ['gravityforms/form', 'mailpoet/form'],
+			};
+			expect(shouldExtendBlock('gravityforms/form')).toBe(false);
+			expect(shouldExtendBlock('mailpoet/form')).toBe(false);
+		});
+
+		test('returns true for non-matching block name', () => {
+			window.dsgoSettings = {
+				excludedBlocks: ['gravityforms/form'],
+			};
+			expect(shouldExtendBlock('core/paragraph')).toBe(true);
+			expect(shouldExtendBlock('woocommerce/product')).toBe(true);
+		});
+
+		test('returns false for namespace wildcard match', () => {
+			window.dsgoSettings = {
+				excludedBlocks: ['gravityforms/*', 'mailpoet/*'],
+			};
+			expect(shouldExtendBlock('gravityforms/form')).toBe(false);
+			expect(shouldExtendBlock('gravityforms/confirmation')).toBe(false);
+			expect(shouldExtendBlock('mailpoet/form')).toBe(false);
+		});
+
+		test('returns true for non-matching namespace wildcard', () => {
+			window.dsgoSettings = {
+				excludedBlocks: ['gravityforms/*'],
+			};
+			expect(shouldExtendBlock('woocommerce/product')).toBe(true);
+			expect(shouldExtendBlock('core/paragraph')).toBe(true);
+		});
+
+		test('handles mixed exact and wildcard exclusions', () => {
+			window.dsgoSettings = {
+				excludedBlocks: [
+					'gravityforms/*',
+					'woocommerce/product',
+					'mailpoet/*',
+				],
+			};
+			// Wildcard matches
+			expect(shouldExtendBlock('gravityforms/form')).toBe(false);
+			expect(shouldExtendBlock('gravityforms/confirmation')).toBe(false);
+			expect(shouldExtendBlock('mailpoet/form')).toBe(false);
+
+			// Exact match
+			expect(shouldExtendBlock('woocommerce/product')).toBe(false);
+
+			// Non-matches
+			expect(shouldExtendBlock('woocommerce/cart')).toBe(true);
+			expect(shouldExtendBlock('core/paragraph')).toBe(true);
+		});
+
+		test('handles block names without namespace separator', () => {
+			window.dsgoSettings = {
+				excludedBlocks: ['gravityforms/*'],
+			};
+			// Block name without '/' should not crash
+			expect(shouldExtendBlock('invalidblockname')).toBe(true);
+		});
+
+		test('handles empty block name', () => {
+			window.dsgoSettings = {
+				excludedBlocks: ['gravityforms/*'],
+			};
+			expect(shouldExtendBlock('')).toBe(true);
+		});
+
+		test('case-sensitive matching', () => {
+			window.dsgoSettings = {
+				excludedBlocks: ['gravityforms/form'],
+			};
+			// WordPress block names are case-sensitive
+			expect(shouldExtendBlock('GravityForms/Form')).toBe(true);
+			expect(shouldExtendBlock('gravityforms/form')).toBe(false);
+		});
+
+		test('caches results for performance', () => {
+			window.dsgoSettings = {
+				excludedBlocks: ['gravityforms/form'],
+			};
+
+			// First call - not cached
+			const firstResult = shouldExtendBlock('core/paragraph');
+			expect(firstResult).toBe(true);
+
+			// Second call - should return cached result
+			const secondResult = shouldExtendBlock('core/paragraph');
+			expect(secondResult).toBe(true);
+
+			// Verify cache works for excluded blocks too
+			expect(shouldExtendBlock('gravityforms/form')).toBe(false);
+			expect(shouldExtendBlock('gravityforms/form')).toBe(false);
+		});
+
+		test('clearExclusionCache clears the cache', () => {
+			window.dsgoSettings = {
+				excludedBlocks: ['gravityforms/form'],
+			};
+
+			// Cache a result
+			expect(shouldExtendBlock('core/paragraph')).toBe(true);
+
+			// Clear cache
+			clearExclusionCache();
+
+			// Change settings
+			window.dsgoSettings = {
+				excludedBlocks: ['core/paragraph'],
+			};
+
+			// Should reflect new settings (not cached value)
+			expect(shouldExtendBlock('core/paragraph')).toBe(false);
 		});
 	});
 });

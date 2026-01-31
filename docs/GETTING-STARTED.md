@@ -124,7 +124,7 @@ Database (Block Content)
 ```
 
 **Technologies:**
-- **PHP 7.4+** - Server-side language
+- **PHP 8.0+** - Server-side language
 - **WordPress 6.4+** - Content management system
 
 ### Local Development
