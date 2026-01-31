@@ -96,10 +96,15 @@ export default function IconButtonEdit({
 	// Extract padding - WordPress stores it in style.spacing.padding
 	const paddingValue = style?.spacing?.padding;
 
-	// Visual styles applied to outer wrapper (must match save.js)
-	// Colors, padding, font size, and hover effects go on the outer wrapper
-	// This ensures background and border apply to the same element
-	const visualStyles = {
+	// Combined styles for single element (must match save.js)
+	// Visual styles (colors, padding, font size, hover) + layout styles (flexbox)
+	const buttonStyles = {
+		display: 'inline-flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		gap: iconPosition !== 'none' && icon ? iconGap : 0,
+		width: width === 'auto' ? 'auto' : width,
+		flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
 		...(bgColor && { backgroundColor: bgColor }),
 		...(txtColor && { color: txtColor }),
 		...(fontSizeValue && { fontSize: fontSizeValue }),
@@ -115,17 +120,9 @@ export default function IconButtonEdit({
 		...(hoverTextColor && {
 			'--dsgo-button-hover-color': hoverTextColor,
 		}),
-	};
-
-	// Layout styles for inner wrapper (must match save.js)
-	// Only structural/layout properties, no visual styles
-	const layoutStyles = {
-		display: 'inline-flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		gap: iconPosition !== 'none' && icon ? iconGap : 0,
-		width: width === 'auto' ? 'auto' : width,
-		flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
+		...(parentHoverButtonBg && {
+			'--dsgo-parent-hover-button-bg': parentHoverButtonBg,
+		}),
 	};
 
 	// Calculate icon wrapper styles
@@ -151,16 +148,12 @@ export default function IconButtonEdit({
 			? ' dsgo-icon-button--width-full'
 			: ' dsgo-icon-button--width-auto';
 
-	// wp-block-button class enables theme.json button styles to cascade to wp-block-button__link
-	// Visual styles (colors, padding, hover) applied to outer wrapper to align with WordPress border controls
+	// Single element with all classes and styles combined
+	// wp-block-button and wp-element-button enable theme.json button styles
+	// wp-block-button__link ensures theme compatibility
 	const blockProps = useBlockProps({
-		className: `dsgo-icon-button wp-block-button wp-element-button${animationClass}${widthClass}`,
-		style: {
-			...visualStyles,
-			...(parentHoverButtonBg && {
-				'--dsgo-parent-hover-button-bg': parentHoverButtonBg,
-			}),
-		},
+		className: `dsgo-icon-button wp-block-button wp-block-button__link wp-element-button${animationClass}${widthClass}`,
+		style: buttonStyles,
 	});
 
 	return (
@@ -209,28 +202,23 @@ export default function IconButtonEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div
-					className="dsgo-icon-button__wrapper"
-					style={layoutStyles}
-				>
-					{iconPosition !== 'none' && icon && (
-						<span
-							className="dsgo-icon-button__icon"
-							style={iconWrapperStyles}
-						>
-							{getIcon(icon)}
-						</span>
-					)}
-					<RichText
-						tagName="span"
-						className="dsgo-icon-button__text"
-						value={text}
-						onChange={(value) => setAttributes({ text: value })}
-						placeholder={__('Button text…', 'designsetgo')}
-						allowedFormats={['core/bold', 'core/italic']}
-						withoutInteractiveFormatting
-					/>
-				</div>
+				{iconPosition !== 'none' && icon && (
+					<span
+						className="dsgo-icon-button__icon"
+						style={iconWrapperStyles}
+					>
+						{getIcon(icon)}
+					</span>
+				)}
+				<RichText
+					tagName="span"
+					className="dsgo-icon-button__text"
+					value={text}
+					onChange={(value) => setAttributes({ text: value })}
+					placeholder={__('Button text…', 'designsetgo')}
+					allowedFormats={['core/bold', 'core/italic']}
+					withoutInteractiveFormatting
+				/>
 			</div>
 		</>
 	);

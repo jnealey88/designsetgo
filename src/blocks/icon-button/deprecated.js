@@ -11,12 +11,14 @@ import { getIcon } from '../icon/utils/svg-icons';
 import { convertPaddingValue } from './utils/padding';
 
 /**
- * Version 4: Before moving visual styles to outer wrapper
+ * Version 4: Before collapsing to single element structure
  *
  * Changes in current version:
- * - Visual styles (background, colors, hover, padding) moved from inner wrapper to outer wrapper
- * - This eliminates the visual gap between background and border
- * - Border and background now apply to the same element
+ * - Removed inner wrapper div/a element
+ * - Merged all classes and styles onto single element
+ * - Button is now single <a> tag instead of <div><a>...</a></div>
+ * - Fixes wp-block-button__link class conflicts with theme.json
+ * - Visual styles moved to outer wrapper (border-radius fix)
  */
 const v4 = {
 	attributes: {
@@ -94,7 +96,7 @@ const v4 = {
 			modalCloseId,
 		} = attributes;
 
-		// Extract WordPress color values (OLD: applied to inner wrapper)
+		// Extract WordPress color values
 		const bgColor =
 			style?.color?.background ||
 			(backgroundColor && `var(--wp--preset--color--${backgroundColor})`);
@@ -102,22 +104,16 @@ const v4 = {
 			style?.color?.text ||
 			(textColor && `var(--wp--preset--color--${textColor})`);
 
-		// Extract font size (OLD: applied to inner wrapper)
+		// Extract font size
 		const fontSizeValue =
 			style?.typography?.fontSize ||
 			(fontSize && `var(--wp--preset--font-size--${fontSize})`);
 
-		// Extract padding (OLD: applied to inner wrapper)
+		// Extract padding
 		const paddingValue = style?.spacing?.padding;
 
-		// Calculate button styles (OLD: applied to inner wrapper)
-		const buttonStyles = {
-			display: 'inline-flex',
-			alignItems: 'center',
-			justifyContent: 'center',
-			gap: iconPosition !== 'none' && icon ? iconGap : 0,
-			width: width === 'auto' ? 'auto' : width,
-			flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
+		// Visual styles applied to outer wrapper
+		const visualStyles = {
 			...(bgColor && { backgroundColor: bgColor }),
 			...(txtColor && { color: txtColor }),
 			...(fontSizeValue && { fontSize: fontSizeValue }),
@@ -133,6 +129,16 @@ const v4 = {
 			...(hoverTextColor && {
 				'--dsgo-button-hover-color': hoverTextColor,
 			}),
+		};
+
+		// Layout styles for inner wrapper
+		const layoutStyles = {
+			display: 'inline-flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			gap: iconPosition !== 'none' && icon ? iconGap : 0,
+			width: width === 'auto' ? 'auto' : width,
+			flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
 		};
 
 		// Calculate icon wrapper styles
@@ -157,17 +163,18 @@ const v4 = {
 				? ' dsgo-icon-button--width-full'
 				: ' dsgo-icon-button--width-auto';
 
+		// OLD: Two-div structure with outer wrapper and inner wrapper
 		const blockProps = useBlockProps.save({
-			className: `dsgo-icon-button wp-block-button${animationClass}${widthClass}`,
+			className: `dsgo-icon-button wp-block-button wp-element-button${animationClass}${widthClass}`,
+			style: visualStyles,
 		});
 
-		// OLD: Wrap in link if URL is provided, styles applied to inner wrapper
+		// OLD: Inner wrapper with wp-block-button__link class
 		const ButtonWrapper = url ? 'a' : 'div';
 		const wrapperProps = url
 			? {
-					className:
-						'dsgo-icon-button__wrapper wp-element-button wp-block-button__link',
-					style: buttonStyles,
+					className: 'dsgo-icon-button__wrapper wp-block-button__link',
+					style: layoutStyles,
 					href: url,
 					target: linkTarget,
 					rel:
@@ -179,9 +186,8 @@ const v4 = {
 					}),
 				}
 			: {
-					className:
-						'dsgo-icon-button__wrapper wp-element-button wp-block-button__link',
-					style: buttonStyles,
+					className: 'dsgo-icon-button__wrapper wp-block-button__link',
+					style: layoutStyles,
 					...(modalCloseId && {
 						'data-dsgo-modal-close': modalCloseId || 'true',
 					}),
