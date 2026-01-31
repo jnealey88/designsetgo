@@ -359,11 +359,13 @@ class Revision_REST_API {
 			);
 		}
 
+		$edit_url = get_edit_post_link( $revision->post_parent, 'raw' );
+
 		return rest_ensure_response(
 			array(
 				'success'  => true,
 				'post_id'  => $revision->post_parent,
-				'edit_url' => get_edit_post_link( $revision->post_parent, 'raw' ) ?: '',
+				'edit_url' => $edit_url ? $edit_url : '',
 			)
 		);
 	}

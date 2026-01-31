@@ -211,6 +211,8 @@ class Revision_Comparison {
 			$post_id = $this->get_post_id_from_revision( $revision_id );
 		}
 
+		$edit_url = $post_id ? get_edit_post_link( $post_id, 'raw' ) : '';
+
 		wp_localize_script(
 			'designsetgo-revisions',
 			'designSetGoRevisions',
@@ -220,7 +222,7 @@ class Revision_Comparison {
 				'postId'     => $post_id,
 				'revisionId' => $revision_id,
 				'adminUrl'   => esc_url( admin_url() ),
-				'editUrl'    => $post_id ? esc_url( get_edit_post_link( $post_id, 'raw' ) ?: '' ) : '',
+				'editUrl'    => $edit_url ? esc_url( $edit_url ) : '',
 			)
 		);
 	}
