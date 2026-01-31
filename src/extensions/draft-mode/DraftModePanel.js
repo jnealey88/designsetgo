@@ -37,6 +37,7 @@ export default function DraftModePanel() {
 	const [error, setError] = useState(null);
 	const [showPublishConfirm, setShowPublishConfirm] = useState(false);
 	const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
+	const [showCreateConfirm, setShowCreateConfirm] = useState(false);
 
 	// Get current post data from the editor store.
 	const {
@@ -88,8 +89,15 @@ export default function DraftModePanel() {
 		fetchStatus();
 	}, [fetchStatus]);
 
-	// Handle manual draft creation.
-	const handleCreateDraft = async () => {
+	// Handle create draft button click (shows confirmation modal).
+	const handleCreateDraft = () => {
+		setShowCreateConfirm(true);
+	};
+
+	// Execute draft creation after confirmation.
+	const confirmCreateDraft = async () => {
+		setShowCreateConfirm(false);
+
 		if (isCreatingDraft) {
 			return;
 		}
@@ -443,6 +451,44 @@ export default function DraftModePanel() {
 									onClick={confirmDiscardDraft}
 								>
 									{__('Discard', 'designsetgo')}
+								</Button>
+							</FlexItem>
+						</Flex>
+					</Flex>
+				</Modal>
+			)}
+
+			{/* Create draft confirmation modal */}
+			{showCreateConfirm && (
+				<Modal
+					title={__('Create Draft?', 'designsetgo')}
+					onRequestClose={() => setShowCreateConfirm(false)}
+					size="small"
+				>
+					<Flex direction="column" gap={4}>
+						<FlexItem>
+							<p style={{ margin: 0 }}>
+								{__(
+									'This will create a draft version of this page with your current edits. The live page will remain unchanged.',
+									'designsetgo'
+								)}
+							</p>
+						</FlexItem>
+						<Flex justify="flex-end" gap={3}>
+							<FlexItem>
+								<Button
+									variant="tertiary"
+									onClick={() => setShowCreateConfirm(false)}
+								>
+									{__('Cancel', 'designsetgo')}
+								</Button>
+							</FlexItem>
+							<FlexItem>
+								<Button
+									variant="primary"
+									onClick={confirmCreateDraft}
+								>
+									{__('Create Draft', 'designsetgo')}
 								</Button>
 							</FlexItem>
 						</Flex>

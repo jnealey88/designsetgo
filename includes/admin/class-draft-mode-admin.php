@@ -225,6 +225,7 @@ class Draft_Mode_Admin {
 		$creating_text     = esc_js( __( 'Creating...', 'designsetgo' ) );
 		$create_draft_text = esc_js( __( 'Create Draft', 'designsetgo' ) );
 		$failed_text       = esc_js( __( 'Failed to create draft.', 'designsetgo' ) );
+		$confirm_text      = esc_js( __( 'Create a draft version of this page with any current edits?', 'designsetgo' ) );
 		$rest_url          = esc_url( rest_url( 'designsetgo/v1/draft-mode/create' ) );
 
 		return "
@@ -234,6 +235,10 @@ class Draft_Mode_Admin {
 
 				var link = e.target;
 				if (link.classList.contains('loading')) return;
+
+				if (!confirm('{$confirm_text}')) {
+					return;
+				}
 
 				var postId = link.dataset.postId;
 				var nonce = link.dataset.nonce;
