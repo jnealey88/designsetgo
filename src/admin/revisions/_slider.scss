@@ -113,6 +113,11 @@
 			cursor: grabbing;
 		}
 
+		&:focus {
+			outline: 2px solid #2271b1;
+			outline-offset: 2px;
+		}
+
 		&--from {
 			background: $dsgo-diff-removed-dark;
 		}
@@ -144,6 +149,7 @@
 		gap: 4px;
 
 		&--from {
+
 			.dsgo-revision-slider__info-label {
 				color: #721c24;
 			}

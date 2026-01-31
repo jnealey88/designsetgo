@@ -187,10 +187,12 @@ class Revision_REST_API {
 		$revisions = wp_get_post_revisions( $post_id );
 
 		if ( empty( $revisions ) ) {
-			return rest_ensure_response( array(
-				'post_id'   => $post_id,
-				'revisions' => array(),
-			) );
+			return rest_ensure_response(
+				array(
+					'post_id'   => $post_id,
+					'revisions' => array(),
+				)
+			);
 		}
 
 		$revision_data = array_map( array( $this, 'format_revision' ), $revisions );
@@ -199,11 +201,13 @@ class Revision_REST_API {
 		$post = get_post( $post_id );
 		array_unshift( $revision_data, $this->format_post_as_revision( $post ) );
 
-		return rest_ensure_response( array(
-			'post_id'   => $post_id,
-			'post_type' => get_post_type( $post_id ),
-			'revisions' => $revision_data,
-		) );
+		return rest_ensure_response(
+			array(
+				'post_id'   => $post_id,
+				'post_type' => get_post_type( $post_id ),
+				'revisions' => $revision_data,
+			)
+		);
 	}
 
 	/**
@@ -317,12 +321,14 @@ class Revision_REST_API {
 	 * @return array Valid blocks.
 	 */
 	private function get_valid_blocks( $content ) {
-		return array_values( array_filter(
-			parse_blocks( $content ),
-			function ( $block ) {
-				return ! empty( $block['blockName'] );
-			}
-		) );
+		return array_values(
+			array_filter(
+				parse_blocks( $content ),
+				function ( $block ) {
+					return ! empty( $block['blockName'] );
+				}
+			)
+		);
 	}
 
 	/**
@@ -353,10 +359,12 @@ class Revision_REST_API {
 			);
 		}
 
-		return rest_ensure_response( array(
-			'success'  => true,
-			'post_id'  => $revision->post_parent,
-			'edit_url' => get_edit_post_link( $revision->post_parent, 'raw' ) ?? '',
-		) );
+		return rest_ensure_response(
+			array(
+				'success'  => true,
+				'post_id'  => $revision->post_parent,
+				'edit_url' => get_edit_post_link( $revision->post_parent, 'raw' ) ?: '',
+			)
+		);
 	}
 }

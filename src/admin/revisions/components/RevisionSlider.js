@@ -4,7 +4,7 @@
  * Slider for selecting which revision to compare against current state.
  * The "after" (current state) is always locked to the newest revision.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -52,7 +52,12 @@ const formatTooltip = (revision) => {
  * @param {Object}   props.toRevision   Current state revision (always newest).
  * @param {Function} props.onFromChange Callback when "from" changes.
  */
-const RevisionSlider = ({ revisions, fromRevision, toRevision, onFromChange }) => {
+const RevisionSlider = ({
+	revisions,
+	fromRevision,
+	toRevision,
+	onFromChange,
+}) => {
 	const sliderRef = useRef(null);
 	const [isDragging, setIsDragging] = useState(false);
 
@@ -114,6 +119,14 @@ const RevisionSlider = ({ revisions, fromRevision, toRevision, onFromChange }) =
 			};
 		}
 	}, [isDragging, handleMouseMove, handleMouseUp]);
+
+	// Cleanup event listeners on unmount to prevent memory leaks.
+	useEffect(() => {
+		return () => {
+			document.removeEventListener('mousemove', handleMouseMove);
+			document.removeEventListener('mouseup', handleMouseUp);
+		};
+	}, [handleMouseMove, handleMouseUp]);
 
 	// Previous/Next navigation - only moves the "from" revision.
 	const handlePrevious = () => {
@@ -216,9 +229,11 @@ const RevisionSlider = ({ revisions, fromRevision, toRevision, onFromChange }) =
 						let tickClass = 'dsgo-revision-slider__tick';
 
 						if (isSelected || isCurrent) {
-							tickClass += ' dsgo-revision-slider__tick--selected';
+							tickClass +=
+								' dsgo-revision-slider__tick--selected';
 						} else if (isInRange) {
-							tickClass += ' dsgo-revision-slider__tick--in-range';
+							tickClass +=
+								' dsgo-revision-slider__tick--in-range';
 						}
 
 						if (revision.is_current) {
@@ -226,7 +241,10 @@ const RevisionSlider = ({ revisions, fromRevision, toRevision, onFromChange }) =
 						}
 
 						return (
-							<Tooltip key={revision.id} text={formatTooltip(revision)}>
+							<Tooltip
+								key={revision.id}
+								text={formatTooltip(revision)}
+							>
 								<button
 									type="button"
 									className={tickClass}

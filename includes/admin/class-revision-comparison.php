@@ -220,7 +220,7 @@ class Revision_Comparison {
 				'postId'     => $post_id,
 				'revisionId' => $revision_id,
 				'adminUrl'   => esc_url( admin_url() ),
-				'editUrl'    => $post_id ? esc_url( get_edit_post_link( $post_id, 'raw' ) ?? '' ) : '',
+				'editUrl'    => $post_id ? esc_url( get_edit_post_link( $post_id, 'raw' ) ?: '' ) : '',
 			)
 		);
 	}
