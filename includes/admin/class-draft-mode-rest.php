@@ -141,7 +141,7 @@ class Draft_Mode_REST {
 	 * @return bool|\WP_Error True if user has permission.
 	 */
 	public function check_permission() {
-		if ( ! current_user_can( 'publish_posts' ) ) {
+		if ( ! current_user_can( 'publish_pages' ) ) {
 			return new \WP_Error(
 				'rest_forbidden',
 				__( 'You do not have permission to manage drafts.', 'designsetgo' ),
@@ -158,7 +158,7 @@ class Draft_Mode_REST {
 	 * @return bool True if user has permission.
 	 */
 	public function check_read_permission() {
-		return current_user_can( 'edit_posts' );
+		return current_user_can( 'edit_pages' );
 	}
 
 	/**

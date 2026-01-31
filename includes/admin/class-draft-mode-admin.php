@@ -60,7 +60,7 @@ class Draft_Mode_Admin {
 	 * @return array Modified actions.
 	 */
 	public function add_row_actions( $actions, $post ) {
-		if ( 'page' !== $post->post_type || ! current_user_can( 'publish_posts' ) ) {
+		if ( 'page' !== $post->post_type || ! current_user_can( 'publish_pages' ) ) {
 			return $actions;
 		}
 
@@ -177,7 +177,11 @@ class Draft_Mode_Admin {
 		}
 
 		wp_add_inline_style( 'wp-admin', $this->get_inline_styles() );
-		wp_add_inline_script( 'jquery', $this->get_inline_script() );
+
+		// Register and enqueue a dedicated script for draft mode page list actions.
+		wp_register_script( 'dsgo-draft-mode-admin', '', array(), DESIGNSETGO_VERSION, true );
+		wp_enqueue_script( 'dsgo-draft-mode-admin' );
+		wp_add_inline_script( 'dsgo-draft-mode-admin', $this->get_inline_script() );
 	}
 
 	/**

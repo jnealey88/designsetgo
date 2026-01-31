@@ -14,7 +14,7 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect, useCallback, useRef, createPortal } from '@wordpress/element';
-import { Button } from '@wordpress/components';
+import { Button, Modal, Flex, FlexItem } from '@wordpress/components';
 import { getDraftStatus, publishDraft, createDraft } from './api';
 import { clearDirtyState } from './utils';
 
@@ -51,6 +51,8 @@ export default function DraftModeControls() {
 	const [headerContainer, setHeaderContainer] = useState(null);
 	const [isPublishing, setIsPublishing] = useState(false);
 	const [isCreatingDraft, setIsCreatingDraft] = useState(false);
+	const [errorMessage, setErrorMessage] = useState(null);
+	const [showErrorModal, setShowErrorModal] = useState(false);
 	const publishInterceptRef = useRef(null);
 
 	// Get current post data from the editor store.
@@ -109,10 +111,10 @@ export default function DraftModeControls() {
 					window.location.href = result.edit_url;
 				}
 			} catch (err) {
-				// eslint-disable-next-line no-alert
-				alert(
+				setErrorMessage(
 					err.message || __('Failed to publish changes.', 'designsetgo')
 				);
+				setShowErrorModal(true);
 				setIsPublishing(false);
 			}
 		},
@@ -266,9 +268,12 @@ export default function DraftModeControls() {
 		} catch (err) {
 			// If draft already exists, redirect to it.
 			if (err.data?.draft_id) {
+				// Prefer API-provided edit_url, fall back to constructing from current admin path.
 				const draftEditUrl =
 					err.data.edit_url ||
-					`post.php?post=${err.data.draft_id}&action=edit`;
+					`${window.location.origin}${
+						window.location.pathname.split('/wp-admin/')[0]
+					}/wp-admin/post.php?post=${err.data.draft_id}&action=edit`;
 
 				// Clear dirty state before navigating.
 				clearDirtyState();
@@ -276,8 +281,10 @@ export default function DraftModeControls() {
 				return;
 			}
 
-			// eslint-disable-next-line no-alert
-			alert(err.message || __('Failed to create draft.', 'designsetgo'));
+			setErrorMessage(
+				err.message || __('Failed to create draft.', 'designsetgo')
+			);
+			setShowErrorModal(true);
 			setIsCreatingDraft(false);
 		}
 	};
@@ -364,6 +371,10 @@ export default function DraftModeControls() {
 					target="_blank"
 					rel="noopener noreferrer"
 					className="dsgo-draft-mode-banner__link"
+					aria-label={__(
+						'View live page (opens in new tab)',
+						'designsetgo'
+					)}
 				>
 					{__('View live page', 'designsetgo')}
 				</a>
@@ -382,6 +393,31 @@ export default function DraftModeControls() {
 				canRenderHeaderControls &&
 				createPortal(headerControl, headerContainer)}
 			{bottomBanner && createPortal(bottomBanner, document.body)}
+
+			{/* Error modal */}
+			{showErrorModal && (
+				<Modal
+					title={__('Error', 'designsetgo')}
+					onRequestClose={() => setShowErrorModal(false)}
+					size="small"
+				>
+					<Flex direction="column" gap={4}>
+						<FlexItem>
+							<p style={{ margin: 0 }}>{errorMessage}</p>
+						</FlexItem>
+						<Flex justify="flex-end">
+							<FlexItem>
+								<Button
+									variant="primary"
+									onClick={() => setShowErrorModal(false)}
+								>
+									{__('OK', 'designsetgo')}
+								</Button>
+							</FlexItem>
+						</Flex>
+					</Flex>
+				</Modal>
+			)}
 		</>
 	);
 }
