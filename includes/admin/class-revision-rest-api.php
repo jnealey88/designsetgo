@@ -156,7 +156,8 @@ class Revision_REST_API {
 	 * @return bool True if user has permission.
 	 */
 	public function check_restore_permission( $request ) {
-		$revision = wp_get_post_revision( $request->get_param( 'revision_id' ) );
+		$revision_id = $request->get_param( 'revision_id' );
+		$revision    = wp_get_post_revision( $revision_id );
 		return $revision && current_user_can( 'edit_post', $revision->post_parent );
 	}
 
