@@ -210,6 +210,6 @@ GPL-2.0-or-later - 100% Free Forever
 
 ---
 
-**Version**: 1.0.0 | **Requires WordPress**: 6.4+ | **Requires PHP**: 7.4+
+**Version**: 1.0.0 | **Requires WordPress**: 6.4+ | **Requires PHP**: 8.0+
 
 Built with ❤️ for the WordPress community

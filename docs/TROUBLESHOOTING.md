@@ -292,7 +292,7 @@ docker run -v $(pwd):/app -w /app php:8.2-cli composer run-script analyse
 # Check versions
 node --version  # Should be 18.x, 20.x, or 22.x
 npm --version   # Should be 8.x or higher
-php --version   # Should be 7.4+ (8.0+ recommended)
+php --version   # Should be 8.0+
 composer --version
 
 # Check disk space (large caches can fill disk)

@@ -56,7 +56,7 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 ### Requirements
 
 - **Node.js**: 18+ (for development)
-- **PHP**: 7.4+ (8.0+ recommended)
+- **PHP**: 8.0+
 - **WordPress**: 6.4+
 - **npm**: 8+ (or pnpm/yarn)
 
@@ -670,4 +670,4 @@ Built with ❤️ for the WordPress community by developers who believe in:
 
 ---
 
-**License**: GPL-2.0-or-later | **Version**: 1.3.0 | **Requires WordPress**: 6.4+ | **Requires PHP**: 7.4+
+**License**: GPL-2.0-or-later | **Version**: 1.3.0 | **Requires WordPress**: 6.4+ | **Requires PHP**: 8.0+
