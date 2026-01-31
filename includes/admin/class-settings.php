@@ -88,6 +88,10 @@ class Settings {
 				'auto_save_enabled'      => true,
 				'auto_save_interval'     => 60,
 			),
+			'revisions'          => array(
+				'enable_visual_comparison' => true,
+				'default_to_visual'        => true,
+			),
 		);
 	}
 
@@ -788,6 +792,14 @@ class Settings {
 				'show_page_list_column'  => isset( $settings['draft_mode']['show_page_list_column'] ) ? (bool) $settings['draft_mode']['show_page_list_column'] : true,
 				'auto_save_enabled'      => isset( $settings['draft_mode']['auto_save_enabled'] ) ? (bool) $settings['draft_mode']['auto_save_enabled'] : true,
 				'auto_save_interval'     => isset( $settings['draft_mode']['auto_save_interval'] ) ? absint( $settings['draft_mode']['auto_save_interval'] ) : 60,
+			);
+		}
+
+		// Sanitize revisions settings.
+		if ( isset( $settings['revisions'] ) && is_array( $settings['revisions'] ) ) {
+			$sanitized['revisions'] = array(
+				'enable_visual_comparison' => isset( $settings['revisions']['enable_visual_comparison'] ) ? (bool) $settings['revisions']['enable_visual_comparison'] : true,
+				'default_to_visual'        => isset( $settings['revisions']['default_to_visual'] ) ? (bool) $settings['revisions']['default_to_visual'] : true,
 			);
 		}
 

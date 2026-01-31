@@ -24,6 +24,12 @@ class Revision_Comparison {
 	 * Constructor
 	 */
 	public function __construct() {
+		// Check if visual comparison is enabled in settings.
+		$settings = Settings::get_settings();
+		if ( empty( $settings['revisions']['enable_visual_comparison'] ) ) {
+			return;
+		}
+
 		add_action( 'admin_menu', array( $this, 'register_page' ) );
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
@@ -43,6 +49,18 @@ class Revision_Comparison {
 		global $pagenow;
 
 		if ( 'revision.php' !== $pagenow ) {
+			return;
+		}
+
+		// Check if visual comparison redirect is enabled in settings.
+		$settings = Settings::get_settings();
+		if ( empty( $settings['revisions']['default_to_visual'] ) ) {
+			return;
+		}
+
+		// Don't redirect if an action is being performed (e.g., restore).
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only URL parameter check.
+		if ( isset( $_GET['action'] ) ) {
 			return;
 		}
 
@@ -89,7 +107,7 @@ class Revision_Comparison {
 	 */
 	public function register_page() {
 		add_submenu_page(
-			null, // Hidden from menu.
+			'options.php', // Hidden from menu (options.php is not displayed).
 			__( 'Visual Revision Comparison', 'designsetgo' ),
 			__( 'Visual Revision Comparison', 'designsetgo' ),
 			'edit_posts',
