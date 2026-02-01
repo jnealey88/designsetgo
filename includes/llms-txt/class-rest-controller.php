@@ -140,6 +140,30 @@ class REST_Controller {
 				},
 			)
 		);
+
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/resolve-conflict',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'resolve_conflict' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/dismiss-conflict',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'dismiss_conflict' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 	}
 
 	/**
@@ -321,10 +345,56 @@ class REST_Controller {
 
 		return rest_ensure_response(
 			array(
-				'enabled'       => $is_enabled,
-				'url'           => home_url( '/llms.txt' ),
-				'has_conflict'  => $has_conflict,
-				'conflict_info' => $has_conflict ? $this->conflict_detector->get_info() : null,
+				'enabled'            => $is_enabled,
+				'url'                => home_url( '/llms.txt' ),
+				'has_conflict'       => $has_conflict,
+				'conflict_dismissed' => $has_conflict ? $this->conflict_detector->is_dismissed() : false,
+				'conflict_info'      => $has_conflict ? $this->conflict_detector->get_info() : null,
+			)
+		);
+	}
+
+	/**
+	 * Resolve conflict by renaming the physical file.
+	 *
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function resolve_conflict() {
+		if ( ! $this->conflict_detector->has_conflict() ) {
+			return rest_ensure_response(
+				array(
+					'success' => true,
+					'message' => __( 'No conflict to resolve.', 'designsetgo' ),
+				)
+			);
+		}
+
+		$result = $this->conflict_detector->rename_conflicting_file();
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return rest_ensure_response(
+			array(
+				'success' => true,
+				'message' => __( 'The existing llms.txt file has been renamed. DesignSetGo will now serve the dynamic version.', 'designsetgo' ),
+			)
+		);
+	}
+
+	/**
+	 * Dismiss conflict notice.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function dismiss_conflict(): \WP_REST_Response {
+		$this->conflict_detector->dismiss();
+
+		return rest_ensure_response(
+			array(
+				'success' => true,
+				'message' => __( 'Conflict notice dismissed.', 'designsetgo' ),
 			)
 		);
 	}

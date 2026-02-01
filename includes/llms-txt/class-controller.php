@@ -90,6 +90,7 @@ class Controller {
 		add_action( 'init', array( $this, 'register_post_meta' ) );
 		add_action( 'rest_api_init', array( $this->rest_controller, 'register_routes' ) );
 		add_action( 'admin_notices', array( $this->conflict_detector, 'maybe_show_notice' ) );
+		add_action( 'admin_init', array( $this->conflict_detector, 'handle_dismiss_action' ) );
 	}
 
 	/**

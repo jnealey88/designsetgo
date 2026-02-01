@@ -22,6 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Conflict_Detector {
 	/**
+	 * User meta key for dismissing the conflict notice.
+	 */
+	const DISMISS_META_KEY = 'designsetgo_llms_conflict_dismissed';
+
+	/**
 	 * Check if a physical llms.txt file exists that would conflict.
 	 *
 	 * When a physical file exists in the site root, the web server serves it
@@ -45,12 +50,104 @@ class Conflict_Detector {
 			return null;
 		}
 
+		$parent_dir = dirname( $file_path );
+
 		return array(
-			'path'     => $file_path,
-			'size'     => filesize( $file_path ),
-			'modified' => filemtime( $file_path ),
-			'writable' => is_writable( $file_path ),
+			'path'       => $file_path,
+			'size'       => filesize( $file_path ),
+			'modified'   => filemtime( $file_path ),
+			'writable'   => is_writable( $file_path ),
+			'renameable' => is_writable( $file_path ) && is_writable( $parent_dir ),
 		);
+	}
+
+	/**
+	 * Check if the current user has dismissed the conflict notice.
+	 *
+	 * @return bool True if dismissed.
+	 */
+	public function is_dismissed(): bool {
+		$user_id = get_current_user_id();
+		if ( ! $user_id ) {
+			return false;
+		}
+
+		return (bool) get_user_meta( $user_id, self::DISMISS_META_KEY, true );
+	}
+
+	/**
+	 * Dismiss the conflict notice for the current user.
+	 *
+	 * @return bool True on success.
+	 */
+	public function dismiss(): bool {
+		$user_id = get_current_user_id();
+		if ( ! $user_id ) {
+			return false;
+		}
+
+		return (bool) update_user_meta( $user_id, self::DISMISS_META_KEY, 1 );
+	}
+
+	/**
+	 * Reset the dismissal (show notice again).
+	 *
+	 * @return bool True on success.
+	 */
+	public function reset_dismissal(): bool {
+		$user_id = get_current_user_id();
+		if ( ! $user_id ) {
+			return false;
+		}
+
+		return delete_user_meta( $user_id, self::DISMISS_META_KEY );
+	}
+
+	/**
+	 * Rename the conflicting file to allow plugin to take over.
+	 *
+	 * @return bool|\WP_Error True on success, WP_Error on failure.
+	 */
+	public function rename_conflicting_file() {
+		$file_path = ABSPATH . 'llms.txt';
+
+		if ( ! file_exists( $file_path ) ) {
+			return new \WP_Error(
+				'no_conflict',
+				__( 'No conflicting file exists.', 'designsetgo' )
+			);
+		}
+
+		$info = $this->get_info();
+		if ( empty( $info['renameable'] ) ) {
+			return new \WP_Error(
+				'not_writable',
+				__( 'The file or directory is not writable. Please rename or delete the file manually via FTP or your hosting file manager.', 'designsetgo' )
+			);
+		}
+
+		// Generate a unique backup filename.
+		$backup_path = ABSPATH . 'llms.txt.bak';
+		$counter     = 1;
+		while ( file_exists( $backup_path ) ) {
+			$backup_path = ABSPATH . 'llms.txt.bak.' . $counter;
+			++$counter;
+		}
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename -- Direct file operation required.
+		$result = rename( $file_path, $backup_path );
+
+		if ( ! $result ) {
+			return new \WP_Error(
+				'rename_failed',
+				__( 'Failed to rename the file. Please try manually via FTP or your hosting file manager.', 'designsetgo' )
+			);
+		}
+
+		// Reset dismissal since the conflict is resolved.
+		$this->reset_dismissal();
+
+		return true;
 	}
 
 	/**
@@ -70,14 +167,24 @@ class Conflict_Detector {
 			return;
 		}
 
+		// Check if user has dismissed the notice.
+		if ( $this->is_dismissed() ) {
+			return;
+		}
+
 		$screen = get_current_screen();
 		if ( ! $screen || ! in_array( $screen->id, array( 'dashboard', 'settings_page_designsetgo', 'plugins' ), true ) ) {
 			return;
 		}
 
 		$conflict_info = $this->get_info();
+		$dismiss_url   = wp_nonce_url(
+			add_query_arg( 'dsgo_dismiss_llms_conflict', '1' ),
+			'dsgo_dismiss_llms_conflict'
+		);
+		$resolve_url   = admin_url( 'options-general.php?page=designsetgo&tab=llms-txt' );
 		?>
-		<div class="notice notice-warning">
+		<div class="notice notice-warning is-dismissible" data-dsgo-notice="llms-conflict">
 			<p>
 				<strong><?php esc_html_e( 'DesignSetGo: llms.txt File Conflict Detected', 'designsetgo' ); ?></strong>
 			</p>
@@ -91,9 +198,37 @@ class Conflict_Detector {
 				?>
 			</p>
 			<p>
-				<?php esc_html_e( 'To use the dynamic llms.txt feature, you need to rename or delete the existing file. It may have been created by your hosting provider or another plugin.', 'designsetgo' ); ?>
+				<a href="<?php echo esc_url( $resolve_url ); ?>" class="button button-primary">
+					<?php esc_html_e( 'Resolve Conflict', 'designsetgo' ); ?>
+				</a>
+				<a href="<?php echo esc_url( $dismiss_url ); ?>" class="button" style="margin-left: 8px;">
+					<?php esc_html_e( 'Dismiss', 'designsetgo' ); ?>
+				</a>
 			</p>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Handle dismiss action from URL.
+	 */
+	public function handle_dismiss_action(): void {
+		if ( ! isset( $_GET['dsgo_dismiss_llms_conflict'] ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'dsgo_dismiss_llms_conflict' ) ) {
+			return;
+		}
+
+		$this->dismiss();
+
+		// Redirect to remove the query args.
+		wp_safe_redirect( remove_query_arg( array( 'dsgo_dismiss_llms_conflict', '_wpnonce' ) ) );
+		exit;
 	}
 }
