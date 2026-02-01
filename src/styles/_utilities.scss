@@ -143,14 +143,22 @@ body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 	/**
 	 * B. Intrinsic Width Blocks (Inline Elements)
 	 * These blocks maintain their natural inline sizing
+	 * NOTE: Icon Button with alignfull is excluded - it should span full width
 	 */
 	> .wp-block-designsetgo-icon,
-	> .wp-block-designsetgo-icon-button,
+	> .wp-block-designsetgo-icon-button:not(.alignfull),
 	> .wp-block-designsetgo-pill,
 	> .wp-block-designsetgo-modal-trigger {
 		width: fit-content !important;
 		max-width: fit-content !important;
 		display: inline-flex;
+	}
+
+	// Icon Button full-width (alignfull): allow it to span container width
+	> .wp-block-designsetgo-icon-button.alignfull {
+		width: 100% !important;
+		max-width: 100% !important;
+		display: flex;
 	}
 
 	> .wp-block-designsetgo-counter:not([style*="width"]) {

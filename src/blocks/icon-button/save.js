@@ -26,7 +26,7 @@ export default function IconButtonSave({ attributes }) {
 		iconPosition,
 		iconSize,
 		iconGap,
-		width,
+		align,
 		hoverAnimation,
 		hoverBackgroundColor,
 		hoverTextColor,
@@ -59,13 +59,14 @@ export default function IconButtonSave({ attributes }) {
 
 	// Combined styles for single element (must match edit.js)
 	// Visual styles (colors, padding, font size, hover) + layout styles (flexbox)
-	// Use flex for full-width, inline-flex for auto to work with CSS classes
+	// Use flex for full-width (alignfull), inline-flex for auto
+	const isFullWidth = align === 'full';
 	const buttonStyles = {
-		display: width === '100%' ? 'flex' : 'inline-flex',
+		display: isFullWidth ? 'flex' : 'inline-flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 		gap: iconPosition !== 'none' && icon ? iconGap : 0,
-		width: width === '100%' ? '100%' : 'auto',
+		width: isFullWidth ? '100%' : 'auto',
 		flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
 		...(bgColor && { backgroundColor: bgColor }),
 		...(txtColor && { color: txtColor }),
@@ -100,21 +101,14 @@ export default function IconButtonSave({ attributes }) {
 			? ` dsgo-icon-button--${hoverAnimation}`
 			: '';
 
-	// Build width class for CSS-based width handling (must match edit.js)
-	// Default to auto width for any non-100% value
-	const widthClass =
-		width === '100%'
-			? ' dsgo-icon-button--width-full'
-			: ' dsgo-icon-button--width-auto';
-
 	// Single element with all classes and styles combined
 	// wp-block-button and wp-element-button enable theme.json button styles
 	// wp-block-button__link ensures theme compatibility
-	// Conditionally render as <a> (with URL) or <button> (without URL)
+	// WordPress automatically adds alignfull class when align="full"
 	const ButtonElement = url ? 'a' : 'button';
 
 	const blockProps = useBlockProps.save({
-		className: `dsgo-icon-button wp-block-button wp-block-button__link wp-element-button${animationClass}${widthClass}`,
+		className: `dsgo-icon-button wp-block-button wp-block-button__link wp-element-button${animationClass}`,
 		style: buttonStyles,
 		...(url && {
 			href: url,

@@ -63,10 +63,17 @@
 		display: inline-flex;
 	}
 
-	// Icon Button - inline button with icon
-	> .wp-block-designsetgo-icon-button {
+	// Icon Button - inline button with icon (unless alignfull)
+	> .wp-block-designsetgo-icon-button:not(.alignfull) {
 		width: auto;
 		display: inline-flex;
+	}
+
+	// Icon Button full-width (alignfull) - allow it to span container width
+	> .wp-block-designsetgo-icon-button.alignfull {
+		width: 100% !important;
+		max-width: 100% !important;
+		display: flex;
 	}
 
 	// Pill - inline badge/tag component

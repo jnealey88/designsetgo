@@ -29,7 +29,6 @@ import { IconPicker } from '../../../icon/components/IconPicker';
  * @param {string}   props.iconPosition   - Icon position (start, end, none)
  * @param {number}   props.iconSize       - Icon size in pixels
  * @param {string}   props.iconGap        - Gap between icon and text
- * @param {string}   props.width          - Button width
  * @param {string}   props.hoverAnimation - Hover animation style
  * @param {string}   props.modalCloseId   - Modal ID to close (or "true" for parent modal)
  * @param {boolean}  props.isInsideModal  - Whether button is inside a modal
@@ -44,7 +43,6 @@ export const ButtonSettingsPanel = ({
 	iconPosition,
 	iconSize,
 	iconGap,
-	width,
 	hoverAnimation,
 	modalCloseId,
 	isInsideModal,
@@ -97,25 +95,6 @@ export const ButtonSettingsPanel = ({
 				title={__('Button & Icon Settings', 'designsetgo')}
 				initialOpen={true}
 			>
-				<SelectControl
-					label={__('Width', 'designsetgo')}
-					value={width}
-					options={[
-						{ label: __('Auto', 'designsetgo'), value: 'auto' },
-						{
-							label: __('Full Width', 'designsetgo'),
-							value: '100%',
-						},
-					]}
-					onChange={(value) => setAttributes({ width: value })}
-					help={__(
-						'Auto sizes to content, Full Width spans container',
-						'designsetgo'
-					)}
-					__next40pxDefaultSize
-					__nextHasNoMarginBottom
-				/>
-
 				<SelectControl
 					label={__('Hover Animation', 'designsetgo')}
 					value={hoverAnimation}

@@ -13,40 +13,35 @@
 	overflow: hidden; // Clip contents to border-radius
 
 	// ============================================================================
-	// WIDTH MODIFIERS
+	// WIDTH & ALIGNMENT
 	// ============================================================================
-	// These classes control the width behavior of the button
+	// Width is controlled via WordPress alignment (alignfull for full-width)
 
-	// Auto width: Button only takes up the space it needs (default behavior)
-	&--width-auto {
-		width: fit-content;
-	}
-
-	// Full width: Button spans the full container width
-	&--width-full {
-		display: flex !important; // Block-level flex instead of inline-flex
+	// Full width: Button spans the full container width (via WordPress alignfull)
+	&.alignfull {
+		display: flex !important;
 		width: 100% !important;
+		max-width: 100% !important;
 	}
 
-	// WordPress alignment support
+	// WordPress alignment support for non-full-width buttons
 	// Constrain button width and use margin for alignment
 	// CRITICAL: Must override inline display: inline-flex with display: flex for auto margins to work
 	// NOTE: Margins don't use !important so user-set margins can override
-	// NOTE: Don't apply fit-content when full-width is set
-	&.aligncenter:not(&--width-full) {
+	&.aligncenter:not(.alignfull) {
 		display: flex !important;
 		width: fit-content !important;
 		margin-left: auto;
 		margin-right: auto;
 	}
 
-	&.alignleft:not(&--width-full) {
+	&.alignleft:not(.alignfull) {
 		display: flex !important;
 		width: fit-content !important;
 		margin-right: auto;
 	}
 
-	&.alignright:not(&--width-full) {
+	&.alignright:not(.alignfull) {
 		display: flex !important;
 		width: fit-content !important;
 		margin-left: auto;
