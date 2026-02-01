@@ -134,7 +134,8 @@ jobs:
 
           echo "➤ Syncing files to trunk..."
           # Use rsync with .distignore to copy only distribution files
-          rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" --delete "$GITHUB_WORKSPACE/" "$SVN_DIR/"
+          # Exclude .svn directory to preserve SVN metadata
+          rsync -rc --exclude='.svn' --exclude-from="$GITHUB_WORKSPACE/.distignore" --delete "$GITHUB_WORKSPACE/" "$SVN_DIR/"
 
           cd "$SVN_DIR"
 
