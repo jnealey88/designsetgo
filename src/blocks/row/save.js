@@ -15,7 +15,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  * Also handles WordPress 6.1+ object format {top, left} for separate row/column gaps
  *
  * @param {string|Object} value The preset value or gap object
- * @return {string} CSS variable format
+ * @return {string|undefined} CSS variable format or undefined if no valid value
  */
 function convertPresetToCSSVar(value) {
 	if (!value) {
@@ -29,6 +29,11 @@ function convertPresetToCSSVar(value) {
 		if (!value) {
 			return undefined;
 		}
+	}
+
+	// Ensure value is a string before using string methods
+	if (typeof value !== 'string') {
+		return value;
 	}
 
 	// If it's already a CSS variable, return as-is
