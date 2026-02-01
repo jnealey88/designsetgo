@@ -151,6 +151,13 @@ class Plugin {
 	public $revision_comparison;
 
 	/**
+	 * LLMS TXT instance.
+	 *
+	 * @var LLMS_Txt\Controller
+	 */
+	public $llms_txt;
+
+	/**
 	 * Returns the instance.
 	 *
 	 * @return Plugin
@@ -196,6 +203,19 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-icon-injector.php';
+
+		// LLMS TXT classes.
+		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-file-manager.php';
+		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-generator.php';
+		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-conflict-detector.php';
+		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-rest-controller.php';
+		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-controller.php';
+
+		// Markdown converter classes.
+		require_once DESIGNSETGO_PATH . 'includes/markdown/class-core-handlers.php';
+		require_once DESIGNSETGO_PATH . 'includes/markdown/class-dsgo-handlers.php';
+		require_once DESIGNSETGO_PATH . 'includes/markdown/class-converter.php';
+
 		require_once DESIGNSETGO_PATH . 'includes/helpers.php';
 
 		// Load Composer autoloader if available.
@@ -238,6 +258,7 @@ class Plugin {
 		$this->section_styles->init();
 		$this->sticky_header = new Sticky_Header();
 		$this->icon_injector = new Icon_Injector();
+		$this->llms_txt      = new LLMS_Txt\Controller();
 
 		// Initialize revision comparison (needs REST routes registered for all contexts).
 		$this->revision_comparison = new Admin\Revision_Comparison();
@@ -314,6 +335,21 @@ class Plugin {
 					'turnstileSiteKey'    => ! empty( $integrations_settings['turnstile_site_key'] ) ? esc_js( $integrations_settings['turnstile_site_key'] ) : '',
 					'turnstileConfigured' => ! empty( $integrations_settings['turnstile_site_key'] ) && ! empty( $integrations_settings['turnstile_secret_key'] ),
 				)
+			);
+		}
+
+		// Enqueue llms.txt editor panel.
+		$llms_asset_file = DESIGNSETGO_PATH . 'build/llms-txt.asset.php';
+
+		if ( file_exists( $llms_asset_file ) ) {
+			$llms_asset = include $llms_asset_file;
+
+			wp_enqueue_script(
+				'dsgo-llms-txt-panel',
+				DESIGNSETGO_URL . 'build/llms-txt.js',
+				$llms_asset['dependencies'],
+				$llms_asset['version'],
+				true
 			);
 		}
 

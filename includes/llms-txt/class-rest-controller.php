@@ -1,0 +1,331 @@
+<?php
+/**
+ * LLMS TXT REST Controller
+ *
+ * Handles REST API endpoints for llms.txt functionality.
+ *
+ * @package DesignSetGo
+ * @since 1.4.0
+ */
+
+namespace DesignSetGo\LLMS_Txt;
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * REST_Controller Class
+ *
+ * Registers and handles REST API endpoints.
+ */
+class REST_Controller {
+	/**
+	 * Cache expiration in seconds (1 day).
+	 */
+	const CACHE_EXPIRATION = DAY_IN_SECONDS;
+
+	/**
+	 * Post meta key for exclusion.
+	 */
+	const EXCLUDE_META_KEY = '_designsetgo_exclude_llms';
+
+	/**
+	 * File manager instance.
+	 *
+	 * @var File_Manager
+	 */
+	private $file_manager;
+
+	/**
+	 * Generator instance.
+	 *
+	 * @var Generator
+	 */
+	private $generator;
+
+	/**
+	 * Conflict detector instance.
+	 *
+	 * @var Conflict_Detector
+	 */
+	private $conflict_detector;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param File_Manager      $file_manager      File manager instance.
+	 * @param Generator         $generator         Generator instance.
+	 * @param Conflict_Detector $conflict_detector Conflict detector instance.
+	 */
+	public function __construct(
+		File_Manager $file_manager,
+		Generator $generator,
+		Conflict_Detector $conflict_detector
+	) {
+		$this->file_manager      = $file_manager;
+		$this->generator         = $generator;
+		$this->conflict_detector = $conflict_detector;
+	}
+
+	/**
+	 * Register REST API routes.
+	 */
+	public function register_routes(): void {
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/post-types',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_post_types' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/flush-cache',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'flush_cache' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/generate-files',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'generate_files' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/markdown/(?P<post_id>\d+)',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_post_markdown' ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id' => array(
+						'description'       => __( 'Post ID to convert to markdown.', 'designsetgo' ),
+						'type'              => 'integer',
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							return is_numeric( $param ) && $param > 0;
+						},
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			'designsetgo/v1',
+			'/llms-txt/status',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_status' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+	}
+
+	/**
+	 * Get available post types endpoint.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function get_post_types(): \WP_REST_Response {
+		$post_types = get_post_types( array( 'public' => true ), 'objects' );
+
+		$result = array();
+		foreach ( $post_types as $post_type ) {
+			if ( 'attachment' === $post_type->name ) {
+				continue;
+			}
+
+			$result[] = array(
+				'name'  => $post_type->name,
+				'label' => $post_type->labels->name,
+			);
+		}
+
+		return rest_ensure_response( $result );
+	}
+
+	/**
+	 * Flush cache endpoint.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function flush_cache(): \WP_REST_Response {
+		delete_transient( Controller::CACHE_KEY );
+
+		global $wpdb;
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+				'_transient_designsetgo_llms_md_%'
+			)
+		);
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+				'_transient_timeout_designsetgo_llms_md_%'
+			)
+		);
+
+		return rest_ensure_response(
+			array(
+				'success' => true,
+				'message' => __( 'llms.txt cache has been cleared.', 'designsetgo' ),
+			)
+		);
+	}
+
+	/**
+	 * Generate all markdown files endpoint.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function generate_files(): \WP_REST_Response {
+		$result = $this->file_manager->generate_all_files( $this->generator );
+
+		delete_transient( Controller::CACHE_KEY );
+
+		return rest_ensure_response(
+			array(
+				'success'         => $result['success'],
+				'generated_count' => $result['generated_count'],
+				'errors'          => $result['errors'],
+				'message'         => sprintf(
+					/* translators: %d: Number of files generated */
+					_n(
+						'Generated %d markdown file.',
+						'Generated %d markdown files.',
+						$result['generated_count'],
+						'designsetgo'
+					),
+					$result['generated_count']
+				),
+			)
+		);
+	}
+
+	/**
+	 * Get post markdown endpoint.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response|\WP_Error Response or error.
+	 */
+	public function get_post_markdown( \WP_REST_Request $request ) {
+		$post_id = absint( $request->get_param( 'post_id' ) );
+		$post    = get_post( $post_id );
+
+		if ( ! $post ) {
+			return new \WP_Error(
+				'not_found',
+				__( 'Post not found.', 'designsetgo' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		if ( 'publish' !== $post->post_status ) {
+			return new \WP_Error(
+				'not_published',
+				__( 'Post is not published.', 'designsetgo' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Reject password-protected or otherwise non-public posts.
+		if ( post_password_required( $post ) || ! is_post_publicly_viewable( $post ) ) {
+			return new \WP_Error(
+				'not_public',
+				__( 'Post is not publicly accessible.', 'designsetgo' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		$excluded = get_post_meta( $post_id, self::EXCLUDE_META_KEY, true );
+		if ( $excluded ) {
+			return new \WP_Error(
+				'excluded',
+				__( 'This post is excluded from llms.txt.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+		if ( empty( $settings['llms_txt']['enable'] ) ) {
+			return new \WP_Error(
+				'feature_disabled',
+				__( 'llms.txt feature is not enabled.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		$enabled_post_types = $settings['llms_txt']['post_types'] ?? array( 'page', 'post' );
+		if ( ! in_array( $post->post_type, $enabled_post_types, true ) ) {
+			return new \WP_Error(
+				'post_type_disabled',
+				__( 'This post type is not enabled for llms.txt.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		$cache_key = 'designsetgo_llms_md_' . $post_id;
+		$cached    = get_transient( $cache_key );
+
+		if ( false !== $cached ) {
+			return rest_ensure_response( $cached );
+		}
+
+		$converter = new \DesignSetGo\Markdown\Converter();
+		$markdown  = $converter->convert( $post );
+
+		$result = array(
+			'id'       => $post->ID,
+			'title'    => $post->post_title,
+			'url'      => get_permalink( $post ),
+			'updated'  => get_post_modified_time( 'c', true, $post ),
+			'markdown' => $markdown,
+		);
+
+		set_transient( $cache_key, $result, self::CACHE_EXPIRATION );
+
+		return rest_ensure_response( $result );
+	}
+
+	/**
+	 * Get status endpoint.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function get_status(): \WP_REST_Response {
+		$settings     = \DesignSetGo\Admin\Settings::get_settings();
+		$is_enabled   = ! empty( $settings['llms_txt']['enable'] );
+		$has_conflict = $this->conflict_detector->has_conflict();
+
+		return rest_ensure_response(
+			array(
+				'enabled'       => $is_enabled,
+				'url'           => home_url( '/llms.txt' ),
+				'has_conflict'  => $has_conflict,
+				'conflict_info' => $has_conflict ? $this->conflict_detector->get_info() : null,
+			)
+		);
+	}
+}

@@ -1,0 +1,255 @@
+<?php
+/**
+ * Markdown Converter Class
+ *
+ * Converts WordPress Gutenberg blocks to clean markdown format.
+ *
+ * @package DesignSetGo
+ * @since 1.4.0
+ */
+
+namespace DesignSetGo\Markdown;
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Converter Class
+ *
+ * Main converter class that orchestrates block-to-markdown conversion.
+ */
+class Converter {
+	/**
+	 * Block handlers registry.
+	 *
+	 * @var array<string, callable>
+	 */
+	private $handlers = array();
+
+	/**
+	 * Constructor - registers default block handlers.
+	 */
+	public function __construct() {
+		$this->register_default_handlers();
+
+		/**
+		 * Allow plugins to register custom block handlers.
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param Converter $converter The converter instance.
+		 */
+		do_action( 'designsetgo_markdown_converter_init', $this );
+	}
+
+	/**
+	 * Convert a WordPress post to markdown.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return string Markdown content.
+	 */
+	public function convert( \WP_Post $post ): string {
+		$lines = array();
+
+		// Add title as H1.
+		$lines[] = '# ' . $this->escape_markdown( $post->post_title );
+		$lines[] = '';
+
+		// Parse and render blocks.
+		$blocks  = parse_blocks( $post->post_content );
+		$content = $this->render_blocks( $blocks );
+
+		if ( ! empty( $content ) ) {
+			$lines[] = $content;
+		}
+
+		return implode( "\n", $lines );
+	}
+
+	/**
+	 * Register a custom block handler.
+	 *
+	 * @param string   $block_name Block name (e.g., 'core/paragraph').
+	 * @param callable $handler    Handler function receiving ($block, $converter).
+	 */
+	public function register_handler( string $block_name, callable $handler ): void {
+		$this->handlers[ $block_name ] = $handler;
+	}
+
+	/**
+	 * Render an array of blocks to markdown.
+	 *
+	 * @param array $blocks Array of parsed blocks.
+	 * @return string Rendered markdown.
+	 */
+	public function render_blocks( array $blocks ): string {
+		$output = array();
+
+		foreach ( $blocks as $block ) {
+			if ( empty( $block['blockName'] ) ) {
+				continue;
+			}
+
+			$rendered = $this->render_block( $block );
+			if ( ! empty( $rendered ) ) {
+				$output[] = $rendered;
+			}
+		}
+
+		return implode( "\n\n", $output );
+	}
+
+	/**
+	 * Render a single block to markdown.
+	 *
+	 * @param array $block Parsed block array.
+	 * @return string Rendered markdown.
+	 */
+	public function render_block( array $block ): string {
+		$handler = $this->handlers[ $block['blockName'] ] ?? null;
+
+		if ( $handler ) {
+			return call_user_func( $handler, $block, $this );
+		}
+
+		return $this->default_handler( $block );
+	}
+
+	/**
+	 * Default handler for unknown blocks.
+	 *
+	 * @param array $block Parsed block.
+	 * @return string Markdown content.
+	 */
+	public function default_handler( array $block ): string {
+		if ( ! empty( $block['innerBlocks'] ) ) {
+			return $this->render_blocks( $block['innerBlocks'] );
+		}
+
+		$html = $this->get_inner_html( $block );
+		if ( ! empty( $html ) ) {
+			return $this->html_to_text( $html );
+		}
+
+		return '';
+	}
+
+	/**
+	 * Register default handlers for core and DesignSetGo blocks.
+	 */
+	private function register_default_handlers(): void {
+		$core_handlers = new Core_Handlers( $this );
+		$dsgo_handlers = new Dsgo_Handlers( $this );
+
+		// Core WordPress blocks.
+		$this->register_handler( 'core/paragraph', array( $core_handlers, 'handle_paragraph' ) );
+		$this->register_handler( 'core/heading', array( $core_handlers, 'handle_heading' ) );
+		$this->register_handler( 'core/list', array( $core_handlers, 'handle_list' ) );
+		$this->register_handler( 'core/list-item', array( $core_handlers, 'handle_list_item' ) );
+		$this->register_handler( 'core/quote', array( $core_handlers, 'handle_quote' ) );
+		$this->register_handler( 'core/code', array( $core_handlers, 'handle_code' ) );
+		$this->register_handler( 'core/preformatted', array( $core_handlers, 'handle_code' ) );
+		$this->register_handler( 'core/image', array( $core_handlers, 'handle_image' ) );
+		$this->register_handler( 'core/separator', array( $core_handlers, 'handle_separator' ) );
+		$this->register_handler( 'core/spacer', array( $core_handlers, 'handle_spacer' ) );
+		$this->register_handler( 'core/buttons', array( $core_handlers, 'handle_buttons' ) );
+		$this->register_handler( 'core/button', array( $core_handlers, 'handle_button' ) );
+		$this->register_handler( 'core/columns', array( $core_handlers, 'handle_container' ) );
+		$this->register_handler( 'core/column', array( $core_handlers, 'handle_container' ) );
+		$this->register_handler( 'core/group', array( $core_handlers, 'handle_container' ) );
+		$this->register_handler( 'core/cover', array( $core_handlers, 'handle_container' ) );
+
+		// DesignSetGo container blocks.
+		$this->register_handler( 'designsetgo/grid', array( $core_handlers, 'handle_container' ) );
+		$this->register_handler( 'designsetgo/row', array( $core_handlers, 'handle_container' ) );
+		$this->register_handler( 'designsetgo/section', array( $core_handlers, 'handle_container' ) );
+		$this->register_handler( 'designsetgo/stack', array( $core_handlers, 'handle_container' ) );
+
+		// DesignSetGo content blocks.
+		$this->register_handler( 'designsetgo/card', array( $dsgo_handlers, 'handle_card' ) );
+		$this->register_handler( 'designsetgo/accordion', array( $dsgo_handlers, 'handle_accordion' ) );
+		$this->register_handler( 'designsetgo/accordion-item', array( $dsgo_handlers, 'handle_accordion_item' ) );
+		$this->register_handler( 'designsetgo/tabs', array( $dsgo_handlers, 'handle_tabs' ) );
+		$this->register_handler( 'designsetgo/tab', array( $dsgo_handlers, 'handle_tab' ) );
+		$this->register_handler( 'designsetgo/icon-list', array( $dsgo_handlers, 'handle_icon_list' ) );
+		$this->register_handler( 'designsetgo/icon-list-item', array( $dsgo_handlers, 'handle_icon_list_item' ) );
+		$this->register_handler( 'designsetgo/divider', array( $core_handlers, 'handle_separator' ) );
+		$this->register_handler( 'designsetgo/button', array( $dsgo_handlers, 'handle_button' ) );
+
+		// Interactive blocks.
+		$this->register_handler( 'designsetgo/slider', array( $dsgo_handlers, 'handle_interactive' ) );
+		$this->register_handler( 'designsetgo/modal', array( $dsgo_handlers, 'handle_interactive' ) );
+		$this->register_handler( 'designsetgo/map', array( $dsgo_handlers, 'handle_map' ) );
+		$this->register_handler( 'designsetgo/form-builder', array( $dsgo_handlers, 'handle_form' ) );
+		$this->register_handler( 'designsetgo/counter', array( $dsgo_handlers, 'handle_counter' ) );
+	}
+
+	/**
+	 * Get inner HTML from block.
+	 *
+	 * @param array $block Block data.
+	 * @return string HTML content.
+	 */
+	public function get_inner_html( array $block ): string {
+		if ( isset( $block['innerHTML'] ) ) {
+			return $block['innerHTML'];
+		}
+
+		if ( ! empty( $block['innerContent'] ) ) {
+			return implode( '', array_filter( $block['innerContent'], 'is_string' ) );
+		}
+
+		return '';
+	}
+
+	/**
+	 * Convert HTML to plain text, preserving some formatting.
+	 *
+	 * @param string $html HTML content.
+	 * @return string Plain text.
+	 */
+	public function html_to_text( string $html ): string {
+		// Convert common inline elements to markdown.
+		$html = preg_replace( '/<strong[^>]*>(.*?)<\/strong>/is', '**$1**', $html );
+		$html = preg_replace( '/<b[^>]*>(.*?)<\/b>/is', '**$1**', $html );
+		$html = preg_replace( '/<em[^>]*>(.*?)<\/em>/is', '*$1*', $html );
+		$html = preg_replace( '/<i[^>]*>(.*?)<\/i>/is', '*$1*', $html );
+		$html = preg_replace( '/<code[^>]*>(.*?)<\/code>/is', '`$1`', $html );
+
+		// Convert links.
+		$html = preg_replace( '/<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)<\/a>/is', '[$2]($1)', $html );
+
+		// Convert line breaks.
+		$html = preg_replace( '/<br\s*\/?>/i', "\n", $html );
+
+		// Strip remaining HTML.
+		$text = wp_strip_all_tags( $html );
+
+		// Decode entities.
+		$text = html_entity_decode( $text, ENT_QUOTES, 'UTF-8' );
+
+		// Normalize whitespace.
+		$text = preg_replace( '/[ \t]+/', ' ', $text );
+		$text = preg_replace( '/\n\s*\n/', "\n\n", $text );
+
+		return trim( $text );
+	}
+
+	/**
+	 * Escape special markdown characters.
+	 *
+	 * @param string $text Text to escape.
+	 * @return string Escaped text.
+	 */
+	public function escape_markdown( string $text ): string {
+		$text = str_replace( '\\', '\\\\', $text );
+		$text = str_replace( '[', '\\[', $text );
+		$text = str_replace( ']', '\\]', $text );
+		$text = str_replace( '(', '\\(', $text );
+		$text = str_replace( ')', '\\)', $text );
+
+		return $text;
+	}
+}

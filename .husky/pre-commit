@@ -1,6 +1,3 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 # Run lint-staged but don't block commits
 # This shows linting issues but allows all changes to be committed
 npx lint-staged || true

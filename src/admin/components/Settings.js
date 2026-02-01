@@ -19,6 +19,7 @@ import AnimationsPanel from './settings-panels/AnimationsPanel';
 import SecurityPanel from './settings-panels/SecurityPanel';
 import IntegrationsPanel from './settings-panels/IntegrationsPanel';
 import DraftModePanel from './settings-panels/DraftModePanel';
+import LLMSTxtPanel from './settings-panels/LLMSTxtPanel';
 
 const Settings = () => {
 	const [settings, setSettings] = useState(null);
@@ -181,6 +182,10 @@ const Settings = () => {
 										settings={settings}
 										updateSetting={updateSetting}
 									/>
+									<LLMSTxtPanel
+										settings={settings}
+										updateSetting={updateSetting}
+									/>
 								</>
 							)}
 
@@ -198,10 +203,12 @@ const Settings = () => {
 							)}
 
 							{tab.name === 'integrations' && (
-								<IntegrationsPanel
-									settings={settings}
-									updateSetting={updateSetting}
-								/>
+								<>
+									<IntegrationsPanel
+										settings={settings}
+										updateSetting={updateSetting}
+									/>
+								</>
 							)}
 						</div>
 					)}
