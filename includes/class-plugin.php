@@ -153,7 +153,7 @@ class Plugin {
 	/**
 	 * LLMS TXT instance.
 	 *
-	 * @var LLMS_Txt
+	 * @var LLMS_Txt\Controller
 	 */
 	public $llms_txt;
 
@@ -203,8 +203,19 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-icon-injector.php';
-		require_once DESIGNSETGO_PATH . 'includes/class-llms-txt.php';
-		require_once DESIGNSETGO_PATH . 'includes/class-markdown-converter.php';
+
+		// LLMS TXT classes.
+		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-file-manager.php';
+		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-generator.php';
+		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-conflict-detector.php';
+		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-rest-controller.php';
+		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-controller.php';
+
+		// Markdown converter classes.
+		require_once DESIGNSETGO_PATH . 'includes/markdown/class-core-handlers.php';
+		require_once DESIGNSETGO_PATH . 'includes/markdown/class-dsgo-handlers.php';
+		require_once DESIGNSETGO_PATH . 'includes/markdown/class-converter.php';
+
 		require_once DESIGNSETGO_PATH . 'includes/helpers.php';
 
 		// Load Composer autoloader if available.
@@ -247,7 +258,7 @@ class Plugin {
 		$this->section_styles->init();
 		$this->sticky_header = new Sticky_Header();
 		$this->icon_injector = new Icon_Injector();
-		$this->llms_txt      = new LLMS_Txt();
+		$this->llms_txt      = new LLMS_Txt\Controller();
 
 		// Initialize revision comparison (needs REST routes registered for all contexts).
 		$this->revision_comparison = new Admin\Revision_Comparison();

@@ -48,7 +48,7 @@ const LLMSTxtPanel = () => {
 
 	return (
 		<PluginDocumentSettingPanel
-			name="designsetgo-llms-txt"
+			name="dsgo-llms-txt"
 			title={__('AI & LLMs', 'designsetgo')}
 			className="dsgo-llms-txt-panel"
 		>
@@ -83,7 +83,7 @@ const LLMSTxtPanel = () => {
 };
 
 // Register the plugin.
-registerPlugin('designsetgo-llms-txt', {
+registerPlugin('dsgo-llms-txt', {
 	render: LLMSTxtPanel,
 	icon: 'visibility',
 });
