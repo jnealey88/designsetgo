@@ -640,16 +640,28 @@ class Block_Inserter {
 				// Build units HTML.
 				$units = array();
 				if ( $show_days ) {
-					$units[] = array( 'type' => 'days', 'label' => 'Days' );
+					$units[] = array(
+						'type'  => 'days',
+						'label' => 'Days',
+					);
 				}
 				if ( $show_hours ) {
-					$units[] = array( 'type' => 'hours', 'label' => 'Hours' );
+					$units[] = array(
+						'type'  => 'hours',
+						'label' => 'Hours',
+					);
 				}
 				if ( $show_minutes ) {
-					$units[] = array( 'type' => 'minutes', 'label' => 'Min' );
+					$units[] = array(
+						'type'  => 'minutes',
+						'label' => 'Min',
+					);
 				}
 				if ( $show_seconds ) {
-					$units[] = array( 'type' => 'seconds', 'label' => 'Sec' );
+					$units[] = array(
+						'type'  => 'seconds',
+						'label' => 'Sec',
+					);
 				}
 
 				$units_html = '';
