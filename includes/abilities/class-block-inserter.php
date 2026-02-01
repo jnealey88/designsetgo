@@ -176,6 +176,15 @@ class Block_Inserter {
 			}
 		}
 
+		// Generate HTML for DesignSetGo blocks without inner blocks (form fields, etc.).
+		if ( 0 === strpos( $block_name, 'designsetgo/' ) && empty( $inner_blocks ) && ! self::is_dynamic_block( $block_name ) ) {
+			$block_html = self::generate_designsetgo_block_html( $block_name, $attributes );
+			if ( ! empty( $block_html ) ) {
+				$innerHTML      = $block_html;
+				$innerContent[] = $block_html;
+			}
+		}
+
 		return array(
 			'blockName'    => $block_name,
 			'attrs'        => $attrs,
@@ -1586,9 +1595,742 @@ class Block_Inserter {
 					'closing' => '</div></div>',
 				);
 
+			case 'designsetgo/form-builder':
+				return self::generate_form_builder_html( $block_class, $attributes );
+
 			default:
 				return null;
 		}
+	}
+
+	/**
+	 * Generate wrapper HTML for form-builder block.
+	 *
+	 * @param string               $block_class Base block class.
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return array<string, string> Array with 'opening' and 'closing' keys.
+	 */
+	private static function generate_form_builder_html( string $block_class, array $attributes ): array {
+		// Get attributes with defaults from block.json.
+		$form_id                          = $attributes['formId'] ?? '';
+		$submit_button_text               = $attributes['submitButtonText'] ?? 'Submit';
+		$submit_button_alignment          = $attributes['submitButtonAlignment'] ?? 'left';
+		$submit_button_position           = $attributes['submitButtonPosition'] ?? 'below';
+		$ajax_submit                      = $attributes['ajaxSubmit'] ?? true;
+		$success_message                  = $attributes['successMessage'] ?? 'Thank you! Your form has been submitted successfully.';
+		$error_message                    = $attributes['errorMessage'] ?? 'There was an error submitting the form. Please try again.';
+		$field_spacing                    = $attributes['fieldSpacing'] ?? '1.5rem';
+		$input_height                     = $attributes['inputHeight'] ?? '44px';
+		$input_padding                    = $attributes['inputPadding'] ?? '0.75rem';
+		$field_label_color                = $attributes['fieldLabelColor'] ?? '';
+		$field_border_color               = $attributes['fieldBorderColor'] ?? '';
+		$field_background_color           = $attributes['fieldBackgroundColor'] ?? '';
+		$submit_button_color              = $attributes['submitButtonColor'] ?? '';
+		$submit_button_background_color   = $attributes['submitButtonBackgroundColor'] ?? '';
+		$submit_button_padding_vertical   = $attributes['submitButtonPaddingVertical'] ?? '0.75rem';
+		$submit_button_padding_horizontal = $attributes['submitButtonPaddingHorizontal'] ?? '2rem';
+		$submit_button_font_size          = $attributes['submitButtonFontSize'] ?? '';
+		$submit_button_height             = $attributes['submitButtonHeight'] ?? '44px';
+		$enable_honeypot                  = $attributes['enableHoneypot'] ?? true;
+		$enable_turnstile                 = $attributes['enableTurnstile'] ?? false;
+		$enable_email                     = $attributes['enableEmail'] ?? false;
+		$email_to                         = $attributes['emailTo'] ?? '';
+		$email_subject                    = $attributes['emailSubject'] ?? 'New Form Submission';
+		$email_from_name                  = $attributes['emailFromName'] ?? '';
+		$email_from_email                 = $attributes['emailFromEmail'] ?? '';
+		$email_reply_to                   = $attributes['emailReplyTo'] ?? '';
+		$email_body                       = $attributes['emailBody'] ?? '';
+
+		// Build classes - must match save.js.
+		$classes = $block_class;
+		if ( $submit_button_alignment && 'below' === $submit_button_position ) {
+			$classes .= ' dsgo-form-builder--align-' . $submit_button_alignment;
+		}
+		if ( 'inline' === $submit_button_position ) {
+			$classes .= ' dsgo-form-builder--button-inline';
+		}
+
+		// Build CSS custom properties - must match save.js order.
+		$style_parts = array(
+			'--dsgo-form-field-spacing:' . esc_attr( $field_spacing ),
+			'--dsgo-form-input-height:' . esc_attr( $input_height ),
+			'--dsgo-form-input-padding:' . esc_attr( $input_padding ),
+		);
+		if ( $field_label_color ) {
+			$style_parts[] = '--dsgo-form-label-color:' . esc_attr( $field_label_color );
+		}
+		// fieldBorderColor defaults to #d1d5db if empty.
+		$style_parts[] = '--dsgo-form-border-color:' . esc_attr( $field_border_color ? $field_border_color : '#d1d5db' );
+		if ( $field_background_color ) {
+			$style_parts[] = '--dsgo-form-field-bg:' . esc_attr( $field_background_color );
+		}
+		$style = implode( ';', $style_parts );
+
+		// Build data attributes.
+		$data_attrs = array(
+			'data-form-id="' . esc_attr( $form_id ) . '"',
+			'data-ajax-submit="' . ( $ajax_submit ? 'true' : 'false' ) . '"',
+			'data-success-message="' . esc_attr( $success_message ) . '"',
+			'data-error-message="' . esc_attr( $error_message ) . '"',
+			'data-submit-text="' . esc_attr( $submit_button_text ) . '"',
+			'data-enable-email="' . ( $enable_email ? 'true' : 'false' ) . '"',
+			'data-email-to="' . esc_attr( $email_to ) . '"',
+			'data-email-subject="' . esc_attr( $email_subject ) . '"',
+			'data-email-from-name="' . esc_attr( $email_from_name ) . '"',
+			'data-email-from-email="' . esc_attr( $email_from_email ) . '"',
+			'data-email-reply-to="' . esc_attr( $email_reply_to ) . '"',
+			'data-email-body="' . esc_attr( $email_body ) . '"',
+		);
+		if ( $enable_turnstile ) {
+			$data_attrs[] = 'data-dsgo-turnstile="true"';
+		}
+		$data_str = implode( ' ', $data_attrs );
+
+		// Build button style - must match save.js order.
+		$button_style_parts = array();
+		if ( $submit_button_color ) {
+			$button_style_parts[] = 'color:' . esc_attr( $submit_button_color );
+		}
+		if ( $submit_button_background_color ) {
+			$button_style_parts[] = 'background-color:' . esc_attr( $submit_button_background_color );
+		}
+		$button_style_parts[] = 'min-height:' . esc_attr( $submit_button_height );
+		$button_style_parts[] = 'padding-top:' . esc_attr( $submit_button_padding_vertical );
+		$button_style_parts[] = 'padding-bottom:' . esc_attr( $submit_button_padding_vertical );
+		$button_style_parts[] = 'padding-left:' . esc_attr( $submit_button_padding_horizontal );
+		$button_style_parts[] = 'padding-right:' . esc_attr( $submit_button_padding_horizontal );
+		if ( $submit_button_font_size ) {
+			$button_style_parts[] = 'font-size:' . esc_attr( $submit_button_font_size );
+		}
+		$button_style = implode( ';', $button_style_parts );
+
+		// Opening HTML: outer div + form + fields wrapper.
+		$opening = '<div class="' . esc_attr( $classes ) . '" style="' . $style . '" ' . $data_str . '>';
+		$opening .= '<form class="dsgo-form" method="post" novalidate>';
+		$opening .= '<div class="dsgo-form__fields">';
+
+		// Closing HTML: depends on button position.
+		$closing = '';
+
+		// Inline button goes inside fields wrapper, before closing.
+		if ( 'inline' === $submit_button_position ) {
+			$closing .= '<button type="submit" class="dsgo-form__submit dsgo-form__submit--inline wp-element-button" style="' . $button_style . '">' . esc_html( $submit_button_text ) . '</button>';
+		}
+
+		// Close fields wrapper.
+		$closing .= '</div>';
+
+		// Honeypot field.
+		if ( $enable_honeypot ) {
+			$closing .= '<input type="text" name="dsg_website" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"/>';
+		}
+
+		// Hidden form ID.
+		$closing .= '<input type="hidden" name="dsg_form_id" value="' . esc_attr( $form_id ) . '"/>';
+
+		// Turnstile widget container.
+		if ( $enable_turnstile ) {
+			$closing .= '<div class="dsgo-turnstile-widget" data-dsgo-turnstile-container="true"></div>';
+		}
+
+		// Footer with button (below position).
+		if ( 'below' === $submit_button_position ) {
+			$closing .= '<div class="dsgo-form__footer">';
+			$closing .= '<button type="submit" class="dsgo-form__submit wp-element-button" style="' . $button_style . '">' . esc_html( $submit_button_text ) . '</button>';
+			$closing .= '</div>';
+		}
+
+		// Message container.
+		$closing .= '<div class="dsgo-form__message" role="status" aria-live="polite" aria-atomic="true" style="display:none"></div>';
+
+		// Close form and outer div.
+		$closing .= '</form></div>';
+
+		return array(
+			'opening' => $opening,
+			'closing' => $closing,
+		);
+	}
+
+	/**
+	 * Generate HTML for DesignSetGo blocks without inner blocks.
+	 *
+	 * @param string               $block_name Block name.
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string|null Generated HTML or null if not supported.
+	 */
+	private static function generate_designsetgo_block_html( string $block_name, array $attributes ): ?string {
+		switch ( $block_name ) {
+			case 'designsetgo/form-text-field':
+				return self::generate_form_text_field_html( $attributes );
+
+			case 'designsetgo/form-email-field':
+				return self::generate_form_email_field_html( $attributes );
+
+			case 'designsetgo/form-textarea':
+				return self::generate_form_textarea_html( $attributes );
+
+			case 'designsetgo/form-select-field':
+				return self::generate_form_select_field_html( $attributes );
+
+			case 'designsetgo/form-checkbox-field':
+				return self::generate_form_checkbox_field_html( $attributes );
+
+			case 'designsetgo/form-number-field':
+				return self::generate_form_number_field_html( $attributes );
+
+			case 'designsetgo/form-phone-field':
+				return self::generate_form_phone_field_html( $attributes );
+
+			case 'designsetgo/form-date-field':
+				return self::generate_form_date_field_html( $attributes );
+
+			case 'designsetgo/form-time-field':
+				return self::generate_form_time_field_html( $attributes );
+
+			case 'designsetgo/form-url-field':
+				return self::generate_form_url_field_html( $attributes );
+
+			case 'designsetgo/form-hidden-field':
+				return self::generate_form_hidden_field_html( $attributes );
+
+			default:
+				return null;
+		}
+	}
+
+	/**
+	 * Generate field width style for form fields.
+	 *
+	 * @param string $field_width Width percentage.
+	 * @return string CSS style string.
+	 */
+	private static function get_form_field_width_style( string $field_width ): string {
+		if ( '100' === $field_width ) {
+			return 'flex-basis:100%;max-width:100%';
+		}
+		return 'flex-basis:calc(' . esc_attr( $field_width ) . '% - var(--dsgo-form-field-spacing, 1.5rem) / 2);max-width:calc(' . esc_attr( $field_width ) . '% - var(--dsgo-form-field-spacing, 1.5rem) / 2)';
+	}
+
+	/**
+	 * Generate form field label HTML.
+	 *
+	 * @param string $field_id Field ID.
+	 * @param string $label Label text.
+	 * @param bool   $required Whether field is required.
+	 * @return string Label HTML.
+	 */
+	private static function generate_form_field_label( string $field_id, string $label, bool $required ): string {
+		$html = '<label for="' . esc_attr( $field_id ) . '" class="dsgo-form-field__label">' . esc_html( $label );
+		if ( $required ) {
+			$html .= '<span class="dsgo-form-field__required" aria-label="required">*</span>';
+		}
+		$html .= '</label>';
+		return $html;
+	}
+
+	/**
+	 * Generate form field help text HTML.
+	 *
+	 * @param string $field_id Field ID.
+	 * @param string $help_text Help text.
+	 * @return string Help text HTML.
+	 */
+	private static function generate_form_field_help( string $field_id, string $help_text ): string {
+		if ( empty( $help_text ) ) {
+			return '';
+		}
+		return '<p id="' . esc_attr( $field_id ) . '-help" class="dsgo-form-field__help">' . esc_html( $help_text ) . '</p>';
+	}
+
+	/**
+	 * Generate text field HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_text_field_html( array $attributes ): string {
+		$field_name         = $attributes['fieldName'] ?? '';
+		$label              = $attributes['label'] ?? 'Text Field';
+		$placeholder        = $attributes['placeholder'] ?? '';
+		$help_text          = $attributes['helpText'] ?? '';
+		$required           = $attributes['required'] ?? false;
+		$default_value      = $attributes['defaultValue'] ?? '';
+		$min_length         = $attributes['minLength'] ?? 0;
+		$max_length         = $attributes['maxLength'] ?? 0;
+		$validation         = $attributes['validation'] ?? 'none';
+		$validation_pattern = $attributes['validationPattern'] ?? '';
+		$validation_message = $attributes['validationMessage'] ?? '';
+		$field_width        = $attributes['fieldWidth'] ?? '100';
+
+		$field_id = 'field-' . $field_name;
+		$style    = self::get_form_field_width_style( $field_width );
+
+		// Get validation pattern.
+		$pattern = null;
+		switch ( $validation ) {
+			case 'letters':
+				$pattern = '[A-Za-z\\s]+';
+				break;
+			case 'numbers':
+				$pattern = '[0-9]+';
+				break;
+			case 'alphanumeric':
+				$pattern = '[A-Za-z0-9]+';
+				break;
+			case 'custom':
+				$pattern = $validation_pattern;
+				break;
+		}
+
+		$html = '<div class="wp-block-designsetgo-form-text-field dsgo-form-field dsgo-form-field--text" style="' . $style . '">';
+		$html .= self::generate_form_field_label( $field_id, $label, $required );
+
+		$html .= '<input type="text" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
+		if ( $placeholder ) {
+			$html .= ' placeholder="' . esc_attr( $placeholder ) . '"';
+		}
+		if ( $required ) {
+			$html .= ' required aria-required="true"';
+		}
+		if ( $min_length > 0 ) {
+			$html .= ' minlength="' . intval( $min_length ) . '"';
+		}
+		if ( $max_length > 0 ) {
+			$html .= ' maxlength="' . intval( $max_length ) . '"';
+		}
+		if ( $pattern ) {
+			$html .= ' pattern="' . esc_attr( $pattern ) . '"';
+		}
+		if ( $validation_message ) {
+			$html .= ' title="' . esc_attr( $validation_message ) . '"';
+		}
+		if ( $default_value ) {
+			$html .= ' value="' . esc_attr( $default_value ) . '"';
+		}
+		if ( $help_text ) {
+			$html .= ' aria-describedby="' . esc_attr( $field_id ) . '-help"';
+		}
+		$html .= ' data-field-type="text"/>';
+
+		$html .= self::generate_form_field_help( $field_id, $help_text );
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Generate email field HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_email_field_html( array $attributes ): string {
+		$field_name    = $attributes['fieldName'] ?? '';
+		$label         = $attributes['label'] ?? 'Email';
+		$placeholder   = $attributes['placeholder'] ?? '';
+		$help_text     = $attributes['helpText'] ?? '';
+		$required      = $attributes['required'] ?? false;
+		$default_value = $attributes['defaultValue'] ?? '';
+		$field_width   = $attributes['fieldWidth'] ?? '100';
+
+		$field_id = 'field-' . $field_name;
+		$style    = self::get_form_field_width_style( $field_width );
+
+		$html = '<div class="wp-block-designsetgo-form-email-field dsgo-form-field dsgo-form-field--email" style="' . $style . '">';
+		$html .= self::generate_form_field_label( $field_id, $label, $required );
+
+		$html .= '<input type="email" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
+		if ( $placeholder ) {
+			$html .= ' placeholder="' . esc_attr( $placeholder ) . '"';
+		}
+		if ( $required ) {
+			$html .= ' required aria-required="true"';
+		}
+		if ( $default_value ) {
+			$html .= ' value="' . esc_attr( $default_value ) . '"';
+		}
+		if ( $help_text ) {
+			$html .= ' aria-describedby="' . esc_attr( $field_id ) . '-help"';
+		}
+		$html .= ' data-field-type="email"/>';
+
+		$html .= self::generate_form_field_help( $field_id, $help_text );
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Generate textarea HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_textarea_html( array $attributes ): string {
+		$field_name    = $attributes['fieldName'] ?? '';
+		$label         = $attributes['label'] ?? 'Message';
+		$placeholder   = $attributes['placeholder'] ?? '';
+		$help_text     = $attributes['helpText'] ?? '';
+		$required      = $attributes['required'] ?? false;
+		$default_value = $attributes['defaultValue'] ?? '';
+		$rows          = $attributes['rows'] ?? 4;
+		$max_length    = $attributes['maxLength'] ?? 0;
+		$field_width   = $attributes['fieldWidth'] ?? '100';
+
+		$field_id = 'field-' . $field_name;
+		$style    = self::get_form_field_width_style( $field_width );
+
+		$html = '<div class="wp-block-designsetgo-form-textarea dsgo-form-field dsgo-form-field--textarea" style="' . $style . '">';
+		$html .= self::generate_form_field_label( $field_id, $label, $required );
+
+		$html .= '<textarea id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__textarea"';
+		if ( $placeholder ) {
+			$html .= ' placeholder="' . esc_attr( $placeholder ) . '"';
+		}
+		if ( $required ) {
+			$html .= ' required aria-required="true"';
+		}
+		$html .= ' rows="' . intval( $rows ) . '"';
+		if ( $max_length > 0 ) {
+			$html .= ' maxlength="' . intval( $max_length ) . '"';
+		}
+		if ( $help_text ) {
+			$html .= ' aria-describedby="' . esc_attr( $field_id ) . '-help"';
+		}
+		$html .= ' data-field-type="textarea">';
+		if ( $default_value ) {
+			$html .= esc_html( $default_value );
+		}
+		$html .= '</textarea>';
+
+		$html .= self::generate_form_field_help( $field_id, $help_text );
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Generate select field HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_select_field_html( array $attributes ): string {
+		$field_name    = $attributes['fieldName'] ?? '';
+		$label         = $attributes['label'] ?? 'Select';
+		$help_text     = $attributes['helpText'] ?? '';
+		$required      = $attributes['required'] ?? false;
+		$default_value = $attributes['defaultValue'] ?? '';
+		$options       = $attributes['options'] ?? array();
+		$placeholder   = $attributes['placeholder'] ?? '';
+		$field_width   = $attributes['fieldWidth'] ?? '100';
+
+		$field_id = 'field-' . $field_name;
+		$style    = self::get_form_field_width_style( $field_width );
+
+		$html = '<div class="wp-block-designsetgo-form-select-field dsgo-form-field dsgo-form-field--select" style="' . $style . '">';
+		$html .= self::generate_form_field_label( $field_id, $label, $required );
+
+		$html .= '<select id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__select"';
+		if ( $required ) {
+			$html .= ' required aria-required="true"';
+		}
+		if ( $help_text ) {
+			$html .= ' aria-describedby="' . esc_attr( $field_id ) . '-help"';
+		}
+		$html .= ' data-field-type="select">';
+
+		if ( $placeholder ) {
+			$html .= '<option value="">' . esc_html( $placeholder ) . '</option>';
+		}
+		foreach ( $options as $option ) {
+			$value    = $option['value'] ?? '';
+			$opt_label = $option['label'] ?? $value;
+			$selected = ( $value === $default_value ) ? ' selected' : '';
+			$html    .= '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_html( $opt_label ) . '</option>';
+		}
+		$html .= '</select>';
+
+		$html .= self::generate_form_field_help( $field_id, $help_text );
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Generate checkbox field HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_checkbox_field_html( array $attributes ): string {
+		$field_name    = $attributes['fieldName'] ?? '';
+		$label         = $attributes['label'] ?? 'Checkbox';
+		$help_text     = $attributes['helpText'] ?? '';
+		$required      = $attributes['required'] ?? false;
+		$default_value = $attributes['defaultValue'] ?? false;
+		$field_width   = $attributes['fieldWidth'] ?? '100';
+
+		$field_id = 'field-' . $field_name;
+		$style    = self::get_form_field_width_style( $field_width );
+
+		$html = '<div class="wp-block-designsetgo-form-checkbox-field dsgo-form-field dsgo-form-field--checkbox" style="' . $style . '">';
+		$html .= '<label class="dsgo-form-field__checkbox-label">';
+		$html .= '<input type="checkbox" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__checkbox"';
+		if ( $required ) {
+			$html .= ' required aria-required="true"';
+		}
+		if ( $default_value ) {
+			$html .= ' checked';
+		}
+		if ( $help_text ) {
+			$html .= ' aria-describedby="' . esc_attr( $field_id ) . '-help"';
+		}
+		$html .= ' data-field-type="checkbox"/>';
+		$html .= '<span class="dsgo-form-field__checkbox-text">' . esc_html( $label );
+		if ( $required ) {
+			$html .= '<span class="dsgo-form-field__required" aria-label="required">*</span>';
+		}
+		$html .= '</span></label>';
+
+		$html .= self::generate_form_field_help( $field_id, $help_text );
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Generate number field HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_number_field_html( array $attributes ): string {
+		$field_name    = $attributes['fieldName'] ?? '';
+		$label         = $attributes['label'] ?? 'Number';
+		$placeholder   = $attributes['placeholder'] ?? '';
+		$help_text     = $attributes['helpText'] ?? '';
+		$required      = $attributes['required'] ?? false;
+		$default_value = $attributes['defaultValue'] ?? '';
+		$min           = $attributes['min'] ?? null;
+		$max           = $attributes['max'] ?? null;
+		$step          = $attributes['step'] ?? 1;
+		$field_width   = $attributes['fieldWidth'] ?? '100';
+
+		$field_id = 'field-' . $field_name;
+		$style    = self::get_form_field_width_style( $field_width );
+
+		$html = '<div class="wp-block-designsetgo-form-number-field dsgo-form-field dsgo-form-field--number" style="' . $style . '">';
+		$html .= self::generate_form_field_label( $field_id, $label, $required );
+
+		$html .= '<input type="number" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
+		if ( $placeholder ) {
+			$html .= ' placeholder="' . esc_attr( $placeholder ) . '"';
+		}
+		if ( $required ) {
+			$html .= ' required aria-required="true"';
+		}
+		if ( null !== $min ) {
+			$html .= ' min="' . esc_attr( $min ) . '"';
+		}
+		if ( null !== $max ) {
+			$html .= ' max="' . esc_attr( $max ) . '"';
+		}
+		$html .= ' step="' . esc_attr( $step ) . '"';
+		if ( '' !== $default_value ) {
+			$html .= ' value="' . esc_attr( $default_value ) . '"';
+		}
+		if ( $help_text ) {
+			$html .= ' aria-describedby="' . esc_attr( $field_id ) . '-help"';
+		}
+		$html .= ' data-field-type="number"/>';
+
+		$html .= self::generate_form_field_help( $field_id, $help_text );
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Generate phone field HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_phone_field_html( array $attributes ): string {
+		$field_name    = $attributes['fieldName'] ?? '';
+		$label         = $attributes['label'] ?? 'Phone';
+		$placeholder   = $attributes['placeholder'] ?? '';
+		$help_text     = $attributes['helpText'] ?? '';
+		$required      = $attributes['required'] ?? false;
+		$default_value = $attributes['defaultValue'] ?? '';
+		$field_width   = $attributes['fieldWidth'] ?? '100';
+
+		$field_id = 'field-' . $field_name;
+		$style    = self::get_form_field_width_style( $field_width );
+
+		$html = '<div class="wp-block-designsetgo-form-phone-field dsgo-form-field dsgo-form-field--phone" style="' . $style . '">';
+		$html .= self::generate_form_field_label( $field_id, $label, $required );
+
+		$html .= '<input type="tel" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
+		if ( $placeholder ) {
+			$html .= ' placeholder="' . esc_attr( $placeholder ) . '"';
+		}
+		if ( $required ) {
+			$html .= ' required aria-required="true"';
+		}
+		if ( $default_value ) {
+			$html .= ' value="' . esc_attr( $default_value ) . '"';
+		}
+		if ( $help_text ) {
+			$html .= ' aria-describedby="' . esc_attr( $field_id ) . '-help"';
+		}
+		$html .= ' data-field-type="phone"/>';
+
+		$html .= self::generate_form_field_help( $field_id, $help_text );
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Generate date field HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_date_field_html( array $attributes ): string {
+		$field_name    = $attributes['fieldName'] ?? '';
+		$label         = $attributes['label'] ?? 'Date';
+		$help_text     = $attributes['helpText'] ?? '';
+		$required      = $attributes['required'] ?? false;
+		$default_value = $attributes['defaultValue'] ?? '';
+		$min_date      = $attributes['minDate'] ?? '';
+		$max_date      = $attributes['maxDate'] ?? '';
+		$field_width   = $attributes['fieldWidth'] ?? '100';
+
+		$field_id = 'field-' . $field_name;
+		$style    = self::get_form_field_width_style( $field_width );
+
+		$html = '<div class="wp-block-designsetgo-form-date-field dsgo-form-field dsgo-form-field--date" style="' . $style . '">';
+		$html .= self::generate_form_field_label( $field_id, $label, $required );
+
+		$html .= '<input type="date" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
+		if ( $required ) {
+			$html .= ' required aria-required="true"';
+		}
+		if ( $min_date ) {
+			$html .= ' min="' . esc_attr( $min_date ) . '"';
+		}
+		if ( $max_date ) {
+			$html .= ' max="' . esc_attr( $max_date ) . '"';
+		}
+		if ( $default_value ) {
+			$html .= ' value="' . esc_attr( $default_value ) . '"';
+		}
+		if ( $help_text ) {
+			$html .= ' aria-describedby="' . esc_attr( $field_id ) . '-help"';
+		}
+		$html .= ' data-field-type="date"/>';
+
+		$html .= self::generate_form_field_help( $field_id, $help_text );
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Generate time field HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_time_field_html( array $attributes ): string {
+		$field_name    = $attributes['fieldName'] ?? '';
+		$label         = $attributes['label'] ?? 'Time';
+		$help_text     = $attributes['helpText'] ?? '';
+		$required      = $attributes['required'] ?? false;
+		$default_value = $attributes['defaultValue'] ?? '';
+		$field_width   = $attributes['fieldWidth'] ?? '100';
+
+		$field_id = 'field-' . $field_name;
+		$style    = self::get_form_field_width_style( $field_width );
+
+		$html = '<div class="wp-block-designsetgo-form-time-field dsgo-form-field dsgo-form-field--time" style="' . $style . '">';
+		$html .= self::generate_form_field_label( $field_id, $label, $required );
+
+		$html .= '<input type="time" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
+		if ( $required ) {
+			$html .= ' required aria-required="true"';
+		}
+		if ( $default_value ) {
+			$html .= ' value="' . esc_attr( $default_value ) . '"';
+		}
+		if ( $help_text ) {
+			$html .= ' aria-describedby="' . esc_attr( $field_id ) . '-help"';
+		}
+		$html .= ' data-field-type="time"/>';
+
+		$html .= self::generate_form_field_help( $field_id, $help_text );
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Generate URL field HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_url_field_html( array $attributes ): string {
+		$field_name    = $attributes['fieldName'] ?? '';
+		$label         = $attributes['label'] ?? 'URL';
+		$placeholder   = $attributes['placeholder'] ?? '';
+		$help_text     = $attributes['helpText'] ?? '';
+		$required      = $attributes['required'] ?? false;
+		$default_value = $attributes['defaultValue'] ?? '';
+		$field_width   = $attributes['fieldWidth'] ?? '100';
+
+		$field_id = 'field-' . $field_name;
+		$style    = self::get_form_field_width_style( $field_width );
+
+		$html = '<div class="wp-block-designsetgo-form-url-field dsgo-form-field dsgo-form-field--url" style="' . $style . '">';
+		$html .= self::generate_form_field_label( $field_id, $label, $required );
+
+		$html .= '<input type="url" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
+		if ( $placeholder ) {
+			$html .= ' placeholder="' . esc_attr( $placeholder ) . '"';
+		}
+		if ( $required ) {
+			$html .= ' required aria-required="true"';
+		}
+		if ( $default_value ) {
+			$html .= ' value="' . esc_attr( $default_value ) . '"';
+		}
+		if ( $help_text ) {
+			$html .= ' aria-describedby="' . esc_attr( $field_id ) . '-help"';
+		}
+		$html .= ' data-field-type="url"/>';
+
+		$html .= self::generate_form_field_help( $field_id, $help_text );
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Generate hidden field HTML.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return string Field HTML.
+	 */
+	private static function generate_form_hidden_field_html( array $attributes ): string {
+		$field_name    = $attributes['fieldName'] ?? '';
+		$default_value = $attributes['defaultValue'] ?? '';
+
+		return '<input type="hidden" name="' . esc_attr( $field_name ) . '" value="' . esc_attr( $default_value ) . '" data-field-type="hidden"/>';
 	}
 
 	/**
