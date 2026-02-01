@@ -36,13 +36,23 @@ import { createBlock } from '@wordpress/blocks';
 /**
  * Convert WordPress preset format to CSS variable
  * Converts "var:preset|spacing|md" to "var(--wp--preset--spacing--md)"
+ * Also handles WordPress 6.1+ object format {top, left} for separate row/column gaps
  *
- * @param {string} value The preset value
+ * @param {string|Object} value The preset value or gap object
  * @return {string} CSS variable format
  */
 function convertPresetToCSSVar(value) {
 	if (!value) {
 		return value;
+	}
+
+	// Handle object format (WordPress 6.1+ for separate row/column gaps)
+	// For flex layouts, use top value (row gap) as the primary gap
+	if (typeof value === 'object') {
+		value = value.top || value.left;
+		if (!value) {
+			return undefined;
+		}
 	}
 
 	// If it's already a CSS variable, return as-is

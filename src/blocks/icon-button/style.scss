@@ -407,10 +407,10 @@
 	}
 }
 
-// Border Pulse - Animated border effect (applies to outer block wrapper)
-// Animates the border set via WordPress border controls
+// Border Pulse - Animated border effect using box-shadow
+// Creates a pulsing glow effect around the button using the current text color
 .dsgo-icon-button.dsgo-icon-button--border-pulse {
-	transition: border-width 0.3s ease;
+	transition: box-shadow 0.3s ease;
 
 	&:hover {
 		animation: dsgo-border-pulse 1s ease infinite;
@@ -423,11 +423,11 @@
 
 	0%,
 	100% {
-		border-width: var(--wp--style--border-width, 2px);
+		box-shadow: 0 0 0 0 currentcolor;
 	}
 
 	50% {
-		border-width: calc(var(--wp--style--border-width, 2px) * 2);
+		box-shadow: 0 0 0 4px currentcolor;
 	}
 }
 

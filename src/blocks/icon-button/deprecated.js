@@ -11,6 +11,205 @@ import { getIcon } from '../icon/utils/svg-icons';
 import { convertPaddingValue } from './utils/padding';
 
 /**
+ * Version 5: Before simplified width options
+ *
+ * Changes in current version:
+ * - Removed 50% and 25% width options (now only auto and 100%)
+ * - Changed display to flex for 100% width (was inline-flex for all)
+ * - Width values 50% and 25% migrated to auto
+ */
+const v5 = {
+	attributes: {
+		text: {
+			type: 'string',
+			default: '',
+		},
+		url: {
+			type: 'string',
+			default: '',
+		},
+		linkTarget: {
+			type: 'string',
+			default: '_self',
+		},
+		rel: {
+			type: 'string',
+			default: '',
+		},
+		icon: {
+			type: 'string',
+			default: 'lightbulb',
+		},
+		iconPosition: {
+			type: 'string',
+			default: 'start',
+		},
+		iconSize: {
+			type: 'number',
+			default: 20,
+		},
+		iconGap: {
+			type: 'string',
+			default: '8px',
+		},
+		width: {
+			type: 'string',
+			default: 'auto',
+		},
+		hoverAnimation: {
+			type: 'string',
+			default: 'none',
+		},
+		hoverBackgroundColor: {
+			type: 'string',
+			default: '',
+		},
+		hoverTextColor: {
+			type: 'string',
+			default: '',
+		},
+		modalCloseId: {
+			type: 'string',
+			default: '',
+		},
+	},
+	save({ attributes }) {
+		const {
+			text,
+			url,
+			linkTarget,
+			rel,
+			icon,
+			iconPosition,
+			iconSize,
+			iconGap,
+			width,
+			hoverAnimation,
+			hoverBackgroundColor,
+			hoverTextColor,
+			style,
+			backgroundColor,
+			textColor,
+			fontSize,
+			modalCloseId,
+		} = attributes;
+
+		// Extract WordPress color values
+		const bgColor =
+			style?.color?.background ||
+			(backgroundColor && `var(--wp--preset--color--${backgroundColor})`);
+		const txtColor =
+			style?.color?.text ||
+			(textColor && `var(--wp--preset--color--${textColor})`);
+
+		// Extract font size
+		const fontSizeValue =
+			style?.typography?.fontSize ||
+			(fontSize && `var(--wp--preset--font-size--${fontSize})`);
+
+		// Extract padding
+		const paddingValue = style?.spacing?.padding;
+
+		// OLD: Combined styles - always used inline-flex and raw width value
+		const buttonStyles = {
+			display: 'inline-flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			gap: iconPosition !== 'none' && icon ? iconGap : 0,
+			width: width === 'auto' ? 'auto' : width,
+			flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
+			...(bgColor && { backgroundColor: bgColor }),
+			...(txtColor && { color: txtColor }),
+			...(fontSizeValue && { fontSize: fontSizeValue }),
+			...(paddingValue && {
+				paddingTop: convertPaddingValue(paddingValue.top),
+				paddingRight: convertPaddingValue(paddingValue.right),
+				paddingBottom: convertPaddingValue(paddingValue.bottom),
+				paddingLeft: convertPaddingValue(paddingValue.left),
+			}),
+			...(hoverBackgroundColor && {
+				'--dsgo-button-hover-bg': hoverBackgroundColor,
+			}),
+			...(hoverTextColor && {
+				'--dsgo-button-hover-color': hoverTextColor,
+			}),
+		};
+
+		// Icon wrapper styles
+		const iconWrapperStyles = {
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			width: `${iconSize}px`,
+			height: `${iconSize}px`,
+			flexShrink: 0,
+		};
+
+		// Animation class
+		const animationClass =
+			hoverAnimation && hoverAnimation !== 'none'
+				? ` dsgo-icon-button--${hoverAnimation}`
+				: '';
+
+		// Width class
+		const widthClass =
+			width === '100%'
+				? ' dsgo-icon-button--width-full'
+				: ' dsgo-icon-button--width-auto';
+
+		const ButtonElement = url ? 'a' : 'button';
+
+		const blockProps = useBlockProps.save({
+			className: `dsgo-icon-button wp-block-button wp-block-button__link wp-element-button${animationClass}${widthClass}`,
+			style: buttonStyles,
+			...(url && {
+				href: url,
+				target: linkTarget,
+				rel:
+					linkTarget === '_blank'
+						? rel || 'noopener noreferrer'
+						: rel || undefined,
+			}),
+			...(!url && {
+				type: 'button',
+			}),
+			...(modalCloseId && {
+				'data-dsgo-modal-close': modalCloseId,
+			}),
+		});
+
+		return (
+			<ButtonElement {...blockProps}>
+				{iconPosition !== 'none' && icon && (
+					<span
+						className="dsgo-icon-button__icon dsgo-lazy-icon"
+						style={iconWrapperStyles}
+						data-icon-name={icon}
+						data-icon-size={iconSize}
+					/>
+				)}
+				<RichText.Content
+					tagName="span"
+					className="dsgo-icon-button__text"
+					value={text}
+				/>
+			</ButtonElement>
+		);
+	},
+	migrate(attributes) {
+		// Convert old percentage widths to auto
+		const newWidth =
+			attributes.width === '50%' || attributes.width === '25%'
+				? 'auto'
+				: attributes.width;
+		return {
+			...attributes,
+			width: newWidth,
+		};
+	},
+};
+
+/**
  * Version 4: Before collapsing to single element structure
  *
  * Changes in current version:
@@ -775,4 +974,4 @@ const v1 = {
 	},
 };
 
-export default [v4, v3, v2, v1];
+export default [v5, v4, v3, v2, v1];

@@ -106,11 +106,12 @@ export const ButtonSettingsPanel = ({
 							label: __('Full Width', 'designsetgo'),
 							value: '100%',
 						},
-						{ label: __('50%', 'designsetgo'), value: '50%' },
-						{ label: __('25%', 'designsetgo'), value: '25%' },
 					]}
 					onChange={(value) => setAttributes({ width: value })}
-					help={__('Button width', 'designsetgo')}
+					help={__(
+						'Auto sizes to content, Full Width spans container',
+						'designsetgo'
+					)}
 					__next40pxDefaultSize
 					__nextHasNoMarginBottom
 				/>

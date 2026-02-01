@@ -98,12 +98,13 @@ export default function IconButtonEdit({
 
 	// Combined styles for single element (must match save.js)
 	// Visual styles (colors, padding, font size, hover) + layout styles (flexbox)
+	// Use flex for full-width, inline-flex for auto to work with CSS classes
 	const buttonStyles = {
-		display: 'inline-flex',
+		display: width === '100%' ? 'flex' : 'inline-flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 		gap: iconPosition !== 'none' && icon ? iconGap : 0,
-		width: width === 'auto' ? 'auto' : width,
+		width: width === '100%' ? '100%' : 'auto',
 		flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
 		...(bgColor && { backgroundColor: bgColor }),
 		...(txtColor && { color: txtColor }),
