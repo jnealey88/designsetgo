@@ -218,9 +218,12 @@ expect.extend({
 	 * @return {Object} Jest matcher result.
 	 */
 	toContainCSSRule(received, selector, property, value) {
-		const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		const escapedSelector = escapeRegex(selector);
+		const escapedProperty = escapeRegex(property);
+		const escapedValue = escapeRegex(value);
 		const regex = new RegExp(
-			`${escapedSelector}[^{]*\\{[^}]*${property}\\s*:\\s*${value}`
+			`${escapedSelector}[^{]*\\{[^}]*${escapedProperty}\\s*:\\s*${escapedValue}`
 		);
 		const pass = regex.test(received);
 

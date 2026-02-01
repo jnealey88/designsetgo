@@ -208,7 +208,11 @@ export const cssAssertions = {
 	 * @return {boolean} Whether the rule exists.
 	 */
 	containsRule: (css, selector, property) => {
-		const regex = new RegExp(`${selector}[^{]*\\{[^}]*${property}[^}]*\\}`);
+		const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		const escapedProperty = property.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		const regex = new RegExp(
+			`${escapedSelector}[^{]*\\{[^}]*${escapedProperty}[^}]*\\}`
+		);
 		return regex.test(css);
 	},
 
