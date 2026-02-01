@@ -24,28 +24,29 @@
 
 	// Full width: Button spans the full container width
 	&--width-full {
-		display: flex; // Block-level flex instead of inline-flex
-		width: 100%;
+		display: flex !important; // Block-level flex instead of inline-flex
+		width: 100% !important;
 	}
 
 	// WordPress alignment support
 	// Constrain button width and use margin for alignment
 	// CRITICAL: Must override inline display: inline-flex with display: flex for auto margins to work
 	// NOTE: Margins don't use !important so user-set margins can override
-	&.aligncenter {
+	// NOTE: Don't apply fit-content when full-width is set
+	&.aligncenter:not(&--width-full) {
 		display: flex !important;
 		width: fit-content !important;
 		margin-left: auto;
 		margin-right: auto;
 	}
 
-	&.alignleft {
+	&.alignleft:not(&--width-full) {
 		display: flex !important;
 		width: fit-content !important;
 		margin-right: auto;
 	}
 
-	&.alignright {
+	&.alignright:not(&--width-full) {
 		display: flex !important;
 		width: fit-content !important;
 		margin-left: auto;

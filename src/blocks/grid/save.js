@@ -9,6 +9,32 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
+ * Convert WordPress preset format to CSS variable
+ * Converts "var:preset|spacing|md" to "var(--wp--preset--spacing--md)"
+ *
+ * @param {string} value The preset value
+ * @return {string} CSS variable format
+ */
+function convertPresetToCSSVar(value) {
+	if (!value) {
+		return value;
+	}
+
+	// If it's already a CSS variable, return as-is
+	if (value.startsWith?.('var(--')) {
+		return value;
+	}
+
+	// Convert WordPress preset format: var:preset|spacing|md -> var(--wp--preset--spacing--md)
+	if (value.startsWith?.('var:preset|')) {
+		const parts = value.replace('var:preset|', '').split('|');
+		return `var(--wp--preset--${parts.join('--')})`;
+	}
+
+	return value;
+}
+
+/**
  * Grid Container Save Component
  *
  * @param {Object} props            Component props
@@ -68,13 +94,16 @@ export default function GridSave({ attributes }) {
 	// IMPORTANT: Always provide a default gap to prevent overlapping items
 	// Priority: blockGap (WordPress spacing) → custom rowGap/columnGap → preset fallback
 	// WordPress 6.1+ stores blockGap as object {top, left} for separate row/column gaps
+	// Also need to convert preset format (var:preset|spacing|X) to CSS variable
 	const blockGapValue = style?.spacing?.blockGap;
 	const isBlockGapObject =
 		typeof blockGapValue === 'object' && blockGapValue !== null;
-	const blockGapRow = isBlockGapObject ? blockGapValue?.top : blockGapValue;
-	const blockGapColumn = isBlockGapObject
-		? blockGapValue?.left
-		: blockGapValue;
+	const blockGapRow = convertPresetToCSSVar(
+		isBlockGapObject ? blockGapValue?.top : blockGapValue
+	);
+	const blockGapColumn = convertPresetToCSSVar(
+		isBlockGapObject ? blockGapValue?.left : blockGapValue
+	);
 	const defaultGap = 'var(--wp--preset--spacing--50)';
 
 	const innerStyles = {
