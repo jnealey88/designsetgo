@@ -2,7 +2,7 @@
 Contributors: justinnealey
 Donate link: https://designsetgoblocks.com/donate
 Tags: blocks, gutenberg, form-builder, animations, responsive
-Requires at least: 6.0
+Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
 Stable tag: 1.4.0
