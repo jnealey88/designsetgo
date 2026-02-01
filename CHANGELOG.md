@@ -5,19 +5,57 @@ All notable changes to the DesignSetGo plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.4.0] - 2026-02-01
 
 ### Added
+- **llms.txt Support** - Implements the [llms.txt standard](https://llmstxt.org/) to help AI language models understand site content
+  - Serves a dynamic llms.txt file at the site root (e.g., `example.com/llms.txt`)
+  - Admin settings in Features tab to enable/disable and select which post types to include
+  - Per-page exclusion control via "AI & LLMs" panel in the block editor sidebar
+  - Automatic markdown conversion of block content with smart block-type handlers
+  - Static file generation option for improved performance
+  - Conflict detection for existing llms.txt files
+- **Draft Mode for Published Pages** - Create and manage draft versions of published content without affecting the live page
+  - Auto-creates draft when editing published pages - no manual action needed
+  - Captures unsaved edits and transfers them to the draft
+  - Header bar controls for publishing or discarding changes
+  - Sidebar panel showing draft status with link to live page
+  - Confirmation modals for all destructive actions (create, publish, discard)
+  - Full accessibility support with proper ARIA labels and keyboard navigation
+- **Visual Revision Comparison** - Side-by-side rendered previews of post revisions
+  - Visual comparison view with "Before" and "After" preview panels
+  - Color-coded block highlighting: green (added), red (removed), yellow (modified)
+  - WordPress-style revision slider with tick marks for navigation
+  - Tab navigation between "Code Changes" and "Visual Comparison" views
+  - Diff summary showing change counts
+  - "Restore This Revision" works from both views
+  - Admin settings to enable/disable and control default view
 - **Block Exclusion System** - User-configurable system to prevent DSG extensions from being applied to specific third-party blocks
   - Added `shouldExtendBlock()` utility with memoization for performance (supports exact match and namespace wildcards like `gravityforms/*`)
   - New "Exclusions" admin UI tab for managing excluded blocks with validation and helpful examples
   - Smart defaults: Fresh installations exclude known problematic blocks (Gravity Forms, MailPoet, WooCommerce, Jetpack)
   - Existing installations maintain current behavior (no automatic exclusions)
   - All 13 extensions updated to check exclusion list before adding attributes
-  - Comprehensive test coverage (13 new unit tests)
+
+### Changed
+- **Breaking**: Minimum PHP requirement bumped from 7.4 to 8.0 for improved security and performance
 
 ### Fixed
+- Icon Button border-radius not displaying on frontend while working correctly in editor
 - REST API validation conflicts with server-side rendered blocks like Gravity Forms
+- Restored 14 missing icons to SVG library (blocks, checkbox, countdown, dropdown, flex, form, lightning, marquee, radio, reveal, send, slider, stack, toggle)
+
+### Testing
+- Added comprehensive test suite for forms, blocks, and utilities (1,695+ lines of tests)
+  - Form Handler Security Tests: field validation, sanitization, IP extraction, rate limiting
+  - Block Schema Validation Tests: naming conventions, attributes, supports, context relationships
+  - Breakpoint Utilities Tests: media query generation, device detection
+  - CSS Generator Utilities Tests: responsive CSS, spacing, unique IDs
+  - Extension System Tests: attribute injection, excluded block handling
+
+### Dependencies
+- Bumped lodash from 4.17.21 to 4.17.23 (security)
+- Bumped lodash-es from 4.17.21 to 4.17.23 (security)
 
 ## [1.3.0] - 2025-12-06
 
@@ -264,6 +302,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[1.4.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.4.0
 [1.3.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.3.0
 [1.2.1]: https://github.com/jnealey88/designsetgo/releases/tag/v1.2.1
 [1.2.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.2.0

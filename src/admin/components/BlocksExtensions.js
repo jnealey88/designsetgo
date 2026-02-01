@@ -331,7 +331,10 @@ const BlocksExtensions = () => {
 		if (currentExcluded.includes(blockName)) {
 			setNotice({
 				status: 'warning',
-				message: __('This block is already in the exclusion list.', 'designsetgo'),
+				message: __(
+					'This block is already in the exclusion list.',
+					'designsetgo'
+				),
 			});
 			return;
 		}
@@ -347,7 +350,10 @@ const BlocksExtensions = () => {
 			status: 'success',
 			message: sprintf(
 				/* translators: %s: block name */
-				__('Successfully added %s to the exclusion list.', 'designsetgo'),
+				__(
+					'Successfully added %s to the exclusion list.',
+					'designsetgo'
+				),
 				blockName
 			),
 		});
@@ -355,6 +361,7 @@ const BlocksExtensions = () => {
 
 	/**
 	 * Remove a block from the exclusion list
+	 * @param {string} blockName - Block name to remove
 	 */
 	const removeExcludedBlock = (blockName) => {
 		if (!settings) {
@@ -364,7 +371,9 @@ const BlocksExtensions = () => {
 		const currentExcluded = settings.excluded_blocks || [];
 		setSettings({
 			...settings,
-			excluded_blocks: currentExcluded.filter((name) => name !== blockName),
+			excluded_blocks: currentExcluded.filter(
+				(name) => name !== blockName
+			),
 		});
 	};
 
@@ -609,7 +618,9 @@ const BlocksExtensions = () => {
 						{tab.name === 'exclusions' && (
 							<Card>
 								<CardHeader>
-									<h2>{__('Excluded Blocks', 'designsetgo')}</h2>
+									<h2>
+										{__('Excluded Blocks', 'designsetgo')}
+									</h2>
 								</CardHeader>
 								<CardBody>
 									<p className="description">
@@ -618,7 +629,13 @@ const BlocksExtensions = () => {
 											'designsetgo'
 										)}
 									</p>
-									<p className="description" style={{ marginTop: '8px', fontStyle: 'italic' }}>
+									<p
+										className="description"
+										style={{
+											marginTop: '8px',
+											fontStyle: 'italic',
+										}}
+									>
 										{__(
 											'Note: Make sure the block plugin is active before adding it to the exclusion list. DSG will validate the format but cannot verify if the block exists.',
 											'designsetgo'
@@ -632,14 +649,24 @@ const BlocksExtensions = () => {
 													type="text"
 													className="components-text-control__input"
 													value={newExcludedBlock}
-													onChange={(e) => setNewExcludedBlock(e.target.value)}
+													onChange={(e) =>
+														setNewExcludedBlock(
+															e.target.value
+														)
+													}
 													onKeyDown={(e) => {
 														if (e.key === 'Enter') {
 															addExcludedBlock();
 														}
 													}}
-													placeholder={__('e.g., gravityforms/form or gravityforms/*', 'designsetgo')}
-													aria-label={__('Block name to exclude', 'designsetgo')}
+													placeholder={__(
+														'e.g., gravityforms/form or gravityforms/*',
+														'designsetgo'
+													)}
+													aria-label={__(
+														'Block name to exclude',
+														'designsetgo'
+													)}
 													aria-describedby="excluded-block-input-description"
 												/>
 												<p
@@ -655,35 +682,56 @@ const BlocksExtensions = () => {
 											<Button
 												variant="primary"
 												onClick={addExcludedBlock}
-												disabled={!newExcludedBlock.trim()}
+												disabled={
+													!newExcludedBlock.trim()
+												}
 											>
 												{__('Add', 'designsetgo')}
 											</Button>
 										</div>
 									</div>
 
-									{settings?.excluded_blocks && settings.excluded_blocks.length > 0 ? (
+									{settings?.excluded_blocks &&
+									settings.excluded_blocks.length > 0 ? (
 										<div className="designsetgo-excluded-blocks-section">
 											<h3 className="designsetgo-excluded-blocks-heading">
-												{__('Currently Excluded:', 'designsetgo')}
+												{__(
+													'Currently Excluded:',
+													'designsetgo'
+												)}
 											</h3>
-											<ul className="designsetgo-excluded-block-list" aria-live="polite" aria-relevant="additions removals">
-												{settings.excluded_blocks.map((blockName) => (
-													<li
-														key={blockName}
-														className="designsetgo-excluded-block-item"
-													>
-														<code>{blockName}</code>
-														<Button
-															isDestructive
-															variant="secondary"
-															onClick={() => removeExcludedBlock(blockName)}
-															size="small"
+											<ul
+												className="designsetgo-excluded-block-list"
+												aria-live="polite"
+												aria-relevant="additions removals"
+											>
+												{settings.excluded_blocks.map(
+													(blockName) => (
+														<li
+															key={blockName}
+															className="designsetgo-excluded-block-item"
 														>
-															{__('Remove', 'designsetgo')}
-														</Button>
-													</li>
-												))}
+															<code>
+																{blockName}
+															</code>
+															<Button
+																isDestructive
+																variant="secondary"
+																onClick={() =>
+																	removeExcludedBlock(
+																		blockName
+																	)
+																}
+																size="small"
+															>
+																{__(
+																	'Remove',
+																	'designsetgo'
+																)}
+															</Button>
+														</li>
+													)
+												)}
 											</ul>
 										</div>
 									) : (
@@ -697,13 +745,40 @@ const BlocksExtensions = () => {
 
 									<div className="designsetgo-info-box">
 										<h4>
-											{__('Common Blocks to Exclude:', 'designsetgo')}
+											{__(
+												'Common Blocks to Exclude:',
+												'designsetgo'
+											)}
 										</h4>
 										<ul>
-											<li><code>gravityforms/*</code> - {__('All Gravity Forms blocks', 'designsetgo')}</li>
-											<li><code>mailpoet/*</code> - {__('All MailPoet blocks', 'designsetgo')}</li>
-											<li><code>woocommerce/*</code> - {__('All WooCommerce blocks', 'designsetgo')}</li>
-											<li><code>jetpack/*</code> - {__('All Jetpack blocks', 'designsetgo')}</li>
+											<li>
+												<code>gravityforms/*</code> -{' '}
+												{__(
+													'All Gravity Forms blocks',
+													'designsetgo'
+												)}
+											</li>
+											<li>
+												<code>mailpoet/*</code> -{' '}
+												{__(
+													'All MailPoet blocks',
+													'designsetgo'
+												)}
+											</li>
+											<li>
+												<code>woocommerce/*</code> -{' '}
+												{__(
+													'All WooCommerce blocks',
+													'designsetgo'
+												)}
+											</li>
+											<li>
+												<code>jetpack/*</code> -{' '}
+												{__(
+													'All Jetpack blocks',
+													'designsetgo'
+												)}
+											</li>
 										</ul>
 									</div>
 								</CardBody>

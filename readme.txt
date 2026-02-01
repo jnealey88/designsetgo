@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.3.4
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,6 +157,24 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.4.0 - 2026-02-01 =
+**New Features:**
+* New: llms.txt Support - Implements the llms.txt standard to help AI language models understand site content, with admin settings and per-page exclusion controls
+* New: Draft Mode for Published Pages - Create and manage draft versions of published content without affecting the live page
+* New: Visual Revision Comparison - Side-by-side rendered previews of post revisions with color-coded block highlighting
+* New: Block Exclusion System - User-configurable system to prevent DSG extensions from being applied to specific third-party blocks
+
+**Breaking Changes:**
+* Breaking: Minimum PHP requirement bumped from 7.4 to 8.0 for improved security and performance
+
+**Bug Fixes:**
+* Fix: Icon Button border-radius not displaying on frontend while working correctly in editor
+* Fix: REST API validation conflicts with server-side rendered blocks like Gravity Forms
+* Fix: Restored 14 missing icons to SVG library
+
+**Security:**
+* Security: Bumped lodash and lodash-es from 4.17.21 to 4.17.23
 
 = 1.3.2 - 2025-01-30 =
 **Bug Fixes:**
@@ -352,6 +370,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Comprehensive documentation and developer guides
 
 == Upgrade Notice ==
+
+= 1.4.0 =
+Major update with 4 new features: llms.txt support for AI language models, Draft Mode for published pages, Visual Revision Comparison, and Block Exclusion System. **Breaking change:** Minimum PHP requirement is now 8.0. Includes bug fixes and comprehensive test suite.
 
 = 1.3.1 =
 Bug fix release: Fixes slider and scroll gallery initialization timing issues on first page load.

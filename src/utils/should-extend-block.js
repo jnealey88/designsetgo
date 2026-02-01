@@ -1,7 +1,7 @@
 /**
  * Block Extension Utilities
  *
- * @package DesignSetGo
+ * @package
  */
 
 /**
@@ -26,10 +26,10 @@ const exclusionCache = new Map();
  * @param {string} blockName - Block name (e.g., 'gravityforms/form')
  * @return {boolean} Whether to extend this block with DSG attributes
  */
-export function shouldExtendBlock( blockName ) {
+export function shouldExtendBlock(blockName) {
 	// Check cache first
-	if ( exclusionCache.has( blockName ) ) {
-		return exclusionCache.get( blockName );
+	if (exclusionCache.has(blockName)) {
+		return exclusionCache.get(blockName);
 	}
 
 	// Get excluded blocks from settings (passed from PHP via wp_localize_script)
@@ -38,18 +38,18 @@ export function shouldExtendBlock( blockName ) {
 	let result = true;
 
 	// Check exact match
-	if ( excludedBlocks.includes( blockName ) ) {
+	if (excludedBlocks.includes(blockName)) {
 		result = false;
 	} else {
 		// Check namespace match (e.g., 'gravityforms/*')
-		const namespace = blockName.split( '/' )[ 0 ];
-		if ( excludedBlocks.includes( `${ namespace }/*` ) ) {
+		const namespace = blockName.split('/')[0];
+		if (excludedBlocks.includes(`${namespace}/*`)) {
 			result = false;
 		}
 	}
 
 	// Cache the result
-	exclusionCache.set( blockName, result );
+	exclusionCache.set(blockName, result);
 
 	return result;
 }

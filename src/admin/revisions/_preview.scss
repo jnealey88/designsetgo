@@ -25,6 +25,7 @@
 	overflow: hidden;
 
 	&--from {
+
 		.dsgo-revision-preview__header {
 			background: $dsgo-diff-removed-light;
 			border-bottom-color: $dsgo-diff-removed-border;
@@ -32,6 +33,7 @@
 	}
 
 	&--to {
+
 		.dsgo-revision-preview__header {
 			background: $dsgo-diff-added-light;
 			border-bottom-color: $dsgo-diff-added-border;
