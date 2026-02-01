@@ -71,8 +71,8 @@ function designsetgo_activate() {
 
 	// Schedule rewrite rules flush for llms.txt feature.
 	// Uses transient-based approach since rewrite rules aren't registered yet.
-	require_once DESIGNSETGO_PATH . 'includes/class-llms-txt.php';
-	\DesignSetGo\LLMS_Txt::schedule_flush_rewrite_rules();
+	require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-controller.php';
+	\DesignSetGo\LLMS_Txt\Controller::schedule_flush_rewrite_rules();
 }
 register_activation_hook( __FILE__, 'DesignSetGo\designsetgo_activate' );
 
