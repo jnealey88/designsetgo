@@ -336,35 +336,33 @@ class Block_Configurator {
 	 * @return array{blocks: array, deleted: int, block_name: string|null}
 	 */
 	public static function delete_block_by_client_id( array $blocks, string $client_id ): array {
-		$deleted    = 0;
-		$block_name = null;
+		$result_blocks = array();
+		$deleted       = 0;
+		$block_name    = null;
 
-		$blocks = array_values(
-			array_filter(
-				$blocks,
-				function ( &$block ) use ( $client_id, &$deleted, &$block_name ) {
-					if ( isset( $block['attrs']['clientId'] ) && $block['attrs']['clientId'] === $client_id ) {
-						$deleted++;
-						$block_name = $block['blockName'];
-						return false;
-					}
+		foreach ( $blocks as $block ) {
+			// Check if this block matches the client ID.
+			if ( isset( $block['attrs']['clientId'] ) && $block['attrs']['clientId'] === $client_id ) {
+				$deleted++;
+				$block_name = $block['blockName'];
+				continue; // Skip this block (delete it).
+			}
 
-					if ( ! empty( $block['innerBlocks'] ) ) {
-						$result               = self::delete_block_by_client_id( $block['innerBlocks'], $client_id );
-						$block['innerBlocks'] = $result['blocks'];
-						$deleted             += $result['deleted'];
-						if ( $result['block_name'] ) {
-							$block_name = $result['block_name'];
-						}
-					}
-
-					return true;
+			// Recursively process inner blocks.
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$inner_result         = self::delete_block_by_client_id( $block['innerBlocks'], $client_id );
+				$block['innerBlocks'] = $inner_result['blocks'];
+				$deleted             += $inner_result['deleted'];
+				if ( $inner_result['block_name'] ) {
+					$block_name = $inner_result['block_name'];
 				}
-			)
-		);
+			}
+
+			$result_blocks[] = $block;
+		}
 
 		return array(
-			'blocks'     => $blocks,
+			'blocks'     => $result_blocks,
 			'deleted'    => $deleted,
 			'block_name' => $block_name,
 		);
@@ -378,39 +376,39 @@ class Block_Configurator {
 	 * @return array{blocks: array, deleted: int}
 	 */
 	public static function delete_first_block_by_name( array $blocks, string $block_name ): array {
-		$deleted = 0;
-		$found   = false;
+		$result_blocks = array();
+		$deleted       = 0;
+		$found         = false;
 
-		$blocks = array_values(
-			array_filter(
-				$blocks,
-				function ( &$block ) use ( $block_name, &$deleted, &$found ) {
-					if ( $found ) {
-						return true;
-					}
+		foreach ( $blocks as $block ) {
+			// If already found, just keep remaining blocks.
+			if ( $found ) {
+				$result_blocks[] = $block;
+				continue;
+			}
 
-					if ( $block['blockName'] === $block_name ) {
-						$deleted++;
-						$found = true;
-						return false;
-					}
+			// Check if this block matches the name.
+			if ( $block['blockName'] === $block_name ) {
+				$deleted++;
+				$found = true;
+				continue; // Skip this block (delete it).
+			}
 
-					if ( ! empty( $block['innerBlocks'] ) ) {
-						$result               = self::delete_first_block_by_name( $block['innerBlocks'], $block_name );
-						$block['innerBlocks'] = $result['blocks'];
-						$deleted             += $result['deleted'];
-						if ( $result['deleted'] > 0 ) {
-							$found = true;
-						}
-					}
-
-					return true;
+			// Recursively process inner blocks if not yet found.
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$inner_result         = self::delete_first_block_by_name( $block['innerBlocks'], $block_name );
+				$block['innerBlocks'] = $inner_result['blocks'];
+				$deleted             += $inner_result['deleted'];
+				if ( $inner_result['deleted'] > 0 ) {
+					$found = true;
 				}
-			)
-		);
+			}
+
+			$result_blocks[] = $block;
+		}
 
 		return array(
-			'blocks'  => $blocks,
+			'blocks'  => $result_blocks,
 			'deleted' => $deleted,
 		);
 	}
@@ -423,30 +421,28 @@ class Block_Configurator {
 	 * @return array{blocks: array, deleted: int}
 	 */
 	public static function delete_all_blocks_by_name( array $blocks, string $block_name ): array {
-		$deleted = 0;
+		$result_blocks = array();
+		$deleted       = 0;
 
-		$blocks = array_values(
-			array_filter(
-				$blocks,
-				function ( &$block ) use ( $block_name, &$deleted ) {
-					if ( $block['blockName'] === $block_name ) {
-						$deleted++;
-						return false;
-					}
+		foreach ( $blocks as $block ) {
+			// Check if this block matches the name.
+			if ( $block['blockName'] === $block_name ) {
+				$deleted++;
+				continue; // Skip this block (delete it).
+			}
 
-					if ( ! empty( $block['innerBlocks'] ) ) {
-						$result               = self::delete_all_blocks_by_name( $block['innerBlocks'], $block_name );
-						$block['innerBlocks'] = $result['blocks'];
-						$deleted             += $result['deleted'];
-					}
+			// Recursively process inner blocks.
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$inner_result         = self::delete_all_blocks_by_name( $block['innerBlocks'], $block_name );
+				$block['innerBlocks'] = $inner_result['blocks'];
+				$deleted             += $inner_result['deleted'];
+			}
 
-					return true;
-				}
-			)
-		);
+			$result_blocks[] = $block;
+		}
 
 		return array(
-			'blocks'  => $blocks,
+			'blocks'  => $result_blocks,
 			'deleted' => $deleted,
 		);
 	}
@@ -460,28 +456,25 @@ class Block_Configurator {
 	 * @return array{blocks: array, deleted: int}
 	 */
 	public static function delete_block_at_position( array $blocks, string $block_name, int $position ): array {
+		$result_blocks    = array();
 		$current_position = 0;
 		$deleted          = 0;
 
-		$blocks = array_values(
-			array_filter(
-				$blocks,
-				function ( $block ) use ( $block_name, $position, &$current_position, &$deleted ) {
-					if ( $block['blockName'] === $block_name ) {
-						if ( $current_position === $position ) {
-							$deleted++;
-							$current_position++;
-							return false;
-						}
-						$current_position++;
-					}
-					return true;
+		foreach ( $blocks as $block ) {
+			if ( $block['blockName'] === $block_name ) {
+				if ( $current_position === $position ) {
+					$deleted++;
+					$current_position++;
+					continue; // Skip this block (delete it).
 				}
-			)
-		);
+				$current_position++;
+			}
+
+			$result_blocks[] = $block;
+		}
 
 		return array(
-			'blocks'  => $blocks,
+			'blocks'  => $result_blocks,
 			'deleted' => $deleted,
 		);
 	}

@@ -230,9 +230,10 @@ abstract class Abstract_Ability {
 
 		$schema = $config['input_schema'];
 
-		// Check required fields.
-		// Note: Only check if key exists; don't reject falsy values like 0, false, or '0'.
-		// Type validation is handled by rest_validate_value_from_schema below.
+		// Check required fields - presence check only.
+		// Uses array_key_exists() to allow falsy values (0, false, '', '0', null).
+		// Type validation (int, bool, string, etc.) is handled separately below
+		// via rest_validate_value_from_schema() which will reject invalid types.
 		if ( isset( $schema['required'] ) && is_array( $schema['required'] ) ) {
 			foreach ( $schema['required'] as $required_field ) {
 				if ( ! array_key_exists( $required_field, $input ) ) {

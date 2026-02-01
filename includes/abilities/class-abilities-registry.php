@@ -198,9 +198,8 @@ class Abilities_Registry {
 
 		// Convert kebab-case to Title_Case (WordPress class naming convention).
 		$class_name = str_replace( '-', '_', $filename );
-		$class_name = implode( '_', array_map( 'ucfirst', explode( '_', $class_name ) ) );
 
-		// Handle common acronyms that should be uppercase.
+		// Map of title-case to uppercase for common acronyms.
 		$acronyms = array(
 			'Css'  => 'CSS',
 			'Cta'  => 'CTA',
@@ -211,12 +210,16 @@ class Abilities_Registry {
 			'Id'   => 'ID',
 		);
 
-		foreach ( $acronyms as $title_case => $uppercase ) {
-			// Replace at word boundaries (after underscore or at start/end).
-			$class_name = preg_replace( '/(?<=_|^)' . $title_case . '(?=_|$)/', $uppercase, $class_name );
-		}
+		// Split by underscore, apply ucfirst, then convert known acronyms.
+		$parts = array_map(
+			function ( $part ) use ( $acronyms ) {
+				$title_case = ucfirst( $part );
+				return isset( $acronyms[ $title_case ] ) ? $acronyms[ $title_case ] : $title_case;
+			},
+			explode( '_', $class_name )
+		);
 
-		return $namespace . $class_name;
+		return $namespace . implode( '_', $parts );
 	}
 
 	/**

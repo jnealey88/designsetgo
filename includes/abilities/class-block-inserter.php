@@ -176,9 +176,10 @@ class Block_Inserter {
 			}
 		}
 
-		// Generate HTML for DesignSetGo blocks without inner blocks (form fields, etc.).
-		if ( 0 === strpos( $block_name, 'designsetgo/' ) && empty( $inner_blocks ) && ! self::is_dynamic_block( $block_name ) ) {
-			$block_html = self::generate_designsetgo_block_html( $block_name, $attributes );
+		// Generate HTML for standalone DesignSetGo blocks (form fields, etc.).
+		// Only runs if wrapper HTML was not generated above.
+		if ( 0 === strpos( $block_name, 'designsetgo/' ) && empty( $inner_blocks ) && empty( $innerHTML ) && ! self::is_dynamic_block( $block_name ) ) {
+			$block_html = self::generate_designsetgo_block_html( $block_name, $attrs );
 			if ( ! empty( $block_html ) ) {
 				$innerHTML      = $block_html;
 				$innerContent[] = $block_html;
@@ -280,7 +281,7 @@ class Block_Inserter {
 				}
 
 				return array(
-					'opening' => '<div class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( $default_padding ) . '"><div class="dsgo-flex__inner" style="' . implode( ';', $inner_styles ) . '">',
+					'opening' => '<div class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( $default_padding ) . '"><div class="dsgo-flex__inner" style="' . esc_attr( implode( ';', $inner_styles ) ) . '">',
 					'closing' => '</div></div>',
 				);
 
@@ -328,7 +329,7 @@ class Block_Inserter {
 				}
 
 				return array(
-					'opening' => '<div class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( $default_padding ) . '"><div class="dsgo-grid__inner" style="' . implode( ';', $inner_styles ) . '">',
+					'opening' => '<div class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( $default_padding ) . '"><div class="dsgo-grid__inner" style="' . esc_attr( implode( ';', $inner_styles ) ) . '">',
 					'closing' => '</div></div>',
 				);
 
