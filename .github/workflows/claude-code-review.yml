@@ -3,25 +3,13 @@ name: Claude Code Review
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review, reopened]
-    # Optional: Only run on specific file changes
-    # paths:
-    #   - "src/**/*.ts"
-    #   - "src/**/*.tsx"
-    #   - "src/**/*.js"
-    #   - "src/**/*.jsx"
 
 jobs:
   claude-review:
-    # Optional: Filter by PR author
-    # if: |
-    #   github.event.pull_request.user.login == 'external-contributor' ||
-    #   github.event.pull_request.user.login == 'new-developer' ||
-    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write
       issues: read
       id-token: write
 
@@ -29,16 +17,69 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Run Claude Code Review
         id: claude-review
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
-          plugins: 'code-review@claude-code-plugins'
-          prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}'
-          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
-          # or https://code.claude.com/docs/en/cli-reference for available options
+          track_progress: true
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            You are reviewing a WordPress plugin codebase. Perform a thorough code review.
+
+            ## Instructions
+            1. First, run `gh pr diff ${{ github.event.pull_request.number }}` to see all changes
+            2. Read and analyze every changed file carefully
+            3. Use inline comments for specific code issues
+            4. Post a summary comment at the end
+
+            ## Security Review (CRITICAL - Check Every Item)
+            - XSS vulnerabilities: unescaped output, missing esc_html/esc_attr/wp_kses
+            - SQL injection: direct variable interpolation in queries, missing $wpdb->prepare()
+            - CSRF: missing nonce verification on forms/AJAX
+            - Sanitization ordering: HTML entities must be decoded BEFORE tag stripping
+            - Input validation: validate and sanitize all user inputs
+            - File operations: path traversal, unsafe file uploads
+            - Authentication/authorization: capability checks, nonce validation
+
+            ## Logic and Correctness
+            - Off-by-one errors, boundary conditions
+            - Null/undefined checks, type coercion issues
+            - Validation logic flaws (e.g., incorrectly rejecting falsy values like 0, false, '0')
+            - Race conditions, timing issues
+            - Error handling gaps
+            - Edge cases not covered
+
+            ## Code Quality
+            - DRY violations: duplicated code that should be extracted
+            - Functions doing too many things
+            - Missing or incorrect error handling
+            - Inconsistent patterns within the codebase
+            - Unused variables or dead code
+
+            ## WordPress Best Practices
+            - Proper hook usage and priorities
+            - Correct use of WordPress APIs
+            - Proper enqueueing of scripts/styles
+            - Translation function usage
+
+            ## Output Format
+            For each issue found:
+            1. Use `mcp__github_inline_comment__create_inline_comment` to add inline comments on specific lines
+            2. Clearly state: SEVERITY (Critical/High/Medium/Low), the problem, and how to fix it
+
+            Post a final summary comment using `gh pr comment` with:
+            - Count of issues by severity
+            - Key findings that need attention
+            - Overall assessment
+
+            Be thorough - a shallow review that misses real issues is worse than no review.
+            If you find NO issues, explain what you checked and why the code is correct.
+
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Read,Grep,Glob"
 
