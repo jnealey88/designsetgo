@@ -32,6 +32,11 @@ class File_Manager {
 	const EXCLUDE_META_KEY = '_designsetgo_exclude_llms';
 
 	/**
+	 * Post meta key for storing the markdown filename.
+	 */
+	const FILENAME_META_KEY = '_designsetgo_llms_filename';
+
+	/**
 	 * Get the full path to the markdown files directory.
 	 *
 	 * @return string Directory path.
@@ -42,14 +47,80 @@ class File_Manager {
 	}
 
 	/**
+	 * Get the filename (without extension) for a post.
+	 *
+	 * Uses the post slug for readable URLs. For hierarchical post types (pages),
+	 * uses the full path (e.g., "blocks/layout-systems" for nested pages).
+	 * Falls back to post ID if no slug is available (plain permalinks).
+	 *
+	 * @param \WP_Post|int $post Post object or ID.
+	 * @return string Filename without extension.
+	 */
+	public function get_filename( $post ): string {
+		if ( is_int( $post ) ) {
+			$post = get_post( $post );
+		}
+
+		if ( ! $post ) {
+			return '';
+		}
+
+		// Check if post has a valid slug.
+		$has_slug = ! empty( $post->post_name ) && ! is_numeric( $post->post_name );
+
+		// Fall back to post ID if no slug (plain permalinks or auto-draft).
+		if ( ! $has_slug ) {
+			return (string) $post->ID;
+		}
+
+		// For hierarchical post types, build the full path.
+		if ( is_post_type_hierarchical( $post->post_type ) && $post->post_parent ) {
+			$ancestors = get_post_ancestors( $post );
+			$slugs     = array();
+
+			// Ancestors are returned from immediate parent to root, so reverse.
+			foreach ( array_reverse( $ancestors ) as $ancestor_id ) {
+				$ancestor = get_post( $ancestor_id );
+				if ( $ancestor && ! empty( $ancestor->post_name ) ) {
+					$slugs[] = $ancestor->post_name;
+				}
+			}
+
+			$slugs[] = $post->post_name;
+			$slug    = implode( '/', $slugs );
+		} else {
+			$slug = $post->post_name;
+		}
+
+		// Handle empty slug (e.g., home page with no slug set).
+		if ( empty( $slug ) ) {
+			return (string) $post->ID;
+		}
+
+		// Sanitize for filesystem safety while preserving path separators.
+		$parts = explode( '/', $slug );
+		$parts = array_map( 'sanitize_file_name', $parts );
+		$slug  = implode( '/', $parts );
+
+		return $slug;
+	}
+
+	/**
 	 * Get the URL for a markdown file.
 	 *
 	 * @param int $post_id Post ID.
 	 * @return string File URL.
 	 */
 	public function get_url( int $post_id ): string {
+		$post = get_post( $post_id );
+		if ( ! $post ) {
+			return '';
+		}
+
+		$filename   = $this->get_filename( $post );
 		$upload_dir = wp_upload_dir();
-		return trailingslashit( $upload_dir['baseurl'] ) . self::MARKDOWN_DIR . '/' . $post_id . '.md';
+
+		return trailingslashit( $upload_dir['baseurl'] ) . self::MARKDOWN_DIR . '/' . $filename . '.md';
 	}
 
 	/**
@@ -59,17 +130,29 @@ class File_Manager {
 	 * @return bool True if file exists.
 	 */
 	public function file_exists( int $post_id ): bool {
-		$file_path = $this->get_directory() . '/' . $post_id . '.md';
+		$post = get_post( $post_id );
+		if ( ! $post ) {
+			return false;
+		}
+
+		$filename  = $this->get_filename( $post );
+		$file_path = $this->get_directory() . '/' . $filename . '.md';
+
 		return file_exists( $file_path );
 	}
 
 	/**
 	 * Ensure the markdown directory exists.
 	 *
+	 * @param string $subdirectory Optional subdirectory path within the main directory.
 	 * @return bool True if directory exists or was created.
 	 */
-	public function ensure_directory(): bool {
+	public function ensure_directory( string $subdirectory = '' ): bool {
 		$dir = $this->get_directory();
+
+		if ( $subdirectory ) {
+			$dir = trailingslashit( $dir ) . $subdirectory;
+		}
 
 		if ( ! file_exists( $dir ) ) {
 			return wp_mkdir_p( $dir );
@@ -122,8 +205,26 @@ class File_Manager {
 			return new \WP_Error( 'post_type_disabled', __( 'Post type is not enabled.', 'designsetgo' ) );
 		}
 
-		// Ensure directory exists.
-		if ( ! $this->ensure_directory() ) {
+		// Get the filename and check for changes.
+		$filename     = $this->get_filename( $post );
+		$old_filename = get_post_meta( $post_id, self::FILENAME_META_KEY, true );
+
+		// Delete old file if filename changed (e.g., slug was updated).
+		if ( $old_filename && $old_filename !== $filename ) {
+			$old_file_path = $this->get_directory() . '/' . $old_filename . '.md';
+			if ( file_exists( $old_file_path ) ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
+				unlink( $old_file_path );
+			}
+		}
+
+		// Ensure directory exists (including subdirectories for hierarchical content).
+		$subdirectory = dirname( $filename );
+		if ( '.' !== $subdirectory ) {
+			if ( ! $this->ensure_directory( $subdirectory ) ) {
+				return new \WP_Error( 'directory_error', __( 'Could not create markdown directory.', 'designsetgo' ) );
+			}
+		} elseif ( ! $this->ensure_directory() ) {
 			return new \WP_Error( 'directory_error', __( 'Could not create markdown directory.', 'designsetgo' ) );
 		}
 
@@ -132,7 +233,7 @@ class File_Manager {
 		$markdown  = $converter->convert( $post );
 
 		// Write the file.
-		$file_path = $this->get_directory() . '/' . $post_id . '.md';
+		$file_path = $this->get_directory() . '/' . $filename . '.md';
 
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct file write required for performance.
 		$result = file_put_contents( $file_path, $markdown );
@@ -140,6 +241,9 @@ class File_Manager {
 		if ( false === $result ) {
 			return new \WP_Error( 'write_error', __( 'Could not write markdown file.', 'designsetgo' ) );
 		}
+
+		// Store the filename for future reference (to handle slug changes).
+		update_post_meta( $post_id, self::FILENAME_META_KEY, $filename );
 
 		return true;
 	}
@@ -151,14 +255,38 @@ class File_Manager {
 	 * @return bool True if file was deleted or didn't exist.
 	 */
 	public function delete_file( int $post_id ): bool {
-		$file_path = $this->get_directory() . '/' . $post_id . '.md';
+		$deleted = true;
 
-		if ( file_exists( $file_path ) ) {
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
-			return unlink( $file_path );
+		// Try to delete using stored filename first.
+		$stored_filename = get_post_meta( $post_id, self::FILENAME_META_KEY, true );
+		if ( $stored_filename ) {
+			$file_path = $this->get_directory() . '/' . $stored_filename . '.md';
+			if ( file_exists( $file_path ) ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
+				$deleted = unlink( $file_path );
+			}
+			delete_post_meta( $post_id, self::FILENAME_META_KEY );
 		}
 
-		return true;
+		// Also try current filename (in case meta wasn't set).
+		$post = get_post( $post_id );
+		if ( $post ) {
+			$filename  = $this->get_filename( $post );
+			$file_path = $this->get_directory() . '/' . $filename . '.md';
+			if ( file_exists( $file_path ) ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
+				$deleted = unlink( $file_path ) && $deleted;
+			}
+		}
+
+		// Clean up legacy ID-based files.
+		$legacy_path = $this->get_directory() . '/' . $post_id . '.md';
+		if ( file_exists( $legacy_path ) ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
+			unlink( $legacy_path );
+		}
+
+		return $deleted;
 	}
 
 	/**

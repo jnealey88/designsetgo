@@ -126,12 +126,20 @@ class Conflict_Detector {
 			);
 		}
 
-		// Generate a unique backup filename.
-		$backup_path = ABSPATH . 'llms.txt.bak';
-		$counter     = 1;
-		while ( file_exists( $backup_path ) ) {
+		// Generate a unique backup filename with safety limit.
+		$backup_path  = ABSPATH . 'llms.txt.bak';
+		$counter      = 1;
+		$max_attempts = 100;
+		while ( file_exists( $backup_path ) && $counter <= $max_attempts ) {
 			$backup_path = ABSPATH . 'llms.txt.bak.' . $counter;
 			++$counter;
+		}
+
+		if ( file_exists( $backup_path ) ) {
+			return new \WP_Error(
+				'backup_limit_reached',
+				__( 'Unable to generate a backup filename after multiple attempts. Please rename or delete existing backup files manually.', 'designsetgo' )
+			);
 		}
 
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename -- Direct file operation required.
@@ -201,7 +209,7 @@ class Conflict_Detector {
 				<a href="<?php echo esc_url( $resolve_url ); ?>" class="button button-primary">
 					<?php esc_html_e( 'Resolve Conflict', 'designsetgo' ); ?>
 				</a>
-				<a href="<?php echo esc_url( $dismiss_url ); ?>" class="button" style="margin-left: 8px;">
+				<a href="<?php echo esc_url( $dismiss_url ); ?>" class="button dsgo-notice-dismiss-btn">
 					<?php esc_html_e( 'Dismiss', 'designsetgo' ); ?>
 				</a>
 			</p>
@@ -221,7 +229,9 @@ class Conflict_Detector {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'dsgo_dismiss_llms_conflict' ) ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce is being verified in this very line.
+		$nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+		if ( ! wp_verify_nonce( $nonce, 'dsgo_dismiss_llms_conflict' ) ) {
 			return;
 		}
 
