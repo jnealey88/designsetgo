@@ -121,6 +121,8 @@ npm run lint:php
 
 **Debug**: `npx wp-env logs` (500 errors), `grep -i "class" build/style-index.css` (missing CSS)
 
+When I report a bug, don't start by trying to fix it. Instead, start by writing a test that reproduces the bug. Then, have subagents try to fix the bug and prove it with a passing test.
+
 ## Documentation
 
 - [REFACTORING-GUIDE.md](.claude/docs/REFACTORING-GUIDE.md)
@@ -139,6 +141,8 @@ npm run lint:php
 ## Branches
 
 Branch prefixes should start with `claude/`
+
+
 
 ---
 
