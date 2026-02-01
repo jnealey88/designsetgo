@@ -730,7 +730,7 @@ class Block_Inserter {
 
 				// Fill styles.
 				$fill_width = $animate_on_scroll ? '0%' : $bar_width . '%';
-				$fill_style = 'width:' . $fill_width . ';height:100%;background-color:' . esc_attr( $bar_color ) . ';transition:width ' . esc_attr( $animation_dur ) . 's ease-out;border-radius:' . esc_attr( $border_radius );
+				$fill_style = 'width:' . $fill_width . ';height:100%;background-color:' . esc_attr( $bar_color ) . ';transition:width ' . esc_attr( (string) $animation_dur ) . 's ease-out;border-radius:' . esc_attr( $border_radius );
 
 				$inner_html  = $label_html;
 				$inner_html .= '<div class="dsgo-progress-bar__container" style="' . esc_attr( $container_style ) . '">';
@@ -796,9 +796,9 @@ class Block_Inserter {
 
 				// Data attributes.
 				$data_attrs  = ' data-dsgo-provider="' . esc_attr( $provider ) . '"';
-				$data_attrs .= ' data-dsgo-lat="' . esc_attr( $safe_lat ) . '"';
-				$data_attrs .= ' data-dsgo-lng="' . esc_attr( $safe_lng ) . '"';
-				$data_attrs .= ' data-dsgo-zoom="' . esc_attr( $safe_zoom ) . '"';
+				$data_attrs .= ' data-dsgo-lat="' . esc_attr( (string) $safe_lat ) . '"';
+				$data_attrs .= ' data-dsgo-lng="' . esc_attr( (string) $safe_lng ) . '"';
+				$data_attrs .= ' data-dsgo-zoom="' . esc_attr( (string) $safe_zoom ) . '"';
 				$data_attrs .= ' data-dsgo-address="' . esc_attr( $address ) . '"';
 				$data_attrs .= ' data-dsgo-marker-icon="' . esc_attr( $marker_icon ) . '"';
 				$data_attrs .= ' data-dsgo-marker-color="' . esc_attr( $marker_color ) . '"';
@@ -923,8 +923,9 @@ class Block_Inserter {
 				$link_target  = isset( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : '';
 				$link_rel     = isset( $attributes['linkRel'] ) ? $attributes['linkRel'] : '';
 				$content_gap  = isset( $attributes['contentGap'] ) ? intval( $attributes['contentGap'] ) : 8;
-				$icon_size    = 32; // Default from context.
-				$icon_position = 'left'; // Default from context.
+				// These values typically come from parent block context, read from attributes if provided.
+				$icon_size     = isset( $attributes['iconSize'] ) ? intval( $attributes['iconSize'] ) : 32;
+				$icon_position = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'left';
 
 				// Calculate text alignment.
 				$text_align = 'left';
