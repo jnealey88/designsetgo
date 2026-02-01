@@ -99,10 +99,6 @@
 			"type": "string",
 			"default": "8px"
 		},
-		"width": {
-			"type": "string",
-			"default": "auto"
-		},
 		"hoverAnimation": {
 			"type": "string",
 			"default": "none"
