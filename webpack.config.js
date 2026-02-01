@@ -71,7 +71,13 @@ module.exports = {
 		// Admin dashboard entry point
 		admin: path.resolve(process.cwd(), 'src', 'admin', 'index.js'),
 		// Visual revision comparison entry point
-		revisions: path.resolve(process.cwd(), 'src', 'admin', 'revisions', 'index.js'),
+		revisions: path.resolve(
+			process.cwd(),
+			'src',
+			'admin',
+			'revisions',
+			'index.js'
+		),
 		// Block category filter for dual categorization
 		'block-category-filter': path.resolve(
 			process.cwd(),

@@ -3,7 +3,7 @@
  *
  * Entry point for the React-based revision comparison interface.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { createRoot } from '@wordpress/element';
@@ -21,7 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		const root = createRoot(rootElement);
 		root.render(
-			<RevisionComparison postId={postId} initialRevisionId={revisionId} />
+			<RevisionComparison
+				postId={postId}
+				initialRevisionId={revisionId}
+			/>
 		);
 	}
 });

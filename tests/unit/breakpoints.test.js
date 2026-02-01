@@ -4,10 +4,14 @@
  * Tests for responsive breakpoint utilities.
  * These tests verify the breakpoint configuration and device detection.
  *
- * @package DesignSetGo
+ * @package
  */
 
-import { breakpoints, mediaQueries, getCurrentDevice } from '../../src/utils/breakpoints';
+import {
+	breakpoints,
+	mediaQueries,
+	getCurrentDevice,
+} from '../../src/utils/breakpoints';
 
 describe('Breakpoint Utilities', () => {
 	describe('breakpoints object', () => {
@@ -80,7 +84,9 @@ describe('Breakpoint Utilities', () => {
 
 		it('tablet query range is correct', () => {
 			expect(mediaQueries.tablet).toContain(`${breakpoints.mobile}px`);
-			expect(mediaQueries.tablet).toContain(`${breakpoints.tablet - 1}px`);
+			expect(mediaQueries.tablet).toContain(
+				`${breakpoints.tablet - 1}px`
+			);
 		});
 
 		it('desktop query starts at tablet breakpoint', () => {
@@ -186,7 +192,9 @@ describe('Breakpoint Utilities', () => {
 			// In Jest/JSDOM, window is always defined, so we test the fallback behavior
 			// by verifying the function handles any width gracefully
 			expect(getCurrentDevice()).toBeDefined();
-			expect(['mobile', 'tablet', 'desktop']).toContain(getCurrentDevice());
+			expect(['mobile', 'tablet', 'desktop']).toContain(
+				getCurrentDevice()
+			);
 		});
 	});
 });

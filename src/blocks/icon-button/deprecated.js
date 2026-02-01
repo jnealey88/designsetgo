@@ -173,7 +173,8 @@ const v4 = {
 		const ButtonWrapper = url ? 'a' : 'div';
 		const wrapperProps = url
 			? {
-					className: 'dsgo-icon-button__wrapper wp-block-button__link',
+					className:
+						'dsgo-icon-button__wrapper wp-block-button__link',
 					style: layoutStyles,
 					href: url,
 					target: linkTarget,
@@ -186,7 +187,8 @@ const v4 = {
 					}),
 				}
 			: {
-					className: 'dsgo-icon-button__wrapper wp-block-button__link',
+					className:
+						'dsgo-icon-button__wrapper wp-block-button__link',
 					style: layoutStyles,
 					...(modalCloseId && {
 						'data-dsgo-modal-close': modalCloseId || 'true',

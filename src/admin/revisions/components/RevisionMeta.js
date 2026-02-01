@@ -3,7 +3,7 @@
  *
  * Displays author and date information for a revision.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
@@ -36,7 +36,9 @@ const RevisionMeta = ({ revision }) => {
 			)}
 			<div className="dsgo-revision-meta__info">
 				<span className="dsgo-revision-meta__author">{authorName}</span>
-				<span className="dsgo-revision-meta__date">{formattedDate}</span>
+				<span className="dsgo-revision-meta__date">
+					{formattedDate}
+				</span>
 			</div>
 		</div>
 	);

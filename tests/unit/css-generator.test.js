@@ -4,7 +4,7 @@
  * Tests for CSS generation utilities used across the plugin.
  * These tests focus on behavior, not implementation details.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import {
