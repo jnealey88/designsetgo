@@ -1,0 +1,93 @@
+name: Deploy Assets to WordPress.org
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_type:
+        description: 'What to deploy'
+        required: true
+        default: 'assets'
+        type: choice
+        options:
+          - assets
+          - readme
+          - both
+      dry_run:
+        description: 'Dry run (show what would be deployed without committing)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  deploy-assets:
+    name: Deploy Assets (screenshots, banners, icons)
+    if: ${{ inputs.deploy_type == 'assets' || inputs.deploy_type == 'both' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy assets to WordPress.org
+        uses: 10up/action-wordpress-plugin-asset-update@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: designsetgo
+          DRY_RUN: ${{ inputs.dry_run }}
+
+  deploy-readme:
+    name: Deploy readme.txt only
+    if: ${{ inputs.deploy_type == 'readme' || inputs.deploy_type == 'both' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy readme.txt to WordPress.org SVN
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: designsetgo
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          # Install SVN
+          sudo apt-get update
+          sudo apt-get install -y subversion
+
+          SVN_URL="https://plugins.svn.wordpress.org/${SLUG}/"
+          SVN_DIR="/tmp/svn-${SLUG}"
+
+          echo "➤ Checking out SVN trunk (shallow)..."
+          svn checkout --depth=immediates "$SVN_URL" "$SVN_DIR" --username "$SVN_USERNAME" --password "$SVN_PASSWORD" --non-interactive
+
+          # Update only trunk directory
+          cd "$SVN_DIR"
+          svn update trunk --set-depth=files --non-interactive
+
+          echo "➤ Copying readme.txt to trunk..."
+          cp "$GITHUB_WORKSPACE/readme.txt" trunk/readme.txt
+
+          echo "➤ Checking for changes..."
+          svn status trunk/
+
+          if svn status trunk/ | grep -q "^M"; then
+            echo "➤ Changes detected in readme.txt"
+
+            if [ "$DRY_RUN" = "true" ]; then
+              echo "➤ DRY RUN: Would commit the following changes:"
+              svn diff trunk/readme.txt
+            else
+              echo "➤ Committing readme.txt update..."
+              svn commit -m "Update readme.txt from GitHub Actions" \
+                --username "$SVN_USERNAME" \
+                --password "$SVN_PASSWORD" \
+                --non-interactive
+              echo "✓ readme.txt deployed successfully!"
+            fi
+          else
+            echo "➤ No changes to readme.txt"
+          fi
