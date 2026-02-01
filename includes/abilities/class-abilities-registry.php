@@ -183,6 +183,7 @@ class Abilities_Registry {
 	 * Convert a file path to a fully qualified class name.
 	 *
 	 * Transforms file names like 'class-insert-section.php' to 'Insert_Section'.
+	 * Handles common acronyms (CSS, CTA, FAQ, API, etc.) that should remain uppercase.
 	 *
 	 * @param string $file_path Full path to the PHP file.
 	 * @param string $namespace PHP namespace prefix.
@@ -198,6 +199,22 @@ class Abilities_Registry {
 		// Convert kebab-case to Title_Case (WordPress class naming convention).
 		$class_name = str_replace( '-', '_', $filename );
 		$class_name = implode( '_', array_map( 'ucfirst', explode( '_', $class_name ) ) );
+
+		// Handle common acronyms that should be uppercase.
+		$acronyms = array(
+			'Css'  => 'CSS',
+			'Cta'  => 'CTA',
+			'Faq'  => 'FAQ',
+			'Api'  => 'API',
+			'Html' => 'HTML',
+			'Url'  => 'URL',
+			'Id'   => 'ID',
+		);
+
+		foreach ( $acronyms as $title_case => $uppercase ) {
+			// Replace at word boundaries (after underscore or at start/end).
+			$class_name = preg_replace( '/(?<=_|^)' . $title_case . '(?=_|$)/', $uppercase, $class_name );
+		}
 
 		return $namespace . $class_name;
 	}
