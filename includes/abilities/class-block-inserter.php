@@ -348,8 +348,8 @@ class Block_Inserter {
 
 				$outer_style = 'align-self:stretch;--dsgo-counter-columns-desktop:' . $desktop_cols . ';--dsgo-counter-columns-tablet:' . $tablet_cols . ';--dsgo-counter-columns-mobile:' . $mobile_cols . ';--dsgo-counter-gap:' . $gap . 'px';
 
-				$data_attrs = ' data-animation-duration="' . esc_attr( $duration ) . '"';
-				$data_attrs .= ' data-animation-delay="' . esc_attr( $delay ) . '"';
+				$data_attrs  = ' data-animation-duration="' . esc_attr( (string) $duration ) . '"';
+				$data_attrs .= ' data-animation-delay="' . esc_attr( (string) $delay ) . '"';
 				$data_attrs .= ' data-animation-easing="' . esc_attr( $easing ) . '"';
 				$data_attrs .= ' data-use-grouping="' . ( $use_grouping ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-separator="' . esc_attr( $separator ) . '"';
@@ -375,13 +375,13 @@ class Block_Inserter {
 				$separator    = isset( $attributes['separator'] ) ? $attributes['separator'] : ',';
 				$decimal      = isset( $attributes['decimal'] ) ? $attributes['decimal'] : '.';
 
-				$data_attrs  = ' data-start-value="' . esc_attr( $start_value ) . '"';
-				$data_attrs .= ' data-end-value="' . esc_attr( $end_value ) . '"';
-				$data_attrs .= ' data-decimals="' . esc_attr( $decimals ) . '"';
+				$data_attrs  = ' data-start-value="' . esc_attr( (string) $start_value ) . '"';
+				$data_attrs .= ' data-end-value="' . esc_attr( (string) $end_value ) . '"';
+				$data_attrs .= ' data-decimals="' . esc_attr( (string) $decimals ) . '"';
 				$data_attrs .= ' data-prefix="' . esc_attr( $prefix ) . '"';
 				$data_attrs .= ' data-suffix="' . esc_attr( $suffix ) . '"';
-				$data_attrs .= ' data-duration="' . esc_attr( $duration ) . '"';
-				$data_attrs .= ' data-delay="' . esc_attr( $delay ) . '"';
+				$data_attrs .= ' data-duration="' . esc_attr( (string) $duration ) . '"';
+				$data_attrs .= ' data-delay="' . esc_attr( (string) $delay ) . '"';
 				$data_attrs .= ' data-easing="' . esc_attr( $easing ) . '"';
 				$data_attrs .= ' data-use-grouping="' . ( $use_grouping ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-separator="' . esc_attr( $separator ) . '"';
@@ -389,7 +389,7 @@ class Block_Inserter {
 
 				$inner_html  = '<div class="dsgo-counter__content icon-top">';
 				$inner_html .= '<div class="dsgo-counter__number">';
-				$inner_html .= '<span class="dsgo-counter__value">' . esc_html( $start_value ) . '</span>';
+				$inner_html .= '<span class="dsgo-counter__value">' . esc_html( (string) $start_value ) . '</span>';
 				$inner_html .= '</div></div>';
 				if ( $label ) {
 					$inner_html .= '<div class="dsgo-counter__label">' . esc_html( $label ) . '</div>';
@@ -716,7 +716,7 @@ class Block_Inserter {
 				// Data attributes for animation.
 				$data_attrs = '';
 				if ( $animate_on_scroll ) {
-					$data_attrs = ' data-percentage="' . esc_attr( $bar_width ) . '" data-duration="' . esc_attr( $animation_dur ) . '"';
+					$data_attrs = ' data-percentage="' . esc_attr( (string) $bar_width ) . '" data-duration="' . esc_attr( (string) $animation_dur ) . '"';
 				}
 
 				// Label.
