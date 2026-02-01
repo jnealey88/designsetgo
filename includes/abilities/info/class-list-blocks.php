@@ -160,285 +160,167 @@ class List_Blocks extends Abstract_Ability {
 	/**
 	 * Get all DesignSetGo blocks with their metadata.
 	 *
+	 * Dynamically retrieves blocks from the WordPress block registry,
+	 * ensuring the list is always up-to-date with registered blocks.
+	 *
 	 * @return array<int, array<string, mixed>>
 	 */
 	private function get_all_blocks(): array {
-		return array(
-			// Layout Containers.
-			array(
-				'name'        => 'designsetgo/row',
-				'title'       => __( 'Row Container', 'designsetgo' ),
-				'description' => __( 'Flexible horizontal or vertical layout container with customizable alignment, gap, and wrapping.', 'designsetgo' ),
-				'category'    => 'layout',
-				'attributes'  => array(
-					'direction'      => array(
-						'type' => 'string',
-						'enum' => array( 'row', 'column' ),
-					),
-					'justifyContent' => array( 'type' => 'string' ),
-					'alignItems'     => array( 'type' => 'string' ),
-					'wrap'           => array( 'type' => 'boolean' ),
-					'gap'            => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/grid',
-				'title'       => __( 'Grid Container', 'designsetgo' ),
-				'description' => __( 'Responsive grid layout with customizable columns for desktop, tablet, and mobile.', 'designsetgo' ),
-				'category'    => 'layout',
-				'attributes'  => array(
-					'columnsDesktop' => array( 'type' => 'integer' ),
-					'columnsTablet'  => array( 'type' => 'integer' ),
-					'columnsMobile'  => array( 'type' => 'integer' ),
-					'gap'            => array( 'type' => 'string' ),
-					'rowGap'         => array( 'type' => 'string' ),
-					'columnGap'      => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/section',
-				'title'       => __( 'Section Container', 'designsetgo' ),
-				'description' => __( 'Vertical stacking container with consistent spacing between elements.', 'designsetgo' ),
-				'category'    => 'layout',
-				'attributes'  => array(
-					'gap'       => array( 'type' => 'string' ),
-					'alignment' => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
-			),
+		$registry = \WP_Block_Type_Registry::get_instance();
+		$blocks   = array();
 
-			// Interactive Elements.
-			array(
-				'name'        => 'designsetgo/accordion',
-				'title'       => __( 'Accordion', 'designsetgo' ),
-				'description' => __( 'Collapsible accordion container for FAQ sections and content organization.', 'designsetgo' ),
-				'category'    => 'interactive',
-				'attributes'  => array(
-					'allowMultiple' => array( 'type' => 'boolean' ),
-					'firstOpen'     => array( 'type' => 'boolean' ),
-				),
-				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/accordion-item',
-				'title'       => __( 'Accordion Item', 'designsetgo' ),
-				'description' => __( 'Individual item within an accordion with title and content.', 'designsetgo' ),
-				'category'    => 'interactive',
-				'attributes'  => array(
-					'title'    => array( 'type' => 'string' ),
-					'isOpen'   => array( 'type' => 'boolean' ),
-					'iconType' => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'color', 'spacing' ),
-			),
-			array(
-				'name'        => 'designsetgo/tabs',
-				'title'       => __( 'Tabs', 'designsetgo' ),
-				'description' => __( 'Tabbed interface for organizing content into switchable panels.', 'designsetgo' ),
-				'category'    => 'interactive',
-				'attributes'  => array(
-					'defaultTab'    => array( 'type' => 'integer' ),
-					'tabsAlignment' => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/tab',
-				'title'       => __( 'Tab', 'designsetgo' ),
-				'description' => __( 'Individual tab within a tabs container.', 'designsetgo' ),
-				'category'    => 'interactive',
-				'attributes'  => array(
-					'title' => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'color', 'spacing' ),
-			),
-			array(
-				'name'        => 'designsetgo/scroll-accordion',
-				'title'       => __( 'Scroll Accordion', 'designsetgo' ),
-				'description' => __( 'Sticky stacking accordion that reveals items on scroll.', 'designsetgo' ),
-				'category'    => 'interactive',
-				'attributes'  => array(
-					'gap' => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/scroll-accordion-item',
-				'title'       => __( 'Scroll Accordion Item', 'designsetgo' ),
-				'description' => __( 'Individual item within a scroll accordion.', 'designsetgo' ),
-				'category'    => 'interactive',
-				'attributes'  => array(),
-				'supports'    => array( 'color', 'spacing' ),
-			),
+		foreach ( $registry->get_all_registered() as $block_type ) {
+			// Only include DesignSetGo blocks.
+			if ( 0 !== strpos( $block_type->name, 'designsetgo/' ) ) {
+				continue;
+			}
 
-			// Visual Elements.
-			array(
-				'name'        => 'designsetgo/icon',
-				'title'       => __( 'Icon', 'designsetgo' ),
-				'description' => __( 'SVG icon with customizable size, color, and rotation.', 'designsetgo' ),
-				'category'    => 'visual',
-				'attributes'  => array(
-					'iconName'  => array( 'type' => 'string' ),
-					'iconSize'  => array( 'type' => 'number' ),
-					'iconColor' => array( 'type' => 'string' ),
-					'rotate'    => array( 'type' => 'number' ),
-				),
-				'supports'    => array( 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/icon-button',
-				'title'       => __( 'Icon Button', 'designsetgo' ),
-				'description' => __( 'Button with icon and optional text label.', 'designsetgo' ),
-				'category'    => 'visual',
-				'attributes'  => array(
-					'iconName'     => array( 'type' => 'string' ),
-					'text'         => array( 'type' => 'string' ),
-					'url'          => array( 'type' => 'string' ),
-					'linkTarget'   => array( 'type' => 'string' ),
-					'rel'          => array( 'type' => 'string' ),
-					'iconPosition' => array(
-						'type' => 'string',
-						'enum' => array( 'left', 'right' ),
-					),
-				),
-				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/pill',
-				'title'       => __( 'Pill', 'designsetgo' ),
-				'description' => __( 'Rounded pill-shaped badge or tag element.', 'designsetgo' ),
-				'category'    => 'visual',
-				'attributes'  => array(
-					'text'      => array( 'type' => 'string' ),
-					'pillColor' => array( 'type' => 'string' ),
-					'textColor' => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/icon-list',
-				'title'       => __( 'Icon List', 'designsetgo' ),
-				'description' => __( 'List with icons for each item, perfect for features or benefits.', 'designsetgo' ),
-				'category'    => 'visual',
-				'attributes'  => array(
-					'gap' => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/icon-list-item',
-				'title'       => __( 'Icon List Item', 'designsetgo' ),
-				'description' => __( 'Individual item within an icon list.', 'designsetgo' ),
-				'category'    => 'visual',
-				'attributes'  => array(
-					'iconName'  => array( 'type' => 'string' ),
-					'iconColor' => array( 'type' => 'string' ),
-					'iconSize'  => array( 'type' => 'number' ),
-				),
-				'supports'    => array( 'color', 'spacing' ),
-			),
-			array(
-				'name'        => 'designsetgo/flip-card',
-				'title'       => __( 'Flip Card', 'designsetgo' ),
-				'description' => __( '3D card that flips on hover to reveal back content.', 'designsetgo' ),
-				'category'    => 'visual',
-				'attributes'  => array(
-					'height'        => array( 'type' => 'string' ),
-					'flipDirection' => array(
-						'type' => 'string',
-						'enum' => array( 'horizontal', 'vertical' ),
-					),
-				),
-				'supports'    => array( 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/flip-card-front',
-				'title'       => __( 'Flip Card Front', 'designsetgo' ),
-				'description' => __( 'Front face of a flip card.', 'designsetgo' ),
-				'category'    => 'visual',
-				'attributes'  => array(),
-				'supports'    => array( 'color', 'spacing' ),
-			),
-			array(
-				'name'        => 'designsetgo/flip-card-back',
-				'title'       => __( 'Flip Card Back', 'designsetgo' ),
-				'description' => __( 'Back face of a flip card.', 'designsetgo' ),
-				'category'    => 'visual',
-				'attributes'  => array(),
-				'supports'    => array( 'color', 'spacing' ),
-			),
-			array(
-				'name'        => 'designsetgo/reveal',
-				'title'       => __( 'Reveal', 'designsetgo' ),
-				'description' => __( 'Content that reveals on scroll with customizable animations.', 'designsetgo' ),
-				'category'    => 'visual',
-				'attributes'  => array(
-					'animation' => array( 'type' => 'string' ),
-					'duration'  => array( 'type' => 'number' ),
-					'delay'     => array( 'type' => 'number' ),
-				),
-				'supports'    => array( 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/scroll-marquee',
-				'title'       => __( 'Scroll Marquee', 'designsetgo' ),
-				'description' => __( 'Infinite scrolling marquee for logos or content.', 'designsetgo' ),
-				'category'    => 'visual',
-				'attributes'  => array(
-					'speed'        => array( 'type' => 'number' ),
-					'direction'    => array(
-						'type' => 'string',
-						'enum' => array( 'left', 'right' ),
-					),
-					'pauseOnHover' => array( 'type' => 'boolean' ),
-				),
-				'supports'    => array( 'align', 'anchor' ),
-			),
+			$blocks[] = array(
+				'name'        => $block_type->name,
+				'title'       => $block_type->title ?? $this->generate_title_from_name( $block_type->name ),
+				'description' => $block_type->description ?? '',
+				'category'    => $this->normalize_category( $block_type->category ?? 'designsetgo' ),
+				'attributes'  => $this->format_attributes( $block_type->attributes ?? array() ),
+				'supports'    => $this->format_supports( $block_type->supports ?? array() ),
+				'parent'      => $block_type->parent ?? null,
+				'icon'        => is_string( $block_type->icon ) ? $block_type->icon : null,
+			);
+		}
 
-			// Dynamic/Animated Elements.
-			array(
-				'name'        => 'designsetgo/counter',
-				'title'       => __( 'Counter', 'designsetgo' ),
-				'description' => __( 'Animated counter that counts up to a target value.', 'designsetgo' ),
-				'category'    => 'dynamic',
-				'attributes'  => array(
-					'startValue' => array( 'type' => 'number' ),
-					'endValue'   => array( 'type' => 'number' ),
-					'duration'   => array( 'type' => 'number' ),
-					'prefix'     => array( 'type' => 'string' ),
-					'suffix'     => array( 'type' => 'string' ),
-					'decimals'   => array( 'type' => 'integer' ),
-				),
-				'supports'    => array( 'color', 'typography', 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/counter-group',
-				'title'       => __( 'Counter Group', 'designsetgo' ),
-				'description' => __( 'Group of animated counters for statistics sections.', 'designsetgo' ),
-				'category'    => 'dynamic',
-				'attributes'  => array(
-					'columns' => array( 'type' => 'integer' ),
-					'gap'     => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'color', 'spacing', 'align', 'anchor' ),
-			),
-			array(
-				'name'        => 'designsetgo/progress-bar',
-				'title'       => __( 'Progress Bar', 'designsetgo' ),
-				'description' => __( 'Animated progress bar with customizable colors and value.', 'designsetgo' ),
-				'category'    => 'dynamic',
-				'attributes'  => array(
-					'value'           => array( 'type' => 'number' ),
-					'label'           => array( 'type' => 'string' ),
-					'showValue'       => array( 'type' => 'boolean' ),
-					'barColor'        => array( 'type' => 'string' ),
-					'backgroundColor' => array( 'type' => 'string' ),
-					'height'          => array( 'type' => 'string' ),
-				),
-				'supports'    => array( 'align', 'anchor' ),
-			),
+		// Sort blocks by name for consistent ordering.
+		usort( $blocks, function ( $a, $b ) {
+			return strcmp( $a['name'], $b['name'] );
+		} );
+
+		return $blocks;
+	}
+
+	/**
+	 * Normalize block category to simplified categories for filtering.
+	 *
+	 * Maps various block categories to four main categories:
+	 * - layout: Container and layout blocks
+	 * - interactive: Blocks with user interaction (accordions, tabs, etc.)
+	 * - visual: Display and media blocks
+	 * - dynamic: Animated and data-driven blocks
+	 *
+	 * @param string $category Original block category.
+	 * @return string Normalized category.
+	 */
+	private function normalize_category( string $category ): string {
+		$category_map = array(
+			// Layout categories.
+			'designsetgo'             => 'layout',
+			'designsetgo-layout'      => 'layout',
+			'designsetgo-containers'  => 'layout',
+			'layout'                  => 'layout',
+
+			// Interactive categories.
+			'designsetgo-interactive' => 'interactive',
+			'designsetgo-navigation'  => 'interactive',
+			'interactive'             => 'interactive',
+
+			// Visual categories.
+			'designsetgo-visual'      => 'visual',
+			'designsetgo-media'       => 'visual',
+			'designsetgo-elements'    => 'visual',
+			'visual'                  => 'visual',
+			'media'                   => 'visual',
+
+			// Dynamic categories.
+			'designsetgo-dynamic'     => 'dynamic',
+			'designsetgo-animated'    => 'dynamic',
+			'dynamic'                 => 'dynamic',
 		);
+
+		return $category_map[ $category ] ?? 'visual';
+	}
+
+	/**
+	 * Generate a human-readable title from block name.
+	 *
+	 * @param string $name Block name (e.g., 'designsetgo/icon-button').
+	 * @return string Human-readable title.
+	 */
+	private function generate_title_from_name( string $name ): string {
+		// Remove namespace prefix.
+		$title = str_replace( 'designsetgo/', '', $name );
+
+		// Convert kebab-case to Title Case.
+		$title = str_replace( '-', ' ', $title );
+		$title = ucwords( $title );
+
+		return $title;
+	}
+
+	/**
+	 * Format block attributes for API output.
+	 *
+	 * Simplifies the attribute definitions for cleaner API responses.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes from registry.
+	 * @return array<string, mixed> Formatted attributes.
+	 */
+	private function format_attributes( array $attributes ): array {
+		$formatted = array();
+
+		foreach ( $attributes as $name => $definition ) {
+			$attr = array(
+				'type' => $definition['type'] ?? 'string',
+			);
+
+			if ( isset( $definition['default'] ) ) {
+				$attr['default'] = $definition['default'];
+			}
+
+			if ( isset( $definition['enum'] ) ) {
+				$attr['enum'] = $definition['enum'];
+			}
+
+			$formatted[ $name ] = $attr;
+		}
+
+		return $formatted;
+	}
+
+	/**
+	 * Format block supports for API output.
+	 *
+	 * Converts supports object to a simplified array of supported features.
+	 *
+	 * @param array<string, mixed>|object $supports Block supports from registry.
+	 * @return array<string> List of supported features.
+	 */
+	private function format_supports( $supports ): array {
+		if ( empty( $supports ) ) {
+			return array();
+		}
+
+		// Convert object to array if needed.
+		$supports = (array) $supports;
+
+		$supported = array();
+
+		// Map common support features.
+		$feature_map = array(
+			'color'      => array( 'color', '__experimentalColor' ),
+			'spacing'    => array( 'spacing', '__experimentalSpacing' ),
+			'typography' => array( 'typography', '__experimentalTypography' ),
+			'align'      => array( 'align' ),
+			'anchor'     => array( 'anchor' ),
+			'html'       => array( 'html' ),
+			'className'  => array( 'className', 'customClassName' ),
+		);
+
+		foreach ( $feature_map as $feature => $keys ) {
+			foreach ( $keys as $key ) {
+				if ( isset( $supports[ $key ] ) && false !== $supports[ $key ] ) {
+					$supported[] = $feature;
+					break;
+				}
+			}
+		}
+
+		return array_unique( $supported );
 	}
 }

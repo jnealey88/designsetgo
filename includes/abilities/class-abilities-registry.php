@@ -90,6 +90,7 @@ class Abilities_Registry {
 		$helpers = array(
 			'class-block-inserter.php',
 			'class-block-configurator.php',
+			'class-css-sanitizer.php',
 		);
 
 		foreach ( $helpers as $helper ) {
@@ -131,190 +132,74 @@ class Abilities_Registry {
 	/**
 	 * Initialize ability instances.
 	 *
+	 * Auto-discovers and instantiates all ability classes from subdirectories.
+	 * This eliminates the need to manually register each ability - simply
+	 * create a new class file in the appropriate directory and it will be
+	 * automatically loaded and registered.
+	 *
 	 * @return void
 	 */
 	private function initialize_abilities(): void {
-		// Info abilities.
-		if ( class_exists( 'DesignSetGo\Abilities\Info\List_Blocks' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Info\List_Blocks() );
+		$directories = array(
+			'info'          => 'DesignSetGo\\Abilities\\Info\\',
+			'inserters'     => 'DesignSetGo\\Abilities\\Inserters\\',
+			'configurators' => 'DesignSetGo\\Abilities\\Configurators\\',
+			'generators'    => 'DesignSetGo\\Abilities\\Generators\\',
+		);
+
+		foreach ( $directories as $dir => $namespace ) {
+			$this->load_abilities_from_namespace( __DIR__ . '/' . $dir, $namespace );
+		}
+	}
+
+	/**
+	 * Load and instantiate abilities from a directory with given namespace.
+	 *
+	 * @param string $directory Directory path containing ability classes.
+	 * @param string $namespace PHP namespace for the classes.
+	 * @return void
+	 */
+	private function load_abilities_from_namespace( string $directory, string $namespace ): void {
+		if ( ! is_dir( $directory ) ) {
+			return;
 		}
 
-		// Inserter abilities - Containers.
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Flex_Container' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Flex_Container() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Grid_Container' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Grid_Container() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Stack_Container' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Stack_Container() );
+		$files = glob( $directory . '/class-*.php' );
+
+		if ( ! $files ) {
+			return;
 		}
 
-		// Inserter abilities - Visual elements.
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Icon' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Icon() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Icon_Button' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Icon_Button() );
-		}
+		foreach ( $files as $file ) {
+			$class_name = $this->file_to_class_name( $file, $namespace );
 
-		// Inserter abilities - Dynamic elements.
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Progress_Bar' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Progress_Bar() );
+			if ( class_exists( $class_name ) && is_subclass_of( $class_name, Abstract_Ability::class ) ) {
+				$this->add_ability( new $class_name() );
+			}
 		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Counter_Group' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Counter_Group() );
-		}
+	}
 
-		// Inserter abilities - Interactive elements.
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Tabs' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Tabs() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Accordion' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Accordion() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Flip_Card' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Flip_Card() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Reveal' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Reveal() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Scroll_Accordion' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Scroll_Accordion() );
-		}
+	/**
+	 * Convert a file path to a fully qualified class name.
+	 *
+	 * Transforms file names like 'class-insert-section.php' to 'Insert_Section'.
+	 *
+	 * @param string $file_path Full path to the PHP file.
+	 * @param string $namespace PHP namespace prefix.
+	 * @return string Fully qualified class name.
+	 */
+	private function file_to_class_name( string $file_path, string $namespace ): string {
+		// Get filename without path and extension.
+		$filename = basename( $file_path, '.php' );
 
-		// Inserter abilities - Content elements.
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Icon_List' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Icon_List() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Icon_List_Item' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Icon_List_Item() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Scroll_Marquee' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Scroll_Marquee() );
-		}
+		// Remove 'class-' prefix.
+		$filename = preg_replace( '/^class-/', '', $filename );
 
-		// Inserter abilities - Modal elements.
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Modal' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Modal() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Modal_Trigger' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Modal_Trigger() );
-		}
+		// Convert kebab-case to Title_Case (WordPress class naming convention).
+		$class_name = str_replace( '-', '_', $filename );
+		$class_name = implode( '_', array_map( 'ucfirst', explode( '_', $class_name ) ) );
 
-		// Inserter abilities - Media elements.
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Slider' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Slider() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Card' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Card() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Image_Accordion' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Image_Accordion() );
-		}
-
-		// Inserter abilities - Page structure.
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Section' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Section() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Divider' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Divider() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Breadcrumbs' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Breadcrumbs() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Table_Of_Contents' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Table_Of_Contents() );
-		}
-
-		// Inserter abilities - Data display.
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Counter' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Counter() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Countdown_Timer' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Countdown_Timer() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Map' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Map() );
-		}
-
-		// Inserter abilities - UI elements.
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Pill' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Pill() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Inserters\Insert_Form_Builder' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Inserters\Insert_Form_Builder() );
-		}
-
-		// Configurator abilities.
-		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Counter_Animation' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Counter_Animation() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Apply_Animation' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Apply_Animation() );
-		}
-
-		// Configurator abilities - Scroll effects (v1.3.0).
-		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Apply_Scroll_Parallax' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Apply_Scroll_Parallax() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Apply_Text_Reveal' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Apply_Text_Reveal() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Apply_Expanding_Background' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Apply_Expanding_Background() );
-		}
-
-		// Configurator abilities - Extension controls.
-		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Background_Video' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Background_Video() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Clickable_Group' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Clickable_Group() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Custom_CSS' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Custom_CSS() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Responsive_Visibility' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Responsive_Visibility() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Configurators\Configure_Max_Width' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Configurators\Configure_Max_Width() );
-		}
-
-		// Generator abilities.
-		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Hero_Section' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Hero_Section() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Feature_Grid' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Feature_Grid() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Stats_Section' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Stats_Section() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_FAQ_Section' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_FAQ_Section() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Contact_Section' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Contact_Section() );
-		}
-
-		// Generator abilities - Additional section types.
-		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Pricing_Section' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Pricing_Section() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Team_Section' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Team_Section() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Testimonial_Section' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Testimonial_Section() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_CTA_Section' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_CTA_Section() );
-		}
-		if ( class_exists( 'DesignSetGo\Abilities\Generators\Generate_Gallery_Section' ) ) {
-			$this->add_ability( new \DesignSetGo\Abilities\Generators\Generate_Gallery_Section() );
-		}
+		return $namespace . $class_name;
 	}
 
 	/**
