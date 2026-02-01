@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -170,6 +170,19 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 1.4.1 - 2026-01-31 =
+**Bug Fixes:**
+* Fix: Grid block type safety for WordPress 6.1+ blockGap object format conversion
+* Fix: Grid block alignItems default now consistent between editor and frontend (uses 'stretch')
+* Fix: Row block preset conversion with proper type checking
+* Fix: Icon Button width attribute removed from schema (deprecation handles migration)
+* Fix: Divider width no longer overridden by editor styles
+* Fix: llms.txt conflict detection now includes dismissable notices with file resolution option
+
+**Improvements:**
+* Enhancement: Icon Button now uses WordPress alignfull for full-width display
+* Enhancement: llms.txt conflict handling allows renaming conflicting files via admin UI
 
 = 1.4.0 - 2026-02-01 =
 **New Features:**
@@ -383,6 +396,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Comprehensive documentation and developer guides
 
 == Upgrade Notice ==
+
+= 1.4.1 =
+Bug fix release: Fixes Grid block type safety for WordPress 6.1+ spacing presets, Row/Grid alignment consistency, Icon Button width migration, and improved llms.txt conflict handling with admin UI resolution.
 
 = 1.4.0 =
 Major update with 4 new features: llms.txt support for AI language models, Draft Mode for published pages, Visual Revision Comparison, and Block Exclusion System. **Breaking change:** Minimum PHP requirement is now 8.0. Includes bug fixes and comprehensive test suite.
