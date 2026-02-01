@@ -26,7 +26,7 @@ DesignSetGo is the **first WordPress block plugin** to integrate with the WordPr
 - ✅ Global styles system (theme.json integration)
 - ✅ Block patterns library
 - ✅ Comprehensive testing setup (E2E + Unit + PHP)
-- ✅ WordPress 6.0+ compatibility (tested up to 6.7)
+- ✅ WordPress 6.7+ compatibility
 - ✅ WordPress Abilities API integration (AI-native)
 - ✅ Comprehensive documentation (15,000+ lines)
 - ✅ Zero JavaScript errors - comprehensive linting cleanup
@@ -57,7 +57,7 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 
 - **Node.js**: 18+ (for development)
 - **PHP**: 8.0+
-- **WordPress**: 6.0+
+- **WordPress**: 6.7+
 - **npm**: 8+ (or pnpm/yarn)
 
 ### Getting Started
@@ -700,4 +700,4 @@ Built with ❤️ for the WordPress community by developers who believe in:
 
 ---
 
-**License**: GPL-2.0-or-later | **Version**: 1.4.0 | **Requires WordPress**: 6.0+ | **Requires PHP**: 8.0+
+**License**: GPL-2.0-or-later | **Version**: 1.4.0 | **Requires WordPress**: 6.7+ | **Requires PHP**: 8.0+
