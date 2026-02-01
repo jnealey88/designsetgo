@@ -1,6 +1,6 @@
 # DesignSetGo
 
-Professional Gutenberg block library with 43 blocks and 11 powerful extensions - complete Form Builder, container system, interactive elements, maps, and animations. Built with WordPress standards for guaranteed editor/frontend parity.
+Professional Gutenberg block library with 46 blocks and 14 powerful extensions - complete Form Builder, container system, interactive elements, maps, modals, breadcrumbs, scroll effects, and animations. Built with WordPress standards for guaranteed editor/frontend parity.
 
 ## 🤖 **First AI-Native WordPress Block Library**
 
@@ -16,17 +16,17 @@ DesignSetGo is the **first WordPress block plugin** to integrate with the WordPr
 - ✅ Project foundation and architecture complete
 - ✅ Build system configured (webpack + @wordpress/scripts)
 - ✅ PHP plugin architecture implemented
-- ✅ 43 custom blocks across 5 categories with FSE integration
+- ✅ 46 custom blocks across 5 categories with FSE integration
 - ✅ Complete Form Builder system (13 blocks: builder + 12 field types)
 - ✅ Container system (Row, Section, Flex, Grid, Stack)
 - ✅ Interactive blocks (Tabs, Accordion, Flip Card, Reveal, Scroll effects, Slider, Counters, Progress)
 - ✅ Content blocks (Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown, Blobs)
 - ✅ Location block (Map with OpenStreetMap & Google Maps support)
-- ✅ 11 Block Extensions - Animations, Sticky Header, Clickable Groups, Background Video, Responsive, Max Width, and more
+- ✅ 14 Block Extensions - Animations, Sticky Header, Clickable Groups, Background Video, Responsive, Scroll Effects (Parallax, Text Reveal, Expanding Background), and more
 - ✅ Global styles system (theme.json integration)
 - ✅ Block patterns library
 - ✅ Comprehensive testing setup (E2E + Unit + PHP)
-- ✅ WordPress 6.4+ compatibility (tested up to 6.7)
+- ✅ WordPress 6.0+ compatibility (tested up to 6.7)
 - ✅ WordPress Abilities API integration (AI-native)
 - ✅ Comprehensive documentation (15,000+ lines)
 - ✅ Zero JavaScript errors - comprehensive linting cleanup
@@ -41,8 +41,8 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 | Category | Features |
 |----------|----------|
 | **🤖 AI Integration** | **WordPress Abilities API** - First plugin with AI-native programmatic access |
-| **Blocks** | **43 blocks** across 5 categories: **Containers (5)** - Row, Section, Flex, Grid, Stack; **Form Builder (13)** - Complete form system with AJAX, spam protection, 12 field types; **Interactive (10)** - Tabs, Accordion, Flip Card, Reveal, Scroll effects, Slider, Counters, Progress; **Content/UI (14)** - Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown, Blobs, plus child blocks; **Location (1)** - Interactive Map with OpenStreetMap & Google Maps |
-| **Extensions** | **11 Extensions** - Block Animations (24 effects), Sticky Header, Clickable Groups, Background Video, Responsive Visibility, Max Width, Custom CSS, Grid Span, Reveal Control, Text Alignment |
+| **Blocks** | **46 blocks** across 5 categories: **Containers (5)** - Row, Section, Flex, Grid, Stack; **Form Builder (13)** - Complete form system with AJAX, spam protection, 12 field types; **Interactive (10)** - Tabs, Accordion, Flip Card, Reveal, Scroll effects, Slider, Counters, Progress; **Content/UI (14)** - Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown, Blobs, Breadcrumbs, Table of Contents, plus child blocks; **Modals (2)** - Modal, Modal Trigger; **Location (1)** - Interactive Map with OpenStreetMap & Google Maps |
+| **Extensions** | **14 Extensions** - Block Animations (24 effects), Sticky Header, Clickable Groups, Background Video, Responsive Visibility, Max Width, Custom CSS, Grid Span, Reveal Control, Text Alignment, Draft Mode, Scroll Effects (Vertical Parallax, Text Reveal, Expanding Background) |
 | **Patterns** | Pre-designed layouts (Hero, CTA, Features, FAQ) |
 | **FSE Ready** | Full Site Editing compatible, theme.json integration, dual categorization |
 | **Performance** | Optimized bundles, code-splitting, no jQuery, declarative styling, viewScript support |
@@ -57,7 +57,7 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 
 - **Node.js**: 18+ (for development)
 - **PHP**: 8.0+
-- **WordPress**: 6.4+
+- **WordPress**: 6.0+
 - **npm**: 8+ (or pnpm/yarn)
 
 ### Getting Started
@@ -131,7 +131,7 @@ npm run plugin-zip
 
 ## Current Features
 
-### 43 Custom Blocks
+### 46 Custom Blocks
 
 📚 **[View Complete Blocks Reference →](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)**
 
@@ -164,7 +164,13 @@ npm run plugin-zip
 - **Divider** - Styleable content separators with multiple styles
 - **Countdown Timer** - Countdown to specific dates and times
 - **Blobs** - Organic animated background shapes
+- **Breadcrumbs** - Navigation breadcrumbs with customizable separators
+- **Table of Contents** - Auto-generated TOC from headings
 - Plus child blocks: Icon List Item
+
+#### Modals (2 Blocks)
+- **Modal** - Accessible popup/dialog with customizable triggers
+- **Modal Trigger** - Button or element to open modals
 
 #### Location (1 Block)
 - **Map** - Interactive maps with dual provider support:
@@ -186,7 +192,7 @@ npm run plugin-zip
 - Success/error message customization
 - Form validation and error handling
 
-### 11 Block Extensions
+### 14 Block Extensions
 
 Extensions work with **any WordPress block** (core, third-party, or DesignSetGo):
 
@@ -245,6 +251,25 @@ Extensions work with **any WordPress block** (core, third-party, or DesignSetGo)
 **Text Alignment Inheritance** - Inherit alignment from parent blocks
 - Consistent text alignment across nested blocks
 - Parent-child context awareness
+
+**Draft Mode Extension** - Control draft content visibility
+- Hide blocks from frontend while visible in editor
+- Useful for work-in-progress content
+
+**Vertical Scroll Parallax Extension** - Smooth parallax scroll effects
+- Configurable parallax intensity
+- Performance-optimized scroll handling
+- Respects `prefers-reduced-motion`
+
+**Text Reveal Extension** - Animated text reveal on scroll
+- Multiple reveal directions and styles
+- Scroll-triggered animation
+- Configurable timing and easing
+
+**Expanding Background Extension** - Dynamic expanding backgrounds
+- Animated background expansion on scroll
+- Customizable expansion direction and speed
+- CSS-only implementation for performance
 
 ### Block Patterns
 
@@ -364,8 +389,8 @@ Reference .claude/CLAUDE.md as you develop
 ## Roadmap
 
 ### ✅ Completed (Phase 1)
-- 43 custom blocks across 5 categories (Containers, Interactive, Content/UI, Location, Forms)
-- 11 block extensions (Animations, Sticky Header, Clickable Groups, Background Video, Responsive, and more)
+- 46 custom blocks across 5 categories (Containers, Interactive, Content/UI, Modals, Location, Forms)
+- 14 block extensions (Animations, Sticky Header, Clickable Groups, Background Video, Responsive, Scroll Effects, and more)
 - Global styles integration with theme.json
 - Animation system (24+ entrance/exit animations)
 - Map block with OpenStreetMap & Google Maps support
@@ -545,10 +570,11 @@ GPL-2.0-or-later - 100% Free Forever
 
 Blocks are organized in the WordPress block inserter:
 
-**DesignSetGo Collection** - All 43 blocks grouped together
+**DesignSetGo Collection** - All 46 blocks grouped together
 - **Layout Containers**: Row, Section, Flex, Grid, Stack
 - **Interactive**: Accordion, Tabs, Slider, Flip Card, Reveal, Scroll Accordion, Image Accordion, Counter Group, Progress Bar, Scroll Marquee
-- **Content & UI**: Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown Timer, Blobs
+- **Content & UI**: Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown Timer, Blobs, Breadcrumbs, Table of Contents
+- **Modals**: Modal, Modal Trigger
 - **Location**: Map (OpenStreetMap & Google Maps)
 - **Forms**: Form Builder + 12 field types (Text, Email, Phone, URL, Date, Time, Number, Checkbox, Select, Textarea, File Upload, Hidden)
 
@@ -557,7 +583,7 @@ Blocks are organized in the WordPress block inserter:
 - **Text**: Icon List, Card
 - **Widgets**: Forms, Counters, Progress Bars, Map, Countdown Timer
 
-**11 Block Extensions** - Available for ANY block (core, third-party, or DesignSetGo)
+**14 Block Extensions** - Available for ANY block (core, third-party, or DesignSetGo)
 - **Block Animations** - 24+ entrance/exit effects with scroll triggers
 - **Sticky Header** - Sticky navigation on scroll
 - **Clickable Groups** - Make containers clickable
@@ -568,6 +594,10 @@ Blocks are organized in the WordPress block inserter:
 - **Grid Span** - Column/row spanning for grids
 - **Reveal Control** - Advanced hover effects
 - **Text Alignment Inheritance** - Align with parent context
+- **Draft Mode** - Control draft content visibility
+- **Vertical Scroll Parallax** - Parallax scroll effects
+- **Text Reveal** - Animated text reveal on scroll
+- **Expanding Background** - Dynamic expanding backgrounds
 
 **Patterns** - Pre-designed layouts
 - Look for the "DesignSetGo" category in the pattern inserter
@@ -670,4 +700,4 @@ Built with ❤️ for the WordPress community by developers who believe in:
 
 ---
 
-**License**: GPL-2.0-or-later | **Version**: 1.3.0 | **Requires WordPress**: 6.4+ | **Requires PHP**: 8.0+
+**License**: GPL-2.0-or-later | **Version**: 1.4.0 | **Requires WordPress**: 6.0+ | **Requires PHP**: 8.0+
