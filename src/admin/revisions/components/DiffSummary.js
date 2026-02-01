@@ -3,7 +3,7 @@
  *
  * Displays a summary of changes between revisions.
  *
- * @package DesignSetGo
+ * @package
  */
 
 import { __ } from '@wordpress/i18n';
