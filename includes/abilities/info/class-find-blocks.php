@@ -155,6 +155,31 @@ class Find_Blocks extends Abstract_Ability {
 			);
 		}
 
+		// Validate post_type exists.
+		if ( ! post_type_exists( $post_type ) ) {
+			return $this->error(
+				'invalid_post_type',
+				sprintf(
+					/* translators: %s: Post type name */
+					__( 'Invalid post type: %s', 'designsetgo' ),
+					$post_type
+				)
+			);
+		}
+
+		// Validate post_status is valid.
+		$valid_statuses = array_keys( get_post_stati() );
+		if ( ! in_array( $post_status, $valid_statuses, true ) ) {
+			return $this->error(
+				'invalid_post_status',
+				sprintf(
+					/* translators: %s: Post status name */
+					__( 'Invalid post status: %s', 'designsetgo' ),
+					$post_status
+				)
+			);
+		}
+
 		// Query posts.
 		$posts = get_posts( array(
 			'post_type'      => $post_type,

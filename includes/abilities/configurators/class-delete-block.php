@@ -12,6 +12,7 @@
 namespace DesignSetGo\Abilities\Configurators;
 
 use DesignSetGo\Abilities\Abstract_Ability;
+use DesignSetGo\Abilities\Block_Configurator;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -139,27 +140,18 @@ class Delete_Block extends Abstract_Ability {
 
 		// Validate post ID.
 		if ( ! $post_id ) {
-			return $this->error(
-				'missing_post_id',
-				__( 'Post ID is required.', 'designsetgo' )
-			);
+			return $this->error( 'missing_post_id', __( 'Post ID is required.', 'designsetgo' ) );
 		}
 
 		// Need either block_name or block_client_id.
 		if ( empty( $block_name ) && empty( $block_client_id ) ) {
-			return $this->error(
-				'missing_block_identifier',
-				__( 'Either block_name or block_client_id is required.', 'designsetgo' )
-			);
+			return $this->error( 'missing_block_identifier', __( 'Either block_name or block_client_id is required.', 'designsetgo' ) );
 		}
 
 		// Validate post exists.
 		$post = get_post( $post_id );
 		if ( ! $post ) {
-			return $this->error(
-				'invalid_post',
-				__( 'Post not found.', 'designsetgo' )
-			);
+			return $this->error( 'invalid_post', __( 'Post not found.', 'designsetgo' ) );
 		}
 
 		// Check permission for this specific post.
@@ -167,52 +159,41 @@ class Delete_Block extends Abstract_Ability {
 			return $this->permission_error();
 		}
 
-		// Parse blocks.
-		$blocks = parse_blocks( $post->post_content );
-
-		// Track deleted count.
-		$deleted_count = 0;
+		// Parse blocks and perform deletion.
+		$blocks            = parse_blocks( $post->post_content );
+		$deleted_count     = 0;
 		$target_block_name = $block_name;
 
 		// Delete by client ID (specific block).
 		if ( $block_client_id ) {
-			$result = $this->delete_block_by_client_id( $blocks, $block_client_id );
-			$blocks = $result['blocks'];
-			$deleted_count = $result['deleted'];
+			$result            = Block_Configurator::delete_block_by_client_id( $blocks, $block_client_id );
+			$blocks            = $result['blocks'];
+			$deleted_count     = $result['deleted'];
 			$target_block_name = $result['block_name'] ?? $block_name;
-		}
-		// Delete by block name.
-		elseif ( $block_name ) {
+		} elseif ( $block_name ) {
+			// Delete by block name.
 			if ( null !== $position ) {
-				// Delete at specific position.
-				$result = $this->delete_block_at_position( $blocks, $block_name, $position );
+				$result = Block_Configurator::delete_block_at_position( $blocks, $block_name, $position );
 			} elseif ( $delete_all ) {
-				// Delete all matching.
-				$result = $this->delete_all_blocks_by_name( $blocks, $block_name );
+				$result = Block_Configurator::delete_all_blocks_by_name( $blocks, $block_name );
 			} else {
-				// Delete first match.
-				$result = $this->delete_first_block_by_name( $blocks, $block_name );
+				$result = Block_Configurator::delete_first_block_by_name( $blocks, $block_name );
 			}
 
-			$blocks = $result['blocks'];
+			$blocks        = $result['blocks'];
 			$deleted_count = $result['deleted'];
 		}
 
 		// Check if any blocks were deleted.
 		if ( 0 === $deleted_count ) {
-			return $this->error(
-				'block_not_found',
-				__( 'No matching blocks found to delete.', 'designsetgo' )
-			);
+			return $this->error( 'block_not_found', __( 'No matching blocks found to delete.', 'designsetgo' ) );
 		}
 
 		// Serialize and update post.
-		$content = serialize_blocks( $blocks );
-
 		$updated = wp_update_post(
 			array(
 				'ID'           => $post_id,
-				'post_content' => $content,
+				'post_content' => serialize_blocks( $blocks ),
 			),
 			true
 		);
@@ -226,162 +207,6 @@ class Delete_Block extends Abstract_Ability {
 			'post_id'       => $post_id,
 			'deleted_count' => $deleted_count,
 			'block_name'    => $target_block_name,
-		);
-	}
-
-	/**
-	 * Delete a block by client ID.
-	 *
-	 * @param array<int, array<string, mixed>> $blocks    Blocks array.
-	 * @param string                           $client_id Client ID to find and delete.
-	 * @return array{blocks: array, deleted: int, block_name: string|null}
-	 */
-	private function delete_block_by_client_id( array $blocks, string $client_id ): array {
-		$deleted = 0;
-		$block_name = null;
-
-		$blocks = array_values( array_filter(
-			$blocks,
-			function ( &$block ) use ( $client_id, &$deleted, &$block_name ) {
-				// Check if this block matches.
-				if ( isset( $block['attrs']['clientId'] ) && $block['attrs']['clientId'] === $client_id ) {
-					$deleted++;
-					$block_name = $block['blockName'];
-					return false;
-				}
-
-				// Check inner blocks.
-				if ( ! empty( $block['innerBlocks'] ) ) {
-					$result = $this->delete_block_by_client_id( $block['innerBlocks'], $client_id );
-					$block['innerBlocks'] = $result['blocks'];
-					$deleted += $result['deleted'];
-					if ( $result['block_name'] ) {
-						$block_name = $result['block_name'];
-					}
-				}
-
-				return true;
-			}
-		) );
-
-		return array(
-			'blocks'     => $blocks,
-			'deleted'    => $deleted,
-			'block_name' => $block_name,
-		);
-	}
-
-	/**
-	 * Delete first block matching name.
-	 *
-	 * @param array<int, array<string, mixed>> $blocks     Blocks array.
-	 * @param string                           $block_name Block name to delete.
-	 * @return array{blocks: array, deleted: int}
-	 */
-	private function delete_first_block_by_name( array $blocks, string $block_name ): array {
-		$deleted = 0;
-		$found = false;
-
-		$blocks = array_values( array_filter(
-			$blocks,
-			function ( &$block ) use ( $block_name, &$deleted, &$found ) {
-				if ( $found ) {
-					return true;
-				}
-
-				// Check if this block matches.
-				if ( $block['blockName'] === $block_name ) {
-					$deleted++;
-					$found = true;
-					return false;
-				}
-
-				// Check inner blocks.
-				if ( ! empty( $block['innerBlocks'] ) ) {
-					$result = $this->delete_first_block_by_name( $block['innerBlocks'], $block_name );
-					$block['innerBlocks'] = $result['blocks'];
-					$deleted += $result['deleted'];
-					if ( $result['deleted'] > 0 ) {
-						$found = true;
-					}
-				}
-
-				return true;
-			}
-		) );
-
-		return array(
-			'blocks'  => $blocks,
-			'deleted' => $deleted,
-		);
-	}
-
-	/**
-	 * Delete all blocks matching name.
-	 *
-	 * @param array<int, array<string, mixed>> $blocks     Blocks array.
-	 * @param string                           $block_name Block name to delete.
-	 * @return array{blocks: array, deleted: int}
-	 */
-	private function delete_all_blocks_by_name( array $blocks, string $block_name ): array {
-		$deleted = 0;
-
-		$blocks = array_values( array_filter(
-			$blocks,
-			function ( &$block ) use ( $block_name, &$deleted ) {
-				// Check if this block matches.
-				if ( $block['blockName'] === $block_name ) {
-					$deleted++;
-					return false;
-				}
-
-				// Check inner blocks.
-				if ( ! empty( $block['innerBlocks'] ) ) {
-					$result = $this->delete_all_blocks_by_name( $block['innerBlocks'], $block_name );
-					$block['innerBlocks'] = $result['blocks'];
-					$deleted += $result['deleted'];
-				}
-
-				return true;
-			}
-		) );
-
-		return array(
-			'blocks'  => $blocks,
-			'deleted' => $deleted,
-		);
-	}
-
-	/**
-	 * Delete block at specific position.
-	 *
-	 * @param array<int, array<string, mixed>> $blocks     Blocks array.
-	 * @param string                           $block_name Block name to match.
-	 * @param int                              $position   Position to delete (0-indexed).
-	 * @return array{blocks: array, deleted: int}
-	 */
-	private function delete_block_at_position( array $blocks, string $block_name, int $position ): array {
-		$current_position = 0;
-		$deleted = 0;
-
-		$blocks = array_values( array_filter(
-			$blocks,
-			function ( $block ) use ( $block_name, $position, &$current_position, &$deleted ) {
-				if ( $block['blockName'] === $block_name ) {
-					if ( $current_position === $position ) {
-						$deleted++;
-						$current_position++;
-						return false;
-					}
-					$current_position++;
-				}
-				return true;
-			}
-		) );
-
-		return array(
-			'blocks'  => $blocks,
-			'deleted' => $deleted,
 		);
 	}
 }

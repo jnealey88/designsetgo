@@ -78,14 +78,19 @@ class CSS_Sanitizer {
 			return '';
 		}
 
-		// Remove HTML tags.
-		$css = wp_strip_all_tags( $css );
-
-		// Remove null bytes and other control characters.
+		// Remove null bytes and other control characters first.
 		$css = preg_replace( '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $css );
 
-		// Decode HTML entities to catch obfuscated attacks.
+		// Decode HTML entities BEFORE stripping tags to catch encoded attacks.
+		// e.g., &lt;script&gt; becomes <script> which can then be stripped.
 		$css = html_entity_decode( $css, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+		// Remove HTML tags after decoding.
+		$css = wp_strip_all_tags( $css );
+
+		// Decode again in case of double-encoding attacks, then strip again.
+		$css = html_entity_decode( $css, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		$css = wp_strip_all_tags( $css );
 
 		// Remove dangerous patterns.
 		foreach ( self::$dangerous_patterns as $pattern ) {

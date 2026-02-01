@@ -327,4 +327,162 @@ class Block_Configurator {
 			'required'   => array( 'success' ),
 		);
 	}
+
+	/**
+	 * Delete a block by client ID.
+	 *
+	 * @param array<int, array<string, mixed>> $blocks    Blocks array.
+	 * @param string                           $client_id Client ID to find and delete.
+	 * @return array{blocks: array, deleted: int, block_name: string|null}
+	 */
+	public static function delete_block_by_client_id( array $blocks, string $client_id ): array {
+		$deleted    = 0;
+		$block_name = null;
+
+		$blocks = array_values(
+			array_filter(
+				$blocks,
+				function ( &$block ) use ( $client_id, &$deleted, &$block_name ) {
+					if ( isset( $block['attrs']['clientId'] ) && $block['attrs']['clientId'] === $client_id ) {
+						$deleted++;
+						$block_name = $block['blockName'];
+						return false;
+					}
+
+					if ( ! empty( $block['innerBlocks'] ) ) {
+						$result               = self::delete_block_by_client_id( $block['innerBlocks'], $client_id );
+						$block['innerBlocks'] = $result['blocks'];
+						$deleted             += $result['deleted'];
+						if ( $result['block_name'] ) {
+							$block_name = $result['block_name'];
+						}
+					}
+
+					return true;
+				}
+			)
+		);
+
+		return array(
+			'blocks'     => $blocks,
+			'deleted'    => $deleted,
+			'block_name' => $block_name,
+		);
+	}
+
+	/**
+	 * Delete first block matching name.
+	 *
+	 * @param array<int, array<string, mixed>> $blocks     Blocks array.
+	 * @param string                           $block_name Block name to delete.
+	 * @return array{blocks: array, deleted: int}
+	 */
+	public static function delete_first_block_by_name( array $blocks, string $block_name ): array {
+		$deleted = 0;
+		$found   = false;
+
+		$blocks = array_values(
+			array_filter(
+				$blocks,
+				function ( &$block ) use ( $block_name, &$deleted, &$found ) {
+					if ( $found ) {
+						return true;
+					}
+
+					if ( $block['blockName'] === $block_name ) {
+						$deleted++;
+						$found = true;
+						return false;
+					}
+
+					if ( ! empty( $block['innerBlocks'] ) ) {
+						$result               = self::delete_first_block_by_name( $block['innerBlocks'], $block_name );
+						$block['innerBlocks'] = $result['blocks'];
+						$deleted             += $result['deleted'];
+						if ( $result['deleted'] > 0 ) {
+							$found = true;
+						}
+					}
+
+					return true;
+				}
+			)
+		);
+
+		return array(
+			'blocks'  => $blocks,
+			'deleted' => $deleted,
+		);
+	}
+
+	/**
+	 * Delete all blocks matching name.
+	 *
+	 * @param array<int, array<string, mixed>> $blocks     Blocks array.
+	 * @param string                           $block_name Block name to delete.
+	 * @return array{blocks: array, deleted: int}
+	 */
+	public static function delete_all_blocks_by_name( array $blocks, string $block_name ): array {
+		$deleted = 0;
+
+		$blocks = array_values(
+			array_filter(
+				$blocks,
+				function ( &$block ) use ( $block_name, &$deleted ) {
+					if ( $block['blockName'] === $block_name ) {
+						$deleted++;
+						return false;
+					}
+
+					if ( ! empty( $block['innerBlocks'] ) ) {
+						$result               = self::delete_all_blocks_by_name( $block['innerBlocks'], $block_name );
+						$block['innerBlocks'] = $result['blocks'];
+						$deleted             += $result['deleted'];
+					}
+
+					return true;
+				}
+			)
+		);
+
+		return array(
+			'blocks'  => $blocks,
+			'deleted' => $deleted,
+		);
+	}
+
+	/**
+	 * Delete block at specific position.
+	 *
+	 * @param array<int, array<string, mixed>> $blocks     Blocks array.
+	 * @param string                           $block_name Block name to match.
+	 * @param int                              $position   Position to delete (0-indexed).
+	 * @return array{blocks: array, deleted: int}
+	 */
+	public static function delete_block_at_position( array $blocks, string $block_name, int $position ): array {
+		$current_position = 0;
+		$deleted          = 0;
+
+		$blocks = array_values(
+			array_filter(
+				$blocks,
+				function ( $block ) use ( $block_name, $position, &$current_position, &$deleted ) {
+					if ( $block['blockName'] === $block_name ) {
+						if ( $current_position === $position ) {
+							$deleted++;
+							$current_position++;
+							return false;
+						}
+						$current_position++;
+					}
+					return true;
+				}
+			)
+		);
+
+		return array(
+			'blocks'  => $blocks,
+			'deleted' => $deleted,
+		);
+	}
 }

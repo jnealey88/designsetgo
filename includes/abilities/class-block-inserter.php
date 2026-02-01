@@ -456,4 +456,36 @@ class Block_Inserter {
 			'required'   => array( 'success' ),
 		);
 	}
+
+	/**
+	 * Build inner blocks array from simplified definitions.
+	 *
+	 * Converts a simplified block definition format into the WordPress
+	 * block array format suitable for use in innerBlocks.
+	 *
+	 * @param array<int, array<string, mixed>> $definitions Block definitions with 'name', 'attributes', 'innerBlocks'.
+	 * @return array<int, array<string, mixed>> WordPress-formatted blocks.
+	 */
+	public static function build_inner_blocks( array $definitions ): array {
+		$blocks = array();
+
+		foreach ( $definitions as $def ) {
+			$block = array(
+				'blockName'    => $def['name'] ?? 'core/paragraph',
+				'attrs'        => self::sanitize_attributes( $def['attributes'] ?? array() ),
+				'innerBlocks'  => array(),
+				'innerHTML'    => '',
+				'innerContent' => array(),
+			);
+
+			if ( ! empty( $def['innerBlocks'] ) ) {
+				$block['innerBlocks']  = self::build_inner_blocks( $def['innerBlocks'] );
+				$block['innerContent'] = array( null );
+			}
+
+			$blocks[] = $block;
+		}
+
+		return $blocks;
+	}
 }

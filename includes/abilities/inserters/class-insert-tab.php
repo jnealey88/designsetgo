@@ -230,7 +230,7 @@ class Insert_Tab extends Abstract_Ability {
 
 				if ( $inner_blocks ) {
 					// Use provided inner blocks.
-					$tab_inner_blocks = $this->build_inner_blocks( $inner_blocks );
+					$tab_inner_blocks = Block_Inserter::build_inner_blocks( $inner_blocks );
 				} elseif ( $content ) {
 					// Create paragraph from content.
 					$tab_inner_blocks = array(
@@ -289,35 +289,6 @@ class Insert_Tab extends Abstract_Ability {
 					return $blocks;
 				}
 			}
-		}
-
-		return $blocks;
-	}
-
-	/**
-	 * Build inner blocks from array definition.
-	 *
-	 * @param array<int, array<string, mixed>> $definitions Block definitions.
-	 * @return array<int, array<string, mixed>> Built blocks.
-	 */
-	private function build_inner_blocks( array $definitions ): array {
-		$blocks = array();
-
-		foreach ( $definitions as $def ) {
-			$block = array(
-				'blockName'    => $def['name'] ?? 'core/paragraph',
-				'attrs'        => Block_Inserter::sanitize_attributes( $def['attributes'] ?? array() ),
-				'innerBlocks'  => array(),
-				'innerHTML'    => '',
-				'innerContent' => array(),
-			);
-
-			if ( ! empty( $def['innerBlocks'] ) ) {
-				$block['innerBlocks'] = $this->build_inner_blocks( $def['innerBlocks'] );
-				$block['innerContent'] = array( null );
-			}
-
-			$blocks[] = $block;
 		}
 
 		return $blocks;
