@@ -168,9 +168,12 @@ class Get_Post_Blocks extends Abstract_Ability {
 		$blocks = parse_blocks( $post->post_content );
 
 		// Filter out empty blocks (whitespace-only).
-		$blocks = array_filter( $blocks, function ( $block ) {
-			return ! empty( $block['blockName'] );
-		} );
+		$blocks = array_filter(
+			$blocks,
+			function ( $block ) {
+				return ! empty( $block['blockName'] );
+			}
+		);
 
 		// Filter by block name if specified.
 		if ( $block_name ) {
@@ -179,10 +182,13 @@ class Get_Post_Blocks extends Abstract_Ability {
 
 		// Remove inner blocks if not wanted.
 		if ( ! $include_inner ) {
-			$blocks = array_map( function ( $block ) {
-				unset( $block['innerBlocks'] );
-				return $block;
-			}, $blocks );
+			$blocks = array_map(
+				function ( $block ) {
+					unset( $block['innerBlocks'] );
+					return $block;
+				},
+				$blocks
+			);
 		}
 
 		// Flatten if requested.
@@ -258,29 +264,32 @@ class Get_Post_Blocks extends Abstract_Ability {
 	 * @return array<int, array<string, mixed>> Cleaned blocks.
 	 */
 	private function clean_blocks_for_output( array $blocks ): array {
-		return array_map( function ( $block ) {
-			$cleaned = array(
-				'blockName'  => $block['blockName'],
-				'attrs'      => $block['attrs'] ?? array(),
-			);
+		return array_map(
+			function ( $block ) {
+				$cleaned = array(
+					'blockName'  => $block['blockName'],
+					'attrs'      => $block['attrs'] ?? array(),
+				);
 
-			// Include innerHTML summary (truncated).
-			if ( ! empty( $block['innerHTML'] ) ) {
-				$html = trim( $block['innerHTML'] );
-				$cleaned['innerHTML'] = strlen( $html ) > 200 ? substr( $html, 0, 200 ) . '...' : $html;
-			}
+				// Include innerHTML summary (truncated).
+				if ( ! empty( $block['innerHTML'] ) ) {
+					$html = trim( $block['innerHTML'] );
+					$cleaned['innerHTML'] = strlen( $html ) > 200 ? substr( $html, 0, 200 ) . '...' : $html;
+				}
 
-			// Include cleaned inner blocks if present.
-			if ( ! empty( $block['innerBlocks'] ) ) {
-				$cleaned['innerBlocks'] = $this->clean_blocks_for_output( $block['innerBlocks'] );
-			}
+				// Include cleaned inner blocks if present.
+				if ( ! empty( $block['innerBlocks'] ) ) {
+					$cleaned['innerBlocks'] = $this->clean_blocks_for_output( $block['innerBlocks'] );
+				}
 
-			// Include depth if flattened.
-			if ( isset( $block['_depth'] ) ) {
-				$cleaned['depth'] = $block['_depth'];
-			}
+				// Include depth if flattened.
+				if ( isset( $block['_depth'] ) ) {
+					$cleaned['depth'] = $block['_depth'];
+				}
 
-			return $cleaned;
-		}, $blocks );
+				return $cleaned;
+			},
+			$blocks
+		);
 	}
 }

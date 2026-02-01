@@ -188,9 +188,12 @@ class List_Blocks extends Abstract_Ability {
 		}
 
 		// Sort blocks by name for consistent ordering.
-		usort( $blocks, function ( $a, $b ) {
-			return strcmp( $a['name'], $b['name'] );
-		} );
+		usort(
+			$blocks,
+			function ( $a, $b ) {
+				return strcmp( $a['name'], $b['name'] );
+			}
+		);
 
 		return $blocks;
 	}

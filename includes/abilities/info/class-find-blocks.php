@@ -181,13 +181,15 @@ class Find_Blocks extends Abstract_Ability {
 		}
 
 		// Query posts.
-		$posts = get_posts( array(
-			'post_type'      => $post_type,
-			'post_status'    => $post_status,
-			'posts_per_page' => $limit,
-			'orderby'        => 'modified',
-			'order'          => 'DESC',
-		) );
+		$posts = get_posts(
+			array(
+				'post_type'      => $post_type,
+				'post_status'    => $post_status,
+				'posts_per_page' => $limit,
+				'orderby'        => 'modified',
+				'order'          => 'DESC',
+			)
+		);
 
 		$results = array();
 		$total_found = 0;
