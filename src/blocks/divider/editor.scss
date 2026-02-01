@@ -36,8 +36,8 @@
 	}
 
 	// Ensure the divider is visible in the editor
+	// NOTE: width is set via inline style from the width attribute (percentage)
 	&__container {
-		width: 100%;
 		pointer-events: none; // Allow click-through to select the block
 		display: flex;
 		align-items: center;

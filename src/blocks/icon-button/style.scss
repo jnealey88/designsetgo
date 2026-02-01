@@ -13,39 +13,35 @@
 	overflow: hidden; // Clip contents to border-radius
 
 	// ============================================================================
-	// WIDTH MODIFIERS
+	// WIDTH & ALIGNMENT
 	// ============================================================================
-	// These classes control the width behavior of the button
+	// Width is controlled via WordPress alignment (alignfull for full-width)
 
-	// Auto width: Button only takes up the space it needs (default behavior)
-	&--width-auto {
-		width: fit-content;
+	// Full width: Button spans the full container width (via WordPress alignfull)
+	&.alignfull {
+		display: flex !important;
+		width: 100% !important;
+		max-width: 100% !important;
 	}
 
-	// Full width: Button spans the full container width
-	&--width-full {
-		display: flex; // Block-level flex instead of inline-flex
-		width: 100%;
-	}
-
-	// WordPress alignment support
+	// WordPress alignment support for non-full-width buttons
 	// Constrain button width and use margin for alignment
 	// CRITICAL: Must override inline display: inline-flex with display: flex for auto margins to work
 	// NOTE: Margins don't use !important so user-set margins can override
-	&.aligncenter {
+	&.aligncenter:not(.alignfull) {
 		display: flex !important;
 		width: fit-content !important;
 		margin-left: auto;
 		margin-right: auto;
 	}
 
-	&.alignleft {
+	&.alignleft:not(.alignfull) {
 		display: flex !important;
 		width: fit-content !important;
 		margin-right: auto;
 	}
 
-	&.alignright {
+	&.alignright:not(.alignfull) {
 		display: flex !important;
 		width: fit-content !important;
 		margin-left: auto;
@@ -407,10 +403,10 @@
 	}
 }
 
-// Border Pulse - Animated border effect (applies to outer block wrapper)
-// Animates the border set via WordPress border controls
+// Border Pulse - Animated border effect using box-shadow
+// Creates a pulsing glow effect around the button using the current text color
 .dsgo-icon-button.dsgo-icon-button--border-pulse {
-	transition: border-width 0.3s ease;
+	transition: box-shadow 0.3s ease;
 
 	&:hover {
 		animation: dsgo-border-pulse 1s ease infinite;
@@ -423,11 +419,11 @@
 
 	0%,
 	100% {
-		border-width: var(--wp--style--border-width, 2px);
+		box-shadow: 0 0 0 0 currentcolor;
 	}
 
 	50% {
-		border-width: calc(var(--wp--style--border-width, 2px) * 2);
+		box-shadow: 0 0 0 4px currentcolor;
 	}
 }
 

@@ -18,8 +18,8 @@
 	"usesContext": ["designsetgo/hoverButtonBackgroundColor"],
 	"supports": {
 		"anchor": true,
-		"align": ["left", "center", "right"],
-		"alignWide": false,
+		"align": ["left", "center", "right", "full"],
+		"alignWide": true,
 		"html": false,
 		"inserter": true,
 		"spacing": {
@@ -98,10 +98,6 @@
 		"iconGap": {
 			"type": "string",
 			"default": "8px"
-		},
-		"width": {
-			"type": "string",
-			"default": "auto"
 		},
 		"hoverAnimation": {
 			"type": "string",

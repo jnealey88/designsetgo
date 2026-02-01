@@ -59,8 +59,7 @@ class Generator {
 			\DesignSetGo\Admin\Settings::get_defaults()['llms_txt']
 		);
 
-		$lines    = array();
-		$rest_url = rest_url( 'designsetgo/v1/llms-txt/markdown/' );
+		$lines = array();
 
 		// H1 - Site name (required).
 		$lines[] = '# ' . $this->escape_markdown( get_bloginfo( 'name' ) );
@@ -72,14 +71,6 @@ class Generator {
 			$lines[] = '> ' . $this->escape_markdown( $description );
 			$lines[] = '';
 		}
-
-		// Add API info for LLMs.
-		$lines[] = sprintf(
-			/* translators: %s: REST API URL */
-			__( '> For clean markdown content, use the API: `GET %s{post_id}`', 'designsetgo' ),
-			$rest_url
-		);
-		$lines[] = '';
 
 		// Get enabled post types.
 		$post_types = $llms_settings['post_types'] ?? array( 'page', 'post' );
@@ -108,7 +99,7 @@ class Generator {
 				if ( $this->file_manager->file_exists( $post->ID ) ) {
 					$markdown_url = $this->file_manager->get_url( $post->ID );
 				} else {
-					$markdown_url = $rest_url . $post->ID;
+					$markdown_url = rest_url( 'designsetgo/v1/llms-txt/markdown/' . $post->ID );
 				}
 
 				$lines[] = '- [' . $title . '](' . $url . ') ([markdown](' . $markdown_url . '))';
