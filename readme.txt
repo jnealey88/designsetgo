@@ -115,7 +115,7 @@ Yes! DesignSetGo is designed to work with any modern WordPress theme. It respect
 
 = Will this slow down my site? =
 
-No! DesignSetGo is built for performance. The entire CSS bundle is under 30 KB, there's no jQuery dependency (saves 150 KB), and blocks only load what you actually use. Your PageSpeed scores stay high.
+No! DesignSetGo is built for performance. The entire CSS bundle is under 10 KB gzipped, there's no jQuery dependency, and blocks only load what you actually use. Your PageSpeed scores stay high.
 
 = Do I need to know how to code? =
 
