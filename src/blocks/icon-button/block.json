@@ -65,8 +65,7 @@
 	},
 	"attributes": {
 		"align": {
-			"type": "string",
-			"default": "center"
+			"type": "string"
 		},
 		"text": {
 			"type": "string",

@@ -31,23 +31,24 @@
 	// WordPress alignment support
 	// Constrain button width and use margin for alignment
 	// CRITICAL: Must override inline display: inline-flex with display: flex for auto margins to work
+	// NOTE: Margins don't use !important so user-set margins can override
 	&.aligncenter {
 		display: flex !important;
 		width: fit-content !important;
-		margin-left: auto !important;
-		margin-right: auto !important;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	&.alignleft {
 		display: flex !important;
 		width: fit-content !important;
-		margin-right: auto !important;
+		margin-right: auto;
 	}
 
 	&.alignright {
 		display: flex !important;
 		width: fit-content !important;
-		margin-left: auto !important;
+		margin-left: auto;
 	}
 
 	// Visual styles and interactions on outer wrapper (where background/border are applied)

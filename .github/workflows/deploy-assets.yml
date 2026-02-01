@@ -11,6 +11,7 @@ on:
         options:
           - assets
           - readme
+          - trunk
           - both
       dry_run:
         description: 'Dry run (show what would be deployed without committing)'
@@ -90,4 +91,76 @@ jobs:
             fi
           else
             echo "➤ No changes to readme.txt"
+          fi
+
+  deploy-trunk:
+    name: Deploy code to trunk (no version bump)
+    if: ${{ inputs.deploy_type == 'trunk' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build plugin
+        run: npm run build
+
+      - name: Deploy to WordPress.org SVN trunk
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: designsetgo
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          # Install SVN
+          sudo apt-get update
+          sudo apt-get install -y subversion rsync
+
+          SVN_URL="https://plugins.svn.wordpress.org/${SLUG}/"
+          SVN_DIR="/tmp/svn-${SLUG}"
+
+          echo "➤ Checking out SVN trunk..."
+          svn checkout "${SVN_URL}trunk" "$SVN_DIR" --username "$SVN_USERNAME" --password "$SVN_PASSWORD" --non-interactive
+
+          echo "➤ Syncing files to trunk..."
+          # Use rsync with .distignore to copy only distribution files
+          rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" --delete "$GITHUB_WORKSPACE/" "$SVN_DIR/"
+
+          cd "$SVN_DIR"
+
+          echo "➤ Adding new files..."
+          svn add --force . --auto-props --parents --depth infinity -q 2>/dev/null || true
+
+          echo "➤ Removing deleted files..."
+          svn status | grep '^\!' | awk '{print $2}' | xargs -r svn delete --force -q 2>/dev/null || true
+
+          echo "➤ Checking for changes..."
+          svn status
+
+          if svn status | grep -qE "^[ADMR]"; then
+            echo "➤ Changes detected"
+
+            if [ "$DRY_RUN" = "true" ]; then
+              echo "➤ DRY RUN: Would commit the following changes:"
+              svn diff --summarize
+            else
+              echo "➤ Committing trunk update..."
+              svn commit -m "Update trunk from GitHub Actions (no version bump)" \
+                --username "$SVN_USERNAME" \
+                --password "$SVN_PASSWORD" \
+                --non-interactive
+              echo "✓ Trunk deployed successfully!"
+            fi
+          else
+            echo "➤ No changes to deploy"
           fi
