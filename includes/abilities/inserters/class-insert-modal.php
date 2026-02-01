@@ -331,6 +331,11 @@ class Insert_Modal extends Abstract_Ability {
 			);
 		}
 
+		// Generate modalId if not provided.
+		if ( empty( $attributes['modalId'] ) ) {
+			$attributes['modalId'] = 'dsgo-modal-' . wp_generate_uuid4();
+		}
+
 		// Sanitize attributes.
 		$attributes = Block_Inserter::sanitize_attributes( $attributes );
 

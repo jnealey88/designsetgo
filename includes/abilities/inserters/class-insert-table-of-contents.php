@@ -195,6 +195,11 @@ class Insert_Table_Of_Contents extends Abstract_Ability {
 			);
 		}
 
+		// Generate uniqueId if not provided.
+		if ( empty( $attributes['uniqueId'] ) ) {
+			$attributes['uniqueId'] = substr( wp_generate_uuid4(), 0, 8 );
+		}
+
 		// Sanitize attributes.
 		$attributes = Block_Inserter::sanitize_attributes( $attributes );
 

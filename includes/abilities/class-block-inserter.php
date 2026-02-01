@@ -132,8 +132,9 @@ class Block_Inserter {
 		$innerContent  = array();
 		$parsed_inners = array();
 
-		// Extract content attribute as innerHTML for core blocks.
-		$attrs = $attributes;
+		// Coerce attribute types and normalize defaults.
+		$attrs = self::coerce_attribute_types( $block_name, $attributes );
+		$attrs = self::normalize_block_attributes( $block_name, $attrs );
 		if ( isset( $attrs['content'] ) && 0 === strpos( $block_name, 'core/' ) ) {
 			$content = $attrs['content'];
 			unset( $attrs['content'] );
@@ -157,17 +158,21 @@ class Block_Inserter {
 			}
 		}
 
-		// Generate wrapper HTML for DesignSetGo blocks with inner blocks.
+		// Generate HTML for DesignSetGo blocks.
 		// Skip dynamic blocks (those with render callbacks) - they'll be rendered server-side.
-		if ( 0 === strpos( $block_name, 'designsetgo/' ) && ! empty( $inner_blocks ) && ! self::is_dynamic_block( $block_name ) ) {
-			$wrapper_html = self::generate_designsetgo_wrapper_html( $block_name, $attributes );
+		if ( 0 === strpos( $block_name, 'designsetgo/' ) && ! self::is_dynamic_block( $block_name ) ) {
+			$wrapper_html = self::generate_designsetgo_wrapper_html( $block_name, $attrs );
 			if ( ! empty( $wrapper_html ) ) {
-				// Add opening wrapper before inner blocks.
-				array_unshift( $innerContent, $wrapper_html['opening'] );
-				// Add closing wrapper after inner blocks.
-				$innerContent[] = $wrapper_html['closing'];
-				// Set innerHTML to complete wrapper.
-				$innerHTML = $wrapper_html['opening'] . $wrapper_html['closing'];
+				if ( ! empty( $inner_blocks ) ) {
+					// Blocks with inner blocks: add opening/closing wrapper around inner blocks.
+					array_unshift( $innerContent, $wrapper_html['opening'] );
+					$innerContent[] = $wrapper_html['closing'];
+					$innerHTML      = $wrapper_html['opening'] . $wrapper_html['closing'];
+				} else {
+					// Blocks without inner blocks: set full HTML as innerHTML.
+					$innerHTML      = $wrapper_html['opening'] . $wrapper_html['closing'];
+					$innerContent[] = $innerHTML;
+				}
 			}
 		}
 
@@ -196,85 +201,1388 @@ class Block_Inserter {
 
 		switch ( $block_name ) {
 			case 'designsetgo/section':
-				$align_items     = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'flex-start';
 				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : false;
-				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '1200px';
+				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '';
+				$align           = isset( $attributes['align'] ) ? $attributes['align'] : 'full';
 
-				// Outer div styles (must match save.js).
-				$outer_style = 'width:100%;align-self:stretch';
-
-				// Inner div styles (must match save.js).
-				$inner_style = 'display:flex;flex-direction:column;align-items:' . esc_attr( $align_items );
-				if ( $constrain_width ) {
-					$inner_style .= ';max-width:' . esc_attr( $content_width ) . ';margin-left:auto;margin-right:auto';
+				// Build outer classes (order: wp-block-*, alignX, dsgo-*).
+				$outer_class_parts = array( 'wp-block-designsetgo-section' );
+				if ( 'full' === $align ) {
+					$outer_class_parts[] = 'alignfull';
+				} elseif ( 'wide' === $align ) {
+					$outer_class_parts[] = 'alignwide';
+				}
+				$outer_class_parts[] = 'dsgo-stack';
+				if ( ! $constrain_width ) {
+					$outer_class_parts[] = 'dsgo-no-width-constraint';
 				}
 
+				// Default padding from block supports.
+				$default_padding = 'padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)';
+
+				// Inner div always has max-width/margin for content centering.
+				$max_width    = $content_width ? $content_width : 'var(--wp--style--global--content-size, 1140px)';
+				$inner_style  = 'max-width:' . esc_attr( $max_width ) . ';margin-left:auto;margin-right:auto';
+
 				return array(
-					'opening' => '<div class="' . esc_attr( $block_class ) . '" style="' . esc_attr( $outer_style ) . '"><div class="dsgo-stack__inner" style="' . esc_attr( $inner_style ) . '">',
+					'opening' => '<div class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( $default_padding ) . '"><div class="dsgo-stack__inner" style="' . esc_attr( $inner_style ) . '">',
 					'closing' => '</div></div>',
 				);
 
 			case 'designsetgo/row':
-				$direction       = isset( $attributes['direction'] ) ? $attributes['direction'] : 'row';
-				$justify         = isset( $attributes['justifyContent'] ) ? $attributes['justifyContent'] : 'flex-start';
-				$align           = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'center';
-				$wrap            = isset( $attributes['wrap'] ) ? $attributes['wrap'] : true;
 				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : false;
-				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '1200px';
+				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '';
+				$mobile_stack    = isset( $attributes['mobileStack'] ) ? $attributes['mobileStack'] : false;
+				$align           = isset( $attributes['align'] ) ? $attributes['align'] : 'full';
+				$layout          = isset( $attributes['layout'] ) ? $attributes['layout'] : array();
+				$justify_content = isset( $layout['justifyContent'] ) ? $layout['justifyContent'] : 'left';
+				$flex_wrap       = isset( $layout['flexWrap'] ) ? $layout['flexWrap'] : 'nowrap';
 
-				// Outer div styles.
-				$outer_style = 'width:100%;align-self:stretch';
+				// Build outer classes (order: wp-block-*, alignX, dsgo-*).
+				$outer_class_parts = array( 'wp-block-designsetgo-row' );
+				if ( 'full' === $align ) {
+					$outer_class_parts[] = 'alignfull';
+				} elseif ( 'wide' === $align ) {
+					$outer_class_parts[] = 'alignwide';
+				}
+				$outer_class_parts[] = 'dsgo-flex';
+				if ( $mobile_stack ) {
+					$outer_class_parts[] = 'dsgo-flex--mobile-stack';
+				}
+				if ( ! $constrain_width ) {
+					$outer_class_parts[] = 'dsgo-no-width-constraint';
+				}
 
-				// Inner div styles (must match save.js).
-				$inner_style = 'display:flex;flex-direction:' . esc_attr( $direction ) . ';flex-wrap:' . ( $wrap ? 'wrap' : 'nowrap' ) . ';justify-content:' . esc_attr( $justify ) . ';align-items:' . esc_attr( $align );
+				// Default padding from block supports.
+				$default_padding = 'padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)';
+
+				// Inner div styles with gap.
+				$inner_styles = array(
+					'display:flex',
+					'justify-content:' . esc_attr( $justify_content ),
+					'flex-wrap:' . esc_attr( $flex_wrap ),
+					'gap:var(--wp--preset--spacing--30)',
+				);
 				if ( $constrain_width ) {
-					$inner_style .= ';max-width:' . esc_attr( $content_width ) . ';margin-left:auto;margin-right:auto';
+					$max_width      = $content_width ? $content_width : 'var(--wp--style--global--content-size, 1140px)';
+					$inner_styles[] = 'max-width:' . esc_attr( $max_width );
+					$inner_styles[] = 'margin-left:auto';
+					$inner_styles[] = 'margin-right:auto';
 				}
 
 				return array(
-					'opening' => '<div class="' . esc_attr( $block_class ) . '" style="' . esc_attr( $outer_style ) . '"><div class="dsgo-flex__inner" style="' . esc_attr( $inner_style ) . '">',
+					'opening' => '<div class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( $default_padding ) . '"><div class="dsgo-flex__inner" style="' . implode( ';', $inner_styles ) . '">',
 					'closing' => '</div></div>',
 				);
 
 			case 'designsetgo/grid':
-				$desktop_cols    = isset( $attributes['desktopColumns'] ) ? $attributes['desktopColumns'] : 3;
-				$align           = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'start';
+				$desktop_cols    = isset( $attributes['desktopColumns'] ) ? intval( $attributes['desktopColumns'] ) : 3;
+				$tablet_cols     = isset( $attributes['tabletColumns'] ) ? intval( $attributes['tabletColumns'] ) : 2;
+				$mobile_cols     = isset( $attributes['mobileColumns'] ) ? intval( $attributes['mobileColumns'] ) : 1;
+				$align_items     = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'stretch';
 				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : false;
-				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '1200px';
+				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '';
+				$align           = isset( $attributes['align'] ) ? $attributes['align'] : 'full';
 
-				// Outer div styles.
-				$outer_style = 'width:100%;align-self:stretch';
+				// Build outer classes (order: wp-block-*, alignX, dsgo-*).
+				$outer_class_parts = array( 'wp-block-designsetgo-grid' );
+				if ( 'full' === $align ) {
+					$outer_class_parts[] = 'alignfull';
+				} elseif ( 'wide' === $align ) {
+					$outer_class_parts[] = 'alignwide';
+				}
+				$outer_class_parts[] = 'dsgo-grid';
+				$outer_class_parts[] = 'dsgo-grid-cols-' . $desktop_cols;
+				$outer_class_parts[] = 'dsgo-grid-cols-tablet-' . $tablet_cols;
+				$outer_class_parts[] = 'dsgo-grid-cols-mobile-' . $mobile_cols;
+				if ( ! $constrain_width ) {
+					$outer_class_parts[] = 'dsgo-no-width-constraint';
+				}
 
-				// Inner div styles (must match save.js).
-				$inner_style = 'display:grid;grid-template-columns:repeat(' . intval( $desktop_cols ) . ', 1fr);align-items:' . esc_attr( $align );
+				// Default padding from block supports.
+				$default_padding = 'padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)';
+
+				// Inner div styles.
+				$default_gap    = 'var(--wp--preset--spacing--50)';
+				$inner_styles   = array(
+					'display:grid',
+					'grid-template-columns:repeat(' . $desktop_cols . ', 1fr)',
+					'align-items:' . esc_attr( $align_items ),
+					'row-gap:' . $default_gap,
+					'column-gap:' . $default_gap,
+				);
 				if ( $constrain_width ) {
-					$inner_style .= ';max-width:' . esc_attr( $content_width ) . ';margin-left:auto;margin-right:auto';
+					$max_width      = $content_width ? $content_width : 'var(--wp--style--global--content-size, 1140px)';
+					$inner_styles[] = 'max-width:' . esc_attr( $max_width );
+					$inner_styles[] = 'margin-left:auto';
+					$inner_styles[] = 'margin-right:auto';
 				}
 
 				return array(
-					'opening' => '<div class="' . esc_attr( $block_class ) . '" style="' . esc_attr( $outer_style ) . '"><div class="dsgo-grid__inner" style="' . esc_attr( $inner_style ) . '">',
+					'opening' => '<div class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( $default_padding ) . '"><div class="dsgo-grid__inner" style="' . implode( ';', $inner_styles ) . '">',
 					'closing' => '</div></div>',
 				);
 
 			case 'designsetgo/counter-group':
+				$desktop_cols = isset( $attributes['desktopColumns'] ) ? intval( $attributes['desktopColumns'] ) : 3;
+				$tablet_cols  = isset( $attributes['tabletColumns'] ) ? intval( $attributes['tabletColumns'] ) : 2;
+				$mobile_cols  = isset( $attributes['mobileColumns'] ) ? intval( $attributes['mobileColumns'] ) : 1;
+				$gap          = isset( $attributes['gap'] ) ? intval( $attributes['gap'] ) : 32;
+				$duration     = isset( $attributes['animationDuration'] ) ? floatval( $attributes['animationDuration'] ) : 2;
+				$delay        = isset( $attributes['animationDelay'] ) ? floatval( $attributes['animationDelay'] ) : 0;
+				$easing       = isset( $attributes['animationEasing'] ) ? $attributes['animationEasing'] : 'easeOutQuad';
+				$use_grouping = isset( $attributes['useGrouping'] ) ? $attributes['useGrouping'] : true;
+				$separator    = isset( $attributes['separator'] ) ? $attributes['separator'] : ',';
+				$decimal      = isset( $attributes['decimal'] ) ? $attributes['decimal'] : '.';
+				$align        = isset( $attributes['alignment'] ) ? $attributes['alignment'] : 'center';
+
+				$outer_style = 'align-self:stretch;--dsgo-counter-columns-desktop:' . $desktop_cols . ';--dsgo-counter-columns-tablet:' . $tablet_cols . ';--dsgo-counter-columns-mobile:' . $mobile_cols . ';--dsgo-counter-gap:' . $gap . 'px';
+
+				$data_attrs = ' data-animation-duration="' . esc_attr( $duration ) . '"';
+				$data_attrs .= ' data-animation-delay="' . esc_attr( $delay ) . '"';
+				$data_attrs .= ' data-animation-easing="' . esc_attr( $easing ) . '"';
+				$data_attrs .= ' data-use-grouping="' . ( $use_grouping ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-separator="' . esc_attr( $separator ) . '"';
+				$data_attrs .= ' data-decimal="' . esc_attr( $decimal ) . '"';
+
 				return array(
-					'opening' => '<div class="' . esc_attr( $block_class ) . '"><div class="dsgo-counter-group__inner">',
+					'opening' => '<div class="wp-block-designsetgo-counter-group dsgo-counter-group" style="' . esc_attr( $outer_style ) . '"' . $data_attrs . '><div class="dsgo-counter-group__inner dsgo-counter-group__inner--align-' . esc_attr( $align ) . '">',
 					'closing' => '</div></div>',
+				);
+
+			case 'designsetgo/counter':
+				$unique_id    = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : wp_unique_id( 'counter-' );
+				$start_value  = isset( $attributes['startValue'] ) ? floatval( $attributes['startValue'] ) : 0;
+				$end_value    = isset( $attributes['endValue'] ) ? floatval( $attributes['endValue'] ) : 100;
+				$decimals     = isset( $attributes['decimals'] ) ? intval( $attributes['decimals'] ) : 0;
+				$prefix       = isset( $attributes['prefix'] ) ? $attributes['prefix'] : '';
+				$suffix       = isset( $attributes['suffix'] ) ? $attributes['suffix'] : '';
+				$label        = isset( $attributes['label'] ) ? $attributes['label'] : '';
+				$duration     = isset( $attributes['duration'] ) ? floatval( $attributes['duration'] ) : 2;
+				$delay        = isset( $attributes['delay'] ) ? floatval( $attributes['delay'] ) : 0;
+				$easing       = isset( $attributes['easing'] ) ? $attributes['easing'] : 'easeOutQuad';
+				$use_grouping = isset( $attributes['useGrouping'] ) ? $attributes['useGrouping'] : true;
+				$separator    = isset( $attributes['separator'] ) ? $attributes['separator'] : ',';
+				$decimal      = isset( $attributes['decimal'] ) ? $attributes['decimal'] : '.';
+
+				$data_attrs  = ' data-start-value="' . esc_attr( $start_value ) . '"';
+				$data_attrs .= ' data-end-value="' . esc_attr( $end_value ) . '"';
+				$data_attrs .= ' data-decimals="' . esc_attr( $decimals ) . '"';
+				$data_attrs .= ' data-prefix="' . esc_attr( $prefix ) . '"';
+				$data_attrs .= ' data-suffix="' . esc_attr( $suffix ) . '"';
+				$data_attrs .= ' data-duration="' . esc_attr( $duration ) . '"';
+				$data_attrs .= ' data-delay="' . esc_attr( $delay ) . '"';
+				$data_attrs .= ' data-easing="' . esc_attr( $easing ) . '"';
+				$data_attrs .= ' data-use-grouping="' . ( $use_grouping ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-separator="' . esc_attr( $separator ) . '"';
+				$data_attrs .= ' data-decimal="' . esc_attr( $decimal ) . '"';
+
+				$inner_html  = '<div class="dsgo-counter__content icon-top">';
+				$inner_html .= '<div class="dsgo-counter__number">';
+				$inner_html .= '<span class="dsgo-counter__value">' . esc_html( $start_value ) . '</span>';
+				$inner_html .= '</div></div>';
+				if ( $label ) {
+					$inner_html .= '<div class="dsgo-counter__label">' . esc_html( $label ) . '</div>';
+				}
+
+				return array(
+					'opening' => '<div class="wp-block-designsetgo-counter dsgo-counter" id="' . esc_attr( $unique_id ) . '" style="text-align:center"' . $data_attrs . '>' . $inner_html,
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/flip-card':
+				$flip_trigger   = isset( $attributes['flipTrigger'] ) ? $attributes['flipTrigger'] : 'hover';
+				$flip_effect    = isset( $attributes['flipEffect'] ) ? $attributes['flipEffect'] : 'flip';
+				$flip_direction = isset( $attributes['flipDirection'] ) ? $attributes['flipDirection'] : 'horizontal';
+				$flip_duration  = isset( $attributes['flipDuration'] ) ? $attributes['flipDuration'] : '0.6s';
+
+				$outer_class = 'wp-block-designsetgo-flip-card dsgo-flip-card dsgo-flip-card--' . esc_attr( $flip_trigger ) . ' dsgo-flip-card--effect-' . esc_attr( $flip_effect ) . ' dsgo-flip-card--' . esc_attr( $flip_direction );
+				$outer_style = '--dsgo-flip-duration:' . esc_attr( $flip_duration ) . ';width:100%';
+				$data_attrs  = ' data-flip-trigger="' . esc_attr( $flip_trigger ) . '" data-flip-effect="' . esc_attr( $flip_effect ) . '" data-flip-direction="' . esc_attr( $flip_direction ) . '"';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( $outer_class ) . '" style="' . esc_attr( $outer_style ) . '"' . $data_attrs . '><div class="dsgo-flip-card__container">',
+					'closing' => '</div></div>',
+				);
+
+			case 'designsetgo/flip-card-front':
+				return array(
+					'opening' => '<div class="wp-block-designsetgo-flip-card-front dsgo-flip-card__face dsgo-flip-card__front">',
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/flip-card-back':
+				return array(
+					'opening' => '<div class="wp-block-designsetgo-flip-card-back dsgo-flip-card__face dsgo-flip-card__back">',
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/icon':
+				$icon_name    = isset( $attributes['icon'] ) ? $attributes['icon'] : ( isset( $attributes['iconName'] ) ? $attributes['iconName'] : 'star' );
+				$icon_style   = isset( $attributes['iconStyle'] ) ? $attributes['iconStyle'] : 'filled';
+				$stroke_width = isset( $attributes['strokeWidth'] ) ? $attributes['strokeWidth'] : '1.5';
+				$icon_size    = isset( $attributes['iconSize'] ) ? intval( $attributes['iconSize'] ) : ( isset( $attributes['size'] ) ? intval( $attributes['size'] ) : 48 );
+				$aria_label   = isset( $attributes['ariaLabel'] ) ? $attributes['ariaLabel'] : ucwords( str_replace( '-', ' ', $icon_name ) );
+
+				$wrapper_style = 'width:' . $icon_size . 'px;height:' . $icon_size . 'px;display:inline-flex;align-items:center;justify-content:center;border-radius:inherit';
+
+				$inner_html  = '<div class="dsgo-icon__wrapper dsgo-lazy-icon" style="' . esc_attr( $wrapper_style ) . '"';
+				$inner_html .= ' data-icon-name="' . esc_attr( $icon_name ) . '"';
+				$inner_html .= ' data-icon-style="' . esc_attr( $icon_style ) . '"';
+				$inner_html .= ' data-icon-stroke-width="' . esc_attr( $stroke_width ) . '"';
+				$inner_html .= ' role="img" aria-label="' . esc_attr( $aria_label ) . '"></div>';
+
+				return array(
+					'opening' => '<div class="wp-block-designsetgo-icon dsgo-icon" style="display:flex;align-items:center;justify-content:center">' . $inner_html,
+					'closing' => '</div>',
 				);
 
 			case 'designsetgo/accordion':
+				$allow_multiple    = isset( $attributes['allowMultipleOpen'] ) ? $attributes['allowMultipleOpen'] : false;
+				$icon_style        = isset( $attributes['iconStyle'] ) ? $attributes['iconStyle'] : 'chevron';
+				$icon_position     = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'right';
+				$border_between    = isset( $attributes['borderBetween'] ) ? $attributes['borderBetween'] : true;
+				$item_gap          = isset( $attributes['itemGap'] ) ? $attributes['itemGap'] : '0.5rem';
+				$open_bg           = isset( $attributes['openBackgroundColor'] ) ? $attributes['openBackgroundColor'] : '';
+				$open_text         = isset( $attributes['openTextColor'] ) ? $attributes['openTextColor'] : '';
+				$hover_bg          = isset( $attributes['hoverBackgroundColor'] ) ? $attributes['hoverBackgroundColor'] : $open_bg;
+				$hover_text        = isset( $attributes['hoverTextColor'] ) ? $attributes['hoverTextColor'] : $open_text;
+				$border_color      = isset( $attributes['borderBetweenColor'] ) ? $attributes['borderBetweenColor'] : '';
+
+				// Build modifier classes (must match save.js).
+				$accordion_classes = array( 'dsgo-accordion' );
+				if ( $allow_multiple ) {
+					$accordion_classes[] = 'dsgo-accordion--multiple';
+				}
+				if ( 'left' === $icon_position ) {
+					$accordion_classes[] = 'dsgo-accordion--icon-left';
+				} elseif ( 'right' === $icon_position ) {
+					$accordion_classes[] = 'dsgo-accordion--icon-right';
+				}
+				if ( 'none' === $icon_style ) {
+					$accordion_classes[] = 'dsgo-accordion--no-icon';
+				}
+				if ( $border_between ) {
+					$accordion_classes[] = 'dsgo-accordion--border-between';
+				}
+
+				// Build CSS custom properties style (must match save.js).
+				$style_parts = array(
+					'--dsgo-accordion-open-bg:' . esc_attr( $open_bg ),
+					'--dsgo-accordion-open-text:' . esc_attr( $open_text ),
+					'--dsgo-accordion-hover-bg:' . esc_attr( $hover_bg ),
+					'--dsgo-accordion-hover-text:' . esc_attr( $hover_text ),
+					'--dsgo-accordion-gap:' . esc_attr( $item_gap ),
+				);
+				if ( $border_color ) {
+					$style_parts[] = '--dsgo-accordion-border-color:' . esc_attr( $border_color );
+				}
+				$custom_style = implode( ';', $style_parts );
+
+				$full_class = 'wp-block-designsetgo-accordion ' . implode( ' ', $accordion_classes );
+
 				return array(
-					'opening' => '<div class="' . esc_attr( $block_class ) . '"><div class="dsgo-accordion__items">',
+					'opening' => '<div class="' . esc_attr( $full_class ) . '" style="' . esc_attr( $custom_style ) . '" data-allow-multiple="' . ( $allow_multiple ? 'true' : 'false' ) . '" data-icon-style="' . esc_attr( $icon_style ) . '"><div class="dsgo-accordion__items">',
 					'closing' => '</div></div>',
 				);
 
-			case 'designsetgo/tabs':
-				$unique_id   = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : wp_unique_id( 'tabs-' );
-				$orientation = isset( $attributes['orientation'] ) ? $attributes['orientation'] : 'horizontal';
-				$tab_style   = isset( $attributes['tabStyle'] ) ? $attributes['tabStyle'] : 'default';
-				$classes     = $block_class . ' dsgo-tabs-' . $unique_id . ' dsgo-tabs--' . $orientation . ' dsgo-tabs--' . $tab_style;
+			case 'designsetgo/accordion-item':
+				$title     = isset( $attributes['title'] ) ? $attributes['title'] : '';
+				$is_open   = isset( $attributes['isOpen'] ) ? $attributes['isOpen'] : false;
+				$unique_id = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : wp_unique_id( 'accordion-item-' );
+
+				// Get icon style/position from context or defaults.
+				$icon_style    = isset( $attributes['iconStyle'] ) ? $attributes['iconStyle'] : 'chevron';
+				$icon_position = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'right';
+
+				// Build item classes.
+				$item_classes = array( 'dsgo-accordion-item' );
+				$item_classes[] = $is_open ? 'dsgo-accordion-item--open' : 'dsgo-accordion-item--closed';
+
+				// Build trigger classes.
+				$trigger_classes = array( 'dsgo-accordion-item__trigger' );
+				if ( 'left' === $icon_position ) {
+					$trigger_classes[] = 'dsgo-accordion-item__trigger--icon-left';
+				} elseif ( 'right' === $icon_position ) {
+					$trigger_classes[] = 'dsgo-accordion-item__trigger--icon-right';
+				}
+
+				// Generate icon SVG based on style.
+				$icon_svg = '';
+				if ( 'none' !== $icon_style ) {
+					switch ( $icon_style ) {
+						case 'plus-minus':
+							if ( $is_open ) {
+								$icon_svg = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4 8h8v1H4z"></path></svg>';
+							} else {
+								$icon_svg = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 4v8M4 8h8" stroke="currentColor" stroke-width="1" fill="none"></path></svg>';
+							}
+							break;
+						case 'caret':
+							$icon_svg = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 7l2 2 2-2z"></path></svg>';
+							break;
+						case 'chevron':
+						default:
+							$icon_svg = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z"></path></svg>';
+							break;
+					}
+				}
+
+				$header_id = esc_attr( $unique_id ) . '-header';
+				$panel_id  = esc_attr( $unique_id ) . '-panel';
+
+				// Build icon HTML.
+				$icon_html = '';
+				if ( $icon_svg ) {
+					$icon_html = '<span class="dsgo-accordion-item__icon" aria-hidden="true">' . $icon_svg . '</span>';
+				}
+
+				// Build the full accordion item HTML structure.
+				$opening  = '<div class="wp-block-designsetgo-accordion-item ' . esc_attr( implode( ' ', $item_classes ) ) . '" data-initially-open="' . ( $is_open ? 'true' : 'false' ) . '">';
+				$opening .= '<div class="dsgo-accordion-item__header">';
+				$opening .= '<button type="button" class="' . esc_attr( implode( ' ', $trigger_classes ) ) . '" aria-expanded="' . ( $is_open ? 'true' : 'false' ) . '" aria-controls="' . $panel_id . '" id="' . $header_id . '">';
+				if ( 'left' === $icon_position ) {
+					$opening .= $icon_html;
+				}
+				$opening .= '<span class="dsgo-accordion-item__title">' . esc_html( $title ) . '</span>';
+				if ( 'right' === $icon_position ) {
+					$opening .= $icon_html;
+				}
+				$opening .= '</button>';
+				$opening .= '</div>';
+				$opening .= '<div class="dsgo-accordion-item__panel" role="region" aria-labelledby="' . $header_id . '" id="' . $panel_id . '"' . ( $is_open ? '' : ' hidden' ) . '>';
+				$opening .= '<div class="dsgo-accordion-item__content">';
+
+				$closing = '</div></div></div>';
+
 				return array(
-					'opening' => '<div class="' . esc_attr( $classes ) . '"><div class="dsgo-tabs__nav"></div><div class="dsgo-tabs__panels">',
+					'opening' => $opening,
+					'closing' => $closing,
+				);
+
+			case 'designsetgo/divider':
+				$divider_style = isset( $attributes['dividerStyle'] ) ? $attributes['dividerStyle'] : 'solid';
+				$width         = isset( $attributes['width'] ) ? $attributes['width'] : 100;
+				$thickness     = isset( $attributes['thickness'] ) ? $attributes['thickness'] : 2;
+				$icon_name     = isset( $attributes['iconName'] ) ? $attributes['iconName'] : '';
+
+				$divider_class = 'wp-block-designsetgo-divider dsgo-divider dsgo-divider--' . esc_attr( $divider_style );
+
+				$container_style = 'width:' . intval( $width ) . '%';
+				$line_style      = 'height:' . intval( $thickness ) . 'px';
+
+				if ( 'icon' === $divider_style ) {
+					// Icon style with three elements.
+					$inner_html  = '<div class="dsgo-divider__container" style="' . esc_attr( $container_style ) . '">';
+					$inner_html .= '<div class="dsgo-divider__icon-wrapper">';
+					$inner_html .= '<span class="dsgo-divider__line dsgo-divider__line--left" style="' . esc_attr( $line_style ) . '"></span>';
+					$inner_html .= '<span class="dsgo-divider__icon dsgo-lazy-icon" data-icon-name="' . esc_attr( $icon_name ) . '"></span>';
+					$inner_html .= '<span class="dsgo-divider__line dsgo-divider__line--right" style="' . esc_attr( $line_style ) . '"></span>';
+					$inner_html .= '</div></div>';
+				} else {
+					// Standard divider.
+					$inner_html  = '<div class="dsgo-divider__container" style="' . esc_attr( $container_style ) . '">';
+					$inner_html .= '<div class="dsgo-divider__line" style="' . esc_attr( $line_style ) . '"></div>';
+					$inner_html .= '</div>';
+				}
+
+				return array(
+					'opening' => '<div class="' . esc_attr( $divider_class ) . '">' . $inner_html,
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/countdown-timer':
+				$target_datetime     = isset( $attributes['targetDateTime'] ) ? $attributes['targetDateTime'] : '';
+				$timezone            = isset( $attributes['timezone'] ) ? $attributes['timezone'] : '';
+				$show_days           = isset( $attributes['showDays'] ) ? $attributes['showDays'] : true;
+				$show_hours          = isset( $attributes['showHours'] ) ? $attributes['showHours'] : true;
+				$show_minutes        = isset( $attributes['showMinutes'] ) ? $attributes['showMinutes'] : true;
+				$show_seconds        = isset( $attributes['showSeconds'] ) ? $attributes['showSeconds'] : true;
+				$layout              = isset( $attributes['layout'] ) ? $attributes['layout'] : 'boxed';
+				$completion_action   = isset( $attributes['completionAction'] ) ? $attributes['completionAction'] : 'message';
+				$completion_message  = isset( $attributes['completionMessage'] ) ? $attributes['completionMessage'] : 'The countdown has ended!';
+				$number_color        = isset( $attributes['numberColor'] ) ? $attributes['numberColor'] : '';
+				$label_color         = isset( $attributes['labelColor'] ) ? $attributes['labelColor'] : '';
+				$unit_bg_color       = isset( $attributes['unitBackgroundColor'] ) ? $attributes['unitBackgroundColor'] : '';
+				$unit_border         = isset( $attributes['unitBorder'] ) ? $attributes['unitBorder'] : array();
+				$unit_border_radius  = isset( $attributes['unitBorderRadius'] ) ? intval( $attributes['unitBorderRadius'] ) : 12;
+				$unit_gap            = isset( $attributes['unitGap'] ) ? $attributes['unitGap'] : '1rem';
+				$unit_padding        = isset( $attributes['unitPadding'] ) ? $attributes['unitPadding'] : '1.5rem';
+
+				// Build unit style.
+				$border_color = isset( $unit_border['color'] ) && $unit_border['color'] ? $unit_border['color'] : 'var(--wp--preset--color--accent-2, currentColor)';
+				$border_width = isset( $unit_border['width'] ) ? $unit_border['width'] : '2px';
+				$border_style = isset( $unit_border['style'] ) ? $unit_border['style'] : 'solid';
+
+				$unit_style_parts = array(
+					'background-color:' . ( $unit_bg_color ? esc_attr( $unit_bg_color ) : 'transparent' ),
+					'border-color:' . esc_attr( $border_color ),
+					'border-width:' . esc_attr( $border_width ),
+					'border-style:' . esc_attr( $border_style ),
+					'border-radius:' . $unit_border_radius . 'px',
+					'padding:' . esc_attr( $unit_padding ),
+				);
+				$unit_style = implode( ';', $unit_style_parts );
+
+				$number_style = 'color:' . ( $number_color ? esc_attr( $number_color ) : 'var(--wp--preset--color--accent-2, currentColor)' );
+				$label_style  = 'color:' . ( $label_color ? esc_attr( $label_color ) : 'currentColor' );
+
+				// Build units HTML.
+				$units = array();
+				if ( $show_days ) {
+					$units[] = array( 'type' => 'days', 'label' => 'Days' );
+				}
+				if ( $show_hours ) {
+					$units[] = array( 'type' => 'hours', 'label' => 'Hours' );
+				}
+				if ( $show_minutes ) {
+					$units[] = array( 'type' => 'minutes', 'label' => 'Min' );
+				}
+				if ( $show_seconds ) {
+					$units[] = array( 'type' => 'seconds', 'label' => 'Sec' );
+				}
+
+				$units_html = '';
+				foreach ( $units as $unit ) {
+					$units_html .= '<div class="dsgo-countdown-timer__unit" data-unit-type="' . esc_attr( $unit['type'] ) . '" style="' . esc_attr( $unit_style ) . '">';
+					$units_html .= '<div class="dsgo-countdown-timer__number" style="' . esc_attr( $number_style ) . '">00</div>';
+					$units_html .= '<div class="dsgo-countdown-timer__label" style="' . esc_attr( $label_style ) . '">' . esc_html( $unit['label'] ) . '</div>';
+					$units_html .= '</div>';
+				}
+
+				// Build data attributes.
+				$data_attrs  = ' data-target-datetime="' . esc_attr( $target_datetime ) . '"';
+				$data_attrs .= ' data-timezone="' . esc_attr( $timezone ) . '"';
+				$data_attrs .= ' data-show-days="' . ( $show_days ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-show-hours="' . ( $show_hours ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-show-minutes="' . ( $show_minutes ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-show-seconds="' . ( $show_seconds ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-completion-action="' . esc_attr( $completion_action ) . '"';
+				$data_attrs .= ' data-completion-message="' . esc_attr( $completion_message ) . '"';
+
+				$container_style = 'gap:' . esc_attr( $unit_gap );
+				$outer_class     = 'wp-block-designsetgo-countdown-timer dsgo-countdown-timer dsgo-countdown-timer--' . esc_attr( $layout );
+
+				$inner_html  = '<div class="dsgo-countdown-timer__units">' . $units_html . '</div>';
+				$inner_html .= '<div class="dsgo-countdown-timer__completion-message" style="display:none">' . esc_html( $completion_message ) . '</div>';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( $outer_class ) . '" style="' . esc_attr( $container_style ) . '"' . $data_attrs . '>' . $inner_html,
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/progress-bar':
+				$percentage        = isset( $attributes['percentage'] ) ? intval( $attributes['percentage'] ) : 75;
+				$bar_color         = isset( $attributes['barColor'] ) ? $attributes['barColor'] : '#2563eb';
+				$bar_bg_color      = isset( $attributes['barBackgroundColor'] ) ? $attributes['barBackgroundColor'] : '#e5e7eb';
+				$height            = isset( $attributes['height'] ) ? $attributes['height'] : '20px';
+				$border_radius     = isset( $attributes['borderRadius'] ) ? $attributes['borderRadius'] : '4px';
+				$show_percentage   = isset( $attributes['showPercentage'] ) ? $attributes['showPercentage'] : true;
+				$label_position    = isset( $attributes['labelPosition'] ) ? $attributes['labelPosition'] : 'top';
+				$animate_on_scroll = isset( $attributes['animateOnScroll'] ) ? $attributes['animateOnScroll'] : true;
+				$animation_dur     = isset( $attributes['animationDuration'] ) ? floatval( $attributes['animationDuration'] ) : 1.5;
+
+				// Clamp percentage.
+				$bar_width = min( max( $percentage, 0 ), 100 );
+
+				// Build classes.
+				$class_parts = array( 'wp-block-designsetgo-progress-bar', 'dsgo-progress-bar' );
+				if ( $animate_on_scroll ) {
+					$class_parts[] = 'dsgo-progress-bar--animate';
+				}
+
+				// Data attributes for animation.
+				$data_attrs = '';
+				if ( $animate_on_scroll ) {
+					$data_attrs = ' data-percentage="' . esc_attr( $bar_width ) . '" data-duration="' . esc_attr( $animation_dur ) . '"';
+				}
+
+				// Label.
+				$label_html = '';
+				if ( $show_percentage && 'top' === $label_position ) {
+					$label_html = '<div class="dsgo-progress-bar__label dsgo-progress-bar__label--top">' . esc_html( $bar_width . '%' ) . '</div>';
+				}
+
+				// Container styles.
+				$container_style = 'width:100%;height:' . esc_attr( $height ) . ';background-color:' . esc_attr( $bar_bg_color ) . ';border-radius:' . esc_attr( $border_radius ) . ';overflow:hidden;position:relative';
+
+				// Fill styles.
+				$fill_width = $animate_on_scroll ? '0%' : $bar_width . '%';
+				$fill_style = 'width:' . $fill_width . ';height:100%;background-color:' . esc_attr( $bar_color ) . ';transition:width ' . esc_attr( $animation_dur ) . 's ease-out;border-radius:' . esc_attr( $border_radius );
+
+				$inner_html  = $label_html;
+				$inner_html .= '<div class="dsgo-progress-bar__container" style="' . esc_attr( $container_style ) . '">';
+				$inner_html .= '<div class="dsgo-progress-bar__fill " style="' . esc_attr( $fill_style ) . '"></div>';
+				$inner_html .= '</div>';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '"' . $data_attrs . '>' . $inner_html,
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/pill':
+				$content = isset( $attributes['content'] ) ? $attributes['content'] : '';
+				$align   = isset( $attributes['align'] ) ? $attributes['align'] : 'center';
+
+				// Build class list matching useBlockProps.save output.
+				$class_parts = array( 'wp-block-designsetgo-pill' );
+				if ( $align ) {
+					$class_parts[] = 'align' . $align;
+				}
+				$class_parts[] = 'dsgo-pill';
+				$class_parts[] = 'has-small-font-size';
+
+				$inner_html = '<span class="dsgo-pill__content">' . wp_kses_post( $content ) . '</span>';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '">' . $inner_html,
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/map':
+				$provider      = isset( $attributes['dsgoProvider'] ) ? $attributes['dsgoProvider'] : 'openstreetmap';
+				$latitude      = isset( $attributes['dsgoLatitude'] ) ? floatval( $attributes['dsgoLatitude'] ) : 40.7128;
+				$longitude     = isset( $attributes['dsgoLongitude'] ) ? floatval( $attributes['dsgoLongitude'] ) : -74.006;
+				$zoom          = isset( $attributes['dsgoZoom'] ) ? intval( $attributes['dsgoZoom'] ) : 13;
+				$address       = isset( $attributes['dsgoAddress'] ) ? $attributes['dsgoAddress'] : '';
+				$marker_icon   = isset( $attributes['dsgoMarkerIcon'] ) ? $attributes['dsgoMarkerIcon'] : '📍';
+				$marker_color  = isset( $attributes['dsgoMarkerColor'] ) ? $attributes['dsgoMarkerColor'] : '#e74c3c';
+				$height        = isset( $attributes['dsgoHeight'] ) ? $attributes['dsgoHeight'] : '400px';
+				$aspect_ratio  = isset( $attributes['dsgoAspectRatio'] ) ? $attributes['dsgoAspectRatio'] : 'custom';
+				$privacy_mode  = isset( $attributes['dsgoPrivacyMode'] ) ? $attributes['dsgoPrivacyMode'] : false;
+				$map_style     = isset( $attributes['dsgoMapStyle'] ) ? $attributes['dsgoMapStyle'] : 'standard';
+
+				// Clamp coordinates.
+				$safe_lat  = max( -90, min( 90, $latitude ) );
+				$safe_lng  = max( -180, min( 180, $longitude ) );
+				$safe_zoom = max( 1, min( 20, $zoom ) );
+
+				// Build classes.
+				$class_parts = array( 'wp-block-designsetgo-map', 'dsgo-map' );
+				if ( $privacy_mode ) {
+					$class_parts[] = 'dsgo-map--privacy-mode';
+				}
+				if ( 'custom' !== $aspect_ratio ) {
+					$class_parts[] = 'dsgo-map--aspect-' . str_replace( ':', '-', $aspect_ratio );
+				}
+
+				// Style.
+				$style = '';
+				if ( 'custom' === $aspect_ratio ) {
+					$style = 'height:' . esc_attr( $height );
+				}
+
+				// Data attributes.
+				$data_attrs  = ' data-dsgo-provider="' . esc_attr( $provider ) . '"';
+				$data_attrs .= ' data-dsgo-lat="' . esc_attr( $safe_lat ) . '"';
+				$data_attrs .= ' data-dsgo-lng="' . esc_attr( $safe_lng ) . '"';
+				$data_attrs .= ' data-dsgo-zoom="' . esc_attr( $safe_zoom ) . '"';
+				$data_attrs .= ' data-dsgo-address="' . esc_attr( $address ) . '"';
+				$data_attrs .= ' data-dsgo-marker-icon="' . esc_attr( $marker_icon ) . '"';
+				$data_attrs .= ' data-dsgo-marker-color="' . esc_attr( $marker_color ) . '"';
+				$data_attrs .= ' data-dsgo-privacy-mode="' . ( $privacy_mode ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-dsgo-map-style="' . esc_attr( $map_style ) . '"';
+
+				// Inner HTML.
+				$aria_label = $address ? 'Map showing ' . esc_attr( $address ) : 'Interactive map';
+				$inner_html = '<div class="dsgo-map__container" role="region" aria-label="' . esc_attr( $aria_label ) . '"></div>';
+
+				$style_attr = $style ? ' style="' . esc_attr( $style ) . '"' : '';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '"' . $style_attr . $data_attrs . '>' . $inner_html,
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/card':
+				$layout_preset     = isset( $attributes['layoutPreset'] ) ? $attributes['layoutPreset'] : 'standard';
+				$visual_style      = isset( $attributes['visualStyle'] ) ? $attributes['visualStyle'] : 'default';
+				$title             = isset( $attributes['title'] ) ? $attributes['title'] : '';
+				$subtitle          = isset( $attributes['subtitle'] ) ? $attributes['subtitle'] : '';
+				$body_text         = isset( $attributes['bodyText'] ) ? $attributes['bodyText'] : '';
+				$show_title        = isset( $attributes['showTitle'] ) ? $attributes['showTitle'] : true;
+				$show_subtitle     = isset( $attributes['showSubtitle'] ) ? $attributes['showSubtitle'] : true;
+				$show_body         = isset( $attributes['showBody'] ) ? $attributes['showBody'] : true;
+				$show_cta          = isset( $attributes['showCta'] ) ? $attributes['showCta'] : true;
+				$content_alignment = isset( $attributes['contentAlignment'] ) ? $attributes['contentAlignment'] : 'left';
+
+				$outer_class = 'wp-block-designsetgo-card dsgo-card dsgo-card--' . esc_attr( $layout_preset ) . ' dsgo-card--style-' . esc_attr( $visual_style );
+
+				// Build content HTML.
+				$content_class = 'dsgo-card__content ';
+				if ( 'background' === $layout_preset ) {
+					$content_class .= 'dsgo-card__content--' . esc_attr( $content_alignment );
+				}
+
+				$content_html = '';
+				if ( $show_title && $title ) {
+					$content_html .= '<h3 class="dsgo-card__title">' . wp_kses_post( $title ) . '</h3>';
+				}
+				if ( $show_subtitle && $subtitle ) {
+					$content_html .= '<p class="dsgo-card__subtitle">' . wp_kses_post( $subtitle ) . '</p>';
+				}
+				if ( $show_body && $body_text ) {
+					$content_html .= '<p class="dsgo-card__body">' . wp_kses_post( $body_text ) . '</p>';
+				}
+
+				// CTA area for inner blocks.
+				$cta_opening = '';
+				$cta_closing = '';
+				if ( $show_cta ) {
+					$cta_opening = '<div class="dsgo-card__cta">';
+					$cta_closing = '</div>';
+				}
+
+				return array(
+					'opening' => '<div class="' . esc_attr( $outer_class ) . '"><div class="dsgo-card__inner"><div class="' . esc_attr( $content_class ) . '">' . $content_html . $cta_opening,
+					'closing' => $cta_closing . '</div></div></div>',
+				);
+
+			case 'designsetgo/icon-list':
+				$layout    = isset( $attributes['layout'] ) ? $attributes['layout'] : 'vertical';
+				$gap       = isset( $attributes['gap'] ) ? $attributes['gap'] : '24px';
+				$columns   = isset( $attributes['columns'] ) ? intval( $attributes['columns'] ) : 2;
+				$alignment = isset( $attributes['alignment'] ) ? $attributes['alignment'] : 'left';
+
+				// Calculate alignment values.
+				$align_items     = '';
+				$justify_content = '';
+				$flex_direction  = '';
+
+				if ( 'vertical' === $layout ) {
+					$flex_direction = 'column';
+					if ( 'center' === $alignment ) {
+						$align_items = 'center';
+					} elseif ( 'right' === $alignment ) {
+						$align_items = 'flex-end';
+					} else {
+						$align_items = 'flex-start';
+					}
+				} elseif ( 'horizontal' === $layout ) {
+					$flex_direction = 'row';
+					if ( 'center' === $alignment ) {
+						$justify_content = 'center';
+					} elseif ( 'right' === $alignment ) {
+						$justify_content = 'flex-end';
+					} else {
+						$justify_content = 'flex-start';
+					}
+				}
+
+				// Build container styles.
+				$container_style_parts = array();
+				if ( 'grid' === $layout ) {
+					$container_style_parts[] = 'display:grid';
+					$container_style_parts[] = 'grid-template-columns:repeat(' . $columns . ', 1fr)';
+				} else {
+					$container_style_parts[] = 'display:flex';
+					$container_style_parts[] = 'flex-direction:' . $flex_direction;
+				}
+				$container_style_parts[] = 'gap:' . esc_attr( $gap );
+				if ( $align_items ) {
+					$container_style_parts[] = 'align-items:' . $align_items;
+				}
+				if ( $justify_content ) {
+					$container_style_parts[] = 'justify-content:' . $justify_content;
+				}
+				$container_style_parts[] = 'width:100%';
+				$container_style         = implode( ';', $container_style_parts );
+
+				$outer_class = 'wp-block-designsetgo-icon-list dsgo-icon-list dsgo-icon-list--' . esc_attr( $layout );
+
+				return array(
+					'opening' => '<div class="' . esc_attr( $outer_class ) . '" style="width:100%"><div class="dsgo-icon-list__items" style="' . esc_attr( $container_style ) . '">',
+					'closing' => '</div></div>',
+				);
+
+			case 'designsetgo/icon-list-item':
+				$icon         = isset( $attributes['icon'] ) ? $attributes['icon'] : 'star';
+				$link_url     = isset( $attributes['linkUrl'] ) ? $attributes['linkUrl'] : '';
+				$link_target  = isset( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : '';
+				$link_rel     = isset( $attributes['linkRel'] ) ? $attributes['linkRel'] : '';
+				$content_gap  = isset( $attributes['contentGap'] ) ? intval( $attributes['contentGap'] ) : 8;
+				$icon_size    = 32; // Default from context.
+				$icon_position = 'left'; // Default from context.
+
+				// Calculate text alignment.
+				$text_align = 'left';
+				if ( 'top' === $icon_position ) {
+					$text_align = 'center';
+				} elseif ( 'right' === $icon_position ) {
+					$text_align = 'right';
+				}
+
+				// Item styles.
+				$flex_direction = 'top' === $icon_position ? 'column' : 'row';
+				if ( 'right' === $icon_position ) {
+					$flex_direction = 'row-reverse';
+				}
+				$item_align = 'top' === $icon_position ? 'center' : 'flex-start';
+				$item_gap   = 'top' === $icon_position ? '12px' : '16px';
+				$item_style = 'display:flex;flex-direction:' . $flex_direction . ';align-items:' . $item_align . ';gap:' . $item_gap;
+
+				// Icon wrapper styles.
+				$icon_style = 'display:flex;align-items:center;justify-content:center;width:' . $icon_size . 'px;height:' . $icon_size . 'px;min-width:' . $icon_size . 'px';
+
+				// Content styles.
+				$content_style = 'text-align:' . $text_align . ';display:flex;flex-direction:column;gap:' . $content_gap . 'px';
+
+				$outer_class = 'wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-' . esc_attr( $icon_position );
+
+				// Build icon HTML.
+				$icon_html = '<div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="' . esc_attr( $icon_style ) . '" data-icon-name="' . esc_attr( $icon ) . '"></div>';
+
+				// Build element (div or link).
+				$tag = $link_url ? 'a' : 'div';
+				$extra_attrs = '';
+				if ( $link_url ) {
+					$extra_attrs .= ' href="' . esc_url( $link_url ) . '"';
+					if ( $link_target ) {
+						$extra_attrs .= ' target="' . esc_attr( $link_target ) . '"';
+					}
+					if ( $link_rel ) {
+						$extra_attrs .= ' rel="' . esc_attr( $link_rel ) . '"';
+					}
+				}
+
+				return array(
+					'opening' => '<' . $tag . ' class="' . esc_attr( $outer_class ) . '" style="' . esc_attr( $item_style ) . '"' . $extra_attrs . '>' . $icon_html . '<div class="dsgo-icon-list-item__content" style="' . esc_attr( $content_style ) . '">',
+					'closing' => '</div></' . $tag . '>',
+				);
+
+			case 'designsetgo/icon-button':
+				$text           = isset( $attributes['text'] ) ? $attributes['text'] : '';
+				$url            = isset( $attributes['url'] ) ? $attributes['url'] : '';
+				$link_target    = isset( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : '';
+				$rel            = isset( $attributes['rel'] ) ? $attributes['rel'] : '';
+				$icon           = isset( $attributes['icon'] ) ? $attributes['icon'] : 'lightbulb';
+				$icon_position  = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'start';
+				$icon_size      = isset( $attributes['iconSize'] ) ? intval( $attributes['iconSize'] ) : 20;
+				$icon_gap       = isset( $attributes['iconGap'] ) ? $attributes['iconGap'] : '8px';
+				$align          = isset( $attributes['align'] ) ? $attributes['align'] : '';
+				$hover_anim     = isset( $attributes['hoverAnimation'] ) ? $attributes['hoverAnimation'] : 'none';
+				$modal_close_id = isset( $attributes['modalCloseId'] ) ? $attributes['modalCloseId'] : '';
+
+				// Build classes.
+				$class_parts = array( 'wp-block-designsetgo-icon-button', 'dsgo-icon-button', 'wp-block-button', 'wp-block-button__link', 'wp-element-button' );
+				if ( $hover_anim && 'none' !== $hover_anim ) {
+					$class_parts[] = 'dsgo-icon-button--' . $hover_anim;
+				}
+
+				// Build button styles.
+				$is_full_width   = 'full' === $align;
+				$flex_direction  = 'end' === $icon_position ? 'row-reverse' : 'row';
+				$gap_value       = ( 'none' !== $icon_position && $icon ) ? $icon_gap : '0';
+				$style_parts     = array(
+					'display:' . ( $is_full_width ? 'flex' : 'inline-flex' ),
+					'align-items:center',
+					'justify-content:center',
+					'gap:' . esc_attr( $gap_value ),
+					'width:' . ( $is_full_width ? '100%' : 'auto' ),
+					'flex-direction:' . $flex_direction,
+				);
+				$button_style = implode( ';', $style_parts );
+
+				// Icon HTML.
+				$icon_html = '';
+				if ( 'none' !== $icon_position && $icon ) {
+					$icon_style = 'display:flex;align-items:center;justify-content:center;width:' . $icon_size . 'px;height:' . $icon_size . 'px;flex-shrink:0';
+					$icon_html  = '<span class="dsgo-icon-button__icon dsgo-lazy-icon" style="' . esc_attr( $icon_style ) . '" data-icon-name="' . esc_attr( $icon ) . '" data-icon-size="' . esc_attr( $icon_size ) . '"></span>';
+				}
+
+				// Text HTML.
+				$text_html = '<span class="dsgo-icon-button__text">' . wp_kses_post( $text ) . '</span>';
+
+				// Build element (button or link).
+				$tag = $url ? 'a' : 'button';
+
+				// Additional attributes.
+				$extra_attrs = '';
+				if ( $url ) {
+					$extra_attrs .= ' href="' . esc_url( $url ) . '"';
+					if ( $link_target ) {
+						$extra_attrs .= ' target="' . esc_attr( $link_target ) . '"';
+					}
+					$rel_value = '_blank' === $link_target ? ( $rel ? $rel : 'noopener noreferrer' ) : $rel;
+					if ( $rel_value ) {
+						$extra_attrs .= ' rel="' . esc_attr( $rel_value ) . '"';
+					}
+				} else {
+					$extra_attrs .= ' type="button"';
+				}
+				if ( $modal_close_id ) {
+					$extra_attrs .= ' data-dsgo-modal-close="' . esc_attr( $modal_close_id ) . '"';
+				}
+
+				$inner_html = $icon_html . $text_html;
+
+				return array(
+					'opening' => '<' . $tag . ' class="' . esc_attr( implode( ' ', $class_parts ) ) . '" style="' . esc_attr( $button_style ) . '"' . $extra_attrs . '>' . $inner_html,
+					'closing' => '</' . $tag . '>',
+				);
+
+			case 'designsetgo/modal':
+				$modal_id                  = isset( $attributes['modalId'] ) ? $attributes['modalId'] : 'dsgo-modal-' . wp_generate_uuid4();
+				$animation_type            = isset( $attributes['animationType'] ) ? $attributes['animationType'] : 'fade';
+				$animation_duration        = isset( $attributes['animationDuration'] ) ? intval( $attributes['animationDuration'] ) : 300;
+				$close_on_backdrop         = isset( $attributes['closeOnBackdrop'] ) ? $attributes['closeOnBackdrop'] : true;
+				$close_on_esc              = isset( $attributes['closeOnEsc'] ) ? $attributes['closeOnEsc'] : true;
+				$disable_body_scroll       = isset( $attributes['disableBodyScroll'] ) ? $attributes['disableBodyScroll'] : true;
+				$allow_hash_trigger        = isset( $attributes['allowHashTrigger'] ) ? $attributes['allowHashTrigger'] : true;
+				$update_url_on_open        = isset( $attributes['updateUrlOnOpen'] ) ? $attributes['updateUrlOnOpen'] : false;
+				$auto_trigger_type         = isset( $attributes['autoTriggerType'] ) ? $attributes['autoTriggerType'] : 'none';
+				$auto_trigger_delay        = isset( $attributes['autoTriggerDelay'] ) ? intval( $attributes['autoTriggerDelay'] ) : 0;
+				$auto_trigger_frequency    = isset( $attributes['autoTriggerFrequency'] ) ? $attributes['autoTriggerFrequency'] : 'always';
+				$cookie_duration           = isset( $attributes['cookieDuration'] ) ? intval( $attributes['cookieDuration'] ) : 7;
+				$exit_intent_sensitivity   = isset( $attributes['exitIntentSensitivity'] ) ? $attributes['exitIntentSensitivity'] : 'medium';
+				$exit_intent_min_time      = isset( $attributes['exitIntentMinTime'] ) ? intval( $attributes['exitIntentMinTime'] ) : 5;
+				$exit_intent_exclude_mob   = isset( $attributes['exitIntentExcludeMobile'] ) ? $attributes['exitIntentExcludeMobile'] : true;
+				$scroll_depth              = isset( $attributes['scrollDepth'] ) ? intval( $attributes['scrollDepth'] ) : 50;
+				$scroll_direction          = isset( $attributes['scrollDirection'] ) ? $attributes['scrollDirection'] : 'down';
+				$time_on_page              = isset( $attributes['timeOnPage'] ) ? intval( $attributes['timeOnPage'] ) : 30;
+				$gallery_group_id          = isset( $attributes['galleryGroupId'] ) ? $attributes['galleryGroupId'] : '';
+				$gallery_index             = isset( $attributes['galleryIndex'] ) ? intval( $attributes['galleryIndex'] ) : 0;
+				$show_gallery_nav          = isset( $attributes['showGalleryNavigation'] ) ? $attributes['showGalleryNavigation'] : true;
+				$nav_style                 = isset( $attributes['navigationStyle'] ) ? $attributes['navigationStyle'] : 'arrows';
+				$nav_position              = isset( $attributes['navigationPosition'] ) ? $attributes['navigationPosition'] : 'sides';
+				$width                     = isset( $attributes['width'] ) ? $attributes['width'] : '600px';
+				$max_width                 = isset( $attributes['maxWidth'] ) ? $attributes['maxWidth'] : '90vw';
+				$overlay_color             = isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : '#000000';
+				$overlay_opacity           = isset( $attributes['overlayOpacity'] ) ? floatval( $attributes['overlayOpacity'] ) : 80;
+				$show_close_button         = isset( $attributes['showCloseButton'] ) ? $attributes['showCloseButton'] : true;
+				$close_button_position     = isset( $attributes['closeButtonPosition'] ) ? $attributes['closeButtonPosition'] : 'inside-top-right';
+				$close_button_size         = isset( $attributes['closeButtonSize'] ) ? intval( $attributes['closeButtonSize'] ) : 24;
+
+				// Build data attributes.
+				$data_attrs  = ' data-dsgo-modal="true"';
+				$data_attrs .= ' data-modal-id="' . esc_attr( $modal_id ) . '"';
+				$data_attrs .= ' data-animation-type="' . esc_attr( $animation_type ) . '"';
+				$data_attrs .= ' data-animation-duration="' . esc_attr( $animation_duration ) . '"';
+				$data_attrs .= ' data-close-on-backdrop="' . ( $close_on_backdrop ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-close-on-esc="' . ( $close_on_esc ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-disable-body-scroll="' . ( $disable_body_scroll ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-allow-hash-trigger="' . ( $allow_hash_trigger ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-update-url-on-open="' . ( $update_url_on_open ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-auto-trigger-type="' . esc_attr( $auto_trigger_type ) . '"';
+				$data_attrs .= ' data-auto-trigger-delay="' . esc_attr( $auto_trigger_delay ) . '"';
+				$data_attrs .= ' data-auto-trigger-frequency="' . esc_attr( $auto_trigger_frequency ) . '"';
+				$data_attrs .= ' data-cookie-duration="' . esc_attr( $cookie_duration ) . '"';
+				$data_attrs .= ' data-exit-intent-sensitivity="' . esc_attr( $exit_intent_sensitivity ) . '"';
+				$data_attrs .= ' data-exit-intent-min-time="' . esc_attr( $exit_intent_min_time ) . '"';
+				$data_attrs .= ' data-exit-intent-exclude-mobile="' . ( $exit_intent_exclude_mob ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-scroll-depth="' . esc_attr( $scroll_depth ) . '"';
+				$data_attrs .= ' data-scroll-direction="' . esc_attr( $scroll_direction ) . '"';
+				$data_attrs .= ' data-time-on-page="' . esc_attr( $time_on_page ) . '"';
+				$data_attrs .= ' data-gallery-group-id="' . esc_attr( $gallery_group_id ) . '"';
+				$data_attrs .= ' data-gallery-index="' . esc_attr( $gallery_index ) . '"';
+				$data_attrs .= ' data-show-gallery-navigation="' . ( $show_gallery_nav ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-navigation-style="' . esc_attr( $nav_style ) . '"';
+				$data_attrs .= ' data-navigation-position="' . esc_attr( $nav_position ) . '"';
+
+				// Overlay styles.
+				$overlay_style = 'background-color:' . esc_attr( $overlay_color ) . ';opacity:' . ( $overlay_opacity / 100 );
+
+				// Content styles.
+				$content_style = 'border-style:none;border-width:0px;width:' . esc_attr( $width ) . ';max-width:' . esc_attr( $max_width );
+
+				// Close button HTML.
+				$close_button_html = '';
+				if ( $show_close_button ) {
+					$close_button_style = 'width:' . $close_button_size . 'px;height:' . $close_button_size . 'px';
+					$close_button_html  = '<button class="dsgo-modal__close dsgo-modal__close--' . esc_attr( $close_button_position ) . '" style="' . esc_attr( $close_button_style ) . '" type="button" aria-label="Close modal">';
+					$close_button_html .= '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">';
+					$close_button_html .= '<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>';
+					$close_button_html .= '</svg></button>';
+				}
+
+				$close_button_is_inside = strpos( $close_button_position, 'inside-' ) === 0;
+
+				$outer_class = 'wp-block-designsetgo-modal dsgo-modal';
+
+				$inner_html  = '<div class="dsgo-modal__backdrop" style="' . esc_attr( $overlay_style ) . '" aria-hidden="true"></div>';
+				$inner_html .= '<div class="dsgo-modal__dialog">';
+				if ( ! $close_button_is_inside ) {
+					$inner_html .= $close_button_html;
+				}
+				$inner_html .= '<div class="dsgo-modal__content" style="' . esc_attr( $content_style ) . '">';
+
+				$closing_html = '';
+				if ( $close_button_is_inside ) {
+					$closing_html .= $close_button_html;
+				}
+				$closing_html .= '</div></div></div>';
+
+				return array(
+					'opening' => '<div id="' . esc_attr( $modal_id ) . '" role="dialog" aria-modal="true" aria-label="Modal" aria-hidden="true"' . $data_attrs . ' class="' . esc_attr( $outer_class ) . '">' . $inner_html,
+					'closing' => $closing_html,
+				);
+
+			case 'designsetgo/modal-trigger':
+				$text           = isset( $attributes['text'] ) ? $attributes['text'] : 'Open Modal';
+				$button_style   = isset( $attributes['buttonStyle'] ) ? $attributes['buttonStyle'] : 'fill';
+				$width_style    = isset( $attributes['widthStyle'] ) ? $attributes['widthStyle'] : 'auto';
+				$icon           = isset( $attributes['icon'] ) ? $attributes['icon'] : '';
+				$icon_position  = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'start';
+
+				$outer_class = 'wp-block-designsetgo-modal-trigger dsgo-modal-trigger dsgo-modal-trigger--' . esc_attr( $button_style ) . ' dsgo-modal-trigger--width-' . esc_attr( $width_style );
+
+				$flex_direction = 'end' === $icon_position ? 'row-reverse' : 'row';
+				$button_style_attr = 'flex-direction:' . $flex_direction;
+
+				$inner_html = '<button class="dsgo-modal-trigger__button" data-dsgo-modal-trigger="" style="' . esc_attr( $button_style_attr ) . '" type="button">';
+				if ( $icon && 'none' !== $icon_position ) {
+					$inner_html .= '<span class="dsgo-modal-trigger__icon dsgo-lazy-icon" data-icon-name="' . esc_attr( $icon ) . '"></span>';
+				}
+				$inner_html .= '<span class="dsgo-modal-trigger__text">' . wp_kses_post( $text ) . '</span>';
+				$inner_html .= '</button>';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( $outer_class ) . '" style="display:inline-block">' . $inner_html,
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/table-of-contents':
+				$unique_id     = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : substr( wp_generate_uuid4(), 0, 8 );
+				$include_h2    = isset( $attributes['includeH2'] ) ? $attributes['includeH2'] : true;
+				$include_h3    = isset( $attributes['includeH3'] ) ? $attributes['includeH3'] : true;
+				$include_h4    = isset( $attributes['includeH4'] ) ? $attributes['includeH4'] : false;
+				$include_h5    = isset( $attributes['includeH5'] ) ? $attributes['includeH5'] : false;
+				$include_h6    = isset( $attributes['includeH6'] ) ? $attributes['includeH6'] : false;
+				$display_mode  = isset( $attributes['displayMode'] ) ? $attributes['displayMode'] : 'hierarchical';
+				$list_style    = isset( $attributes['listStyle'] ) ? $attributes['listStyle'] : 'unordered';
+				$show_title    = isset( $attributes['showTitle'] ) ? $attributes['showTitle'] : true;
+				$title_text    = isset( $attributes['titleText'] ) ? $attributes['titleText'] : 'Table of Contents';
+				$scroll_smooth = isset( $attributes['scrollSmooth'] ) ? $attributes['scrollSmooth'] : true;
+				$scroll_offset = isset( $attributes['scrollOffset'] ) ? intval( $attributes['scrollOffset'] ) : 0;
+
+				// Build heading levels.
+				$heading_levels = array();
+				if ( $include_h2 ) {
+					$heading_levels[] = 'h2';
+				}
+				if ( $include_h3 ) {
+					$heading_levels[] = 'h3';
+				}
+				if ( $include_h4 ) {
+					$heading_levels[] = 'h4';
+				}
+				if ( $include_h5 ) {
+					$heading_levels[] = 'h5';
+				}
+				if ( $include_h6 ) {
+					$heading_levels[] = 'h6';
+				}
+
+				// Build classes.
+				$class_parts = array( 'wp-block-designsetgo-table-of-contents', 'dsgo-table-of-contents' );
+				if ( 'hierarchical' === $display_mode ) {
+					$class_parts[] = 'dsgo-table-of-contents--hierarchical';
+				} else {
+					$class_parts[] = 'dsgo-table-of-contents--flat';
+				}
+				if ( 'ordered' === $list_style ) {
+					$class_parts[] = 'dsgo-table-of-contents--ordered';
+				}
+				if ( $scroll_smooth ) {
+					$class_parts[] = 'dsgo-table-of-contents--smooth';
+				}
+
+				// Data attributes.
+				$data_attrs  = ' data-unique-id="' . esc_attr( $unique_id ) . '"';
+				$data_attrs .= ' data-heading-levels="' . esc_attr( implode( ',', $heading_levels ) ) . '"';
+				$data_attrs .= ' data-display-mode="' . esc_attr( $display_mode ) . '"';
+				$data_attrs .= ' data-scroll-smooth="' . ( $scroll_smooth ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-scroll-offset="' . esc_attr( $scroll_offset ) . '"';
+
+				// List tag.
+				$list_tag = 'ordered' === $list_style ? 'ol' : 'ul';
+
+				// Inner HTML.
+				$inner_html  = '<div class="dsgo-table-of-contents__content">';
+				if ( $show_title ) {
+					$inner_html .= '<div class="dsgo-table-of-contents__title">' . esc_html( $title_text ) . '</div>';
+				}
+				$inner_html .= '<' . $list_tag . ' class="dsgo-table-of-contents__list"></' . $list_tag . '>';
+				$inner_html .= '</div>';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '"' . $data_attrs . '>' . $inner_html,
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/image-accordion':
+				$height                   = isset( $attributes['height'] ) ? $attributes['height'] : '500px';
+				$gap                      = isset( $attributes['gap'] ) ? $attributes['gap'] : '4px';
+				$expanded_ratio           = isset( $attributes['expandedRatio'] ) ? floatval( $attributes['expandedRatio'] ) : 3;
+				$transition_duration      = isset( $attributes['transitionDuration'] ) ? $attributes['transitionDuration'] : '0.5s';
+				$enable_overlay           = isset( $attributes['enableOverlay'] ) ? $attributes['enableOverlay'] : true;
+				$overlay_color            = isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : '#000000';
+				$overlay_opacity          = isset( $attributes['overlayOpacity'] ) ? floatval( $attributes['overlayOpacity'] ) : 40;
+				$overlay_opacity_expanded = isset( $attributes['overlayOpacityExpanded'] ) ? floatval( $attributes['overlayOpacityExpanded'] ) : 20;
+				$trigger_type             = isset( $attributes['triggerType'] ) ? $attributes['triggerType'] : 'hover';
+				$default_expanded         = isset( $attributes['defaultExpanded'] ) ? intval( $attributes['defaultExpanded'] ) : 0;
+
+				// Build classes.
+				$class_parts = array( 'wp-block-designsetgo-image-accordion', 'dsgo-image-accordion' );
+				$class_parts[] = 'dsgo-image-accordion--' . esc_attr( $trigger_type );
+
+				// Build style with CSS custom properties.
+				$style_parts = array(
+					'--dsgo-image-accordion-height:' . esc_attr( $height ),
+					'--dsgo-image-accordion-gap:' . esc_attr( $gap ),
+					'--dsgo-image-accordion-expanded-ratio:' . esc_attr( $expanded_ratio ),
+					'--dsgo-image-accordion-transition:' . esc_attr( $transition_duration ),
+					'--dsgo-image-accordion-overlay-color:' . esc_attr( $overlay_color ),
+					'--dsgo-image-accordion-overlay-opacity:' . esc_attr( $overlay_opacity / 100 ),
+					'--dsgo-image-accordion-overlay-opacity-expanded:' . esc_attr( $overlay_opacity_expanded / 100 ),
+				);
+				$style = implode( ';', $style_parts );
+
+				// Data attributes.
+				$data_attrs  = ' data-trigger-type="' . esc_attr( $trigger_type ) . '"';
+				$data_attrs .= ' data-default-expanded="' . esc_attr( $default_expanded ) . '"';
+				$data_attrs .= ' data-enable-overlay="' . ( $enable_overlay ? 'true' : 'false' ) . '"';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '" style="' . esc_attr( $style ) . '"' . $data_attrs . '><div class="dsgo-image-accordion__items">',
+					'closing' => '</div></div>',
+				);
+
+			case 'designsetgo/image-accordion-item':
+				$unique_id            = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : 'image-accordion-item-' . substr( str_replace( '-', '', wp_generate_uuid4() ), 0, 9 );
+				$vertical_alignment   = isset( $attributes['verticalAlignment'] ) ? $attributes['verticalAlignment'] : 'center';
+				$horizontal_alignment = isset( $attributes['horizontalAlignment'] ) ? $attributes['horizontalAlignment'] : 'center';
+
+				// Context defaults (when no parent context available).
+				$enable_overlay           = true;
+				$overlay_color            = '#000000';
+				$overlay_opacity          = 40;
+				$overlay_opacity_expanded = 20;
+
+				// Build classes.
+				$class_parts = array( 'wp-block-designsetgo-image-accordion-item', 'dsgo-image-accordion-item' );
+				if ( $enable_overlay ) {
+					$class_parts[] = 'dsgo-image-accordion-item--has-overlay';
+				}
+
+				// Build style with CSS custom properties (overlay first, then alignment - must match save.js order).
+				$style_parts = array();
+				if ( $enable_overlay ) {
+					$style_parts[] = '--dsgo-overlay-color:' . esc_attr( $overlay_color );
+					$style_parts[] = '--dsgo-overlay-opacity:' . esc_attr( $overlay_opacity / 100 );
+					$style_parts[] = '--dsgo-overlay-opacity-expanded:' . esc_attr( $overlay_opacity_expanded / 100 );
+				}
+				$style_parts[] = '--dsgo-vertical-alignment:' . esc_attr( $vertical_alignment );
+				$style_parts[] = '--dsgo-horizontal-alignment:' . esc_attr( $horizontal_alignment );
+				$style = implode( ';', $style_parts );
+
+				return array(
+					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '" style="' . esc_attr( $style ) . '" data-unique-id="' . esc_attr( $unique_id ) . '" role="button" tabindex="0"><div class="dsgo-image-accordion-item__content">',
+					'closing' => '</div></div>',
+				);
+
+			case 'designsetgo/scroll-accordion':
+				$align_items = isset( $attributes['alignItems'] ) ? $attributes['alignItems'] : 'flex-start';
+
+				// Inner styles.
+				$inner_style = 'display:flex;flex-direction:column;align-items:' . esc_attr( $align_items );
+
+				return array(
+					'opening' => '<div class="wp-block-designsetgo-scroll-accordion dsgo-scroll-accordion" style="width:100%;align-self:stretch"><div class="dsgo-scroll-accordion__items" style="' . esc_attr( $inner_style ) . '">',
+					'closing' => '</div></div>',
+				);
+
+			case 'designsetgo/scroll-accordion-item':
+				$overlay_color = isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : '';
+
+				// Build classes.
+				$class_parts = array( 'wp-block-designsetgo-scroll-accordion-item', 'dsgo-scroll-accordion-item' );
+				if ( $overlay_color ) {
+					$class_parts[] = 'dsgo-scroll-accordion-item--has-overlay';
+				}
+
+				// Build style.
+				$style = '';
+				if ( $overlay_color ) {
+					$style = '--dsgo-overlay-color:' . esc_attr( $overlay_color ) . ';--dsgo-overlay-opacity:0.8';
+				}
+
+				$style_attr = $style ? ' style="' . esc_attr( $style ) . '"' : '';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '"' . $style_attr . '>',
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/slider':
+				$slides_per_view        = isset( $attributes['slidesPerView'] ) ? intval( $attributes['slidesPerView'] ) : 1;
+				$slides_per_view_tablet = isset( $attributes['slidesPerViewTablet'] ) ? intval( $attributes['slidesPerViewTablet'] ) : 1;
+				$slides_per_view_mobile = isset( $attributes['slidesPerViewMobile'] ) ? intval( $attributes['slidesPerViewMobile'] ) : 1;
+				$height                 = isset( $attributes['height'] ) ? $attributes['height'] : '500px';
+				$aspect_ratio           = isset( $attributes['aspectRatio'] ) ? $attributes['aspectRatio'] : '16/9';
+				$use_aspect_ratio       = isset( $attributes['useAspectRatio'] ) ? $attributes['useAspectRatio'] : false;
+				$gap                    = isset( $attributes['gap'] ) ? $attributes['gap'] : '20px';
+				$show_arrows            = isset( $attributes['showArrows'] ) ? $attributes['showArrows'] : true;
+				$show_dots              = isset( $attributes['showDots'] ) ? $attributes['showDots'] : true;
+				$arrow_style            = isset( $attributes['arrowStyle'] ) ? $attributes['arrowStyle'] : 'default';
+				$arrow_position         = isset( $attributes['arrowPosition'] ) ? $attributes['arrowPosition'] : 'sides';
+				$arrow_vertical_pos     = isset( $attributes['arrowVerticalPosition'] ) ? $attributes['arrowVerticalPosition'] : 'center';
+				$arrow_size             = isset( $attributes['arrowSize'] ) ? $attributes['arrowSize'] : '48px';
+				$dot_style              = isset( $attributes['dotStyle'] ) ? $attributes['dotStyle'] : 'default';
+				$dot_position           = isset( $attributes['dotPosition'] ) ? $attributes['dotPosition'] : 'bottom';
+				$effect                 = isset( $attributes['effect'] ) ? $attributes['effect'] : 'slide';
+				$transition_duration    = isset( $attributes['transitionDuration'] ) ? $attributes['transitionDuration'] : '0.5s';
+				$transition_easing      = isset( $attributes['transitionEasing'] ) ? $attributes['transitionEasing'] : 'ease-in-out';
+				$autoplay               = isset( $attributes['autoplay'] ) ? $attributes['autoplay'] : false;
+				$autoplay_interval      = isset( $attributes['autoplayInterval'] ) ? intval( $attributes['autoplayInterval'] ) : 3000;
+				$pause_on_hover         = isset( $attributes['pauseOnHover'] ) ? $attributes['pauseOnHover'] : true;
+				$pause_on_interaction   = isset( $attributes['pauseOnInteraction'] ) ? $attributes['pauseOnInteraction'] : true;
+				$loop                   = isset( $attributes['loop'] ) ? $attributes['loop'] : true;
+				$draggable              = isset( $attributes['draggable'] ) ? $attributes['draggable'] : true;
+				$swipeable              = isset( $attributes['swipeable'] ) ? $attributes['swipeable'] : true;
+				$free_mode              = isset( $attributes['freeMode'] ) ? $attributes['freeMode'] : false;
+				$centered_slides        = isset( $attributes['centeredSlides'] ) ? $attributes['centeredSlides'] : false;
+				$mobile_breakpoint      = isset( $attributes['mobileBreakpoint'] ) ? intval( $attributes['mobileBreakpoint'] ) : 768;
+				$tablet_breakpoint      = isset( $attributes['tabletBreakpoint'] ) ? intval( $attributes['tabletBreakpoint'] ) : 1024;
+				$active_slide           = isset( $attributes['activeSlide'] ) ? intval( $attributes['activeSlide'] ) : 0;
+				$style_variation        = isset( $attributes['styleVariation'] ) ? $attributes['styleVariation'] : 'classic';
+				$aria_label             = isset( $attributes['ariaLabel'] ) ? $attributes['ariaLabel'] : '';
+
+				// Single slide effects.
+				$single_slide_effects     = array( 'fade', 'zoom' );
+				$requires_single          = in_array( $effect, $single_slide_effects, true );
+				$effective_slides         = $requires_single ? 1 : $slides_per_view;
+				$effective_slides_tablet  = $requires_single ? 1 : $slides_per_view_tablet;
+				$effective_slides_mobile  = $requires_single ? 1 : $slides_per_view_mobile;
+
+				// Build classes.
+				$class_parts = array( 'wp-block-designsetgo-slider', 'dsgo-slider' );
+				if ( $style_variation ) {
+					$class_parts[] = 'dsgo-slider--' . esc_attr( $style_variation );
+				}
+				if ( $effect ) {
+					$class_parts[] = 'dsgo-slider--effect-' . esc_attr( $effect );
+				}
+				if ( $show_arrows ) {
+					$class_parts[] = 'dsgo-slider--has-arrows';
+				}
+				if ( $show_dots ) {
+					$class_parts[] = 'dsgo-slider--has-dots';
+				}
+				if ( $centered_slides ) {
+					$class_parts[] = 'dsgo-slider--centered';
+				}
+				if ( $free_mode ) {
+					$class_parts[] = 'dsgo-slider--free-mode';
+				}
+
+				// Build style.
+				$style_parts = array(
+					'--dsgo-slider-height:' . esc_attr( $height ),
+					'--dsgo-slider-aspect-ratio:' . esc_attr( $aspect_ratio ),
+					'--dsgo-slider-gap:' . esc_attr( $gap ),
+					'--dsgo-slider-transition:' . esc_attr( $transition_duration ),
+					'--dsgo-slider-slides-per-view:' . esc_attr( $effective_slides ),
+					'--dsgo-slider-slides-per-view-tablet:' . esc_attr( $effective_slides_tablet ),
+					'--dsgo-slider-slides-per-view-mobile:' . esc_attr( $effective_slides_mobile ),
+				);
+				if ( $arrow_size ) {
+					$style_parts[] = '--dsgo-slider-arrow-size:' . esc_attr( $arrow_size );
+				}
+				$style = implode( ';', $style_parts );
+
+				// Build data attributes.
+				$data_attrs  = ' data-slides-per-view="' . esc_attr( $effective_slides ) . '"';
+				$data_attrs .= ' data-slides-per-view-tablet="' . esc_attr( $effective_slides_tablet ) . '"';
+				$data_attrs .= ' data-slides-per-view-mobile="' . esc_attr( $effective_slides_mobile ) . '"';
+				$data_attrs .= ' data-use-aspect-ratio="' . ( $use_aspect_ratio ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-show-arrows="' . ( $show_arrows ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-show-dots="' . ( $show_dots ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-arrow-style="' . esc_attr( $arrow_style ) . '"';
+				$data_attrs .= ' data-arrow-position="' . esc_attr( $arrow_position ) . '"';
+				$data_attrs .= ' data-arrow-vertical-position="' . esc_attr( $arrow_vertical_pos ) . '"';
+				$data_attrs .= ' data-dot-style="' . esc_attr( $dot_style ) . '"';
+				$data_attrs .= ' data-dot-position="' . esc_attr( $dot_position ) . '"';
+				$data_attrs .= ' data-effect="' . esc_attr( $effect ) . '"';
+				$data_attrs .= ' data-transition-duration="' . esc_attr( $transition_duration ) . '"';
+				$data_attrs .= ' data-transition-easing="' . esc_attr( $transition_easing ) . '"';
+				$data_attrs .= ' data-autoplay="' . ( $autoplay ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-autoplay-interval="' . esc_attr( $autoplay_interval ) . '"';
+				$data_attrs .= ' data-pause-on-hover="' . ( $pause_on_hover ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-pause-on-interaction="' . ( $pause_on_interaction ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-loop="' . ( $loop ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-draggable="' . ( $draggable ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-swipeable="' . ( $swipeable ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-free-mode="' . ( $free_mode ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-centered-slides="' . ( $centered_slides ? 'true' : 'false' ) . '"';
+				$data_attrs .= ' data-mobile-breakpoint="' . esc_attr( $mobile_breakpoint ) . '"';
+				$data_attrs .= ' data-tablet-breakpoint="' . esc_attr( $tablet_breakpoint ) . '"';
+				$data_attrs .= ' data-active-slide="' . esc_attr( $active_slide ) . '"';
+
+				$aria = $aria_label ? $aria_label : 'Image slider';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '" style="' . esc_attr( $style ) . '"' . $data_attrs . ' role="region" aria-label="' . esc_attr( $aria ) . '" aria-roledescription="slider"><div class="dsgo-slider__viewport"><div class="dsgo-slider__track">',
+					'closing' => '</div></div></div>',
+				);
+
+			case 'designsetgo/slide':
+				$background_image     = isset( $attributes['backgroundImage'] ) ? $attributes['backgroundImage'] : array();
+				$background_size      = isset( $attributes['backgroundSize'] ) ? $attributes['backgroundSize'] : 'cover';
+				$background_position  = isset( $attributes['backgroundPosition'] ) ? $attributes['backgroundPosition'] : 'center center';
+				$background_repeat    = isset( $attributes['backgroundRepeat'] ) ? $attributes['backgroundRepeat'] : 'no-repeat';
+				$overlay_color        = isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : '';
+				$overlay_opacity      = isset( $attributes['overlayOpacity'] ) ? floatval( $attributes['overlayOpacity'] ) : 80;
+				$content_v_align      = isset( $attributes['contentVerticalAlign'] ) ? $attributes['contentVerticalAlign'] : 'center';
+				$content_h_align      = isset( $attributes['contentHorizontalAlign'] ) ? $attributes['contentHorizontalAlign'] : 'center';
+				$min_height           = isset( $attributes['minHeight'] ) ? $attributes['minHeight'] : '';
+				$bg_url               = isset( $background_image['url'] ) ? $background_image['url'] : '';
+
+				// Build classes.
+				$class_parts = array( 'wp-block-designsetgo-slide', 'dsgo-slide' );
+				if ( $bg_url ) {
+					$class_parts[] = 'dsgo-slide--has-background';
+				}
+				if ( $overlay_color ) {
+					$class_parts[] = 'dsgo-slide--has-overlay';
+				}
+
+				// Build style.
+				$style_parts = array();
+				if ( $bg_url ) {
+					$style_parts[] = 'background-image:url(' . esc_url( $bg_url ) . ')';
+					$style_parts[] = 'background-size:' . esc_attr( $background_size );
+					$style_parts[] = 'background-position:' . esc_attr( $background_position );
+					$style_parts[] = 'background-repeat:' . esc_attr( $background_repeat );
+				}
+				if ( $overlay_color ) {
+					$style_parts[] = '--dsgo-slide-overlay-color:' . esc_attr( $overlay_color );
+					$style_parts[] = '--dsgo-slide-overlay-opacity:' . esc_attr( $overlay_opacity / 100 );
+				}
+				$style_parts[] = '--dsgo-slide-content-vertical-align:' . esc_attr( $content_v_align );
+				$style_parts[] = '--dsgo-slide-content-horizontal-align:' . esc_attr( $content_h_align );
+				if ( $min_height ) {
+					$style_parts[] = 'min-height:' . esc_attr( $min_height );
+				}
+				$style = implode( ';', $style_parts );
+
+				// Overlay HTML.
+				$overlay_html = '';
+				if ( $overlay_color ) {
+					$overlay_style = 'background-color:' . esc_attr( $overlay_color ) . ';opacity:' . esc_attr( $overlay_opacity / 100 );
+					$overlay_html  = '<div class="dsgo-slide__overlay" style="' . esc_attr( $overlay_style ) . '"></div>';
+				}
+
+				return array(
+					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '" style="' . esc_attr( $style ) . '" role="group" aria-roledescription="slide">' . $overlay_html . '<div class="dsgo-slide__content">',
+					'closing' => '</div></div>',
+				);
+
+			case 'designsetgo/scroll-marquee':
+				$rows          = isset( $attributes['rows'] ) ? $attributes['rows'] : array();
+				$scroll_speed  = isset( $attributes['scrollSpeed'] ) ? floatval( $attributes['scrollSpeed'] ) : 0.5;
+				$image_height  = isset( $attributes['imageHeight'] ) ? $attributes['imageHeight'] : '200px';
+				$image_width   = isset( $attributes['imageWidth'] ) ? $attributes['imageWidth'] : '300px';
+				$gap           = isset( $attributes['gap'] ) ? $attributes['gap'] : '20px';
+				$row_gap       = isset( $attributes['rowGap'] ) ? $attributes['rowGap'] : '20px';
+				$border_radius = isset( $attributes['borderRadius'] ) ? $attributes['borderRadius'] : '8px';
+
+				// Build style.
+				$style_parts = array(
+					'--dsgo-marquee-gap:' . esc_attr( $gap ),
+					'--dsgo-marquee-row-gap:' . esc_attr( $row_gap ),
+					'--dsgo-marquee-image-height:' . esc_attr( $image_height ),
+					'--dsgo-marquee-image-width:' . esc_attr( $image_width ),
+					'--dsgo-marquee-border-radius:' . esc_attr( $border_radius ),
+				);
+				$style = implode( ';', $style_parts );
+
+				// Build rows HTML.
+				$rows_html = '';
+				foreach ( $rows as $row ) {
+					$direction  = isset( $row['direction'] ) ? $row['direction'] : 'left';
+					$images     = isset( $row['images'] ) ? $row['images'] : array();
+
+					$rows_html .= '<div class="dsgo-scroll-marquee__row" data-direction="' . esc_attr( $direction ) . '">';
+					$rows_html .= '<div class="dsgo-scroll-marquee__track">';
+
+					// Render images 6 times for seamless infinite scroll.
+					for ( $i = 0; $i < 6; $i++ ) {
+						$rows_html .= '<div class="dsgo-scroll-marquee__track-segment">';
+						foreach ( $images as $image ) {
+							$img_url = isset( $image['url'] ) ? $image['url'] : '';
+							$img_alt = isset( $image['alt'] ) ? $image['alt'] : '';
+							$rows_html .= '<img src="' . esc_url( $img_url ) . '" alt="' . esc_attr( $img_alt ) . '" class="dsgo-scroll-marquee__image" loading="lazy"/>';
+						}
+						$rows_html .= '</div>';
+					}
+
+					$rows_html .= '</div></div>';
+				}
+
+				return array(
+					'opening' => '<div class="wp-block-designsetgo-scroll-marquee dsgo-scroll-marquee" data-scroll-speed="' . esc_attr( $scroll_speed ) . '" style="' . esc_attr( $style ) . '">' . $rows_html,
+					'closing' => '</div>',
+				);
+
+			case 'designsetgo/tabs':
+				$unique_id          = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : substr( str_replace( '-', '', wp_generate_uuid4() ), 0, 9 );
+				$orientation        = isset( $attributes['orientation'] ) ? $attributes['orientation'] : 'horizontal';
+				$active_tab         = isset( $attributes['activeTab'] ) ? intval( $attributes['activeTab'] ) : 0;
+				$alignment          = isset( $attributes['alignment'] ) ? $attributes['alignment'] : 'left';
+				$mobile_breakpoint  = isset( $attributes['mobileBreakpoint'] ) ? intval( $attributes['mobileBreakpoint'] ) : 768;
+				$mobile_mode        = isset( $attributes['mobileMode'] ) ? $attributes['mobileMode'] : 'accordion';
+				$enable_deep_link   = isset( $attributes['enableDeepLinking'] ) ? $attributes['enableDeepLinking'] : false;
+				$gap                = isset( $attributes['gap'] ) ? $attributes['gap'] : '8px';
+				$tab_style          = isset( $attributes['tabStyle'] ) ? $attributes['tabStyle'] : 'default';
+				$show_nav_border    = isset( $attributes['showNavBorder'] ) ? $attributes['showNavBorder'] : false;
+
+				// Build classes.
+				$class_parts = array( 'wp-block-designsetgo-tabs', 'dsgo-tabs', 'dsgo-tabs-' . esc_attr( $unique_id ) );
+				$class_parts[] = 'dsgo-tabs--' . esc_attr( $orientation );
+				$class_parts[] = 'dsgo-tabs--' . esc_attr( $tab_style );
+				$class_parts[] = 'dsgo-tabs--align-' . esc_attr( $alignment );
+				if ( $show_nav_border ) {
+					$class_parts[] = 'dsgo-tabs--show-nav-border';
+				}
+
+				// Build style.
+				$style = '--dsgo-tabs-gap:' . esc_attr( $gap );
+
+				// Data attributes.
+				$data_attrs  = ' data-active-tab="' . esc_attr( $active_tab ) . '"';
+				$data_attrs .= ' data-mobile-breakpoint="' . esc_attr( $mobile_breakpoint ) . '"';
+				$data_attrs .= ' data-mobile-mode="' . esc_attr( $mobile_mode ) . '"';
+				$data_attrs .= ' data-deep-linking="' . ( $enable_deep_link ? 'true' : 'false' ) . '"';
+
+				return array(
+					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '" style="' . esc_attr( $style ) . '"' . $data_attrs . '><div class="dsgo-tabs__nav" role="tablist"></div><div class="dsgo-tabs__panels">',
+					'closing' => '</div></div>',
+				);
+
+			case 'designsetgo/tab':
+				$unique_id     = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : substr( str_replace( '-', '', wp_generate_uuid4() ), 0, 9 );
+				$title         = isset( $attributes['title'] ) ? $attributes['title'] : 'Tab';
+				$anchor        = isset( $attributes['anchor'] ) ? $attributes['anchor'] : '';
+				$icon          = isset( $attributes['icon'] ) ? $attributes['icon'] : '';
+				$icon_position = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'none';
+
+				// Build panel ID.
+				$panel_id = 'panel-' . ( $anchor ? esc_attr( $anchor ) : esc_attr( $unique_id ) );
+
+				// Build aria-label.
+				$aria_label = $title ? $title : 'Tab ' . $unique_id;
+
+				// Data attributes for icon.
+				$icon_data = '';
+				if ( $icon && $icon_position && 'none' !== $icon_position ) {
+					$safe_icon     = strtolower( preg_replace( '/[^a-z0-9\-]/i', '', $icon ) );
+					$safe_position = in_array( $icon_position, array( 'left', 'right' ), true ) ? $icon_position : 'left';
+					$icon_data     = ' data-icon="' . esc_attr( $safe_icon ) . '" data-icon-position="' . esc_attr( $safe_position ) . '"';
+				}
+
+				return array(
+					'opening' => '<div class="wp-block-designsetgo-tab dsgo-tab" role="tabpanel" aria-labelledby="tab-' . esc_attr( $unique_id ) . '" aria-label="' . esc_attr( $aria_label ) . '" id="' . esc_attr( $panel_id ) . '" hidden' . $icon_data . '><div class="dsgo-tab__content">',
 					'closing' => '</div></div>',
 				);
 
@@ -309,6 +1617,101 @@ class Block_Inserter {
 			default:
 				return wp_kses_post( $content );
 		}
+	}
+
+	/**
+	 * Coerce attribute types to match block.json schema.
+	 *
+	 * Ensures numeric attributes are stored as numbers (not strings) so that
+	 * WordPress block validation doesn't fail due to type mismatches.
+	 *
+	 * @param string               $block_name Block name.
+	 * @param array<string, mixed> $attributes Attributes to coerce.
+	 * @return array<string, mixed> Attributes with corrected types.
+	 */
+	private static function coerce_attribute_types( string $block_name, array $attributes ): array {
+		// Define numeric attributes for each block that needs type coercion.
+		$numeric_attrs = array(
+			'designsetgo/divider'       => array( 'width', 'thickness' ),
+			'designsetgo/counter'       => array( 'startValue', 'endValue', 'duration', 'delay', 'decimals' ),
+			'designsetgo/counter-group' => array( 'desktopColumns', 'tabletColumns', 'mobileColumns', 'gap', 'animationDuration', 'animationDelay' ),
+			'designsetgo/grid'          => array( 'desktopColumns', 'tabletColumns', 'mobileColumns' ),
+			'designsetgo/icon'          => array( 'size', 'iconSize', 'strokeWidth', 'rotation' ),
+			'designsetgo/icon-button'   => array( 'iconSize' ),
+		);
+
+		if ( ! isset( $numeric_attrs[ $block_name ] ) ) {
+			return $attributes;
+		}
+
+		foreach ( $numeric_attrs[ $block_name ] as $attr_name ) {
+			if ( isset( $attributes[ $attr_name ] ) && is_string( $attributes[ $attr_name ] ) ) {
+				// Cast to integer or float as appropriate.
+				if ( false !== strpos( $attributes[ $attr_name ], '.' ) ) {
+					$attributes[ $attr_name ] = (float) $attributes[ $attr_name ];
+				} else {
+					$attributes[ $attr_name ] = (int) $attributes[ $attr_name ];
+				}
+			}
+		}
+
+		return $attributes;
+	}
+
+	/**
+	 * Normalize block attributes to include required defaults.
+	 *
+	 * Ensures attributes like layout have all required fields for block validation.
+	 *
+	 * @param string               $block_name Block name.
+	 * @param array<string, mixed> $attributes Attributes to normalize.
+	 * @return array<string, mixed> Normalized attributes.
+	 */
+	private static function normalize_block_attributes( string $block_name, array $attributes ): array {
+		switch ( $block_name ) {
+			case 'designsetgo/row':
+				// Ensure layout has all required fields for block validation.
+				$layout = isset( $attributes['layout'] ) ? $attributes['layout'] : array();
+				$attributes['layout'] = array_merge(
+					array(
+						'type'           => 'flex',
+						'orientation'    => 'horizontal',
+						'justifyContent' => 'left',
+						'flexWrap'       => 'nowrap',
+					),
+					$layout
+				);
+				break;
+
+			case 'designsetgo/grid':
+				// Ensure column counts are set for block validation.
+				if ( ! isset( $attributes['desktopColumns'] ) ) {
+					$attributes['desktopColumns'] = 3;
+				}
+				if ( ! isset( $attributes['tabletColumns'] ) ) {
+					$attributes['tabletColumns'] = 2;
+				}
+				if ( ! isset( $attributes['mobileColumns'] ) ) {
+					$attributes['mobileColumns'] = 1;
+				}
+				break;
+
+			case 'designsetgo/accordion-item':
+				// Ensure uniqueId is set for accessibility attributes.
+				if ( ! isset( $attributes['uniqueId'] ) ) {
+					$attributes['uniqueId'] = 'accordion-item-' . wp_generate_uuid4();
+				}
+				break;
+
+			case 'designsetgo/counter':
+				// Ensure uniqueId is set for element ID.
+				if ( ! isset( $attributes['uniqueId'] ) ) {
+					$attributes['uniqueId'] = 'counter-' . wp_generate_uuid4();
+				}
+				break;
+		}
+
+		return $attributes;
 	}
 
 	/**
