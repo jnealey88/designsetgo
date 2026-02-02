@@ -643,9 +643,18 @@ Each ability has specific permission requirements:
 - [x] Extension configurators (background video, clickable groups, custom CSS, responsive visibility)
 - [x] WordPress 6.9 native Abilities API support
 
+### Completed in v2.1.0
+
+- [x] Batch operation abilities (`batch-update`)
+- [x] Block query abilities (`get-post-blocks`, `find-blocks`)
+- [x] Block deletion ability (`delete-block`)
+- [x] Child block inserters (`insert-accordion-item`, `insert-tab`)
+- [x] Auto-discovery of ability classes (no manual registration needed)
+- [x] Enhanced CSS sanitization for security
+- [x] Standardized error responses with HTTP status codes
+
 ### Phase 3 (Future)
 
-- [ ] Batch operation abilities (apply changes to multiple blocks)
 - [ ] Pattern template generation
 - [ ] Full-page layout generation from descriptions
 - [ ] Advanced animation sequencing
@@ -657,43 +666,112 @@ Each ability has specific permission requirements:
 
 ### Creating Custom Abilities
 
-DesignSetGo's abilities architecture is extensible. Create your own abilities:
+DesignSetGo's abilities architecture is extensible. Abilities are **auto-discovered** from the following directories:
+
+- `includes/abilities/info/` - Information/query abilities
+- `includes/abilities/inserters/` - Block insertion abilities
+- `includes/abilities/configurators/` - Block configuration abilities
+- `includes/abilities/generators/` - Section generation abilities
+
+Simply create a new class file following the naming convention `class-{ability-name}.php` and it will be automatically loaded and registered.
 
 ```php
 <?php
-namespace DesignSetGo\Abilities\Custom;
+// File: includes/abilities/inserters/class-insert-my-block.php
+namespace DesignSetGo\Abilities\Inserters;
 
 use DesignSetGo\Abilities\Abstract_Ability;
+use DesignSetGo\Abilities\Block_Inserter;
 
-class My_Custom_Ability extends Abstract_Ability {
+class Insert_My_Block extends Abstract_Ability {
     public function get_name(): string {
-        return 'designsetgo/my-custom-ability';
+        return 'designsetgo/insert-my-block';
     }
 
     public function get_config(): array {
         return array(
-            'label' => __('My Custom Ability', 'designsetgo'),
-            'description' => __('Does something awesome', 'designsetgo'),
-            'input_schema' => array( /* ... */ ),
-            'output_schema' => array( /* ... */ ),
+            'label'               => __('Insert My Block', 'designsetgo'),
+            'description'         => __('Inserts a custom block', 'designsetgo'),
+            'thinking_message'    => __('Creating block...', 'designsetgo'),
+            'success_message'     => __('Block created successfully.', 'designsetgo'),
+            'category'            => 'blocks',
+            'input_schema'        => $this->get_input_schema(),
+            'output_schema'       => Block_Inserter::get_default_output_schema(),
             'permission_callback' => array($this, 'check_permission_callback'),
         );
     }
 
+    public function check_permission_callback(): bool {
+        return $this->check_permission('edit_posts');
+    }
+
     public function execute(array $input) {
+        // Validate input
+        $validation = $this->validate_input($input);
+        if (is_wp_error($validation)) {
+            return $validation;
+        }
+
         // Your logic here
-        return $this->success(array('result' => 'awesome'));
+        return Block_Inserter::insert_block(
+            $input['post_id'],
+            'namespace/my-block',
+            $input['attributes'] ?? array(),
+            $input['innerBlocks'] ?? array(),
+            $input['position'] ?? -1
+        );
     }
 }
 ```
 
-Register in `includes/abilities/class-abilities-registry.php`:
+### Filter Hook: `designsetgo_abilities`
+
+Use this filter to modify, add, or remove abilities programmatically:
 
 ```php
-if (class_exists('DesignSetGo\Abilities\Custom\My_Custom_Ability')) {
-    $this->add_ability(new \DesignSetGo\Abilities\Custom\My_Custom_Ability());
-}
+/**
+ * Filter registered abilities.
+ *
+ * @param array<Abstract_Ability> $abilities Registered ability instances.
+ * @return array<Abstract_Ability> Modified abilities.
+ */
+add_filter('designsetgo_abilities', function($abilities) {
+    // Remove an ability
+    unset($abilities['designsetgo/some-ability']);
+
+    // Add a custom ability
+    $abilities['myplugin/custom-ability'] = new My_Custom_Ability();
+
+    // Modify an ability (wrap with logging, etc.)
+    // $abilities['designsetgo/insert-section'] = new Wrapped_Insert_Section();
+
+    return $abilities;
+});
 ```
+
+### Helper Classes
+
+DesignSetGo provides helper classes for common operations:
+
+| Class | Purpose |
+|-------|---------|
+| `Block_Inserter` | Insert blocks into posts with validation and sanitization |
+| `Block_Configurator` | Update block attributes, walk block trees |
+| `CSS_Sanitizer` | Sanitize CSS to prevent XSS attacks |
+
+### Base Class Methods
+
+The `Abstract_Ability` class provides these protected methods:
+
+| Method | Description |
+|--------|-------------|
+| `check_permission($cap)` | Check if user has capability |
+| `permission_error($msg)` | Return standardized permission error |
+| `error($code, $msg, $data)` | Return error with auto HTTP status |
+| `success($data)` | Return success response |
+| `validate_input($input)` | Validate against input schema |
+| `validate_post($id)` | Validate post exists |
+| `sanitize_attributes($attrs)` | Sanitize block attributes |
 
 ---
 

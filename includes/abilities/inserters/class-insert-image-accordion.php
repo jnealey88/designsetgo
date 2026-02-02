@@ -227,15 +227,15 @@ class Insert_Image_Accordion extends Abstract_Ability {
 			$inner_blocks = array(
 				array(
 					'name'       => 'designsetgo/image-accordion-item',
-					'attributes' => array( 'title' => 'Item 1' ),
+					'attributes' => array( 'uniqueId' => 'image-accordion-item-' . substr( str_replace( '-', '', wp_generate_uuid4() ), 0, 9 ) ),
 				),
 				array(
 					'name'       => 'designsetgo/image-accordion-item',
-					'attributes' => array( 'title' => 'Item 2' ),
+					'attributes' => array( 'uniqueId' => 'image-accordion-item-' . substr( str_replace( '-', '', wp_generate_uuid4() ), 0, 9 ) ),
 				),
 				array(
 					'name'       => 'designsetgo/image-accordion-item',
-					'attributes' => array( 'title' => 'Item 3' ),
+					'attributes' => array( 'uniqueId' => 'image-accordion-item-' . substr( str_replace( '-', '', wp_generate_uuid4() ), 0, 9 ) ),
 				),
 			);
 		}

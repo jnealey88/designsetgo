@@ -69,9 +69,14 @@ class Insert_Countdown_Timer extends Abstract_Ability {
 						'type'        => 'object',
 						'description' => __( 'Countdown timer attributes', 'designsetgo' ),
 						'properties'  => array(
-							'targetDate'        => array(
+							'targetDateTime'    => array(
 								'type'        => 'string',
 								'description' => __( 'Target date/time in ISO 8601 format (e.g., "2025-12-31T23:59:59")', 'designsetgo' ),
+							),
+							'timezone'          => array(
+								'type'        => 'string',
+								'description' => __( 'Timezone for the countdown (empty for local time)', 'designsetgo' ),
+								'default'     => '',
 							),
 							'showDays'          => array(
 								'type'        => 'boolean',
@@ -96,34 +101,19 @@ class Insert_Countdown_Timer extends Abstract_Ability {
 							'layout'            => array(
 								'type'        => 'string',
 								'description' => __( 'Layout style', 'designsetgo' ),
-								'enum'        => array( 'inline', 'stacked', 'boxed' ),
+								'enum'        => array( 'inline', 'compact', 'boxed' ),
 								'default'     => 'boxed',
 							),
-							'separator'         => array(
+							'completionAction'  => array(
 								'type'        => 'string',
-								'description' => __( 'Separator between units', 'designsetgo' ),
-								'default'     => ':',
+								'description' => __( 'Action when countdown completes', 'designsetgo' ),
+								'enum'        => array( 'message', 'hide' ),
+								'default'     => 'message',
 							),
-							'labelPosition'     => array(
+							'completionMessage' => array(
 								'type'        => 'string',
-								'description' => __( 'Position of unit labels', 'designsetgo' ),
-								'enum'        => array( 'above', 'below', 'none' ),
-								'default'     => 'below',
-							),
-							'expiredMessage'    => array(
-								'type'        => 'string',
-								'description' => __( 'Message to show when countdown expires', 'designsetgo' ),
-								'default'     => '',
-							),
-							'expiredAction'     => array(
-								'type'        => 'string',
-								'description' => __( 'Action when countdown expires', 'designsetgo' ),
-								'enum'        => array( 'none', 'hide', 'message', 'redirect' ),
-								'default'     => 'none',
-							),
-							'expiredRedirectUrl' => array(
-								'type'        => 'string',
-								'description' => __( 'URL to redirect to when expired (if expiredAction is redirect)', 'designsetgo' ),
+								'description' => __( 'Message to show when countdown completes', 'designsetgo' ),
+								'default'     => 'The countdown has ended!',
 							),
 						),
 					),
@@ -171,8 +161,8 @@ class Insert_Countdown_Timer extends Abstract_Ability {
 		}
 
 		// Set default target date if not provided (7 days from now).
-		if ( empty( $attributes['targetDate'] ) ) {
-			$attributes['targetDate'] = gmdate( 'c', strtotime( '+7 days' ) );
+		if ( empty( $attributes['targetDateTime'] ) ) {
+			$attributes['targetDateTime'] = gmdate( 'c', strtotime( '+7 days' ) );
 		}
 
 		// Sanitize attributes.

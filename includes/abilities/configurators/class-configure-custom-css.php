@@ -14,6 +14,7 @@ namespace DesignSetGo\Abilities\Configurators;
 
 use DesignSetGo\Abilities\Abstract_Ability;
 use DesignSetGo\Abilities\Block_Configurator;
+use DesignSetGo\Abilities\CSS_Sanitizer;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -135,19 +136,19 @@ class Configure_Custom_CSS extends Abstract_Ability {
 			);
 		}
 
-		// Sanitize CSS (basic sanitization - more extensive in block rendering).
+		// Sanitize CSS using comprehensive CSS_Sanitizer to prevent XSS attacks.
 		$sanitized_css = array();
 		if ( isset( $css['enabled'] ) ) {
 			$sanitized_css['dsgoCustomCssEnabled'] = (bool) $css['enabled'];
 		}
 		if ( ! empty( $css['desktop'] ) ) {
-			$sanitized_css['dsgoCustomCss'] = wp_strip_all_tags( $css['desktop'] );
+			$sanitized_css['dsgoCustomCss'] = CSS_Sanitizer::sanitize( $css['desktop'] );
 		}
 		if ( ! empty( $css['tablet'] ) ) {
-			$sanitized_css['dsgoCustomCssTablet'] = wp_strip_all_tags( $css['tablet'] );
+			$sanitized_css['dsgoCustomCssTablet'] = CSS_Sanitizer::sanitize( $css['tablet'] );
 		}
 		if ( ! empty( $css['mobile'] ) ) {
-			$sanitized_css['dsgoCustomCssMobile'] = wp_strip_all_tags( $css['mobile'] );
+			$sanitized_css['dsgoCustomCssMobile'] = CSS_Sanitizer::sanitize( $css['mobile'] );
 		}
 
 		// Apply the configuration.

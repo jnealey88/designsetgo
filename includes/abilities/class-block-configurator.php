@@ -327,4 +327,155 @@ class Block_Configurator {
 			'required'   => array( 'success' ),
 		);
 	}
+
+	/**
+	 * Delete a block by client ID.
+	 *
+	 * @param array<int, array<string, mixed>> $blocks    Blocks array.
+	 * @param string                           $client_id Client ID to find and delete.
+	 * @return array{blocks: array, deleted: int, block_name: string|null}
+	 */
+	public static function delete_block_by_client_id( array $blocks, string $client_id ): array {
+		$result_blocks = array();
+		$deleted       = 0;
+		$block_name    = null;
+
+		foreach ( $blocks as $block ) {
+			// Check if this block matches the client ID.
+			if ( isset( $block['attrs']['clientId'] ) && $block['attrs']['clientId'] === $client_id ) {
+				$deleted++;
+				$block_name = $block['blockName'];
+				continue; // Skip this block (delete it).
+			}
+
+			// Recursively process inner blocks.
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$inner_result         = self::delete_block_by_client_id( $block['innerBlocks'], $client_id );
+				$block['innerBlocks'] = $inner_result['blocks'];
+				$deleted             += $inner_result['deleted'];
+				if ( $inner_result['block_name'] ) {
+					$block_name = $inner_result['block_name'];
+				}
+			}
+
+			$result_blocks[] = $block;
+		}
+
+		return array(
+			'blocks'     => $result_blocks,
+			'deleted'    => $deleted,
+			'block_name' => $block_name,
+		);
+	}
+
+	/**
+	 * Delete first block matching name.
+	 *
+	 * @param array<int, array<string, mixed>> $blocks     Blocks array.
+	 * @param string                           $block_name Block name to delete.
+	 * @return array{blocks: array, deleted: int}
+	 */
+	public static function delete_first_block_by_name( array $blocks, string $block_name ): array {
+		$result_blocks = array();
+		$deleted       = 0;
+		$found         = false;
+
+		foreach ( $blocks as $block ) {
+			// If already found, just keep remaining blocks.
+			if ( $found ) {
+				$result_blocks[] = $block;
+				continue;
+			}
+
+			// Check if this block matches the name.
+			if ( $block['blockName'] === $block_name ) {
+				$deleted++;
+				$found = true;
+				continue; // Skip this block (delete it).
+			}
+
+			// Recursively process inner blocks if not yet found.
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$inner_result         = self::delete_first_block_by_name( $block['innerBlocks'], $block_name );
+				$block['innerBlocks'] = $inner_result['blocks'];
+				$deleted             += $inner_result['deleted'];
+				if ( $inner_result['deleted'] > 0 ) {
+					$found = true;
+				}
+			}
+
+			$result_blocks[] = $block;
+		}
+
+		return array(
+			'blocks'  => $result_blocks,
+			'deleted' => $deleted,
+		);
+	}
+
+	/**
+	 * Delete all blocks matching name.
+	 *
+	 * @param array<int, array<string, mixed>> $blocks     Blocks array.
+	 * @param string                           $block_name Block name to delete.
+	 * @return array{blocks: array, deleted: int}
+	 */
+	public static function delete_all_blocks_by_name( array $blocks, string $block_name ): array {
+		$result_blocks = array();
+		$deleted       = 0;
+
+		foreach ( $blocks as $block ) {
+			// Check if this block matches the name.
+			if ( $block['blockName'] === $block_name ) {
+				$deleted++;
+				continue; // Skip this block (delete it).
+			}
+
+			// Recursively process inner blocks.
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$inner_result         = self::delete_all_blocks_by_name( $block['innerBlocks'], $block_name );
+				$block['innerBlocks'] = $inner_result['blocks'];
+				$deleted             += $inner_result['deleted'];
+			}
+
+			$result_blocks[] = $block;
+		}
+
+		return array(
+			'blocks'  => $result_blocks,
+			'deleted' => $deleted,
+		);
+	}
+
+	/**
+	 * Delete block at specific position.
+	 *
+	 * @param array<int, array<string, mixed>> $blocks     Blocks array.
+	 * @param string                           $block_name Block name to match.
+	 * @param int                              $position   Position to delete (0-indexed).
+	 * @return array{blocks: array, deleted: int}
+	 */
+	public static function delete_block_at_position( array $blocks, string $block_name, int $position ): array {
+		$result_blocks    = array();
+		$current_position = 0;
+		$deleted          = 0;
+
+		foreach ( $blocks as $block ) {
+			if ( $block['blockName'] === $block_name ) {
+				if ( $current_position === $position ) {
+					$deleted++;
+					$current_position++;
+					continue; // Skip this block (delete it).
+				}
+				$current_position++;
+			}
+
+			$result_blocks[] = $block;
+		}
+
+		return array(
+			'blocks'  => $result_blocks,
+			'deleted' => $deleted,
+		);
+	}
 }
