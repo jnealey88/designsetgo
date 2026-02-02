@@ -346,7 +346,7 @@ class Block_Inserter {
 				$decimal      = isset( $attributes['decimal'] ) ? $attributes['decimal'] : '.';
 				$align        = isset( $attributes['alignment'] ) ? $attributes['alignment'] : 'center';
 
-				$outer_style = 'align-self:stretch;--dsgo-counter-columns-desktop:' . $desktop_cols . ';--dsgo-counter-columns-tablet:' . $tablet_cols . ';--dsgo-counter-columns-mobile:' . $mobile_cols . ';--dsgo-counter-gap:' . $gap . 'px';
+				$outer_style = 'align-self:stretch;--dsgo-counter-columns-desktop:' . (string) $desktop_cols . ';--dsgo-counter-columns-tablet:' . (string) $tablet_cols . ';--dsgo-counter-columns-mobile:' . (string) $mobile_cols . ';--dsgo-counter-gap:' . (string) $gap . 'px';
 
 				$data_attrs  = ' data-animation-duration="' . esc_attr( (string) $duration ) . '"';
 				$data_attrs .= ' data-animation-delay="' . esc_attr( (string) $delay ) . '"';
@@ -1010,7 +1010,7 @@ class Block_Inserter {
 				$icon_html = '';
 				if ( 'none' !== $icon_position && $icon ) {
 					$icon_style = 'display:flex;align-items:center;justify-content:center;width:' . $icon_size . 'px;height:' . $icon_size . 'px;flex-shrink:0';
-					$icon_html  = '<span class="dsgo-icon-button__icon dsgo-lazy-icon" style="' . esc_attr( $icon_style ) . '" data-icon-name="' . esc_attr( $icon ) . '" data-icon-size="' . esc_attr( $icon_size ) . '"></span>';
+					$icon_html  = '<span class="dsgo-icon-button__icon dsgo-lazy-icon" style="' . esc_attr( $icon_style ) . '" data-icon-name="' . esc_attr( $icon ) . '" data-icon-size="' . esc_attr( (string) $icon_size ) . '"></span>';
 				}
 
 				// Text HTML.
@@ -1080,24 +1080,24 @@ class Block_Inserter {
 				$data_attrs  = ' data-dsgo-modal="true"';
 				$data_attrs .= ' data-modal-id="' . esc_attr( $modal_id ) . '"';
 				$data_attrs .= ' data-animation-type="' . esc_attr( $animation_type ) . '"';
-				$data_attrs .= ' data-animation-duration="' . esc_attr( $animation_duration ) . '"';
+				$data_attrs .= ' data-animation-duration="' . esc_attr( (string) $animation_duration ) . '"';
 				$data_attrs .= ' data-close-on-backdrop="' . ( $close_on_backdrop ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-close-on-esc="' . ( $close_on_esc ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-disable-body-scroll="' . ( $disable_body_scroll ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-allow-hash-trigger="' . ( $allow_hash_trigger ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-update-url-on-open="' . ( $update_url_on_open ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-auto-trigger-type="' . esc_attr( $auto_trigger_type ) . '"';
-				$data_attrs .= ' data-auto-trigger-delay="' . esc_attr( $auto_trigger_delay ) . '"';
+				$data_attrs .= ' data-auto-trigger-delay="' . esc_attr( (string) $auto_trigger_delay ) . '"';
 				$data_attrs .= ' data-auto-trigger-frequency="' . esc_attr( $auto_trigger_frequency ) . '"';
-				$data_attrs .= ' data-cookie-duration="' . esc_attr( $cookie_duration ) . '"';
-				$data_attrs .= ' data-exit-intent-sensitivity="' . esc_attr( $exit_intent_sensitivity ) . '"';
-				$data_attrs .= ' data-exit-intent-min-time="' . esc_attr( $exit_intent_min_time ) . '"';
+				$data_attrs .= ' data-cookie-duration="' . esc_attr( (string) $cookie_duration ) . '"';
+				$data_attrs .= ' data-exit-intent-sensitivity="' . esc_attr( (string) $exit_intent_sensitivity ) . '"';
+				$data_attrs .= ' data-exit-intent-min-time="' . esc_attr( (string) $exit_intent_min_time ) . '"';
 				$data_attrs .= ' data-exit-intent-exclude-mobile="' . ( $exit_intent_exclude_mob ? 'true' : 'false' ) . '"';
-				$data_attrs .= ' data-scroll-depth="' . esc_attr( $scroll_depth ) . '"';
+				$data_attrs .= ' data-scroll-depth="' . esc_attr( (string) $scroll_depth ) . '"';
 				$data_attrs .= ' data-scroll-direction="' . esc_attr( $scroll_direction ) . '"';
-				$data_attrs .= ' data-time-on-page="' . esc_attr( $time_on_page ) . '"';
+				$data_attrs .= ' data-time-on-page="' . esc_attr( (string) $time_on_page ) . '"';
 				$data_attrs .= ' data-gallery-group-id="' . esc_attr( $gallery_group_id ) . '"';
-				$data_attrs .= ' data-gallery-index="' . esc_attr( $gallery_index ) . '"';
+				$data_attrs .= ' data-gallery-index="' . esc_attr( (string) $gallery_index ) . '"';
 				$data_attrs .= ' data-show-gallery-navigation="' . ( $show_gallery_nav ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-navigation-style="' . esc_attr( $nav_style ) . '"';
 				$data_attrs .= ' data-navigation-position="' . esc_attr( $nav_position ) . '"';
@@ -1215,7 +1215,7 @@ class Block_Inserter {
 				$data_attrs .= ' data-heading-levels="' . esc_attr( implode( ',', $heading_levels ) ) . '"';
 				$data_attrs .= ' data-display-mode="' . esc_attr( $display_mode ) . '"';
 				$data_attrs .= ' data-scroll-smooth="' . ( $scroll_smooth ? 'true' : 'false' ) . '"';
-				$data_attrs .= ' data-scroll-offset="' . esc_attr( $scroll_offset ) . '"';
+				$data_attrs .= ' data-scroll-offset="' . esc_attr( (string) $scroll_offset ) . '"';
 
 				// List tag.
 				$list_tag = 'ordered' === $list_style ? 'ol' : 'ul';
@@ -1253,17 +1253,17 @@ class Block_Inserter {
 				$style_parts = array(
 					'--dsgo-image-accordion-height:' . esc_attr( $height ),
 					'--dsgo-image-accordion-gap:' . esc_attr( $gap ),
-					'--dsgo-image-accordion-expanded-ratio:' . esc_attr( $expanded_ratio ),
+					'--dsgo-image-accordion-expanded-ratio:' . esc_attr( (string) $expanded_ratio ),
 					'--dsgo-image-accordion-transition:' . esc_attr( $transition_duration ),
 					'--dsgo-image-accordion-overlay-color:' . esc_attr( $overlay_color ),
-					'--dsgo-image-accordion-overlay-opacity:' . esc_attr( $overlay_opacity / 100 ),
-					'--dsgo-image-accordion-overlay-opacity-expanded:' . esc_attr( $overlay_opacity_expanded / 100 ),
+					'--dsgo-image-accordion-overlay-opacity:' . esc_attr( (string) ( $overlay_opacity / 100 ) ),
+					'--dsgo-image-accordion-overlay-opacity-expanded:' . esc_attr( (string) ( $overlay_opacity_expanded / 100 ) ),
 				);
 				$style = implode( ';', $style_parts );
 
 				// Data attributes.
 				$data_attrs  = ' data-trigger-type="' . esc_attr( $trigger_type ) . '"';
-				$data_attrs .= ' data-default-expanded="' . esc_attr( $default_expanded ) . '"';
+				$data_attrs .= ' data-default-expanded="' . esc_attr( (string) $default_expanded ) . '"';
 				$data_attrs .= ' data-enable-overlay="' . ( $enable_overlay ? 'true' : 'false' ) . '"';
 
 				return array(
@@ -1292,8 +1292,8 @@ class Block_Inserter {
 				$style_parts = array();
 				if ( $enable_overlay ) {
 					$style_parts[] = '--dsgo-overlay-color:' . esc_attr( $overlay_color );
-					$style_parts[] = '--dsgo-overlay-opacity:' . esc_attr( $overlay_opacity / 100 );
-					$style_parts[] = '--dsgo-overlay-opacity-expanded:' . esc_attr( $overlay_opacity_expanded / 100 );
+					$style_parts[] = '--dsgo-overlay-opacity:' . esc_attr( (string) ( $overlay_opacity / 100 ) );
+					$style_parts[] = '--dsgo-overlay-opacity-expanded:' . esc_attr( (string) ( $overlay_opacity_expanded / 100 ) );
 				}
 				$style_parts[] = '--dsgo-vertical-alignment:' . esc_attr( $vertical_alignment );
 				$style_parts[] = '--dsgo-horizontal-alignment:' . esc_attr( $horizontal_alignment );
@@ -1405,9 +1405,9 @@ class Block_Inserter {
 					'--dsgo-slider-aspect-ratio:' . esc_attr( $aspect_ratio ),
 					'--dsgo-slider-gap:' . esc_attr( $gap ),
 					'--dsgo-slider-transition:' . esc_attr( $transition_duration ),
-					'--dsgo-slider-slides-per-view:' . esc_attr( $effective_slides ),
-					'--dsgo-slider-slides-per-view-tablet:' . esc_attr( $effective_slides_tablet ),
-					'--dsgo-slider-slides-per-view-mobile:' . esc_attr( $effective_slides_mobile ),
+					'--dsgo-slider-slides-per-view:' . esc_attr( (string) $effective_slides ),
+					'--dsgo-slider-slides-per-view-tablet:' . esc_attr( (string) $effective_slides_tablet ),
+					'--dsgo-slider-slides-per-view-mobile:' . esc_attr( (string) $effective_slides_mobile ),
 				);
 				if ( $arrow_size ) {
 					$style_parts[] = '--dsgo-slider-arrow-size:' . esc_attr( $arrow_size );
@@ -1415,9 +1415,9 @@ class Block_Inserter {
 				$style = implode( ';', $style_parts );
 
 				// Build data attributes.
-				$data_attrs  = ' data-slides-per-view="' . esc_attr( $effective_slides ) . '"';
-				$data_attrs .= ' data-slides-per-view-tablet="' . esc_attr( $effective_slides_tablet ) . '"';
-				$data_attrs .= ' data-slides-per-view-mobile="' . esc_attr( $effective_slides_mobile ) . '"';
+				$data_attrs  = ' data-slides-per-view="' . esc_attr( (string) $effective_slides ) . '"';
+				$data_attrs .= ' data-slides-per-view-tablet="' . esc_attr( (string) $effective_slides_tablet ) . '"';
+				$data_attrs .= ' data-slides-per-view-mobile="' . esc_attr( (string) $effective_slides_mobile ) . '"';
 				$data_attrs .= ' data-use-aspect-ratio="' . ( $use_aspect_ratio ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-show-arrows="' . ( $show_arrows ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-show-dots="' . ( $show_dots ? 'true' : 'false' ) . '"';
@@ -1430,7 +1430,7 @@ class Block_Inserter {
 				$data_attrs .= ' data-transition-duration="' . esc_attr( $transition_duration ) . '"';
 				$data_attrs .= ' data-transition-easing="' . esc_attr( $transition_easing ) . '"';
 				$data_attrs .= ' data-autoplay="' . ( $autoplay ? 'true' : 'false' ) . '"';
-				$data_attrs .= ' data-autoplay-interval="' . esc_attr( $autoplay_interval ) . '"';
+				$data_attrs .= ' data-autoplay-interval="' . esc_attr( (string) $autoplay_interval ) . '"';
 				$data_attrs .= ' data-pause-on-hover="' . ( $pause_on_hover ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-pause-on-interaction="' . ( $pause_on_interaction ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-loop="' . ( $loop ? 'true' : 'false' ) . '"';
@@ -1438,9 +1438,9 @@ class Block_Inserter {
 				$data_attrs .= ' data-swipeable="' . ( $swipeable ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-free-mode="' . ( $free_mode ? 'true' : 'false' ) . '"';
 				$data_attrs .= ' data-centered-slides="' . ( $centered_slides ? 'true' : 'false' ) . '"';
-				$data_attrs .= ' data-mobile-breakpoint="' . esc_attr( $mobile_breakpoint ) . '"';
-				$data_attrs .= ' data-tablet-breakpoint="' . esc_attr( $tablet_breakpoint ) . '"';
-				$data_attrs .= ' data-active-slide="' . esc_attr( $active_slide ) . '"';
+				$data_attrs .= ' data-mobile-breakpoint="' . esc_attr( (string) $mobile_breakpoint ) . '"';
+				$data_attrs .= ' data-tablet-breakpoint="' . esc_attr( (string) $tablet_breakpoint ) . '"';
+				$data_attrs .= ' data-active-slide="' . esc_attr( (string) $active_slide ) . '"';
 
 				$aria = $aria_label ? $aria_label : 'Image slider';
 
@@ -1480,7 +1480,7 @@ class Block_Inserter {
 				}
 				if ( $overlay_color ) {
 					$style_parts[] = '--dsgo-slide-overlay-color:' . esc_attr( $overlay_color );
-					$style_parts[] = '--dsgo-slide-overlay-opacity:' . esc_attr( $overlay_opacity / 100 );
+					$style_parts[] = '--dsgo-slide-overlay-opacity:' . esc_attr( (string) ( $overlay_opacity / 100 ) );
 				}
 				$style_parts[] = '--dsgo-slide-content-vertical-align:' . esc_attr( $content_v_align );
 				$style_parts[] = '--dsgo-slide-content-horizontal-align:' . esc_attr( $content_h_align );
@@ -1492,7 +1492,7 @@ class Block_Inserter {
 				// Overlay HTML.
 				$overlay_html = '';
 				if ( $overlay_color ) {
-					$overlay_style = 'background-color:' . esc_attr( $overlay_color ) . ';opacity:' . esc_attr( $overlay_opacity / 100 );
+					$overlay_style = 'background-color:' . esc_attr( $overlay_color ) . ';opacity:' . esc_attr( (string) ( $overlay_opacity / 100 ) );
 					$overlay_html  = '<div class="dsgo-slide__overlay" style="' . esc_attr( $overlay_style ) . '"></div>';
 				}
 
@@ -1544,7 +1544,7 @@ class Block_Inserter {
 				}
 
 				return array(
-					'opening' => '<div class="wp-block-designsetgo-scroll-marquee dsgo-scroll-marquee" data-scroll-speed="' . esc_attr( $scroll_speed ) . '" style="' . esc_attr( $style ) . '">' . $rows_html,
+					'opening' => '<div class="wp-block-designsetgo-scroll-marquee dsgo-scroll-marquee" data-scroll-speed="' . esc_attr( (string) $scroll_speed ) . '" style="' . esc_attr( $style ) . '">' . $rows_html,
 					'closing' => '</div>',
 				);
 
@@ -1573,8 +1573,8 @@ class Block_Inserter {
 				$style = '--dsgo-tabs-gap:' . esc_attr( $gap );
 
 				// Data attributes.
-				$data_attrs  = ' data-active-tab="' . esc_attr( $active_tab ) . '"';
-				$data_attrs .= ' data-mobile-breakpoint="' . esc_attr( $mobile_breakpoint ) . '"';
+				$data_attrs  = ' data-active-tab="' . esc_attr( (string) $active_tab ) . '"';
+				$data_attrs .= ' data-mobile-breakpoint="' . esc_attr( (string) $mobile_breakpoint ) . '"';
 				$data_attrs .= ' data-mobile-mode="' . esc_attr( $mobile_mode ) . '"';
 				$data_attrs .= ' data-deep-linking="' . ( $enable_deep_link ? 'true' : 'false' ) . '"';
 
@@ -2146,12 +2146,12 @@ class Block_Inserter {
 			$html .= ' required aria-required="true"';
 		}
 		if ( null !== $min ) {
-			$html .= ' min="' . esc_attr( $min ) . '"';
+			$html .= ' min="' . esc_attr( (string) $min ) . '"';
 		}
 		if ( null !== $max ) {
-			$html .= ' max="' . esc_attr( $max ) . '"';
+			$html .= ' max="' . esc_attr( (string) $max ) . '"';
 		}
-		$html .= ' step="' . esc_attr( $step ) . '"';
+		$html .= ' step="' . esc_attr( (string) $step ) . '"';
 		if ( '' !== $default_value ) {
 			$html .= ' value="' . esc_attr( $default_value ) . '"';
 		}
