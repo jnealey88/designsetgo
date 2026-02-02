@@ -243,7 +243,7 @@ class CSS_Sanitizer {
 		$sanitized = array();
 
 		foreach ( array( 'desktop', 'tablet', 'mobile' ) as $breakpoint ) {
-			if ( isset( $css_array[ $breakpoint ] ) && is_string( $css_array[ $breakpoint ] ) ) {
+			if ( isset( $css_array[ $breakpoint ] ) ) {
 				$sanitized[ $breakpoint ] = self::sanitize( $css_array[ $breakpoint ] );
 			}
 		}

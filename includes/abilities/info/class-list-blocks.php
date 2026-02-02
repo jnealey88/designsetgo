@@ -177,8 +177,8 @@ class List_Blocks extends Abstract_Ability {
 
 			$blocks[] = array(
 				'name'        => $block_type->name,
-				'title'       => $block_type->title ?? $this->generate_title_from_name( $block_type->name ),
-				'description' => $block_type->description ?? '',
+				'title'       => '' !== $block_type->title ? $block_type->title : $this->generate_title_from_name( $block_type->name ),
+				'description' => $block_type->description,
 				'category'    => $this->normalize_category( $block_type->category ?? 'designsetgo' ),
 				'attributes'  => $this->format_attributes( $block_type->attributes ?? array() ),
 				'supports'    => $this->format_supports( $block_type->supports ?? array() ),

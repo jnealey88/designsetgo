@@ -1276,11 +1276,12 @@ class Block_Inserter {
 				$vertical_alignment   = isset( $attributes['verticalAlignment'] ) ? $attributes['verticalAlignment'] : 'center';
 				$horizontal_alignment = isset( $attributes['horizontalAlignment'] ) ? $attributes['horizontalAlignment'] : 'center';
 
-				// Context defaults (when no parent context available).
-				$enable_overlay           = true;
-				$overlay_color            = '#000000';
-				$overlay_opacity          = 40;
-				$overlay_opacity_expanded = 20;
+				// These values come from parent block context (usesContext in block.json).
+				// Read from attributes if provided, otherwise use defaults matching parent defaults.
+				$enable_overlay           = isset( $attributes['enableOverlay'] ) ? (bool) $attributes['enableOverlay'] : true;
+				$overlay_color            = isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : '#000000';
+				$overlay_opacity          = isset( $attributes['overlayOpacity'] ) ? floatval( $attributes['overlayOpacity'] ) : 40;
+				$overlay_opacity_expanded = isset( $attributes['overlayOpacityExpanded'] ) ? floatval( $attributes['overlayOpacityExpanded'] ) : 20;
 
 				// Build classes.
 				$class_parts = array( 'wp-block-designsetgo-image-accordion-item', 'dsgo-image-accordion-item' );
