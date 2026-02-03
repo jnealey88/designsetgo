@@ -118,3 +118,6 @@ performance.txt
 copilot-comments.txt
 failed-check.txt
 tasks.txt
+
+#Claude
+.claude/claude-memory.md
