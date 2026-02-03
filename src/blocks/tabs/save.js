@@ -23,6 +23,8 @@ export default function Save({ attributes }) {
 		activeTabColor,
 		activeTabBackgroundColor,
 		tabBorderColor,
+		tabHoverColor,
+		tabHoverBackgroundColor,
 		showNavBorder,
 	} = attributes;
 
@@ -47,6 +49,12 @@ export default function Save({ attributes }) {
 			}),
 			...(tabBorderColor && {
 				'--dsgo-tab-border-color': tabBorderColor,
+			}),
+			...(tabHoverColor && {
+				'--dsgo-tab-color-hover': tabHoverColor,
+			}),
+			...(tabHoverBackgroundColor && {
+				'--dsgo-tab-bg-hover': tabHoverBackgroundColor,
 			}),
 		},
 	});

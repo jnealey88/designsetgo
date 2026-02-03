@@ -50,6 +50,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		activeTabColor,
 		activeTabBackgroundColor,
 		tabBorderColor,
+		tabHoverColor,
+		tabHoverBackgroundColor,
 		showNavBorder,
 	} = attributes;
 
@@ -153,6 +155,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			...(tabBorderColor && {
 				'--dsgo-tab-border-color': tabBorderColor,
 			}),
+			...(tabHoverColor && {
+				'--dsgo-tab-color-hover': tabHoverColor,
+			}),
+			...(tabHoverBackgroundColor && {
+				'--dsgo-tab-bg-hover': tabHoverBackgroundColor,
+			}),
 		},
 	});
 
@@ -188,6 +196,22 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							onColorChange: (color) =>
 								setAttributes({
 									tabBackgroundColor: color || '',
+								}),
+							clearable: true,
+						},
+						{
+							label: __('Tab Text Hover', 'designsetgo'),
+							colorValue: tabHoverColor,
+							onColorChange: (color) =>
+								setAttributes({ tabHoverColor: color || '' }),
+							clearable: true,
+						},
+						{
+							label: __('Tab Background Hover', 'designsetgo'),
+							colorValue: tabHoverBackgroundColor,
+							onColorChange: (color) =>
+								setAttributes({
+									tabHoverBackgroundColor: color || '',
 								}),
 							clearable: true,
 						},
