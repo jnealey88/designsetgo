@@ -1516,6 +1516,54 @@
 	}
 
 	/**
+	 * Initialize hash link triggers
+	 *
+	 * Handles anchor links with href="#modal-id" that should open modals.
+	 * This ensures modals can be reopened even when the hash is already in the URL,
+	 * which normally wouldn't trigger a hashchange event.
+	 */
+	function initHashLinkTriggers() {
+		// Find all anchor links with hash hrefs that haven't been initialized
+		const hashLinks = document.querySelectorAll(
+			'a[href^="#"]:not([data-dsgo-hash-trigger-initialized]):not([data-dsgo-modal-trigger])'
+		);
+
+		hashLinks.forEach((link) => {
+			const href = link.getAttribute('href');
+			if (!href || href === '#') {
+				return;
+			}
+
+			const modalId = href.substring(1); // Remove the # prefix
+			const modal = document.getElementById(modalId);
+
+			// Only initialize if this links to a modal with hash trigger enabled
+			if (
+				!modal ||
+				!modal.dsgoModalInstance ||
+				!modal.dsgoModalInstance.settings.allowHashTrigger
+			) {
+				return;
+			}
+
+			// Prevent duplicate initialization
+			link.setAttribute('data-dsgo-hash-trigger-initialized', 'true');
+
+			// Add click handler
+			link.addEventListener('click', (e) => {
+				e.preventDefault();
+
+				// Open the modal if not already open
+				// Note: The open() method handles URL hash updates when updateUrlOnOpen is enabled,
+				// so we don't duplicate that logic here
+				if (!modal.dsgoModalInstance.isOpen) {
+					modal.dsgoModalInstance.open(link);
+				}
+			});
+		});
+	}
+
+	/**
 	 * Initialize on DOM ready
 	 */
 	if (document.readyState === 'loading') {
@@ -1523,11 +1571,13 @@
 			initModals();
 			initTriggers();
 			initCloseTriggers();
+			initHashLinkTriggers();
 		});
 	} else {
 		initModals();
 		initTriggers();
 		initCloseTriggers();
+		initHashLinkTriggers();
 	}
 
 	/**
@@ -1537,6 +1587,7 @@
 		initModals();
 		initTriggers();
 		initCloseTriggers();
+		initHashLinkTriggers();
 	});
 
 	/**
@@ -1766,6 +1817,7 @@
 	window.dsgoInitModals = initModals;
 	window.dsgoInitModalTriggers = initTriggers;
 	window.dsgoInitModalCloseTriggers = initCloseTriggers;
+	window.dsgoInitHashLinkTriggers = initHashLinkTriggers;
 	window.dsgoModal = publicAPI;
 	window.dsgoModalAPI = publicAPI; // Alias for backwards compatibility
 })();
