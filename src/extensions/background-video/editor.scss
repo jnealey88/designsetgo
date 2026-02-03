@@ -12,6 +12,13 @@
 	overflow: hidden; // CRITICAL: Makes border radius work by clipping video
 	width: 100%; // CRITICAL: Ensure wrapper doesn't shrink nested containers
 
+	// CRITICAL: When wrapper has alignfull, apply same negative margins as WordPress does for full-width blocks
+	// This ensures the video background wrapper extends edge-to-edge in the editor
+	&.alignfull {
+		margin-right: calc(var(--wp--style--root--padding-right, 0px) * -1) !important;
+		margin-left: calc(var(--wp--style--root--padding-left, 0px) * -1) !important;
+	}
+
 	// CRITICAL: Must match style.scss for frontend parity
 	.dsgo-video-background,
 	.dsgo-video-background-editor {
