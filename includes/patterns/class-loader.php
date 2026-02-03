@@ -39,6 +39,8 @@ class Loader {
 			'dsgo-content'      => __( 'DesignSetGo: Content', 'designsetgo' ),
 			'dsgo-faq'          => __( 'DesignSetGo: FAQ', 'designsetgo' ),
 			'dsgo-modal'        => __( 'DesignSetGo: Modals', 'designsetgo' ),
+			'dsgo-gallery'      => __( 'DesignSetGo: Gallery', 'designsetgo' ),
+			'dsgo-contact'      => __( 'DesignSetGo: Contact', 'designsetgo' ),
 		);
 
 		// Get pattern categories registry.
@@ -66,7 +68,7 @@ class Loader {
 		}
 
 		// Only scan expected/allowed pattern categories.
-		$allowed_categories = array( 'hero', 'features', 'pricing', 'testimonials', 'team', 'cta', 'content', 'faq', 'modal' );
+		$allowed_categories = array( 'hero', 'features', 'pricing', 'testimonials', 'team', 'cta', 'content', 'faq', 'modal', 'gallery', 'contact' );
 
 		foreach ( $allowed_categories as $category ) {
 			$category_dir = $patterns_dir . $category . '/';
