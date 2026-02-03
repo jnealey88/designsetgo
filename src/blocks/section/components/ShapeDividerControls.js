@@ -21,6 +21,7 @@ import {
 	getShapeDividerOptions,
 	getShapeDivider,
 } from '../utils/shape-dividers';
+import { sanitizeColor } from '../utils/sanitize-color';
 
 /**
  * Shape preview component showing a small preview of the selected shape
@@ -61,6 +62,10 @@ function ShapePreview({
 		transforms.push('scaleY(-1)');
 	}
 
+	// Sanitize color values to prevent XSS
+	const safeColor = sanitizeColor(color);
+	const safeBackgroundColor = sanitizeColor(backgroundColor);
+
 	return (
 		<div
 			style={{
@@ -68,7 +73,7 @@ function ShapePreview({
 				height: '40px',
 				overflow: 'hidden',
 				borderRadius: '4px',
-				backgroundColor: backgroundColor || '#f0f0f0',
+				backgroundColor: safeBackgroundColor || '#f0f0f0',
 				marginBottom: '12px',
 			}}
 		>
@@ -78,7 +83,7 @@ function ShapePreview({
 				style={{
 					width: '100%',
 					height: '100%',
-					fill: color || 'currentColor',
+					fill: safeColor || 'currentColor',
 					transform:
 						transforms.length > 0
 							? transforms.join(' ')

@@ -30,6 +30,7 @@ export default function SectionSave({ attributes }) {
 		// Shape divider attributes
 		shapeDividerTop,
 		shapeDividerTopColor,
+		shapeDividerTopBackgroundColor,
 		shapeDividerTopHeight,
 		shapeDividerTopWidth,
 		shapeDividerTopFlipX,
@@ -37,6 +38,7 @@ export default function SectionSave({ attributes }) {
 		shapeDividerTopFront,
 		shapeDividerBottom,
 		shapeDividerBottomColor,
+		shapeDividerBottomBackgroundColor,
 		shapeDividerBottomHeight,
 		shapeDividerBottomWidth,
 		shapeDividerBottomFlipX,
@@ -89,6 +91,14 @@ export default function SectionSave({ attributes }) {
 		innerStyle.marginRight = 'auto';
 	}
 
+	// Add padding to clear shape dividers (must match edit.js EXACTLY)
+	if (shapeDividerTop) {
+		innerStyle.paddingTop = `${shapeDividerTopHeight || 100}px`;
+	}
+	if (shapeDividerBottom) {
+		innerStyle.paddingBottom = `${shapeDividerBottomHeight || 100}px`;
+	}
+
 	// Merge inner blocks props without the outer block props
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: 'dsgo-stack__inner',
@@ -100,6 +110,7 @@ export default function SectionSave({ attributes }) {
 			<ShapeDivider
 				shape={shapeDividerTop}
 				color={shapeDividerTopColor}
+				backgroundColor={shapeDividerTopBackgroundColor}
 				height={shapeDividerTopHeight}
 				width={shapeDividerTopWidth}
 				flipX={shapeDividerTopFlipX}
@@ -111,6 +122,7 @@ export default function SectionSave({ attributes }) {
 			<ShapeDivider
 				shape={shapeDividerBottom}
 				color={shapeDividerBottomColor}
+				backgroundColor={shapeDividerBottomBackgroundColor}
 				height={shapeDividerBottomHeight}
 				width={shapeDividerBottomWidth}
 				flipX={shapeDividerBottomFlipX}

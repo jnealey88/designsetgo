@@ -157,6 +157,10 @@
 			"type": "boolean",
 			"default": false
 		},
+		"shapeDividerTopBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
 		"shapeDividerBottom": {
 			"type": "string",
 			"default": ""
@@ -184,6 +188,10 @@
 		"shapeDividerBottomFront": {
 			"type": "boolean",
 			"default": false
+		},
+		"shapeDividerBottomBackgroundColor": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"providesContext": {

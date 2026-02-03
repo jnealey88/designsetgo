@@ -59,11 +59,11 @@ const v2 = {
 	isEligible(attributes) {
 		// This deprecation is for blocks without shape divider attributes
 		// If any shape divider attribute exists, this is not the right version
+		// Use constrainWidth to distinguish v2 from v1 (v1 used layout.contentSize)
 		return (
 			!attributes.shapeDividerTop &&
 			!attributes.shapeDividerBottom &&
-			// Must have align attribute (distinguishes from v1)
-			attributes.align !== undefined
+			Object.prototype.hasOwnProperty.call(attributes, 'constrainWidth')
 		);
 	},
 	save({ attributes }) {

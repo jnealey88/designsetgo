@@ -40,7 +40,8 @@
 	}
 
 	// Ensure content is above hover overlay
-	> *:not(.dsgo-stack__inner) {
+	// IMPORTANT: Exclude shape dividers - they need position: absolute to stay at edges
+	> *:not(.dsgo-stack__inner):not(.dsgo-shape-divider) {
 		position: relative;
 		z-index: 3;
 	}
@@ -451,6 +452,9 @@
  * Shape Divider Styles (Editor)
  *
  * Must match style.scss for consistent preview.
+ * Shapes are positioned at the edges of the section, and the inner
+ * container receives automatic padding to clear the shape heights.
+ *
  * Z-index hierarchy:
  * - Shape dividers (default): z-index 1
  * - Inner container: z-index 2
@@ -471,6 +475,9 @@
 	// Center the shape when width > 100%
 	left: var(--dsgo-shape-offset, 0);
 
+	// Apply background color if set
+	background-color: var(--dsgo-shape-background, transparent);
+
 	svg {
 		display: block;
 		width: 100%;
@@ -478,12 +485,12 @@
 		fill: var(--dsgo-shape-color, currentColor);
 	}
 
-	// Top position - shape at the very top of section
+	// Top position - shape at the top edge of section
 	&--top {
 		top: 0;
 	}
 
-	// Bottom position - shape at the very bottom of section
+	// Bottom position - shape at the bottom edge of section
 	&--bottom {
 		bottom: 0;
 	}

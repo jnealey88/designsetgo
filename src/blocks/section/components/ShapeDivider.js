@@ -8,58 +8,7 @@
  */
 
 import { getShapeDivider } from '../utils/shape-dividers';
-
-/**
- * Validate and sanitize color values to prevent XSS
- * Allows: hex colors, rgb/rgba, hsl/hsla, CSS variables, and named colors
- *
- * @param {string} color - Color value to validate
- * @return {string|null} Sanitized color or null if invalid
- */
-function sanitizeColor(color) {
-	if (!color || typeof color !== 'string') {
-		return null;
-	}
-
-	// Trim whitespace
-	const trimmed = color.trim();
-
-	// Allow CSS custom properties (variables)
-	if (/^var\(--[\w-]+(?:,\s*[^)]+)?\)$/i.test(trimmed)) {
-		return trimmed;
-	}
-
-	// Allow hex colors (3, 4, 6, or 8 digits)
-	if (/^#(?:[\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})$/i.test(trimmed)) {
-		return trimmed;
-	}
-
-	// Allow rgb/rgba
-	if (
-		/^rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*(?:,\s*[\d.]+)?\s*\)$/i.test(
-			trimmed
-		)
-	) {
-		return trimmed;
-	}
-
-	// Allow hsl/hsla
-	if (
-		/^hsla?\(\s*\d{1,3}\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*(?:,\s*[\d.]+)?\s*\)$/i.test(
-			trimmed
-		)
-	) {
-		return trimmed;
-	}
-
-	// Allow named colors (basic validation - alphanumeric only)
-	if (/^[a-z]+$/i.test(trimmed)) {
-		return trimmed;
-	}
-
-	// Reject anything else
-	return null;
-}
+import { sanitizeColor } from '../utils/sanitize-color';
 
 /**
  * Clamp a value between min and max
@@ -76,20 +25,22 @@ function clamp(value, min, max) {
 /**
  * Shape Divider Component
  *
- * @param {Object}  props          Component props
- * @param {string}  props.shape    Shape name from SHAPE_DIVIDERS
- * @param {string}  props.color    Fill color for the shape
- * @param {number}  props.height   Height in pixels
- * @param {number}  props.width    Width percentage (100-300)
- * @param {boolean} props.flipX    Flip horizontally
- * @param {boolean} props.flipY    Flip vertically
- * @param {boolean} props.front    Bring to front (above content)
- * @param {string}  props.position 'top' or 'bottom'
+ * @param {Object}  props                 Component props
+ * @param {string}  props.shape           Shape name from SHAPE_DIVIDERS
+ * @param {string}  props.color           Fill color for the shape
+ * @param {string}  props.backgroundColor Background color behind the shape
+ * @param {number}  props.height          Height in pixels
+ * @param {number}  props.width           Width percentage (100-300)
+ * @param {boolean} props.flipX           Flip horizontally
+ * @param {boolean} props.flipY           Flip vertically
+ * @param {boolean} props.front           Bring to front (above content)
+ * @param {string}  props.position        'top' or 'bottom'
  * @return {JSX.Element|null} Shape divider element or null
  */
 export default function ShapeDivider({
 	shape,
 	color,
+	backgroundColor,
 	height = 100,
 	width = 100,
 	flipX = false,
@@ -112,8 +63,9 @@ export default function ShapeDivider({
 	const safeHeight = clamp(Number(height) || 100, 10, 500);
 	const safeWidth = clamp(Number(width) || 100, 100, 300);
 
-	// Sanitize color value
+	// Sanitize color values
 	const safeColor = sanitizeColor(color);
+	const safeBackgroundColor = sanitizeColor(backgroundColor);
 
 	// Build transform for flipping
 	// Use scaleY for consistent 2D flipping behavior
@@ -151,6 +103,9 @@ export default function ShapeDivider({
 		'--dsgo-shape-width': `${safeWidth}%`,
 		'--dsgo-shape-offset': `-${widthOffset}%`,
 		'--dsgo-shape-color': safeColor || 'currentColor',
+		...(safeBackgroundColor && {
+			'--dsgo-shape-background': safeBackgroundColor,
+		}),
 	};
 
 	return (
