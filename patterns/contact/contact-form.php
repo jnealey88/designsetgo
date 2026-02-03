@@ -7,6 +7,8 @@
  * Keywords: contact, form, map, professional
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'Contact Form with Map', 'designsetgo' ),
 	'categories' => array( 'dsgo-contact' ),

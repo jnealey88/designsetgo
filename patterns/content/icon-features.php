@@ -7,6 +7,8 @@
  * Keywords: features, icons, list, light, airy
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'Icon Features List', 'designsetgo' ),
 	'categories' => array( 'dsgo-content' ),

@@ -7,6 +7,8 @@
  * Keywords: cta, banner, countdown, urgency, bold
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'CTA Banner with Countdown', 'designsetgo' ),
 	'categories' => array( 'dsgo-cta' ),

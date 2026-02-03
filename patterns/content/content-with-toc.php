@@ -7,6 +7,8 @@
  * Keywords: content, toc, table of contents, article, minimal
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'Content with Table of Contents', 'designsetgo' ),
 	'categories' => array( 'dsgo-content' ),

@@ -7,6 +7,8 @@
  * Keywords: hero, split, slider, image, bold
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'Hero Split', 'designsetgo' ),
 	'categories' => array( 'dsgo-hero' ),

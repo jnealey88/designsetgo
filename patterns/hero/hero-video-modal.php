@@ -7,6 +7,8 @@
  * Keywords: hero, video, modal, play, creative
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'Hero with Video Modal', 'designsetgo' ),
 	'categories' => array( 'dsgo-hero' ),

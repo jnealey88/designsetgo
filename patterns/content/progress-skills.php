@@ -7,6 +7,8 @@
  * Keywords: progress, skills, bars, animated, light
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'Progress Skills', 'designsetgo' ),
 	'categories' => array( 'dsgo-content' ),

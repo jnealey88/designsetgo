@@ -7,6 +7,8 @@
  * Keywords: team, grid, members, staff, minimal
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'Team Grid', 'designsetgo' ),
 	'categories' => array( 'dsgo-team' ),

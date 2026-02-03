@@ -7,6 +7,8 @@
  * Keywords: contact, split, form, info, light
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'Contact Split', 'designsetgo' ),
 	'categories' => array( 'dsgo-contact' ),

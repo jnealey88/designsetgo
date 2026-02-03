@@ -7,6 +7,8 @@
  * Keywords: faq, tabs, accordion, categorized, light
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'FAQ with Tabs', 'designsetgo' ),
 	'categories' => array( 'dsgo-faq' ),

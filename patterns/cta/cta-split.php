@@ -7,6 +7,8 @@
  * Keywords: cta, split, blobs, dark, decorative
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'CTA Split with Blobs', 'designsetgo' ),
 	'categories' => array( 'dsgo-cta' ),

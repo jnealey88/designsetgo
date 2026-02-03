@@ -7,6 +7,8 @@
  * Keywords: stats, counter, numbers, animated, bold
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'Stats Counter', 'designsetgo' ),
 	'categories' => array( 'dsgo-content' ),
