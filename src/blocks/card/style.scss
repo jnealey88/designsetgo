@@ -9,6 +9,10 @@
 	flex-direction: column;
 	overflow: hidden;
 
+	// CRITICAL: Ensure borders and padding are included in the total width
+	// Prevents cards from overflowing grid cells when borders are applied
+	box-sizing: border-box;
+
 	// Default background when no inline styles
 	&:not([style*="background"]) {
 		background-color: var(--wp--preset--color--base, #fff);
@@ -18,6 +22,16 @@
 	:where(.dsgo-stack__inner, .dsgo-flex__inner, .dsgo-grid__inner) > & {
 		width: 100% !important;
 	}
+}
+
+// CRITICAL: Cards inside grid need additional constraints to prevent overlap
+// Note: min-width: 0 is already provided by grid block styles (.dsgo-grid__inner > *)
+.dsgo-grid__inner > .dsgo-card {
+	// Constrain max width to prevent overflow when borders are applied
+	max-width: 100%;
+	// Fill the full height of the grid cell for consistent row heights
+	// Safe because .dsgo-card has overflow: hidden to handle content overflow
+	height: 100%;
 }
 
 // Inner wrapper
