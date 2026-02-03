@@ -107,10 +107,18 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 		...(bgColor && { backgroundColor: bgColor }),
 		...(txtColor && { color: txtColor }),
 		...(fontSizeValue && { fontSize: fontSizeValue }),
-		...(paddingValue?.top && { paddingTop: paddingValue.top }),
-		...(paddingValue?.right && { paddingRight: paddingValue.right }),
-		...(paddingValue?.bottom && { paddingBottom: paddingValue.bottom }),
-		...(paddingValue?.left && { paddingLeft: paddingValue.left }),
+		...(paddingValue?.top !== undefined && {
+			paddingTop: paddingValue.top,
+		}),
+		...(paddingValue?.right !== undefined && {
+			paddingRight: paddingValue.right,
+		}),
+		...(paddingValue?.bottom !== undefined && {
+			paddingBottom: paddingValue.bottom,
+		}),
+		...(paddingValue?.left !== undefined && {
+			paddingLeft: paddingValue.left,
+		}),
 	};
 
 	// Calculate icon wrapper styles

@@ -149,6 +149,48 @@
 		width: 100%;
 		display: flex;
 	}
+
+	// ============================================================================
+	// LEGACY SUPPORT: Nested __button structure (v1/v2 saved content)
+	// ============================================================================
+	// Blocks saved before v3 have a nested <div><button> structure.
+	// This ensures they continue to render correctly until re-saved.
+	&__button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		padding: 12px 24px;
+		border: 2px solid transparent;
+		border-radius: var(--wp--style--elements--button--border--radius, 4px);
+		background: #0073aa;
+		color: #fff;
+		font-size: 16px;
+		font-weight: 500;
+		line-height: 1.5;
+		text-decoration: none;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		user-select: none;
+		width: 100%; // Fill wrapper
+		font-family: inherit;
+
+		&:hover,
+		&:focus {
+			background: #005a87;
+			transform: translateY(-1px);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+		}
+
+		&:focus {
+			outline: 2px solid currentcolor;
+			outline-offset: 2px;
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+	}
 }
 
 // Reduced Motion Support

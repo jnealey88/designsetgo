@@ -10,13 +10,14 @@ import { useBlockProps, RichText } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
 
 /**
- * Version 2: Before alignment support / flat structure
+ * Version 2: Pre-alignment support with nested wrapper + button structure
  *
- * Changes in current version:
- * - Migrated from width attribute to WordPress align attribute
- * - Changed from nested wrapper structure to flat button element
- * - Added WordPress button classes (wp-block-button, wp-element-button)
- * - Added __experimentalSkipSerialization for colors and padding
+ * Behavior of this saved version:
+ * - Uses custom `width` attribute instead of the WordPress `align` attribute
+ * - Renders an outer <div> wrapper containing an inner <button> element
+ * - Applies legacy `dsgo-modal-trigger--width-*` classes and inline display styling
+ * - Does not include WordPress button classes (wp-block-button, wp-element-button)
+ * - Does not use __experimentalSkipSerialization flags
  */
 const v2 = {
 	attributes: {
