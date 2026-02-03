@@ -95,6 +95,14 @@
 			"type": "string",
 			"default": ""
 		},
+		"tabHoverColor": {
+			"type": "string",
+			"default": ""
+		},
+		"tabHoverBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
 		"showNavBorder": {
 			"type": "boolean",
 			"default": false

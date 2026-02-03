@@ -70,7 +70,8 @@
 
 		// Subtle hover effect
 		&:hover:not(.is-active) {
-			color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			color: var(--dsgo-tab-color-hover, var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb)));
+			background: var(--dsgo-tab-bg-hover, transparent);
 		}
 
 		// Active state - apply custom colors
@@ -213,7 +214,8 @@
 			margin-right: 0;
 
 			&:hover:not(.is-active) {
-				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsgo-tab-color-hover, var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb)));
+				background: var(--dsgo-tab-bg-hover, transparent);
 			}
 
 			&.is-active {
@@ -232,8 +234,8 @@
 		.dsgo-tabs__tab {
 
 			&:hover:not(.is-active) {
-				background: transparent;
-				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				background: var(--dsgo-tab-bg-hover, transparent);
+				color: var(--dsgo-tab-color-hover, var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb)));
 			}
 
 			&.is-active {
@@ -261,8 +263,8 @@
 			background: var(--dsgo-tab-bg, rgba(0, 0, 0, 0.05));
 
 			&:hover:not(.is-active) {
-				background: var(--dsgo-tab-bg, rgba(0, 0, 0, 0.1));
-				color: var(--wp--preset--color--accent-2, #2563eb);
+				background: var(--dsgo-tab-bg-hover, var(--dsgo-tab-bg, rgba(0, 0, 0, 0.1)));
+				color: var(--dsgo-tab-color-hover, var(--wp--preset--color--accent-2, #2563eb));
 			}
 
 			&.is-active {
@@ -288,8 +290,8 @@
 			background: transparent; // No background by default for underline style
 
 			&:hover:not(.is-active) {
-				background: transparent; // Keep transparent on hover
-				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				background: var(--dsgo-tab-bg-hover, transparent);
+				color: var(--dsgo-tab-color-hover, var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb)));
 			}
 
 			&.is-active {
@@ -315,7 +317,8 @@
 			margin-bottom: 0;
 
 			&:hover:not(.is-active) {
-				color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				color: var(--dsgo-tab-color-hover, var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb)));
+				background: var(--dsgo-tab-bg-hover, transparent);
 			}
 
 			&.is-active {
