@@ -11,15 +11,26 @@
 	"icon": "button",
 	"supports": {
 		"anchor": true,
-		"align": false,
+		"align": ["left", "center", "right", "full"],
+		"alignWide": true,
 		"html": false,
 		"spacing": {
 			"margin": true,
-			"padding": true
+			"padding": true,
+			"__experimentalSkipSerialization": ["padding"],
+			"__experimentalDefaultControls": {
+				"margin": true,
+				"padding": true
+			}
 		},
 		"color": {
 			"background": true,
-			"text": true
+			"text": true,
+			"__experimentalSkipSerialization": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
 		},
 		"typography": {
 			"fontSize": true,
@@ -39,6 +50,9 @@
 		}
 	},
 	"attributes": {
+		"align": {
+			"type": "string"
+		},
 		"targetModalId": {
 			"type": "string",
 			"default": ""
@@ -50,10 +64,6 @@
 		"buttonStyle": {
 			"type": "string",
 			"default": "fill"
-		},
-		"width": {
-			"type": "string",
-			"default": "auto"
 		},
 		"icon": {
 			"type": "string",

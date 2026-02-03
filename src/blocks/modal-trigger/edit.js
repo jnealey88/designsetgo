@@ -27,11 +27,15 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 		targetModalId,
 		text,
 		buttonStyle,
-		width,
+		align,
 		icon,
 		iconPosition,
 		iconSize,
 		iconGap,
+		style,
+		backgroundColor,
+		textColor,
+		fontSize,
 	} = attributes;
 
 	// Get all modal blocks on the current page
@@ -69,13 +73,44 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 		})),
 	];
 
+	// Extract WordPress color values
+	// Custom colors come from style.color.background (hex/rgb)
+	// Preset colors come from backgroundColor/textColor (slugs that need conversion)
+	const bgColor =
+		style?.color?.background ||
+		(backgroundColor && `var(--wp--preset--color--${backgroundColor})`);
+	const txtColor =
+		style?.color?.text ||
+		(textColor && `var(--wp--preset--color--${textColor})`);
+
+	// Extract font size
+	// Custom font sizes come from style.typography.fontSize (px/rem/em)
+	// Preset font sizes come from fontSize (slug that needs conversion)
+	const fontSizeValue =
+		style?.typography?.fontSize ||
+		(fontSize && `var(--wp--preset--font-size--${fontSize})`);
+
+	// Extract padding - WordPress stores it in style.spacing.padding
+	const paddingValue = style?.spacing?.padding;
+
+	// Calculate if full width based on alignment
+	const isFullWidth = align === 'full';
+
 	// Calculate button styles
 	const buttonStyles = {
-		display: 'inline-flex',
+		display: isFullWidth ? 'flex' : 'inline-flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+		width: isFullWidth ? '100%' : 'auto',
 		gap: iconPosition !== 'none' && icon ? iconGap : 0,
 		flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
+		...(bgColor && { backgroundColor: bgColor }),
+		...(txtColor && { color: txtColor }),
+		...(fontSizeValue && { fontSize: fontSizeValue }),
+		...(paddingValue?.top && { paddingTop: paddingValue.top }),
+		...(paddingValue?.right && { paddingRight: paddingValue.right }),
+		...(paddingValue?.bottom && { paddingBottom: paddingValue.bottom }),
+		...(paddingValue?.left && { paddingLeft: paddingValue.left }),
 	};
 
 	// Calculate icon wrapper styles
@@ -88,9 +123,12 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 		flexShrink: 0,
 	};
 
+	// wp-block-button and wp-element-button enable theme.json button styles
+	// wp-block-button__link ensures theme compatibility
+	// WordPress automatically adds alignment classes (alignleft, aligncenter, alignright, alignfull)
 	const blockProps = useBlockProps({
-		className: `dsgo-modal-trigger dsgo-modal-trigger--${buttonStyle} dsgo-modal-trigger--width-${width}`,
-		style: { display: width === 'full' ? 'block' : 'inline-block' },
+		className: `dsgo-modal-trigger dsgo-modal-trigger--${buttonStyle} wp-block-button wp-block-button__link wp-element-button`,
+		style: buttonStyles,
 	});
 
 	return (
@@ -142,24 +180,6 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 							{
 								label: __('Link', 'designsetgo'),
 								value: 'link',
-							},
-						]}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-
-					<SelectControl
-						label={__('Width', 'designsetgo')}
-						value={width}
-						onChange={(value) => setAttributes({ width: value })}
-						options={[
-							{
-								label: __('Auto', 'designsetgo'),
-								value: 'auto',
-							},
-							{
-								label: __('Full Width', 'designsetgo'),
-								value: 'full',
 							},
 						]}
 						__next40pxDefaultSize
@@ -252,25 +272,30 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div
-					className="dsgo-modal-trigger__button"
-					style={buttonStyles}
-				>
-					{icon && iconPosition === 'start' && (
-						<span style={iconWrapperStyles}>{getIcon(icon)}</span>
-					)}
-					<RichText
-						tagName="span"
-						value={text}
-						onChange={(value) => setAttributes({ text: value })}
-						placeholder={__('Button text…', 'designsetgo')}
-						allowedFormats={['core/bold', 'core/italic']}
-						className="dsgo-modal-trigger__text"
-					/>
-					{icon && iconPosition === 'end' && (
-						<span style={iconWrapperStyles}>{getIcon(icon)}</span>
-					)}
-				</div>
+				{icon && iconPosition === 'start' && (
+					<span
+						className="dsgo-modal-trigger__icon"
+						style={iconWrapperStyles}
+					>
+						{getIcon(icon)}
+					</span>
+				)}
+				<RichText
+					tagName="span"
+					value={text}
+					onChange={(value) => setAttributes({ text: value })}
+					placeholder={__('Button text…', 'designsetgo')}
+					allowedFormats={['core/bold', 'core/italic']}
+					className="dsgo-modal-trigger__text"
+				/>
+				{icon && iconPosition === 'end' && (
+					<span
+						className="dsgo-modal-trigger__icon"
+						style={iconWrapperStyles}
+					>
+						{getIcon(icon)}
+					</span>
+				)}
 			</div>
 		</>
 	);
