@@ -4,22 +4,25 @@
  * Slug: designsetgo/modal/announcement-promo
  * Categories: dsgo-modal
  * Description: Promotional announcement modal that auto-opens on page load
- *
- * @package DesignSetGo
+ * Keywords: modal, announcement, promo, popup, offer
  */
+
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	'title'      => __( 'Announcement & Promo Modal', 'designsetgo' ),
 	'categories' => array( 'dsgo-modal' ),
-	'content'    => '<!-- wp:designsetgo/modal {"modalId":"dsgo-modal-promo","width":"600px","maxWidth":"90vw","overlayOpacity":70,"animationType":"zoom","autoTriggerType":"pageLoad","autoTriggerDelay":2,"autoTriggerFrequency":"session"} -->
-<!-- wp:heading {"textAlign":"center","level":2} -->
-<h2 class="wp-block-heading has-text-align-center">' . esc_html__( '🎉 Special Offer!', 'designsetgo' ) . '</h2>
+	'content'    => '<!-- wp:designsetgo/modal {"modalId":"dsgo-modal-promo","autoTriggerType":"pageLoad","autoTriggerDelay":2,"autoTriggerFrequency":"session","animationType":"zoom","overlayOpacity":70,"metadata":{"categories":["dsgo-modal"],"patternName":"designsetgo/modal/announcement-promo","name":"Announcement \u0026 Promo Modal"}} -->
+<div id="dsgo-modal-promo" role="dialog" aria-modal="true" aria-label="Modal" aria-hidden="true" data-dsgo-modal="true" data-modal-id="dsgo-modal-promo" data-animation-type="zoom" data-animation-duration="300" data-close-on-backdrop="true" data-close-on-esc="true" data-disable-body-scroll="true" data-allow-hash-trigger="true" data-update-url-on-open="false" data-auto-trigger-type="pageLoad" data-auto-trigger-delay="2" data-auto-trigger-frequency="session" data-cookie-duration="7" data-exit-intent-sensitivity="medium" data-exit-intent-min-time="5" data-exit-intent-exclude-mobile="true" data-scroll-depth="50" data-scroll-direction="down" data-time-on-page="30" data-gallery-group-id="" data-gallery-index="0" data-show-gallery-navigation="true" data-navigation-style="arrows" data-navigation-position="sides" class="wp-block-designsetgo-modal dsgo-modal"><div class="dsgo-modal__backdrop" style="background-color:#000000;opacity:0.7" aria-hidden="true"></div><div class="dsgo-modal__dialog"><div class="dsgo-modal__content" style="border-style:none;border-width:0px;width:600px;max-width:90vw"><!-- wp:heading {"textAlign":"center"} -->
+<h2 class="wp-block-heading has-text-align-center">🎉 Special Offer!</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center","fontSize":"medium"} -->
-<p class="has-text-align-center has-medium-font-size">' . esc_html__( 'Get 20% off your first purchase. Use code <strong>WELCOME20</strong> at checkout.', 'designsetgo' ) . '</p>
+<p class="has-text-align-center has-medium-font-size">Get 20% off your first purchase. Use code <strong>WELCOME20</strong> at checkout.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:designsetgo/icon-button {"text":"' . esc_html__( 'Shop Now', 'designsetgo' ) . '","icon":"cart","iconPosition":"end","width":"full","style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} /-->
+<!-- wp:designsetgo/icon-button {"align":"center","text":"Shop Now","icon":"cart","iconPosition":"end","style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} -->
+<button class="wp-block-designsetgo-icon-button aligncenter dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="margin-top:var(--wp--preset--spacing--50);display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row-reverse" type="button"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="cart" data-icon-size="20"></span><span class="dsgo-icon-button__text">Shop Now</span></button>
+<!-- /wp:designsetgo/icon-button --><button class="dsgo-modal__close dsgo-modal__close--inside-top-right" style="width:24px;height:24px" type="button" aria-label="Close modal"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button></div></div></div>
 <!-- /wp:designsetgo/modal -->',
 );

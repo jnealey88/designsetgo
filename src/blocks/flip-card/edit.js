@@ -44,7 +44,8 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 
 	// Inner blocks configuration
 	// Template creates two child blocks (front and back)
-	// Template is locked so users can't delete or reorder the front/back
+	// Template defines structure only - content comes from pattern or user input
+	// templateLock: 'insert' prevents adding/removing front/back but allows editing content
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: 'dsgo-flip-card__container',
@@ -55,107 +56,10 @@ export default function FlipCardEdit({ attributes, setAttributes }) {
 				'designsetgo/flip-card-back',
 			],
 			template: [
-				[
-					'designsetgo/flip-card-front',
-					{
-						style: {
-							spacing: {
-								padding: {
-									top: '3rem',
-									right: '2rem',
-									bottom: '3rem',
-									left: '2rem',
-								},
-								blockGap: '1rem',
-							},
-							color: {
-								gradient:
-									'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-								text: '#ffffff',
-							},
-						},
-					},
-					[
-						[
-							'core/heading',
-							{
-								content: '✨ Discover More',
-								level: 2,
-								textAlign: 'center',
-								style: {
-									typography: {
-										fontSize: '2.5rem',
-										fontWeight: '700',
-									},
-								},
-							},
-						],
-						[
-							'core/paragraph',
-							{
-								content: 'Hover to reveal amazing content',
-								align: 'center',
-								style: {
-									typography: {
-										fontSize: '1.1rem',
-									},
-								},
-							},
-						],
-					],
-				],
-				[
-					'designsetgo/flip-card-back',
-					{
-						style: {
-							spacing: {
-								padding: {
-									top: '3rem',
-									right: '2rem',
-									bottom: '3rem',
-									left: '2rem',
-								},
-								blockGap: '1.5rem',
-							},
-							color: {
-								gradient:
-									'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-								text: '#ffffff',
-							},
-						},
-					},
-					[
-						[
-							'core/heading',
-							{
-								content: '🚀 Ready to Start?',
-								level: 2,
-								textAlign: 'center',
-								style: {
-									typography: {
-										fontSize: '2rem',
-										fontWeight: '700',
-									},
-								},
-							},
-						],
-						[
-							'core/paragraph',
-							{
-								content:
-									'Add your own content here using any WordPress blocks. Customize colors, add images, buttons, and more!',
-								align: 'center',
-								style: {
-									typography: {
-										fontSize: '1rem',
-									},
-								},
-							},
-						],
-					],
-				],
+				['designsetgo/flip-card-front', {}],
+				['designsetgo/flip-card-back', {}],
 			],
-			templateLock: 'all', // Lock template so users can't delete/reorder front/back
+			templateLock: 'insert', // Prevents adding/removing but allows content editing
 			orientation: 'vertical',
 		}
 	);
