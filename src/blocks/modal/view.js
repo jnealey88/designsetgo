@@ -1553,20 +1553,11 @@
 			link.addEventListener('click', (e) => {
 				e.preventDefault();
 
-				const instance = modal.dsgoModalInstance;
-
 				// Open the modal if not already open
-				if (!instance.isOpen) {
-					instance.open(link);
-				}
-
-				// Update URL hash if the setting is enabled
-				if (instance.settings.updateUrlOnOpen && instance.modalId) {
-					instance.isUpdatingHash = true;
-					window.location.hash = instance.modalId;
-					setTimeout(() => {
-						instance.isUpdatingHash = false;
-					}, 100);
+				// Note: The open() method handles URL hash updates when updateUrlOnOpen is enabled,
+				// so we don't duplicate that logic here
+				if (!modal.dsgoModalInstance.isOpen) {
+					modal.dsgoModalInstance.open(link);
 				}
 			});
 		});
