@@ -32,6 +32,8 @@ import {
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
+import ShapeDividerControls from './components/ShapeDividerControls';
+import ShapeDivider from './components/ShapeDivider';
 
 /**
  * Section Container Edit Component
@@ -55,6 +57,21 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		hoverButtonBackgroundColor,
 		overlayColor,
 		layout,
+		// Shape divider attributes
+		shapeDividerTop,
+		shapeDividerTopColor,
+		shapeDividerTopHeight,
+		shapeDividerTopWidth,
+		shapeDividerTopFlipX,
+		shapeDividerTopFlipY,
+		shapeDividerTopFront,
+		shapeDividerBottom,
+		shapeDividerBottomColor,
+		shapeDividerBottomHeight,
+		shapeDividerBottomWidth,
+		shapeDividerBottomFlipX,
+		shapeDividerBottomFlipY,
+		shapeDividerBottomFront,
 	} = attributes;
 
 	// Auto-migrate old blocks that use className for alignment
@@ -146,6 +163,8 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 	const blockClassName = [
 		'dsgo-stack',
 		overlayColor && 'dsgo-stack--has-overlay',
+		(shapeDividerTop || shapeDividerBottom) &&
+			'dsgo-stack--has-shape-divider',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -351,8 +370,36 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 				/>
 			</InspectorControls>
 
+			<InspectorControls>
+				<ShapeDividerControls
+					attributes={attributes}
+					setAttributes={setAttributes}
+					clientId={clientId}
+				/>
+			</InspectorControls>
+
 			<TagName {...blockProps}>
+				<ShapeDivider
+					shape={shapeDividerTop}
+					color={shapeDividerTopColor}
+					height={shapeDividerTopHeight}
+					width={shapeDividerTopWidth}
+					flipX={shapeDividerTopFlipX}
+					flipY={shapeDividerTopFlipY}
+					front={shapeDividerTopFront}
+					position="top"
+				/>
 				<div {...innerBlocksProps} />
+				<ShapeDivider
+					shape={shapeDividerBottom}
+					color={shapeDividerBottomColor}
+					height={shapeDividerBottomHeight}
+					width={shapeDividerBottomWidth}
+					flipX={shapeDividerBottomFlipX}
+					flipY={shapeDividerBottomFlipY}
+					front={shapeDividerBottomFront}
+					position="bottom"
+				/>
 			</TagName>
 		</>
 	);

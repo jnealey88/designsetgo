@@ -446,3 +446,59 @@
 		margin-right: 0 !important;
 	}
 }
+
+/**
+ * Shape Divider Styles (Editor)
+ *
+ * Must match style.scss for consistent preview.
+ *
+ * @since 1.4.2
+ */
+.dsgo-shape-divider {
+	position: absolute;
+	width: var(--dsgo-shape-width, 100%);
+	height: var(--dsgo-shape-height, 100px);
+	overflow: hidden;
+	pointer-events: none;
+	line-height: 0;
+	z-index: 1;
+
+	// Center the shape when width > 100%
+	left: var(--dsgo-shape-offset, 0);
+
+	svg {
+		display: block;
+		width: 100%;
+		height: 100%;
+		fill: var(--dsgo-shape-color, currentColor);
+	}
+
+	// Top position - shape at the very top of section
+	&--top {
+		top: 0;
+	}
+
+	// Bottom position - shape at the very bottom of section
+	&--bottom {
+		bottom: 0;
+	}
+
+	// Bring to front - display above content
+	&--front {
+		z-index: 10;
+	}
+}
+
+// When section has shape dividers, ensure proper stacking
+.dsgo-stack--has-shape-divider {
+	// Shape dividers need overflow visible to extend beyond section bounds if needed
+	// But we also need to hide horizontal overflow for stretched shapes
+	overflow-x: clip;
+	overflow-y: visible;
+
+	// Content stays above shapes (unless shape is set to front)
+	> .dsgo-stack__inner {
+		position: relative;
+		z-index: 2;
+	}
+}
