@@ -25,12 +25,12 @@
 }
 
 // CRITICAL: Cards inside grid need additional constraints to prevent overlap
-// Grid items can overflow if min-width isn't constrained
+// Note: min-width: 0 is already provided by grid block styles (.dsgo-grid__inner > *)
 .dsgo-grid__inner > .dsgo-card {
-	// Prevent cards from overflowing grid cells
-	min-width: 0;
+	// Constrain max width to prevent overflow when borders are applied
 	max-width: 100%;
 	// Fill the full height of the grid cell for consistent row heights
+	// Safe because .dsgo-card has overflow: hidden to handle content overflow
 	height: 100%;
 }
 

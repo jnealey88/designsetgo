@@ -122,11 +122,10 @@
 
 		// CRITICAL: Cards inside grid need constraints to prevent overlap
 		// In editor, cards are wrapped in [data-block] elements
+		// Note: min-width: 0 provided by grid styles, box-sizing by card styles
 		> [data-block] > .dsgo-card {
-			min-width: 0;
 			max-width: 100%;
 			height: 100%;
-			box-sizing: border-box;
 		}
 
 		// Also handle the [data-block] wrapper itself for proper sizing
