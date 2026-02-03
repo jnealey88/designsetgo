@@ -14,13 +14,9 @@ import {
 	ToggleControl,
 	Flex,
 	FlexItem,
+	Notice,
+	Button,
 } from '@wordpress/components';
-import {
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
-} from '@wordpress/block-editor';
 import {
 	getShapeDividerOptions,
 	getShapeDivider,
@@ -29,15 +25,23 @@ import {
 /**
  * Shape preview component showing a small preview of the selected shape
  *
- * @param {Object}  props          Component props
- * @param {string}  props.shape    Shape name
- * @param {string}  props.color    Fill color
- * @param {boolean} props.flipX    Flip horizontally
- * @param {boolean} props.flipY    Flip vertically
- * @param {boolean} props.isBottom Whether this is a bottom divider
+ * @param {Object}  props                 Component props
+ * @param {string}  props.shape           Shape name
+ * @param {string}  props.color           Fill color
+ * @param {string}  props.backgroundColor Background color behind the shape
+ * @param {boolean} props.flipX           Flip horizontally
+ * @param {boolean} props.flipY           Flip vertically
+ * @param {boolean} props.isBottom        Whether this is a bottom divider
  * @return {JSX.Element|null} Preview element
  */
-function ShapePreview({ shape, color, flipX, flipY, isBottom }) {
+function ShapePreview({
+	shape,
+	color,
+	backgroundColor,
+	flipX,
+	flipY,
+	isBottom,
+}) {
 	if (!shape) {
 		return null;
 	}
@@ -64,7 +68,7 @@ function ShapePreview({ shape, color, flipX, flipY, isBottom }) {
 				height: '40px',
 				overflow: 'hidden',
 				borderRadius: '4px',
-				backgroundColor: '#f0f0f0',
+				backgroundColor: backgroundColor || '#f0f0f0',
 				marginBottom: '12px',
 			}}
 		>
@@ -90,26 +94,27 @@ function ShapePreview({ shape, color, flipX, flipY, isBottom }) {
 /**
  * Reusable Shape Divider Panel Component
  * Renders controls for a single shape divider (top or bottom)
+ * Note: Color controls are in the main color panel, not here.
  *
- * @param {Object}   props               Component props
- * @param {string}   props.title         Panel title
- * @param {string}   props.shape         Selected shape value
- * @param {string}   props.color         Shape color
- * @param {number}   props.height        Shape height
- * @param {number}   props.width         Shape width percentage
- * @param {boolean}  props.flipX         Flip horizontal
- * @param {boolean}  props.flipY         Flip vertical
- * @param {boolean}  props.front         Bring to front
- * @param {boolean}  props.isBottom      Whether this is a bottom divider
- * @param {Function} props.onChange      Callback for attribute changes
- * @param {string}   props.clientId      Block client ID
- * @param {Object}   props.colorSettings Color gradient settings
+ * @param {Object}   props                 Component props
+ * @param {string}   props.title           Panel title
+ * @param {string}   props.shape           Selected shape value
+ * @param {string}   props.color           Shape color (for preview only)
+ * @param {string}   props.backgroundColor Background color (for preview only)
+ * @param {number}   props.height          Shape height
+ * @param {number}   props.width           Shape width percentage
+ * @param {boolean}  props.flipX           Flip horizontal
+ * @param {boolean}  props.flipY           Flip vertical
+ * @param {boolean}  props.front           Bring to front
+ * @param {boolean}  props.isBottom        Whether this is a bottom divider
+ * @param {Function} props.onChange        Callback for attribute changes
  * @return {JSX.Element} Shape divider panel
  */
 function ShapeDividerPanel({
 	title,
 	shape,
 	color,
+	backgroundColor,
 	height,
 	width,
 	flipX,
@@ -117,8 +122,6 @@ function ShapeDividerPanel({
 	front,
 	isBottom,
 	onChange,
-	clientId,
-	colorSettings,
 }) {
 	return (
 		<PanelBody title={title} initialOpen={false}>
@@ -127,6 +130,7 @@ function ShapeDividerPanel({
 				value={shape}
 				options={getShapeDividerOptions()}
 				onChange={(value) => onChange({ shape: value })}
+				__next40pxDefaultSize
 				__nextHasNoMarginBottom
 			/>
 
@@ -135,23 +139,10 @@ function ShapeDividerPanel({
 					<ShapePreview
 						shape={shape}
 						color={color}
+						backgroundColor={backgroundColor}
 						flipX={flipX}
 						flipY={flipY}
 						isBottom={isBottom}
-					/>
-
-					<ColorGradientSettingsDropdown
-						panelId={clientId}
-						settings={[
-							{
-								label: __('Color', 'designsetgo'),
-								colorValue: color,
-								onColorChange: (newColor) =>
-									onChange({ color: newColor || '' }),
-								clearable: true,
-							},
-						]}
-						{...colorSettings}
 					/>
 
 					<RangeControl
@@ -161,6 +152,7 @@ function ShapeDividerPanel({
 						min={10}
 						max={500}
 						step={1}
+						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 
@@ -175,6 +167,7 @@ function ShapeDividerPanel({
 							'Stretch the shape wider for more dramatic effect.',
 							'designsetgo'
 						)}
+						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 
@@ -215,21 +208,18 @@ function ShapeDividerPanel({
 
 /**
  * Shape Divider Controls
+ * Note: Color controls are in the main color panel (InspectorControls group="color")
  *
  * @param {Object}   props               Component props
  * @param {Object}   props.attributes    Block attributes
  * @param {Function} props.setAttributes Function to update attributes
- * @param {string}   props.clientId      Block client ID
  * @return {JSX.Element} Shape divider controls
  */
-export default function ShapeDividerControls({
-	attributes,
-	setAttributes,
-	clientId,
-}) {
+export default function ShapeDividerControls({ attributes, setAttributes }) {
 	const {
 		shapeDividerTop,
 		shapeDividerTopColor,
+		shapeDividerTopBackgroundColor,
 		shapeDividerTopHeight,
 		shapeDividerTopWidth,
 		shapeDividerTopFlipX,
@@ -237,21 +227,25 @@ export default function ShapeDividerControls({
 		shapeDividerTopFront,
 		shapeDividerBottom,
 		shapeDividerBottomColor,
+		shapeDividerBottomBackgroundColor,
 		shapeDividerBottomHeight,
 		shapeDividerBottomWidth,
 		shapeDividerBottomFlipX,
 		shapeDividerBottomFlipY,
 		shapeDividerBottomFront,
+		// Video background attribute (from extension)
+		dsgoVideoUrl,
 	} = attributes;
 
-	// Get theme color palette
-	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+	// Check if video background is enabled
+	const hasVideoBackground = !!dsgoVideoUrl;
 
 	// Handler for top shape divider changes
 	const handleTopChange = (changes) => {
 		const attrMap = {
 			shape: 'shapeDividerTop',
 			color: 'shapeDividerTopColor',
+			backgroundColor: 'shapeDividerTopBackgroundColor',
 			height: 'shapeDividerTopHeight',
 			width: 'shapeDividerTopWidth',
 			flipX: 'shapeDividerTopFlipX',
@@ -272,6 +266,7 @@ export default function ShapeDividerControls({
 		const attrMap = {
 			shape: 'shapeDividerBottom',
 			color: 'shapeDividerBottomColor',
+			backgroundColor: 'shapeDividerBottomBackgroundColor',
 			height: 'shapeDividerBottomHeight',
 			width: 'shapeDividerBottomWidth',
 			flipX: 'shapeDividerBottomFlipX',
@@ -287,12 +282,42 @@ export default function ShapeDividerControls({
 		setAttributes(newAttrs);
 	};
 
+	// If video background is enabled, show notice instead of controls
+	if (hasVideoBackground) {
+		return (
+			<PanelBody
+				title={__('Shape Dividers', 'designsetgo')}
+				initialOpen={false}
+			>
+				<Notice status="warning" isDismissible={false}>
+					{__(
+						'Shape dividers cannot be used with video backgrounds.',
+						'designsetgo'
+					)}
+				</Notice>
+				<Button
+					variant="secondary"
+					onClick={() =>
+						setAttributes({
+							dsgoVideoUrl: '',
+							dsgoVideoPoster: '',
+						})
+					}
+					style={{ marginTop: '12px' }}
+				>
+					{__('Remove Video Background', 'designsetgo')}
+				</Button>
+			</PanelBody>
+		);
+	}
+
 	return (
 		<>
 			<ShapeDividerPanel
 				title={__('Top Shape Divider', 'designsetgo')}
 				shape={shapeDividerTop}
 				color={shapeDividerTopColor}
+				backgroundColor={shapeDividerTopBackgroundColor}
 				height={shapeDividerTopHeight}
 				width={shapeDividerTopWidth}
 				flipX={shapeDividerTopFlipX}
@@ -300,13 +325,12 @@ export default function ShapeDividerControls({
 				front={shapeDividerTopFront}
 				isBottom={false}
 				onChange={handleTopChange}
-				clientId={clientId}
-				colorSettings={colorGradientSettings}
 			/>
 			<ShapeDividerPanel
 				title={__('Bottom Shape Divider', 'designsetgo')}
 				shape={shapeDividerBottom}
 				color={shapeDividerBottomColor}
+				backgroundColor={shapeDividerBottomBackgroundColor}
 				height={shapeDividerBottomHeight}
 				width={shapeDividerBottomWidth}
 				flipX={shapeDividerBottomFlipX}
@@ -314,8 +338,6 @@ export default function ShapeDividerControls({
 				front={shapeDividerBottomFront}
 				isBottom={true}
 				onChange={handleBottomChange}
-				clientId={clientId}
-				colorSettings={colorGradientSettings}
 			/>
 		</>
 	);
