@@ -49,6 +49,23 @@ const v2 = {
 			default: '',
 		},
 	},
+	/**
+	 * Determine if this deprecation should be used
+	 * Matches blocks created before shape dividers were added
+	 *
+	 * @param {Object} attributes Block attributes
+	 * @return {boolean} True if block matches this deprecation
+	 */
+	isEligible(attributes) {
+		// This deprecation is for blocks without shape divider attributes
+		// If any shape divider attribute exists, this is not the right version
+		return (
+			!attributes.shapeDividerTop &&
+			!attributes.shapeDividerBottom &&
+			// Must have align attribute (distinguishes from v1)
+			attributes.align !== undefined
+		);
+	},
 	save({ attributes }) {
 		const {
 			tagName = 'div',
@@ -144,6 +161,18 @@ const v1 = {
 		hoverButtonBackgroundColor: {
 			type: 'string',
 		},
+	},
+	/**
+	 * Determine if this deprecation should be used
+	 * Matches blocks created before align attribute was added
+	 *
+	 * @param {Object} attributes Block attributes
+	 * @return {boolean} True if block matches this deprecation
+	 */
+	isEligible(attributes) {
+		// This deprecation is for the earliest blocks without align attribute
+		// They used className for alignment instead
+		return attributes.align === undefined;
 	},
 	save({ attributes }) {
 		const {

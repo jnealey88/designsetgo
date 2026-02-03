@@ -425,6 +425,11 @@
  * Shape Divider Styles
  *
  * Modern decorative shapes for section top/bottom.
+ * Z-index hierarchy:
+ * - Shape dividers (default): z-index 1
+ * - Inner container: z-index 2
+ * - Content children: z-index 3 (inherited from base styles)
+ * - Shape dividers (front): z-index 10
  *
  * @since 1.4.2
  */
@@ -465,12 +470,13 @@
 
 // When section has shape dividers, ensure proper stacking
 .dsgo-stack--has-shape-divider {
-	// Shape dividers need overflow visible to extend beyond section bounds if needed
-	// But we also need to hide horizontal overflow for stretched shapes
-	overflow-x: clip;
-	overflow-y: visible;
+	// Override base overflow:hidden to allow shapes to extend beyond bounds
+	// Use !important to ensure precedence over base .dsgo-stack styles
+	overflow-x: clip !important;
+	overflow-y: visible !important;
 
-	// Content stays above shapes (unless shape is set to front)
+	// Content stays above shapes (z-index: 2)
+	// unless shape has "bring to front" option (z-index: 10)
 	> .dsgo-stack__inner {
 		position: relative;
 		z-index: 2;

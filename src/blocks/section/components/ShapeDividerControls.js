@@ -22,7 +22,7 @@ import {
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
-	SHAPE_DIVIDER_OPTIONS,
+	getShapeDividerOptions,
 	getShapeDivider,
 } from '../utils/shape-dividers';
 
@@ -88,6 +88,132 @@ function ShapePreview({ shape, color, flipX, flipY, isBottom }) {
 }
 
 /**
+ * Reusable Shape Divider Panel Component
+ * Renders controls for a single shape divider (top or bottom)
+ *
+ * @param {Object}   props               Component props
+ * @param {string}   props.title         Panel title
+ * @param {string}   props.shape         Selected shape value
+ * @param {string}   props.color         Shape color
+ * @param {number}   props.height        Shape height
+ * @param {number}   props.width         Shape width percentage
+ * @param {boolean}  props.flipX         Flip horizontal
+ * @param {boolean}  props.flipY         Flip vertical
+ * @param {boolean}  props.front         Bring to front
+ * @param {boolean}  props.isBottom      Whether this is a bottom divider
+ * @param {Function} props.onChange      Callback for attribute changes
+ * @param {string}   props.clientId      Block client ID
+ * @param {Object}   props.colorSettings Color gradient settings
+ * @return {JSX.Element} Shape divider panel
+ */
+function ShapeDividerPanel({
+	title,
+	shape,
+	color,
+	height,
+	width,
+	flipX,
+	flipY,
+	front,
+	isBottom,
+	onChange,
+	clientId,
+	colorSettings,
+}) {
+	return (
+		<PanelBody title={title} initialOpen={false}>
+			<SelectControl
+				label={__('Shape', 'designsetgo')}
+				value={shape}
+				options={getShapeDividerOptions()}
+				onChange={(value) => onChange({ shape: value })}
+				__nextHasNoMarginBottom
+			/>
+
+			{shape && (
+				<>
+					<ShapePreview
+						shape={shape}
+						color={color}
+						flipX={flipX}
+						flipY={flipY}
+						isBottom={isBottom}
+					/>
+
+					<ColorGradientSettingsDropdown
+						panelId={clientId}
+						settings={[
+							{
+								label: __('Color', 'designsetgo'),
+								colorValue: color,
+								onColorChange: (newColor) =>
+									onChange({ color: newColor || '' }),
+								clearable: true,
+							},
+						]}
+						{...colorSettings}
+					/>
+
+					<RangeControl
+						label={__('Height', 'designsetgo')}
+						value={height}
+						onChange={(value) => onChange({ height: value })}
+						min={10}
+						max={500}
+						step={1}
+						__nextHasNoMarginBottom
+					/>
+
+					<RangeControl
+						label={__('Width', 'designsetgo')}
+						value={width}
+						onChange={(value) => onChange({ width: value })}
+						min={100}
+						max={300}
+						step={1}
+						help={__(
+							'Stretch the shape wider for more dramatic effect.',
+							'designsetgo'
+						)}
+						__nextHasNoMarginBottom
+					/>
+
+					<Flex>
+						<FlexItem>
+							<ToggleControl
+								label={__('Flip Horizontal', 'designsetgo')}
+								checked={flipX}
+								onChange={(value) => onChange({ flipX: value })}
+								__nextHasNoMarginBottom
+							/>
+						</FlexItem>
+						<FlexItem>
+							<ToggleControl
+								label={__('Flip Vertical', 'designsetgo')}
+								checked={flipY}
+								onChange={(value) => onChange({ flipY: value })}
+								__nextHasNoMarginBottom
+							/>
+						</FlexItem>
+					</Flex>
+
+					<ToggleControl
+						label={__('Bring to Front', 'designsetgo')}
+						checked={front}
+						onChange={(value) => onChange({ front: value })}
+						help={__(
+							'Display the shape above the section content.',
+							'designsetgo'
+						)}
+						__nextHasNoMarginBottom
+					/>
+				</>
+			)}
+		</PanelBody>
+	);
+}
+
+/**
  * Shape Divider Controls
  *
  * @param {Object}   props               Component props
@@ -121,236 +247,76 @@ export default function ShapeDividerControls({
 	// Get theme color palette
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
+	// Handler for top shape divider changes
+	const handleTopChange = (changes) => {
+		const attrMap = {
+			shape: 'shapeDividerTop',
+			color: 'shapeDividerTopColor',
+			height: 'shapeDividerTopHeight',
+			width: 'shapeDividerTopWidth',
+			flipX: 'shapeDividerTopFlipX',
+			flipY: 'shapeDividerTopFlipY',
+			front: 'shapeDividerTopFront',
+		};
+		const newAttrs = {};
+		Object.entries(changes).forEach(([key, value]) => {
+			if (attrMap[key]) {
+				newAttrs[attrMap[key]] = value;
+			}
+		});
+		setAttributes(newAttrs);
+	};
+
+	// Handler for bottom shape divider changes
+	const handleBottomChange = (changes) => {
+		const attrMap = {
+			shape: 'shapeDividerBottom',
+			color: 'shapeDividerBottomColor',
+			height: 'shapeDividerBottomHeight',
+			width: 'shapeDividerBottomWidth',
+			flipX: 'shapeDividerBottomFlipX',
+			flipY: 'shapeDividerBottomFlipY',
+			front: 'shapeDividerBottomFront',
+		};
+		const newAttrs = {};
+		Object.entries(changes).forEach(([key, value]) => {
+			if (attrMap[key]) {
+				newAttrs[attrMap[key]] = value;
+			}
+		});
+		setAttributes(newAttrs);
+	};
+
 	return (
 		<>
-			<PanelBody
+			<ShapeDividerPanel
 				title={__('Top Shape Divider', 'designsetgo')}
-				initialOpen={false}
-			>
-				<SelectControl
-					label={__('Shape', 'designsetgo')}
-					value={shapeDividerTop}
-					options={SHAPE_DIVIDER_OPTIONS}
-					onChange={(value) =>
-						setAttributes({ shapeDividerTop: value })
-					}
-					__nextHasNoMarginBottom
-				/>
-
-				{shapeDividerTop && (
-					<>
-						<ShapePreview
-							shape={shapeDividerTop}
-							color={shapeDividerTopColor}
-							flipX={shapeDividerTopFlipX}
-							flipY={shapeDividerTopFlipY}
-							isBottom={false}
-						/>
-
-						<ColorGradientSettingsDropdown
-							panelId={clientId}
-							settings={[
-								{
-									label: __('Color', 'designsetgo'),
-									colorValue: shapeDividerTopColor,
-									onColorChange: (color) =>
-										setAttributes({
-											shapeDividerTopColor: color || '',
-										}),
-									clearable: true,
-								},
-							]}
-							{...colorGradientSettings}
-						/>
-
-						<RangeControl
-							label={__('Height', 'designsetgo')}
-							value={shapeDividerTopHeight}
-							onChange={(value) =>
-								setAttributes({ shapeDividerTopHeight: value })
-							}
-							min={10}
-							max={500}
-							step={1}
-							__nextHasNoMarginBottom
-						/>
-
-						<RangeControl
-							label={__('Width', 'designsetgo')}
-							value={shapeDividerTopWidth}
-							onChange={(value) =>
-								setAttributes({ shapeDividerTopWidth: value })
-							}
-							min={100}
-							max={300}
-							step={1}
-							help={__(
-								'Stretch the shape wider for more dramatic effect.',
-								'designsetgo'
-							)}
-							__nextHasNoMarginBottom
-						/>
-
-						<Flex>
-							<FlexItem>
-								<ToggleControl
-									label={__('Flip Horizontal', 'designsetgo')}
-									checked={shapeDividerTopFlipX}
-									onChange={(value) =>
-										setAttributes({
-											shapeDividerTopFlipX: value,
-										})
-									}
-									__nextHasNoMarginBottom
-								/>
-							</FlexItem>
-							<FlexItem>
-								<ToggleControl
-									label={__('Flip Vertical', 'designsetgo')}
-									checked={shapeDividerTopFlipY}
-									onChange={(value) =>
-										setAttributes({
-											shapeDividerTopFlipY: value,
-										})
-									}
-									__nextHasNoMarginBottom
-								/>
-							</FlexItem>
-						</Flex>
-
-						<ToggleControl
-							label={__('Bring to Front', 'designsetgo')}
-							checked={shapeDividerTopFront}
-							onChange={(value) =>
-								setAttributes({ shapeDividerTopFront: value })
-							}
-							help={__(
-								'Display the shape above the section content.',
-								'designsetgo'
-							)}
-							__nextHasNoMarginBottom
-						/>
-					</>
-				)}
-			</PanelBody>
-
-			<PanelBody
+				shape={shapeDividerTop}
+				color={shapeDividerTopColor}
+				height={shapeDividerTopHeight}
+				width={shapeDividerTopWidth}
+				flipX={shapeDividerTopFlipX}
+				flipY={shapeDividerTopFlipY}
+				front={shapeDividerTopFront}
+				isBottom={false}
+				onChange={handleTopChange}
+				clientId={clientId}
+				colorSettings={colorGradientSettings}
+			/>
+			<ShapeDividerPanel
 				title={__('Bottom Shape Divider', 'designsetgo')}
-				initialOpen={false}
-			>
-				<SelectControl
-					label={__('Shape', 'designsetgo')}
-					value={shapeDividerBottom}
-					options={SHAPE_DIVIDER_OPTIONS}
-					onChange={(value) =>
-						setAttributes({ shapeDividerBottom: value })
-					}
-					__nextHasNoMarginBottom
-				/>
-
-				{shapeDividerBottom && (
-					<>
-						<ShapePreview
-							shape={shapeDividerBottom}
-							color={shapeDividerBottomColor}
-							flipX={shapeDividerBottomFlipX}
-							flipY={shapeDividerBottomFlipY}
-							isBottom={true}
-						/>
-
-						<ColorGradientSettingsDropdown
-							panelId={clientId}
-							settings={[
-								{
-									label: __('Color', 'designsetgo'),
-									colorValue: shapeDividerBottomColor,
-									onColorChange: (color) =>
-										setAttributes({
-											shapeDividerBottomColor:
-												color || '',
-										}),
-									clearable: true,
-								},
-							]}
-							{...colorGradientSettings}
-						/>
-
-						<RangeControl
-							label={__('Height', 'designsetgo')}
-							value={shapeDividerBottomHeight}
-							onChange={(value) =>
-								setAttributes({
-									shapeDividerBottomHeight: value,
-								})
-							}
-							min={10}
-							max={500}
-							step={1}
-							__nextHasNoMarginBottom
-						/>
-
-						<RangeControl
-							label={__('Width', 'designsetgo')}
-							value={shapeDividerBottomWidth}
-							onChange={(value) =>
-								setAttributes({
-									shapeDividerBottomWidth: value,
-								})
-							}
-							min={100}
-							max={300}
-							step={1}
-							help={__(
-								'Stretch the shape wider for more dramatic effect.',
-								'designsetgo'
-							)}
-							__nextHasNoMarginBottom
-						/>
-
-						<Flex>
-							<FlexItem>
-								<ToggleControl
-									label={__('Flip Horizontal', 'designsetgo')}
-									checked={shapeDividerBottomFlipX}
-									onChange={(value) =>
-										setAttributes({
-											shapeDividerBottomFlipX: value,
-										})
-									}
-									__nextHasNoMarginBottom
-								/>
-							</FlexItem>
-							<FlexItem>
-								<ToggleControl
-									label={__('Flip Vertical', 'designsetgo')}
-									checked={shapeDividerBottomFlipY}
-									onChange={(value) =>
-										setAttributes({
-											shapeDividerBottomFlipY: value,
-										})
-									}
-									__nextHasNoMarginBottom
-								/>
-							</FlexItem>
-						</Flex>
-
-						<ToggleControl
-							label={__('Bring to Front', 'designsetgo')}
-							checked={shapeDividerBottomFront}
-							onChange={(value) =>
-								setAttributes({
-									shapeDividerBottomFront: value,
-								})
-							}
-							help={__(
-								'Display the shape above the section content.',
-								'designsetgo'
-							)}
-							__nextHasNoMarginBottom
-						/>
-					</>
-				)}
-			</PanelBody>
+				shape={shapeDividerBottom}
+				color={shapeDividerBottomColor}
+				height={shapeDividerBottomHeight}
+				width={shapeDividerBottomWidth}
+				flipX={shapeDividerBottomFlipX}
+				flipY={shapeDividerBottomFlipY}
+				front={shapeDividerBottomFront}
+				isBottom={true}
+				onChange={handleBottomChange}
+				clientId={clientId}
+				colorSettings={colorGradientSettings}
+			/>
 		</>
 	);
 }

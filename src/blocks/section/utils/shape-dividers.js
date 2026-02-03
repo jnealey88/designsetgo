@@ -8,6 +8,8 @@
  * @since 1.4.2
  */
 
+import { __ } from '@wordpress/i18n';
+
 /**
  * Shape divider definitions
  * Each shape returns an SVG path element
@@ -141,33 +143,46 @@ export const SHAPE_DIVIDERS = {
 
 /**
  * Get shape divider options for SelectControl
+ *
+ * @return {Array} Array of shape options with translated labels
  */
-export const SHAPE_DIVIDER_OPTIONS = [
-	{ label: 'None', value: '' },
-	{ label: 'Wave', value: 'wave' },
-	{ label: 'Wave Double', value: 'wave-double' },
-	{ label: 'Wave Layered', value: 'wave-layered' },
-	{ label: 'Wave Asymmetric', value: 'wave-asymmetric' },
-	{ label: 'Tilt', value: 'tilt' },
-	{ label: 'Tilt Reverse', value: 'tilt-reverse' },
-	{ label: 'Curve', value: 'curve' },
-	{ label: 'Curve Asymmetric', value: 'curve-asymmetric' },
-	{ label: 'Triangle', value: 'triangle' },
-	{ label: 'Triangle Asymmetric', value: 'triangle-asymmetric' },
-	{ label: 'Arrow', value: 'arrow' },
-	{ label: 'Arrow Wide', value: 'arrow-wide' },
-	{ label: 'Peaks', value: 'peaks' },
-	{ label: 'Peaks Soft', value: 'peaks-soft' },
-	{ label: 'Zigzag', value: 'zigzag' },
-	{ label: 'Book', value: 'book' },
-	{ label: 'Clouds', value: 'clouds' },
-	{ label: 'Drops', value: 'drops' },
-	{ label: 'Split', value: 'split' },
-	{ label: 'Fan', value: 'fan' },
-	{ label: 'Steps', value: 'steps' },
-	{ label: 'Torn Paper', value: 'torn' },
-	{ label: 'Slime', value: 'slime' },
-];
+export function getShapeDividerOptions() {
+	return [
+		{ label: __('None', 'designsetgo'), value: '' },
+		{ label: __('Wave', 'designsetgo'), value: 'wave' },
+		{ label: __('Wave Double', 'designsetgo'), value: 'wave-double' },
+		{ label: __('Wave Layered', 'designsetgo'), value: 'wave-layered' },
+		{
+			label: __('Wave Asymmetric', 'designsetgo'),
+			value: 'wave-asymmetric',
+		},
+		{ label: __('Tilt', 'designsetgo'), value: 'tilt' },
+		{ label: __('Tilt Reverse', 'designsetgo'), value: 'tilt-reverse' },
+		{ label: __('Curve', 'designsetgo'), value: 'curve' },
+		{
+			label: __('Curve Asymmetric', 'designsetgo'),
+			value: 'curve-asymmetric',
+		},
+		{ label: __('Triangle', 'designsetgo'), value: 'triangle' },
+		{
+			label: __('Triangle Asymmetric', 'designsetgo'),
+			value: 'triangle-asymmetric',
+		},
+		{ label: __('Arrow', 'designsetgo'), value: 'arrow' },
+		{ label: __('Arrow Wide', 'designsetgo'), value: 'arrow-wide' },
+		{ label: __('Peaks', 'designsetgo'), value: 'peaks' },
+		{ label: __('Peaks Soft', 'designsetgo'), value: 'peaks-soft' },
+		{ label: __('Zigzag', 'designsetgo'), value: 'zigzag' },
+		{ label: __('Book', 'designsetgo'), value: 'book' },
+		{ label: __('Clouds', 'designsetgo'), value: 'clouds' },
+		{ label: __('Drops', 'designsetgo'), value: 'drops' },
+		{ label: __('Split', 'designsetgo'), value: 'split' },
+		{ label: __('Fan', 'designsetgo'), value: 'fan' },
+		{ label: __('Steps', 'designsetgo'), value: 'steps' },
+		{ label: __('Torn Paper', 'designsetgo'), value: 'torn' },
+		{ label: __('Slime', 'designsetgo'), value: 'slime' },
+	];
+}
 
 /**
  * Get a shape divider SVG element

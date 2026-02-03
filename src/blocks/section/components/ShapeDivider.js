@@ -10,6 +10,70 @@
 import { getShapeDivider } from '../utils/shape-dividers';
 
 /**
+ * Validate and sanitize color values to prevent XSS
+ * Allows: hex colors, rgb/rgba, hsl/hsla, CSS variables, and named colors
+ *
+ * @param {string} color - Color value to validate
+ * @return {string|null} Sanitized color or null if invalid
+ */
+function sanitizeColor(color) {
+	if (!color || typeof color !== 'string') {
+		return null;
+	}
+
+	// Trim whitespace
+	const trimmed = color.trim();
+
+	// Allow CSS custom properties (variables)
+	if (/^var\(--[\w-]+(?:,\s*[^)]+)?\)$/i.test(trimmed)) {
+		return trimmed;
+	}
+
+	// Allow hex colors (3, 4, 6, or 8 digits)
+	if (/^#(?:[\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})$/i.test(trimmed)) {
+		return trimmed;
+	}
+
+	// Allow rgb/rgba
+	if (
+		/^rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*(?:,\s*[\d.]+)?\s*\)$/i.test(
+			trimmed
+		)
+	) {
+		return trimmed;
+	}
+
+	// Allow hsl/hsla
+	if (
+		/^hsla?\(\s*\d{1,3}\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*(?:,\s*[\d.]+)?\s*\)$/i.test(
+			trimmed
+		)
+	) {
+		return trimmed;
+	}
+
+	// Allow named colors (basic validation - alphanumeric only)
+	if (/^[a-z]+$/i.test(trimmed)) {
+		return trimmed;
+	}
+
+	// Reject anything else
+	return null;
+}
+
+/**
+ * Clamp a value between min and max
+ *
+ * @param {number} value - Value to clamp
+ * @param {number} min   - Minimum value
+ * @param {number} max   - Maximum value
+ * @return {number} Clamped value
+ */
+function clamp(value, min, max) {
+	return Math.min(Math.max(value, min), max);
+}
+
+/**
  * Shape Divider Component
  *
  * @param {Object}  props          Component props
@@ -44,25 +108,33 @@ export default function ShapeDivider({
 		return null;
 	}
 
+	// Validate and clamp numeric values
+	const safeHeight = clamp(Number(height) || 100, 10, 500);
+	const safeWidth = clamp(Number(width) || 100, 100, 300);
+
+	// Sanitize color value
+	const safeColor = sanitizeColor(color);
+
 	// Build transform for flipping
-	// Bottom shapes are rotated 180deg by default (to point into section)
+	// Use scaleY for consistent 2D flipping behavior
 	const transforms = [];
 
 	if (flipX) {
 		transforms.push('scaleX(-1)');
 	}
 
-	// For bottom position, default is rotated (pointing into section)
+	// For bottom position, default is flipped (pointing into section)
 	// flipY inverts this behavior
 	if (position === 'bottom' && !flipY) {
-		transforms.push('rotateX(180deg)');
+		transforms.push('scaleY(-1)');
 	} else if (position !== 'bottom' && flipY) {
-		// For top position, flipY rotates it
-		transforms.push('rotateX(180deg)');
+		// For top position, flipY flips it
+		transforms.push('scaleY(-1)');
 	}
 
 	// Calculate width offset for stretched shapes (centering)
-	const widthOffset = width > 100 ? (width - 100) / 2 : 0;
+	// Use Math.max to guard against edge cases
+	const widthOffset = Math.max(0, (safeWidth - 100) / 2);
 
 	// Build className
 	const className = [
@@ -73,12 +145,12 @@ export default function ShapeDivider({
 		.filter(Boolean)
 		.join(' ');
 
-	// Build inline styles
+	// Build inline styles with validated values
 	const style = {
-		'--dsgo-shape-height': `${height}px`,
-		'--dsgo-shape-width': `${width}%`,
+		'--dsgo-shape-height': `${safeHeight}px`,
+		'--dsgo-shape-width': `${safeWidth}%`,
 		'--dsgo-shape-offset': `-${widthOffset}%`,
-		'--dsgo-shape-color': color || 'currentColor',
+		'--dsgo-shape-color': safeColor || 'currentColor',
 	};
 
 	return (
