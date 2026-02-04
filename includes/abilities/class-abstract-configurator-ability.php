@@ -188,8 +188,16 @@ abstract class Abstract_Configurator_Ability extends Abstract_Ability {
 		$post_id         = (int) ( $input['post_id'] ?? 0 );
 		$block_client_id = $input['block_client_id'] ?? null;
 		$update_all      = (bool) ( $input['update_all'] ?? false );
-		$block_name      = $input['block_name'] ?? $this->get_target_block_name() ?? '';
+		$target_block    = $this->get_target_block_name();
 		$attributes      = $input['attributes'] ?? array();
+
+		// For block-specific configurators, enforce the target block name.
+		// This prevents callers from overriding the intended block type.
+		if ( $target_block ) {
+			$block_name = $target_block;
+		} else {
+			$block_name = $input['block_name'] ?? '';
+		}
 
 		// Validate required parameters.
 		if ( ! $post_id ) {
@@ -199,12 +207,15 @@ abstract class Abstract_Configurator_Ability extends Abstract_Ability {
 			);
 		}
 
-		if ( empty( $block_name ) ) {
+		if ( '' === $block_name ) {
 			return $this->error(
 				'missing_block_name',
 				__( 'Block name is required.', 'designsetgo' )
 			);
 		}
+
+		// Filter attributes against allowed list at runtime (not just schema).
+		$attributes = $this->filter_attributes_at_runtime( $attributes );
 
 		// Transform attributes if needed.
 		$new_attributes = $this->transform_attributes( $attributes, $input );
@@ -213,7 +224,8 @@ abstract class Abstract_Configurator_Ability extends Abstract_Ability {
 			return $new_attributes;
 		}
 
-		if ( empty( $new_attributes ) ) {
+		// Use count() instead of empty() to allow legitimate falsy values (0, false).
+		if ( ! is_array( $new_attributes ) || 0 === count( $new_attributes ) ) {
 			return $this->error(
 				'missing_attributes',
 				__( 'No attributes provided to configure.', 'designsetgo' )
@@ -228,6 +240,55 @@ abstract class Abstract_Configurator_Ability extends Abstract_Ability {
 			$block_client_id,
 			$update_all
 		);
+	}
+
+	/**
+	 * Filter attributes at runtime against block.json definitions.
+	 *
+	 * Ensures that only attributes defined in the block's block.json
+	 * and not excluded by get_excluded_attributes() are applied.
+	 *
+	 * @param array<string, mixed> $attributes Input attributes.
+	 * @return array<string, mixed> Filtered attributes.
+	 */
+	protected function filter_attributes_at_runtime( array $attributes ): array {
+		$block_name = $this->get_target_block_name();
+
+		if ( ! $block_name ) {
+			return $attributes;
+		}
+
+		$valid_attrs   = Block_Schema_Loader::get_attribute_names( $block_name );
+		$include_attrs = $this->get_included_attributes();
+		$exclude_attrs = $this->get_excluded_attributes();
+
+		// If no valid attributes found, return as-is.
+		if ( empty( $valid_attrs ) ) {
+			return $attributes;
+		}
+
+		$filtered = array();
+
+		foreach ( $attributes as $attr_name => $attr_value ) {
+			// Must be a valid block attribute.
+			if ( ! in_array( $attr_name, $valid_attrs, true ) ) {
+				continue;
+			}
+
+			// If include list is specified, must be in it.
+			if ( ! empty( $include_attrs ) && ! in_array( $attr_name, $include_attrs, true ) ) {
+				continue;
+			}
+
+			// Must not be in exclude list.
+			if ( in_array( $attr_name, $exclude_attrs, true ) ) {
+				continue;
+			}
+
+			$filtered[ $attr_name ] = $attr_value;
+		}
+
+		return $filtered;
 	}
 
 	/**

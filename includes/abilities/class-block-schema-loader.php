@@ -23,6 +23,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Block_Schema_Loader {
 
 	/**
+	 * Maximum file size for JSON files (1MB).
+	 *
+	 * @var int
+	 */
+	private const MAX_FILE_SIZE = 1048576;
+
+	/**
+	 * Maximum JSON decode depth.
+	 *
+	 * @var int
+	 */
+	private const MAX_JSON_DEPTH = 32;
+
+	/**
+	 * Maximum length for attribute names (ReDoS protection).
+	 *
+	 * @var int
+	 */
+	private const MAX_ATTR_NAME_LENGTH = 200;
+
+	/**
 	 * Cache for loaded block schemas.
 	 *
 	 * @var array<string, array>
@@ -64,20 +85,21 @@ class Block_Schema_Loader {
 		// Wrap block attributes in an 'attributes' property if we have any.
 		if ( ! empty( $block_schema['properties'] ) ) {
 			$properties['attributes'] = array(
-				'type'        => 'object',
-				'description' => sprintf(
+				'type'                 => 'object',
+				'description'          => sprintf(
 					/* translators: %s: Block name */
 					__( 'Attributes for the %s block', 'designsetgo' ),
 					$block_name
 				),
-				'properties'  => $block_schema['properties'],
+				'properties'           => $block_schema['properties'],
+				'additionalProperties' => false,
 			);
 		}
 
 		return array(
 			'type'                 => 'object',
 			'properties'           => $properties,
-			'required'             => array( 'post_id' ),
+			'required'             => array( 'post_id', 'attributes' ),
 			'additionalProperties' => false,
 		);
 	}
@@ -140,6 +162,12 @@ class Block_Schema_Loader {
 			return array();
 		}
 
+		// Resolve to real path for comparison.
+		$blocks_dir_real = realpath( $blocks_dir );
+		if ( false === $blocks_dir_real ) {
+			return array();
+		}
+
 		$block_names = array();
 		$dirs        = glob( $blocks_dir . '*', GLOB_ONLYDIR );
 
@@ -148,7 +176,13 @@ class Block_Schema_Loader {
 		}
 
 		foreach ( $dirs as $dir ) {
-			$block_json = $dir . '/block.json';
+			// Verify path stays within blocks directory (path traversal protection).
+			$dir_real = realpath( $dir );
+			if ( false === $dir_real || 0 !== strpos( $dir_real, $blocks_dir_real ) ) {
+				continue;
+			}
+
+			$block_json = $dir_real . '/block.json';
 			if ( file_exists( $block_json ) ) {
 				$data = self::read_json_file( $block_json );
 				if ( ! empty( $data['name'] ) ) {
@@ -172,19 +206,42 @@ class Block_Schema_Loader {
 			return self::$schema_cache[ $block_name ];
 		}
 
+		// Validate block name format (namespace/slug pattern, alphanumeric with hyphens).
+		if ( ! preg_match( '/^[a-z0-9-]+\/[a-z0-9-]+$/i', $block_name ) ) {
+			return null;
+		}
+
 		// Extract the block slug from the name.
 		$parts = explode( '/', $block_name );
 		$slug  = end( $parts );
 
+		// Additional slug validation - must be alphanumeric with hyphens only.
+		if ( ! preg_match( '/^[a-z0-9-]+$/i', $slug ) ) {
+			return null;
+		}
+
 		// Look in build directory first, then src.
-		$paths = array(
-			DESIGNSETGO_PATH . 'build/blocks/' . $slug . '/block.json',
-			DESIGNSETGO_PATH . 'src/blocks/' . $slug . '/block.json',
+		$base_dirs = array(
+			DESIGNSETGO_PATH . 'build/blocks/',
+			DESIGNSETGO_PATH . 'src/blocks/',
 		);
 
-		foreach ( $paths as $path ) {
-			if ( file_exists( $path ) ) {
-				$data = self::read_json_file( $path );
+		foreach ( $base_dirs as $base_dir ) {
+			$base_real = realpath( $base_dir );
+			if ( false === $base_real ) {
+				continue;
+			}
+
+			$path      = $base_dir . $slug . '/block.json';
+			$path_real = realpath( $path );
+
+			// Verify resolved path stays within expected directory (path traversal protection).
+			if ( false === $path_real || 0 !== strpos( $path_real, $base_real ) ) {
+				continue;
+			}
+
+			if ( file_exists( $path_real ) ) {
+				$data = self::read_json_file( $path_real );
 				if ( $data ) {
 					self::$schema_cache[ $block_name ] = $data;
 					return $data;
@@ -425,6 +482,11 @@ class Block_Schema_Loader {
 	 * @return string Words separated by spaces.
 	 */
 	private static function camel_to_words( string $str ): string {
+		// Limit input length to prevent ReDoS attacks.
+		if ( strlen( $str ) > self::MAX_ATTR_NAME_LENGTH ) {
+			$str = substr( $str, 0, self::MAX_ATTR_NAME_LENGTH );
+		}
+
 		// Insert spaces before uppercase letters.
 		$result = preg_replace( '/([a-z])([A-Z])/', '$1 $2', $str );
 		// Handle consecutive uppercase (e.g., "HTMLParser" -> "HTML Parser").
@@ -443,6 +505,12 @@ class Block_Schema_Loader {
 			return null;
 		}
 
+		// Check file size to prevent DoS attacks.
+		$file_size = filesize( $path );
+		if ( false === $file_size || $file_size > self::MAX_FILE_SIZE ) {
+			return null;
+		}
+
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$contents = file_get_contents( $path );
 
@@ -450,7 +518,8 @@ class Block_Schema_Loader {
 			return null;
 		}
 
-		$data = json_decode( $contents, true );
+		// Decode with depth limit to prevent nested structure DoS.
+		$data = json_decode( $contents, true, self::MAX_JSON_DEPTH );
 
 		if ( ! is_array( $data ) ) {
 			return null;
