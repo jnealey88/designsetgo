@@ -409,20 +409,11 @@ addFilter(
 const withBackgroundVideoEdit = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
 		const { attributes, name } = props;
-		const { dsgoVideoUrl, dsgoVideoPoster, dsgoVideoOverlayColor, align } =
+		const { dsgoVideoUrl, dsgoVideoPoster, dsgoVideoOverlayColor } =
 			attributes;
 
 		if (!ALLOWED_BLOCKS.includes(name) || !dsgoVideoUrl) {
 			return <BlockListBlock {...props} />;
-		}
-
-		// Build wrapper class names, including alignment classes
-		// CRITICAL: Pass alignment classes to wrapper so full-width blocks remain full-width in editor
-		const wrapperClasses = ['dsgo-has-video-background'];
-		if (align === 'full') {
-			wrapperClasses.push('alignfull');
-		} else if (align === 'wide') {
-			wrapperClasses.push('alignwide');
 		}
 
 		// Apply 70% opacity to overlay color if set
@@ -441,7 +432,7 @@ const withBackgroundVideoEdit = createHigherOrderComponent((BlockListBlock) => {
 			: null;
 
 		return (
-			<div className={wrapperClasses.join(' ')}>
+			<div className="dsgo-has-video-background">
 				<div
 					className="dsgo-video-background-editor"
 					style={{
