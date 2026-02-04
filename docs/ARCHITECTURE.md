@@ -21,7 +21,7 @@ Complete guide to DesignSetGo's architecture, code organization, and how everyth
 
 ```
 ┌─────────────────────────────────────────┐
-│         WordPress 6.4+                  │
+│         WordPress 6.7+                  │
 │  ┌───────────────────────────────────┐  │
 │  │   Block Editor (Gutenberg)        │  │
 │  │  ┌─────────────────────────────┐  │  │
@@ -970,4 +970,4 @@ Each block is compiled separately:
 
 ---
 
-**Last Updated:** 2025-11-15 | **Version:** 1.0.0 | **WordPress:** 6.4+
+**Last Updated:** 2025-11-15 | **Version:** 1.4.1 | **WordPress:** 6.7+

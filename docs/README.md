@@ -428,5 +428,5 @@ When you discover new patterns or best practices:
 ---
 
 **Last Updated**: 2025-11-19
-**Plugin Version**: 1.0.0
-**WordPress Compatibility**: 6.4+
+**Plugin Version**: 1.4.1
+**WordPress Compatibility**: 6.7+
