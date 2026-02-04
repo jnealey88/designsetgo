@@ -7,10 +7,37 @@
  * @package DesignSetGo
  */
 
+/**
+ * Fix alignfull behavior when video background wrapper is inside root container
+ *
+ * When a block has a video background, it gets wrapped in .dsgo-has-video-background.
+ * This wrapper needs to:
+ * 1. Remove max-width constraint that WordPress applies via :where(:not(.alignfull))
+ * 2. Apply negative margins to break out of the root container's padding
+ *
+ * WordPress applies constraints via these selectors:
+ * - .is-root-container > :where(:not(.alignfull)) { max-width: 1200px; margin: auto; }
+ * - .is-layout-constrained > :where(:not(.alignfull)) { max-width: content-size; margin: auto; }
+ *
+ * The inner block inherits alignfull from WordPress, but the wrapper needs these overrides.
+ */
+// Override WordPress max-width and margin:auto constraints on the wrapper
+.block-editor-block-list__layout.is-root-container > .dsgo-has-video-background,
+.is-layout-constrained > .dsgo-has-video-background {
+	max-width: none !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+// Apply negative margins to break out of global padding
+.block-editor-block-list__layout.is-root-container.has-global-padding > .dsgo-has-video-background {
+	margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
+	margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
+}
+
 .dsgo-has-video-background {
 	position: relative;
 	overflow: hidden; // CRITICAL: Makes border radius work by clipping video
-	width: 100%; // CRITICAL: Ensure wrapper doesn't shrink nested containers
 
 	// CRITICAL: Must match style.scss for frontend parity
 	.dsgo-video-background,
