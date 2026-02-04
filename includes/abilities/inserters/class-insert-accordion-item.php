@@ -223,12 +223,29 @@ class Insert_Accordion_Item extends Abstract_Ability {
 					continue;
 				}
 
-				// Create the accordion item.
+				// Get parent accordion settings for icon position.
+				$icon_position = $block['attrs']['iconPosition'] ?? 'right';
+				$icon_style    = $block['attrs']['iconStyle'] ?? 'chevron';
+
+				// Generate unique ID for the accordion item.
+				$unique_id = 'accordion-item-' . wp_generate_password( 8, false, false );
+
+				// Generate the accordion item HTML structure.
+				$item_html = $this->generate_accordion_item_html(
+					$title,
+					$unique_id,
+					$is_open,
+					$icon_position,
+					$icon_style
+				);
+
+				// Create the accordion item block.
 				$new_item = array(
 					'blockName'    => 'designsetgo/accordion-item',
 					'attrs'        => array(
-						'title'  => $title,
-						'isOpen' => $is_open,
+						'title'    => $title,
+						'isOpen'   => $is_open,
+						'uniqueId' => $unique_id,
 					),
 					'innerBlocks'  => array(
 						array(
@@ -239,8 +256,8 @@ class Insert_Accordion_Item extends Abstract_Ability {
 							'innerContent' => array( '<p>' . $content . '</p>' ),
 						),
 					),
-					'innerHTML'    => '',
-					'innerContent' => array( null ),
+					'innerHTML'    => $item_html['full'],
+					'innerContent' => $item_html['content'],
 				);
 
 				// Initialize innerBlocks if not set.
@@ -280,5 +297,98 @@ class Insert_Accordion_Item extends Abstract_Ability {
 		}
 
 		return $blocks;
+	}
+
+	/**
+	 * Generate the HTML structure for an accordion item.
+	 *
+	 * @param string $title         Item title.
+	 * @param string $unique_id     Unique ID for ARIA.
+	 * @param bool   $is_open       Whether item is open.
+	 * @param string $icon_position Icon position (left/right).
+	 * @param string $icon_style    Icon style (chevron/plus-minus/caret/none).
+	 * @return array{full: string, content: array} HTML structure.
+	 */
+	private function generate_accordion_item_html(
+		string $title,
+		string $unique_id,
+		bool $is_open,
+		string $icon_position,
+		string $icon_style
+	): array {
+		$header_id = $unique_id . '-header';
+		$panel_id  = $unique_id . '-panel';
+
+		$item_class   = 'dsgo-accordion-item ' . ( $is_open ? 'dsgo-accordion-item--open' : 'dsgo-accordion-item--closed' );
+		$trigger_class = 'dsgo-accordion-item__trigger dsgo-accordion-item__trigger--icon-' . $icon_position;
+
+		// Generate icon SVG based on style.
+		$icon_html = '';
+		if ( 'none' !== $icon_style ) {
+			$icon_svg = $this->get_icon_svg( $icon_style, $is_open );
+			$icon_html = '<span class="dsgo-accordion-item__icon" aria-hidden="true">' . $icon_svg . '</span>';
+		}
+
+		// Build the HTML parts.
+		$opening = sprintf(
+			'<div class="wp-block-designsetgo-accordion-item %s" data-initially-open="%s"><div class="dsgo-accordion-item__header"><button type="button" class="%s" aria-expanded="%s" aria-controls="%s" id="%s">',
+			esc_attr( $item_class ),
+			$is_open ? 'true' : 'false',
+			esc_attr( $trigger_class ),
+			$is_open ? 'true' : 'false',
+			esc_attr( $panel_id ),
+			esc_attr( $header_id )
+		);
+
+		// Add icon on left if needed.
+		if ( 'left' === $icon_position ) {
+			$opening .= $icon_html;
+		}
+
+		// Add title.
+		$opening .= '<span class="dsgo-accordion-item__title">' . esc_html( $title ) . '</span>';
+
+		// Add icon on right if needed.
+		if ( 'right' === $icon_position ) {
+			$opening .= $icon_html;
+		}
+
+		$opening .= sprintf(
+			'</button></div><div class="dsgo-accordion-item__panel" role="region" aria-labelledby="%s" id="%s"%s><div class="dsgo-accordion-item__content">',
+			esc_attr( $header_id ),
+			esc_attr( $panel_id ),
+			$is_open ? '' : ' hidden'
+		);
+
+		$closing = '</div></div></div>';
+
+		return array(
+			'full'    => $opening . $closing,
+			'content' => array( $opening, null, $closing ),
+		);
+	}
+
+	/**
+	 * Get icon SVG markup.
+	 *
+	 * @param string $style   Icon style.
+	 * @param bool   $is_open Whether item is open.
+	 * @return string SVG markup.
+	 */
+	private function get_icon_svg( string $style, bool $is_open ): string {
+		switch ( $style ) {
+			case 'plus-minus':
+				if ( $is_open ) {
+					return '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4 8h8v1H4z"></path></svg>';
+				}
+				return '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 4v8M4 8h8" stroke="currentColor" stroke-width="1" fill="none"></path></svg>';
+
+			case 'caret':
+				return '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 7l2 2 2-2z"></path></svg>';
+
+			case 'chevron':
+			default:
+				return '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z"></path></svg>';
+		}
 	}
 }

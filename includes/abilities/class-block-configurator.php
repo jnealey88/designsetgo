@@ -81,6 +81,10 @@ class Block_Configurator {
 
 					// Merge attributes.
 					$block['attrs'] = array_merge( $block['attrs'] ?? array(), $attributes );
+
+					// Also update the saved HTML markup (data-* attributes and CSS variables).
+					$block = self::update_block_markup( $block, $attributes, $block_name );
+
 					$updated_count++;
 					$found_first = true;
 				}
@@ -479,5 +483,273 @@ class Block_Configurator {
 			'blocks'  => $result_blocks,
 			'deleted' => $deleted,
 		);
+	}
+
+	/**
+	 * Update block markup (innerHTML) to reflect attribute changes.
+	 *
+	 * This updates data-* attributes, CSS classes, and CSS variables in the saved HTML
+	 * to match the new attribute values. Uses htmlMappings from block.json when available.
+	 *
+	 * @param array<string, mixed> $block      Block array with innerHTML/innerContent.
+	 * @param array<string, mixed> $attributes New attributes that were applied.
+	 * @param string               $block_name Block name for looking up mappings.
+	 * @return array<string, mixed> Block with updated markup.
+	 */
+	private static function update_block_markup( array $block, array $attributes, string $block_name ): array {
+		// Skip if no innerHTML to update.
+		if ( empty( $block['innerHTML'] ) ) {
+			return $block;
+		}
+
+		// Get HTML mappings from block.json if available.
+		$mappings      = Block_Schema_Loader::get_html_mappings( $block_name );
+		$data_mappings = $mappings['dataAttributes'] ?? array();
+		$css_modifiers = $mappings['cssModifiers'] ?? array();
+		$css_var_map   = $mappings['cssVariables'] ?? array();
+
+		$html = $block['innerHTML'];
+
+		foreach ( $attributes as $key => $value ) {
+			// Convert value to string representation.
+			$string_value = self::value_to_string( $value );
+
+			// 1. Update or add data-* attributes (only for mapped attributes).
+			if ( isset( $data_mappings[ $key ] ) && null !== $string_value ) {
+				$data_attr = $data_mappings[ $key ];
+				$html      = self::update_or_add_data_attr( $html, $data_attr, $string_value );
+			}
+
+			// 2. Update CSS modifier classes.
+			if ( isset( $css_modifiers[ $key ] ) ) {
+				$html = self::update_css_modifier( $html, $css_modifiers[ $key ], $value );
+			}
+
+			// 3. Update or add CSS variables (only for mapped attributes).
+			if ( isset( $css_var_map[ $key ] ) && null !== $string_value ) {
+				$css_var = $css_var_map[ $key ];
+				$html    = self::update_or_add_css_var( $html, $css_var, $string_value );
+			}
+		}
+
+		$block['innerHTML'] = $html;
+
+		// Also update innerContent array if present.
+		// Only update the FIRST string element (the opening wrapper with wp-block-* class).
+		if ( ! empty( $block['innerContent'] ) && is_array( $block['innerContent'] ) ) {
+			$updated_first = false;
+			$block['innerContent'] = array_map(
+				function ( $content ) use ( $attributes, $data_mappings, $css_modifiers, $css_var_map, $block_name, &$updated_first ) {
+					if ( ! is_string( $content ) || $updated_first ) {
+						return $content;
+					}
+					// Only update the first fragment that contains the block wrapper class.
+					$block_class = 'wp-block-' . str_replace( '/', '-', $block_name );
+					if ( strpos( $content, $block_class ) !== false ) {
+						$updated_first = true;
+						return self::update_html_content( $content, $attributes, $data_mappings, $css_modifiers, $css_var_map, $block_name );
+					}
+					return $content;
+				},
+				$block['innerContent']
+			);
+		}
+
+		return $block;
+	}
+
+	/**
+	 * Update or add a data attribute to HTML.
+	 *
+	 * @param string $html       HTML content.
+	 * @param string $data_attr  Data attribute name (without "data-" prefix).
+	 * @param string $value      Attribute value.
+	 * @return string Updated HTML.
+	 */
+	private static function update_or_add_data_attr( string $html, string $data_attr, string $value ): string {
+		$full_attr    = 'data-' . $data_attr;
+		$escaped_val  = esc_attr( $value );
+		$new_attr_str = $full_attr . '="' . $escaped_val . '"';
+
+		// Check if attribute already exists.
+		if ( preg_match( '/' . preg_quote( $full_attr, '/' ) . '="[^"]*"/', $html ) ) {
+			// Update existing attribute.
+			return preg_replace(
+				'/' . preg_quote( $full_attr, '/' ) . '="[^"]*"/',
+				$new_attr_str,
+				$html
+			);
+		}
+
+		// Add new attribute to the first element with wp-block- class (the root wrapper).
+		// Match: <div class="wp-block-... other classes..." [other attributes]>
+		return preg_replace(
+			'/(<div\s+class="wp-block-[^"]*"[^>]*)(>)/',
+			'$1 ' . $new_attr_str . '$2',
+			$html,
+			1
+		);
+	}
+
+	/**
+	 * Update or add a CSS variable to the style attribute.
+	 *
+	 * @param string $html    HTML content.
+	 * @param string $css_var CSS variable name (with -- prefix).
+	 * @param string $value   Variable value.
+	 * @return string Updated HTML.
+	 */
+	private static function update_or_add_css_var( string $html, string $css_var, string $value ): string {
+		$escaped_val = esc_attr( $value );
+		$new_var_str = $css_var . ':' . $escaped_val;
+		$var_pattern = preg_quote( $css_var, '/' ) . ':[^;"]*';
+
+		// Check if variable already exists in style (use word boundary to avoid matching data-*-style).
+		if ( preg_match( '/\sstyle="[^"]*' . $var_pattern . '/', $html ) ) {
+			// Update existing variable.
+			return preg_replace( '/' . $var_pattern . '/', $new_var_str, $html );
+		}
+
+		// Check if style attribute exists on element with wp-block- class (use \s to avoid matching data-*-style).
+		if ( preg_match( '/(<div\s+class="wp-block-[^"]*"[^>]*\sstyle=")([^"]*)(")/i', $html ) ) {
+			// Add variable to existing style (append with semicolon).
+			return preg_replace(
+				'/(<div\s+class="wp-block-[^"]*"[^>]*\sstyle=")([^"]*)(")/i',
+				'$1$2;' . $new_var_str . '$3',
+				$html,
+				1
+			);
+		}
+
+		// Add new style attribute to the element with wp-block- class.
+		return preg_replace(
+			'/(<div\s+class="wp-block-[^"]*"[^>]*)(>)/',
+			'$1 style="' . $new_var_str . '"$2',
+			$html,
+			1
+		);
+	}
+
+	/**
+	 * Update HTML content string with attribute changes.
+	 *
+	 * @param string                $html         HTML content.
+	 * @param array<string, mixed>  $attributes   Attributes to apply.
+	 * @param array<string, string> $data_mappings Data attribute mappings.
+	 * @param array<string, mixed>  $css_modifiers CSS modifier mappings.
+	 * @param array<string, string> $css_var_map  CSS variable mappings.
+	 * @param string                $block_name   Block name.
+	 * @return string Updated HTML.
+	 */
+	private static function update_html_content( string $html, array $attributes, array $data_mappings, array $css_modifiers, array $css_var_map, string $block_name ): string {
+		foreach ( $attributes as $key => $value ) {
+			$string_value = self::value_to_string( $value );
+
+			// Update or add data attributes (only for mapped attributes).
+			if ( isset( $data_mappings[ $key ] ) && null !== $string_value ) {
+				$html = self::update_or_add_data_attr( $html, $data_mappings[ $key ], $string_value );
+			}
+
+			// Update CSS modifiers.
+			if ( isset( $css_modifiers[ $key ] ) ) {
+				$html = self::update_css_modifier( $html, $css_modifiers[ $key ], $value );
+			}
+
+			// Update or add CSS variables (only for mapped attributes).
+			if ( isset( $css_var_map[ $key ] ) && null !== $string_value ) {
+				$html = self::update_or_add_css_var( $html, $css_var_map[ $key ], $string_value );
+			}
+		}
+		return $html;
+	}
+
+	/**
+	 * Update CSS modifier class in HTML.
+	 *
+	 * @param string $html     HTML content.
+	 * @param mixed  $modifier Modifier pattern or mapping.
+	 * @param mixed  $value    Attribute value.
+	 * @return string Updated HTML.
+	 */
+	private static function update_css_modifier( string $html, $modifier, $value ): string {
+		// Handle string pattern with {value} placeholder (e.g., "dsgo-accordion--icon-{value}").
+		if ( is_string( $modifier ) && strpos( $modifier, '{value}' ) !== false ) {
+			$string_value = self::value_to_string( $value );
+			if ( null === $string_value ) {
+				return $html;
+			}
+
+			// Extract the base pattern (e.g., "dsgo-accordion--icon-").
+			$base_pattern = str_replace( '{value}', '', $modifier );
+			$new_class    = str_replace( '{value}', $string_value, $modifier );
+
+			// Check if any class with this pattern exists.
+			if ( preg_match( '/\b' . preg_quote( $base_pattern, '/' ) . '[a-z0-9-]+\b/', $html ) ) {
+				// Replace existing class with new one.
+				$html = preg_replace(
+					'/\b' . preg_quote( $base_pattern, '/' ) . '[a-z0-9-]+\b/',
+					$new_class,
+					$html
+				);
+			} elseif ( strpos( $html, $new_class ) === false ) {
+				// Add new class if it doesn't exist yet.
+				$html = preg_replace( '/class="([^"]*)"/', 'class="$1 ' . esc_attr( $new_class ) . '"', $html, 1 );
+			}
+		} elseif ( is_array( $modifier ) ) {
+			// Handle boolean/value mapping (e.g., {"true": "dsgo-accordion--border-between", "false": ""}).
+			$string_value = self::value_to_string( $value );
+			$old_class    = null;
+			$new_class    = null;
+
+			foreach ( $modifier as $map_value => $class_name ) {
+				if ( (string) $map_value === $string_value ) {
+					$new_class = $class_name;
+				} else {
+					$old_class = $class_name;
+				}
+			}
+
+			// Remove old class if it exists.
+			if ( $old_class && '' !== $old_class ) {
+				$html = preg_replace( '/\s*\b' . preg_quote( $old_class, '/' ) . '\b/', '', $html );
+			}
+
+			// Add new class if needed.
+			if ( $new_class && '' !== $new_class && strpos( $html, $new_class ) === false ) {
+				// Find the class attribute and append.
+				$html = preg_replace( '/class="([^"]*)"/', 'class="$1 ' . esc_attr( $new_class ) . '"', $html, 1 );
+			}
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Convert a value to string for HTML output.
+	 *
+	 * @param mixed $value Value to convert.
+	 * @return string|null String value or null if not convertible.
+	 */
+	private static function value_to_string( $value ): ?string {
+		if ( is_bool( $value ) ) {
+			return $value ? 'true' : 'false';
+		}
+		if ( is_int( $value ) || is_float( $value ) ) {
+			return (string) $value;
+		}
+		if ( is_string( $value ) ) {
+			return $value;
+		}
+		return null;
+	}
+
+	/**
+	 * Convert camelCase to kebab-case.
+	 *
+	 * @param string $str CamelCase string.
+	 * @return string kebab-case string.
+	 */
+	private static function camel_to_kebab( string $str ): string {
+		return strtolower( preg_replace( '/([a-z])([A-Z])/', '$1-$2', $str ) );
 	}
 }

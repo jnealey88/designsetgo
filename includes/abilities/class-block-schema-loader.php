@@ -607,4 +607,23 @@ class Block_Schema_Loader {
 
 		return $block_data['supports'];
 	}
+
+	/**
+	 * Get HTML mappings for a block.
+	 *
+	 * Returns the 'htmlMappings' section from schemaMetadata in block.json
+	 * which defines how attributes map to data attributes, CSS classes, and CSS variables.
+	 *
+	 * @param string $block_name Block name.
+	 * @return array<string, mixed> HTML mappings configuration.
+	 */
+	public static function get_html_mappings( string $block_name ): array {
+		$block_data = self::get_block_json( $block_name );
+
+		if ( empty( $block_data ) || empty( $block_data['schemaMetadata']['htmlMappings'] ) ) {
+			return array();
+		}
+
+		return $block_data['schemaMetadata']['htmlMappings'];
+	}
 }
