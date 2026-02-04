@@ -12,9 +12,8 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'title'      => __( 'Restaurant / Local Business Homepage', 'designsetgo' ),
 	'categories' => array( 'dsgo-homepage' ),
-	'content'    => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"0","bottom":"0"}}},"metadata":{"categories":["dsgo-homepage"],"patternName":"designsetgo/homepage/homepage-restaurant","name":"Restaurant / Local Business Homepage"}} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:0;padding-bottom:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:cover {"url":"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&h=900&fit=crop","dimRatio":60,"overlayColor":"contrast","isUserOverlayColor":true,"minHeight":600,"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}}} -->
-<div class="wp-block-cover alignfull" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80);min-height:600px"><span aria-hidden="true" class="wp-block-cover__background has-contrast-background-color has-background-dim-60 has-background-dim"></span><img class="wp-block-cover__image-background" alt="Restaurant interior" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&amp;h=900&amp;fit=crop" data-object-fit="cover"/><div class="wp-block-cover__inner-container"><!-- wp:group {"layout":{"type":"constrained","contentSize":"700px"}} -->
+	'content'    => '<!-- wp:cover {"url":"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600\u0026h=900\u0026fit=crop","alt":"Restaurant interior","dimRatio":60,"overlayColor":"contrast","minHeight":600,"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}}} -->
+<div class="wp-block-cover alignfull" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80);min-height:600px"><img class="wp-block-cover__image-background" alt="Restaurant interior" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&amp;h=900&amp;fit=crop" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-contrast-background-color has-background-dim-60 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:group {"layout":{"type":"constrained","contentSize":"700px"}} -->
 <div class="wp-block-group"><!-- wp:paragraph {"align":"center","style":{"typography":{"textTransform":"uppercase","letterSpacing":"4px"}},"textColor":"base","fontSize":"small"} -->
 <p class="has-text-align-center has-base-color has-text-color has-small-font-size" style="letter-spacing:4px;text-transform:uppercase">Est. 2010 - Farm to Table Dining</p>
 <!-- /wp:paragraph -->
@@ -28,7 +27,7 @@ return array(
 <!-- /wp:paragraph -->
 
 <!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"},"blockGap":"var:preset|spacing|20"}},"layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} -->
-<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon-button {"text":"Reserve a Table","url":"#reservations","icon":"calendar","iconPosition":"start","backgroundColor":"base","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"50px"}}} -->
+<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon-button {"text":"Reserve a Table","url":"#reservations","icon":"calendar","backgroundColor":"base","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"50px"}}} -->
 <a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="border-radius:50px;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row;background-color:var(--wp--preset--color--base);color:var(--wp--preset--color--contrast);padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--40)" href="#reservations" target="_self"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="calendar" data-icon-size="20"></span><span class="dsgo-icon-button__text">Reserve a Table</span></a>
 <!-- /wp:designsetgo/icon-button -->
 
@@ -37,11 +36,10 @@ return array(
 <!-- /wp:designsetgo/icon-button --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group --></div></div>
-<!-- /wp:cover --></div></div>
-<!-- /wp:designsetgo/section -->
+<!-- /wp:cover -->
 
 <!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}}} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/grid {"desktopColumns":2,"alignItems":"center","style":{"spacing":{"blockGap":"var:preset|spacing|70","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/grid {"desktopColumns":2,"style":{"spacing":{"blockGap":"var:preset|spacing|70","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"alignItems":"center"} -->
 <div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-2 dsgo-grid-cols-tablet-2 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(2, 1fr);align-items:center;row-gap:var(--wp--preset--spacing--70);column-gap:var(--wp--preset--spacing--70)"><!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"16px"}}} -->
 <figure class="wp-block-image size-large has-custom-border"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&amp;h=500&amp;fit=crop" alt="Chef preparing food" style="border-radius:16px"/></figure>
@@ -199,8 +197,8 @@ return array(
 <!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/section -->
 
-<!-- wp:designsetgo/grid {"desktopColumns":4,"tabletColumns":2,"style":{"spacing":{"blockGap":"var:preset|spacing|20","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-4 dsgo-grid-cols-tablet-2 dsgo-grid-cols-mobile-2 dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(4, 1fr);align-items:stretch;row-gap:var(--wp--preset--spacing--20);column-gap:var(--wp--preset--spacing--20)"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"8px"}}} -->
+<!-- wp:designsetgo/grid {"desktopColumns":4,"style":{"spacing":{"blockGap":"var:preset|spacing|20","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"dsgo-grid-cols-mobile-2"} -->
+<div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-4 dsgo-grid-cols-tablet-2 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint dsgo-grid-cols-mobile-2" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(4, 1fr);align-items:stretch;row-gap:var(--wp--preset--spacing--20);column-gap:var(--wp--preset--spacing--20)"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"8px"}}} -->
 <figure class="wp-block-image size-large has-custom-border"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=300&amp;h=300&amp;fit=crop" alt="Restaurant interior 1" style="border-radius:8px"/></figure>
 <!-- /wp:image -->
 
@@ -275,20 +273,20 @@ return array(
 <!-- /wp:designsetgo/section -->
 
 <!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"backgroundColor":"base-2"} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-2-background-color has-background" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/grid {"desktopColumns":2,"alignItems":"center","style":{"spacing":{"blockGap":"var:preset|spacing|70","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-2-background-color has-background" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/grid {"desktopColumns":2,"style":{"spacing":{"blockGap":"var:preset|spacing|70","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"alignItems":"center"} -->
 <div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-2 dsgo-grid-cols-tablet-2 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(2, 1fr);align-items:center;row-gap:var(--wp--preset--spacing--70);column-gap:var(--wp--preset--spacing--70)"><!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:paragraph {"style":{"typography":{"textTransform":"uppercase","letterSpacing":"3px"},"color":{"text":"#d97706"}},"fontSize":"small"} -->
 <p class="has-text-color has-small-font-size" style="color:#d97706;letter-spacing:3px;text-transform:uppercase">Visit Us</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"style":{"typography":{"fontStyle":"normal","fontWeight":"700"},"spacing":{"margin":{"top":"var:preset|spacing|20"}}},"fontSize":"x-large"} -->
-<h2 class="wp-block-heading has-x-large-font-size" style="margin-top:var(--wp--preset--spacing--20);font-style:normal;font-weight:700">Location & Hours</h2>
+<h2 class="wp-block-heading has-x-large-font-size" style="margin-top:var(--wp--preset--spacing--20);font-style:normal;font-weight:700">Location &amp; Hours</h2>
 <!-- /wp:heading -->
 
 <!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"},"blockGap":"var:preset|spacing|30"}},"layout":{"type":"flex","orientation":"vertical"}} -->
 <div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)"><!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"top"}} -->
-<div class="wp-block-group"><!-- wp:designsetgo/icon {"icon":"map-pin","size":"24px","style":{"color":{"text":"#d97706"}}} -->
-<div class="wp-block-designsetgo-icon dsgo-icon has-text-color" style="color:#d97706"><span class="dsgo-icon__wrapper dsgo-lazy-icon" data-icon-name="map-pin" data-icon-size="24" style="width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center"></span></div>
+<div class="wp-block-group"><!-- wp:designsetgo/icon {"icon":"location","style":{"color":{"text":"#d97706"}}} -->
+<div class="wp-block-designsetgo-icon dsgo-icon has-text-color" style="color:#d97706;display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;border-radius:inherit" data-icon-name="location" data-icon-style="filled" data-icon-stroke-width="1.5" role="img" aria-label="Location"></div></div>
 <!-- /wp:designsetgo/icon -->
 
 <!-- wp:group {"layout":{"type":"flex","orientation":"vertical"}} -->
@@ -303,8 +301,8 @@ return array(
 <!-- /wp:group -->
 
 <!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"top"}} -->
-<div class="wp-block-group"><!-- wp:designsetgo/icon {"icon":"clock","size":"24px","style":{"color":{"text":"#d97706"}}} -->
-<div class="wp-block-designsetgo-icon dsgo-icon has-text-color" style="color:#d97706"><span class="dsgo-icon__wrapper dsgo-lazy-icon" data-icon-name="clock" data-icon-size="24" style="width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center"></span></div>
+<div class="wp-block-group"><!-- wp:designsetgo/icon {"icon":"clock","style":{"color":{"text":"#d97706"}}} -->
+<div class="wp-block-designsetgo-icon dsgo-icon has-text-color" style="color:#d97706;display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;border-radius:inherit" data-icon-name="clock" data-icon-style="filled" data-icon-stroke-width="1.5" role="img" aria-label="Clock"></div></div>
 <!-- /wp:designsetgo/icon -->
 
 <!-- wp:group {"layout":{"type":"flex","orientation":"vertical"}} -->
@@ -319,8 +317,8 @@ return array(
 <!-- /wp:group -->
 
 <!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"top"}} -->
-<div class="wp-block-group"><!-- wp:designsetgo/icon {"icon":"phone","size":"24px","style":{"color":{"text":"#d97706"}}} -->
-<div class="wp-block-designsetgo-icon dsgo-icon has-text-color" style="color:#d97706"><span class="dsgo-icon__wrapper dsgo-lazy-icon" data-icon-name="phone" data-icon-size="24" style="width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center"></span></div>
+<div class="wp-block-group"><!-- wp:designsetgo/icon {"icon":"phone","style":{"color":{"text":"#d97706"}}} -->
+<div class="wp-block-designsetgo-icon dsgo-icon has-text-color" style="color:#d97706;display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;border-radius:inherit" data-icon-name="phone" data-icon-style="filled" data-icon-stroke-width="1.5" role="img" aria-label="Phone"></div></div>
 <!-- /wp:designsetgo/icon -->
 
 <!-- wp:group {"layout":{"type":"flex","orientation":"vertical"}} -->
@@ -335,21 +333,21 @@ return array(
 <!-- /wp:group --></div>
 <!-- /wp:group -->
 
-<!-- wp:designsetgo/icon-button {"text":"Make a Reservation","url":"#","icon":"calendar","iconPosition":"start","backgroundColor":"contrast","textColor":"base","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|40","right":"var:preset|spacing|40"},"margin":{"top":"var:preset|spacing|40"}},"border":{"radius":"50px"}}} -->
-<a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="border-radius:50px;margin-top:var(--wp--preset--spacing--40);display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row;background-color:var(--wp--preset--color--contrast);color:var(--wp--preset--color--base);padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--40)" href="#" target="_self"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="calendar" data-icon-size="20"></span><span class="dsgo-icon-button__text">Make a Reservation</span></a>
+<!-- wp:designsetgo/icon-button {"align":"left","text":"Make a Reservation","url":"#","icon":"calendar","backgroundColor":"contrast","textColor":"base","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|40","right":"var:preset|spacing|40"},"margin":{"top":"var:preset|spacing|40"}},"border":{"radius":"50px"}}} -->
+<a class="wp-block-designsetgo-icon-button alignleft dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="border-radius:50px;margin-top:var(--wp--preset--spacing--40);display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row;background-color:var(--wp--preset--color--contrast);color:var(--wp--preset--color--base);padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--40)" href="#" target="_self"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="calendar" data-icon-size="20"></span><span class="dsgo-icon-button__text">Make a Reservation</span></a>
 <!-- /wp:designsetgo/icon-button --></div></div>
 <!-- /wp:designsetgo/section -->
 
 <!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/map {"latitude":"40.7128","longitude":"-74.006","zoom":15,"height":"350px","style":{"border":{"radius":"12px"}}} -->
-<div class="wp-block-designsetgo-map dsgo-map" style="border-radius:12px;height:350px" data-latitude="40.7128" data-longitude="-74.006" data-zoom="15"><div class="dsgo-map__container"></div></div>
+<div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/map {"style":{"border":{"radius":"12px"}}} -->
+<div class="wp-block-designsetgo-map dsgo-map" style="border-radius:12px;height:400px" data-dsgo-provider="openstreetmap" data-dsgo-lat="40.7128" data-dsgo-lng="-74.006" data-dsgo-zoom="13" data-dsgo-address="" data-dsgo-marker-icon="📍" data-dsgo-marker-color="#e74c3c" data-dsgo-privacy-mode="false" data-dsgo-map-style="standard"><div class="dsgo-map__container" role="region" aria-label="Interactive map"></div></div>
 <!-- /wp:designsetgo/map --></div></div>
 <!-- /wp:designsetgo/section --></div></div>
 <!-- /wp:designsetgo/grid --></div></div>
 <!-- /wp:designsetgo/section -->
 
-<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"backgroundColor":"contrast","textColor":"base"} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-color has-contrast-background-color has-text-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:group {"layout":{"type":"constrained","contentSize":"700px"}} -->
+<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"backgroundColor":"contrast","textColor":"base"} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-color has-contrast-background-color has-text-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--70);padding-left:var(--wp--preset--spacing--30)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:group {"layout":{"type":"constrained","contentSize":"700px"}} -->
 <div class="wp-block-group"><!-- wp:heading {"textAlign":"center","style":{"typography":{"fontStyle":"normal","fontWeight":"700"}},"fontSize":"x-large"} -->
 <h2 class="wp-block-heading has-text-align-center has-x-large-font-size" style="font-style:normal;font-weight:700">Ready for an Unforgettable Evening?</h2>
 <!-- /wp:heading -->
@@ -359,7 +357,7 @@ return array(
 <!-- /wp:paragraph -->
 
 <!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}},"layout":{"type":"flex","justifyContent":"center"}} -->
-<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon-button {"text":"Book Your Table Now","url":"#","icon":"calendar","iconPosition":"start","backgroundColor":"base","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}},"border":{"radius":"50px"}}} -->
+<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon-button {"text":"Book Your Table Now","url":"#","icon":"calendar","backgroundColor":"base","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}},"border":{"radius":"50px"}}} -->
 <a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="border-radius:50px;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row;background-color:var(--wp--preset--color--base);color:var(--wp--preset--color--contrast);padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--50)" href="#" target="_self"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="calendar" data-icon-size="20"></span><span class="dsgo-icon-button__text">Book Your Table Now</span></a>
 <!-- /wp:designsetgo/icon-button --></div>
 <!-- /wp:group --></div>

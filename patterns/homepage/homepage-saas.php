@@ -13,13 +13,9 @@ return array(
 	'title'      => __( 'SaaS / Startup Homepage', 'designsetgo' ),
 	'categories' => array( 'dsgo-homepage' ),
 	'content'    => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"backgroundColor":"base-2","metadata":{"categories":["dsgo-homepage"],"patternName":"designsetgo/homepage/homepage-saas","name":"SaaS / Startup Homepage"}} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-2-background-color has-background" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/blobs {"align":"center","blobShape":"shape-3","blobAnimation":"morph-2","size":"500px","style":{"spacing":{"margin":{"bottom":"0"}}}} -->
-<div class="wp-block-designsetgo-blobs aligncenter dsgo-blobs-wrapper" style="margin-bottom:0"><div class="dsgo-blobs dsgo-blobs--shape-3 dsgo-blobs--morph-2" style="--dsgo-blob-size:500px;--dsgo-blob-animation-duration:8s;--dsgo-blob-animation-easing:ease-in-out" data-blob-animation="morph-2"><div class="dsgo-blobs__shape"><div class="dsgo-blobs__content"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}}}} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--50)"><div class="dsgo-stack__inner"><!-- wp:designsetgo/pill {"style":{"spacing":{"padding":{"top":"var:preset|spacing|10","bottom":"var:preset|spacing|10","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}},"border":{"radius":"50px"}},"backgroundColor":"contrast","textColor":"base","fontSize":"small"} -->
-<div class="wp-block-designsetgo-pill dsgo-pill has-base-color has-contrast-background-color has-text-color has-background has-small-font-size" style="border-radius:50px;padding-top:var(--wp--preset--spacing--10);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--10);padding-left:var(--wp--preset--spacing--30)">New: AI-Powered Analytics Now Available</div>
-<!-- /wp:designsetgo/pill -->
-
-<!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontStyle":"normal","fontWeight":"700"},"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"fontSize":"xx-large"} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-2-background-color has-background" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/blobs {"align":"center","blobShape":"shape-3","blobAnimation":"morph-2","size":"100%","style":{"spacing":{"margin":{"bottom":"0"}}}} -->
+<div class="wp-block-designsetgo-blobs aligncenter dsgo-blobs-wrapper" style="margin-bottom:0"><div class="dsgo-blobs dsgo-blobs--shape-3 dsgo-blobs--morph-2" style="--dsgo-blob-size:100%;--dsgo-blob-animation-duration:8s;--dsgo-blob-animation-easing:ease-in-out" data-blob-animation="morph-2"><div class="dsgo-blobs__shape"><div class="dsgo-blobs__content"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--50)"><div class="dsgo-stack__inner"><!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontStyle":"normal","fontWeight":"700"},"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"fontSize":"xx-large"} -->
 <h1 class="wp-block-heading has-text-align-center has-xx-large-font-size" style="margin-top:var(--wp--preset--spacing--30);font-style:normal;font-weight:700">Scale Your Business<br>with Powerful Tools</h1>
 <!-- /wp:heading -->
 
@@ -27,15 +23,15 @@ return array(
 <p class="has-text-align-center has-medium-font-size" style="margin-top:var(--wp--preset--spacing--30)">The all-in-one platform that helps teams collaborate, automate workflows, and deliver results faster than ever before.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"},"blockGap":"var:preset|spacing|20"}},"layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} -->
-<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon-button {"text":"Start Free Trial","url":"#","icon":"arrow-right","iconPosition":"end","backgroundColor":"contrast","textColor":"base","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"8px"}}} -->
+<!-- wp:designsetgo/row {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"},"blockGap":"var:preset|spacing|20","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} -->
+<div class="wp-block-designsetgo-row alignfull dsgo-flex dsgo-no-width-constraint" style="margin-top:var(--wp--preset--spacing--40);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-flex__inner" style="display:flex;justify-content:center;flex-wrap:wrap;gap:var(--wp--preset--spacing--20)"><!-- wp:designsetgo/icon-button {"text":"Start Free Trial","url":"#","icon":"arrow-right","iconPosition":"end","backgroundColor":"contrast","textColor":"base","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"8px"}}} -->
 <a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="border-radius:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row-reverse;background-color:var(--wp--preset--color--contrast);color:var(--wp--preset--color--base);padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--40)" href="#" target="_self"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="arrow-right" data-icon-size="20"></span><span class="dsgo-icon-button__text">Start Free Trial</span></a>
 <!-- /wp:designsetgo/icon-button -->
 
-<!-- wp:designsetgo/icon-button {"text":"Watch Demo","url":"#","icon":"play-circle","iconPosition":"start","backgroundColor":"transparent","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"8px","width":"2px"}}} -->
+<!-- wp:designsetgo/icon-button {"text":"Watch Demo","url":"#","icon":"play-circle","backgroundColor":"transparent","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"8px","width":"2px"}}} -->
 <a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="border-width:2px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row;background-color:var(--wp--preset--color--transparent);color:var(--wp--preset--color--contrast);padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--40)" href="#" target="_self"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="play-circle" data-icon-size="20"></span><span class="dsgo-icon-button__text">Watch Demo</span></a>
-<!-- /wp:designsetgo/icon-button --></div>
-<!-- /wp:group -->
+<!-- /wp:designsetgo/icon-button --></div></div>
+<!-- /wp:designsetgo/row -->
 
 <!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"fontSize":"small"} -->
 <p class="has-text-align-center has-small-font-size" style="margin-top:var(--wp--preset--spacing--30)">No credit card required. 14-day free trial.</p>
@@ -49,8 +45,8 @@ return array(
 <p class="has-text-align-center has-small-font-size" style="letter-spacing:2px;text-transform:uppercase">Trusted by 10,000+ companies worldwide</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}},"layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} -->
-<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)"><!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"600","letterSpacing":"1px"},"spacing":{"padding":{"left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"textColor":"contrast-2","fontSize":"large"} -->
+<!-- wp:designsetgo/row {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"},"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"layout":{"type":"flex","justifyContent":"center","flexWrap":"nowrap"}} -->
+<div class="wp-block-designsetgo-row alignfull dsgo-flex dsgo-no-width-constraint" style="margin-top:var(--wp--preset--spacing--40);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-flex__inner" style="display:flex;justify-content:center;flex-wrap:nowrap"><!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"600","letterSpacing":"1px"},"spacing":{"padding":{"left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"textColor":"contrast-2","fontSize":"large"} -->
 <p class="has-contrast-2-color has-text-color has-large-font-size" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30);font-style:normal;font-weight:600;letter-spacing:1px">Acme Corp</p>
 <!-- /wp:paragraph -->
 
@@ -68,8 +64,8 @@ return array(
 
 <!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"600","letterSpacing":"1px"},"spacing":{"padding":{"left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"textColor":"contrast-2","fontSize":"large"} -->
 <p class="has-contrast-2-color has-text-color has-large-font-size" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30);font-style:normal;font-weight:600;letter-spacing:1px">CloudBase</p>
-<!-- /wp:paragraph --></div>
-<!-- /wp:group --></div></div>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/row --></div></div>
 <!-- /wp:designsetgo/section -->
 
 <!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"backgroundColor":"base-2"} -->
@@ -84,9 +80,9 @@ return array(
 <!-- /wp:designsetgo/section -->
 
 <!-- wp:designsetgo/grid {"style":{"spacing":{"blockGap":"var:preset|spacing|30","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-3 dsgo-grid-cols-tablet-2 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(3, 1fr);align-items:stretch;row-gap:var(--wp--preset--spacing--30);column-gap:var(--wp--preset--spacing--30)"><!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"zap","size":"32px","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
-<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20)"><span class="dsgo-icon__wrapper dsgo-lazy-icon" data-icon-name="zap" data-icon-size="32" style="width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center"></span></div>
+<div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-3 dsgo-grid-cols-tablet-2 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(3, 1fr);align-items:stretch;row-gap:var(--wp--preset--spacing--30);column-gap:var(--wp--preset--spacing--30)"><!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained","justifyContent":"left"}} -->
+<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"lightning","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
+<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20);display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;border-radius:inherit" data-icon-name="lightning" data-icon-style="filled" data-icon-stroke-width="1.5" role="img" aria-label="Lightning"></div></div>
 <!-- /wp:designsetgo/icon -->
 
 <!-- wp:heading {"level":3,"fontSize":"large"} -->
@@ -98,9 +94,9 @@ return array(
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"shield","size":"32px","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
-<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20)"><span class="dsgo-icon__wrapper dsgo-lazy-icon" data-icon-name="shield" data-icon-size="32" style="width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center"></span></div>
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained","justifyContent":"left"}} -->
+<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"shield","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
+<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20);display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;border-radius:inherit" data-icon-name="shield" data-icon-style="filled" data-icon-stroke-width="1.5" role="img" aria-label="Shield"></div></div>
 <!-- /wp:designsetgo/icon -->
 
 <!-- wp:heading {"level":3,"fontSize":"large"} -->
@@ -112,9 +108,9 @@ return array(
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"users","size":"32px","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
-<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20)"><span class="dsgo-icon__wrapper dsgo-lazy-icon" data-icon-name="users" data-icon-size="32" style="width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center"></span></div>
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained","justifyContent":"left"}} -->
+<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"users","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
+<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20);display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;border-radius:inherit" data-icon-name="users" data-icon-style="filled" data-icon-stroke-width="1.5" role="img" aria-label="Users"></div></div>
 <!-- /wp:designsetgo/icon -->
 
 <!-- wp:heading {"level":3,"fontSize":"large"} -->
@@ -126,9 +122,9 @@ return array(
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"bar-chart-2","size":"32px","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
-<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20)"><span class="dsgo-icon__wrapper dsgo-lazy-icon" data-icon-name="bar-chart-2" data-icon-size="32" style="width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center"></span></div>
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained","justifyContent":"left"}} -->
+<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"chart","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
+<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20);display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;border-radius:inherit" data-icon-name="chart" data-icon-style="filled" data-icon-stroke-width="1.5" role="img" aria-label="Chart"></div></div>
 <!-- /wp:designsetgo/icon -->
 
 <!-- wp:heading {"level":3,"fontSize":"large"} -->
@@ -140,9 +136,9 @@ return array(
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"refresh-cw","size":"32px","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
-<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20)"><span class="dsgo-icon__wrapper dsgo-lazy-icon" data-icon-name="refresh-cw" data-icon-size="32" style="width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center"></span></div>
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained","justifyContent":"left"}} -->
+<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"list","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
+<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20);display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;border-radius:inherit" data-icon-name="list" data-icon-style="filled" data-icon-stroke-width="1.5" role="img" aria-label="List"></div></div>
 <!-- /wp:designsetgo/icon -->
 
 <!-- wp:heading {"level":3,"fontSize":"large"} -->
@@ -154,9 +150,9 @@ return array(
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"globe","size":"32px","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
-<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20)"><span class="dsgo-icon__wrapper dsgo-lazy-icon" data-icon-name="globe" data-icon-size="32" style="width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center"></span></div>
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained","justifyContent":"left"}} -->
+<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon {"icon":"globe","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} -->
+<div class="wp-block-designsetgo-icon dsgo-icon" style="margin-bottom:var(--wp--preset--spacing--20);display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;border-radius:inherit" data-icon-name="globe" data-icon-style="filled" data-icon-stroke-width="1.5" role="img" aria-label="Globe"></div></div>
 <!-- /wp:designsetgo/icon -->
 
 <!-- wp:heading {"level":3,"fontSize":"large"} -->
@@ -182,20 +178,20 @@ return array(
 <!-- /wp:designsetgo/section -->
 
 <!-- wp:designsetgo/counter-group {"columns":4,"animationDuration":2000,"animationDelay":200,"animationEasing":"easeOutExpo","className":"dsgo-counter-group-cols-4 dsgo-counter-group-cols-tablet-2 dsgo-counter-group-cols-mobile-1","textColor":"base"} -->
-<div class="wp-block-designsetgo-counter-group dsgo-counter-group dsgo-counter-group-cols-4 dsgo-counter-group-cols-tablet-2 dsgo-counter-group-cols-mobile-1 has-base-color has-text-color" style="align-self:stretch;--dsgo-counter-columns-desktop:4;--dsgo-counter-columns-tablet:2;--dsgo-counter-columns-mobile:1;--dsgo-counter-gap:32px" data-animation-duration="2000" data-animation-delay="200" data-animation-easing="easeOutExpo" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter-group__inner dsgo-counter-group__inner--align-center"><!-- wp:designsetgo/counter {"uniqueId":"counter-saas-1","endValue":50000,"suffix":"+","label":"Active Users","className":"dsgo-counter--align-center"} -->
-<div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-saas-1" style="text-align:center" data-start-value="0" data-end-value="50000" data-decimals="0" data-prefix="" data-suffix="+" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Active Users</div></div>
+<div class="wp-block-designsetgo-counter-group dsgo-counter-group dsgo-counter-group-cols-4 dsgo-counter-group-cols-tablet-2 dsgo-counter-group-cols-mobile-1 has-base-color has-text-color" style="align-self:stretch;--dsgo-counter-columns-desktop:4;--dsgo-counter-columns-tablet:2;--dsgo-counter-columns-mobile:1;--dsgo-counter-gap:32px" data-animation-duration="2000" data-animation-delay="200" data-animation-easing="easeOutExpo" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter-group__inner dsgo-counter-group__inner--align-center"><!-- wp:designsetgo/counter {"uniqueId":"counter-saas-1","endValue":50000,"suffix":"+","label":"Active Users","className":"dsgo-counter\u002d\u002dalign-center"} -->
+<div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-saas-1" style="text-align:center" data-start-value="0" data-end-value="50000" data-decimals="0" data-prefix="" data-suffix="+" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content icon-top"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Active Users</div></div>
 <!-- /wp:designsetgo/counter -->
 
-<!-- wp:designsetgo/counter {"uniqueId":"counter-saas-2","endValue":99,"suffix":"%","label":"Uptime SLA","className":"dsgo-counter--align-center"} -->
-<div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-saas-2" style="text-align:center" data-start-value="0" data-end-value="99" data-decimals="0" data-prefix="" data-suffix="%" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Uptime SLA</div></div>
+<!-- wp:designsetgo/counter {"uniqueId":"counter-saas-2","endValue":99,"suffix":"%","label":"Uptime SLA","className":"dsgo-counter\u002d\u002dalign-center"} -->
+<div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-saas-2" style="text-align:center" data-start-value="0" data-end-value="99" data-decimals="0" data-prefix="" data-suffix="%" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content icon-top"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Uptime SLA</div></div>
 <!-- /wp:designsetgo/counter -->
 
-<!-- wp:designsetgo/counter {"uniqueId":"counter-saas-3","endValue":150,"suffix":"+","label":"Integrations","className":"dsgo-counter--align-center"} -->
-<div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-saas-3" style="text-align:center" data-start-value="0" data-end-value="150" data-decimals="0" data-prefix="" data-suffix="+" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Integrations</div></div>
+<!-- wp:designsetgo/counter {"uniqueId":"counter-saas-3","endValue":150,"suffix":"+","label":"Integrations","className":"dsgo-counter\u002d\u002dalign-center"} -->
+<div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-saas-3" style="text-align:center" data-start-value="0" data-end-value="150" data-decimals="0" data-prefix="" data-suffix="+" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content icon-top"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Integrations</div></div>
 <!-- /wp:designsetgo/counter -->
 
-<!-- wp:designsetgo/counter {"uniqueId":"counter-saas-4","endValue":24,"suffix":"/7","label":"Support","className":"dsgo-counter--align-center"} -->
-<div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-saas-4" style="text-align:center" data-start-value="0" data-end-value="24" data-decimals="0" data-prefix="" data-suffix="/7" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Support</div></div>
+<!-- wp:designsetgo/counter {"uniqueId":"counter-saas-4","endValue":24,"suffix":"/7","label":"Support","className":"dsgo-counter\u002d\u002dalign-center"} -->
+<div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-saas-4" style="text-align:center" data-start-value="0" data-end-value="24" data-decimals="0" data-prefix="" data-suffix="/7" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content icon-top"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Support</div></div>
 <!-- /wp:designsetgo/counter --></div></div>
 <!-- /wp:designsetgo/counter-group --></div></div>
 <!-- /wp:designsetgo/section -->
@@ -221,21 +217,21 @@ return array(
 <p style="margin-top:var(--wp--preset--spacing--20)">"This platform completely transformed how our team collaborates. We have seen a 40% increase in productivity since switching."</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--30)"><!-- wp:image {"width":"48px","height":"48px","scale":"cover","sizeSlug":"thumbnail","className":"is-style-rounded"} -->
+<!-- wp:designsetgo/row {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30"},"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-designsetgo-row alignfull dsgo-flex dsgo-no-width-constraint" style="margin-top:var(--wp--preset--spacing--30);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-flex__inner" style="display:flex;justify-content:left;flex-wrap:nowrap"><!-- wp:image {"width":"48px","height":"48px","scale":"cover","sizeSlug":"thumbnail","className":"is-style-rounded"} -->
 <figure class="wp-block-image size-thumbnail is-resized is-style-rounded"><img src="https://i.pravatar.cc/150?img=32" alt="Sarah Chen" style="object-fit:cover;width:48px;height:48px"/></figure>
 <!-- /wp:image -->
 
-<!-- wp:group {"layout":{"type":"flex","orientation":"vertical","justifyContent":"left"}} -->
-<div class="wp-block-group"><!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"600"}},"fontSize":"small"} -->
+<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"600"}},"fontSize":"small"} -->
 <p class="has-small-font-size" style="font-style:normal;font-weight:600">Sarah Chen</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"fontSize":"small"} -->
 <p class="has-small-font-size">VP of Operations, TechCorp</p>
-<!-- /wp:paragraph --></div>
-<!-- /wp:group --></div>
-<!-- /wp:group --></div>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/row --></div>
 <!-- /wp:group -->
 
 <!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base-2","layout":{"type":"constrained"}} -->
@@ -247,21 +243,21 @@ return array(
 <p style="margin-top:var(--wp--preset--spacing--20)">"The automation features alone have saved us countless hours every week. Best investment we have made this year."</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--30)"><!-- wp:image {"width":"48px","height":"48px","scale":"cover","sizeSlug":"thumbnail","className":"is-style-rounded"} -->
+<!-- wp:designsetgo/row {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30"},"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-designsetgo-row alignfull dsgo-flex dsgo-no-width-constraint" style="margin-top:var(--wp--preset--spacing--30);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-flex__inner" style="display:flex;justify-content:left;flex-wrap:nowrap"><!-- wp:image {"width":"48px","height":"48px","scale":"cover","sizeSlug":"thumbnail","className":"is-style-rounded"} -->
 <figure class="wp-block-image size-thumbnail is-resized is-style-rounded"><img src="https://i.pravatar.cc/150?img=60" alt="Marcus Johnson" style="object-fit:cover;width:48px;height:48px"/></figure>
 <!-- /wp:image -->
 
-<!-- wp:group {"layout":{"type":"flex","orientation":"vertical","justifyContent":"left"}} -->
-<div class="wp-block-group"><!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"600"}},"fontSize":"small"} -->
+<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"600"}},"fontSize":"small"} -->
 <p class="has-small-font-size" style="font-style:normal;font-weight:600">Marcus Johnson</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"fontSize":"small"} -->
 <p class="has-small-font-size">CEO, StartupFlow</p>
-<!-- /wp:paragraph --></div>
-<!-- /wp:group --></div>
-<!-- /wp:group --></div>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/row --></div>
 <!-- /wp:group -->
 
 <!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base-2","layout":{"type":"constrained"}} -->
@@ -273,21 +269,21 @@ return array(
 <p style="margin-top:var(--wp--preset--spacing--20)">"Outstanding customer support and a product that just works. Our team adopted it instantly with zero learning curve."</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--30)"><!-- wp:image {"width":"48px","height":"48px","scale":"cover","sizeSlug":"thumbnail","className":"is-style-rounded"} -->
+<!-- wp:designsetgo/row {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30"},"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-designsetgo-row alignfull dsgo-flex dsgo-no-width-constraint" style="margin-top:var(--wp--preset--spacing--30);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-flex__inner" style="display:flex;justify-content:left;flex-wrap:nowrap"><!-- wp:image {"width":"48px","height":"48px","scale":"cover","sizeSlug":"thumbnail","className":"is-style-rounded"} -->
 <figure class="wp-block-image size-thumbnail is-resized is-style-rounded"><img src="https://i.pravatar.cc/150?img=47" alt="Emily Rodriguez" style="object-fit:cover;width:48px;height:48px"/></figure>
 <!-- /wp:image -->
 
-<!-- wp:group {"layout":{"type":"flex","orientation":"vertical","justifyContent":"left"}} -->
-<div class="wp-block-group"><!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"600"}},"fontSize":"small"} -->
+<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"600"}},"fontSize":"small"} -->
 <p class="has-small-font-size" style="font-style:normal;font-weight:600">Emily Rodriguez</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"fontSize":"small"} -->
 <p class="has-small-font-size">Director, Digital Agency</p>
-<!-- /wp:paragraph --></div>
-<!-- /wp:group --></div>
-<!-- /wp:group --></div>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/row --></div>
 <!-- /wp:group --></div></div>
 <!-- /wp:designsetgo/grid --></div></div>
 <!-- /wp:designsetgo/section -->
@@ -304,8 +300,8 @@ return array(
 <!-- /wp:designsetgo/section -->
 
 <!-- wp:designsetgo/grid {"tabletColumns":1,"style":{"spacing":{"blockGap":"var:preset|spacing|30","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-3 dsgo-grid-cols-tablet-1 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(3, 1fr);align-items:stretch;row-gap:var(--wp--preset--spacing--30);column-gap:var(--wp--preset--spacing--30)"><!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--40)"><!-- wp:heading {"level":3,"fontSize":"large"} -->
+<div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-3 dsgo-grid-cols-tablet-1 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(3, 1fr);align-items:stretch;row-gap:var(--wp--preset--spacing--30);column-gap:var(--wp--preset--spacing--30)"><!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:heading {"level":3,"fontSize":"large"} -->
 <h3 class="wp-block-heading has-large-font-size">Starter</h3>
 <!-- /wp:heading -->
 
@@ -322,7 +318,7 @@ return array(
 <!-- /wp:separator -->
 
 <!-- wp:list {"style":{"spacing":{"padding":{"left":"var:preset|spacing|20"}}}} -->
-<ul style="padding-left:var(--wp--preset--spacing--20)"><!-- wp:list-item -->
+<ul style="padding-left:var(--wp--preset--spacing--20)" class="wp-block-list"><!-- wp:list-item -->
 <li>Up to 5 team members</li>
 <!-- /wp:list-item -->
 
@@ -339,14 +335,14 @@ return array(
 <!-- /wp:list-item --></ul>
 <!-- /wp:list -->
 
-<!-- wp:designsetgo/icon-button {"text":"Get Started","url":"#","icon":"","iconPosition":"none","backgroundColor":"transparent","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"0","right":"0"},"margin":{"top":"var:preset|spacing|30"}},"border":{"radius":"8px","width":"2px"}}} -->
-<a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="border-width:2px;border-radius:8px;margin-top:var(--wp--preset--spacing--30);display:inline-flex;align-items:center;justify-content:center;gap:0;width:100%;flex-direction:row;background-color:var(--wp--preset--color--transparent);color:var(--wp--preset--color--contrast);padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:var(--wp--preset--spacing--20);padding-left:0" href="#" target="_self"><span class="dsgo-icon-button__text">Get Started</span></a>
-<!-- /wp:designsetgo/icon-button --></div>
-<!-- /wp:group -->
+<!-- wp:designsetgo/icon-button {"align":"left","text":"Purchase","icon":"arrow-right","iconPosition":"end"} -->
+<button class="wp-block-designsetgo-icon-button alignleft dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row-reverse" type="button"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="arrow-right" data-icon-size="20"></span><span class="dsgo-icon-button__text">Purchase</span></button>
+<!-- /wp:designsetgo/icon-button --></div></div>
+<!-- /wp:designsetgo/section -->
 
-<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"contrast","textColor":"base","layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-base-color has-contrast-background-color has-text-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/pill {"style":{"spacing":{"padding":{"top":"var:preset|spacing|10","bottom":"var:preset|spacing|10","left":"var:preset|spacing|20","right":"var:preset|spacing|20"}},"border":{"radius":"50px"}},"backgroundColor":"base","textColor":"contrast","fontSize":"small"} -->
-<div class="wp-block-designsetgo-pill dsgo-pill has-contrast-color has-base-background-color has-text-color has-background has-small-font-size" style="border-radius:50px;padding-top:var(--wp--preset--spacing--10);padding-right:var(--wp--preset--spacing--20);padding-bottom:var(--wp--preset--spacing--10);padding-left:var(--wp--preset--spacing--20)">Most Popular</div>
+<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}},"elements":{"link":{"color":{"text":"var:preset|color|base"}}},"border":{"radius":{"topLeft":"16px","topRight":"16px","bottomLeft":"16px","bottomRight":"16px"}}},"backgroundColor":"contrast","textColor":"base"} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-color has-contrast-background-color has-text-color has-background has-link-color" style="border-top-left-radius:16px;border-top-right-radius:16px;border-bottom-left-radius:16px;border-bottom-right-radius:16px;padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/pill {"align":"left","content":"Most Popular","backgroundColor":"base","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|10","bottom":"var:preset|spacing|10","left":"var:preset|spacing|20","right":"var:preset|spacing|20"}},"border":{"radius":"50px"}}} -->
+<div class="wp-block-designsetgo-pill alignleft dsgo-pill has-contrast-color has-base-background-color has-text-color has-background has-small-font-size" style="padding-top:var(--wp--preset--spacing--10);padding-right:var(--wp--preset--spacing--20);padding-bottom:var(--wp--preset--spacing--10);padding-left:var(--wp--preset--spacing--20)"><span class="dsgo-pill__content" style="border-radius:50px">Most Popular</span></div>
 <!-- /wp:designsetgo/pill -->
 
 <!-- wp:heading {"level":3,"style":{"spacing":{"margin":{"top":"var:preset|spacing|20"}}},"fontSize":"large"} -->
@@ -366,7 +362,7 @@ return array(
 <!-- /wp:separator -->
 
 <!-- wp:list {"style":{"spacing":{"padding":{"left":"var:preset|spacing|20"}}}} -->
-<ul style="padding-left:var(--wp--preset--spacing--20)"><!-- wp:list-item -->
+<ul style="padding-left:var(--wp--preset--spacing--20)" class="wp-block-list"><!-- wp:list-item -->
 <li>Up to 20 team members</li>
 <!-- /wp:list-item -->
 
@@ -387,13 +383,13 @@ return array(
 <!-- /wp:list-item --></ul>
 <!-- /wp:list -->
 
-<!-- wp:designsetgo/icon-button {"text":"Get Started","url":"#","icon":"","iconPosition":"none","backgroundColor":"base","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"0","right":"0"},"margin":{"top":"var:preset|spacing|30"}},"border":{"radius":"8px"}}} -->
-<a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="border-radius:8px;margin-top:var(--wp--preset--spacing--30);display:inline-flex;align-items:center;justify-content:center;gap:0;width:100%;flex-direction:row;background-color:var(--wp--preset--color--base);color:var(--wp--preset--color--contrast);padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:var(--wp--preset--spacing--20);padding-left:0" href="#" target="_self"><span class="dsgo-icon-button__text">Get Started</span></a>
-<!-- /wp:designsetgo/icon-button --></div>
-<!-- /wp:group -->
+<!-- wp:designsetgo/icon-button {"align":"left","text":"Purchase","icon":"arrow-right","iconPosition":"end","backgroundColor":"base","textColor":"contrast","style":{"elements":{"link":{"color":{"text":"var:preset|color|contrast"}}}}} -->
+<button class="wp-block-designsetgo-icon-button alignleft dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row-reverse;background-color:var(--wp--preset--color--base);color:var(--wp--preset--color--contrast)" type="button"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="arrow-right" data-icon-size="20"></span><span class="dsgo-icon-button__text">Purchase</span></button>
+<!-- /wp:designsetgo/icon-button --></div></div>
+<!-- /wp:designsetgo/section -->
 
-<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}},"border":{"radius":"16px"}},"backgroundColor":"base","layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--40)"><!-- wp:heading {"level":3,"fontSize":"large"} -->
+<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:heading {"level":3,"fontSize":"large"} -->
 <h3 class="wp-block-heading has-large-font-size">Enterprise</h3>
 <!-- /wp:heading -->
 
@@ -410,7 +406,7 @@ return array(
 <!-- /wp:separator -->
 
 <!-- wp:list {"style":{"spacing":{"padding":{"left":"var:preset|spacing|20"}}}} -->
-<ul style="padding-left:var(--wp--preset--spacing--20)"><!-- wp:list-item -->
+<ul style="padding-left:var(--wp--preset--spacing--20)" class="wp-block-list"><!-- wp:list-item -->
 <li>Unlimited team members</li>
 <!-- /wp:list-item -->
 
@@ -431,10 +427,10 @@ return array(
 <!-- /wp:list-item --></ul>
 <!-- /wp:list -->
 
-<!-- wp:designsetgo/icon-button {"text":"Contact Sales","url":"#","icon":"","iconPosition":"none","backgroundColor":"transparent","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"0","right":"0"},"margin":{"top":"var:preset|spacing|30"}},"border":{"radius":"8px","width":"2px"}}} -->
-<a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="border-width:2px;border-radius:8px;margin-top:var(--wp--preset--spacing--30);display:inline-flex;align-items:center;justify-content:center;gap:0;width:100%;flex-direction:row;background-color:var(--wp--preset--color--transparent);color:var(--wp--preset--color--contrast);padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:var(--wp--preset--spacing--20);padding-left:0" href="#" target="_self"><span class="dsgo-icon-button__text">Contact Sales</span></a>
-<!-- /wp:designsetgo/icon-button --></div>
-<!-- /wp:group --></div></div>
+<!-- wp:designsetgo/icon-button {"align":"left","text":"Purchase","icon":"arrow-right","iconPosition":"end"} -->
+<button class="wp-block-designsetgo-icon-button alignleft dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row-reverse" type="button"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="arrow-right" data-icon-size="20"></span><span class="dsgo-icon-button__text">Purchase</span></button>
+<!-- /wp:designsetgo/icon-button --></div></div>
+<!-- /wp:designsetgo/section --></div></div>
 <!-- /wp:designsetgo/grid --></div></div>
 <!-- /wp:designsetgo/section -->
 
@@ -449,36 +445,36 @@ return array(
 <!-- /wp:paragraph --></div></div>
 <!-- /wp:designsetgo/section -->
 
-<!-- wp:designsetgo/accordion {"allowMultiple":false,"iconStyle":"chevron"} -->
-<div class="wp-block-designsetgo-accordion dsgo-accordion dsgo-accordion--icon-chevron" data-allow-multiple="false" data-icon-style="chevron"><!-- wp:designsetgo/accordion-item {"title":"How does the free trial work?","isOpen":true} -->
-<div class="wp-block-designsetgo-accordion-item dsgo-accordion-item dsgo-accordion-item--open"><button class="dsgo-accordion-item__trigger" aria-expanded="true"><span class="dsgo-accordion-item__title">How does the free trial work?</span><span class="dsgo-accordion-item__icon" aria-hidden="true"></span></button><div class="dsgo-accordion-item__content" role="region"><div class="dsgo-accordion-item__inner"><!-- wp:paragraph -->
+<!-- wp:designsetgo/accordion {"className":"dsgo-accordion\u002d\u002dicon-chevron"} -->
+<div class="wp-block-designsetgo-accordion dsgo-accordion dsgo-accordion--icon-right dsgo-accordion--border-between dsgo-accordion--icon-chevron" style="--dsgo-accordion-open-bg:;--dsgo-accordion-open-text:;--dsgo-accordion-hover-bg:;--dsgo-accordion-hover-text:;--dsgo-accordion-gap:0.5rem" data-allow-multiple="false" data-icon-style="chevron"><div class="dsgo-accordion__items"><!-- wp:designsetgo/accordion-item {"title":"How does the free trial work?","uniqueId":"accordion-item-amhjsq5iu"} -->
+<div class="wp-block-designsetgo-accordion-item dsgo-accordion-item dsgo-accordion-item--closed" data-initially-open="false"><div class="dsgo-accordion-item__header"><button type="button" class="dsgo-accordion-item__trigger dsgo-accordion-item__trigger--icon-right" aria-expanded="false" aria-controls="accordion-item-amhjsq5iu-panel" id="accordion-item-amhjsq5iu-header"><span class="dsgo-accordion-item__title">How does the free trial work?</span><span class="dsgo-accordion-item__icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z"></path></svg></span></button></div><div class="dsgo-accordion-item__panel" role="region" aria-labelledby="accordion-item-amhjsq5iu-header" id="accordion-item-amhjsq5iu-panel" hidden><div class="dsgo-accordion-item__content"><!-- wp:paragraph -->
 <p>Our 14-day free trial gives you full access to all features with no credit card required. Simply sign up and start exploring. At the end of your trial, you can choose a plan that fits your needs or continue with our free tier.</p>
 <!-- /wp:paragraph --></div></div></div>
 <!-- /wp:designsetgo/accordion-item -->
 
-<!-- wp:designsetgo/accordion-item {"title":"Can I change my plan later?"} -->
-<div class="wp-block-designsetgo-accordion-item dsgo-accordion-item"><button class="dsgo-accordion-item__trigger" aria-expanded="false"><span class="dsgo-accordion-item__title">Can I change my plan later?</span><span class="dsgo-accordion-item__icon" aria-hidden="true"></span></button><div class="dsgo-accordion-item__content" role="region"><div class="dsgo-accordion-item__inner"><!-- wp:paragraph -->
+<!-- wp:designsetgo/accordion-item {"title":"Can I change my plan later?","uniqueId":"accordion-item-zl9mpknnk"} -->
+<div class="wp-block-designsetgo-accordion-item dsgo-accordion-item dsgo-accordion-item--closed" data-initially-open="false"><div class="dsgo-accordion-item__header"><button type="button" class="dsgo-accordion-item__trigger dsgo-accordion-item__trigger--icon-right" aria-expanded="false" aria-controls="accordion-item-zl9mpknnk-panel" id="accordion-item-zl9mpknnk-header"><span class="dsgo-accordion-item__title">Can I change my plan later?</span><span class="dsgo-accordion-item__icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z"></path></svg></span></button></div><div class="dsgo-accordion-item__panel" role="region" aria-labelledby="accordion-item-zl9mpknnk-header" id="accordion-item-zl9mpknnk-panel" hidden><div class="dsgo-accordion-item__content"><!-- wp:paragraph -->
 <p>Yes, you can upgrade or downgrade your plan at any time. When you upgrade, you will immediately get access to additional features. When you downgrade, the change takes effect at the start of your next billing cycle.</p>
 <!-- /wp:paragraph --></div></div></div>
 <!-- /wp:designsetgo/accordion-item -->
 
-<!-- wp:designsetgo/accordion-item {"title":"What payment methods do you accept?"} -->
-<div class="wp-block-designsetgo-accordion-item dsgo-accordion-item"><button class="dsgo-accordion-item__trigger" aria-expanded="false"><span class="dsgo-accordion-item__title">What payment methods do you accept?</span><span class="dsgo-accordion-item__icon" aria-hidden="true"></span></button><div class="dsgo-accordion-item__content" role="region"><div class="dsgo-accordion-item__inner"><!-- wp:paragraph -->
+<!-- wp:designsetgo/accordion-item {"title":"What payment methods do you accept?","isOpen":true,"uniqueId":"accordion-item-sgb8h1pyf"} -->
+<div class="wp-block-designsetgo-accordion-item dsgo-accordion-item dsgo-accordion-item--open" data-initially-open="true"><div class="dsgo-accordion-item__header"><button type="button" class="dsgo-accordion-item__trigger dsgo-accordion-item__trigger--icon-right" aria-expanded="true" aria-controls="accordion-item-sgb8h1pyf-panel" id="accordion-item-sgb8h1pyf-header"><span class="dsgo-accordion-item__title">What payment methods do you accept?</span><span class="dsgo-accordion-item__icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z"></path></svg></span></button></div><div class="dsgo-accordion-item__panel" role="region" aria-labelledby="accordion-item-sgb8h1pyf-header" id="accordion-item-sgb8h1pyf-panel"><div class="dsgo-accordion-item__content"><!-- wp:paragraph -->
 <p>We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers for annual enterprise plans. All payments are processed securely through Stripe.</p>
 <!-- /wp:paragraph --></div></div></div>
 <!-- /wp:designsetgo/accordion-item -->
 
-<!-- wp:designsetgo/accordion-item {"title":"Is my data secure?"} -->
-<div class="wp-block-designsetgo-accordion-item dsgo-accordion-item"><button class="dsgo-accordion-item__trigger" aria-expanded="false"><span class="dsgo-accordion-item__title">Is my data secure?</span><span class="dsgo-accordion-item__icon" aria-hidden="true"></span></button><div class="dsgo-accordion-item__content" role="region"><div class="dsgo-accordion-item__inner"><!-- wp:paragraph -->
+<!-- wp:designsetgo/accordion-item {"title":"Is my data secure?","uniqueId":"accordion-item-pxyppsjq7"} -->
+<div class="wp-block-designsetgo-accordion-item dsgo-accordion-item dsgo-accordion-item--closed" data-initially-open="false"><div class="dsgo-accordion-item__header"><button type="button" class="dsgo-accordion-item__trigger dsgo-accordion-item__trigger--icon-right" aria-expanded="false" aria-controls="accordion-item-pxyppsjq7-panel" id="accordion-item-pxyppsjq7-header"><span class="dsgo-accordion-item__title">Is my data secure?</span><span class="dsgo-accordion-item__icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z"></path></svg></span></button></div><div class="dsgo-accordion-item__panel" role="region" aria-labelledby="accordion-item-pxyppsjq7-header" id="accordion-item-pxyppsjq7-panel" hidden><div class="dsgo-accordion-item__content"><!-- wp:paragraph -->
 <p>Absolutely. We use bank-level 256-bit SSL encryption for all data transfers and store your data in SOC 2 Type II certified data centers. We are also GDPR compliant and never sell your data to third parties.</p>
 <!-- /wp:paragraph --></div></div></div>
 <!-- /wp:designsetgo/accordion-item -->
 
-<!-- wp:designsetgo/accordion-item {"title":"Do you offer customer support?"} -->
-<div class="wp-block-designsetgo-accordion-item dsgo-accordion-item"><button class="dsgo-accordion-item__trigger" aria-expanded="false"><span class="dsgo-accordion-item__title">Do you offer customer support?</span><span class="dsgo-accordion-item__icon" aria-hidden="true"></span></button><div class="dsgo-accordion-item__content" role="region"><div class="dsgo-accordion-item__inner"><!-- wp:paragraph -->
+<!-- wp:designsetgo/accordion-item {"title":"Do you offer customer support?","uniqueId":"accordion-item-oq36caiu5"} -->
+<div class="wp-block-designsetgo-accordion-item dsgo-accordion-item dsgo-accordion-item--closed" data-initially-open="false"><div class="dsgo-accordion-item__header"><button type="button" class="dsgo-accordion-item__trigger dsgo-accordion-item__trigger--icon-right" aria-expanded="false" aria-controls="accordion-item-oq36caiu5-panel" id="accordion-item-oq36caiu5-header"><span class="dsgo-accordion-item__title">Do you offer customer support?</span><span class="dsgo-accordion-item__icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z"></path></svg></span></button></div><div class="dsgo-accordion-item__panel" role="region" aria-labelledby="accordion-item-oq36caiu5-header" id="accordion-item-oq36caiu5-panel" hidden><div class="dsgo-accordion-item__content"><!-- wp:paragraph -->
 <p>Yes! We offer email support for all plans, with priority support for Professional plans and dedicated 24/7 support for Enterprise customers. Our average response time is under 2 hours during business hours.</p>
 <!-- /wp:paragraph --></div></div></div>
-<!-- /wp:designsetgo/accordion-item --></div>
+<!-- /wp:designsetgo/accordion-item --></div></div>
 <!-- /wp:designsetgo/accordion --></div></div>
 <!-- /wp:designsetgo/section -->
 
@@ -491,15 +487,15 @@ return array(
 <p class="has-text-align-center has-base-color has-text-color has-medium-font-size" style="margin-top:var(--wp--preset--spacing--20)">Join thousands of teams already using our platform to work smarter.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"},"blockGap":"var:preset|spacing|20"}},"layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} -->
-<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)"><!-- wp:designsetgo/icon-button {"text":"Start Free Trial","url":"#","icon":"arrow-right","iconPosition":"end","backgroundColor":"base","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}},"border":{"radius":"8px"}}} -->
+<!-- wp:designsetgo/row {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"},"blockGap":"var:preset|spacing|20","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} -->
+<div class="wp-block-designsetgo-row alignfull dsgo-flex dsgo-no-width-constraint" style="margin-top:var(--wp--preset--spacing--40);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-flex__inner" style="display:flex;justify-content:center;flex-wrap:wrap;gap:var(--wp--preset--spacing--20)"><!-- wp:designsetgo/icon-button {"text":"Start Free Trial","url":"#","icon":"arrow-right","iconPosition":"end","backgroundColor":"base","textColor":"contrast","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}},"border":{"radius":"8px"}}} -->
 <a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="border-radius:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row-reverse;background-color:var(--wp--preset--color--base);color:var(--wp--preset--color--contrast);padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--50)" href="#" target="_self"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="arrow-right" data-icon-size="20"></span><span class="dsgo-icon-button__text">Start Free Trial</span></a>
 <!-- /wp:designsetgo/icon-button -->
 
 <!-- wp:designsetgo/icon-button {"text":"Talk to Sales","url":"#","icon":"","iconPosition":"none","backgroundColor":"transparent","textColor":"base","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}},"border":{"radius":"8px","width":"2px","color":"#ffffff"}}} -->
 <a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button has-border-color" style="border-color:#ffffff;border-width:2px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;gap:0;width:auto;flex-direction:row;background-color:var(--wp--preset--color--transparent);color:var(--wp--preset--color--base);padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--50)" href="#" target="_self"><span class="dsgo-icon-button__text">Talk to Sales</span></a>
-<!-- /wp:designsetgo/icon-button --></div>
-<!-- /wp:group -->
+<!-- /wp:designsetgo/icon-button --></div></div>
+<!-- /wp:designsetgo/row -->
 
 <!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"textColor":"base","fontSize":"small"} -->
 <p class="has-text-align-center has-base-color has-text-color has-small-font-size" style="margin-top:var(--wp--preset--spacing--30)">No credit card required. 14-day free trial.</p>
