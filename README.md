@@ -64,7 +64,7 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/designsetgo.git
+git clone https://github.com/jnealey88/designsetgo.git
 cd designsetgo
 
 # 2. Install dependencies
@@ -351,21 +351,21 @@ Complete documentation for users and developers.
   - Getting help
 
 **Development Guides:**
-- **[Best Practices Summary](docs/BEST-PRACTICES-SUMMARY.md)** - Quick reference patterns
-- **[Block Development (Comprehensive)](docs/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md)** - Deep dive
-- **[WordPress Block Editor Best Practices](docs/WORDPRESS-BLOCK-EDITOR-BEST-PRACTICES.md)**
-- **[FSE Compatibility Guide](docs/FSE-COMPATIBILITY-GUIDE.md)** - Full Site Editing integration
-- **[Testing Guide](docs/TESTING.md)** - E2E and unit testing
+- **[Best Practices Summary](docs/guides/BEST-PRACTICES-SUMMARY.md)** - Quick reference patterns
+- **[Block Development (Comprehensive)](docs/guides/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md)** - Deep dive
+- **[WordPress Block Editor Best Practices](docs/guides/WORDPRESS-BLOCK-EDITOR-BEST-PRACTICES.md)**
+- **[FSE Compatibility Guide](.claude/docs/FSE-COMPATIBILITY-GUIDE.md)** - Full Site Editing integration
+- **[Testing Guide](TESTING.md)** - E2E and unit testing
 
 **Specialized Topics:**
-- **[Block Controls Organization](docs/BLOCK-CONTROLS-ORGANIZATION.md)**
-- **[Color Controls Pattern](docs/COLOR-CONTROLS-PATTERN.md)**
-- **[Width & Layout Patterns](docs/WIDTH-LAYOUT-PATTERNS.md)**
-- **[Extension vs Custom Blocks](docs/EXTENSION-VS-CUSTOM-BLOCKS.md)**
+- **[Block Controls Organization](docs/guides/BLOCK-CONTROLS-ORGANIZATION.md)**
+- **[Color Controls Pattern](docs/patterns/COLOR-CONTROLS-PATTERN.md)**
+- **[Width & Layout Patterns](docs/patterns/WIDTH-LAYOUT-PATTERNS.md)**
+- **[Extension vs Custom Blocks](docs/planning/EXTENSION-VS-CUSTOM-BLOCKS.md)**
 - **[Abilities API](docs/api/ABILITIES-API.md)** - AI integration
 
 **AI-Assisted Development:**
-- **[AI-Assisted Development Guide](docs/AI-ASSISTED-DEVELOPMENT.md)** - Complete guide to building with AI
+- **[AI-Assisted Development Guide](docs/guides/AI-ASSISTED-DEVELOPMENT.md)** - Complete guide to building with AI
 - **[.claude/CLAUDE.md](.claude/CLAUDE.md)** - Development patterns for AI agents
 
 ### 🗺️ Documentation Map
@@ -677,12 +677,11 @@ curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/g
 
 ### Getting Help
 - **Documentation**: See [docs/](./docs/) folder for comprehensive guides
-- **GitHub Issues**: [Report bugs or request features](https://github.com/yourusername/designsetgo/issues)
-- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/yourusername/designsetgo/discussions)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/jnealey88/designsetgo/issues)
+- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions)
 
 ### Useful Resources
-- [How to Use Guide](docs/HOW-TO-USE.md) - Getting started
-- [Troubleshooting](docs/TROUBLESHOOTING.md) - Common issues
+- [Troubleshooting](docs/troubleshooting/TROUBLESHOOTING.md) - Common issues
 - [Claude Code Learnings](.claude/CLAUDE.md) - Development insights
 
 ### WordPress.org
@@ -700,4 +699,4 @@ Built with ❤️ for the WordPress community by developers who believe in:
 
 ---
 
-**License**: GPL-2.0-or-later | **Version**: 1.4.0 | **Requires WordPress**: 6.7+ | **Requires PHP**: 8.0+
+**License**: GPL-2.0-or-later | **Version**: 1.4.1 | **Requires WordPress**: 6.7+ | **Requires PHP**: 8.0+

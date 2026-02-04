@@ -497,5 +497,5 @@ bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
 ---
 
 **Last Updated**: 2025-11-07
-**Plugin Version**: 1.0.0
-**WordPress Compatibility**: 6.4+
+**Plugin Version**: 1.4.1
+**WordPress Compatibility**: 6.7+
