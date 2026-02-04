@@ -132,11 +132,22 @@ body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
  * All blocks inside container inner divs default to full width
  */
 .dsgo-stack__inner,
-.dsgo-flex__inner,
 .dsgo-grid__inner {
 
 	> .wp-block {
 		width: 100%;
+		max-width: none;
+	}
+}
+
+/**
+ * Flex/Row containers: children should NOT have forced width
+ * This allows justify-content (left/center/right/space-between) to work properly
+ * Flex items size naturally by content unless explicitly set
+ */
+.dsgo-flex__inner {
+
+	> .wp-block {
 		max-width: none;
 	}
 
