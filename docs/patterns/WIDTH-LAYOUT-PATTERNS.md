@@ -806,7 +806,7 @@ const innerStyle = {
 ```javascript
 // Let WordPress handle flex via layout classes
 const innerBlocksProps = useInnerBlocksProps.save({
-    className: 'dsgo-row__inner',
+    className: 'dsgo-flex__inner',
     style: innerStyle,  // Only width constraint, not flex properties
 });
 ```
