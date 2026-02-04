@@ -32,6 +32,8 @@ import {
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
+import ShapeDividerControls from './components/ShapeDividerControls';
+import ShapeDivider from './components/ShapeDivider';
 
 /**
  * Section Container Edit Component
@@ -55,6 +57,23 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		hoverButtonBackgroundColor,
 		overlayColor,
 		layout,
+		// Shape divider attributes
+		shapeDividerTop,
+		shapeDividerTopColor,
+		shapeDividerTopBackgroundColor,
+		shapeDividerTopHeight,
+		shapeDividerTopWidth,
+		shapeDividerTopFlipX,
+		shapeDividerTopFlipY,
+		shapeDividerTopFront,
+		shapeDividerBottom,
+		shapeDividerBottomColor,
+		shapeDividerBottomBackgroundColor,
+		shapeDividerBottomHeight,
+		shapeDividerBottomWidth,
+		shapeDividerBottomFlipX,
+		shapeDividerBottomFlipY,
+		shapeDividerBottomFront,
 	} = attributes;
 
 	// Auto-migrate old blocks that use className for alignment
@@ -146,6 +165,8 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 	const blockClassName = [
 		'dsgo-stack',
 		overlayColor && 'dsgo-stack--has-overlay',
+		(shapeDividerTop || shapeDividerBottom) &&
+			'dsgo-stack--has-shape-divider',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -183,6 +204,14 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		innerStyle.maxWidth = contentWidth || themeContentSize || '1140px';
 		innerStyle.marginLeft = 'auto';
 		innerStyle.marginRight = 'auto';
+	}
+
+	// Add padding to clear shape dividers (must match save.js EXACTLY)
+	if (shapeDividerTop) {
+		innerStyle.paddingTop = `${shapeDividerTopHeight || 100}px`;
+	}
+	if (shapeDividerBottom) {
+		innerStyle.paddingBottom = `${shapeDividerBottomHeight || 100}px`;
 	}
 
 	// Merge inner blocks props
@@ -349,10 +378,113 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 					]}
 					{...colorGradientSettings}
 				/>
+				{/* Shape Divider Colors - only show when shapes are enabled */}
+				{(shapeDividerTop || shapeDividerBottom) && (
+					<ColorGradientSettingsDropdown
+						panelId={clientId}
+						title={__('Shape Divider Colors', 'designsetgo')}
+						settings={[
+							// Top shape colors
+							...(shapeDividerTop
+								? [
+										{
+											label: __(
+												'Top Shape Color',
+												'designsetgo'
+											),
+											colorValue: shapeDividerTopColor,
+											onColorChange: (color) =>
+												setAttributes({
+													shapeDividerTopColor:
+														color || '',
+												}),
+											clearable: true,
+										},
+										{
+											label: __(
+												'Top Shape Background',
+												'designsetgo'
+											),
+											colorValue:
+												shapeDividerTopBackgroundColor,
+											onColorChange: (color) =>
+												setAttributes({
+													shapeDividerTopBackgroundColor:
+														color || '',
+												}),
+											clearable: true,
+										},
+									]
+								: []),
+							// Bottom shape colors
+							...(shapeDividerBottom
+								? [
+										{
+											label: __(
+												'Bottom Shape Color',
+												'designsetgo'
+											),
+											colorValue: shapeDividerBottomColor,
+											onColorChange: (color) =>
+												setAttributes({
+													shapeDividerBottomColor:
+														color || '',
+												}),
+											clearable: true,
+										},
+										{
+											label: __(
+												'Bottom Shape Background',
+												'designsetgo'
+											),
+											colorValue:
+												shapeDividerBottomBackgroundColor,
+											onColorChange: (color) =>
+												setAttributes({
+													shapeDividerBottomBackgroundColor:
+														color || '',
+												}),
+											clearable: true,
+										},
+									]
+								: []),
+						]}
+						{...colorGradientSettings}
+					/>
+				)}
+			</InspectorControls>
+
+			<InspectorControls>
+				<ShapeDividerControls
+					attributes={attributes}
+					setAttributes={setAttributes}
+				/>
 			</InspectorControls>
 
 			<TagName {...blockProps}>
+				<ShapeDivider
+					shape={shapeDividerTop}
+					color={shapeDividerTopColor}
+					backgroundColor={shapeDividerTopBackgroundColor}
+					height={shapeDividerTopHeight}
+					width={shapeDividerTopWidth}
+					flipX={shapeDividerTopFlipX}
+					flipY={shapeDividerTopFlipY}
+					front={shapeDividerTopFront}
+					position="top"
+				/>
 				<div {...innerBlocksProps} />
+				<ShapeDivider
+					shape={shapeDividerBottom}
+					color={shapeDividerBottomColor}
+					backgroundColor={shapeDividerBottomBackgroundColor}
+					height={shapeDividerBottomHeight}
+					width={shapeDividerBottomWidth}
+					flipX={shapeDividerBottomFlipX}
+					flipY={shapeDividerBottomFlipY}
+					front={shapeDividerBottomFront}
+					position="bottom"
+				/>
 			</TagName>
 		</>
 	);

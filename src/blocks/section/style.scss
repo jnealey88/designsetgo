@@ -55,7 +55,8 @@
 
 	// Ensure content is above all overlays
 	// NOTE: This is overridden for overlay blocks (z-index: 2 on .dsgo-stack__inner)
-	> *:not(.dsgo-stack__inner) {
+	// IMPORTANT: Exclude shape dividers - they need position: absolute to stay at edges
+	> *:not(.dsgo-stack__inner):not(.dsgo-shape-divider) {
 		position: relative;
 		z-index: 3;
 	}
@@ -418,5 +419,89 @@
 		max-width: none !important;
 		margin-left: 0 !important;
 		margin-right: 0 !important;
+	}
+}
+
+/**
+ * Shape Divider Styles
+ *
+ * Modern decorative shapes for section top/bottom.
+ * Shapes are positioned at the edges of the section, and the inner
+ * container receives automatic padding to clear the shape heights.
+ *
+ * Z-index hierarchy:
+ * - Shape dividers (default): z-index 1
+ * - Inner container: z-index 2
+ * - Content children: z-index 3 (inherited from base styles)
+ * - Shape dividers (front): z-index 10
+ *
+ * @since 1.4.2
+ */
+.dsgo-shape-divider {
+	position: absolute;
+	width: var(--dsgo-shape-width, 100%);
+	height: var(--dsgo-shape-height, 100px);
+	overflow: hidden;
+	pointer-events: none;
+	line-height: 0;
+	z-index: 1;
+
+	// Center the shape when width > 100%
+	left: var(--dsgo-shape-offset, 0);
+
+	// Apply background color if set
+	background-color: var(--dsgo-shape-background, transparent);
+
+	svg {
+		display: block;
+		width: 100%;
+		height: 100%;
+		fill: var(--dsgo-shape-color, currentColor);
+	}
+
+	// Top position - shape at the top edge of section
+	&--top {
+		top: 0;
+	}
+
+	// Bottom position - shape at the bottom edge of section
+	&--bottom {
+		bottom: 0;
+	}
+
+	// Bring to front - display above content
+	&--front {
+		z-index: 10;
+	}
+}
+
+// When section has shape dividers, ensure proper stacking
+.dsgo-stack--has-shape-divider {
+	// Override base overflow:hidden to allow shapes to extend beyond bounds
+	// Use !important to ensure precedence over base .dsgo-stack styles
+	overflow-x: clip !important;
+	overflow-y: visible !important;
+
+	// Content stays above shapes (z-index: 2)
+	// unless shape has "bring to front" option (z-index: 10)
+	> .dsgo-stack__inner {
+		position: relative;
+		z-index: 2;
+	}
+}
+
+// Respect user preference for reduced motion
+@media (prefers-reduced-motion: reduce) {
+
+	.dsgo-shape-divider svg {
+		transition: none;
+	}
+}
+
+// Print styles - hide decorative shapes
+@media print {
+
+	.dsgo-shape-divider {
+		display: none;
 	}
 }

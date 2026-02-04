@@ -142,8 +142,9 @@ When I report a bug, don't start by trying to fix it. Instead, start by writing 
 
 Branch prefixes should start with `claude/`
 
+## Memory
 
-
+As you work on an issue, add notes to memory, .claude/claude-memory.md, create an agent ID or session ID so as to not confuse other agents.
 ---
 
 **Updated**: 2025-01-31 | **Version**: 1.1.0 | **WP**: 6.4+

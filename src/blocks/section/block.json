@@ -128,6 +128,70 @@
 		"overlayColor": {
 			"type": "string",
 			"default": ""
+		},
+		"shapeDividerTop": {
+			"type": "string",
+			"default": ""
+		},
+		"shapeDividerTopColor": {
+			"type": "string",
+			"default": ""
+		},
+		"shapeDividerTopHeight": {
+			"type": "number",
+			"default": 100
+		},
+		"shapeDividerTopWidth": {
+			"type": "number",
+			"default": 100
+		},
+		"shapeDividerTopFlipX": {
+			"type": "boolean",
+			"default": false
+		},
+		"shapeDividerTopFlipY": {
+			"type": "boolean",
+			"default": false
+		},
+		"shapeDividerTopFront": {
+			"type": "boolean",
+			"default": false
+		},
+		"shapeDividerTopBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"shapeDividerBottom": {
+			"type": "string",
+			"default": ""
+		},
+		"shapeDividerBottomColor": {
+			"type": "string",
+			"default": ""
+		},
+		"shapeDividerBottomHeight": {
+			"type": "number",
+			"default": 100
+		},
+		"shapeDividerBottomWidth": {
+			"type": "number",
+			"default": 100
+		},
+		"shapeDividerBottomFlipX": {
+			"type": "boolean",
+			"default": false
+		},
+		"shapeDividerBottomFlipY": {
+			"type": "boolean",
+			"default": false
+		},
+		"shapeDividerBottomFront": {
+			"type": "boolean",
+			"default": false
+		},
+		"shapeDividerBottomBackgroundColor": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"providesContext": {

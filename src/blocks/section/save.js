@@ -8,6 +8,7 @@
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import ShapeDivider from './components/ShapeDivider';
 
 /**
  * Section Container Save Component
@@ -26,6 +27,23 @@ export default function SectionSave({ attributes }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 		overlayColor,
+		// Shape divider attributes
+		shapeDividerTop,
+		shapeDividerTopColor,
+		shapeDividerTopBackgroundColor,
+		shapeDividerTopHeight,
+		shapeDividerTopWidth,
+		shapeDividerTopFlipX,
+		shapeDividerTopFlipY,
+		shapeDividerTopFront,
+		shapeDividerBottom,
+		shapeDividerBottomColor,
+		shapeDividerBottomBackgroundColor,
+		shapeDividerBottomHeight,
+		shapeDividerBottomWidth,
+		shapeDividerBottomFlipX,
+		shapeDividerBottomFlipY,
+		shapeDividerBottomFront,
 	} = attributes;
 
 	// Build className with conditional no-width-constraint and overlay classes
@@ -33,6 +51,8 @@ export default function SectionSave({ attributes }) {
 		'dsgo-stack',
 		!constrainWidth && 'dsgo-no-width-constraint',
 		overlayColor && 'dsgo-stack--has-overlay',
+		(shapeDividerTop || shapeDividerBottom) &&
+			'dsgo-stack--has-shape-divider',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -71,6 +91,14 @@ export default function SectionSave({ attributes }) {
 		innerStyle.marginRight = 'auto';
 	}
 
+	// Add padding to clear shape dividers (must match edit.js EXACTLY)
+	if (shapeDividerTop) {
+		innerStyle.paddingTop = `${shapeDividerTopHeight || 100}px`;
+	}
+	if (shapeDividerBottom) {
+		innerStyle.paddingBottom = `${shapeDividerBottomHeight || 100}px`;
+	}
+
 	// Merge inner blocks props without the outer block props
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: 'dsgo-stack__inner',
@@ -79,7 +107,29 @@ export default function SectionSave({ attributes }) {
 
 	return (
 		<TagName {...blockProps}>
+			<ShapeDivider
+				shape={shapeDividerTop}
+				color={shapeDividerTopColor}
+				backgroundColor={shapeDividerTopBackgroundColor}
+				height={shapeDividerTopHeight}
+				width={shapeDividerTopWidth}
+				flipX={shapeDividerTopFlipX}
+				flipY={shapeDividerTopFlipY}
+				front={shapeDividerTopFront}
+				position="top"
+			/>
 			<div {...innerBlocksProps} />
+			<ShapeDivider
+				shape={shapeDividerBottom}
+				color={shapeDividerBottomColor}
+				backgroundColor={shapeDividerBottomBackgroundColor}
+				height={shapeDividerBottomHeight}
+				width={shapeDividerBottomWidth}
+				flipX={shapeDividerBottomFlipX}
+				flipY={shapeDividerBottomFlipY}
+				front={shapeDividerBottomFront}
+				position="bottom"
+			/>
 		</TagName>
 	);
 }
