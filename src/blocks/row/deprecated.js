@@ -157,6 +157,12 @@ const v3 = {
 			</TagName>
 		);
 	},
+	migrate(oldAttributes) {
+		// Preserve all attributes - the new version automatically applies alignItems
+		return {
+			...oldAttributes,
+		};
+	},
 };
 
 // Version 2: Before width constraint styles were added to inner div

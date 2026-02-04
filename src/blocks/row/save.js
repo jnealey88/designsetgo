@@ -30,7 +30,7 @@ function getAlignItemsValue(value) {
 		'space-between': 'space-between',
 	};
 
-	return alignMap[value] || value;
+	return alignMap[value];
 }
 
 /**
