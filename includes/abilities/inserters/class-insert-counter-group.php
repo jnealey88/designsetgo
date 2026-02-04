@@ -43,8 +43,6 @@ class Insert_Counter_Group extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Counter Group', 'designsetgo' ),
 			'description'         => __( 'Inserts a Counter Group container for displaying animated statistics. Add Counter blocks as inner blocks to display multiple stats.', 'designsetgo' ),
-			'thinking_message'    => __( 'Inserting counter group...', 'designsetgo' ),
-			'success_message'     => __( 'Counter group inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

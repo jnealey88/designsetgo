@@ -57,22 +57,4 @@ class Configure_Accordion extends Abstract_Configurator_Ability {
 	protected function get_description(): string {
 		return __( 'Configure a DesignSetGo accordion block including icon style, position, behavior, and styling options.', 'designsetgo' );
 	}
-
-	/**
-	 * Get the thinking message.
-	 *
-	 * @return string
-	 */
-	protected function get_thinking_message(): string {
-		return __( 'Configuring accordion...', 'designsetgo' );
-	}
-
-	/**
-	 * Get the success message.
-	 *
-	 * @return string
-	 */
-	protected function get_success_message(): string {
-		return __( 'Accordion configured successfully.', 'designsetgo' );
-	}
 }

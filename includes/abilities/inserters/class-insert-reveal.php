@@ -43,8 +43,6 @@ class Insert_Reveal extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Reveal', 'designsetgo' ),
 			'description'         => __( 'Inserts a Reveal container that reveals hidden content on hover. Perfect for interactive content reveals and hover effects.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating reveal container...', 'designsetgo' ),
-			'success_message'     => __( 'Reveal container inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

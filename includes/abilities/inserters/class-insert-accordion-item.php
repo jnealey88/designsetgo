@@ -42,8 +42,6 @@ class Insert_Accordion_Item extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Accordion Item', 'designsetgo' ),
 			'description'         => __( 'Inserts an accordion item with title and content into an existing accordion container.', 'designsetgo' ),
-			'thinking_message'    => __( 'Adding accordion item...', 'designsetgo' ),
-			'success_message'     => __( 'Accordion item added successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -156,7 +154,7 @@ class Insert_Accordion_Item extends Abstract_Ability {
 
 		// Find the accordion block.
 		$accordion_found = false;
-		$blocks = $this->add_item_to_accordion(
+		$blocks          = $this->add_item_to_accordion(
 			$blocks,
 			$accordion_client_id,
 			$title,

@@ -43,8 +43,6 @@ class Insert_Map extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Map', 'designsetgo' ),
 			'description'         => __( 'Inserts an interactive Map block with OpenStreetMap. Supports custom markers, zoom levels, and map styling. Perfect for contact pages and location displays.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating map...', 'designsetgo' ),
-			'success_message'     => __( 'Map inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

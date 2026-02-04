@@ -43,8 +43,6 @@ class Insert_Image_Accordion extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Image Accordion', 'designsetgo' ),
 			'description'         => __( 'Inserts an Image Accordion block where images expand on hover or click. Perfect for showcasing portfolios, team members, or product categories in an interactive way.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating image accordion...', 'designsetgo' ),
-			'success_message'     => __( 'Image accordion inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -69,30 +67,30 @@ class Insert_Image_Accordion extends Abstract_Ability {
 						'type'        => 'object',
 						'description' => __( 'Image accordion attributes', 'designsetgo' ),
 						'properties'  => array(
-							'height'            => array(
+							'height'             => array(
 								'type'        => 'string',
 								'description' => __( 'Accordion height (e.g., "400px", "50vh")', 'designsetgo' ),
 								'default'     => '400px',
 							),
-							'expandTrigger'     => array(
+							'expandTrigger'      => array(
 								'type'        => 'string',
 								'description' => __( 'How items expand', 'designsetgo' ),
 								'enum'        => array( 'hover', 'click' ),
 								'default'     => 'hover',
 							),
-							'expandRatio'       => array(
+							'expandRatio'        => array(
 								'type'        => 'number',
 								'description' => __( 'How much the active item expands (1.5 = 50% larger)', 'designsetgo' ),
 								'default'     => 2,
 								'minimum'     => 1.1,
 								'maximum'     => 5,
 							),
-							'gap'               => array(
+							'gap'                => array(
 								'type'        => 'string',
 								'description' => __( 'Gap between items', 'designsetgo' ),
 								'default'     => '10px',
 							),
-							'borderRadius'      => array(
+							'borderRadius'       => array(
 								'type'        => 'string',
 								'description' => __( 'Border radius for items', 'designsetgo' ),
 								'default'     => '8px',
@@ -102,7 +100,7 @@ class Insert_Image_Accordion extends Abstract_Ability {
 								'description' => __( 'Animation duration (e.g., "0.5s")', 'designsetgo' ),
 								'default'     => '0.5s',
 							),
-							'overlayOpacity'    => array(
+							'overlayOpacity'     => array(
 								'type'        => 'number',
 								'description' => __( 'Overlay opacity for inactive items (0-100)', 'designsetgo' ),
 								'default'     => 30,

@@ -64,24 +64,6 @@ class Configure_Section extends Abstract_Configurator_Ability {
 	}
 
 	/**
-	 * Get the thinking message.
-	 *
-	 * @return string
-	 */
-	protected function get_thinking_message(): string {
-		return __( 'Configuring section...', 'designsetgo' );
-	}
-
-	/**
-	 * Get the success message.
-	 *
-	 * @return string
-	 */
-	protected function get_success_message(): string {
-		return __( 'Section configured successfully.', 'designsetgo' );
-	}
-
-	/**
 	 * Get attributes to exclude from the schema.
 	 *
 	 * We exclude the 'style' attribute as it's a complex WordPress

@@ -59,24 +59,6 @@ class Configure_Row extends Abstract_Configurator_Ability {
 	}
 
 	/**
-	 * Get the thinking message.
-	 *
-	 * @return string
-	 */
-	protected function get_thinking_message(): string {
-		return __( 'Configuring row...', 'designsetgo' );
-	}
-
-	/**
-	 * Get the success message.
-	 *
-	 * @return string
-	 */
-	protected function get_success_message(): string {
-		return __( 'Row configured successfully.', 'designsetgo' );
-	}
-
-	/**
 	 * Get attributes to exclude from the schema.
 	 *
 	 * @return array<string> Attributes to exclude.

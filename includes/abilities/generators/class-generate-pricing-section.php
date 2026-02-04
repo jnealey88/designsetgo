@@ -43,8 +43,6 @@ class Generate_Pricing_Section extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Generate Pricing Section', 'designsetgo' ),
 			'description'         => __( 'Generates a complete pricing table section with multiple pricing tiers. Each tier can include price, features list, and CTA button.', 'designsetgo' ),
-			'thinking_message'    => __( 'Generating pricing section...', 'designsetgo' ),
-			'success_message'     => __( 'Pricing section generated successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -65,19 +63,19 @@ class Generate_Pricing_Section extends Abstract_Ability {
 			'properties'           => array_merge(
 				$common,
 				array(
-					'heading'      => array(
+					'heading'       => array(
 						'type'        => 'string',
 						'description' => __( 'Section heading text', 'designsetgo' ),
 						'default'     => 'Choose Your Plan',
 					),
-					'headingLevel' => array(
+					'headingLevel'  => array(
 						'type'        => 'integer',
 						'description' => __( 'Heading level (1-6)', 'designsetgo' ),
 						'minimum'     => 1,
 						'maximum'     => 6,
 						'default'     => 2,
 					),
-					'description'  => array(
+					'description'   => array(
 						'type'        => 'string',
 						'description' => __( 'Section description text', 'designsetgo' ),
 						'default'     => 'Select the plan that best fits your needs.',
@@ -87,7 +85,7 @@ class Generate_Pricing_Section extends Abstract_Ability {
 						'description' => __( 'Show monthly/yearly billing toggle', 'designsetgo' ),
 						'default'     => false,
 					),
-					'tiers'       => array(
+					'tiers'         => array(
 						'type'        => 'array',
 						'description' => __( 'Pricing tier definitions', 'designsetgo' ),
 						'items'       => array(
@@ -268,8 +266,8 @@ class Generate_Pricing_Section extends Abstract_Ability {
 
 			// CTA Button.
 			$card_inner[] = array(
-				'name'       => 'core/buttons',
-				'attributes' => array(
+				'name'        => 'core/buttons',
+				'attributes'  => array(
 					'layout' => array(
 						'type'           => 'flex',
 						'justifyContent' => 'center',
@@ -334,7 +332,7 @@ class Generate_Pricing_Section extends Abstract_Ability {
 		}
 
 		// Pricing grid.
-		$columns = count( $tiers );
+		$columns        = count( $tiers );
 		$inner_blocks[] = array(
 			'name'        => 'designsetgo/grid',
 			'attributes'  => array(

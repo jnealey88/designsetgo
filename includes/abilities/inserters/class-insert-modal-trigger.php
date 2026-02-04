@@ -43,8 +43,6 @@ class Insert_Modal_Trigger extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Modal Trigger', 'designsetgo' ),
 			'description'         => __( 'Inserts a Modal Trigger button for opening modal dialogs. Includes customizable text, icons, and styling options.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating modal trigger...', 'designsetgo' ),
-			'success_message'     => __( 'Modal trigger inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

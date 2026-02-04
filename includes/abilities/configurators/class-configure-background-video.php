@@ -43,8 +43,6 @@ class Configure_Background_Video extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Configure Background Video', 'designsetgo' ),
 			'description'         => __( 'Applies background video settings to container blocks. Supports self-hosted videos with autoplay, loop, and overlay options.', 'designsetgo' ),
-			'thinking_message'    => __( 'Configuring background video...', 'designsetgo' ),
-			'success_message'     => __( 'Background video configured successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),

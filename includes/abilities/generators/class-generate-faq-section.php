@@ -42,8 +42,6 @@ class Generate_FAQ_Section extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Generate FAQ Section', 'designsetgo' ),
 			'description'         => __( 'Generates a Frequently Asked Questions section using an accordion with collapsible questions and answers.', 'designsetgo' ),
-			'thinking_message'    => __( 'Generating FAQ section...', 'designsetgo' ),
-			'success_message'     => __( 'FAQ section generated successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

@@ -43,8 +43,6 @@ class Apply_Scroll_Parallax extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Apply Scroll Parallax', 'designsetgo' ),
 			'description'         => __( 'Applies Elementor-style vertical scroll parallax effects to container and visual blocks. Elements move at different speeds relative to page scroll, creating depth and visual interest.', 'designsetgo' ),
-			'thinking_message'    => __( 'Applying parallax effect...', 'designsetgo' ),
-			'success_message'     => __( 'Parallax effect applied successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),

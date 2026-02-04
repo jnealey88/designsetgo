@@ -43,8 +43,6 @@ class Insert_Table_Of_Contents extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Table of Contents', 'designsetgo' ),
 			'description'         => __( 'Inserts a Table of Contents block that automatically generates navigation links from page headings. Perfect for long-form content, documentation, and articles.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating table of contents...', 'designsetgo' ),
-			'success_message'     => __( 'Table of contents inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -69,84 +67,84 @@ class Insert_Table_Of_Contents extends Abstract_Ability {
 						'type'        => 'object',
 						'description' => __( 'Table of contents attributes', 'designsetgo' ),
 						'properties'  => array(
-							'title'             => array(
+							'title'            => array(
 								'type'        => 'string',
 								'description' => __( 'Title shown above the table of contents', 'designsetgo' ),
 								'default'     => 'Table of Contents',
 							),
-							'showTitle'         => array(
+							'showTitle'        => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show the title', 'designsetgo' ),
 								'default'     => true,
 							),
-							'minLevel'          => array(
+							'minLevel'         => array(
 								'type'        => 'number',
 								'description' => __( 'Minimum heading level to include (1-6)', 'designsetgo' ),
 								'default'     => 2,
 								'minimum'     => 1,
 								'maximum'     => 6,
 							),
-							'maxLevel'          => array(
+							'maxLevel'         => array(
 								'type'        => 'number',
 								'description' => __( 'Maximum heading level to include (1-6)', 'designsetgo' ),
 								'default'     => 4,
 								'minimum'     => 1,
 								'maximum'     => 6,
 							),
-							'listStyle'         => array(
+							'listStyle'        => array(
 								'type'        => 'string',
 								'description' => __( 'List style for items', 'designsetgo' ),
 								'enum'        => array( 'none', 'disc', 'decimal', 'circle' ),
 								'default'     => 'none',
 							),
-							'showNumbers'       => array(
+							'showNumbers'      => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show numbered list', 'designsetgo' ),
 								'default'     => true,
 							),
-							'hierarchical'      => array(
+							'hierarchical'     => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show nested hierarchy based on heading levels', 'designsetgo' ),
 								'default'     => true,
 							),
-							'smoothScroll'      => array(
+							'smoothScroll'     => array(
 								'type'        => 'boolean',
 								'description' => __( 'Enable smooth scroll to anchors', 'designsetgo' ),
 								'default'     => true,
 							),
-							'highlightActive'   => array(
+							'highlightActive'  => array(
 								'type'        => 'boolean',
 								'description' => __( 'Highlight current section in viewport', 'designsetgo' ),
 								'default'     => true,
 							),
-							'sticky'            => array(
+							'sticky'           => array(
 								'type'        => 'boolean',
 								'description' => __( 'Make ToC sticky on scroll', 'designsetgo' ),
 								'default'     => false,
 							),
-							'collapsible'       => array(
+							'collapsible'      => array(
 								'type'        => 'boolean',
 								'description' => __( 'Allow collapsing the ToC', 'designsetgo' ),
 								'default'     => false,
 							),
-							'defaultCollapsed'  => array(
+							'defaultCollapsed' => array(
 								'type'        => 'boolean',
 								'description' => __( 'Start in collapsed state', 'designsetgo' ),
 								'default'     => false,
 							),
-							'backgroundColor'   => array(
+							'backgroundColor'  => array(
 								'type'        => 'string',
 								'description' => __( 'Background color', 'designsetgo' ),
 							),
-							'textColor'         => array(
+							'textColor'        => array(
 								'type'        => 'string',
 								'description' => __( 'Text/link color', 'designsetgo' ),
 							),
-							'activeColor'       => array(
+							'activeColor'      => array(
 								'type'        => 'string',
 								'description' => __( 'Active item color', 'designsetgo' ),
 							),
-							'borderColor'       => array(
+							'borderColor'      => array(
 								'type'        => 'string',
 								'description' => __( 'Border color', 'designsetgo' ),
 							),

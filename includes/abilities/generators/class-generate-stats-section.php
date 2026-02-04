@@ -42,8 +42,6 @@ class Generate_Stats_Section extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Generate Stats Section', 'designsetgo' ),
 			'description'         => __( 'Generates a statistics section with animated counters. Perfect for showcasing metrics, achievements, or key numbers.', 'designsetgo' ),
-			'thinking_message'    => __( 'Generating stats section...', 'designsetgo' ),
-			'success_message'     => __( 'Stats section generated successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

@@ -123,8 +123,8 @@ class Block_Schema_Loader {
 			return array( 'properties' => array() );
 		}
 
-		$attributes  = $block_data['attributes'];
-		$metadata    = $block_data['schemaMetadata'] ?? array();
+		$attributes   = $block_data['attributes'];
+		$metadata     = $block_data['schemaMetadata'] ?? array();
 		$descriptions = $metadata['attributeDescriptions'] ?? array();
 
 		$properties = array();
@@ -442,15 +442,15 @@ class Block_Schema_Loader {
 	private static function get_known_descriptions(): array {
 		return array(
 			// Common layout attributes.
-			'align'          => __( 'Block alignment (wide, full, left, center, right)', 'designsetgo' ),
-			'tagName'        => __( 'HTML tag to use for the container element', 'designsetgo' ),
-			'constrainWidth' => __( 'Whether to constrain the content width', 'designsetgo' ),
-			'contentWidth'   => __( 'Maximum width for the content area', 'designsetgo' ),
-			'mobileStack'    => __( 'Stack items vertically on mobile devices', 'designsetgo' ),
-			'style'          => __( 'WordPress block style object containing spacing, colors, and typography settings', 'designsetgo' ),
+			'align'             => __( 'Block alignment (wide, full, left, center, right)', 'designsetgo' ),
+			'tagName'           => __( 'HTML tag to use for the container element', 'designsetgo' ),
+			'constrainWidth'    => __( 'Whether to constrain the content width', 'designsetgo' ),
+			'contentWidth'      => __( 'Maximum width for the content area', 'designsetgo' ),
+			'mobileStack'       => __( 'Stack items vertically on mobile devices', 'designsetgo' ),
+			'style'             => __( 'WordPress block style object containing spacing, colors, and typography settings', 'designsetgo' ),
 
 			// Overlay and effects.
-			'overlayColor'   => __( 'Background overlay color', 'designsetgo' ),
+			'overlayColor'      => __( 'Background overlay color', 'designsetgo' ),
 
 			// Accordion-specific.
 			'allowMultipleOpen' => __( 'Allow multiple accordion items to be open at once', 'designsetgo' ),
@@ -458,20 +458,20 @@ class Block_Schema_Loader {
 			'itemGap'           => __( 'Spacing between accordion items', 'designsetgo' ),
 
 			// Button/link attributes.
-			'url'       => __( 'Link URL', 'designsetgo' ),
-			'text'      => __( 'Text content', 'designsetgo' ),
-			'linkTarget' => __( 'Link target (_blank for new tab)', 'designsetgo' ),
-			'rel'       => __( 'Link rel attribute (nofollow, noopener, etc.)', 'designsetgo' ),
+			'url'               => __( 'Link URL', 'designsetgo' ),
+			'text'              => __( 'Text content', 'designsetgo' ),
+			'linkTarget'        => __( 'Link target (_blank for new tab)', 'designsetgo' ),
+			'rel'               => __( 'Link rel attribute (nofollow, noopener, etc.)', 'designsetgo' ),
 
 			// Media attributes.
-			'imageId'   => __( 'WordPress media library image ID', 'designsetgo' ),
-			'imageUrl'  => __( 'Image URL', 'designsetgo' ),
-			'imageAlt'  => __( 'Image alt text for accessibility', 'designsetgo' ),
-			'mediaType' => __( 'Type of media (image, video)', 'designsetgo' ),
+			'imageId'           => __( 'WordPress media library image ID', 'designsetgo' ),
+			'imageUrl'          => __( 'Image URL', 'designsetgo' ),
+			'imageAlt'          => __( 'Image alt text for accessibility', 'designsetgo' ),
+			'mediaType'         => __( 'Type of media (image, video)', 'designsetgo' ),
 
 			// Icon attributes.
-			'icon'       => __( 'Icon identifier', 'designsetgo' ),
-			'iconPrefix' => __( 'Icon library prefix', 'designsetgo' ),
+			'icon'              => __( 'Icon identifier', 'designsetgo' ),
+			'iconPrefix'        => __( 'Icon library prefix', 'designsetgo' ),
 		);
 	}
 

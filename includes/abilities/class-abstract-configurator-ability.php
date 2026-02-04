@@ -88,8 +88,6 @@ abstract class Abstract_Configurator_Ability extends Abstract_Ability {
 		return array(
 			'label'               => $this->get_label(),
 			'description'         => $this->get_description(),
-			'thinking_message'    => $this->get_thinking_message(),
-			'success_message'     => $this->get_success_message(),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),
@@ -110,24 +108,6 @@ abstract class Abstract_Configurator_Ability extends Abstract_Ability {
 	 * @return string Description of what this ability does.
 	 */
 	abstract protected function get_description(): string;
-
-	/**
-	 * Get the thinking message shown during execution.
-	 *
-	 * @return string Message shown while ability is executing.
-	 */
-	protected function get_thinking_message(): string {
-		return __( 'Configuring block...', 'designsetgo' );
-	}
-
-	/**
-	 * Get the success message shown after execution.
-	 *
-	 * @return string Message shown on successful execution.
-	 */
-	protected function get_success_message(): string {
-		return __( 'Block configured successfully.', 'designsetgo' );
-	}
 
 	/**
 	 * Get the input schema for this ability.

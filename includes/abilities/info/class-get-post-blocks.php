@@ -42,8 +42,6 @@ class Get_Post_Blocks extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Get Post Blocks', 'designsetgo' ),
 			'description'         => __( 'Retrieves all blocks from a post with their attributes, enabling inspection of current content structure.', 'designsetgo' ),
-			'thinking_message'    => __( 'Retrieving post blocks...', 'designsetgo' ),
-			'success_message'     => __( 'Successfully retrieved post blocks.', 'designsetgo' ),
 			'category'            => 'info',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),
@@ -60,11 +58,11 @@ class Get_Post_Blocks extends Abstract_Ability {
 		return array(
 			'type'                 => 'object',
 			'properties'           => array(
-				'post_id'     => array(
+				'post_id'       => array(
 					'type'        => 'integer',
 					'description' => __( 'Post ID to retrieve blocks from', 'designsetgo' ),
 				),
-				'block_name'  => array(
+				'block_name'    => array(
 					'type'        => 'string',
 					'description' => __( 'Optional: Filter to only return blocks of this type', 'designsetgo' ),
 				),
@@ -73,7 +71,7 @@ class Get_Post_Blocks extends Abstract_Ability {
 					'description' => __( 'Include inner blocks in the response', 'designsetgo' ),
 					'default'     => true,
 				),
-				'flatten'     => array(
+				'flatten'       => array(
 					'type'        => 'boolean',
 					'description' => __( 'Return a flat list instead of nested structure', 'designsetgo' ),
 					'default'     => false,
@@ -93,15 +91,15 @@ class Get_Post_Blocks extends Abstract_Ability {
 		return array(
 			'type'       => 'object',
 			'properties' => array(
-				'success'  => array(
+				'success' => array(
 					'type'        => 'boolean',
 					'description' => __( 'Whether the operation succeeded', 'designsetgo' ),
 				),
-				'post_id'  => array(
+				'post_id' => array(
 					'type'        => 'integer',
 					'description' => __( 'The post ID', 'designsetgo' ),
 				),
-				'blocks'   => array(
+				'blocks'  => array(
 					'type'        => 'array',
 					'description' => __( 'Array of blocks', 'designsetgo' ),
 					'items'       => array(
@@ -114,7 +112,7 @@ class Get_Post_Blocks extends Abstract_Ability {
 						),
 					),
 				),
-				'total'    => array(
+				'total'   => array(
 					'type'        => 'integer',
 					'description' => __( 'Total number of blocks returned', 'designsetgo' ),
 				),
@@ -223,7 +221,7 @@ class Get_Post_Blocks extends Abstract_Ability {
 				$matching[] = $block;
 			} elseif ( $search_inner && ! empty( $block['innerBlocks'] ) ) {
 				$inner_matches = $this->filter_blocks_by_name( $block['innerBlocks'], $block_name, true );
-				$matching = array_merge( $matching, $inner_matches );
+				$matching      = array_merge( $matching, $inner_matches );
 			}
 		}
 
@@ -242,7 +240,7 @@ class Get_Post_Blocks extends Abstract_Ability {
 
 		foreach ( $blocks as $block ) {
 			$block['_depth'] = $depth;
-			$inner_blocks = $block['innerBlocks'] ?? array();
+			$inner_blocks    = $block['innerBlocks'] ?? array();
 			unset( $block['innerBlocks'] );
 
 			$flat[] = $block;
@@ -267,13 +265,13 @@ class Get_Post_Blocks extends Abstract_Ability {
 		return array_map(
 			function ( $block ) {
 				$cleaned = array(
-					'blockName'  => $block['blockName'],
-					'attrs'      => $block['attrs'] ?? array(),
+					'blockName' => $block['blockName'],
+					'attrs'     => $block['attrs'] ?? array(),
 				);
 
 				// Include innerHTML summary (truncated).
 				if ( ! empty( $block['innerHTML'] ) ) {
-					$html = trim( $block['innerHTML'] );
+					$html                 = trim( $block['innerHTML'] );
 					$cleaned['innerHTML'] = strlen( $html ) > 200 ? substr( $html, 0, 200 ) . '...' : $html;
 				}
 

@@ -42,8 +42,6 @@ class Find_Blocks extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Find Blocks', 'designsetgo' ),
 			'description'         => __( 'Searches for blocks of a specific type across posts, returning locations and counts.', 'designsetgo' ),
-			'thinking_message'    => __( 'Searching for blocks...', 'designsetgo' ),
-			'success_message'     => __( 'Block search completed.', 'designsetgo' ),
 			'category'            => 'info',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),
@@ -191,7 +189,7 @@ class Find_Blocks extends Abstract_Ability {
 			)
 		);
 
-		$results = array();
+		$results     = array();
 		$total_found = 0;
 
 		foreach ( $posts as $post ) {
@@ -202,7 +200,7 @@ class Find_Blocks extends Abstract_Ability {
 
 			// Parse blocks and count matches.
 			$blocks = parse_blocks( $post->post_content );
-			$count = $this->count_blocks_by_name( $blocks, $block_name );
+			$count  = $this->count_blocks_by_name( $blocks, $block_name );
 
 			if ( $count > 0 ) {
 				$results[] = array(
@@ -237,7 +235,7 @@ class Find_Blocks extends Abstract_Ability {
 
 		foreach ( $blocks as $block ) {
 			if ( $block['blockName'] === $block_name ) {
-				$count++;
+				++$count;
 			}
 
 			if ( ! empty( $block['innerBlocks'] ) ) {

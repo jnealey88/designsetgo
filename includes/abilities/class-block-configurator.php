@@ -345,7 +345,7 @@ class Block_Configurator {
 		foreach ( $blocks as $block ) {
 			// Check if this block matches the client ID.
 			if ( isset( $block['attrs']['clientId'] ) && $block['attrs']['clientId'] === $client_id ) {
-				$deleted++;
+				++$deleted;
 				$block_name = $block['blockName'];
 				continue; // Skip this block (delete it).
 			}
@@ -391,7 +391,7 @@ class Block_Configurator {
 
 			// Check if this block matches the name.
 			if ( $block['blockName'] === $block_name ) {
-				$deleted++;
+				++$deleted;
 				$found = true;
 				continue; // Skip this block (delete it).
 			}
@@ -429,7 +429,7 @@ class Block_Configurator {
 		foreach ( $blocks as $block ) {
 			// Check if this block matches the name.
 			if ( $block['blockName'] === $block_name ) {
-				$deleted++;
+				++$deleted;
 				continue; // Skip this block (delete it).
 			}
 
@@ -465,11 +465,11 @@ class Block_Configurator {
 		foreach ( $blocks as $block ) {
 			if ( $block['blockName'] === $block_name ) {
 				if ( $current_position === $position ) {
-					$deleted++;
-					$current_position++;
+					++$deleted;
+					++$current_position;
 					continue; // Skip this block (delete it).
 				}
-				$current_position++;
+				++$current_position;
 			}
 
 			$result_blocks[] = $block;

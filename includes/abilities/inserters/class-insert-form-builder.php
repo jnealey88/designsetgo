@@ -43,8 +43,6 @@ class Insert_Form_Builder extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Form Builder', 'designsetgo' ),
 			'description'         => __( 'Inserts a Form Builder block for creating contact forms, registration forms, and surveys. Supports text, email, phone, textarea, select, checkbox, and more field types.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating form...', 'designsetgo' ),
-			'success_message'     => __( 'Form inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -69,54 +67,54 @@ class Insert_Form_Builder extends Abstract_Ability {
 						'type'        => 'object',
 						'description' => __( 'Form attributes', 'designsetgo' ),
 						'properties'  => array(
-							'submitButtonText'   => array(
+							'submitButtonText' => array(
 								'type'        => 'string',
 								'description' => __( 'Submit button text', 'designsetgo' ),
 								'default'     => 'Submit',
 							),
-							'recipientEmail'     => array(
+							'recipientEmail'   => array(
 								'type'        => 'string',
 								'description' => __( 'Email address for form submissions', 'designsetgo' ),
 							),
-							'successMessage'     => array(
+							'successMessage'   => array(
 								'type'        => 'string',
 								'description' => __( 'Message shown after successful submission', 'designsetgo' ),
 								'default'     => 'Thank you for your submission!',
 							),
-							'errorMessage'       => array(
+							'errorMessage'     => array(
 								'type'        => 'string',
 								'description' => __( 'Message shown on submission error', 'designsetgo' ),
 								'default'     => 'There was an error. Please try again.',
 							),
-							'emailSubject'       => array(
+							'emailSubject'     => array(
 								'type'        => 'string',
 								'description' => __( 'Email subject line', 'designsetgo' ),
 								'default'     => 'New Form Submission',
 							),
-							'buttonAlignment'    => array(
+							'buttonAlignment'  => array(
 								'type'        => 'string',
 								'description' => __( 'Submit button alignment', 'designsetgo' ),
 								'enum'        => array( 'left', 'center', 'right', 'full' ),
 								'default'     => 'left',
 							),
-							'buttonStyle'        => array(
+							'buttonStyle'      => array(
 								'type'        => 'string',
 								'description' => __( 'Submit button style', 'designsetgo' ),
 								'enum'        => array( 'fill', 'outline' ),
 								'default'     => 'fill',
 							),
-							'enableRecaptcha'    => array(
+							'enableRecaptcha'  => array(
 								'type'        => 'boolean',
 								'description' => __( 'Enable spam protection', 'designsetgo' ),
 								'default'     => false,
 							),
-							'labelPosition'      => array(
+							'labelPosition'    => array(
 								'type'        => 'string',
 								'description' => __( 'Position of field labels', 'designsetgo' ),
 								'enum'        => array( 'above', 'inline', 'floating' ),
 								'default'     => 'above',
 							),
-							'fieldSpacing'       => array(
+							'fieldSpacing'     => array(
 								'type'        => 'string',
 								'description' => __( 'Spacing between fields', 'designsetgo' ),
 								'default'     => '1rem',

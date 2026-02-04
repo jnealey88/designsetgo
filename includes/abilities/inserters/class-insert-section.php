@@ -43,8 +43,6 @@ class Insert_Section extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Section', 'designsetgo' ),
 			'description'         => __( 'Inserts a Section block for creating full-width page sections with optional content width constraints, shape dividers, hover effects, and overlays. Perfect for hero sections, feature areas, and page layouts.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating section...', 'designsetgo' ),
-			'success_message'     => __( 'Section inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -70,44 +68,44 @@ class Insert_Section extends Abstract_Ability {
 						'description' => __( 'Section attributes. Note: WordPress block supports (minHeight, backgroundColor, textColor, padding, margin, borders) should be set via the "style" object attribute following WordPress block supports format.', 'designsetgo' ),
 						'properties'  => array(
 							// Layout settings.
-							'align'            => array(
+							'align'                      => array(
 								'type'        => 'string',
 								'description' => __( 'Block alignment', 'designsetgo' ),
 								'enum'        => array( 'wide', 'full' ),
 								'default'     => 'full',
 							),
-							'tagName'          => array(
+							'tagName'                    => array(
 								'type'        => 'string',
 								'description' => __( 'HTML tag for the section', 'designsetgo' ),
 								'enum'        => array( 'div', 'section', 'article', 'header', 'footer', 'main', 'aside' ),
 								'default'     => 'div',
 							),
-							'constrainWidth'   => array(
+							'constrainWidth'             => array(
 								'type'        => 'boolean',
 								'description' => __( 'Constrain inner content width', 'designsetgo' ),
 								'default'     => true,
 							),
-							'contentWidth'     => array(
+							'contentWidth'               => array(
 								'type'        => 'string',
 								'description' => __( 'Content max width (e.g., "1200px"). Leave empty to use theme default.', 'designsetgo' ),
 							),
 
 							// Overlay.
-							'overlayColor'     => array(
+							'overlayColor'               => array(
 								'type'        => 'string',
 								'description' => __( 'Overlay color to dim backgrounds for better content readability (CSS color value)', 'designsetgo' ),
 							),
 
 							// Hover effects.
-							'hoverBackgroundColor' => array(
+							'hoverBackgroundColor'       => array(
 								'type'        => 'string',
 								'description' => __( 'Background color on hover (CSS color value)', 'designsetgo' ),
 							),
-							'hoverTextColor'   => array(
+							'hoverTextColor'             => array(
 								'type'        => 'string',
 								'description' => __( 'Text color on hover (CSS color value)', 'designsetgo' ),
 							),
-							'hoverIconBackgroundColor' => array(
+							'hoverIconBackgroundColor'   => array(
 								'type'        => 'string',
 								'description' => __( 'Icon background color on hover, passed to child blocks (CSS color value)', 'designsetgo' ),
 							),
@@ -117,7 +115,7 @@ class Insert_Section extends Abstract_Ability {
 							),
 
 							// Shape divider - Top.
-							'shapeDividerTop'  => array(
+							'shapeDividerTop'            => array(
 								'type'        => 'string',
 								'description' => __( 'Top shape divider type', 'designsetgo' ),
 								'enum'        => array(
@@ -147,7 +145,7 @@ class Insert_Section extends Abstract_Ability {
 									'slime',
 								),
 							),
-							'shapeDividerTopColor' => array(
+							'shapeDividerTopColor'       => array(
 								'type'        => 'string',
 								'description' => __( 'Top shape fill color (CSS color value)', 'designsetgo' ),
 							),
@@ -155,34 +153,34 @@ class Insert_Section extends Abstract_Ability {
 								'type'        => 'string',
 								'description' => __( 'Top shape background/container color (CSS color value)', 'designsetgo' ),
 							),
-							'shapeDividerTopHeight' => array(
+							'shapeDividerTopHeight'      => array(
 								'type'        => 'number',
 								'description' => __( 'Top shape height in pixels', 'designsetgo' ),
 								'default'     => 100,
 							),
-							'shapeDividerTopWidth' => array(
+							'shapeDividerTopWidth'       => array(
 								'type'        => 'number',
 								'description' => __( 'Top shape width as percentage (100 = 100%)', 'designsetgo' ),
 								'default'     => 100,
 							),
-							'shapeDividerTopFlipX' => array(
+							'shapeDividerTopFlipX'       => array(
 								'type'        => 'boolean',
 								'description' => __( 'Flip top shape horizontally', 'designsetgo' ),
 								'default'     => false,
 							),
-							'shapeDividerTopFlipY' => array(
+							'shapeDividerTopFlipY'       => array(
 								'type'        => 'boolean',
 								'description' => __( 'Flip top shape vertically', 'designsetgo' ),
 								'default'     => false,
 							),
-							'shapeDividerTopFront' => array(
+							'shapeDividerTopFront'       => array(
 								'type'        => 'boolean',
 								'description' => __( 'Bring top shape to front (above content)', 'designsetgo' ),
 								'default'     => false,
 							),
 
 							// Shape divider - Bottom.
-							'shapeDividerBottom' => array(
+							'shapeDividerBottom'         => array(
 								'type'        => 'string',
 								'description' => __( 'Bottom shape divider type', 'designsetgo' ),
 								'enum'        => array(
@@ -212,7 +210,7 @@ class Insert_Section extends Abstract_Ability {
 									'slime',
 								),
 							),
-							'shapeDividerBottomColor' => array(
+							'shapeDividerBottomColor'    => array(
 								'type'        => 'string',
 								'description' => __( 'Bottom shape fill color (CSS color value)', 'designsetgo' ),
 							),
@@ -220,34 +218,34 @@ class Insert_Section extends Abstract_Ability {
 								'type'        => 'string',
 								'description' => __( 'Bottom shape background/container color (CSS color value)', 'designsetgo' ),
 							),
-							'shapeDividerBottomHeight' => array(
+							'shapeDividerBottomHeight'   => array(
 								'type'        => 'number',
 								'description' => __( 'Bottom shape height in pixels', 'designsetgo' ),
 								'default'     => 100,
 							),
-							'shapeDividerBottomWidth' => array(
+							'shapeDividerBottomWidth'    => array(
 								'type'        => 'number',
 								'description' => __( 'Bottom shape width as percentage (100 = 100%)', 'designsetgo' ),
 								'default'     => 100,
 							),
-							'shapeDividerBottomFlipX' => array(
+							'shapeDividerBottomFlipX'    => array(
 								'type'        => 'boolean',
 								'description' => __( 'Flip bottom shape horizontally', 'designsetgo' ),
 								'default'     => false,
 							),
-							'shapeDividerBottomFlipY' => array(
+							'shapeDividerBottomFlipY'    => array(
 								'type'        => 'boolean',
 								'description' => __( 'Flip bottom shape vertically', 'designsetgo' ),
 								'default'     => false,
 							),
-							'shapeDividerBottomFront' => array(
+							'shapeDividerBottomFront'    => array(
 								'type'        => 'boolean',
 								'description' => __( 'Bring bottom shape to front (above content)', 'designsetgo' ),
 								'default'     => false,
 							),
 
 							// WordPress block supports (set via style object).
-							'style'            => array(
+							'style'                      => array(
 								'type'        => 'object',
 								'description' => __( 'WordPress block supports styling. Use this for minHeight, spacing (padding/margin), colors (background/text/gradient), borders, and typography.', 'designsetgo' ),
 								'properties'  => array(
@@ -256,7 +254,7 @@ class Insert_Section extends Abstract_Ability {
 										'description' => __( 'Dimension settings', 'designsetgo' ),
 										'properties'  => array(
 											'minHeight' => array(
-												'type'        => 'string',
+												'type' => 'string',
 												'description' => __( 'Minimum height (e.g., "500px", "100vh")', 'designsetgo' ),
 											),
 										),
@@ -266,15 +264,15 @@ class Insert_Section extends Abstract_Ability {
 										'description' => __( 'Spacing settings', 'designsetgo' ),
 										'properties'  => array(
 											'padding'  => array(
-												'type'        => 'object',
+												'type' => 'object',
 												'description' => __( 'Padding values (top, right, bottom, left)', 'designsetgo' ),
 											),
 											'margin'   => array(
-												'type'        => 'object',
+												'type' => 'object',
 												'description' => __( 'Margin values (top, right, bottom, left)', 'designsetgo' ),
 											),
 											'blockGap' => array(
-												'type'        => 'string',
+												'type' => 'string',
 												'description' => __( 'Gap between inner blocks', 'designsetgo' ),
 											),
 										),
@@ -284,15 +282,15 @@ class Insert_Section extends Abstract_Ability {
 										'description' => __( 'Color settings', 'designsetgo' ),
 										'properties'  => array(
 											'background' => array(
-												'type'        => 'string',
+												'type' => 'string',
 												'description' => __( 'Background color', 'designsetgo' ),
 											),
 											'text'       => array(
-												'type'        => 'string',
+												'type' => 'string',
 												'description' => __( 'Text color', 'designsetgo' ),
 											),
 											'gradient'   => array(
-												'type'        => 'string',
+												'type' => 'string',
 												'description' => __( 'Background gradient', 'designsetgo' ),
 											),
 										),

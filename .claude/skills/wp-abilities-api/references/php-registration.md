@@ -25,11 +25,12 @@ add_action( 'wp_abilities_api_categories_init', function() {
 // 2. Then register abilities
 add_action( 'wp_abilities_api_init', function() {
     wp_register_ability( 'my-plugin/get-info', [
-        'label'       => __( 'Get Site Info', 'my-plugin' ),
-        'description' => __( 'Returns basic site information.', 'my-plugin' ),
-        'category'    => 'my-plugin',
-        'callback'    => 'my_plugin_get_info_callback',
-        'meta'        => [ 'show_in_rest' => true ],
+        'label'               => __( 'Get Site Info', 'my-plugin' ),
+        'description'         => __( 'Returns basic site information.', 'my-plugin' ),
+        'category'            => 'my-plugin',
+        'execute_callback'    => 'my_plugin_get_info_callback',
+        'permission_callback' => 'my_plugin_permission_check',
+        'meta'                => [ 'show_in_rest' => true ],
     ] );
 } );
 ```
@@ -42,16 +43,18 @@ add_action( 'wp_abilities_api_init', function() {
 ## Key arguments for `wp_register_ability()`
 
 | Argument | Description |
-|----------|-------------|
+| -------- | ----------- |
 | `label` | Human-readable name for UI (e.g., command palette) |
 | `description` | What the ability does |
 | `category` | Category ID (must be registered first) |
-| `callback` | Function that executes the ability |
+| `execute_callback` | Function that executes the ability |
+| `permission_callback` | Function to check if current user can execute |
 | `input_schema` | JSON Schema for expected input (enables validation) |
 | `output_schema` | JSON Schema for returned output |
-| `permission_callback` | Optional function to check if current user can execute |
 | `meta.show_in_rest` | Set `true` to expose via REST API |
-| `meta.readonly` | Set `true` if ability is informational only |
+| `meta.annotations.readonly` | Set `true` if ability is informational only |
+| `meta.annotations.destructive` | Set `true` if ability may perform destructive updates |
+| `meta.annotations.idempotent` | Set `true` if repeated calls have no additional effect |
 
 ## Recommended patterns
 

@@ -42,8 +42,6 @@ class Delete_Block extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Delete Block', 'designsetgo' ),
 			'description'         => __( 'Removes blocks from a post by block name or client ID. Can delete first match, specific block, or all matching blocks.', 'designsetgo' ),
-			'thinking_message'    => __( 'Removing block(s)...', 'designsetgo' ),
-			'success_message'     => __( 'Block(s) deleted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),

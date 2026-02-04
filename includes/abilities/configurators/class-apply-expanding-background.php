@@ -43,8 +43,6 @@ class Apply_Expanding_Background extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Apply Expanding Background', 'designsetgo' ),
 			'description'         => __( 'Applies scroll-driven expanding background effect to Group and Section blocks. A small blurred circle expands from the center to fill the entire section with color as users scroll.', 'designsetgo' ),
-			'thinking_message'    => __( 'Applying expanding background...', 'designsetgo' ),
-			'success_message'     => __( 'Expanding background applied successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),

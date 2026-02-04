@@ -43,8 +43,6 @@ class Insert_Scroll_Accordion extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Scroll Accordion', 'designsetgo' ),
 			'description'         => __( 'Inserts a Scroll Accordion that reveals items progressively as you scroll. Items stack on top of each other with a sticky stacking effect.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating scroll accordion...', 'designsetgo' ),
-			'success_message'     => __( 'Scroll accordion inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

@@ -43,8 +43,6 @@ class Apply_Text_Reveal extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Apply Text Reveal', 'designsetgo' ),
 			'description'         => __( 'Applies scroll-triggered text color reveal effect to paragraphs and headings. Text progressively changes color as users scroll, simulating natural reading progression.', 'designsetgo' ),
-			'thinking_message'    => __( 'Applying text reveal effect...', 'designsetgo' ),
-			'success_message'     => __( 'Text reveal effect applied successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),
