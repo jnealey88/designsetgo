@@ -34,6 +34,30 @@ import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
 
 /**
+ * Convert WordPress vertical alignment value to CSS align-items value
+ * WordPress stores: stretch, center, top, bottom, space-between
+ * CSS align-items needs: stretch, center, flex-start, flex-end, space-between
+ *
+ * @param {string} value The WordPress vertical alignment value
+ * @return {string} CSS align-items value
+ */
+function getAlignItemsValue(value) {
+	if (!value) {
+		return undefined;
+	}
+
+	const alignMap = {
+		stretch: 'stretch',
+		center: 'center',
+		top: 'flex-start',
+		bottom: 'flex-end',
+		'space-between': 'space-between',
+	};
+
+	return alignMap[value] || value;
+}
+
+/**
  * Convert WordPress preset format to CSS variable
  * Converts "var:preset|spacing|md" to "var(--wp--preset--spacing--md)"
  * Also handles WordPress 6.1+ object format {top, left} for separate row/column gaps
@@ -230,10 +254,13 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 
 	// Inner container props with flex layout and width constraints (must match save.js EXACTLY)
 	// CRITICAL: Apply display: flex here, not via WordPress layout support on outer div
+	const alignItems = getAlignItemsValue(layout?.verticalAlignment);
 	const innerStyle = {
 		display: 'flex',
 		// Apply layout justifyContent to inner div where flex children are
 		justifyContent: layout?.justifyContent || 'left',
+		// Apply vertical alignment (align-items) from layout support
+		...(alignItems && { alignItems }),
 		// Apply flex-wrap from layout support
 		flexWrap: layout?.flexWrap || 'wrap',
 		// Apply gap from blockProps or attributes
