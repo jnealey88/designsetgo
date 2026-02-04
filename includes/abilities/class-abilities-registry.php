@@ -83,13 +83,15 @@ class Abilities_Registry {
 	private function load_ability_classes(): void {
 		$base_path = __DIR__;
 
-		// Load base abstract class (already loaded, but for clarity).
+		// Load base abstract classes (already loaded, but for clarity).
 		require_once $base_path . '/class-abstract-ability.php';
+		require_once $base_path . '/class-abstract-configurator-ability.php';
 
 		// Load helper classes.
 		$helpers = array(
 			'class-block-inserter.php',
 			'class-block-configurator.php',
+			'class-block-schema-loader.php',
 			'class-css-sanitizer.php',
 		);
 

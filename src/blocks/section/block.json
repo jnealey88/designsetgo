@@ -194,6 +194,36 @@
 			"default": ""
 		}
 	},
+	"schemaMetadata": {
+		"attributeDescriptions": {
+			"align": "Block alignment (wide or full width)",
+			"tagName": "HTML tag to use for the section container (div, section, article, header, footer, main, aside)",
+			"constrainWidth": "Whether to constrain the content to a maximum width",
+			"contentWidth": "Maximum width for the content area (CSS value like 1200px or 80%)",
+			"style": "WordPress block style object containing spacing, colors, and typography settings",
+			"hoverBackgroundColor": "Background color when hovering over the section",
+			"hoverTextColor": "Text color when hovering over the section",
+			"hoverIconBackgroundColor": "Icon background color on hover (passed to child blocks via context)",
+			"hoverButtonBackgroundColor": "Button background color on hover (passed to child blocks via context)",
+			"overlayColor": "Semi-transparent overlay color for background images",
+			"shapeDividerTop": "Shape divider style for the top edge (wave, tilt, curve, etc.)",
+			"shapeDividerTopColor": "Color of the top shape divider",
+			"shapeDividerTopHeight": "Height of the top shape divider in pixels",
+			"shapeDividerTopWidth": "Width stretch percentage of the top shape divider",
+			"shapeDividerTopFlipX": "Flip the top shape divider horizontally",
+			"shapeDividerTopFlipY": "Flip the top shape divider vertically",
+			"shapeDividerTopFront": "Render the top shape divider in front of content",
+			"shapeDividerTopBackgroundColor": "Background color behind the top shape divider",
+			"shapeDividerBottom": "Shape divider style for the bottom edge",
+			"shapeDividerBottomColor": "Color of the bottom shape divider",
+			"shapeDividerBottomHeight": "Height of the bottom shape divider in pixels",
+			"shapeDividerBottomWidth": "Width stretch percentage of the bottom shape divider",
+			"shapeDividerBottomFlipX": "Flip the bottom shape divider horizontally",
+			"shapeDividerBottomFlipY": "Flip the bottom shape divider vertically",
+			"shapeDividerBottomFront": "Render the bottom shape divider in front of content",
+			"shapeDividerBottomBackgroundColor": "Background color behind the bottom shape divider"
+		}
+	},
 	"providesContext": {
 		"designsetgo/hoverIconBackgroundColor": "hoverIconBackgroundColor",
 		"designsetgo/hoverButtonBackgroundColor": "hoverButtonBackgroundColor"
