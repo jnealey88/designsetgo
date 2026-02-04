@@ -1,0 +1,43 @@
+/**
+ * Timeline Block - Editor Styles
+ * Styles specific to the WordPress block editor
+ */
+
+.wp-block-designsetgo-timeline {
+	// Ensure timeline items are always visible in editor
+	&.dsgo-timeline--animate {
+		.dsgo-timeline-item {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	// Show placeholder when empty
+	.dsgo-timeline__items:empty::after {
+		content: "Add Timeline Items";
+		display: block;
+		padding: 2rem;
+		text-align: center;
+		color: var(--wp--preset--color--contrast, #666);
+		background: var(--wp--preset--color--base-2, #f5f5f5);
+		border: 2px dashed var(--wp--preset--color--contrast, #ccc);
+		border-radius: 4px;
+	}
+
+	// Better visibility of the timeline line in editor
+	.dsgo-timeline__line {
+		z-index: 0;
+	}
+
+	// Ensure items are above the line
+	.dsgo-timeline__items {
+		z-index: 1;
+	}
+}
+
+// Block inserter positioning
+.block-editor-block-list__layout .wp-block-designsetgo-timeline {
+	.block-list-appender {
+		margin-top: var(--dsgo-timeline-item-spacing, 2rem);
+	}
+}

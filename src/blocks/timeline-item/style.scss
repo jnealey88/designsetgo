@@ -1,0 +1,320 @@
+/**
+ * Timeline Item Block - Frontend Styles
+ * Individual timeline milestone/event styling
+ */
+
+.dsgo-timeline-item {
+	position: relative;
+	display: flex;
+	align-items: flex-start;
+	gap: 1rem;
+
+	// ===================
+	// MARKER STYLES
+	// ===================
+	.dsgo-timeline-item__marker {
+		position: relative;
+		flex-shrink: 0;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		// Marker image styling
+		.dsgo-timeline-item__marker-image {
+			display: block;
+			border: 2px solid var(--dsgo-timeline-marker-border-color, var(--wp--preset--color--primary, #2563eb));
+			background-color: var(--wp--preset--color--base, #fff);
+		}
+
+		svg {
+			display: block;
+		}
+	}
+
+	// ===================
+	// CONTENT WRAPPER
+	// ===================
+	.dsgo-timeline-item__wrapper {
+		flex: 1;
+		min-width: 0;
+		padding-bottom: var(--wp--preset--spacing--20, 0.5rem);
+	}
+
+	// Link wrapper
+	.dsgo-timeline-item__link {
+		display: block;
+		flex: 1;
+		min-width: 0;
+		text-decoration: none;
+		color: inherit;
+		transition: transform 0.2s ease;
+
+		&:hover {
+			transform: translateX(4px);
+		}
+
+		&:focus {
+			outline: 2px solid var(--wp--preset--color--primary, #2563eb);
+			outline-offset: 4px;
+			border-radius: 4px;
+		}
+	}
+
+	// ===================
+	// DATE/LABEL
+	// ===================
+	.dsgo-timeline-item__date {
+		display: inline-block;
+		font-size: 0.85em;
+		font-weight: 600;
+		color: var(--dsgo-timeline-marker-color, var(--wp--preset--color--primary, #2563eb));
+		margin-bottom: var(--wp--preset--spacing--10, 0.25rem);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	// ===================
+	// TITLE
+	// ===================
+	.dsgo-timeline-item__title {
+		margin: 0 0 var(--wp--preset--spacing--20, 0.5rem) 0;
+		font-size: 1.25em;
+		font-weight: 600;
+		line-height: 1.3;
+		color: inherit;
+	}
+
+	// ===================
+	// CONTENT
+	// ===================
+	.dsgo-timeline-item__content {
+		// Reset margins for nested content
+		> *:first-child {
+			margin-top: 0;
+		}
+
+		> *:last-child {
+			margin-bottom: 0;
+		}
+
+		p {
+			margin-bottom: var(--wp--preset--spacing--20, 0.5rem);
+		}
+	}
+
+	// ===================
+	// ACTIVE STATE
+	// ===================
+	&.dsgo-timeline-item--active {
+		.dsgo-timeline-item__marker {
+			// Pulse animation for active marker
+			animation: dsgo-timeline-pulse 2s infinite;
+		}
+
+		.dsgo-timeline-item__wrapper {
+			background-color: var(--wp--preset--color--base-2, rgba(0, 0, 0, 0.02));
+			padding: var(--wp--preset--spacing--30, 1rem);
+			border-radius: 8px;
+			border-left: 3px solid var(--dsgo-timeline-marker-color, var(--wp--preset--color--primary, #2563eb));
+		}
+	}
+
+	// ===================
+	// HAS LINK STATE
+	// ===================
+	&.dsgo-timeline-item--has-link {
+		cursor: pointer;
+
+		.dsgo-timeline-item__wrapper {
+			transition: background-color 0.2s ease;
+		}
+
+		&:hover .dsgo-timeline-item__wrapper {
+			background-color: var(--wp--preset--color--base-2, rgba(0, 0, 0, 0.02));
+		}
+	}
+}
+
+// ===================
+// PULSE ANIMATION
+// ===================
+@keyframes dsgo-timeline-pulse {
+	0%,
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	50% {
+		transform: scale(1.1);
+		opacity: 0.8;
+	}
+}
+
+// ===================
+// VERTICAL TIMELINE LAYOUT OVERRIDES
+// ===================
+.dsgo-timeline--vertical {
+	// Alternating layout
+	&.dsgo-timeline--layout-alternating {
+		.dsgo-timeline-item {
+			width: calc(50% - var(--dsgo-timeline-marker-size, 16px) / 2 - 1rem);
+			flex-direction: row-reverse;
+			text-align: right;
+
+			.dsgo-timeline-item__marker {
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+
+			.dsgo-timeline-item__wrapper {
+				padding-right: calc(var(--dsgo-timeline-marker-size, 16px) + 1rem);
+			}
+
+			// Even items on the right
+			&:nth-child(even) {
+				margin-left: auto;
+				flex-direction: row;
+				text-align: left;
+
+				.dsgo-timeline-item__wrapper {
+					padding-right: 0;
+					padding-left: calc(var(--dsgo-timeline-marker-size, 16px) + 1rem);
+				}
+			}
+		}
+	}
+
+	// Left layout
+	&.dsgo-timeline--layout-left {
+		.dsgo-timeline-item {
+			flex-direction: row-reverse;
+			text-align: right;
+
+			.dsgo-timeline-item__marker {
+				position: absolute;
+				right: 0;
+				transform: translateX(50%);
+			}
+		}
+	}
+
+	// Right layout
+	&.dsgo-timeline--layout-right {
+		.dsgo-timeline-item {
+			.dsgo-timeline-item__marker {
+				position: absolute;
+				left: 0;
+				transform: translateX(-50%);
+			}
+		}
+	}
+}
+
+// ===================
+// HORIZONTAL TIMELINE LAYOUT
+// ===================
+.dsgo-timeline--horizontal {
+	.dsgo-timeline-item {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+
+		.dsgo-timeline-item__marker {
+			position: absolute;
+			top: calc(-1 * var(--dsgo-timeline-marker-size, 16px) - 0.5rem);
+		}
+
+		.dsgo-timeline-item__wrapper {
+			padding-top: 0.5rem;
+		}
+
+		.dsgo-timeline-item__date {
+			display: block;
+		}
+	}
+}
+
+// ===================
+// MOBILE RESPONSIVE
+// ===================
+@media (max-width: 768px) {
+	.dsgo-timeline-item {
+		// Reset alternating styles on mobile
+		flex-direction: row !important;
+		text-align: left !important;
+		width: 100% !important;
+		margin-left: 0 !important;
+
+		.dsgo-timeline-item__marker {
+			position: absolute !important;
+			left: 0 !important;
+			right: auto !important;
+			transform: translateX(-50%) !important;
+		}
+
+		.dsgo-timeline-item__wrapper {
+			padding-left: calc(var(--dsgo-timeline-marker-size, 16px) + 1rem) !important;
+			padding-right: 0 !important;
+		}
+
+		// Active state mobile adjustments
+		&.dsgo-timeline-item--active .dsgo-timeline-item__wrapper {
+			margin-left: calc(var(--dsgo-timeline-marker-size, 16px) + 0.5rem);
+			padding-left: var(--wp--preset--spacing--30, 1rem) !important;
+		}
+	}
+
+	// Horizontal becomes vertical on mobile
+	.dsgo-timeline--horizontal .dsgo-timeline-item {
+		flex-direction: row !important;
+		align-items: flex-start !important;
+		text-align: left !important;
+
+		.dsgo-timeline-item__marker {
+			position: absolute !important;
+			top: 0 !important;
+			left: 0 !important;
+			transform: translateX(-50%) !important;
+		}
+
+		.dsgo-timeline-item__wrapper {
+			padding-top: 0 !important;
+		}
+
+		.dsgo-timeline-item__date {
+			display: inline-block;
+		}
+	}
+}
+
+// ===================
+// REDUCED MOTION
+// ===================
+@media (prefers-reduced-motion: reduce) {
+	.dsgo-timeline-item {
+		&.dsgo-timeline-item--active .dsgo-timeline-item__marker {
+			animation: none;
+		}
+
+		.dsgo-timeline-item__link:hover {
+			transform: none;
+		}
+	}
+}
+
+// ===================
+// PRINT STYLES
+// ===================
+@media print {
+	.dsgo-timeline-item {
+		page-break-inside: avoid;
+
+		.dsgo-timeline-item__marker {
+			-webkit-print-color-adjust: exact;
+			print-color-adjust: exact;
+		}
+	}
+}
