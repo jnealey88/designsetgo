@@ -35,6 +35,7 @@ const ICON_CATEGORIES = {
 			'rocket',
 			'lightbulb',
 			'shield',
+			'shield-check',
 		],
 	},
 	social: {
@@ -81,7 +82,7 @@ const ICON_CATEGORIES = {
 	},
 	communication: {
 		label: __('Contact', 'designsetgo'),
-		icons: ['comment', 'chat', 'bell', 'info', 'warning'],
+		icons: ['comment', 'chat', 'bell', 'info', 'warning', 'quote'],
 	},
 	actions: {
 		label: __('Actions', 'designsetgo'),
