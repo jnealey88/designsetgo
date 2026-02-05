@@ -5,6 +5,31 @@ import {
 } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
+/**
+ * Validates URL protocol to prevent javascript: and other dangerous protocols.
+ * @param {string} url - The URL to validate.
+ * @return {string|null} - The safe URL or null if invalid.
+ */
+const getSafeUrl = (url) => {
+	if (!url) {
+		return null;
+	}
+	try {
+		const parsed = new URL(url, window.location.origin);
+		const allowedProtocols = ['https:', 'http:', 'mailto:', 'tel:'];
+		if (allowedProtocols.includes(parsed.protocol)) {
+			return url;
+		}
+		return null;
+	} catch {
+		// Relative URLs are okay
+		if (url.startsWith('/') || url.startsWith('#')) {
+			return url;
+		}
+		return null;
+	}
+};
+
 // Marker shape SVGs - same as edit.js
 const MarkerShapes = {
 	circle: ({ size, fillColor, borderColor }) => (
@@ -96,11 +121,14 @@ export default function TimelineItemSave({ attributes, context }) {
 	// Get the marker shape component
 	const MarkerShape = MarkerShapes[markerStyle] || MarkerShapes.circle;
 
+	// Validate URL protocol for security
+	const safeUrl = getSafeUrl(linkUrl);
+
 	// Build class names - must match edit.js
 	const itemClasses = classnames('dsgo-timeline-item', {
 		'dsgo-timeline-item--active': isActive,
 		'dsgo-timeline-item--has-image': imageUrl,
-		'dsgo-timeline-item--has-link': linkUrl,
+		'dsgo-timeline-item--has-link': safeUrl,
 	});
 
 	// Custom styles for marker
@@ -165,15 +193,15 @@ export default function TimelineItemSave({ attributes, context }) {
 		</div>
 	);
 
-	// If there's a link, wrap the entire item
-	if (linkUrl) {
+	// If there's a safe link, wrap the entire item
+	if (safeUrl) {
 		const linkRel = linkTarget === '_blank' ? 'noopener noreferrer' : undefined;
 
 		return (
 			<div {...blockProps}>
 				{renderMarker()}
 				<a
-					href={linkUrl}
+					href={safeUrl}
 					target={linkTarget}
 					rel={linkRel}
 					className="dsgo-timeline-item__link"

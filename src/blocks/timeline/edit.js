@@ -135,7 +135,7 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 					<UnitControl
 						label={__('Item Spacing', 'designsetgo')}
 						value={itemSpacing}
-						onChange={(value) => setAttributes({ itemSpacing: value || '2rem' })}
+						onChange={(value) => setAttributes({ itemSpacing: value ?? '2rem' })}
 						units={[
 							{ value: 'px', label: 'px', default: 32 },
 							{ value: 'rem', label: 'rem', default: 2 },

@@ -21,6 +21,7 @@ import {
 	TextControl,
 } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
+import { useInstanceId } from '@wordpress/compose';
 import classnames from 'classnames';
 
 // Marker shape SVGs
@@ -119,14 +120,17 @@ export default function TimelineItemEdit({
 	// Color settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
-	// Generate unique ID for accessibility
+	// Generate stable unique ID for accessibility using useInstanceId
+	const instanceId = useInstanceId(TimelineItemEdit, 'timeline-item');
+
+	// Persist unique ID to attributes if not already set
 	useEffect(() => {
 		if (!uniqueId) {
 			setAttributes({
-				uniqueId: `timeline-item-${Math.random().toString(36).substr(2, 9)}`,
+				uniqueId: `timeline-item-${instanceId}`,
 			});
 		}
-	}, [uniqueId, setAttributes]);
+	}, [uniqueId, instanceId, setAttributes]);
 
 	// Determine marker colors (custom overrides parent)
 	const effectiveMarkerColor = customMarkerColor || markerColor || 'var(--wp--preset--color--primary, #2563eb)';

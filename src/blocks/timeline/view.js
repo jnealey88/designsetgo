@@ -35,15 +35,18 @@ function initTimelines() {
 			return;
 		}
 
-		// Get animation settings from data attributes
-		const animationDuration = parseInt(
+		// Get animation settings from data attributes with NaN validation
+		const parsedDuration = parseInt(
 			timeline.getAttribute('data-animation-duration') || '600',
 			10
 		);
-		const staggerDelay = parseInt(
+		const animationDuration = Number.isNaN(parsedDuration) ? 600 : parsedDuration;
+
+		const parsedDelay = parseInt(
 			timeline.getAttribute('data-stagger-delay') || '100',
 			10
 		);
+		const staggerDelay = Number.isNaN(parsedDelay) ? 100 : parsedDelay;
 
 		// Initialize scroll animation
 		initScrollAnimation(timeline, animationDuration, staggerDelay);

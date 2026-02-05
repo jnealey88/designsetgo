@@ -124,12 +124,13 @@ class Insert_Timeline_Item extends Abstract_Ability {
 	public function execute( array $input ) {
 		$post_id            = (int) ( $input['post_id'] ?? 0 );
 		$timeline_client_id = $input['timeline_client_id'] ?? null;
-		$date               = sanitize_text_field( $input['date'] ?? '' );
-		$title              = sanitize_text_field( $input['title'] ?? '' );
-		$content            = wp_kses_post( $input['content'] ?? '' );
+		$date               = isset( $input['date'] ) ? sanitize_text_field( wp_unslash( $input['date'] ) ) : '';
+		$title              = isset( $input['title'] ) ? sanitize_text_field( wp_unslash( $input['title'] ) ) : '';
+		$content            = isset( $input['content'] ) ? wp_kses_post( wp_unslash( $input['content'] ) ) : '';
 		$is_active          = (bool) ( $input['is_active'] ?? false );
-		$link_url           = esc_url_raw( $input['link_url'] ?? '' );
-		$link_target        = sanitize_text_field( $input['link_target'] ?? '_self' );
+		$link_url           = isset( $input['link_url'] ) ? esc_url_raw( $input['link_url'] ) : '';
+		$link_target_input  = $input['link_target'] ?? '_self';
+		$link_target        = in_array( $link_target_input, array( '_self', '_blank' ), true ) ? $link_target_input : '_self';
 		$position           = (int) ( $input['position'] ?? -1 );
 
 		// Validate required parameters.
