@@ -27,6 +27,16 @@ class Draft_Mode_REST {
 	private $draft_mode;
 
 	/**
+	 * Allowed HTML tags for block content sanitization.
+	 *
+	 * Extended from wp_kses_post to include SVG elements and additional attributes
+	 * needed by WordPress blocks while still filtering XSS vectors.
+	 *
+	 * @var array|null
+	 */
+	private static $block_allowed_html = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Draft_Mode $draft_mode Draft Mode instance.
@@ -34,6 +44,190 @@ class Draft_Mode_REST {
 	public function __construct( Draft_Mode $draft_mode ) {
 		$this->draft_mode = $draft_mode;
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
+	}
+
+	/**
+	 * Get allowed HTML tags for block content.
+	 *
+	 * Extends wp_kses_post allowed tags to include SVG elements and additional
+	 * attributes needed by WordPress blocks (style with flex/grid, tabindex, etc.)
+	 * while still filtering out script tags and event handlers.
+	 *
+	 * @return array Allowed HTML tags and their attributes.
+	 */
+	public static function get_block_allowed_html() {
+		if ( null !== self::$block_allowed_html ) {
+			return self::$block_allowed_html;
+		}
+
+		// Start with wp_kses_post allowed tags.
+		$allowed = wp_kses_allowed_html( 'post' );
+
+		// Global attributes that should be allowed on most elements.
+		$global_attrs = array(
+			'id'          => true,
+			'class'       => true,
+			'style'       => true,
+			'title'       => true,
+			'role'        => true,
+			'tabindex'    => true,
+			'aria-*'      => true,
+			'data-*'      => true,
+			'hidden'      => true,
+			'lang'        => true,
+			'dir'         => true,
+		);
+
+		// Add global attributes to common elements that blocks use.
+		$elements_needing_attrs = array(
+			'div', 'span', 'p', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+			'section', 'article', 'aside', 'nav', 'header', 'footer', 'main', 'figure',
+			'figcaption', 'blockquote', 'pre', 'code', 'table', 'thead', 'tbody', 'tfoot',
+			'tr', 'th', 'td', 'form', 'fieldset', 'legend', 'label', 'input', 'textarea',
+			'select', 'option', 'button', 'img', 'video', 'audio', 'source', 'picture',
+			'iframe', 'embed', 'object', 'param', 'details', 'summary', 'dialog', 'menu',
+		);
+
+		foreach ( $elements_needing_attrs as $element ) {
+			if ( ! isset( $allowed[ $element ] ) ) {
+				$allowed[ $element ] = array();
+			}
+			$allowed[ $element ] = array_merge( $allowed[ $element ], $global_attrs );
+		}
+
+		// Ensure anchor tags have all needed attributes.
+		$allowed['a'] = array_merge(
+			$allowed['a'] ?? array(),
+			$global_attrs,
+			array(
+				'href'     => true,
+				'target'   => true,
+				'rel'      => true,
+				'download' => true,
+				'hreflang' => true,
+				'type'     => true,
+			)
+		);
+
+		// Ensure img tags have all needed attributes.
+		$allowed['img'] = array_merge(
+			$allowed['img'] ?? array(),
+			$global_attrs,
+			array(
+				'src'      => true,
+				'srcset'   => true,
+				'sizes'    => true,
+				'alt'      => true,
+				'width'    => true,
+				'height'   => true,
+				'loading'  => true,
+				'decoding' => true,
+			)
+		);
+
+		// Add SVG support for shape dividers and icons.
+		$svg_attrs = array_merge(
+			$global_attrs,
+			array(
+				'xmlns'              => true,
+				'viewbox'            => true,
+				'preserveaspectratio' => true,
+				'width'              => true,
+				'height'             => true,
+				'fill'               => true,
+				'stroke'             => true,
+				'stroke-width'       => true,
+				'stroke-linecap'     => true,
+				'stroke-linejoin'    => true,
+				'opacity'            => true,
+				'transform'          => true,
+				'x'                  => true,
+				'y'                  => true,
+				'x1'                 => true,
+				'y1'                 => true,
+				'x2'                 => true,
+				'y2'                 => true,
+				'cx'                 => true,
+				'cy'                 => true,
+				'r'                  => true,
+				'rx'                 => true,
+				'ry'                 => true,
+				'd'                  => true,
+				'points'             => true,
+				'fill-rule'          => true,
+				'clip-rule'          => true,
+				'clip-path'          => true,
+				'mask'               => true,
+				'filter'             => true,
+			)
+		);
+
+		$svg_elements = array(
+			'svg', 'path', 'circle', 'rect', 'line', 'polyline', 'polygon',
+			'ellipse', 'g', 'defs', 'use', 'symbol', 'text', 'tspan',
+			'clippath', 'mask', 'lineargradient', 'radialgradient', 'stop',
+			'pattern', 'image', 'title', 'desc',
+		);
+
+		foreach ( $svg_elements as $element ) {
+			$allowed[ $element ] = $svg_attrs;
+		}
+
+		// Add gradient stop specific attributes.
+		$allowed['stop'] = array_merge(
+			$svg_attrs,
+			array(
+				'offset'     => true,
+				'stop-color' => true,
+				'stop-opacity' => true,
+			)
+		);
+
+		// Add video/audio attributes.
+		$media_attrs = array_merge(
+			$global_attrs,
+			array(
+				'src'         => true,
+				'autoplay'    => true,
+				'controls'    => true,
+				'loop'        => true,
+				'muted'       => true,
+				'playsinline' => true,
+				'poster'      => true,
+				'preload'     => true,
+				'width'       => true,
+				'height'      => true,
+			)
+		);
+
+		$allowed['video'] = $media_attrs;
+		$allowed['audio'] = $media_attrs;
+		$allowed['source'] = array(
+			'src'   => true,
+			'type'  => true,
+			'media' => true,
+		);
+
+		self::$block_allowed_html = $allowed;
+		return self::$block_allowed_html;
+	}
+
+	/**
+	 * Sanitize block content.
+	 *
+	 * Uses an extended allowed tags list to preserve legitimate block content
+	 * (SVG, flex/grid CSS, tabindex) while filtering XSS vectors.
+	 *
+	 * @param string $content The content to sanitize.
+	 * @return string Sanitized content.
+	 */
+	public static function sanitize_block_content( $content ) {
+		if ( ! is_string( $content ) ) {
+			return '';
+		}
+
+		// Use wp_kses with our extended allowed tags.
+		return wp_kses( $content, self::get_block_allowed_html() );
 	}
 
 	/**
@@ -58,9 +252,7 @@ class Draft_Mode_REST {
 					'content' => array(
 						'required'          => false,
 						'type'              => 'string',
-						// Note: Block content should NOT use wp_kses_post as it strips CSS properties
-						// (display:flex, display:grid), SVG elements, and attributes (tabindex).
-						// WordPress blocks have their own validation through the block parser.
+						'sanitize_callback' => array( __CLASS__, 'sanitize_block_content' ),
 						'description'       => __( 'Optional content to use instead of published content (captures unsaved edits).', 'designsetgo' ),
 					),
 					'title' => array(
@@ -72,9 +264,7 @@ class Draft_Mode_REST {
 					'excerpt' => array(
 						'required'          => false,
 						'type'              => 'string',
-						// Note: Block content should NOT use wp_kses_post as it strips CSS properties
-						// (display:flex, display:grid), SVG elements, and attributes (tabindex).
-						// WordPress blocks have their own validation through the block parser.
+						'sanitize_callback' => 'sanitize_textarea_field',
 						'description'       => __( 'Optional excerpt to use instead of published excerpt.', 'designsetgo' ),
 					),
 				),
