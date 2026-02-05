@@ -1,104 +1,100 @@
 /**
- * Custom hook for scanning headings in the editor
+ * Custom hook for scanning headings in the editor.
+ *
+ * Reads heading data directly from the block store rather than querying
+ * the DOM, which avoids issues with the iframe-based editor in WP 6.x+.
  */
-import { useEffect, useState } from '@wordpress/element';
+import { useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
 /**
- * Scan the editor for headings based on the selected levels
+ * Strip HTML tags from a rich-text content string.
+ *
+ * @param {string} html - Raw rich-text HTML string
+ * @return {string} Plain text
+ */
+function stripHTML(html) {
+	if (!html) {
+		return '';
+	}
+	return html.replace(/<[^>]+>/g, '').trim();
+}
+
+/**
+ * Recursively collect core/heading blocks from a block tree.
+ *
+ * @param {Array} blocks        - Top-level (or inner) blocks array
+ * @param {Set}   enabledLevels - Set of enabled heading level numbers (2–6)
+ * @param {Array} result        - Accumulator array
+ * @return {Array} Flat list of heading objects { level, text, id }
+ */
+function collectHeadings(blocks, enabledLevels, result = []) {
+	for (const block of blocks) {
+		if (
+			block.name === 'core/heading' &&
+			enabledLevels.has(block.attributes?.level)
+		) {
+			const text = stripHTML(block.attributes?.content);
+			if (text) {
+				const id =
+					block.attributes?.anchor ||
+					`preview-${text
+						.toLowerCase()
+						.replace(/[^a-z0-9]+/g, '-')
+						.substring(0, 30)}-${result.length}`;
+				result.push({
+					level: block.attributes.level,
+					text,
+					id,
+				});
+			}
+		}
+
+		// Recurse into nested blocks (groups, columns, etc.)
+		if (block.innerBlocks?.length) {
+			collectHeadings(block.innerBlocks, enabledLevels, result);
+		}
+	}
+	return result;
+}
+
+/**
+ * Scan the editor for headings based on the selected levels.
  *
  * @param {Object} levelFlags - Object with includeH2-H6 boolean flags
  * @return {Array} Array of heading objects
  */
 export function useHeadingScanner(levelFlags) {
-	const [previewHeadings, setPreviewHeadings] = useState([]);
-
 	// Subscribe to block changes in the editor
-	const { blocks } = useSelect(
-		(select) => ({
-			blocks: select(blockEditorStore).getBlocks(),
-		}),
+	const blocks = useSelect(
+		(select) => select(blockEditorStore).getBlocks(),
 		[]
 	);
 
-	useEffect(() => {
-		const scanEditorHeadings = () => {
-			try {
-				const headings = [];
-				const levels = [];
+	const headings = useMemo(() => {
+		const enabledLevels = new Set();
+		if (levelFlags.includeH2) {
+			enabledLevels.add(2);
+		}
+		if (levelFlags.includeH3) {
+			enabledLevels.add(3);
+		}
+		if (levelFlags.includeH4) {
+			enabledLevels.add(4);
+		}
+		if (levelFlags.includeH5) {
+			enabledLevels.add(5);
+		}
+		if (levelFlags.includeH6) {
+			enabledLevels.add(6);
+		}
 
-				// Build levels array from flags
-				if (levelFlags.includeH2) {
-					levels.push('h2');
-				}
-				if (levelFlags.includeH3) {
-					levels.push('h3');
-				}
-				if (levelFlags.includeH4) {
-					levels.push('h4');
-				}
-				if (levelFlags.includeH5) {
-					levels.push('h5');
-				}
-				if (levelFlags.includeH6) {
-					levels.push('h6');
-				}
+		if (enabledLevels.size === 0) {
+			return [];
+		}
 
-				if (levels.length === 0) {
-					setPreviewHeadings([]);
-					return;
-				}
-
-				// Search in editor content
-				const editorContent = document.querySelector(
-					'.editor-styles-wrapper'
-				);
-				if (!editorContent) {
-					setPreviewHeadings([]);
-					return;
-				}
-
-				// Create a single selector for all heading levels
-				const selector = levels.join(', ');
-				editorContent
-					.querySelectorAll(selector)
-					.forEach((heading, index) => {
-						// Skip if this heading is inside a TOC block
-						if (heading.closest('.dsgo-table-of-contents')) {
-							return;
-						}
-
-						const text = heading.textContent?.trim();
-						if (!text) {
-							return;
-						}
-
-						// Use existing ID or generate a preview one
-						let id = heading.id;
-						if (!id) {
-							id = `preview-${text
-								.toLowerCase()
-								.replace(/[^a-z0-9]+/g, '-')
-								.substring(0, 30)}-${index}`;
-						}
-
-						headings.push({
-							level: parseInt(heading.tagName.replace('H', '')),
-							text,
-							id,
-						});
-					});
-
-				setPreviewHeadings(headings);
-			} catch (error) {
-				// eslint-disable-next-line no-console
-				console.error('[DSG TOC] Error scanning headings:', error);
-				setPreviewHeadings([]);
-			}
-		};
-
-		scanEditorHeadings();
+		return collectHeadings(blocks, enabledLevels);
 	}, [
 		blocks,
 		levelFlags.includeH2,
@@ -108,5 +104,5 @@ export function useHeadingScanner(levelFlags) {
 		levelFlags.includeH6,
 	]);
 
-	return previewHeadings;
+	return headings;
 }
