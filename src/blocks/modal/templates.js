@@ -261,7 +261,7 @@ export const modalTemplates = [
 						},
 					],
 					[
-						'designsetgo/form-textarea',
+						'designsetgo/form-textarea-field',
 						{
 							label: __('Message', 'designsetgo'),
 							placeholder: 'Your message...',

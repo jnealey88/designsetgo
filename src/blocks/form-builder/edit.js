@@ -111,7 +111,7 @@ export default function FormBuilderEdit({
 				allowedBlocks: [
 					'designsetgo/form-text-field',
 					'designsetgo/form-email-field',
-					'designsetgo/form-textarea',
+					'designsetgo/form-textarea-field',
 					'designsetgo/form-number-field',
 					'designsetgo/form-phone-field',
 					'designsetgo/form-url-field',
@@ -139,7 +139,7 @@ export default function FormBuilderEdit({
 						},
 					],
 					[
-						'designsetgo/form-textarea',
+						'designsetgo/form-textarea-field',
 						{
 							label: __('Message', 'designsetgo'),
 							fieldName: 'message',

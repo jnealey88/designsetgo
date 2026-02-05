@@ -256,7 +256,7 @@ class Insert_Form_Builder extends Abstract_Ability {
 					),
 				),
 				array(
-					'name'       => 'designsetgo/form-textarea',
+					'name'       => 'designsetgo/form-textarea-field',
 					'attributes' => array(
 						'label'       => __( 'Message', 'designsetgo' ),
 						'placeholder' => __( 'Your message...', 'designsetgo' ),
@@ -288,7 +288,7 @@ class Insert_Form_Builder extends Abstract_Ability {
 			'text'     => 'designsetgo/form-text-field',
 			'email'    => 'designsetgo/form-email-field',
 			'phone'    => 'designsetgo/form-phone-field',
-			'textarea' => 'designsetgo/form-textarea',
+			'textarea' => 'designsetgo/form-textarea-field',
 			'select'   => 'designsetgo/form-select-field',
 			'checkbox' => 'designsetgo/form-checkbox-field',
 			'number'   => 'designsetgo/form-number-field',
