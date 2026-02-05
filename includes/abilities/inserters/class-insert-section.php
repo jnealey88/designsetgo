@@ -303,6 +303,40 @@ class Insert_Section extends Abstract_Ability {
 									),
 								),
 							),
+
+							// Responsive spacing overrides.
+							'dsgoResponsiveSpacing' => array(
+								'type'        => 'object',
+								'description' => __( 'Responsive spacing overrides for tablet (max-width: 1023px) and mobile (max-width: 767px). Desktop spacing is set via style.spacing. Tablet inherits desktop, mobile inherits tablet, unless overridden. Values accept CSS units (e.g., "20px", "2rem") or WordPress presets (e.g., "var:preset|spacing|md").', 'designsetgo' ),
+								'properties'  => array(
+									'tablet' => array(
+										'type'       => 'object',
+										'properties' => array(
+											'padding' => array(
+												'type'        => 'object',
+												'description' => __( 'Tablet padding (top, right, bottom, left)', 'designsetgo' ),
+											),
+											'margin'  => array(
+												'type'        => 'object',
+												'description' => __( 'Tablet margin (top, right, bottom, left)', 'designsetgo' ),
+											),
+										),
+									),
+									'mobile' => array(
+										'type'       => 'object',
+										'properties' => array(
+											'padding' => array(
+												'type'        => 'object',
+												'description' => __( 'Mobile padding (top, right, bottom, left)', 'designsetgo' ),
+											),
+											'margin'  => array(
+												'type'        => 'object',
+												'description' => __( 'Mobile margin (top, right, bottom, left)', 'designsetgo' ),
+											),
+										),
+									),
+								),
+							),
 						),
 					),
 					'innerBlocks' => array(
