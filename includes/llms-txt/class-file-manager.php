@@ -158,7 +158,19 @@ class File_Manager {
 			return wp_mkdir_p( $dir );
 		}
 
-		return is_dir( $dir ) && is_writable( $dir );
+		if ( ! is_dir( $dir ) ) {
+			return false;
+		}
+
+		// Use WP_Filesystem for writability check, with fallback to native function.
+		global $wp_filesystem;
+		if ( ! $wp_filesystem ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Fallback when WP_Filesystem fails.
+		return $wp_filesystem ? $wp_filesystem->is_writable( $dir ) : is_writable( $dir );
 	}
 
 	/**

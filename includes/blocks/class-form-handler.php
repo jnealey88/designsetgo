@@ -839,11 +839,7 @@ class Form_Handler {
 		// Note: enable_email is already sanitized to boolean by rest_sanitize_boolean.
 		$enable_email = $request->get_param( 'enable_email' );
 
-		// Debug logging.
-		error_log( sprintf( 'DesignSetGo Form: Email notification check - enable_email=%s', var_export( $enable_email, true ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-
 		if ( ! $enable_email ) {
-			error_log( 'DesignSetGo Form: Email notifications disabled, skipping email' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			return;
 		}
 
@@ -964,15 +960,8 @@ class Form_Handler {
 			}
 		}
 
-		// Debug: Log email attempt with full details.
-		error_log( sprintf( 'DesignSetGo Form: Sending email - To: %s, From: %s <%s>, Subject: %s', $email_to, $email_from_name, $email_from, $email_subject ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-		error_log( sprintf( 'DesignSetGo Form: Headers: %s', implode( ' | ', $headers ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-
-		// Send email and log the result.
+		// Send email.
 		$email_sent = wp_mail( $email_to, $email_subject, $email_body, $headers );
-
-		// Debug: Log email result.
-		error_log( sprintf( 'DesignSetGo Form: wp_mail() returned: %s', $email_sent ? 'TRUE (success)' : 'FALSE (failed)' ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 
 		// Store email delivery status in submission meta.
 		update_post_meta( $submission_id, '_dsg_email_sent', $email_sent ? 'yes' : 'no' );

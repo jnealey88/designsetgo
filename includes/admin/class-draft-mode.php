@@ -218,11 +218,7 @@ class Draft_Mode {
 		// Step 3: Update featured image.
 		$draft_thumbnail = get_post_thumbnail_id( $draft_id );
 		if ( $draft_thumbnail ) {
-			$thumbnail_result = set_post_thumbnail( $original_id, $draft_thumbnail );
-			if ( ! $thumbnail_result ) {
-				// Log error but continue - featured image is not critical.
-				error_log( sprintf( 'Draft Mode: Failed to set thumbnail for post %d', $original_id ) );
-			}
+			set_post_thumbnail( $original_id, $draft_thumbnail );
 		} else {
 			delete_post_thumbnail( $original_id );
 		}
@@ -242,13 +238,7 @@ class Draft_Mode {
 
 		// Step 5: Delete the draft post.
 		// If this fails, at least the relationship meta has been cleaned up.
-		$delete_result = wp_delete_post( $draft_id, true );
-
-		if ( ! $delete_result ) {
-			// Log the error but don't fail the entire operation since the content
-			// has already been merged successfully.
-			error_log( sprintf( 'Draft Mode: Failed to delete draft post %d after publishing. Manual cleanup may be required.', $draft_id ) );
-		}
+		wp_delete_post( $draft_id, true );
 
 		return $original_id;
 	}
