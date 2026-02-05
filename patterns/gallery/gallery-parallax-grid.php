@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'title'      => __( 'Gallery Parallax Grid', 'designsetgo' ),
 	'categories' => array( 'dsgo-gallery' ),
-	'content'    => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"backgroundColor":"contrast","textColor":"base"} -->
+	'content'    => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"backgroundColor":"contrast","textColor":"base","metadata":{"categories":["dsgo-gallery"],"patternName":"designsetgo/gallery/gallery-parallax-grid","name":"Gallery Parallax Grid"}} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-color has-contrast-background-color has-text-color has-background" style="padding-top:var(--wp--preset--spacing--80);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--80);padding-left:var(--wp--preset--spacing--30)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/section {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|60"},"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack" style="margin-bottom:var(--wp--preset--spacing--60);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:paragraph {"align":"center","style":{"typography":{"textTransform":"uppercase","letterSpacing":"3px"},"color":{"text":"#6366f1"}},"fontSize":"small"} -->
 <p class="has-text-align-center has-text-color has-small-font-size" style="color:#6366f1;letter-spacing:3px;text-transform:uppercase">Our Work</p>
@@ -27,7 +27,7 @@ return array(
 <!-- /wp:paragraph --></div></div>
 <!-- /wp:designsetgo/section -->
 
-<!-- wp:designsetgo/grid {"desktopColumns":3,"tabletColumns":2,"style":{"spacing":{"blockGap":"var:preset|spacing|30","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
+<!-- wp:designsetgo/grid {"style":{"spacing":{"blockGap":"var:preset|spacing|30","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
 <div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-3 dsgo-grid-cols-tablet-2 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(3, 1fr);align-items:stretch;row-gap:var(--wp--preset--spacing--30);column-gap:var(--wp--preset--spacing--30)"><!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"dsgoAnimationEnabled":true,"dsgoEntranceAnimation":"fadeInUp","dsgoAnimationDuration":500} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack has-dsgo-animation dsgo-animation-fadeInUp" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-dsgo-animation-enabled="true" data-dsgo-entrance-animation="fadeInUp" data-dsgo-exit-animation="" data-dsgo-animation-trigger="scroll" data-dsgo-animation-duration="500" data-dsgo-animation-delay="0" data-dsgo-animation-easing="ease-out" data-dsgo-animation-offset="100" data-dsgo-animation-once="true"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"12px"}},"dsgoParallaxEnabled":true,"dsgoParallaxSpeed":3} -->
 <figure class="wp-block-image size-large has-custom-border dsgo-has-parallax" data-dsgo-parallax-enabled="true" data-dsgo-parallax-direction="up" data-dsgo-parallax-speed="3" data-dsgo-parallax-viewport-start="0" data-dsgo-parallax-viewport-end="100" data-dsgo-parallax-relative-to="viewport" data-dsgo-parallax-desktop="true" data-dsgo-parallax-tablet="true" data-dsgo-parallax-mobile="false"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&amp;h=500&amp;fit=crop" alt="Project showcase" style="border-radius:12px"/></figure>
@@ -71,7 +71,7 @@ return array(
 <!-- /wp:designsetgo/section -->
 
 <!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"dsgoAnimationEnabled":true,"dsgoEntranceAnimation":"fadeInUp","dsgoAnimationDuration":500,"dsgoAnimationDelay":300} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack has-dsgo-animation dsgo-animation-fadeInUp" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-dsgo-animation-enabled="true" data-dsgo-entrance-animation="fadeInUp" data-dsgo-exit-animation="" data-dsgo-animation-trigger="scroll" data-dsgo-animation-duration="500" data-dsgo-animation-delay="300" data-dsgo-animation-easing="ease-out" data-dsgo-animation-offset="100" data-dsgo-animation-once="true"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"12px"}},"dsgoParallaxEnabled":true,"dsgoParallaxSpeed":5} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack has-dsgo-animation dsgo-animation-fadeInUp" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-dsgo-animation-enabled="true" data-dsgo-entrance-animation="fadeInUp" data-dsgo-exit-animation="" data-dsgo-animation-trigger="scroll" data-dsgo-animation-duration="500" data-dsgo-animation-delay="300" data-dsgo-animation-easing="ease-out" data-dsgo-animation-offset="100" data-dsgo-animation-once="true"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"12px"}},"dsgoParallaxEnabled":true} -->
 <figure class="wp-block-image size-large has-custom-border dsgo-has-parallax" data-dsgo-parallax-enabled="true" data-dsgo-parallax-direction="up" data-dsgo-parallax-speed="5" data-dsgo-parallax-viewport-start="0" data-dsgo-parallax-viewport-end="100" data-dsgo-parallax-relative-to="viewport" data-dsgo-parallax-desktop="true" data-dsgo-parallax-tablet="true" data-dsgo-parallax-mobile="false"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&amp;h=550&amp;fit=crop" alt="Project showcase" style="border-radius:12px"/></figure>
 <!-- /wp:image -->
 
@@ -80,7 +80,7 @@ return array(
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"style":{"color":{"text":"#94a3b8"}},"fontSize":"small"} -->
-<p class="has-text-color has-small-font-size" style="color:#94a3b8">iOS & Android</p>
+<p class="has-text-color has-small-font-size" style="color:#94a3b8">iOS &amp; Android</p>
 <!-- /wp:paragraph --></div></div>
 <!-- /wp:designsetgo/section -->
 
