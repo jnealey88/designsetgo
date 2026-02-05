@@ -362,4 +362,419 @@ class Test_Draft_Mode_REST extends WP_UnitTestCase {
 		wp_set_current_user( $this->subscriber_id );
 		$this->assertFalse( $this->rest_api->check_read_permission() );
 	}
+
+	/**
+	 * Test that block content with CSS display property is preserved.
+	 *
+	 * Regression test for wp_kses_post stripping display:flex from block content.
+	 *
+	 * @ticket DSGO-BLOCK-VALIDATION
+	 */
+	public function test_create_draft_preserves_display_flex_in_block_content() {
+		wp_set_current_user( $this->editor_id );
+
+		// Block content with display:flex that wp_kses_post would strip.
+		$block_content = '<!-- wp:designsetgo/row -->
+<div class="wp-block-designsetgo-row dsgo-flex"><div class="dsgo-flex__inner" style="display:flex;justify-content:center;flex-wrap:wrap;gap:20px"><!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/row -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $block_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify display:flex is preserved.
+		$this->assertStringContainsString( 'display:flex', $draft->post_content, 'display:flex should be preserved in block content' );
+	}
+
+	/**
+	 * Test that block content with CSS display:grid is preserved.
+	 *
+	 * Regression test for wp_kses_post stripping display:grid from block content.
+	 *
+	 * @ticket DSGO-BLOCK-VALIDATION
+	 */
+	public function test_create_draft_preserves_display_grid_in_block_content() {
+		wp_set_current_user( $this->editor_id );
+
+		$block_content = '<!-- wp:designsetgo/grid -->
+<div class="wp-block-designsetgo-grid dsgo-grid"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:20px"><!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/grid -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $block_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify display:grid is preserved.
+		$this->assertStringContainsString( 'display:grid', $draft->post_content, 'display:grid should be preserved in block content' );
+	}
+
+	/**
+	 * Test that block content with SVG elements is preserved.
+	 *
+	 * Regression test for wp_kses_post stripping SVG from shape dividers.
+	 *
+	 * @ticket DSGO-BLOCK-VALIDATION
+	 */
+	public function test_create_draft_preserves_svg_in_block_content() {
+		wp_set_current_user( $this->editor_id );
+
+		$block_content = '<!-- wp:designsetgo/section {"shapeDividerBottom":"wave"} -->
+<div class="wp-block-designsetgo-section dsgo-stack"><div class="dsgo-shape-divider dsgo-shape-divider--bottom"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0 C300,120 900,0 1200,80 L1200,120 L0,120 Z"></path></svg></div></div>
+<!-- /wp:designsetgo/section -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $block_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify SVG content is preserved.
+		$this->assertStringContainsString( '<svg', $draft->post_content, 'SVG element should be preserved in block content' );
+		$this->assertStringContainsString( '<path', $draft->post_content, 'SVG path element should be preserved in block content' );
+	}
+
+	/**
+	 * Test that block content with inline-flex display is preserved.
+	 *
+	 * Regression test for wp_kses_post stripping display:inline-flex from buttons.
+	 *
+	 * @ticket DSGO-BLOCK-VALIDATION
+	 */
+	public function test_create_draft_preserves_inline_flex_in_block_content() {
+		wp_set_current_user( $this->editor_id );
+
+		$block_content = '<!-- wp:designsetgo/icon-button {"text":"Click me"} -->
+<a class="wp-block-designsetgo-icon-button dsgo-icon-button" style="display:inline-flex;align-items:center;justify-content:center;gap:8px" href="#">Click me</a>
+<!-- /wp:designsetgo/icon-button -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $block_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify display:inline-flex is preserved.
+		$this->assertStringContainsString( 'display:inline-flex', $draft->post_content, 'display:inline-flex should be preserved in block content' );
+	}
+
+	/**
+	 * Test that block content with tabindex attribute is preserved.
+	 *
+	 * Regression test for wp_kses_post stripping tabindex from interactive elements.
+	 *
+	 * @ticket DSGO-BLOCK-VALIDATION
+	 */
+	public function test_create_draft_preserves_tabindex_in_block_content() {
+		wp_set_current_user( $this->editor_id );
+
+		$block_content = '<!-- wp:designsetgo/image-accordion-item -->
+<div class="wp-block-designsetgo-image-accordion-item dsgo-image-accordion-item" role="button" tabindex="0"><div class="dsgo-image-accordion-item__content"><!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/image-accordion-item -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $block_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify tabindex is preserved.
+		$this->assertStringContainsString( 'tabindex="0"', $draft->post_content, 'tabindex attribute should be preserved in block content' );
+	}
+
+	/**
+	 * Test that script tags are filtered from block content.
+	 *
+	 * Security test to verify XSS prevention.
+	 *
+	 * @ticket DSGO-SECURITY
+	 */
+	public function test_create_draft_filters_script_tags() {
+		wp_set_current_user( $this->editor_id );
+
+		$malicious_content = '<!-- wp:paragraph -->
+<p>Hello</p>
+<!-- /wp:paragraph -->
+<script>alert("XSS")</script>
+<!-- wp:paragraph -->
+<p>World</p>
+<!-- /wp:paragraph -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $malicious_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify script tag is removed.
+		$this->assertStringNotContainsString( '<script', $draft->post_content, 'Script tags should be filtered from content' );
+		$this->assertStringNotContainsString( 'alert(', $draft->post_content, 'Script content should be filtered' );
+		// But legitimate content should be preserved.
+		$this->assertStringContainsString( '<p>Hello</p>', $draft->post_content, 'Legitimate content should be preserved' );
+		$this->assertStringContainsString( '<p>World</p>', $draft->post_content, 'Legitimate content should be preserved' );
+	}
+
+	/**
+	 * Test that onclick event handlers are filtered from block content.
+	 *
+	 * Security test to verify XSS prevention via event handlers.
+	 *
+	 * @ticket DSGO-SECURITY
+	 */
+	public function test_create_draft_filters_onclick_handlers() {
+		wp_set_current_user( $this->editor_id );
+
+		$malicious_content = '<!-- wp:paragraph -->
+<p onclick="alert(\'XSS\')">Click me</p>
+<!-- /wp:paragraph -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $malicious_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify onclick is removed.
+		$this->assertStringNotContainsString( 'onclick', $draft->post_content, 'onclick handler should be filtered from content' );
+		// But the paragraph should be preserved.
+		$this->assertStringContainsString( '<p', $draft->post_content, 'Paragraph tag should be preserved' );
+		$this->assertStringContainsString( 'Click me', $draft->post_content, 'Text content should be preserved' );
+	}
+
+	/**
+	 * Test that onerror event handlers on images are filtered.
+	 *
+	 * Security test to verify XSS prevention via img onerror.
+	 *
+	 * @ticket DSGO-SECURITY
+	 */
+	public function test_create_draft_filters_onerror_handlers() {
+		wp_set_current_user( $this->editor_id );
+
+		$malicious_content = '<!-- wp:image -->
+<figure class="wp-block-image"><img src="invalid.jpg" onerror="alert(\'XSS\')" alt="Test" /></figure>
+<!-- /wp:image -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $malicious_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify onerror is removed.
+		$this->assertStringNotContainsString( 'onerror', $draft->post_content, 'onerror handler should be filtered from content' );
+		// But the image should be preserved.
+		$this->assertStringContainsString( '<img', $draft->post_content, 'Image tag should be preserved' );
+		$this->assertStringContainsString( 'src="invalid.jpg"', $draft->post_content, 'Image src should be preserved' );
+	}
+
+	/**
+	 * Test that javascript: URLs in href are filtered.
+	 *
+	 * Security test to verify XSS prevention via javascript: protocol.
+	 *
+	 * @ticket DSGO-SECURITY
+	 */
+	public function test_create_draft_filters_javascript_urls() {
+		wp_set_current_user( $this->editor_id );
+
+		$malicious_content = '<!-- wp:paragraph -->
+<p><a href="javascript:alert(\'XSS\')">Click me</a></p>
+<!-- /wp:paragraph -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $malicious_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify javascript: URL is removed or sanitized.
+		$this->assertStringNotContainsString( 'javascript:', $draft->post_content, 'javascript: URLs should be filtered from content' );
+		// But the anchor and text should be preserved.
+		$this->assertStringContainsString( 'Click me', $draft->post_content, 'Link text should be preserved' );
+	}
+
+	/**
+	 * Test that onload handlers on SVG are filtered while preserving SVG.
+	 *
+	 * Security test to verify XSS prevention while allowing legitimate SVG.
+	 *
+	 * @ticket DSGO-SECURITY
+	 */
+	public function test_create_draft_filters_svg_onload_handlers() {
+		wp_set_current_user( $this->editor_id );
+
+		$malicious_content = '<!-- wp:designsetgo/section -->
+<div class="wp-block-designsetgo-section"><svg onload="alert(\'XSS\')" viewBox="0 0 100 100"><path d="M0,0 L100,100"></path></svg></div>
+<!-- /wp:designsetgo/section -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $malicious_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify onload is removed.
+		$this->assertStringNotContainsString( 'onload', $draft->post_content, 'onload handler should be filtered from SVG' );
+		// But legitimate SVG content should be preserved.
+		$this->assertStringContainsString( '<svg', $draft->post_content, 'SVG element should be preserved' );
+		$this->assertStringContainsString( '<path', $draft->post_content, 'SVG path should be preserved' );
+		$this->assertStringContainsString( 'viewBox', $draft->post_content, 'SVG viewBox should be preserved' );
+	}
+
+	/**
+	 * Test that legitimate block content with flex AND sanitization works together.
+	 *
+	 * Integration test: ensures security sanitization doesn't break legitimate content.
+	 *
+	 * @ticket DSGO-SECURITY
+	 */
+	public function test_create_draft_preserves_flex_while_filtering_xss() {
+		wp_set_current_user( $this->editor_id );
+
+		// Content with both legitimate flex styling and XSS attempt.
+		$mixed_content = '<!-- wp:designsetgo/row -->
+<div class="wp-block-designsetgo-row dsgo-flex" onclick="alert(\'XSS\')"><div class="dsgo-flex__inner" style="display:flex;justify-content:center"><!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/row -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $mixed_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Security: onclick should be removed.
+		$this->assertStringNotContainsString( 'onclick', $draft->post_content, 'onclick should be filtered' );
+		// Functionality: display:flex should be preserved.
+		$this->assertStringContainsString( 'display:flex', $draft->post_content, 'display:flex should be preserved' );
+		$this->assertStringContainsString( 'justify-content:center', $draft->post_content, 'Other flex properties should be preserved' );
+	}
+
+	/**
+	 * Test that excerpt is properly sanitized.
+	 *
+	 * Security test to verify excerpt uses sanitize_textarea_field.
+	 *
+	 * @ticket DSGO-SECURITY
+	 */
+	public function test_create_draft_sanitizes_excerpt() {
+		wp_set_current_user( $this->editor_id );
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'excerpt', '<script>alert("XSS")</script>Safe text with line
+breaks' );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify script tag is stripped.
+		$this->assertStringNotContainsString( '<script', $draft->post_excerpt, 'Script tags should be stripped from excerpt' );
+		// Verify safe text is preserved (sanitize_textarea_field preserves line breaks).
+		$this->assertStringContainsString( 'Safe text', $draft->post_excerpt, 'Safe text should be preserved' );
+	}
+
+	/**
+	 * Test sanitize_block_content method directly.
+	 *
+	 * Unit test for the static sanitization method.
+	 *
+	 * @ticket DSGO-SECURITY
+	 */
+	public function test_sanitize_block_content_method() {
+		// Test script removal.
+		$result = Draft_Mode_REST::sanitize_block_content( '<p>Hello</p><script>alert("XSS")</script>' );
+		$this->assertStringNotContainsString( '<script', $result );
+		$this->assertStringContainsString( '<p>Hello</p>', $result );
+
+		// Test event handler removal.
+		$result = Draft_Mode_REST::sanitize_block_content( '<div onclick="evil()">Test</div>' );
+		$this->assertStringNotContainsString( 'onclick', $result );
+		$this->assertStringContainsString( '<div', $result );
+		$this->assertStringContainsString( 'Test', $result );
+
+		// Test SVG preservation.
+		$result = Draft_Mode_REST::sanitize_block_content( '<svg viewBox="0 0 100 100"><path d="M0,0"></path></svg>' );
+		$this->assertStringContainsString( '<svg', $result );
+		$this->assertStringContainsString( '<path', $result );
+		$this->assertStringContainsString( 'viewBox', $result );
+
+		// Test style with flex preservation.
+		$result = Draft_Mode_REST::sanitize_block_content( '<div style="display:flex;gap:10px">Test</div>' );
+		$this->assertStringContainsString( 'display:flex', $result );
+
+		// Test tabindex preservation.
+		$result = Draft_Mode_REST::sanitize_block_content( '<div tabindex="0" role="button">Test</div>' );
+		$this->assertStringContainsString( 'tabindex="0"', $result );
+		$this->assertStringContainsString( 'role="button"', $result );
+
+		// Test non-string input.
+		$result = Draft_Mode_REST::sanitize_block_content( null );
+		$this->assertEquals( '', $result );
+
+		$result = Draft_Mode_REST::sanitize_block_content( 123 );
+		$this->assertEquals( '', $result );
+	}
 }
