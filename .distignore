@@ -1,150 +1,149 @@
 # .distignore - Files to exclude from WordPress.org SVN deployment
 
-# Development files
+# ===================
+# Version Control
+# ===================
 /.git
-/.github
 /.gitignore
 /.gitattributes
 
-# Node and dependencies
+# ===================
+# GitHub/CI
+# ===================
+/.github
+
+# ===================
+# Node/NPM
+# ===================
 /node_modules
-/package-lock.json
+package.json
+package-lock.json
 /.npm
 /.npmrc
 
-# Build source files (only include /build/)
+# ===================
+# Source Files
+# ===================
 /src
+/assets-src
 
+# ===================
+# Build Tools
+# ===================
+webpack.config.js
+tsconfig.json
+lint-staged.config.js
+
+# ===================
 # Testing
+# ===================
 /tests
 /playwright-report
 /test-results
 /.playwright
-/playwright.config.js
-/phpunit.xml
+playwright.config.js
+phpunit.xml
 /.phpunit.result.cache
 
-# WordPress environment
+# ===================
+# WordPress Dev Environment
+# ===================
 /.wp-env.json
 /wordpress
 
-# Claude AI files
+# ===================
+# Claude AI
+# ===================
 /.claude
 
-# Build artifacts and deployment
-/bin
-/deployment-package
-
-# Documentation (ALL .md files except readme.txt)
+# ===================
+# Documentation
+# ===================
 /docs
-README.md
 *.md
 !readme.txt
-CLAUDE.md
-PRD.md
-DEVELOPMENT-STATUS.md
-REFACTORING-*.md
-MAINTAINABILITY-*.md
-CODE-AUDIT-REPORT.md
-SECURITY-REVIEW.md
-DEV-PHASE-*.md
-CONTROL-REORGANIZATION.md
-WORDPRESS-ORG-SUBMISSION-CHECKLIST.md
-SUBMISSION-TODO.md
 
-# Backup files
+# ===================
+# Composer
+# ===================
+composer.json
+composer.lock
+/vendor/bin
+/vendor/phpstan
+/vendor/phpunit
+
+# ===================
+# Linting/Formatting
+# ===================
+.eslintrc*
+.eslintignore
+.stylelintrc*
+.prettierrc*
+.prettierignore
+.editorconfig
+phpcs.xml.dist
+phpstan.neon
+psalm.xml
+
+# ===================
+# IDE/Editor
+# ===================
+/.vscode
+/.idea
+*.sublime-project
+*.sublime-workspace
+
+# ===================
+# OS Files
+# ===================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ===================
+# Temporary/Cache
+# ===================
+/tmp
+/temp
+/.cache
+*.log
+npm-debug.log*
+
+# ===================
+# Backups
+# ===================
 *.backup
 *.bak
 *.sql
 *.db
-
-# IDE and editor files
-.vscode
-.idea
-*.sublime-project
-*.sublime-workspace
-.DS_Store
-
-# Linting and formatting
-.eslintrc.js
-.eslintignore
-.stylelintrc.json
-.prettierrc
-.prettierignore
-.editorconfig
-
-# Composer (dev dependencies)
-composer.json
-composer.lock
-vendor/bin
-vendor/phpstan
-vendor/phpunit
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# OS files
-Thumbs.db
-.DS_Store
-*.swp
-*.swo
-
-# Temporary files
-tmp
-temp
-.cache
-
-# Husky (git hooks)
-.husky
-
-# Asset source files (keep only optimized assets)
-assets-src
-
-# Backup of edited files
 *.js.backup
 *.php.backup
 
-# Build scripts
-webpack.config.js
-tsconfig.json
+# ===================
+# Git Hooks
+# ===================
+/.husky
 
-# Documentation files (keep only readme.txt for WordPress.org)
-README.md
-docs
-*.md
+# ===================
+# Build/Deployment Artifacts
+# ===================
+/bin
+/deployment-package
 
-# Environment and CI/CD
+# ===================
+# Environment
+# ===================
 .env
 .env.*
-.github
-.git
-.gitignore
-.gitattributes
 
-# Package files (not needed in distribution)
-package.json
-package-lock.json
-composer.json
-composer.lock
-
-# Assets folder (handled separately by .wordpress-org, exclude from trunk)
+# ===================
+# WordPress.org Assets (handled by .wordpress-org)
+# ===================
 /assets
 
-# Translation source files (only include compiled .mo files)
+# ===================
+# Translation Sources
+# ===================
 languages/*.po
 languages/*.pot
-
-# Development tools
-.husky
-.vscode
-.idea
-lint-staged.config.js
-.eslintrc*
-.stylelintrc*
-.prettierrc*
-phpcs.xml.dist
-phpstan.neon
-psalm.xml

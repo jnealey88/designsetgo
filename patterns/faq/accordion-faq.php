@@ -7,6 +7,8 @@
  * Keywords: faq, accordion, questions, help, support
  */
 
+defined( 'ABSPATH' ) || exit;
+
 return array(
 	'title'      => __( 'FAQ Accordion', 'designsetgo' ),
 	'categories' => array( 'dsgo-faq' ),

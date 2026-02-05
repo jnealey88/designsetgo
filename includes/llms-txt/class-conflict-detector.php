@@ -52,12 +52,22 @@ class Conflict_Detector {
 
 		$parent_dir = dirname( $file_path );
 
+		// Use WP_Filesystem for writability checks.
+		global $wp_filesystem;
+		if ( ! $wp_filesystem ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
+
+		$file_writable = $wp_filesystem ? $wp_filesystem->is_writable( $file_path ) : false;
+		$dir_writable  = $wp_filesystem ? $wp_filesystem->is_writable( $parent_dir ) : false;
+
 		return array(
 			'path'       => $file_path,
 			'size'       => filesize( $file_path ),
 			'modified'   => filemtime( $file_path ),
-			'writable'   => is_writable( $file_path ),
-			'renameable' => is_writable( $file_path ) && is_writable( $parent_dir ),
+			'writable'   => $file_writable,
+			'renameable' => $file_writable && $dir_writable,
 		);
 	}
 
