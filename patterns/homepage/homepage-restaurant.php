@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'title'      => __( 'Restaurant / Local Business Homepage', 'designsetgo' ),
 	'categories' => array( 'dsgo-homepage' ),
+	'viewportWidth' => 1200,
 	'content'    => '<!-- wp:cover {"url":"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600\u0026h=900\u0026fit=crop","alt":"Restaurant interior","dimRatio":60,"overlayColor":"contrast","minHeight":600,"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}}} -->
 <div class="wp-block-cover alignfull" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80);min-height:600px"><img class="wp-block-cover__image-background" alt="Restaurant interior" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&amp;h=900&amp;fit=crop" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-contrast-background-color has-background-dim-60 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:group {"layout":{"type":"constrained","contentSize":"700px"}} -->
 <div class="wp-block-group"><!-- wp:paragraph {"align":"center","style":{"typography":{"textTransform":"uppercase","letterSpacing":"4px"}},"textColor":"base","fontSize":"small"} -->

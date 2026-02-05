@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'title'      => __( 'Luxury Real Estate Homepage', 'designsetgo' ),
 	'categories' => array( 'dsgo-homepage' ),
+	'viewportWidth' => 1200,
 	'content'    => '<!-- wp:cover {"url":"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1800\u0026h=1000\u0026fit=crop","alt":"Luxury modern home exterior","dimRatio":50,"overlayColor":"contrast","minHeight":750,"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}}} -->
 <div class="wp-block-cover alignfull" style="padding-top:var(--wp--preset--spacing--80);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--80);padding-left:var(--wp--preset--spacing--30);min-height:750px"><img class="wp-block-cover__image-background" alt="Luxury modern home exterior" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1800&amp;h=1000&amp;fit=crop" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-contrast-background-color has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"dsgoAnimationEnabled":true,"dsgoEntranceAnimation":"fadeIn","dsgoAnimationDuration":1000} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack has-dsgo-animation dsgo-animation-fadeIn" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-dsgo-animation-enabled="true" data-dsgo-entrance-animation="fadeIn" data-dsgo-exit-animation="" data-dsgo-animation-trigger="scroll" data-dsgo-animation-duration="1000" data-dsgo-animation-delay="0" data-dsgo-animation-easing="ease-out" data-dsgo-animation-offset="100" data-dsgo-animation-once="true"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:paragraph {"align":"center","style":{"typography":{"textTransform":"uppercase","letterSpacing":"6px"},"color":{"text":"#d4af37"}},"fontSize":"small"} -->
@@ -23,7 +24,7 @@ return array(
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}},"color":{"text":"rgba(255,255,255,0.85)"}},"fontSize":"medium"} -->
-<p class="has-text-align-center has-text-color has-medium-font-size" style="color:rgba(255,255,255,0.85);margin-top:var(--wp--preset--spacing--30)">Curating the world&#39;s most prestigious properties for discerning buyers who demand excellence.</p>
+<p class="has-text-align-center has-text-color has-medium-font-size" style="color:rgba(255,255,255,0.85);margin-top:var(--wp--preset--spacing--30)">Curating the world\'s most prestigious properties for discerning buyers who demand excellence.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:designsetgo/row {"style":{"spacing":{"margin":{"top":"var:preset|spacing|50"},"blockGap":"var:preset|spacing|20","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"},"dsgoAnimationEnabled":true,"dsgoEntranceAnimation":"fadeInUp","dsgoAnimationDelay":300} -->

@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'title'      => __( 'Newsletter Signup Modal', 'designsetgo' ),
 	'categories' => array( 'dsgo-modal' ),
+	'viewportWidth' => 1200,
 	'content'    => '<!-- wp:group {"metadata":{"categories":["dsgo-modal"],"patternName":"designsetgo/modal/newsletter-signup","name":"Newsletter Signup Modal"},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group"><!-- wp:designsetgo/icon-button {"text":"Subscribe to Newsletter","url":"#dsgo-modal-newsletter","icon":"envelope","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|60","right":"var:preset|spacing|60"}}}} -->
 <a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;flex-direction:row;padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--60)" href="#dsgo-modal-newsletter" target="_self"><span class="dsgo-icon-button__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0" data-icon-name="envelope" data-icon-size="20"></span><span class="dsgo-icon-button__text">Subscribe to Newsletter</span></a>
