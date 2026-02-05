@@ -1,0 +1,13 @@
+/**
+ * Grid Mobile Order Extension - Editor Styles
+ *
+ * Editor-only styles for mobile order functionality.
+ * Dynamic order styles are injected via JavaScript (see index.js withMobileOrderStyles).
+ * This file provides the base CSS that the dynamic styles build upon.
+ *
+ * @package DesignSetGo
+ */
+
+// No static editor styles needed - mobile order is applied via
+// dynamic <style> elements in the withMobileOrderStyles HOC.
+// This ensures order values stay in sync with block attributes.
