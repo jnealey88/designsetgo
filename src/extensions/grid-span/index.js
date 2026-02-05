@@ -17,7 +17,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, RangeControl } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useSelect } from '@wordpress/data';
-import { useEffect } from '@wordpress/element';
 
 /**
  * Add columnSpan attribute to all blocks
@@ -119,7 +118,11 @@ addFilter(
 );
 
 /**
- * Apply column span styles in editor
+ * Apply column span styles in editor via wrapperProps
+ *
+ * Uses inline styles on the block wrapper instead of dynamic <style> injection.
+ * This ensures grid-column spans work in both the editor canvas AND pattern
+ * previews (which render in separate iframes without name="editor-canvas").
  */
 const withColumnSpanStyles = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
@@ -144,102 +147,18 @@ const withColumnSpanStyles = createHigherOrderComponent((BlockListBlock) => {
 			[clientId]
 		);
 
-		// Generate dynamic CSS for column span in editor
-		const styleId = `dsgo-grid-span-${clientId}`;
-
-		// Get parent grid's responsive column settings
-		const parentGridSettings = useSelect(
-			(select) => {
-				if (!isInGrid) {
-					return null;
-				}
-
-				const { getBlockParents, getBlock } =
-					select('core/block-editor');
-				const parents = getBlockParents(clientId);
-
-				for (const parentId of parents) {
-					const parent = getBlock(parentId);
-					if (parent && parent.name === 'designsetgo/grid') {
-						return {
-							desktopColumns:
-								parent.attributes?.desktopColumns || 3,
-							tabletColumns:
-								parent.attributes?.tabletColumns || 2,
-							mobileColumns:
-								parent.attributes?.mobileColumns || 1,
-						};
-					}
-				}
-				return null;
-			},
-			[clientId, isInGrid]
-		);
-
-		useEffect(() => {
-			// Only apply if inside Grid
-			if (!isInGrid || !parentGridSettings) {
-				return;
-			}
-
-			// Get editor document (may be in iframe)
-			const editorDocument =
-				document.querySelector('iframe[name="editor-canvas"]')
-					?.contentDocument || document;
-
-			// Remove existing style
-			const existingStyle = editorDocument.getElementById(styleId);
-			if (existingStyle) {
-				existingStyle.remove();
-			}
-
-			// Create new style element if columnSpan is set
-			if (dsgoColumnSpan && dsgoColumnSpan > 1) {
-				const styleElement = editorDocument.createElement('style');
-				styleElement.id = styleId;
-
-				// Calculate effective spans for each breakpoint
-				// Constrain to parent's column count at each breakpoint
-				const effectiveTabletSpan = Math.min(
-					dsgoColumnSpan,
-					parentGridSettings.tabletColumns
-				);
-				const effectiveMobileSpan = Math.min(
-					dsgoColumnSpan,
-					parentGridSettings.mobileColumns
-				);
-
-				styleElement.textContent = `
-					/* Desktop */
-					[data-block="${clientId}"] {
-						grid-column: span ${dsgoColumnSpan} !important;
-					}
-
-					/* Tablet - constrain to parent tablet columns */
-					@media (max-width: 1024px) {
-						[data-block="${clientId}"] {
-							grid-column: span ${effectiveTabletSpan} !important;
-						}
-					}
-
-					/* Mobile - constrain to parent mobile columns */
-					@media (max-width: 767px) {
-						[data-block="${clientId}"] {
-							grid-column: span ${effectiveMobileSpan} !important;
-						}
-					}
-				`;
-				editorDocument.head.appendChild(styleElement);
-			}
-
-			// Cleanup
-			return () => {
-				const styleToRemove = editorDocument.getElementById(styleId);
-				if (styleToRemove) {
-					styleToRemove.remove();
-				}
+		// Apply grid-column span directly via wrapperProps
+		if (isInGrid && dsgoColumnSpan && dsgoColumnSpan > 1) {
+			const wrapperProps = {
+				...props.wrapperProps,
+				style: {
+					...props.wrapperProps?.style,
+					gridColumn: `span ${dsgoColumnSpan}`,
+				},
 			};
-		}, [dsgoColumnSpan, clientId, styleId, isInGrid, parentGridSettings]);
+
+			return <BlockListBlock {...props} wrapperProps={wrapperProps} />;
+		}
 
 		return <BlockListBlock {...props} />;
 	};
