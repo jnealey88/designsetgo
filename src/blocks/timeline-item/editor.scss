@@ -1,0 +1,57 @@
+/**
+ * Timeline Item Block - Editor Styles
+ * Styles specific to the WordPress block editor
+ */
+
+.wp-block-designsetgo-timeline-item {
+	// Ensure all items are visible in editor (no animation states)
+	opacity: 1 !important;
+	transform: none !important;
+
+	// Better selection visibility
+	&.is-selected,
+	&.has-child-selected {
+		outline: 2px solid var(--wp-admin-theme-color, #007cba);
+		outline-offset: 2px;
+		border-radius: 4px;
+	}
+
+	// Link indicator in editor
+	.dsgo-timeline-item__link-indicator {
+		margin-top: var(--wp--preset--spacing--20, 0.5rem);
+		padding-top: var(--wp--preset--spacing--20, 0.5rem);
+		border-top: 1px dashed var(--wp--preset--color--contrast, #ccc);
+		font-size: 0.85em;
+	}
+
+	// Image control styling in sidebar
+	.dsgo-timeline-item__image-control {
+		margin-bottom: var(--wp--preset--spacing--20, 0.5rem);
+
+		img {
+			display: block;
+			max-width: 100%;
+			height: auto;
+		}
+	}
+
+	// Placeholder styling for empty fields
+	.dsgo-timeline-item__date[data-empty="true"],
+	.dsgo-timeline-item__title[data-empty="true"] {
+
+		&::before {
+			content: attr(data-placeholder);
+			color: var(--wp--preset--color--contrast, #999);
+			opacity: 0.6;
+		}
+	}
+}
+
+// Editor-specific layout adjustments
+.block-editor-block-list__layout {
+	// Ensure proper spacing in editor (vertical layouts only)
+	// Horizontal layouts use gap via flex, so margin-top would misalign markers
+	.dsgo-timeline--vertical .wp-block-designsetgo-timeline-item + .wp-block-designsetgo-timeline-item {
+		margin-top: var(--dsgo-timeline-item-spacing, 2rem);
+	}
+}

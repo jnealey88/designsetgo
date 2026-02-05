@@ -1,0 +1,131 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/timeline-item",
+	"version": "1.0.0",
+	"title": "Timeline Item",
+	"category": "design",
+	"parent": [
+		"designsetgo/timeline"
+	],
+	"description": "An individual milestone or event within a timeline.",
+	"keywords": [
+		"timeline",
+		"item",
+		"milestone",
+		"event",
+		"step"
+	],
+	"textdomain": "designsetgo",
+	"attributes": {
+		"date": {
+			"type": "string",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"icon": {
+			"type": "string",
+			"default": ""
+		},
+		"imageId": {
+			"type": "number",
+			"default": 0
+		},
+		"imageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"imageAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"isActive": {
+			"type": "boolean",
+			"default": false
+		},
+		"linkUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"linkTarget": {
+			"type": "string",
+			"default": "_self"
+		},
+		"customMarkerColor": {
+			"type": "string",
+			"default": ""
+		},
+		"uniqueId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"usesContext": [
+		"designsetgo/timeline/orientation",
+		"designsetgo/timeline/layout",
+		"designsetgo/timeline/lineColor",
+		"designsetgo/timeline/markerStyle",
+		"designsetgo/timeline/markerSize",
+		"designsetgo/timeline/markerColor",
+		"designsetgo/timeline/markerBorderColor",
+		"designsetgo/timeline/animateOnScroll"
+	],
+	"example": {
+		"attributes": {
+			"date": "January 2024",
+			"title": "Major Milestone"
+		},
+		"innerBlocks": [
+			{
+				"name": "core/paragraph",
+				"attributes": {
+					"content": "This is the description of this timeline event. Add any content you want here."
+				}
+			}
+		]
+	},
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"spacing": {
+			"padding": true,
+			"margin": false,
+			"__experimentalDefaultControls": {
+				"padding": true
+			}
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"radius": true
+			}
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
+}

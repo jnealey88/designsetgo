@@ -1,0 +1,208 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/timeline",
+	"version": "1.0.0",
+	"title": "Timeline",
+	"category": "design",
+	"description": "Display chronological events, company history, or process steps in a visual timeline format with customizable layouts and scroll animations.",
+	"keywords": [
+		"timeline",
+		"history",
+		"events",
+		"chronology",
+		"roadmap",
+		"process",
+		"steps",
+		"milestones"
+	],
+	"textdomain": "designsetgo",
+	"attributes": {
+		"orientation": {
+			"type": "string",
+			"default": "vertical",
+			"enum": [
+				"vertical",
+				"horizontal"
+			]
+		},
+		"layout": {
+			"type": "string",
+			"default": "alternating",
+			"enum": [
+				"alternating",
+				"right"
+			]
+		},
+		"lineColor": {
+			"type": "string",
+			"default": ""
+		},
+		"lineThickness": {
+			"type": "number",
+			"default": 2
+		},
+		"connectorStyle": {
+			"type": "string",
+			"default": "solid",
+			"enum": [
+				"solid",
+				"dashed",
+				"dotted"
+			]
+		},
+		"markerStyle": {
+			"type": "string",
+			"default": "circle",
+			"enum": [
+				"circle",
+				"square",
+				"diamond"
+			]
+		},
+		"markerSize": {
+			"type": "number",
+			"default": 16
+		},
+		"markerColor": {
+			"type": "string",
+			"default": ""
+		},
+		"markerBorderColor": {
+			"type": "string",
+			"default": ""
+		},
+		"itemSpacing": {
+			"type": "string",
+			"default": "2rem"
+		},
+		"animateOnScroll": {
+			"type": "boolean",
+			"default": true
+		},
+		"animationDuration": {
+			"type": "number",
+			"default": 600
+		},
+		"staggerDelay": {
+			"type": "number",
+			"default": 100
+		}
+	},
+	"providesContext": {
+		"designsetgo/timeline/orientation": "orientation",
+		"designsetgo/timeline/layout": "layout",
+		"designsetgo/timeline/lineColor": "lineColor",
+		"designsetgo/timeline/markerStyle": "markerStyle",
+		"designsetgo/timeline/markerSize": "markerSize",
+		"designsetgo/timeline/markerColor": "markerColor",
+		"designsetgo/timeline/markerBorderColor": "markerBorderColor",
+		"designsetgo/timeline/animateOnScroll": "animateOnScroll"
+	},
+	"supports": {
+		"anchor": true,
+		"align": [
+			"wide",
+			"full"
+		],
+		"html": false,
+		"inserter": true,
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"padding": true,
+				"blockGap": true
+			}
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true,
+				"lineHeight": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"color": true,
+				"radius": true,
+				"style": true,
+				"width": true
+			}
+		}
+	},
+	"example": {
+		"attributes": {
+			"orientation": "vertical",
+			"layout": "alternating"
+		},
+		"innerBlocks": [
+			{
+				"name": "designsetgo/timeline-item",
+				"attributes": {
+					"date": "2020",
+					"title": "Company Founded"
+				},
+				"innerBlocks": [
+					{
+						"name": "core/paragraph",
+						"attributes": {
+							"content": "Our journey began with a simple idea and a passionate team."
+						}
+					}
+				]
+			},
+			{
+				"name": "designsetgo/timeline-item",
+				"attributes": {
+					"date": "2022",
+					"title": "Major Milestone"
+				},
+				"innerBlocks": [
+					{
+						"name": "core/paragraph",
+						"attributes": {
+							"content": "Reached 10,000 customers and expanded to new markets."
+						}
+					}
+				]
+			},
+			{
+				"name": "designsetgo/timeline-item",
+				"attributes": {
+					"date": "2024",
+					"title": "Looking Forward"
+				},
+				"innerBlocks": [
+					{
+						"name": "core/paragraph",
+						"attributes": {
+							"content": "Continuing to innovate and grow with our community."
+						}
+					}
+				]
+			}
+		]
+	},
+	"viewScript": "file:./view.js",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
+}
