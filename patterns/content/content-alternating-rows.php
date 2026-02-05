@@ -11,9 +11,10 @@ defined( 'ABSPATH' ) || exit;
 
 return array(
 	'title'      => __( 'Alternating Content Rows', 'designsetgo' ),
-	'categories' => array( 'dsgo-content' ),
-	'content'    => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"backgroundColor":"base","metadata":{"categories":["dsgo-content"],"patternName":"designsetgo/content/content-alternating-rows","name":"Alternating Content Rows"}} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-background-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/section {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|60"},"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
+	'categories'    => array( 'dsgo-content' ),
+	'viewportWidth' => 1200,
+	'content'       => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"backgroundColor":"base","metadata":{"categories":["dsgo-content"],"patternName":"designsetgo/content/content-alternating-rows","name":"Alternating Content Rows"}} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-background-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--70);padding-left:var(--wp--preset--spacing--30)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/section {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|60"},"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack" style="margin-bottom:var(--wp--preset--spacing--60);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:heading {"textAlign":"center","fontSize":"x-large"} -->
 <h2 class="wp-block-heading has-text-align-center has-x-large-font-size">How We Help You Succeed</h2>
 <!-- /wp:heading -->
@@ -23,18 +24,18 @@ return array(
 <!-- /wp:paragraph --></div></div>
 <!-- /wp:designsetgo/section -->
 
-<!-- wp:designsetgo/row {"verticalAlignment":"center","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"},"blockGap":"var:preset|spacing|60","margin":{"bottom":"var:preset|spacing|60"}}}} -->
-<div class="wp-block-designsetgo-row alignfull dsgo-flex dsgo-no-width-constraint" style="margin-bottom:var(--wp--preset--spacing--60);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-flex__inner" style="display:flex;flex-wrap:wrap;gap:var(--wp--preset--spacing--60);align-items:center"><!-- wp:designsetgo/row-column {"width":"50","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-row-column dsgo-row-column" style="flex-basis:50%;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:designsetgo/section {"dsgoAnimation":{"type":"fadeInLeft","duration":"normal","delay":"none","easing":"ease"},"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInLeft"} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInLeft" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-dsgo-animation="fadeInLeft" data-dsgo-animation-duration="normal" data-dsgo-animation-delay="none" data-dsgo-animation-easing="ease" data-dsgo-animation-once="true"><div class="dsgo-stack__inner"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"16px"}}} -->
+<!-- wp:designsetgo/grid {"desktopColumns":10,"tabletColumns":1,"style":{"spacing":{"blockGap":"var:preset|spacing|60","padding":{"top":"0","bottom":"0","left":"0","right":"0"},"margin":{"bottom":"var:preset|spacing|60"}}},"alignItems":"center"} -->
+<div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-10 dsgo-grid-cols-tablet-1 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="margin-bottom:var(--wp--preset--spacing--60);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(10, 1fr);align-items:center;row-gap:var(--wp--preset--spacing--60);column-gap:var(--wp--preset--spacing--60)"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"gridColumn":"span 5"}},"dsgoColumnSpan":4} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;grid-column:span 4"><div class="dsgo-stack__inner"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInLeft"} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInLeft" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"16px"}}} -->
 <figure class="wp-block-image size-large has-custom-border"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&amp;h=450&amp;fit=crop" alt="Strategy planning" style="border-radius:16px"/></figure>
 <!-- /wp:image --></div></div>
-<!-- /wp:designsetgo/section --></div>
-<!-- /wp:designsetgo/row-column -->
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/section -->
 
-<!-- wp:designsetgo/row-column {"width":"50","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-row-column dsgo-row-column" style="flex-basis:50%;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:designsetgo/section {"dsgoAnimation":{"type":"fadeInRight","duration":"normal","delay":"none","easing":"ease"},"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInRight"} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInRight" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-dsgo-animation="fadeInRight" data-dsgo-animation-duration="normal" data-dsgo-animation-delay="none" data-dsgo-animation-easing="ease" data-dsgo-animation-once="true"><div class="dsgo-stack__inner"><!-- wp:paragraph {"style":{"typography":{"fontWeight":"600"},"color":{"text":"#6366f1"}},"fontSize":"small"} -->
+<!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"gridColumn":"span 5"}},"dsgoColumnSpan":6} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;grid-column:span 6"><div class="dsgo-stack__inner"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInRight"} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInRight" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner"><!-- wp:paragraph {"style":{"typography":{"fontWeight":"600"},"color":{"text":"#6366f1"}},"fontSize":"small"} -->
 <p class="has-text-color has-small-font-size" style="color:#6366f1;font-weight:600">STEP 01</p>
 <!-- /wp:paragraph -->
 
@@ -46,28 +47,34 @@ return array(
 <p style="margin-bottom:var(--wp--preset--spacing--30)">We start by understanding your business goals and creating a comprehensive roadmap for success. Our team analyzes market trends and competitive landscapes.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:designsetgo/icon-list {"iconColor":"#10b981","iconSize":18} -->
-<ul class="wp-block-designsetgo-icon-list dsgo-icon-list"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="color:#10b981;width:18px;height:18px" data-icon-name="check" data-icon-size="18"></span><span class="dsgo-icon-list-item__content">Market research &amp; analysis</span></li>
+<!-- wp:designsetgo/icon-list {"iconSize":18,"iconColor":"#10b981"} -->
+<div class="wp-block-designsetgo-icon-list dsgo-icon-list dsgo-icon-list--vertical" style="width:100%"><div class="dsgo-icon-list__items" style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;width:100%"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title…"} -->
+<h4 class="wp-block-heading">Market research &amp; analysis</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="color:#10b981;width:18px;height:18px" data-icon-name="check" data-icon-size="18"></span><span class="dsgo-icon-list-item__content">Goal setting &amp; KPIs</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title…"} -->
+<h4 class="wp-block-heading">Goal setting &amp; KPIs</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="color:#10b981;width:18px;height:18px" data-icon-name="check" data-icon-size="18"></span><span class="dsgo-icon-list-item__content">Resource allocation</span></li>
-<!-- /wp:designsetgo/icon-list-item --></ul>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title…"} -->
+<h4 class="wp-block-heading">Resource allocation</h4>
+<!-- /wp:heading --></div></div>
+<!-- /wp:designsetgo/icon-list-item --></div></div>
 <!-- /wp:designsetgo/icon-list --></div></div>
-<!-- /wp:designsetgo/section --></div>
-<!-- /wp:designsetgo/row-column --></div></div>
-<!-- /wp:designsetgo/row -->
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/grid -->
 
-<!-- wp:designsetgo/row {"verticalAlignment":"center","reverseOnMobile":true,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"},"blockGap":"var:preset|spacing|60","margin":{"bottom":"var:preset|spacing|60"}}}} -->
-<div class="wp-block-designsetgo-row alignfull dsgo-flex dsgo-no-width-constraint" style="margin-bottom:var(--wp--preset--spacing--60);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-flex__inner" style="display:flex;flex-wrap:wrap;gap:var(--wp--preset--spacing--60);align-items:center"><!-- wp:designsetgo/row-column {"width":"50","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-row-column dsgo-row-column" style="flex-basis:50%;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:designsetgo/section {"dsgoAnimation":{"type":"fadeInLeft","duration":"normal","delay":"none","easing":"ease"},"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInLeft"} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInLeft" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-dsgo-animation="fadeInLeft" data-dsgo-animation-duration="normal" data-dsgo-animation-delay="none" data-dsgo-animation-easing="ease" data-dsgo-animation-once="true"><div class="dsgo-stack__inner"><!-- wp:paragraph {"style":{"typography":{"fontWeight":"600"},"color":{"text":"#10b981"}},"fontSize":"small"} -->
-<p class="has-text-color has-small-font-size" style="color:#10b981;font-weight:600">STEP 02</p>
+<!-- wp:designsetgo/grid {"desktopColumns":10,"tabletColumns":1,"style":{"spacing":{"blockGap":"var:preset|spacing|60","padding":{"top":"0","bottom":"0","left":"0","right":"0"},"margin":{"bottom":"var:preset|spacing|60"}}},"alignItems":"center"} -->
+<div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-10 dsgo-grid-cols-tablet-1 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="margin-bottom:var(--wp--preset--spacing--60);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(10, 1fr);align-items:center;row-gap:var(--wp--preset--spacing--60);column-gap:var(--wp--preset--spacing--60)"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"gridColumn":"span 5"}},"className":"dsgo-order-2-mobile","dsgoColumnSpan":6} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint dsgo-order-2-mobile" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;grid-column:span 6"><div class="dsgo-stack__inner"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInLeft"} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInLeft" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner"><!-- wp:paragraph {"style":{"typography":{"fontWeight":"600","fontStyle":"normal"},"color":{"text":"#10b981"}},"fontSize":"small"} -->
+<p class="has-text-color has-small-font-size" style="color:#10b981;font-style:normal;font-weight:600">STEP 02</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3,"fontSize":"large"} -->
@@ -78,43 +85,49 @@ return array(
 <p style="margin-bottom:var(--wp--preset--spacing--30)">Our expert team brings your vision to life with cutting-edge design and robust development practices that ensure scalability and performance.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:designsetgo/icon-list {"iconColor":"#10b981","iconSize":18} -->
-<ul class="wp-block-designsetgo-icon-list dsgo-icon-list"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="color:#10b981;width:18px;height:18px" data-icon-name="check" data-icon-size="18"></span><span class="dsgo-icon-list-item__content">User-centered design</span></li>
+<!-- wp:designsetgo/icon-list {"iconSize":18,"iconColor":"#10b981"} -->
+<div class="wp-block-designsetgo-icon-list dsgo-icon-list dsgo-icon-list--vertical" style="width:100%"><div class="dsgo-icon-list__items" style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;width:100%"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title…"} -->
+<h4 class="wp-block-heading">User-centered design</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="color:#10b981;width:18px;height:18px" data-icon-name="check" data-icon-size="18"></span><span class="dsgo-icon-list-item__content">Agile development</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title…"} -->
+<h4 class="wp-block-heading">Agile development</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="color:#10b981;width:18px;height:18px" data-icon-name="check" data-icon-size="18"></span><span class="dsgo-icon-list-item__content">Quality assurance</span></li>
-<!-- /wp:designsetgo/icon-list-item --></ul>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title…"} -->
+<h4 class="wp-block-heading">Quality assurance</h4>
+<!-- /wp:heading --></div></div>
+<!-- /wp:designsetgo/icon-list-item --></div></div>
 <!-- /wp:designsetgo/icon-list --></div></div>
-<!-- /wp:designsetgo/section --></div>
-<!-- /wp:designsetgo/row-column -->
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/section -->
 
-<!-- wp:designsetgo/row-column {"width":"50","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-row-column dsgo-row-column" style="flex-basis:50%;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:designsetgo/section {"dsgoAnimation":{"type":"fadeInRight","duration":"normal","delay":"none","easing":"ease"},"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInRight"} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInRight" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-dsgo-animation="fadeInRight" data-dsgo-animation-duration="normal" data-dsgo-animation-delay="none" data-dsgo-animation-easing="ease" data-dsgo-animation-once="true"><div class="dsgo-stack__inner"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"16px"}}} -->
+<!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"gridColumn":"span 5"}},"className":"dsgo-order-1-mobile","dsgoColumnSpan":4} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint dsgo-order-1-mobile" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;grid-column:span 4"><div class="dsgo-stack__inner"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInRight"} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInRight" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"16px"}}} -->
 <figure class="wp-block-image size-large has-custom-border"><img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600&amp;h=450&amp;fit=crop" alt="Design process" style="border-radius:16px"/></figure>
 <!-- /wp:image --></div></div>
-<!-- /wp:designsetgo/section --></div>
-<!-- /wp:designsetgo/row-column --></div></div>
-<!-- /wp:designsetgo/row -->
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/grid -->
 
-<!-- wp:designsetgo/row {"verticalAlignment":"center","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"},"blockGap":"var:preset|spacing|60"}}} -->
-<div class="wp-block-designsetgo-row alignfull dsgo-flex dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-flex__inner" style="display:flex;flex-wrap:wrap;gap:var(--wp--preset--spacing--60);align-items:center"><!-- wp:designsetgo/row-column {"width":"50","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-row-column dsgo-row-column" style="flex-basis:50%;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:designsetgo/section {"dsgoAnimation":{"type":"fadeInLeft","duration":"normal","delay":"none","easing":"ease"},"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInLeft"} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInLeft" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-dsgo-animation="fadeInLeft" data-dsgo-animation-duration="normal" data-dsgo-animation-delay="none" data-dsgo-animation-easing="ease" data-dsgo-animation-once="true"><div class="dsgo-stack__inner"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"16px"}}} -->
+<!-- wp:designsetgo/grid {"desktopColumns":10,"tabletColumns":1,"style":{"spacing":{"blockGap":"var:preset|spacing|60","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"alignItems":"center"} -->
+<div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-10 dsgo-grid-cols-tablet-1 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(10, 1fr);align-items:center;row-gap:var(--wp--preset--spacing--60);column-gap:var(--wp--preset--spacing--60)"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"gridColumn":"span 5"}},"dsgoColumnSpan":4} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;grid-column:span 4"><div class="dsgo-stack__inner"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInLeft"} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInLeft" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner"><!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"16px"}}} -->
 <figure class="wp-block-image size-large has-custom-border"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&amp;h=450&amp;fit=crop" alt="Launch and growth" style="border-radius:16px"/></figure>
 <!-- /wp:image --></div></div>
-<!-- /wp:designsetgo/section --></div>
-<!-- /wp:designsetgo/row-column -->
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/section -->
 
-<!-- wp:designsetgo/row-column {"width":"50","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-row-column dsgo-row-column" style="flex-basis:50%;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:designsetgo/section {"dsgoAnimation":{"type":"fadeInRight","duration":"normal","delay":"none","easing":"ease"},"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInRight"} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInRight" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-dsgo-animation="fadeInRight" data-dsgo-animation-duration="normal" data-dsgo-animation-delay="none" data-dsgo-animation-easing="ease" data-dsgo-animation-once="true"><div class="dsgo-stack__inner"><!-- wp:paragraph {"style":{"typography":{"fontWeight":"600"},"color":{"text":"#f59e0b"}},"fontSize":"small"} -->
+<!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"gridColumn":"span 5"}},"dsgoColumnSpan":6} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;grid-column:span 6"><div class="dsgo-stack__inner"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"className":"has-dsgo-animation dsgo-animation-fadeInRight"} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack dsgo-no-width-constraint has-dsgo-animation dsgo-animation-fadeInRight" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner"><!-- wp:paragraph {"style":{"typography":{"fontWeight":"600"},"color":{"text":"#f59e0b"}},"fontSize":"small"} -->
 <p class="has-text-color has-small-font-size" style="color:#f59e0b;font-weight:600">STEP 03</p>
 <!-- /wp:paragraph -->
 
@@ -126,21 +139,27 @@ return array(
 <p style="margin-bottom:var(--wp--preset--spacing--30)">We ensure a smooth launch and provide ongoing support to help you grow. Our data-driven approach helps optimize performance continuously.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:designsetgo/icon-list {"iconColor":"#10b981","iconSize":18} -->
-<ul class="wp-block-designsetgo-icon-list dsgo-icon-list"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="color:#10b981;width:18px;height:18px" data-icon-name="check" data-icon-size="18"></span><span class="dsgo-icon-list-item__content">Seamless deployment</span></li>
+<!-- wp:designsetgo/icon-list {"iconSize":18,"iconColor":"#10b981"} -->
+<div class="wp-block-designsetgo-icon-list dsgo-icon-list dsgo-icon-list--vertical" style="width:100%"><div class="dsgo-icon-list__items" style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;width:100%"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title…"} -->
+<h4 class="wp-block-heading">Seamless deployment</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="color:#10b981;width:18px;height:18px" data-icon-name="check" data-icon-size="18"></span><span class="dsgo-icon-list-item__content">Performance monitoring</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title…"} -->
+<h4 class="wp-block-heading">Performance monitoring</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="color:#10b981;width:18px;height:18px" data-icon-name="check" data-icon-size="18"></span><span class="dsgo-icon-list-item__content">Continuous optimization</span></li>
-<!-- /wp:designsetgo/icon-list-item --></ul>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title…"} -->
+<h4 class="wp-block-heading">Continuous optimization</h4>
+<!-- /wp:heading --></div></div>
+<!-- /wp:designsetgo/icon-list-item --></div></div>
 <!-- /wp:designsetgo/icon-list --></div></div>
-<!-- /wp:designsetgo/section --></div>
-<!-- /wp:designsetgo/row-column --></div></div>
-<!-- /wp:designsetgo/row --></div></div>
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/section --></div></div>
+<!-- /wp:designsetgo/grid --></div></div>
 <!-- /wp:designsetgo/section -->',
 );

@@ -12,7 +12,8 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'title'      => __( 'Pricing Tabs', 'designsetgo' ),
 	'categories' => array( 'dsgo-pricing' ),
-	'content'    => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"backgroundColor":"base-2"} -->
+	'viewportWidth' => 1200,
+	'content'    => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"backgroundColor":"base-2","metadata":{"categories":["dsgo-pricing"],"patternName":"designsetgo/pricing/pricing-tabs","name":"Pricing Tabs"}} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-2-background-color has-background" style="padding-top:var(--wp--preset--spacing--80);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--80);padding-left:var(--wp--preset--spacing--30)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/section {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|50"},"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack" style="margin-bottom:var(--wp--preset--spacing--50);padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:paragraph {"align":"center","style":{"typography":{"textTransform":"uppercase","letterSpacing":"3px"},"color":{"text":"#6366f1"}},"fontSize":"small"} -->
 <p class="has-text-align-center has-text-color has-small-font-size" style="color:#6366f1;letter-spacing:3px;text-transform:uppercase">Pricing</p>
@@ -27,15 +28,9 @@ return array(
 <!-- /wp:paragraph --></div></div>
 <!-- /wp:designsetgo/section -->
 
-<!-- wp:designsetgo/tabs {"tabStyle":"pills","alignment":"center","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"}}}} -->
-<div class="wp-block-designsetgo-tabs dsgo-tabs dsgo-tabs--pills dsgo-tabs--align-center" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0" data-orientation="horizontal" data-default-tab="0"><div class="dsgo-tabs__nav-wrapper"><div class="dsgo-tabs__nav" role="tablist" aria-orientation="horizontal"><!-- wp:designsetgo/tab-title {"title":"Monthly","tabIndex":0} -->
-<button class="wp-block-designsetgo-tab-title dsgo-tab-title dsgo-tab-title--active" role="tab" aria-selected="true" aria-controls="dsgo-tab-panel-0" id="dsgo-tab-0" tabindex="0" data-tab-index="0">Monthly</button>
-<!-- /wp:designsetgo/tab-title -->
-
-<!-- wp:designsetgo/tab-title {"title":"Yearly (Save 20%)","tabIndex":1} -->
-<button class="wp-block-designsetgo-tab-title dsgo-tab-title" role="tab" aria-selected="false" aria-controls="dsgo-tab-panel-1" id="dsgo-tab-1" tabindex="-1" data-tab-index="1">Yearly (Save 20%)</button>
-<!-- /wp:designsetgo/tab-title --></div></div><div class="dsgo-tabs__panels"><!-- wp:designsetgo/tab-panel {"tabIndex":0} -->
-<div class="wp-block-designsetgo-tab-panel dsgo-tab-panel dsgo-tab-panel--active" role="tabpanel" aria-labelledby="dsgo-tab-0" id="dsgo-tab-panel-0" tabindex="0" data-tab-index="0"><!-- wp:designsetgo/grid {"style":{"spacing":{"blockGap":"var:preset|spacing|30","padding":{"top":"var:preset|spacing|40","bottom":"0","left":"0","right":"0"}}}} -->
+<!-- wp:designsetgo/tabs {"uniqueId":"f4a8b2c1","tabStyle":"pills","className":"dsgo-tabs\u002d\u002dalign-center"} -->
+<div class="wp-block-designsetgo-tabs dsgo-tabs dsgo-tabs-f4a8b2c1 dsgo-tabs--horizontal dsgo-tabs--pills dsgo-tabs--align-left dsgo-tabs--align-center" data-active-tab="0" data-mobile-breakpoint="768" data-mobile-mode="accordion" data-deep-linking="false" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;font-size:var(--wp--preset--font-size--large);--dsgo-tabs-gap:8px"><div class="dsgo-tabs__nav" role="tablist"></div><div class="dsgo-tabs__panels"><!-- wp:designsetgo/tab {"uniqueId":"d3e7f1a5","title":"Monthly","anchor":"monthly","className":"dsgo-tabs__panel dsgo-tabs__panel\u002d\u002dactive"} -->
+<div class="wp-block-designsetgo-tab dsgo-tab dsgo-tabs__panel dsgo-tabs__panel--active" role="tabpanel" aria-labelledby="tab-d3e7f1a5" aria-label="Monthly" id="panel-monthly" hidden style="padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><div class="dsgo-tab__content"><!-- wp:designsetgo/grid {"style":{"spacing":{"blockGap":"var:preset|spacing|30","padding":{"top":"var:preset|spacing|40","bottom":"0","left":"0","right":"0"}}}} -->
 <div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-3 dsgo-grid-cols-tablet-2 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:var(--wp--preset--spacing--40);padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(3, 1fr);align-items:stretch;row-gap:var(--wp--preset--spacing--30);column-gap:var(--wp--preset--spacing--30)"><!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}},"border":{"radius":"16px"}},"backgroundColor":"base","dsgoAnimationEnabled":true,"dsgoEntranceAnimation":"fadeInUp","dsgoAnimationDuration":500} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-background-color has-background has-dsgo-animation dsgo-animation-fadeInUp" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--30)" data-dsgo-animation-enabled="true" data-dsgo-entrance-animation="fadeInUp" data-dsgo-exit-animation="" data-dsgo-animation-trigger="scroll" data-dsgo-animation-duration="500" data-dsgo-animation-delay="0" data-dsgo-animation-easing="ease-out" data-dsgo-animation-offset="100" data-dsgo-animation-once="true"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:heading {"level":3,"fontSize":"large"} -->
 <h3 class="wp-block-heading has-large-font-size">Starter</h3>
@@ -59,32 +54,40 @@ return array(
 <hr class="wp-block-separator has-alpha-channel-opacity" style="margin-top:var(--wp--preset--spacing--20);margin-bottom:var(--wp--preset--spacing--20)"/>
 <!-- /wp:separator -->
 
-<!-- wp:designsetgo/icon-list {"iconColor":"#10b981","iconSize":18,"style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
-<ul class="wp-block-designsetgo-icon-list dsgo-icon-list" style="--dsgo-icon-list-icon-size:18px;--dsgo-icon-list-icon-color:#10b981;--dsgo-icon-list-gap:var(--wp--preset--spacing--15)"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">5 Projects</span></li>
+<!-- wp:designsetgo/icon-list {"iconSize":18,"iconColor":"#10b981","style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
+<div class="wp-block-designsetgo-icon-list dsgo-icon-list dsgo-icon-list--vertical" style="width:100%"><div class="dsgo-icon-list__items" style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;width:100%"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">5 Projects</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">10GB Storage</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">10GB Storage</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Basic Analytics</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Basic Analytics</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Email Support</span></li>
-<!-- /wp:designsetgo/icon-list-item --></ul>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Email Support</h4>
+<!-- /wp:heading --></div></div>
+<!-- /wp:designsetgo/icon-list-item --></div></div>
 <!-- /wp:designsetgo/icon-list -->
 
-<!-- wp:designsetgo/icon-button {"text":"Get Started","url":"#","icon":"","iconPosition":"none","className":"has-text-color has-background","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"0","right":"0"},"margin":{"top":"var:preset|spacing|30"}},"border":{"radius":"8px","width":"2px"},"color":{"background":"transparent","text":"#0f172a"},"layout":{"selfStretch":"fill","flexSize":null}}} -->
-<a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button has-text-color has-background" style="border-width:2px;border-radius:8px;margin-top:var(--wp--preset--spacing--30);display:inline-flex;align-items:center;justify-content:center;gap:0;width:100%;flex-direction:row;background-color:transparent;color:#0f172a;padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:var(--wp--preset--spacing--20);padding-left:0" href="#" target="_self"><span class="dsgo-icon-button__text">Get Started</span></a>
+<!-- wp:designsetgo/icon-button {"align":"left","text":"Get Started","iconPosition":"none","backgroundColor":"contrast","textColor":"base","style":{"elements":{"link":{"color":{"text":"var:preset|color|base"}}}}} -->
+<button class="wp-block-designsetgo-icon-button alignleft dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;gap:0;width:auto;flex-direction:row;background-color:var(--wp--preset--color--contrast);color:var(--wp--preset--color--base)" type="button"><span class="dsgo-icon-button__text">Get Started</span></button>
 <!-- /wp:designsetgo/icon-button --></div></div>
 <!-- /wp:designsetgo/section -->
 
 <!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}},"border":{"radius":"16px","width":"2px","color":"#6366f1"}},"backgroundColor":"base","dsgoAnimationEnabled":true,"dsgoEntranceAnimation":"fadeInUp","dsgoAnimationDuration":500,"dsgoAnimationDelay":100} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack has-border-color has-base-background-color has-background has-dsgo-animation dsgo-animation-fadeInUp" style="border-color:#6366f1;border-width:2px;border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--30)" data-dsgo-animation-enabled="true" data-dsgo-entrance-animation="fadeInUp" data-dsgo-exit-animation="" data-dsgo-animation-trigger="scroll" data-dsgo-animation-duration="500" data-dsgo-animation-delay="100" data-dsgo-animation-easing="ease-out" data-dsgo-animation-offset="100" data-dsgo-animation-once="true"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/pill {"content":"Most Popular","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|15"}},"border":{"radius":"50px"},"color":{"background":"#6366f1","text":"#ffffff"}}} -->
-<div class="wp-block-designsetgo-pill dsgo-pill has-text-color has-background has-small-font-size" style="margin-bottom:var(--wp--preset--spacing--15)"><span class="dsgo-pill__content" style="background-color:#6366f1;color:#ffffff;border-radius:50px">Most Popular</span></div>
+<div class="wp-block-designsetgo-section alignfull dsgo-stack has-border-color has-base-background-color has-background has-dsgo-animation dsgo-animation-fadeInUp" style="border-color:#6366f1;border-width:2px;border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--30)" data-dsgo-animation-enabled="true" data-dsgo-entrance-animation="fadeInUp" data-dsgo-exit-animation="" data-dsgo-animation-trigger="scroll" data-dsgo-animation-duration="500" data-dsgo-animation-delay="100" data-dsgo-animation-easing="ease-out" data-dsgo-animation-offset="100" data-dsgo-animation-once="true"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/pill {"align":"left","content":"Most Popular","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|15"}},"border":{"radius":"50px"},"color":{"background":"#6366f1","text":"#ffffff"}}} -->
+<div class="wp-block-designsetgo-pill alignleft dsgo-pill has-text-color has-background has-small-font-size" style="margin-bottom:var(--wp--preset--spacing--15)"><span class="dsgo-pill__content" style="background-color:#6366f1;color:#ffffff;border-radius:50px">Most Popular</span></div>
 <!-- /wp:designsetgo/pill -->
 
 <!-- wp:heading {"level":3,"fontSize":"large"} -->
@@ -109,30 +112,40 @@ return array(
 <hr class="wp-block-separator has-alpha-channel-opacity" style="margin-top:var(--wp--preset--spacing--20);margin-bottom:var(--wp--preset--spacing--20)"/>
 <!-- /wp:separator -->
 
-<!-- wp:designsetgo/icon-list {"iconColor":"#10b981","iconSize":18,"style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
-<ul class="wp-block-designsetgo-icon-list dsgo-icon-list" style="--dsgo-icon-list-icon-size:18px;--dsgo-icon-list-icon-color:#10b981;--dsgo-icon-list-gap:var(--wp--preset--spacing--15)"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Unlimited Projects</span></li>
+<!-- wp:designsetgo/icon-list {"iconSize":18,"iconColor":"#10b981","style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
+<div class="wp-block-designsetgo-icon-list dsgo-icon-list dsgo-icon-list--vertical" style="width:100%"><div class="dsgo-icon-list__items" style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;width:100%"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Unlimited Projects</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">100GB Storage</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">100GB Storage</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Advanced Analytics</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Advanced Analytics</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Priority Support</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Priority Support</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">API Access</span></li>
-<!-- /wp:designsetgo/icon-list-item --></ul>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">API Access</h4>
+<!-- /wp:heading --></div></div>
+<!-- /wp:designsetgo/icon-list-item --></div></div>
 <!-- /wp:designsetgo/icon-list -->
 
-<!-- wp:designsetgo/icon-button {"text":"Get Started","url":"#","icon":"","iconPosition":"none","className":"has-text-color has-background","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"0","right":"0"},"margin":{"top":"var:preset|spacing|30"}},"border":{"radius":"8px"},"color":{"background":"#6366f1","text":"#ffffff"},"layout":{"selfStretch":"fill","flexSize":null}}} -->
-<a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button has-text-color has-background" style="border-radius:8px;margin-top:var(--wp--preset--spacing--30);display:inline-flex;align-items:center;justify-content:center;gap:0;width:100%;flex-direction:row;background-color:#6366f1;color:#ffffff;padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:var(--wp--preset--spacing--20);padding-left:0" href="#" target="_self"><span class="dsgo-icon-button__text">Get Started</span></a>
+<!-- wp:designsetgo/icon-button {"align":"left","text":"Get Started","iconPosition":"none","backgroundColor":"contrast","textColor":"base","style":{"elements":{"link":{"color":{"text":"var:preset|color|base"}}}}} -->
+<button class="wp-block-designsetgo-icon-button alignleft dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;gap:0;width:auto;flex-direction:row;background-color:var(--wp--preset--color--contrast);color:var(--wp--preset--color--base)" type="button"><span class="dsgo-icon-button__text">Get Started</span></button>
 <!-- /wp:designsetgo/icon-button --></div></div>
 <!-- /wp:designsetgo/section -->
 
@@ -159,37 +172,47 @@ return array(
 <hr class="wp-block-separator has-alpha-channel-opacity" style="margin-top:var(--wp--preset--spacing--20);margin-bottom:var(--wp--preset--spacing--20)"/>
 <!-- /wp:separator -->
 
-<!-- wp:designsetgo/icon-list {"iconColor":"#10b981","iconSize":18,"style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
-<ul class="wp-block-designsetgo-icon-list dsgo-icon-list" style="--dsgo-icon-list-icon-size:18px;--dsgo-icon-list-icon-color:#10b981;--dsgo-icon-list-gap:var(--wp--preset--spacing--15)"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Everything in Pro</span></li>
+<!-- wp:designsetgo/icon-list {"iconSize":18,"iconColor":"#10b981","style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
+<div class="wp-block-designsetgo-icon-list dsgo-icon-list dsgo-icon-list--vertical" style="width:100%"><div class="dsgo-icon-list__items" style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;width:100%"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Everything in Pro</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Unlimited Storage</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Unlimited Storage</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Custom Integrations</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Custom Integrations</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Dedicated Support</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Dedicated Support</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">SLA Guarantee</span></li>
-<!-- /wp:designsetgo/icon-list-item --></ul>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">SLA Guarantee</h4>
+<!-- /wp:heading --></div></div>
+<!-- /wp:designsetgo/icon-list-item --></div></div>
 <!-- /wp:designsetgo/icon-list -->
 
-<!-- wp:designsetgo/icon-button {"text":"Contact Sales","url":"#","icon":"","iconPosition":"none","className":"has-text-color has-background","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"0","right":"0"},"margin":{"top":"var:preset|spacing|30"}},"border":{"radius":"8px","width":"2px"},"color":{"background":"transparent","text":"#0f172a"},"layout":{"selfStretch":"fill","flexSize":null}}} -->
-<a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button has-text-color has-background" style="border-width:2px;border-radius:8px;margin-top:var(--wp--preset--spacing--30);display:inline-flex;align-items:center;justify-content:center;gap:0;width:100%;flex-direction:row;background-color:transparent;color:#0f172a;padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:var(--wp--preset--spacing--20);padding-left:0" href="#" target="_self"><span class="dsgo-icon-button__text">Contact Sales</span></a>
+<!-- wp:designsetgo/icon-button {"align":"left","text":"Contact Sales","iconPosition":"none","backgroundColor":"contrast","textColor":"base","style":{"elements":{"link":{"color":{"text":"var:preset|color|base"}}}}} -->
+<button class="wp-block-designsetgo-icon-button alignleft dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;gap:0;width:auto;flex-direction:row;background-color:var(--wp--preset--color--contrast);color:var(--wp--preset--color--base)" type="button"><span class="dsgo-icon-button__text">Contact Sales</span></button>
 <!-- /wp:designsetgo/icon-button --></div></div>
 <!-- /wp:designsetgo/section --></div></div>
-<!-- /wp:designsetgo/grid --></div>
-<!-- /wp:designsetgo/tab-panel -->
+<!-- /wp:designsetgo/grid --></div></div>
+<!-- /wp:designsetgo/tab -->
 
-<!-- wp:designsetgo/tab-panel {"tabIndex":1} -->
-<div class="wp-block-designsetgo-tab-panel dsgo-tab-panel" role="tabpanel" aria-labelledby="dsgo-tab-1" id="dsgo-tab-panel-1" tabindex="0" data-tab-index="1" hidden><!-- wp:designsetgo/grid {"style":{"spacing":{"blockGap":"var:preset|spacing|30","padding":{"top":"var:preset|spacing|40","bottom":"0","left":"0","right":"0"}}}} -->
+<!-- wp:designsetgo/tab {"uniqueId":"b6c9d2e8","title":"Yearly (Save 20%)","anchor":"yearly","className":"dsgo-tabs__panel"} -->
+<div class="wp-block-designsetgo-tab dsgo-tab dsgo-tabs__panel" role="tabpanel" aria-labelledby="tab-b6c9d2e8" aria-label="Yearly (Save 20%)" id="panel-yearly" hidden style="padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><div class="dsgo-tab__content"><!-- wp:designsetgo/grid {"style":{"spacing":{"blockGap":"var:preset|spacing|30","padding":{"top":"var:preset|spacing|40","bottom":"0","left":"0","right":"0"}}}} -->
 <div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-3 dsgo-grid-cols-tablet-2 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:var(--wp--preset--spacing--40);padding-right:0;padding-bottom:0;padding-left:0"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(3, 1fr);align-items:stretch;row-gap:var(--wp--preset--spacing--30);column-gap:var(--wp--preset--spacing--30)"><!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}},"border":{"radius":"16px"}},"backgroundColor":"base"} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-background-color has-background" style="border-radius:16px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--30)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:heading {"level":3,"fontSize":"large"} -->
 <h3 class="wp-block-heading has-large-font-size">Starter</h3>
@@ -217,26 +240,34 @@ return array(
 <hr class="wp-block-separator has-alpha-channel-opacity" style="margin-top:var(--wp--preset--spacing--20);margin-bottom:var(--wp--preset--spacing--20)"/>
 <!-- /wp:separator -->
 
-<!-- wp:designsetgo/icon-list {"iconColor":"#10b981","iconSize":18,"style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
-<ul class="wp-block-designsetgo-icon-list dsgo-icon-list" style="--dsgo-icon-list-icon-size:18px;--dsgo-icon-list-icon-color:#10b981;--dsgo-icon-list-gap:var(--wp--preset--spacing--15)"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">5 Projects</span></li>
+<!-- wp:designsetgo/icon-list {"iconSize":18,"iconColor":"#10b981","style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
+<div class="wp-block-designsetgo-icon-list dsgo-icon-list dsgo-icon-list--vertical" style="width:100%"><div class="dsgo-icon-list__items" style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;width:100%"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">5 Projects</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">10GB Storage</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">10GB Storage</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Basic Analytics</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Basic Analytics</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Email Support</span></li>
-<!-- /wp:designsetgo/icon-list-item --></ul>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Email Support</h4>
+<!-- /wp:heading --></div></div>
+<!-- /wp:designsetgo/icon-list-item --></div></div>
 <!-- /wp:designsetgo/icon-list -->
 
-<!-- wp:designsetgo/icon-button {"text":"Get Started","url":"#","icon":"","iconPosition":"none","className":"has-text-color has-background","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"0","right":"0"},"margin":{"top":"var:preset|spacing|30"}},"border":{"radius":"8px","width":"2px"},"color":{"background":"transparent","text":"#0f172a"},"layout":{"selfStretch":"fill","flexSize":null}}} -->
-<a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button has-text-color has-background" style="border-width:2px;border-radius:8px;margin-top:var(--wp--preset--spacing--30);display:inline-flex;align-items:center;justify-content:center;gap:0;width:100%;flex-direction:row;background-color:transparent;color:#0f172a;padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:var(--wp--preset--spacing--20);padding-left:0" href="#" target="_self"><span class="dsgo-icon-button__text">Get Started</span></a>
+<!-- wp:designsetgo/icon-button {"align":"left","text":"Get Started","iconPosition":"none","backgroundColor":"contrast","textColor":"base","style":{"elements":{"link":{"color":{"text":"var:preset|color|base"}}}}} -->
+<button class="wp-block-designsetgo-icon-button alignleft dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;gap:0;width:auto;flex-direction:row;background-color:var(--wp--preset--color--contrast);color:var(--wp--preset--color--base)" type="button"><span class="dsgo-icon-button__text">Get Started</span></button>
 <!-- /wp:designsetgo/icon-button --></div></div>
 <!-- /wp:designsetgo/section -->
 
@@ -271,30 +302,40 @@ return array(
 <hr class="wp-block-separator has-alpha-channel-opacity" style="margin-top:var(--wp--preset--spacing--20);margin-bottom:var(--wp--preset--spacing--20)"/>
 <!-- /wp:separator -->
 
-<!-- wp:designsetgo/icon-list {"iconColor":"#10b981","iconSize":18,"style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
-<ul class="wp-block-designsetgo-icon-list dsgo-icon-list" style="--dsgo-icon-list-icon-size:18px;--dsgo-icon-list-icon-color:#10b981;--dsgo-icon-list-gap:var(--wp--preset--spacing--15)"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Unlimited Projects</span></li>
+<!-- wp:designsetgo/icon-list {"iconSize":18,"iconColor":"#10b981","style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
+<div class="wp-block-designsetgo-icon-list dsgo-icon-list dsgo-icon-list--vertical" style="width:100%"><div class="dsgo-icon-list__items" style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;width:100%"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Unlimited Projects</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">100GB Storage</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">100GB Storage</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Advanced Analytics</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Advanced Analytics</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Priority Support</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Priority Support</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">API Access</span></li>
-<!-- /wp:designsetgo/icon-list-item --></ul>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">API Access</h4>
+<!-- /wp:heading --></div></div>
+<!-- /wp:designsetgo/icon-list-item --></div></div>
 <!-- /wp:designsetgo/icon-list -->
 
-<!-- wp:designsetgo/icon-button {"text":"Get Started","url":"#","icon":"","iconPosition":"none","className":"has-text-color has-background","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"0","right":"0"},"margin":{"top":"var:preset|spacing|30"}},"border":{"radius":"8px"},"color":{"background":"#6366f1","text":"#ffffff"},"layout":{"selfStretch":"fill","flexSize":null}}} -->
-<a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button has-text-color has-background" style="border-radius:8px;margin-top:var(--wp--preset--spacing--30);display:inline-flex;align-items:center;justify-content:center;gap:0;width:100%;flex-direction:row;background-color:#6366f1;color:#ffffff;padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:var(--wp--preset--spacing--20);padding-left:0" href="#" target="_self"><span class="dsgo-icon-button__text">Get Started</span></a>
+<!-- wp:designsetgo/icon-button {"align":"left","text":"Get Started","iconPosition":"none","backgroundColor":"contrast","textColor":"base","style":{"elements":{"link":{"color":{"text":"var:preset|color|base"}}}}} -->
+<button class="wp-block-designsetgo-icon-button alignleft dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;gap:0;width:auto;flex-direction:row;background-color:var(--wp--preset--color--contrast);color:var(--wp--preset--color--base)" type="button"><span class="dsgo-icon-button__text">Get Started</span></button>
 <!-- /wp:designsetgo/icon-button --></div></div>
 <!-- /wp:designsetgo/section -->
 
@@ -325,34 +366,44 @@ return array(
 <hr class="wp-block-separator has-alpha-channel-opacity" style="margin-top:var(--wp--preset--spacing--20);margin-bottom:var(--wp--preset--spacing--20)"/>
 <!-- /wp:separator -->
 
-<!-- wp:designsetgo/icon-list {"iconColor":"#10b981","iconSize":18,"style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
-<ul class="wp-block-designsetgo-icon-list dsgo-icon-list" style="--dsgo-icon-list-icon-size:18px;--dsgo-icon-list-icon-color:#10b981;--dsgo-icon-list-gap:var(--wp--preset--spacing--15)"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Everything in Pro</span></li>
+<!-- wp:designsetgo/icon-list {"iconSize":18,"iconColor":"#10b981","style":{"spacing":{"blockGap":"var:preset|spacing|15"}}} -->
+<div class="wp-block-designsetgo-icon-list dsgo-icon-list dsgo-icon-list--vertical" style="width:100%"><div class="dsgo-icon-list__items" style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;width:100%"><!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Everything in Pro</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Unlimited Storage</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Unlimited Storage</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Custom Integrations</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Custom Integrations</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">Dedicated Support</span></li>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">Dedicated Support</h4>
+<!-- /wp:heading --></div></div>
 <!-- /wp:designsetgo/icon-list-item -->
 
 <!-- wp:designsetgo/icon-list-item {"icon":"check"} -->
-<li class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item"><span class="dsgo-icon-list-item__icon dsgo-lazy-icon" data-icon-name="check" aria-hidden="true"></span><span class="dsgo-icon-list-item__content">SLA Guarantee</span></li>
-<!-- /wp:designsetgo/icon-list-item --></ul>
+<div class="wp-block-designsetgo-icon-list-item dsgo-icon-list-item dsgo-icon-list-item--icon-left" style="display:flex;flex-direction:row;align-items:flex-start;gap:16px"><div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px" data-icon-name="check"></div><div class="dsgo-icon-list-item__content" style="text-align:left;display:flex;flex-direction:column;gap:8px"><!-- wp:heading {"level":4,"placeholder":"List item title\u2026"} -->
+<h4 class="wp-block-heading">SLA Guarantee</h4>
+<!-- /wp:heading --></div></div>
+<!-- /wp:designsetgo/icon-list-item --></div></div>
 <!-- /wp:designsetgo/icon-list -->
 
-<!-- wp:designsetgo/icon-button {"text":"Contact Sales","url":"#","icon":"","iconPosition":"none","className":"has-text-color has-background","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"0","right":"0"},"margin":{"top":"var:preset|spacing|30"}},"border":{"radius":"8px","width":"2px"},"color":{"background":"transparent","text":"#0f172a"},"layout":{"selfStretch":"fill","flexSize":null}}} -->
-<a class="wp-block-designsetgo-icon-button dsgo-icon-button wp-block-button wp-block-button__link wp-element-button has-text-color has-background" style="border-width:2px;border-radius:8px;margin-top:var(--wp--preset--spacing--30);display:inline-flex;align-items:center;justify-content:center;gap:0;width:100%;flex-direction:row;background-color:transparent;color:#0f172a;padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:var(--wp--preset--spacing--20);padding-left:0" href="#" target="_self"><span class="dsgo-icon-button__text">Contact Sales</span></a>
+<!-- wp:designsetgo/icon-button {"align":"left","text":"Contact Sales","iconPosition":"none","backgroundColor":"contrast","textColor":"base","style":{"elements":{"link":{"color":{"text":"var:preset|color|base"}}}}} -->
+<button class="wp-block-designsetgo-icon-button alignleft dsgo-icon-button wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;gap:0;width:auto;flex-direction:row;background-color:var(--wp--preset--color--contrast);color:var(--wp--preset--color--base)" type="button"><span class="dsgo-icon-button__text">Contact Sales</span></button>
 <!-- /wp:designsetgo/icon-button --></div></div>
 <!-- /wp:designsetgo/section --></div></div>
-<!-- /wp:designsetgo/grid --></div>
-<!-- /wp:designsetgo/tab-panel --></div></div>
+<!-- /wp:designsetgo/grid --></div></div>
+<!-- /wp:designsetgo/tab --></div></div>
 <!-- /wp:designsetgo/tabs --></div></div>
 <!-- /wp:designsetgo/section -->',
 );
