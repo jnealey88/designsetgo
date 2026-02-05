@@ -52,15 +52,17 @@ class Conflict_Detector {
 
 		$parent_dir = dirname( $file_path );
 
-		// Use WP_Filesystem for writability checks.
+		// Use WP_Filesystem for writability checks, with fallback to native functions.
 		global $wp_filesystem;
 		if ( ! $wp_filesystem ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 			WP_Filesystem();
 		}
 
-		$file_writable = $wp_filesystem ? $wp_filesystem->is_writable( $file_path ) : false;
-		$dir_writable  = $wp_filesystem ? $wp_filesystem->is_writable( $parent_dir ) : false;
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Fallback when WP_Filesystem fails.
+		$file_writable = $wp_filesystem ? $wp_filesystem->is_writable( $file_path ) : is_writable( $file_path );
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Fallback when WP_Filesystem fails.
+		$dir_writable  = $wp_filesystem ? $wp_filesystem->is_writable( $parent_dir ) : is_writable( $parent_dir );
 
 		return array(
 			'path'       => $file_path,
