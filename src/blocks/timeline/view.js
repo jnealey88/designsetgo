@@ -4,6 +4,8 @@
  * Follows WordPress best practices and respects prefers-reduced-motion
  */
 
+/* global IntersectionObserver */
+
 document.addEventListener('DOMContentLoaded', function () {
 	initTimelines();
 });
@@ -40,7 +42,9 @@ function initTimelines() {
 			timeline.getAttribute('data-animation-duration') || '600',
 			10
 		);
-		const animationDuration = Number.isNaN(parsedDuration) ? 600 : parsedDuration;
+		const animationDuration = Number.isNaN(parsedDuration)
+			? 600
+			: parsedDuration;
 
 		const parsedDelay = parseInt(
 			timeline.getAttribute('data-stagger-delay') || '100',
@@ -68,15 +72,12 @@ function showAllItems(timeline) {
 
 /**
  * Initialize scroll-triggered animations using IntersectionObserver
- * @param {HTMLElement} timeline - The timeline container element
- * @param {number} animationDuration - Animation duration in milliseconds
- * @param {number} staggerDelay - Delay between each item animation
+ * @param {HTMLElement} timeline          - The timeline container element
+ * @param {number}      animationDuration - Animation duration in milliseconds
+ * @param {number}      staggerDelay      - Delay between each item animation
  */
 function initScrollAnimation(timeline, animationDuration, staggerDelay) {
 	const items = timeline.querySelectorAll('.dsgo-timeline-item');
-
-	// Track which items have been animated
-	let animatedCount = 0;
 
 	// Create intersection observer
 	const observerOptions = {
@@ -97,8 +98,6 @@ function initScrollAnimation(timeline, animationDuration, staggerDelay) {
 				// Apply staggered animation
 				setTimeout(() => {
 					animateItemIn(item, animationDuration);
-					animatedCount++;
-
 					// Once animated, stop observing this item
 					observer.unobserve(item);
 				}, delay);
@@ -110,8 +109,7 @@ function initScrollAnimation(timeline, animationDuration, staggerDelay) {
 	items.forEach((item) => {
 		// Check if item is already in viewport on load
 		const rect = item.getBoundingClientRect();
-		const isInViewport =
-			rect.top < window.innerHeight && rect.bottom >= 0;
+		const isInViewport = rect.top < window.innerHeight && rect.bottom >= 0;
 
 		if (isInViewport) {
 			// Animate immediately with stagger
@@ -130,15 +128,18 @@ function initScrollAnimation(timeline, animationDuration, staggerDelay) {
 
 /**
  * Animate a single timeline item into view
- * @param {HTMLElement} item - The timeline item to animate
- * @param {number} duration - Animation duration in milliseconds
+ * @param {HTMLElement} item     - The timeline item to animate
+ * @param {number}      duration - Animation duration in milliseconds
  */
 function animateItemIn(item, duration) {
 	// Add visible class to trigger CSS animation
 	item.classList.add('dsgo-timeline-item--visible');
 
 	// Set animation duration via CSS custom property
-	item.style.setProperty('--dsgo-timeline-animation-duration', `${duration}ms`);
+	item.style.setProperty(
+		'--dsgo-timeline-animation-duration',
+		`${duration}ms`
+	);
 }
 
 /**
@@ -147,9 +148,11 @@ function animateItemIn(item, duration) {
  */
 window.dsgoReinitTimelines = function () {
 	// Remove initialization flags
-	document.querySelectorAll('.dsgo-timeline[data-dsgo-initialized]').forEach((timeline) => {
-		timeline.removeAttribute('data-dsgo-initialized');
-	});
+	document
+		.querySelectorAll('.dsgo-timeline[data-dsgo-initialized]')
+		.forEach((timeline) => {
+			timeline.removeAttribute('data-dsgo-initialized');
+		});
 
 	// Re-initialize
 	initTimelines();

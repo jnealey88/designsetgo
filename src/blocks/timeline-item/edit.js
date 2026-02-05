@@ -107,12 +107,11 @@ export default function TimelineItemEdit({
 	} = attributes;
 
 	// Get context from parent timeline
-	const orientation = context['designsetgo/timeline/orientation'] || 'vertical';
-	const layout = context['designsetgo/timeline/layout'] || 'alternating';
 	const markerStyle = context['designsetgo/timeline/markerStyle'] || 'circle';
 	const markerSize = context['designsetgo/timeline/markerSize'] || 16;
 	const markerColor = context['designsetgo/timeline/markerColor'] || '';
-	const markerBorderColor = context['designsetgo/timeline/markerBorderColor'] || '';
+	const markerBorderColor =
+		context['designsetgo/timeline/markerBorderColor'] || '';
 
 	// State for link popover
 	const [isLinkPopoverOpen, setIsLinkPopoverOpen] = useState(false);
@@ -133,7 +132,10 @@ export default function TimelineItemEdit({
 	}, [uniqueId, instanceId, setAttributes]);
 
 	// Determine marker colors (custom overrides parent)
-	const effectiveMarkerColor = customMarkerColor || markerColor || 'var(--wp--preset--color--primary, #2563eb)';
+	const effectiveMarkerColor =
+		customMarkerColor ||
+		markerColor ||
+		'var(--wp--preset--color--primary, #2563eb)';
 	const effectiveBorderColor = markerBorderColor || effectiveMarkerColor;
 
 	// Get the marker shape component
@@ -198,8 +200,14 @@ export default function TimelineItemEdit({
 						label={__('Active State', 'designsetgo')}
 						help={
 							isActive
-								? __('This milestone is highlighted as active/current', 'designsetgo')
-								: __('This is a regular timeline item', 'designsetgo')
+								? __(
+										'This milestone is highlighted as active/current',
+										'designsetgo'
+									)
+								: __(
+										'This is a regular timeline item',
+										'designsetgo'
+									)
 						}
 						checked={isActive}
 						onChange={(value) => setAttributes({ isActive: value })}
@@ -220,14 +228,19 @@ export default function TimelineItemEdit({
 							label={__('Open in New Tab', 'designsetgo')}
 							checked={linkTarget === '_blank'}
 							onChange={(value) =>
-								setAttributes({ linkTarget: value ? '_blank' : '_self' })
+								setAttributes({
+									linkTarget: value ? '_blank' : '_self',
+								})
 							}
 							__nextHasNoMarginBottom
 						/>
 					)}
 				</PanelBody>
 
-				<PanelBody title={__('Marker Image', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Marker Image', 'designsetgo')}
+					initialOpen={false}
+				>
 					<MediaUploadCheck>
 						<MediaUpload
 							onSelect={onSelectImage}
@@ -247,30 +260,56 @@ export default function TimelineItemEdit({
 													borderRadius: '4px',
 												}}
 											/>
-											<div style={{ display: 'flex', gap: '8px' }}>
-												<Button variant="secondary" onClick={open}>
-													{__('Replace', 'designsetgo')}
+											<div
+												style={{
+													display: 'flex',
+													gap: '8px',
+												}}
+											>
+												<Button
+													variant="secondary"
+													onClick={open}
+												>
+													{__(
+														'Replace',
+														'designsetgo'
+													)}
 												</Button>
 												<Button
 													variant="secondary"
 													isDestructive
 													onClick={onRemoveImage}
 												>
-													{__('Remove', 'designsetgo')}
+													{__(
+														'Remove',
+														'designsetgo'
+													)}
 												</Button>
 											</div>
 										</>
 									) : (
-										<Button variant="secondary" onClick={open}>
-											{__('Add Marker Image', 'designsetgo')}
+										<Button
+											variant="secondary"
+											onClick={open}
+										>
+											{__(
+												'Add Marker Image',
+												'designsetgo'
+											)}
 										</Button>
 									)}
 								</div>
 							)}
 						/>
 					</MediaUploadCheck>
-					<p className="components-base-control__help" style={{ marginTop: '8px' }}>
-						{__('Optional: Replace the marker dot with an image or avatar.', 'designsetgo')}
+					<p
+						className="components-base-control__help"
+						style={{ marginTop: '8px' }}
+					>
+						{__(
+							'Optional: Replace the marker dot with an image or avatar.',
+							'designsetgo'
+						)}
 					</p>
 				</PanelBody>
 			</InspectorControls>
@@ -283,7 +322,9 @@ export default function TimelineItemEdit({
 							label: __('Custom Marker Color', 'designsetgo'),
 							colorValue: customMarkerColor,
 							onColorChange: (color) =>
-								setAttributes({ customMarkerColor: color || '' }),
+								setAttributes({
+									customMarkerColor: color || '',
+								}),
 							clearable: true,
 						},
 					]}
@@ -302,7 +343,8 @@ export default function TimelineItemEdit({
 							style={{
 								width: markerSize,
 								height: markerSize,
-								borderRadius: markerStyle === 'circle' ? '50%' : '4px',
+								borderRadius:
+									markerStyle === 'circle' ? '50%' : '4px',
 								objectFit: 'cover',
 							}}
 						/>
@@ -334,7 +376,11 @@ export default function TimelineItemEdit({
 						value={title}
 						onChange={(value) => setAttributes({ title: value })}
 						placeholder={__('Event Title', 'designsetgo')}
-						allowedFormats={['core/bold', 'core/italic', 'core/link']}
+						allowedFormats={[
+							'core/bold',
+							'core/italic',
+							'core/link',
+						]}
 					/>
 
 					{/* Inner blocks content */}
@@ -345,7 +391,9 @@ export default function TimelineItemEdit({
 						<div className="dsgo-timeline-item__link-indicator">
 							<Button
 								variant="link"
-								onClick={() => setIsLinkPopoverOpen(!isLinkPopoverOpen)}
+								onClick={() =>
+									setIsLinkPopoverOpen(!isLinkPopoverOpen)
+								}
 							>
 								{__('Edit Link', 'designsetgo')}
 							</Button>
@@ -357,12 +405,15 @@ export default function TimelineItemEdit({
 									<LinkControl
 										value={{
 											url: linkUrl,
-											opensInNewTab: linkTarget === '_blank',
+											opensInNewTab:
+												linkTarget === '_blank',
 										}}
 										onChange={({ url, opensInNewTab }) => {
 											setAttributes({
 												linkUrl: url || '',
-												linkTarget: opensInNewTab ? '_blank' : '_self',
+												linkTarget: opensInNewTab
+													? '_blank'
+													: '_self',
 											});
 										}}
 									/>

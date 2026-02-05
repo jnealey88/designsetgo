@@ -101,7 +101,6 @@ export default function TimelineItemSave({ attributes, context }) {
 		date,
 		title,
 		imageUrl,
-		imageAlt,
 		isActive,
 		linkUrl,
 		linkTarget,
@@ -109,13 +108,18 @@ export default function TimelineItemSave({ attributes, context }) {
 	} = attributes;
 
 	// Get context from parent timeline
-	const markerStyle = context?.['designsetgo/timeline/markerStyle'] || 'circle';
+	const markerStyle =
+		context?.['designsetgo/timeline/markerStyle'] || 'circle';
 	const markerSize = context?.['designsetgo/timeline/markerSize'] || 16;
 	const markerColor = context?.['designsetgo/timeline/markerColor'] || '';
-	const markerBorderColor = context?.['designsetgo/timeline/markerBorderColor'] || '';
+	const markerBorderColor =
+		context?.['designsetgo/timeline/markerBorderColor'] || '';
 
 	// Determine marker colors (custom overrides parent)
-	const effectiveMarkerColor = customMarkerColor || markerColor || 'var(--wp--preset--color--primary, #2563eb)';
+	const effectiveMarkerColor =
+		customMarkerColor ||
+		markerColor ||
+		'var(--wp--preset--color--primary, #2563eb)';
 	const effectiveBorderColor = markerBorderColor || effectiveMarkerColor;
 
 	// Get the marker shape component
@@ -195,7 +199,8 @@ export default function TimelineItemSave({ attributes, context }) {
 
 	// If there's a safe link, wrap the entire item
 	if (safeUrl) {
-		const linkRel = linkTarget === '_blank' ? 'noopener noreferrer' : undefined;
+		const linkRel =
+			linkTarget === '_blank' ? 'noopener noreferrer' : undefined;
 
 		return (
 			<div {...blockProps}>
