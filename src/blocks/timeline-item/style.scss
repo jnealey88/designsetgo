@@ -168,11 +168,12 @@
 // ===================
 .dsgo-timeline--vertical {
 	// Alternating layout
+	// Item stays width: 100% (set by parent) so marker left: 50% = container center.
+	// Content is constrained to 50% via the wrapper/link, and positioned via
+	// the parent's justify-content: flex-end (odd) / flex-start (even).
 	&.dsgo-timeline--layout-alternating {
 
 		.dsgo-timeline-item {
-			width: calc(50% - var(--dsgo-timeline-marker-size, 16px) / 2 - 1rem);
-			flex-direction: row-reverse;
 			text-align: right;
 
 			.dsgo-timeline-item__marker {
@@ -181,17 +182,20 @@
 				transform: translateX(-50%);
 			}
 
-			.dsgo-timeline-item__wrapper {
+			// Constrain content to one side of the timeline line
+			> .dsgo-timeline-item__wrapper,
+			> .dsgo-timeline-item__link {
+				flex: 0 0 auto;
+				width: calc(50% - var(--dsgo-timeline-marker-size, 16px) / 2 - 1rem);
 				padding-right: calc(var(--dsgo-timeline-marker-size, 16px) + 1rem);
 			}
 
-			// Even items on the right
+			// Even items on the opposite side
 			&:nth-child(even) {
-				margin-left: auto;
-				flex-direction: row;
 				text-align: left;
 
-				.dsgo-timeline-item__wrapper {
+				> .dsgo-timeline-item__wrapper,
+				> .dsgo-timeline-item__link {
 					padding-right: 0;
 					padding-left: calc(var(--dsgo-timeline-marker-size, 16px) + 1rem);
 				}
@@ -268,7 +272,10 @@
 			transform: translateX(-50%) !important;
 		}
 
-		.dsgo-timeline-item__wrapper {
+		.dsgo-timeline-item__wrapper,
+		.dsgo-timeline-item__link {
+			flex: 1 !important;
+			width: auto !important;
 			padding-top: 0 !important;
 			padding-left: calc(var(--dsgo-timeline-marker-size, 16px) + 1rem) !important;
 			padding-right: 0 !important;
