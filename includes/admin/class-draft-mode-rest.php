@@ -58,7 +58,9 @@ class Draft_Mode_REST {
 					'content' => array(
 						'required'          => false,
 						'type'              => 'string',
-						'sanitize_callback' => 'wp_kses_post',
+						// Note: Block content should NOT use wp_kses_post as it strips CSS properties
+						// (display:flex, display:grid), SVG elements, and attributes (tabindex).
+						// WordPress blocks have their own validation through the block parser.
 						'description'       => __( 'Optional content to use instead of published content (captures unsaved edits).', 'designsetgo' ),
 					),
 					'title' => array(
@@ -70,7 +72,9 @@ class Draft_Mode_REST {
 					'excerpt' => array(
 						'required'          => false,
 						'type'              => 'string',
-						'sanitize_callback' => 'wp_kses_post',
+						// Note: Block content should NOT use wp_kses_post as it strips CSS properties
+						// (display:flex, display:grid), SVG elements, and attributes (tabindex).
+						// WordPress blocks have their own validation through the block parser.
 						'description'       => __( 'Optional excerpt to use instead of published excerpt.', 'designsetgo' ),
 					),
 				),

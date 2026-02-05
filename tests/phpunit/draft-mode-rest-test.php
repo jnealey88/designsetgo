@@ -362,4 +362,151 @@ class Test_Draft_Mode_REST extends WP_UnitTestCase {
 		wp_set_current_user( $this->subscriber_id );
 		$this->assertFalse( $this->rest_api->check_read_permission() );
 	}
+
+	/**
+	 * Test that block content with CSS display property is preserved.
+	 *
+	 * Regression test for wp_kses_post stripping display:flex from block content.
+	 *
+	 * @ticket DSGO-BLOCK-VALIDATION
+	 */
+	public function test_create_draft_preserves_display_flex_in_block_content() {
+		wp_set_current_user( $this->editor_id );
+
+		// Block content with display:flex that wp_kses_post would strip.
+		$block_content = '<!-- wp:designsetgo/row -->
+<div class="wp-block-designsetgo-row dsgo-flex"><div class="dsgo-flex__inner" style="display:flex;justify-content:center;flex-wrap:wrap;gap:20px"><!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/row -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $block_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify display:flex is preserved.
+		$this->assertStringContainsString( 'display:flex', $draft->post_content, 'display:flex should be preserved in block content' );
+	}
+
+	/**
+	 * Test that block content with CSS display:grid is preserved.
+	 *
+	 * Regression test for wp_kses_post stripping display:grid from block content.
+	 *
+	 * @ticket DSGO-BLOCK-VALIDATION
+	 */
+	public function test_create_draft_preserves_display_grid_in_block_content() {
+		wp_set_current_user( $this->editor_id );
+
+		$block_content = '<!-- wp:designsetgo/grid -->
+<div class="wp-block-designsetgo-grid dsgo-grid"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:20px"><!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/grid -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $block_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify display:grid is preserved.
+		$this->assertStringContainsString( 'display:grid', $draft->post_content, 'display:grid should be preserved in block content' );
+	}
+
+	/**
+	 * Test that block content with SVG elements is preserved.
+	 *
+	 * Regression test for wp_kses_post stripping SVG from shape dividers.
+	 *
+	 * @ticket DSGO-BLOCK-VALIDATION
+	 */
+	public function test_create_draft_preserves_svg_in_block_content() {
+		wp_set_current_user( $this->editor_id );
+
+		$block_content = '<!-- wp:designsetgo/section {"shapeDividerBottom":"wave"} -->
+<div class="wp-block-designsetgo-section dsgo-stack"><div class="dsgo-shape-divider dsgo-shape-divider--bottom"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0 C300,120 900,0 1200,80 L1200,120 L0,120 Z"></path></svg></div></div>
+<!-- /wp:designsetgo/section -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $block_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify SVG content is preserved.
+		$this->assertStringContainsString( '<svg', $draft->post_content, 'SVG element should be preserved in block content' );
+		$this->assertStringContainsString( '<path', $draft->post_content, 'SVG path element should be preserved in block content' );
+	}
+
+	/**
+	 * Test that block content with inline-flex display is preserved.
+	 *
+	 * Regression test for wp_kses_post stripping display:inline-flex from buttons.
+	 *
+	 * @ticket DSGO-BLOCK-VALIDATION
+	 */
+	public function test_create_draft_preserves_inline_flex_in_block_content() {
+		wp_set_current_user( $this->editor_id );
+
+		$block_content = '<!-- wp:designsetgo/icon-button {"text":"Click me"} -->
+<a class="wp-block-designsetgo-icon-button dsgo-icon-button" style="display:inline-flex;align-items:center;justify-content:center;gap:8px" href="#">Click me</a>
+<!-- /wp:designsetgo/icon-button -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $block_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify display:inline-flex is preserved.
+		$this->assertStringContainsString( 'display:inline-flex', $draft->post_content, 'display:inline-flex should be preserved in block content' );
+	}
+
+	/**
+	 * Test that block content with tabindex attribute is preserved.
+	 *
+	 * Regression test for wp_kses_post stripping tabindex from interactive elements.
+	 *
+	 * @ticket DSGO-BLOCK-VALIDATION
+	 */
+	public function test_create_draft_preserves_tabindex_in_block_content() {
+		wp_set_current_user( $this->editor_id );
+
+		$block_content = '<!-- wp:designsetgo/image-accordion-item -->
+<div class="wp-block-designsetgo-image-accordion-item dsgo-image-accordion-item" role="button" tabindex="0"><div class="dsgo-image-accordion-item__content"><!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph --></div></div>
+<!-- /wp:designsetgo/image-accordion-item -->';
+
+		$request = new WP_REST_Request( 'POST', '/' . $this->namespace . '/draft-mode/create' );
+		$request->set_param( 'post_id', $this->page_id );
+		$request->set_param( 'content', $block_content );
+
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$draft = get_post( $data['draft_id'] );
+
+		// Verify tabindex is preserved.
+		$this->assertStringContainsString( 'tabindex="0"', $draft->post_content, 'tabindex attribute should be preserved in block content' );
+	}
 }
