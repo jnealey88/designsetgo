@@ -123,7 +123,6 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 							value={layout}
 							options={[
 								{ label: __('Alternating Sides', 'designsetgo'), value: 'alternating' },
-								{ label: __('Left Side Only', 'designsetgo'), value: 'left' },
 								{ label: __('Right Side Only', 'designsetgo'), value: 'right' },
 							]}
 							onChange={(value) => setAttributes({ layout: value })}

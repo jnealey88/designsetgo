@@ -31,7 +31,6 @@
 			"default": "alternating",
 			"enum": [
 				"alternating",
-				"left",
 				"right"
 			]
 		},

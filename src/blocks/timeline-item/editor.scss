@@ -38,6 +38,7 @@
 	// Placeholder styling for empty fields
 	.dsgo-timeline-item__date[data-empty="true"],
 	.dsgo-timeline-item__title[data-empty="true"] {
+
 		&::before {
 			content: attr(data-placeholder);
 			color: var(--wp--preset--color--contrast, #999);
@@ -48,8 +49,9 @@
 
 // Editor-specific layout adjustments
 .block-editor-block-list__layout {
-	// Ensure proper spacing in editor
-	.wp-block-designsetgo-timeline-item + .wp-block-designsetgo-timeline-item {
+	// Ensure proper spacing in editor (vertical layouts only)
+	// Horizontal layouts use gap via flex, so margin-top would misalign markers
+	.dsgo-timeline--vertical .wp-block-designsetgo-timeline-item + .wp-block-designsetgo-timeline-item {
 		margin-top: var(--dsgo-timeline-item-spacing, 2rem);
 	}
 }

@@ -6,6 +6,7 @@
 .wp-block-designsetgo-timeline {
 	// Ensure timeline items are always visible in editor
 	&.dsgo-timeline--animate {
+
 		.dsgo-timeline-item {
 			opacity: 1;
 			transform: none;
@@ -37,6 +38,7 @@
 
 // Block inserter positioning
 .block-editor-block-list__layout .wp-block-designsetgo-timeline {
+
 	.block-list-appender {
 		margin-top: var(--dsgo-timeline-item-spacing, 2rem);
 	}

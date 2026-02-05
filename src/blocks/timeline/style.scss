@@ -14,9 +14,12 @@
 	--dsgo-timeline-item-spacing: 2rem;
 	--dsgo-timeline-animation-duration: 600ms;
 	--dsgo-timeline-content-width: 45%;
+	--dsgo-timeline-edge-inset: 0; // Default, overridden in right layout
 
+	box-sizing: border-box;
 	position: relative;
 	width: 100%;
+	max-width: 100%;
 	padding: var(--wp--preset--spacing--40, 1rem) 0;
 
 	// Timeline line (shared between orientations)
@@ -27,17 +30,26 @@
 		border-color: var(--dsgo-timeline-line-color);
 	}
 
+	// Ensure all children respect box-sizing
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
 	// Items container
 	.dsgo-timeline__items {
 		position: relative;
 		display: flex;
 		flex-direction: column;
+		max-width: 100%;
 	}
 
 	// ===================
 	// VERTICAL ORIENTATION
 	// ===================
 	&.dsgo-timeline--vertical {
+
 		.dsgo-timeline__line {
 			top: 0;
 			bottom: 0;
@@ -64,6 +76,7 @@
 
 		// Alternating layout
 		&.dsgo-timeline--layout-alternating {
+
 			.dsgo-timeline__line {
 				left: 50%;
 			}
@@ -79,61 +92,96 @@
 			}
 		}
 
-		// Left layout - content on left, line on right
-		&.dsgo-timeline--layout-left {
-			.dsgo-timeline__line {
-				left: auto;
-				right: 0;
-				transform: none;
-			}
-
-			.dsgo-timeline-item {
-				width: 100%;
-				padding-right: calc(var(--dsgo-timeline-marker-size) + 1.5rem);
-			}
-		}
-
 		// Right layout - content on right, line on left
 		&.dsgo-timeline--layout-right {
+			// Inset line/marker to prevent touching container edge
+			--dsgo-timeline-edge-inset: calc(var(--dsgo-timeline-marker-size) / 2 + 0.25rem);
+
+			// Hide the original line element
 			.dsgo-timeline__line {
-				left: 0;
-				transform: none;
+				display: none;
+			}
+
+			// Use pseudo-element on items container so line is positioned relative to content area
+			.dsgo-timeline__items::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: calc(var(--dsgo-timeline-edge-inset) - var(--dsgo-timeline-line-thickness) / 2);
+				width: var(--dsgo-timeline-line-thickness);
+				background-color: var(--dsgo-timeline-line-color);
+				z-index: 0;
 			}
 
 			.dsgo-timeline-item {
-				width: 100%;
-				padding-left: calc(var(--dsgo-timeline-marker-size) + 1.5rem);
+				// Extra padding to account for edge inset
+				padding-left: calc(var(--dsgo-timeline-marker-size) + 1.5rem + var(--dsgo-timeline-edge-inset));
 			}
 		}
 	}
 
 	// ===================
-	// HORIZONTAL ORIENTATION
+	// HORIZONTAL ORIENTATION (desktop only)
 	// ===================
 	&.dsgo-timeline--horizontal {
-		overflow-x: auto;
-		padding-bottom: var(--wp--preset--spacing--40, 1rem);
+		// Only apply horizontal styles on larger screens
+		@media (min-width: 769px) {
+			overflow-x: auto;
+			padding-bottom: var(--wp--preset--spacing--40, 1rem);
 
-		.dsgo-timeline__line {
-			left: 0;
-			right: 0;
-			height: var(--dsgo-timeline-line-thickness);
-			top: calc(var(--dsgo-timeline-marker-size) / 2);
-			transform: none;
-			width: auto;
+			.dsgo-timeline__line {
+				left: 0;
+				right: 0;
+				height: var(--dsgo-timeline-line-thickness);
+				// Position line to align with marker centers
+				top: calc(var(--dsgo-timeline-marker-size) / 2);
+				transform: none;
+				width: auto;
+			}
+
+			.dsgo-timeline__items {
+				flex-direction: row;
+				gap: var(--dsgo-timeline-item-spacing);
+				min-width: max-content;
+				// Reduced padding to align markers with line
+				padding-top: calc(var(--dsgo-timeline-marker-size) - 0.6rem);
+			}
+
+			.dsgo-timeline-item {
+				flex: 0 0 auto;
+				min-width: 200px;
+				max-width: 300px;
+			}
 		}
 
-		.dsgo-timeline__items {
-			flex-direction: row;
-			gap: var(--dsgo-timeline-item-spacing);
-			min-width: max-content;
-			padding-top: calc(var(--dsgo-timeline-marker-size) + 1rem);
-		}
+		// Mobile: use vertical layout styles instead
+		@media (max-width: 768px) {
+			// Inherit vertical-right layout behavior
+			--dsgo-timeline-edge-inset: calc(var(--dsgo-timeline-marker-size) / 2 + 0.25rem);
 
-		.dsgo-timeline-item {
-			flex: 0 0 auto;
-			min-width: 200px;
-			max-width: 300px;
+			.dsgo-timeline__line {
+				display: none;
+			}
+
+			.dsgo-timeline__items {
+				gap: var(--dsgo-timeline-item-spacing);
+
+				&::before {
+					content: "";
+					position: absolute;
+					top: 0;
+					bottom: 0;
+					left: calc(var(--dsgo-timeline-edge-inset) - var(--dsgo-timeline-line-thickness) / 2);
+					width: var(--dsgo-timeline-line-thickness);
+					background-color: var(--dsgo-timeline-line-color);
+					z-index: 0;
+				}
+			}
+
+			.dsgo-timeline-item {
+				padding-left: calc(var(--dsgo-timeline-marker-size) + 1.5rem + var(--dsgo-timeline-edge-inset));
+			}
 		}
 	}
 
@@ -158,6 +206,7 @@
 
 		// Horizontal animation direction
 		&.dsgo-timeline--horizontal {
+
 			.dsgo-timeline-item {
 				transform: translateX(-30px);
 			}
@@ -170,6 +219,7 @@
 
 	// No animation when disabled
 	&:not(.dsgo-timeline--animate) {
+
 		.dsgo-timeline-item {
 			opacity: 1;
 			transform: none;
@@ -180,6 +230,7 @@
 
 // Reduced motion preference
 @media (prefers-reduced-motion: reduce) {
+
 	.dsgo-timeline .dsgo-timeline-item {
 		opacity: 1;
 		transform: none;
@@ -189,6 +240,7 @@
 
 // Full width alignment support
 .dsgo-timeline {
+
 	&.alignwide,
 	&.alignfull {
 		width: 100%;
@@ -201,6 +253,7 @@
 .dsgo-timeline {
 	// Dashed line via repeating gradient
 	&[style*="--dsgo-timeline-connector-style: dashed"] {
+
 		.dsgo-timeline__line {
 			background: repeating-linear-gradient(
 				to bottom,
@@ -224,6 +277,7 @@
 
 	// Dotted line via repeating gradient
 	&[style*="--dsgo-timeline-connector-style: dotted"] {
+
 		.dsgo-timeline__line {
 			background: repeating-linear-gradient(
 				to bottom,
@@ -250,47 +304,34 @@
 // RESPONSIVE STYLES
 // ===================
 @media (max-width: 768px) {
+
 	.dsgo-timeline {
-		// Force vertical on mobile for horizontal timelines
-		&.dsgo-timeline--horizontal {
-			overflow-x: visible;
-			padding-bottom: 0;
-
-			.dsgo-timeline__line {
-				left: 0;
-				right: auto;
-				top: 0;
-				bottom: 0;
-				height: auto;
-				width: var(--dsgo-timeline-line-thickness);
-			}
-
-			.dsgo-timeline__items {
-				flex-direction: column;
-				min-width: 0;
-				padding-top: 0;
-				padding-left: calc(var(--dsgo-timeline-marker-size) + 1rem);
-				gap: var(--dsgo-timeline-item-spacing);
-			}
-
-			.dsgo-timeline-item {
-				min-width: 0;
-				max-width: none;
-				width: 100%;
-			}
-		}
-
 		// Simplify alternating to single-side on mobile
 		&.dsgo-timeline--vertical.dsgo-timeline--layout-alternating {
+			// Add edge inset on mobile
+			--dsgo-timeline-edge-inset: calc(var(--dsgo-timeline-marker-size) / 2 + 0.25rem);
+
+			// Hide the original line element
 			.dsgo-timeline__line {
-				left: 0;
-				transform: none;
+				display: none;
+			}
+
+			// Use pseudo-element for line
+			.dsgo-timeline__items::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: calc(var(--dsgo-timeline-edge-inset) - var(--dsgo-timeline-line-thickness) / 2);
+				width: var(--dsgo-timeline-line-thickness);
+				background-color: var(--dsgo-timeline-line-color);
+				z-index: 0;
 			}
 
 			.dsgo-timeline-item {
 				width: 100%;
 				justify-content: flex-start;
-				padding-left: calc(var(--dsgo-timeline-marker-size) + 1.5rem);
+				padding-left: calc(var(--dsgo-timeline-marker-size) + 1.5rem + var(--dsgo-timeline-edge-inset));
 				padding-right: 0;
 
 				&:nth-child(even) {
@@ -301,6 +342,7 @@
 
 		// Animation adjustments for mobile
 		&.dsgo-timeline--animate {
+
 			.dsgo-timeline-item {
 				transform: translateY(20px);
 			}
@@ -312,7 +354,9 @@
 // PRINT STYLES
 // ===================
 @media print {
+
 	.dsgo-timeline {
+
 		.dsgo-timeline-item {
 			opacity: 1 !important;
 			transform: none !important;

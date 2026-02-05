@@ -4,10 +4,19 @@
  */
 
 .dsgo-timeline-item {
+	box-sizing: border-box;
 	position: relative;
 	display: flex;
 	align-items: flex-start;
 	gap: 1rem;
+	max-width: 100%;
+
+	// Ensure all children respect box-sizing
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
 
 	// ===================
 	// MARKER STYLES
@@ -107,6 +116,7 @@
 	// ACTIVE STATE
 	// ===================
 	&.dsgo-timeline-item--active {
+
 		.dsgo-timeline-item__marker {
 			// Pulse animation for active marker
 			animation: dsgo-timeline-pulse 2s infinite;
@@ -140,6 +150,7 @@
 // PULSE ANIMATION
 // ===================
 @keyframes dsgo-timeline-pulse {
+
 	0%,
 	100% {
 		transform: scale(1);
@@ -158,6 +169,7 @@
 .dsgo-timeline--vertical {
 	// Alternating layout
 	&.dsgo-timeline--layout-alternating {
+
 		.dsgo-timeline-item {
 			width: calc(50% - var(--dsgo-timeline-marker-size, 16px) / 2 - 1rem);
 			flex-direction: row-reverse;
@@ -187,52 +199,50 @@
 		}
 	}
 
-	// Left layout
-	&.dsgo-timeline--layout-left {
-		.dsgo-timeline-item {
-			flex-direction: row-reverse;
-			text-align: right;
-
-			.dsgo-timeline-item__marker {
-				position: absolute;
-				right: 0;
-				transform: translateX(50%);
-			}
-		}
-	}
-
 	// Right layout
 	&.dsgo-timeline--layout-right {
+
 		.dsgo-timeline-item {
+
 			.dsgo-timeline-item__marker {
 				position: absolute;
-				left: 0;
+				left: var(--dsgo-timeline-edge-inset);
 				transform: translateX(-50%);
+			}
+
+			.dsgo-timeline-item__wrapper {
+				padding-left: calc(var(--dsgo-timeline-marker-size, 16px) + 1rem);
 			}
 		}
 	}
 }
 
 // ===================
-// HORIZONTAL TIMELINE LAYOUT
+// HORIZONTAL TIMELINE LAYOUT (desktop only)
 // ===================
-.dsgo-timeline--horizontal {
-	.dsgo-timeline-item {
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
+@media (min-width: 769px) {
 
-		.dsgo-timeline-item__marker {
-			position: absolute;
-			top: calc(-1 * var(--dsgo-timeline-marker-size, 16px) - 0.5rem);
-		}
+	.dsgo-timeline--horizontal {
 
-		.dsgo-timeline-item__wrapper {
-			padding-top: 0.5rem;
-		}
+		.dsgo-timeline-item {
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
 
-		.dsgo-timeline-item__date {
-			display: block;
+			.dsgo-timeline-item__marker {
+				position: absolute;
+				// Position marker to align with timeline line
+				// Items have reduced padding-top (marker-size - 0.6rem)
+				top: calc(-.7rem - var(--dsgo-timeline-marker-size, 16px));
+			}
+
+			.dsgo-timeline-item__wrapper {
+				padding-top: 0.5rem;
+			}
+
+			.dsgo-timeline-item__date {
+				display: block;
+			}
 		}
 	}
 }
@@ -241,8 +251,10 @@
 // MOBILE RESPONSIVE
 // ===================
 @media (max-width: 768px) {
+
+	// All timeline items (vertical alternating, vertical-right, and horizontal)
+	// use vertical-right style on mobile
 	.dsgo-timeline-item {
-		// Reset alternating styles on mobile
 		flex-direction: row !important;
 		text-align: left !important;
 		width: 100% !important;
@@ -250,12 +262,14 @@
 
 		.dsgo-timeline-item__marker {
 			position: absolute !important;
-			left: 0 !important;
+			top: 0 !important;
+			left: var(--dsgo-timeline-edge-inset) !important;
 			right: auto !important;
 			transform: translateX(-50%) !important;
 		}
 
 		.dsgo-timeline-item__wrapper {
+			padding-top: 0 !important;
 			padding-left: calc(var(--dsgo-timeline-marker-size, 16px) + 1rem) !important;
 			padding-right: 0 !important;
 		}
@@ -266,35 +280,15 @@
 			padding-left: var(--wp--preset--spacing--30, 1rem) !important;
 		}
 	}
-
-	// Horizontal becomes vertical on mobile
-	.dsgo-timeline--horizontal .dsgo-timeline-item {
-		flex-direction: row !important;
-		align-items: flex-start !important;
-		text-align: left !important;
-
-		.dsgo-timeline-item__marker {
-			position: absolute !important;
-			top: 0 !important;
-			left: 0 !important;
-			transform: translateX(-50%) !important;
-		}
-
-		.dsgo-timeline-item__wrapper {
-			padding-top: 0 !important;
-		}
-
-		.dsgo-timeline-item__date {
-			display: inline-block;
-		}
-	}
 }
 
 // ===================
 // REDUCED MOTION
 // ===================
 @media (prefers-reduced-motion: reduce) {
+
 	.dsgo-timeline-item {
+
 		&.dsgo-timeline-item--active .dsgo-timeline-item__marker {
 			animation: none;
 		}
@@ -309,6 +303,7 @@
 // PRINT STYLES
 // ===================
 @media print {
+
 	.dsgo-timeline-item {
 		page-break-inside: avoid;
 
