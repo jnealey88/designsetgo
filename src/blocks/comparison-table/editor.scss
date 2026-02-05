@@ -1,0 +1,97 @@
+/**
+ * Comparison Table - Editor-only Styles
+ *
+ * Styles that apply only in the block editor for editing UI,
+ * row controls, cell toolbars, and selection states.
+ */
+
+// Ensure the block is selectable in the editor
+.wp-block-designsetgo-comparison-table {
+	// Give the block a minimum height so it's clickable
+	min-height: 100px;
+}
+
+// Row controls (move up/down, delete)
+.dsgo-comparison-table-editor {
+	&__row-controls {
+		display: none;
+		margin-top: 4px;
+
+		.components-button {
+			min-width: 28px;
+			height: 28px;
+			padding: 0;
+		}
+	}
+
+	// Show row controls on hover
+	&__add-row {
+		display: flex;
+		justify-content: center;
+		padding: 12px 0;
+		opacity: 0.6;
+		transition: opacity 0.2s ease;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	// Column settings in inspector
+	&__column-settings {
+		h4 {
+			font-size: 13px;
+		}
+	}
+
+	// Cell type toolbar popup
+	&__cell-toolbar {
+		position: absolute;
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 20;
+		background: #fff;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		padding: 4px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+		white-space: nowrap;
+
+		.components-button {
+			min-width: 32px;
+			height: 28px;
+			padding: 0 6px;
+			font-size: 13px;
+		}
+	}
+}
+
+// Show row controls on row hover in editor
+.dsgo-comparison-table__row:hover {
+	.dsgo-comparison-table-editor__row-controls {
+		display: flex;
+	}
+}
+
+// Cell hover state in editor
+.dsgo-comparison-table__cell:not(.dsgo-comparison-table__cell--label) {
+	cursor: pointer;
+	position: relative;
+
+	&:hover {
+		outline: 2px solid var(--wp-admin-theme-color, #007cba);
+		outline-offset: -2px;
+		border-radius: 2px;
+	}
+}
+
+// Make RichText inputs in the table less distracting
+.dsgo-comparison-table .rich-text:focus {
+	outline: none;
+}
+
+// Tooltip trigger in editor
+.dsgo-comparison-table__tooltip-trigger {
+	user-select: none;
+}

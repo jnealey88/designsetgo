@@ -1,0 +1,183 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/comparison-table",
+	"version": "1.0.0",
+	"title": "Comparison Table",
+	"category": "widgets",
+	"description": "Display a feature comparison table for products, services, or plans",
+	"keywords": [
+		"comparison",
+		"table",
+		"pricing",
+		"features",
+		"plans"
+	],
+	"textdomain": "designsetgo",
+	"supports": {
+		"anchor": true,
+		"align": [
+			"wide",
+			"full"
+		],
+		"html": false,
+		"inserter": true,
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"padding": true
+			}
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"color": true,
+				"radius": true
+			}
+		}
+	},
+	"attributes": {
+		"columns": {
+			"type": "array",
+			"default": [
+				{ "name": "Basic", "link": "", "linkText": "Get Started", "featured": false },
+				{ "name": "Pro", "link": "", "linkText": "Get Started", "featured": true },
+				{ "name": "Enterprise", "link": "", "linkText": "Contact Us", "featured": false }
+			]
+		},
+		"rows": {
+			"type": "array",
+			"default": [
+				{
+					"label": "Storage",
+					"tooltip": "",
+					"cells": [
+						{ "type": "text", "value": "5 GB" },
+						{ "type": "text", "value": "50 GB" },
+						{ "type": "text", "value": "Unlimited" }
+					]
+				},
+				{
+					"label": "Users",
+					"tooltip": "",
+					"cells": [
+						{ "type": "text", "value": "1" },
+						{ "type": "text", "value": "10" },
+						{ "type": "text", "value": "Unlimited" }
+					]
+				},
+				{
+					"label": "Priority Support",
+					"tooltip": "Get faster response times from our team",
+					"cells": [
+						{ "type": "cross", "value": "" },
+						{ "type": "check", "value": "" },
+						{ "type": "check", "value": "" }
+					]
+				},
+				{
+					"label": "API Access",
+					"tooltip": "",
+					"cells": [
+						{ "type": "cross", "value": "" },
+						{ "type": "check", "value": "" },
+						{ "type": "check", "value": "" }
+					]
+				}
+			]
+		},
+		"stickyHeader": {
+			"type": "boolean",
+			"default": true
+		},
+		"alternatingRows": {
+			"type": "boolean",
+			"default": true
+		},
+		"responsiveMode": {
+			"type": "string",
+			"default": "scroll"
+		},
+		"featuredColumnColor": {
+			"type": "string",
+			"default": ""
+		},
+		"headerBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"headerTextColor": {
+			"type": "string",
+			"default": ""
+		},
+		"showCtaButtons": {
+			"type": "boolean",
+			"default": true
+		},
+		"ctaStyle": {
+			"type": "string",
+			"default": "filled"
+		}
+	},
+	"example": {
+		"attributes": {
+			"columns": [
+				{ "name": "Starter", "link": "#", "linkText": "Choose", "featured": false },
+				{ "name": "Professional", "link": "#", "linkText": "Choose", "featured": true },
+				{ "name": "Business", "link": "#", "linkText": "Choose", "featured": false }
+			],
+			"rows": [
+				{
+					"label": "Projects",
+					"tooltip": "",
+					"cells": [
+						{ "type": "text", "value": "3" },
+						{ "type": "text", "value": "Unlimited" },
+						{ "type": "text", "value": "Unlimited" }
+					]
+				},
+				{
+					"label": "Team Members",
+					"tooltip": "",
+					"cells": [
+						{ "type": "text", "value": "1" },
+						{ "type": "text", "value": "10" },
+						{ "type": "text", "value": "Unlimited" }
+					]
+				},
+				{
+					"label": "Priority Support",
+					"tooltip": "",
+					"cells": [
+						{ "type": "cross", "value": "" },
+						{ "type": "check", "value": "" },
+						{ "type": "check", "value": "" }
+					]
+				}
+			]
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css",
+	"viewScript": "file:./view.js"
+}
