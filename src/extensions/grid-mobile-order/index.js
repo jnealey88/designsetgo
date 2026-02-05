@@ -21,6 +21,30 @@ import { useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 
 /**
+ * Check if the current block is inside a Grid container
+ *
+ * @param {string} clientId Block client ID
+ * @return {Object|null} Parent grid block object or null
+ */
+function useParentGrid(clientId) {
+	return useSelect(
+		(select) => {
+			const { getBlockParents, getBlock } = select('core/block-editor');
+			const parents = getBlockParents(clientId);
+
+			for (const parentId of parents) {
+				const parent = getBlock(parentId);
+				if (parent && parent.name === 'designsetgo/grid') {
+					return parent;
+				}
+			}
+			return null;
+		},
+		[clientId]
+	);
+}
+
+/**
  * Add mobileOrder attribute to all blocks
  *
  * @param {Object} settings Block settings
@@ -58,23 +82,7 @@ const withMobileOrderControl = createHigherOrderComponent((BlockEdit) => {
 		const { attributes, setAttributes, clientId } = props;
 		const { dsgoMobileOrder } = attributes;
 
-		// Check if this block is inside a Grid container
-		const parentGrid = useSelect(
-			(select) => {
-				const { getBlockParents, getBlock } =
-					select('core/block-editor');
-				const parents = getBlockParents(clientId);
-
-				for (const parentId of parents) {
-					const parent = getBlock(parentId);
-					if (parent && parent.name === 'designsetgo/grid') {
-						return parent;
-					}
-				}
-				return null;
-			},
-			[clientId]
-		);
+		const parentGrid = useParentGrid(clientId);
 
 		return (
 			<>
@@ -134,23 +142,7 @@ const withMobileOrderStyles = createHigherOrderComponent((BlockListBlock) => {
 		const { attributes, clientId } = props;
 		const { dsgoMobileOrder } = attributes;
 
-		// Check if this block is inside a Grid container
-		const isInGrid = useSelect(
-			(select) => {
-				const { getBlockParents, getBlock } =
-					select('core/block-editor');
-				const parents = getBlockParents(clientId);
-
-				for (const parentId of parents) {
-					const parent = getBlock(parentId);
-					if (parent && parent.name === 'designsetgo/grid') {
-						return true;
-					}
-				}
-				return false;
-			},
-			[clientId]
-		);
+		const isInGrid = !!useParentGrid(clientId);
 
 		const styleId = `dsgo-mobile-order-${clientId}`;
 
@@ -164,6 +156,10 @@ const withMobileOrderStyles = createHigherOrderComponent((BlockListBlock) => {
 				document.querySelector('iframe[name="editor-canvas"]')
 					?.contentDocument || document;
 
+			if (!editorDocument?.getElementById) {
+				return;
+			}
+
 			// Remove existing style
 			const existingStyle = editorDocument.getElementById(styleId);
 			if (existingStyle) {
@@ -171,15 +167,20 @@ const withMobileOrderStyles = createHigherOrderComponent((BlockListBlock) => {
 			}
 
 			// Create new style element if mobileOrder is set
-			if (dsgoMobileOrder && dsgoMobileOrder > 0) {
+			if (dsgoMobileOrder > 0) {
 				const styleElement = editorDocument.createElement('style');
 				styleElement.id = styleId;
+
+				// Sanitize clientId for CSS selector (defense-in-depth)
+				const safeClientId = window.CSS?.escape
+					? window.CSS.escape(clientId)
+					: clientId.replace(/[^a-zA-Z0-9-]/g, '');
 
 				styleElement.textContent = `
 					/* Mobile order */
 					@media (max-width: 767px) {
-						[data-block="${clientId}"] {
-							order: ${dsgoMobileOrder} !important;
+						[data-block="${safeClientId}"] {
+							order: ${Number(dsgoMobileOrder)} !important;
 						}
 					}
 				`;
@@ -215,10 +216,16 @@ addFilter(
  * @return {Object} Modified props
  */
 function applyMobileOrderSaveProps(props, blockType, attributes) {
+	if (!shouldExtendBlock(blockType.name)) {
+		return props;
+	}
+
 	const { dsgoMobileOrder } = attributes;
 
-	// Only apply if mobileOrder is set and > 0
-	if (!dsgoMobileOrder || dsgoMobileOrder === 0) {
+	// Validate and clamp the value
+	const mobileOrder = Math.max(0, Math.min(10, Number(dsgoMobileOrder) || 0));
+
+	if (mobileOrder <= 0) {
 		return props;
 	}
 
@@ -226,7 +233,7 @@ function applyMobileOrderSaveProps(props, blockType, attributes) {
 		...props,
 		style: {
 			...props.style,
-			'--dsgo-mobile-order': dsgoMobileOrder,
+			'--dsgo-mobile-order': mobileOrder,
 		},
 	};
 }
