@@ -87,6 +87,7 @@
 }
 
 // Make RichText inputs in the table less distracting
+// stylelint-disable-next-line selector-class-pattern
 .dsgo-comparison-table .rich-text:focus {
 	outline: none;
 }
