@@ -131,6 +131,14 @@
 		"overlayColor": {
 			"type": "string",
 			"default": ""
+		},
+		"dsgoBlockStyleId": {
+			"type": "string",
+			"default": ""
+		},
+		"dsgoResponsiveSpacing": {
+			"type": "object",
+			"default": {}
 		}
 	},
 	"providesContext": {

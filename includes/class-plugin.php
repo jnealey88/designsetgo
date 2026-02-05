@@ -109,6 +109,13 @@ class Plugin {
 	public $custom_css_renderer;
 
 	/**
+	 * Responsive Spacing Renderer instance.
+	 *
+	 * @var Responsive_Spacing_Renderer
+	 */
+	public $responsive_spacing_renderer;
+
+	/**
 	 * Abilities Registry instance.
 	 *
 	 * @var Abilities\Abilities_Registry
@@ -200,6 +207,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-rest-api.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-comparison.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
+		require_once DESIGNSETGO_PATH . 'includes/class-responsive-spacing-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-icon-injector.php';
@@ -253,8 +261,9 @@ class Plugin {
 		$this->settings            = new Admin\Settings();
 		$this->block_manager       = new Admin\Block_Manager();
 		$this->gdpr_compliance     = new Admin\GDPR_Compliance();
-		$this->custom_css_renderer = new Custom_CSS_Renderer();
-		$this->section_styles      = new Section_Styles();
+		$this->custom_css_renderer          = new Custom_CSS_Renderer();
+		$this->responsive_spacing_renderer = new Responsive_Spacing_Renderer();
+		$this->section_styles               = new Section_Styles();
 		$this->section_styles->init();
 		$this->sticky_header = new Sticky_Header();
 		$this->icon_injector = new Icon_Injector();

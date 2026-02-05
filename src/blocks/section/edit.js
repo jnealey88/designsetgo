@@ -34,6 +34,11 @@ import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
 import ShapeDividerControls from './components/ShapeDividerControls';
 import ShapeDivider from './components/ShapeDivider';
+import {
+	ResponsiveSpacingControl,
+	EditorStyleInjector,
+} from '../../components/responsive-spacing';
+import { generateBlockStyleId } from '../../utils/responsive-spacing';
 
 /**
  * Section Container Edit Component
@@ -56,7 +61,10 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 		overlayColor,
+		dsgoBlockStyleId,
+		dsgoResponsiveSpacing,
 		layout,
+		style,
 		// Shape divider attributes
 		shapeDividerTop,
 		shapeDividerTopColor,
@@ -161,9 +169,18 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		innerBlocks,
 	]);
 
+	// Auto-generate block style ID for responsive spacing CSS targeting
+	useEffect(() => {
+		if (!dsgoBlockStyleId) {
+			setAttributes({ dsgoBlockStyleId: generateBlockStyleId() });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	// Build className
 	const blockClassName = [
 		'dsgo-stack',
+		dsgoBlockStyleId,
 		overlayColor && 'dsgo-stack--has-overlay',
 		(shapeDividerTop || shapeDividerBottom) &&
 			'dsgo-stack--has-shape-divider',
@@ -455,11 +472,96 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 			</InspectorControls>
 
 			<InspectorControls>
+				<PanelBody
+					title={__('Responsive Spacing', 'designsetgo')}
+					initialOpen={false}
+				>
+					<ResponsiveSpacingControl
+						label={__('Padding', 'designsetgo')}
+						type="padding"
+						desktopValues={style?.spacing?.padding}
+						responsiveValues={dsgoResponsiveSpacing}
+						onDesktopChange={(values) =>
+							setAttributes({
+								style: {
+									...style,
+									spacing: {
+										...style?.spacing,
+										padding: values,
+									},
+								},
+							})
+						}
+						onResponsiveChange={(device, type, values) => {
+							const updated = {
+								...dsgoResponsiveSpacing,
+								[device]: {
+									...dsgoResponsiveSpacing?.[device],
+									[type]: values,
+								},
+							};
+							// Clean up undefined values
+							if (!values) {
+								delete updated[device][type];
+								if (Object.keys(updated[device]).length === 0) {
+									delete updated[device];
+								}
+							}
+							setAttributes({
+								dsgoResponsiveSpacing: updated,
+							});
+						}}
+					/>
+					<ResponsiveSpacingControl
+						label={__('Margin', 'designsetgo')}
+						type="margin"
+						desktopValues={style?.spacing?.margin}
+						responsiveValues={dsgoResponsiveSpacing}
+						onDesktopChange={(values) =>
+							setAttributes({
+								style: {
+									...style,
+									spacing: {
+										...style?.spacing,
+										margin: values,
+									},
+								},
+							})
+						}
+						onResponsiveChange={(device, type, values) => {
+							const updated = {
+								...dsgoResponsiveSpacing,
+								[device]: {
+									...dsgoResponsiveSpacing?.[device],
+									[type]: values,
+								},
+							};
+							if (!values) {
+								delete updated[device][type];
+								if (Object.keys(updated[device]).length === 0) {
+									delete updated[device];
+								}
+							}
+							setAttributes({
+								dsgoResponsiveSpacing: updated,
+							});
+						}}
+					/>
+				</PanelBody>
+			</InspectorControls>
+
+			<InspectorControls>
 				<ShapeDividerControls
 					attributes={attributes}
 					setAttributes={setAttributes}
 				/>
 			</InspectorControls>
+
+			<EditorStyleInjector
+				blockStyleId={dsgoBlockStyleId}
+				desktopSpacing={style?.spacing}
+				responsiveSpacing={dsgoResponsiveSpacing}
+			/>
 
 			<TagName {...blockProps}>
 				<ShapeDivider

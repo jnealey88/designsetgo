@@ -33,6 +33,11 @@ import {
 } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
+import {
+	ResponsiveSpacingControl,
+	EditorStyleInjector,
+} from '../../components/responsive-spacing';
+import { generateBlockStyleId } from '../../utils/responsive-spacing';
 
 /**
  * Convert WordPress preset format to CSS variable
@@ -101,6 +106,8 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
+		dsgoBlockStyleId,
+		dsgoResponsiveSpacing,
 		style,
 	} = attributes;
 
@@ -153,10 +160,27 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		[clientId]
 	);
 
+	// Auto-generate block style ID for responsive spacing CSS targeting
+	useEffect(() => {
+		if (!dsgoBlockStyleId) {
+			setAttributes({ dsgoBlockStyleId: generateBlockStyleId() });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	const TagName = tagName || 'div';
+	const gridClassName = [
+		'dsgo-grid',
+		dsgoBlockStyleId,
+		`dsgo-grid-cols-${desktopColumns}`,
+		`dsgo-grid-cols-tablet-${tabletColumns}`,
+		`dsgo-grid-cols-mobile-${mobileColumns}`,
+	]
+		.filter(Boolean)
+		.join(' ');
 	const blockProps = useBlockProps({
-		className: `dsgo-grid dsgo-grid-cols-${desktopColumns} dsgo-grid-cols-tablet-${tabletColumns} dsgo-grid-cols-mobile-${mobileColumns}`,
+		className: gridClassName,
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsgo-hover-bg-color': hoverBackgroundColor,
@@ -490,6 +514,82 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 				</PanelBody>
 
 				<PanelBody
+					title={__('Responsive Spacing', 'designsetgo')}
+					initialOpen={false}
+				>
+					<ResponsiveSpacingControl
+						label={__('Padding', 'designsetgo')}
+						type="padding"
+						desktopValues={style?.spacing?.padding}
+						responsiveValues={dsgoResponsiveSpacing}
+						onDesktopChange={(values) =>
+							setAttributes({
+								style: {
+									...style,
+									spacing: {
+										...style?.spacing,
+										padding: values,
+									},
+								},
+							})
+						}
+						onResponsiveChange={(device, type, values) => {
+							const updated = {
+								...dsgoResponsiveSpacing,
+								[device]: {
+									...dsgoResponsiveSpacing?.[device],
+									[type]: values,
+								},
+							};
+							if (!values) {
+								delete updated[device][type];
+								if (Object.keys(updated[device]).length === 0) {
+									delete updated[device];
+								}
+							}
+							setAttributes({
+								dsgoResponsiveSpacing: updated,
+							});
+						}}
+					/>
+					<ResponsiveSpacingControl
+						label={__('Margin', 'designsetgo')}
+						type="margin"
+						desktopValues={style?.spacing?.margin}
+						responsiveValues={dsgoResponsiveSpacing}
+						onDesktopChange={(values) =>
+							setAttributes({
+								style: {
+									...style,
+									spacing: {
+										...style?.spacing,
+										margin: values,
+									},
+								},
+							})
+						}
+						onResponsiveChange={(device, type, values) => {
+							const updated = {
+								...dsgoResponsiveSpacing,
+								[device]: {
+									...dsgoResponsiveSpacing?.[device],
+									[type]: values,
+								},
+							};
+							if (!values) {
+								delete updated[device][type];
+								if (Object.keys(updated[device]).length === 0) {
+									delete updated[device];
+								}
+							}
+							setAttributes({
+								dsgoResponsiveSpacing: updated,
+							});
+						}}
+					/>
+				</PanelBody>
+
+				<PanelBody
 					title={__('Width Settings', 'designsetgo')}
 					initialOpen={false}
 				>
@@ -543,6 +643,12 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 					)}
 				</PanelBody>
 			</InspectorControls>
+
+			<EditorStyleInjector
+				blockStyleId={dsgoBlockStyleId}
+				desktopSpacing={style?.spacing}
+				responsiveSpacing={dsgoResponsiveSpacing}
+			/>
 
 			<TagName {...blockProps}>
 				<div {...innerBlocksProps} />

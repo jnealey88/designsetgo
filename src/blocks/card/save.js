@@ -58,6 +58,7 @@ export default function CardSave({ attributes }) {
 		showBody,
 		showBadge,
 		showCta,
+		dsgoBlockStyleId,
 	} = attributes;
 
 	// Build block props with border color
@@ -70,8 +71,16 @@ export default function CardSave({ attributes }) {
 		blockStyles.borderStyle = 'solid';
 	}
 
+	const cardClassName = [
+		'dsgo-card',
+		dsgoBlockStyleId,
+		`dsgo-card--${layoutPreset}`,
+		`dsgo-card--style-${visualStyle}`,
+	]
+		.filter(Boolean)
+		.join(' ');
 	const blockProps = useBlockProps.save({
-		className: `dsgo-card dsgo-card--${layoutPreset} dsgo-card--style-${visualStyle}`,
+		className: cardClassName,
 		style: blockStyles,
 	});
 

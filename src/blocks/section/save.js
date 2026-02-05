@@ -27,6 +27,7 @@ export default function SectionSave({ attributes }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 		overlayColor,
+		dsgoBlockStyleId,
 		// Shape divider attributes
 		shapeDividerTop,
 		shapeDividerTopColor,
@@ -49,6 +50,7 @@ export default function SectionSave({ attributes }) {
 	// Build className with conditional no-width-constraint and overlay classes
 	const className = [
 		'dsgo-stack',
+		dsgoBlockStyleId,
 		!constrainWidth && 'dsgo-no-width-constraint',
 		overlayColor && 'dsgo-stack--has-overlay',
 		(shapeDividerTop || shapeDividerBottom) &&

@@ -179,6 +179,14 @@
 		"showCta": {
 			"type": "boolean",
 			"default": true
+		},
+		"dsgoBlockStyleId": {
+			"type": "string",
+			"default": ""
+		},
+		"dsgoResponsiveSpacing": {
+			"type": "object",
+			"default": {}
 		}
 	},
 	"providesContext": {

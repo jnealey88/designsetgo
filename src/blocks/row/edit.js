@@ -32,6 +32,11 @@ import {
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
+import {
+	ResponsiveSpacingControl,
+	EditorStyleInjector,
+} from '../../components/responsive-spacing';
+import { generateBlockStyleId } from '../../utils/responsive-spacing';
 
 /**
  * Convert WordPress vertical alignment value to CSS align-items value
@@ -120,7 +125,10 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 		mobileStack,
+		dsgoBlockStyleId,
+		dsgoResponsiveSpacing,
 		layout,
+		style,
 	} = attributes;
 
 	// Auto-migrate old blocks that use className for alignment
@@ -208,9 +216,18 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 		innerBlocks,
 	]);
 
+	// Auto-generate block style ID for responsive spacing CSS targeting
+	useEffect(() => {
+		if (!dsgoBlockStyleId) {
+			setAttributes({ dsgoBlockStyleId: generateBlockStyleId() });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	// Block wrapper props - outer div stays full width (must match save.js EXACTLY)
 	const blockClassName = [
 		'dsgo-flex',
+		dsgoBlockStyleId,
 		mobileStack && 'dsgo-flex--mobile-stack',
 		overlayColor && 'dsgo-flex--has-overlay',
 	]
@@ -393,6 +410,84 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 				</PanelBody>
 			</InspectorControls>
 
+			<InspectorControls>
+				<PanelBody
+					title={__('Responsive Spacing', 'designsetgo')}
+					initialOpen={false}
+				>
+					<ResponsiveSpacingControl
+						label={__('Padding', 'designsetgo')}
+						type="padding"
+						desktopValues={style?.spacing?.padding}
+						responsiveValues={dsgoResponsiveSpacing}
+						onDesktopChange={(values) =>
+							setAttributes({
+								style: {
+									...style,
+									spacing: {
+										...style?.spacing,
+										padding: values,
+									},
+								},
+							})
+						}
+						onResponsiveChange={(device, type, values) => {
+							const updated = {
+								...dsgoResponsiveSpacing,
+								[device]: {
+									...dsgoResponsiveSpacing?.[device],
+									[type]: values,
+								},
+							};
+							if (!values) {
+								delete updated[device][type];
+								if (Object.keys(updated[device]).length === 0) {
+									delete updated[device];
+								}
+							}
+							setAttributes({
+								dsgoResponsiveSpacing: updated,
+							});
+						}}
+					/>
+					<ResponsiveSpacingControl
+						label={__('Margin', 'designsetgo')}
+						type="margin"
+						desktopValues={style?.spacing?.margin}
+						responsiveValues={dsgoResponsiveSpacing}
+						onDesktopChange={(values) =>
+							setAttributes({
+								style: {
+									...style,
+									spacing: {
+										...style?.spacing,
+										margin: values,
+									},
+								},
+							})
+						}
+						onResponsiveChange={(device, type, values) => {
+							const updated = {
+								...dsgoResponsiveSpacing,
+								[device]: {
+									...dsgoResponsiveSpacing?.[device],
+									[type]: values,
+								},
+							};
+							if (!values) {
+								delete updated[device][type];
+								if (Object.keys(updated[device]).length === 0) {
+									delete updated[device];
+								}
+							}
+							setAttributes({
+								dsgoResponsiveSpacing: updated,
+							});
+						}}
+					/>
+				</PanelBody>
+			</InspectorControls>
+
 			<InspectorControls group="color">
 				<ColorGradientSettingsDropdown
 					panelId={clientId}
@@ -461,6 +556,12 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 					{...colorGradientSettings}
 				/>
 			</InspectorControls>
+
+			<EditorStyleInjector
+				blockStyleId={dsgoBlockStyleId}
+				desktopSpacing={style?.spacing}
+				responsiveSpacing={dsgoResponsiveSpacing}
+			/>
 
 			<TagName {...blockProps}>
 				<div {...innerBlocksProps} />

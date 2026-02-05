@@ -1,0 +1,77 @@
+/**
+ * Responsive Spacing Control - Editor Styles
+ *
+ * @package DesignSetGo
+ * @since 1.5.0
+ */
+
+.dsgo-responsive-spacing-control {
+	margin-bottom: 16px;
+
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 8px;
+	}
+
+	&__label {
+		font-size: 11px;
+		font-weight: 500;
+		text-transform: uppercase;
+		line-height: 1.4;
+		color: #1e1e1e;
+	}
+
+	&__inherit-notice {
+		font-size: 12px;
+		color: #757575;
+		font-style: italic;
+		margin: 0 0 8px;
+	}
+
+	&__reset {
+		margin-top: 4px;
+		font-size: 12px;
+	}
+}
+
+// Device toggle button group
+.dsgo-device-toggle {
+	display: flex;
+	gap: 0;
+
+	.components-button {
+		min-width: 30px;
+		height: 30px;
+		padding: 4px;
+		border-radius: 0;
+		border: 1px solid #ddd;
+		margin-left: -1px;
+
+		&:first-child {
+			border-radius: 2px 0 0 2px;
+			margin-left: 0;
+		}
+
+		&:last-child {
+			border-radius: 0 2px 2px 0;
+		}
+
+		&.is-pressed {
+			background: #1e1e1e;
+			color: #fff;
+			border-color: #1e1e1e;
+			z-index: 1;
+		}
+
+		&:not(.is-pressed):hover {
+			background: #f0f0f0;
+		}
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
+}

@@ -70,12 +70,14 @@ export default function GridSave({ attributes }) {
 		hoverTextColor,
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
+		dsgoBlockStyleId,
 		style,
 	} = attributes;
 
 	// Build className with conditional classes
 	const className = [
 		'dsgo-grid',
+		dsgoBlockStyleId,
 		`dsgo-grid-cols-${desktopColumns}`,
 		`dsgo-grid-cols-tablet-${tabletColumns}`,
 		`dsgo-grid-cols-mobile-${mobileColumns}`,

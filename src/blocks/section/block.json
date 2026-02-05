@@ -129,6 +129,14 @@
 			"type": "string",
 			"default": ""
 		},
+		"dsgoBlockStyleId": {
+			"type": "string",
+			"default": ""
+		},
+		"dsgoResponsiveSpacing": {
+			"type": "object",
+			"default": {}
+		},
 		"shapeDividerTop": {
 			"type": "string",
 			"default": ""

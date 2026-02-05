@@ -92,12 +92,14 @@ export default function RowSave({ attributes }) {
 		hoverIconBackgroundColor,
 		hoverButtonBackgroundColor,
 		mobileStack,
+		dsgoBlockStyleId,
 		layout,
 	} = attributes;
 
 	// Build className with conditional classes
 	const className = [
 		'dsgo-flex',
+		dsgoBlockStyleId,
 		mobileStack && 'dsgo-flex--mobile-stack',
 		!constrainWidth && 'dsgo-no-width-constraint',
 		overlayColor && 'dsgo-flex--has-overlay',

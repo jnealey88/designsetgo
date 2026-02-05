@@ -24,6 +24,12 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalDivider as Divider,
 } from '@wordpress/components';
+import { useEffect } from '@wordpress/element';
+import {
+	ResponsiveSpacingControl,
+	EditorStyleInjector,
+} from '../../components/responsive-spacing';
+import { generateBlockStyleId } from '../../utils/responsive-spacing';
 
 /**
  * Edit component for Card block
@@ -63,9 +69,21 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 		showBody,
 		showBadge,
 		showCta,
+		dsgoBlockStyleId,
+		dsgoResponsiveSpacing,
 	} = attributes;
 
+	const { style } = attributes;
+
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+	// Auto-generate block style ID for responsive spacing CSS targeting
+	useEffect(() => {
+		if (!dsgoBlockStyleId) {
+			setAttributes({ dsgoBlockStyleId: generateBlockStyleId() });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// Build block props with border color
 	const blockStyles = {};
@@ -77,8 +95,16 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 		blockStyles.borderStyle = 'solid';
 	}
 
+	const cardClassName = [
+		'dsgo-card',
+		dsgoBlockStyleId,
+		`dsgo-card--${layoutPreset}`,
+		`dsgo-card--style-${visualStyle}`,
+	]
+		.filter(Boolean)
+		.join(' ');
 	const blockProps = useBlockProps({
-		className: `dsgo-card dsgo-card--${layoutPreset} dsgo-card--style-${visualStyle}`,
+		className: cardClassName,
 		style: blockStyles,
 	});
 
@@ -755,6 +781,84 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 				</PanelBody>
 			</InspectorControls>
 
+			<InspectorControls>
+				<PanelBody
+					title={__('Responsive Spacing', 'designsetgo')}
+					initialOpen={false}
+				>
+					<ResponsiveSpacingControl
+						label={__('Padding', 'designsetgo')}
+						type="padding"
+						desktopValues={style?.spacing?.padding}
+						responsiveValues={dsgoResponsiveSpacing}
+						onDesktopChange={(values) =>
+							setAttributes({
+								style: {
+									...style,
+									spacing: {
+										...style?.spacing,
+										padding: values,
+									},
+								},
+							})
+						}
+						onResponsiveChange={(device, type, values) => {
+							const updated = {
+								...dsgoResponsiveSpacing,
+								[device]: {
+									...dsgoResponsiveSpacing?.[device],
+									[type]: values,
+								},
+							};
+							if (!values) {
+								delete updated[device][type];
+								if (Object.keys(updated[device]).length === 0) {
+									delete updated[device];
+								}
+							}
+							setAttributes({
+								dsgoResponsiveSpacing: updated,
+							});
+						}}
+					/>
+					<ResponsiveSpacingControl
+						label={__('Margin', 'designsetgo')}
+						type="margin"
+						desktopValues={style?.spacing?.margin}
+						responsiveValues={dsgoResponsiveSpacing}
+						onDesktopChange={(values) =>
+							setAttributes({
+								style: {
+									...style,
+									spacing: {
+										...style?.spacing,
+										margin: values,
+									},
+								},
+							})
+						}
+						onResponsiveChange={(device, type, values) => {
+							const updated = {
+								...dsgoResponsiveSpacing,
+								[device]: {
+									...dsgoResponsiveSpacing?.[device],
+									[type]: values,
+								},
+							};
+							if (!values) {
+								delete updated[device][type];
+								if (Object.keys(updated[device]).length === 0) {
+									delete updated[device];
+								}
+							}
+							setAttributes({
+								dsgoResponsiveSpacing: updated,
+							});
+						}}
+					/>
+				</PanelBody>
+			</InspectorControls>
+
 			<InspectorControls group="color">
 				<ColorGradientSettingsDropdown
 					panelId={clientId}
@@ -814,6 +918,12 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 					/>
 				)}
 			</InspectorControls>
+
+			<EditorStyleInjector
+				blockStyleId={dsgoBlockStyleId}
+				desktopSpacing={style?.spacing}
+				responsiveSpacing={dsgoResponsiveSpacing}
+			/>
 
 			<div {...blockProps}>
 				{badgeStyle === 'floating' && renderBadge()}
