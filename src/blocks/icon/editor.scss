@@ -72,19 +72,11 @@
 		}
 	}
 
-	// Ensure proper color inheritance from WordPress color controls
-	// Use background-color instead of background shorthand to avoid conflicts with hover
-	&[style*="background-color"]:not([style*="background-image"]) .dsgo-icon__wrapper {
-		background-color: inherit !important;
-	}
-
-	// For background images, inherit full background
-	&[style*="background-image"] .dsgo-icon__wrapper {
-		background: inherit !important;
-	}
-
-	// Transfer background from WordPress color classes (e.g., has-warning-background-color)
-	&.has-background .dsgo-icon__wrapper {
+	// WordPress color support applies background to this outer element.
+	// The wrapper must stay transparent to prevent double-layered backgrounds
+	// (two stacked semi-transparent layers would appear darker over the icon).
+	&.has-background .dsgo-icon__wrapper,
+	&[style*="background-color"] .dsgo-icon__wrapper {
 		background-color: transparent !important;
 	}
 
