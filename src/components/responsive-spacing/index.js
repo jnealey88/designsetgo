@@ -7,4 +7,5 @@
 
 export { default as DeviceToggle } from './DeviceToggle';
 export { default as ResponsiveSpacingControl } from './ResponsiveSpacingControl';
+export { default as ResponsiveSpacingPanel } from './ResponsiveSpacingPanel';
 export { default as EditorStyleInjector } from './EditorStyleInjector';

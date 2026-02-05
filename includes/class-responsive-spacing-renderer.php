@@ -114,7 +114,7 @@ class Responsive_Spacing_Renderer {
 
 		foreach ( $this->collected_styles as $block_style_id => $data ) {
 			$spacing = $data['spacing'];
-			$selector = '.' . $block_style_id;
+			$selector = '.' . esc_attr( $block_style_id );
 
 			// Generate tablet CSS.
 			if ( ! empty( $spacing['tablet'] ) ) {
@@ -198,10 +198,9 @@ class Responsive_Spacing_Renderer {
 			return false;
 		}
 
-		// Already a CSS variable.
+		// Already a CSS variable (no fallback values allowed for security).
 		if ( 0 === strpos( $value, 'var(--' ) ) {
-			// Sanitize: only allow CSS variable references with safe characters.
-			if ( preg_match( '/^var\(--[a-zA-Z0-9_-]+(?:--[a-zA-Z0-9_-]+)*(?:,\s*[^)]+)?\)$/', $value ) ) {
+			if ( preg_match( '/^var\(--[a-zA-Z0-9_-]+(?:--[a-zA-Z0-9_-]+)*\)$/', $value ) ) {
 				return $value;
 			}
 			return false;
@@ -224,8 +223,8 @@ class Responsive_Spacing_Renderer {
 			return $value;
 		}
 
-		// Allow calc() expressions with safe content.
-		if ( preg_match( '/^calc\([0-9a-zA-Z%+\-*\/.() ]+\)$/', $value ) ) {
+		// Allow calc() expressions with only numbers, units, operators, and whitespace.
+		if ( preg_match( '/^calc\([\d\s+\-*\/.()]+(?:px|em|rem|%|vh|vw)?\)$/', $value ) ) {
 			return $value;
 		}
 

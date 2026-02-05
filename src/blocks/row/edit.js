@@ -33,7 +33,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
 import {
-	ResponsiveSpacingControl,
+	ResponsiveSpacingPanel,
 	EditorStyleInjector,
 } from '../../components/responsive-spacing';
 import { generateBlockStyleId } from '../../utils/responsive-spacing';
@@ -411,81 +411,11 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 			</InspectorControls>
 
 			<InspectorControls>
-				<PanelBody
-					title={__('Responsive Spacing', 'designsetgo')}
-					initialOpen={false}
-				>
-					<ResponsiveSpacingControl
-						label={__('Padding', 'designsetgo')}
-						type="padding"
-						desktopValues={style?.spacing?.padding}
-						responsiveValues={dsgoResponsiveSpacing}
-						onDesktopChange={(values) =>
-							setAttributes({
-								style: {
-									...style,
-									spacing: {
-										...style?.spacing,
-										padding: values,
-									},
-								},
-							})
-						}
-						onResponsiveChange={(device, type, values) => {
-							const updated = {
-								...dsgoResponsiveSpacing,
-								[device]: {
-									...dsgoResponsiveSpacing?.[device],
-									[type]: values,
-								},
-							};
-							if (!values) {
-								delete updated[device][type];
-								if (Object.keys(updated[device]).length === 0) {
-									delete updated[device];
-								}
-							}
-							setAttributes({
-								dsgoResponsiveSpacing: updated,
-							});
-						}}
-					/>
-					<ResponsiveSpacingControl
-						label={__('Margin', 'designsetgo')}
-						type="margin"
-						desktopValues={style?.spacing?.margin}
-						responsiveValues={dsgoResponsiveSpacing}
-						onDesktopChange={(values) =>
-							setAttributes({
-								style: {
-									...style,
-									spacing: {
-										...style?.spacing,
-										margin: values,
-									},
-								},
-							})
-						}
-						onResponsiveChange={(device, type, values) => {
-							const updated = {
-								...dsgoResponsiveSpacing,
-								[device]: {
-									...dsgoResponsiveSpacing?.[device],
-									[type]: values,
-								},
-							};
-							if (!values) {
-								delete updated[device][type];
-								if (Object.keys(updated[device]).length === 0) {
-									delete updated[device];
-								}
-							}
-							setAttributes({
-								dsgoResponsiveSpacing: updated,
-							});
-						}}
-					/>
-				</PanelBody>
+				<ResponsiveSpacingPanel
+					style={style}
+					dsgoResponsiveSpacing={dsgoResponsiveSpacing}
+					setAttributes={setAttributes}
+				/>
 			</InspectorControls>
 
 			<InspectorControls group="color">

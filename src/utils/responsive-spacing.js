@@ -57,7 +57,7 @@ export function getEffectiveSpacing(
  * @return {string} Unique ID in format "dsgo-rs-xxxxxxxxx"
  */
 export function generateBlockStyleId() {
-	return `dsgo-rs-${Math.random().toString(36).substr(2, 9)}`;
+	return `dsgo-rs-${Math.random().toString(36).slice(2, 11)}`;
 }
 
 /**
@@ -78,7 +78,10 @@ function convertPresetValue(value) {
 
 	if (value.startsWith('var:preset|')) {
 		const parts = value.replace('var:preset|', '').split('|');
-		return `var(--wp--preset--${parts.join('--')})`;
+		if (parts.every((part) => /^[a-zA-Z0-9_-]+$/.test(part))) {
+			return `var(--wp--preset--${parts.join('--')})`;
+		}
+		return value;
 	}
 
 	return value;
@@ -123,6 +126,10 @@ export function buildResponsiveSpacingCSS(
 	responsiveSpacing
 ) {
 	if (!blockId || !responsiveSpacing) {
+		return '';
+	}
+
+	if (!/^dsgo-rs-[a-z0-9]+$/.test(blockId)) {
 		return '';
 	}
 
