@@ -252,7 +252,7 @@ class Draft_Mode_REST {
 					'content' => array(
 						'required'          => false,
 						'type'              => 'string',
-						'sanitize_callback' => array( __CLASS__, 'sanitize_block_content' ),
+						// No sanitize_callback - wp_kses breaks block content (strips CSS, corrupts unicode)
 						'description'       => __( 'Optional content to use instead of published content (captures unsaved edits).', 'designsetgo' ),
 					),
 					'title' => array(
