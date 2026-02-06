@@ -44,6 +44,14 @@ class Draft_Mode_Preview {
 	const TRANSIENT_DRAFT_MAP = 'dsgo_draft_map';
 
 	/**
+	 * Option key for the latest draft creation timestamp.
+	 *
+	 * Used to auto-reset users to preview mode when new drafts
+	 * are created after they opted out.
+	 */
+	const OPTION_LAST_DRAFT_CREATED = 'dsgo_last_draft_created';
+
+	/**
 	 * Draft Mode instance.
 	 *
 	 * @var Draft_Mode
@@ -88,6 +96,9 @@ class Draft_Mode_Preview {
 		add_action( 'designsetgo_draft_created', array( $this, 'invalidate_draft_map_cache' ) );
 		add_action( 'designsetgo_draft_published', array( $this, 'invalidate_draft_map_cache' ) );
 		add_action( 'designsetgo_draft_discarded', array( $this, 'invalidate_draft_map_cache' ) );
+
+		// Record timestamp when new drafts are created to auto-reset preview mode.
+		add_action( 'designsetgo_draft_created', array( $this, 'record_draft_created_time' ) );
 	}
 
 	/**
@@ -99,6 +110,12 @@ class Draft_Mode_Preview {
 	public function register_frontend_hooks() {
 		// Only run on the frontend, not in admin or REST API contexts.
 		if ( is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+			return;
+		}
+
+		// Check if frontend preview is enabled in settings.
+		$settings = $this->draft_mode->get_settings();
+		if ( empty( $settings['show_frontend_preview'] ) ) {
 			return;
 		}
 
@@ -143,9 +160,17 @@ class Draft_Mode_Preview {
 		// Check if user has opted out via cookie.
 		if ( isset( $_COOKIE[ self::COOKIE_LIVE_MODE ] ) ) {
 			$cookie_value = sanitize_text_field( wp_unslash( $_COOKIE[ self::COOKIE_LIVE_MODE ] ) );
-			if ( '1' === $cookie_value ) {
-				$this->is_preview_active = false;
-				return false;
+			if ( ! empty( $cookie_value ) ) {
+				// Cookie stores the opt-out timestamp. If a new draft was
+				// created after the user opted out, auto-reset to preview.
+				$opt_out_time     = (int) $cookie_value;
+				$last_draft_time  = (int) get_option( self::OPTION_LAST_DRAFT_CREATED, 0 );
+
+				if ( 0 === $last_draft_time || $opt_out_time >= $last_draft_time ) {
+					$this->is_preview_active = false;
+					return false;
+				}
+				// New draft created after opt-out — fall through to preview mode.
 			}
 		}
 
@@ -232,6 +257,18 @@ class Draft_Mode_Preview {
 	}
 
 	/**
+	 * Record the timestamp when a draft is created.
+	 *
+	 * This allows auto-resetting users to preview mode when new
+	 * drafts appear after they opted out to live mode.
+	 *
+	 * Hooked to designsetgo_draft_created action.
+	 */
+	public function record_draft_created_time() {
+		update_option( self::OPTION_LAST_DRAFT_CREATED, time(), false );
+	}
+
+	/**
 	 * Handle the live mode toggle via query parameter.
 	 *
 	 * When ?dsgo_live=1 is present, set a cookie to opt out of preview.
@@ -259,10 +296,12 @@ class Draft_Mode_Preview {
 		$live_mode = sanitize_text_field( wp_unslash( $_GET[ self::PARAM_LIVE_MODE ] ) );
 
 		if ( '1' === $live_mode ) {
-			// Opt out of preview — set cookie for 24 hours.
+			// Opt out of preview — set cookie with timestamp for 24 hours.
+			// The timestamp allows auto-reset when new drafts are created.
+			$now = (string) time();
 			setcookie(
 				self::COOKIE_LIVE_MODE,
-				'1',
+				$now,
 				array(
 					'expires'  => time() + DAY_IN_SECONDS,
 					'path'     => COOKIEPATH,
@@ -272,7 +311,7 @@ class Draft_Mode_Preview {
 					'samesite' => 'Lax',
 				)
 			);
-			$_COOKIE[ self::COOKIE_LIVE_MODE ] = '1';
+			$_COOKIE[ self::COOKIE_LIVE_MODE ] = $now;
 		} else {
 			// Opt back into preview — remove cookie.
 			setcookie(
@@ -315,6 +354,12 @@ class Draft_Mode_Preview {
 			return $posts;
 		}
 
+		// Check if frontend preview is enabled in settings.
+		$settings = $this->draft_mode->get_settings();
+		if ( empty( $settings['show_frontend_preview'] ) ) {
+			return $posts;
+		}
+
 		if ( ! $this->is_preview_active() ) {
 			return $posts;
 		}
@@ -353,8 +398,8 @@ class Draft_Mode_Preview {
 	/**
 	 * Swap the featured image to use the draft's featured image.
 	 *
-	 * @param int $thumbnail_id The thumbnail/featured image ID.
-	 * @param int $post_id      The post ID.
+	 * @param int             $thumbnail_id The thumbnail/featured image ID.
+	 * @param int|\WP_Post   $post_id      The post ID or post object.
 	 * @return int Modified thumbnail ID.
 	 */
 	public function swap_thumbnail( $thumbnail_id, $post_id ) {
@@ -510,20 +555,20 @@ class Draft_Mode_Preview {
 	private function render_banner_html( $is_active, $draft_count, $toggle_url, $draft_list_items, $current_page_has_draft ) {
 		$status_text = $is_active
 			? sprintf(
-				/* translators: %d is the number of pages with draft changes */
+				/* translators: %d is the number of pages with pending changes */
 				_n(
-					'Previewing draft changes (%d page)',
-					'Previewing draft changes (%d pages)',
+					'Preview mode — %d page with changes',
+					'Preview mode — %d pages with changes',
 					$draft_count,
 					'designsetgo'
 				),
 				$draft_count
 			)
 			: sprintf(
-				/* translators: %d is the number of pages with pending draft changes */
+				/* translators: %d is the number of pages with pending changes */
 				_n(
-					'Viewing live site — %d page has draft changes',
-					'Viewing live site — %d pages have draft changes',
+					'Live mode — %d page has pending changes',
+					'Live mode — %d pages have pending changes',
 					$draft_count,
 					'designsetgo'
 				),
@@ -532,7 +577,7 @@ class Draft_Mode_Preview {
 
 		$toggle_label = $is_active
 			? __( 'View Live', 'designsetgo' )
-			: __( 'Preview Drafts', 'designsetgo' );
+			: __( 'Preview Changes', 'designsetgo' );
 
 		$indicator_class = $is_active ? 'dsgo-preview-banner--active' : 'dsgo-preview-banner--live';
 		?>
@@ -560,12 +605,12 @@ class Draft_Mode_Preview {
 
 			<div id="dsgo-preview-draft-list" class="dsgo-preview-banner__details" hidden>
 				<div class="dsgo-preview-banner__details-inner">
-					<h3 class="dsgo-preview-banner__details-title"><?php esc_html_e( 'Pages with draft changes:', 'designsetgo' ); ?></h3>
+					<h3 class="dsgo-preview-banner__details-title"><?php esc_html_e( 'Pages with pending changes:', 'designsetgo' ); ?></h3>
 					<ul class="dsgo-preview-banner__draft-list">
 						<?php foreach ( $draft_list_items as $item ) : ?>
 							<li class="dsgo-preview-draft-item<?php echo $item['is_current'] ? ' dsgo-preview-draft-item--current' : ''; ?>">
 								<a href="<?php echo esc_url( $item['page_url'] ); ?>" class="dsgo-preview-draft-link"><?php echo esc_html( $item['page_title'] ); ?></a>
-								<a href="<?php echo esc_url( $item['edit_url'] ); ?>" class="dsgo-preview-draft-edit" title="<?php esc_attr_e( 'Edit draft', 'designsetgo' ); ?>"><?php esc_html_e( 'Edit', 'designsetgo' ); ?></a>
+								<a href="<?php echo esc_url( $item['edit_url'] ); ?>" class="dsgo-preview-draft-edit" title="<?php esc_attr_e( 'Edit page', 'designsetgo' ); ?>"><?php esc_html_e( 'Edit', 'designsetgo' ); ?></a>
 							</li>
 						<?php endforeach; ?>
 					</ul>
