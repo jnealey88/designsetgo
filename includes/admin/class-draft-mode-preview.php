@@ -521,8 +521,8 @@ class Draft_Mode_Preview {
 	/**
 	 * Build an array of draft list item data for the details panel.
 	 *
-	 * @param array         $draft_map       Draft map of original_id => draft post.
-	 * @param \WP_Post|null $queried_object  Currently queried object.
+	 * @param array         $draft_map      Draft map of original_id => draft post.
+	 * @param \WP_Post|null $queried_object Currently queried object.
 	 * @return array[] Array of item data arrays with keys: page_title, page_url, edit_url, is_current.
 	 */
 	private function build_draft_list_items( $draft_map, $queried_object ) {
