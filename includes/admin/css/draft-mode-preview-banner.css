@@ -1,0 +1,255 @@
+/**
+ * Draft Mode Preview Banner Styles
+ *
+ * Floating banner shown to logged-in admins when draft pages exist.
+ * Supports both active (dark) and live (light) visual states.
+ *
+ * @package DesignSetGo
+ * @since 1.5.0
+ */
+
+#dsgo-preview-banner {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 99998;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-size: 13px;
+	line-height: 1.4;
+	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+}
+
+#dsgo-preview-banner * {
+	box-sizing: border-box;
+}
+
+/* Active state (viewing drafts) — dark background */
+.dsgo-preview-banner--active {
+	background: #1e1e1e;
+	color: #f0f0f0;
+}
+
+/* Live state (viewing published) — light background */
+.dsgo-preview-banner--live {
+	background: #fff;
+	color: #1e1e1e;
+	border-top: 2px solid #ddd;
+}
+
+.dsgo-preview-banner__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 20px;
+	max-width: 100%;
+	gap: 16px;
+}
+
+.dsgo-preview-banner__status {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.dsgo-preview-banner__indicator {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.dsgo-preview-banner--active .dsgo-preview-banner__indicator {
+	background: #f0c33c;
+	box-shadow: 0 0 6px rgba(240, 195, 60, 0.5);
+}
+
+.dsgo-preview-banner--live .dsgo-preview-banner__indicator {
+	background: #00a32a;
+	box-shadow: 0 0 6px rgba(0, 163, 42, 0.3);
+}
+
+.dsgo-preview-banner__text {
+	font-weight: 500;
+}
+
+.dsgo-preview-banner__page-badge {
+	display: inline-block;
+	padding: 1px 8px;
+	background: rgba(240, 195, 60, 0.2);
+	color: #f0c33c;
+	border-radius: 3px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+/* Actions */
+.dsgo-preview-banner__actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-shrink: 0;
+}
+
+.dsgo-preview-banner__details-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 5px 12px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 4px;
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+	font-size: 12px;
+	transition: background 0.15s;
+}
+
+.dsgo-preview-banner--live .dsgo-preview-banner__details-toggle {
+	border-color: #ddd;
+}
+
+.dsgo-preview-banner__details-toggle:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.dsgo-preview-banner--live .dsgo-preview-banner__details-toggle:hover {
+	background: #f0f0f0;
+}
+
+.dsgo-preview-banner__details-toggle[aria-expanded="true"] svg {
+	transform: rotate(180deg);
+}
+
+.dsgo-preview-banner__toggle {
+	display: inline-block;
+	padding: 5px 16px;
+	border-radius: 4px;
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: 600;
+	transition: background 0.15s, color 0.15s;
+}
+
+.dsgo-preview-banner--active .dsgo-preview-banner__toggle {
+	background: #f0f0f0;
+	color: #1e1e1e;
+}
+
+.dsgo-preview-banner--active .dsgo-preview-banner__toggle:hover {
+	background: #fff;
+}
+
+.dsgo-preview-banner--live .dsgo-preview-banner__toggle {
+	background: #2271b1;
+	color: #fff;
+}
+
+.dsgo-preview-banner--live .dsgo-preview-banner__toggle:hover {
+	background: #135e96;
+}
+
+/* Details panel */
+.dsgo-preview-banner__details {
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dsgo-preview-banner--live .dsgo-preview-banner__details {
+	border-top-color: #ddd;
+}
+
+.dsgo-preview-banner__details-inner {
+	padding: 12px 20px 16px;
+}
+
+.dsgo-preview-banner__details-title {
+	margin: 0 0 8px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	opacity: 0.7;
+}
+
+.dsgo-preview-banner__draft-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.dsgo-preview-draft-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 10px;
+	border-radius: 4px;
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.dsgo-preview-banner--live .dsgo-preview-draft-item {
+	background: #f0f0f0;
+}
+
+.dsgo-preview-draft-item--current {
+	background: rgba(240, 195, 60, 0.15);
+}
+
+.dsgo-preview-banner--live .dsgo-preview-draft-item--current {
+	background: #e8f0fe;
+}
+
+.dsgo-preview-draft-link {
+	color: inherit;
+	text-decoration: none;
+	font-weight: 500;
+}
+
+.dsgo-preview-draft-link:hover {
+	text-decoration: underline;
+}
+
+.dsgo-preview-draft-edit {
+	font-size: 11px;
+	opacity: 0.6;
+	text-decoration: none;
+}
+
+.dsgo-preview-banner--active .dsgo-preview-draft-edit {
+	color: #72aee6;
+}
+
+.dsgo-preview-banner--live .dsgo-preview-draft-edit {
+	color: #2271b1;
+}
+
+.dsgo-preview-draft-edit:hover {
+	opacity: 1;
+	text-decoration: underline;
+}
+
+/* Offset page content so banner doesn't cover it */
+body.dsgo-has-draft-banner {
+	padding-bottom: 48px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+	.dsgo-preview-banner__inner {
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 8px 12px;
+		gap: 8px;
+	}
+
+	.dsgo-preview-banner__actions {
+		width: 100%;
+		justify-content: flex-end;
+	}
+}

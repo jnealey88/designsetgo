@@ -117,6 +117,7 @@ class Settings {
 				'enable'                 => true,
 				'show_page_list_actions' => true,
 				'show_page_list_column'  => true,
+				'show_frontend_preview'  => true,
 				'auto_save_enabled'      => true,
 				'auto_save_interval'     => 60,
 			),
@@ -832,6 +833,7 @@ class Settings {
 				'enable'                 => isset( $settings['draft_mode']['enable'] ) ? (bool) $settings['draft_mode']['enable'] : true,
 				'show_page_list_actions' => isset( $settings['draft_mode']['show_page_list_actions'] ) ? (bool) $settings['draft_mode']['show_page_list_actions'] : true,
 				'show_page_list_column'  => isset( $settings['draft_mode']['show_page_list_column'] ) ? (bool) $settings['draft_mode']['show_page_list_column'] : true,
+				'show_frontend_preview'  => isset( $settings['draft_mode']['show_frontend_preview'] ) ? (bool) $settings['draft_mode']['show_frontend_preview'] : true,
 				'auto_save_enabled'      => isset( $settings['draft_mode']['auto_save_enabled'] ) ? (bool) $settings['draft_mode']['auto_save_enabled'] : true,
 				'auto_save_interval'     => isset( $settings['draft_mode']['auto_save_interval'] ) ? absint( $settings['draft_mode']['auto_save_interval'] ) : 60,
 			);

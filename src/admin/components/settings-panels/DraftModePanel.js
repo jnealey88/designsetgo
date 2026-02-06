@@ -46,54 +46,88 @@ const DraftModePanel = ({ settings, updateSetting }) => {
 				</div>
 
 				{settings?.draft_mode?.enable && (
-					<div className="designsetgo-settings-section">
-						<h3 className="designsetgo-section-heading">
-							{__('Admin Interface', 'designsetgo')}
-						</h3>
+					<>
+						<div className="designsetgo-settings-section">
+							<h3 className="designsetgo-section-heading">
+								{__('Frontend', 'designsetgo')}
+							</h3>
 
-						<ToggleControl
-							label={__('Show Page List Actions', 'designsetgo')}
-							help={__(
-								'Display "Create Draft" and "Edit Draft" links in the Pages list.',
-								'designsetgo'
-							)}
-							checked={
-								settings?.draft_mode?.show_page_list_actions ??
-								true
-							}
-							onChange={(value) =>
-								updateSetting(
-									'draft_mode',
-									'show_page_list_actions',
-									value
-								)
-							}
-							__nextHasNoMarginBottom
-						/>
+							<ToggleControl
+								label={__(
+									'Show Frontend Preview',
+									'designsetgo'
+								)}
+								help={__(
+									'Display a preview banner on the frontend and show draft content to logged-in editors.',
+									'designsetgo'
+								)}
+								checked={
+									settings?.draft_mode
+										?.show_frontend_preview ?? true
+								}
+								onChange={(value) =>
+									updateSetting(
+										'draft_mode',
+										'show_frontend_preview',
+										value
+									)
+								}
+								__nextHasNoMarginBottom
+							/>
+						</div>
 
-						<ToggleControl
-							label={__(
-								'Show Draft Status Column',
-								'designsetgo'
-							)}
-							help={__(
-								'Display a "Draft Status" column in the Pages list.',
-								'designsetgo'
-							)}
-							checked={
-								settings?.draft_mode?.show_page_list_column ??
-								true
-							}
-							onChange={(value) =>
-								updateSetting(
-									'draft_mode',
-									'show_page_list_column',
-									value
-								)
-							}
-							__nextHasNoMarginBottom
-						/>
-					</div>
+						<div className="designsetgo-settings-section">
+							<h3 className="designsetgo-section-heading">
+								{__('Admin Interface', 'designsetgo')}
+							</h3>
+
+							<ToggleControl
+								label={__(
+									'Show Page List Actions',
+									'designsetgo'
+								)}
+								help={__(
+									'Display "Create Draft" and "Edit Draft" links in the Pages list.',
+									'designsetgo'
+								)}
+								checked={
+									settings?.draft_mode
+										?.show_page_list_actions ?? true
+								}
+								onChange={(value) =>
+									updateSetting(
+										'draft_mode',
+										'show_page_list_actions',
+										value
+									)
+								}
+								__nextHasNoMarginBottom
+							/>
+
+							<ToggleControl
+								label={__(
+									'Show Draft Status Column',
+									'designsetgo'
+								)}
+								help={__(
+									'Display a "Draft Status" column in the Pages list.',
+									'designsetgo'
+								)}
+								checked={
+									settings?.draft_mode
+										?.show_page_list_column ?? true
+								}
+								onChange={(value) =>
+									updateSetting(
+										'draft_mode',
+										'show_page_list_column',
+										value
+									)
+								}
+								__nextHasNoMarginBottom
+							/>
+						</div>
+					</>
 				)}
 			</CardBody>
 		</Card>

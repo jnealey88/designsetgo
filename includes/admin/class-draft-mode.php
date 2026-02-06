@@ -45,6 +45,9 @@ class Draft_Mode {
 		// Initialize admin UI handler (hooks registered in constructor).
 		new Draft_Mode_Admin( $this );
 
+		// Initialize frontend preview mode (serves draft content to logged-in admins).
+		new Draft_Mode_Preview( $this );
+
 		// Always clean up meta when posts are deleted.
 		add_action( 'before_delete_post', array( $this, 'cleanup_draft_meta' ) );
 	}
@@ -55,14 +58,19 @@ class Draft_Mode {
 	 * @return array Draft mode settings.
 	 */
 	public function get_settings() {
-		$all_settings = Settings::get_settings();
-		return isset( $all_settings['draft_mode'] ) ? $all_settings['draft_mode'] : array(
+		$defaults = array(
 			'enable'                 => true,
 			'show_page_list_actions' => true,
 			'show_page_list_column'  => true,
+			'show_frontend_preview'  => true,
 			'auto_save_enabled'      => true,
 			'auto_save_interval'     => 60,
 		);
+
+		$all_settings = Settings::get_settings();
+		$stored       = isset( $all_settings['draft_mode'] ) ? $all_settings['draft_mode'] : array();
+
+		return wp_parse_args( $stored, $defaults );
 	}
 
 	/**

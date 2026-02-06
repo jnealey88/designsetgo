@@ -70,6 +70,48 @@ To abandon your draft:
 
 ---
 
+## Frontend Preview Mode
+
+**Since**: 1.5.0
+
+When pages have pending changes, logged-in administrators see a **preview banner** fixed at the bottom of the public site. This lets admins review how draft content looks on the live frontend before publishing.
+
+### How It Works
+
+- **Preview mode** (default): Draft content is swapped into page output for the current admin. Regular visitors always see published content.
+- **Live mode**: The admin opts out and sees the same published content as regular visitors.
+
+The banner displays:
+- **Status text**: "Preview mode — N pages with changes" or "Live mode — N pages have pending changes"
+- **Page badge**: "This page has changes" (when the current page has a pending draft)
+- **Toggle button**: Switch between "View Live" and "Preview Changes"
+- **Details panel**: Expandable list of all pages with pending changes, with links to edit each one
+
+### Toggle Behavior
+
+Admins can click **"View Live"** to temporarily opt out of preview mode. This sets a cookie (`dsgo_live_mode`) that expires after 24 hours.
+
+**Auto-reset**: If a new draft is created after the admin opted out, they are automatically returned to preview mode on their next page load. This ensures admins always see the latest pending changes.
+
+### Requirements
+
+- User must be logged in with `edit_pages` capability
+- Draft mode must be enabled in settings
+- Frontend preview must be enabled in settings (`show_frontend_preview`)
+- At least one published page must have a pending draft
+
+### Disabling
+
+Frontend preview can be independently disabled in the DesignSetGo settings panel under **Draft Mode > Frontend > Show Frontend Preview**. When disabled, the preview banner does not appear and draft content is not swapped on the frontend. Draft creation, editing, and publishing in the admin still work normally.
+
+### CSS Classes
+
+- `body.dsgo-has-draft-banner` — Added when the preview banner is visible (adds bottom padding to prevent content overlap)
+- `.dsgo-preview-banner--active` — Banner in preview mode (dark background)
+- `.dsgo-preview-banner--live` — Banner in live mode (light background)
+
+---
+
 ## Plugin Settings
 
 Draft Mode can be configured in DesignSetGo settings:
@@ -77,6 +119,7 @@ Draft Mode can be configured in DesignSetGo settings:
 | Setting | Default | Description |
 |---------|---------|-------------|
 | `enable` | `true` | Enable/disable draft mode entirely |
+| `show_frontend_preview` | `true` | Show preview banner on the frontend and swap draft content for editors |
 | `show_page_list_actions` | `true` | Show Create/Edit Draft row actions in page list |
 | `show_page_list_column` | `true` | Show Draft Status column in page list |
 
