@@ -309,10 +309,27 @@ class Configure_Shape_Divider extends Abstract_Ability {
 
 		// Named CSS colors (basic subset commonly used).
 		$named_colors = array(
-			'transparent', 'currentcolor', 'inherit',
-			'black', 'white', 'red', 'green', 'blue', 'yellow', 'orange', 'purple',
-			'gray', 'grey', 'navy', 'teal', 'aqua', 'maroon', 'olive', 'lime',
-			'fuchsia', 'silver',
+			'transparent',
+			'currentcolor',
+			'inherit',
+			'black',
+			'white',
+			'red',
+			'green',
+			'blue',
+			'yellow',
+			'orange',
+			'purple',
+			'gray',
+			'grey',
+			'navy',
+			'teal',
+			'aqua',
+			'maroon',
+			'olive',
+			'lime',
+			'fuchsia',
+			'silver',
 		);
 		if ( in_array( strtolower( $color ), $named_colors, true ) ) {
 			return true;
