@@ -7,10 +7,6 @@
  */
 
 .dsgo-flex {
-	// CRITICAL: Must duplicate from style.scss for editor/frontend parity
-	// Row should be full-width by default (like other block-level elements)
-	width: 100%;
-
 	// Visual indicator in editor and positioning context for block inserter
 	position: relative;
 	overflow: visible;

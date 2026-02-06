@@ -10,9 +10,6 @@
 	// Container display - WordPress handles flex layout through native layout support
 	// We only need to override specific behaviors
 
-	// CRITICAL: Row should be full-width by default (like other block-level elements)
-	// This ensures it spans the container width when placed inside Section or other containers
-	width: 100%;
 	position: relative;
 	overflow: visible;
 
