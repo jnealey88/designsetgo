@@ -2,10 +2,10 @@
  * Comparison Table Block - Save Component
  *
  * Generates the static frontend HTML for the comparison table.
- * Includes data attributes for sticky header and tooltip behavior
- * handled by view.js.
+ * Includes data attributes for tooltip behavior handled by view.js.
  */
 
+import { __ } from '@wordpress/i18n';
 import { useBlockProps, RichText } from '@wordpress/block-editor';
 
 /**
@@ -19,7 +19,6 @@ export default function ComparisonTableSave({ attributes }) {
 	const {
 		columns,
 		rows,
-		stickyHeader,
 		alternatingRows,
 		responsiveMode,
 		featuredColumnColor,
@@ -51,7 +50,6 @@ export default function ComparisonTableSave({ attributes }) {
 				'--dsgo-comparison-header-text': headerTextColor,
 			}),
 		},
-		'data-sticky-header': stickyHeader ? 'true' : 'false',
 	});
 
 	return (
@@ -78,7 +76,7 @@ export default function ComparisonTableSave({ attributes }) {
 								>
 									{col.featured && (
 										<span className="dsgo-comparison-table__featured-badge">
-											Popular
+											{__('Popular', 'designsetgo')}
 										</span>
 									)}
 
@@ -92,8 +90,13 @@ export default function ComparisonTableSave({ attributes }) {
 										<a
 											href={col.link}
 											className={`dsgo-comparison-table__cta dsgo-comparison-table__cta--${ctaStyle}`}
+											rel="noopener noreferrer"
 										>
-											{col.linkText || 'Get Started'}
+											{col.linkText ||
+												__(
+													'Get Started',
+													'designsetgo'
+												)}
 										</a>
 									)}
 
@@ -131,7 +134,8 @@ export default function ComparisonTableSave({ attributes }) {
 												className="dsgo-comparison-table__tooltip-trigger"
 												data-tooltip={row.tooltip}
 												aria-label={row.tooltip}
-												role="img"
+												role="button"
+												tabIndex="0"
 											>
 												?
 											</span>

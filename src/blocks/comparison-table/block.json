@@ -105,16 +105,13 @@
 				}
 			]
 		},
-		"stickyHeader": {
-			"type": "boolean",
-			"default": true
-		},
 		"alternatingRows": {
 			"type": "boolean",
 			"default": true
 		},
 		"responsiveMode": {
 			"type": "string",
+			"enum": ["scroll", "stack"],
 			"default": "scroll"
 		},
 		"featuredColumnColor": {
@@ -135,6 +132,7 @@
 		},
 		"ctaStyle": {
 			"type": "string",
+			"enum": ["filled", "outlined"],
 			"default": "filled"
 		}
 	},

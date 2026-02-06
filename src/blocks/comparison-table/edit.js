@@ -21,9 +21,6 @@ import {
 	ToggleControl,
 	SelectControl,
 	Button,
-	ButtonGroup,
-	ToolbarGroup,
-	ToolbarButton,
 	TextControl,
 	Tooltip,
 } from '@wordpress/components';
@@ -122,7 +119,6 @@ export default function ComparisonTableEdit({
 	const {
 		columns,
 		rows,
-		stickyHeader,
 		alternatingRows,
 		responsiveMode,
 		featuredColumnColor,
@@ -171,7 +167,9 @@ export default function ComparisonTableEdit({
 	 */
 	const updateCell = (rowIndex, colIndex, changes) => {
 		const newRows = rows.map((row, rIdx) => {
-			if (rIdx !== rowIndex) return row;
+			if (rIdx !== rowIndex) {
+				return row;
+			}
 			const newCells = row.cells.map((cell, cIdx) =>
 				cIdx === colIndex ? { ...cell, ...changes } : cell
 			);
@@ -184,7 +182,9 @@ export default function ComparisonTableEdit({
 	 * Adds a new column to the table
 	 */
 	const addColumn = () => {
-		if (columns.length >= 6) return;
+		if (columns.length >= 6) {
+			return;
+		}
 		const newColumns = [
 			...columns,
 			{
@@ -207,7 +207,9 @@ export default function ComparisonTableEdit({
 	 * @param {number} colIndex - Column index to remove
 	 */
 	const removeColumn = (colIndex) => {
-		if (columns.length <= 2) return;
+		if (columns.length <= 2) {
+			return;
+		}
 		const newColumns = columns.filter((_, i) => i !== colIndex);
 		const newRows = rows.map((row) => ({
 			...row,
@@ -234,7 +236,9 @@ export default function ComparisonTableEdit({
 	 * @param {number} rowIndex - Row index to remove
 	 */
 	const removeRow = (rowIndex) => {
-		if (rows.length <= 1) return;
+		if (rows.length <= 1) {
+			return;
+		}
 		setAttributes({ rows: rows.filter((_, i) => i !== rowIndex) });
 	};
 
@@ -246,28 +250,15 @@ export default function ComparisonTableEdit({
 	 */
 	const moveRow = (rowIndex, direction) => {
 		const newRows = [...rows];
-		const targetIndex =
-			direction === 'up' ? rowIndex - 1 : rowIndex + 1;
-		if (targetIndex < 0 || targetIndex >= rows.length) return;
+		const targetIndex = direction === 'up' ? rowIndex - 1 : rowIndex + 1;
+		if (targetIndex < 0 || targetIndex >= rows.length) {
+			return;
+		}
 		[newRows[rowIndex], newRows[targetIndex]] = [
 			newRows[targetIndex],
 			newRows[rowIndex],
 		];
 		setAttributes({ rows: newRows });
-	};
-
-	/**
-	 * Cycles through cell types: text -> check -> cross -> text
-	 *
-	 * @param {number} rowIndex - Row index
-	 * @param {number} colIndex - Column index
-	 */
-	const cycleCellType = (rowIndex, colIndex) => {
-		const cell = rows[rowIndex].cells[colIndex];
-		const typeOrder = ['text', 'check', 'cross'];
-		const currentIdx = typeOrder.indexOf(cell.type);
-		const nextType = typeOrder[(currentIdx + 1) % typeOrder.length];
-		updateCell(rowIndex, colIndex, { type: nextType, value: '' });
 	};
 
 	const blockProps = useBlockProps({
@@ -303,10 +294,7 @@ export default function ComparisonTableEdit({
 					title={__('Table Colors', 'designsetgo')}
 					settings={[
 						{
-							label: __(
-								'Header Background',
-								'designsetgo'
-							),
+							label: __('Header Background', 'designsetgo'),
 							colorValue: headerBackgroundColor,
 							onColorChange: (color) =>
 								setAttributes({
@@ -347,19 +335,6 @@ export default function ComparisonTableEdit({
 					initialOpen={true}
 				>
 					<ToggleControl
-						label={__('Sticky Header', 'designsetgo')}
-						checked={stickyHeader}
-						onChange={(value) =>
-							setAttributes({ stickyHeader: value })
-						}
-						help={__(
-							'Keep the header visible when scrolling',
-							'designsetgo'
-						)}
-						__nextHasNoMarginBottom
-					/>
-
-					<ToggleControl
 						label={__('Alternating Row Colors', 'designsetgo')}
 						checked={alternatingRows}
 						onChange={(value) =>
@@ -373,17 +348,11 @@ export default function ComparisonTableEdit({
 						value={responsiveMode}
 						options={[
 							{
-								label: __(
-									'Horizontal Scroll',
-									'designsetgo'
-								),
+								label: __('Horizontal Scroll', 'designsetgo'),
 								value: 'scroll',
 							},
 							{
-								label: __(
-									'Stack on Mobile',
-									'designsetgo'
-								),
+								label: __('Stack on Mobile', 'designsetgo'),
 								value: 'stack',
 							},
 						]}
@@ -452,9 +421,7 @@ export default function ComparisonTableEdit({
 											'Remove column',
 											'designsetgo'
 										)}
-										onClick={() =>
-											removeColumn(colIndex)
-										}
+										onClick={() => removeColumn(colIndex)}
 										isDestructive
 										size="small"
 									/>
@@ -475,10 +442,7 @@ export default function ComparisonTableEdit({
 							{showCtaButtons && (
 								<>
 									<TextControl
-										label={__(
-											'CTA Link',
-											'designsetgo'
-										)}
+										label={__('CTA Link', 'designsetgo')}
 										value={col.link}
 										onChange={(value) =>
 											updateColumn(colIndex, {
@@ -490,10 +454,7 @@ export default function ComparisonTableEdit({
 										__nextHasNoMarginBottom
 									/>
 									<TextControl
-										label={__(
-											'CTA Text',
-											'designsetgo'
-										)}
+										label={__('CTA Text', 'designsetgo')}
 										value={col.linkText}
 										onChange={(value) =>
 											updateColumn(colIndex, {
@@ -536,10 +497,7 @@ export default function ComparisonTableEdit({
 							onChange={(value) =>
 								updateRow(rowIndex, { tooltip: value })
 							}
-							placeholder={__(
-								'Tooltip text...',
-								'designsetgo'
-							)}
+							placeholder={__('Tooltip text…', 'designsetgo')}
 							__next40pxDefaultSize
 							__nextHasNoMarginBottom
 						/>
@@ -575,10 +533,7 @@ export default function ComparisonTableEdit({
 									>
 										{col.featured && (
 											<span className="dsgo-comparison-table__featured-badge">
-												{__(
-													'Popular',
-													'designsetgo'
-												)}
+												{__('Popular', 'designsetgo')}
 											</span>
 										)}
 										<RichText
@@ -603,13 +558,9 @@ export default function ComparisonTableEdit({
 												className={`dsgo-comparison-table__cta dsgo-comparison-table__cta--${ctaStyle}`}
 												value={col.linkText}
 												onChange={(value) =>
-													updateColumn(
-														colIndex,
-														{
-															linkText:
-																value,
-														}
-													)
+													updateColumn(colIndex, {
+														linkText: value,
+													})
 												}
 												placeholder={__(
 													'CTA Text',
@@ -652,9 +603,7 @@ export default function ComparisonTableEdit({
 												]}
 											/>
 											{row.tooltip && (
-												<Tooltip
-													text={row.tooltip}
-												>
+												<Tooltip text={row.tooltip}>
 													<span className="dsgo-comparison-table__tooltip-trigger">
 														?
 													</span>
@@ -664,191 +613,198 @@ export default function ComparisonTableEdit({
 
 										{/* Row controls */}
 										<div className="dsgo-comparison-table-editor__row-controls">
-											<ButtonGroup>
-												<Button
-													icon="arrow-up-alt2"
-													label={__(
-														'Move up',
-														'designsetgo'
-													)}
-													onClick={() =>
-														moveRow(
-															rowIndex,
-															'up'
-														)
-													}
-													disabled={
-														rowIndex === 0
-													}
-													size="small"
-												/>
-												<Button
-													icon="arrow-down-alt2"
-													label={__(
-														'Move down',
-														'designsetgo'
-													)}
-													onClick={() =>
-														moveRow(
-															rowIndex,
-															'down'
-														)
-													}
-													disabled={
-														rowIndex ===
-														rows.length - 1
-													}
-													size="small"
-												/>
-												{rows.length > 1 && (
-													<Button
-														icon="no-alt"
-														label={__(
-															'Remove row',
-															'designsetgo'
-														)}
-														onClick={() =>
-															removeRow(
-																rowIndex
-															)
-														}
-														isDestructive
-														size="small"
-													/>
+											<button
+												type="button"
+												className="dsgo-comparison-table-editor__row-btn"
+												onClick={() =>
+													moveRow(rowIndex, 'up')
+												}
+												disabled={rowIndex === 0}
+												aria-label={__(
+													'Move up',
+													'designsetgo'
 												)}
-											</ButtonGroup>
+											>
+												<svg
+													width="16"
+													height="16"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth="2"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+												>
+													<polyline points="18 15 12 9 6 15" />
+												</svg>
+											</button>
+											<button
+												type="button"
+												className="dsgo-comparison-table-editor__row-btn"
+												onClick={() =>
+													moveRow(rowIndex, 'down')
+												}
+												disabled={
+													rowIndex === rows.length - 1
+												}
+												aria-label={__(
+													'Move down',
+													'designsetgo'
+												)}
+											>
+												<svg
+													width="16"
+													height="16"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth="2"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+												>
+													<polyline points="6 9 12 15 18 9" />
+												</svg>
+											</button>
+											{rows.length > 1 && (
+												<button
+													type="button"
+													className="dsgo-comparison-table-editor__row-btn dsgo-comparison-table-editor__row-btn--delete"
+													onClick={() =>
+														removeRow(rowIndex)
+													}
+													aria-label={__(
+														'Remove row',
+														'designsetgo'
+													)}
+												>
+													<svg
+														width="16"
+														height="16"
+														viewBox="0 0 24 24"
+														fill="none"
+														stroke="currentColor"
+														strokeWidth="2"
+														strokeLinecap="round"
+														strokeLinejoin="round"
+													>
+														<line
+															x1="18"
+															y1="6"
+															x2="6"
+															y2="18"
+														/>
+														<line
+															x1="6"
+															y1="6"
+															x2="18"
+															y2="18"
+														/>
+													</svg>
+												</button>
+											)}
 										</div>
 									</td>
 
 									{/* Cells */}
-									{row.cells.map(
-										(cell, colIndex) => (
-											<td
-												key={colIndex}
-												className={[
-													'dsgo-comparison-table__cell',
-													columns[colIndex]
-														?.featured &&
-														'dsgo-comparison-table__cell--featured',
-												]
-													.filter(Boolean)
-													.join(' ')}
-												onClick={() =>
+									{row.cells.map((cell, colIndex) => (
+										<td
+											key={colIndex}
+											className={[
+												'dsgo-comparison-table__cell',
+												columns[colIndex]?.featured &&
+													'dsgo-comparison-table__cell--featured',
+											]
+												.filter(Boolean)
+												.join(' ')}
+											onClick={() =>
+												setSelectedCell({
+													row: rowIndex,
+													col: colIndex,
+												})
+											}
+											onKeyDown={(e) => {
+												if (
+													e.key === 'Enter' ||
+													e.key === ' '
+												) {
 													setSelectedCell({
 														row: rowIndex,
 														col: colIndex,
-													})
+													});
 												}
-												onKeyDown={(e) => {
-													if (
-														e.key ===
-															'Enter' ||
-														e.key === ' '
-													) {
-														setSelectedCell(
-															{
-																row: rowIndex,
-																col: colIndex,
-															}
-														);
-													}
-												}}
-												role="button"
-												tabIndex="0"
-											>
-												<div className="dsgo-comparison-table__cell-content">
-													<CellContent
-														cell={cell}
-														rowIndex={
-															rowIndex
-														}
-														colIndex={
-															colIndex
-														}
-														onCellChange={
-															updateCell
-														}
-													/>
-												</div>
+											}}
+											role="button"
+											tabIndex="0"
+											aria-label={`${row.label || __('Feature', 'designsetgo')}, ${columns[colIndex]?.name || __('Column', 'designsetgo')}`}
+										>
+											<div className="dsgo-comparison-table__cell-content">
+												<CellContent
+													cell={cell}
+													rowIndex={rowIndex}
+													colIndex={colIndex}
+													onCellChange={updateCell}
+												/>
+											</div>
 
-												{/* Cell type toggle */}
-												{selectedCell?.row ===
-													rowIndex &&
-													selectedCell?.col ===
-														colIndex && (
-														<div className="dsgo-comparison-table-editor__cell-toolbar">
-															<ButtonGroup>
-																<Button
-																	variant={
-																		cell.type ===
-																		'text'
-																			? 'primary'
-																			: 'secondary'
+											{/* Cell type toggle */}
+											{selectedCell?.row === rowIndex &&
+												selectedCell?.col ===
+													colIndex && (
+													<div className="dsgo-comparison-table-editor__cell-toolbar">
+														<button
+															type="button"
+															className={`dsgo-comparison-table-editor__type-btn ${cell.type === 'text' ? 'is-active' : ''}`}
+															onClick={() =>
+																updateCell(
+																	rowIndex,
+																	colIndex,
+																	{
+																		type: 'text',
 																	}
-																	onClick={() =>
-																		updateCell(
-																			rowIndex,
-																			colIndex,
-																			{
-																				type: 'text',
-																			}
-																		)
+																)
+															}
+														>
+															{__(
+																'Aa',
+																'designsetgo'
+															)}
+														</button>
+														<button
+															type="button"
+															className={`dsgo-comparison-table-editor__type-btn ${cell.type === 'check' ? 'is-active' : ''}`}
+															onClick={() =>
+																updateCell(
+																	rowIndex,
+																	colIndex,
+																	{
+																		type: 'check',
+																		value: '',
 																	}
-																	size="small"
-																>
-																	{__(
-																		'Aa',
-																		'designsetgo'
-																	)}
-																</Button>
-																<Button
-																	variant={
-																		cell.type ===
-																		'check'
-																			? 'primary'
-																			: 'secondary'
+																)
+															}
+														>
+															&#10003;
+														</button>
+														<button
+															type="button"
+															className={`dsgo-comparison-table-editor__type-btn ${cell.type === 'cross' ? 'is-active' : ''}`}
+															onClick={() =>
+																updateCell(
+																	rowIndex,
+																	colIndex,
+																	{
+																		type: 'cross',
+																		value: '',
 																	}
-																	onClick={() =>
-																		updateCell(
-																			rowIndex,
-																			colIndex,
-																			{
-																				type: 'check',
-																				value: '',
-																			}
-																		)
-																	}
-																	size="small"
-																>
-																	&#10003;
-																</Button>
-																<Button
-																	variant={
-																		cell.type ===
-																		'cross'
-																			? 'primary'
-																			: 'secondary'
-																	}
-																	onClick={() =>
-																		updateCell(
-																			rowIndex,
-																			colIndex,
-																			{
-																				type: 'cross',
-																				value: '',
-																			}
-																		)
-																	}
-																	size="small"
-																>
-																	&#10005;
-																</Button>
-															</ButtonGroup>
-														</div>
-													)}
-											</td>
-										)
-									)}
+																)
+															}
+														>
+															&#10005;
+														</button>
+													</div>
+												)}
+										</td>
+									))}
 								</tr>
 							))}
 						</tbody>

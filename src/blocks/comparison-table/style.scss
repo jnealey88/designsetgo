@@ -36,6 +36,7 @@
 	// --- Header ---
 
 	&__header {
+
 		tr {
 			border-bottom: 2px solid currentcolor;
 			opacity: 0.9;
@@ -125,6 +126,7 @@
 
 	// Featured column CTA adjustments
 	&__header-cell--featured &__cta {
+
 		&--filled {
 			background-color: #fff;
 			color: var(
@@ -142,6 +144,7 @@
 	// --- Body ---
 
 	&__body {
+
 		tr {
 			border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 			transition: background-color 0.15s ease;
@@ -226,7 +229,7 @@
 		}
 
 		&--cross {
-			color: rgba(128, 128, 128, 0.35);
+			color: rgba(128, 128, 128, 0.6);
 		}
 	}
 
@@ -289,24 +292,10 @@
 		}
 	}
 
-	// --- Sticky header (applied by view.js) ---
-
-	&__header--stuck {
-		th {
-			position: sticky;
-			top: 0;
-			z-index: 10;
-			background-color: var(
-				--dsgo-comparison-header-bg,
-				var(--wp--preset--color--base, #fff)
-			);
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-		}
-	}
-
 	// --- Responsive: Horizontal Scroll ---
 
 	&--responsive-scroll {
+
 		.dsgo-comparison-table__wrapper {
 			overflow-x: auto;
 		}
@@ -319,7 +308,9 @@
 	// --- Responsive: Stack on Mobile ---
 
 	&--responsive-stack {
+
 		@media (max-width: 767px) {
+
 			.dsgo-comparison-table__table,
 			.dsgo-comparison-table__header,
 			.dsgo-comparison-table__body,
@@ -332,11 +323,11 @@
 			}
 
 			.dsgo-comparison-table__header {
+
 				tr {
 					display: flex;
 					flex-wrap: wrap;
 					gap: 0.5rem;
-					border-bottom: none;
 					padding-bottom: 1rem;
 					margin-bottom: 0.5rem;
 					border-bottom: 2px solid currentcolor;
@@ -397,6 +388,7 @@
 
 			// Featured column highlight in stacked mode
 			.dsgo-comparison-table__cell--featured {
+
 				&::before {
 					display: none;
 				}
@@ -410,6 +402,7 @@
 	// --- General Mobile Adjustments ---
 
 	@media (max-width: 767px) {
+
 		&__column-name {
 			font-size: 1.1em;
 		}
