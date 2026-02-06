@@ -58,11 +58,12 @@ class Block_Configurator {
 
 		// Track if any blocks were updated.
 		$updated_count = 0;
+		$found_first   = false;
 
 		// Update blocks.
 		$blocks = self::walk_blocks(
 			$blocks,
-			function ( $block ) use ( $block_name, $attributes, $client_id, $update_all, &$updated_count ) {
+			function ( $block ) use ( $block_name, $attributes, $client_id, $update_all, &$updated_count, &$found_first ) {
 				// Check if this block matches.
 				if ( $block['blockName'] === $block_name ) {
 					// If client_id is specified, check if it matches.
@@ -73,14 +74,15 @@ class Block_Configurator {
 						}
 					}
 
+					// If not updating all, skip after first match.
+					if ( ! $update_all && null === $client_id && $found_first ) {
+						return $block;
+					}
+
 					// Merge attributes.
 					$block['attrs'] = array_merge( $block['attrs'] ?? array(), $attributes );
 					$updated_count++;
-
-					// If not updating all, we can stop after first match.
-					if ( ! $update_all && null === $client_id ) {
-						return $block;
-					}
+					$found_first = true;
 				}
 
 				return $block;

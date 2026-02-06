@@ -459,6 +459,11 @@ class Draft_Mode_REST {
 			}
 		);
 
+		// Sanitize block content to prevent XSS while preserving legitimate block HTML.
+		if ( isset( $overrides['content'] ) ) {
+			$overrides['content'] = self::sanitize_block_content( $overrides['content'] );
+		}
+
 		$result = $this->draft_mode->create_draft( $post_id, $overrides );
 
 		if ( is_wp_error( $result ) ) {

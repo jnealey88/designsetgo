@@ -45,7 +45,7 @@ class Test_Security_Fixes extends WP_UnitTestCase {
 	 */
 	public function test_form_submissions_count_uses_prepared_statement() {
 		// Create Settings instance to access the endpoint.
-		$settings = new \DesignSetGo\Includes\Admin\Settings();
+		$settings = new \DesignSetGo\Admin\Settings();
 
 		// Create a test form submission.
 		$post_id = $this->factory->post->create(
@@ -85,7 +85,7 @@ class Test_Security_Fixes extends WP_UnitTestCase {
 		delete_transient( 'dsgo_form_submissions_count' );
 
 		// Create Settings instance.
-		$settings = new \DesignSetGo\Includes\Admin\Settings();
+		$settings = new \DesignSetGo\Admin\Settings();
 
 		// Set current user as admin.
 		wp_set_current_user( $this->admin_user );
@@ -109,7 +109,7 @@ class Test_Security_Fixes extends WP_UnitTestCase {
 		$this->assertEquals( $count1, $count2, 'Cached value should be returned' );
 
 		// Create a new form submission.
-		$form_handler = new \DesignSetGo\Includes\Blocks\Form_Handler();
+		$form_handler = new \DesignSetGo\Blocks\Form_Handler();
 		$reflection   = new \ReflectionClass( $form_handler );
 		$method       = $reflection->getMethod( 'store_submission' );
 		$method->setAccessible( true );
@@ -139,7 +139,7 @@ class Test_Security_Fixes extends WP_UnitTestCase {
 	 * Verifies that newline characters are stripped from email parameters.
 	 */
 	public function test_email_header_injection_prevention() {
-		$form_handler = new \DesignSetGo\Includes\Blocks\Form_Handler();
+		$form_handler = new \DesignSetGo\Blocks\Form_Handler();
 
 		// Create malicious request with newlines in email fields.
 		$request = new WP_REST_Request( 'POST', '/designsetgo/v1/form-submit' );
@@ -217,7 +217,7 @@ class Test_Security_Fixes extends WP_UnitTestCase {
 	 * Verifies that capability checks happen before nonce verification.
 	 */
 	public function test_settings_permission_check_ordering() {
-		$settings = new \DesignSetGo\Includes\Admin\Settings();
+		$settings = new \DesignSetGo\Admin\Settings();
 
 		// Test 1: Non-admin user should fail capability check first.
 		wp_set_current_user( $this->regular_user );
@@ -258,7 +258,7 @@ class Test_Security_Fixes extends WP_UnitTestCase {
 	 * Verifies that capability checks happen before nonce verification.
 	 */
 	public function test_global_styles_permission_check_ordering() {
-		$global_styles = new \DesignSetGo\Includes\Admin\Global_Styles();
+		$global_styles = new \DesignSetGo\Admin\Global_Styles();
 
 		// Test 1: Non-admin user should fail capability check first.
 		wp_set_current_user( $this->regular_user );
