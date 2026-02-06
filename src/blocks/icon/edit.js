@@ -67,7 +67,6 @@ export default function IconEdit({ attributes, setAttributes, context }) {
 		alignItems: 'center',
 		justifyContent: 'center',
 		transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined,
-		// Background is inherited via CSS rules (see style.scss and editor.scss)
 		// borderRadius inherits from parent for shape variants
 		borderRadius: 'inherit',
 	};
