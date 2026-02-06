@@ -1,0 +1,419 @@
+/**
+ * Comparison Table - Frontend & Editor Styles
+ *
+ * Applied in both the block editor and the frontend.
+ * Uses BEM naming convention with .dsgo-comparison-table prefix.
+ */
+
+.dsgo-comparison-table {
+	box-sizing: border-box;
+	max-width: 100%;
+	color: var(--wp--preset--color--contrast, inherit);
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	// Wrapper handles overflow for responsive scroll mode
+	&__wrapper {
+		width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	// Table base styles
+	&__table {
+		width: 100%;
+		border-collapse: collapse;
+		border-spacing: 0;
+		table-layout: fixed;
+		font-size: inherit;
+		line-height: inherit;
+	}
+
+	// --- Header ---
+
+	&__header {
+
+		tr {
+			border-bottom: 2px solid currentcolor;
+			opacity: 0.9;
+		}
+	}
+
+	&__header-cell {
+		padding: 1.25rem 1rem;
+		text-align: center;
+		vertical-align: bottom;
+		font-weight: 600;
+		background-color: var(--dsgo-comparison-header-bg, transparent);
+		color: var(--dsgo-comparison-header-text, currentcolor);
+		position: relative;
+
+		&--label {
+			text-align: left;
+			width: 30%;
+			min-width: 140px;
+		}
+
+		&--featured {
+			background-color: var(
+				--dsgo-comparison-featured-color,
+				var(--wp--preset--color--primary, #2563eb)
+			);
+			color: #fff;
+		}
+	}
+
+	&__column-name {
+		display: block;
+		font-size: 1.25em;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+	}
+
+	&__featured-badge {
+		display: inline-block;
+		font-size: 0.7em;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 0.2em 0.6em;
+		border-radius: 100px;
+		background-color: rgba(255, 255, 255, 0.2);
+		margin-bottom: 0.5rem;
+	}
+
+	// --- CTA Buttons ---
+
+	&__cta {
+		display: inline-block;
+		margin-top: 0.75rem;
+		padding: 0.5em 1.25em;
+		font-size: 0.85em;
+		font-weight: 600;
+		border-radius: 6px;
+		text-decoration: none;
+		cursor: pointer;
+		transition: background-color 0.2s ease, color 0.2s ease,
+			box-shadow 0.2s ease;
+		line-height: 1.4;
+
+		&--filled {
+			background-color: currentcolor;
+			color: var(--dsgo-comparison-header-bg, #fff);
+
+			// Use a pseudo-element for text color to avoid inheriting currentcolor
+			&,
+			&:visited {
+				text-decoration: none;
+			}
+		}
+
+		&--outlined {
+			background-color: transparent;
+			border: 2px solid currentcolor;
+			color: currentcolor;
+
+			&,
+			&:visited {
+				text-decoration: none;
+			}
+		}
+	}
+
+	// Featured column CTA adjustments
+	&__header-cell--featured &__cta {
+
+		&--filled {
+			background-color: #fff;
+			color: var(
+				--dsgo-comparison-featured-color,
+				var(--wp--preset--color--primary, #2563eb)
+			);
+		}
+
+		&--outlined {
+			border-color: #fff;
+			color: #fff;
+		}
+	}
+
+	// --- Body ---
+
+	&__body {
+
+		tr {
+			border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+			transition: background-color 0.15s ease;
+
+			&:last-child {
+				border-bottom: none;
+			}
+
+			&:hover {
+				background-color: rgba(128, 128, 128, 0.05);
+			}
+		}
+	}
+
+	// Alternating row colors
+	&--alternating &__body tr:nth-child(even) {
+		background-color: rgba(128, 128, 128, 0.04);
+
+		&:hover {
+			background-color: rgba(128, 128, 128, 0.08);
+		}
+	}
+
+	// --- Cells ---
+
+	&__cell {
+		padding: 0.875rem 1rem;
+		text-align: center;
+		vertical-align: middle;
+
+		&--label {
+			text-align: left;
+			font-weight: 500;
+		}
+
+		&--featured {
+			background-color: rgba(
+				var(--dsgo-comparison-featured-rgb, 37, 99, 235),
+				0.04
+			);
+			// Use a subtle overlay instead for simpler implementation
+			position: relative;
+
+			&::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background-color: var(
+					--dsgo-comparison-featured-color,
+					var(--wp--preset--color--primary, #2563eb)
+				);
+				opacity: 0.04;
+				pointer-events: none;
+			}
+		}
+	}
+
+	&__cell-content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__cell--label &__cell-content {
+		justify-content: flex-start;
+	}
+
+	&__cell-text {
+		line-height: 1.5;
+	}
+
+	// --- Icons ---
+
+	&__icon {
+		flex-shrink: 0;
+
+		&--check {
+			color: var(
+				--wp--preset--color--vivid-green-cyan,
+				#00d084
+			);
+		}
+
+		&--cross {
+			color: rgba(128, 128, 128, 0.6);
+		}
+	}
+
+	// --- Labels & Tooltips ---
+
+	&__label-wrapper {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	&__row-label {
+		line-height: 1.5;
+	}
+
+	&__tooltip-trigger {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 18px;
+		height: 18px;
+		font-size: 11px;
+		font-weight: 700;
+		line-height: 1;
+		border-radius: 50%;
+		background-color: rgba(128, 128, 128, 0.15);
+		color: inherit;
+		opacity: 0.6;
+		cursor: help;
+		flex-shrink: 0;
+		position: relative;
+		transition: opacity 0.2s ease;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	// Frontend tooltip popup (positioned by view.js)
+	&__tooltip {
+		position: absolute;
+		z-index: 100;
+		max-width: 240px;
+		padding: 0.5em 0.75em;
+		font-size: 0.8em;
+		font-weight: 400;
+		line-height: 1.4;
+		color: #fff;
+		background-color: rgba(0, 0, 0, 0.85);
+		border-radius: 6px;
+		pointer-events: none;
+		opacity: 0;
+		transform: translateY(4px);
+		transition: opacity 0.15s ease, transform 0.15s ease;
+		white-space: normal;
+
+		&.is-visible {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	// --- Responsive: Horizontal Scroll ---
+
+	&--responsive-scroll {
+
+		.dsgo-comparison-table__wrapper {
+			overflow-x: auto;
+		}
+
+		.dsgo-comparison-table__table {
+			min-width: 600px;
+		}
+	}
+
+	// --- Responsive: Stack on Mobile ---
+
+	&--responsive-stack {
+
+		@media (max-width: 767px) {
+
+			.dsgo-comparison-table__table,
+			.dsgo-comparison-table__header,
+			.dsgo-comparison-table__body,
+			.dsgo-comparison-table__header tr,
+			.dsgo-comparison-table__body tr,
+			.dsgo-comparison-table__header-cell,
+			.dsgo-comparison-table__cell {
+				display: block;
+				width: 100%;
+			}
+
+			.dsgo-comparison-table__header {
+
+				tr {
+					display: flex;
+					flex-wrap: wrap;
+					gap: 0.5rem;
+					padding-bottom: 1rem;
+					margin-bottom: 0.5rem;
+					border-bottom: 2px solid currentcolor;
+					opacity: 0.9;
+				}
+			}
+
+			.dsgo-comparison-table__header-cell {
+				flex: 1;
+				min-width: 0;
+				padding: 0.75rem;
+
+				&--label {
+					flex: 0 0 100%;
+					text-align: center;
+					font-weight: 700;
+					padding-bottom: 0;
+				}
+			}
+
+			.dsgo-comparison-table__row {
+				display: grid;
+				grid-template-columns: 1fr;
+				gap: 0;
+				padding: 0.75rem 0;
+				border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+			}
+
+			.dsgo-comparison-table__cell {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				text-align: right;
+				padding: 0.5rem 0.75rem;
+
+				&--label {
+					text-align: left;
+					font-weight: 700;
+					font-size: 1.05em;
+					padding-bottom: 0.25rem;
+					border-bottom: none;
+				}
+
+				// Show column label on mobile
+				&:not(.dsgo-comparison-table__cell--label)::before {
+					content: attr(data-label);
+					font-weight: 500;
+					text-align: left;
+					margin-right: 1rem;
+					opacity: 0.7;
+					flex-shrink: 0;
+				}
+			}
+
+			.dsgo-comparison-table__cell-content {
+				justify-content: flex-end;
+			}
+
+			// Featured column highlight in stacked mode
+			.dsgo-comparison-table__cell--featured {
+
+				&::before {
+					display: none;
+				}
+
+				background-color: rgba(128, 128, 128, 0.04);
+				border-radius: 4px;
+			}
+		}
+	}
+
+	// --- General Mobile Adjustments ---
+
+	@media (max-width: 767px) {
+
+		&__column-name {
+			font-size: 1.1em;
+		}
+
+		&__cta {
+			font-size: 0.8em;
+			padding: 0.4em 1em;
+		}
+
+		&__featured-badge {
+			font-size: 0.65em;
+		}
+	}
+}
