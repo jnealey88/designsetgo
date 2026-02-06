@@ -398,8 +398,8 @@ class Draft_Mode_Preview {
 	/**
 	 * Swap the featured image to use the draft's featured image.
 	 *
-	 * @param int             $thumbnail_id The thumbnail/featured image ID.
-	 * @param int|\WP_Post   $post_id      The post ID or post object.
+	 * @param int          $thumbnail_id The thumbnail/featured image ID.
+	 * @param int|\WP_Post $post_id      The post ID or post object.
 	 * @return int Modified thumbnail ID.
 	 */
 	public function swap_thumbnail( $thumbnail_id, $post_id ) {
