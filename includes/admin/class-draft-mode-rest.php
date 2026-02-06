@@ -293,8 +293,42 @@ class Draft_Mode_REST {
 			return '';
 		}
 
+		// Strip <script> tags and their content before wp_kses (wp_kses only
+		// removes the tags themselves, leaving the inner text behind).
+		$content = preg_replace( '/<script\b[^>]*>.*?<\/script>/is', '', $content );
+
+		// Temporarily allow CSS display property through wp_kses. The default
+		// safecss_filter_attr strips display:flex/grid/inline-flex which blocks
+		// need for layout.
+		$allow_display = function ( $styles ) {
+			$styles[] = 'display';
+			return $styles;
+		};
+		add_filter( 'safe_style_css', $allow_display );
+
 		// Use wp_kses with our extended allowed tags.
-		return wp_kses( $content, self::get_block_allowed_html() );
+		$content = wp_kses( $content, self::get_block_allowed_html() );
+
+		remove_filter( 'safe_style_css', $allow_display );
+
+		// Restore SVG camelCase attributes that wp_kses lowercases.
+		$svg_case_map = array(
+			'viewbox'             => 'viewBox',
+			'preserveaspectratio' => 'preserveAspectRatio',
+			'basefrequency'      => 'baseFrequency',
+			'stddeviation'       => 'stdDeviation',
+			'patternunits'       => 'patternUnits',
+			'gradientunits'      => 'gradientUnits',
+			'gradienttransform'  => 'gradientTransform',
+			'patterntransform'   => 'patternTransform',
+			'clippathunits'      => 'clipPathUnits',
+		);
+
+		foreach ( $svg_case_map as $lower => $camel ) {
+			$content = str_replace( $lower . '=', $camel . '=', $content );
+		}
+
+		return $content;
 	}
 
 	/**

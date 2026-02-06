@@ -222,7 +222,7 @@ class Test_Custom_CSS_Renderer extends WP_UnitTestCase {
 		// Add same CSS twice.
 		$block1 = array(
 			'blockName' => 'designsetgo/test',
-			'attrs'     => array( 'dsgCustomCSS' => 'selector { color: red; }' ),
+			'attrs'     => array( 'dsgoCustomCSS' => 'selector { color: red; }' ),
 		);
 		$this->renderer->collect_custom_css( $block_content, $block1 );
 		$this->renderer->collect_custom_css( $block_content, $block1 );

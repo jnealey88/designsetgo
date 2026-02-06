@@ -291,11 +291,11 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 										)
 									}
 									colors={[
-										{ name: 'White', color: '#ffffff' },
-										{ name: 'Black', color: '#000000' },
-										{ name: 'Gray', color: '#f0f0f0' },
-										{ name: 'Blue', color: '#2271b1' },
-										{ name: 'Dark', color: '#1e1e1e' },
+										{ name: __('White', 'designsetgo'), color: '#ffffff' },
+										{ name: __('Black', 'designsetgo'), color: '#000000' },
+										{ name: __('Gray', 'designsetgo'), color: '#f0f0f0' },
+										{ name: __('Blue', 'designsetgo'), color: '#2271b1' },
+										{ name: __('Dark', 'designsetgo'), color: '#1e1e1e' },
 									]}
 									clearable
 								/>
@@ -321,6 +321,46 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 									step={5}
 									__nextHasNoMarginBottom
 									__next40pxDefaultSize
+								/>
+
+								<div className="components-base-control__label">
+									{__(
+										'Text Color on Scroll',
+										'designsetgo'
+									)}
+								</div>
+								<p className="components-base-control__help">
+									{__(
+										'Change text color when scrolled. Useful for transparent headers with light text over hero images.',
+										'designsetgo'
+									)}
+								</p>
+								<ColorPalette
+									value={
+										settings?.sticky_header
+											?.text_scroll_color || ''
+									}
+									onChange={(color) =>
+										updateSetting(
+											'sticky_header',
+											'text_scroll_color',
+											color || ''
+										)
+									}
+									colors={[
+										{ name: __('Black', 'designsetgo'), color: '#000000' },
+										{ name: __('White', 'designsetgo'), color: '#ffffff' },
+										{
+											name: __('Dark Gray', 'designsetgo'),
+											color: '#1e1e1e',
+										},
+										{
+											name: __('Gray', 'designsetgo'),
+											color: '#757575',
+										},
+										{ name: __('Blue', 'designsetgo'), color: '#2271b1' },
+									]}
+									clearable
 								/>
 							</div>
 						)}
