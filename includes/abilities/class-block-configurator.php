@@ -582,7 +582,7 @@ class Block_Configurator {
 		}
 
 		// Add new attribute to the first element with wp-block- class (the root wrapper).
-		// Match: <div class="wp-block-... other classes..." [other attributes]>
+		// Match pattern: <div class="wp-block-..." [other attributes]>.
 		return preg_replace(
 			'/(<div\s+class="wp-block-[^"]*"[^>]*)(>)/',
 			'$1 ' . $new_attr_str . '$2',
