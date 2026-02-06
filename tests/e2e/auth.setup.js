@@ -8,12 +8,54 @@
 const { test, expect } = require('@playwright/test');
 const path = require('path');
 const fs = require('fs');
+const http = require('http');
 
 // WordPress admin credentials (from wp-env defaults)
 const ADMIN_USER = process.env.WP_ADMIN_USER || 'admin';
 const ADMIN_PASSWORD = process.env.WP_ADMIN_PASSWORD || 'password';
 
+const WP_BASE_URL = process.env.WP_BASE_URL || 'http://localhost:8888';
+
+/**
+ * Wait for the WordPress server to be ready by polling the login page.
+ * Returns when the server responds with HTTP 200, or throws after max attempts.
+ */
+async function waitForServer(url, { maxAttempts = 30, intervalMs = 2000 } = {}) {
+	const target = new URL('/wp-login.php', url);
+	for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+		try {
+			await new Promise((resolve, reject) => {
+				const req = http.get(target.href, (res) => {
+					// Accept any HTTP response — the server is up
+					res.resume();
+					resolve(res.statusCode);
+				});
+				req.on('error', reject);
+				req.setTimeout(5000, () => {
+					req.destroy();
+					reject(new Error('timeout'));
+				});
+			});
+			console.log(`Server ready at ${target.href} (attempt ${attempt})`);
+			return;
+		} catch {
+			console.log(
+				`Waiting for server (attempt ${attempt}/${maxAttempts})...`
+			);
+			if (attempt < maxAttempts) {
+				await new Promise((r) => setTimeout(r, intervalMs));
+			}
+		}
+	}
+	throw new Error(
+		`Server at ${url} not ready after ${maxAttempts} attempts`
+	);
+}
+
 test('authenticate as admin', async ({ page, context }) => {
+	// Wait for WordPress to be fully ready before attempting login
+	await waitForServer(WP_BASE_URL);
+
 	// Navigate to WordPress login page
 	await page.goto('/wp-login.php');
 
@@ -44,5 +86,5 @@ test('authenticate as admin', async ({ page, context }) => {
 	// Save storage state
 	await context.storageState({ path: storageStatePath });
 
-	console.log('✓ Authentication successful - state saved');
+	console.log('Authentication successful - state saved');
 });

@@ -205,10 +205,29 @@ jobs:
       - name: Build plugin
         run: npm run build
 
+      - name: Start wp-env
+        run: npm run wp-env start
+
+      - name: Wait for WordPress to be ready
+        run: |
+          echo "Waiting for WordPress..."
+          for i in $(seq 1 30); do
+            if curl -s -o /dev/null -w '%{http_code}' http://localhost:8888/wp-login.php | grep -q '200'; then
+              echo "WordPress is ready (attempt $i)"
+              break
+            fi
+            echo "Not ready yet (attempt $i/30)..."
+            sleep 2
+          done
+
       - name: Run E2E tests (Chromium)
         run: npm run test:e2e -- --project=setup --project=chromium
         env:
           CI: true
+
+      - name: Stop wp-env
+        if: always()
+        run: npm run wp-env stop
 
       - name: Upload E2E test artifacts
         uses: actions/upload-artifact@v4
