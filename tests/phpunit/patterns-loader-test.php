@@ -128,13 +128,38 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 
 	/**
 	 * Test is_editor_request returns true in admin context.
-	 *
-	 * Note: WP_UnitTestCase runs in an admin-like context, so is_admin()
-	 * returns true by default.
 	 */
 	public function test_is_editor_request_in_admin() {
+		// PHPUnit runs via CLI where is_admin() is false.
+		// Simulate an admin screen to flip it to true.
+		set_current_screen( 'edit-post' );
+
 		$result = $this->call_private_static_method( 'is_editor_request' );
 		$this->assertTrue( $result, 'is_editor_request should return true in admin context' );
+
+		// Restore non-admin context.
+		set_current_screen( 'front' );
+	}
+
+	/**
+	 * Test is_editor_request returns false on front-end requests.
+	 */
+	public function test_is_editor_request_false_on_frontend() {
+		// Ensure we are in a non-admin, non-REST, non-CLI context.
+		set_current_screen( 'front' );
+
+		// Temporarily unset REQUEST_URI to prevent URL-based REST detection.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- saving raw superglobal for test restore.
+		$saved_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : null;
+		unset( $_SERVER['REQUEST_URI'] );
+
+		$result = $this->call_private_static_method( 'is_editor_request' );
+		$this->assertFalse( $result, 'is_editor_request should return false on front-end' );
+
+		// Restore.
+		if ( null !== $saved_uri ) {
+			$_SERVER['REQUEST_URI'] = $saved_uri;
+		}
 	}
 
 	// -------------------------------------------------------------------------
