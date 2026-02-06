@@ -20,12 +20,17 @@ export default function TimelineSave({ attributes }) {
 
 	// CSS custom properties - must match edit.js exactly
 	const customStyles = {
-		'--dsgo-timeline-line-color': lineColor || 'var(--wp--preset--color--contrast, #e5e7eb)',
+		'--dsgo-timeline-line-color':
+			lineColor || 'var(--wp--preset--color--contrast, #e5e7eb)',
 		'--dsgo-timeline-line-thickness': `${lineThickness}px`,
 		'--dsgo-timeline-connector-style': connectorStyle,
 		'--dsgo-timeline-marker-size': `${markerSize}px`,
-		'--dsgo-timeline-marker-color': markerColor || 'var(--wp--preset--color--primary, #2563eb)',
-		'--dsgo-timeline-marker-border-color': markerBorderColor || markerColor || 'var(--wp--preset--color--primary, #2563eb)',
+		'--dsgo-timeline-marker-color':
+			markerColor || 'var(--wp--preset--color--primary, #2563eb)',
+		'--dsgo-timeline-marker-border-color':
+			markerBorderColor ||
+			markerColor ||
+			'var(--wp--preset--color--primary, #2563eb)',
 		'--dsgo-timeline-item-spacing': itemSpacing,
 		'--dsgo-timeline-animation-duration': `${animationDuration}ms`,
 	};

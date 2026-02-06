@@ -1,0 +1,21 @@
+/**
+ * Grid Mobile Order Extension - Frontend Styles
+ *
+ * Applies CSS order property at mobile breakpoint for grid children
+ * that have a custom mobile order set via the --dsgo-mobile-order custom property.
+ *
+ * @package DesignSetGo
+ */
+
+// Mobile breakpoint (≤ 767px) - matches grid block's mobile breakpoint
+@media (max-width: 767px) {
+	// Default all grid children to order 1 so items set to 0 appear first
+	.dsgo-grid__inner > * {
+		order: 1;
+	}
+
+	// Override with custom order from the --dsgo-mobile-order CSS custom property
+	.dsgo-grid__inner > [style*="--dsgo-mobile-order"] {
+		order: var(--dsgo-mobile-order);
+	}
+}

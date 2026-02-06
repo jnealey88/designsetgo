@@ -40,12 +40,17 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 
 	// CSS custom properties for styling
 	const customStyles = {
-		'--dsgo-timeline-line-color': lineColor || 'var(--wp--preset--color--contrast, #e5e7eb)',
+		'--dsgo-timeline-line-color':
+			lineColor || 'var(--wp--preset--color--contrast, #e5e7eb)',
 		'--dsgo-timeline-line-thickness': `${lineThickness}px`,
 		'--dsgo-timeline-connector-style': connectorStyle,
 		'--dsgo-timeline-marker-size': `${markerSize}px`,
-		'--dsgo-timeline-marker-color': markerColor || 'var(--wp--preset--color--primary, #2563eb)',
-		'--dsgo-timeline-marker-border-color': markerBorderColor || markerColor || 'var(--wp--preset--color--primary, #2563eb)',
+		'--dsgo-timeline-marker-color':
+			markerColor || 'var(--wp--preset--color--primary, #2563eb)',
+		'--dsgo-timeline-marker-border-color':
+			markerBorderColor ||
+			markerColor ||
+			'var(--wp--preset--color--primary, #2563eb)',
 		'--dsgo-timeline-item-spacing': itemSpacing,
 		'--dsgo-timeline-animation-duration': `${animationDuration}ms`,
 	};
@@ -93,7 +98,8 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 					},
 				],
 			],
-			orientation: orientation === 'horizontal' ? 'horizontal' : 'vertical',
+			orientation:
+				orientation === 'horizontal' ? 'horizontal' : 'vertical',
 		}
 	);
 
@@ -105,10 +111,18 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 						label={__('Orientation', 'designsetgo')}
 						value={orientation}
 						options={[
-							{ label: __('Vertical', 'designsetgo'), value: 'vertical' },
-							{ label: __('Horizontal', 'designsetgo'), value: 'horizontal' },
+							{
+								label: __('Vertical', 'designsetgo'),
+								value: 'vertical',
+							},
+							{
+								label: __('Horizontal', 'designsetgo'),
+								value: 'horizontal',
+							},
 						]}
-						onChange={(value) => setAttributes({ orientation: value })}
+						onChange={(value) =>
+							setAttributes({ orientation: value })
+						}
 						help={__(
 							'Horizontal timelines automatically switch to vertical on mobile devices.',
 							'designsetgo'
@@ -122,10 +136,21 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 							label={__('Content Layout', 'designsetgo')}
 							value={layout}
 							options={[
-								{ label: __('Alternating Sides', 'designsetgo'), value: 'alternating' },
-								{ label: __('Right Side Only', 'designsetgo'), value: 'right' },
+								{
+									label: __(
+										'Alternating Sides',
+										'designsetgo'
+									),
+									value: 'alternating',
+								},
+								{
+									label: __('Right Side Only', 'designsetgo'),
+									value: 'right',
+								},
 							]}
-							onChange={(value) => setAttributes({ layout: value })}
+							onChange={(value) =>
+								setAttributes({ layout: value })
+							}
 							__next40pxDefaultSize
 							__nextHasNoMarginBottom
 						/>
@@ -134,7 +159,9 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 					<UnitControl
 						label={__('Item Spacing', 'designsetgo')}
 						value={itemSpacing}
-						onChange={(value) => setAttributes({ itemSpacing: value ?? '2rem' })}
+						onChange={(value) =>
+							setAttributes({ itemSpacing: value ?? '2rem' })
+						}
 						units={[
 							{ value: 'px', label: 'px', default: 32 },
 							{ value: 'rem', label: 'rem', default: 2 },
@@ -147,11 +174,16 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Line Settings', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Line Settings', 'designsetgo')}
+					initialOpen={false}
+				>
 					<RangeControl
 						label={__('Line Thickness', 'designsetgo')}
 						value={lineThickness}
-						onChange={(value) => setAttributes({ lineThickness: value })}
+						onChange={(value) =>
+							setAttributes({ lineThickness: value })
+						}
 						min={1}
 						max={8}
 						__next40pxDefaultSize
@@ -162,26 +194,51 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 						label={__('Connector Style', 'designsetgo')}
 						value={connectorStyle}
 						options={[
-							{ label: __('Solid', 'designsetgo'), value: 'solid' },
-							{ label: __('Dashed', 'designsetgo'), value: 'dashed' },
-							{ label: __('Dotted', 'designsetgo'), value: 'dotted' },
+							{
+								label: __('Solid', 'designsetgo'),
+								value: 'solid',
+							},
+							{
+								label: __('Dashed', 'designsetgo'),
+								value: 'dashed',
+							},
+							{
+								label: __('Dotted', 'designsetgo'),
+								value: 'dotted',
+							},
 						]}
-						onChange={(value) => setAttributes({ connectorStyle: value })}
+						onChange={(value) =>
+							setAttributes({ connectorStyle: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Marker Settings', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Marker Settings', 'designsetgo')}
+					initialOpen={false}
+				>
 					<SelectControl
 						label={__('Marker Shape', 'designsetgo')}
 						value={markerStyle}
 						options={[
-							{ label: __('Circle', 'designsetgo'), value: 'circle' },
-							{ label: __('Square', 'designsetgo'), value: 'square' },
-							{ label: __('Diamond', 'designsetgo'), value: 'diamond' },
+							{
+								label: __('Circle', 'designsetgo'),
+								value: 'circle',
+							},
+							{
+								label: __('Square', 'designsetgo'),
+								value: 'square',
+							},
+							{
+								label: __('Diamond', 'designsetgo'),
+								value: 'diamond',
+							},
 						]}
-						onChange={(value) => setAttributes({ markerStyle: value })}
+						onChange={(value) =>
+							setAttributes({ markerStyle: value })
+						}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -189,7 +246,9 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 					<RangeControl
 						label={__('Marker Size', 'designsetgo')}
 						value={markerSize}
-						onChange={(value) => setAttributes({ markerSize: value })}
+						onChange={(value) =>
+							setAttributes({ markerSize: value })
+						}
 						min={8}
 						max={48}
 						__next40pxDefaultSize
@@ -197,25 +256,41 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Animation Settings', 'designsetgo')} initialOpen={false}>
+				<PanelBody
+					title={__('Animation Settings', 'designsetgo')}
+					initialOpen={false}
+				>
 					<ToggleControl
 						label={__('Animate on Scroll', 'designsetgo')}
 						help={
 							animateOnScroll
-								? __('Items will fade in as they scroll into view', 'designsetgo')
-								: __('All items will be visible immediately', 'designsetgo')
+								? __(
+										'Items will fade in as they scroll into view',
+										'designsetgo'
+									)
+								: __(
+										'All items will be visible immediately',
+										'designsetgo'
+									)
 						}
 						checked={animateOnScroll}
-						onChange={(value) => setAttributes({ animateOnScroll: value })}
+						onChange={(value) =>
+							setAttributes({ animateOnScroll: value })
+						}
 						__nextHasNoMarginBottom
 					/>
 
 					{animateOnScroll && (
 						<>
 							<RangeControl
-								label={__('Animation Duration (ms)', 'designsetgo')}
+								label={__(
+									'Animation Duration (ms)',
+									'designsetgo'
+								)}
 								value={animationDuration}
-								onChange={(value) => setAttributes({ animationDuration: value })}
+								onChange={(value) =>
+									setAttributes({ animationDuration: value })
+								}
 								min={100}
 								max={2000}
 								step={50}
@@ -226,11 +301,16 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 							<RangeControl
 								label={__('Stagger Delay (ms)', 'designsetgo')}
 								value={staggerDelay}
-								onChange={(value) => setAttributes({ staggerDelay: value })}
+								onChange={(value) =>
+									setAttributes({ staggerDelay: value })
+								}
 								min={0}
 								max={500}
 								step={25}
-								help={__('Delay between each item animation', 'designsetgo')}
+								help={__(
+									'Delay between each item animation',
+									'designsetgo'
+								)}
 								__next40pxDefaultSize
 								__nextHasNoMarginBottom
 							/>
@@ -246,19 +326,24 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 						{
 							label: __('Line Color', 'designsetgo'),
 							colorValue: lineColor,
-							onColorChange: (color) => setAttributes({ lineColor: color || '' }),
+							onColorChange: (color) =>
+								setAttributes({ lineColor: color || '' }),
 							clearable: true,
 						},
 						{
 							label: __('Marker Fill', 'designsetgo'),
 							colorValue: markerColor,
-							onColorChange: (color) => setAttributes({ markerColor: color || '' }),
+							onColorChange: (color) =>
+								setAttributes({ markerColor: color || '' }),
 							clearable: true,
 						},
 						{
 							label: __('Marker Border', 'designsetgo'),
 							colorValue: markerBorderColor,
-							onColorChange: (color) => setAttributes({ markerBorderColor: color || '' }),
+							onColorChange: (color) =>
+								setAttributes({
+									markerBorderColor: color || '',
+								}),
 							clearable: true,
 						},
 					]}

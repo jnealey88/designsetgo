@@ -19,6 +19,7 @@
 @use './extensions/max-width/style' as max-width;
 @use './extensions/background-video/style' as background-video;
 @use './extensions/grid-span/style' as grid-span;
+@use './extensions/grid-mobile-order/style' as grid-mobile-order;
 @use './extensions/reveal-control/styles' as reveal-control;
 @use './extensions/clickable-group/styles' as clickable-group;
 @use './extensions/text-reveal/style' as text-reveal;

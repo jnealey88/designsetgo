@@ -34,6 +34,9 @@ import './extensions/background-video';
 // Grid Span - adds column span control to blocks inside Grid containers
 import './extensions/grid-span';
 
+// Grid Mobile Order - adds mobile reordering control to blocks inside Grid containers
+import './extensions/grid-mobile-order';
+
 // Text Alignment Inheritance - sets text-align based on parent container's alignItems
 import './extensions/text-alignment-inheritance';
 
