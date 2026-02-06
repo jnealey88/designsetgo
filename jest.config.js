@@ -11,6 +11,10 @@ module.exports = {
 	// Extend @wordpress/scripts default config
 	...require('@wordpress/scripts/config/jest-unit.config'),
 
+	// Use V8 coverage instead of babel-plugin-istanbul
+	// (babel-plugin-istanbul is incompatible with glob v10 override)
+	coverageProvider: 'v8',
+
 	// Test match patterns
 	testMatch: [
 		'**/tests/unit/**/*.test.js',

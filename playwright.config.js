@@ -68,9 +68,6 @@ module.exports = defineConfig({
 		// Timezone
 		timezoneId: 'America/New_York',
 
-		// Storage state (for logged-in sessions)
-		storageState: process.env.STORAGE_STATE_PATH,
-
 		// Action timeout
 		actionTimeout: 10000, // 10 seconds
 
@@ -88,18 +85,12 @@ module.exports = defineConfig({
 			name: 'setup',
 			testMatch: /.*\.setup\.js/,
 			teardown: 'cleanup',
-			use: {
-				storageState: undefined,
-			},
 		},
 
 		// Cleanup project
 		{
 			name: 'cleanup',
 			testMatch: /.*\.teardown\.js/,
-			use: {
-				storageState: undefined,
-			},
 		},
 
 		// Desktop Chrome
@@ -107,6 +98,7 @@ module.exports = defineConfig({
 			name: 'chromium',
 			use: {
 				...devices['Desktop Chrome'],
+				storageState: process.env.STORAGE_STATE_PATH,
 			},
 			dependencies: ['setup'],
 		},
@@ -116,6 +108,7 @@ module.exports = defineConfig({
 			name: 'firefox',
 			use: {
 				...devices['Desktop Firefox'],
+				storageState: process.env.STORAGE_STATE_PATH,
 			},
 			dependencies: ['setup'],
 		},
@@ -125,6 +118,7 @@ module.exports = defineConfig({
 			name: 'webkit',
 			use: {
 				...devices['Desktop Safari'],
+				storageState: process.env.STORAGE_STATE_PATH,
 			},
 			dependencies: ['setup'],
 		},
@@ -134,6 +128,7 @@ module.exports = defineConfig({
 			name: 'mobile-chrome',
 			use: {
 				...devices['Pixel 5'],
+				storageState: process.env.STORAGE_STATE_PATH,
 			},
 			dependencies: ['setup'],
 		},
@@ -143,6 +138,7 @@ module.exports = defineConfig({
 			name: 'mobile-safari',
 			use: {
 				...devices['iPhone 12'],
+				storageState: process.env.STORAGE_STATE_PATH,
 			},
 			dependencies: ['setup'],
 		},
@@ -152,6 +148,7 @@ module.exports = defineConfig({
 			name: 'tablet',
 			use: {
 				...devices['iPad Pro'],
+				storageState: process.env.STORAGE_STATE_PATH,
 			},
 			dependencies: ['setup'],
 		},
