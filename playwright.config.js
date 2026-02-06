@@ -88,12 +88,18 @@ module.exports = defineConfig({
 			name: 'setup',
 			testMatch: /.*\.setup\.js/,
 			teardown: 'cleanup',
+			use: {
+				storageState: undefined,
+			},
 		},
 
 		// Cleanup project
 		{
 			name: 'cleanup',
 			testMatch: /.*\.teardown\.js/,
+			use: {
+				storageState: undefined,
+			},
 		},
 
 		// Desktop Chrome
