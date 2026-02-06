@@ -268,6 +268,10 @@ class Block_Configurator {
 				'description' => __( 'Target post ID', 'designsetgo' ),
 				'required'    => true,
 			),
+			'block_index'     => array(
+				'type'        => 'integer',
+				'description' => __( 'Document-order index of the block to update (from get-post-blocks). Alternative to block_client_id.', 'designsetgo' ),
+			),
 			'block_client_id' => array(
 				'type'        => 'string',
 				'description' => __( 'Specific block client ID to update (optional)', 'designsetgo' ),
@@ -328,6 +332,339 @@ class Block_Configurator {
 			),
 			'required'   => array( 'success' ),
 		);
+	}
+
+	/**
+	 * Update a block's attributes by document-order index.
+	 *
+	 * Walks the block tree in depth-first order, counting each block.
+	 * When the target index is reached, merges the provided attributes.
+	 * Optionally validates the block name matches for safety.
+	 *
+	 * @param int                  $post_id             Post ID.
+	 * @param int                  $block_index         Document-order index of the target block.
+	 * @param array<string, mixed> $attributes          Attributes to merge.
+	 * @param string               $expected_block_name Optional. If provided, validates the block at this index has this name.
+	 * @return array<string, mixed>|WP_Error Success data or error.
+	 */
+	public static function update_block_by_index( int $post_id, int $block_index, array $attributes, string $expected_block_name = '' ) {
+		// Validate post.
+		$post = get_post( $post_id );
+		if ( ! $post ) {
+			return new WP_Error(
+				'invalid_post',
+				__( 'Post not found.', 'designsetgo' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Check permissions.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return new WP_Error(
+				'permission_denied',
+				__( 'You do not have permission to edit this post.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		// Parse blocks.
+		$blocks = parse_blocks( $post->post_content );
+
+		// Walk blocks in document order and update at the target index.
+		$counter      = 0;
+		$updated      = false;
+		$matched_name = '';
+
+		$blocks = self::walk_blocks_with_index(
+			$blocks,
+			$block_index,
+			$attributes,
+			$expected_block_name,
+			$counter,
+			$updated,
+			$matched_name
+		);
+
+		if ( ! $updated ) {
+			if ( ! empty( $matched_name ) && '' !== $expected_block_name && $matched_name !== $expected_block_name ) {
+				return new WP_Error(
+					'block_name_mismatch',
+					sprintf(
+						/* translators: 1: expected block name, 2: actual block name, 3: block index */
+						__( 'Expected block "%1$s" at index %3$d, but found "%2$s".', 'designsetgo' ),
+						$expected_block_name,
+						$matched_name,
+						$block_index
+					),
+					array( 'status' => 400 )
+				);
+			}
+
+			return new WP_Error(
+				'block_not_found',
+				sprintf(
+					/* translators: %d: block index */
+					__( 'No block found at index %d.', 'designsetgo' ),
+					$block_index
+				),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Serialize blocks back to content.
+		$content = serialize_blocks( $blocks );
+
+		// Update post.
+		$result = wp_update_post(
+			array(
+				'ID'           => $post->ID,
+				'post_content' => $content,
+			),
+			true
+		);
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return array(
+			'success'        => true,
+			'post_id'        => $post->ID,
+			'updated_count'  => 1,
+			'block_name'     => $matched_name,
+			'block_index'    => $block_index,
+			'new_attributes' => $attributes,
+		);
+	}
+
+	/**
+	 * Walk blocks in document order and update the block at the target index.
+	 *
+	 * @param array<int, array<string, mixed>> $blocks              Blocks array.
+	 * @param int                              $target_index        Target document-order index.
+	 * @param array<string, mixed>             $attributes          Attributes to merge.
+	 * @param string                           $expected_block_name Expected block name for validation.
+	 * @param int                              $counter             Current counter (by reference).
+	 * @param bool                             $updated             Whether a block was updated (by reference).
+	 * @param string                           $matched_name        Name of block found at index (by reference).
+	 * @return array<int, array<string, mixed>> Modified blocks.
+	 */
+	private static function walk_blocks_with_index( array $blocks, int $target_index, array $attributes, string $expected_block_name, int &$counter, bool &$updated, string &$matched_name ): array {
+		$modified = array();
+
+		foreach ( $blocks as $block ) {
+			if ( ! empty( $block['blockName'] ) && ! $updated ) {
+				if ( $counter === $target_index ) {
+					$matched_name = $block['blockName'];
+
+					// Validate block name if expected name provided.
+					if ( '' !== $expected_block_name && $block['blockName'] !== $expected_block_name ) {
+						$counter++;
+						$modified[] = $block;
+						continue;
+					}
+
+					// Merge attributes.
+					$block['attrs'] = array_merge( $block['attrs'] ?? array(), $attributes );
+					$updated        = true;
+				}
+
+				$counter++;
+			}
+
+			// Recursively walk inner blocks.
+			if ( ! empty( $block['innerBlocks'] ) && ! $updated ) {
+				$block['innerBlocks'] = self::walk_blocks_with_index(
+					$block['innerBlocks'],
+					$target_index,
+					$attributes,
+					$expected_block_name,
+					$counter,
+					$updated,
+					$matched_name
+				);
+			}
+
+			$modified[] = $block;
+		}
+
+		return $modified;
+	}
+
+	/**
+	 * Insert a block as a child of an existing block identified by document-order index.
+	 *
+	 * Critical: Updates both innerBlocks AND innerContent on the parent block.
+	 * WordPress parsed blocks use innerContent to interleave HTML strings with null
+	 * placeholders for inner block positions. If innerContent is not updated,
+	 * serialize_blocks() will silently drop the new block.
+	 *
+	 * @param int                              $post_id            Post ID.
+	 * @param int                              $parent_block_index Document-order index of the parent block.
+	 * @param string                           $block_name         Block type to insert.
+	 * @param array<string, mixed>             $attributes         Block attributes.
+	 * @param array<int, array<string, mixed>> $inner_blocks       Inner blocks of the new block.
+	 * @param int                              $position           Position within parent's inner blocks (-1 = append).
+	 * @return array<string, mixed>|WP_Error Success data or error.
+	 */
+	public static function insert_inner_block( int $post_id, int $parent_block_index, string $block_name, array $attributes = array(), array $inner_blocks = array(), int $position = -1 ) {
+		// Validate post.
+		$post = get_post( $post_id );
+		if ( ! $post ) {
+			return new WP_Error(
+				'invalid_post',
+				__( 'Post not found.', 'designsetgo' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Check permissions.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return new WP_Error(
+				'permission_denied',
+				__( 'You do not have permission to edit this post.', 'designsetgo' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		// Build the new block using Block_Inserter markup generation then parse it.
+		$new_block_markup = Block_Inserter::build_block_markup( $block_name, $attributes, $inner_blocks );
+		$parsed           = parse_blocks( $new_block_markup );
+		$new_block        = $parsed[0];
+
+		// Parse existing blocks.
+		$blocks = parse_blocks( $post->post_content );
+
+		// Find and update the parent block.
+		$counter = 0;
+		$found   = false;
+
+		$blocks = self::insert_into_parent_block(
+			$blocks,
+			$parent_block_index,
+			$new_block,
+			$position,
+			$counter,
+			$found
+		);
+
+		if ( ! $found ) {
+			return new WP_Error(
+				'block_not_found',
+				sprintf(
+					/* translators: %d: block index */
+					__( 'No parent block found at index %d.', 'designsetgo' ),
+					$parent_block_index
+				),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Serialize blocks back to content.
+		$content = serialize_blocks( $blocks );
+
+		// Update post.
+		$result = wp_update_post(
+			array(
+				'ID'           => $post->ID,
+				'post_content' => $content,
+			),
+			true
+		);
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return array(
+			'success'            => true,
+			'post_id'            => $post->ID,
+			'parent_block_index' => $parent_block_index,
+			'block_name'         => $block_name,
+			'position'           => $position,
+			'note'               => __( 'Block inserted as child. Open the post in the WordPress editor to validate and save.', 'designsetgo' ),
+		);
+	}
+
+	/**
+	 * Recursively find a parent block by index and insert a child block.
+	 *
+	 * Updates both innerBlocks and innerContent arrays on the parent.
+	 *
+	 * @param array<int, array<string, mixed>> $blocks       Blocks array.
+	 * @param int                              $target_index Target parent block index.
+	 * @param array<string, mixed>             $new_block    New block to insert.
+	 * @param int                              $position     Position within parent (-1 = append).
+	 * @param int                              $counter      Document-order counter (by reference).
+	 * @param bool                             $found        Whether the parent was found (by reference).
+	 * @return array<int, array<string, mixed>> Modified blocks.
+	 */
+	private static function insert_into_parent_block( array $blocks, int $target_index, array $new_block, int $position, int &$counter, bool &$found ): array {
+		$modified = array();
+
+		foreach ( $blocks as $block ) {
+			if ( ! empty( $block['blockName'] ) && ! $found ) {
+				if ( $counter === $target_index ) {
+					// Found the parent block - insert the new block as a child.
+					$inner_blocks  = $block['innerBlocks'] ?? array();
+					$inner_content = $block['innerContent'] ?? array();
+
+					if ( -1 === $position || $position >= count( $inner_blocks ) ) {
+						// Append to end.
+						$inner_blocks[] = $new_block;
+
+						// Find last non-null entry position in innerContent and insert null after it.
+						// This places the new inner block placeholder at the end (before closing HTML).
+						$insert_pos = count( $inner_content );
+						// If there's closing HTML (last entry is a string), insert before it.
+						if ( ! empty( $inner_content ) && is_string( end( $inner_content ) ) ) {
+							$insert_pos = count( $inner_content ) - 1;
+						}
+						array_splice( $inner_content, $insert_pos, 0, array( null ) );
+					} else {
+						// Insert at specific position.
+						array_splice( $inner_blocks, $position, 0, array( $new_block ) );
+
+						// Find the corresponding position in innerContent.
+						// Count null entries to find where the Nth inner block placeholder is.
+						$null_count       = 0;
+						$content_position = 0;
+						foreach ( $inner_content as $idx => $entry ) {
+							if ( null === $entry ) {
+								if ( $null_count === $position ) {
+									$content_position = $idx;
+									break;
+								}
+								$null_count++;
+							}
+						}
+						array_splice( $inner_content, $content_position, 0, array( null ) );
+					}
+
+					$block['innerBlocks']  = $inner_blocks;
+					$block['innerContent'] = $inner_content;
+					$found                 = true;
+				}
+
+				$counter++;
+			}
+
+			// Recursively search inner blocks.
+			if ( ! empty( $block['innerBlocks'] ) && ! $found ) {
+				$block['innerBlocks'] = self::insert_into_parent_block(
+					$block['innerBlocks'],
+					$target_index,
+					$new_block,
+					$position,
+					$counter,
+					$found
+				);
+			}
+
+			$modified[] = $block;
+		}
+
+		return $modified;
 	}
 
 	/**

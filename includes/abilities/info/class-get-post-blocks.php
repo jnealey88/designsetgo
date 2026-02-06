@@ -107,6 +107,10 @@ class Get_Post_Blocks extends Abstract_Ability {
 					'items'       => array(
 						'type'       => 'object',
 						'properties' => array(
+							'blockIndex'  => array(
+								'type'        => 'integer',
+								'description' => __( 'Document-order index for stable targeting', 'designsetgo' ),
+							),
 							'blockName'   => array( 'type' => 'string' ),
 							'attrs'       => array( 'type' => 'object' ),
 							'innerBlocks' => array( 'type' => 'array' ),
@@ -259,37 +263,43 @@ class Get_Post_Blocks extends Abstract_Ability {
 	 * Clean blocks for API output.
 	 *
 	 * Removes unnecessary properties and formats for cleaner response.
+	 * Assigns a document-order blockIndex to each block via depth-first traversal.
 	 *
-	 * @param array<int, array<string, mixed>> $blocks Blocks to clean.
+	 * @param array<int, array<string, mixed>> $blocks  Blocks to clean.
+	 * @param int                              $counter Document-order counter passed by reference.
 	 * @return array<int, array<string, mixed>> Cleaned blocks.
 	 */
-	private function clean_blocks_for_output( array $blocks ): array {
-		return array_map(
-			function ( $block ) {
-				$cleaned = array(
-					'blockName'  => $block['blockName'],
-					'attrs'      => $block['attrs'] ?? array(),
-				);
+	private function clean_blocks_for_output( array $blocks, int &$counter = 0 ): array {
+		$result = array();
 
-				// Include innerHTML summary (truncated).
-				if ( ! empty( $block['innerHTML'] ) ) {
-					$html = trim( $block['innerHTML'] );
-					$cleaned['innerHTML'] = strlen( $html ) > 200 ? substr( $html, 0, 200 ) . '...' : $html;
-				}
+		foreach ( $blocks as $block ) {
+			$cleaned = array(
+				'blockIndex' => $counter,
+				'blockName'  => $block['blockName'],
+				'attrs'      => $block['attrs'] ?? array(),
+			);
 
-				// Include cleaned inner blocks if present.
-				if ( ! empty( $block['innerBlocks'] ) ) {
-					$cleaned['innerBlocks'] = $this->clean_blocks_for_output( $block['innerBlocks'] );
-				}
+			$counter++;
 
-				// Include depth if flattened.
-				if ( isset( $block['_depth'] ) ) {
-					$cleaned['depth'] = $block['_depth'];
-				}
+			// Include innerHTML summary (truncated).
+			if ( ! empty( $block['innerHTML'] ) ) {
+				$html = trim( $block['innerHTML'] );
+				$cleaned['innerHTML'] = strlen( $html ) > 200 ? substr( $html, 0, 200 ) . '...' : $html;
+			}
 
-				return $cleaned;
-			},
-			$blocks
-		);
+			// Include cleaned inner blocks if present.
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$cleaned['innerBlocks'] = $this->clean_blocks_for_output( $block['innerBlocks'], $counter );
+			}
+
+			// Include depth if flattened.
+			if ( isset( $block['_depth'] ) ) {
+				$cleaned['depth'] = $block['_depth'];
+			}
+
+			$result[] = $cleaned;
+		}
+
+		return $result;
 	}
 }
