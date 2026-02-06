@@ -9,8 +9,12 @@
 
 // Mobile breakpoint (≤ 767px) - matches grid block's mobile breakpoint
 @media (max-width: 767px) {
-	// Apply order to direct grid children that have the custom property set
-	// The custom property is added as an inline style by the save filter
+	// Default all grid children to order 1 so items set to 0 appear first
+	.dsgo-grid__inner > * {
+		order: 1;
+	}
+
+	// Override with custom order from the --dsgo-mobile-order CSS custom property
 	.dsgo-grid__inner > [style*="--dsgo-mobile-order"] {
 		order: var(--dsgo-mobile-order);
 	}

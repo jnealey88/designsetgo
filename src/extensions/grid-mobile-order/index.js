@@ -62,7 +62,7 @@ function addMobileOrderAttribute(settings, name) {
 			...settings.attributes,
 			dsgoMobileOrder: {
 				type: 'number',
-				default: 0,
+				default: 1,
 			},
 		},
 	};
@@ -104,11 +104,11 @@ const withMobileOrderControl = createHigherOrderComponent((BlockEdit) => {
 								min={0}
 								max={10}
 								allowReset
-								resetFallbackValue={0}
+								resetFallbackValue={1}
 								help={
-									dsgoMobileOrder > 0
+									dsgoMobileOrder !== 1
 										? __(
-												'Lower numbers appear first on mobile. Items without a custom order default to 0.',
+												'Lower numbers appear first on mobile. Set to 0 to move this item to the top.',
 												'designsetgo'
 											)
 										: __(
@@ -166,8 +166,8 @@ const withMobileOrderStyles = createHigherOrderComponent((BlockListBlock) => {
 				existingStyle.remove();
 			}
 
-			// Create new style element if mobileOrder is set
-			if (dsgoMobileOrder > 0) {
+			// Create new style element if mobileOrder differs from default
+			if (dsgoMobileOrder !== 1) {
 				const styleElement = editorDocument.createElement('style');
 				styleElement.id = styleId;
 
@@ -222,10 +222,10 @@ function applyMobileOrderSaveProps(props, blockType, attributes) {
 
 	const { dsgoMobileOrder } = attributes;
 
-	// Validate and clamp the value
-	const mobileOrder = Math.max(0, Math.min(10, Number(dsgoMobileOrder) || 0));
+	// Validate and clamp the value (default is 1)
+	const mobileOrder = Math.max(0, Math.min(10, Number(dsgoMobileOrder) ?? 1));
 
-	if (mobileOrder <= 0) {
+	if (mobileOrder === 1) {
 		return props;
 	}
 
