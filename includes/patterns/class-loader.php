@@ -88,11 +88,11 @@ class Loader {
 		}
 
 		// Detect REST API requests by URL path. The REST_REQUEST constant is not
-		// defined until parse_request, which fires after the constructor runs.
+		// defined until parse_request (which fires after this constructor), so
+		// URL-based detection is the reliable early check for REST requests.
 		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
 			$rest_prefix = rest_get_url_prefix();
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only used for string comparison, not output.
-			$request_uri = wp_unslash( $_SERVER['REQUEST_URI'] );
+			$request_uri = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
 			if ( false !== strpos( $request_uri, '/' . $rest_prefix . '/' ) ) {
 				return true;
 			}
@@ -144,11 +144,16 @@ class Loader {
 	 */
 	private function get_pattern_file_map() {
 		// Skip cache in debug mode so new/removed patterns are picked up immediately.
-		if ( ! ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ) {
+		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
 			$cached = get_transient( self::CACHE_TRANSIENT );
 
-			// Validate that the cached data matches the current plugin version.
-			if ( is_array( $cached ) && isset( $cached['version'] ) && DESIGNSETGO_VERSION === $cached['version'] ) {
+			// Validate cached data structure and version match.
+			if (
+				is_array( $cached )
+				&& isset( $cached['version'], $cached['map'] )
+				&& DESIGNSETGO_VERSION === $cached['version']
+				&& is_array( $cached['map'] )
+			) {
 				return $cached['map'];
 			}
 		}
@@ -160,6 +165,8 @@ class Loader {
 			return $file_map;
 		}
 
+		$dir_prefix_len = strlen( $patterns_dir );
+
 		foreach ( self::ALLOWED_CATEGORIES as $category ) {
 			$category_dir = $patterns_dir . $category . '/';
 
@@ -169,16 +176,27 @@ class Loader {
 
 			$files = glob( $category_dir . '*.php' );
 
+			// glob() returns false on error, empty array when no matches.
+			if ( false === $files ) {
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( sprintf( 'DesignSetGo: glob() failed for pattern directory: %s', $category_dir ) );
+				}
+				continue;
+			}
+
 			if ( $files ) {
 				// Store paths relative to the patterns directory for portability.
 				$file_map[ $category ] = array_map(
-					static function ( $file ) use ( $patterns_dir ) {
-						return str_replace( $patterns_dir, '', $file );
+					static function ( $file ) use ( $dir_prefix_len ) {
+						return substr( $file, $dir_prefix_len );
 					},
 					$files
 				);
 			}
 		}
+
+		/** This filter is documented in includes/patterns/class-loader.php */
+		$cache_duration = (int) apply_filters( 'designsetgo_pattern_cache_duration', DAY_IN_SECONDS );
 
 		set_transient(
 			self::CACHE_TRANSIENT,
@@ -186,10 +204,43 @@ class Loader {
 				'version' => DESIGNSETGO_VERSION,
 				'map'     => $file_map,
 			),
-			DAY_IN_SECONDS
+			$cache_duration
 		);
 
 		return $file_map;
+	}
+
+	/**
+	 * Validate a relative pattern path before use.
+	 *
+	 * Ensures cached paths cannot be exploited for directory traversal
+	 * or arbitrary file inclusion if the transient data is compromised.
+	 *
+	 * @param string $relative_path Relative path from the cache.
+	 * @return bool True if the path is safe to use.
+	 */
+	private static function is_valid_relative_path( $relative_path ) {
+		// Must be a non-empty string.
+		if ( ! is_string( $relative_path ) || '' === $relative_path ) {
+			return false;
+		}
+
+		// Must end with .php.
+		if ( '.php' !== substr( $relative_path, -4 ) ) {
+			return false;
+		}
+
+		// Must not contain directory traversal sequences.
+		if ( false !== strpos( $relative_path, '..' ) ) {
+			return false;
+		}
+
+		// Must not start with a path separator (absolute path).
+		if ( '/' === $relative_path[0] || '\\' === $relative_path[0] ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -198,18 +249,34 @@ class Loader {
 	public function register_patterns() {
 		$patterns_dir = DESIGNSETGO_PATH . 'patterns/';
 		$file_map     = $this->get_pattern_file_map();
+		$real_dir     = realpath( $patterns_dir );
+
+		if ( ! $real_dir ) {
+			return;
+		}
+
+		// Enforce trailing slash for directory boundary check to prevent
+		// matching sibling directories (e.g. "patterns2/").
+		$real_dir = rtrim( $real_dir, '/' ) . '/';
 
 		foreach ( $file_map as $category => $relative_paths ) {
 			foreach ( $relative_paths as $relative_path ) {
+				// Validate relative path structure before constructing full path.
+				if ( ! self::is_valid_relative_path( $relative_path ) ) {
+					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						error_log( sprintf( 'DesignSetGo: Skipped invalid relative pattern path: %s', $relative_path ) );
+					}
+					continue;
+				}
+
 				$file = $patterns_dir . $relative_path;
 
-				// Security: Verify file is within expected directory (prevent directory traversal).
+				// Security: Verify resolved file is within expected directory.
 				$real_file = realpath( $file );
-				$real_dir  = realpath( $patterns_dir );
 
-				if ( ! $real_file || ! $real_dir || strpos( $real_file, $real_dir ) !== 0 ) {
+				if ( ! $real_file || 0 !== strpos( $real_file, $real_dir ) ) {
 					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-						error_log( sprintf( 'DesignSetGo: Skipped invalid pattern file path: %s', $file ) );
+						error_log( sprintf( 'DesignSetGo: Skipped pattern file outside allowed directory: %s', $file ) );
 					}
 					continue;
 				}
