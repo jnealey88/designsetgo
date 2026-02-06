@@ -742,14 +742,4 @@ class Block_Configurator {
 		}
 		return null;
 	}
-
-	/**
-	 * Convert camelCase to kebab-case.
-	 *
-	 * @param string $str CamelCase string.
-	 * @return string kebab-case string.
-	 */
-	private static function camel_to_kebab( string $str ): string {
-		return strtolower( preg_replace( '/([a-z])([A-Z])/', '$1-$2', $str ) );
-	}
 }
