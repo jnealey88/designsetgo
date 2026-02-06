@@ -43,8 +43,6 @@ class Generate_Contact_Section extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Generate Contact Section', 'designsetgo' ),
 			'description'         => __( 'Generates a complete contact section with a contact form and optional map, contact details, and social links. Perfect for contact pages and landing page sections.', 'designsetgo' ),
-			'thinking_message'    => __( 'Generating contact section...', 'designsetgo' ),
-			'success_message'     => __( 'Contact section generated successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -65,30 +63,30 @@ class Generate_Contact_Section extends Abstract_Ability {
 			'properties'           => array_merge(
 				$common,
 				array(
-					'heading'      => array(
+					'heading'        => array(
 						'type'        => 'string',
 						'description' => __( 'Section heading text', 'designsetgo' ),
 						'default'     => 'Get In Touch',
 					),
-					'headingLevel' => array(
+					'headingLevel'   => array(
 						'type'        => 'integer',
 						'description' => __( 'Heading level (1-6)', 'designsetgo' ),
 						'minimum'     => 1,
 						'maximum'     => 6,
 						'default'     => 2,
 					),
-					'description'  => array(
+					'description'    => array(
 						'type'        => 'string',
 						'description' => __( 'Section description text', 'designsetgo' ),
 						'default'     => 'Have a question or want to work together? Fill out the form below and we\'ll get back to you as soon as possible.',
 					),
-					'layout'      => array(
+					'layout'         => array(
 						'type'        => 'string',
 						'description' => __( 'Section layout style', 'designsetgo' ),
 						'enum'        => array( 'form-only', 'form-left', 'form-right', 'form-top' ),
 						'default'     => 'form-left',
 					),
-					'formFields'  => array(
+					'formFields'     => array(
 						'type'        => 'array',
 						'description' => __( 'Form fields to include', 'designsetgo' ),
 						'items'       => array(
@@ -97,7 +95,7 @@ class Generate_Contact_Section extends Abstract_Ability {
 						),
 						'default'     => array( 'name', 'email', 'message' ),
 					),
-					'submitText'  => array(
+					'submitText'     => array(
 						'type'        => 'string',
 						'description' => __( 'Form submit button text', 'designsetgo' ),
 						'default'     => 'Send Message',
@@ -106,12 +104,12 @@ class Generate_Contact_Section extends Abstract_Ability {
 						'type'        => 'string',
 						'description' => __( 'Email address to receive form submissions (defaults to admin email)', 'designsetgo' ),
 					),
-					'includeMap'  => array(
+					'includeMap'     => array(
 						'type'        => 'boolean',
 						'description' => __( 'Include a map block', 'designsetgo' ),
 						'default'     => false,
 					),
-					'mapLocation' => array(
+					'mapLocation'    => array(
 						'type'        => 'object',
 						'description' => __( 'Map location settings', 'designsetgo' ),
 						'properties'  => array(
@@ -138,7 +136,7 @@ class Generate_Contact_Section extends Abstract_Ability {
 							),
 						),
 					),
-					'contactInfo' => array(
+					'contactInfo'    => array(
 						'type'        => 'object',
 						'description' => __( 'Contact information to display', 'designsetgo' ),
 						'properties'  => array(
@@ -402,7 +400,7 @@ class Generate_Contact_Section extends Abstract_Ability {
 				if ( $map_block ) {
 					$left_column[] = $map_block;
 				}
-				$left_column   = array_merge( $left_column, $info_blocks );
+				$left_column    = array_merge( $left_column, $info_blocks );
 				$right_column[] = $form_block;
 			}
 

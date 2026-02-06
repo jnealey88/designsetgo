@@ -42,8 +42,6 @@ class Insert_Icon_Button extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Icon Button', 'designsetgo' ),
 			'description'         => __( 'Inserts an Icon Button block with customizable text, icon, link, and styling. Perfect for CTAs and navigation.', 'designsetgo' ),
-			'thinking_message'    => __( 'Inserting icon button...', 'designsetgo' ),
-			'success_message'     => __( 'Icon button inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

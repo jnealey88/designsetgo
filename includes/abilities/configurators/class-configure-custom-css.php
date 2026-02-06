@@ -44,8 +44,6 @@ class Configure_Custom_CSS extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Configure Custom CSS', 'designsetgo' ),
 			'description'         => __( 'Applies custom CSS to individual blocks for advanced styling. Use the "selector" placeholder to target the specific block.', 'designsetgo' ),
-			'thinking_message'    => __( 'Applying custom CSS...', 'designsetgo' ),
-			'success_message'     => __( 'Custom CSS applied successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),
@@ -74,20 +72,20 @@ class Configure_Custom_CSS extends Abstract_Ability {
 						'type'        => 'object',
 						'description' => __( 'Custom CSS settings', 'designsetgo' ),
 						'properties'  => array(
-							'enabled'  => array(
+							'enabled' => array(
 								'type'        => 'boolean',
 								'description' => __( 'Enable custom CSS', 'designsetgo' ),
 								'default'     => true,
 							),
-							'desktop'  => array(
+							'desktop' => array(
 								'type'        => 'string',
 								'description' => __( 'CSS for desktop (use "selector" as placeholder for block selector)', 'designsetgo' ),
 							),
-							'tablet'   => array(
+							'tablet'  => array(
 								'type'        => 'string',
 								'description' => __( 'CSS for tablet breakpoint', 'designsetgo' ),
 							),
-							'mobile'   => array(
+							'mobile'  => array(
 								'type'        => 'string',
 								'description' => __( 'CSS for mobile breakpoint', 'designsetgo' ),
 							),

@@ -43,8 +43,6 @@ class Apply_Animation extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Apply Block Animation', 'designsetgo' ),
 			'description'         => __( 'Applies entrance and exit animations to any WordPress block with customizable settings for duration, delay, easing, and triggers.', 'designsetgo' ),
-			'thinking_message'    => __( 'Applying animation...', 'designsetgo' ),
-			'success_message'     => __( 'Animation applied successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),

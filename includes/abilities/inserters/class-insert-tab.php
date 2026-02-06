@@ -42,8 +42,6 @@ class Insert_Tab extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Tab', 'designsetgo' ),
 			'description'         => __( 'Inserts a tab with title and content into an existing tabs container.', 'designsetgo' ),
-			'thinking_message'    => __( 'Adding tab...', 'designsetgo' ),
-			'success_message'     => __( 'Tab added successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -60,27 +58,27 @@ class Insert_Tab extends Abstract_Ability {
 		return array(
 			'type'                 => 'object',
 			'properties'           => array(
-				'post_id'         => array(
+				'post_id'        => array(
 					'type'        => 'integer',
 					'description' => __( 'Post ID containing the tabs', 'designsetgo' ),
 				),
-				'tabs_client_id'  => array(
+				'tabs_client_id' => array(
 					'type'        => 'string',
 					'description' => __( 'Client ID of the parent tabs (optional - uses first tabs if not specified)', 'designsetgo' ),
 				),
-				'title'           => array(
+				'title'          => array(
 					'type'        => 'string',
 					'description' => __( 'Tab title', 'designsetgo' ),
 				),
-				'content'         => array(
+				'content'        => array(
 					'type'        => 'string',
 					'description' => __( 'Tab content (HTML supported)', 'designsetgo' ),
 				),
-				'inner_blocks'    => array(
+				'inner_blocks'   => array(
 					'type'        => 'array',
 					'description' => __( 'Optional: Complex inner blocks instead of simple content', 'designsetgo' ),
 				),
-				'position'        => array(
+				'position'       => array(
 					'type'        => 'integer',
 					'description' => __( 'Position within the tabs (-1 = append, 0 = prepend)', 'designsetgo' ),
 					'default'     => -1,
@@ -156,7 +154,7 @@ class Insert_Tab extends Abstract_Ability {
 
 		// Find the tabs block.
 		$tabs_found = false;
-		$blocks = $this->add_tab_to_tabs(
+		$blocks     = $this->add_tab_to_tabs(
 			$blocks,
 			$tabs_client_id,
 			$title,

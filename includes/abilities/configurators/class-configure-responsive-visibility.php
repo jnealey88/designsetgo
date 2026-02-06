@@ -43,8 +43,6 @@ class Configure_Responsive_Visibility extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Configure Responsive Visibility', 'designsetgo' ),
 			'description'         => __( 'Controls block visibility across different device sizes. Hide or show blocks on desktop, tablet, and mobile breakpoints.', 'designsetgo' ),
-			'thinking_message'    => __( 'Configuring responsive visibility...', 'designsetgo' ),
-			'success_message'     => __( 'Responsive visibility configured successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),

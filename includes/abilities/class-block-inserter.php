@@ -135,6 +135,11 @@ class Block_Inserter {
 		// Coerce attribute types and normalize defaults.
 		$attrs = self::coerce_attribute_types( $block_name, $attributes );
 		$attrs = self::normalize_block_attributes( $block_name, $attrs );
+
+		// Convert CSS var() syntax to WordPress shorthand in style attribute.
+		if ( isset( $attrs['style'] ) && is_array( $attrs['style'] ) ) {
+			$attrs['style'] = self::convert_style_vars( $attrs['style'] );
+		}
 		if ( isset( $attrs['content'] ) && 0 === strpos( $block_name, 'core/' ) ) {
 			$content = $attrs['content'];
 			unset( $attrs['content'] );
@@ -186,6 +191,10 @@ class Block_Inserter {
 			}
 		}
 
+		// Strip attributes that match block.json defaults so serialize_block
+		// doesn't include them in the block comment (WordPress omits defaults).
+		$attrs = self::strip_default_attributes( $block_name, $attrs );
+
 		return array(
 			'blockName'    => $block_name,
 			'attrs'        => $attrs,
@@ -211,9 +220,10 @@ class Block_Inserter {
 
 		switch ( $block_name ) {
 			case 'designsetgo/section':
-				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : false;
+				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : true;
 				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '';
 				$align           = isset( $attributes['align'] ) ? $attributes['align'] : 'full';
+				$tag_name        = isset( $attributes['tagName'] ) && $attributes['tagName'] ? $attributes['tagName'] : 'div';
 
 				// Build outer classes (order: wp-block-*, alignX, dsgo-*).
 				$outer_class_parts = array( 'wp-block-designsetgo-section' );
@@ -227,16 +237,28 @@ class Block_Inserter {
 					$outer_class_parts[] = 'dsgo-no-width-constraint';
 				}
 
-				// Default padding from block supports.
-				$default_padding = 'padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)';
+				// Process block support styles (colors, padding, etc.).
+				$style          = isset( $attributes['style'] ) ? $attributes['style'] : array();
+				$support_result = self::get_block_support_styles( $style );
+				$outer_class_parts = array_merge( $outer_class_parts, $support_result['classes'] );
+
+				// Build outer inline styles: block support styles first, then default padding as fallback.
+				$outer_styles = $support_result['styles'];
+				if ( empty( $style['spacing']['padding'] ) ) {
+					// Use default padding when none specified in style.
+					$outer_styles[] = 'padding-top:var(--wp--preset--spacing--50)';
+					$outer_styles[] = 'padding-right:var(--wp--preset--spacing--30)';
+					$outer_styles[] = 'padding-bottom:var(--wp--preset--spacing--50)';
+					$outer_styles[] = 'padding-left:var(--wp--preset--spacing--30)';
+				}
 
 				// Inner div always has max-width/margin for content centering.
-				$max_width    = $content_width ? $content_width : 'var(--wp--style--global--content-size, 1140px)';
-				$inner_style  = 'max-width:' . esc_attr( $max_width ) . ';margin-left:auto;margin-right:auto';
+				$max_width   = $content_width ? $content_width : 'var(--wp--style--global--content-size, 1140px)';
+				$inner_style = 'max-width:' . esc_attr( $max_width ) . ';margin-left:auto;margin-right:auto';
 
 				return array(
-					'opening' => '<div class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( $default_padding ) . '"><div class="dsgo-stack__inner" style="' . esc_attr( $inner_style ) . '">',
-					'closing' => '</div></div>',
+					'opening' => '<' . esc_attr( $tag_name ) . ' class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . implode( ';', $outer_styles ) . '"><div class="dsgo-stack__inner" style="' . esc_attr( $inner_style ) . '">',
+					'closing' => '</div></' . esc_attr( $tag_name ) . '>',
 				);
 
 			case 'designsetgo/row':
@@ -313,8 +335,8 @@ class Block_Inserter {
 				$default_padding = 'padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)';
 
 				// Inner div styles.
-				$default_gap    = 'var(--wp--preset--spacing--50)';
-				$inner_styles   = array(
+				$default_gap  = 'var(--wp--preset--spacing--50)';
+				$inner_styles = array(
 					'display:grid',
 					'grid-template-columns:repeat(' . $desktop_cols . ', 1fr)',
 					'align-items:' . esc_attr( $align_items ),
@@ -448,16 +470,16 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/accordion':
-				$allow_multiple    = isset( $attributes['allowMultipleOpen'] ) ? $attributes['allowMultipleOpen'] : false;
-				$icon_style        = isset( $attributes['iconStyle'] ) ? $attributes['iconStyle'] : 'chevron';
-				$icon_position     = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'right';
-				$border_between    = isset( $attributes['borderBetween'] ) ? $attributes['borderBetween'] : true;
-				$item_gap          = isset( $attributes['itemGap'] ) ? $attributes['itemGap'] : '0.5rem';
-				$open_bg           = isset( $attributes['openBackgroundColor'] ) ? $attributes['openBackgroundColor'] : '';
-				$open_text         = isset( $attributes['openTextColor'] ) ? $attributes['openTextColor'] : '';
-				$hover_bg          = isset( $attributes['hoverBackgroundColor'] ) ? $attributes['hoverBackgroundColor'] : $open_bg;
-				$hover_text        = isset( $attributes['hoverTextColor'] ) ? $attributes['hoverTextColor'] : $open_text;
-				$border_color      = isset( $attributes['borderBetweenColor'] ) ? $attributes['borderBetweenColor'] : '';
+				$allow_multiple = isset( $attributes['allowMultipleOpen'] ) ? $attributes['allowMultipleOpen'] : false;
+				$icon_style     = isset( $attributes['iconStyle'] ) ? $attributes['iconStyle'] : 'chevron';
+				$icon_position  = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'right';
+				$border_between = isset( $attributes['borderBetween'] ) ? $attributes['borderBetween'] : true;
+				$item_gap       = isset( $attributes['itemGap'] ) ? $attributes['itemGap'] : '0.5rem';
+				$open_bg        = isset( $attributes['openBackgroundColor'] ) ? $attributes['openBackgroundColor'] : '';
+				$open_text      = isset( $attributes['openTextColor'] ) ? $attributes['openTextColor'] : '';
+				$hover_bg       = isset( $attributes['hoverBackgroundColor'] ) ? $attributes['hoverBackgroundColor'] : $open_bg;
+				$hover_text     = isset( $attributes['hoverTextColor'] ) ? $attributes['hoverTextColor'] : $open_text;
+				$border_color   = isset( $attributes['borderBetweenColor'] ) ? $attributes['borderBetweenColor'] : '';
 
 				// Build modifier classes (must match save.js).
 				$accordion_classes = array( 'dsgo-accordion' );
@@ -506,7 +528,7 @@ class Block_Inserter {
 				$icon_position = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'right';
 
 				// Build item classes.
-				$item_classes = array( 'dsgo-accordion-item' );
+				$item_classes   = array( 'dsgo-accordion-item' );
 				$item_classes[] = $is_open ? 'dsgo-accordion-item--open' : 'dsgo-accordion-item--closed';
 
 				// Build trigger classes.
@@ -602,22 +624,22 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/countdown-timer':
-				$target_datetime     = isset( $attributes['targetDateTime'] ) ? $attributes['targetDateTime'] : '';
-				$timezone            = isset( $attributes['timezone'] ) ? $attributes['timezone'] : '';
-				$show_days           = isset( $attributes['showDays'] ) ? $attributes['showDays'] : true;
-				$show_hours          = isset( $attributes['showHours'] ) ? $attributes['showHours'] : true;
-				$show_minutes        = isset( $attributes['showMinutes'] ) ? $attributes['showMinutes'] : true;
-				$show_seconds        = isset( $attributes['showSeconds'] ) ? $attributes['showSeconds'] : true;
-				$layout              = isset( $attributes['layout'] ) ? $attributes['layout'] : 'boxed';
-				$completion_action   = isset( $attributes['completionAction'] ) ? $attributes['completionAction'] : 'message';
-				$completion_message  = isset( $attributes['completionMessage'] ) ? $attributes['completionMessage'] : 'The countdown has ended!';
-				$number_color        = isset( $attributes['numberColor'] ) ? $attributes['numberColor'] : '';
-				$label_color         = isset( $attributes['labelColor'] ) ? $attributes['labelColor'] : '';
-				$unit_bg_color       = isset( $attributes['unitBackgroundColor'] ) ? $attributes['unitBackgroundColor'] : '';
-				$unit_border         = isset( $attributes['unitBorder'] ) ? $attributes['unitBorder'] : array();
-				$unit_border_radius  = isset( $attributes['unitBorderRadius'] ) ? intval( $attributes['unitBorderRadius'] ) : 12;
-				$unit_gap            = isset( $attributes['unitGap'] ) ? $attributes['unitGap'] : '1rem';
-				$unit_padding        = isset( $attributes['unitPadding'] ) ? $attributes['unitPadding'] : '1.5rem';
+				$target_datetime    = isset( $attributes['targetDateTime'] ) ? $attributes['targetDateTime'] : '';
+				$timezone           = isset( $attributes['timezone'] ) ? $attributes['timezone'] : '';
+				$show_days          = isset( $attributes['showDays'] ) ? $attributes['showDays'] : true;
+				$show_hours         = isset( $attributes['showHours'] ) ? $attributes['showHours'] : true;
+				$show_minutes       = isset( $attributes['showMinutes'] ) ? $attributes['showMinutes'] : true;
+				$show_seconds       = isset( $attributes['showSeconds'] ) ? $attributes['showSeconds'] : true;
+				$layout             = isset( $attributes['layout'] ) ? $attributes['layout'] : 'boxed';
+				$completion_action  = isset( $attributes['completionAction'] ) ? $attributes['completionAction'] : 'message';
+				$completion_message = isset( $attributes['completionMessage'] ) ? $attributes['completionMessage'] : 'The countdown has ended!';
+				$number_color       = isset( $attributes['numberColor'] ) ? $attributes['numberColor'] : '';
+				$label_color        = isset( $attributes['labelColor'] ) ? $attributes['labelColor'] : '';
+				$unit_bg_color      = isset( $attributes['unitBackgroundColor'] ) ? $attributes['unitBackgroundColor'] : '';
+				$unit_border        = isset( $attributes['unitBorder'] ) ? $attributes['unitBorder'] : array();
+				$unit_border_radius = isset( $attributes['unitBorderRadius'] ) ? intval( $attributes['unitBorderRadius'] ) : 12;
+				$unit_gap           = isset( $attributes['unitGap'] ) ? $attributes['unitGap'] : '1rem';
+				$unit_padding       = isset( $attributes['unitPadding'] ) ? $attributes['unitPadding'] : '1.5rem';
 
 				// Build unit style.
 				$border_color = isset( $unit_border['color'] ) && $unit_border['color'] ? $unit_border['color'] : 'var(--wp--preset--color--accent-2, currentColor)';
@@ -632,7 +654,7 @@ class Block_Inserter {
 					'border-radius:' . $unit_border_radius . 'px',
 					'padding:' . esc_attr( $unit_padding ),
 				);
-				$unit_style = implode( ';', $unit_style_parts );
+				$unit_style       = implode( ';', $unit_style_parts );
 
 				$number_style = 'color:' . ( $number_color ? esc_attr( $number_color ) : 'var(--wp--preset--color--accent-2, currentColor)' );
 				$label_style  = 'color:' . ( $label_color ? esc_attr( $label_color ) : 'currentColor' );
@@ -762,17 +784,17 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/map':
-				$provider      = isset( $attributes['dsgoProvider'] ) ? $attributes['dsgoProvider'] : 'openstreetmap';
-				$latitude      = isset( $attributes['dsgoLatitude'] ) ? floatval( $attributes['dsgoLatitude'] ) : 40.7128;
-				$longitude     = isset( $attributes['dsgoLongitude'] ) ? floatval( $attributes['dsgoLongitude'] ) : -74.006;
-				$zoom          = isset( $attributes['dsgoZoom'] ) ? intval( $attributes['dsgoZoom'] ) : 13;
-				$address       = isset( $attributes['dsgoAddress'] ) ? $attributes['dsgoAddress'] : '';
-				$marker_icon   = isset( $attributes['dsgoMarkerIcon'] ) ? $attributes['dsgoMarkerIcon'] : '📍';
-				$marker_color  = isset( $attributes['dsgoMarkerColor'] ) ? $attributes['dsgoMarkerColor'] : '#e74c3c';
-				$height        = isset( $attributes['dsgoHeight'] ) ? $attributes['dsgoHeight'] : '400px';
-				$aspect_ratio  = isset( $attributes['dsgoAspectRatio'] ) ? $attributes['dsgoAspectRatio'] : 'custom';
-				$privacy_mode  = isset( $attributes['dsgoPrivacyMode'] ) ? $attributes['dsgoPrivacyMode'] : false;
-				$map_style     = isset( $attributes['dsgoMapStyle'] ) ? $attributes['dsgoMapStyle'] : 'standard';
+				$provider     = isset( $attributes['dsgoProvider'] ) ? $attributes['dsgoProvider'] : 'openstreetmap';
+				$latitude     = isset( $attributes['dsgoLatitude'] ) ? floatval( $attributes['dsgoLatitude'] ) : 40.7128;
+				$longitude    = isset( $attributes['dsgoLongitude'] ) ? floatval( $attributes['dsgoLongitude'] ) : -74.006;
+				$zoom         = isset( $attributes['dsgoZoom'] ) ? intval( $attributes['dsgoZoom'] ) : 13;
+				$address      = isset( $attributes['dsgoAddress'] ) ? $attributes['dsgoAddress'] : '';
+				$marker_icon  = isset( $attributes['dsgoMarkerIcon'] ) ? $attributes['dsgoMarkerIcon'] : '📍';
+				$marker_color = isset( $attributes['dsgoMarkerColor'] ) ? $attributes['dsgoMarkerColor'] : '#e74c3c';
+				$height       = isset( $attributes['dsgoHeight'] ) ? $attributes['dsgoHeight'] : '400px';
+				$aspect_ratio = isset( $attributes['dsgoAspectRatio'] ) ? $attributes['dsgoAspectRatio'] : 'custom';
+				$privacy_mode = isset( $attributes['dsgoPrivacyMode'] ) ? $attributes['dsgoPrivacyMode'] : false;
+				$map_style    = isset( $attributes['dsgoMapStyle'] ) ? $attributes['dsgoMapStyle'] : 'standard';
 
 				// Clamp coordinates.
 				$safe_lat  = max( -90, min( 90, $latitude ) );
@@ -918,11 +940,11 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/icon-list-item':
-				$icon         = isset( $attributes['icon'] ) ? $attributes['icon'] : 'star';
-				$link_url     = isset( $attributes['linkUrl'] ) ? $attributes['linkUrl'] : '';
-				$link_target  = isset( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : '';
-				$link_rel     = isset( $attributes['linkRel'] ) ? $attributes['linkRel'] : '';
-				$content_gap  = isset( $attributes['contentGap'] ) ? intval( $attributes['contentGap'] ) : 8;
+				$icon        = isset( $attributes['icon'] ) ? $attributes['icon'] : 'star';
+				$link_url    = isset( $attributes['linkUrl'] ) ? $attributes['linkUrl'] : '';
+				$link_target = isset( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : '';
+				$link_rel    = isset( $attributes['linkRel'] ) ? $attributes['linkRel'] : '';
+				$content_gap = isset( $attributes['contentGap'] ) ? intval( $attributes['contentGap'] ) : 8;
 				// These values typically come from parent block context, read from attributes if provided.
 				$icon_size     = isset( $attributes['iconSize'] ) ? intval( $attributes['iconSize'] ) : 32;
 				$icon_position = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'left';
@@ -956,7 +978,7 @@ class Block_Inserter {
 				$icon_html = '<div class="dsgo-icon-list-item__icon dsgo-lazy-icon" style="' . esc_attr( $icon_style ) . '" data-icon-name="' . esc_attr( $icon ) . '"></div>';
 
 				// Build element (div or link).
-				$tag = $link_url ? 'a' : 'div';
+				$tag         = $link_url ? 'a' : 'div';
 				$extra_attrs = '';
 				if ( $link_url ) {
 					$extra_attrs .= ' href="' . esc_url( $link_url ) . '"';
@@ -993,10 +1015,10 @@ class Block_Inserter {
 				}
 
 				// Build button styles.
-				$is_full_width   = 'full' === $align;
-				$flex_direction  = 'end' === $icon_position ? 'row-reverse' : 'row';
-				$gap_value       = ( 'none' !== $icon_position && $icon ) ? $icon_gap : '0';
-				$style_parts     = array(
+				$is_full_width  = 'full' === $align;
+				$flex_direction = 'end' === $icon_position ? 'row-reverse' : 'row';
+				$gap_value      = ( 'none' !== $icon_position && $icon ) ? $icon_gap : '0';
+				$style_parts    = array(
 					'display:' . ( $is_full_width ? 'flex' : 'inline-flex' ),
 					'align-items:center',
 					'justify-content:center',
@@ -1004,7 +1026,7 @@ class Block_Inserter {
 					'width:' . ( $is_full_width ? '100%' : 'auto' ),
 					'flex-direction:' . $flex_direction,
 				);
-				$button_style = implode( ';', $style_parts );
+				$button_style   = implode( ';', $style_parts );
 
 				// Icon HTML.
 				$icon_html = '';
@@ -1045,36 +1067,36 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/modal':
-				$modal_id                  = isset( $attributes['modalId'] ) ? $attributes['modalId'] : 'dsgo-modal-' . wp_generate_uuid4();
-				$animation_type            = isset( $attributes['animationType'] ) ? $attributes['animationType'] : 'fade';
-				$animation_duration        = isset( $attributes['animationDuration'] ) ? intval( $attributes['animationDuration'] ) : 300;
-				$close_on_backdrop         = isset( $attributes['closeOnBackdrop'] ) ? $attributes['closeOnBackdrop'] : true;
-				$close_on_esc              = isset( $attributes['closeOnEsc'] ) ? $attributes['closeOnEsc'] : true;
-				$disable_body_scroll       = isset( $attributes['disableBodyScroll'] ) ? $attributes['disableBodyScroll'] : true;
-				$allow_hash_trigger        = isset( $attributes['allowHashTrigger'] ) ? $attributes['allowHashTrigger'] : true;
-				$update_url_on_open        = isset( $attributes['updateUrlOnOpen'] ) ? $attributes['updateUrlOnOpen'] : false;
-				$auto_trigger_type         = isset( $attributes['autoTriggerType'] ) ? $attributes['autoTriggerType'] : 'none';
-				$auto_trigger_delay        = isset( $attributes['autoTriggerDelay'] ) ? intval( $attributes['autoTriggerDelay'] ) : 0;
-				$auto_trigger_frequency    = isset( $attributes['autoTriggerFrequency'] ) ? $attributes['autoTriggerFrequency'] : 'always';
-				$cookie_duration           = isset( $attributes['cookieDuration'] ) ? intval( $attributes['cookieDuration'] ) : 7;
-				$exit_intent_sensitivity   = isset( $attributes['exitIntentSensitivity'] ) ? $attributes['exitIntentSensitivity'] : 'medium';
-				$exit_intent_min_time      = isset( $attributes['exitIntentMinTime'] ) ? intval( $attributes['exitIntentMinTime'] ) : 5;
-				$exit_intent_exclude_mob   = isset( $attributes['exitIntentExcludeMobile'] ) ? $attributes['exitIntentExcludeMobile'] : true;
-				$scroll_depth              = isset( $attributes['scrollDepth'] ) ? intval( $attributes['scrollDepth'] ) : 50;
-				$scroll_direction          = isset( $attributes['scrollDirection'] ) ? $attributes['scrollDirection'] : 'down';
-				$time_on_page              = isset( $attributes['timeOnPage'] ) ? intval( $attributes['timeOnPage'] ) : 30;
-				$gallery_group_id          = isset( $attributes['galleryGroupId'] ) ? $attributes['galleryGroupId'] : '';
-				$gallery_index             = isset( $attributes['galleryIndex'] ) ? intval( $attributes['galleryIndex'] ) : 0;
-				$show_gallery_nav          = isset( $attributes['showGalleryNavigation'] ) ? $attributes['showGalleryNavigation'] : true;
-				$nav_style                 = isset( $attributes['navigationStyle'] ) ? $attributes['navigationStyle'] : 'arrows';
-				$nav_position              = isset( $attributes['navigationPosition'] ) ? $attributes['navigationPosition'] : 'sides';
-				$width                     = isset( $attributes['width'] ) ? $attributes['width'] : '600px';
-				$max_width                 = isset( $attributes['maxWidth'] ) ? $attributes['maxWidth'] : '90vw';
-				$overlay_color             = isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : '#000000';
-				$overlay_opacity           = isset( $attributes['overlayOpacity'] ) ? floatval( $attributes['overlayOpacity'] ) : 80;
-				$show_close_button         = isset( $attributes['showCloseButton'] ) ? $attributes['showCloseButton'] : true;
-				$close_button_position     = isset( $attributes['closeButtonPosition'] ) ? $attributes['closeButtonPosition'] : 'inside-top-right';
-				$close_button_size         = isset( $attributes['closeButtonSize'] ) ? intval( $attributes['closeButtonSize'] ) : 24;
+				$modal_id                = isset( $attributes['modalId'] ) ? $attributes['modalId'] : 'dsgo-modal-' . wp_generate_uuid4();
+				$animation_type          = isset( $attributes['animationType'] ) ? $attributes['animationType'] : 'fade';
+				$animation_duration      = isset( $attributes['animationDuration'] ) ? intval( $attributes['animationDuration'] ) : 300;
+				$close_on_backdrop       = isset( $attributes['closeOnBackdrop'] ) ? $attributes['closeOnBackdrop'] : true;
+				$close_on_esc            = isset( $attributes['closeOnEsc'] ) ? $attributes['closeOnEsc'] : true;
+				$disable_body_scroll     = isset( $attributes['disableBodyScroll'] ) ? $attributes['disableBodyScroll'] : true;
+				$allow_hash_trigger      = isset( $attributes['allowHashTrigger'] ) ? $attributes['allowHashTrigger'] : true;
+				$update_url_on_open      = isset( $attributes['updateUrlOnOpen'] ) ? $attributes['updateUrlOnOpen'] : false;
+				$auto_trigger_type       = isset( $attributes['autoTriggerType'] ) ? $attributes['autoTriggerType'] : 'none';
+				$auto_trigger_delay      = isset( $attributes['autoTriggerDelay'] ) ? intval( $attributes['autoTriggerDelay'] ) : 0;
+				$auto_trigger_frequency  = isset( $attributes['autoTriggerFrequency'] ) ? $attributes['autoTriggerFrequency'] : 'always';
+				$cookie_duration         = isset( $attributes['cookieDuration'] ) ? intval( $attributes['cookieDuration'] ) : 7;
+				$exit_intent_sensitivity = isset( $attributes['exitIntentSensitivity'] ) ? $attributes['exitIntentSensitivity'] : 'medium';
+				$exit_intent_min_time    = isset( $attributes['exitIntentMinTime'] ) ? intval( $attributes['exitIntentMinTime'] ) : 5;
+				$exit_intent_exclude_mob = isset( $attributes['exitIntentExcludeMobile'] ) ? $attributes['exitIntentExcludeMobile'] : true;
+				$scroll_depth            = isset( $attributes['scrollDepth'] ) ? intval( $attributes['scrollDepth'] ) : 50;
+				$scroll_direction        = isset( $attributes['scrollDirection'] ) ? $attributes['scrollDirection'] : 'down';
+				$time_on_page            = isset( $attributes['timeOnPage'] ) ? intval( $attributes['timeOnPage'] ) : 30;
+				$gallery_group_id        = isset( $attributes['galleryGroupId'] ) ? $attributes['galleryGroupId'] : '';
+				$gallery_index           = isset( $attributes['galleryIndex'] ) ? intval( $attributes['galleryIndex'] ) : 0;
+				$show_gallery_nav        = isset( $attributes['showGalleryNavigation'] ) ? $attributes['showGalleryNavigation'] : true;
+				$nav_style               = isset( $attributes['navigationStyle'] ) ? $attributes['navigationStyle'] : 'arrows';
+				$nav_position            = isset( $attributes['navigationPosition'] ) ? $attributes['navigationPosition'] : 'sides';
+				$width                   = isset( $attributes['width'] ) ? $attributes['width'] : '600px';
+				$max_width               = isset( $attributes['maxWidth'] ) ? $attributes['maxWidth'] : '90vw';
+				$overlay_color           = isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : '#000000';
+				$overlay_opacity         = isset( $attributes['overlayOpacity'] ) ? floatval( $attributes['overlayOpacity'] ) : 80;
+				$show_close_button       = isset( $attributes['showCloseButton'] ) ? $attributes['showCloseButton'] : true;
+				$close_button_position   = isset( $attributes['closeButtonPosition'] ) ? $attributes['closeButtonPosition'] : 'inside-top-right';
+				$close_button_size       = isset( $attributes['closeButtonSize'] ) ? intval( $attributes['closeButtonSize'] ) : 24;
 
 				// Build data attributes.
 				$data_attrs  = ' data-dsgo-modal="true"';
@@ -1141,15 +1163,15 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/modal-trigger':
-				$text           = isset( $attributes['text'] ) ? $attributes['text'] : 'Open Modal';
-				$button_style   = isset( $attributes['buttonStyle'] ) ? $attributes['buttonStyle'] : 'fill';
-				$width_style    = isset( $attributes['widthStyle'] ) ? $attributes['widthStyle'] : 'auto';
-				$icon           = isset( $attributes['icon'] ) ? $attributes['icon'] : '';
-				$icon_position  = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'start';
+				$text          = isset( $attributes['text'] ) ? $attributes['text'] : 'Open Modal';
+				$button_style  = isset( $attributes['buttonStyle'] ) ? $attributes['buttonStyle'] : 'fill';
+				$width_style   = isset( $attributes['widthStyle'] ) ? $attributes['widthStyle'] : 'auto';
+				$icon          = isset( $attributes['icon'] ) ? $attributes['icon'] : '';
+				$icon_position = isset( $attributes['iconPosition'] ) ? $attributes['iconPosition'] : 'start';
 
 				$outer_class = 'wp-block-designsetgo-modal-trigger dsgo-modal-trigger dsgo-modal-trigger--' . esc_attr( $button_style ) . ' dsgo-modal-trigger--width-' . esc_attr( $width_style );
 
-				$flex_direction = 'end' === $icon_position ? 'row-reverse' : 'row';
+				$flex_direction    = 'end' === $icon_position ? 'row-reverse' : 'row';
 				$button_style_attr = 'flex-direction:' . $flex_direction;
 
 				$inner_html = '<button class="dsgo-modal-trigger__button" data-dsgo-modal-trigger="" style="' . esc_attr( $button_style_attr ) . '" type="button">';
@@ -1221,7 +1243,7 @@ class Block_Inserter {
 				$list_tag = 'ordered' === $list_style ? 'ol' : 'ul';
 
 				// Inner HTML.
-				$inner_html  = '<div class="dsgo-table-of-contents__content">';
+				$inner_html = '<div class="dsgo-table-of-contents__content">';
 				if ( $show_title ) {
 					$inner_html .= '<div class="dsgo-table-of-contents__title">' . esc_html( $title_text ) . '</div>';
 				}
@@ -1246,7 +1268,7 @@ class Block_Inserter {
 				$default_expanded         = isset( $attributes['defaultExpanded'] ) ? intval( $attributes['defaultExpanded'] ) : 0;
 
 				// Build classes.
-				$class_parts = array( 'wp-block-designsetgo-image-accordion', 'dsgo-image-accordion' );
+				$class_parts   = array( 'wp-block-designsetgo-image-accordion', 'dsgo-image-accordion' );
 				$class_parts[] = 'dsgo-image-accordion--' . esc_attr( $trigger_type );
 
 				// Build style with CSS custom properties.
@@ -1259,7 +1281,7 @@ class Block_Inserter {
 					'--dsgo-image-accordion-overlay-opacity:' . esc_attr( (string) ( $overlay_opacity / 100 ) ),
 					'--dsgo-image-accordion-overlay-opacity-expanded:' . esc_attr( (string) ( $overlay_opacity_expanded / 100 ) ),
 				);
-				$style = implode( ';', $style_parts );
+				$style       = implode( ';', $style_parts );
 
 				// Data attributes.
 				$data_attrs  = ' data-trigger-type="' . esc_attr( $trigger_type ) . '"';
@@ -1298,7 +1320,7 @@ class Block_Inserter {
 				}
 				$style_parts[] = '--dsgo-vertical-alignment:' . esc_attr( $vertical_alignment );
 				$style_parts[] = '--dsgo-horizontal-alignment:' . esc_attr( $horizontal_alignment );
-				$style = implode( ';', $style_parts );
+				$style         = implode( ';', $style_parts );
 
 				return array(
 					'opening' => '<div class="' . esc_attr( implode( ' ', $class_parts ) ) . '" style="' . esc_attr( $style ) . '" data-unique-id="' . esc_attr( $unique_id ) . '" role="button" tabindex="0"><div class="dsgo-image-accordion-item__content">',
@@ -1373,11 +1395,11 @@ class Block_Inserter {
 				$aria_label             = isset( $attributes['ariaLabel'] ) ? $attributes['ariaLabel'] : '';
 
 				// Single slide effects.
-				$single_slide_effects     = array( 'fade', 'zoom' );
-				$requires_single          = in_array( $effect, $single_slide_effects, true );
-				$effective_slides         = $requires_single ? 1 : $slides_per_view;
-				$effective_slides_tablet  = $requires_single ? 1 : $slides_per_view_tablet;
-				$effective_slides_mobile  = $requires_single ? 1 : $slides_per_view_mobile;
+				$single_slide_effects    = array( 'fade', 'zoom' );
+				$requires_single         = in_array( $effect, $single_slide_effects, true );
+				$effective_slides        = $requires_single ? 1 : $slides_per_view;
+				$effective_slides_tablet = $requires_single ? 1 : $slides_per_view_tablet;
+				$effective_slides_mobile = $requires_single ? 1 : $slides_per_view_mobile;
 
 				// Build classes.
 				$class_parts = array( 'wp-block-designsetgo-slider', 'dsgo-slider' );
@@ -1451,16 +1473,16 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/slide':
-				$background_image     = isset( $attributes['backgroundImage'] ) ? $attributes['backgroundImage'] : array();
-				$background_size      = isset( $attributes['backgroundSize'] ) ? $attributes['backgroundSize'] : 'cover';
-				$background_position  = isset( $attributes['backgroundPosition'] ) ? $attributes['backgroundPosition'] : 'center center';
-				$background_repeat    = isset( $attributes['backgroundRepeat'] ) ? $attributes['backgroundRepeat'] : 'no-repeat';
-				$overlay_color        = isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : '';
-				$overlay_opacity      = isset( $attributes['overlayOpacity'] ) ? floatval( $attributes['overlayOpacity'] ) : 80;
-				$content_v_align      = isset( $attributes['contentVerticalAlign'] ) ? $attributes['contentVerticalAlign'] : 'center';
-				$content_h_align      = isset( $attributes['contentHorizontalAlign'] ) ? $attributes['contentHorizontalAlign'] : 'center';
-				$min_height           = isset( $attributes['minHeight'] ) ? $attributes['minHeight'] : '';
-				$bg_url               = isset( $background_image['url'] ) ? $background_image['url'] : '';
+				$background_image    = isset( $attributes['backgroundImage'] ) ? $attributes['backgroundImage'] : array();
+				$background_size     = isset( $attributes['backgroundSize'] ) ? $attributes['backgroundSize'] : 'cover';
+				$background_position = isset( $attributes['backgroundPosition'] ) ? $attributes['backgroundPosition'] : 'center center';
+				$background_repeat   = isset( $attributes['backgroundRepeat'] ) ? $attributes['backgroundRepeat'] : 'no-repeat';
+				$overlay_color       = isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : '';
+				$overlay_opacity     = isset( $attributes['overlayOpacity'] ) ? floatval( $attributes['overlayOpacity'] ) : 80;
+				$content_v_align     = isset( $attributes['contentVerticalAlign'] ) ? $attributes['contentVerticalAlign'] : 'center';
+				$content_h_align     = isset( $attributes['contentHorizontalAlign'] ) ? $attributes['contentHorizontalAlign'] : 'center';
+				$min_height          = isset( $attributes['minHeight'] ) ? $attributes['minHeight'] : '';
+				$bg_url              = isset( $background_image['url'] ) ? $background_image['url'] : '';
 
 				// Build classes.
 				$class_parts = array( 'wp-block-designsetgo-slide', 'dsgo-slide' );
@@ -1519,13 +1541,13 @@ class Block_Inserter {
 					'--dsgo-marquee-image-width:' . esc_attr( $image_width ),
 					'--dsgo-marquee-border-radius:' . esc_attr( $border_radius ),
 				);
-				$style = implode( ';', $style_parts );
+				$style       = implode( ';', $style_parts );
 
 				// Build rows HTML.
 				$rows_html = '';
 				foreach ( $rows as $row ) {
-					$direction  = isset( $row['direction'] ) ? $row['direction'] : 'left';
-					$images     = isset( $row['images'] ) ? $row['images'] : array();
+					$direction = isset( $row['direction'] ) ? $row['direction'] : 'left';
+					$images    = isset( $row['images'] ) ? $row['images'] : array();
 
 					$rows_html .= '<div class="dsgo-scroll-marquee__row" data-direction="' . esc_attr( $direction ) . '">';
 					$rows_html .= '<div class="dsgo-scroll-marquee__track">';
@@ -1534,8 +1556,8 @@ class Block_Inserter {
 					for ( $i = 0; $i < 6; $i++ ) {
 						$rows_html .= '<div class="dsgo-scroll-marquee__track-segment">';
 						foreach ( $images as $image ) {
-							$img_url = isset( $image['url'] ) ? $image['url'] : '';
-							$img_alt = isset( $image['alt'] ) ? $image['alt'] : '';
+							$img_url    = isset( $image['url'] ) ? $image['url'] : '';
+							$img_alt    = isset( $image['alt'] ) ? $image['alt'] : '';
 							$rows_html .= '<img src="' . esc_url( $img_url ) . '" alt="' . esc_attr( $img_alt ) . '" class="dsgo-scroll-marquee__image" loading="lazy"/>';
 						}
 						$rows_html .= '</div>';
@@ -1550,19 +1572,19 @@ class Block_Inserter {
 				);
 
 			case 'designsetgo/tabs':
-				$unique_id          = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : substr( str_replace( '-', '', wp_generate_uuid4() ), 0, 9 );
-				$orientation        = isset( $attributes['orientation'] ) ? $attributes['orientation'] : 'horizontal';
-				$active_tab         = isset( $attributes['activeTab'] ) ? intval( $attributes['activeTab'] ) : 0;
-				$alignment          = isset( $attributes['alignment'] ) ? $attributes['alignment'] : 'left';
-				$mobile_breakpoint  = isset( $attributes['mobileBreakpoint'] ) ? intval( $attributes['mobileBreakpoint'] ) : 768;
-				$mobile_mode        = isset( $attributes['mobileMode'] ) ? $attributes['mobileMode'] : 'accordion';
-				$enable_deep_link   = isset( $attributes['enableDeepLinking'] ) ? $attributes['enableDeepLinking'] : false;
-				$gap                = isset( $attributes['gap'] ) ? $attributes['gap'] : '8px';
-				$tab_style          = isset( $attributes['tabStyle'] ) ? $attributes['tabStyle'] : 'default';
-				$show_nav_border    = isset( $attributes['showNavBorder'] ) ? $attributes['showNavBorder'] : false;
+				$unique_id         = isset( $attributes['uniqueId'] ) ? $attributes['uniqueId'] : substr( str_replace( '-', '', wp_generate_uuid4() ), 0, 9 );
+				$orientation       = isset( $attributes['orientation'] ) ? $attributes['orientation'] : 'horizontal';
+				$active_tab        = isset( $attributes['activeTab'] ) ? intval( $attributes['activeTab'] ) : 0;
+				$alignment         = isset( $attributes['alignment'] ) ? $attributes['alignment'] : 'left';
+				$mobile_breakpoint = isset( $attributes['mobileBreakpoint'] ) ? intval( $attributes['mobileBreakpoint'] ) : 768;
+				$mobile_mode       = isset( $attributes['mobileMode'] ) ? $attributes['mobileMode'] : 'accordion';
+				$enable_deep_link  = isset( $attributes['enableDeepLinking'] ) ? $attributes['enableDeepLinking'] : false;
+				$gap               = isset( $attributes['gap'] ) ? $attributes['gap'] : '8px';
+				$tab_style         = isset( $attributes['tabStyle'] ) ? $attributes['tabStyle'] : 'default';
+				$show_nav_border   = isset( $attributes['showNavBorder'] ) ? $attributes['showNavBorder'] : false;
 
 				// Build classes.
-				$class_parts = array( 'wp-block-designsetgo-tabs', 'dsgo-tabs', 'dsgo-tabs-' . esc_attr( $unique_id ) );
+				$class_parts   = array( 'wp-block-designsetgo-tabs', 'dsgo-tabs', 'dsgo-tabs-' . esc_attr( $unique_id ) );
 				$class_parts[] = 'dsgo-tabs--' . esc_attr( $orientation );
 				$class_parts[] = 'dsgo-tabs--' . esc_attr( $tab_style );
 				$class_parts[] = 'dsgo-tabs--align-' . esc_attr( $alignment );
@@ -1720,7 +1742,7 @@ class Block_Inserter {
 		$button_style = implode( ';', $button_style_parts );
 
 		// Opening HTML: outer div + form + fields wrapper.
-		$opening = '<div class="' . esc_attr( $classes ) . '" style="' . $style . '" ' . $data_str . '>';
+		$opening  = '<div class="' . esc_attr( $classes ) . '" style="' . $style . '" ' . $data_str . '>';
 		$opening .= '<form class="dsgo-form" method="post" novalidate>';
 		$opening .= '<div class="dsgo-form__fields">';
 
@@ -1898,7 +1920,7 @@ class Block_Inserter {
 				break;
 		}
 
-		$html = '<div class="wp-block-designsetgo-form-text-field dsgo-form-field dsgo-form-field--text" style="' . $style . '">';
+		$html  = '<div class="wp-block-designsetgo-form-text-field dsgo-form-field dsgo-form-field--text" style="' . $style . '">';
 		$html .= self::generate_form_field_label( $field_id, $label, $required );
 
 		$html .= '<input type="text" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
@@ -1952,7 +1974,7 @@ class Block_Inserter {
 		$field_id = 'field-' . $field_name;
 		$style    = self::get_form_field_width_style( $field_width );
 
-		$html = '<div class="wp-block-designsetgo-form-email-field dsgo-form-field dsgo-form-field--email" style="' . $style . '">';
+		$html  = '<div class="wp-block-designsetgo-form-email-field dsgo-form-field dsgo-form-field--email" style="' . $style . '">';
 		$html .= self::generate_form_field_label( $field_id, $label, $required );
 
 		$html .= '<input type="email" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
@@ -1996,7 +2018,7 @@ class Block_Inserter {
 		$field_id = 'field-' . $field_name;
 		$style    = self::get_form_field_width_style( $field_width );
 
-		$html = '<div class="wp-block-designsetgo-form-textarea dsgo-form-field dsgo-form-field--textarea" style="' . $style . '">';
+		$html  = '<div class="wp-block-designsetgo-form-textarea dsgo-form-field dsgo-form-field--textarea" style="' . $style . '">';
 		$html .= self::generate_form_field_label( $field_id, $label, $required );
 
 		$html .= '<textarea id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__textarea"';
@@ -2044,7 +2066,7 @@ class Block_Inserter {
 		$field_id = 'field-' . $field_name;
 		$style    = self::get_form_field_width_style( $field_width );
 
-		$html = '<div class="wp-block-designsetgo-form-select-field dsgo-form-field dsgo-form-field--select" style="' . $style . '">';
+		$html  = '<div class="wp-block-designsetgo-form-select-field dsgo-form-field dsgo-form-field--select" style="' . $style . '">';
 		$html .= self::generate_form_field_label( $field_id, $label, $required );
 
 		$html .= '<select id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__select"';
@@ -2060,10 +2082,10 @@ class Block_Inserter {
 			$html .= '<option value="">' . esc_html( $placeholder ) . '</option>';
 		}
 		foreach ( $options as $option ) {
-			$value    = $option['value'] ?? '';
+			$value     = $option['value'] ?? '';
 			$opt_label = $option['label'] ?? $value;
-			$selected = ( $value === $default_value ) ? ' selected' : '';
-			$html    .= '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_html( $opt_label ) . '</option>';
+			$selected  = ( $value === $default_value ) ? ' selected' : '';
+			$html     .= '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_html( $opt_label ) . '</option>';
 		}
 		$html .= '</select>';
 
@@ -2090,7 +2112,7 @@ class Block_Inserter {
 		$field_id = 'field-' . $field_name;
 		$style    = self::get_form_field_width_style( $field_width );
 
-		$html = '<div class="wp-block-designsetgo-form-checkbox-field dsgo-form-field dsgo-form-field--checkbox" style="' . $style . '">';
+		$html  = '<div class="wp-block-designsetgo-form-checkbox-field dsgo-form-field dsgo-form-field--checkbox" style="' . $style . '">';
 		$html .= '<label class="dsgo-form-field__checkbox-label">';
 		$html .= '<input type="checkbox" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__checkbox"';
 		if ( $required ) {
@@ -2136,7 +2158,7 @@ class Block_Inserter {
 		$field_id = 'field-' . $field_name;
 		$style    = self::get_form_field_width_style( $field_width );
 
-		$html = '<div class="wp-block-designsetgo-form-number-field dsgo-form-field dsgo-form-field--number" style="' . $style . '">';
+		$html  = '<div class="wp-block-designsetgo-form-number-field dsgo-form-field dsgo-form-field--number" style="' . $style . '">';
 		$html .= self::generate_form_field_label( $field_id, $label, $required );
 
 		$html .= '<input type="number" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
@@ -2185,7 +2207,7 @@ class Block_Inserter {
 		$field_id = 'field-' . $field_name;
 		$style    = self::get_form_field_width_style( $field_width );
 
-		$html = '<div class="wp-block-designsetgo-form-phone-field dsgo-form-field dsgo-form-field--phone" style="' . $style . '">';
+		$html  = '<div class="wp-block-designsetgo-form-phone-field dsgo-form-field dsgo-form-field--phone" style="' . $style . '">';
 		$html .= self::generate_form_field_label( $field_id, $label, $required );
 
 		$html .= '<input type="tel" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
@@ -2228,7 +2250,7 @@ class Block_Inserter {
 		$field_id = 'field-' . $field_name;
 		$style    = self::get_form_field_width_style( $field_width );
 
-		$html = '<div class="wp-block-designsetgo-form-date-field dsgo-form-field dsgo-form-field--date" style="' . $style . '">';
+		$html  = '<div class="wp-block-designsetgo-form-date-field dsgo-form-field dsgo-form-field--date" style="' . $style . '">';
 		$html .= self::generate_form_field_label( $field_id, $label, $required );
 
 		$html .= '<input type="date" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
@@ -2272,7 +2294,7 @@ class Block_Inserter {
 		$field_id = 'field-' . $field_name;
 		$style    = self::get_form_field_width_style( $field_width );
 
-		$html = '<div class="wp-block-designsetgo-form-time-field dsgo-form-field dsgo-form-field--time" style="' . $style . '">';
+		$html  = '<div class="wp-block-designsetgo-form-time-field dsgo-form-field dsgo-form-field--time" style="' . $style . '">';
 		$html .= self::generate_form_field_label( $field_id, $label, $required );
 
 		$html .= '<input type="time" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
@@ -2311,7 +2333,7 @@ class Block_Inserter {
 		$field_id = 'field-' . $field_name;
 		$style    = self::get_form_field_width_style( $field_width );
 
-		$html = '<div class="wp-block-designsetgo-form-url-field dsgo-form-field dsgo-form-field--url" style="' . $style . '">';
+		$html  = '<div class="wp-block-designsetgo-form-url-field dsgo-form-field dsgo-form-field--url" style="' . $style . '">';
 		$html .= self::generate_form_field_label( $field_id, $label, $required );
 
 		$html .= '<input type="url" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" class="dsgo-form-field__input"';
@@ -2428,7 +2450,7 @@ class Block_Inserter {
 		switch ( $block_name ) {
 			case 'designsetgo/row':
 				// Ensure layout has all required fields for block validation.
-				$layout = isset( $attributes['layout'] ) ? $attributes['layout'] : array();
+				$layout               = isset( $attributes['layout'] ) ? $attributes['layout'] : array();
 				$attributes['layout'] = array_merge(
 					array(
 						'type'           => 'flex',
@@ -2469,6 +2491,150 @@ class Block_Inserter {
 		}
 
 		return $attributes;
+	}
+
+	/**
+	 * Strip attributes that match their block.json defaults.
+	 *
+	 * WordPress's block serialization omits attributes that equal the
+	 * registered default. This method mirrors that behavior so inserted
+	 * blocks produce the same comment markup as the editor.
+	 *
+	 * @param string               $block_name Block name.
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return array<string, mixed> Attributes with defaults removed.
+	 */
+	private static function strip_default_attributes( string $block_name, array $attributes ): array {
+		$registry   = \WP_Block_Type_Registry::get_instance();
+		$block_type = $registry->get_registered( $block_name );
+
+		if ( ! $block_type || empty( $block_type->attributes ) ) {
+			return $attributes;
+		}
+
+		foreach ( $block_type->attributes as $attr_name => $attr_def ) {
+			if ( ! array_key_exists( $attr_name, $attributes ) || ! array_key_exists( 'default', $attr_def ) ) {
+				continue;
+			}
+			// phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual -- intentional loose comparison for type-coerced defaults.
+			if ( $attributes[ $attr_name ] == $attr_def['default'] ) {
+				unset( $attributes[ $attr_name ] );
+			}
+		}
+
+		return $attributes;
+	}
+
+	/**
+	 * Convert CSS var() syntax to WordPress shorthand for block comment serialization.
+	 *
+	 * WordPress stores preset values as `var:preset|spacing|60` in block comments,
+	 * which gets converted to `var(--wp--preset--spacing--60)` at render time.
+	 *
+	 * @param string $value CSS value that may contain var(--wp--preset--*) syntax.
+	 * @return string Converted value using WordPress shorthand, or original value.
+	 */
+	private static function css_var_to_wp_shorthand( string $value ): string {
+		if ( preg_match( '/^var\(--wp--preset--([a-zA-Z]+)--(.+)\)$/', $value, $matches ) ) {
+			return 'var:preset|' . $matches[1] . '|' . $matches[2];
+		}
+		return $value;
+	}
+
+	/**
+	 * Convert WordPress shorthand var:preset|*|* to CSS var() syntax for inline styles.
+	 *
+	 * @param string $value WordPress shorthand value.
+	 * @return string CSS var() value.
+	 */
+	private static function wp_shorthand_to_css_var( string $value ): string {
+		if ( preg_match( '/^var:preset\|([a-zA-Z]+)\|(.+)$/', $value, $matches ) ) {
+			return 'var(--wp--preset--' . $matches[1] . '--' . $matches[2] . ')';
+		}
+		return $value;
+	}
+
+	/**
+	 * Recursively convert CSS var() syntax to WordPress shorthand in style arrays.
+	 *
+	 * @param array<string, mixed> $style_array Style attribute array.
+	 * @return array<string, mixed> Converted style array.
+	 */
+	private static function convert_style_vars( array $style_array ): array {
+		foreach ( $style_array as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$style_array[ $key ] = self::convert_style_vars( $value );
+			} elseif ( is_string( $value ) ) {
+				$style_array[ $key ] = self::css_var_to_wp_shorthand( $value );
+			}
+		}
+		return $style_array;
+	}
+
+	/**
+	 * Extract block support classes and inline styles from the style attribute.
+	 *
+	 * Processes color, spacing, and other block supports into CSS classes and
+	 * inline style strings, mirroring what useBlockProps.save() does in JS.
+	 *
+	 * @param array<string, mixed> $style Style attribute from block.
+	 * @return array{classes: string[], styles: string[]} Classes and style declarations.
+	 */
+	private static function get_block_support_styles( array $style ): array {
+		$classes = array();
+		$styles  = array();
+
+		// Color support.
+		if ( ! empty( $style['color']['background'] ) ) {
+			$classes[] = 'has-background';
+			$styles[]  = 'background-color:' . esc_attr( $style['color']['background'] );
+		}
+		if ( ! empty( $style['color']['text'] ) ) {
+			$classes[] = 'has-text-color';
+			$styles[]  = 'color:' . esc_attr( $style['color']['text'] );
+		}
+		if ( ! empty( $style['color']['gradient'] ) ) {
+			$classes[] = 'has-background';
+			$styles[]  = 'background:' . esc_attr( $style['color']['gradient'] );
+		}
+
+		// Spacing support - padding.
+		if ( ! empty( $style['spacing']['padding'] ) ) {
+			$padding = $style['spacing']['padding'];
+			if ( ! empty( $padding['top'] ) ) {
+				$styles[] = 'padding-top:' . esc_attr( self::wp_shorthand_to_css_var( $padding['top'] ) );
+			}
+			if ( ! empty( $padding['right'] ) ) {
+				$styles[] = 'padding-right:' . esc_attr( self::wp_shorthand_to_css_var( $padding['right'] ) );
+			}
+			if ( ! empty( $padding['bottom'] ) ) {
+				$styles[] = 'padding-bottom:' . esc_attr( self::wp_shorthand_to_css_var( $padding['bottom'] ) );
+			}
+			if ( ! empty( $padding['left'] ) ) {
+				$styles[] = 'padding-left:' . esc_attr( self::wp_shorthand_to_css_var( $padding['left'] ) );
+			}
+		}
+
+		// Spacing support - margin.
+		if ( ! empty( $style['spacing']['margin'] ) ) {
+			$margin = $style['spacing']['margin'];
+			if ( ! empty( $margin['top'] ) ) {
+				$styles[] = 'margin-top:' . esc_attr( self::wp_shorthand_to_css_var( $margin['top'] ) );
+			}
+			if ( ! empty( $margin['bottom'] ) ) {
+				$styles[] = 'margin-bottom:' . esc_attr( self::wp_shorthand_to_css_var( $margin['bottom'] ) );
+			}
+		}
+
+		// Dimensions support.
+		if ( ! empty( $style['dimensions']['minHeight'] ) ) {
+			$styles[] = 'min-height:' . esc_attr( self::wp_shorthand_to_css_var( $style['dimensions']['minHeight'] ) );
+		}
+
+		return array(
+			'classes' => $classes,
+			'styles'  => $styles,
+		);
 	}
 
 	/**

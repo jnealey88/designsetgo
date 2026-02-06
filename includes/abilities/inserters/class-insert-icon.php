@@ -42,8 +42,6 @@ class Insert_Icon extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Icon', 'designsetgo' ),
 			'description'         => __( 'Inserts an Icon block with customizable styling including icon selection, size, style (filled/outlined), rotation, and optional link.', 'designsetgo' ),
-			'thinking_message'    => __( 'Inserting icon...', 'designsetgo' ),
-			'success_message'     => __( 'Icon inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

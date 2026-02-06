@@ -43,8 +43,6 @@ class Configure_Counter_Animation extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Configure Counter Animation', 'designsetgo' ),
 			'description'         => __( 'Updates animation settings for Counter blocks including start/end values, duration, delay, decimals, and prefix/suffix.', 'designsetgo' ),
-			'thinking_message'    => __( 'Updating counter animation...', 'designsetgo' ),
-			'success_message'     => __( 'Counter animation updated successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),

@@ -43,8 +43,6 @@ class Insert_Breadcrumbs extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Breadcrumbs', 'designsetgo' ),
 			'description'         => __( 'Inserts a Breadcrumbs block for displaying navigation trails. Automatically generates breadcrumb links based on page hierarchy. Perfect for improving site navigation and SEO.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating breadcrumbs...', 'designsetgo' ),
-			'success_message'     => __( 'Breadcrumbs inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -69,54 +67,54 @@ class Insert_Breadcrumbs extends Abstract_Ability {
 						'type'        => 'object',
 						'description' => __( 'Breadcrumbs attributes', 'designsetgo' ),
 						'properties'  => array(
-							'separator'        => array(
+							'separator'      => array(
 								'type'        => 'string',
 								'description' => __( 'Separator between breadcrumb items', 'designsetgo' ),
 								'default'     => '/',
 							),
-							'separatorIcon'    => array(
+							'separatorIcon'  => array(
 								'type'        => 'string',
 								'description' => __( 'Icon name to use as separator (overrides text separator)', 'designsetgo' ),
 								'enum'        => array( 'chevron-right', 'arrow-right', 'slash', 'dot' ),
 							),
-							'showHome'         => array(
+							'showHome'       => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show home link as first item', 'designsetgo' ),
 								'default'     => true,
 							),
-							'homeLabel'        => array(
+							'homeLabel'      => array(
 								'type'        => 'string',
 								'description' => __( 'Label for home link', 'designsetgo' ),
 								'default'     => 'Home',
 							),
-							'homeIcon'         => array(
+							'homeIcon'       => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show home icon instead of text', 'designsetgo' ),
 								'default'     => false,
 							),
-							'showCurrent'      => array(
+							'showCurrent'    => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show current page in breadcrumbs', 'designsetgo' ),
 								'default'     => true,
 							),
-							'linkCurrent'      => array(
+							'linkCurrent'    => array(
 								'type'        => 'boolean',
 								'description' => __( 'Make current page a clickable link', 'designsetgo' ),
 								'default'     => false,
 							),
-							'textColor'        => array(
+							'textColor'      => array(
 								'type'        => 'string',
 								'description' => __( 'Text color for breadcrumb links', 'designsetgo' ),
 							),
-							'separatorColor'   => array(
+							'separatorColor' => array(
 								'type'        => 'string',
 								'description' => __( 'Separator color', 'designsetgo' ),
 							),
-							'currentColor'     => array(
+							'currentColor'   => array(
 								'type'        => 'string',
 								'description' => __( 'Current page text color', 'designsetgo' ),
 							),
-							'fontSize'         => array(
+							'fontSize'       => array(
 								'type'        => 'string',
 								'description' => __( 'Font size', 'designsetgo' ),
 							),

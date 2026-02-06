@@ -43,8 +43,6 @@ class Insert_Icon_List_Item extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Icon List Item', 'designsetgo' ),
 			'description'         => __( 'Inserts an Icon List Item with icon, optional link, and rich content. Must be used within an Icon List block.', 'designsetgo' ),
-			'thinking_message'    => __( 'Adding icon list item...', 'designsetgo' ),
-			'success_message'     => __( 'Icon list item inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

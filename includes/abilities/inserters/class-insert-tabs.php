@@ -43,8 +43,6 @@ class Insert_Tabs extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Tabs', 'designsetgo' ),
 			'description'         => __( 'Inserts a Tabs container for organizing content into tabbed sections with icons, deep linking, and responsive accordion mode.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating tabs container...', 'designsetgo' ),
-			'success_message'     => __( 'Tabs container inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

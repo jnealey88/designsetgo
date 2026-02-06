@@ -43,8 +43,6 @@ class Generate_Hero_Section extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Generate Hero Section', 'designsetgo' ),
 			'description'         => __( 'Generates a complete hero section with heading, description text, and call-to-action buttons in a centered Stack container.', 'designsetgo' ),
-			'thinking_message'    => __( 'Generating hero section...', 'designsetgo' ),
-			'success_message'     => __( 'Hero section generated successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

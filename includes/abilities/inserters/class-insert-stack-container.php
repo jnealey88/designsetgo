@@ -43,8 +43,6 @@ class Insert_Stack_Container extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Stack Container', 'designsetgo' ),
 			'description'         => __( 'Inserts a Stack Container block for simple vertical stacking with consistent gaps. Perfect for sections and content areas.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating stack container...', 'designsetgo' ),
-			'success_message'     => __( 'Stack container inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

@@ -56,7 +56,7 @@ Lists all available DesignSetGo blocks with their metadata, attributes, and capa
 
 **REST API Example:**
 ```bash
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/list-blocks/execute \
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/list-blocks/run \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{"category": "layout"}'
@@ -105,7 +105,7 @@ Inserts a Flex Container block with customizable layout settings.
 
 **REST API Example:**
 ```bash
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/insert-flex-container/execute \
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/insert-flex-container/run \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{
@@ -149,7 +149,7 @@ Inserts a responsive Grid Container with column configurations for different dev
 
 **REST API Example:**
 ```bash
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/insert-grid-container/execute \
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/insert-grid-container/run \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{
@@ -201,7 +201,7 @@ Updates animation settings for Counter blocks.
 
 **REST API Example:**
 ```bash
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/configure-counter-animation/execute \
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/configure-counter-animation/run \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{
@@ -253,7 +253,7 @@ Applies entrance/exit animations to any WordPress block.
 
 **REST API Example:**
 ```bash
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/apply-animation/execute \
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/apply-animation/run \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{
@@ -508,7 +508,7 @@ All abilities require proper WordPress authentication. You can use:
 ### Using Application Password
 
 ```bash
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/... \
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/{namespace}/{ability}/run \
   -H "Content-Type: application/json" \
   -u "username:APPLICATION_PASSWORD" \
   -d '{ ... }'
@@ -536,23 +536,36 @@ const result = await mcp.callTool("designsetgo/insert-flex-container", {
 ### Custom Automation
 
 ```javascript
-// Discover all abilities
-const response = await fetch('http://yoursite.com/wp-json/wp-abilities/v1/abilities');
+const authHeader = 'Basic ' + btoa('username:app_password');
+
+// Discover all abilities (requires authentication)
+const response = await fetch('http://yoursite.com/wp-json/wp-abilities/v1/abilities', {
+  headers: { 'Authorization': authHeader }
+});
 const abilities = await response.json();
 
 // Filter DesignSetGo abilities
 const designsetgoAbilities = abilities.filter(a => a.name.startsWith('designsetgo/'));
 
-// Execute an ability
+// Execute a readonly ability (GET for readonly, POST for modifications, DELETE for destructive)
 const result = await fetch(
-  'http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/list-blocks/execute',
+  'http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/list-blocks/run?category=all',
+  {
+    method: 'GET',
+    headers: { 'Authorization': authHeader }
+  }
+);
+
+// Execute a modification ability (POST)
+const insertResult = await fetch(
+  'http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/insert-flex-container/run',
   {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + btoa('username:password')
+      'Authorization': authHeader
     },
-    body: JSON.stringify({ category: 'all' })
+    body: JSON.stringify({ post_id: 123, attributes: { direction: 'row' } })
   }
 );
 ```
@@ -775,11 +788,191 @@ The `Abstract_Ability` class provides these protected methods:
 
 ---
 
+## WordPress Abilities API Reference
+
+This section documents the core WordPress Abilities API functions and hooks (WP 6.9+). For the full official reference, see the [WordPress Abilities API Handbook](https://developer.wordpress.org/apis/abilities-api/).
+
+### Compatibility Check
+
+Before using the API, verify it's available:
+
+```php
+if ( ! class_exists( 'WP_Ability' ) ) {
+    // Abilities API not available — add admin notice or skip registration.
+    return;
+}
+```
+
+### Registration Functions
+
+#### `wp_register_ability_category( $slug, $args )`
+
+Registers an organizational grouping for abilities. Must be called during `wp_abilities_api_categories_init`.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `$slug` | `string` | Category slug (lowercase alphanumeric + hyphens only) |
+| `$args['label']` | `string` | Human-readable category name |
+| `$args['description']` | `string` | Category description |
+
+Returns `?\WP_Ability_Category`.
+
+#### `wp_register_ability( $name, $args )`
+
+Registers an ability. Must be called during `wp_abilities_api_init`.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `$name` | `string` | Yes | Namespaced name (`namespace/ability-name`) |
+| `$args['label']` | `string` | Yes | Human-readable name |
+| `$args['description']` | `string` | Yes | What the ability does |
+| `$args['category']` | `string` | Yes | Category slug (must be registered first) |
+| `$args['output_schema']` | `array` | Yes | JSON Schema for returned output |
+| `$args['execute_callback']` | `callable` | Yes | Function that executes the ability |
+| `$args['permission_callback']` | `callable` | Yes | Returns `true`/`WP_Error` for access control |
+| `$args['input_schema']` | `array` | No | JSON Schema for expected input |
+| `$args['show_in_rest']` | `bool` | No | Set `true` to expose via REST API (default: `false`) |
+| `$args['annotations']` | `array` | No | Behavioral metadata (see below) |
+| `$args['meta']` | `array` | No | Additional custom metadata |
+| `$args['ability_class']` | `string` | No | Custom WP_Ability subclass |
+
+### Annotations
+
+Annotations provide behavioral metadata that helps clients (and AI agents) understand how an ability works. They also determine the HTTP method used for the REST `/run` endpoint.
+
+```php
+wp_register_ability( 'myplugin/get-data', array(
+    // ... other args ...
+    'annotations' => array(
+        'readonly'     => true,   // Only reads data (REST uses GET)
+        'destructive'  => false,  // Does not delete data (REST uses DELETE when true)
+        'idempotent'   => true,   // Repeated calls produce same result
+        'instructions' => 'Returns site analytics for the given date range.',
+    ),
+) );
+```
+
+| Annotation | Type | Description | REST Method |
+|------------|------|-------------|-------------|
+| `readonly` | `bool` | Ability only reads data | `GET` |
+| `destructive` | `bool` | Ability performs deletions | `DELETE` |
+| `idempotent` | `bool` | Repeated calls have no additional effect | — |
+| `instructions` | `string` | Custom usage guidance for AI agents | — |
+
+When neither `readonly` nor `destructive` is set, the REST endpoint defaults to `POST`.
+
+### Retrieval Functions
+
+```php
+// Check if an ability is registered
+$exists = wp_ability_is_registered( 'designsetgo/insert-flex-container' );
+
+// Get a specific ability instance
+$ability = wp_get_ability( 'designsetgo/insert-flex-container' );
+
+// Get all registered abilities
+$all_abilities = wp_get_abilities();
+
+// Get a specific category
+$category = wp_get_ability_category( 'designsetgo-blocks' );
+
+// Get all registered categories
+$all_categories = wp_get_ability_categories();
+```
+
+### Execution
+
+```php
+$ability = wp_get_ability( 'designsetgo/list-blocks' );
+
+if ( $ability && ! is_wp_error( $ability ) ) {
+    // Check permissions first
+    $allowed = $ability->check_permissions( $input );
+    if ( true === $allowed ) {
+        $result = $ability->execute( array( 'category' => 'layout' ) );
+        if ( is_wp_error( $result ) ) {
+            // Handle error
+        }
+    }
+}
+```
+
+### Hooks
+
+#### Actions
+
+| Hook | When | Parameters |
+|------|------|------------|
+| `wp_abilities_api_categories_init` | Category registry initializes | `$registry` (`WP_Ability_Categories_Registry`) |
+| `wp_abilities_api_init` | Abilities registry initializes | `$registry` (`WP_Abilities_Registry`) |
+| `wp_before_execute_ability` | Before ability runs (after permissions pass) | `$ability_name` (string), `$input` (mixed) |
+| `wp_after_execute_ability` | After successful execution + output validation | `$ability_name` (string), `$input` (mixed), `$result` (mixed) |
+
+**Logging example:**
+
+```php
+add_action( 'wp_before_execute_ability', function( $ability_name, $input ) {
+    error_log( sprintf( 'Executing ability: %s', $ability_name ) );
+}, 10, 2 );
+
+add_action( 'wp_after_execute_ability', function( $ability_name, $input, $result ) {
+    error_log( sprintf( 'Completed ability: %s', $ability_name ) );
+}, 10, 3 );
+```
+
+#### Filters
+
+| Filter | Purpose | Parameters |
+|--------|---------|------------|
+| `wp_register_ability_args` | Modify ability args before validation | `$args` (array), `$ability_name` (string) |
+| `wp_register_ability_category_args` | Modify category args before validation | `$args` (array), `$slug` (string) |
+
+**Example — override a permission callback:**
+
+```php
+add_filter( 'wp_register_ability_args', function( $args, $ability_name ) {
+    if ( 'designsetgo/list-blocks' === $ability_name ) {
+        $args['permission_callback'] = function() {
+            return current_user_can( 'edit_posts' );
+        };
+    }
+    return $args;
+}, 10, 2 );
+```
+
+### REST API Endpoints
+
+All endpoints live under `/wp-json/wp-abilities/v1`. Authentication is required for all requests.
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/wp-abilities/v1/abilities` | `GET` | List all abilities (supports `page`, `per_page`, `category` params) |
+| `/wp-abilities/v1/{namespace}/{ability}` | `GET` | Retrieve a single ability definition |
+| `/wp-abilities/v1/categories` | `GET` | List all categories |
+| `/wp-abilities/v1/{namespace}/{ability}/run` | `GET\|POST\|DELETE` | Execute an ability |
+
+**HTTP method for `/run`** is determined by ability annotations:
+- `GET` — when `annotations.readonly` is `true`
+- `DELETE` — when `annotations.destructive` is `true`
+- `POST` — default for all other abilities
+
+**Error codes:**
+
+| Code | Description |
+|------|-------------|
+| `rest_ability_not_found` | Ability not found or `show_in_rest` is `false` |
+| `ability_missing_input_schema` | Ability requires input but none provided |
+| `ability_invalid_input` | Input failed JSON Schema validation |
+| `ability_invalid_permissions` | User lacks required permissions |
+| `ability_invalid_output` | Output failed schema validation (server error) |
+
+---
+
 ## Support
 
 - **Documentation:** [https://github.com/yourrepo/designsetgo/docs](docs/)
 - **Issues:** [https://github.com/yourrepo/designsetgo/issues](issues)
-- **WordPress AI Initiative:** [https://make.wordpress.org/ai/](https://make.wordpress.org/ai/)
+- **WordPress Abilities API Handbook:** [https://developer.wordpress.org/apis/abilities-api/](https://developer.wordpress.org/apis/abilities-api/)
 
 ---
 

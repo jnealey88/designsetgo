@@ -43,8 +43,6 @@ class Insert_Card extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Card', 'designsetgo' ),
 			'description'         => __( 'Inserts a Card block for displaying content in styled layouts with image, badge, title, subtitle, body text, and CTA. Perfect for pricing tables, feature cards, team members, and service listings.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating card...', 'designsetgo' ),
-			'success_message'     => __( 'Card inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -70,47 +68,47 @@ class Insert_Card extends Abstract_Ability {
 						'description' => __( 'Card attributes', 'designsetgo' ),
 						'properties'  => array(
 							// Layout.
-							'layoutPreset'     => array(
+							'layoutPreset'          => array(
 								'type'        => 'string',
 								'description' => __( 'Card layout style', 'designsetgo' ),
 								'enum'        => array( 'standard', 'horizontal-left', 'horizontal-right', 'background', 'minimal', 'featured' ),
 								'default'     => 'standard',
 							),
-							'visualStyle'      => array(
+							'visualStyle'           => array(
 								'type'        => 'string',
 								'description' => __( 'Visual appearance style', 'designsetgo' ),
 								'enum'        => array( 'default', 'outlined', 'filled', 'shadow', 'minimal' ),
 								'default'     => 'default',
 							),
-							'contentAlignment' => array(
+							'contentAlignment'      => array(
 								'type'        => 'string',
 								'description' => __( 'Content text alignment', 'designsetgo' ),
 								'enum'        => array( 'left', 'center', 'right' ),
 								'default'     => 'center',
 							),
 							// Content.
-							'title'            => array(
+							'title'                 => array(
 								'type'        => 'string',
 								'description' => __( 'Card title text', 'designsetgo' ),
 								'default'     => '',
 							),
-							'subtitle'         => array(
+							'subtitle'              => array(
 								'type'        => 'string',
 								'description' => __( 'Card subtitle text', 'designsetgo' ),
 								'default'     => '',
 							),
-							'bodyText'         => array(
+							'bodyText'              => array(
 								'type'        => 'string',
 								'description' => __( 'Card body/description text', 'designsetgo' ),
 								'default'     => '',
 							),
 							// Badge.
-							'badgeText'        => array(
+							'badgeText'             => array(
 								'type'        => 'string',
 								'description' => __( 'Badge text (e.g., "New", "Popular", "Sale")', 'designsetgo' ),
 								'default'     => '',
 							),
-							'badgeStyle'       => array(
+							'badgeStyle'            => array(
 								'type'        => 'string',
 								'description' => __( 'Badge display style', 'designsetgo' ),
 								'enum'        => array( 'floating', 'inline' ),
@@ -131,73 +129,73 @@ class Insert_Card extends Abstract_Ability {
 								'description' => __( 'Badge text color', 'designsetgo' ),
 							),
 							// Image.
-							'imageUrl'         => array(
+							'imageUrl'              => array(
 								'type'        => 'string',
 								'description' => __( 'Card image URL', 'designsetgo' ),
 								'default'     => '',
 							),
-							'imageId'          => array(
+							'imageId'               => array(
 								'type'        => 'number',
 								'description' => __( 'Card image attachment ID', 'designsetgo' ),
 								'default'     => 0,
 							),
-							'imageAlt'         => array(
+							'imageAlt'              => array(
 								'type'        => 'string',
 								'description' => __( 'Image alt text', 'designsetgo' ),
 								'default'     => '',
 							),
-							'imageAspectRatio' => array(
+							'imageAspectRatio'      => array(
 								'type'        => 'string',
 								'description' => __( 'Image aspect ratio', 'designsetgo' ),
 								'enum'        => array( '16-9', '4-3', '1-1', 'original', 'custom' ),
 								'default'     => '16-9',
 							),
-							'imageObjectFit'   => array(
+							'imageObjectFit'        => array(
 								'type'        => 'string',
 								'description' => __( 'How image fills the container', 'designsetgo' ),
 								'enum'        => array( 'cover', 'contain', 'fill', 'scale-down' ),
 								'default'     => 'cover',
 							),
 							// Visibility toggles.
-							'showImage'        => array(
+							'showImage'             => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show image section', 'designsetgo' ),
 								'default'     => true,
 							),
-							'showTitle'        => array(
+							'showTitle'             => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show title', 'designsetgo' ),
 								'default'     => true,
 							),
-							'showSubtitle'     => array(
+							'showSubtitle'          => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show subtitle', 'designsetgo' ),
 								'default'     => true,
 							),
-							'showBody'         => array(
+							'showBody'              => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show body text', 'designsetgo' ),
 								'default'     => true,
 							),
-							'showBadge'        => array(
+							'showBadge'             => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show badge', 'designsetgo' ),
 								'default'     => true,
 							),
-							'showCta'          => array(
+							'showCta'               => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show CTA button', 'designsetgo' ),
 								'default'     => true,
 							),
 							// Overlay (for background layout).
-							'overlayOpacity'   => array(
+							'overlayOpacity'        => array(
 								'type'        => 'number',
 								'description' => __( 'Overlay opacity (0-100) for background layout', 'designsetgo' ),
 								'default'     => 80,
 								'minimum'     => 0,
 								'maximum'     => 100,
 							),
-							'overlayColor'     => array(
+							'overlayColor'          => array(
 								'type'        => 'string',
 								'description' => __( 'Overlay color for background layout', 'designsetgo' ),
 							),

@@ -41,8 +41,6 @@ class List_Blocks extends Abstract_Ability {
 		return array(
 			'label'               => __( 'List DesignSetGo Blocks', 'designsetgo' ),
 			'description'         => __( 'Returns a comprehensive list of all available DesignSetGo blocks with their capabilities, attributes, and metadata.', 'designsetgo' ),
-			'thinking_message'    => __( 'Retrieving available blocks...', 'designsetgo' ),
-			'success_message'     => __( 'Successfully retrieved block list.', 'designsetgo' ),
 			'category'            => 'info',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),
