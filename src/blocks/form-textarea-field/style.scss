@@ -1,0 +1,10 @@
+/**
+ * Form Textarea Block - Styles
+ *
+ * Uses shared form field styles from text field
+ *
+ * @since 1.0.0
+ */
+
+// Textarea uses the same styles as text field
+@use '../form-text-field/style' as *;

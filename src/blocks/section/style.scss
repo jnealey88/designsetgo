@@ -276,6 +276,8 @@
 	&:not(.dsgo-no-width-constraint) .dsgo-stack__inner.is-layout-flex {
 		// Inline blocks still shrink to content
 		> .dsgo-pill,
+		> .dsgo-icon,
+		> .wp-block-designsetgo-icon,
 		> .wp-block-button,
 		> .wp-block-buttons,
 		> .dsgo-icon-button,
@@ -291,6 +293,8 @@
 		> :where(
 			.dsgo-pill,
 			.wp-block-designsetgo-pill,
+			.dsgo-icon,
+			.wp-block-designsetgo-icon,
 			.wp-block-button,
 			.wp-block-buttons,
 			.dsgo-icon-button,
@@ -306,6 +310,8 @@
 		> :where(
 			.dsgo-pill,
 			.wp-block-designsetgo-pill,
+			.dsgo-icon,
+			.wp-block-designsetgo-icon,
 			.wp-block-button,
 			.wp-block-buttons,
 			.dsgo-icon-button,
@@ -321,6 +327,8 @@
 		> :where(
 			.dsgo-pill,
 			.wp-block-designsetgo-pill,
+			.dsgo-icon,
+			.wp-block-designsetgo-icon,
 			.wp-block-button,
 			.wp-block-buttons,
 			.dsgo-icon-button,
@@ -339,6 +347,8 @@
 			> :where(
 				.dsgo-pill,
 				.wp-block-designsetgo-pill,
+				.dsgo-icon,
+				.wp-block-designsetgo-icon,
 				.wp-block-button,
 				.wp-block-buttons,
 				.dsgo-icon-button,
@@ -355,6 +365,8 @@
 			> :where(
 				.dsgo-pill,
 				.wp-block-designsetgo-pill,
+				.dsgo-icon,
+				.wp-block-designsetgo-icon,
 				.wp-block-button,
 				.wp-block-buttons,
 				.dsgo-icon-button,
@@ -371,6 +383,8 @@
 			> :where(
 				.dsgo-pill,
 				.wp-block-designsetgo-pill,
+				.dsgo-icon,
+				.wp-block-designsetgo-icon,
 				.wp-block-button,
 				.wp-block-buttons,
 				.dsgo-icon-button,

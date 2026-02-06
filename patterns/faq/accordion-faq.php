@@ -12,8 +12,9 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'title'      => __( 'FAQ Accordion', 'designsetgo' ),
 	'categories' => array( 'dsgo-faq' ),
-	'content'    => '<!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50"}}},"layout":{"type":"constrained"},"metadata":{"categories":["dsgo-faq"],"patternName":"designsetgo/faq/accordion-faq","name":"FAQ Accordion"}} -->
-<div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50)"><!-- wp:heading {"textAlign":"center"} -->
+	'viewportWidth' => 1200,
+	'content'    => '<!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"layout":{"type":"constrained"},"metadata":{"categories":["dsgo-faq"],"patternName":"designsetgo/faq/accordion-faq","name":"FAQ Accordion"}} -->
+<div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)"><!-- wp:heading {"textAlign":"center"} -->
 <h2 class="wp-block-heading has-text-align-center">Frequently Asked Questions</h2>
 <!-- /wp:heading -->
 

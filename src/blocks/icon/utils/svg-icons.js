@@ -185,6 +185,15 @@ export const SVG_ICONS = {
 			<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
 		</svg>
 	),
+	'shield-check': (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm7 10c0 4.52-2.98 8.69-7 9.93-4.02-1.24-7-5.41-7-9.93V6.3l7-3.11 7 3.11V11zm-11.59.34L6 12.75l4 4 8-8-1.41-1.41-6.59 6.59z" />
+		</svg>
+	),
 	// Social Media
 	facebook: (
 		<svg
@@ -330,6 +339,15 @@ export const SVG_ICONS = {
 			fill="currentColor"
 		>
 			<path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+		</svg>
+	),
+	quote: (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z" />
 		</svg>
 	),
 	// Actions

@@ -138,6 +138,31 @@ body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 		width: 100%;
 		max-width: none;
 	}
+
+	/**
+	 * B. Intrinsic Width Blocks (Inline Elements)
+	 * These blocks maintain their natural inline sizing
+	 */
+	> .wp-block-designsetgo-icon,
+	> .wp-block-designsetgo-pill,
+	> .wp-block-designsetgo-counter:not([style*="width"]) {
+		width: fit-content !important;
+		max-width: fit-content !important;
+		display: inline-flex;
+	}
+
+	// Icon Button - inline button with icon (unless alignfull)
+	> .wp-block-designsetgo-icon-button:not(.alignfull) {
+		width: auto;
+		display: inline-flex;
+	}
+
+	// Icon Button full-width (alignfull) - allow it to span container width
+	> .wp-block-designsetgo-icon-button.alignfull {
+		width: 100% !important;
+		max-width: 100% !important;
+		display: flex;
+	}
 }
 
 /**

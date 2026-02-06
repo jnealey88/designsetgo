@@ -12,8 +12,9 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'title'      => __( 'Hero with Video Modal', 'designsetgo' ),
 	'categories' => array( 'dsgo-hero' ),
-	'content'    => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}},"dimensions":{"minHeight":"80vh"}},"backgroundColor":"contrast","layout":{"type":"flex","orientation":"vertical","justifyContent":"center","verticalAlignment":"center"},"metadata":{"categories":["dsgo-hero"],"patternName":"designsetgo/hero/hero-video-modal","name":"Hero with Video Modal"}} -->
-<div class="wp-block-designsetgo-section alignfull dsgo-stack has-contrast-background-color has-background" style="min-height:80vh;padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/section {"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
+	'viewportWidth' => 1200,
+	'content'    => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}},"dimensions":{"minHeight":"80vh"}},"backgroundColor":"contrast","layout":{"type":"flex","orientation":"vertical","justifyContent":"center","verticalAlignment":"center"},"metadata":{"categories":["dsgo-hero"],"patternName":"designsetgo/hero/hero-video-modal","name":"Hero with Video Modal"}} -->
+<div class="wp-block-designsetgo-section alignfull dsgo-stack has-contrast-background-color has-background" style="min-height:80vh;padding-top:var(--wp--preset--spacing--80);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--80);padding-left:var(--wp--preset--spacing--30)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/section {"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack" style="padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontStyle":"normal","fontWeight":"800","letterSpacing":"-0.02em"}},"textColor":"base","fontSize":"xx-large"} -->
 <h1 class="wp-block-heading has-text-align-center has-base-color has-text-color has-xx-large-font-size" style="font-style:normal;font-weight:800;letter-spacing:-0.02em">See It In Action</h1>
 <!-- /wp:heading -->
@@ -22,8 +23,8 @@ return array(
 <p class="has-text-align-center has-base-color has-text-color has-large-font-size" style="margin-top:var(--wp--preset--spacing--20)">Watch how our platform transforms the way you build websites</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:designsetgo/modal-trigger {"targetModalId":"video-demo-modal"} -->
-<div class="wp-block-designsetgo-modal-trigger dsgo-modal-trigger dsgo-modal-trigger--fill dsgo-modal-trigger--width-auto" style="display:inline-block"><button class="dsgo-modal-trigger__button" data-dsgo-modal-trigger="video-demo-modal" style="flex-direction:row" type="button"><span class="dsgo-modal-trigger__text">Open Modal</span></button></div>
+<!-- wp:designsetgo/modal-trigger {"targetModalId":"video-demo-modal","backgroundColor":"base","textColor":"contrast","style":{"elements":{"link":{"color":{"text":"var:preset|color|contrast"}}}}} -->
+<button class="wp-block-designsetgo-modal-trigger dsgo-modal-trigger dsgo-modal-trigger--fill wp-block-button wp-block-button__link wp-element-button" style="display:inline-flex;align-items:center;justify-content:center;width:auto;flex-direction:row;background-color:var(--wp--preset--color--base);color:var(--wp--preset--color--contrast)" data-dsgo-modal-trigger="video-demo-modal" type="button"><span class="dsgo-modal-trigger__text">Open Modal</span></button>
 <!-- /wp:designsetgo/modal-trigger -->
 
 <!-- wp:designsetgo/modal {"modalId":"video-demo-modal","width":"900px","overlayOpacity":90} -->

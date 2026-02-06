@@ -254,7 +254,7 @@ class Generate_Contact_Section extends Abstract_Ability {
 					break;
 				case 'message':
 					$form_inner_blocks[] = array(
-						'name'       => 'designsetgo/form-textarea',
+						'name'       => 'designsetgo/form-textarea-field',
 						'attributes' => array(
 							'label'       => __( 'Message', 'designsetgo' ),
 							'placeholder' => __( 'Your message...', 'designsetgo' ),

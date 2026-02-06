@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'title'      => __( 'SaaS / Startup Homepage', 'designsetgo' ),
 	'categories' => array( 'dsgo-homepage' ),
+	'viewportWidth' => 1200,
 	'content'    => '<!-- wp:designsetgo/section {"style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"backgroundColor":"base-2","metadata":{"categories":["dsgo-homepage"],"patternName":"designsetgo/homepage/homepage-saas","name":"SaaS / Startup Homepage"}} -->
 <div class="wp-block-designsetgo-section alignfull dsgo-stack has-base-2-background-color has-background" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)"><div class="dsgo-stack__inner" style="max-width:var(--wp--style--global--content-size, 1140px);margin-left:auto;margin-right:auto"><!-- wp:designsetgo/blobs {"align":"center","blobShape":"shape-3","blobAnimation":"morph-2","size":"100%","style":{"spacing":{"margin":{"bottom":"0"}}}} -->
 <div class="wp-block-designsetgo-blobs aligncenter dsgo-blobs-wrapper" style="margin-bottom:0"><div class="dsgo-blobs dsgo-blobs--shape-3 dsgo-blobs--morph-2" style="--dsgo-blob-size:100%;--dsgo-blob-animation-duration:8s;--dsgo-blob-animation-easing:ease-in-out" data-blob-animation="morph-2"><div class="dsgo-blobs__shape"><div class="dsgo-blobs__content"><!-- wp:designsetgo/section {"constrainWidth":false,"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60","left":"var:preset|spacing|50","right":"var:preset|spacing|50"}}}} -->

@@ -1782,7 +1782,7 @@ class Block_Inserter {
 			case 'designsetgo/form-email-field':
 				return self::generate_form_email_field_html( $attributes );
 
-			case 'designsetgo/form-textarea':
+			case 'designsetgo/form-textarea-field':
 				return self::generate_form_textarea_html( $attributes );
 
 			case 'designsetgo/form-select-field':

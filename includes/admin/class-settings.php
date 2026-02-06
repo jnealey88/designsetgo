@@ -390,7 +390,7 @@ class Settings {
 						'performance' => 'low',
 					),
 					array(
-						'name'        => 'designsetgo/form-textarea',
+						'name'        => 'designsetgo/form-textarea-field',
 						'title'       => __( 'Textarea', 'designsetgo' ),
 						'description' => __( 'Multi-line text input', 'designsetgo' ),
 						'performance' => 'low',
