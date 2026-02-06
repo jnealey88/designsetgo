@@ -85,9 +85,8 @@ class Abilities_Registry {
 
 		// Load base abstract classes (already loaded, but for clarity).
 		require_once $base_path . '/class-abstract-ability.php';
-		require_once $base_path . '/class-abstract-configurator-ability.php';
 
-		// Load helper classes.
+		// Load helper classes (must be before abstract-configurator-ability which depends on Block_Schema_Loader).
 		$helpers = array(
 			'class-block-inserter.php',
 			'class-block-configurator.php',
@@ -101,6 +100,9 @@ class Abilities_Registry {
 				require_once $helper_path;
 			}
 		}
+
+		// Load abstract configurator after helpers (depends on Block_Schema_Loader).
+		require_once $base_path . '/class-abstract-configurator-ability.php';
 
 		// Load ability classes from subdirectories.
 		$this->load_abilities_from_directory( $base_path . '/info' );
