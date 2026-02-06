@@ -19,8 +19,8 @@ parameters:
 	bootstrapFiles:
 		- vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
 		- designsetgo.php
+		- phpstan-constants.php
 
-	# Ignore errors from WordPress globals and functions
 	ignoreErrors:
 		# WordPress globals
 		- '#Undefined variable: \$wpdb#'

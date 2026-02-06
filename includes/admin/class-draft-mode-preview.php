@@ -425,7 +425,7 @@ class Draft_Mode_Preview {
 		// Check if the current page has a draft.
 		$current_page_has_draft = false;
 		$queried_object         = get_queried_object();
-		if ( $queried_object && isset( $queried_object->ID ) && isset( $draft_map[ $queried_object->ID ] ) ) {
+		if ( $queried_object instanceof \WP_Post && isset( $draft_map[ $queried_object->ID ] ) ) {
 			$current_page_has_draft = true;
 		}
 
@@ -449,7 +449,7 @@ class Draft_Mode_Preview {
 
 		foreach ( $draft_map as $original_id => $draft ) {
 			$original   = get_post( $original_id );
-			$is_current = ( $queried_object && isset( $queried_object->ID ) && $queried_object->ID === $original_id );
+			$is_current = ( $queried_object instanceof \WP_Post && $queried_object->ID === $original_id );
 
 			$items[] = array(
 				'page_title' => $original ? $original->post_title : __( 'Untitled', 'designsetgo' ),
