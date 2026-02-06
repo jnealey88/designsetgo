@@ -75,8 +75,11 @@
 // Alignment support - use flexbox to position the inner inline-block content
 // Important is needed to override Stack block's width: auto !important
 // Higher specificity selector to override Stack container rules
+// float: none overrides WordPress flow layout which applies float:left/right to aligned blocks,
+// causing them to sit beside adjacent content (e.g. headings) in Group blocks
 .dsgo-pill.alignleft,
 [class*="wp-container"] > .dsgo-pill.alignleft {
+	float: none !important;
 	display: flex !important;
 	justify-content: flex-start;
 	width: fit-content !important;
@@ -86,6 +89,7 @@
 
 .dsgo-pill.aligncenter,
 [class*="wp-container"] > .dsgo-pill.aligncenter {
+	float: none !important;
 	display: flex !important;
 	justify-content: center;
 	width: fit-content !important;
@@ -95,6 +99,7 @@
 
 .dsgo-pill.alignright,
 [class*="wp-container"] > .dsgo-pill.alignright {
+	float: none !important;
 	display: flex !important;
 	justify-content: flex-end;
 	width: fit-content !important;

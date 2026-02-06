@@ -58,7 +58,10 @@
 	// Constrain button width and use margin for alignment
 	// CRITICAL: Must override inline display: inline-flex with display: flex for auto margins to work
 	// NOTE: Margins don't use !important so user-set margins can override
+	// float: none overrides WordPress flow layout which applies float:left/right to aligned blocks,
+	// causing them to sit beside adjacent content (e.g. headings) in Group blocks
 	&.aligncenter:not(.alignfull) {
+		float: none !important;
 		display: flex !important;
 		width: fit-content !important;
 		margin-left: auto;
@@ -66,12 +69,14 @@
 	}
 
 	&.alignleft:not(.alignfull) {
+		float: none !important;
 		display: flex !important;
 		width: fit-content !important;
 		margin-right: auto;
 	}
 
 	&.alignright:not(.alignfull) {
+		float: none !important;
 		display: flex !important;
 		width: fit-content !important;
 		margin-left: auto;
