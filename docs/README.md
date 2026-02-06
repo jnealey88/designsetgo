@@ -112,10 +112,10 @@ User-facing documentation for blocks:
 - [MODAL-TRIGGER.md](./blocks/MODAL-TRIGGER.md) - Modal trigger buttons
 
 **Forms (1):**
-- [FORM-BUILDER.md](./blocks/FORM-BUILDER.md) - Complete form system (12 field types)
+- [FORM-BUILDER.md](./blocks/FORM-BUILDER.md) - Complete form system (11 field types)
 
 #### [extensions/](./extensions/)
-Documentation for all 14 block extensions that enhance any WordPress block:
+Documentation for all 15 block extensions that enhance any WordPress block:
 
 **Animation & Effects:**
 - [BLOCK-ANIMATIONS.md](./extensions/BLOCK-ANIMATIONS.md) - Entrance/exit animations
@@ -131,6 +131,7 @@ Documentation for all 14 block extensions that enhance any WordPress block:
 - [STICKY-HEADER.md](./extensions/STICKY-HEADER.md) - Sticky header behavior
 - [MAX-WIDTH.md](./extensions/MAX-WIDTH.md) - Content width constraints
 - [GRID-SPAN.md](./extensions/GRID-SPAN.md) - Grid column spanning
+- [GRID-MOBILE-ORDER.md](./extensions/GRID-MOBILE-ORDER.md) - Mobile grid item reordering
 
 **Interaction:**
 - [CLICKABLE-GROUP.md](./extensions/CLICKABLE-GROUP.md) - Clickable containers
@@ -356,12 +357,12 @@ See [BLOCK-TEMPLATE-EDIT.js](./templates/BLOCK-TEMPLATE-EDIT.js) for complete ex
 ### Block Count
 - **Total blocks**: 48 (across 6 categories)
 - **Container blocks**: 3 (Row, Section, Grid)
-- **Form blocks**: 13 (Form Builder + 12 field types)
+- **Form blocks**: 13 (Form Builder + 11 field types)
 - **Interactive blocks**: 12 (Accordion, Tabs, Slider, Flip Card, Reveal, Scroll Accordion, Image Accordion, Counter Group, Progress Bar, Scroll Marquee, Comparison Table, Timeline)
 - **Content/UI blocks**: 10 (Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown Timer, Blobs, Breadcrumbs, Table of Contents)
 - **Modal blocks**: 2 (Modal, Modal Trigger)
 - **Location blocks**: 1 (Map)
-- **Extensions**: 14
+- **Extensions**: 15
 
 ### Code Quality
 - **Color controls**: 100% modern (all blocks using ColorGradientSettingsDropdown)
