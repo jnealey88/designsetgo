@@ -155,11 +155,15 @@ module.exports = defineConfig({
 	],
 
 	// Web server configuration (starts wp-env)
+	// In CI, wp-env is started explicitly in the workflow before running tests.
+	// reuseExistingServer must be true so Playwright skips starting wp-env when
+	// it is already running. Locally this also allows reusing a manually started
+	// environment; if nothing is running Playwright will start it automatically.
 	webServer: {
 		command: 'npm run wp-env start',
 		url: baseUrl.href,
 		timeout: 120000, // 2 minutes
-		reuseExistingServer: !process.env.CI,
+		reuseExistingServer: true,
 		stdout: 'ignore',
 		stderr: 'pipe',
 	},
