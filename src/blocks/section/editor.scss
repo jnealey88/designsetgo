@@ -10,6 +10,13 @@
 	// CRITICAL: Ensure width includes padding to prevent overflow
 	box-sizing: border-box;
 
+	// CRITICAL: Flex column layout so .dsgo-stack__inner can fill available height
+	// This enables vertical alignment (top/center/bottom/space-between) to work
+	// when the section has a min-height set. Shape dividers are position: absolute
+	// so they don't participate in this flex layout.
+	display: flex;
+	flex-direction: column;
+
 	// Ensure background images respect border radius in editor
 	overflow: hidden;
 
@@ -77,6 +84,10 @@
 	// When constrainWidth is enabled, inline styles will override with max-width
 	.dsgo-stack__inner {
 		width: 100%;
+		// CRITICAL: Fill available height so justify-content (vertical alignment) works
+		// Without this, the inner div shrinks to content height and top/center/bottom/space-between
+		// have no effect because there's no extra space to distribute
+		flex-grow: 1;
 		// Ensure inner container doesn't create positioning context for absolute children
 		position: static;
 	}
