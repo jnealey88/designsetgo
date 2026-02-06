@@ -4,21 +4,27 @@
  * Reads heading data directly from the block store rather than querying
  * the DOM, which avoids issues with the iframe-based editor in WP 6.x+.
  */
+/* global DOMParser */
 import { useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
 /**
- * Strip HTML tags from a rich-text content string.
+ * Strip HTML tags from a rich-text content string using a DOM parser,
+ * which safely handles malformed or nested markup (e.g. `<script<script>>`).
  *
  * @param {string} html - Raw rich-text HTML string
  * @return {string} Plain text
  */
+const stripHTMLParser = new DOMParser();
 function stripHTML(html) {
 	if (!html) {
 		return '';
 	}
-	return html.replace(/<[^>]+>/g, '').trim();
+	return (
+		stripHTMLParser.parseFromString(html, 'text/html').body.textContent ||
+		''
+	).trim();
 }
 
 /**
