@@ -260,6 +260,14 @@ class Loader {
 		$real_dir = rtrim( $real_dir, '/' ) . '/';
 
 		foreach ( $file_map as $category => $relative_paths ) {
+			// Validate category is in the allowed list (defense-in-depth against cache corruption).
+			if ( ! in_array( $category, self::ALLOWED_CATEGORIES, true ) ) {
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( sprintf( 'DesignSetGo: Skipped invalid cached pattern category: %s', $category ) );
+				}
+				continue;
+			}
+
 			foreach ( $relative_paths as $relative_path ) {
 				// Validate relative path structure before constructing full path.
 				if ( ! self::is_valid_relative_path( $relative_path ) ) {

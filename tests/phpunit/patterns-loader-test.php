@@ -502,6 +502,36 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 		$this->assertArrayNotHasKey( 'services', $file_map, 'Services should be excluded from file map' );
 	}
 
+	/**
+	 * Test that invalid categories in cached data are skipped during registration.
+	 */
+	public function test_register_patterns_skips_invalid_cached_categories() {
+		$this->loader->register_pattern_categories();
+
+		// Seed cache with a poisoned category key alongside a valid one.
+		set_transient(
+			Loader::CACHE_TRANSIENT,
+			array(
+				'version' => DESIGNSETGO_VERSION,
+				'map'     => array(
+					'../../../../etc' => array( '../../../../etc/passwd.php' ),
+					'hero'            => array( 'hero/hero-centered.php' ),
+				),
+			),
+			DAY_IN_SECONDS
+		);
+
+		$this->loader->register_patterns();
+
+		$registry = \WP_Block_Patterns_Registry::get_instance();
+
+		// The valid pattern should still register.
+		$this->assertTrue(
+			$registry->is_registered( 'designsetgo/hero/hero-centered' ),
+			'Valid pattern should still be registered'
+		);
+	}
+
 	// -------------------------------------------------------------------------
 	// Pattern registration tests
 	// -------------------------------------------------------------------------
