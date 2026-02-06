@@ -90,7 +90,13 @@
 			header.style.setProperty('--dsgo-sticky-scale-amount', scaleAmount);
 		}
 
-		if (settings.backgroundOnScroll && settings.backgroundScrollColor) {
+		// Apply background and text color CSS vars when global setting is enabled
+		// OR when the block has FSE-level bg-on-scroll class (per-template-part override)
+		const needsBgVars =
+			settings.backgroundOnScroll ||
+			header.classList.contains('dsgo-sticky-bg-on-scroll');
+
+		if (needsBgVars && settings.backgroundScrollColor) {
 			const opacity = settings.backgroundScrollOpacity / 100;
 			// Convert hex to rgba if needed
 			let bgColor = settings.backgroundScrollColor;
@@ -103,7 +109,7 @@
 			header.style.setProperty('--dsgo-sticky-scroll-bg-color', bgColor);
 		}
 
-		if (settings.backgroundOnScroll && settings.textScrollColor) {
+		if (needsBgVars && settings.textScrollColor) {
 			header.style.setProperty(
 				'--dsgo-sticky-scroll-text-color',
 				settings.textScrollColor
