@@ -140,8 +140,10 @@
 		display: flex;
 		flex-direction: column; // Vertical stacking
 
-		// Match WordPress default: children stretch to container width unless the user explicitly sets alignment.
-		align-items: stretch;
+		// NOTE: align-items defaults to stretch (browser default).
+		// Do NOT set align-items here — WordPress's layout system may generate
+		// align-items based on content justification, and an explicit stretch
+		// would override it, breaking Pill/Icon/Button alignment inheritance.
 
 		// Inline blocks WITH explicit alignment - override section alignment
 		> :where(

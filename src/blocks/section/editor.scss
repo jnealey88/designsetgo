@@ -6,6 +6,30 @@
  * @package DesignSetGo
  */
 
+// SCSS Variables for inline/shrink-wrap blocks
+// These blocks should align based on parent container settings rather than stretch to full width
+// Used across text-align, content-justification, and explicit alignment rules
+
+// Frontend block classes (for save.js output)
+$inline-block-classes: (
+	'.dsgo-pill',
+	'.wp-block-designsetgo-pill',
+	'.wp-block-button',
+	'.wp-block-buttons',
+	'.dsgo-icon-button',
+	'.wp-block-designsetgo-icon-button'
+);
+
+// Editor data-type attributes (for edit.js output - blocks are wrapped in [data-type] elements)
+$inline-block-data-types: (
+	'[data-type="designsetgo/pill"]',
+	'[data-type="designsetgo/icon"]',
+	'[data-type="designsetgo/icon-button"]',
+	'[data-type="designsetgo/counter"]',
+	'[data-type="core/button"]',
+	'[data-type="core/buttons"]'
+);
+
 .dsgo-stack {
 	// CRITICAL: Ensure width includes padding to prevent overflow
 	box-sizing: border-box;
@@ -300,15 +324,12 @@
 	&.has-text-align-left,
 	&[style*='text-align:left'] {
 
-		.dsgo-stack__inner.is-layout-flex
-			> :where(
-				.dsgo-pill,
-				.wp-block-designsetgo-pill,
-				.wp-block-button,
-				.wp-block-buttons,
-				.dsgo-icon-button,
-				.wp-block-designsetgo-icon-button
-			) {
+		.dsgo-stack__inner.is-layout-flex > :where(#{$inline-block-classes}) {
+			align-self: flex-start;
+		}
+
+		// Editor: target inline blocks by data-type attribute
+		.dsgo-stack__inner.is-layout-flex > :where(#{$inline-block-data-types}) {
 			align-self: flex-start;
 		}
 	}
@@ -316,15 +337,12 @@
 	&.has-text-align-center,
 	&[style*='text-align:center'] {
 
-		.dsgo-stack__inner.is-layout-flex
-			> :where(
-				.dsgo-pill,
-				.wp-block-designsetgo-pill,
-				.wp-block-button,
-				.wp-block-buttons,
-				.dsgo-icon-button,
-				.wp-block-designsetgo-icon-button
-			) {
+		.dsgo-stack__inner.is-layout-flex > :where(#{$inline-block-classes}) {
+			align-self: center;
+		}
+
+		// Editor: target inline blocks by data-type attribute
+		.dsgo-stack__inner.is-layout-flex > :where(#{$inline-block-data-types}) {
 			align-self: center;
 		}
 	}
@@ -332,32 +350,34 @@
 	&.has-text-align-right,
 	&[style*='text-align:right'] {
 
-		.dsgo-stack__inner.is-layout-flex
-			> :where(
-				.dsgo-pill,
-				.wp-block-designsetgo-pill,
-				.wp-block-button,
-				.wp-block-buttons,
-				.dsgo-icon-button,
-				.wp-block-designsetgo-icon-button
-			) {
+		.dsgo-stack__inner.is-layout-flex > :where(#{$inline-block-classes}) {
+			align-self: flex-end;
+		}
+
+		// Editor: target inline blocks by data-type attribute
+		.dsgo-stack__inner.is-layout-flex > :where(#{$inline-block-data-types}) {
 			align-self: flex-end;
 		}
 	}
 
 	.dsgo-stack__inner.is-layout-flex {
 
+		// NOTE: Do NOT set align-items: stretch here — it's the browser default,
+		// and an explicit declaration would override WordPress's layout-generated
+		// align-items (e.g., from content justification), breaking alignment inheritance.
+
+		// EDITOR: Blocks are wrapped in [data-block] elements, so alignment must target
+		// both the block class (frontend parity) AND the [data-block] wrapper (editor).
+
 		// Section center alignment - apply to inline blocks WITHOUT their own alignment
 		&.is-content-justification-center {
 
-			> :where(
-				.dsgo-pill,
-				.wp-block-designsetgo-pill,
-				.wp-block-button,
-				.wp-block-buttons,
-				.dsgo-icon-button,
-				.wp-block-designsetgo-icon-button
-			):not(.alignleft):not(.alignright):not(.aligncenter) {
+			> :where(#{$inline-block-classes}):not(.alignleft):not(.alignright):not(.aligncenter) {
+				align-self: center;
+			}
+
+			// Editor: target inline blocks by data-type attribute
+			> #{$inline-block-data-types} {
 				align-self: center;
 			}
 		}
@@ -365,14 +385,12 @@
 		// Section right alignment - apply to inline blocks WITHOUT their own alignment
 		&.is-content-justification-right {
 
-			> :where(
-				.dsgo-pill,
-				.wp-block-designsetgo-pill,
-				.wp-block-button,
-				.wp-block-buttons,
-				.dsgo-icon-button,
-				.wp-block-designsetgo-icon-button
-			):not(.alignleft):not(.alignright):not(.aligncenter) {
+			> :where(#{$inline-block-classes}):not(.alignleft):not(.alignright):not(.aligncenter) {
+				align-self: flex-end;
+			}
+
+			// Editor: target inline blocks by data-type attribute
+			> #{$inline-block-data-types} {
 				align-self: flex-end;
 			}
 		}
@@ -380,14 +398,12 @@
 		// Section left alignment - apply to inline blocks WITHOUT their own alignment
 		&.is-content-justification-left {
 
-			> :where(
-				.dsgo-pill,
-				.wp-block-designsetgo-pill,
-				.wp-block-button,
-				.wp-block-buttons,
-				.dsgo-icon-button,
-				.wp-block-designsetgo-icon-button
-			):not(.alignleft):not(.alignright):not(.aligncenter) {
+			> :where(#{$inline-block-classes}):not(.alignleft):not(.alignright):not(.aligncenter) {
+				align-self: flex-start;
+			}
+
+			// Editor: target inline blocks by data-type attribute
+			> #{$inline-block-data-types} {
 				align-self: flex-start;
 			}
 		}
@@ -417,6 +433,40 @@
 			.wp-block-designsetgo-pill,
 			.wp-block-designsetgo-counter
 		).alignright {
+			align-self: flex-end !important;
+		}
+
+		// Editor: [data-block] wrappers WITH explicit alignment on inner block
+		> [data-block]:has(> .aligncenter:where(
+			.wp-block-designsetgo-icon,
+			.wp-block-designsetgo-icon-button,
+			.wp-block-designsetgo-pill,
+			.wp-block-designsetgo-counter,
+			.wp-block-button,
+			.wp-block-buttons
+		)) {
+			align-self: center !important;
+		}
+
+		> [data-block]:has(> .alignleft:where(
+			.wp-block-designsetgo-icon,
+			.wp-block-designsetgo-icon-button,
+			.wp-block-designsetgo-pill,
+			.wp-block-designsetgo-counter,
+			.wp-block-button,
+			.wp-block-buttons
+		)) {
+			align-self: flex-start !important;
+		}
+
+		> [data-block]:has(> .alignright:where(
+			.wp-block-designsetgo-icon,
+			.wp-block-designsetgo-icon-button,
+			.wp-block-designsetgo-pill,
+			.wp-block-designsetgo-counter,
+			.wp-block-button,
+			.wp-block-buttons
+		)) {
 			align-self: flex-end !important;
 		}
 
