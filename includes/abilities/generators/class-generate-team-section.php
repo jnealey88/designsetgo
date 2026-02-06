@@ -43,8 +43,6 @@ class Generate_Team_Section extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Generate Team Section', 'designsetgo' ),
 			'description'         => __( 'Generates a team members section with profile cards. Each member can include photo, name, role, bio, and social media links.', 'designsetgo' ),
-			'thinking_message'    => __( 'Generating team section...', 'designsetgo' ),
-			'success_message'     => __( 'Team section generated successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -82,46 +80,46 @@ class Generate_Team_Section extends Abstract_Ability {
 						'description' => __( 'Section description text', 'designsetgo' ),
 						'default'     => 'The talented people behind our success.',
 					),
-					'columns'     => array(
+					'columns'      => array(
 						'type'        => 'number',
 						'description' => __( 'Number of columns on desktop (2-4)', 'designsetgo' ),
 						'default'     => 3,
 						'minimum'     => 2,
 						'maximum'     => 4,
 					),
-					'cardStyle'   => array(
+					'cardStyle'    => array(
 						'type'        => 'string',
 						'description' => __( 'Card visual style', 'designsetgo' ),
 						'enum'        => array( 'standard', 'minimal', 'overlay' ),
 						'default'     => 'standard',
 					),
-					'members'     => array(
+					'members'      => array(
 						'type'        => 'array',
 						'description' => __( 'Team member definitions', 'designsetgo' ),
 						'items'       => array(
 							'type'       => 'object',
 							'properties' => array(
-								'name'      => array(
+								'name'     => array(
 									'type'        => 'string',
 									'description' => __( 'Member name', 'designsetgo' ),
 								),
-								'role'      => array(
+								'role'     => array(
 									'type'        => 'string',
 									'description' => __( 'Job title/role', 'designsetgo' ),
 								),
-								'bio'       => array(
+								'bio'      => array(
 									'type'        => 'string',
 									'description' => __( 'Short bio', 'designsetgo' ),
 								),
-								'imageUrl'  => array(
+								'imageUrl' => array(
 									'type'        => 'string',
 									'description' => __( 'Profile photo URL', 'designsetgo' ),
 								),
-								'imageId'   => array(
+								'imageId'  => array(
 									'type'        => 'number',
 									'description' => __( 'Profile photo attachment ID', 'designsetgo' ),
 								),
-								'social'    => array(
+								'social'   => array(
 									'type'        => 'object',
 									'description' => __( 'Social media links', 'designsetgo' ),
 									'properties'  => array(
@@ -256,7 +254,7 @@ class Generate_Team_Section extends Abstract_Ability {
 
 			// Social links.
 			if ( ! empty( $member['social'] ) ) {
-				$social_icons = array();
+				$social_icons   = array();
 				$social_mapping = array(
 					'linkedin'  => 'linkedin',
 					'twitter'   => 'twitter',

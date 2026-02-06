@@ -133,6 +133,21 @@
 			"default": ""
 		}
 	},
+	"schemaMetadata": {
+		"attributeDescriptions": {
+			"align": "Block alignment (wide or full width)",
+			"tagName": "HTML tag to use for the row container",
+			"constrainWidth": "Whether to constrain the content to a maximum width",
+			"contentWidth": "Maximum width for the content area (CSS value)",
+			"mobileStack": "Stack items vertically on mobile devices instead of horizontally",
+			"style": "WordPress block style object containing spacing, colors, and typography settings",
+			"hoverBackgroundColor": "Background color when hovering over the row",
+			"hoverTextColor": "Text color when hovering over the row",
+			"hoverIconBackgroundColor": "Icon background color on hover (passed to child blocks via context)",
+			"hoverButtonBackgroundColor": "Button background color on hover (passed to child blocks via context)",
+			"overlayColor": "Semi-transparent overlay color for background images"
+		}
+	},
 	"providesContext": {
 		"designsetgo/hoverIconBackgroundColor": "hoverIconBackgroundColor",
 		"designsetgo/hoverButtonBackgroundColor": "hoverButtonBackgroundColor"

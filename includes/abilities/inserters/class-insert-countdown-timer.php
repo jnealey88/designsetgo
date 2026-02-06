@@ -43,8 +43,6 @@ class Insert_Countdown_Timer extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Countdown Timer', 'designsetgo' ),
 			'description'         => __( 'Inserts a Countdown Timer block that displays time remaining until a target date. Perfect for product launches, events, sales, and deadlines.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating countdown timer...', 'designsetgo' ),
-			'success_message'     => __( 'Countdown timer inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

@@ -43,8 +43,6 @@ class Insert_Divider extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Divider', 'designsetgo' ),
 			'description'         => __( 'Inserts a Divider block for visual separation between content sections. Supports various styles including solid, dashed, dotted, and decorative options.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating divider...', 'designsetgo' ),
-			'success_message'     => __( 'Divider inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -69,46 +67,46 @@ class Insert_Divider extends Abstract_Ability {
 						'type'        => 'object',
 						'description' => __( 'Divider attributes', 'designsetgo' ),
 						'properties'  => array(
-							'style'         => array(
+							'style'        => array(
 								'type'        => 'string',
 								'description' => __( 'Divider line style', 'designsetgo' ),
 								'enum'        => array( 'solid', 'dashed', 'dotted', 'double', 'gradient' ),
 								'default'     => 'solid',
 							),
-							'width'         => array(
+							'width'        => array(
 								'type'        => 'string',
 								'description' => __( 'Divider width (e.g., "100%", "50%", "200px")', 'designsetgo' ),
 								'default'     => '100%',
 							),
-							'thickness'     => array(
+							'thickness'    => array(
 								'type'        => 'string',
 								'description' => __( 'Line thickness (e.g., "1px", "3px")', 'designsetgo' ),
 								'default'     => '1px',
 							),
-							'color'         => array(
+							'color'        => array(
 								'type'        => 'string',
 								'description' => __( 'Divider color', 'designsetgo' ),
 							),
-							'alignment'     => array(
+							'alignment'    => array(
 								'type'        => 'string',
 								'description' => __( 'Horizontal alignment', 'designsetgo' ),
 								'enum'        => array( 'left', 'center', 'right' ),
 								'default'     => 'center',
 							),
-							'marginTop'     => array(
+							'marginTop'    => array(
 								'type'        => 'string',
 								'description' => __( 'Top margin spacing', 'designsetgo' ),
 							),
-							'marginBottom'  => array(
+							'marginBottom' => array(
 								'type'        => 'string',
 								'description' => __( 'Bottom margin spacing', 'designsetgo' ),
 							),
-							'showIcon'      => array(
+							'showIcon'     => array(
 								'type'        => 'boolean',
 								'description' => __( 'Show decorative icon in center', 'designsetgo' ),
 								'default'     => false,
 							),
-							'iconName'      => array(
+							'iconName'     => array(
 								'type'        => 'string',
 								'description' => __( 'Icon name from Lucide icon set', 'designsetgo' ),
 								'default'     => 'star',

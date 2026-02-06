@@ -43,8 +43,6 @@ class Generate_CTA_Section extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Generate CTA Section', 'designsetgo' ),
 			'description'         => __( 'Generates a call-to-action section with compelling headline, description, and action buttons. Perfect for conversion-focused landing pages.', 'designsetgo' ),
-			'thinking_message'    => __( 'Generating CTA section...', 'designsetgo' ),
-			'success_message'     => __( 'CTA section generated successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -319,10 +317,10 @@ class Generate_CTA_Section extends Abstract_Ability {
 				$post_id,
 				'core/cover',
 				array(
-					'url'            => esc_url( $bg_image ),
-					'dimRatio'       => $overlay_opacity,
-					'overlayColor'   => ! empty( $bg_color ) ? $bg_color : 'black',
-					'minHeight'      => 300,
+					'url'             => esc_url( $bg_image ),
+					'dimRatio'        => $overlay_opacity,
+					'overlayColor'    => ! empty( $bg_color ) ? $bg_color : 'black',
+					'minHeight'       => 300,
 					'contentPosition' => 'center center',
 				),
 				$cover_inner,

@@ -43,8 +43,6 @@ class Batch_Update extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Batch Update Blocks', 'designsetgo' ),
 			'description'         => __( 'Applies attribute changes to multiple blocks at once. Supports updating by block name across entire post or multiple specific blocks.', 'designsetgo' ),
-			'thinking_message'    => __( 'Applying batch updates...', 'designsetgo' ),
-			'success_message'     => __( 'Batch update completed successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),
@@ -104,15 +102,15 @@ class Batch_Update extends Abstract_Ability {
 		return array(
 			'type'       => 'object',
 			'properties' => array(
-				'success'        => array(
+				'success'           => array(
 					'type'        => 'boolean',
 					'description' => __( 'Whether all operations succeeded', 'designsetgo' ),
 				),
-				'post_id'        => array(
+				'post_id'           => array(
 					'type'        => 'integer',
 					'description' => __( 'The post ID', 'designsetgo' ),
 				),
-				'total_updated'  => array(
+				'total_updated'     => array(
 					'type'        => 'integer',
 					'description' => __( 'Total number of blocks updated', 'designsetgo' ),
 				),
@@ -185,7 +183,7 @@ class Batch_Update extends Abstract_Ability {
 		$blocks = parse_blocks( $post->post_content );
 
 		// Execute each operation.
-		$total_updated = 0;
+		$total_updated     = 0;
 		$operation_results = array();
 
 		foreach ( $operations as $operation ) {
@@ -264,14 +262,14 @@ class Batch_Update extends Abstract_Ability {
 
 				// Merge attributes.
 				$block['attrs'] = array_merge( $block['attrs'] ?? array(), $attributes );
-				$updated++;
+				++$updated;
 			}
 
 			// Process inner blocks.
 			if ( ! empty( $block['innerBlocks'] ) ) {
-				$result = $this->update_blocks_by_name( $block['innerBlocks'], $block_name, $attributes, $filter );
+				$result               = $this->update_blocks_by_name( $block['innerBlocks'], $block_name, $attributes, $filter );
 				$block['innerBlocks'] = $result['blocks'];
-				$updated += $result['updated'];
+				$updated             += $result['updated'];
 			}
 		}
 

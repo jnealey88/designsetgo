@@ -43,8 +43,6 @@ class Insert_Counter extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Counter', 'designsetgo' ),
 			'description'         => __( 'Inserts a single Counter block that animates from a start value to an end value. Perfect for statistics, achievements, and metrics displays.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating counter...', 'designsetgo' ),
-			'success_message'     => __( 'Counter inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -69,72 +67,72 @@ class Insert_Counter extends Abstract_Ability {
 						'type'        => 'object',
 						'description' => __( 'Counter attributes', 'designsetgo' ),
 						'properties'  => array(
-							'startValue'       => array(
+							'startValue'        => array(
 								'type'        => 'number',
 								'description' => __( 'Starting value for animation', 'designsetgo' ),
 								'default'     => 0,
 							),
-							'endValue'         => array(
+							'endValue'          => array(
 								'type'        => 'number',
 								'description' => __( 'Ending value for animation', 'designsetgo' ),
 								'default'     => 100,
 							),
-							'duration'         => array(
+							'duration'          => array(
 								'type'        => 'number',
 								'description' => __( 'Animation duration in seconds', 'designsetgo' ),
 								'default'     => 2,
 								'minimum'     => 0.5,
 								'maximum'     => 10,
 							),
-							'prefix'           => array(
+							'prefix'            => array(
 								'type'        => 'string',
 								'description' => __( 'Text/symbol before the number (e.g., "$")', 'designsetgo' ),
 								'default'     => '',
 							),
-							'suffix'           => array(
+							'suffix'            => array(
 								'type'        => 'string',
 								'description' => __( 'Text/symbol after the number (e.g., "+", "%", "k")', 'designsetgo' ),
 								'default'     => '',
 							),
-							'decimals'         => array(
+							'decimals'          => array(
 								'type'        => 'number',
 								'description' => __( 'Number of decimal places', 'designsetgo' ),
 								'default'     => 0,
 								'minimum'     => 0,
 								'maximum'     => 4,
 							),
-							'separator'        => array(
+							'separator'         => array(
 								'type'        => 'string',
 								'description' => __( 'Thousands separator (e.g., ",")', 'designsetgo' ),
 								'default'     => ',',
 							),
-							'decimalSeparator' => array(
+							'decimalSeparator'  => array(
 								'type'        => 'string',
 								'description' => __( 'Decimal separator (e.g., ".")', 'designsetgo' ),
 								'default'     => '.',
 							),
-							'label'            => array(
+							'label'             => array(
 								'type'        => 'string',
 								'description' => __( 'Label text below the counter', 'designsetgo' ),
 								'default'     => '',
 							),
-							'labelPosition'    => array(
+							'labelPosition'     => array(
 								'type'        => 'string',
 								'description' => __( 'Position of the label', 'designsetgo' ),
 								'enum'        => array( 'above', 'below' ),
 								'default'     => 'below',
 							),
-							'alignment'        => array(
+							'alignment'         => array(
 								'type'        => 'string',
 								'description' => __( 'Text alignment', 'designsetgo' ),
 								'enum'        => array( 'left', 'center', 'right' ),
 								'default'     => 'center',
 							),
-							'numberColor'      => array(
+							'numberColor'       => array(
 								'type'        => 'string',
 								'description' => __( 'Number text color', 'designsetgo' ),
 							),
-							'labelColor'       => array(
+							'labelColor'        => array(
 								'type'        => 'string',
 								'description' => __( 'Label text color', 'designsetgo' ),
 							),
@@ -142,12 +140,12 @@ class Insert_Counter extends Abstract_Ability {
 								'type'        => 'string',
 								'description' => __( 'Prefix/suffix text color', 'designsetgo' ),
 							),
-							'animateOnScroll'  => array(
+							'animateOnScroll'   => array(
 								'type'        => 'boolean',
 								'description' => __( 'Trigger animation when scrolled into view', 'designsetgo' ),
 								'default'     => true,
 							),
-							'animateOnce'      => array(
+							'animateOnce'       => array(
 								'type'        => 'boolean',
 								'description' => __( 'Only animate once (vs every time in view)', 'designsetgo' ),
 								'default'     => true,

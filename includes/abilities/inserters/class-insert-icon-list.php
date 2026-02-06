@@ -43,8 +43,6 @@ class Insert_Icon_List extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Icon List', 'designsetgo' ),
 			'description'         => __( 'Inserts an Icon List container for creating lists with icons, titles, and descriptions. Perfect for features, benefits, and services.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating icon list...', 'designsetgo' ),
-			'success_message'     => __( 'Icon list inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

@@ -43,8 +43,6 @@ class Configure_Max_Width extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Configure Max Width', 'designsetgo' ),
 			'description'         => __( 'Sets maximum width constraints on blocks. Supports responsive values for desktop, tablet, and mobile breakpoints.', 'designsetgo' ),
-			'thinking_message'    => __( 'Configuring max width...', 'designsetgo' ),
-			'success_message'     => __( 'Max width configured successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),

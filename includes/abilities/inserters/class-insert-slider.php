@@ -43,8 +43,6 @@ class Insert_Slider extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Slider', 'designsetgo' ),
 			'description'         => __( 'Inserts a modern, performant Slider block for hero carousels, image galleries, and content slideshows. Supports multiple transition effects, auto-play, and full block support inside slides.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating slider...', 'designsetgo' ),
-			'success_message'     => __( 'Slider inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

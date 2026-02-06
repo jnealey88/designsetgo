@@ -43,8 +43,6 @@ class Insert_Modal extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Modal', 'designsetgo' ),
 			'description'         => __( 'Inserts a Modal dialog block for creating popups, lightboxes, and overlays with advanced triggers and animations. Supports auto-triggers (page load, exit intent, scroll depth, time-based) and gallery navigation.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating modal...', 'designsetgo' ),
-			'success_message'     => __( 'Modal inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

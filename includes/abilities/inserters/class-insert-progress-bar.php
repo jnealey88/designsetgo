@@ -43,8 +43,6 @@ class Insert_Progress_Bar extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Progress Bar', 'designsetgo' ),
 			'description'         => __( 'Inserts a Progress Bar block for displaying progress, statistics, or skills with customizable colors, labels, and animations.', 'designsetgo' ),
-			'thinking_message'    => __( 'Inserting progress bar...', 'designsetgo' ),
-			'success_message'     => __( 'Progress bar inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

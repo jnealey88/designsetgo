@@ -66,6 +66,44 @@
 			"default": ""
 		}
 	},
+	"schemaMetadata": {
+		"attributeDescriptions": {
+			"allowMultipleOpen": "Allow multiple accordion items to be expanded simultaneously",
+			"iconStyle": "Visual style for the expand/collapse indicator icon",
+			"iconPosition": "Position of the expand/collapse icon relative to the title",
+			"borderBetween": "Show a horizontal border between accordion items",
+			"borderBetweenColor": "Color of the border between accordion items",
+			"itemGap": "Vertical spacing between accordion items (CSS value)",
+			"openBackgroundColor": "Background color for expanded accordion items",
+			"openTextColor": "Text color for expanded accordion items",
+			"hoverBackgroundColor": "Background color when hovering over an accordion item",
+			"hoverTextColor": "Text color when hovering over an accordion item"
+		},
+		"htmlMappings": {
+			"dataAttributes": {
+				"allowMultipleOpen": "allow-multiple",
+				"iconStyle": "icon-style"
+			},
+			"cssModifiers": {
+				"allowMultipleOpen": {
+					"true": "dsgo-accordion--multiple",
+					"false": ""
+				},
+				"iconPosition": "dsgo-accordion--icon-{value}",
+				"borderBetween": {
+					"true": "dsgo-accordion--border-between",
+					"false": ""
+				}
+			},
+			"cssVariables": {
+				"itemGap": "--dsgo-accordion-gap",
+				"openBackgroundColor": "--dsgo-accordion-open-bg",
+				"openTextColor": "--dsgo-accordion-open-text",
+				"hoverBackgroundColor": "--dsgo-accordion-hover-bg",
+				"hoverTextColor": "--dsgo-accordion-hover-text"
+			}
+		}
+	},
 	"providesContext": {
 		"designsetgo/accordion/allowMultipleOpen": "allowMultipleOpen",
 		"designsetgo/accordion/iconStyle": "iconStyle",

@@ -43,8 +43,6 @@ class Insert_Pill extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Pill', 'designsetgo' ),
 			'description'         => __( 'Inserts a Pill/Badge block for displaying labels, tags, and status indicators. Perfect for category tags, feature badges, pricing labels, and notification badges.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating pill...', 'designsetgo' ),
-			'success_message'     => __( 'Pill inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

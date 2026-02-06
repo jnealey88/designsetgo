@@ -43,8 +43,6 @@ class Insert_Accordion extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Accordion', 'designsetgo' ),
 			'description'         => __( 'Inserts an Accordion container for creating accessible collapsible content sections. Perfect for FAQs and content organization.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating accordion...', 'designsetgo' ),
-			'success_message'     => __( 'Accordion inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

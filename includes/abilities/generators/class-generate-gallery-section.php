@@ -43,8 +43,6 @@ class Generate_Gallery_Section extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Generate Gallery Section', 'designsetgo' ),
 			'description'         => __( 'Generates an image gallery section with various layout options. Supports grid, masonry, and slider layouts with lightbox functionality.', 'designsetgo' ),
-			'thinking_message'    => __( 'Generating gallery section...', 'designsetgo' ),
-			'success_message'     => __( 'Gallery section generated successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -65,53 +63,53 @@ class Generate_Gallery_Section extends Abstract_Ability {
 			'properties'           => array_merge(
 				$common,
 				array(
-					'heading'       => array(
+					'heading'      => array(
 						'type'        => 'string',
 						'description' => __( 'Section heading text', 'designsetgo' ),
 						'default'     => 'Our Gallery',
 					),
-					'headingLevel'  => array(
+					'headingLevel' => array(
 						'type'        => 'integer',
 						'description' => __( 'Heading level (1-6)', 'designsetgo' ),
 						'minimum'     => 1,
 						'maximum'     => 6,
 						'default'     => 2,
 					),
-					'description'   => array(
+					'description'  => array(
 						'type'        => 'string',
 						'description' => __( 'Section description text', 'designsetgo' ),
 						'default'     => '',
 					),
-					'layout'        => array(
+					'layout'       => array(
 						'type'        => 'string',
 						'description' => __( 'Gallery layout style', 'designsetgo' ),
 						'enum'        => array( 'grid', 'masonry', 'slider', 'image-accordion' ),
 						'default'     => 'grid',
 					),
-					'columns'       => array(
+					'columns'      => array(
 						'type'        => 'number',
 						'description' => __( 'Number of columns (2-6)', 'designsetgo' ),
 						'default'     => 3,
 						'minimum'     => 2,
 						'maximum'     => 6,
 					),
-					'gap'           => array(
+					'gap'          => array(
 						'type'        => 'string',
 						'description' => __( 'Gap between images', 'designsetgo' ),
 						'default'     => '10px',
 					),
-					'aspectRatio'   => array(
+					'aspectRatio'  => array(
 						'type'        => 'string',
 						'description' => __( 'Image aspect ratio for grid', 'designsetgo' ),
 						'enum'        => array( '1-1', '4-3', '16-9', 'original' ),
 						'default'     => '1-1',
 					),
-					'lightbox'      => array(
+					'lightbox'     => array(
 						'type'        => 'boolean',
 						'description' => __( 'Enable lightbox on click', 'designsetgo' ),
 						'default'     => true,
 					),
-					'images'        => array(
+					'images'       => array(
 						'type'        => 'array',
 						'description' => __( 'Gallery image definitions', 'designsetgo' ),
 						'items'       => array(

@@ -43,8 +43,6 @@ class Generate_Testimonial_Section extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Generate Testimonial Section', 'designsetgo' ),
 			'description'         => __( 'Generates a testimonials section with customer reviews. Supports grid or slider layout with quotes, author info, and ratings.', 'designsetgo' ),
-			'thinking_message'    => __( 'Generating testimonial section...', 'designsetgo' ),
-			'success_message'     => __( 'Testimonial section generated successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
@@ -218,7 +216,7 @@ class Generate_Testimonial_Section extends Abstract_Ability {
 
 			// Rating stars.
 			if ( $show_rating && ! empty( $testimonial['rating'] ) ) {
-				$stars = str_repeat( '★', (int) $testimonial['rating'] ) . str_repeat( '☆', 5 - (int) $testimonial['rating'] );
+				$stars        = str_repeat( '★', (int) $testimonial['rating'] ) . str_repeat( '☆', 5 - (int) $testimonial['rating'] );
 				$card_inner[] = array(
 					'name'       => 'core/paragraph',
 					'attributes' => array(
@@ -229,8 +227,8 @@ class Generate_Testimonial_Section extends Abstract_Ability {
 
 			// Quote.
 			$card_inner[] = array(
-				'name'       => 'core/quote',
-				'attributes' => array(
+				'name'        => 'core/quote',
+				'attributes'  => array(
 					'citation' => '',
 				),
 				'innerBlocks' => array(
@@ -270,7 +268,7 @@ class Generate_Testimonial_Section extends Abstract_Ability {
 			$author_text = '<strong>' . sanitize_text_field( $testimonial['author'] ?? '' ) . '</strong>';
 			if ( ! empty( $testimonial['role'] ) || ! empty( $testimonial['company'] ) ) {
 				$author_text .= '<br>';
-				$role_parts = array();
+				$role_parts   = array();
 				if ( ! empty( $testimonial['role'] ) ) {
 					$role_parts[] = sanitize_text_field( $testimonial['role'] );
 				}

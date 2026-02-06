@@ -43,8 +43,6 @@ class Configure_Clickable_Group extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Configure Clickable Group', 'designsetgo' ),
 			'description'         => __( 'Makes container blocks clickable, turning them into interactive link areas. Perfect for card layouts, feature boxes, and call-to-action sections.', 'designsetgo' ),
-			'thinking_message'    => __( 'Configuring clickable group...', 'designsetgo' ),
-			'success_message'     => __( 'Clickable group configured successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),
@@ -75,36 +73,36 @@ class Configure_Clickable_Group extends Abstract_Ability {
 						'type'        => 'object',
 						'description' => __( 'Clickable link settings', 'designsetgo' ),
 						'properties'  => array(
-							'enabled'       => array(
+							'enabled'      => array(
 								'type'        => 'boolean',
 								'description' => __( 'Enable clickable group', 'designsetgo' ),
 								'default'     => true,
 							),
-							'url'           => array(
+							'url'          => array(
 								'type'        => 'string',
 								'description' => __( 'Link URL', 'designsetgo' ),
 							),
-							'openInNewTab'  => array(
+							'openInNewTab' => array(
 								'type'        => 'boolean',
 								'description' => __( 'Open link in new tab', 'designsetgo' ),
 								'default'     => false,
 							),
-							'noFollow'      => array(
+							'noFollow'     => array(
 								'type'        => 'boolean',
 								'description' => __( 'Add nofollow rel attribute', 'designsetgo' ),
 								'default'     => false,
 							),
-							'ariaLabel'     => array(
+							'ariaLabel'    => array(
 								'type'        => 'string',
 								'description' => __( 'Accessible label for the link', 'designsetgo' ),
 							),
-							'hoverEffect'   => array(
+							'hoverEffect'  => array(
 								'type'        => 'string',
 								'description' => __( 'Hover effect style', 'designsetgo' ),
 								'enum'        => array( 'none', 'lift', 'scale', 'shadow', 'border' ),
 								'default'     => 'none',
 							),
-							'cursorStyle'   => array(
+							'cursorStyle'  => array(
 								'type'        => 'string',
 								'description' => __( 'Cursor style on hover', 'designsetgo' ),
 								'enum'        => array( 'pointer', 'default' ),

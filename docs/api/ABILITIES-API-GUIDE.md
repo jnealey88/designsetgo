@@ -448,11 +448,40 @@ curl -X POST -u "$USER:$PASS" \
   -d "{\"input\": {\"post_id\": $POST_ID, \"block_name\": \"core/heading\", \"animation\": {...}}}"
 ```
 
+## WordPress Abilities API Reference
+
+For the full official WordPress Abilities API documentation, see:
+
+- [Abilities API Overview](https://developer.wordpress.org/apis/abilities-api/)
+- [Getting Started](https://developer.wordpress.org/apis/abilities-api/getting-started/)
+- [Hooks Reference](https://developer.wordpress.org/apis/abilities-api/hooks/)
+- [PHP Reference](https://developer.wordpress.org/apis/abilities-api/php-reference/)
+- [REST API Endpoints](https://developer.wordpress.org/apis/abilities-api/rest-api-endpoints/)
+
+### Key API Details
+
+**Registration hooks** (order matters):
+1. `wp_abilities_api_categories_init` — register categories first
+2. `wp_abilities_api_init` — register abilities after categories exist
+
+**`wp_register_ability()` key parameters:**
+- `category` — top-level parameter (not nested in `meta`)
+- `show_in_rest` — top-level parameter, set `true` to expose via REST
+- `annotations` — top-level parameter with `readonly`, `destructive`, `idempotent`, `instructions`
+
+**REST endpoint for execution:**
+- `GET|POST|DELETE /wp-abilities/v1/{namespace}/{ability}/run`
+- HTTP method determined by `annotations`: `readonly` = GET, `destructive` = DELETE, default = POST
+
+**Execution hooks:**
+- `wp_before_execute_ability` — fires before ability runs
+- `wp_after_execute_ability` — fires after successful execution
+
 ## Future Roadmap
 
-- [ ] Server-side render callbacks to eliminate validation warnings
-- [ ] Bulk operations (apply settings to multiple blocks at once)
-- [ ] Query abilities (search/filter existing blocks)
+- [x] ~~Server-side render callbacks to eliminate validation warnings~~
+- [x] ~~Bulk operations (apply settings to multiple blocks at once)~~
+- [x] ~~Query abilities (search/filter existing blocks)~~
 - [ ] Template abilities (save/load pre-designed layouts)
 - [ ] MCP Server integration for direct AI agent access
 
@@ -460,9 +489,9 @@ curl -X POST -u "$USER:$PASS" \
 
 - **GitHub Issues**: https://github.com/yourusername/designsetgo/issues
 - **Documentation**: https://designsetgo.com/docs
-- **Community**: https://designsetgo.com/community
+- **WordPress Abilities API Handbook**: https://developer.wordpress.org/apis/abilities-api/
 
 ---
 
-**Version**: 2.0.0
-**Last Updated**: 2025-11-07
+**Version**: 2.1.0
+**Last Updated**: 2026-02-06

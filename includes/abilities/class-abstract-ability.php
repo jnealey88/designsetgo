@@ -38,12 +38,15 @@ abstract class Abstract_Ability {
 	 * Should return an array with keys:
 	 * - label: Human-readable name
 	 * - description: What this ability does
-	 * - thinking_message: Message shown while executing
-	 * - success_message: Message shown on success
+	 * - category: Category slug this ability belongs to
 	 * - input_schema: JSON Schema for inputs
 	 * - output_schema: JSON Schema for outputs
 	 * - permission_callback: Callable for permission check
-	 * - meta: Additional metadata (category, etc.)
+	 * - meta: Additional metadata including:
+	 *   - show_in_rest: Whether to expose via REST API (default true)
+	 *   - annotations: Behavioral hints (readonly, destructive, idempotent)
+	 *
+	 * Note: execute_callback is added automatically during registration.
 	 *
 	 * @return array<string, mixed>
 	 */

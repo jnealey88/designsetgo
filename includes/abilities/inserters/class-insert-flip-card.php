@@ -43,8 +43,6 @@ class Insert_Flip_Card extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Flip Card', 'designsetgo' ),
 			'description'         => __( 'Inserts an interactive Flip Card that reveals content on the back. Perfect for team profiles, product showcases, and feature highlights.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating flip card...', 'designsetgo' ),
-			'success_message'     => __( 'Flip card inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

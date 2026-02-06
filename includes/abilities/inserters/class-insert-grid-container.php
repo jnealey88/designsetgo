@@ -43,8 +43,6 @@ class Insert_Grid_Container extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Grid Container', 'designsetgo' ),
 			'description'         => __( 'Inserts a responsive Grid Container block with customizable column counts for desktop, tablet, and mobile.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating grid container...', 'designsetgo' ),
-			'success_message'     => __( 'Grid container inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
