@@ -9,7 +9,7 @@ Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Professional WordPress blocks without page builder bloat. 46 blocks + 13 universal extensions that enhance ANY block.
+Professional WordPress blocks without page builder bloat. 48 blocks + 14 universal extensions that enhance ANY block.
 
 == Description ==
 
@@ -20,8 +20,8 @@ DesignSetGo gives you the power of a page builder with the simplicity of WordPre
 = Why DesignSetGo? =
 
 ✓ **Works Like WordPress** - If you know blocks, you know DesignSetGo. No separate interface, no learning curve.
-✓ **46 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, modals, breadcrumbs, and more.
-✓ **13 Universal Extensions** - Add animations, scroll effects, parallax, responsive visibility, sticky headers, clickable groups, max width, and more to ANY WordPress block (including core blocks).
+✓ **48 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, modals, breadcrumbs, timelines, and more.
+✓ **14 Universal Extensions** - Add animations, scroll effects, parallax, responsive visibility, sticky headers, clickable groups, draft mode, max width, and more to ANY WordPress block (including core blocks).
 ✓ **Text Style Format** - Apply custom colors, gradients, font sizes, and highlights to selected text inline, just like bold or italic.
 ✓ **Performance First** - Lightweight code, no jQuery, optimized bundles. Your site stays fast.
 ✓ **No Lock-In** - Built with WordPress standards. What you build works with or without the plugin.
@@ -30,14 +30,14 @@ DesignSetGo gives you the power of a page builder with the simplicity of WordPre
 
 = What's Included =
 
-**Layouts & Containers (5 blocks)**
-Build responsive layouts without code: flex, grid, stacks, rows, and full-width sections with content width controls.
+**Layouts & Containers (3 blocks)**
+Build responsive layouts without code: grid, rows, and full-width sections with content width controls.
 
 **Complete Form Builder (13 blocks)**
-Professional forms with AJAX submission, spam protection (including Cloudflare Turnstile), and email notifications. Includes text, email, phone, textarea, number, URL, date, time, select, checkbox, file upload, and hidden fields. No external services required.
+Professional forms with AJAX submission, spam protection (including Cloudflare Turnstile), and email notifications. Includes text, email, phone, textarea, number, URL, date, time, select, checkbox, and hidden fields. No external services required.
 
-**Interactive Elements (11 blocks)**
-Tabs, accordions, modals/popups, flip cards, sliders, scroll effects, counters, progress bars, and revealing content. All with smooth animations and mobile-responsive behavior.
+**Interactive Elements (14 blocks)**
+Tabs, accordions, modals/popups, flip cards, sliders, scroll effects, counters, progress bars, comparison tables, timelines, and revealing content. All with smooth animations and mobile-responsive behavior.
 
 **Navigation & Structure (2 blocks)**
 Breadcrumbs with Schema.org markup and Table of Contents with automatic heading detection, smooth scrolling, and sticky positioning.
@@ -48,7 +48,7 @@ Icons (500+), icon buttons, icon lists, pills/badges, dividers, countdown timers
 **Location (1 block)**
 Interactive maps with Google Maps and OpenStreetMap support, custom markers, and privacy-friendly options.
 
-**Universal Extensions (13 extensions)**
+**Universal Extensions (14 extensions)**
 These work with ANY WordPress block—including core blocks and third-party blocks:
 * **Block Animations** - 24+ effects with scroll/hover/click triggers
 * **Scroll Parallax** - Elementor-style vertical/horizontal parallax effects with device controls
@@ -63,9 +63,9 @@ These work with ANY WordPress block—including core blocks and third-party bloc
 * **Grid Span** - Column and row spanning for grid layouts
 * **Reveal Control** - Advanced hover reveal timing and transitions
 * **Text Alignment Inheritance** - Inherit alignment from parent blocks
+* **Draft Mode** - Control draft content visibility in the editor vs frontend
 
 **Content Management Tools**
-* **Draft Mode** - Create and edit draft versions of published pages without affecting the live content
 * **Visual Revision Comparison** - Side-by-side rendered previews of post revisions with color-coded block highlighting
 * **llms.txt Support** - Implements the llms.txt standard to help AI language models understand your site content
 
@@ -144,7 +144,7 @@ Yes, exactly. DesignSetGo uses the same patterns as WordPress core blocks to gua
 
 = Do I need Contact Form 7 or another form plugin? =
 
-No! DesignSetGo includes a complete form builder with 11 field types, AJAX submission, spam protection, and email notifications. Everything is built-in and works without external services.
+No! DesignSetGo includes a complete form builder with 12 field types, AJAX submission, spam protection, and email notifications. Everything is built-in and works without external services.
 
 = Does this work with Full Site Editing (FSE)? =
 

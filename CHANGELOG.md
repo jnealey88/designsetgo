@@ -5,6 +5,20 @@ All notable changes to the DesignSetGo plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2026-01-31
+
+### Fixed
+- Grid block type safety for WordPress 6.1+ blockGap object format conversion
+- Grid block alignItems default now consistent between editor and frontend (uses 'stretch')
+- Row block preset conversion with proper type checking
+- Icon Button width attribute removed from schema (deprecation handles migration)
+- Divider width no longer overridden by editor styles
+- llms.txt conflict detection now includes dismissable notices with file resolution option
+
+### Improved
+- Icon Button now uses WordPress alignfull for full-width display
+- llms.txt conflict handling allows renaming conflicting files via admin UI
+
 ## [1.4.0] - 2026-02-01
 
 ### Added
@@ -56,6 +70,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Dependencies
 - Bumped lodash from 4.17.21 to 4.17.23 (security)
 - Bumped lodash-es from 4.17.21 to 4.17.23 (security)
+
+## [1.3.2] - 2025-01-30
+
+### Fixed
+- Icon Button no longer displays double background layer when using rounded corners
+- Stop overriding theme.json color palette, spacing presets, and font families - better theme compatibility
+- Temporarily disable post content alignfull padding fix pending comprehensive solution
+
+### Developer Experience
+- Migrate commands to modern Claude Code skills format for improved automation
+- Add Claude Code GitHub Workflow for CI/CD improvements
+
+## [1.3.1] - 2025-01-09
+
+### Fixed
+- Slider initialization timing - fixed first-load issues where sliders showed gaps or incorrect positioning before reload
+- Scroll Gallery (Marquee) initialization timing - fixed first-load issues where gallery wouldn't scroll until page reload
+- Both blocks now properly wait for images to load and CSS to apply before calculating dimensions
 
 ## [1.3.0] - 2025-12-06
 
@@ -302,7 +334,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[1.4.1]: https://github.com/jnealey88/designsetgo/releases/tag/v1.4.1
 [1.4.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.4.0
+[1.3.2]: https://github.com/jnealey88/designsetgo/releases/tag/v1.3.2
+[1.3.1]: https://github.com/jnealey88/designsetgo/releases/tag/v1.3.1
 [1.3.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.3.0
 [1.2.1]: https://github.com/jnealey88/designsetgo/releases/tag/v1.2.1
 [1.2.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.2.0

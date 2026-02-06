@@ -6,8 +6,9 @@ We release patches for security vulnerabilities for the following versions:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.2.x   | :white_check_mark: |
-| < 1.2   | :x:                |
+| 1.4.x   | :white_check_mark: |
+| 1.3.x   | :white_check_mark: |
+| < 1.3   | :x:                |
 
 ## Reporting a Vulnerability
 
@@ -202,6 +203,15 @@ See [docs/GDPR-COMPLIANCE.md](docs/GDPR-COMPLIANCE.md) for complete documentatio
 
 ## Security Audit History
 
+### Version 1.4.0 (2026-02-01)
+
+**Security Improvements:**
+- Bumped minimum PHP requirement from 7.4 to 8.0
+- Updated lodash and lodash-es to 4.17.23 (security patches)
+- Added block exclusion system to prevent extension conflicts with third-party blocks
+
+**Audited by:** Internal security review
+
 ### Version 1.2.0 (2025-11-21)
 
 **Comprehensive Security Review:**
@@ -215,7 +225,7 @@ See [docs/GDPR-COMPLIANCE.md](docs/GDPR-COMPLIANCE.md) for complete documentatio
 
 **Audited by:** Internal security review
 
-### Version 1.0.0 (2024-11-11)
+### Version 1.0.0 (2025-11-12)
 
 **Comprehensive Security Review:**
 - Fixed SQL injection vulnerability in stats endpoint
@@ -253,5 +263,5 @@ For security-related questions or concerns:
 
 ---
 
-**Last Updated:** 2025-11-24
-**Version:** 1.2.0
+**Last Updated:** 2026-02-06
+**Version:** 1.4.1

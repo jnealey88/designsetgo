@@ -106,12 +106,12 @@ npm run test:e2e:report       # View HTML test report
 const { test, expect } = require('@playwright/test');
 const { createNewPost, insertBlock } = require('./helpers/wordpress');
 
-test.describe('Flex Block', () => {
+test.describe('Accordion Block', () => {
   test('should insert and configure Flex block', async ({ page }) => {
     await createNewPost(page, 'post');
-    await insertBlock(page, 'designsetgo/flex');
+    await insertBlock(page, 'designsetgo/accordion');
 
-    const block = page.locator('[data-type="designsetgo/flex"]');
+    const block = page.locator('[data-type="designsetgo/accordion"]');
     await expect(block).toBeVisible();
   });
 });
@@ -142,7 +142,7 @@ describe('Block Utilities', () => {
   test('validates block name format', () => {
     const isValidBlockName = (name) => /^designsetgo\/[\w-]+$/.test(name);
 
-    expect(isValidBlockName('designsetgo/flex')).toBe(true);
+    expect(isValidBlockName('designsetgo/accordion')).toBe(true);
     expect(isValidBlockName('invalid/name')).toBe(false);
   });
 });
@@ -196,19 +196,19 @@ npm run wp-env run tests-cli --env-cwd=wp-content/plugins/designsetgo vendor/bin
 
 ```php
 <?php
-class Test_Flex_Block extends WP_UnitTestCase {
+class Test_Accordion_Block extends WP_UnitTestCase {
 
   public function test_block_registered() {
     $registry = WP_Block_Type_Registry::get_instance();
-    $this->assertTrue( $registry->is_registered( 'designsetgo/flex' ) );
+    $this->assertTrue( $registry->is_registered( 'designsetgo/accordion' ) );
   }
 
   public function test_block_attributes() {
     $registry = WP_Block_Type_Registry::get_instance();
-    $block = $registry->get_registered( 'designsetgo/flex' );
+    $block = $registry->get_registered( 'designsetgo/accordion' );
 
-    $this->assertArrayHasKey( 'flexDirection', $block->attributes );
-    $this->assertEquals( 'row', $block->attributes['flexDirection']['default'] );
+    $this->assertArrayHasKey( 'allowMultipleOpen', $block->attributes );
+    $this->assertFalse( $block->attributes['allowMultipleOpen']['default'] );
   }
 }
 ```
@@ -496,6 +496,6 @@ bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
 
 ---
 
-**Last Updated**: 2025-11-07
+**Last Updated**: 2026-02-06
 **Plugin Version**: 1.4.1
 **WordPress Compatibility**: 6.7+

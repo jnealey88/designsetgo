@@ -27,7 +27,7 @@ Complete reference documentation for developing blocks in the DesignSetGo WordPr
 ### For Experienced WordPress Developers
 1. Read [BEST-PRACTICES-SUMMARY.md](./guides/BEST-PRACTICES-SUMMARY.md) for quick patterns
 2. Review [BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md](./guides/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) for deep understanding
-3. Check [FSE-COMPATIBILITY-GUIDE.md](./FSE-COMPATIBILITY-GUIDE.md) when creating new blocks
+3. Check [WordPress Block Editor Best Practices](./guides/WORDPRESS-BLOCK-EDITOR-BEST-PRACTICES.md) when creating new blocks
 
 ### For AI-Assisted Development
 **This plugin was built 100% with AI assistance!**
@@ -62,6 +62,7 @@ The documentation is organized into the following categories:
 API references and technical documentation:
 - [ABILITIES-API-GUIDE.md](./api/ABILITIES-API-GUIDE.md) - WordPress Abilities API integration guide
 - [ABILITIES-API.md](./api/ABILITIES-API.md) - Core Abilities API reference
+- [DRAFT-MODE-API.md](./api/DRAFT-MODE-API.md) - Draft Mode API reference
 - [INTERACTIVE-BLOCKS.md](./api/INTERACTIVE-BLOCKS.md) - Interactive block patterns
 
 #### [audits/](./audits/)
@@ -70,14 +71,14 @@ Block audits and analysis documents:
 - [scroll-accordion-stacking-notes.md](./audits/scroll-accordion-stacking-notes.md) - Scroll accordion analysis
 
 #### [blocks/](./blocks/)
-User-facing documentation for all 25 blocks:
+User-facing documentation for blocks:
 
 **Container Blocks (3):**
 - [GRID.md](./blocks/GRID.md) - Responsive CSS Grid layouts
 - [ROW.md](./blocks/ROW.md) - Horizontal flexbox containers
 - [SECTION.md](./blocks/SECTION.md) - Vertical stacking sections
 
-**Interactive Blocks (7):**
+**Interactive Blocks (12):**
 - [ACCORDION.md](./blocks/ACCORDION.md) - Collapsible content panels
 - [TABS.md](./blocks/TABS.md) - Tabbed interface with deep linking
 - [SLIDER.md](./blocks/SLIDER.md) - Image/content carousel
@@ -85,22 +86,25 @@ User-facing documentation for all 25 blocks:
 - [REVEAL.md](./blocks/REVEAL.md) - Hover-triggered content reveal
 - [IMAGE-ACCORDION.md](./blocks/IMAGE-ACCORDION.md) - Expandable image panels
 - [SCROLL-ACCORDION.md](./blocks/SCROLL-ACCORDION.md) - Scroll-triggered sticky cards
+- [SCROLL-GALLERY.md](./blocks/SCROLL-GALLERY.md) - Scroll-based marquee gallery
+- [COMPARISON-TABLE.md](./blocks/COMPARISON-TABLE.md) - Feature comparison tables
+- [TIMELINE.md](./blocks/TIMELINE.md) - Chronological event timelines
+- [COUNTER-GROUP.md](./blocks/COUNTER-GROUP.md) - Animated statistics
+- [PROGRESS-BAR.md](./blocks/PROGRESS-BAR.md) - Animated progress indicators
 
 **Icon Blocks (3):**
 - [ICON.md](./blocks/ICON.md) - SVG icon display
 - [ICON-BUTTON.md](./blocks/ICON-BUTTON.md) - Buttons with icons
 - [ICON-LIST.md](./blocks/ICON-LIST.md) - Lists with custom icons
 
-**Counter Blocks (2):**
-- [COUNTER-GROUP.md](./blocks/COUNTER-GROUP.md) - Animated statistics
-- [PROGRESS-BAR.md](./blocks/PROGRESS-BAR.md) - Animated progress indicators
-
-**Content/UI Blocks (5):**
+**Content/UI Blocks (7):**
 - [CARD.md](./blocks/CARD.md) - Content cards with layouts
 - [PILL.md](./blocks/PILL.md) - Inline badges and tags
 - [DIVIDER.md](./blocks/DIVIDER.md) - Content separators
 - [COUNTDOWN-TIMER.md](./blocks/COUNTDOWN-TIMER.md) - Live countdowns
 - [BLOBS.md](./blocks/BLOBS.md) - Organic animated shapes
+- [BREADCRUMBS.md](./blocks/BREADCRUMBS.md) - Navigation breadcrumbs with Schema.org
+- [TABLE-OF-CONTENTS.md](./blocks/TABLE-OF-CONTENTS.md) - Auto-generated TOC from headings
 
 **Utility Blocks (3):**
 - [MAP.md](./blocks/MAP.md) - Interactive maps (OSM/Google)
@@ -110,15 +114,18 @@ User-facing documentation for all 25 blocks:
 **Forms (1):**
 - [FORM-BUILDER.md](./blocks/FORM-BUILDER.md) - Complete form system (12 field types)
 
-**Special (1):**
-- [SCROLL-GALLERY.md](./blocks/SCROLL-GALLERY.md) - Scroll-based parallax gallery
-
 #### [extensions/](./extensions/)
-Documentation for all 11 block extensions that enhance any WordPress block:
+Documentation for all 14 block extensions that enhance any WordPress block:
 
 **Animation & Effects:**
 - [BLOCK-ANIMATIONS.md](./extensions/BLOCK-ANIMATIONS.md) - Entrance/exit animations
+- [ANIMATION.md](./extensions/ANIMATION.md) - Animation framework (advanced)
 - [REVEAL-CONTROL.md](./extensions/REVEAL-CONTROL.md) - Hover reveal effects
+
+**Scroll Effects:**
+- [SCROLL-PARALLAX.md](./extensions/SCROLL-PARALLAX.md) - Vertical/horizontal parallax
+- [TEXT-REVEAL.md](./extensions/TEXT-REVEAL.md) - Scroll-triggered text reveal
+- [EXPANDING-BACKGROUND.md](./extensions/EXPANDING-BACKGROUND.md) - Scroll-driven expanding backgrounds
 
 **Layout & Positioning:**
 - [STICKY-HEADER.md](./extensions/STICKY-HEADER.md) - Sticky header behavior
@@ -133,7 +140,6 @@ Documentation for all 11 block extensions that enhance any WordPress block:
 - [RESPONSIVE-VISIBILITY.md](./extensions/RESPONSIVE-VISIBILITY.md) - Device-based visibility
 - [CUSTOM-CSS.md](./extensions/CUSTOM-CSS.md) - Custom CSS per block
 - [TEXT-ALIGNMENT-INHERITANCE.md](./extensions/TEXT-ALIGNMENT-INHERITANCE.md) - Alignment inheritance
-- [ANIMATION.md](./extensions/ANIMATION.md) - Animation framework (advanced)
 
 #### [compliance/](./compliance/)
 Accessibility and compliance documentation:
@@ -223,7 +229,7 @@ Complete contribution guide and workflow:
 
 **When to use**: Ready to contribute code or submitting a pull request.
 
-#### [AI-ASSISTED-DEVELOPMENT.md](./AI-ASSISTED-DEVELOPMENT.md)
+#### [AI-ASSISTED-DEVELOPMENT.md](./guides/AI-ASSISTED-DEVELOPMENT.md)
 Complete guide to AI-assisted development (how this plugin was built):
 - **Why AI-assisted development**: Benefits and use cases
 - **Getting started with Claude Code**: Installation and setup
@@ -302,24 +308,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 ### Specialized Guides
 
-#### [FSE-COMPATIBILITY-GUIDE.md](./FSE-COMPATIBILITY-GUIDE.md)
-Full Site Editing compatibility requirements:
+#### [WORDPRESS-BLOCK-EDITOR-BEST-PRACTICES.md](./guides/WORDPRESS-BLOCK-EDITOR-BEST-PRACTICES.md)
+WordPress block editor and FSE compatibility:
 - Block.json configuration
 - Supports properties
 - Testing checklist
 - Pattern creation
-
-#### [REFACTORING-GUIDE.md](./REFACTORING-GUIDE.md)
-File structure and refactoring patterns:
-- 300-line file size limit
-- Component extraction strategies
-- Real-world examples with ROI
-
-#### [EDITOR-STYLING-GUIDE.md](./EDITOR-STYLING-GUIDE.md)
-Editor styling best practices:
-- Declarative styling patterns
-- useInnerBlocksProps usage
-- :where() specificity patterns
 
 #### [BLOCK-CONTROLS-ORGANIZATION.md](./guides/BLOCK-CONTROLS-ORGANIZATION.md)
 Inspector controls organization:
@@ -327,17 +321,11 @@ Inspector controls organization:
 - Block Supports usage
 - Panel structure
 
-#### [BLOCK-SUPPORTS-AUDIT.md](./BLOCK-SUPPORTS-AUDIT.md)
-Block Supports optimization audit:
-- Current support usage across all blocks
-- Opportunities for improvement
-- Migration patterns
-
 ## 🎯 Common Tasks
 
 ### Creating a New Block
 1. Copy [BLOCK-TEMPLATE-EDIT.js](./templates/BLOCK-TEMPLATE-EDIT.js) to `src/blocks/{block-name}/edit.js`
-2. Update block.json with proper supports (see [FSE-COMPATIBILITY-GUIDE.md](./FSE-COMPATIBILITY-GUIDE.md))
+2. Update block.json with proper supports (see [WordPress Block Editor Best Practices](./guides/WORDPRESS-BLOCK-EDITOR-BEST-PRACTICES.md))
 3. Implement save.js matching edit.js structure
 4. Add color controls using ColorGradientSettingsDropdown pattern
 5. Test in editor and frontend
@@ -358,29 +346,27 @@ See [BLOCK-TEMPLATE-EDIT.js](./templates/BLOCK-TEMPLATE-EDIT.js) for complete ex
 
 ### Refactoring Large Files
 1. Check file line count: `wc -l src/blocks/{block-name}/edit.js`
-2. If >300 lines, follow [REFACTORING-GUIDE.md](./REFACTORING-GUIDE.md)
+2. If >300 lines, extract components and utilities
 3. Extract components into `components/` directory
 4. Extract utilities into `utils/` directory
 5. Keep index.js focused on registration only
 
-## 📊 Project Statistics (2025-11-08)
+## 📊 Project Statistics
 
 ### Block Count
-- **Total blocks**: 41
-- **Container blocks**: 3 (Flex, Grid, Stack)
-- **Form blocks**: 11 (Form Builder + 10 field types)
-- **Content blocks**: 27
+- **Total blocks**: 48 (across 6 categories)
+- **Container blocks**: 3 (Row, Section, Grid)
+- **Form blocks**: 13 (Form Builder + 12 field types)
+- **Interactive blocks**: 12 (Accordion, Tabs, Slider, Flip Card, Reveal, Scroll Accordion, Image Accordion, Counter Group, Progress Bar, Scroll Marquee, Comparison Table, Timeline)
+- **Content/UI blocks**: 10 (Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown Timer, Blobs, Breadcrumbs, Table of Contents)
+- **Modal blocks**: 2 (Modal, Modal Trigger)
+- **Location blocks**: 1 (Map)
+- **Extensions**: 14
 
 ### Code Quality
-- **Block Supports adoption**: 93% (38/41 blocks)
-- **Color controls**: 100% modern (13/13 blocks using ColorGradientSettingsDropdown)
-- **Refactored blocks**: 4 (Container, Counter, Icon, Icon List)
-- **Average file size reduction**: 66% (after refactoring)
-
-### Recent Migrations
-- **2025-11-08**: All 13 blocks migrated from PanelColorSettings to ColorGradientSettingsDropdown
-- **Blocks affected**: Icon List, Counter, Progress Bar, Counter Group, Countdown Timer, Tabs, Grid, Stack, Flex, Form Builder, Blobs, Slider, Icon Button
-- **Result**: Zero PanelColorSettings instances remaining in codebase
+- **Color controls**: 100% modern (all blocks using ColorGradientSettingsDropdown)
+- **Zero PanelColorSettings instances** remaining in codebase
+- **File size target**: < 300 lines per file
 
 ## 🔍 Finding Information
 
@@ -391,29 +377,29 @@ See [BLOCK-TEMPLATE-EDIT.js](./templates/BLOCK-TEMPLATE-EDIT.js) for complete ex
 → [BEST-PRACTICES-SUMMARY.md](./guides/BEST-PRACTICES-SUMMARY.md) or [BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md](./guides/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md)
 
 ### "How do I make my block FSE-compatible?"
-→ [FSE-COMPATIBILITY-GUIDE.md](./FSE-COMPATIBILITY-GUIDE.md)
+→ [WordPress Block Editor Best Practices](./guides/WORDPRESS-BLOCK-EDITOR-BEST-PRACTICES.md)
 
 ### "My file is too large, how do I refactor?"
-→ [REFACTORING-GUIDE.md](./REFACTORING-GUIDE.md)
+→ [Best Practices Summary](./guides/BEST-PRACTICES-SUMMARY.md) (see file size and extraction patterns)
 
 ### "Should I use Block Supports or custom controls?"
-→ [BLOCK-CONTROLS-ORGANIZATION.md](./guides/BLOCK-CONTROLS-ORGANIZATION.md) and [BLOCK-SUPPORTS-AUDIT.md](./BLOCK-SUPPORTS-AUDIT.md)
+→ [BLOCK-CONTROLS-ORGANIZATION.md](./guides/BLOCK-CONTROLS-ORGANIZATION.md)
 
 ## 🎓 Learning Path
 
 ### Beginner
 1. Read [BEST-PRACTICES-SUMMARY.md](./guides/BEST-PRACTICES-SUMMARY.md) - Critical rules
 2. Copy [BLOCK-TEMPLATE-EDIT.js](./templates/BLOCK-TEMPLATE-EDIT.js) - Build first block
-3. Read [FSE-COMPATIBILITY-GUIDE.md](./FSE-COMPATIBILITY-GUIDE.md) - Make it compatible
+3. Read [WordPress Block Editor Best Practices](./guides/WORDPRESS-BLOCK-EDITOR-BEST-PRACTICES.md) - Make it compatible
 
 ### Intermediate
 1. Read [BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md](./guides/BLOCK-DEVELOPMENT-BEST-PRACTICES-COMPREHENSIVE.md) - Deep understanding
 2. Review [BLOCK-CONTROLS-ORGANIZATION.md](./guides/BLOCK-CONTROLS-ORGANIZATION.md) - Better UX patterns
-3. Study [EDITOR-STYLING-GUIDE.md](./EDITOR-STYLING-GUIDE.md) - Proper styling
+3. Study [Design System](./guides/DESIGN-SYSTEM.md) - Proper styling
 
 ### Advanced
-1. Apply [REFACTORING-GUIDE.md](./REFACTORING-GUIDE.md) - Clean architecture
-2. Optimize with [BLOCK-SUPPORTS-AUDIT.md](./BLOCK-SUPPORTS-AUDIT.md) - Less code, better integration
+1. Review [Block Extension Strategy](./planning/BLOCK-EXTENSION-STRATEGY.md) - Extension architecture
+2. Study [Color Controls Pattern](./patterns/COLOR-CONTROLS-PATTERN.md) - Advanced patterns
 3. Contribute patterns back to [../.claude/CLAUDE.md](../.claude/CLAUDE.md)
 
 ## 📝 Contributing to Documentation
@@ -427,6 +413,6 @@ When you discover new patterns or best practices:
 
 ---
 
-**Last Updated**: 2025-11-19
+**Last Updated**: 2026-02-06
 **Plugin Version**: 1.4.1
 **WordPress Compatibility**: 6.7+
