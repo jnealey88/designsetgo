@@ -549,7 +549,7 @@ class Form_Handler {
 				break;
 
 			case 'url':
-				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) || ! preg_match( '/^https?:\/\//i', $value ) ) {
 					return new WP_Error(
 						'invalid_url',
 						__( 'Invalid URL.', 'designsetgo' )

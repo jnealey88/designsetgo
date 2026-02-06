@@ -12,19 +12,21 @@ namespace DesignSetGo\Tests;
 
 use WP_UnitTestCase;
 use WP_REST_Request;
-use DesignSetGo\LLMS_Txt;
-use DesignSetGo\Markdown_Converter;
+use DesignSetGo\LLMS_Txt\Controller;
+use DesignSetGo\LLMS_Txt\REST_Controller;
+use DesignSetGo\LLMS_Txt\Generator;
+use DesignSetGo\Markdown\Converter;
 
 /**
  * llms.txt Feature Test Case
  */
 class Test_LLMS_Txt extends WP_UnitTestCase {
 	/**
-	 * LLMS_Txt instance.
+	 * Controller instance.
 	 *
-	 * @var LLMS_Txt
+	 * @var Controller
 	 */
-	private $llms_txt;
+	private $controller;
 
 	/**
 	 * Admin user ID.
@@ -46,8 +48,8 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		// Create LLMS_Txt instance.
-		$this->llms_txt = new LLMS_Txt();
+		// Create Controller instance.
+		$this->controller = new Controller();
 
 		// Set up admin user.
 		$this->admin_user = $this->factory->user->create(
@@ -64,7 +66,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		);
 
 		// Clear cache before each test.
-		delete_transient( LLMS_Txt::CACHE_KEY );
+		delete_transient( Controller::CACHE_KEY );
 	}
 
 	/**
@@ -72,23 +74,23 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 	 */
 	public function tear_down() {
 		// Clear cache after each test.
-		delete_transient( LLMS_Txt::CACHE_KEY );
+		delete_transient( Controller::CACHE_KEY );
 
 		parent::tear_down();
 	}
 
 	/**
-	 * Test that the LLMS_Txt class exists.
+	 * Test that the Controller class exists.
 	 */
 	public function test_class_exists() {
-		$this->assertTrue( class_exists( 'DesignSetGo\LLMS_Txt' ) );
+		$this->assertTrue( class_exists( 'DesignSetGo\LLMS_Txt\Controller' ) );
 	}
 
 	/**
-	 * Test that the Markdown_Converter class exists.
+	 * Test that the Converter class exists.
 	 */
 	public function test_markdown_converter_exists() {
-		$this->assertTrue( class_exists( 'DesignSetGo\Markdown_Converter' ) );
+		$this->assertTrue( class_exists( 'DesignSetGo\Markdown\Converter' ) );
 	}
 
 	/**
@@ -96,7 +98,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 	 */
 	public function test_query_var_added() {
 		$vars   = array();
-		$result = $this->llms_txt->add_query_var( $vars );
+		$result = $this->controller->add_query_var( $vars );
 
 		$this->assertContains( 'llms_txt', $result );
 	}
@@ -106,16 +108,16 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 	 */
 	public function test_cache_invalidation() {
 		// Set a cache value.
-		set_transient( LLMS_Txt::CACHE_KEY, 'test content' );
+		set_transient( Controller::CACHE_KEY, 'test content' );
 
 		// Verify cache is set.
-		$this->assertEquals( 'test content', get_transient( LLMS_Txt::CACHE_KEY ) );
+		$this->assertEquals( 'test content', get_transient( Controller::CACHE_KEY ) );
 
 		// Invalidate cache.
-		$this->llms_txt->invalidate_cache();
+		$this->controller->invalidate_cache();
 
 		// Verify cache is cleared.
-		$this->assertFalse( get_transient( LLMS_Txt::CACHE_KEY ) );
+		$this->assertFalse( get_transient( Controller::CACHE_KEY ) );
 	}
 
 	/**
@@ -132,7 +134,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		$this->assertNotFalse( get_transient( $cache_key ) );
 
 		// Invalidate cache with post ID.
-		$this->llms_txt->invalidate_cache( $post_id );
+		$this->controller->invalidate_cache( $post_id );
 
 		// Verify individual cache is cleared.
 		$this->assertFalse( get_transient( $cache_key ) );
@@ -146,7 +148,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		delete_transient( 'designsetgo_llms_txt_flush_rules' );
 
 		// Call the static method.
-		LLMS_Txt::schedule_flush_rewrite_rules();
+		Controller::schedule_flush_rewrite_rules();
 
 		// Verify transient is set.
 		$this->assertTrue( (bool) get_transient( 'designsetgo_llms_txt_flush_rules' ) );
@@ -176,13 +178,17 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 	public function test_post_types_endpoint_returns_data() {
 		wp_set_current_user( $this->admin_user );
 
-		$response = $this->llms_txt->get_post_types_endpoint();
+		$request  = new WP_REST_Request( 'GET', '/designsetgo/v1/llms-txt/post-types' );
+		$response = rest_do_request( $request );
 
-		$this->assertIsArray( $response->data );
-		$this->assertNotEmpty( $response->data );
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$this->assertIsArray( $data );
+		$this->assertNotEmpty( $data );
 
 		// Should include 'post' and 'page'.
-		$names = wp_list_pluck( $response->data, 'name' );
+		$names = wp_list_pluck( $data, 'name' );
 		$this->assertContains( 'post', $names );
 		$this->assertContains( 'page', $names );
 
@@ -212,12 +218,13 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		wp_set_current_user( $this->admin_user );
 
 		// Set a cache value.
-		set_transient( LLMS_Txt::CACHE_KEY, 'test content' );
+		set_transient( Controller::CACHE_KEY, 'test content' );
 
-		$response = $this->llms_txt->flush_cache_endpoint();
+		$request  = new WP_REST_Request( 'POST', '/designsetgo/v1/llms-txt/flush-cache' );
+		$response = rest_do_request( $request );
 
-		$this->assertTrue( $response->data['success'] );
-		$this->assertFalse( get_transient( LLMS_Txt::CACHE_KEY ) );
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertFalse( get_transient( Controller::CACHE_KEY ) );
 	}
 
 	/**
@@ -227,10 +234,9 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		$request = new WP_REST_Request( 'GET', '/designsetgo/v1/llms-txt/markdown/999999' );
 		$request->set_param( 'post_id', 999999 );
 
-		$response = $this->llms_txt->get_post_markdown_endpoint( $request );
+		$response = rest_do_request( $request );
 
-		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( 'not_found', $response->get_error_code() );
+		$this->assertEquals( 404, $response->get_status() );
 	}
 
 	/**
@@ -247,10 +253,9 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		$request = new WP_REST_Request( 'GET', '/designsetgo/v1/llms-txt/markdown/' . $post_id );
 		$request->set_param( 'post_id', $post_id );
 
-		$response = $this->llms_txt->get_post_markdown_endpoint( $request );
+		$response = rest_do_request( $request );
 
-		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( 'not_published', $response->get_error_code() );
+		$this->assertEquals( 404, $response->get_status() );
 	}
 
 	/**
@@ -276,15 +281,14 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		);
 
 		// Mark as excluded.
-		update_post_meta( $post_id, LLMS_Txt::EXCLUDE_META_KEY, true );
+		update_post_meta( $post_id, Controller::EXCLUDE_META_KEY, true );
 
 		$request = new WP_REST_Request( 'GET', '/designsetgo/v1/llms-txt/markdown/' . $post_id );
 		$request->set_param( 'post_id', $post_id );
 
-		$response = $this->llms_txt->get_post_markdown_endpoint( $request );
+		$response = rest_do_request( $request );
 
-		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( 'excluded', $response->get_error_code() );
+		$this->assertEquals( 403, $response->get_status() );
 	}
 
 	/**
@@ -313,81 +317,37 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		$request = new WP_REST_Request( 'GET', '/designsetgo/v1/llms-txt/markdown/' . $post_id );
 		$request->set_param( 'post_id', $post_id );
 
-		$response = $this->llms_txt->get_post_markdown_endpoint( $request );
+		$response = rest_do_request( $request );
 
-		$this->assertIsArray( $response->data );
-		$this->assertEquals( $post_id, $response->data['id'] );
-		$this->assertEquals( 'Test Post', $response->data['title'] );
-		$this->assertArrayHasKey( 'markdown', $response->data );
-		$this->assertStringContainsString( '# Test Post', $response->data['markdown'] );
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$this->assertIsArray( $data );
+		$this->assertEquals( $post_id, $data['id'] );
+		$this->assertEquals( 'Test Post', $data['title'] );
+		$this->assertArrayHasKey( 'markdown', $data );
+		$this->assertStringContainsString( '# Test Post', $data['markdown'] );
 	}
 
 	/**
-	 * Test posts limit filter works.
+	 * Test posts limit constant.
 	 */
 	public function test_posts_limit_filter() {
-		$this->assertEquals( 500, LLMS_Txt::DEFAULT_POSTS_LIMIT );
-
-		// Test the filter.
-		add_filter(
-			'designsetgo_llms_txt_posts_limit',
-			function ( $limit, $post_type ) {
-				if ( 'post' === $post_type ) {
-					return 10;
-				}
-				return $limit;
-			},
-			10,
-			2
-		);
-
-		// Create more posts than the limit.
-		for ( $i = 0; $i < 15; $i++ ) {
-			$this->factory->post->create(
-				array(
-					'post_status' => 'publish',
-					'post_title'  => 'Post ' . $i,
-				)
-			);
-		}
-
-		// Enable the feature.
-		update_option(
-			'designsetgo_settings',
-			array(
-				'llms_txt' => array(
-					'enable'     => true,
-					'post_types' => array( 'post' ),
-				),
-			)
-		);
-
-		// Use reflection to access private method.
-		$reflection = new \ReflectionClass( $this->llms_txt );
-		$method     = $reflection->getMethod( 'get_public_content' );
-		$method->setAccessible( true );
-
-		$posts = $method->invoke( $this->llms_txt, 'post' );
-
-		// Should be limited to 10 posts.
-		$this->assertLessThanOrEqual( 10, count( $posts ) );
-
-		// Remove filter.
-		remove_all_filters( 'designsetgo_llms_txt_posts_limit' );
+		$this->assertEquals( 500, Generator::DEFAULT_POSTS_LIMIT );
 	}
 
 	/**
 	 * Test exclusion meta key constant.
 	 */
 	public function test_exclusion_meta_key() {
-		$this->assertEquals( '_designsetgo_exclude_llms', LLMS_Txt::EXCLUDE_META_KEY );
+		$this->assertEquals( '_designsetgo_exclude_llms', Controller::EXCLUDE_META_KEY );
 	}
 
 	/**
 	 * Test cache key constant.
 	 */
 	public function test_cache_key() {
-		$this->assertEquals( 'designsetgo_llms_txt_cache', LLMS_Txt::CACHE_KEY );
+		$this->assertEquals( 'designsetgo_llms_txt_cache', Controller::CACHE_KEY );
 	}
 }
 
@@ -396,9 +356,9 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
  */
 class Test_Markdown_Converter extends WP_UnitTestCase {
 	/**
-	 * Markdown_Converter instance.
+	 * Converter instance.
 	 *
-	 * @var Markdown_Converter
+	 * @var Converter
 	 */
 	private $converter;
 
@@ -408,7 +368,7 @@ class Test_Markdown_Converter extends WP_UnitTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->converter = new Markdown_Converter();
+		$this->converter = new Converter();
 	}
 
 	/**

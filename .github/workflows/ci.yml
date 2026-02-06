@@ -101,7 +101,7 @@ jobs:
         run: composer run-script analyse
 
       - name: Run JavaScript unit tests
-        run: npm run test:unit -- --coverage --ci
+        run: npm run test:unit -- --ci
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4

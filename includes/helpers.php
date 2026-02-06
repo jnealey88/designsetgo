@@ -139,7 +139,7 @@ function designsetgo_sanitize_css_color( $value ) {
 
 	// Allow CSS custom properties for theme integration (e.g., "var(--wp--preset--color--primary)").
 	// Only allow WordPress-style custom properties (--wp--*, --dsgo--*).
-	if ( preg_match( '/^var\(\s*--(wp|dsg)--[\w\-]+\s*\)$/i', $value ) ) {
+	if ( preg_match( '/^var\(\s*--(wp|dsgo|dsg)--[\w\-]+\s*\)$/i', $value ) ) {
 		return $value;
 	}
 

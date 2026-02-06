@@ -172,7 +172,7 @@ class Test_Custom_CSS_Renderer extends WP_UnitTestCase {
 		$block         = array(
 			'blockName' => 'designsetgo/test',
 			'attrs'     => array(
-				'dsgCustomCSS' => 'selector { color: red; }',
+				'dsgoCustomCSS' => 'selector { color: red; }',
 			),
 		);
 
