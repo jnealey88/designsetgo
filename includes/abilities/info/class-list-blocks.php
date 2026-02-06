@@ -63,6 +63,19 @@ class List_Blocks extends Abstract_Ability {
 					'enum'        => array( 'all', 'layout', 'interactive', 'visual', 'dynamic' ),
 					'default'     => 'all',
 				),
+				'detail'   => array(
+					'type'        => 'string',
+					'description' => __( 'Level of attribute detail. "summary" returns type/default/enum only. "full" returns complete attribute definitions including minimum, maximum, nested properties, and items for arrays.', 'designsetgo' ),
+					'enum'        => array( 'summary', 'full' ),
+					'default'     => 'summary',
+				),
+				'blocks'   => array(
+					'type'        => 'array',
+					'description' => __( 'Filter to specific block names (e.g., ["designsetgo/section", "designsetgo/row"]). When combined with detail "full", limits verbose output to only the requested blocks.', 'designsetgo' ),
+					'items'       => array(
+						'type' => 'string',
+					),
+				),
 			),
 			'additionalProperties' => false,
 		);
@@ -134,10 +147,23 @@ class List_Blocks extends Abstract_Ability {
 	 * @return array<string, mixed>
 	 */
 	public function execute( array $input ): array {
-		$category = $input['category'] ?? 'all';
+		$category      = $input['category'] ?? 'all';
+		$detail        = $input['detail'] ?? 'summary';
+		$block_filter  = $input['blocks'] ?? array();
+		$use_full      = 'full' === $detail;
 
 		// Get all DesignSetGo blocks.
-		$all_blocks = $this->get_all_blocks();
+		$all_blocks = $this->get_all_blocks( $use_full );
+
+		// Filter by specific block names if provided.
+		if ( ! empty( $block_filter ) ) {
+			$all_blocks = array_filter(
+				$all_blocks,
+				function ( $block ) use ( $block_filter ) {
+					return in_array( $block['name'], $block_filter, true );
+				}
+			);
+		}
 
 		// Filter by category if specified.
 		if ( 'all' !== $category ) {
@@ -161,9 +187,10 @@ class List_Blocks extends Abstract_Ability {
 	 * Dynamically retrieves blocks from the WordPress block registry,
 	 * ensuring the list is always up-to-date with registered blocks.
 	 *
+	 * @param bool $full_detail Whether to include full attribute definitions.
 	 * @return array<int, array<string, mixed>>
 	 */
-	private function get_all_blocks(): array {
+	private function get_all_blocks( bool $full_detail = false ): array {
 		$registry = \WP_Block_Type_Registry::get_instance();
 		$blocks   = array();
 
@@ -173,16 +200,23 @@ class List_Blocks extends Abstract_Ability {
 				continue;
 			}
 
-			$blocks[] = array(
+			$block_data = array(
 				'name'        => $block_type->name,
 				'title'       => '' !== $block_type->title ? $block_type->title : $this->generate_title_from_name( $block_type->name ),
 				'description' => $block_type->description,
 				'category'    => $this->normalize_category( $block_type->category ?? 'designsetgo' ),
-				'attributes'  => $this->format_attributes( $block_type->attributes ?? array() ),
 				'supports'    => $this->format_supports( $block_type->supports ?? array() ),
 				'parent'      => $block_type->parent ?? null,
 				'icon'        => is_string( $block_type->icon ) ? $block_type->icon : null,
 			);
+
+			if ( $full_detail ) {
+				$block_data['attributes'] = $this->format_attributes_full( $block_type->attributes ?? array() );
+			} else {
+				$block_data['attributes'] = $this->format_attributes( $block_type->attributes ?? array() );
+			}
+
+			$blocks[] = $block_data;
 		}
 
 		// Sort blocks by name for consistent ordering.
@@ -276,6 +310,54 @@ class List_Blocks extends Abstract_Ability {
 
 			if ( isset( $definition['enum'] ) ) {
 				$attr['enum'] = $definition['enum'];
+			}
+
+			$formatted[ $name ] = $attr;
+		}
+
+		return $formatted;
+	}
+
+	/**
+	 * Format block attributes with full detail for API output.
+	 *
+	 * Returns complete attribute definitions from the block registry including
+	 * minimum, maximum, nested properties, items for arrays, and all other
+	 * schema metadata. This provides agents with full knowledge of valid values.
+	 *
+	 * @param array<string, mixed> $attributes Block attributes from registry.
+	 * @return array<string, mixed> Full attribute definitions.
+	 */
+	private function format_attributes_full( array $attributes ): array {
+		$formatted = array();
+
+		foreach ( $attributes as $name => $definition ) {
+			$attr = array(
+				'type' => $definition['type'] ?? 'string',
+			);
+
+			// Include all available schema properties.
+			$schema_keys = array(
+				'default',
+				'enum',
+				'minimum',
+				'maximum',
+				'minLength',
+				'maxLength',
+				'pattern',
+				'items',
+				'properties',
+				'required',
+				'format',
+				'source',
+				'selector',
+				'attribute',
+			);
+
+			foreach ( $schema_keys as $key ) {
+				if ( isset( $definition[ $key ] ) ) {
+					$attr[ $key ] = $definition[ $key ];
+				}
 			}
 
 			$formatted[ $name ] = $attr;
