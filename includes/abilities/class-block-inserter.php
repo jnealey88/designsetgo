@@ -135,6 +135,11 @@ class Block_Inserter {
 		// Coerce attribute types and normalize defaults.
 		$attrs = self::coerce_attribute_types( $block_name, $attributes );
 		$attrs = self::normalize_block_attributes( $block_name, $attrs );
+
+		// Convert CSS var() syntax to WordPress shorthand in style attribute.
+		if ( isset( $attrs['style'] ) && is_array( $attrs['style'] ) ) {
+			$attrs['style'] = self::convert_style_vars( $attrs['style'] );
+		}
 		if ( isset( $attrs['content'] ) && 0 === strpos( $block_name, 'core/' ) ) {
 			$content = $attrs['content'];
 			unset( $attrs['content'] );
@@ -186,6 +191,10 @@ class Block_Inserter {
 			}
 		}
 
+		// Strip attributes that match block.json defaults so serialize_block
+		// doesn't include them in the block comment (WordPress omits defaults).
+		$attrs = self::strip_default_attributes( $block_name, $attrs );
+
 		return array(
 			'blockName'    => $block_name,
 			'attrs'        => $attrs,
@@ -211,9 +220,10 @@ class Block_Inserter {
 
 		switch ( $block_name ) {
 			case 'designsetgo/section':
-				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : false;
+				$constrain_width = isset( $attributes['constrainWidth'] ) ? $attributes['constrainWidth'] : true;
 				$content_width   = isset( $attributes['contentWidth'] ) ? $attributes['contentWidth'] : '';
 				$align           = isset( $attributes['align'] ) ? $attributes['align'] : 'full';
+				$tag_name        = isset( $attributes['tagName'] ) && $attributes['tagName'] ? $attributes['tagName'] : 'div';
 
 				// Build outer classes (order: wp-block-*, alignX, dsgo-*).
 				$outer_class_parts = array( 'wp-block-designsetgo-section' );
@@ -227,16 +237,28 @@ class Block_Inserter {
 					$outer_class_parts[] = 'dsgo-no-width-constraint';
 				}
 
-				// Default padding from block supports.
-				$default_padding = 'padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)';
+				// Process block support styles (colors, padding, etc.).
+				$style          = isset( $attributes['style'] ) ? $attributes['style'] : array();
+				$support_result = self::get_block_support_styles( $style );
+				$outer_class_parts = array_merge( $outer_class_parts, $support_result['classes'] );
+
+				// Build outer inline styles: block support styles first, then default padding as fallback.
+				$outer_styles = $support_result['styles'];
+				if ( empty( $style['spacing']['padding'] ) ) {
+					// Use default padding when none specified in style.
+					$outer_styles[] = 'padding-top:var(--wp--preset--spacing--50)';
+					$outer_styles[] = 'padding-right:var(--wp--preset--spacing--30)';
+					$outer_styles[] = 'padding-bottom:var(--wp--preset--spacing--50)';
+					$outer_styles[] = 'padding-left:var(--wp--preset--spacing--30)';
+				}
 
 				// Inner div always has max-width/margin for content centering.
 				$max_width   = $content_width ? $content_width : 'var(--wp--style--global--content-size, 1140px)';
 				$inner_style = 'max-width:' . esc_attr( $max_width ) . ';margin-left:auto;margin-right:auto';
 
 				return array(
-					'opening' => '<div class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( $default_padding ) . '"><div class="dsgo-stack__inner" style="' . esc_attr( $inner_style ) . '">',
-					'closing' => '</div></div>',
+					'opening' => '<' . esc_attr( $tag_name ) . ' class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . implode( ';', $outer_styles ) . '"><div class="dsgo-stack__inner" style="' . esc_attr( $inner_style ) . '">',
+					'closing' => '</div></' . esc_attr( $tag_name ) . '>',
 				);
 
 			case 'designsetgo/row':
@@ -2469,6 +2491,150 @@ class Block_Inserter {
 		}
 
 		return $attributes;
+	}
+
+	/**
+	 * Strip attributes that match their block.json defaults.
+	 *
+	 * WordPress's block serialization omits attributes that equal the
+	 * registered default. This method mirrors that behavior so inserted
+	 * blocks produce the same comment markup as the editor.
+	 *
+	 * @param string               $block_name Block name.
+	 * @param array<string, mixed> $attributes Block attributes.
+	 * @return array<string, mixed> Attributes with defaults removed.
+	 */
+	private static function strip_default_attributes( string $block_name, array $attributes ): array {
+		$registry   = \WP_Block_Type_Registry::get_instance();
+		$block_type = $registry->get_registered( $block_name );
+
+		if ( ! $block_type || empty( $block_type->attributes ) ) {
+			return $attributes;
+		}
+
+		foreach ( $block_type->attributes as $attr_name => $attr_def ) {
+			if ( ! array_key_exists( $attr_name, $attributes ) || ! array_key_exists( 'default', $attr_def ) ) {
+				continue;
+			}
+			// phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual -- intentional loose comparison for type-coerced defaults.
+			if ( $attributes[ $attr_name ] == $attr_def['default'] ) {
+				unset( $attributes[ $attr_name ] );
+			}
+		}
+
+		return $attributes;
+	}
+
+	/**
+	 * Convert CSS var() syntax to WordPress shorthand for block comment serialization.
+	 *
+	 * WordPress stores preset values as `var:preset|spacing|60` in block comments,
+	 * which gets converted to `var(--wp--preset--spacing--60)` at render time.
+	 *
+	 * @param string $value CSS value that may contain var(--wp--preset--*) syntax.
+	 * @return string Converted value using WordPress shorthand, or original value.
+	 */
+	private static function css_var_to_wp_shorthand( string $value ): string {
+		if ( preg_match( '/^var\(--wp--preset--([a-zA-Z]+)--(.+)\)$/', $value, $matches ) ) {
+			return 'var:preset|' . $matches[1] . '|' . $matches[2];
+		}
+		return $value;
+	}
+
+	/**
+	 * Convert WordPress shorthand var:preset|*|* to CSS var() syntax for inline styles.
+	 *
+	 * @param string $value WordPress shorthand value.
+	 * @return string CSS var() value.
+	 */
+	private static function wp_shorthand_to_css_var( string $value ): string {
+		if ( preg_match( '/^var:preset\|([a-zA-Z]+)\|(.+)$/', $value, $matches ) ) {
+			return 'var(--wp--preset--' . $matches[1] . '--' . $matches[2] . ')';
+		}
+		return $value;
+	}
+
+	/**
+	 * Recursively convert CSS var() syntax to WordPress shorthand in style arrays.
+	 *
+	 * @param array<string, mixed> $style_array Style attribute array.
+	 * @return array<string, mixed> Converted style array.
+	 */
+	private static function convert_style_vars( array $style_array ): array {
+		foreach ( $style_array as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$style_array[ $key ] = self::convert_style_vars( $value );
+			} elseif ( is_string( $value ) ) {
+				$style_array[ $key ] = self::css_var_to_wp_shorthand( $value );
+			}
+		}
+		return $style_array;
+	}
+
+	/**
+	 * Extract block support classes and inline styles from the style attribute.
+	 *
+	 * Processes color, spacing, and other block supports into CSS classes and
+	 * inline style strings, mirroring what useBlockProps.save() does in JS.
+	 *
+	 * @param array<string, mixed> $style Style attribute from block.
+	 * @return array{classes: string[], styles: string[]} Classes and style declarations.
+	 */
+	private static function get_block_support_styles( array $style ): array {
+		$classes = array();
+		$styles  = array();
+
+		// Color support.
+		if ( ! empty( $style['color']['background'] ) ) {
+			$classes[] = 'has-background';
+			$styles[]  = 'background-color:' . esc_attr( $style['color']['background'] );
+		}
+		if ( ! empty( $style['color']['text'] ) ) {
+			$classes[] = 'has-text-color';
+			$styles[]  = 'color:' . esc_attr( $style['color']['text'] );
+		}
+		if ( ! empty( $style['color']['gradient'] ) ) {
+			$classes[] = 'has-background';
+			$styles[]  = 'background:' . esc_attr( $style['color']['gradient'] );
+		}
+
+		// Spacing support - padding.
+		if ( ! empty( $style['spacing']['padding'] ) ) {
+			$padding = $style['spacing']['padding'];
+			if ( ! empty( $padding['top'] ) ) {
+				$styles[] = 'padding-top:' . esc_attr( self::wp_shorthand_to_css_var( $padding['top'] ) );
+			}
+			if ( ! empty( $padding['right'] ) ) {
+				$styles[] = 'padding-right:' . esc_attr( self::wp_shorthand_to_css_var( $padding['right'] ) );
+			}
+			if ( ! empty( $padding['bottom'] ) ) {
+				$styles[] = 'padding-bottom:' . esc_attr( self::wp_shorthand_to_css_var( $padding['bottom'] ) );
+			}
+			if ( ! empty( $padding['left'] ) ) {
+				$styles[] = 'padding-left:' . esc_attr( self::wp_shorthand_to_css_var( $padding['left'] ) );
+			}
+		}
+
+		// Spacing support - margin.
+		if ( ! empty( $style['spacing']['margin'] ) ) {
+			$margin = $style['spacing']['margin'];
+			if ( ! empty( $margin['top'] ) ) {
+				$styles[] = 'margin-top:' . esc_attr( self::wp_shorthand_to_css_var( $margin['top'] ) );
+			}
+			if ( ! empty( $margin['bottom'] ) ) {
+				$styles[] = 'margin-bottom:' . esc_attr( self::wp_shorthand_to_css_var( $margin['bottom'] ) );
+			}
+		}
+
+		// Dimensions support.
+		if ( ! empty( $style['dimensions']['minHeight'] ) ) {
+			$styles[] = 'min-height:' . esc_attr( self::wp_shorthand_to_css_var( $style['dimensions']['minHeight'] ) );
+		}
+
+		return array(
+			'classes' => $classes,
+			'styles'  => $styles,
+		);
 	}
 
 	/**
