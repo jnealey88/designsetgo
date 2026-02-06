@@ -73,6 +73,9 @@ function designsetgo_activate() {
 	// Uses transient-based approach since rewrite rules aren't registered yet.
 	require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-controller.php';
 	\DesignSetGo\LLMS_Txt\Controller::schedule_flush_rewrite_rules();
+
+	// Clear cached pattern file list so new/changed patterns are picked up.
+	\DesignSetGo\Patterns\Loader::clear_cache();
 }
 register_activation_hook( __FILE__, 'DesignSetGo\designsetgo_activate' );
 

@@ -15,14 +15,90 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Patterns Loader Class - Registers block patterns
+ *
+ * Performance optimizations:
+ * - Patterns only register on admin/REST/CLI requests (never on front-end page loads).
+ * - Pattern file paths are cached in a transient to avoid repeated filesystem scans.
  */
 class Loader {
+
+	/**
+	 * Transient name for caching pattern file paths.
+	 *
+	 * @var string
+	 */
+	const CACHE_TRANSIENT = 'dsgo_pattern_files';
+
+	/**
+	 * Allowed pattern category directory names.
+	 *
+	 * @var array
+	 */
+	const ALLOWED_CATEGORIES = array(
+		'homepage',
+		'hero',
+		'features',
+		'pricing',
+		'testimonials',
+		'team',
+		'cta',
+		'content',
+		'faq',
+		'modal',
+		'gallery',
+		'contact',
+	);
+
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
+		// Patterns are only used in the block editor. Skip registration entirely
+		// on front-end page loads to avoid unnecessary filesystem I/O and memory usage.
+		if ( ! self::is_editor_request() ) {
+			return;
+		}
+
 		add_action( 'init', array( $this, 'register_pattern_categories' ) );
 		add_action( 'init', array( $this, 'register_patterns' ) );
+	}
+
+	/**
+	 * Check if the current request may need block patterns.
+	 *
+	 * Returns true for admin pages (classic editor, Site Editor), REST API
+	 * requests (block editor fetches patterns via REST), and WP-CLI.
+	 *
+	 * @return bool
+	 */
+	private static function is_editor_request() {
+		// Admin requests (editor page loads, Site Editor).
+		if ( is_admin() ) {
+			return true;
+		}
+
+		// REST API — constant may already be set by another plugin or mu-plugin.
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return true;
+		}
+
+		// WP-CLI commands may need pattern data.
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			return true;
+		}
+
+		// Detect REST API requests by URL path. The REST_REQUEST constant is not
+		// defined until parse_request, which fires after the constructor runs.
+		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+			$rest_prefix = rest_get_url_prefix();
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only used for string comparison, not output.
+			$request_uri = wp_unslash( $_SERVER['REQUEST_URI'] );
+			if ( false !== strpos( $request_uri, '/' . $rest_prefix . '/' ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -59,34 +135,74 @@ class Loader {
 	}
 
 	/**
-	 * Register all patterns.
+	 * Get the cached map of category => relative file paths.
+	 *
+	 * Uses a version-keyed transient so the cache auto-invalidates on plugin
+	 * updates. In WP_DEBUG mode the cache is bypassed for development convenience.
+	 *
+	 * @return array<string, string[]> Associative array of category => relative paths.
 	 */
-	public function register_patterns() {
-		$patterns_dir = DESIGNSETGO_PATH . 'patterns/';
+	private function get_pattern_file_map() {
+		// Skip cache in debug mode so new/removed patterns are picked up immediately.
+		if ( ! ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ) {
+			$cached = get_transient( self::CACHE_TRANSIENT );
 
-		if ( ! file_exists( $patterns_dir ) ) {
-			return;
+			// Validate that the cached data matches the current plugin version.
+			if ( is_array( $cached ) && isset( $cached['version'] ) && DESIGNSETGO_VERSION === $cached['version'] ) {
+				return $cached['map'];
+			}
 		}
 
-		// Only scan expected/allowed pattern categories.
-		$allowed_categories = array( 'homepage', 'hero', 'features', 'pricing', 'testimonials', 'team', 'cta', 'content', 'faq', 'modal', 'gallery', 'contact' );
+		$patterns_dir = DESIGNSETGO_PATH . 'patterns/';
+		$file_map     = array();
 
-		foreach ( $allowed_categories as $category ) {
+		if ( ! file_exists( $patterns_dir ) ) {
+			return $file_map;
+		}
+
+		foreach ( self::ALLOWED_CATEGORIES as $category ) {
 			$category_dir = $patterns_dir . $category . '/';
 
-			// Skip if category directory doesn't exist.
 			if ( ! is_dir( $category_dir ) ) {
 				continue;
 			}
 
-			// Get pattern files from this specific category.
-			$pattern_files = glob( $category_dir . '*.php' );
+			$files = glob( $category_dir . '*.php' );
 
-			if ( ! $pattern_files ) {
-				continue;
+			if ( $files ) {
+				// Store paths relative to the patterns directory for portability.
+				$file_map[ $category ] = array_map(
+					static function ( $file ) use ( $patterns_dir ) {
+						return str_replace( $patterns_dir, '', $file );
+					},
+					$files
+				);
 			}
+		}
 
-			foreach ( $pattern_files as $file ) {
+		set_transient(
+			self::CACHE_TRANSIENT,
+			array(
+				'version' => DESIGNSETGO_VERSION,
+				'map'     => $file_map,
+			),
+			DAY_IN_SECONDS
+		);
+
+		return $file_map;
+	}
+
+	/**
+	 * Register all patterns.
+	 */
+	public function register_patterns() {
+		$patterns_dir = DESIGNSETGO_PATH . 'patterns/';
+		$file_map     = $this->get_pattern_file_map();
+
+		foreach ( $file_map as $category => $relative_paths ) {
+			foreach ( $relative_paths as $relative_path ) {
+				$file = $patterns_dir . $relative_path;
+
 				// Security: Verify file is within expected directory (prevent directory traversal).
 				$real_file = realpath( $file );
 				$real_dir  = realpath( $patterns_dir );
@@ -108,5 +224,14 @@ class Loader {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Clear the pattern file cache.
+	 *
+	 * Should be called on plugin activation to ensure a fresh scan.
+	 */
+	public static function clear_cache() {
+		delete_transient( self::CACHE_TRANSIENT );
 	}
 }
