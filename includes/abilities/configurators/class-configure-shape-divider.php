@@ -152,7 +152,7 @@ class Configure_Shape_Divider extends Abstract_Ability {
 					'default'     => false,
 				),
 			),
-			'required'             => array( 'post_id', 'block_index', 'shape' ),
+			'required'             => array( 'post_id', 'shape' ),
 			'additionalProperties' => false,
 		);
 	}
@@ -213,6 +213,34 @@ class Configure_Shape_Divider extends Abstract_Ability {
 			);
 		}
 
+		// Validate color values.
+		if ( null !== $color && ! $this->is_valid_color( $color ) ) {
+			return $this->error(
+				'validation_failed',
+				__( 'Invalid color value. Must be a hex color (#rgb or #rrggbb), rgb/rgba function, hsl/hsla function, or CSS variable (var(--...)).', 'designsetgo' )
+			);
+		}
+		if ( null !== $bg_color && ! $this->is_valid_color( $bg_color ) ) {
+			return $this->error(
+				'validation_failed',
+				__( 'Invalid backgroundColor value. Must be a hex color (#rgb or #rrggbb), rgb/rgba function, hsl/hsla function, or CSS variable (var(--...)).', 'designsetgo' )
+			);
+		}
+
+		// Validate height/width ranges and return errors instead of silently clamping.
+		if ( null !== $height && ( $height < 0 || $height > 300 ) ) {
+			return $this->error(
+				'validation_failed',
+				__( 'Height must be between 0 and 300 pixels.', 'designsetgo' )
+			);
+		}
+		if ( null !== $width && ( $width < 50 || $width > 200 ) ) {
+			return $this->error(
+				'validation_failed',
+				__( 'Width must be between 50 and 200 percent.', 'designsetgo' )
+			);
+		}
+
 		// Validate targeting.
 		if ( null === $block_index && empty( $block_client_id ) ) {
 			return $this->error(
@@ -254,6 +282,46 @@ class Configure_Shape_Divider extends Abstract_Ability {
 	}
 
 	/**
+	 * Validate a color value.
+	 *
+	 * Accepts hex colors (#rgb, #rrggbb, #rrggbbaa), rgb/rgba/hsl/hsla functions,
+	 * CSS variables (var(--...)), and named CSS colors. Rejects any value that
+	 * could contain CSS injection payloads.
+	 *
+	 * @param string $color Color value to validate.
+	 * @return bool Whether the color is valid.
+	 */
+	private function is_valid_color( string $color ): bool {
+		// Hex colors: #rgb, #rrggbb, #rrggbbaa.
+		if ( preg_match( '/^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $color ) ) {
+			return true;
+		}
+
+		// CSS functions: rgb(), rgba(), hsl(), hsla().
+		if ( preg_match( '/^(rgb|rgba|hsl|hsla)\(\s*[\d.,\s%]+\s*\)$/', $color ) ) {
+			return true;
+		}
+
+		// CSS variables: var(--custom-property) or var(--wp--preset--color--name).
+		if ( preg_match( '/^var\(\s*--[\w-]+(\s*,\s*[^)]+)?\s*\)$/', $color ) ) {
+			return true;
+		}
+
+		// Named CSS colors (basic subset commonly used).
+		$named_colors = array(
+			'transparent', 'currentcolor', 'inherit',
+			'black', 'white', 'red', 'green', 'blue', 'yellow', 'orange', 'purple',
+			'gray', 'grey', 'navy', 'teal', 'aqua', 'maroon', 'olive', 'lime',
+			'fuchsia', 'silver',
+		);
+		if ( in_array( strtolower( $color ), $named_colors, true ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Build the shape divider block attributes from user-friendly params.
 	 *
 	 * Maps position + shape params to the actual attribute names
@@ -292,19 +360,23 @@ class Configure_Shape_Divider extends Abstract_Ability {
 		}
 
 		foreach ( $positions as $pos ) {
-			$attributes[ 'shapeDivider' . $pos ] = sanitize_text_field( $shape );
+			// Shape name is already validated against VALID_SHAPES enum.
+			$attributes[ 'shapeDivider' . $pos ] = $shape;
 
 			if ( null !== $color ) {
-				$attributes[ 'shapeDivider' . $pos . 'Color' ] = sanitize_text_field( $color );
+				// Color already validated by is_valid_color() - use wp_strip_all_tags as belt-and-suspenders.
+				$attributes[ 'shapeDivider' . $pos . 'Color' ] = wp_strip_all_tags( $color );
 			}
 			if ( null !== $bg_color ) {
-				$attributes[ 'shapeDivider' . $pos . 'BackgroundColor' ] = sanitize_text_field( $bg_color );
+				$attributes[ 'shapeDivider' . $pos . 'BackgroundColor' ] = wp_strip_all_tags( $bg_color );
 			}
 			if ( null !== $height ) {
-				$attributes[ 'shapeDivider' . $pos . 'Height' ] = max( 0, min( 300, $height ) );
+				// Already range-validated in execute().
+				$attributes[ 'shapeDivider' . $pos . 'Height' ] = $height;
 			}
 			if ( null !== $width ) {
-				$attributes[ 'shapeDivider' . $pos . 'Width' ] = max( 50, min( 200, $width ) );
+				// Already range-validated in execute().
+				$attributes[ 'shapeDivider' . $pos . 'Width' ] = $width;
 			}
 
 			$attributes[ 'shapeDivider' . $pos . 'FlipX' ] = $flip_x;

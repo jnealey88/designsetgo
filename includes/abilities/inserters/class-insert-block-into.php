@@ -204,6 +204,11 @@ class Insert_Block_Into extends Abstract_Ability {
 			$attributes = Block_Configurator::sanitize_attributes( $attributes );
 		}
 
+		// Recursively sanitize inner blocks attributes.
+		if ( ! empty( $inner_blocks ) ) {
+			$inner_blocks = $this->sanitize_inner_blocks( $inner_blocks );
+		}
+
 		// Delegate to Block_Configurator's insert_inner_block method.
 		return Block_Configurator::insert_inner_block(
 			$post_id,
@@ -213,5 +218,41 @@ class Insert_Block_Into extends Abstract_Ability {
 			$inner_blocks,
 			$position
 		);
+	}
+
+	/**
+	 * Recursively sanitize inner blocks and their attributes.
+	 *
+	 * Ensures all nested block attributes are properly sanitized to prevent
+	 * XSS via malicious attribute values in deeply nested structures.
+	 *
+	 * @param array<int, array<string, mixed>> $inner_blocks Inner blocks to sanitize.
+	 * @return array<int, array<string, mixed>> Sanitized inner blocks.
+	 */
+	private function sanitize_inner_blocks( array $inner_blocks ): array {
+		$sanitized = array();
+
+		foreach ( $inner_blocks as $block ) {
+			$clean_block = array();
+
+			// Sanitize block name.
+			if ( isset( $block['name'] ) ) {
+				$clean_block['name'] = sanitize_text_field( $block['name'] );
+			}
+
+			// Sanitize attributes.
+			if ( isset( $block['attributes'] ) && is_array( $block['attributes'] ) ) {
+				$clean_block['attributes'] = Block_Configurator::sanitize_attributes( $block['attributes'] );
+			}
+
+			// Recursively sanitize nested inner blocks.
+			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				$clean_block['innerBlocks'] = $this->sanitize_inner_blocks( $block['innerBlocks'] );
+			}
+
+			$sanitized[] = $clean_block;
+		}
+
+		return $sanitized;
 	}
 }

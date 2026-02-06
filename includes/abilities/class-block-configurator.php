@@ -371,6 +371,9 @@ class Block_Configurator {
 			);
 		}
 
+		// Sanitize attributes as defense-in-depth (callers should also sanitize).
+		$attributes = self::sanitize_attributes( $attributes );
+
 		// Parse blocks.
 		$blocks = parse_blocks( $post->post_content );
 
@@ -457,6 +460,9 @@ class Block_Configurator {
 		$modified = array();
 
 		foreach ( $blocks as $block ) {
+			// Only count blocks with a blockName (skip freeform/whitespace blocks
+			// which have null blockName). This matches get-post-blocks which also
+			// filters out null-blockName blocks, so indices stay consistent.
 			if ( ! empty( $block['blockName'] ) && ! $updated ) {
 				if ( $counter === $target_index ) {
 					$matched_name = $block['blockName'];
@@ -528,6 +534,20 @@ class Block_Configurator {
 				'permission_denied',
 				__( 'You do not have permission to edit this post.', 'designsetgo' ),
 				array( 'status' => 403 )
+			);
+		}
+
+		// Validate block type is registered.
+		$block_registry = \WP_Block_Type_Registry::get_instance();
+		if ( ! $block_registry->get_registered( $block_name ) ) {
+			return new WP_Error(
+				'invalid_input',
+				sprintf(
+					/* translators: %s: block name */
+					__( 'Block type "%s" is not registered.', 'designsetgo' ),
+					$block_name
+				),
+				array( 'status' => 400 )
 			);
 		}
 
@@ -617,22 +637,23 @@ class Block_Configurator {
 						// Append to end.
 						$inner_blocks[] = $new_block;
 
-						// Find last non-null entry position in innerContent and insert null after it.
-						// This places the new inner block placeholder at the end (before closing HTML).
-						$insert_pos = count( $inner_content );
-						// If there's closing HTML (last entry is a string), insert before it.
-						if ( ! empty( $inner_content ) && is_string( end( $inner_content ) ) ) {
-							$insert_pos = count( $inner_content ) - 1;
+						// Insert null placeholder at the end (before closing HTML if present).
+						// Use array index access instead of end() to avoid modifying the array pointer.
+						$content_count = count( $inner_content );
+						$insert_pos    = $content_count;
+						if ( $content_count > 0 && is_string( $inner_content[ $content_count - 1 ] ) ) {
+							$insert_pos = $content_count - 1;
 						}
 						array_splice( $inner_content, $insert_pos, 0, array( null ) );
 					} else {
 						// Insert at specific position.
 						array_splice( $inner_blocks, $position, 0, array( $new_block ) );
 
-						// Find the corresponding position in innerContent.
-						// Count null entries to find where the Nth inner block placeholder is.
+						// Find the corresponding null position in innerContent.
+						// innerContent interleaves HTML strings with null placeholders.
+						// Count nulls to find where the Nth inner block placeholder is.
 						$null_count       = 0;
-						$content_position = 0;
+						$content_position = -1;
 						foreach ( $inner_content as $idx => $entry ) {
 							if ( null === $entry ) {
 								if ( $null_count === $position ) {
@@ -640,6 +661,16 @@ class Block_Configurator {
 									break;
 								}
 								$null_count++;
+							}
+						}
+
+						// If the target null position wasn't found (position exceeds existing
+						// inner blocks), fall back to inserting before the closing HTML.
+						if ( -1 === $content_position ) {
+							$content_count    = count( $inner_content );
+							$content_position = $content_count;
+							if ( $content_count > 0 && is_string( $inner_content[ $content_count - 1 ] ) ) {
+								$content_position = $content_count - 1;
 							}
 						}
 						array_splice( $inner_content, $content_position, 0, array( null ) );

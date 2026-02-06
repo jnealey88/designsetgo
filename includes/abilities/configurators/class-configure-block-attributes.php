@@ -119,10 +119,10 @@ class Configure_Block_Attributes extends Abstract_Ability {
 			);
 		}
 
-		if ( empty( $attributes ) ) {
+		if ( ! is_array( $attributes ) || empty( $attributes ) ) {
 			return $this->error(
 				'missing_settings',
-				__( 'Attributes object is required and must not be empty.', 'designsetgo' )
+				__( 'Attributes object is required and must contain at least one key-value pair to update.', 'designsetgo' )
 			);
 		}
 
@@ -203,8 +203,9 @@ class Configure_Block_Attributes extends Abstract_Ability {
 		$registered_attrs = $block_type->attributes ?? array();
 
 		// Validate attribute keys exist in the block's registered schema.
-		// Skip validation for 'style' (WordPress supports-generated) and
-		// 'className' (always available) as they may not be in the registry.
+		// Skip validation for WordPress-managed attributes that may not appear
+		// in the registry: 'style' (supports-generated), 'className' (always
+		// available), 'lock', 'metadata'.
 		$skip_validation = array( 'style', 'className', 'lock', 'metadata' );
 
 		foreach ( $attributes as $key => $value ) {
@@ -220,7 +221,8 @@ class Configure_Block_Attributes extends Abstract_Ability {
 				continue;
 			}
 
-			// Check if attribute exists in the registered schema.
+			// Only validate against registry if the block has registered attributes.
+			// Some blocks have empty attribute schemas and accept arbitrary attributes.
 			if ( ! empty( $registered_attrs ) && ! isset( $registered_attrs[ $key ] ) ) {
 				return new WP_Error(
 					'validation_failed',
