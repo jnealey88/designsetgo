@@ -7,8 +7,7 @@
  */
 
 .dsgo-grid {
-	// CRITICAL: Ensure width includes padding to prevent overflow
-	// When width: 100% is set, padding must be included in the total width
+	// CRITICAL: Ensure padding is included in the total width to prevent overflow
 	box-sizing: border-box;
 
 	// Smooth transition for hover background color
@@ -36,7 +35,6 @@
 	// MUST be duplicated from editor.scss for editor/frontend parity
 	&.alignfull {
 		max-width: none;
-		width: 100%;
 		margin-left: 0;
 		margin-right: 0;
 	}

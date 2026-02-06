@@ -9,7 +9,7 @@
  */
 
 .dsgo-grid {
-	// CRITICAL: Ensure width includes padding to prevent overflow
+	// CRITICAL: Ensure padding is included in the total width to prevent overflow
 	// Must match style.scss for editor/frontend parity
 	box-sizing: border-box;
 
@@ -52,7 +52,6 @@
 	// WordPress automatically adds .alignfull and .alignwide classes when user selects alignment
 	&.alignfull {
 		max-width: none;
-		width: 100%;
 		margin-left: 0;
 		margin-right: 0;
 	}
