@@ -284,26 +284,35 @@ class Configure_Shape_Divider extends Abstract_Ability {
 	/**
 	 * Validate a color value.
 	 *
-	 * Accepts hex colors (#rgb, #rrggbb, #rrggbbaa), rgb/rgba/hsl/hsla functions,
-	 * CSS variables (var(--...)), and named CSS colors. Rejects any value that
+	 * Accepts hex colors (#rgb, #rgba, #rrggbb, #rrggbbaa), rgb/rgba/hsl/hsla
+	 * functions with strictly numeric arguments, CSS custom properties without
+	 * fallback values, and common named CSS colors. Rejects any value that
 	 * could contain CSS injection payloads.
 	 *
 	 * @param string $color Color value to validate.
 	 * @return bool Whether the color is valid.
 	 */
 	private function is_valid_color( string $color ): bool {
-		// Hex colors: #rgb, #rrggbb, #rrggbbaa.
+		// Hex colors: #rgb, #rgba, #rrggbb, #rrggbbaa.
 		if ( preg_match( '/^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $color ) ) {
 			return true;
 		}
 
-		// CSS functions: rgb(), rgba(), hsl(), hsla().
-		if ( preg_match( '/^(rgb|rgba|hsl|hsla)\(\s*[\d.,\s%]+\s*\)$/', $color ) ) {
+		// CSS functions: rgb(r, g, b) / rgba(r, g, b, a) with numeric/percentage values only.
+		// Allows: rgb(255, 0, 0), rgba(255, 0, 0, 0.5), rgb(100%, 0%, 0%).
+		if ( preg_match( '/^rgba?\(\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*(,\s*(0|1|0?\.\d+)\s*)?\)$/', $color ) ) {
 			return true;
 		}
 
-		// CSS variables: var(--custom-property) or var(--wp--preset--color--name).
-		if ( preg_match( '/^var\(\s*--[\w-]+(\s*,\s*[^)]+)?\s*\)$/', $color ) ) {
+		// CSS functions: hsl(h, s%, l%) / hsla(h, s%, l%, a) with numeric values only.
+		if ( preg_match( '/^hsla?\(\s*\d{1,3}\s*,\s*\d{1,3}%\s*,\s*\d{1,3}%\s*(,\s*(0|1|0?\.\d+)\s*)?\)$/', $color ) ) {
+			return true;
+		}
+
+		// CSS variables: var(--custom-property) only, no fallback values.
+		// Fallback values (var(--x, fallback)) are rejected because the fallback
+		// could contain arbitrary content including injection payloads.
+		if ( preg_match( '/^var\(\s*--[\w-]+\s*\)$/', $color ) ) {
 			return true;
 		}
 
@@ -381,11 +390,13 @@ class Configure_Shape_Divider extends Abstract_Ability {
 			$attributes[ 'shapeDivider' . $pos ] = $shape;
 
 			if ( null !== $color ) {
-				// Color already validated by is_valid_color() - use wp_strip_all_tags as belt-and-suspenders.
-				$attributes[ 'shapeDivider' . $pos . 'Color' ] = wp_strip_all_tags( $color );
+				// Color is already validated by is_valid_color() which only allows
+				// hex, rgb/hsl functions with numeric args, CSS vars without fallbacks,
+				// or named colors - none of which can contain HTML tags or injection.
+				$attributes[ 'shapeDivider' . $pos . 'Color' ] = $color;
 			}
 			if ( null !== $bg_color ) {
-				$attributes[ 'shapeDivider' . $pos . 'BackgroundColor' ] = wp_strip_all_tags( $bg_color );
+				$attributes[ 'shapeDivider' . $pos . 'BackgroundColor' ] = $bg_color;
 			}
 			if ( null !== $height ) {
 				// Already range-validated in execute().
