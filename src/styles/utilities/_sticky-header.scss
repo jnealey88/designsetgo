@@ -95,11 +95,34 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-heade
  * Changes/adds background color when scrolling
  */
 .dsgo-sticky-bg-on-scroll.wp-block-template-part {
-	transition: background-color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
+	transition: background-color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out,
+		color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
 }
 
 .dsgo-sticky-bg-on-scroll.wp-block-template-part.dsgo-scrolled {
 	background-color: var(--dsgo-sticky-scroll-bg-color, rgba(255, 255, 255, 0.95));
+	color: var(--dsgo-sticky-scroll-text-color, inherit);
+
+	/* Apply text color to all nested elements for full coverage */
+	a,
+	a:hover,
+	a:focus,
+	p,
+	span,
+	li,
+	.wp-block-site-title a,
+	.wp-block-navigation-item__content,
+	.wp-block-navigation__submenu-icon {
+		color: var(--dsgo-sticky-scroll-text-color, inherit);
+		transition: color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
+	}
+
+	/* Navigation SVG icons (hamburger, submenu arrows) */
+	.wp-block-navigation__submenu-icon svg,
+	.wp-block-navigation__responsive-container-open svg {
+		fill: var(--dsgo-sticky-scroll-text-color, currentColor);
+		transition: fill var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
+	}
 }
 
 /**
@@ -121,7 +144,10 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-heade
 	.wp-block-template-part,
 	.dsgo-sticky-shrink.wp-block-template-part,
 	.dsgo-sticky-hide-on-scroll-down.wp-block-template-part,
-	.dsgo-sticky-bg-on-scroll.wp-block-template-part {
+	.dsgo-sticky-bg-on-scroll.wp-block-template-part,
+	.dsgo-sticky-bg-on-scroll.wp-block-template-part a,
+	.dsgo-sticky-bg-on-scroll.wp-block-template-part span,
+	.dsgo-sticky-bg-on-scroll.wp-block-template-part svg {
 		transition: none !important;
 	}
 }
@@ -145,6 +171,7 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-heade
 
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part.dsgo-scrolled {
 		background-color: var(--dsgo-sticky-scroll-bg-color, rgba(0, 0, 0, 0.95));
+		color: var(--dsgo-sticky-scroll-text-color, inherit);
 	}
 }
 

@@ -108,9 +108,10 @@ class Settings {
 				'transition_speed'          => 300,
 				'scroll_threshold'          => 50,
 				'hide_on_scroll_down'       => false,
-				'background_on_scroll'      => false,
-				'background_scroll_color'   => '',
+				'background_on_scroll'      => true,
+				'background_scroll_color'   => '#ffffff',
 				'background_scroll_opacity' => 100,
+				'text_scroll_color'         => '#000000',
 			),
 			'draft_mode'         => array(
 				'enable'                 => true,
@@ -818,9 +819,10 @@ class Settings {
 				'transition_speed'          => isset( $settings['sticky_header']['transition_speed'] ) ? absint( $settings['sticky_header']['transition_speed'] ) : 300,
 				'scroll_threshold'          => isset( $settings['sticky_header']['scroll_threshold'] ) ? absint( $settings['sticky_header']['scroll_threshold'] ) : 50,
 				'hide_on_scroll_down'       => isset( $settings['sticky_header']['hide_on_scroll_down'] ) ? (bool) $settings['sticky_header']['hide_on_scroll_down'] : false,
-				'background_on_scroll'      => isset( $settings['sticky_header']['background_on_scroll'] ) ? (bool) $settings['sticky_header']['background_on_scroll'] : false,
-				'background_scroll_color'   => isset( $settings['sticky_header']['background_scroll_color'] ) ? sanitize_hex_color( $settings['sticky_header']['background_scroll_color'] ) : '',
+				'background_on_scroll'      => isset( $settings['sticky_header']['background_on_scroll'] ) ? (bool) $settings['sticky_header']['background_on_scroll'] : true,
+				'background_scroll_color'   => isset( $settings['sticky_header']['background_scroll_color'] ) ? sanitize_hex_color( $settings['sticky_header']['background_scroll_color'] ) : '#ffffff',
 				'background_scroll_opacity' => isset( $settings['sticky_header']['background_scroll_opacity'] ) ? absint( $settings['sticky_header']['background_scroll_opacity'] ) : 100,
+				'text_scroll_color'         => isset( $settings['sticky_header']['text_scroll_color'] ) ? sanitize_hex_color( $settings['sticky_header']['text_scroll_color'] ) : '#000000',
 			);
 		}
 

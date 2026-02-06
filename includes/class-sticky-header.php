@@ -102,6 +102,7 @@ class Sticky_Header {
 					'backgroundOnScroll'      => (bool) $sticky_settings['background_on_scroll'],
 					'backgroundScrollColor'   => sanitize_hex_color( $sticky_settings['background_scroll_color'] ),
 					'backgroundScrollOpacity' => absint( $sticky_settings['background_scroll_opacity'] ),
+					'textScrollColor'         => sanitize_hex_color( $sticky_settings['text_scroll_color'] ),
 				)
 			);
 		}

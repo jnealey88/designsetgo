@@ -29,9 +29,10 @@
 		transitionSpeed: 300,
 		scrollThreshold: 50,
 		hideOnScrollDown: false,
-		backgroundOnScroll: false,
-		backgroundScrollColor: '',
+		backgroundOnScroll: true,
+		backgroundScrollColor: '#ffffff',
 		backgroundScrollOpacity: 100,
+		textScrollColor: '#000000',
 	};
 
 	// Early exit if sticky header is disabled
@@ -100,6 +101,13 @@
 				bgColor = `rgba(${r}, ${g}, ${b}, ${opacity})`;
 			}
 			header.style.setProperty('--dsgo-sticky-scroll-bg-color', bgColor);
+		}
+
+		if (settings.backgroundOnScroll && settings.textScrollColor) {
+			header.style.setProperty(
+				'--dsgo-sticky-scroll-text-color',
+				settings.textScrollColor
+			);
 		}
 	}
 

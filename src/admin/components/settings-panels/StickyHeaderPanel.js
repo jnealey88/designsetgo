@@ -322,6 +322,46 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 									__nextHasNoMarginBottom
 									__next40pxDefaultSize
 								/>
+
+								<div className="components-base-control__label">
+									{__(
+										'Text Color on Scroll',
+										'designsetgo'
+									)}
+								</div>
+								<p className="components-base-control__help">
+									{__(
+										'Change text color when scrolled. Useful for transparent headers with light text over hero images.',
+										'designsetgo'
+									)}
+								</p>
+								<ColorPalette
+									value={
+										settings?.sticky_header
+											?.text_scroll_color || ''
+									}
+									onChange={(color) =>
+										updateSetting(
+											'sticky_header',
+											'text_scroll_color',
+											color || ''
+										)
+									}
+									colors={[
+										{ name: 'Black', color: '#000000' },
+										{ name: 'White', color: '#ffffff' },
+										{
+											name: 'Dark Gray',
+											color: '#1e1e1e',
+										},
+										{
+											name: 'Gray',
+											color: '#757575',
+										},
+										{ name: 'Blue', color: '#2271b1' },
+									]}
+									clearable
+								/>
 							</div>
 						)}
 
