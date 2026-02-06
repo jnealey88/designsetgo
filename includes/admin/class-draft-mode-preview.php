@@ -75,7 +75,13 @@ class Draft_Mode_Preview {
 		// Handle live mode toggle early (before template_redirect).
 		add_action( 'init', array( $this, 'handle_live_mode_toggle' ) );
 
-		// Register frontend hooks after WordPress context is fully set up.
+		// Register the_posts filter early so it catches the main query.
+		// The frontend guard is inside the callback since is_admin() is
+		// reliable at filter time but query conditionals are not yet
+		// available when this constructor runs.
+		add_filter( 'the_posts', array( $this, 'swap_draft_content' ), 10, 2 );
+
+		// Register remaining frontend hooks after query context is set up.
 		add_action( 'wp', array( $this, 'register_frontend_hooks' ) );
 
 		// Invalidate draft map cache when drafts change.
@@ -95,9 +101,6 @@ class Draft_Mode_Preview {
 		if ( is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
 			return;
 		}
-
-		// Swap content for pages with drafts.
-		add_filter( 'the_posts', array( $this, 'swap_draft_content' ), 10, 2 );
 
 		// Add the preview banner to the frontend.
 		add_action( 'wp_footer', array( $this, 'render_preview_banner' ) );
@@ -307,6 +310,11 @@ class Draft_Mode_Preview {
 	 * @return \WP_Post[] Modified posts array.
 	 */
 	public function swap_draft_content( $posts, $query ) {
+		// Only run on the frontend, not in admin or REST API contexts.
+		if ( is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+			return $posts;
+		}
+
 		if ( ! $this->is_preview_active() ) {
 			return $posts;
 		}
@@ -337,6 +345,7 @@ class Draft_Mode_Preview {
 				$post->post_excerpt = $draft->post_excerpt;
 			}
 		}
+		unset( $post );
 
 		return $posts;
 	}
@@ -353,6 +362,11 @@ class Draft_Mode_Preview {
 			return $thumbnail_id;
 		}
 
+		// The post_thumbnail_id filter may pass a WP_Post object as $post_id.
+		if ( $post_id instanceof \WP_Post ) {
+			$post_id = $post_id->ID;
+		}
+
 		$draft_map = $this->get_draft_map();
 
 		if ( isset( $draft_map[ $post_id ] ) ) {
@@ -366,7 +380,7 @@ class Draft_Mode_Preview {
 	}
 
 	/**
-	 * Add preview mode body class server-side to prevent layout shift.
+	 * Add body class server-side to prevent layout shift from the banner.
 	 *
 	 * @param string[] $classes Array of body CSS classes.
 	 * @return string[] Modified classes array.
@@ -382,7 +396,7 @@ class Draft_Mode_Preview {
 
 		$draft_map = $this->get_draft_map();
 		if ( ! empty( $draft_map ) ) {
-			$classes[] = 'dsgo-preview-mode';
+			$classes[] = 'dsgo-has-draft-banner';
 		}
 
 		return $classes;
@@ -414,6 +428,8 @@ class Draft_Mode_Preview {
 			return;
 		}
 
+		$this->enqueue_banner_assets();
+
 		$is_active    = $this->is_preview_active();
 		$toggle_value = $is_active ? '1' : '0';
 		$toggle_url   = wp_nonce_url(
@@ -429,12 +445,32 @@ class Draft_Mode_Preview {
 			$current_page_has_draft = true;
 		}
 
-		// Build draft list for the details panel.
 		$draft_list_items = $this->build_draft_list_items( $draft_map, $queried_object );
 
 		$this->render_banner_html( $is_active, $draft_count, $toggle_url, $draft_list_items, $current_page_has_draft );
-		$this->render_banner_styles();
-		$this->render_banner_script();
+	}
+
+	/**
+	 * Enqueue banner CSS and JS assets via the WordPress enqueue system.
+	 */
+	private function enqueue_banner_assets() {
+		$css_file = DESIGNSETGO_PATH . 'includes/admin/css/draft-mode-preview-banner.css';
+		$js_file  = DESIGNSETGO_PATH . 'includes/admin/js/draft-mode-preview-banner.js';
+
+		wp_enqueue_style(
+			'dsgo-preview-banner',
+			DESIGNSETGO_URL . 'includes/admin/css/draft-mode-preview-banner.css',
+			array(),
+			file_exists( $css_file ) ? filemtime( $css_file ) : DESIGNSETGO_VERSION
+		);
+
+		wp_enqueue_script(
+			'dsgo-preview-banner',
+			DESIGNSETGO_URL . 'includes/admin/js/draft-mode-preview-banner.js',
+			array(),
+			file_exists( $js_file ) ? filemtime( $js_file ) : DESIGNSETGO_VERSION,
+			true
+		);
 	}
 
 	/**
@@ -537,281 +573,5 @@ class Draft_Mode_Preview {
 			</div>
 		</div>
 		<?php
-	}
-
-	/**
-	 * Render the banner CSS styles.
-	 */
-	private function render_banner_styles() {
-		?>
-		<style id="dsgo-preview-banner-styles">
-			#dsgo-preview-banner {
-				position: fixed;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				z-index: 99999;
-				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-				font-size: 13px;
-				line-height: 1.4;
-				box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
-			}
-
-			#dsgo-preview-banner * {
-				box-sizing: border-box;
-			}
-
-			.dsgo-preview-banner--active {
-				background: #1e1e1e;
-				color: #f0f0f0;
-			}
-
-			.dsgo-preview-banner--live {
-				background: #fff;
-				color: #1e1e1e;
-				border-top: 2px solid #ddd;
-			}
-
-			.dsgo-preview-banner__inner {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				padding: 10px 20px;
-				max-width: 100%;
-				gap: 16px;
-			}
-
-			.dsgo-preview-banner__status {
-				display: flex;
-				align-items: center;
-				gap: 8px;
-				flex-wrap: wrap;
-			}
-
-			.dsgo-preview-banner__indicator {
-				display: inline-block;
-				width: 8px;
-				height: 8px;
-				border-radius: 50%;
-				flex-shrink: 0;
-			}
-
-			.dsgo-preview-banner--active .dsgo-preview-banner__indicator {
-				background: #f0c33c;
-				box-shadow: 0 0 6px rgba(240, 195, 60, 0.5);
-			}
-
-			.dsgo-preview-banner--live .dsgo-preview-banner__indicator {
-				background: #00a32a;
-				box-shadow: 0 0 6px rgba(0, 163, 42, 0.3);
-			}
-
-			.dsgo-preview-banner__text {
-				font-weight: 500;
-			}
-
-			.dsgo-preview-banner__page-badge {
-				display: inline-block;
-				padding: 1px 8px;
-				background: rgba(240, 195, 60, 0.2);
-				color: #f0c33c;
-				border-radius: 3px;
-				font-size: 11px;
-				font-weight: 600;
-				text-transform: uppercase;
-				letter-spacing: 0.5px;
-			}
-
-			.dsgo-preview-banner__actions {
-				display: flex;
-				align-items: center;
-				gap: 12px;
-				flex-shrink: 0;
-			}
-
-			.dsgo-preview-banner__details-toggle {
-				display: inline-flex;
-				align-items: center;
-				gap: 4px;
-				padding: 5px 12px;
-				border: 1px solid rgba(255, 255, 255, 0.2);
-				border-radius: 4px;
-				background: transparent;
-				color: inherit;
-				cursor: pointer;
-				font-size: 12px;
-				transition: background 0.15s;
-			}
-
-			.dsgo-preview-banner--live .dsgo-preview-banner__details-toggle {
-				border-color: #ddd;
-			}
-
-			.dsgo-preview-banner__details-toggle:hover {
-				background: rgba(255, 255, 255, 0.1);
-			}
-
-			.dsgo-preview-banner--live .dsgo-preview-banner__details-toggle:hover {
-				background: #f0f0f0;
-			}
-
-			.dsgo-preview-banner__details-toggle[aria-expanded="true"] svg {
-				transform: rotate(180deg);
-			}
-
-			.dsgo-preview-banner__toggle {
-				display: inline-block;
-				padding: 5px 16px;
-				border-radius: 4px;
-				text-decoration: none;
-				font-size: 12px;
-				font-weight: 600;
-				transition: background 0.15s, color 0.15s;
-			}
-
-			.dsgo-preview-banner--active .dsgo-preview-banner__toggle {
-				background: #f0f0f0;
-				color: #1e1e1e;
-			}
-
-			.dsgo-preview-banner--active .dsgo-preview-banner__toggle:hover {
-				background: #fff;
-			}
-
-			.dsgo-preview-banner--live .dsgo-preview-banner__toggle {
-				background: #2271b1;
-				color: #fff;
-			}
-
-			.dsgo-preview-banner--live .dsgo-preview-banner__toggle:hover {
-				background: #135e96;
-			}
-
-			/* Details panel */
-			.dsgo-preview-banner__details {
-				border-top: 1px solid rgba(255, 255, 255, 0.1);
-			}
-
-			.dsgo-preview-banner--live .dsgo-preview-banner__details {
-				border-top-color: #ddd;
-			}
-
-			.dsgo-preview-banner__details-inner {
-				padding: 12px 20px 16px;
-			}
-
-			.dsgo-preview-banner__details-title {
-				margin: 0 0 8px;
-				font-size: 12px;
-				font-weight: 600;
-				text-transform: uppercase;
-				letter-spacing: 0.5px;
-				opacity: 0.7;
-			}
-
-			.dsgo-preview-banner__draft-list {
-				margin: 0;
-				padding: 0;
-				list-style: none;
-				display: flex;
-				flex-wrap: wrap;
-				gap: 6px;
-			}
-
-			.dsgo-preview-draft-item {
-				display: flex;
-				align-items: center;
-				gap: 6px;
-				padding: 4px 10px;
-				border-radius: 4px;
-				background: rgba(255, 255, 255, 0.08);
-			}
-
-			.dsgo-preview-banner--live .dsgo-preview-draft-item {
-				background: #f0f0f0;
-			}
-
-			.dsgo-preview-draft-item--current {
-				background: rgba(240, 195, 60, 0.15);
-			}
-
-			.dsgo-preview-banner--live .dsgo-preview-draft-item--current {
-				background: #e8f0fe;
-			}
-
-			.dsgo-preview-draft-link {
-				color: inherit;
-				text-decoration: none;
-				font-weight: 500;
-			}
-
-			.dsgo-preview-draft-link:hover {
-				text-decoration: underline;
-			}
-
-			.dsgo-preview-draft-edit {
-				font-size: 11px;
-				opacity: 0.6;
-				text-decoration: none;
-			}
-
-			.dsgo-preview-banner--active .dsgo-preview-draft-edit {
-				color: #72aee6;
-			}
-
-			.dsgo-preview-banner--live .dsgo-preview-draft-edit {
-				color: #2271b1;
-			}
-
-			.dsgo-preview-draft-edit:hover {
-				opacity: 1;
-				text-decoration: underline;
-			}
-
-			/* Offset page content so banner doesn't cover it */
-			body.dsgo-preview-mode {
-				padding-bottom: 48px;
-			}
-
-			/* Mobile adjustments */
-			@media (max-width: 600px) {
-				.dsgo-preview-banner__inner {
-					flex-direction: column;
-					align-items: flex-start;
-					padding: 8px 12px;
-					gap: 8px;
-				}
-
-				.dsgo-preview-banner__actions {
-					width: 100%;
-					justify-content: flex-end;
-				}
-			}
-		</style>
-		<?php
-	}
-
-	/**
-	 * Render the banner JavaScript via wp_add_inline_script.
-	 */
-	private function render_banner_script() {
-		$script = <<<'JS'
-(function() {
-	'use strict';
-	var toggleBtn = document.querySelector('.dsgo-preview-banner__details-toggle');
-	var detailsPanel = document.getElementById('dsgo-preview-draft-list');
-	if (toggleBtn && detailsPanel) {
-		toggleBtn.addEventListener('click', function() {
-			var isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-			toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
-			detailsPanel.hidden = isExpanded;
-		});
-	}
-})();
-JS;
-
-		wp_register_script( 'dsgo-preview-banner', false, array(), DESIGNSETGO_VERSION, true );
-		wp_add_inline_script( 'dsgo-preview-banner', $script );
-		wp_enqueue_script( 'dsgo-preview-banner' );
 	}
 }
