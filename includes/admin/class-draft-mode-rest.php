@@ -293,8 +293,31 @@ class Draft_Mode_REST {
 			return '';
 		}
 
+		// Strip <script> tags and their content before wp_kses (wp_kses only
+		// removes the tags themselves, leaving the inner text behind).
+		$content = preg_replace( '/<script\b[^>]*>.*?<\/script>/is', '', $content );
+
 		// Use wp_kses with our extended allowed tags.
-		return wp_kses( $content, self::get_block_allowed_html() );
+		$content = wp_kses( $content, self::get_block_allowed_html() );
+
+		// Restore SVG camelCase attributes that wp_kses lowercases.
+		$svg_case_map = array(
+			'viewbox'             => 'viewBox',
+			'preserveaspectratio' => 'preserveAspectRatio',
+			'basefrequency'      => 'baseFrequency',
+			'stddeviation'       => 'stdDeviation',
+			'patternunits'       => 'patternUnits',
+			'gradientunits'      => 'gradientUnits',
+			'gradienttransform'  => 'gradientTransform',
+			'patterntransform'   => 'patternTransform',
+			'clippathunits'      => 'clipPathUnits',
+		);
+
+		foreach ( $svg_case_map as $lower => $camel ) {
+			$content = str_replace( $lower . '=', $camel . '=', $content );
+		}
+
+		return $content;
 	}
 
 	/**

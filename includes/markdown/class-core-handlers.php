@@ -73,12 +73,28 @@ class Core_Handlers {
 		$items   = array();
 		$index   = 1;
 
-		foreach ( $block['innerBlocks'] as $item ) {
-			$text = $this->converter->render_block( $item );
-			if ( ! empty( $text ) ) {
-				$prefix  = $ordered ? "{$index}. " : '- ';
-				$items[] = $prefix . $text;
-				$index++;
+		if ( ! empty( $block['innerBlocks'] ) ) {
+			foreach ( $block['innerBlocks'] as $item ) {
+				$text = $this->converter->render_block( $item );
+				if ( ! empty( $text ) ) {
+					$prefix  = $ordered ? "{$index}. " : '- ';
+					$items[] = $prefix . $text;
+					$index++;
+				}
+			}
+		} else {
+			// Fallback: parse list items directly from HTML (older block format
+			// without inner block comments).
+			$html = $this->converter->get_inner_html( $block );
+			if ( preg_match_all( '/<li[^>]*>(.*?)<\/li>/is', $html, $matches ) ) {
+				foreach ( $matches[1] as $li_content ) {
+					$text = $this->converter->html_to_text( $li_content );
+					if ( ! empty( $text ) ) {
+						$prefix  = $ordered ? "{$index}. " : '- ';
+						$items[] = $prefix . $text;
+						$index++;
+					}
+				}
 			}
 		}
 

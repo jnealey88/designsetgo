@@ -245,6 +245,8 @@ class Converter {
 	 */
 	public function escape_markdown( string $text ): string {
 		$text = str_replace( '\\', '\\\\', $text );
+		$text = str_replace( '*', '\\*', $text );
+		$text = str_replace( '_', '\\_', $text );
 		$text = str_replace( '[', '\\[', $text );
 		$text = str_replace( ']', '\\]', $text );
 		$text = str_replace( '(', '\\(', $text );
