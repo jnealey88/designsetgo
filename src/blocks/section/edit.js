@@ -161,9 +161,10 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		innerBlocks,
 	]);
 
-	// Build className
+	// Build className (must match save.js)
 	const blockClassName = [
 		'dsgo-stack',
+		!constrainWidth && 'dsgo-no-width-constraint',
 		overlayColor && 'dsgo-stack--has-overlay',
 		(shapeDividerTop || shapeDividerBottom) &&
 			'dsgo-stack--has-shape-divider',

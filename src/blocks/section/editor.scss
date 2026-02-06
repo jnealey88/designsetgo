@@ -311,6 +311,19 @@
 			) {
 			align-self: flex-start;
 		}
+
+		// Editor: target [data-block] wrappers
+		.dsgo-stack__inner.is-layout-flex
+			> :where(
+				[data-type="designsetgo/pill"],
+				[data-type="designsetgo/icon"],
+				[data-type="designsetgo/icon-button"],
+				[data-type="designsetgo/counter"],
+				[data-type="core/button"],
+				[data-type="core/buttons"]
+			) {
+			align-self: flex-start;
+		}
 	}
 
 	&.has-text-align-center,
@@ -324,6 +337,19 @@
 				.wp-block-buttons,
 				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
+			) {
+			align-self: center;
+		}
+
+		// Editor: target [data-block] wrappers
+		.dsgo-stack__inner.is-layout-flex
+			> :where(
+				[data-type="designsetgo/pill"],
+				[data-type="designsetgo/icon"],
+				[data-type="designsetgo/icon-button"],
+				[data-type="designsetgo/counter"],
+				[data-type="core/button"],
+				[data-type="core/buttons"]
 			) {
 			align-self: center;
 		}
@@ -343,9 +369,29 @@
 			) {
 			align-self: flex-end;
 		}
+
+		// Editor: target [data-block] wrappers
+		.dsgo-stack__inner.is-layout-flex
+			> :where(
+				[data-type="designsetgo/pill"],
+				[data-type="designsetgo/icon"],
+				[data-type="designsetgo/icon-button"],
+				[data-type="designsetgo/counter"],
+				[data-type="core/button"],
+				[data-type="core/buttons"]
+			) {
+			align-self: flex-end;
+		}
 	}
 
 	.dsgo-stack__inner.is-layout-flex {
+
+		// NOTE: Do NOT set align-items: stretch here — it's the browser default,
+		// and an explicit declaration would override WordPress's layout-generated
+		// align-items (e.g., from content justification), breaking alignment inheritance.
+
+		// EDITOR: Blocks are wrapped in [data-block] elements, so alignment must target
+		// both the block class (frontend parity) AND the [data-block] wrapper (editor).
 
 		// Section center alignment - apply to inline blocks WITHOUT their own alignment
 		&.is-content-justification-center {
@@ -358,6 +404,16 @@
 				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			):not(.alignleft):not(.alignright):not(.aligncenter) {
+				align-self: center;
+			}
+
+			// Editor: target [data-block] wrappers for inline blocks
+			> [data-type="designsetgo/pill"],
+			> [data-type="designsetgo/icon"],
+			> [data-type="designsetgo/icon-button"],
+			> [data-type="designsetgo/counter"],
+			> [data-type="core/button"],
+			> [data-type="core/buttons"] {
 				align-self: center;
 			}
 		}
@@ -375,6 +431,16 @@
 			):not(.alignleft):not(.alignright):not(.aligncenter) {
 				align-self: flex-end;
 			}
+
+			// Editor: target [data-block] wrappers for inline blocks
+			> [data-type="designsetgo/pill"],
+			> [data-type="designsetgo/icon"],
+			> [data-type="designsetgo/icon-button"],
+			> [data-type="designsetgo/counter"],
+			> [data-type="core/button"],
+			> [data-type="core/buttons"] {
+				align-self: flex-end;
+			}
 		}
 
 		// Section left alignment - apply to inline blocks WITHOUT their own alignment
@@ -388,6 +454,16 @@
 				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			):not(.alignleft):not(.alignright):not(.aligncenter) {
+				align-self: flex-start;
+			}
+
+			// Editor: target [data-block] wrappers for inline blocks
+			> [data-type="designsetgo/pill"],
+			> [data-type="designsetgo/icon"],
+			> [data-type="designsetgo/icon-button"],
+			> [data-type="designsetgo/counter"],
+			> [data-type="core/button"],
+			> [data-type="core/buttons"] {
 				align-self: flex-start;
 			}
 		}
@@ -417,6 +493,40 @@
 			.wp-block-designsetgo-pill,
 			.wp-block-designsetgo-counter
 		).alignright {
+			align-self: flex-end !important;
+		}
+
+		// Editor: [data-block] wrappers WITH explicit alignment on inner block
+		> [data-block]:has(> .aligncenter:where(
+			.wp-block-designsetgo-icon,
+			.wp-block-designsetgo-icon-button,
+			.wp-block-designsetgo-pill,
+			.wp-block-designsetgo-counter,
+			.wp-block-button,
+			.wp-block-buttons
+		)) {
+			align-self: center !important;
+		}
+
+		> [data-block]:has(> .alignleft:where(
+			.wp-block-designsetgo-icon,
+			.wp-block-designsetgo-icon-button,
+			.wp-block-designsetgo-pill,
+			.wp-block-designsetgo-counter,
+			.wp-block-button,
+			.wp-block-buttons
+		)) {
+			align-self: flex-start !important;
+		}
+
+		> [data-block]:has(> .alignright:where(
+			.wp-block-designsetgo-icon,
+			.wp-block-designsetgo-icon-button,
+			.wp-block-designsetgo-pill,
+			.wp-block-designsetgo-counter,
+			.wp-block-button,
+			.wp-block-buttons
+		)) {
 			align-self: flex-end !important;
 		}
 
