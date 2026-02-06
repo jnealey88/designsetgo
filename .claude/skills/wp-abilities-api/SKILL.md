@@ -49,19 +49,24 @@ If you need a logical grouping, register an ability category early (see `referen
 
 Implement the ability in PHP registration with:
 
-- stable `id` (namespaced),
+- stable `name` (slash-namespaced, e.g. `my-plugin/feature-name`),
 - `label`/`description`,
-- `category`,
-- `meta`:
-  - add `readonly: true` when the ability is informational,
-  - set `show_in_rest: true` for abilities you want visible to clients.
+- `category` (top-level parameter, must reference a registered category),
+- `output_schema` (JSON Schema for return value),
+- `execute_callback` / `permission_callback`,
+- `show_in_rest` (top-level parameter, set `true` to expose via REST),
+- `annotations` (top-level parameter):
+  - `readonly: true` for informational abilities (REST uses GET),
+  - `destructive: true` for deletion abilities (REST uses DELETE),
+  - `idempotent: true` if repeated calls have no additional effect,
+  - `instructions` for AI agent guidance.
 
 Use the documented init hooks for Abilities API registration so they load at the right time (see `references/php-registration.md`).
 
 ### 5) Confirm REST exposure
 
 - Verify the REST endpoints exist and return expected results (see `references/rest-api.md`).
-- If the client still can’t see the ability, confirm `meta.show_in_rest` is enabled and you’re querying the right endpoint.
+- If the client still can't see the ability, confirm `show_in_rest => true` is set (top-level parameter) and you're querying the right endpoint.
 
 ### 6) Consume from JS (if needed)
 
@@ -80,8 +85,8 @@ Use the documented init hooks for Abilities API registration so they load at the
 
 - Ability never appears:
   - registration code not running (wrong hook / file not loaded),
-  - missing `meta.show_in_rest`,
-  - incorrect category/ID mismatch.
+  - missing `show_in_rest => true` (top-level parameter),
+  - incorrect category slug or ability name mismatch.
 - REST shows ability but JS doesn’t:
   - wrong REST base/namespace,
   - JS dependency not bundled,
