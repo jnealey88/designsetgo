@@ -201,7 +201,7 @@ npm install
 npm start
 ```
 
-See [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for more help.
+See [TROUBLESHOOTING.md](docs/troubleshooting/TROUBLESHOOTING.md) for more help.
 
 ## 🏗️ Project Architecture
 
@@ -472,7 +472,7 @@ src/blocks/my-block/
     └── helpers.js
 ```
 
-See [REFACTORING-GUIDE.md](docs/REFACTORING-GUIDE.md) for patterns.
+See [Best Practices Summary](docs/guides/BEST-PRACTICES-SUMMARY.md) for patterns.
 
 #### 3. Color Controls Pattern
 
@@ -596,7 +596,7 @@ test.describe('My Block', () => {
 });
 ```
 
-See [TESTING.md](docs/TESTING.md) for complete testing guide.
+See [TESTING.md](TESTING.md) for complete testing guide.
 
 ## 🚀 Submitting Changes
 
@@ -683,7 +683,7 @@ Closes #123
 - **[Getting Started](docs/GETTING-STARTED.md)** - Detailed setup guide
 - **[Architecture](docs/ARCHITECTURE.md)** - Project structure
 - **[Best Practices](.claude/CLAUDE.md)** - Development patterns
-- **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Common issues
+- **[Troubleshooting](docs/troubleshooting/TROUBLESHOOTING.md)** - Common issues
 
 ### Community
 
@@ -696,10 +696,10 @@ Closes #123
 A: Start with the [Block Editor Handbook](https://developer.wordpress.org/block-editor/), then review our [Getting Started Guide](docs/GETTING-STARTED.md).
 
 **Q: How do I add a new block?**
-A: Use the block template in `docs/BLOCK-TEMPLATE-EDIT.js` as a starting point.
+A: Use the block template in `docs/templates/BLOCK-TEMPLATE-EDIT.js` as a starting point.
 
 **Q: The build is failing. What do I do?**
-A: Check [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) or open an issue with the error message.
+A: Check [TROUBLESHOOTING.md](docs/troubleshooting/TROUBLESHOOTING.md) or open an issue with the error message.
 
 **Q: Can I work on an issue that's already assigned?**
 A: Comment on the issue first to coordinate with the assignee.
@@ -719,7 +719,7 @@ Look for issues labeled `good-first-issue`:
 
 ### Feature Requests
 
-Check [ROADMAP.md](docs/ROADMAP.md) for planned features.
+Check [ROADMAP.md](docs/planning/ROADMAP.md) for planned features.
 
 ### Bugs
 
