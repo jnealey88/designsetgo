@@ -297,8 +297,19 @@ class Draft_Mode_REST {
 		// removes the tags themselves, leaving the inner text behind).
 		$content = preg_replace( '/<script\b[^>]*>.*?<\/script>/is', '', $content );
 
+		// Temporarily allow CSS display property through wp_kses. The default
+		// safecss_filter_attr strips display:flex/grid/inline-flex which blocks
+		// need for layout.
+		$allow_display = function ( $styles ) {
+			$styles[] = 'display';
+			return $styles;
+		};
+		add_filter( 'safe_style_css', $allow_display );
+
 		// Use wp_kses with our extended allowed tags.
 		$content = wp_kses( $content, self::get_block_allowed_html() );
+
+		remove_filter( 'safe_style_css', $allow_display );
 
 		// Restore SVG camelCase attributes that wp_kses lowercases.
 		$svg_case_map = array(
