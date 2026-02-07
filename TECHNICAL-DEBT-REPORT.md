@@ -3,7 +3,7 @@
 **Repository**: DesignSetGo WordPress Plugin
 **Analysis Date**: 2026-02-07
 **Plugin Version**: 1.4.1
-**Total Debt Items**: 42
+**Total Debt Items**: 46 (some items appear in multiple categories)
 
 ---
 
@@ -16,7 +16,7 @@
 | **Medium** | 16 | Next quarter |
 | **Low** | 14 | Backlog |
 
-The DesignSetGo plugin has strong foundations -- excellent inline documentation (100% PHPDoc coverage), well-designed extension architecture, and smart frontend asset optimization. The most significant debt concentrates in three areas: **God objects** (`Block_Inserter` at 2,817 lines), **test coverage gaps** (0/51 blocks have dedicated JS tests, 1 E2E spec covers only group enhancements), and **performance patterns** (global `render_block` filters, redundant settings calls, block style variation filter accumulation).
+The DesignSetGo plugin has strong foundations -- excellent inline documentation (100% PHPDoc coverage), well-designed extension architecture, and smart frontend asset optimization. The most significant debt concentrates in three areas: **God objects** (`Block_Inserter` at ~2.8k lines), **test coverage gaps** (no edit/save component tests for blocks, and only 1 E2E spec covering group enhancements), and **performance patterns** (global `render_block` filters, redundant settings calls, block style variation filter accumulation).
 
 ---
 
@@ -45,16 +45,16 @@ The DesignSetGo plugin has strong foundations -- excellent inline documentation 
 
 ### 2. [Critical] Zero JS component tests for block edit/save functions
 
-- **Impact**: 51 blocks' editor UI and save markup are completely untested. Combined with the 50% Jest coverage threshold, this means large portions of the JS codebase have no quality gate.
+- **Impact**: No block edit/save components have dedicated unit tests (existing JS tests cover view scripts and utilities only). Combined with the 50% Jest coverage threshold, this means large portions of the JS codebase have no quality gate.
 - **Effort**: 10-15 days
 - **Fix**: Add unit tests for edit/save components starting with the most complex blocks (slider, comparison-table, form-builder, card, modal)
 - **Files**: `tests/unit/` (12 test files exist, none test block components)
 
-### 3. [Critical] `Block_Inserter` God object (2,817 lines, 34 methods)
+### 3. [Critical] `Block_Inserter` God object (~2.8k lines, 34 methods)
 
 - **Impact**: This is the most-changed abilities file (8 commits in 90 days). The `generate_designsetgo_wrapper_html()` method has 104 conditional branches in a single switch statement. Every new block type requires modifying this method, creating merge conflicts and increasing regression risk.
 - **Effort**: 5-8 days
-- **Fix**: Extract per-block HTML generators into individual strategy classes. Extract 11 identical `generate_form_*_field_html()` methods into a single generic form field renderer.
+- **Fix**: Extract per-block HTML generators into individual strategy classes. Extract 12 identical `generate_form_*_field_html()` methods into a single generic form field renderer.
 - **File**: `includes/abilities/class-block-inserter.php`
 
 ### 4. [High] Global `render_block` filters instead of block-specific filters
@@ -71,19 +71,19 @@ The DesignSetGo plugin has strong foundations -- excellent inline documentation 
 - **Fix**: Batch all style variations into a single filter callback that applies all theme.json modifications at once.
 - **File**: `includes/blocks/class-loader.php:234-251`
 
-### 6. [High] `Form_Handler` class has 6+ responsibilities (1,055 lines)
+### 6. [High] `Form_Handler` class has 6+ responsibilities (~1k lines)
 
 - **Impact**: 11 commits in 90 days (3rd most-changed file). The class handles REST registration, form validation, spam detection, rate limiting, Turnstile verification, email sending, submission storage, and GDPR export hooks. Changes to one concern risk breaking others.
 - **Effort**: 3-5 days
 - **Fix**: Extract `SpamDetector`, `RateLimiter`, `EmailNotifier`, and `FieldValidator` into separate classes.
 - **File**: `includes/blocks/class-form-handler.php`
 
-### 7. [High] 11 duplicated form field configurators (660 lines)
+### 7. [High] 12 duplicated form field configurators (~720 lines)
 
-- **Impact**: Adding or modifying form field abilities requires changing 11 identical files. The 11 `generate_form_*_field_html()` methods in `Block_Inserter` are also structurally identical.
+- **Impact**: Adding or modifying form field abilities requires changing 12 identical files (11 field types + form-builder). The corresponding `generate_form_*_field_html()` methods in `Block_Inserter` are also structurally identical.
 - **Effort**: 1-2 days
 - **Fix**: Create a single `Configure_Form_Field` class with a data-driven registration approach where field type, label, and description are passed as constructor parameters.
-- **Files**: `includes/abilities/configurators/class-configure-form-*.php` (11 files)
+- **Files**: `includes/abilities/configurators/class-configure-form-*.php` (12 files)
 
 ### 8. [High] Deploy workflows use Node 18 (EOL) while CI uses Node 20
 
@@ -101,7 +101,7 @@ The DesignSetGo plugin has strong foundations -- excellent inline documentation 
 
 ### 10. [High] Missing PHP tests for 20+ classes
 
-- **Impact**: Major subsystems have zero test coverage: `Settings` (862 lines, 13 commits), `GDPR_Compliance` (567 lines), `Global_Styles` (607 lines), `Admin_Menu`, `Block_Manager`, `Revision_Renderer`, `Revision_REST_API`, `Block_Differ`, and all 50+ individual configurator/generator abilities.
+- **Impact**: Major subsystems have zero test coverage: `Settings` (~860 lines, 13 commits), `GDPR_Compliance` (~570 lines), `Global_Styles` (~610 lines), `Admin_Menu`, `Block_Manager`, `Revision_Renderer`, `Revision_REST_API`, `Block_Differ`, and all 50+ individual configurator/generator abilities.
 - **Effort**: 5-8 days
 - **Fix**: Prioritize tests for Settings (most-changed) and GDPR (compliance-critical), then admin classes.
 - **Files**: `tests/phpunit/` (15 test files exist for ~70+ classes)
@@ -149,12 +149,12 @@ The DesignSetGo plugin has strong foundations -- excellent inline documentation 
 
 | # | Severity | Issue | File(s) | Effort |
 |---|----------|-------|---------|--------|
-| CQ-1 | Critical | `Block_Inserter` God object (2,817 lines, 104-branch switch) | `includes/abilities/class-block-inserter.php` | 5-8d |
-| CQ-2 | High | 11 duplicated form field configurators (660 lines identical code) | `includes/abilities/configurators/class-configure-form-*.php` | 1-2d |
-| CQ-3 | High | `Form_Handler` God object (1,055 lines, 6+ responsibilities) | `includes/blocks/class-form-handler.php` | 3-5d |
+| CQ-1 | Critical | `Block_Inserter` God object (~2.8k lines, 104-branch switch) | `includes/abilities/class-block-inserter.php` | 5-8d |
+| CQ-2 | High | 12 duplicated form field configurators (~720 lines identical code) | `includes/abilities/configurators/class-configure-form-*.php` | 1-2d |
+| CQ-3 | High | `Form_Handler` God object (~1k lines, 6+ responsibilities) | `includes/blocks/class-form-handler.php` | 3-5d |
 | CQ-4 | Medium | `Settings.sanitize_settings()` -- 117 lines of repetitive `isset()` ternary; defaults duplicated from `get_defaults()` | `includes/admin/class-settings.php:744-861` | 1d |
 | CQ-5 | Medium | `Settings.get_available_blocks()` -- 310 lines of static data that should be a config file | `includes/admin/class-settings.php:140-450` | 0.5d |
-| CQ-6 | Medium | `Block_Configurator.insert_into_parent_block()` -- nesting depth 8, 7 params (3 by-reference) | `includes/abilities/class-block-configurator.php:633` | 1d |
+| CQ-6 | Medium | `Block_Configurator.insert_into_parent_block()` -- nesting depth 8, 7 params (3 by-reference) | `includes/abilities/class-block-configurator.php` | 1d |
 | CQ-7 | Medium | `convertPresetToCSSVar()` duplicated in 4 files | `src/blocks/row/edit.js:68`, `row/save.js:44`, `grid/edit.js:45`, `grid/save.js` | 0.5d |
 | CQ-8 | Medium | Header injection sanitization pattern repeated 6 times | `includes/blocks/class-form-handler.php:847-955` | 0.5d |
 | CQ-9 | Low | Magic strings: `'designsetgo/v1'` used in 27 places, `'dsgo_form_submission'` in 12 | Multiple files | 0.5d |
@@ -242,8 +242,8 @@ The DesignSetGo plugin has strong foundations -- excellent inline documentation 
 - **Block style variation filter accumulation** -- Adding N closures instead of batching indicates the performance implication wasn't considered.
 
 ### Prudent & Inadvertent
-- **`Block_Inserter` growth** -- Started as a reasonable utility class and grew organically as blocks were added. Now at 2,817 lines, it needs architectural intervention.
-- **Form field code duplication** -- Copy-paste was expedient when adding each form field type, but with 11 types, the duplication has become significant.
+- **`Block_Inserter` growth** -- Started as a reasonable utility class and grew organically as blocks were added. Now at ~2.8k lines, it needs architectural intervention.
+- **Form field code duplication** -- Copy-paste was expedient when adding each form field type, but with 12 configurators, the duplication has become significant.
 - **No dependency injection** -- Common in WordPress plugin development due to the global-first architecture. Not reckless, but limits testability.
 
 ---
@@ -308,7 +308,7 @@ The DesignSetGo plugin has strong foundations -- excellent inline documentation 
 - Priority: High
 - Effort: 3 story points
 - Acceptance Criteria:
-  - [ ] Single generic `Configure_Form_Field` class replaces 11 identical files
+  - [ ] Single generic `Configure_Form_Field` class replaces 12 identical files
   - [ ] Each field type registered with data-driven approach
   - [ ] All abilities function identically (verified via smoke tests)
 
@@ -381,7 +381,7 @@ The DesignSetGo plugin has strong foundations -- excellent inline documentation 
 - `composer.lock` generation
 
 ### Phase 2 (Weeks 3-4): Deduplication & Consistency
-- Consolidate 11 form field configurators
+- Consolidate 12 form field configurators
 - Extract shared utilities
 - Standardize error handling across abilities
 - Remove unused dependencies
@@ -414,7 +414,7 @@ The DesignSetGo plugin has strong foundations -- excellent inline documentation 
 | PHP Test Coverage | ~40% (estimated) | 70% | Q3 2026 |
 | E2E Specs | 1 | 20+ | Q2 2026 |
 | Avg. Cyclomatic Complexity | ~15 (est.) | < 10 | Q4 2026 |
-| Max File Size (PHP) | 2,817 lines | < 500 lines | Q3 2026 |
+| Max File Size (PHP) | ~2.8k lines | < 500 lines | Q3 2026 |
 | Code Duplication | Moderate | < 5% | Q2 2026 |
 | Critical/High CVEs | 0 | 0 | Maintained |
 | Outdated Dependencies (major) | 5 | < 2 | Q2 2026 |
