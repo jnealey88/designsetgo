@@ -391,6 +391,28 @@ $inline-block-data-types: (
 		// EDITOR: Blocks are wrapped in [data-block] elements, so alignment must target
 		// both the block class (frontend parity) AND the [data-block] wrapper (editor).
 
+		// CRITICAL: Text blocks with explicit text alignment must stretch to full width.
+		// When section has content justification (e.g., center), WordPress applies
+		// align-items: center which shrinks text blocks and centers them, overriding
+		// the user's text-align setting. align-self: stretch ensures text blocks
+		// maintain full width so text-align works as expected.
+		> .has-text-align-left,
+		> .has-text-align-right,
+		> .has-text-align-center {
+			align-self: stretch !important;
+		}
+
+		// Editor: [data-block] wrappers containing text blocks with explicit alignment.
+		// Uses :has() selector (Chrome 105+, Firefox 121+, Safari 15.4+) which is
+		// acceptable for editor-only styles since the block editor already requires
+		// modern browsers. Frontend styles in style.scss don't need :has() because
+		// the .has-text-align-* class is directly on the child element (no [data-block] wrapper).
+		> [data-block]:has(> .has-text-align-left),
+		> [data-block]:has(> .has-text-align-right),
+		> [data-block]:has(> .has-text-align-center) {
+			align-self: stretch !important;
+		}
+
 		// Section center alignment - apply to inline blocks WITHOUT their own alignment
 		&.is-content-justification-center {
 
