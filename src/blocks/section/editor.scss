@@ -41,14 +41,9 @@ $inline-block-data-types: (
 	display: flex;
 	flex-direction: column;
 
-	// Ensure background images respect border radius in editor
-	overflow: hidden;
-
-	// CRITICAL: Allow Navigation block dropdowns to overflow
-	// Navigation menus need to display outside container bounds
-	&:has(.wp-block-navigation) {
-		overflow: visible;
-	}
+	// NOTE: No overflow restrictions — allows nav dropdowns, sticky elements,
+	// and fonts to render without clipping. Shape dividers handle their own
+	// overflow via .dsgo-stack--has-shape-divider { overflow-x: clip }.
 
 	// Visual indicator in editor
 	position: relative;
@@ -608,10 +603,8 @@ $inline-block-data-types: (
 
 // When section has shape dividers, ensure proper stacking
 .dsgo-stack--has-shape-divider {
-	// Override base overflow:hidden to allow shapes to extend beyond bounds
-	// Use !important to ensure precedence over base .dsgo-stack styles
-	overflow-x: clip !important;
-	overflow-y: visible !important;
+	// Prevent horizontal scrollbar from shapes extending beyond section width
+	overflow-x: clip;
 
 	// Content stays above shapes (z-index: 2)
 	// unless shape has "bring to front" option (z-index: 10)

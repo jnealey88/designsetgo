@@ -37,7 +37,9 @@
 
 .dsgo-has-video-background {
 	position: relative;
-	overflow: hidden; // CRITICAL: Makes border radius work by clipping video
+	// Use clip instead of hidden — clips video to border-radius without
+	// creating a scroll container (so position: sticky still works)
+	overflow: clip;
 
 	// CRITICAL: Must match style.scss for frontend parity
 	.dsgo-video-background,
