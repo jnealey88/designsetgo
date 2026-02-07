@@ -4,7 +4,7 @@
  * Parent block that manages tab navigation and panels
  */
 
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	InspectorControls,
@@ -93,13 +93,15 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Handle keyboard navigation
 	const handleKeyDown = (e, index) => {
 		// Don't interfere with text editing in RichText
-		if (e.target.isContentEditable) {
+		if (e.target.closest('[contenteditable="true"]')) {
 			return;
 		}
 
 		// Handle Enter/Space for tab activation (divs need explicit handling unlike buttons)
 		if (e.key === 'Enter' || e.key === ' ') {
-			handleTabClick(index);
+			if (index !== activeTab) {
+				handleTabClick(index);
+			}
 			e.preventDefault();
 			return;
 		}
@@ -490,19 +492,29 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										tagName="span"
 										className="dsgo-tabs__tab-title"
 										value={title}
-										onChange={(value) =>
+										onChange={(value) => {
+											// Strip any residual HTML to ensure plain text storage
+											const plainText = value.replace(/<[^>]*>/g, '');
 											updateBlockAttributes(
 												block.clientId,
-												{ title: value }
-											)
-										}
-										placeholder={`Tab ${index + 1}`}
+												{ title: plainText }
+											);
+										}}
+										placeholder={sprintf(
+											/* translators: %d: tab number */
+											__('Tab %d', 'designsetgo'),
+											index + 1
+										)}
 										allowedFormats={[]}
 										withoutInteractiveFormatting
 									/>
 								) : (
 									<span className="dsgo-tabs__tab-title">
-										{title || `Tab ${index + 1}`}
+										{title || sprintf(
+											/* translators: %d: tab number */
+											__('Tab %d', 'designsetgo'),
+											index + 1
+										)}
 									</span>
 								)}
 
