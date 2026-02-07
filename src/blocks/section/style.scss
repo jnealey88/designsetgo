@@ -111,8 +111,19 @@
 	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
 	// but float should not work inside flex containers
 	// NOTE: .is-layout-flex is on the dsgo-stack__inner element, not the outer wrapper
+	// CRITICAL: Disable float and stretch all block-level children by default.
+	// Float: WordPress core CSS applies float for alignment classes (.alignleft,
+	// .alignright) but float should not work inside flex containers.
+	// Stretch: When section has content justification (e.g., center), WordPress
+	// applies align-items: center which shrinks ALL children to content width.
+	// This breaks paragraphs, headings, and other text blocks — even those without
+	// an explicit has-text-align-* class (i.e., default left-aligned text).
+	// Using align-self: stretch without !important so inline block rules (pill,
+	// icon, button, counter) can override via higher specificity or !important.
+	// NOTE: .is-layout-flex is on the dsgo-stack__inner element, not the outer wrapper
 	.dsgo-stack__inner.is-layout-flex > * {
 		float: none !important;
+		align-self: stretch;
 	}
 
 	// CRITICAL: Ensure flex layout properties work correctly
@@ -126,20 +137,6 @@
 		// Do NOT set align-items here — WordPress's layout system may generate
 		// align-items based on content justification, and an explicit stretch
 		// would override it, breaking Pill/Icon/Button alignment inheritance.
-
-		// CRITICAL: Text blocks with explicit text alignment must stretch to full width.
-		// When section has content justification (e.g., center), WordPress applies
-		// align-items: center which shrinks text blocks and centers them, overriding
-		// the user's text-align setting. align-self: stretch ensures text blocks
-		// maintain full width so text-align works as expected.
-		// Targets any block with WordPress's has-text-align-* classes (paragraphs,
-		// headings, lists, quotes, etc.) — this is intentionally broad since all
-		// text blocks should respect their own alignment over the section's.
-		> .has-text-align-left,
-		> .has-text-align-right,
-		> .has-text-align-center {
-			align-self: stretch !important;
-		}
 
 		// Inline blocks WITH explicit alignment - override section alignment
 		> :where(
