@@ -30,26 +30,29 @@ const EXCLUDED_BLOCKS = [
 ];
 
 // Lazy-load editor components
-const MaxWidthPanel = lazy( () =>
-	import(
-		/* webpackChunkName: "ext-max-width" */ './edit'
-	).then( ( m ) => ( { default: m.MaxWidthPanel } ) )
+const MaxWidthPanel = lazy(() =>
+	import(/* webpackChunkName: "ext-max-width" */ './edit').then((m) => ({
+		default: m.MaxWidthPanel,
+	}))
 );
-const MaxWidthStyles = lazy( () =>
-	import(
-		/* webpackChunkName: "ext-max-width" */ './edit'
-	).then( ( m ) => ( { default: m.MaxWidthStyles } ) )
+const MaxWidthStyles = lazy(() =>
+	import(/* webpackChunkName: "ext-max-width" */ './edit').then((m) => ({
+		default: m.MaxWidthStyles,
+	}))
 );
 
 /**
  * Add width attributes to blocks
+ *
+ * @param {Object} settings Block settings
+ * @param {string} name     Block name
  */
-function addMaxWidthAttribute( settings, name ) {
-	if ( ! shouldExtendBlock( name ) ) {
+function addMaxWidthAttribute(settings, name) {
+	if (!shouldExtendBlock(name)) {
 		return settings;
 	}
 
-	if ( EXCLUDED_BLOCKS.includes( name ) ) {
+	if (EXCLUDED_BLOCKS.includes(name)) {
 		return settings;
 	}
 
@@ -71,24 +74,24 @@ addFilter(
 /**
  * Add width controls to block inspector (lazy-loaded)
  */
-const withMaxWidthControl = createHigherOrderComponent( ( BlockEdit ) => {
-	return ( props ) => {
+const withMaxWidthControl = createHigherOrderComponent((BlockEdit) => {
+	return (props) => {
 		const { name } = props;
 
-		if ( ! shouldExtendBlock( name ) || EXCLUDED_BLOCKS.includes( name ) ) {
-			return <BlockEdit { ...props } />;
+		if (!shouldExtendBlock(name) || EXCLUDED_BLOCKS.includes(name)) {
+			return <BlockEdit {...props} />;
 		}
 
 		return (
 			<>
-				<BlockEdit { ...props } />
-				<Suspense fallback={ null }>
-					<MaxWidthPanel { ...props } />
+				<BlockEdit {...props} />
+				<Suspense fallback={null}>
+					<MaxWidthPanel {...props} />
 				</Suspense>
 			</>
 		);
 	};
-}, 'withMaxWidthControl' );
+}, 'withMaxWidthControl');
 
 addFilter(
 	'editor.BlockEdit',
@@ -100,25 +103,25 @@ addFilter(
 /**
  * Apply max-width styles in editor (lazy-loaded)
  */
-const withMaxWidthStyles = createHigherOrderComponent( ( BlockListBlock ) => {
-	return ( props ) => {
+const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
+	return (props) => {
 		const { attributes, name } = props;
 
-		if ( ! shouldExtendBlock( name ) || EXCLUDED_BLOCKS.includes( name ) ) {
-			return <BlockListBlock { ...props } />;
+		if (!shouldExtendBlock(name) || EXCLUDED_BLOCKS.includes(name)) {
+			return <BlockListBlock {...props} />;
 		}
 
-		if ( ! attributes.dsgoMaxWidth ) {
-			return <BlockListBlock { ...props } />;
+		if (!attributes.dsgoMaxWidth) {
+			return <BlockListBlock {...props} />;
 		}
 
 		return (
-			<Suspense fallback={ <BlockListBlock { ...props } /> }>
-				<MaxWidthStyles BlockListBlock={ BlockListBlock } { ...props } />
+			<Suspense fallback={<BlockListBlock {...props} />}>
+				<MaxWidthStyles BlockListBlock={BlockListBlock} {...props} />
 			</Suspense>
 		);
 	};
-}, 'withMaxWidthStyles' );
+}, 'withMaxWidthStyles');
 
 addFilter(
 	'editor.BlockListBlock',
@@ -129,36 +132,40 @@ addFilter(
 
 /**
  * Apply max-width styles to block wrapper on frontend
+ *
+ * @param {Object} props      Extra props
+ * @param {Object} blockType  Block type
+ * @param {Object} attributes Block attributes
  */
-function applyMaxWidthStyles( props, blockType, attributes ) {
+function applyMaxWidthStyles(props, blockType, attributes) {
 	const { dsgoMaxWidth, align, textAlign } = attributes;
 
-	if ( ! shouldExtendBlock( blockType.name ) ) {
+	if (!shouldExtendBlock(blockType.name)) {
 		return props;
 	}
 
-	if ( EXCLUDED_BLOCKS.includes( blockType.name ) ) {
+	if (EXCLUDED_BLOCKS.includes(blockType.name)) {
 		return props;
 	}
 
-	if ( ! dsgoMaxWidth ) {
+	if (!dsgoMaxWidth) {
 		return props;
 	}
 
 	let marginLeft = 'auto';
 	let marginRight = 'auto';
 
-	if ( textAlign === 'left' || align === 'left' ) {
+	if (textAlign === 'left' || align === 'left') {
 		marginLeft = '0';
 		marginRight = 'auto';
-	} else if ( textAlign === 'right' || align === 'right' ) {
+	} else if (textAlign === 'right' || align === 'right') {
 		marginLeft = 'auto';
 		marginRight = '0';
 	}
 
 	return {
 		...props,
-		className: `${ props.className || '' } dsgo-has-max-width`.trim(),
+		className: `${props.className || ''} dsgo-has-max-width`.trim(),
 		style: {
 			...props.style,
 			maxWidth: dsgoMaxWidth,

@@ -13,11 +13,17 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { lazy, Suspense } from '@wordpress/element';
 
 // Lazy-load animation UI components to reduce initial bundle size
-const AnimationPanel = lazy( () =>
-	import( /* webpackChunkName: "ext-block-animations" */ './components/AnimationPanel' )
+const AnimationPanel = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "ext-block-animations" */ './components/AnimationPanel'
+		)
 );
-const AnimationToolbar = lazy( () =>
-	import( /* webpackChunkName: "ext-block-animations" */ './components/AnimationToolbar' )
+const AnimationToolbar = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "ext-block-animations" */ './components/AnimationToolbar'
+		)
 );
 
 /**
@@ -34,7 +40,7 @@ const withAnimationControls = createHigherOrderComponent((BlockEdit) => {
 
 		return (
 			<>
-				<Suspense fallback={ null }>
+				<Suspense fallback={null}>
 					<AnimationToolbar
 						attributes={attributes}
 						setAttributes={setAttributes}
@@ -42,7 +48,7 @@ const withAnimationControls = createHigherOrderComponent((BlockEdit) => {
 				</Suspense>
 				<BlockEdit {...props} />
 				<InspectorControls>
-					<Suspense fallback={ null }>
+					<Suspense fallback={null}>
 						<AnimationPanel
 							attributes={attributes}
 							setAttributes={setAttributes}

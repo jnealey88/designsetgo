@@ -15,17 +15,17 @@ import { lazy, Suspense } from '@wordpress/element';
 import './editor.scss';
 
 // Lazy-load draft mode components to reduce initial bundle size
-const DraftModePanel = lazy( () =>
-	import( /* webpackChunkName: "ext-draft-mode" */ './DraftModePanel' )
+const DraftModePanel = lazy(
+	() => import(/* webpackChunkName: "ext-draft-mode" */ './DraftModePanel')
 );
-const DraftModeControls = lazy( () =>
-	import( /* webpackChunkName: "ext-draft-mode" */ './DraftModeControls' )
+const DraftModeControls = lazy(
+	() => import(/* webpackChunkName: "ext-draft-mode" */ './DraftModeControls')
 );
 
 // Register the draft mode panel plugin (sidebar + auto-detection + controls).
 registerPlugin('dsgo-draft-mode', {
 	render: () => (
-		<Suspense fallback={ null }>
+		<Suspense fallback={null}>
 			<DraftModePanel />
 		</Suspense>
 	),
@@ -35,7 +35,7 @@ registerPlugin('dsgo-draft-mode', {
 // Register the draft mode controls plugin (post status info area controls).
 registerPlugin('dsgo-draft-mode-controls', {
 	render: () => (
-		<Suspense fallback={ null }>
+		<Suspense fallback={null}>
 			<DraftModeControls />
 		</Suspense>
 	),

@@ -14,19 +14,22 @@ import { lazy, Suspense } from '@wordpress/element';
 import { shouldExtendBlock } from '../../utils/should-extend-block';
 
 // Lazy-load editor panel
-const StickyHeaderPanel = lazy( () =>
-	import( /* webpackChunkName: "ext-sticky-header" */ './edit' )
+const StickyHeaderPanel = lazy(
+	() => import(/* webpackChunkName: "ext-sticky-header" */ './edit')
 );
 
 /**
  * Add sticky header attributes to template parts
+ *
+ * @param {Object} settings Block settings
+ * @param {string} name     Block name
  */
-function addStickyHeaderAttributes( settings, name ) {
-	if ( ! shouldExtendBlock( name ) ) {
+function addStickyHeaderAttributes(settings, name) {
+	if (!shouldExtendBlock(name)) {
 		return settings;
 	}
 
-	if ( name !== 'core/template-part' ) {
+	if (name !== 'core/template-part') {
 		return settings;
 	}
 
@@ -53,33 +56,33 @@ addFilter(
 /**
  * Add sticky header controls to template parts (lazy-loaded)
  */
-const withStickyHeaderControls = createHigherOrderComponent( ( BlockEdit ) => {
-	return ( props ) => {
+const withStickyHeaderControls = createHigherOrderComponent((BlockEdit) => {
+	return (props) => {
 		const { name, attributes } = props;
 
-		if ( name !== 'core/template-part' ) {
-			return <BlockEdit { ...props } />;
+		if (name !== 'core/template-part') {
+			return <BlockEdit {...props} />;
 		}
 
 		const isHeader =
 			attributes.area === 'header' ||
-			attributes.slug?.includes( 'header' ) ||
-			attributes.theme?.includes( 'header' );
+			attributes.slug?.includes('header') ||
+			attributes.theme?.includes('header');
 
-		if ( ! isHeader ) {
-			return <BlockEdit { ...props } />;
+		if (!isHeader) {
+			return <BlockEdit {...props} />;
 		}
 
 		return (
 			<>
-				<BlockEdit { ...props } />
-				<Suspense fallback={ null }>
-					<StickyHeaderPanel { ...props } />
+				<BlockEdit {...props} />
+				<Suspense fallback={null}>
+					<StickyHeaderPanel {...props} />
 				</Suspense>
 			</>
 		);
 	};
-}, 'withStickyHeaderControls' );
+}, 'withStickyHeaderControls');
 
 addFilter(
 	'editor.BlockEdit',
@@ -89,37 +92,41 @@ addFilter(
 
 /**
  * Apply sticky header classes to template parts on save
+ *
+ * @param {Object} extraProps Extra props
+ * @param {Object} blockType  Block type
+ * @param {Object} attributes Block attributes
  */
-function applyStickyHeaderClasses( extraProps, blockType, attributes ) {
-	if ( blockType.name !== 'core/template-part' ) {
+function applyStickyHeaderClasses(extraProps, blockType, attributes) {
+	if (blockType.name !== 'core/template-part') {
 		return extraProps;
 	}
 
-	if ( ! attributes.dsgoStickyEnabled ) {
+	if (!attributes.dsgoStickyEnabled) {
 		return extraProps;
 	}
 
-	const classes = [ 'dsgo-sticky-header-enabled' ];
+	const classes = ['dsgo-sticky-header-enabled'];
 
-	if ( attributes.dsgoStickyShadow && attributes.dsgoStickyShadow !== 'none' ) {
-		classes.push( `dsgo-sticky-shadow-${ attributes.dsgoStickyShadow }` );
+	if (attributes.dsgoStickyShadow && attributes.dsgoStickyShadow !== 'none') {
+		classes.push(`dsgo-sticky-shadow-${attributes.dsgoStickyShadow}`);
 	}
 
-	if ( attributes.dsgoStickyShrink ) {
-		classes.push( 'dsgo-sticky-shrink' );
+	if (attributes.dsgoStickyShrink) {
+		classes.push('dsgo-sticky-shrink');
 	}
 
-	if ( attributes.dsgoStickyHideOnScroll ) {
-		classes.push( 'dsgo-sticky-hide-on-scroll-down' );
+	if (attributes.dsgoStickyHideOnScroll) {
+		classes.push('dsgo-sticky-hide-on-scroll-down');
 	}
 
-	if ( attributes.dsgoStickyBackground ) {
-		classes.push( 'dsgo-sticky-bg-on-scroll' );
+	if (attributes.dsgoStickyBackground) {
+		classes.push('dsgo-sticky-bg-on-scroll');
 	}
 
 	return {
 		...extraProps,
-		className: `${ extraProps.className || '' } ${ classes.join( ' ' ) }`.trim(),
+		className: `${extraProps.className || ''} ${classes.join(' ')}`.trim(),
 		'data-dsgo-shrink-amount': attributes.dsgoStickyShrinkAmount || 15,
 	};
 }

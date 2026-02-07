@@ -13,7 +13,13 @@ import './editor.scss';
 // Note: style.scss is imported in src/styles/style.scss for frontend loading
 
 import { __ } from '@wordpress/i18n';
-import { useState, useCallback, useRef, lazy, Suspense } from '@wordpress/element';
+import {
+	useState,
+	useCallback,
+	useRef,
+	lazy,
+	Suspense,
+} from '@wordpress/element';
 import {
 	registerFormatType,
 	applyFormat,
@@ -28,8 +34,11 @@ import { FORMAT_NAME, CSS_CLASSES } from './constants';
 import { generateStyleString, parseStyleString, hasAnyStyle } from './utils';
 
 // Lazy-load the popover content (SizeSection, ColorSection are large)
-const TextStylePopover = lazy( () =>
-	import( /* webpackChunkName: "fmt-text-style" */ './components/TextStylePopover' )
+const TextStylePopover = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "fmt-text-style" */ './components/TextStylePopover'
+		)
 );
 
 /**
@@ -114,7 +123,7 @@ function TextStyleEdit({ isActive, value, onChange }) {
 					onClose={() => setIsPopoverOpen(false)}
 					focusOnMount="firstElement"
 				>
-					<Suspense fallback={ null }>
+					<Suspense fallback={null}>
 						<TextStylePopover
 							styles={currentStyles}
 							onChange={applyStyles}

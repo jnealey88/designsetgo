@@ -36,26 +36,29 @@ const ALLOWED_BLOCKS = [
 ];
 
 // Lazy-load editor components
-const BackgroundVideoPanel = lazy( () =>
-	import(
-		/* webpackChunkName: "ext-background-video" */ './edit'
-	).then( ( m ) => ( { default: m.BackgroundVideoPanel } ) )
+const BackgroundVideoPanel = lazy(() =>
+	import(/* webpackChunkName: "ext-background-video" */ './edit').then(
+		(m) => ({ default: m.BackgroundVideoPanel })
+	)
 );
-const BackgroundVideoPreview = lazy( () =>
-	import(
-		/* webpackChunkName: "ext-background-video" */ './edit'
-	).then( ( m ) => ( { default: m.BackgroundVideoPreview } ) )
+const BackgroundVideoPreview = lazy(() =>
+	import(/* webpackChunkName: "ext-background-video" */ './edit').then(
+		(m) => ({ default: m.BackgroundVideoPreview })
+	)
 );
 
 /**
  * Add background video attributes to allowed container blocks
+ *
+ * @param {Object} settings Block settings
+ * @param {string} name     Block name
  */
-function addBackgroundVideoAttributes( settings, name ) {
-	if ( ! shouldExtendBlock( name ) ) {
+function addBackgroundVideoAttributes(settings, name) {
+	if (!shouldExtendBlock(name)) {
 		return settings;
 	}
 
-	if ( ! ALLOWED_BLOCKS.includes( name ) ) {
+	if (!ALLOWED_BLOCKS.includes(name)) {
 		return settings;
 	}
 
@@ -83,25 +86,22 @@ addFilter(
 /**
  * Add background video controls to block inspector (lazy-loaded)
  */
-const withBackgroundVideoControls = createHigherOrderComponent(
-	( BlockEdit ) => {
-		return ( props ) => {
-			if ( ! ALLOWED_BLOCKS.includes( props.name ) ) {
-				return <BlockEdit { ...props } />;
-			}
+const withBackgroundVideoControls = createHigherOrderComponent((BlockEdit) => {
+	return (props) => {
+		if (!ALLOWED_BLOCKS.includes(props.name)) {
+			return <BlockEdit {...props} />;
+		}
 
-			return (
-				<>
-					<BlockEdit { ...props } />
-					<Suspense fallback={ null }>
-						<BackgroundVideoPanel { ...props } />
-					</Suspense>
-				</>
-			);
-		};
-	},
-	'withBackgroundVideoControls'
-);
+		return (
+			<>
+				<BlockEdit {...props} />
+				<Suspense fallback={null}>
+					<BackgroundVideoPanel {...props} />
+				</Suspense>
+			</>
+		);
+	};
+}, 'withBackgroundVideoControls');
 
 addFilter(
 	'editor.BlockEdit',
@@ -113,27 +113,24 @@ addFilter(
 /**
  * Add background video wrapper in editor (lazy-loaded)
  */
-const withBackgroundVideoEdit = createHigherOrderComponent(
-	( BlockListBlock ) => {
-		return ( props ) => {
-			const { attributes, name } = props;
+const withBackgroundVideoEdit = createHigherOrderComponent((BlockListBlock) => {
+	return (props) => {
+		const { attributes, name } = props;
 
-			if ( ! ALLOWED_BLOCKS.includes( name ) || ! attributes.dsgoVideoUrl ) {
-				return <BlockListBlock { ...props } />;
-			}
+		if (!ALLOWED_BLOCKS.includes(name) || !attributes.dsgoVideoUrl) {
+			return <BlockListBlock {...props} />;
+		}
 
-			return (
-				<Suspense fallback={ <BlockListBlock { ...props } /> }>
-					<BackgroundVideoPreview
-						BlockListBlock={ BlockListBlock }
-						{ ...props }
-					/>
-				</Suspense>
-			);
-		};
-	},
-	'withBackgroundVideoEdit'
-);
+		return (
+			<Suspense fallback={<BlockListBlock {...props} />}>
+				<BackgroundVideoPreview
+					BlockListBlock={BlockListBlock}
+					{...props}
+				/>
+			</Suspense>
+		);
+	};
+}, 'withBackgroundVideoEdit');
 
 addFilter(
 	'editor.BlockListBlock',
@@ -143,17 +140,21 @@ addFilter(
 
 /**
  * Add background video classes and data attributes to save
+ *
+ * @param {Object} props      Extra props
+ * @param {Object} blockType  Block type
+ * @param {Object} attributes Block attributes
  */
-function addBackgroundVideoSaveProps( props, blockType, attributes ) {
+function addBackgroundVideoSaveProps(props, blockType, attributes) {
 	const { dsgoVideoUrl } = attributes;
 
-	if ( ! dsgoVideoUrl ) {
+	if (!dsgoVideoUrl) {
 		return props;
 	}
 
 	return {
 		...props,
-		className: `${ props.className || '' } dsgo-has-video-background`.trim(),
+		className: `${props.className || ''} dsgo-has-video-background`.trim(),
 		'data-video-url': dsgoVideoUrl,
 		'data-video-poster': attributes.dsgoVideoPoster || '',
 		'data-video-muted': attributes.dsgoVideoMuted ? 'true' : 'false',

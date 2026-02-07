@@ -30,19 +30,22 @@ const SUPPORTED_BLOCKS = [
 ];
 
 // Lazy-load editor panel
-const ClickableGroupPanel = lazy( () =>
-	import( /* webpackChunkName: "ext-clickable-group" */ './edit' )
+const ClickableGroupPanel = lazy(
+	() => import(/* webpackChunkName: "ext-clickable-group" */ './edit')
 );
 
 /**
  * Add link attributes to container blocks
+ *
+ * @param {Object} settings Block settings
+ * @param {string} name     Block name
  */
-function addLinkAttributes( settings, name ) {
-	if ( ! shouldExtendBlock( name ) ) {
+function addLinkAttributes(settings, name) {
+	if (!shouldExtendBlock(name)) {
 		return settings;
 	}
 
-	if ( ! SUPPORTED_BLOCKS.includes( name ) ) {
+	if (!SUPPORTED_BLOCKS.includes(name)) {
 		return settings;
 	}
 
@@ -66,22 +69,22 @@ addFilter(
 /**
  * Add link controls to container block inspector (lazy-loaded)
  */
-const withLinkControls = createHigherOrderComponent( ( BlockEdit ) => {
-	return ( props ) => {
-		if ( ! SUPPORTED_BLOCKS.includes( props.name ) ) {
-			return <BlockEdit { ...props } />;
+const withLinkControls = createHigherOrderComponent((BlockEdit) => {
+	return (props) => {
+		if (!SUPPORTED_BLOCKS.includes(props.name)) {
+			return <BlockEdit {...props} />;
 		}
 
 		return (
 			<>
-				<BlockEdit { ...props } />
-				<Suspense fallback={ null }>
-					<ClickableGroupPanel { ...props } />
+				<BlockEdit {...props} />
+				<Suspense fallback={null}>
+					<ClickableGroupPanel {...props} />
 				</Suspense>
 			</>
 		);
 	};
-}, 'withLinkControls' );
+}, 'withLinkControls');
 
 addFilter(
 	'editor.BlockEdit',
@@ -92,20 +95,21 @@ addFilter(
 /**
  * Add clickable class to container blocks in editor
  */
-const withClickableClass = createHigherOrderComponent( ( BlockListBlock ) => {
-	return ( props ) => {
+const withClickableClass = createHigherOrderComponent((BlockListBlock) => {
+	return (props) => {
 		const { name, attributes } = props;
 
-		if ( ! SUPPORTED_BLOCKS.includes( name ) ) {
-			return <BlockListBlock { ...props } />;
+		if (!SUPPORTED_BLOCKS.includes(name)) {
+			return <BlockListBlock {...props} />;
 		}
 
-		const hasValidUrl = attributes.dsgoLinkUrl && attributes.dsgoLinkUrl.trim().length > 0;
-		const classes = classnames( { 'dsgo-clickable': hasValidUrl } );
+		const hasValidUrl =
+			attributes.dsgoLinkUrl && attributes.dsgoLinkUrl.trim().length > 0;
+		const classes = classnames({ 'dsgo-clickable': hasValidUrl });
 
-		return <BlockListBlock { ...props } className={ classes } />;
+		return <BlockListBlock {...props} className={classes} />;
 	};
-}, 'withClickableClass' );
+}, 'withClickableClass');
 
 addFilter(
 	'editor.BlockListBlock',
@@ -115,26 +119,30 @@ addFilter(
 
 /**
  * Add link data attributes and class to container blocks on save
+ *
+ * @param {Object} extraProps Extra props
+ * @param {Object} blockType  Block type
+ * @param {Object} attributes Block attributes
  */
-function addLinkSaveProps( extraProps, blockType, attributes ) {
-	if ( ! SUPPORTED_BLOCKS.includes( blockType.name ) ) {
+function addLinkSaveProps(extraProps, blockType, attributes) {
+	if (!SUPPORTED_BLOCKS.includes(blockType.name)) {
 		return extraProps;
 	}
 
 	const { dsgoLinkUrl, dsgoLinkTarget, dsgoLinkRel } = attributes;
 
-	if ( ! dsgoLinkUrl || dsgoLinkUrl.trim().length === 0 ) {
+	if (!dsgoLinkUrl || dsgoLinkUrl.trim().length === 0) {
 		return extraProps;
 	}
 
-	const classes = classnames( extraProps.className, 'dsgo-clickable' );
+	const classes = classnames(extraProps.className, 'dsgo-clickable');
 	const linkProps = { 'data-link-url': dsgoLinkUrl };
 
-	if ( dsgoLinkTarget ) {
-		linkProps[ 'data-link-target' ] = '_blank';
+	if (dsgoLinkTarget) {
+		linkProps['data-link-target'] = '_blank';
 	}
-	if ( dsgoLinkRel ) {
-		linkProps[ 'data-link-rel' ] = dsgoLinkRel;
+	if (dsgoLinkRel) {
+		linkProps['data-link-rel'] = dsgoLinkRel;
 	}
 
 	return { ...extraProps, ...linkProps, className: classes };
