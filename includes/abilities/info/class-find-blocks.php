@@ -46,6 +46,11 @@ class Find_Blocks extends Abstract_Ability {
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
+			'show_in_rest'        => true,
+			'annotations'         => array(
+				'readonly'     => true,
+				'instructions' => 'Searches for blocks across posts by block name. Useful for content audits and finding blocks before bulk operations.',
+			),
 		);
 	}
 

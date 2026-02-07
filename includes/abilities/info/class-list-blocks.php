@@ -45,6 +45,11 @@ class List_Blocks extends Abstract_Ability {
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
+			'show_in_rest'        => true,
+			'annotations'         => array(
+				'readonly'     => true,
+				'instructions' => 'Returns all DesignSetGo blocks with their attributes and metadata. Use category filter to narrow results. Use detail "full" with specific block names for complete attribute definitions.',
+			),
 		);
 	}
 
