@@ -159,18 +159,10 @@ class Insert_Table_Of_Contents extends Abstract_Ability {
 	/**
 	 * Permission callback.
 	 *
-	 * @return bool|WP_Error
+	 * @return bool
 	 */
-	public function check_permission_callback() {
-		if ( ! current_user_can( 'edit_posts' ) ) {
-			return new WP_Error(
-				'rest_forbidden',
-				__( 'Sorry, you are not allowed to insert table of contents.', 'designsetgo' ),
-				array( 'status' => rest_authorization_required_code() )
-			);
-		}
-
-		return true;
+	public function check_permission_callback(): bool {
+		return $this->check_permission( 'edit_posts' );
 	}
 
 	/**
@@ -186,10 +178,9 @@ class Insert_Table_Of_Contents extends Abstract_Ability {
 
 		// Validate post.
 		if ( ! $post_id ) {
-			return new WP_Error(
+			return $this->error(
 				'missing_post_id',
-				__( 'Post ID is required.', 'designsetgo' ),
-				array( 'status' => 400 )
+				__( 'Post ID is required.', 'designsetgo' )
 			);
 		}
 

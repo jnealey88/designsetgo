@@ -253,10 +253,9 @@ class Insert_Slider extends Abstract_Ability {
 
 		// Validate post.
 		if ( ! $post_id ) {
-			return new WP_Error(
+			return $this->error(
 				'missing_post_id',
-				__( 'Post ID is required.', 'designsetgo' ),
-				array( 'status' => 400 )
+				__( 'Post ID is required.', 'designsetgo' )
 			);
 		}
 

@@ -535,15 +535,39 @@ class Settings {
 	}
 
 	/**
+	 * Cached settings to avoid repeated get_option() + wp_parse_args() calls.
+	 *
+	 * @var array|null
+	 */
+	private static $cached_settings = null;
+
+	/**
 	 * Get current settings
 	 *
 	 * @return array Current settings merged with defaults.
 	 */
 	public static function get_settings() {
-		$saved_settings = get_option( self::OPTION_NAME, array() );
-		$defaults       = self::get_defaults();
+		if ( null !== self::$cached_settings ) {
+			return self::$cached_settings;
+		}
 
-		return wp_parse_args( $saved_settings, $defaults );
+		$saved_settings       = get_option( self::OPTION_NAME, array() );
+		$defaults             = self::get_defaults();
+		self::$cached_settings = wp_parse_args( $saved_settings, $defaults );
+
+		return self::$cached_settings;
+	}
+
+	/**
+	 * Invalidate the settings cache.
+	 *
+	 * Call this whenever settings are saved or updated to ensure
+	 * subsequent get_settings() calls return fresh data.
+	 *
+	 * @since 1.5.1
+	 */
+	public static function invalidate_cache() {
+		self::$cached_settings = null;
 	}
 
 	/**
@@ -663,6 +687,7 @@ class Settings {
 		$sanitized = $this->sanitize_settings( $new_settings );
 
 		update_option( self::OPTION_NAME, $sanitized );
+		self::invalidate_cache();
 
 		return rest_ensure_response(
 			array(

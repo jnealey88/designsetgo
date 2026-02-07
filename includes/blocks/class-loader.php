@@ -195,6 +195,9 @@ class Loader {
 		// Find all block directories.
 		$blocks = array_filter( glob( $blocks_dir . '*' ), 'is_dir' );
 
+		// Collect all style variation data to register in a single filter callback.
+		$all_style_variations = array();
+
 		foreach ( $blocks as $block_dir ) {
 			$styles_dir = $block_dir . '/styles/';
 
@@ -229,28 +232,36 @@ class Loader {
 						)
 					);
 
-					// Register the style variation data with WordPress.
-					// This allows the Site Editor to apply the comprehensive theme.json styles.
-					add_filter(
-						'wp_theme_json_data_default',
-						function ( $theme_json ) use ( $style_data, $block_type ) {
-							// Merge the style variation into the theme.json data.
-							$theme_json_data = $theme_json->get_data();
-
-							if ( ! isset( $theme_json_data['styles']['blocks'][ $block_type ] ) ) {
-								$theme_json_data['styles']['blocks'][ $block_type ] = array();
-							}
-
-							// Add the style variation data.
-							if ( isset( $style_data['styles'] ) ) {
-								$theme_json_data['styles']['blocks'][ $block_type ]['variations'][ $style_data['slug'] ] = $style_data['styles'];
-							}
-
-							return new \WP_Theme_JSON_Data( $theme_json_data, 'default' );
-						}
-					);
+					// Collect the style variation data for batched registration.
+					if ( isset( $style_data['styles'] ) ) {
+						$all_style_variations[] = array(
+							'block_type' => $block_type,
+							'slug'       => $style_data['slug'],
+							'styles'     => $style_data['styles'],
+						);
+					}
 				}
 			}
+		}
+
+		// Register all style variations with a single filter callback.
+		if ( ! empty( $all_style_variations ) ) {
+			add_filter(
+				'wp_theme_json_data_default',
+				function ( $theme_json ) use ( $all_style_variations ) {
+					$theme_json_data = $theme_json->get_data();
+
+					foreach ( $all_style_variations as $variation ) {
+						if ( ! isset( $theme_json_data['styles']['blocks'][ $variation['block_type'] ] ) ) {
+							$theme_json_data['styles']['blocks'][ $variation['block_type'] ] = array();
+						}
+
+						$theme_json_data['styles']['blocks'][ $variation['block_type'] ]['variations'][ $variation['slug'] ] = $variation['styles'];
+					}
+
+					return new \WP_Theme_JSON_Data( $theme_json_data, 'default' );
+				}
+			);
 		}
 	}
 

@@ -104,6 +104,9 @@ class Abilities_Registry {
 		// Load abstract configurator after helpers (depends on Block_Schema_Loader).
 		require_once $base_path . '/class-abstract-configurator-ability.php';
 
+		// Load form field configurator base class before directory scan (dependency order).
+		require_once $base_path . '/configurators/class-configure-form-field.php';
+
 		// Load ability classes from subdirectories.
 		$this->load_abilities_from_directory( $base_path . '/info' );
 		$this->load_abilities_from_directory( $base_path . '/inserters' );
@@ -177,7 +180,10 @@ class Abilities_Registry {
 		foreach ( $files as $file ) {
 			$class_name = $this->file_to_class_name( $file, $namespace );
 
-			if ( class_exists( $class_name ) && is_subclass_of( $class_name, Abstract_Ability::class ) ) {
+			if ( class_exists( $class_name )
+				&& is_subclass_of( $class_name, Abstract_Ability::class )
+				&& ! ( new \ReflectionClass( $class_name ) )->isAbstract()
+			) {
 				$this->add_ability( new $class_name() );
 			}
 		}

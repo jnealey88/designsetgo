@@ -4,7 +4,6 @@
 # Dependencies
 /node_modules
 /vendor
-composer.lock
 
 # Build output
 # Build files are generated fresh by GitHub Actions during deployment
