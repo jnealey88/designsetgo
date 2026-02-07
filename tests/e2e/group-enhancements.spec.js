@@ -15,6 +15,7 @@ const {
 	openBlockSettings,
 	savePost,
 	publishPost,
+	getFrontendUrl,
 	selectBlock,
 	blockHasClass,
 } = require('./helpers/wordpress');
@@ -220,9 +221,7 @@ test.describe('Group Block - Clickable with Link', () => {
 		await publishPost(page);
 
 		// Get frontend URL
-		const previewUrl = await page
-			.locator('.edit-post-header-preview__button-external')
-			.getAttribute('href');
+		const previewUrl = await getFrontendUrl(page);
 
 		// Visit the frontend
 		await page.goto(previewUrl);
@@ -305,9 +304,7 @@ test.describe('Group Block - Overlay', () => {
 		await publishPost(page);
 
 		// Get frontend URL
-		const previewUrl = await page
-			.locator('.edit-post-header-preview__button-external')
-			.getAttribute('href');
+		const previewUrl = await getFrontendUrl(page);
 
 		// Visit the frontend
 		await page.goto(previewUrl);
@@ -350,9 +347,7 @@ test.describe('Group Block - Frontend Behavior', () => {
 		await publishPost(page);
 
 		// Get frontend URL
-		const previewUrl = await page
-			.locator('.edit-post-header-preview__button-external')
-			.getAttribute('href');
+		const previewUrl = await getFrontendUrl(page);
 
 		// Visit on desktop (default viewport)
 		await page.goto(previewUrl);
