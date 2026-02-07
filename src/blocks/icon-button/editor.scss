@@ -10,12 +10,6 @@
 .dsgo-icon-button {
 	// Editor-specific styles
 
-	// CRITICAL: Prevent button from stretching vertically in grid contexts
-	// When a section is inside a grid, the grid's align-items: stretch cascades through
-	// the section's flex layout, and WordPress may apply height: 100% to wp-element-button
-	// elements in layout contexts. Buttons should never expand to fill container height.
-	height: auto !important;
-
 	// Width auto: Ensure the button wrapper stays fit-content in the editor
 	// WordPress editor may try to force blocks to full width by default
 	&--width-auto {
@@ -70,4 +64,14 @@
 .dsgo-stack[style*="--dsgo-parent-hover-button-bg"]:hover .dsgo-stack__inner > .dsgo-icon-button .dsgo-icon-button__wrapper {
 	background-color: var(--dsgo-parent-hover-button-bg) !important;
 	transition: background-color 0.3s ease;
+}
+
+// CRITICAL: Prevent button from stretching vertically in grid contexts (editor-only)
+// When a section is inside a grid, the grid's align-items: stretch cascades through
+// the section's flex layout, and WordPress applies height: 100% to wp-element-button
+// elements in layout contexts. This resets the button element's height within grids.
+// No frontend equivalent needed - frontend has no [data-block] wrappers and doesn't
+// inherit height: 100% from WordPress's editor layout system.
+.dsgo-grid .dsgo-icon-button {
+	height: auto !important;
 }
