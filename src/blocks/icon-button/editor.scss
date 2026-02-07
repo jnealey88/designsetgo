@@ -10,6 +10,12 @@
 .dsgo-icon-button {
 	// Editor-specific styles
 
+	// CRITICAL: Prevent button from stretching vertically in grid contexts
+	// When a section is inside a grid, the grid's align-items: stretch cascades through
+	// the section's flex layout, and WordPress may apply height: 100% to wp-element-button
+	// elements in layout contexts. Buttons should never expand to fill container height.
+	height: auto !important;
+
 	// Width auto: Ensure the button wrapper stays fit-content in the editor
 	// WordPress editor may try to force blocks to full width by default
 	&--width-auto {

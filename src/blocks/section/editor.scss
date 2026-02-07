@@ -316,6 +316,23 @@ $inline-block-data-types: (
 	}
 }
 
+// CRITICAL: When section is inside a grid, prevent inline block [data-block] wrappers
+// from stretching vertically. Grid items stretch to fill their cells via align-items: stretch,
+// which cascades through the section's flex layout. The section fills the grid cell, and
+// .dsgo-stack__inner fills the section (flex-grow: 1), leaving extra vertical space.
+// Without this fix, WordPress may apply flex-grow or height to [data-block] wrappers,
+// causing inline blocks (buttons, pills) to expand to fill the section height.
+.dsgo-grid .dsgo-stack .dsgo-stack__inner.is-layout-flex {
+
+	> [data-type="designsetgo/icon-button"],
+	> [data-type="core/button"],
+	> [data-type="core/buttons"],
+	> [data-type="designsetgo/pill"] {
+		flex-grow: 0 !important;
+		height: auto !important;
+	}
+}
+
 // Text alignment helpers for inline-width children (editor)
 .dsgo-stack,
 .wp-block-designsetgo-stack {
