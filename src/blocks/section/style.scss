@@ -150,6 +150,9 @@
 		// align-items: center which shrinks text blocks and centers them, overriding
 		// the user's text-align setting. align-self: stretch ensures text blocks
 		// maintain full width so text-align works as expected.
+		// Targets any block with WordPress's has-text-align-* classes (paragraphs,
+		// headings, lists, quotes, etc.) — this is intentionally broad since all
+		// text blocks should respect their own alignment over the section's.
 		> .has-text-align-left,
 		> .has-text-align-right,
 		> .has-text-align-center {
