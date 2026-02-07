@@ -13,4 +13,5 @@ import './editor.scss';
 // Import extension modules
 import './attributes';
 import './editor';
-import './frontend';
+
+// Note: frontend.js is imported in src/frontend.js for frontend-only loading

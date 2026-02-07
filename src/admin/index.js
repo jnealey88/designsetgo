@@ -6,11 +6,22 @@
  * @package
  */
 
-import { createRoot } from '@wordpress/element';
-import Dashboard from './components/Dashboard';
-import BlocksExtensions from './components/BlocksExtensions';
-import Settings from './components/Settings';
+import { createRoot, lazy, Suspense } from '@wordpress/element';
+import { Spinner } from '@wordpress/components';
 import './style.scss';
+
+// Lazy-load page components - only one is shown at a time
+const Dashboard = lazy(() =>
+	import(/* webpackChunkName: "admin-dashboard" */ './components/Dashboard')
+);
+const BlocksExtensions = lazy(() =>
+	import(
+		/* webpackChunkName: "admin-blocks" */ './components/BlocksExtensions'
+	)
+);
+const Settings = lazy(() =>
+	import(/* webpackChunkName: "admin-settings" */ './components/Settings')
+);
 
 /**
  * Admin App Component
@@ -35,7 +46,15 @@ const App = () => {
 
 	return (
 		<div className="designsetgo-admin-wrapper">
-			<Component />
+			<Suspense
+				fallback={
+					<div className="designsetgo-admin-loading">
+						<Spinner />
+					</div>
+				}
+			>
+				<Component />
+			</Suspense>
 		</div>
 	);
 };
