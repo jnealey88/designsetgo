@@ -7,6 +7,9 @@
  */
 
 .dsgo-flex {
+	// CRITICAL: Ensure width includes padding/border to prevent overflow
+	box-sizing: border-box;
+
 	// Visual indicator in editor and positioning context for block inserter
 	position: relative;
 	overflow: visible;
