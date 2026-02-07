@@ -145,6 +145,17 @@
 		// align-items based on content justification, and an explicit stretch
 		// would override it, breaking Pill/Icon/Button alignment inheritance.
 
+		// CRITICAL: Text blocks with explicit text alignment must stretch to full width.
+		// When section has content justification (e.g., center), WordPress applies
+		// align-items: center which shrinks text blocks and centers them, overriding
+		// the user's text-align setting. align-self: stretch ensures text blocks
+		// maintain full width so text-align works as expected.
+		> .has-text-align-left,
+		> .has-text-align-right,
+		> .has-text-align-center {
+			align-self: stretch !important;
+		}
+
 		// Inline blocks WITH explicit alignment - override section alignment
 		> :where(
 			.wp-block-designsetgo-icon,
