@@ -58,12 +58,12 @@ async function insertBlock(page, blockName) {
 	const blockLabel = blockSlug.charAt(0).toUpperCase() + blockSlug.slice(1);
 
 	// Open the global block inserter via the toolbar toggle.
-	// Use the CSS class selector for stability across WordPress versions —
-	// the accessible name changed from "Toggle block inserter" (WP ≤6.7)
-	// to "Block Inserter" (WP 6.8+).
-	const inserterToggle = page.locator(
-		'button.editor-document-tools__inserter-toggle'
-	);
+	// Prefer the accessible role selector, falling back to the CSS class
+	// for stability across WordPress versions — the accessible name changed
+	// from "Toggle block inserter" (WP ≤6.7) to "Block Inserter" (WP 6.8+).
+	const inserterToggle = page
+		.getByRole('button', { name: /block inserter/i })
+		.or(page.locator('button.editor-document-tools__inserter-toggle'));
 	await inserterToggle.click();
 
 	// Wait for the inserter panel to appear and search for the block
