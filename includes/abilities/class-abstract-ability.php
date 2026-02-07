@@ -66,19 +66,32 @@ abstract class Abstract_Ability {
 	 * @return void
 	 */
 	public function register(): void {
-		if ( ! function_exists( 'wp_register_ability' ) ) {
+		if ( ! class_exists( 'WP_Ability' ) ) {
 			return;
 		}
 
 		$config                     = $this->get_config();
 		$config['execute_callback'] = array( $this, 'execute' );
 
-		// Ensure ability is exposed in REST API.
-		if ( ! isset( $config['meta'] ) ) {
-			$config['meta'] = array();
+		// Ensure show_in_rest is a top-level parameter (not nested in meta).
+		if ( ! isset( $config['show_in_rest'] ) ) {
+			$config['show_in_rest'] = true;
 		}
-		if ( ! isset( $config['meta']['show_in_rest'] ) ) {
-			$config['meta']['show_in_rest'] = true;
+
+		// Promote annotations from meta to top-level if needed (backward compatibility).
+		if ( ! isset( $config['annotations'] ) && isset( $config['meta']['annotations'] ) ) {
+			$config['annotations'] = $config['meta']['annotations'];
+			unset( $config['meta']['annotations'] );
+		}
+
+		// Remove show_in_rest from meta if it was nested there.
+		if ( isset( $config['meta']['show_in_rest'] ) ) {
+			unset( $config['meta']['show_in_rest'] );
+		}
+
+		// Clean up empty meta array.
+		if ( isset( $config['meta'] ) && empty( $config['meta'] ) ) {
+			unset( $config['meta'] );
 		}
 
 		wp_register_ability( $this->get_name(), $config );

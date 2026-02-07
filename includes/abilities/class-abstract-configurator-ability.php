@@ -92,6 +92,10 @@ abstract class Abstract_Configurator_Ability extends Abstract_Ability {
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
+			'show_in_rest'        => true,
+			'annotations'         => array(
+				'idempotent' => true,
+			),
 		);
 	}
 

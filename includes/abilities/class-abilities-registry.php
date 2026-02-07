@@ -246,7 +246,7 @@ class Abilities_Registry {
 	 */
 	public function register_ability_categories(): void {
 		// Check if the Abilities API is available.
-		if ( ! function_exists( 'wp_register_ability_category' ) ) {
+		if ( ! class_exists( 'WP_Ability' ) ) {
 			return;
 		}
 
@@ -274,7 +274,7 @@ class Abilities_Registry {
 	 */
 	public function register_abilities(): void {
 		// Check if the Abilities API is available.
-		if ( ! function_exists( 'wp_register_ability' ) ) {
+		if ( ! class_exists( 'WP_Ability' ) ) {
 			return;
 		}
 

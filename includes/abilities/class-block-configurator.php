@@ -213,11 +213,18 @@ class Block_Configurator {
 
 		foreach ( $attributes as $key => $value ) {
 			if ( is_string( $value ) ) {
-				// Don't sanitize CSS values (they can contain special characters).
+				// Decode HTML entities BEFORE stripping tags to catch encoded attacks.
+				// e.g., &lt;script&gt; becomes <script> which can then be stripped.
+				// Decode twice to defend against double-encoding attacks.
+				$decoded = html_entity_decode( $value, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+				$decoded = wp_strip_all_tags( $decoded );
+				$decoded = html_entity_decode( $decoded, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+				$decoded = wp_strip_all_tags( $decoded );
+
 				if ( self::is_css_property( $key ) ) {
-					$sanitized[ $key ] = wp_strip_all_tags( $value );
+					$sanitized[ $key ] = $decoded;
 				} else {
-					$sanitized[ $key ] = sanitize_text_field( $value );
+					$sanitized[ $key ] = sanitize_text_field( $decoded );
 				}
 			} elseif ( is_array( $value ) ) {
 				$sanitized[ $key ] = self::sanitize_attributes( $value );
