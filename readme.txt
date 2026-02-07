@@ -172,17 +172,36 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 == Changelog ==
 
-= 1.4.2 - 2026-02-07 =
+= 1.5.0 - 2026-02-07 =
+**New Blocks:**
+* New: Comparison Table block - dynamic columns, checkmark/X/text cells, featured column highlighting, CTA buttons, and responsive layout
+* New: Timeline block - vertical and horizontal orientations, alternating layouts, customizable markers, scroll animations, and optional links
+
+**New Extension:**
+* New: Grid Mobile Order - reorder grid items on mobile without changing the desktop layout or HTML structure
+
 **New Features:**
-* New: Frontend Draft Preview Mode - administrators can browse the frontend and see draft content across all pages with a toggle between preview and live views
-* New: 6 new AI abilities for block configuration, shape dividers, nested block insertion, and ability discovery
+* New: Shape Dividers for Section blocks - 24 decorative shapes (waves, curves, peaks, clouds, and more) with customizable color, height, and width
+* New: Frontend Draft Preview Mode - administrators can browse the frontend and see draft content across all pages with a preview/live toggle
+* New: 40+ section patterns and 12 complete homepage templates for SaaS, agency, restaurant, real estate, fitness, and more
+* New: Tabs hover color controls for custom text and background colors on hover
+* New: Sticky Header text color on scroll - switch text colors when header scrolls over content
+* New: Modal hash link reopening - modals reopen when clicking anchor links to the same modal ID
+
+**Improvements:**
+* Enhancement: Row block now supports vertical alignment (top, center, bottom, stretch, space-between)
+* Enhancement: Section block vertical alignment now works with min-height
+* Enhancement: Modal Trigger inherits theme.json button styles and supports WordPress alignment
+* Enhancement: Pattern loading optimized with caching and editor-only registration
 
 **Bug Fixes:**
-* Fix: Pill, Icon Button, Icon, and Modal Trigger blocks no longer float beside content in Group blocks
-* Fix: Grid and Row blocks now properly go edge-to-edge with full-width alignment outside Section blocks
-
-**Performance:**
-* Performance: Pattern loading optimized with caching and editor-only registration for faster page loads
+* Fix: Pill, Icon Button, Icon, and Modal Trigger no longer float beside content in Group blocks
+* Fix: Grid and Row blocks go edge-to-edge with full-width alignment outside Section blocks
+* Fix: Pill alignment carries through Grid > Section nesting
+* Fix: Icon block double-layered background color removed
+* Fix: Card block overflow in grid layouts
+* Fix: Full-width video background alignment in editor
+* Fix: Icon Button default focus outline removed
 
 **Security:**
 * Security: Fixed potential XSS bypass in block attribute sanitization
@@ -413,8 +432,8 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 == Upgrade Notice ==
 
-= 1.4.2 =
-New frontend draft preview mode for administrators, 6 new AI abilities for block configuration, fixes for block alignment in Group blocks and full-width Grid/Row layouts, pattern loading performance optimization, and a security fix for block attribute sanitization.
+= 1.5.0 =
+Major update: 2 new blocks (Comparison Table, Timeline), Grid Mobile Order extension, shape dividers for sections, 40+ patterns and 12 homepage templates, frontend draft preview mode, tabs hover colors, sticky header text color on scroll, plus multiple bug fixes and a security improvement.
 
 = 1.4.1 =
 Bug fix release: Fixes Grid block type safety for WordPress 6.1+ spacing presets, Row/Grid alignment consistency, Icon Button width migration, and improved llms.txt conflict handling with admin UI resolution.
