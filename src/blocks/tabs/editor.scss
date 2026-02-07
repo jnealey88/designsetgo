@@ -79,6 +79,21 @@
 			background: var(--dsgo-tab-bg-active, transparent);
 			color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			font-weight: 600;
+			cursor: text;
+		}
+
+		// Inline-editable tab title (RichText)
+		&.is-active .dsgo-tabs__tab-title {
+			cursor: text;
+
+			[contenteditable] {
+				outline: none;
+				cursor: text;
+			}
+
+			&:focus-within {
+				outline: none;
+			}
 		}
 	}
 

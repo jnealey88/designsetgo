@@ -9,6 +9,7 @@ import {
 	useBlockProps,
 	InspectorControls,
 	useInnerBlocksProps,
+	RichText,
 	store as blockEditorStore,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
@@ -76,8 +77,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		[clientId]
 	);
 
-	// Get dispatch actions for selecting blocks
-	const { selectBlock } = useDispatch(blockEditorStore);
+	// Get dispatch actions for selecting blocks and updating child attributes
+	const { selectBlock, updateBlockAttributes } = useDispatch(blockEditorStore);
 
 	// Handle tab click - set active tab and select the Tab block to show its settings
 	const handleTabClick = (index) => {
@@ -91,6 +92,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	// Handle keyboard navigation
 	const handleKeyDown = (e, index) => {
+		// Don't interfere with text editing in RichText
+		if (e.target.isContentEditable) {
+			return;
+		}
+
+		// Handle Enter/Space for tab activation (divs need explicit handling unlike buttons)
+		if (e.key === 'Enter' || e.key === ' ') {
+			handleTabClick(index);
+			e.preventDefault();
+			return;
+		}
+
 		let newIndex = index;
 
 		if (orientation === 'horizontal') {
@@ -442,7 +455,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						const isActive = index === activeTab;
 
 						return (
-							<button
+							<div
 								key={block.clientId}
 								className={`dsgo-tabs__tab ${isActive ? 'is-active' : ''} ${
 									icon ? `has-icon icon-${iconPosition}` : ''
@@ -453,7 +466,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								aria-controls={`panel-${tabId}`}
 								tabIndex={isActive ? 0 : -1}
 								data-tab-index={index}
-								onClick={() => handleTabClick(index)}
+								onClick={() => {
+									if (!isActive) {
+										handleTabClick(index);
+									}
+								}}
 								onKeyDown={(e) => handleKeyDown(e, index)}
 							>
 								{icon && iconPosition === 'left' && (
@@ -468,16 +485,33 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									</span>
 								)}
 
-								<span className="dsgo-tabs__tab-title">
-									{title || `Tab ${index + 1}`}
-								</span>
+								{isActive ? (
+									<RichText
+										tagName="span"
+										className="dsgo-tabs__tab-title"
+										value={title}
+										onChange={(value) =>
+											updateBlockAttributes(
+												block.clientId,
+												{ title: value }
+											)
+										}
+										placeholder={`Tab ${index + 1}`}
+										allowedFormats={[]}
+										withoutInteractiveFormatting
+									/>
+								) : (
+									<span className="dsgo-tabs__tab-title">
+										{title || `Tab ${index + 1}`}
+									</span>
+								)}
 
 								{icon && iconPosition === 'right' && (
 									<span className="dsgo-tabs__tab-icon">
 										{getIcon(icon)}
 									</span>
 								)}
-							</button>
+							</div>
 						);
 					})}
 				</div>
