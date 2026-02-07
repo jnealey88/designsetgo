@@ -7,6 +7,9 @@
  */
 
 .dsgo-flex {
+	// CRITICAL: Ensure width includes padding/border to prevent overflow
+	box-sizing: border-box;
+
 	// Container display - WordPress handles flex layout through native layout support
 	// We only need to override specific behaviors
 
