@@ -5,6 +5,42 @@ All notable changes to the DesignSetGo plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-02-07
+
+### New Blocks
+- **Comparison Table** - Flexible product/plan comparison with 2–6 dynamic columns, checkmark/X/text cells, featured column highlighting, CTA buttons, and responsive horizontal scroll or stack layout
+- **Timeline** - Chronological content display with vertical and horizontal orientations, alternating/left/right layouts, customizable markers (circle/square/diamond), scroll-triggered animations, and optional links
+
+### New Extension
+- **Grid Mobile Order** - Reorder grid items on mobile without changing the desktop layout or HTML structure — solves the zigzag stacking problem for alternating row designs
+
+### Added
+- **Shape Dividers for Sections** - 24 decorative shapes (waves, curves, triangles, peaks, clouds, zigzag, torn paper, and more) for top and bottom of Section blocks with customizable color, height, width, and flip options
+- **Frontend Draft Preview Mode** - Administrators can browse the frontend and see draft content across all pages with a floating banner to toggle between preview and live views
+- **Pattern Library** - 40+ new section patterns (hero, CTA, FAQ, features, gallery, team, testimonials, pricing, contact, and more) plus 12 complete homepage templates for SaaS, agency, restaurant, real estate, fitness, non-profit, events, education, and portfolio sites
+- **Tabs hover colors** - Custom text and background color controls for tab hover states
+- **Sticky Header text color on scroll** - Change text and link colors when the header scrolls, so transparent headers with light text can switch to dark text on a solid background
+- **Modal hash link reopening** - Modals can now be reopened by clicking anchor links pointing to the same modal ID
+- **6 new AI Abilities** - Configure any block's attributes, configure shape dividers, insert blocks into existing containers, and discover all available abilities via the Abilities API
+
+### Improved
+- Row block now supports vertical alignment (top, center, bottom, stretch, space-between)
+- Section block vertical alignment now works properly when min-height is set
+- Modal Trigger inherits WordPress button styles from theme.json and supports left/center/right/full alignment
+- Pattern loading optimized with caching and editor-only registration for faster page loads
+
+### Fixed
+- Pill, Icon Button, Icon, and Modal Trigger blocks no longer float beside content in Group blocks
+- Grid and Row blocks now properly go edge-to-edge with full-width alignment outside Section blocks
+- Pill alignment now carries through Grid > Section nesting correctly
+- Icon block no longer shows double-layered background color
+- Card blocks no longer overflow in grid layouts
+- Full-width video background alignment fixed in the editor
+- Icon Button default focus outline removed
+
+### Security
+- Fixed potential XSS bypass in block attribute sanitization with double-encoding defense
+
 ## [1.4.1] - 2026-01-31
 
 ### Fixed
@@ -334,6 +370,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[1.5.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.5.0
 [1.4.1]: https://github.com/jnealey88/designsetgo/releases/tag/v1.4.1
 [1.4.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.4.0
 [1.3.2]: https://github.com/jnealey88/designsetgo/releases/tag/v1.3.2
