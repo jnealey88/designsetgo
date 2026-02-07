@@ -511,7 +511,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 			)
 		);
 
-		$this->assertInstanceOf( WP_Error::class, $result );
+		$this->assert_error_code( 'permission_denied', $result );
 	}
 
 	/**
@@ -526,7 +526,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$ability = new Get_Post_Blocks();
 		$result  = $ability->execute( array( 'post_id' => $post_id ) );
 
-		$this->assertInstanceOf( WP_Error::class, $result );
+		$this->assert_error_code( 'rest_forbidden', $result );
 	}
 
 	/**
@@ -573,7 +573,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 			)
 		);
 
-		$this->assertInstanceOf( WP_Error::class, $result );
+		$this->assert_error_code( 'permission_denied', $result );
 	}
 
 	// -------------------------------------------------------------------------
@@ -773,5 +773,280 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		// Only the real block should appear, freeform should be filtered out.
 		$this->assertSame( 1, $result['total'] );
 		$this->assertSame( 'core/paragraph', $result['blocks'][0]['blockName'] );
+	}
+
+	// -------------------------------------------------------------------------
+	// HTML Entity-Encoded XSS (Critical)
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Test that HTML entity-encoded script tags are stripped from attributes.
+	 *
+	 * Verifies that &lt;script&gt; payloads are decoded and stripped,
+	 * not passed through unchanged to the database.
+	 */
+	public function test_entity_encoded_xss_stripped(): void {
+		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
+		$post_id = $this->create_block_post( $content );
+
+		$ability = new Configure_Block_Attributes();
+		$result  = $ability->execute(
+			array(
+				'post_id'     => $post_id,
+				'block_index' => 0,
+				'attributes'  => array(
+					'className' => '&lt;script&gt;alert(1)&lt;/script&gt;safe-class',
+				),
+			)
+		);
+
+		$this->assertTrue( $result['success'] );
+
+		// Verify the saved value has entity-encoded tags stripped.
+		$post   = get_post( $post_id );
+		$blocks = parse_blocks( $post->post_content );
+		$blocks = array_values( array_filter( $blocks, fn( $b ) => ! empty( $b['blockName'] ) ) );
+
+		$saved_class = $blocks[0]['attrs']['className'];
+		$this->assertStringNotContainsString( '<script>', $saved_class );
+		$this->assertStringNotContainsString( '&lt;script', $saved_class );
+		$this->assertStringContainsString( 'safe-class', $saved_class );
+	}
+
+	/**
+	 * Test that double-encoded XSS payloads are stripped.
+	 *
+	 * Verifies that &amp;lt;script&amp;gt; (double-encoded) payloads
+	 * are decoded through both layers and stripped.
+	 */
+	public function test_double_encoded_xss_stripped(): void {
+		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
+		$post_id = $this->create_block_post( $content );
+
+		$ability = new Configure_Block_Attributes();
+		$result  = $ability->execute(
+			array(
+				'post_id'     => $post_id,
+				'block_index' => 0,
+				'attributes'  => array(
+					'className' => '&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;safe-class',
+				),
+			)
+		);
+
+		$this->assertTrue( $result['success'] );
+
+		// Verify double-encoded tags are fully stripped.
+		$post   = get_post( $post_id );
+		$blocks = parse_blocks( $post->post_content );
+		$blocks = array_values( array_filter( $blocks, fn( $b ) => ! empty( $b['blockName'] ) ) );
+
+		$saved_class = $blocks[0]['attrs']['className'];
+		$this->assertStringNotContainsString( '<script>', $saved_class );
+		$this->assertStringNotContainsString( '&lt;script', $saved_class );
+		$this->assertStringNotContainsString( '&amp;lt;script', $saved_class );
+		$this->assertStringContainsString( 'safe-class', $saved_class );
+	}
+
+	/**
+	 * Test that entity-encoded XSS in CSS property attributes is stripped.
+	 */
+	public function test_entity_encoded_xss_in_css_property_stripped(): void {
+		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
+		$post_id = $this->create_block_post( $content );
+
+		$ability = new Configure_Block_Attributes();
+		$result  = $ability->execute(
+			array(
+				'post_id'     => $post_id,
+				'block_index' => 0,
+				'attributes'  => array(
+					'backgroundColor' => '&lt;script&gt;alert(1)&lt;/script&gt;red',
+				),
+			)
+		);
+
+		$this->assertTrue( $result['success'] );
+
+		// Verify CSS property value has entity-encoded tags stripped.
+		$post   = get_post( $post_id );
+		$blocks = parse_blocks( $post->post_content );
+		$blocks = array_values( array_filter( $blocks, fn( $b ) => ! empty( $b['blockName'] ) ) );
+
+		$saved_bg = $blocks[0]['attrs']['backgroundColor'];
+		$this->assertStringNotContainsString( '<script>', $saved_bg );
+		$this->assertStringNotContainsString( '&lt;script', $saved_bg );
+		$this->assertStringContainsString( 'red', $saved_bg );
+	}
+
+	// -------------------------------------------------------------------------
+	// CSS Injection Edge Cases (Medium)
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Test that url() injection in color values is rejected.
+	 */
+	public function test_color_url_injection_rejected(): void {
+		$content = '<!-- wp:designsetgo/section -->'
+			. '<div class="wp-block-designsetgo-section"></div>'
+			. '<!-- /wp:designsetgo/section -->';
+		$post_id = $this->create_block_post( $content );
+
+		$ability = new Configure_Shape_Divider();
+		$result  = $ability->execute(
+			array(
+				'post_id'     => $post_id,
+				'block_index' => 0,
+				'shape'       => 'wave',
+				'color'       => 'url(https://evil.com/exfil)',
+			)
+		);
+
+		$this->assert_error_code( 'validation_failed', $result );
+	}
+
+	/**
+	 * Test that newlines in color values are rejected.
+	 */
+	public function test_color_newline_injection_rejected(): void {
+		$content = '<!-- wp:designsetgo/section -->'
+			. '<div class="wp-block-designsetgo-section"></div>'
+			. '<!-- /wp:designsetgo/section -->';
+		$post_id = $this->create_block_post( $content );
+
+		$ability = new Configure_Shape_Divider();
+		$result  = $ability->execute(
+			array(
+				'post_id'     => $post_id,
+				'block_index' => 0,
+				'shape'       => 'wave',
+				'color'       => "red;\nbackground: url(evil)",
+			)
+		);
+
+		$this->assert_error_code( 'validation_failed', $result );
+	}
+
+	// -------------------------------------------------------------------------
+	// Falsy Values Edge Cases (Medium)
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Test that attributes with valid falsy boolean value are preserved.
+	 */
+	public function test_falsy_boolean_attribute_preserved(): void {
+		$result = \DesignSetGo\Abilities\Block_Configurator::sanitize_attributes(
+			array( 'disabled' => false )
+		);
+
+		$this->assertArrayHasKey( 'disabled', $result );
+		$this->assertFalse( $result['disabled'] );
+	}
+
+	/**
+	 * Test that attributes with valid zero integer value are preserved.
+	 */
+	public function test_zero_integer_attribute_preserved(): void {
+		$result = \DesignSetGo\Abilities\Block_Configurator::sanitize_attributes(
+			array( 'count' => 0 )
+		);
+
+		$this->assertArrayHasKey( 'count', $result );
+		$this->assertSame( 0, $result['count'] );
+	}
+
+	/**
+	 * Test that null attribute values are preserved through sanitization.
+	 */
+	public function test_null_attribute_preserved(): void {
+		$result = \DesignSetGo\Abilities\Block_Configurator::sanitize_attributes(
+			array( 'optional' => null )
+		);
+
+		$this->assertArrayHasKey( 'optional', $result );
+		$this->assertNull( $result['optional'] );
+	}
+
+	// -------------------------------------------------------------------------
+	// Block Index Edge Cases (Low)
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Test that a negative block_index returns an error.
+	 */
+	public function test_negative_block_index_returns_error(): void {
+		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
+		$post_id = $this->create_block_post( $content );
+
+		$ability = new Configure_Block_Attributes();
+		$result  = $ability->execute(
+			array(
+				'post_id'     => $post_id,
+				'block_index' => -1,
+				'attributes'  => array( 'className' => 'test' ),
+			)
+		);
+
+		$this->assert_error_code( 'block_not_found', $result );
+	}
+
+	// -------------------------------------------------------------------------
+	// Shape Divider - Height Zero Edge Case (Low)
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Test that height=0 is accepted (disables divider height).
+	 *
+	 * Height range is 0-300. Zero is intentionally valid to allow
+	 * a divider with no height (effectively hidden).
+	 */
+	public function test_height_zero_accepted(): void {
+		$content = '<!-- wp:designsetgo/section -->'
+			. '<div class="wp-block-designsetgo-section"></div>'
+			. '<!-- /wp:designsetgo/section -->';
+		$post_id = $this->create_block_post( $content );
+
+		$ability = new Configure_Shape_Divider();
+		$result  = $ability->execute(
+			array(
+				'post_id'     => $post_id,
+				'block_index' => 0,
+				'shape'       => 'wave',
+				'height'      => 0,
+			)
+		);
+
+		$this->assertIsArray( $result, 'Height 0 should be accepted.' );
+		$this->assertTrue( $result['success'] );
+	}
+
+	// -------------------------------------------------------------------------
+	// CSRF Protection Note
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Test that abilities that modify content require edit_post capability.
+	 *
+	 * CSRF protection for abilities exposed via REST is delegated to the
+	 * WordPress REST API, which verifies nonces on all authenticated requests.
+	 * This test verifies the server-side capability check as defense-in-depth.
+	 */
+	public function test_modify_abilities_require_edit_post_capability(): void {
+		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
+		$post_id = $this->create_block_post( $content );
+
+		// Unauthenticated user (no user set).
+		wp_set_current_user( 0 );
+
+		$ability = new Configure_Block_Attributes();
+		$result  = $ability->execute(
+			array(
+				'post_id'     => $post_id,
+				'block_index' => 0,
+				'attributes'  => array( 'className' => 'test' ),
+			)
+		);
+
+		$this->assert_error_code( 'permission_denied', $result );
 	}
 }
