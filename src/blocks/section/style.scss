@@ -17,28 +17,6 @@
 	display: flex;
 	flex-direction: column;
 
-	// Ensure background images respect border radius
-	overflow: hidden;
-
-	// Allow specific layouts (like scroll accordions) to opt out of clipping
-	&.dsgo-stack--allow-overflow {
-		overflow: visible;
-	}
-
-	// CRITICAL: Allow Navigation block dropdowns to overflow
-	// Navigation menus need to display outside container bounds
-	&:has(.wp-block-navigation) {
-		overflow: visible;
-	}
-
-	// CRITICAL: Allow sticky positioned elements to work correctly
-	// Sticky positioning requires overflow: visible on all ancestors
-	&:has(.is-position-sticky),
-	&:has([style*="position:sticky"]),
-	&:has([style*="position: sticky"]) {
-		overflow: visible;
-	}
-
 	// Position relative for hover overlay pseudo-element
 	position: relative;
 
@@ -504,10 +482,8 @@
 
 // When section has shape dividers, ensure proper stacking
 .dsgo-stack--has-shape-divider {
-	// Override base overflow:hidden to allow shapes to extend beyond bounds
-	// Use !important to ensure precedence over base .dsgo-stack styles
-	overflow-x: clip !important;
-	overflow-y: visible !important;
+	// Prevent horizontal scrollbar from shapes extending beyond section width
+	overflow-x: clip;
 
 	// Content stays above shapes (z-index: 2)
 	// unless shape has "bring to front" option (z-index: 10)
