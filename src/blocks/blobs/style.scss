@@ -38,7 +38,7 @@
 	// Container with blob shape
 	position: relative;
 	width: var(--dsgo-blob-size);
-	height: var(--dsgo-blob-size);
+	height: var(--dsgo-blob-height, var(--dsgo-blob-size));
 	display: flex;
 	align-items: center;
 	justify-content: center;
