@@ -267,13 +267,39 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 							setAttributes({ size: value || '300px' })
 						}
 						units={[
-							{ value: 'px', label: 'px', default: 300 },
-							{ value: '%', label: '%', default: 100 },
-							{ value: 'vw', label: 'vw', default: 30 },
-							{ value: 'vh', label: 'vh', default: 30 },
+							{
+								value: 'px',
+								label: 'px',
+								default: 300,
+								min: 50,
+								max: 800,
+								step: 1,
+							},
+							{
+								value: '%',
+								label: '%',
+								default: 50,
+								min: 10,
+								max: 200,
+								step: 1,
+							},
+							{
+								value: 'vw',
+								label: 'vw',
+								default: 30,
+								min: 5,
+								max: 100,
+								step: 1,
+							},
+							{
+								value: 'vh',
+								label: 'vh',
+								default: 30,
+								min: 5,
+								max: 100,
+								step: 1,
+							},
 						]}
-						min={100}
-						max={800}
 						help={__(
 							'Width and height of the blob shape',
 							'designsetgo'
