@@ -200,7 +200,8 @@ function getScrollObserver(offset) {
  * @param {HTMLElement} element Element to animate
  */
 function animateOnScroll(element) {
-	const offset = parseInt(element.dataset.dsgoAnimationOffset) || 100;
+	const rawOffset = parseInt(element.dataset.dsgoAnimationOffset);
+	const offset = Number.isFinite(rawOffset) ? rawOffset : 100;
 	// Default to true (animate once) when attribute is absent
 	const once = element.dataset.dsgoAnimationOnce !== 'false';
 	const hasExitAnimation =
@@ -278,7 +279,7 @@ function animateOnClick(element) {
 
 	element.addEventListener('click', (e) => {
 		// Don't prevent default or stop propagation for links/buttons
-		if (e.target.closest('a, button')) {
+		if (e.target.closest?.('a, button')) {
 			return;
 		}
 

@@ -89,8 +89,8 @@ function dsgo_get_animation_attributes( $attributes ) {
 		$animation_attrs['data-dsgo-animation-offset'] = esc_attr( $offset );
 	}
 
-	$once = isset( $attributes['dsgoAnimationOnce'] ) ? $attributes['dsgoAnimationOnce'] : true;
-	if ( true !== $once ) {
+	$once = isset( $attributes['dsgoAnimationOnce'] ) ? (bool) $attributes['dsgoAnimationOnce'] : true;
+	if ( ! $once ) {
 		$animation_attrs['data-dsgo-animation-once'] = 'false';
 	}
 

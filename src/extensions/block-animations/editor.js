@@ -136,7 +136,7 @@ function addAnimationSaveProps(extraProps, blockType, attributes) {
 	if (dsgoAnimationOffset !== DEFAULT_ANIMATION_SETTINGS.offset) {
 		dataAttributes['data-dsgo-animation-offset'] = dsgoAnimationOffset;
 	}
-	if (dsgoAnimationOnce !== DEFAULT_ANIMATION_SETTINGS.once) {
+	if (Boolean(dsgoAnimationOnce) !== DEFAULT_ANIMATION_SETTINGS.once) {
 		dataAttributes['data-dsgo-animation-once'] = dsgoAnimationOnce
 			? 'true'
 			: 'false';
