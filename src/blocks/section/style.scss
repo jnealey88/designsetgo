@@ -17,6 +17,10 @@
 	display: flex;
 	flex-direction: column;
 
+	// NOTE: No overflow restrictions — allows nav dropdowns, sticky elements,
+	// and fonts to render without clipping. Shape dividers handle their own
+	// overflow via .dsgo-stack--has-shape-divider { overflow-x: clip }.
+
 	// Position relative for hover overlay pseudo-element
 	position: relative;
 
