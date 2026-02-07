@@ -204,15 +204,15 @@ class Apply_Animation extends Abstract_Ability {
 
 		// Map animation settings to block attributes.
 		$attributes = array(
-			'dsgAnimationEnabled'  => $animation['enabled'] ?? true,
-			'dsgEntranceAnimation' => $animation['entranceAnimation'] ?? '',
-			'dsgExitAnimation'     => $animation['exitAnimation'] ?? '',
-			'dsgAnimationTrigger'  => $animation['trigger'] ?? 'scroll',
-			'dsgAnimationDuration' => $animation['duration'] ?? 600,
-			'dsgAnimationDelay'    => $animation['delay'] ?? 0,
-			'dsgAnimationEasing'   => $animation['easing'] ?? 'ease-out',
-			'dsgAnimationOffset'   => $animation['offset'] ?? 100,
-			'dsgAnimationOnce'     => $animation['once'] ?? true,
+			'dsgoAnimationEnabled'  => $animation['enabled'] ?? true,
+			'dsgoEntranceAnimation' => $animation['entranceAnimation'] ?? '',
+			'dsgoExitAnimation'     => $animation['exitAnimation'] ?? '',
+			'dsgoAnimationTrigger'  => $animation['trigger'] ?? 'scroll',
+			'dsgoAnimationDuration' => $animation['duration'] ?? 600,
+			'dsgoAnimationDelay'    => $animation['delay'] ?? 0,
+			'dsgoAnimationEasing'   => $animation['easing'] ?? 'ease-out',
+			'dsgoAnimationOffset'   => $animation['offset'] ?? 100,
+			'dsgoAnimationOnce'     => $animation['once'] ?? true,
 		);
 
 		// Sanitize attributes.
