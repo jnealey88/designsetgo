@@ -291,11 +291,26 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 										)
 									}
 									colors={[
-										{ name: __('White', 'designsetgo'), color: '#ffffff' },
-										{ name: __('Black', 'designsetgo'), color: '#000000' },
-										{ name: __('Gray', 'designsetgo'), color: '#f0f0f0' },
-										{ name: __('Blue', 'designsetgo'), color: '#2271b1' },
-										{ name: __('Dark', 'designsetgo'), color: '#1e1e1e' },
+										{
+											name: __('White', 'designsetgo'),
+											color: '#ffffff',
+										},
+										{
+											name: __('Black', 'designsetgo'),
+											color: '#000000',
+										},
+										{
+											name: __('Gray', 'designsetgo'),
+											color: '#f0f0f0',
+										},
+										{
+											name: __('Blue', 'designsetgo'),
+											color: '#2271b1',
+										},
+										{
+											name: __('Dark', 'designsetgo'),
+											color: '#1e1e1e',
+										},
 									]}
 									clearable
 								/>
@@ -324,10 +339,7 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 								/>
 
 								<div className="components-base-control__label">
-									{__(
-										'Text Color on Scroll',
-										'designsetgo'
-									)}
+									{__('Text Color on Scroll', 'designsetgo')}
 								</div>
 								<p className="components-base-control__help">
 									{__(
@@ -348,17 +360,29 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 										)
 									}
 									colors={[
-										{ name: __('Black', 'designsetgo'), color: '#000000' },
-										{ name: __('White', 'designsetgo'), color: '#ffffff' },
 										{
-											name: __('Dark Gray', 'designsetgo'),
+											name: __('Black', 'designsetgo'),
+											color: '#000000',
+										},
+										{
+											name: __('White', 'designsetgo'),
+											color: '#ffffff',
+										},
+										{
+											name: __(
+												'Dark Gray',
+												'designsetgo'
+											),
 											color: '#1e1e1e',
 										},
 										{
 											name: __('Gray', 'designsetgo'),
 											color: '#757575',
 										},
-										{ name: __('Blue', 'designsetgo'), color: '#2271b1' },
+										{
+											name: __('Blue', 'designsetgo'),
+											color: '#2271b1',
+										},
 									]}
 									clearable
 								/>

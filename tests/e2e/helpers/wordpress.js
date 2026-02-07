@@ -100,7 +100,10 @@ async function openBlockSettings(page) {
 
 	// Check if settings sidebar is already open
 	const sidebar = page.locator('.editor-sidebar, .edit-post-sidebar');
-	const isOpen = await sidebar.first().isVisible().catch(() => false);
+	const isOpen = await sidebar
+		.first()
+		.isVisible()
+		.catch(() => false);
 
 	if (!isOpen) {
 		await settingsButton.click();
