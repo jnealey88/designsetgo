@@ -9,7 +9,7 @@
  */
 export function convertPresetToCSSVar(value) {
 	if (!value) {
-		return value;
+		return undefined;
 	}
 
 	// Handle object format (WordPress 6.1+ for separate row/column gaps)
@@ -23,7 +23,7 @@ export function convertPresetToCSSVar(value) {
 
 	// Ensure value is a string before using string methods
 	if (typeof value !== 'string') {
-		return value;
+		return String(value);
 	}
 
 	// If it's already a CSS variable, return as-is
