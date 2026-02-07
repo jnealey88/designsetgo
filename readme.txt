@@ -172,6 +172,21 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 == Changelog ==
 
+= 1.4.2 - 2026-02-07 =
+**New Features:**
+* New: Frontend Draft Preview Mode - administrators can browse the frontend and see draft content across all pages with a toggle between preview and live views
+* New: 6 new AI abilities for block configuration, shape dividers, nested block insertion, and ability discovery
+
+**Bug Fixes:**
+* Fix: Pill, Icon Button, Icon, and Modal Trigger blocks no longer float beside content in Group blocks
+* Fix: Grid and Row blocks now properly go edge-to-edge with full-width alignment outside Section blocks
+
+**Performance:**
+* Performance: Pattern loading optimized with caching and editor-only registration for faster page loads
+
+**Security:**
+* Security: Fixed potential XSS bypass in block attribute sanitization
+
 = 1.4.1 - 2026-01-31 =
 **Bug Fixes:**
 * Fix: Grid block type safety for WordPress 6.1+ blockGap object format conversion
@@ -397,6 +412,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Comprehensive documentation and developer guides
 
 == Upgrade Notice ==
+
+= 1.4.2 =
+New frontend draft preview mode for administrators, 6 new AI abilities for block configuration, fixes for block alignment in Group blocks and full-width Grid/Row layouts, pattern loading performance optimization, and a security fix for block attribute sanitization.
 
 = 1.4.1 =
 Bug fix release: Fixes Grid block type safety for WordPress 6.1+ spacing presets, Row/Grid alignment consistency, Icon Button width migration, and improved llms.txt conflict handling with admin UI resolution.

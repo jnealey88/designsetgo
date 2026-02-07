@@ -5,6 +5,22 @@ All notable changes to the DesignSetGo plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2026-02-07
+
+### Added
+- **Frontend Draft Preview Mode** - Logged-in administrators can now browse the frontend and see draft content across all pages, with a floating banner to toggle between draft preview and live views
+- **New AI Abilities** - 6 new Abilities API capabilities for AI-powered site editing: configure any block's attributes, configure shape dividers, insert blocks into existing containers, and discover all available abilities
+
+### Fixed
+- Pill, Icon Button, Icon, and Modal Trigger blocks no longer float beside adjacent content when placed inside Group blocks — they now stack correctly
+- Grid and Row blocks with full-width alignment now properly go edge-to-edge when placed directly in post content (outside a Section block)
+
+### Improved
+- Pattern loading optimized with caching and editor-only registration — patterns no longer load on frontend requests, reducing page load overhead
+
+### Security
+- Fixed potential XSS bypass in block attribute sanitization with double-encoding defense
+
 ## [1.4.1] - 2026-01-31
 
 ### Fixed
@@ -334,6 +350,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[1.4.2]: https://github.com/jnealey88/designsetgo/releases/tag/v1.4.2
 [1.4.1]: https://github.com/jnealey88/designsetgo/releases/tag/v1.4.1
 [1.4.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.4.0
 [1.3.2]: https://github.com/jnealey88/designsetgo/releases/tag/v1.3.2
