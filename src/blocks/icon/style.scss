@@ -10,6 +10,7 @@
 	justify-content: center;
 	width: fit-content; // Ensure block only takes space needed for icon + padding
 	max-width: fit-content; // Prevent expansion beyond content
+	line-height: 1; // Prevent inherited line-height from creating extra vertical space
 	// Background color is applied to this outer element by WordPress color support.
 	// The inner .dsgo-icon__wrapper should NOT inherit it to avoid double-layering.
 
@@ -39,6 +40,13 @@
 		color: currentcolor;
 		transition: background-color 0.2s ease, color 0.2s ease;
 		width: fit-content;
+
+		// Ensure SVGs fill the wrapper (wrapper has explicit dimensions via inline styles)
+		svg {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
 
 		/* stylelint-disable-next-line selector-class-pattern */
 		.dashicons {

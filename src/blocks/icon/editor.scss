@@ -43,8 +43,7 @@
 		transition: background-color 0.2s ease, color 0.2s ease;
 		width: fit-content;
 
-		// Ensure inline SVGs fill the wrapper (editor renders SVGs directly via React,
-		// unlike the frontend which lazy-loads them into empty divs)
+		// Ensure SVGs fill the wrapper (wrapper has explicit dimensions via inline styles)
 		svg {
 			display: block;
 			width: 100%;
