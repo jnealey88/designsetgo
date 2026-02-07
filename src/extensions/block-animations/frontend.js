@@ -201,7 +201,8 @@ function getScrollObserver(offset) {
  */
 function animateOnScroll(element) {
 	const offset = parseInt(element.dataset.dsgoAnimationOffset) || 100;
-	const once = element.dataset.dsgoAnimationOnce === 'true';
+	// Default to true (animate once) when attribute is absent
+	const once = element.dataset.dsgoAnimationOnce !== 'false';
 	const hasExitAnimation =
 		element.dataset.dsgoExitAnimation &&
 		element.dataset.dsgoExitAnimation !== '';

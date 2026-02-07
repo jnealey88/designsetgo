@@ -12,6 +12,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { InspectorControls } from '@wordpress/block-editor';
 import AnimationPanel from './components/AnimationPanel';
 import AnimationToolbar from './components/AnimationToolbar';
+import { DEFAULT_ANIMATION_SETTINGS } from './constants';
 
 /**
  * Add animation controls to block edit component
@@ -107,18 +108,39 @@ function addAnimationSaveProps(extraProps, blockType, attributes) {
 		return extraProps;
 	}
 
-	// Add data attributes for frontend JavaScript
+	// Always include the enabled flag and animation type(s) — these are required
 	const dataAttributes = {
 		'data-dsgo-animation-enabled': 'true',
-		'data-dsgo-entrance-animation': dsgoEntranceAnimation || '',
-		'data-dsgo-exit-animation': dsgoExitAnimation || '',
-		'data-dsgo-animation-trigger': dsgoAnimationTrigger,
-		'data-dsgo-animation-duration': dsgoAnimationDuration,
-		'data-dsgo-animation-delay': dsgoAnimationDelay,
-		'data-dsgo-animation-easing': dsgoAnimationEasing,
-		'data-dsgo-animation-offset': dsgoAnimationOffset,
-		'data-dsgo-animation-once': dsgoAnimationOnce ? 'true' : 'false',
 	};
+
+	if (dsgoEntranceAnimation) {
+		dataAttributes['data-dsgo-entrance-animation'] = dsgoEntranceAnimation;
+	}
+	if (dsgoExitAnimation) {
+		dataAttributes['data-dsgo-exit-animation'] = dsgoExitAnimation;
+	}
+
+	// Only output settings that differ from defaults to keep markup lean
+	if (dsgoAnimationTrigger !== DEFAULT_ANIMATION_SETTINGS.trigger) {
+		dataAttributes['data-dsgo-animation-trigger'] = dsgoAnimationTrigger;
+	}
+	if (dsgoAnimationDuration !== DEFAULT_ANIMATION_SETTINGS.duration) {
+		dataAttributes['data-dsgo-animation-duration'] = dsgoAnimationDuration;
+	}
+	if (dsgoAnimationDelay !== DEFAULT_ANIMATION_SETTINGS.delay) {
+		dataAttributes['data-dsgo-animation-delay'] = dsgoAnimationDelay;
+	}
+	if (dsgoAnimationEasing !== DEFAULT_ANIMATION_SETTINGS.easing) {
+		dataAttributes['data-dsgo-animation-easing'] = dsgoAnimationEasing;
+	}
+	if (dsgoAnimationOffset !== DEFAULT_ANIMATION_SETTINGS.offset) {
+		dataAttributes['data-dsgo-animation-offset'] = dsgoAnimationOffset;
+	}
+	if (dsgoAnimationOnce !== DEFAULT_ANIMATION_SETTINGS.once) {
+		dataAttributes['data-dsgo-animation-once'] = dsgoAnimationOnce
+			? 'true'
+			: 'false';
+	}
 
 	// Build animation classes
 	let className = extraProps.className || '';

@@ -51,46 +51,48 @@ function dsgo_get_animation_attributes( $attributes ) {
 		$animation_classes[] = 'dsgo-animation-exit-' . esc_attr( $exit_animation );
 	}
 
-	// Add data attributes.
+	// Always include the enabled flag and animation type(s) — required by frontend JS.
 	$animation_attrs['data-dsgo-animation-enabled'] = 'true';
 
-	// Entrance animation.
 	if ( $entrance_animation ) {
 		$animation_attrs['data-dsgo-entrance-animation'] = esc_attr( $entrance_animation );
-	} else {
-		$animation_attrs['data-dsgo-entrance-animation'] = '';
 	}
 
-	// Exit animation.
 	if ( $exit_animation ) {
 		$animation_attrs['data-dsgo-exit-animation'] = esc_attr( $exit_animation );
-	} else {
-		$animation_attrs['data-dsgo-exit-animation'] = '';
 	}
 
-	// Animation trigger.
-	$trigger                                        = isset( $attributes['dsgoAnimationTrigger'] ) ? $attributes['dsgoAnimationTrigger'] : 'scroll';
-	$animation_attrs['data-dsgo-animation-trigger'] = esc_attr( $trigger );
+	// Only output settings that differ from defaults to keep markup lean.
+	// Defaults: trigger=scroll, duration=600, delay=0, easing=ease-out, offset=100, once=true.
+	$trigger = isset( $attributes['dsgoAnimationTrigger'] ) ? $attributes['dsgoAnimationTrigger'] : 'scroll';
+	if ( 'scroll' !== $trigger ) {
+		$animation_attrs['data-dsgo-animation-trigger'] = esc_attr( $trigger );
+	}
 
-	// Animation duration.
-	$duration                                        = isset( $attributes['dsgoAnimationDuration'] ) ? $attributes['dsgoAnimationDuration'] : 600;
-	$animation_attrs['data-dsgo-animation-duration'] = esc_attr( $duration );
+	$duration = isset( $attributes['dsgoAnimationDuration'] ) ? (int) $attributes['dsgoAnimationDuration'] : 600;
+	if ( 600 !== $duration ) {
+		$animation_attrs['data-dsgo-animation-duration'] = esc_attr( $duration );
+	}
 
-	// Animation delay.
-	$delay                                        = isset( $attributes['dsgoAnimationDelay'] ) ? $attributes['dsgoAnimationDelay'] : 0;
-	$animation_attrs['data-dsgo-animation-delay'] = esc_attr( $delay );
+	$delay = isset( $attributes['dsgoAnimationDelay'] ) ? (int) $attributes['dsgoAnimationDelay'] : 0;
+	if ( 0 !== $delay ) {
+		$animation_attrs['data-dsgo-animation-delay'] = esc_attr( $delay );
+	}
 
-	// Animation easing.
-	$easing                                        = isset( $attributes['dsgoAnimationEasing'] ) ? $attributes['dsgoAnimationEasing'] : 'ease-out';
-	$animation_attrs['data-dsgo-animation-easing'] = esc_attr( $easing );
+	$easing = isset( $attributes['dsgoAnimationEasing'] ) ? $attributes['dsgoAnimationEasing'] : 'ease-out';
+	if ( 'ease-out' !== $easing ) {
+		$animation_attrs['data-dsgo-animation-easing'] = esc_attr( $easing );
+	}
 
-	// Animation offset (for scroll trigger).
-	$offset                                        = isset( $attributes['dsgoAnimationOffset'] ) ? $attributes['dsgoAnimationOffset'] : 100;
-	$animation_attrs['data-dsgo-animation-offset'] = esc_attr( $offset );
+	$offset = isset( $attributes['dsgoAnimationOffset'] ) ? (int) $attributes['dsgoAnimationOffset'] : 100;
+	if ( 100 !== $offset ) {
+		$animation_attrs['data-dsgo-animation-offset'] = esc_attr( $offset );
+	}
 
-	// Animation once.
-	$once                                        = isset( $attributes['dsgoAnimationOnce'] ) ? $attributes['dsgoAnimationOnce'] : true;
-	$animation_attrs['data-dsgo-animation-once'] = $once ? 'true' : 'false';
+	$once = isset( $attributes['dsgoAnimationOnce'] ) ? $attributes['dsgoAnimationOnce'] : true;
+	if ( true !== $once ) {
+		$animation_attrs['data-dsgo-animation-once'] = 'false';
+	}
 
 	// Convert classes array to string.
 	$classes_string = implode( ' ', $animation_classes );
