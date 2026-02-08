@@ -25,6 +25,7 @@
 // Override the scrollable track behavior from slider editor.scss
 // to use transform-based navigation for the query slider preview.
 .wp-block-designsetgo-query-slider {
+
 	.dsgo-slider__track {
 		overflow: hidden;
 		scroll-snap-type: none;

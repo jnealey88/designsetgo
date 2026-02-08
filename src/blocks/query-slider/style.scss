@@ -60,7 +60,7 @@
 	font-size: 0.85em;
 	font-weight: 600;
 	text-decoration: none;
-	border: 2px solid currentColor;
+	border: 2px solid currentcolor;
 	border-radius: 4px;
 	color: inherit;
 	transition: background-color 0.2s ease, color 0.2s ease;
@@ -74,6 +74,7 @@
 
 // ── When slides have a background image, use light text ──────────────
 .dsgo-slide--has-background {
+
 	.dsgo-query-slide__title,
 	.dsgo-query-slide__excerpt,
 	.dsgo-query-slide__date,
@@ -84,6 +85,7 @@
 
 // ── Ensure content has reasonable max-width inside slides ────────────
 .dsgo-slide__content {
+
 	.dsgo-query-slide__title,
 	.dsgo-query-slide__excerpt {
 		max-width: 40em;
@@ -92,6 +94,7 @@
 
 // ── Reduced motion ───────────────────────────────────────────────────
 @media (prefers-reduced-motion: reduce) {
+
 	.dsgo-query-slide__read-more {
 		transition: none;
 	}
