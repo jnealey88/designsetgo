@@ -95,7 +95,7 @@ class Form_Field_Html_Generator {
 	public static function generate_label( string $field_id, string $label, bool $required ): string {
 		$html = '<label for="' . esc_attr( $field_id ) . '" class="dsgo-form-field__label">' . esc_html( $label );
 		if ( $required ) {
-			$html .= '<span class="dsgo-form-field__required" aria-label="required">*</span>';
+			$html .= '<span class="dsgo-form-field__required"><span aria-hidden="true">*</span><span class="screen-reader-text">' . esc_html__( 'Required', 'designsetgo' ) . '</span></span>';
 		}
 		$html .= '</label>';
 		return $html;
@@ -123,7 +123,7 @@ class Form_Field_Html_Generator {
 	 */
 	private static function generate_text_field( array $attributes ): string {
 		$field_name         = $attributes['fieldName'] ?? '';
-		$label              = $attributes['label'] ?? 'Text Field';
+		$label              = $attributes['label'] ?? __( 'Text Field', 'designsetgo' );
 		$placeholder        = $attributes['placeholder'] ?? '';
 		$help_text          = $attributes['helpText'] ?? '';
 		$required           = $attributes['required'] ?? false;
@@ -199,7 +199,7 @@ class Form_Field_Html_Generator {
 	 */
 	private static function generate_email_field( array $attributes ): string {
 		$field_name    = $attributes['fieldName'] ?? '';
-		$label         = $attributes['label'] ?? 'Email';
+		$label         = $attributes['label'] ?? __( 'Email', 'designsetgo' );
 		$placeholder   = $attributes['placeholder'] ?? '';
 		$help_text     = $attributes['helpText'] ?? '';
 		$required      = $attributes['required'] ?? false;
@@ -241,7 +241,7 @@ class Form_Field_Html_Generator {
 	 */
 	private static function generate_textarea( array $attributes ): string {
 		$field_name    = $attributes['fieldName'] ?? '';
-		$label         = $attributes['label'] ?? 'Message';
+		$label         = $attributes['label'] ?? __( 'Message', 'designsetgo' );
 		$placeholder   = $attributes['placeholder'] ?? '';
 		$help_text     = $attributes['helpText'] ?? '';
 		$required      = $attributes['required'] ?? false;
@@ -290,7 +290,7 @@ class Form_Field_Html_Generator {
 	 */
 	private static function generate_select_field( array $attributes ): string {
 		$field_name    = $attributes['fieldName'] ?? '';
-		$label         = $attributes['label'] ?? 'Select';
+		$label         = $attributes['label'] ?? __( 'Select', 'designsetgo' );
 		$help_text     = $attributes['helpText'] ?? '';
 		$required      = $attributes['required'] ?? false;
 		$default_value = $attributes['defaultValue'] ?? '';
@@ -338,7 +338,7 @@ class Form_Field_Html_Generator {
 	 */
 	private static function generate_checkbox_field( array $attributes ): string {
 		$field_name    = $attributes['fieldName'] ?? '';
-		$label         = $attributes['label'] ?? 'Checkbox';
+		$label         = $attributes['label'] ?? __( 'Checkbox', 'designsetgo' );
 		$help_text     = $attributes['helpText'] ?? '';
 		$required      = $attributes['required'] ?? false;
 		$default_value = $attributes['defaultValue'] ?? false;
@@ -362,7 +362,7 @@ class Form_Field_Html_Generator {
 		$html .= ' data-field-type="checkbox"/>';
 		$html .= '<span class="dsgo-form-field__checkbox-text">' . esc_html( $label );
 		if ( $required ) {
-			$html .= '<span class="dsgo-form-field__required" aria-label="required">*</span>';
+			$html .= '<span class="dsgo-form-field__required"><span aria-hidden="true">*</span><span class="screen-reader-text">' . esc_html__( 'Required', 'designsetgo' ) . '</span></span>';
 		}
 		$html .= '</span></label>';
 
@@ -380,7 +380,7 @@ class Form_Field_Html_Generator {
 	 */
 	private static function generate_number_field( array $attributes ): string {
 		$field_name    = $attributes['fieldName'] ?? '';
-		$label         = $attributes['label'] ?? 'Number';
+		$label         = $attributes['label'] ?? __( 'Number', 'designsetgo' );
 		$placeholder   = $attributes['placeholder'] ?? '';
 		$help_text     = $attributes['helpText'] ?? '';
 		$required      = $attributes['required'] ?? false;
@@ -432,7 +432,7 @@ class Form_Field_Html_Generator {
 	 */
 	private static function generate_phone_field( array $attributes ): string {
 		$field_name    = $attributes['fieldName'] ?? '';
-		$label         = $attributes['label'] ?? 'Phone';
+		$label         = $attributes['label'] ?? __( 'Phone', 'designsetgo' );
 		$placeholder   = $attributes['placeholder'] ?? '';
 		$help_text     = $attributes['helpText'] ?? '';
 		$required      = $attributes['required'] ?? false;
@@ -474,7 +474,7 @@ class Form_Field_Html_Generator {
 	 */
 	private static function generate_date_field( array $attributes ): string {
 		$field_name    = $attributes['fieldName'] ?? '';
-		$label         = $attributes['label'] ?? 'Date';
+		$label         = $attributes['label'] ?? __( 'Date', 'designsetgo' );
 		$help_text     = $attributes['helpText'] ?? '';
 		$required      = $attributes['required'] ?? false;
 		$default_value = $attributes['defaultValue'] ?? '';
@@ -520,7 +520,7 @@ class Form_Field_Html_Generator {
 	 */
 	private static function generate_time_field( array $attributes ): string {
 		$field_name    = $attributes['fieldName'] ?? '';
-		$label         = $attributes['label'] ?? 'Time';
+		$label         = $attributes['label'] ?? __( 'Time', 'designsetgo' );
 		$help_text     = $attributes['helpText'] ?? '';
 		$required      = $attributes['required'] ?? false;
 		$default_value = $attributes['defaultValue'] ?? '';
@@ -558,7 +558,7 @@ class Form_Field_Html_Generator {
 	 */
 	private static function generate_url_field( array $attributes ): string {
 		$field_name    = $attributes['fieldName'] ?? '';
-		$label         = $attributes['label'] ?? 'URL';
+		$label         = $attributes['label'] ?? __( 'URL', 'designsetgo' );
 		$placeholder   = $attributes['placeholder'] ?? '';
 		$help_text     = $attributes['helpText'] ?? '';
 		$required      = $attributes['required'] ?? false;

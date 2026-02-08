@@ -251,6 +251,13 @@ class Loader {
 				function ( $theme_json ) use ( $all_style_variations ) {
 					$theme_json_data = $theme_json->get_data();
 
+					if ( ! isset( $theme_json_data['styles'] ) ) {
+						$theme_json_data['styles'] = array();
+					}
+					if ( ! isset( $theme_json_data['styles']['blocks'] ) ) {
+						$theme_json_data['styles']['blocks'] = array();
+					}
+
 					foreach ( $all_style_variations as $variation ) {
 						if ( ! isset( $theme_json_data['styles']['blocks'][ $variation['block_type'] ] ) ) {
 							$theme_json_data['styles']['blocks'][ $variation['block_type'] ] = array();
