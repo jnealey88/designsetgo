@@ -111,6 +111,9 @@ class Loader {
 
 	/**
 	 * Register all blocks.
+	 *
+	 * Derives the block name from the directory name to avoid reading
+	 * block.json twice (once here and once inside register_block_type).
 	 */
 	public function register_blocks() {
 		// Get all block directories from build folder.
@@ -124,19 +127,38 @@ class Loader {
 		$blocks = array_filter( glob( $blocks_dir . '*' ), 'is_dir' );
 
 		foreach ( $blocks as $block_dir ) {
-			$block_json = $block_dir . '/block.json';
+			if ( ! file_exists( $block_dir . '/block.json' ) ) {
+				continue;
+			}
 
-			if ( file_exists( $block_json ) ) {
-				// Get block name from block.json.
-				$block_data = json_decode( file_get_contents( $block_json ), true );
-				$block_name = isset( $block_data['name'] ) ? $block_data['name'] : '';
+			// Derive block name from directory name — matches the slug in block.json
+			// and avoids a redundant file_get_contents + json_decode per block.
+			$block_name = 'designsetgo/' . basename( $block_dir );
 
-				// Check if block should be registered (allows filtering via Block_Manager).
-				$should_register = apply_filters( 'designsetgo_register_block', true, $block_name );
-
-				if ( $should_register ) {
-					register_block_type( $block_dir );
+			// In debug mode, verify the derived name matches block.json to catch
+			// directory/name mismatches during development.
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				$json_data = json_decode( file_get_contents( $block_dir . '/block.json' ), true );
+				$json_name = isset( $json_data['name'] ) ? $json_data['name'] : '';
+				if ( $block_name !== $json_name ) {
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+					trigger_error(
+						sprintf(
+							'DesignSetGo: Block directory name "%s" does not match block.json name "%s" in %s',
+							esc_html( $block_name ),
+							esc_html( $json_name ),
+							esc_html( $block_dir )
+						),
+						E_USER_WARNING
+					);
 				}
+			}
+
+			// Check if block should be registered (allows filtering via Block_Manager).
+			$should_register = apply_filters( 'designsetgo_register_block', true, $block_name );
+
+			if ( $should_register ) {
+				register_block_type( $block_dir );
 			}
 		}
 	}
@@ -195,6 +217,9 @@ class Loader {
 		// Find all block directories.
 		$blocks = array_filter( glob( $blocks_dir . '*' ), 'is_dir' );
 
+		// Collect all style variation data to register in a single filter callback.
+		$all_style_variations = array();
+
 		foreach ( $blocks as $block_dir ) {
 			$styles_dir = $block_dir . '/styles/';
 
@@ -229,28 +254,36 @@ class Loader {
 						)
 					);
 
-					// Register the style variation data with WordPress.
-					// This allows the Site Editor to apply the comprehensive theme.json styles.
-					add_filter(
-						'wp_theme_json_data_default',
-						function ( $theme_json ) use ( $style_data, $block_type ) {
-							// Merge the style variation into the theme.json data.
-							$theme_json_data = $theme_json->get_data();
-
-							if ( ! isset( $theme_json_data['styles']['blocks'][ $block_type ] ) ) {
-								$theme_json_data['styles']['blocks'][ $block_type ] = array();
-							}
-
-							// Add the style variation data.
-							if ( isset( $style_data['styles'] ) ) {
-								$theme_json_data['styles']['blocks'][ $block_type ]['variations'][ $style_data['slug'] ] = $style_data['styles'];
-							}
-
-							return new \WP_Theme_JSON_Data( $theme_json_data, 'default' );
-						}
-					);
+					// Collect the style variation data for batched registration.
+					if ( isset( $style_data['styles'] ) ) {
+						$all_style_variations[] = array(
+							'block_type' => $block_type,
+							'slug'       => $style_data['slug'],
+							'styles'     => $style_data['styles'],
+						);
+					}
 				}
 			}
+		}
+
+		// Register all style variations with a single filter callback.
+		if ( ! empty( $all_style_variations ) ) {
+			add_filter(
+				'wp_theme_json_data_default',
+				function ( $theme_json ) use ( $all_style_variations ) {
+					$theme_json_data = $theme_json->get_data();
+
+					foreach ( $all_style_variations as $variation ) {
+						if ( ! isset( $theme_json_data['styles']['blocks'][ $variation['block_type'] ] ) ) {
+							$theme_json_data['styles']['blocks'][ $variation['block_type'] ] = array();
+						}
+
+						$theme_json_data['styles']['blocks'][ $variation['block_type'] ]['variations'][ $variation['slug'] ] = $variation['styles'];
+					}
+
+					return new \WP_Theme_JSON_Data( $theme_json_data, 'default' );
+				}
+			);
 		}
 	}
 

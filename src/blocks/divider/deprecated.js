@@ -7,7 +7,7 @@
  */
 
 import { useBlockProps } from '@wordpress/block-editor';
-import { getIcon } from '../icon/utils/svg-icons';
+import { getIcon } from '../shared/icon-utils';
 
 /**
  * Version 1: Before lazy loading icon library

@@ -187,7 +187,7 @@ npm run plugin-zip
   - Checkbox, Select, Textarea fields
   - Hidden field
 - AJAX submission with honeypot spam protection
-- Google reCAPTCHA v3 support
+- Cloudflare Turnstile spam protection
 - Email notifications with customizable templates
 - Success/error message customization
 - Form validation and error handling

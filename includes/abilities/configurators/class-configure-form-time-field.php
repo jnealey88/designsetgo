@@ -2,16 +2,12 @@
 /**
  * Configure Form Time Field Block Ability.
  *
- * Configures DesignSetGo form time field blocks using schema derived from block.json.
- *
  * @package DesignSetGo
  * @subpackage Abilities
  * @since 2.1.0
  */
 
 namespace DesignSetGo\Abilities\Configurators;
-
-use DesignSetGo\Abilities\Abstract_Configurator_Ability;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,24 +16,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Configure Form Time Field ability class.
  */
-class Configure_Form_Time_Field extends Abstract_Configurator_Ability {
+class Configure_Form_Time_Field extends Configure_Form_Field {
 
 	/**
-	 * Get ability name.
-	 *
-	 * @return string
+	 * Constructor.
 	 */
-	public function get_name(): string {
-		return 'designsetgo/configure-form-time-field';
-	}
-
-	/**
-	 * Get the target block name.
-	 *
-	 * @return string Block name for schema generation.
-	 */
-	protected function get_target_block_name(): ?string {
-		return 'designsetgo/form-time-field';
+	public function __construct() {
+		parent::__construct(
+			'designsetgo/configure-form-time-field',
+			'designsetgo/form-time-field'
+		);
 	}
 
 	/**

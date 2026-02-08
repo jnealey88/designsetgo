@@ -151,9 +151,6 @@ module.exports = {
 	],
 	optimization: {
 		...defaultConfig.optimization,
-		// TEMPORARY: Code splitting for icon library during migration
-		// TODO: Remove this entire splitChunks configuration once all blocks
-		// are converted to lazy loading (currently 6/6 converted in PR #111)
 		// PERFORMANCE: Only enable code splitting in production mode
 		splitChunks:
 			defaultConfig.mode === 'production'
