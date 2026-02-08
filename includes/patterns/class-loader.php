@@ -47,6 +47,7 @@ class Loader {
 		'modal',
 		'gallery',
 		'contact',
+		'services',
 	);
 
 	/**
@@ -118,6 +119,7 @@ class Loader {
 			'dsgo-modal'        => __( 'DesignSetGo: Modals', 'designsetgo' ),
 			'dsgo-gallery'      => __( 'DesignSetGo: Gallery', 'designsetgo' ),
 			'dsgo-contact'      => __( 'DesignSetGo: Contact', 'designsetgo' ),
+			'dsgo-services'     => __( 'DesignSetGo: Services', 'designsetgo' ),
 		);
 
 		// Get pattern categories registry.
