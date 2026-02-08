@@ -264,7 +264,11 @@ class Form_Security {
 	 * @return bool True if IP is in range.
 	 */
 	private function ip_in_range( string $ip, string $cidr ): bool {
-		list( $subnet, $mask ) = explode( '/', $cidr );
+		$parts = explode( '/', $cidr );
+		if ( count( $parts ) !== 2 ) {
+			return false;
+		}
+		list( $subnet, $mask ) = $parts;
 
 		$ip_long     = ip2long( $ip );
 		$subnet_long = ip2long( $subnet );
@@ -273,7 +277,15 @@ class Form_Security {
 			return false;
 		}
 
-		$mask_long = -1 << ( 32 - (int) $mask );
+		$mask = (int) $mask;
+		if ( $mask < 0 || $mask > 32 ) {
+			return false;
+		}
+		if ( 0 === $mask ) {
+			return true;
+		}
+
+		$mask_long = -1 << ( 32 - $mask );
 
 		return ( $ip_long & $mask_long ) === ( $subnet_long & $mask_long );
 	}
