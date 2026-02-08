@@ -14,6 +14,10 @@
 $inline-block-classes: (
 	'.dsgo-pill',
 	'.wp-block-designsetgo-pill',
+	'.dsgo-icon',
+	'.wp-block-designsetgo-icon',
+	'.dsgo-counter',
+	'.wp-block-designsetgo-counter',
 	'.wp-block-button',
 	'.wp-block-buttons',
 	'.dsgo-icon-button',
@@ -302,6 +306,10 @@ $inline-block-data-types: (
 
 		> .dsgo-pill,
 		> .wp-block-designsetgo-pill,
+		> .dsgo-icon,
+		> .wp-block-designsetgo-icon,
+		> .dsgo-counter,
+		> .wp-block-designsetgo-counter,
 		> .wp-block-button,
 		> .wp-block-buttons,
 		> .dsgo-icon-button,
@@ -312,16 +320,19 @@ $inline-block-data-types: (
 	}
 }
 
-// CRITICAL: Editor-only fix for inline block [data-block] wrappers stretching inside grid > section.
-// Grid items stretch to fill their cells via align-items: stretch, which cascades through the
-// section's flex layout. The section fills the grid cell, and .dsgo-stack__inner fills the
-// section (flex-grow: 1), leaving extra vertical space. WordPress may apply flex-grow or height
+// CRITICAL: Editor-only fix for inline block [data-block] wrappers stretching inside
+// grid > section or slide > section contexts.
+// Grid: items stretch to fill their cells via align-items: stretch.
+// Slide: height: 100% + flex: 1 on .dsgo-slide__content forces children to fill height.
+// Both cascade through the section's flex layout — .dsgo-stack__inner fills the parent
+// (flex-grow: 1), leaving extra vertical space. WordPress may apply flex-grow or height
 // to [data-block] wrappers, causing inline blocks to expand to fill the section height.
 // No frontend equivalent needed - [data-type] selectors only exist in the editor DOM.
 // NOTE: Uses descendant selectors (not child combinators) intentionally, because the section
-// may be nested deeper inside the grid (e.g., grid > flex > section).
+// may be nested deeper inside the parent (e.g., grid > flex > section, slide > section).
 // NOTE: Must include all types from $inline-block-data-types to prevent stretching.
-.dsgo-grid .dsgo-stack .dsgo-stack__inner.is-layout-flex {
+.dsgo-grid .dsgo-stack .dsgo-stack__inner.is-layout-flex,
+.dsgo-slide .dsgo-stack .dsgo-stack__inner.is-layout-flex {
 
 	> [data-type="designsetgo/icon-button"],
 	> [data-type="designsetgo/icon"],
@@ -387,26 +398,16 @@ $inline-block-data-types: (
 		// EDITOR: Blocks are wrapped in [data-block] elements, so alignment must target
 		// both the block class (frontend parity) AND the [data-block] wrapper (editor).
 
-		// CRITICAL: Text blocks with explicit text alignment must stretch to full width.
+		// CRITICAL: All block-level children stretch to full width by default.
 		// When section has content justification (e.g., center), WordPress applies
-		// align-items: center which shrinks text blocks and centers them, overriding
-		// the user's text-align setting. align-self: stretch ensures text blocks
-		// maintain full width so text-align works as expected.
-		> .has-text-align-left,
-		> .has-text-align-right,
-		> .has-text-align-center {
-			align-self: stretch !important;
-		}
-
-		// Editor: [data-block] wrappers containing text blocks with explicit alignment.
-		// Uses :has() selector (Chrome 105+, Firefox 121+, Safari 15.4+) which is
-		// acceptable for editor-only styles since the block editor already requires
-		// modern browsers. Frontend styles in style.scss don't need :has() because
-		// the .has-text-align-* class is directly on the child element (no [data-block] wrapper).
-		> [data-block]:has(> .has-text-align-left),
-		> [data-block]:has(> .has-text-align-right),
-		> [data-block]:has(> .has-text-align-center) {
-			align-self: stretch !important;
+		// align-items: center which shrinks ALL children to content width. This
+		// breaks paragraphs, headings, and other text blocks — even those without
+		// an explicit has-text-align-* class (i.e., default left-aligned text).
+		// In the editor, blocks are wrapped in [data-block] elements so > * covers
+		// those wrappers. Using > * without !important so inline block rules (pill,
+		// icon, button, counter) can override via higher specificity or !important.
+		> * {
+			align-self: stretch;
 		}
 
 		// Section center alignment - apply to inline blocks WITHOUT their own alignment
