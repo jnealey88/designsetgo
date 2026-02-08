@@ -71,12 +71,12 @@ function dsgo_get_animation_attributes( $attributes ) {
 
 	$duration = isset( $attributes['dsgoAnimationDuration'] ) ? (int) $attributes['dsgoAnimationDuration'] : 600;
 	if ( 600 !== $duration ) {
-		$animation_attrs['data-dsgo-animation-duration'] = esc_attr( $duration );
+		$animation_attrs['data-dsgo-animation-duration'] = esc_attr( (string) $duration );
 	}
 
 	$delay = isset( $attributes['dsgoAnimationDelay'] ) ? (int) $attributes['dsgoAnimationDelay'] : 0;
 	if ( 0 !== $delay ) {
-		$animation_attrs['data-dsgo-animation-delay'] = esc_attr( $delay );
+		$animation_attrs['data-dsgo-animation-delay'] = esc_attr( (string) $delay );
 	}
 
 	$easing = isset( $attributes['dsgoAnimationEasing'] ) ? $attributes['dsgoAnimationEasing'] : 'ease-out';
@@ -86,7 +86,7 @@ function dsgo_get_animation_attributes( $attributes ) {
 
 	$offset = isset( $attributes['dsgoAnimationOffset'] ) ? (int) $attributes['dsgoAnimationOffset'] : 100;
 	if ( 100 !== $offset ) {
-		$animation_attrs['data-dsgo-animation-offset'] = esc_attr( $offset );
+		$animation_attrs['data-dsgo-animation-offset'] = esc_attr( (string) $offset );
 	}
 
 	$once = isset( $attributes['dsgoAnimationOnce'] ) ? (bool) $attributes['dsgoAnimationOnce'] : true;
