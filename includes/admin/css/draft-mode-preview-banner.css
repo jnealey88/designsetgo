@@ -241,6 +241,7 @@ body.dsgo-has-draft-banner {
 
 /* Mobile adjustments */
 @media (max-width: 600px) {
+
 	.dsgo-preview-banner__inner {
 		flex-direction: column;
 		align-items: flex-start;

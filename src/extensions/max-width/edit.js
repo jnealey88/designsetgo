@@ -23,39 +23,29 @@ import { useEffect } from '@wordpress/element';
  *
  * @param {Object} props Block props
  */
-export function MaxWidthPanel( props ) {
+export function MaxWidthPanel(props) {
 	const { attributes, setAttributes } = props;
 	const { dsgoMaxWidth } = attributes;
 
-	const [ spacingUnits ] = useSettings( 'spacing.units' );
-	const units = useCustomUnits( {
-		availableUnits: spacingUnits || [
-			'px',
-			'em',
-			'rem',
-			'vh',
-			'vw',
-			'%',
-		],
-	} );
+	const [spacingUnits] = useSettings('spacing.units');
+	const units = useCustomUnits({
+		availableUnits: spacingUnits || ['px', 'em', 'rem', 'vh', 'vw', '%'],
+	});
 
 	return (
 		<InspectorControls>
-			<PanelBody
-				title={ __( 'Width', 'designsetgo' ) }
-				initialOpen={ false }
-			>
+			<PanelBody title={__('Width', 'designsetgo')} initialOpen={false}>
 				<UnitControl
-					label={ __( 'Max width', 'designsetgo' ) }
-					value={ dsgoMaxWidth || '' }
-					onChange={ ( value ) =>
-						setAttributes( { dsgoMaxWidth: value || '' } )
+					label={__('Max width', 'designsetgo')}
+					value={dsgoMaxWidth || ''}
+					onChange={(value) =>
+						setAttributes({ dsgoMaxWidth: value || '' })
 					}
-					units={ units }
-					help={ __(
+					units={units}
+					help={__(
 						'Maximum width for this block. Leave empty for no constraint.',
 						'designsetgo'
-					) }
+					)}
 					__next40pxDefaultSize
 					__nextHasNoMarginBottom
 				/>
@@ -67,64 +57,64 @@ export function MaxWidthPanel( props ) {
 /**
  * Max width editor style application wrapper
  *
- * @param {Object} props               Block list block props
+ * @param {Object} props                Block list block props
  * @param {Object} props.BlockListBlock Original BlockListBlock component
  */
-export function MaxWidthStyles( { BlockListBlock, ...props } ) {
+export function MaxWidthStyles({ BlockListBlock, ...props }) {
 	const { attributes, clientId } = props;
 	const { dsgoMaxWidth, align, textAlign } = attributes;
 
 	const maxWidth = dsgoMaxWidth;
-	const styleId = `dsgo-max-width-${ clientId }`;
+	const styleId = `dsgo-max-width-${clientId}`;
 
-	useEffect( () => {
+	useEffect(() => {
 		const editorDocument =
-			document.querySelector( 'iframe[name="editor-canvas"]' )
+			document.querySelector('iframe[name="editor-canvas"]')
 				?.contentDocument || document;
 
-		const existingStyle = editorDocument.getElementById( styleId );
-		if ( existingStyle ) {
+		const existingStyle = editorDocument.getElementById(styleId);
+		if (existingStyle) {
 			existingStyle.remove();
 		}
 
-		if ( maxWidth ) {
-			const styleElement = editorDocument.createElement( 'style' );
+		if (maxWidth) {
+			const styleElement = editorDocument.createElement('style');
 			styleElement.id = styleId;
 
 			let marginLeft = 'auto';
 			let marginRight = 'auto';
 
-			if ( textAlign === 'left' || align === 'left' ) {
+			if (textAlign === 'left' || align === 'left') {
 				marginLeft = '0';
 				marginRight = 'auto';
-			} else if ( textAlign === 'right' || align === 'right' ) {
+			} else if (textAlign === 'right' || align === 'right') {
 				marginLeft = 'auto';
 				marginRight = '0';
 			}
 
-			const selector = `[data-block="${ clientId }"]`;
+			const selector = `[data-block="${clientId}"]`;
 			styleElement.textContent = `
-				${ selector } {
-					max-width: ${ maxWidth } !important;
-					margin-left: ${ marginLeft } !important;
-					margin-right: ${ marginRight } !important;
+				${selector} {
+					max-width: ${maxWidth} !important;
+					margin-left: ${marginLeft} !important;
+					margin-right: ${marginRight} !important;
 				}
 			`;
 
-			editorDocument.head.appendChild( styleElement );
+			editorDocument.head.appendChild(styleElement);
 		}
 
 		return () => {
-			const styleToRemove = editorDocument.getElementById( styleId );
-			if ( styleToRemove ) {
+			const styleToRemove = editorDocument.getElementById(styleId);
+			if (styleToRemove) {
 				styleToRemove.remove();
 			}
 		};
-	}, [ maxWidth, clientId, styleId, textAlign, align ] );
+	}, [maxWidth, clientId, styleId, textAlign, align]);
 
 	const className = maxWidth
-		? `${ props.className || '' } dsgo-has-max-width`.trim()
+		? `${props.className || ''} dsgo-has-max-width`.trim()
 		: props.className;
 
-	return <BlockListBlock { ...props } className={ className } />;
+	return <BlockListBlock {...props} className={className} />;
 }

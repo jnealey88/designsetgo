@@ -226,31 +226,17 @@
 			transition: none;
 		}
 	}
-}
 
-// Reduced motion preference
-@media (prefers-reduced-motion: reduce) {
-
-	.dsgo-timeline .dsgo-timeline-item {
-		opacity: 1;
-		transform: none;
-		transition: none;
-	}
-}
-
-// Full width alignment support
-.dsgo-timeline {
-
+	// Full width alignment support
 	&.alignwide,
 	&.alignfull {
 		width: 100%;
 	}
-}
 
-// ===================
-// DASHED/DOTTED LINE STYLES
-// ===================
-.dsgo-timeline {
+	// ===================
+	// DASHED/DOTTED LINE STYLES
+	// ===================
+
 	// Dashed line via repeating gradient
 	&[style*="--dsgo-timeline-connector-style: dashed"] {
 
@@ -297,6 +283,16 @@
 				transparent 10px
 			);
 		}
+	}
+}
+
+// Reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+
+	.dsgo-timeline .dsgo-timeline-item {
+		opacity: 1;
+		transform: none;
+		transition: none;
 	}
 }
 
