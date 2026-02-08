@@ -21,6 +21,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
 use DesignSetGo\Blocks\Form_Handler;
+use DesignSetGo\Blocks\Form_Security;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -37,18 +38,26 @@ class Test_Form_Handler extends WP_UnitTestCase {
 	private $handler;
 
 	/**
+	 * Form security instance.
+	 *
+	 * @var Form_Security
+	 */
+	private $security;
+
+	/**
 	 * Set up test fixtures.
 	 */
 	public function set_up() {
 		parent::set_up();
-		$this->handler = new Form_Handler();
+		$this->handler  = new Form_Handler();
+		$this->security = new Form_Security();
 
 		// Register the REST route for testing.
 		do_action( 'rest_api_init' );
 	}
 
 	/**
-	 * Helper to call private methods for testing.
+	 * Helper to call private methods on Form_Handler for testing.
 	 *
 	 * @param string $method Method name.
 	 * @param array  $args   Method arguments.
@@ -59,6 +68,20 @@ class Test_Form_Handler extends WP_UnitTestCase {
 		$method     = $reflection->getMethod( $method );
 		$method->setAccessible( true );
 		return $method->invokeArgs( $this->handler, $args );
+	}
+
+	/**
+	 * Helper to call private methods on Form_Security for testing.
+	 *
+	 * @param string $method Method name.
+	 * @param array  $args   Method arguments.
+	 * @return mixed Method result.
+	 */
+	private function call_security_method( $method, $args = array() ) {
+		$reflection = new ReflectionClass( $this->security );
+		$method     = $reflection->getMethod( $method );
+		$method->setAccessible( true );
+		return $method->invokeArgs( $this->security, $args );
 	}
 
 	/**
@@ -232,7 +255,7 @@ class Test_Form_Handler extends WP_UnitTestCase {
 		unset( $_SERVER['HTTP_X_FORWARDED_FOR'] );
 		unset( $_SERVER['HTTP_X_REAL_IP'] );
 
-		$ip = $this->call_private_method( 'get_client_ip', array() );
+		$ip = $this->security->get_client_ip();
 
 		$this->assertEquals( '192.168.1.100', $ip );
 	}
@@ -244,7 +267,7 @@ class Test_Form_Handler extends WP_UnitTestCase {
 		unset( $_SERVER['REMOTE_ADDR'] );
 		unset( $_SERVER['HTTP_X_FORWARDED_FOR'] );
 
-		$ip = $this->call_private_method( 'get_client_ip', array() );
+		$ip = $this->security->get_client_ip();
 
 		$this->assertEquals( 'unknown', $ip );
 
@@ -260,7 +283,7 @@ class Test_Form_Handler extends WP_UnitTestCase {
 		$_SERVER['HTTP_X_FORWARDED_FOR'] = '203.0.113.50';
 
 		// Without trusted proxies filter, should use REMOTE_ADDR.
-		$ip = $this->call_private_method( 'get_client_ip', array() );
+		$ip = $this->security->get_client_ip();
 
 		$this->assertEquals( '10.0.0.1', $ip );
 	}
@@ -271,17 +294,17 @@ class Test_Form_Handler extends WP_UnitTestCase {
 	public function test_ip_in_range() {
 		// IP in range.
 		$this->assertTrue(
-			$this->call_private_method( 'ip_in_range', array( '192.168.1.50', '192.168.1.0/24' ) )
+			$this->call_security_method( 'ip_in_range', array( '192.168.1.50', '192.168.1.0/24' ) )
 		);
 
 		// IP outside range.
 		$this->assertFalse(
-			$this->call_private_method( 'ip_in_range', array( '192.168.2.50', '192.168.1.0/24' ) )
+			$this->call_security_method( 'ip_in_range', array( '192.168.2.50', '192.168.1.0/24' ) )
 		);
 
 		// Exact match with /32.
 		$this->assertTrue(
-			$this->call_private_method( 'ip_in_range', array( '10.0.0.5', '10.0.0.5/32' ) )
+			$this->call_security_method( 'ip_in_range', array( '10.0.0.5', '10.0.0.5/32' ) )
 		);
 	}
 
@@ -296,27 +319,27 @@ class Test_Form_Handler extends WP_UnitTestCase {
 
 		// Exact match.
 		$this->assertTrue(
-			$this->call_private_method( 'is_trusted_proxy', array( '10.0.0.1', $trusted_proxies ) )
+			$this->call_security_method( 'is_trusted_proxy', array( '10.0.0.1', $trusted_proxies ) )
 		);
 
 		// CIDR match.
 		$this->assertTrue(
-			$this->call_private_method( 'is_trusted_proxy', array( '192.168.50.100', $trusted_proxies ) )
+			$this->call_security_method( 'is_trusted_proxy', array( '192.168.50.100', $trusted_proxies ) )
 		);
 
 		// Not trusted.
 		$this->assertFalse(
-			$this->call_private_method( 'is_trusted_proxy', array( '203.0.113.1', $trusted_proxies ) )
+			$this->call_security_method( 'is_trusted_proxy', array( '203.0.113.1', $trusted_proxies ) )
 		);
 	}
 
 	/**
-	 * Test rate limiting creates transient on first submission.
+	 * Test rate limiting allows first submission.
 	 */
 	public function test_rate_limit_first_submission() {
 		$_SERVER['REMOTE_ADDR'] = '192.168.1.1';
 
-		$result = $this->call_private_method( 'check_rate_limit', array( 'test-form-1', true ) );
+		$result = $this->security->check_rate_limit( 'test-form-1' );
 
 		$this->assertTrue( $result );
 	}
@@ -328,10 +351,11 @@ class Test_Form_Handler extends WP_UnitTestCase {
 		$_SERVER['REMOTE_ADDR'] = '192.168.1.2';
 		$form_id                = 'test-form-2';
 
-		// First two submissions should be allowed.
+		// First two submissions should be allowed (increment after check).
 		for ( $i = 0; $i < 2; $i++ ) {
-			$result = $this->call_private_method( 'check_rate_limit', array( $form_id, true ) );
+			$result = $this->security->check_rate_limit( $form_id );
 			$this->assertTrue( $result, "Submission $i should be allowed" );
+			$this->security->increment_rate_limit( $form_id );
 		}
 	}
 
@@ -347,7 +371,7 @@ class Test_Form_Handler extends WP_UnitTestCase {
 		// Set transient to max submissions (3 by default).
 		set_transient( $key, 3, 60 );
 
-		$result = $this->call_private_method( 'check_rate_limit', array( $form_id, false ) );
+		$result = $this->security->check_rate_limit( $form_id );
 
 		$this->assertInstanceOf( WP_Error::class, $result );
 		$this->assertEquals( 'rate_limit', $result->get_error_code() );

@@ -24,7 +24,7 @@ class Configure_Form_Textarea extends Configure_Form_Field {
 	public function __construct() {
 		parent::__construct(
 			'designsetgo/configure-form-textarea',
-			'designsetgo/form-textarea'
+			'designsetgo/form-textarea-field'
 		);
 	}
 

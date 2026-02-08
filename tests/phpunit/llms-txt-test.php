@@ -16,6 +16,7 @@ use DesignSetGo\LLMS_Txt\Controller;
 use DesignSetGo\LLMS_Txt\REST_Controller;
 use DesignSetGo\LLMS_Txt\Generator;
 use DesignSetGo\Markdown\Converter;
+use DesignSetGo\Admin\Settings;
 
 /**
  * llms.txt Feature Test Case
@@ -67,7 +68,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 
 		// Clear cache before each test.
 		delete_transient( Controller::CACHE_KEY );
-		\DesignSetGo\Admin\Settings::invalidate_cache();
+		Settings::invalidate_cache();
 	}
 
 	/**
@@ -76,7 +77,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 	public function tear_down() {
 		// Clear cache after each test.
 		delete_transient( Controller::CACHE_KEY );
-		\DesignSetGo\Admin\Settings::invalidate_cache();
+		Settings::invalidate_cache();
 
 		parent::tear_down();
 	}
@@ -274,6 +275,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 				),
 			)
 		);
+		Settings::invalidate_cache();
 
 		$post_id = $this->factory->post->create(
 			array(
@@ -307,6 +309,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 				),
 			)
 		);
+		Settings::invalidate_cache();
 
 		$post_id = $this->factory->post->create(
 			array(

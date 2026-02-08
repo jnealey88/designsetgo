@@ -10,6 +10,7 @@ import {
 	shouldExtendBlock,
 	clearExclusionCache,
 } from '../../src/utils/should-extend-block';
+import { convertPresetToCSSVar } from '../../src/utils/convert-preset-to-css-var';
 
 describe('Utility Functions', () => {
 	describe('classNames helper', () => {
@@ -156,6 +157,70 @@ describe('Utility Functions', () => {
 				'(min-width: 768px) and (max-width: 1023px)'
 			);
 			expect(getMediaQuery('desktop')).toBe('(min-width: 1024px)');
+		});
+	});
+
+	describe('convertPresetToCSSVar', () => {
+		test('converts preset format to CSS variable', () => {
+			expect(convertPresetToCSSVar('var:preset|spacing|md')).toBe(
+				'var(--wp--preset--spacing--md)'
+			);
+		});
+
+		test('converts preset with different categories', () => {
+			expect(convertPresetToCSSVar('var:preset|color|primary')).toBe(
+				'var(--wp--preset--color--primary)'
+			);
+			expect(convertPresetToCSSVar('var:preset|font-size|large')).toBe(
+				'var(--wp--preset--font-size--large)'
+			);
+		});
+
+		test('returns existing CSS variable as-is', () => {
+			expect(
+				convertPresetToCSSVar('var(--wp--preset--spacing--md)')
+			).toBe('var(--wp--preset--spacing--md)');
+		});
+
+		test('returns plain value as-is', () => {
+			expect(convertPresetToCSSVar('16px')).toBe('16px');
+			expect(convertPresetToCSSVar('1.5rem')).toBe('1.5rem');
+		});
+
+		test('returns undefined for falsy values', () => {
+			expect(convertPresetToCSSVar(undefined)).toBeUndefined();
+			expect(convertPresetToCSSVar(null)).toBeUndefined();
+			expect(convertPresetToCSSVar('')).toBeUndefined();
+			expect(convertPresetToCSSVar(0)).toBeUndefined();
+		});
+
+		test('handles object format with top value', () => {
+			expect(
+				convertPresetToCSSVar({
+					top: 'var:preset|spacing|md',
+					left: 'var:preset|spacing|lg',
+				})
+			).toBe('var(--wp--preset--spacing--md)');
+		});
+
+		test('handles object format falling back to left value', () => {
+			expect(
+				convertPresetToCSSVar({
+					top: '',
+					left: 'var:preset|spacing|lg',
+				})
+			).toBe('var(--wp--preset--spacing--lg)');
+		});
+
+		test('returns undefined for empty object', () => {
+			expect(convertPresetToCSSVar({})).toBeUndefined();
+			expect(
+				convertPresetToCSSVar({ top: '', left: '' })
+			).toBeUndefined();
+		});
+
+		test('converts non-string values to string', () => {
+			expect(convertPresetToCSSVar(42)).toBe('42');
 		});
 	});
 

@@ -92,9 +92,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Form_Handler {
 
 	/**
+	 * Security module for spam checks, rate limiting, and verification.
+	 *
+	 * @var Form_Security
+	 */
+	private Form_Security $security;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
+		$this->security = new Form_Security();
+
 		add_action( 'rest_api_init', array( $this, 'register_rest_endpoint' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'localize_form_script' ) );
 
@@ -261,37 +270,24 @@ class Form_Handler {
 		$timestamp     = $request->get_param( 'timestamp' );
 		$form_settings = $this->get_form_settings();
 
-		// Honeypot spam check - if filled, it's a bot (only if enabled in settings).
-		if ( $form_settings['enable_honeypot'] && ! empty( $honeypot ) ) {
-			// Security monitoring hook for honeypot spam detection.
-			do_action( 'designsetgo_form_spam_detected', $form_id, 'honeypot', $this->get_client_ip() );
-
-			return new WP_Error(
-				'spam_detected',
-				__( 'Spam submission rejected.', 'designsetgo' ),
-				array( 'status' => 403 )
-			);
+		// Honeypot spam check (only if enabled in settings).
+		if ( $form_settings['enable_honeypot'] ) {
+			$honeypot_check = $this->security->check_honeypot( $honeypot, $form_id );
+			if ( is_wp_error( $honeypot_check ) ) {
+				return $honeypot_check;
+			}
 		}
 
-		// Time-based check - submission must be > 3 seconds after page load.
-		if ( ! empty( $timestamp ) ) {
-			$elapsed = ( time() * 1000 ) - intval( $timestamp );
-			if ( $elapsed < 3000 ) {
-				// Security monitoring hook for time-based spam detection.
-				do_action( 'designsetgo_form_spam_detected', $form_id, 'too_fast', $this->get_client_ip(), array( 'elapsed_ms' => $elapsed ) );
-
-				return new WP_Error(
-					'too_fast',
-					__( 'Submission too fast. Please try again.', 'designsetgo' ),
-					array( 'status' => 429 )
-				);
-			}
+		// Time-based spam check.
+		$timing_check = $this->security->check_submission_timing( $timestamp, $form_id );
+		if ( is_wp_error( $timing_check ) ) {
+			return $timing_check;
 		}
 
 		// Rate limiting check (only if enabled in settings).
 		// Note: We only CHECK here, not increment. Increment happens after successful submission.
 		if ( $form_settings['enable_rate_limiting'] ) {
-			$rate_limit_check = $this->check_rate_limit( $form_id, false );
+			$rate_limit_check = $this->security->check_rate_limit( $form_id );
 			if ( is_wp_error( $rate_limit_check ) ) {
 				return $rate_limit_check;
 			}
@@ -301,7 +297,7 @@ class Form_Handler {
 		// Graceful degradation: If no token, skip verification (form submitted without Turnstile or widget failed).
 		$turnstile_token = $request->get_param( 'turnstile_token' );
 		if ( ! empty( $turnstile_token ) ) {
-			$turnstile_result = $this->verify_turnstile( $turnstile_token );
+			$turnstile_result = $this->security->verify_turnstile( $turnstile_token );
 			if ( is_wp_error( $turnstile_result ) ) {
 				/**
 				 * Fires when Cloudflare Turnstile verification fails.
@@ -311,7 +307,7 @@ class Form_Handler {
 				 * @param string $ip_address  Client IP address.
 				 * @param string $error_code  Error code from verification.
 				 */
-				do_action( 'designsetgo_form_turnstile_failed', $form_id, $this->get_client_ip(), $turnstile_result->get_error_code() );
+				do_action( 'designsetgo_form_turnstile_failed', $form_id, $this->security->get_client_ip(), $turnstile_result->get_error_code() );
 				return $turnstile_result;
 			}
 		}
@@ -331,7 +327,7 @@ class Form_Handler {
 			$validation_result = $this->validate_field( $field_value, $field_type );
 			if ( is_wp_error( $validation_result ) ) {
 				// Security monitoring hook for validation failures.
-				do_action( 'designsetgo_form_validation_failed', $form_id, $field_name, $field_type, $validation_result->get_error_code(), $this->get_client_ip() );
+				do_action( 'designsetgo_form_validation_failed', $form_id, $field_name, $field_type, $validation_result->get_error_code(), $this->security->get_client_ip() );
 
 				return new WP_Error(
 					'validation_error',
@@ -370,7 +366,7 @@ class Form_Handler {
 
 		// Increment rate limit counter ONLY after successful submission.
 		if ( $form_settings['enable_rate_limiting'] ) {
-			$this->increment_rate_limit( $form_id );
+			$this->security->increment_rate_limit( $form_id );
 		}
 
 		// Trigger action hook for email notifications, integrations, etc.
@@ -384,144 +380,6 @@ class Form_Handler {
 			),
 			200
 		);
-	}
-
-	/**
-	 * Check rate limiting for form submissions.
-	 *
-	 * @param string $form_id Form ID.
-	 * @param bool   $increment Whether to increment the counter (default: true for backwards compatibility).
-	 * @return true|WP_Error True if allowed, WP_Error if rate limited.
-	 */
-	private function check_rate_limit( $form_id, $increment = true ) {
-		$ip_address = $this->get_client_ip();
-		$key        = 'form_submit_' . $form_id . '_' . md5( $ip_address );
-		$count      = get_transient( $key );
-
-		// Default rate limit: 3 submissions per 60 seconds.
-		$max_submissions = apply_filters( 'designsetgo_form_rate_limit_count', 3, $form_id );
-		$time_window     = apply_filters( 'designsetgo_form_rate_limit_window', 60, $form_id );
-
-		if ( false === $count ) {
-			// First submission, start tracking only if incrementing.
-			if ( $increment ) {
-				set_transient( $key, 1, $time_window );
-			}
-			return true;
-		}
-
-		if ( $count >= $max_submissions ) {
-			// Security monitoring hook for rate limit violations.
-			do_action( 'designsetgo_form_rate_limit_exceeded', $form_id, $ip_address, $count, $max_submissions );
-
-			return new WP_Error(
-				'rate_limit',
-				__( 'Too many submissions. Please try again later.', 'designsetgo' ),
-				array( 'status' => 429 )
-			);
-		}
-
-		// Increment count only if requested.
-		if ( $increment ) {
-			set_transient( $key, $count + 1, $time_window );
-		}
-		return true;
-	}
-
-	/**
-	 * Increment rate limit counter after successful submission.
-	 *
-	 * @param string $form_id Form ID.
-	 */
-	private function increment_rate_limit( $form_id ) {
-		$ip_address = $this->get_client_ip();
-		$key        = 'form_submit_' . $form_id . '_' . md5( $ip_address );
-		$count      = get_transient( $key );
-
-		// Get rate limit settings.
-		$time_window = apply_filters( 'designsetgo_form_rate_limit_window', 60, $form_id );
-
-		if ( false === $count ) {
-			// First submission.
-			set_transient( $key, 1, $time_window );
-		} else {
-			// Increment existing count.
-			set_transient( $key, $count + 1, $time_window );
-		}
-	}
-
-	/**
-	 * Verify Cloudflare Turnstile token.
-	 *
-	 * Makes a server-side request to Cloudflare's siteverify endpoint
-	 * to validate the Turnstile response token.
-	 *
-	 * @param string $token The Turnstile response token from the frontend.
-	 * @return true|WP_Error True on success, WP_Error on verification failure.
-	 *                       Returns true (graceful degradation) if secret key is missing
-	 *                       or on network/API errors.
-	 */
-	private function verify_turnstile( $token ) {
-		// Get secret key from settings.
-		$settings   = get_option( 'designsetgo_settings', array() );
-		$secret_key = isset( $settings['integrations']['turnstile_secret_key'] )
-			? $settings['integrations']['turnstile_secret_key']
-			: '';
-
-		// If no secret key configured, skip verification (graceful degradation).
-		if ( empty( $secret_key ) ) {
-			return true;
-		}
-
-		// Make verification request to Cloudflare.
-		$response = wp_remote_post(
-			'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-			array(
-				'timeout' => 5,
-				'body'    => array(
-					'secret'   => $secret_key,
-					'response' => $token,
-					'remoteip' => $this->get_client_ip(),
-				),
-			)
-		);
-
-		// Handle HTTP errors.
-		if ( is_wp_error( $response ) ) {
-			// Log the error but allow submission (graceful degradation).
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'DesignSetGo Turnstile: HTTP error - ' . $response->get_error_message() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			}
-			return true; // Graceful degradation - don't block on network errors.
-		}
-
-		$body = wp_remote_retrieve_body( $response );
-		$data = json_decode( $body, true );
-
-		// Handle invalid response.
-		if ( ! is_array( $data ) ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'DesignSetGo Turnstile: Invalid response from Cloudflare' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			}
-			return true; // Graceful degradation.
-		}
-
-		// Check verification result.
-		if ( ! isset( $data['success'] ) || true !== $data['success'] ) {
-			$error_codes = isset( $data['error-codes'] ) ? implode( ', ', $data['error-codes'] ) : 'unknown';
-
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'DesignSetGo Turnstile: Verification failed - ' . $error_codes ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			}
-
-			return new WP_Error(
-				'turnstile_failed',
-				__( 'Security verification failed. Please try again.', 'designsetgo' ),
-				array( 'status' => 403 )
-			);
-		}
-
-		return true;
 	}
 
 	/**
@@ -639,7 +497,7 @@ class Form_Handler {
 		// Store form data as post meta.
 		update_post_meta( $post_id, '_dsg_form_id', $form_id );
 		update_post_meta( $post_id, '_dsg_form_fields', $fields );
-		update_post_meta( $post_id, '_dsg_submission_ip', $this->get_client_ip() );
+		update_post_meta( $post_id, '_dsg_submission_ip', $this->security->get_client_ip() );
 		update_post_meta( $post_id, '_dsg_submission_user_agent', $this->get_user_agent() );
 		update_post_meta( $post_id, '_dsg_submission_referer', wp_get_referer() );
 		update_post_meta( $post_id, '_dsg_submission_date', current_time( 'mysql' ) );
@@ -648,135 +506,6 @@ class Form_Handler {
 		delete_transient( 'dsgo_form_submissions_count' );
 
 		return $post_id;
-	}
-
-	/**
-	 * Get client IP address with trusted proxy support.
-	 *
-	 * Security: By default, only uses REMOTE_ADDR to prevent IP spoofing.
-	 * Proxy headers (X-Forwarded-For, etc.) are only trusted if the request
-	 * comes from a configured trusted proxy.
-	 *
-	 * Configure trusted proxies via filter (supports individual IPs and CIDR ranges):
-	 * ```php
-	 * add_filter( 'designsetgo_trusted_proxies', function() {
-	 *     return array(
-	 *         '10.0.0.1',              // Individual IP
-	 *         '192.168.1.0/24',        // CIDR range
-	 *         '173.245.48.0/20',       // Cloudflare range
-	 *     );
-	 * } );
-	 * ```
-	 *
-	 * @return string IP address.
-	 */
-	private function get_client_ip() {
-		// Get direct connection IP (always trustworthy).
-		$remote_addr = isset( $_SERVER['REMOTE_ADDR'] )
-			? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) )
-			: 'unknown';
-
-		// Cannot resolve IP - return early.
-		if ( 'unknown' === $remote_addr ) {
-			return 'unknown';
-		}
-
-		// Get trusted proxy list (filterable).
-		$trusted_proxies = apply_filters( 'designsetgo_trusted_proxies', array() );
-
-		// If no trusted proxies configured, use direct IP only (secure default).
-		if ( empty( $trusted_proxies ) || ! is_array( $trusted_proxies ) ) {
-			return $remote_addr;
-		}
-
-		// Verify REMOTE_ADDR is in trusted proxy list (supports CIDR).
-		if ( ! $this->is_trusted_proxy( $remote_addr, $trusted_proxies ) ) {
-			// Request not from trusted proxy - use direct IP.
-			return $remote_addr;
-		}
-
-		// Request IS from trusted proxy - check proxy headers.
-		$proxy_headers = array(
-			'HTTP_X_FORWARDED_FOR',     // Standard proxy header.
-			'HTTP_X_REAL_IP',            // Nginx proxy.
-			'HTTP_CF_CONNECTING_IP',     // Cloudflare.
-			'HTTP_X_CLUSTER_CLIENT_IP',  // AWS ELB.
-			'HTTP_CLIENT_IP',
-		);
-
-		foreach ( $proxy_headers as $header ) {
-			if ( empty( $_SERVER[ $header ] ) ) {
-				continue;
-			}
-
-			$ip = sanitize_text_field( wp_unslash( $_SERVER[ $header ] ) );
-
-			// X-Forwarded-For can contain multiple IPs (client, proxy1, proxy2...).
-			// Take the leftmost (client) IP.
-			if ( strpos( $ip, ',' ) !== false ) {
-				$ip = explode( ',', $ip )[0];
-			}
-
-			$ip = trim( $ip );
-
-			// Validate IP format.
-			if ( filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
-				return $ip;
-			}
-		}
-
-		// No valid proxy header found - use direct IP.
-		return $remote_addr;
-	}
-
-	/**
-	 * Check if IP address is in trusted proxy list (supports CIDR notation).
-	 *
-	 * @param string $ip IP address to check.
-	 * @param array  $trusted_proxies List of trusted IPs/CIDR ranges.
-	 * @return bool True if trusted, false otherwise.
-	 */
-	private function is_trusted_proxy( $ip, $trusted_proxies ) {
-		foreach ( $trusted_proxies as $trusted ) {
-			// Check if it's CIDR notation (e.g., '192.168.1.0/24').
-			if ( strpos( $trusted, '/' ) !== false ) {
-				if ( $this->ip_in_range( $ip, $trusted ) ) {
-					return true;
-				}
-			} elseif ( $ip === $trusted ) {
-				// Exact IP match.
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Check if IP is in CIDR range.
-	 *
-	 * Supports IPv4 CIDR notation (e.g., '192.168.1.0/24').
-	 *
-	 * @param string $ip IP address to check.
-	 * @param string $cidr CIDR notation (e.g., '192.168.1.0/24').
-	 * @return bool True if IP is in range.
-	 */
-	private function ip_in_range( $ip, $cidr ) {
-		list( $subnet, $mask ) = explode( '/', $cidr );
-
-		// Convert IPs to long integers for bitwise comparison.
-		$ip_long     = ip2long( $ip );
-		$subnet_long = ip2long( $subnet );
-
-		// Invalid IP addresses return false from ip2long().
-		if ( false === $ip_long || false === $subnet_long ) {
-			return false;
-		}
-
-		// Create netmask from CIDR prefix length.
-		$mask_long = -1 << ( 32 - (int) $mask );
-
-		// Check if IP is in subnet by comparing network portions.
-		return ( $ip_long & $mask_long ) === ( $subnet_long & $mask_long );
 	}
 
 	/**
@@ -969,7 +698,7 @@ class Form_Handler {
 		update_post_meta( $submission_id, '_dsg_email_sent_date', current_time( 'mysql' ) );
 
 		// Log email delivery if enabled in settings.
-		$form_settings      = $this->get_form_settings();
+		$form_settings        = $this->get_form_settings();
 		$enable_email_logging = isset( $form_settings['enable_email_logging'] ) ? $form_settings['enable_email_logging'] : false;
 
 		if ( $enable_email_logging ) {
