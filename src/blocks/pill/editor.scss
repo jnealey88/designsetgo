@@ -73,6 +73,14 @@
 	white-space: nowrap;
 }
 
+// When inside a flex or grid container (Row/Grid blocks), prevent the pill from
+// stretching to fill available space. Without this, display:block items stretch
+// by default as flex/grid children.
+.is-layout-flex > .dsgo-pill,
+.is-layout-grid > .dsgo-pill {
+	width: fit-content;
+}
+
 // Alignment support - CRITICAL: Must be duplicated from style.scss for editor/frontend parity
 // Use flexbox to position the inner inline-block content
 // Important is needed to override Stack block's width: auto !important
