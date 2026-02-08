@@ -22,11 +22,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 // ── Build WP_Query args ──────────────────────────────────────────────
 $query_config = isset( $attributes['query'] ) ? $attributes['query'] : array();
 
+// Validate orderby against allowed values.
+$allowed_orderby = array( 'date', 'title', 'modified', 'menu_order', 'author', 'name', 'type', 'rand' );
+$orderby         = ! empty( $query_config['orderBy'] ) ? sanitize_key( $query_config['orderBy'] ) : 'date';
+if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
+	$orderby = 'date';
+}
+
+// Validate order against allowed values.
+$order = ! empty( $query_config['order'] ) ? strtoupper( sanitize_key( $query_config['order'] ) ) : 'DESC';
+if ( ! in_array( $order, array( 'ASC', 'DESC' ), true ) ) {
+	$order = 'DESC';
+}
+
 $query_args = array(
 	'post_type'      => ! empty( $query_config['postType'] ) ? sanitize_key( $query_config['postType'] ) : 'post',
 	'posts_per_page' => isset( $query_config['postsPerPage'] ) ? absint( $query_config['postsPerPage'] ) : 6,
-	'orderby'        => ! empty( $query_config['orderBy'] ) ? sanitize_key( $query_config['orderBy'] ) : 'date',
-	'order'          => ! empty( $query_config['order'] ) ? strtoupper( sanitize_key( $query_config['order'] ) ) : 'DESC',
+	'orderby'        => $orderby,
+	'order'          => $order,
 	'offset'         => isset( $query_config['offset'] ) ? absint( $query_config['offset'] ) : 0,
 	'post_status'    => 'publish',
 	'no_found_rows'  => true, // No pagination needed — performance optimization.
@@ -119,6 +132,12 @@ $dot_style              = ! empty( $attributes['dotStyle'] ) ? $attributes['dotS
 $dot_position           = ! empty( $attributes['dotPosition'] ) ? $attributes['dotPosition'] : 'bottom';
 $dot_color              = ! empty( $attributes['dotColor'] ) ? $attributes['dotColor'] : '';
 $effect                 = ! empty( $attributes['effect'] ) ? $attributes['effect'] : 'slide';
+
+// Validate effect against allowed values.
+$allowed_effects = array( 'slide', 'fade', 'zoom' );
+if ( ! in_array( $effect, $allowed_effects, true ) ) {
+	$effect = 'slide';
+}
 $transition_duration    = ! empty( $attributes['transitionDuration'] ) ? $attributes['transitionDuration'] : '0.5s';
 $transition_easing      = ! empty( $attributes['transitionEasing'] ) ? $attributes['transitionEasing'] : 'ease-in-out';
 $is_autoplay            = ! empty( $attributes['autoplay'] );
@@ -134,8 +153,8 @@ $mobile_breakpoint      = isset( $attributes['mobileBreakpoint'] ) ? absint( $at
 $tablet_breakpoint      = isset( $attributes['tabletBreakpoint'] ) ? absint( $attributes['tabletBreakpoint'] ) : 1024;
 $aria_label             = ! empty( $attributes['ariaLabel'] ) ? $attributes['ariaLabel'] : __( 'Post Slider', 'designsetgo' );
 
-// Sanitize title tag to allowed values.
-$allowed_title_tags = array( 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span' );
+// Sanitize title tag to allowed heading values.
+$allowed_title_tags = array( 'h2', 'h3', 'h4', 'h5', 'h6' );
 if ( ! in_array( $title_tag, $allowed_title_tags, true ) ) {
 	$title_tag = 'h3';
 }
@@ -248,11 +267,8 @@ while ( $query->have_posts() ) {
 	$date_str    = get_the_date( '', $post_id );
 	$raw_excerpt = get_the_excerpt( $post_id );
 
-	// Truncate excerpt.
-	$excerpt_words = explode( ' ', wp_strip_all_tags( $raw_excerpt ) );
-	$excerpt       = count( $excerpt_words ) > $excerpt_length
-		? implode( ' ', array_slice( $excerpt_words, 0, $excerpt_length ) ) . '...'
-		: implode( ' ', $excerpt_words );
+	// Truncate excerpt using WordPress built-in function.
+	$excerpt = wp_trim_words( $raw_excerpt, $excerpt_length, '&hellip;' );
 
 	// Primary category.
 	$category_name = '';
@@ -335,10 +351,10 @@ wp_reset_postdata();
 
 // ── Final output ─────────────────────────────────────────────────────
 ?>
-<div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo $data_attr_string; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+<div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() returns pre-escaped HTML. ?><?php echo $data_attr_string; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built with esc_attr() per key-value pair on line 232. ?>>
 	<div class="dsgo-slider__viewport">
 		<div class="dsgo-slider__track">
-			<?php echo $slides_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Individual elements escaped above. ?>
+			<?php echo $slides_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Each element escaped individually: esc_attr() for classes/styles, esc_url() for links/images, esc_html() for text content. ?>
 		</div>
 	</div>
 </div>

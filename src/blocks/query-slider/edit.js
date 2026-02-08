@@ -245,9 +245,7 @@ export default function QuerySliderEdit({
 
 	// Extract featured image URL from embedded data.
 	const getImageUrl = (post) => {
-		const media =
-			post._embedded?.['wp:featuredmedia']?.[0] ||
-			post._embedded?.['wp:featuredmedia']?.[0];
+		const media = post._embedded?.['wp:featuredmedia']?.[0];
 		if (media?.source_url) {
 			return media.source_url;
 		}
@@ -263,17 +261,23 @@ export default function QuerySliderEdit({
 		return '';
 	};
 
+	// Convert HTML to plain text using DOM (safe against incomplete tag stripping).
+	const stripHtml = (html) => {
+		const doc = new window.DOMParser().parseFromString(html, 'text/html');
+		return doc.body.textContent || '';
+	};
+
 	// Truncate excerpt to word count.
 	const truncateExcerpt = (excerpt, length) => {
 		if (!excerpt) {
 			return '';
 		}
-		const stripped = excerpt.replace(/<[^>]+>/g, '');
-		const words = stripped.split(/\s+/);
+		const stripped = stripHtml(excerpt);
+		const words = stripped.split(/\s+/).filter(Boolean);
 		if (words.length <= length) {
 			return stripped;
 		}
-		return words.slice(0, length).join(' ') + '...';
+		return words.slice(0, length).join(' ') + '\u2026';
 	};
 
 	// Vertical alignment to CSS value.
@@ -1171,9 +1175,19 @@ export default function QuerySliderEdit({
 											)}
 											{showTitle && (
 												<TitleTag className="dsgo-query-slide__title">
-													{decodeEntities(
-														post.title?.rendered ||
-															''
+													{linkTitle ? (
+														<a href={post.link}>
+															{decodeEntities(
+																post.title
+																	?.rendered ||
+																	''
+															)}
+														</a>
+													) : (
+														decodeEntities(
+															post.title
+																?.rendered || ''
+														)
 													)}
 												</TitleTag>
 											)}
@@ -1183,9 +1197,12 @@ export default function QuerySliderEdit({
 												</p>
 											)}
 											{showReadMore && (
-												<span className="dsgo-query-slide__read-more">
+												<a
+													href={post.link}
+													className="dsgo-query-slide__read-more"
+												>
 													{readMoreText}
-												</span>
+												</a>
 											)}
 										</div>
 									</div>
