@@ -73,6 +73,13 @@
 	white-space: nowrap;
 }
 
+// When inside a flex container (Row block), pill should shrink to fit content
+// rather than stretching to fill available space
+.is-layout-flex > .dsgo-pill,
+.is-layout-grid > .dsgo-pill {
+	width: fit-content;
+}
+
 // Alignment support - CRITICAL: Must be duplicated from style.scss for editor/frontend parity
 // Use flexbox to position the inner inline-block content
 // Important is needed to override Stack block's width: auto !important
