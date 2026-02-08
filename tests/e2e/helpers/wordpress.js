@@ -66,7 +66,13 @@ async function insertBlock(page, blockName) {
 	const inserterToggle = page.locator(
 		'button.editor-document-tools__inserter-toggle'
 	);
-	await inserterToggle.click();
+
+	// Only open the inserter if it isn't already open
+	const isAlreadyOpen =
+		(await inserterToggle.getAttribute('aria-pressed')) === 'true';
+	if (!isAlreadyOpen) {
+		await inserterToggle.click();
+	}
 
 	// Wait for the inserter panel to appear and search for the block
 	const searchInput = page
