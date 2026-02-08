@@ -14,6 +14,10 @@
 $inline-block-classes: (
 	'.dsgo-pill',
 	'.wp-block-designsetgo-pill',
+	'.dsgo-icon',
+	'.wp-block-designsetgo-icon',
+	'.dsgo-counter',
+	'.wp-block-designsetgo-counter',
 	'.wp-block-button',
 	'.wp-block-buttons',
 	'.dsgo-icon-button',
@@ -301,6 +305,10 @@ $inline-block-data-types: (
 
 		> .dsgo-pill,
 		> .wp-block-designsetgo-pill,
+		> .dsgo-icon,
+		> .wp-block-designsetgo-icon,
+		> .dsgo-counter,
+		> .wp-block-designsetgo-counter,
 		> .wp-block-button,
 		> .wp-block-buttons,
 		> .dsgo-icon-button,
