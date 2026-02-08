@@ -72,8 +72,9 @@
 	line-height: 1.5;
 }
 
-// When inside a flex container (Row block), pill should shrink to fit content
-// rather than stretching to fill available space
+// When inside a flex or grid container (Row/Grid blocks), prevent the pill from
+// stretching to fill available space. Without this, display:block items stretch
+// by default as flex/grid children.
 .is-layout-flex > .dsgo-pill,
 .is-layout-grid > .dsgo-pill {
 	width: fit-content;
