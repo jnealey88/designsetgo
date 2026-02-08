@@ -37,6 +37,12 @@ jest.mock('@wordpress/compose', () => ({
 
 jest.mock('@wordpress/element', () => ({
 	useEffect: jest.fn(),
+	lazy: jest.fn(() => {
+		const LazyComponent = () => null;
+		LazyComponent.displayName = 'LazyMock';
+		return LazyComponent;
+	}),
+	Suspense: ({ children }) => children,
 }));
 
 describe('Extension System', () => {
@@ -204,10 +210,16 @@ describe('Extension System', () => {
 				TextareaControl: () => null,
 			}));
 			jest.mock('@wordpress/compose', () => ({
-				createHigherOrderComponent: jest.fn((fn) => fn),
+				createHigherOrderComponent: jest.fn((_fn) => _fn),
 			}));
 			jest.mock('@wordpress/element', () => ({
 				useEffect: jest.fn(),
+				lazy: jest.fn(() => {
+					const LazyComponent = () => null;
+					LazyComponent.displayName = 'LazyMock';
+					return LazyComponent;
+				}),
+				Suspense: ({ children }) => children,
 			}));
 
 			require('../../src/extensions/custom-css/index');
@@ -325,10 +337,16 @@ describe('Extension System', () => {
 				TextareaControl: () => null,
 			}));
 			jest.mock('@wordpress/compose', () => ({
-				createHigherOrderComponent: jest.fn((fn) => fn),
+				createHigherOrderComponent: jest.fn((_fn) => _fn),
 			}));
 			jest.mock('@wordpress/element', () => ({
 				useEffect: jest.fn(),
+				lazy: jest.fn(() => {
+					const LazyComponent = () => null;
+					LazyComponent.displayName = 'LazyMock';
+					return LazyComponent;
+				}),
+				Suspense: ({ children }) => children,
 			}));
 
 			// Import extensions

@@ -25,9 +25,11 @@ Prepare the plugin for deployment to WordPress.org via automated GitHub Actions 
    - Address any critical or high severity issues
 
 4. **Run tests and lint**
-   - Execute `npm test` to ensure all tests pass
+   - Execute `npm run test:unit` to run JS unit tests (wp-scripts test-unit-js)
+   - Execute `npm run test:php` to run PHP tests (composer test)
    - Execute `npm run lint:js` and `npm run lint:css`
    - Fix any issues found
+   - Note: E2E tests (`npm run test:e2e`) require a running WordPress instance and are run separately
 
 5. **Pre-deployment checklist**
    - Do we need to update any documentation?
