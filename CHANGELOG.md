@@ -17,17 +17,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Shape Dividers for Sections** - 24 decorative shapes (waves, curves, triangles, peaks, clouds, zigzag, torn paper, and more) for top and bottom of Section blocks with customizable color, height, width, and flip options
 - **Frontend Draft Preview Mode** - Administrators can browse the frontend and see draft content across all pages with a floating banner to toggle between preview and live views
-- **Pattern Library** - 40+ new section patterns (hero, CTA, FAQ, features, gallery, team, testimonials, pricing, contact, and more) plus 12 complete homepage templates for SaaS, agency, restaurant, real estate, fitness, non-profit, events, education, and portfolio sites
+- **Pattern Library** - 150+ reusable section patterns (hero, CTA, FAQ, features, gallery, team, testimonials, pricing, contact, and more) plus 12 complete homepage templates for SaaS, agency, restaurant, real estate, fitness, non-profit, events, education, and portfolio sites
 - **Tabs hover colors** - Custom text and background color controls for tab hover states
 - **Sticky Header text color on scroll** - Change text and link colors when the header scrolls, so transparent headers with light text can switch to dark text on a solid background
 - **Modal hash link reopening** - Modals can now be reopened by clicking anchor links pointing to the same modal ID
 - **6 new AI Abilities** - Configure any block's attributes, configure shape dividers, insert blocks into existing containers, and discover all available abilities via the Abilities API
+- **4 new icons** - Dumbbell, fire, layers, and refresh icons added to the icon library
+- **Reduced motion support** - Animations now respect the `prefers-reduced-motion` accessibility preference
 
 ### Improved
 - Row block now supports vertical alignment (top, center, bottom, stretch, space-between)
 - Section block vertical alignment now works properly when min-height is set
 - Modal Trigger inherits WordPress button styles from theme.json and supports left/center/right/full alignment
 - Pattern loading optimized with caching and editor-only registration for faster page loads
+- Code splitting with lazy loading for extensions and admin pages reduces initial bundle size and speeds up editor load
+- Animation frontend performance optimized with shared IntersectionObserver instances and automatic garbage collection
+- Section overflow handling simplified for better compatibility with navigation dropdowns and sticky elements
 
 ### Fixed
 - Pill, Icon Button, Icon, and Modal Trigger blocks no longer float beside content in Group blocks
@@ -37,6 +42,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Card blocks no longer overflow in grid layouts
 - Full-width video background alignment fixed in the editor
 - Icon Button default focus outline removed
+- Pill block no longer stretches to fill flex and grid containers
+- Buttons and pills no longer stretch vertically in grid layout contexts
+- Text alignment now works correctly in sections with content justification enabled
+- Icon block vertical alignment and SVG rendering fixed in the editor
+- Row block no longer overflows when padding or border is applied inside constrained containers
+- Background images with URL query parameters now render correctly on the frontend
+- Icon block sizing improved in editor with reduced min-height and min-width
+- Draft mode no longer strips CSS display properties, SVG content, or accessibility attributes from block markup
 
 ### Security
 - Fixed potential XSS bypass in block attribute sanitization with double-encoding defense

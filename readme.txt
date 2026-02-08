@@ -183,16 +183,21 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 **New Features:**
 * New: Shape Dividers for Section blocks - 24 decorative shapes (waves, curves, peaks, clouds, and more) with customizable color, height, and width
 * New: Frontend Draft Preview Mode - administrators can browse the frontend and see draft content across all pages with a preview/live toggle
-* New: 40+ section patterns and 12 complete homepage templates for SaaS, agency, restaurant, real estate, fitness, and more
+* New: 150+ reusable section patterns and 12 complete homepage templates for SaaS, agency, restaurant, real estate, fitness, and more
 * New: Tabs hover color controls for custom text and background colors on hover
 * New: Sticky Header text color on scroll - switch text colors when header scrolls over content
 * New: Modal hash link reopening - modals reopen when clicking anchor links to the same modal ID
+* New: 4 new icons added to the icon library (dumbbell, fire, layers, refresh)
+* New: Animations now respect prefers-reduced-motion accessibility preference
 
 **Improvements:**
 * Enhancement: Row block now supports vertical alignment (top, center, bottom, stretch, space-between)
 * Enhancement: Section block vertical alignment now works with min-height
 * Enhancement: Modal Trigger inherits theme.json button styles and supports WordPress alignment
 * Enhancement: Pattern loading optimized with caching and editor-only registration
+* Enhancement: Code splitting with lazy loading for extensions and admin - smaller bundle, faster editor load
+* Enhancement: Animation performance optimized with shared observers and reduced overhead
+* Enhancement: Section overflow handling improved for better dropdown and sticky element compatibility
 
 **Bug Fixes:**
 * Fix: Pill, Icon Button, Icon, and Modal Trigger no longer float beside content in Group blocks
@@ -202,6 +207,14 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Fix: Card block overflow in grid layouts
 * Fix: Full-width video background alignment in editor
 * Fix: Icon Button default focus outline removed
+* Fix: Pill block no longer stretches to fill flex and grid containers
+* Fix: Buttons and pills no longer stretch vertically in grid layout contexts
+* Fix: Text alignment now works in sections with content justification
+* Fix: Icon block vertical alignment and SVG rendering in editor
+* Fix: Row block overflow when padding or border is applied
+* Fix: Background images with URL query parameters now render on frontend
+* Fix: Icon block sizing improved in editor
+* Fix: Draft mode no longer strips CSS or SVG content from blocks
 
 **Security:**
 * Security: Fixed potential XSS bypass in block attribute sanitization
@@ -433,7 +446,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 == Upgrade Notice ==
 
 = 1.5.0 =
-Major update: 2 new blocks (Comparison Table, Timeline), Grid Mobile Order extension, shape dividers for sections, 40+ patterns and 12 homepage templates, frontend draft preview mode, tabs hover colors, sticky header text color on scroll, plus multiple bug fixes and a security improvement.
+Major update: 2 new blocks (Comparison Table, Timeline), Grid Mobile Order extension, shape dividers for sections, 150+ patterns and 12 homepage templates, frontend draft preview mode, lazy loading for faster editor performance, reduced motion accessibility support, plus numerous bug fixes and a security improvement.
 
 = 1.4.1 =
 Bug fix release: Fixes Grid block type safety for WordPress 6.1+ spacing presets, Row/Grid alignment consistency, Icon Button width migration, and improved llms.txt conflict handling with admin UI resolution.
