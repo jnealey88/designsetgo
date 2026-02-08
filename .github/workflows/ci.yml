@@ -7,12 +7,13 @@ on:
     branches: [ main ]
 
 jobs:
+  # ─── Build once, share everywhere ─────────────────────────────
   build:
-    name: Build & Lint JS/CSS
+    name: Build
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      actions: write   # Required for actions/upload-artifact
+      actions: write
 
     steps:
       - name: Checkout code
@@ -33,12 +34,11 @@ jobs:
       - name: Build plugin
         run: npm run build
 
-      - name: Check build output
+      - name: Verify build output
         run: |
           echo "Checking build output..."
           ls -lh build/
 
-          # Check for essential build artifacts
           if [ ! -f "build/frontend.js" ]; then
             echo "❌ build/frontend.js not found"
             exit 1
@@ -49,7 +49,6 @@ jobs:
             exit 1
           fi
 
-          # Check that index chunks were created (due to code splitting)
           index_chunks=$(ls build/index*.js 2>/dev/null | wc -l)
           if [ "$index_chunks" -eq 0 ]; then
             echo "❌ No index chunks found (build/index*.js)"
@@ -57,6 +56,69 @@ jobs:
           fi
 
           echo "✅ Build successful - found $index_chunks index chunks, frontend.js, and style-index.css"
+
+      - name: Check bundle sizes
+        run: |
+          echo "Checking bundle sizes..."
+          max_chunk=100000  # 100 KB max per chunk
+          max_css=70000     # 70 KB max for CSS
+
+          for js_file in build/index*.js; do
+            if [ -f "$js_file" ]; then
+              js_size=$(stat -c%s "$js_file" 2>/dev/null || stat -f%z "$js_file")
+              filename=$(basename "$js_file")
+              if [ $js_size -gt $max_chunk ]; then
+                echo "⚠️ $filename is ${js_size} bytes (max: ${max_chunk})"
+              else
+                echo "✅ $filename is ${js_size} bytes"
+              fi
+            fi
+          done
+
+          if [ -f "build/frontend.js" ]; then
+            js_size=$(stat -c%s build/frontend.js 2>/dev/null || stat -f%z build/frontend.js)
+            if [ $js_size -gt $max_chunk ]; then
+              echo "⚠️ build/frontend.js is ${js_size} bytes (max: ${max_chunk})"
+            else
+              echo "✅ build/frontend.js is ${js_size} bytes"
+            fi
+          fi
+
+          if [ -f "build/style-index.css" ]; then
+            css_size=$(stat -c%s build/style-index.css 2>/dev/null || stat -f%z build/style-index.css)
+            if [ $css_size -gt $max_css ]; then
+              echo "⚠️ build/style-index.css is ${css_size} bytes (max: ${max_css})"
+            else
+              echo "✅ build/style-index.css is ${css_size} bytes"
+            fi
+          fi
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: build/
+          retention-days: 1
+
+  # ─── JS/CSS lint + unit tests (no PHP needed, runs once) ─────
+  lint-and-test:
+    name: Lint & Unit Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run JavaScript linter
         run: npm run lint:js --if-present || echo "⚠️ JS linting not configured"
@@ -75,56 +137,10 @@ jobs:
           name: codecov-umbrella
         continue-on-error: true
 
-      - name: Check file sizes
-        run: |
-          echo "Checking bundle sizes..."
-          max_chunk=100000  # 100 KB max per chunk (code splitting allows multiple chunks)
-          max_css=70000     # 70 KB max for CSS
-
-          # Check all index chunks (code splitting may create multiple)
-          for js_file in build/index*.js; do
-            if [ -f "$js_file" ]; then
-              js_size=$(stat -c%s "$js_file" 2>/dev/null || stat -f%z "$js_file")
-              filename=$(basename "$js_file")
-              if [ $js_size -gt $max_chunk ]; then
-                echo "⚠️ $filename is ${js_size} bytes (max: ${max_chunk})"
-              else
-                echo "✅ $filename is ${js_size} bytes"
-              fi
-            fi
-          done
-
-          # Check frontend.js
-          if [ -f "build/frontend.js" ]; then
-            js_size=$(stat -c%s build/frontend.js 2>/dev/null || stat -f%z build/frontend.js)
-            if [ $js_size -gt $max_chunk ]; then
-              echo "⚠️ build/frontend.js is ${js_size} bytes (max: ${max_chunk})"
-            else
-              echo "✅ build/frontend.js is ${js_size} bytes"
-            fi
-          fi
-
-          # Check CSS
-          if [ -f "build/style-index.css" ]; then
-            css_size=$(stat -c%s build/style-index.css 2>/dev/null || stat -f%z build/style-index.css)
-            if [ $css_size -gt $max_css ]; then
-              echo "⚠️ build/style-index.css is ${css_size} bytes (max: ${max_css})"
-            else
-              echo "✅ build/style-index.css is ${css_size} bytes"
-            fi
-          fi
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output
-          path: build/
-          retention-days: 7
-
-  php-tests:
-    name: PHP ${{ matrix.php-version }} Tests
+  # ─── PHP lint & static analysis (matrix only where needed) ───
+  lint-php:
+    name: PHP ${{ matrix.php-version }} Lint & Analysis
     runs-on: ubuntu-latest
-    needs: build
     permissions:
       contents: read
 
@@ -167,11 +183,12 @@ jobs:
       - name: Run PHPStan static analysis
         run: composer run-script analyse
 
+  # ─── Security audit ──────────────────────────────────────────
   security-check:
     name: Security Audit
     runs-on: ubuntu-latest
     permissions:
-      contents: read   # Required for actions/checkout
+      contents: read
 
     steps:
       - name: Checkout code
@@ -188,13 +205,32 @@ jobs:
       - name: Run npm audit
         run: npm audit --audit-level=critical
 
-  e2e-tests:
-    name: E2E Tests
+  # ─── Dependency review (PR only) ─────────────────────────────
+  dependency-review:
+    name: Dependency Review
     runs-on: ubuntu-latest
-    needs: build
+    if: github.event_name == 'pull_request'
     permissions:
       contents: read
-      actions: write   # Required for actions/upload-artifact
+      pull-requests: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: critical
+
+  # ─── E2E tests (reuses build artifact) ───────────────────────
+  e2e-tests:
+    name: E2E Tests
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
 
     steps:
       - name: Checkout code
@@ -209,7 +245,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Download build artifacts
+      - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: build-output
@@ -252,35 +288,35 @@ jobs:
             playwright-report/
           retention-days: 7
 
-  dependency-review:
-    name: Dependency Review
+  # ─── Dynamic matrix for WordPress compatibility ──────────────
+  setup-wp-matrix:
+    name: Setup WP Matrix
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    permissions:
-      contents: read
-      pull-requests: read  # Required for dependency-review-action
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Dependency Review
-        uses: actions/dependency-review-action@v4
-        with:
-          fail-on-severity: critical
+      - name: Determine matrix
+        id: set-matrix
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # PRs: test boundary pairs (oldest + newest) for fast feedback
+            echo 'matrix={"include":[{"php":"8.0","wordpress":"6.7"},{"php":"8.3","wordpress":"latest"}]}' >> $GITHUB_OUTPUT
+          else
+            # Main push: full matrix for comprehensive coverage
+            echo 'matrix={"php":["8.0","8.1","8.2","8.3"],"wordpress":["6.7","6.8","6.9","latest"]}' >> $GITHUB_OUTPUT
+          fi
 
   wordpress-compatibility:
     name: WordPress ${{ matrix.wordpress }} / PHP ${{ matrix.php }}
+    needs: [build, setup-wp-matrix]
     runs-on: ubuntu-latest
-    needs: build
     permissions:
       contents: read
 
     strategy:
       fail-fast: false
-      matrix:
-        php: ['8.0', '8.1', '8.2']
-        wordpress: ['6.7', '6.8', '6.9', 'latest']
+      matrix: ${{ fromJSON(needs.setup-wp-matrix.outputs.matrix) }}
 
     steps:
       - name: Checkout code
@@ -303,7 +339,7 @@ jobs:
           npm ci
           composer install --no-interaction --prefer-dist
 
-      - name: Download build artifacts
+      - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: build-output
@@ -311,7 +347,6 @@ jobs:
 
       - name: Configure wp-env for WordPress ${{ matrix.wordpress }}
         run: |
-          # Create custom .wp-env.override.json for this WP version
           cat > .wp-env.override.json <<EOF
           {
             "core": "WordPress/WordPress#${{ matrix.wordpress == 'latest' && 'master' || matrix.wordpress }}",
@@ -332,7 +367,6 @@ jobs:
 
       - name: Run PHP tests in WordPress environment
         run: |
-          # Run tests inside wp-env (using vendor/bin/phpunit directly since Composer isn't in the container)
           npx wp-env run tests-cli --env-cwd=wp-content/plugins/designsetgo vendor/bin/phpunit
 
       - name: Check plugin activation
