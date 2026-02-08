@@ -27,7 +27,12 @@ import {
 	getActiveFormat,
 } from '@wordpress/rich-text';
 import { BlockControls } from '@wordpress/block-editor';
-import { Popover, ToolbarGroup, ToolbarButton } from '@wordpress/components';
+import {
+	Popover,
+	ToolbarGroup,
+	ToolbarButton,
+	Spinner,
+} from '@wordpress/components';
 import { textColor as textColorIcon } from '@wordpress/icons';
 
 import { FORMAT_NAME, CSS_CLASSES } from './constants';
@@ -123,7 +128,18 @@ function TextStyleEdit({ isActive, value, onChange }) {
 					onClose={() => setIsPopoverOpen(false)}
 					focusOnMount="firstElement"
 				>
-					<Suspense fallback={null}>
+					<Suspense
+						fallback={
+							<div
+								className="dsgo-text-style-popover__loading"
+								// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+								tabIndex={0}
+								style={{ padding: '16px' }}
+							>
+								<Spinner />
+							</div>
+						}
+					>
 						<TextStylePopover
 							styles={currentStyles}
 							onChange={applyStyles}

@@ -13,6 +13,25 @@ import { PanelBody, TextareaControl } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
 
 /**
+ * Dangerous CSS patterns that could be used for injection
+ */
+const DANGEROUS_CSS_PATTERNS =
+	/javascript\s*:|expression\s*\(|behavior\s*:|@import|url\s*\(\s*['"]?\s*data:/i;
+
+/**
+ * Sanitize CSS by removing dangerous patterns
+ *
+ * @param {string} css - Raw CSS string
+ * @return {string} Sanitized CSS
+ */
+function sanitizeCSS(css) {
+	if (!css) {
+		return '';
+	}
+	return css.replace(DANGEROUS_CSS_PATTERNS, '/* removed */');
+}
+
+/**
  * Replace "selector" keyword with actual CSS class
  *
  * @param {string} css       - User's CSS code
@@ -23,7 +42,7 @@ function replaceSelector(css, className) {
 	if (!css) {
 		return '';
 	}
-	return css.replace(/\bselector\b/g, `.${className}`);
+	return sanitizeCSS(css).replace(/\bselector\b/g, `.${className}`);
 }
 
 /**

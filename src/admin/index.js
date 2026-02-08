@@ -6,21 +6,63 @@
  * @package
  */
 
-import { createRoot, lazy, Suspense } from '@wordpress/element';
-import { Spinner } from '@wordpress/components';
+import { createRoot, lazy, Suspense, Component } from '@wordpress/element';
+import { Spinner, Button } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 import './style.scss';
 
+/**
+ * Error boundary for lazy-loaded admin components
+ */
+class AdminErrorBoundary extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { hasError: false };
+	}
+
+	static getDerivedStateFromError() {
+		return { hasError: true };
+	}
+
+	render() {
+		if (this.state.hasError) {
+			return (
+				<div className="designsetgo-admin-error">
+					<p>
+						{__(
+							'Something went wrong loading this page.',
+							'designsetgo'
+						)}
+					</p>
+					<Button
+						variant="secondary"
+						onClick={() => window.location.reload()}
+					>
+						{__('Reload Page', 'designsetgo')}
+					</Button>
+				</div>
+			);
+		}
+		return this.props.children;
+	}
+}
+
 // Lazy-load page components - only one is shown at a time
-const Dashboard = lazy(() =>
-	import(/* webpackChunkName: "admin-dashboard" */ './components/Dashboard')
+const Dashboard = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "admin-dashboard" */ './components/Dashboard'
+		)
 );
-const BlocksExtensions = lazy(() =>
-	import(
-		/* webpackChunkName: "admin-blocks" */ './components/BlocksExtensions'
-	)
+const BlocksExtensions = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "admin-blocks" */ './components/BlocksExtensions'
+		)
 );
-const Settings = lazy(() =>
-	import(/* webpackChunkName: "admin-settings" */ './components/Settings')
+const Settings = lazy(
+	() =>
+		import(/* webpackChunkName: "admin-settings" */ './components/Settings')
 );
 
 /**
@@ -30,31 +72,33 @@ const App = () => {
 	const { currentPage } = window.designSetGoAdmin || {};
 
 	// Determine which component to render based on current page
-	let Component;
+	let PageComponent;
 	switch (currentPage) {
 		case 'blocks':
-			Component = BlocksExtensions;
+			PageComponent = BlocksExtensions;
 			break;
 		case 'settings':
-			Component = Settings;
+			PageComponent = Settings;
 			break;
 		case 'dashboard':
 		default:
-			Component = Dashboard;
+			PageComponent = Dashboard;
 			break;
 	}
 
 	return (
 		<div className="designsetgo-admin-wrapper">
-			<Suspense
-				fallback={
-					<div className="designsetgo-admin-loading">
-						<Spinner />
-					</div>
-				}
-			>
-				<Component />
-			</Suspense>
+			<AdminErrorBoundary>
+				<Suspense
+					fallback={
+						<div className="designsetgo-admin-loading">
+							<Spinner />
+						</div>
+					}
+				>
+					<PageComponent />
+				</Suspense>
+			</AdminErrorBoundary>
 		</div>
 	);
 };

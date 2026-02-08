@@ -27,11 +27,163 @@ import {
 import { Fragment } from '@wordpress/element';
 
 /**
+ * Video file upload control
+ *
+ * @param {Object}   props               Component props
+ * @param {string}   props.videoUrl      Current video URL
+ * @param {Function} props.setAttributes Block setAttributes
+ */
+function VideoUploadControl({ videoUrl, setAttributes }) {
+	return (
+		<MediaUploadCheck>
+			<MediaUpload
+				onSelect={(media) => {
+					if (media?.type === 'video' && media?.url) {
+						setAttributes({ dsgoVideoUrl: media.url });
+					}
+				}}
+				allowedTypes={['video']}
+				value={videoUrl}
+				render={({ open }) => (
+					<div className="dsgo-video-upload">
+						{videoUrl ? (
+							<Fragment>
+								<video
+									src={videoUrl}
+									autoPlay
+									loop
+									muted
+									style={{
+										width: '100%',
+										maxHeight: '200px',
+										objectFit: 'cover',
+										borderRadius: '4px',
+										marginBottom: '12px',
+									}}
+								/>
+								<Button
+									onClick={open}
+									variant="secondary"
+									isSmall
+									style={{ marginRight: '8px' }}
+								>
+									{__('Replace Video', 'designsetgo')}
+								</Button>
+								<Button
+									onClick={() =>
+										setAttributes({
+											dsgoVideoUrl: '',
+											dsgoVideoPoster: '',
+										})
+									}
+									variant="secondary"
+									isDestructive
+									isSmall
+								>
+									{__('Remove Video', 'designsetgo')}
+								</Button>
+							</Fragment>
+						) : (
+							<Button onClick={open} variant="primary">
+								{__('Upload Video', 'designsetgo')}
+							</Button>
+						)}
+					</div>
+				)}
+			/>
+		</MediaUploadCheck>
+	);
+}
+
+/**
+ * Poster image upload control
+ *
+ * @param {Object}   props               Component props
+ * @param {string}   props.posterUrl     Current poster URL
+ * @param {Function} props.setAttributes Block setAttributes
+ */
+function PosterUploadControl({ posterUrl, setAttributes }) {
+	return (
+		<div style={{ marginTop: '16px' }}>
+			<MediaUploadCheck>
+				<MediaUpload
+					onSelect={(media) => {
+						if (media?.type === 'image' && media?.url) {
+							setAttributes({ dsgoVideoPoster: media.url });
+						}
+					}}
+					allowedTypes={['image']}
+					value={posterUrl}
+					render={({ open }) => (
+						<div className="dsgo-poster-upload">
+							<div
+								style={{
+									display: 'block',
+									marginBottom: '8px',
+									fontSize: '11px',
+									fontWeight: '500',
+									textTransform: 'uppercase',
+								}}
+							>
+								{__('Poster Image (Optional)', 'designsetgo')}
+							</div>
+							{posterUrl ? (
+								<Fragment>
+									<img
+										src={posterUrl}
+										alt={__('Video poster', 'designsetgo')}
+										style={{
+											width: '100%',
+											maxHeight: '100px',
+											objectFit: 'cover',
+											borderRadius: '4px',
+											marginBottom: '8px',
+										}}
+									/>
+									<Button
+										onClick={open}
+										variant="secondary"
+										isSmall
+										style={{ marginRight: '8px' }}
+									>
+										{__('Replace Poster', 'designsetgo')}
+									</Button>
+									<Button
+										onClick={() =>
+											setAttributes({
+												dsgoVideoPoster: '',
+											})
+										}
+										variant="secondary"
+										isDestructive
+										isSmall
+									>
+										{__('Remove Poster', 'designsetgo')}
+									</Button>
+								</Fragment>
+							) : (
+								<Button
+									onClick={open}
+									variant="secondary"
+									isSmall
+								>
+									{__('Upload Poster', 'designsetgo')}
+								</Button>
+							)}
+						</div>
+					)}
+				/>
+			</MediaUploadCheck>
+		</div>
+	);
+}
+
+/**
  * Background video inspector controls panel
  *
  * @param {Object} props Block props
  */
-export function BackgroundVideoPanel( props ) {
+export function BackgroundVideoPanel(props) {
 	const { attributes, setAttributes, name, clientId } = props;
 	const {
 		dsgoVideoUrl,
@@ -50,291 +202,137 @@ export function BackgroundVideoPanel( props ) {
 	// Check if shape dividers are enabled (only applies to Section block)
 	const hasShapeDivider =
 		name === 'designsetgo/section' &&
-		( !! shapeDividerTop || !! shapeDividerBottom );
+		(!!shapeDividerTop || !!shapeDividerBottom);
 
 	return (
 		<Fragment>
-			{ dsgoVideoUrl && ! hasShapeDivider && (
+			{dsgoVideoUrl && !hasShapeDivider && (
 				<InspectorControls group="color">
 					<ColorGradientSettingsDropdown
-						panelId={ clientId }
-						title={ __( 'Video Overlay', 'designsetgo' ) }
-						settings={ [
+						panelId={clientId}
+						title={__('Video Overlay', 'designsetgo')}
+						settings={[
 							{
-								label: __(
-									'Video Overlay Color',
-									'designsetgo'
-								),
+								label: __('Video Overlay Color', 'designsetgo'),
 								colorValue: dsgoVideoOverlayColor,
-								onColorChange: ( color ) => {
-									setAttributes( {
+								onColorChange: (color) => {
+									setAttributes({
 										dsgoVideoOverlayColor: color || '',
-									} );
+									});
 								},
 								clearable: true,
 							},
-						] }
-						{ ...colorGradientSettings }
+						]}
+						{...colorGradientSettings}
 					/>
 				</InspectorControls>
-			) }
+			)}
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Background Video', 'designsetgo' ) }
-					initialOpen={ false }
+					title={__('Background Video', 'designsetgo')}
+					initialOpen={false}
 				>
-					{ hasShapeDivider ? (
+					{hasShapeDivider ? (
 						<Fragment>
-							<Notice status="warning" isDismissible={ false }>
-								{ __(
+							<Notice status="warning" isDismissible={false}>
+								{__(
 									'Video backgrounds cannot be used with shape dividers.',
 									'designsetgo'
-								) }
+								)}
 							</Notice>
 							<Button
 								variant="secondary"
-								onClick={ () =>
-									setAttributes( {
+								onClick={() =>
+									setAttributes({
 										shapeDividerTop: '',
 										shapeDividerBottom: '',
-									} )
+									})
 								}
-								style={ { marginTop: '12px' } }
+								style={{ marginTop: '12px' }}
 							>
-								{ __( 'Remove Shape Dividers', 'designsetgo' ) }
+								{__('Remove Shape Dividers', 'designsetgo')}
 							</Button>
 						</Fragment>
 					) : (
 						<>
-							<MediaUploadCheck>
-								<MediaUpload
-									onSelect={ ( media ) => {
-										setAttributes( {
-											dsgoVideoUrl: media.url,
-										} );
-									} }
-									allowedTypes={ [ 'video' ] }
-									value={ dsgoVideoUrl }
-									render={ ( { open } ) => (
-										<div className="dsgo-video-upload">
-											{ dsgoVideoUrl ? (
-												<Fragment>
-													<video
-														src={ dsgoVideoUrl }
-														autoPlay
-														loop
-														muted
-														style={ {
-															width: '100%',
-															maxHeight: '200px',
-															objectFit: 'cover',
-															borderRadius: '4px',
-															marginBottom: '12px',
-														} }
-													/>
-													<Button
-														onClick={ open }
-														variant="secondary"
-														isSmall
-														style={ {
-															marginRight: '8px',
-														} }
-													>
-														{ __(
-															'Replace Video',
-															'designsetgo'
-														) }
-													</Button>
-													<Button
-														onClick={ () =>
-															setAttributes( {
-																dsgoVideoUrl: '',
-																dsgoVideoPoster: '',
-															} )
-														}
-														variant="secondary"
-														isDestructive
-														isSmall
-													>
-														{ __(
-															'Remove Video',
-															'designsetgo'
-														) }
-													</Button>
-												</Fragment>
-											) : (
-												<Button
-													onClick={ open }
-													variant="primary"
-												>
-													{ __(
-														'Upload Video',
-														'designsetgo'
-													) }
-												</Button>
-											) }
-										</div>
-									) }
-								/>
-							</MediaUploadCheck>
+							<VideoUploadControl
+								videoUrl={dsgoVideoUrl}
+								setAttributes={setAttributes}
+							/>
 
-							{ dsgoVideoUrl && (
+							{dsgoVideoUrl && (
 								<Fragment>
-									<div style={ { marginTop: '16px' } }>
-										<MediaUploadCheck>
-											<MediaUpload
-												onSelect={ ( media ) => {
-													setAttributes( {
-														dsgoVideoPoster: media.url,
-													} );
-												} }
-												allowedTypes={ [ 'image' ] }
-												value={ dsgoVideoPoster }
-												render={ ( { open } ) => (
-													<div className="dsgo-poster-upload">
-														<div
-															style={ {
-																display: 'block',
-																marginBottom: '8px',
-																fontSize: '11px',
-																fontWeight: '500',
-																textTransform: 'uppercase',
-															} }
-														>
-															{ __(
-																'Poster Image (Optional)',
-																'designsetgo'
-															) }
-														</div>
-														{ dsgoVideoPoster ? (
-															<Fragment>
-																<img
-																	src={ dsgoVideoPoster }
-																	alt={ __(
-																		'Video poster',
-																		'designsetgo'
-																	) }
-																	style={ {
-																		width: '100%',
-																		maxHeight: '100px',
-																		objectFit: 'cover',
-																		borderRadius: '4px',
-																		marginBottom: '8px',
-																	} }
-																/>
-																<Button
-																	onClick={ open }
-																	variant="secondary"
-																	isSmall
-																	style={ {
-																		marginRight: '8px',
-																	} }
-																>
-																	{ __(
-																		'Replace Poster',
-																		'designsetgo'
-																	) }
-																</Button>
-																<Button
-																	onClick={ () =>
-																		setAttributes( {
-																			dsgoVideoPoster: '',
-																		} )
-																	}
-																	variant="secondary"
-																	isDestructive
-																	isSmall
-																>
-																	{ __(
-																		'Remove Poster',
-																		'designsetgo'
-																	) }
-																</Button>
-															</Fragment>
-														) : (
-															<Button
-																onClick={ open }
-																variant="secondary"
-																isSmall
-															>
-																{ __(
-																	'Upload Poster',
-																	'designsetgo'
-																) }
-															</Button>
-														) }
-													</div>
-												) }
-											/>
-										</MediaUploadCheck>
-									</div>
+									<PosterUploadControl
+										posterUrl={dsgoVideoPoster}
+										setAttributes={setAttributes}
+									/>
 
 									<ToggleControl
-										label={ __( 'Autoplay', 'designsetgo' ) }
-										checked={ dsgoVideoAutoplay }
-										onChange={ ( value ) =>
-											setAttributes( {
+										label={__('Autoplay', 'designsetgo')}
+										checked={dsgoVideoAutoplay}
+										onChange={(value) =>
+											setAttributes({
 												dsgoVideoAutoplay: value,
-											} )
+											})
 										}
-										help={ __(
+										help={__(
 											'Automatically start playing when page loads',
 											'designsetgo'
-										) }
+										)}
 										__nextHasNoMarginBottom
 									/>
 
 									<ToggleControl
-										label={ __( 'Loop', 'designsetgo' ) }
-										checked={ dsgoVideoLoop }
-										onChange={ ( value ) =>
-											setAttributes( {
+										label={__('Loop', 'designsetgo')}
+										checked={dsgoVideoLoop}
+										onChange={(value) =>
+											setAttributes({
 												dsgoVideoLoop: value,
-											} )
+											})
 										}
-										help={ __(
+										help={__(
 											'Restart video when it ends',
 											'designsetgo'
-										) }
+										)}
 										__nextHasNoMarginBottom
 									/>
 
 									<ToggleControl
-										label={ __( 'Muted', 'designsetgo' ) }
-										checked={ dsgoVideoMuted }
-										onChange={ ( value ) =>
-											setAttributes( {
+										label={__('Muted', 'designsetgo')}
+										checked={dsgoVideoMuted}
+										onChange={(value) =>
+											setAttributes({
 												dsgoVideoMuted: value,
-											} )
+											})
 										}
-										help={ __(
+										help={__(
 											'Mute audio (required for autoplay)',
 											'designsetgo'
-										) }
+										)}
 										__nextHasNoMarginBottom
 									/>
 
 									<ToggleControl
-										label={ __(
+										label={__(
 											'Hide on Mobile',
 											'designsetgo'
-										) }
-										checked={ dsgoVideoMobileHide }
-										onChange={ ( value ) =>
-											setAttributes( {
+										)}
+										checked={dsgoVideoMobileHide}
+										onChange={(value) =>
+											setAttributes({
 												dsgoVideoMobileHide: value,
-											} )
+											})
 										}
-										help={ __(
+										help={__(
 											'Hide video on mobile devices to save bandwidth',
 											'designsetgo'
-										) }
+										)}
 										__nextHasNoMarginBottom
 									/>
 								</Fragment>
-							) }
+							)}
 						</>
-					) }
+					)}
 				</PanelBody>
 			</InspectorControls>
 		</Fragment>
@@ -344,10 +342,10 @@ export function BackgroundVideoPanel( props ) {
 /**
  * Background video editor preview wrapper
  *
- * @param {Object} props           Block list block props
+ * @param {Object} props                Block list block props
  * @param {Object} props.BlockListBlock Original BlockListBlock component
  */
-export function BackgroundVideoPreview( { BlockListBlock, ...props } ) {
+export function BackgroundVideoPreview({ BlockListBlock, ...props }) {
 	const { attributes } = props;
 	const { dsgoVideoUrl, dsgoVideoPoster, dsgoVideoOverlayColor } = attributes;
 
@@ -370,7 +368,7 @@ export function BackgroundVideoPreview( { BlockListBlock, ...props } ) {
 		<div className="dsgo-has-video-background">
 			<div
 				className="dsgo-video-background-editor"
-				style={ {
+				style={{
 					position: 'absolute',
 					top: 0,
 					left: 0,
@@ -379,24 +377,24 @@ export function BackgroundVideoPreview( { BlockListBlock, ...props } ) {
 					zIndex: 0,
 					overflow: 'hidden',
 					pointerEvents: 'none',
-				} }
+				}}
 			>
 				<video
-					src={ dsgoVideoUrl }
-					poster={ dsgoVideoPoster }
+					src={dsgoVideoUrl}
+					poster={dsgoVideoPoster}
 					autoPlay
 					loop
 					muted
 					playsInline
-					style={ {
+					style={{
 						width: '100%',
 						height: '100%',
 						objectFit: 'cover',
-					} }
+					}}
 				/>
-				{ overlayStyle && <div style={ overlayStyle } /> }
+				{overlayStyle && <div style={overlayStyle} />}
 			</div>
-			<BlockListBlock { ...props } />
+			<BlockListBlock {...props} />
 		</div>
 	);
 }
