@@ -58,13 +58,21 @@ async function insertBlock(page, blockName) {
 	const blockLabel = blockSlug.charAt(0).toUpperCase() + blockSlug.slice(1);
 
 	// Open the global block inserter via the toolbar toggle.
-	// Prefer the accessible role selector, falling back to the CSS class
-	// for stability across WordPress versions — the accessible name changed
-	// from "Toggle block inserter" (WP ≤6.7) to "Block Inserter" (WP 6.8+).
-	const inserterToggle = page
-		.getByRole('button', { name: /block inserter/i })
-		.or(page.locator('button.editor-document-tools__inserter-toggle'));
-	await inserterToggle.click();
+	// Use the CSS class to uniquely target the toolbar toggle button.
+	// The aria-label varies across WP versions ("Toggle block inserter"
+	// in WP ≤6.7, "Block Inserter" in WP 6.8+) and a regex match on
+	// /block inserter/i also catches the "Close Block Inserter" sidebar
+	// button, causing a strict-mode violation.
+	const inserterToggle = page.locator(
+		'button.editor-document-tools__inserter-toggle'
+	);
+
+	// Only open the inserter if it isn't already open
+	const isAlreadyOpen =
+		(await inserterToggle.getAttribute('aria-pressed')) === 'true';
+	if (!isAlreadyOpen) {
+		await inserterToggle.click();
+	}
 
 	// Wait for the inserter panel to appear and search for the block
 	const searchInput = page
