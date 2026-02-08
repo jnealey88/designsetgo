@@ -14,6 +14,7 @@ export default function BlobsSave({ attributes }) {
 		animationDuration,
 		animationEasing,
 		size,
+		height,
 		enableOverlay,
 		overlayColor,
 		overlayOpacity,
@@ -29,6 +30,7 @@ export default function BlobsSave({ attributes }) {
 	// Apply animation settings as CSS custom properties - MUST MATCH edit.js
 	const customStyles = {
 		'--dsgo-blob-size': size,
+		...(height ? { '--dsgo-blob-height': height } : {}),
 		'--dsgo-blob-animation-duration': animationDuration,
 		'--dsgo-blob-animation-easing': animationEasing,
 	};

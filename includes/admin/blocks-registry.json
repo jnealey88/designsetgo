@@ -1,0 +1,309 @@
+{
+	"containers": {
+		"label": "Container Blocks",
+		"blocks": [
+			{
+				"name": "designsetgo/grid",
+				"title": "Grid Container",
+				"description": "CSS Grid-based responsive layouts",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/row",
+				"title": "Row",
+				"description": "Flexible horizontal or vertical layouts with wrapping",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/section",
+				"title": "Section",
+				"description": "Vertical stacking container for sections and content areas",
+				"performance": "low"
+			}
+		]
+	},
+	"ui": {
+		"label": "UI Elements",
+		"blocks": [
+			{
+				"name": "designsetgo/icon",
+				"title": "Icon",
+				"description": "Inline SVG icons with styling",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/icon-button",
+				"title": "Icon Button",
+				"description": "Button with icon support",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/icon-list",
+				"title": "Icon List",
+				"description": "List with custom icons",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/icon-list-item",
+				"title": "Icon List Item",
+				"description": "Individual list item",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/pill",
+				"title": "Pill",
+				"description": "Badge/tag style elements",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/card",
+				"title": "Card",
+				"description": "Display content in a card layout with image, badge, title, and CTA",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/divider",
+				"title": "Divider",
+				"description": "Visual separator with multiple style options",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/accordion",
+				"title": "Accordion",
+				"description": "Traditional accordion container",
+				"performance": "medium"
+			},
+			{
+				"name": "designsetgo/accordion-item",
+				"title": "Accordion Item",
+				"description": "Individual accordion panel",
+				"performance": "medium"
+			},
+			{
+				"name": "designsetgo/tabs",
+				"title": "Tabs",
+				"description": "Tabbed content with deep linking",
+				"performance": "medium"
+			},
+			{
+				"name": "designsetgo/tab",
+				"title": "Tab",
+				"description": "Individual tab panel",
+				"performance": "medium"
+			},
+			{
+				"name": "designsetgo/scroll-accordion",
+				"title": "Scroll Accordion",
+				"description": "Sticky stacking scroll effect",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/scroll-accordion-item",
+				"title": "Scroll Accordion Item",
+				"description": "Individual scroll panel",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/scroll-marquee",
+				"title": "Scroll Marquee",
+				"description": "Infinite scrolling content",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/reveal",
+				"title": "Reveal",
+				"description": "Content reveal on scroll",
+				"performance": "medium"
+			},
+			{
+				"name": "designsetgo/image-accordion",
+				"title": "Image Accordion",
+				"description": "Accordion with images",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/image-accordion-item",
+				"title": "Image Accordion Item",
+				"description": "Individual image item",
+				"performance": "high"
+			}
+		]
+	},
+	"interactive": {
+		"label": "Interactive Blocks",
+		"blocks": [
+			{
+				"name": "designsetgo/flip-card",
+				"title": "Flip Card",
+				"description": "3D flip card container",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/flip-card-front",
+				"title": "Flip Card Front",
+				"description": "Front face of flip card",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/flip-card-back",
+				"title": "Flip Card Back",
+				"description": "Back face of flip card",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/slider",
+				"title": "Slider",
+				"description": "Modern carousel with effects",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/slide",
+				"title": "Slide",
+				"description": "Individual slider slide",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/blobs",
+				"title": "Blobs",
+				"description": "Animated blob shapes",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/modal",
+				"title": "Modal",
+				"description": "Accessible modal dialogs with customizable triggers",
+				"performance": "medium"
+			},
+			{
+				"name": "designsetgo/modal-trigger",
+				"title": "Modal Trigger",
+				"description": "Button or link that opens a modal dialog",
+				"performance": "low"
+			}
+		]
+	},
+	"widgets": {
+		"label": "Dynamic Blocks",
+		"blocks": [
+			{
+				"name": "designsetgo/counter-group",
+				"title": "Counter Group",
+				"description": "Animated statistics container",
+				"performance": "medium"
+			},
+			{
+				"name": "designsetgo/counter",
+				"title": "Counter",
+				"description": "Individual animated counter",
+				"performance": "medium"
+			},
+			{
+				"name": "designsetgo/progress-bar",
+				"title": "Progress Bar",
+				"description": "Animated progress indicators",
+				"performance": "medium"
+			},
+			{
+				"name": "designsetgo/countdown-timer",
+				"title": "Countdown Timer",
+				"description": "Display a countdown timer to a specific date and time",
+				"performance": "medium"
+			},
+			{
+				"name": "designsetgo/map",
+				"title": "Map",
+				"description": "Interactive map using OpenStreetMap or Google Maps",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/breadcrumbs",
+				"title": "Breadcrumbs",
+				"description": "Navigation breadcrumbs with Schema.org markup",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/table-of-contents",
+				"title": "Table of Contents",
+				"description": "Auto-generate table of contents from page headings",
+				"performance": "medium"
+			}
+		]
+	},
+	"forms": {
+		"label": "Form Blocks",
+		"blocks": [
+			{
+				"name": "designsetgo/form-builder",
+				"title": "Form Builder",
+				"description": "Complete form with AJAX submission",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/form-text-field",
+				"title": "Text Field",
+				"description": "Text input field",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/form-email-field",
+				"title": "Email Field",
+				"description": "Email input field",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/form-textarea-field",
+				"title": "Textarea",
+				"description": "Multi-line text input",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/form-number-field",
+				"title": "Number Field",
+				"description": "Number input field",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/form-phone-field",
+				"title": "Phone Field",
+				"description": "Phone number input",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/form-url-field",
+				"title": "URL Field",
+				"description": "URL input field",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/form-date-field",
+				"title": "Date Field",
+				"description": "Date picker input",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/form-time-field",
+				"title": "Time Field",
+				"description": "Time picker input",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/form-select-field",
+				"title": "Select Field",
+				"description": "Dropdown select",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/form-checkbox-field",
+				"title": "Checkbox Field",
+				"description": "Checkbox input",
+				"performance": "low"
+			},
+			{
+				"name": "designsetgo/form-hidden-field",
+				"title": "Hidden Field",
+				"description": "Hidden form field",
+				"performance": "low"
+			}
+		]
+	}
+}

@@ -17,27 +17,9 @@
 	display: flex;
 	flex-direction: column;
 
-	// Ensure background images respect border radius
-	overflow: hidden;
-
-	// Allow specific layouts (like scroll accordions) to opt out of clipping
-	&.dsgo-stack--allow-overflow {
-		overflow: visible;
-	}
-
-	// CRITICAL: Allow Navigation block dropdowns to overflow
-	// Navigation menus need to display outside container bounds
-	&:has(.wp-block-navigation) {
-		overflow: visible;
-	}
-
-	// CRITICAL: Allow sticky positioned elements to work correctly
-	// Sticky positioning requires overflow: visible on all ancestors
-	&:has(.is-position-sticky),
-	&:has([style*="position:sticky"]),
-	&:has([style*="position: sticky"]) {
-		overflow: visible;
-	}
+	// NOTE: No overflow restrictions — allows nav dropdowns, sticky elements,
+	// and fonts to render without clipping. Shape dividers handle their own
+	// overflow via .dsgo-stack--has-shape-divider { overflow-x: clip }.
 
 	// Position relative for hover overlay pseudo-element
 	position: relative;
@@ -129,8 +111,19 @@
 	// WordPress core CSS applies float for alignment classes (.alignleft, .alignright)
 	// but float should not work inside flex containers
 	// NOTE: .is-layout-flex is on the dsgo-stack__inner element, not the outer wrapper
+	// CRITICAL: Disable float and stretch all block-level children by default.
+	// Float: WordPress core CSS applies float for alignment classes (.alignleft,
+	// .alignright) but float should not work inside flex containers.
+	// Stretch: When section has content justification (e.g., center), WordPress
+	// applies align-items: center which shrinks ALL children to content width.
+	// This breaks paragraphs, headings, and other text blocks — even those without
+	// an explicit has-text-align-* class (i.e., default left-aligned text).
+	// Using align-self: stretch without !important so inline block rules (pill,
+	// icon, button, counter) can override via higher specificity or !important.
+	// NOTE: .is-layout-flex is on the dsgo-stack__inner element, not the outer wrapper
 	.dsgo-stack__inner.is-layout-flex > * {
 		float: none !important;
+		align-self: stretch;
 	}
 
 	// CRITICAL: Ensure flex layout properties work correctly
@@ -199,6 +192,10 @@
 		// CRITICAL: Inline/shrink-wrap blocks should respect alignment
 		// These blocks should shrink to content width so they can be centered/aligned
 		> .dsgo-pill,
+		> .dsgo-icon,
+		> .wp-block-designsetgo-icon,
+		> .dsgo-counter,
+		> .wp-block-designsetgo-counter,
 		> .wp-block-button,
 		> .wp-block-buttons,
 		> .dsgo-icon-button,
@@ -278,6 +275,8 @@
 		> .dsgo-pill,
 		> .dsgo-icon,
 		> .wp-block-designsetgo-icon,
+		> .dsgo-counter,
+		> .wp-block-designsetgo-counter,
 		> .wp-block-button,
 		> .wp-block-buttons,
 		> .dsgo-icon-button,
@@ -295,6 +294,8 @@
 			.wp-block-designsetgo-pill,
 			.dsgo-icon,
 			.wp-block-designsetgo-icon,
+			.dsgo-counter,
+			.wp-block-designsetgo-counter,
 			.wp-block-button,
 			.wp-block-buttons,
 			.dsgo-icon-button,
@@ -312,6 +313,8 @@
 			.wp-block-designsetgo-pill,
 			.dsgo-icon,
 			.wp-block-designsetgo-icon,
+			.dsgo-counter,
+			.wp-block-designsetgo-counter,
 			.wp-block-button,
 			.wp-block-buttons,
 			.dsgo-icon-button,
@@ -329,6 +332,8 @@
 			.wp-block-designsetgo-pill,
 			.dsgo-icon,
 			.wp-block-designsetgo-icon,
+			.dsgo-counter,
+			.wp-block-designsetgo-counter,
 			.wp-block-button,
 			.wp-block-buttons,
 			.dsgo-icon-button,
@@ -349,6 +354,8 @@
 				.wp-block-designsetgo-pill,
 				.dsgo-icon,
 				.wp-block-designsetgo-icon,
+				.dsgo-counter,
+				.wp-block-designsetgo-counter,
 				.wp-block-button,
 				.wp-block-buttons,
 				.dsgo-icon-button,
@@ -367,6 +374,8 @@
 				.wp-block-designsetgo-pill,
 				.dsgo-icon,
 				.wp-block-designsetgo-icon,
+				.dsgo-counter,
+				.wp-block-designsetgo-counter,
 				.wp-block-button,
 				.wp-block-buttons,
 				.dsgo-icon-button,
@@ -385,6 +394,8 @@
 				.wp-block-designsetgo-pill,
 				.dsgo-icon,
 				.wp-block-designsetgo-icon,
+				.dsgo-counter,
+				.wp-block-designsetgo-counter,
 				.wp-block-button,
 				.wp-block-buttons,
 				.dsgo-icon-button,
@@ -424,6 +435,10 @@
 
 	> .dsgo-pill,
 	> .wp-block-designsetgo-pill,
+	> .dsgo-icon,
+	> .wp-block-designsetgo-icon,
+	> .dsgo-counter,
+	> .wp-block-designsetgo-counter,
 	> .wp-block-button,
 	> .wp-block-buttons,
 	> .dsgo-icon-button,
@@ -504,10 +519,8 @@
 
 // When section has shape dividers, ensure proper stacking
 .dsgo-stack--has-shape-divider {
-	// Override base overflow:hidden to allow shapes to extend beyond bounds
-	// Use !important to ensure precedence over base .dsgo-stack styles
-	overflow-x: clip !important;
-	overflow-y: visible !important;
+	// Prevent horizontal scrollbar from shapes extending beyond section width
+	overflow-x: clip;
 
 	// Content stays above shapes (z-index: 2)
 	// unless shape has "bring to front" option (z-index: 10)

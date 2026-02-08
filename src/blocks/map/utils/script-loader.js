@@ -4,6 +4,10 @@
  * Utilities for dynamically loading external scripts and stylesheets.
  */
 
+// Cache in-flight promises so concurrent callers share one load.
+const pendingScripts = new Map();
+const pendingStyles = new Map();
+
 /**
  * Load external script dynamically.
  *
@@ -12,9 +16,22 @@
  * @return {Promise} Resolves when script loads.
  */
 export function loadScript(url, id) {
-	return new Promise((resolve, reject) => {
-		if (document.getElementById(id)) {
-			resolve();
+	if (pendingScripts.has(id)) {
+		return pendingScripts.get(id);
+	}
+
+	const promise = new Promise((resolve, reject) => {
+		const existing = document.getElementById(id);
+		if (existing) {
+			// Script tag exists — if already loaded, resolve; otherwise wait.
+			if (existing.dataset.loaded === 'true') {
+				resolve();
+				return;
+			}
+			existing.addEventListener('load', () => resolve());
+			existing.addEventListener('error', () =>
+				reject(new Error(`Failed to load: ${url}`))
+			);
 			return;
 		}
 
@@ -22,10 +39,16 @@ export function loadScript(url, id) {
 		script.id = id;
 		script.src = url;
 		script.async = true;
-		script.onload = () => resolve();
+		script.onload = () => {
+			script.dataset.loaded = 'true';
+			resolve();
+		};
 		script.onerror = () => reject(new Error(`Failed to load: ${url}`));
 		document.head.appendChild(script);
 	});
+
+	pendingScripts.set(id, promise);
+	return promise;
 }
 
 /**
@@ -36,7 +59,11 @@ export function loadScript(url, id) {
  * @return {Promise} Resolves when stylesheet loads.
  */
 export function loadStylesheet(url, id) {
-	return new Promise((resolve, reject) => {
+	if (pendingStyles.has(id)) {
+		return pendingStyles.get(id);
+	}
+
+	const promise = new Promise((resolve, reject) => {
 		if (document.getElementById(id)) {
 			resolve();
 			return;
@@ -50,6 +77,9 @@ export function loadStylesheet(url, id) {
 		link.onerror = () => reject(new Error(`Failed to load: ${url}`));
 		document.head.appendChild(link);
 	});
+
+	pendingStyles.set(id, promise);
+	return promise;
 }
 
 /**

@@ -57,11 +57,22 @@ async function insertBlock(page, blockName) {
 	const blockSlug = blockName.split('/').pop();
 	const blockLabel = blockSlug.charAt(0).toUpperCase() + blockSlug.slice(1);
 
-	// Open the global block inserter via the toolbar toggle
-	const inserterToggle = page.getByRole('button', {
-		name: 'Toggle block inserter',
-	});
-	await inserterToggle.click();
+	// Open the global block inserter via the toolbar toggle.
+	// Use the CSS class to uniquely target the toolbar toggle button.
+	// The aria-label varies across WP versions ("Toggle block inserter"
+	// in WP ≤6.7, "Block Inserter" in WP 6.8+) and a regex match on
+	// /block inserter/i also catches the "Close Block Inserter" sidebar
+	// button, causing a strict-mode violation.
+	const inserterToggle = page.locator(
+		'button.editor-document-tools__inserter-toggle'
+	);
+
+	// Only open the inserter if it isn't already open
+	const isAlreadyOpen =
+		(await inserterToggle.getAttribute('aria-pressed')) === 'true';
+	if (!isAlreadyOpen) {
+		await inserterToggle.click();
+	}
 
 	// Wait for the inserter panel to appear and search for the block
 	const searchInput = page
@@ -100,7 +111,10 @@ async function openBlockSettings(page) {
 
 	// Check if settings sidebar is already open
 	const sidebar = page.locator('.editor-sidebar, .edit-post-sidebar');
-	const isOpen = await sidebar.first().isVisible().catch(() => false);
+	const isOpen = await sidebar
+		.first()
+		.isVisible()
+		.catch(() => false);
 
 	if (!isOpen) {
 		await settingsButton.click();

@@ -22,6 +22,19 @@ body:not(.block-editor-page):not(.wp-admin) {
 		&.dsgo-exit-active {
 			animation-fill-mode: both;
 		}
+
+		// Show content immediately for users who prefer reduced motion
+		@media (prefers-reduced-motion: reduce) {
+
+			&:not(.dsgo-entrance-active):not(.dsgo-exit-active) {
+				opacity: 1;
+			}
+
+			&.dsgo-entrance-active,
+			&.dsgo-exit-active {
+				animation: none !important;
+			}
+		}
 	}
 
 	// Entrance animations - apply animation names to active blocks
@@ -125,18 +138,6 @@ body:not(.block-editor-page):not(.wp-admin) {
 
 		&.dsgo-animation-exit-bounceOut {
 			animation-name: dsgBounceOut;
-		}
-
-		&.dsgo-animation-exit-flipOutX {
-			animation-name: dsgFlipOutX;
-		}
-
-		&.dsgo-animation-exit-flipOutY {
-			animation-name: dsgFlipOutY;
-		}
-
-		&.dsgo-animation-exit-rotateOut {
-			animation-name: dsgRotateOut;
 		}
 	}
 }

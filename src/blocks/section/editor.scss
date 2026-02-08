@@ -14,6 +14,10 @@
 $inline-block-classes: (
 	'.dsgo-pill',
 	'.wp-block-designsetgo-pill',
+	'.dsgo-icon',
+	'.wp-block-designsetgo-icon',
+	'.dsgo-counter',
+	'.wp-block-designsetgo-counter',
 	'.wp-block-button',
 	'.wp-block-buttons',
 	'.dsgo-icon-button',
@@ -41,14 +45,9 @@ $inline-block-data-types: (
 	display: flex;
 	flex-direction: column;
 
-	// Ensure background images respect border radius in editor
-	overflow: hidden;
-
-	// CRITICAL: Allow Navigation block dropdowns to overflow
-	// Navigation menus need to display outside container bounds
-	&:has(.wp-block-navigation) {
-		overflow: visible;
-	}
+	// NOTE: No overflow restrictions — allows nav dropdowns, sticky elements,
+	// and fonts to render without clipping. Shape dividers handle their own
+	// overflow via .dsgo-stack--has-shape-divider { overflow-x: clip }.
 
 	// Visual indicator in editor
 	position: relative;
@@ -202,6 +201,7 @@ $inline-block-data-types: (
 		&[data-type="designsetgo/flex"],
 		&[data-type="designsetgo/tabs"],
 		&[data-type="designsetgo/accordion"],
+		&[data-type="designsetgo/blobs"],
 		&[data-type="designsetgo/scroll-marquee"] {
 			width: 100%;
 
@@ -306,6 +306,10 @@ $inline-block-data-types: (
 
 		> .dsgo-pill,
 		> .wp-block-designsetgo-pill,
+		> .dsgo-icon,
+		> .wp-block-designsetgo-icon,
+		> .dsgo-counter,
+		> .wp-block-designsetgo-counter,
 		> .wp-block-button,
 		> .wp-block-buttons,
 		> .dsgo-icon-button,
@@ -313,6 +317,31 @@ $inline-block-data-types: (
 			width: auto !important;
 			max-width: none !important;
 		}
+	}
+}
+
+// CRITICAL: Editor-only fix for inline block [data-block] wrappers stretching inside
+// grid > section or slide > section contexts.
+// Grid: items stretch to fill their cells via align-items: stretch.
+// Slide: height: 100% + flex: 1 on .dsgo-slide__content forces children to fill height.
+// Both cascade through the section's flex layout — .dsgo-stack__inner fills the parent
+// (flex-grow: 1), leaving extra vertical space. WordPress may apply flex-grow or height
+// to [data-block] wrappers, causing inline blocks to expand to fill the section height.
+// No frontend equivalent needed - [data-type] selectors only exist in the editor DOM.
+// NOTE: Uses descendant selectors (not child combinators) intentionally, because the section
+// may be nested deeper inside the parent (e.g., grid > flex > section, slide > section).
+// NOTE: Must include all types from $inline-block-data-types to prevent stretching.
+.dsgo-grid .dsgo-stack .dsgo-stack__inner.is-layout-flex,
+.dsgo-slide .dsgo-stack .dsgo-stack__inner.is-layout-flex {
+
+	> [data-type="designsetgo/icon-button"],
+	> [data-type="designsetgo/icon"],
+	> [data-type="designsetgo/counter"],
+	> [data-type="designsetgo/pill"],
+	> [data-type="core/button"],
+	> [data-type="core/buttons"] {
+		flex-grow: 0 !important;
+		height: auto !important;
 	}
 }
 
@@ -368,6 +397,18 @@ $inline-block-data-types: (
 
 		// EDITOR: Blocks are wrapped in [data-block] elements, so alignment must target
 		// both the block class (frontend parity) AND the [data-block] wrapper (editor).
+
+		// CRITICAL: All block-level children stretch to full width by default.
+		// When section has content justification (e.g., center), WordPress applies
+		// align-items: center which shrinks ALL children to content width. This
+		// breaks paragraphs, headings, and other text blocks — even those without
+		// an explicit has-text-align-* class (i.e., default left-aligned text).
+		// In the editor, blocks are wrapped in [data-block] elements so > * covers
+		// those wrappers. Using > * without !important so inline block rules (pill,
+		// icon, button, counter) can override via higher specificity or !important.
+		> * {
+			align-self: stretch;
+		}
 
 		// Section center alignment - apply to inline blocks WITHOUT their own alignment
 		&.is-content-justification-center {
@@ -564,10 +605,8 @@ $inline-block-data-types: (
 
 // When section has shape dividers, ensure proper stacking
 .dsgo-stack--has-shape-divider {
-	// Override base overflow:hidden to allow shapes to extend beyond bounds
-	// Use !important to ensure precedence over base .dsgo-stack styles
-	overflow-x: clip !important;
-	overflow-y: visible !important;
+	// Prevent horizontal scrollbar from shapes extending beyond section width
+	overflow-x: clip;
 
 	// Content stays above shapes (z-index: 2)
 	// unless shape has "bring to front" option (z-index: 10)

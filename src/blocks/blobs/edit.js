@@ -32,10 +32,27 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 		animationDuration,
 		animationEasing,
 		size,
+		height,
 		enableOverlay,
 		overlayColor,
 		overlayOpacity,
 	} = attributes;
+
+	// Derive unit-specific min/max for the blob size control
+	const sizeUnit = size ? size.replace(/[\d.]+/, '') : 'px';
+	const sizeConstraints = {
+		px: { min: 50, max: 800 },
+		'%': { min: 20, max: 200 },
+		vw: { min: 10, max: 100 },
+		vh: { min: 10, max: 100 },
+	};
+	const { min: sizeMin, max: sizeMax } =
+		sizeConstraints[sizeUnit] || sizeConstraints.px;
+
+	// Derive unit-specific min/max for the blob height control
+	const heightUnit = height ? height.replace(/[\d.]+/, '') : 'px';
+	const { min: heightMin, max: heightMax } =
+		sizeConstraints[heightUnit] || sizeConstraints.px;
 
 	// Get theme color palette and gradient settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
@@ -50,6 +67,7 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 	// Apply animation settings as CSS custom properties
 	const customStyles = {
 		'--dsgo-blob-size': size,
+		...(height ? { '--dsgo-blob-height': height } : {}),
 		'--dsgo-blob-animation-duration': animationDuration,
 		'--dsgo-blob-animation-easing': animationEasing,
 	};
@@ -261,7 +279,7 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 					/>
 
 					<UnitControl
-						label={__('Blob Size', 'designsetgo')}
+						label={__('Width', 'designsetgo')}
 						value={size}
 						onChange={(value) =>
 							setAttributes({ size: value || '300px' })
@@ -272,10 +290,28 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 							{ value: 'vw', label: 'vw', default: 30 },
 							{ value: 'vh', label: 'vh', default: 30 },
 						]}
-						min={100}
-						max={800}
+						min={sizeMin}
+						max={sizeMax}
+						help={__('Width of the blob shape', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					<UnitControl
+						label={__('Height', 'designsetgo')}
+						value={height}
+						onChange={(value) => setAttributes({ height: value })}
+						units={[
+							{ value: 'px', label: 'px', default: 300 },
+							{ value: '%', label: '%', default: 100 },
+							{ value: 'vw', label: 'vw', default: 30 },
+							{ value: 'vh', label: 'vh', default: 30 },
+						]}
+						min={heightMin}
+						max={heightMax}
+						placeholder={size}
 						help={__(
-							'Width and height of the blob shape',
+							'Height of the blob shape. Defaults to width if empty.',
 							'designsetgo'
 						)}
 						__next40pxDefaultSize
