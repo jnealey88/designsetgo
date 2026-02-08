@@ -111,6 +111,9 @@ class Loader {
 
 	/**
 	 * Register all blocks.
+	 *
+	 * Derives the block name from the directory name to avoid reading
+	 * block.json twice (once here and once inside register_block_type).
 	 */
 	public function register_blocks() {
 		// Get all block directories from build folder.
@@ -124,19 +127,19 @@ class Loader {
 		$blocks = array_filter( glob( $blocks_dir . '*' ), 'is_dir' );
 
 		foreach ( $blocks as $block_dir ) {
-			$block_json = $block_dir . '/block.json';
+			if ( ! file_exists( $block_dir . '/block.json' ) ) {
+				continue;
+			}
 
-			if ( file_exists( $block_json ) ) {
-				// Get block name from block.json.
-				$block_data = json_decode( file_get_contents( $block_json ), true );
-				$block_name = isset( $block_data['name'] ) ? $block_data['name'] : '';
+			// Derive block name from directory name — matches the slug in block.json
+			// and avoids a redundant file_get_contents + json_decode per block.
+			$block_name = 'designsetgo/' . basename( $block_dir );
 
-				// Check if block should be registered (allows filtering via Block_Manager).
-				$should_register = apply_filters( 'designsetgo_register_block', true, $block_name );
+			// Check if block should be registered (allows filtering via Block_Manager).
+			$should_register = apply_filters( 'designsetgo_register_block', true, $block_name );
 
-				if ( $should_register ) {
-					register_block_type( $block_dir );
-				}
+			if ( $should_register ) {
+				register_block_type( $block_dir );
 			}
 		}
 	}

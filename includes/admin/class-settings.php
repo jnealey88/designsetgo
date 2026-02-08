@@ -133,320 +133,52 @@ class Settings {
 	}
 
 	/**
+	 * Cached blocks registry data.
+	 *
+	 * @var array|null
+	 */
+	private static $cached_blocks_registry = null;
+
+	/**
 	 * Get all available blocks
+	 *
+	 * Loads block data from blocks-registry.json and applies i18n translations.
+	 * The JSON file is the single source of truth for block metadata.
 	 *
 	 * @return array Block information organized by category.
 	 */
 	public static function get_available_blocks() {
-		return array(
-			'containers'  => array(
-				'label'  => __( 'Container Blocks', 'designsetgo' ),
-				'blocks' => array(
-					array(
-						'name'        => 'designsetgo/grid',
-						'title'       => __( 'Grid Container', 'designsetgo' ),
-						'description' => __( 'CSS Grid-based responsive layouts', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/row',
-						'title'       => __( 'Row', 'designsetgo' ),
-						'description' => __( 'Flexible horizontal or vertical layouts with wrapping', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/section',
-						'title'       => __( 'Section', 'designsetgo' ),
-						'description' => __( 'Vertical stacking container for sections and content areas', 'designsetgo' ),
-						'performance' => 'low',
-					),
-				),
-			),
-			'ui'          => array(
-				'label'  => __( 'UI Elements', 'designsetgo' ),
-				'blocks' => array(
-					array(
-						'name'        => 'designsetgo/icon',
-						'title'       => __( 'Icon', 'designsetgo' ),
-						'description' => __( 'Inline SVG icons with styling', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/icon-button',
-						'title'       => __( 'Icon Button', 'designsetgo' ),
-						'description' => __( 'Button with icon support', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/icon-list',
-						'title'       => __( 'Icon List', 'designsetgo' ),
-						'description' => __( 'List with custom icons', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/icon-list-item',
-						'title'       => __( 'Icon List Item', 'designsetgo' ),
-						'description' => __( 'Individual list item', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/pill',
-						'title'       => __( 'Pill', 'designsetgo' ),
-						'description' => __( 'Badge/tag style elements', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/card',
-						'title'       => __( 'Card', 'designsetgo' ),
-						'description' => __( 'Display content in a card layout with image, badge, title, and CTA', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/divider',
-						'title'       => __( 'Divider', 'designsetgo' ),
-						'description' => __( 'Visual separator with multiple style options', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/accordion',
-						'title'       => __( 'Accordion', 'designsetgo' ),
-						'description' => __( 'Traditional accordion container', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-					array(
-						'name'        => 'designsetgo/accordion-item',
-						'title'       => __( 'Accordion Item', 'designsetgo' ),
-						'description' => __( 'Individual accordion panel', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-					array(
-						'name'        => 'designsetgo/tabs',
-						'title'       => __( 'Tabs', 'designsetgo' ),
-						'description' => __( 'Tabbed content with deep linking', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-					array(
-						'name'        => 'designsetgo/tab',
-						'title'       => __( 'Tab', 'designsetgo' ),
-						'description' => __( 'Individual tab panel', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-					array(
-						'name'        => 'designsetgo/scroll-accordion',
-						'title'       => __( 'Scroll Accordion', 'designsetgo' ),
-						'description' => __( 'Sticky stacking scroll effect', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/scroll-accordion-item',
-						'title'       => __( 'Scroll Accordion Item', 'designsetgo' ),
-						'description' => __( 'Individual scroll panel', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/scroll-marquee',
-						'title'       => __( 'Scroll Marquee', 'designsetgo' ),
-						'description' => __( 'Infinite scrolling content', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/reveal',
-						'title'       => __( 'Reveal', 'designsetgo' ),
-						'description' => __( 'Content reveal on scroll', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-					array(
-						'name'        => 'designsetgo/image-accordion',
-						'title'       => __( 'Image Accordion', 'designsetgo' ),
-						'description' => __( 'Accordion with images', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/image-accordion-item',
-						'title'       => __( 'Image Accordion Item', 'designsetgo' ),
-						'description' => __( 'Individual image item', 'designsetgo' ),
-						'performance' => 'high',
-					),
-				),
-			),
-			'interactive' => array(
-				'label'  => __( 'Interactive Blocks', 'designsetgo' ),
-				'blocks' => array(
-					array(
-						'name'        => 'designsetgo/flip-card',
-						'title'       => __( 'Flip Card', 'designsetgo' ),
-						'description' => __( '3D flip card container', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/flip-card-front',
-						'title'       => __( 'Flip Card Front', 'designsetgo' ),
-						'description' => __( 'Front face of flip card', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/flip-card-back',
-						'title'       => __( 'Flip Card Back', 'designsetgo' ),
-						'description' => __( 'Back face of flip card', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/slider',
-						'title'       => __( 'Slider', 'designsetgo' ),
-						'description' => __( 'Modern carousel with effects', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/slide',
-						'title'       => __( 'Slide', 'designsetgo' ),
-						'description' => __( 'Individual slider slide', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/blobs',
-						'title'       => __( 'Blobs', 'designsetgo' ),
-						'description' => __( 'Animated blob shapes', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/modal',
-						'title'       => __( 'Modal', 'designsetgo' ),
-						'description' => __( 'Accessible modal dialogs with customizable triggers', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-					array(
-						'name'        => 'designsetgo/modal-trigger',
-						'title'       => __( 'Modal Trigger', 'designsetgo' ),
-						'description' => __( 'Button or link that opens a modal dialog', 'designsetgo' ),
-						'performance' => 'low',
-					),
-				),
-			),
-			'widgets'     => array(
-				'label'  => __( 'Dynamic Blocks', 'designsetgo' ),
-				'blocks' => array(
-					array(
-						'name'        => 'designsetgo/counter-group',
-						'title'       => __( 'Counter Group', 'designsetgo' ),
-						'description' => __( 'Animated statistics container', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-					array(
-						'name'        => 'designsetgo/counter',
-						'title'       => __( 'Counter', 'designsetgo' ),
-						'description' => __( 'Individual animated counter', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-					array(
-						'name'        => 'designsetgo/progress-bar',
-						'title'       => __( 'Progress Bar', 'designsetgo' ),
-						'description' => __( 'Animated progress indicators', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-					array(
-						'name'        => 'designsetgo/countdown-timer',
-						'title'       => __( 'Countdown Timer', 'designsetgo' ),
-						'description' => __( 'Display a countdown timer to a specific date and time', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-					array(
-						'name'        => 'designsetgo/map',
-						'title'       => __( 'Map', 'designsetgo' ),
-						'description' => __( 'Interactive map using OpenStreetMap or Google Maps', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/breadcrumbs',
-						'title'       => __( 'Breadcrumbs', 'designsetgo' ),
-						'description' => __( 'Navigation breadcrumbs with Schema.org markup', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/table-of-contents',
-						'title'       => __( 'Table of Contents', 'designsetgo' ),
-						'description' => __( 'Auto-generate table of contents from page headings', 'designsetgo' ),
-						'performance' => 'medium',
-					),
-				),
-			),
-			'forms'       => array(
-				'label'  => __( 'Form Blocks', 'designsetgo' ),
-				'blocks' => array(
-					array(
-						'name'        => 'designsetgo/form-builder',
-						'title'       => __( 'Form Builder', 'designsetgo' ),
-						'description' => __( 'Complete form with AJAX submission', 'designsetgo' ),
-						'performance' => 'high',
-					),
-					array(
-						'name'        => 'designsetgo/form-text-field',
-						'title'       => __( 'Text Field', 'designsetgo' ),
-						'description' => __( 'Text input field', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/form-email-field',
-						'title'       => __( 'Email Field', 'designsetgo' ),
-						'description' => __( 'Email input field', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/form-textarea-field',
-						'title'       => __( 'Textarea', 'designsetgo' ),
-						'description' => __( 'Multi-line text input', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/form-number-field',
-						'title'       => __( 'Number Field', 'designsetgo' ),
-						'description' => __( 'Number input field', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/form-phone-field',
-						'title'       => __( 'Phone Field', 'designsetgo' ),
-						'description' => __( 'Phone number input', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/form-url-field',
-						'title'       => __( 'URL Field', 'designsetgo' ),
-						'description' => __( 'URL input field', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/form-date-field',
-						'title'       => __( 'Date Field', 'designsetgo' ),
-						'description' => __( 'Date picker input', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/form-time-field',
-						'title'       => __( 'Time Field', 'designsetgo' ),
-						'description' => __( 'Time picker input', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/form-select-field',
-						'title'       => __( 'Select Field', 'designsetgo' ),
-						'description' => __( 'Dropdown select', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/form-checkbox-field',
-						'title'       => __( 'Checkbox Field', 'designsetgo' ),
-						'description' => __( 'Checkbox input', 'designsetgo' ),
-						'performance' => 'low',
-					),
-					array(
-						'name'        => 'designsetgo/form-hidden-field',
-						'title'       => __( 'Hidden Field', 'designsetgo' ),
-						'description' => __( 'Hidden form field', 'designsetgo' ),
-						'performance' => 'low',
-					),
-				),
-			),
-		);
+		if ( null !== self::$cached_blocks_registry ) {
+			return self::$cached_blocks_registry;
+		}
+
+		$json_path = __DIR__ . '/blocks-registry.json';
+		$raw_data  = json_decode( file_get_contents( $json_path ), true );
+
+		if ( ! is_array( $raw_data ) ) {
+			return array();
+		}
+
+		// Apply i18n translations to labels, titles, and descriptions.
+		$registry = array();
+		foreach ( $raw_data as $category_key => $category ) {
+			$registry[ $category_key ] = array(
+				'label'  => __( $category['label'], 'designsetgo' ), // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+				'blocks' => array(),
+			);
+
+			foreach ( $category['blocks'] as $block ) {
+				$registry[ $category_key ]['blocks'][] = array(
+					'name'        => $block['name'],
+					'title'       => __( $block['title'], 'designsetgo' ), // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+					'description' => __( $block['description'], 'designsetgo' ), // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+					'performance' => $block['performance'],
+				);
+			}
+		}
+
+		self::$cached_blocks_registry = $registry;
+		return self::$cached_blocks_registry;
 	}
 
 	/**
@@ -593,6 +325,65 @@ class Settings {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'update_settings_endpoint' ),
 				'permission_callback' => array( $this, 'check_write_permission' ),
+				'args'                => array(
+					'enabled_blocks'     => array(
+						'type'              => 'array',
+						'description'       => __( 'List of enabled block names. Empty array means all enabled.', 'designsetgo' ),
+						'sanitize_callback' => function ( $value ) {
+							return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : array();
+						},
+					),
+					'enabled_extensions' => array(
+						'type'              => 'array',
+						'description'       => __( 'List of enabled extension names. Empty array means all enabled.', 'designsetgo' ),
+						'sanitize_callback' => function ( $value ) {
+							return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : array();
+						},
+					),
+					'excluded_blocks'    => array(
+						'type'              => 'array',
+						'description'       => __( 'Block name patterns excluded from abilities API.', 'designsetgo' ),
+						'sanitize_callback' => function ( $value ) {
+							return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : array();
+						},
+					),
+					'performance'        => array(
+						'type'        => 'object',
+						'description' => __( 'Performance settings (conditional_loading, cache_duration).', 'designsetgo' ),
+					),
+					'forms'              => array(
+						'type'        => 'object',
+						'description' => __( 'Form settings (enable_honeypot, enable_rate_limiting, enable_email_logging, retention_days).', 'designsetgo' ),
+					),
+					'animations'         => array(
+						'type'        => 'object',
+						'description' => __( 'Animation settings (enable_animations, default_duration, default_easing, respect_prefers_reduced_motion).', 'designsetgo' ),
+					),
+					'security'           => array(
+						'type'        => 'object',
+						'description' => __( 'Security logging settings (log_ip_addresses, log_user_agents, log_referrers).', 'designsetgo' ),
+					),
+					'integrations'       => array(
+						'type'        => 'object',
+						'description' => __( 'Third-party integration keys (google_maps_api_key, turnstile_site_key, turnstile_secret_key).', 'designsetgo' ),
+					),
+					'sticky_header'      => array(
+						'type'        => 'object',
+						'description' => __( 'Sticky header configuration.', 'designsetgo' ),
+					),
+					'draft_mode'         => array(
+						'type'        => 'object',
+						'description' => __( 'Draft mode settings (enable, show_page_list_actions, etc.).', 'designsetgo' ),
+					),
+					'revisions'          => array(
+						'type'        => 'object',
+						'description' => __( 'Revision comparison settings (enable_visual_comparison, default_to_visual).', 'designsetgo' ),
+					),
+					'llms_txt'           => array(
+						'type'        => 'object',
+						'description' => __( 'llms.txt settings (enable, post_types).', 'designsetgo' ),
+					),
+				),
 			)
 		);
 
@@ -761,125 +552,172 @@ class Settings {
 	}
 
 	/**
+	 * Get the sanitization schema for settings fields.
+	 *
+	 * Maps each setting key to its sanitizer type. The defaults are sourced
+	 * from get_defaults() so there is a single source of truth.
+	 *
+	 * Supported sanitizer types:
+	 * - 'bool'       — Cast to boolean.
+	 * - 'absint'     — Unsigned integer via absint().
+	 * - 'text'       — sanitize_text_field().
+	 * - 'hex_color'  — sanitize_hex_color().
+	 * - 'key'        — sanitize_key().
+	 * - 'text_list'  — Array of sanitize_text_field() values.
+	 * - 'key_list'   — Array of sanitize_key() values.
+	 *
+	 * @return array Sanitization schema keyed by setting group then field.
+	 */
+	private static function get_sanitization_schema(): array {
+		return array(
+			'enabled_blocks'     => 'text_list',
+			'enabled_extensions' => 'text_list',
+			'excluded_blocks'    => 'text_list',
+			'performance'        => array(
+				'conditional_loading' => 'bool',
+				'cache_duration'      => 'absint',
+			),
+			'forms'              => array(
+				'enable_honeypot'      => 'bool',
+				'enable_rate_limiting' => 'bool',
+				'enable_email_logging' => 'bool',
+				'retention_days'       => 'absint',
+			),
+			'animations'         => array(
+				'enable_animations'              => 'bool',
+				'default_duration'               => 'absint',
+				'default_easing'                 => 'text',
+				'respect_prefers_reduced_motion' => 'bool',
+			),
+			'security'           => array(
+				'log_ip_addresses' => 'bool',
+				'log_user_agents'  => 'bool',
+				'log_referrers'    => 'bool',
+			),
+			'integrations'       => array(
+				'google_maps_api_key'    => 'text',
+				'turnstile_site_key'     => 'text',
+				'turnstile_secret_key'   => 'text',
+			),
+			'sticky_header'      => array(
+				'enable'                    => 'bool',
+				'custom_selector'           => 'text',
+				'z_index'                   => 'absint',
+				'shadow_on_scroll'          => 'bool',
+				'shadow_size'               => 'text',
+				'shrink_on_scroll'          => 'bool',
+				'shrink_amount'             => 'absint',
+				'mobile_enabled'            => 'bool',
+				'mobile_breakpoint'         => 'absint',
+				'transition_speed'          => 'absint',
+				'scroll_threshold'          => 'absint',
+				'hide_on_scroll_down'       => 'bool',
+				'background_on_scroll'      => 'bool',
+				'background_scroll_color'   => 'hex_color',
+				'background_scroll_opacity' => 'absint',
+				'text_scroll_color'         => 'hex_color',
+			),
+			'draft_mode'         => array(
+				'enable'                 => 'bool',
+				'show_page_list_actions' => 'bool',
+				'show_page_list_column'  => 'bool',
+				'show_frontend_preview'  => 'bool',
+				'auto_save_enabled'      => 'bool',
+				'auto_save_interval'     => 'absint',
+			),
+			'revisions'          => array(
+				'enable_visual_comparison' => 'bool',
+				'default_to_visual'        => 'bool',
+			),
+			'llms_txt'           => array(
+				'enable'     => 'bool',
+				'post_types' => 'key_list',
+			),
+		);
+	}
+
+	/**
+	 * Sanitize a single value according to its sanitizer type.
+	 *
+	 * @param mixed  $value     The value to sanitize.
+	 * @param string $sanitizer The sanitizer type.
+	 * @param mixed  $default   The default value to fall back to.
+	 * @return mixed Sanitized value.
+	 */
+	private static function sanitize_value( $value, string $sanitizer, $default ) {
+		switch ( $sanitizer ) {
+			case 'bool':
+				return (bool) $value;
+			case 'absint':
+				return absint( $value );
+			case 'text':
+				return sanitize_text_field( $value );
+			case 'hex_color':
+				$color = sanitize_hex_color( $value );
+				return $color ? $color : $default;
+			case 'key':
+				return sanitize_key( $value );
+			case 'text_list':
+				return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : $default;
+			case 'key_list':
+				return is_array( $value ) ? array_map( 'sanitize_key', $value ) : $default;
+			default:
+				return sanitize_text_field( $value );
+		}
+	}
+
+	/**
 	 * Sanitize settings
+	 *
+	 * Uses the sanitization schema and defaults from get_defaults() to
+	 * sanitize each setting value by type, eliminating repetitive
+	 * isset/ternary patterns.
 	 *
 	 * @param array $settings Settings to sanitize.
 	 * @return array Sanitized settings.
 	 */
 	private function sanitize_settings( $settings ): array {
 		$sanitized = array();
+		$defaults  = self::get_defaults();
+		$schema    = self::get_sanitization_schema();
 
-		// Sanitize enabled blocks.
-		if ( isset( $settings['enabled_blocks'] ) && is_array( $settings['enabled_blocks'] ) ) {
-			$sanitized['enabled_blocks'] = array_map( 'sanitize_text_field', $settings['enabled_blocks'] );
-		}
+		foreach ( $schema as $key => $field_schema ) {
+			// Skip keys not present in input.
+			if ( ! isset( $settings[ $key ] ) ) {
+				continue;
+			}
 
-		// Sanitize enabled extensions.
-		if ( isset( $settings['enabled_extensions'] ) && is_array( $settings['enabled_extensions'] ) ) {
-			$sanitized['enabled_extensions'] = array_map( 'sanitize_text_field', $settings['enabled_extensions'] );
-		}
+			// Top-level list fields (enabled_blocks, enabled_extensions, excluded_blocks).
+			if ( is_string( $field_schema ) ) {
+				$sanitized[ $key ] = self::sanitize_value(
+					$settings[ $key ],
+					$field_schema,
+					$defaults[ $key ] ?? array()
+				);
+				continue;
+			}
 
-		// Sanitize excluded blocks.
-		if ( isset( $settings['excluded_blocks'] ) && is_array( $settings['excluded_blocks'] ) ) {
-			$sanitized['excluded_blocks'] = array_map( 'sanitize_text_field', $settings['excluded_blocks'] );
-		}
+			// Nested object fields — must be an array in input.
+			if ( ! is_array( $settings[ $key ] ) ) {
+				continue;
+			}
 
-		// Sanitize performance settings.
-		if ( isset( $settings['performance'] ) && is_array( $settings['performance'] ) ) {
-			$sanitized['performance'] = array(
-				'conditional_loading' => isset( $settings['performance']['conditional_loading'] ) ? (bool) $settings['performance']['conditional_loading'] : true,
-				'cache_duration'      => isset( $settings['performance']['cache_duration'] ) ? absint( $settings['performance']['cache_duration'] ) : 3600,
-			);
-		}
+			$group_defaults    = $defaults[ $key ] ?? array();
+			$sanitized[ $key ] = array();
 
-		// Sanitize form settings.
-		if ( isset( $settings['forms'] ) && is_array( $settings['forms'] ) ) {
-			$sanitized['forms'] = array(
-				'enable_honeypot'      => isset( $settings['forms']['enable_honeypot'] ) ? (bool) $settings['forms']['enable_honeypot'] : true,
-				'enable_rate_limiting' => isset( $settings['forms']['enable_rate_limiting'] ) ? (bool) $settings['forms']['enable_rate_limiting'] : true,
-				'enable_email_logging' => isset( $settings['forms']['enable_email_logging'] ) ? (bool) $settings['forms']['enable_email_logging'] : false,
-				'retention_days'       => isset( $settings['forms']['retention_days'] ) ? absint( $settings['forms']['retention_days'] ) : 30,
-			);
-		}
+			foreach ( $field_schema as $field_key => $sanitizer ) {
+				$default = $group_defaults[ $field_key ] ?? null;
 
-		// Sanitize animation settings.
-		if ( isset( $settings['animations'] ) && is_array( $settings['animations'] ) ) {
-			$sanitized['animations'] = array(
-				'enable_animations'              => isset( $settings['animations']['enable_animations'] ) ? (bool) $settings['animations']['enable_animations'] : true,
-				'default_duration'               => isset( $settings['animations']['default_duration'] ) ? absint( $settings['animations']['default_duration'] ) : 600,
-				'default_easing'                 => isset( $settings['animations']['default_easing'] ) ? sanitize_text_field( $settings['animations']['default_easing'] ) : 'ease-in-out',
-				'respect_prefers_reduced_motion' => isset( $settings['animations']['respect_prefers_reduced_motion'] ) ? (bool) $settings['animations']['respect_prefers_reduced_motion'] : true,
-			);
-		}
-
-		// Sanitize security settings.
-		if ( isset( $settings['security'] ) && is_array( $settings['security'] ) ) {
-			$sanitized['security'] = array(
-				'log_ip_addresses' => isset( $settings['security']['log_ip_addresses'] ) ? (bool) $settings['security']['log_ip_addresses'] : true,
-				'log_user_agents'  => isset( $settings['security']['log_user_agents'] ) ? (bool) $settings['security']['log_user_agents'] : true,
-				'log_referrers'    => isset( $settings['security']['log_referrers'] ) ? (bool) $settings['security']['log_referrers'] : false,
-			);
-		}
-
-		// Sanitize integrations settings.
-		if ( isset( $settings['integrations'] ) && is_array( $settings['integrations'] ) ) {
-			$sanitized['integrations'] = array(
-				'google_maps_api_key'  => isset( $settings['integrations']['google_maps_api_key'] ) ? sanitize_text_field( $settings['integrations']['google_maps_api_key'] ) : '',
-				'turnstile_site_key'   => isset( $settings['integrations']['turnstile_site_key'] ) ? sanitize_text_field( $settings['integrations']['turnstile_site_key'] ) : '',
-				'turnstile_secret_key' => isset( $settings['integrations']['turnstile_secret_key'] ) ? sanitize_text_field( $settings['integrations']['turnstile_secret_key'] ) : '',
-			);
-		}
-
-		// Sanitize sticky header settings.
-		if ( isset( $settings['sticky_header'] ) && is_array( $settings['sticky_header'] ) ) {
-			$sanitized['sticky_header'] = array(
-				'enable'                    => isset( $settings['sticky_header']['enable'] ) ? (bool) $settings['sticky_header']['enable'] : true,
-				'custom_selector'           => isset( $settings['sticky_header']['custom_selector'] ) ? sanitize_text_field( $settings['sticky_header']['custom_selector'] ) : '',
-				'z_index'                   => isset( $settings['sticky_header']['z_index'] ) ? absint( $settings['sticky_header']['z_index'] ) : 100,
-				'shadow_on_scroll'          => isset( $settings['sticky_header']['shadow_on_scroll'] ) ? (bool) $settings['sticky_header']['shadow_on_scroll'] : true,
-				'shadow_size'               => isset( $settings['sticky_header']['shadow_size'] ) ? sanitize_text_field( $settings['sticky_header']['shadow_size'] ) : 'medium',
-				'shrink_on_scroll'          => isset( $settings['sticky_header']['shrink_on_scroll'] ) ? (bool) $settings['sticky_header']['shrink_on_scroll'] : false,
-				'shrink_amount'             => isset( $settings['sticky_header']['shrink_amount'] ) ? absint( $settings['sticky_header']['shrink_amount'] ) : 20,
-				'mobile_enabled'            => isset( $settings['sticky_header']['mobile_enabled'] ) ? (bool) $settings['sticky_header']['mobile_enabled'] : true,
-				'mobile_breakpoint'         => isset( $settings['sticky_header']['mobile_breakpoint'] ) ? absint( $settings['sticky_header']['mobile_breakpoint'] ) : 768,
-				'transition_speed'          => isset( $settings['sticky_header']['transition_speed'] ) ? absint( $settings['sticky_header']['transition_speed'] ) : 300,
-				'scroll_threshold'          => isset( $settings['sticky_header']['scroll_threshold'] ) ? absint( $settings['sticky_header']['scroll_threshold'] ) : 50,
-				'hide_on_scroll_down'       => isset( $settings['sticky_header']['hide_on_scroll_down'] ) ? (bool) $settings['sticky_header']['hide_on_scroll_down'] : false,
-				'background_on_scroll'      => isset( $settings['sticky_header']['background_on_scroll'] ) ? (bool) $settings['sticky_header']['background_on_scroll'] : true,
-				'background_scroll_color'   => isset( $settings['sticky_header']['background_scroll_color'] ) ? sanitize_hex_color( $settings['sticky_header']['background_scroll_color'] ) : '#ffffff',
-				'background_scroll_opacity' => isset( $settings['sticky_header']['background_scroll_opacity'] ) ? absint( $settings['sticky_header']['background_scroll_opacity'] ) : 100,
-				'text_scroll_color'         => isset( $settings['sticky_header']['text_scroll_color'] ) ? sanitize_hex_color( $settings['sticky_header']['text_scroll_color'] ) : '#000000',
-			);
-		}
-
-		// Sanitize draft mode settings.
-		if ( isset( $settings['draft_mode'] ) && is_array( $settings['draft_mode'] ) ) {
-			$sanitized['draft_mode'] = array(
-				'enable'                 => isset( $settings['draft_mode']['enable'] ) ? (bool) $settings['draft_mode']['enable'] : true,
-				'show_page_list_actions' => isset( $settings['draft_mode']['show_page_list_actions'] ) ? (bool) $settings['draft_mode']['show_page_list_actions'] : true,
-				'show_page_list_column'  => isset( $settings['draft_mode']['show_page_list_column'] ) ? (bool) $settings['draft_mode']['show_page_list_column'] : true,
-				'show_frontend_preview'  => isset( $settings['draft_mode']['show_frontend_preview'] ) ? (bool) $settings['draft_mode']['show_frontend_preview'] : true,
-				'auto_save_enabled'      => isset( $settings['draft_mode']['auto_save_enabled'] ) ? (bool) $settings['draft_mode']['auto_save_enabled'] : true,
-				'auto_save_interval'     => isset( $settings['draft_mode']['auto_save_interval'] ) ? absint( $settings['draft_mode']['auto_save_interval'] ) : 60,
-			);
-		}
-
-		// Sanitize revisions settings.
-		if ( isset( $settings['revisions'] ) && is_array( $settings['revisions'] ) ) {
-			$sanitized['revisions'] = array(
-				'enable_visual_comparison' => isset( $settings['revisions']['enable_visual_comparison'] ) ? (bool) $settings['revisions']['enable_visual_comparison'] : true,
-				'default_to_visual'        => isset( $settings['revisions']['default_to_visual'] ) ? (bool) $settings['revisions']['default_to_visual'] : true,
-			);
-		}
-
-		// Sanitize llms.txt settings.
-		if ( isset( $settings['llms_txt'] ) && is_array( $settings['llms_txt'] ) ) {
-			$sanitized['llms_txt'] = array(
-				'enable'     => isset( $settings['llms_txt']['enable'] ) ? (bool) $settings['llms_txt']['enable'] : false,
-				'post_types' => isset( $settings['llms_txt']['post_types'] ) && is_array( $settings['llms_txt']['post_types'] )
-					? array_map( 'sanitize_key', $settings['llms_txt']['post_types'] )
-					: array( 'page', 'post' ),
-			);
+				if ( isset( $settings[ $key ][ $field_key ] ) ) {
+					$sanitized[ $key ][ $field_key ] = self::sanitize_value(
+						$settings[ $key ][ $field_key ],
+						$sanitizer,
+						$default
+					);
+				} else {
+					$sanitized[ $key ][ $field_key ] = $default;
+				}
+			}
 		}
 
 		return $sanitized;
