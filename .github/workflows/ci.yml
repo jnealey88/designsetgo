@@ -7,49 +7,22 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
-    name: Build and Test
+  build:
+    name: Build & Lint JS/CSS
     runs-on: ubuntu-latest
     permissions:
-      contents: read   # Required for actions/checkout
+      contents: read
       actions: write   # Required for actions/upload-artifact
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-        php-version: [8.0, 8.1, 8.2, 8.3]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: 'npm'
-
-      - name: Setup PHP ${{ matrix.php-version }}
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          tools: composer
-          coverage: none
-
-      - name: PHP syntax check
-        run: |
-          errors=0
-          while IFS= read -r file; do
-            if ! php -l "$file" > /dev/null 2>&1; then
-              php -l "$file"
-              errors=$((errors + 1))
-            fi
-          done < <(git ls-files '*.php' ':!vendor')
-          if [ "$errors" -gt 0 ]; then
-            echo "Found $errors PHP file(s) with syntax errors"
-            exit 1
-          fi
-          echo "All PHP files pass syntax check"
 
       - name: Install dependencies
         run: npm ci
@@ -91,21 +64,11 @@ jobs:
       - name: Run CSS linter
         run: npm run lint:css --if-present || echo "⚠️ CSS linting not configured"
 
-      - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist
-
-      - name: Run PHP linter (PHPCS)
-        run: composer run-script lint
-
-      - name: Run PHPStan static analysis
-        run: composer run-script analyse
-
       - name: Run JavaScript unit tests
         run: npm run test:unit -- --ci
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4
-        if: matrix.php-version == '8.2'
         with:
           files: ./coverage/lcov.info
           flags: unittests
@@ -154,9 +117,55 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-php-${{ matrix.php-version }}
+          name: build-output
           path: build/
           retention-days: 7
+
+  php-tests:
+    name: PHP ${{ matrix.php-version }} Tests
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+
+    strategy:
+      matrix:
+        php-version: ['8.0', '8.1', '8.2', '8.3']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer
+          coverage: none
+
+      - name: PHP syntax check
+        run: |
+          errors=0
+          while IFS= read -r file; do
+            if ! php -l "$file" > /dev/null 2>&1; then
+              php -l "$file"
+              errors=$((errors + 1))
+            fi
+          done < <(git ls-files '*.php' ':!vendor')
+          if [ "$errors" -gt 0 ]; then
+            echo "Found $errors PHP file(s) with syntax errors"
+            exit 1
+          fi
+          echo "All PHP files pass syntax check"
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Run PHP linter (PHPCS)
+        run: composer run-script lint
+
+      - name: Run PHPStan static analysis
+        run: composer run-script analyse
 
   security-check:
     name: Security Audit
@@ -182,6 +191,7 @@ jobs:
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
+    needs: build
     permissions:
       contents: read
       actions: write   # Required for actions/upload-artifact
@@ -199,11 +209,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: build/
+
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
-
-      - name: Build plugin
-        run: npm run build
 
       - name: Start wp-env
         run: npm run wp-env start
@@ -259,6 +272,7 @@ jobs:
   wordpress-compatibility:
     name: WordPress ${{ matrix.wordpress }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
+    needs: build
     permissions:
       contents: read
 
@@ -289,8 +303,11 @@ jobs:
           npm ci
           composer install --no-interaction --prefer-dist
 
-      - name: Build plugin
-        run: npm run build
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: build/
 
       - name: Configure wp-env for WordPress ${{ matrix.wordpress }}
         run: |
