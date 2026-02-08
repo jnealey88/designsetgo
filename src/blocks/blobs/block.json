@@ -62,6 +62,10 @@
 			"type": "string",
 			"default": "300px"
 		},
+		"height": {
+			"type": "string",
+			"default": ""
+		},
 		"enableOverlay": {
 			"type": "boolean",
 			"default": false

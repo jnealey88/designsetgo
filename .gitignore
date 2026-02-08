@@ -4,7 +4,6 @@
 # Dependencies
 /node_modules
 /vendor
-composer.lock
 
 # Build output
 # Build files are generated fresh by GitHub Actions during deployment
@@ -75,6 +74,8 @@ console.txt
 
 # Package managers (keep package-lock.json for CI/CD reproducibility)
 # package-lock.json should be committed for most projects
+# composer.lock excluded: plugin supports PHP 8.0+ and lock file pins to generating PHP version
+composer.lock
 yarn.lock
 pnpm-lock.yaml
 

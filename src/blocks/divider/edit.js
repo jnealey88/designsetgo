@@ -10,8 +10,7 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, SelectControl, RangeControl } from '@wordpress/components';
-import { getIcon } from '../icon/utils/svg-icons';
-import { IconPicker } from '../icon/components/IconPicker';
+import { getIcon, IconPicker } from '../shared/icon-utils';
 
 /**
  * Divider Edit Component

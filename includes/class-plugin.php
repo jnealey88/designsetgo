@@ -183,6 +183,7 @@ class Plugin {
 	private function load_dependencies() {
 		require_once DESIGNSETGO_PATH . 'includes/class-assets.php';
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-loader.php';
+		require_once DESIGNSETGO_PATH . 'includes/blocks/class-form-security.php';
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-form-handler.php';
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-form-submissions.php';
 		require_once DESIGNSETGO_PATH . 'includes/blocks/class-modal-hooks.php';
@@ -286,7 +287,7 @@ class Plugin {
 		add_filter( 'block_categories_all', array( $this, 'register_block_category' ), 10, 2 );
 
 		// Inject API keys into Map block on render.
-		add_filter( 'render_block', array( $this, 'inject_map_api_key' ), 10, 2 );
+		add_filter( 'render_block_designsetgo/map', array( $this, 'inject_map_api_key' ), 10, 2 );
 	}
 
 	/**
@@ -405,11 +406,6 @@ class Plugin {
 	 * @return string Modified block content.
 	 */
 	public function inject_map_api_key( $block_content, $block ) {
-		// Only process the Map block.
-		if ( 'designsetgo/map' !== $block['blockName'] ) {
-			return $block_content;
-		}
-
 		// Get settings.
 		$settings = \DesignSetGo\Admin\Settings::get_settings();
 

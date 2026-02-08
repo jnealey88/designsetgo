@@ -478,6 +478,24 @@ class Global_Styles {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'update_global_styles' ),
 				'permission_callback' => array( $this, 'check_write_permission' ),
+				'args'                => array(
+					'spacing'    => array(
+						'type'        => 'object',
+						'description' => __( 'Spacing style overrides.', 'designsetgo' ),
+					),
+					'typography' => array(
+						'type'        => 'object',
+						'description' => __( 'Typography style overrides.', 'designsetgo' ),
+					),
+					'color'      => array(
+						'type'        => 'object',
+						'description' => __( 'Color style overrides.', 'designsetgo' ),
+					),
+					'border'     => array(
+						'type'        => 'object',
+						'description' => __( 'Border style overrides.', 'designsetgo' ),
+					),
+				),
 			)
 		);
 	}
