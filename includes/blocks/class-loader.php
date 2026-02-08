@@ -135,6 +135,25 @@ class Loader {
 			// and avoids a redundant file_get_contents + json_decode per block.
 			$block_name = 'designsetgo/' . basename( $block_dir );
 
+			// In debug mode, verify the derived name matches block.json to catch
+			// directory/name mismatches during development.
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				$json_data = json_decode( file_get_contents( $block_dir . '/block.json' ), true );
+				$json_name = isset( $json_data['name'] ) ? $json_data['name'] : '';
+				if ( $block_name !== $json_name ) {
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+					trigger_error(
+						sprintf(
+							'DesignSetGo: Block directory name "%s" does not match block.json name "%s" in %s',
+							esc_html( $block_name ),
+							esc_html( $json_name ),
+							esc_html( $block_dir )
+						),
+						E_USER_WARNING
+					);
+				}
+			}
+
 			// Check if block should be registered (allows filtering via Block_Manager).
 			$should_register = apply_filters( 'designsetgo_register_block', true, $block_name );
 

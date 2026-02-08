@@ -153,7 +153,12 @@ class Settings {
 		}
 
 		$json_path = __DIR__ . '/blocks-registry.json';
-		$raw_data  = json_decode( file_get_contents( $json_path ), true );
+
+		if ( ! file_exists( $json_path ) || ! is_file( $json_path ) || ! is_readable( $json_path ) ) {
+			return array();
+		}
+
+		$raw_data = json_decode( file_get_contents( $json_path ), true );
 
 		if ( ! is_array( $raw_data ) ) {
 			return array();
@@ -326,26 +331,19 @@ class Settings {
 				'callback'            => array( $this, 'update_settings_endpoint' ),
 				'permission_callback' => array( $this, 'check_write_permission' ),
 				'args'                => array(
+					// Sanitization for all args is handled centrally in sanitize_settings()
+					// to avoid double-sanitization. Type/description kept for schema docs.
 					'enabled_blocks'     => array(
-						'type'              => 'array',
-						'description'       => __( 'List of enabled block names. Empty array means all enabled.', 'designsetgo' ),
-						'sanitize_callback' => function ( $value ) {
-							return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : array();
-						},
+						'type'        => 'array',
+						'description' => __( 'List of enabled block names. Empty array means all enabled.', 'designsetgo' ),
 					),
 					'enabled_extensions' => array(
-						'type'              => 'array',
-						'description'       => __( 'List of enabled extension names. Empty array means all enabled.', 'designsetgo' ),
-						'sanitize_callback' => function ( $value ) {
-							return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : array();
-						},
+						'type'        => 'array',
+						'description' => __( 'List of enabled extension names. Empty array means all enabled.', 'designsetgo' ),
 					),
 					'excluded_blocks'    => array(
-						'type'              => 'array',
-						'description'       => __( 'Block name patterns excluded from abilities API.', 'designsetgo' ),
-						'sanitize_callback' => function ( $value ) {
-							return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : array();
-						},
+						'type'        => 'array',
+						'description' => __( 'Block name patterns excluded from abilities API.', 'designsetgo' ),
 					),
 					'performance'        => array(
 						'type'        => 'object',
@@ -468,22 +466,31 @@ class Settings {
 	/**
 	 * Update settings endpoint
 	 *
+	 * Supports partial updates: only keys present in the request body are
+	 * changed; all other existing settings are preserved. Nested groups are
+	 * merged field-by-field so sending { "forms": { "retention_days": 60 } }
+	 * updates only that field without resetting the rest of the forms group.
+	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function update_settings_endpoint( $request ) {
 		$new_settings = $request->get_json_params();
 
-		// Sanitize settings.
+		// Sanitize only the incoming keys.
 		$sanitized = $this->sanitize_settings( $new_settings );
 
-		update_option( self::OPTION_NAME, $sanitized );
+		// Merge with existing saved settings so unsubmitted keys are preserved.
+		$existing = get_option( self::OPTION_NAME, array() );
+		$merged   = array_replace_recursive( $existing, $sanitized );
+
+		update_option( self::OPTION_NAME, $merged );
 		self::invalidate_cache();
 
 		return rest_ensure_response(
 			array(
 				'success'  => true,
-				'settings' => $sanitized,
+				'settings' => self::get_settings(),
 			)
 		);
 	}
@@ -673,6 +680,10 @@ class Settings {
 	 * sanitize each setting value by type, eliminating repetitive
 	 * isset/ternary patterns.
 	 *
+	 * Only processes keys present in the input. For nested groups, only
+	 * sanitizes fields that were actually submitted — missing fields are
+	 * omitted (not reset to defaults) so the caller can merge correctly.
+	 *
 	 * @param array $settings Settings to sanitize.
 	 * @return array Sanitized settings.
 	 */
@@ -706,17 +717,20 @@ class Settings {
 			$sanitized[ $key ] = array();
 
 			foreach ( $field_schema as $field_key => $sanitizer ) {
+				// Only sanitize fields that were actually submitted.
+				// Missing fields are omitted so array_replace_recursive in
+				// the caller preserves existing saved values.
+				if ( ! isset( $settings[ $key ][ $field_key ] ) ) {
+					continue;
+				}
+
 				$default = $group_defaults[ $field_key ] ?? null;
 
-				if ( isset( $settings[ $key ][ $field_key ] ) ) {
-					$sanitized[ $key ][ $field_key ] = self::sanitize_value(
-						$settings[ $key ][ $field_key ],
-						$sanitizer,
-						$default
-					);
-				} else {
-					$sanitized[ $key ][ $field_key ] = $default;
-				}
+				$sanitized[ $key ][ $field_key ] = self::sanitize_value(
+					$settings[ $key ][ $field_key ],
+					$sanitizer,
+					$default
+				);
 			}
 		}
 
