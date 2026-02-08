@@ -5,7 +5,7 @@
  * Also handles WordPress 6.1+ object format {top, left} for separate row/column gaps.
  *
  * @param {string|Object} value The preset value or gap object
- * @return {string|undefined} CSS variable format or undefined if no valid value
+ * @return {string|undefined} CSS variable format, coerced string, or undefined if no valid value
  */
 export function convertPresetToCSSVar(value) {
 	if (!value) {
