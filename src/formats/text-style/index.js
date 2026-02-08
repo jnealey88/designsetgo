@@ -13,7 +13,13 @@ import './editor.scss';
 // Note: style.scss is imported in src/styles/style.scss for frontend loading
 
 import { __ } from '@wordpress/i18n';
-import { useState, useCallback, useRef } from '@wordpress/element';
+import {
+	useState,
+	useCallback,
+	useRef,
+	lazy,
+	Suspense,
+} from '@wordpress/element';
 import {
 	registerFormatType,
 	applyFormat,
@@ -21,12 +27,24 @@ import {
 	getActiveFormat,
 } from '@wordpress/rich-text';
 import { BlockControls } from '@wordpress/block-editor';
-import { Popover, ToolbarGroup, ToolbarButton } from '@wordpress/components';
+import {
+	Popover,
+	ToolbarGroup,
+	ToolbarButton,
+	Spinner,
+} from '@wordpress/components';
 import { textColor as textColorIcon } from '@wordpress/icons';
 
 import { FORMAT_NAME, CSS_CLASSES } from './constants';
 import { generateStyleString, parseStyleString, hasAnyStyle } from './utils';
-import TextStylePopover from './components/TextStylePopover';
+
+// Lazy-load the popover content (SizeSection, ColorSection are large)
+const TextStylePopover = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "fmt-text-style" */ './components/TextStylePopover'
+		)
+);
 
 /**
  * Text Style Edit Component
@@ -110,12 +128,25 @@ function TextStyleEdit({ isActive, value, onChange }) {
 					onClose={() => setIsPopoverOpen(false)}
 					focusOnMount="firstElement"
 				>
-					<TextStylePopover
-						styles={currentStyles}
-						onChange={applyStyles}
-						onClear={clearStyles}
-						onClose={() => setIsPopoverOpen(false)}
-					/>
+					<Suspense
+						fallback={
+							<div
+								className="dsgo-text-style-popover__loading"
+								// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+								tabIndex={0}
+								style={{ padding: '16px' }}
+							>
+								<Spinner />
+							</div>
+						}
+					>
+						<TextStylePopover
+							styles={currentStyles}
+							onChange={applyStyles}
+							onClear={clearStyles}
+							onClose={() => setIsPopoverOpen(false)}
+						/>
+					</Suspense>
 				</Popover>
 			)}
 		</BlockControls>

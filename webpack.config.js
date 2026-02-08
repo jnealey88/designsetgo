@@ -192,27 +192,45 @@ module.exports = {
 	},
 	performance: {
 		// ===================================================================
-		// PERFORMANCE BUDGETS (Updated 2025-11-11)
+		// PERFORMANCE BUDGETS (Updated 2026-02-07)
 		// ===================================================================
-		// After optimizations (Grid CSS -84%, Bundle splitting):
+		// After lazy-loading optimizations:
+		// - Extension edit panels: Lazy-loaded as separate chunks (~1-17 KiB each)
 		// - Individual blocks: Target <15KB JS, <10KB CSS (raw)
-		// - Shared chunks: Max 50KB (icon library at 50KB is acceptable)
-		// - Entry points: Max 250KB (editor entry with all extensions)
+		// - Shared chunks: Max 50KB (icon library at ~50KB)
+		// - Entry points: Max 250KB (editor entry with extension wrappers)
 		//
-		// These budgets prevent future bloat and maintain optimization gains.
+		// Main entry (index.js) contains synchronous extension wrappers:
+		//   attribute registration, save filters, and lazy-load HOC shells.
+		//   Heavy editor UI is deferred to lazy chunks (ext-*.js, fmt-*.js).
+		//
 		// Run `ANALYZE=true npm run build` to visualize bundle sizes.
 		// ===================================================================
 		hints: defaultConfig.mode === 'production' ? 'warning' : false,
-		maxEntrypointSize: 250000, // 250KB - main editor entry (tightened from 300KB)
-		maxAssetSize: 50000, // 50KB - individual blocks/chunks (tightened from 120KB)
-		// Filter out asset.php files, source maps, and CSS from performance hints
-		// CSS is less critical as it's loaded async and highly cacheable
+		maxEntrypointSize: 250000, // 250KB - main editor entry (all extensions)
+		maxAssetSize: 50000, // 50KB - individual blocks/chunks
+		// Filter out files that shouldn't trigger performance warnings:
+		// - asset.php manifests, source maps, CSS (loaded async, cacheable)
+		// - Main entry points (covered by maxEntrypointSize instead)
+		// - Shared icon library (code-split, conditionally loaded)
 		assetFilter: (assetFilename) => {
-			return (
-				!assetFilename.endsWith('.asset.php') &&
-				!assetFilename.endsWith('.map') &&
-				!assetFilename.endsWith('.css')
-			);
+			// Skip non-JS assets
+			if (
+				assetFilename.endsWith('.asset.php') ||
+				assetFilename.endsWith('.map') ||
+				assetFilename.endsWith('.css')
+			) {
+				return false;
+			}
+			// Skip main entry points (monitored by maxEntrypointSize)
+			if (/^(index|frontend|admin)\.js$/.test(assetFilename)) {
+				return false;
+			}
+			// Skip shared icon library (conditionally loaded, acceptable at ~50KB)
+			if (assetFilename === 'shared-icon-library-static.js') {
+				return false;
+			}
+			return true;
 		},
 	},
 };

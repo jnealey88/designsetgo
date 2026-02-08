@@ -2,33 +2,29 @@
  * Sticky Header Controls Extension
  *
  * Adds sticky header configuration controls to template parts in the Site Editor.
+ * Editor panel is lazy-loaded to reduce initial bundle size.
  *
  * @package
  * @since 1.0.0
  */
 
-import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/block-editor';
-import {
-	PanelBody,
-	ToggleControl,
-	RangeControl,
-	SelectControl,
-	Notice,
-} from '@wordpress/components';
-import { createHigherOrderComponent } from '@wordpress/compose';
 import { addFilter } from '@wordpress/hooks';
+import { createHigherOrderComponent } from '@wordpress/compose';
+import { lazy, Suspense } from '@wordpress/element';
 import { shouldExtendBlock } from '../../utils/should-extend-block';
+
+// Lazy-load editor panel
+const StickyHeaderPanel = lazy(
+	() => import(/* webpackChunkName: "ext-sticky-header" */ './edit')
+);
 
 /**
  * Add sticky header attributes to template parts
  *
- * @param {Object} settings Block settings object
+ * @param {Object} settings Block settings
  * @param {string} name     Block name
- * @return {Object} Modified settings object
  */
 function addStickyHeaderAttributes(settings, name) {
-	// Check user exclusion list first
 	if (!shouldExtendBlock(name)) {
 		return settings;
 	}
@@ -41,30 +37,12 @@ function addStickyHeaderAttributes(settings, name) {
 		...settings,
 		attributes: {
 			...settings.attributes,
-			dsgoStickyEnabled: {
-				type: 'boolean',
-				default: false,
-			},
-			dsgoStickyShadow: {
-				type: 'string',
-				default: 'medium',
-			},
-			dsgoStickyShrink: {
-				type: 'boolean',
-				default: false,
-			},
-			dsgoStickyShrinkAmount: {
-				type: 'number',
-				default: 15,
-			},
-			dsgoStickyHideOnScroll: {
-				type: 'boolean',
-				default: false,
-			},
-			dsgoStickyBackground: {
-				type: 'boolean',
-				default: false,
-			},
+			dsgoStickyEnabled: { type: 'boolean', default: false },
+			dsgoStickyShadow: { type: 'string', default: 'medium' },
+			dsgoStickyShrink: { type: 'boolean', default: false },
+			dsgoStickyShrinkAmount: { type: 'number', default: 15 },
+			dsgoStickyHideOnScroll: { type: 'boolean', default: false },
+			dsgoStickyBackground: { type: 'boolean', default: false },
 		},
 	};
 }
@@ -76,18 +54,16 @@ addFilter(
 );
 
 /**
- * Add sticky header controls to template parts
+ * Add sticky header controls to template parts (lazy-loaded)
  */
 const withStickyHeaderControls = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
-		const { name, attributes, setAttributes } = props;
+		const { name, attributes } = props;
 
-		// Only add controls to template parts
 		if (name !== 'core/template-part') {
 			return <BlockEdit {...props} />;
 		}
 
-		// Only show for header template parts
 		const isHeader =
 			attributes.area === 'header' ||
 			attributes.slug?.includes('header') ||
@@ -97,171 +73,12 @@ const withStickyHeaderControls = createHigherOrderComponent((BlockEdit) => {
 			return <BlockEdit {...props} />;
 		}
 
-		// Check if global sticky header is enabled.
-		const globalEnabled =
-			window.dsgoStickyHeaderGlobalSettings?.enabled ?? true;
-
 		return (
 			<>
 				<BlockEdit {...props} />
-				<InspectorControls>
-					<PanelBody
-						title={__('Sticky Header', 'designsetgo')}
-						initialOpen={false}
-					>
-						{!globalEnabled && (
-							<Notice status="warning" isDismissible={false}>
-								{__(
-									'Sticky header is disabled in DesignSetGo Settings. Enable it in Settings > DesignSetGo to use these controls.',
-									'designsetgo'
-								)}
-							</Notice>
-						)}
-
-						<p className="components-base-control__help">
-							{__(
-								'Configure sticky header behavior for this template part.',
-								'designsetgo'
-							)}
-						</p>
-
-						<ToggleControl
-							label={__('Enable Sticky Header', 'designsetgo')}
-							help={__(
-								'Make this header stick to the top when scrolling.',
-								'designsetgo'
-							)}
-							checked={attributes.dsgoStickyEnabled || false}
-							disabled={!globalEnabled}
-							onChange={(value) =>
-								setAttributes({ dsgoStickyEnabled: value })
-							}
-						/>
-
-						{attributes.dsgoStickyEnabled && globalEnabled && (
-							<>
-								<SelectControl
-									label={__('Shadow Size', 'designsetgo')}
-									value={
-										attributes.dsgoStickyShadow || 'medium'
-									}
-									options={[
-										{
-											label: __('None', 'designsetgo'),
-											value: 'none',
-										},
-										{
-											label: __('Small', 'designsetgo'),
-											value: 'small',
-										},
-										{
-											label: __('Medium', 'designsetgo'),
-											value: 'medium',
-										},
-										{
-											label: __('Large', 'designsetgo'),
-											value: 'large',
-										},
-									]}
-									onChange={(value) =>
-										setAttributes({
-											dsgoStickyShadow: value,
-										})
-									}
-									help={__(
-										'Shadow depth when scrolled.',
-										'designsetgo'
-									)}
-								/>
-
-								<ToggleControl
-									label={__(
-										'Shrink on Scroll',
-										'designsetgo'
-									)}
-									checked={
-										attributes.dsgoStickyShrink || false
-									}
-									onChange={(value) =>
-										setAttributes({
-											dsgoStickyShrink: value,
-										})
-									}
-								/>
-
-								{attributes.dsgoStickyShrink && (
-									<RangeControl
-										label={__(
-											'Shrink Amount (%)',
-											'designsetgo'
-										)}
-										value={
-											attributes.dsgoStickyShrinkAmount ||
-											15
-										}
-										onChange={(value) =>
-											setAttributes({
-												dsgoStickyShrinkAmount: value,
-											})
-										}
-										min={5}
-										max={50}
-										step={5}
-									/>
-								)}
-
-								<ToggleControl
-									label={__(
-										'Hide on Scroll Down',
-										'designsetgo'
-									)}
-									checked={
-										attributes.dsgoStickyHideOnScroll ||
-										false
-									}
-									onChange={(value) =>
-										setAttributes({
-											dsgoStickyHideOnScroll: value,
-										})
-									}
-									help={__(
-										'Auto-hide when scrolling down, show when scrolling up.',
-										'designsetgo'
-									)}
-								/>
-
-								<ToggleControl
-									label={__(
-										'Background on Scroll',
-										'designsetgo'
-									)}
-									checked={
-										attributes.dsgoStickyBackground || false
-									}
-									onChange={(value) =>
-										setAttributes({
-											dsgoStickyBackground: value,
-										})
-									}
-									help={__(
-										'Use global background color setting when scrolled.',
-										'designsetgo'
-									)}
-								/>
-
-								<p
-									className="components-base-control__help"
-									style={{ marginTop: '16px' }}
-								>
-									{__(
-										'Additional settings like z-index, transition speed, and background color can be configured in DesignSetGo Settings.',
-										'designsetgo'
-									)}
-								</p>
-							</>
-						)}
-					</PanelBody>
-				</InspectorControls>
+				<Suspense fallback={null}>
+					<StickyHeaderPanel {...props} />
+				</Suspense>
 			</>
 		);
 	};
@@ -276,10 +93,9 @@ addFilter(
 /**
  * Apply sticky header classes to template parts on save
  *
- * @param {Object} extraProps Extra props object
- * @param {Object} blockType  Block type object
+ * @param {Object} extraProps Extra props
+ * @param {Object} blockType  Block type
  * @param {Object} attributes Block attributes
- * @return {Object} Modified extra props
  */
 function applyStickyHeaderClasses(extraProps, blockType, attributes) {
 	if (blockType.name !== 'core/template-part') {
@@ -292,22 +108,18 @@ function applyStickyHeaderClasses(extraProps, blockType, attributes) {
 
 	const classes = ['dsgo-sticky-header-enabled'];
 
-	// Add shadow class if not 'none'
 	if (attributes.dsgoStickyShadow && attributes.dsgoStickyShadow !== 'none') {
 		classes.push(`dsgo-sticky-shadow-${attributes.dsgoStickyShadow}`);
 	}
 
-	// Add shrink class
 	if (attributes.dsgoStickyShrink) {
 		classes.push('dsgo-sticky-shrink');
 	}
 
-	// Add hide on scroll class
 	if (attributes.dsgoStickyHideOnScroll) {
 		classes.push('dsgo-sticky-hide-on-scroll-down');
 	}
 
-	// Add background on scroll class
 	if (attributes.dsgoStickyBackground) {
 		classes.push('dsgo-sticky-bg-on-scroll');
 	}
