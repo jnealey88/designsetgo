@@ -1,0 +1,121 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/query-slider",
+	"version": "1.0.0",
+	"title": "Post Slider",
+	"category": "design",
+	"description": "A dynamic slider that displays posts, pages, or custom post types with customizable slide templates, transitions, and navigation.",
+	"keywords": [
+		"slider",
+		"carousel",
+		"posts",
+		"query",
+		"dynamic",
+		"blog",
+		"slideshow"
+	],
+	"textdomain": "designsetgo",
+	"attributes": {
+		"query": {
+			"type": "object",
+			"default": {
+				"postType": "post",
+				"postsPerPage": 6,
+				"orderBy": "date",
+				"order": "desc",
+				"categories": [],
+				"tags": [],
+				"offset": 0,
+				"excludeCurrent": false
+			}
+		},
+		"showTitle": { "type": "boolean", "default": true },
+		"showExcerpt": { "type": "boolean", "default": true },
+		"showDate": { "type": "boolean", "default": false },
+		"showCategory": { "type": "boolean", "default": true },
+		"showReadMore": { "type": "boolean", "default": true },
+		"readMoreText": { "type": "string", "default": "Read More" },
+		"titleTag": { "type": "string", "default": "h3" },
+		"excerptLength": { "type": "number", "default": 20 },
+		"linkTitle": { "type": "boolean", "default": true },
+		"overlayColor": { "type": "string", "default": "rgba(0,0,0,0.4)" },
+		"overlayOpacity": { "type": "number", "default": 60 },
+		"contentVerticalAlign": { "type": "string", "default": "end" },
+		"contentHorizontalAlign": { "type": "string", "default": "start" },
+		"slidesPerView": { "type": "number", "default": 1 },
+		"slidesPerViewTablet": { "type": "number", "default": 1 },
+		"slidesPerViewMobile": { "type": "number", "default": 1 },
+		"height": { "type": "string", "default": "500px" },
+		"useAspectRatio": { "type": "boolean", "default": false },
+		"aspectRatio": { "type": "string", "default": "16/9" },
+		"gap": { "type": "string", "default": "20px" },
+		"showArrows": { "type": "boolean", "default": true },
+		"showDots": { "type": "boolean", "default": true },
+		"arrowStyle": { "type": "string", "default": "default" },
+		"arrowPosition": { "type": "string", "default": "sides" },
+		"arrowVerticalPosition": { "type": "string", "default": "center" },
+		"arrowColor": { "type": "string", "default": "" },
+		"arrowBackgroundColor": { "type": "string", "default": "" },
+		"arrowSize": { "type": "string", "default": "48px" },
+		"arrowPadding": { "type": "string", "default": "" },
+		"dotStyle": { "type": "string", "default": "default" },
+		"dotPosition": { "type": "string", "default": "bottom" },
+		"dotColor": { "type": "string", "default": "" },
+		"effect": { "type": "string", "default": "slide" },
+		"transitionDuration": { "type": "string", "default": "0.5s" },
+		"transitionEasing": { "type": "string", "default": "ease-in-out" },
+		"autoplay": { "type": "boolean", "default": false },
+		"autoplayInterval": { "type": "number", "default": 3000 },
+		"pauseOnHover": { "type": "boolean", "default": true },
+		"pauseOnInteraction": { "type": "boolean", "default": true },
+		"loop": { "type": "boolean", "default": true },
+		"draggable": { "type": "boolean", "default": true },
+		"swipeable": { "type": "boolean", "default": true },
+		"freeMode": { "type": "boolean", "default": false },
+		"centeredSlides": { "type": "boolean", "default": false },
+		"mobileBreakpoint": { "type": "number", "default": 768 },
+		"tabletBreakpoint": { "type": "number", "default": 1024 },
+		"styleVariation": { "type": "string", "default": "classic" },
+		"ariaLabel": { "type": "string", "default": "" }
+	},
+	"supports": {
+		"anchor": true,
+		"align": ["wide", "full"],
+		"html": false,
+		"spacing": { "margin": true, "padding": true },
+		"color": { "background": true, "gradient": true, "text": true },
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"fontFamily": true,
+			"fontWeight": true,
+			"textTransform": true,
+			"letterSpacing": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		}
+	},
+	"example": {
+		"attributes": {
+			"query": {
+				"postType": "post",
+				"postsPerPage": 3,
+				"orderBy": "date",
+				"order": "desc"
+			},
+			"effect": "slide",
+			"showArrows": true,
+			"showDots": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

@@ -1,0 +1,98 @@
+/**
+ * Query Slider Block - Frontend Styles
+ *
+ * Imports the base slider and slide styles, then adds styles specific
+ * to the query-generated slide content (title, excerpt, category, etc.).
+ */
+
+// Pull in all base slider + slide styles so the same visual treatment applies.
+@use '../slider/style' as *;
+@use '../slide/style' as *;
+
+// ── Query slide content elements ─────────────────────────────────────
+.dsgo-query-slide__category {
+	display: inline-block;
+	padding: 0.25em 0.75em;
+	font-size: 0.75em;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	background: var(--wp--preset--color--primary, #2563eb);
+	color: var(--wp--preset--color--base, #fff);
+	border-radius: 2px;
+	margin-bottom: 0.75em;
+}
+
+.dsgo-query-slide__date {
+	display: block;
+	font-size: 0.8em;
+	opacity: 0.85;
+	margin-bottom: 0.5em;
+}
+
+.dsgo-query-slide__title {
+	font-size: 1.5em;
+	font-weight: 700;
+	line-height: 1.3;
+	margin: 0 0 0.5em;
+
+	a {
+		color: inherit;
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			text-decoration: underline;
+		}
+	}
+}
+
+.dsgo-query-slide__excerpt {
+	font-size: 0.95em;
+	line-height: 1.6;
+	opacity: 0.9;
+	margin: 0 0 1em;
+}
+
+.dsgo-query-slide__read-more {
+	display: inline-block;
+	padding: 0.5em 1.25em;
+	font-size: 0.85em;
+	font-weight: 600;
+	text-decoration: none;
+	border: 2px solid currentColor;
+	border-radius: 4px;
+	color: inherit;
+	transition: background-color 0.2s ease, color 0.2s ease;
+
+	&:hover,
+	&:focus {
+		background: var(--wp--preset--color--base, #fff);
+		color: var(--wp--preset--color--contrast, #000);
+	}
+}
+
+// ── When slides have a background image, use light text ──────────────
+.dsgo-slide--has-background {
+	.dsgo-query-slide__title,
+	.dsgo-query-slide__excerpt,
+	.dsgo-query-slide__date,
+	.dsgo-query-slide__read-more {
+		color: var(--wp--preset--color--base, #fff);
+	}
+}
+
+// ── Ensure content has reasonable max-width inside slides ────────────
+.dsgo-slide__content {
+	.dsgo-query-slide__title,
+	.dsgo-query-slide__excerpt {
+		max-width: 40em;
+	}
+}
+
+// ── Reduced motion ───────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+	.dsgo-query-slide__read-more {
+		transition: none;
+	}
+}

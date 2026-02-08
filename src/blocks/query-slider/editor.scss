@@ -1,0 +1,57 @@
+/**
+ * Query Slider Block - Editor Styles
+ *
+ * Editor-specific styles for the query slider preview.
+ */
+
+// Import the base frontend styles.
+@use './style' as *;
+
+// Import slider editor styles for arrow/dot editor behavior.
+@use '../slider/editor' as *;
+
+// ── Loading state ────────────────────────────────────────────────────
+.dsgo-query-slider__loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	min-height: 200px;
+	color: #757575;
+}
+
+// ── Editor slide previews ────────────────────────────────────────────
+// Override the scrollable track behavior from slider editor.scss
+// to use transform-based navigation for the query slider preview.
+.wp-block-designsetgo-query-slider {
+	.dsgo-slider__track {
+		overflow: hidden;
+		scroll-snap-type: none;
+		transition: transform 0.3s ease;
+	}
+
+	// In the editor, make slides non-interactive (no actual navigation).
+	.dsgo-slide {
+		pointer-events: none;
+
+		a {
+			pointer-events: none;
+		}
+	}
+
+	// Editor nav buttons.
+	.dsgo-slider__arrow--editor-only {
+		pointer-events: auto;
+		cursor: pointer;
+
+		&:disabled {
+			opacity: 0.3;
+			cursor: not-allowed;
+		}
+	}
+
+	.dsgo-slider__dots--editor-only {
+		pointer-events: auto;
+	}
+}
