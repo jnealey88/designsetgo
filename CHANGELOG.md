@@ -10,9 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### New Blocks
 - **Comparison Table** - Flexible product/plan comparison with 2–6 dynamic columns, checkmark/X/text cells, featured column highlighting, CTA buttons, and responsive horizontal scroll or stack layout
 - **Timeline** - Chronological content display with vertical and horizontal orientations, alternating/left/right layouts, customizable markers (circle/square/diamond), scroll-triggered animations, and optional links
+- **Advanced Heading** - Create headings with multiple font styles, weights, and colors using independent heading segments — each segment supports independent typography, color, and rich text formatting within a single semantic heading element (H1–H6)
 
-### New Extension
+### New Extensions
 - **Grid Mobile Order** - Reorder grid items on mobile without changing the desktop layout or HTML structure — solves the zigzag stacking problem for alternating row designs
+- **SVG Patterns** - Add 25+ repeatable SVG background patterns (simple, geometric, organic, decorative, architectural, technical) to sections and groups with customizable color, opacity, and scale — rendered as pure CSS for zero-JavaScript frontend performance
 
 ### Added
 - **Shape Dividers for Sections** - 24 decorative shapes (waves, curves, triangles, peaks, clouds, zigzag, torn paper, and more) for top and bottom of Section blocks with customizable color, height, width, and flip options
@@ -29,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Row block now supports vertical alignment (top, center, bottom, stretch, space-between)
 - Section block vertical alignment now works properly when min-height is set
 - Modal Trigger inherits WordPress button styles from theme.json and supports left/center/right/full alignment
+- Icon Button link settings moved to inline toolbar with WordPress LinkControl for URL search and autocomplete, matching core Button block pattern
 - Pattern loading optimized with caching and editor-only registration for faster page loads
 - Code splitting with lazy loading for extensions and admin pages reduces initial bundle size and speeds up editor load
 - Animation frontend performance optimized with shared IntersectionObserver instances and automatic garbage collection
@@ -50,6 +53,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Background images with URL query parameters now render correctly on the frontend
 - Icon block sizing improved in editor with reduced min-height and min-width
 - Draft mode no longer strips CSS display properties, SVG content, or accessibility attributes from block markup
+- Modal trigger button padding now consistent with WordPress buttons; link-style triggers maintain compact styling on mobile
+- Card block badge and overlay color controls now appear correctly in sidebar
+- Sticky header no longer overrides custom button and element colors in non-navigation areas
+
+### Internationalization
+- Updated translation strings for v1.5.0 across all 9 supported languages (German, Spanish, French, Italian, Japanese, Dutch, Portuguese, Russian, Chinese) — includes new Advanced Heading, Heading Segment, SVG Patterns, pattern categories, and form field type strings
 
 ### Security
 - Fixed potential XSS bypass in block attribute sanitization with double-encoding defense
