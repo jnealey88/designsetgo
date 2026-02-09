@@ -305,6 +305,20 @@ class Draft_Mode_REST {
 		// Strip javascript: protocol URLs from href/src/action attributes.
 		$content = preg_replace( '/(\s(?:href|src|action)\s*=\s*["\'])\s*javascript\s*:[^"\']*(["\'])/is', '$1#$2', $content );
 
+		// Preserve WordPress block comment delimiters before wp_kses, which
+		// strips all HTML comments. Block delimiters (<!-- wp:name {...} -->)
+		// are required for the block editor to parse content correctly.
+		$placeholders = array();
+		$content      = preg_replace_callback(
+			'/<!--\s+\/?wp:[a-z][a-z0-9-]*(?:\/[a-z][a-z0-9-]*)?\s*(\{[^}]*\}\s*)?\/?\s*-->/',
+			function ( $match ) use ( &$placeholders ) {
+				$key                  = '%%DSGO_BLOCK_COMMENT_' . count( $placeholders ) . '%%';
+				$placeholders[ $key ] = $match[0];
+				return $key;
+			},
+			$content
+		);
+
 		// Temporarily allow CSS display property through wp_kses. The default
 		// safecss_filter_attr strips display:flex/grid/inline-flex which blocks
 		// need for layout.
@@ -318,6 +332,15 @@ class Draft_Mode_REST {
 		$content = wp_kses( $content, self::get_block_allowed_html() );
 
 		remove_filter( 'safe_style_css', $allow_display );
+
+		// Restore block comment delimiters, validating each placeholder exists.
+		if ( ! empty( $placeholders ) ) {
+			foreach ( $placeholders as $key => $original ) {
+				if ( false !== strpos( $content, $key ) ) {
+					$content = str_replace( $key, $original, $content );
+				}
+			}
+		}
 
 		// Restore SVG camelCase attributes that wp_kses lowercases.
 		$svg_case_map = array(
@@ -502,7 +525,10 @@ class Draft_Mode_REST {
 		);
 
 		// Sanitize block content to prevent XSS while preserving legitimate block HTML.
-		if ( isset( $overrides['content'] ) ) {
+		// Skip for users with unfiltered_html capability (admins on single-site),
+		// matching WordPress's own behavior — wp_insert_post() does not apply kses
+		// filtering for these users.
+		if ( isset( $overrides['content'] ) && ! current_user_can( 'unfiltered_html' ) ) {
 			$overrides['content'] = self::sanitize_block_content( $overrides['content'] );
 		}
 
