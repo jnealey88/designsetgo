@@ -83,7 +83,34 @@ function clamp(value, min, max) {
 }
 
 /**
+ * Get an element's absolute top position from the document (layout position).
+ *
+ * Uses offsetTop chain instead of getBoundingClientRect() because offsetTop
+ * is NOT affected by CSS transforms. This prevents a feedback loop where the
+ * parallax transform shifts the bounding rect, causing the next frame to
+ * calculate a different offset. This fix is critical for large elements like
+ * sections where the feedback loop was dampening the parallax effect.
+ *
+ * @param {HTMLElement} element Target element
+ * @return {number} Absolute top position in pixels from document top
+ */
+function getAbsoluteTop(element) {
+	let top = 0;
+	let el = element;
+	while (el) {
+		top += el.offsetTop;
+		el = el.offsetParent;
+	}
+	return top;
+}
+
+/**
  * Calculate parallax offset for an element
+ *
+ * Uses one-directional offset: elements start at their natural position
+ * (offset = 0) when entering the viewport and move in the specified direction
+ * as the user scrolls. This prevents "down" parallax from pushing elements
+ * upward initially, which caused adjacent elements to stack/overlap.
  *
  * @param {HTMLElement} element        Element with parallax
  * @param {Object}      settings       Parsed settings
@@ -92,9 +119,8 @@ function clamp(value, min, max) {
  * @return {Object} Object with x and y offset values in pixels
  */
 function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
-	const rect = element.getBoundingClientRect();
-	const elementTop = rect.top + scrollY;
-	const elementHeight = rect.height;
+	const elementTop = getAbsoluteTop(element);
+	const elementHeight = element.offsetHeight;
 
 	// Calculate scroll range based on relativeTo setting
 	let scrollStart, scrollEnd;
@@ -125,36 +151,34 @@ function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
 	const rangeDiff = adjustedEnd - adjustedStart;
 	const progress =
 		rangeDiff === 0
-			? 0.5
+			? 0
 			: clamp((scrollY - adjustedStart) / rangeDiff, 0, 1);
 
 	// Convert speed (0-10) to max pixel offset
 	// Speed 10 = 200px max movement, Speed 0 = 0px
 	const maxOffset = settings.speed * 20;
 
-	// Calculate base offset
-	// Progress 0.5 = center position (no offset)
-	const baseOffset = (progress - 0.5) * maxOffset * 2;
-
-	// Calculate x and y offsets based on direction
+	// One-directional offset: start at natural position (0), move toward maxOffset.
+	// Progress 0 = entering viewport = no offset (natural position)
+	// Progress 1 = exiting viewport = full offset
 	let offsetX = 0;
 	let offsetY = 0;
 
 	switch (settings.direction) {
 		case 'up':
-			offsetY = -baseOffset;
+			offsetY = -(progress * maxOffset);
 			break;
 		case 'down':
-			offsetY = baseOffset;
+			offsetY = progress * maxOffset;
 			break;
 		case 'left':
-			offsetX = -baseOffset;
+			offsetX = -(progress * maxOffset);
 			break;
 		case 'right':
-			offsetX = baseOffset;
+			offsetX = progress * maxOffset;
 			break;
 		default:
-			offsetY = -baseOffset;
+			offsetY = -(progress * maxOffset);
 	}
 
 	return { x: offsetX, y: offsetY };

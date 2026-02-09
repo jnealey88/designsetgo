@@ -288,6 +288,9 @@ class Plugin {
 
 		// Inject API keys into Map block on render.
 		add_filter( 'render_block_designsetgo/map', array( $this, 'inject_map_api_key' ), 10, 2 );
+
+		// Inject parallax data attributes into block output (server-side fallback).
+		add_filter( 'render_block', array( $this, 'inject_parallax_attributes' ), 10, 2 );
 	}
 
 	/**
@@ -431,5 +434,54 @@ class Plugin {
 		$replacement = '$1 data-dsgo-api-key="' . esc_attr( $api_key ) . '"';
 
 		return preg_replace( $pattern, $replacement, $block_content, 1 );
+	}
+
+	/**
+	 * Inject parallax data attributes into block output.
+	 *
+	 * Server-side fallback that ensures parallax data attributes are present
+	 * on block HTML even if the client-side blocks.getSaveContent.extraProps
+	 * filter didn't persist them. Uses WP_HTML_Tag_Processor for safe HTML
+	 * modification.
+	 *
+	 * @param string $block_content Rendered block content.
+	 * @param array  $block         Block data including attrs.
+	 * @return string Modified block content.
+	 */
+	public function inject_parallax_attributes( $block_content, $block ) {
+		// Only process blocks with parallax enabled.
+		if ( empty( $block['attrs']['dsgoParallaxEnabled'] ) ) {
+			return $block_content;
+		}
+
+		// Skip if data attributes already exist in the HTML.
+		if ( strpos( $block_content, 'data-dsgo-parallax-enabled' ) !== false ) {
+			return $block_content;
+		}
+
+		// Skip empty content.
+		if ( empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		$attrs = $block['attrs'];
+
+		$processor = new \WP_HTML_Tag_Processor( $block_content );
+		if ( $processor->next_tag() ) {
+			$processor->set_attribute( 'data-dsgo-parallax-enabled', 'true' );
+			$processor->set_attribute( 'data-dsgo-parallax-direction', $attrs['dsgoParallaxDirection'] ?? 'up' );
+			$processor->set_attribute( 'data-dsgo-parallax-speed', (string) ( $attrs['dsgoParallaxSpeed'] ?? 5 ) );
+			$processor->set_attribute( 'data-dsgo-parallax-viewport-start', (string) ( $attrs['dsgoParallaxViewportStart'] ?? 0 ) );
+			$processor->set_attribute( 'data-dsgo-parallax-viewport-end', (string) ( $attrs['dsgoParallaxViewportEnd'] ?? 100 ) );
+			$processor->set_attribute( 'data-dsgo-parallax-relative-to', $attrs['dsgoParallaxRelativeTo'] ?? 'viewport' );
+			$processor->set_attribute( 'data-dsgo-parallax-desktop', ( $attrs['dsgoParallaxDesktop'] ?? true ) ? 'true' : 'false' );
+			$processor->set_attribute( 'data-dsgo-parallax-tablet', ( $attrs['dsgoParallaxTablet'] ?? true ) ? 'true' : 'false' );
+			$processor->set_attribute( 'data-dsgo-parallax-mobile', ( $attrs['dsgoParallaxMobile'] ?? false ) ? 'true' : 'false' );
+			$processor->add_class( 'dsgo-has-parallax' );
+
+			$block_content = $processor->get_updated_html();
+		}
+
+		return $block_content;
 	}
 }
