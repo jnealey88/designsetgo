@@ -31,10 +31,8 @@ class Global_Styles {
 	 * Extend theme.json with DesignSetGo presets.
 	 *
 	 * Adds DesignSetGo-specific settings and spacing presets:
-	 * - Standard WP spacing slugs (20, 30, 40, etc.) are ALWAYS added to ensure
-	 *   block styles work reliably, even when themes use different slug names.
-	 * - Legacy DSG slugs (xs, sm, md, etc.) are only added when the theme doesn't
-	 *   define custom spacing, for backward compatibility with existing content.
+	 * - Spacing sizes (both standard WP slugs and legacy DSG slugs) are only added
+	 *   when the theme doesn't define its own spacingSizes, respecting theme values.
 	 * - Font sizes are only added when theme doesn't define them.
 	 * - Color palette, gradients, and duotone are NOT added (respects theme colors).
 	 *
@@ -82,18 +80,43 @@ class Global_Styles {
 			),
 		);
 
-		// Always provide WP standard spacing slugs so block styles work reliably.
-		// These are added even if theme has custom spacing, to ensure blocks have
-		// consistent defaults. Legacy DSG slugs are only added when theme doesn't
-		// define spacing, for backward compatibility with existing content.
-		$dsg_settings['settings']['spacing']['spacingSizes'] = $this->get_standard_spacing_sizes();
-		$dsg_settings['settings']['spacing']['spacingScale'] = array( 'steps' => 0 );
-
-		// Add legacy DSG slugs only if theme doesn't define spacing (for backward compatibility).
+		// Only add spacing presets and block spacing defaults when the theme
+		// doesn't define its own spacingSizes. Themes that define spacingSizes
+		// (e.g. with clamp() or responsive values) should not be overwritten.
+		// Blocks inherit the theme's spacing rhythm via blockGap support and
+		// the theme's spacing presets resolve automatically.
 		if ( ! $this->theme_has_spacing_sizes( $theme_data ) ) {
 			$dsg_settings['settings']['spacing']['spacingSizes'] = array_merge(
-				$dsg_settings['settings']['spacing']['spacingSizes'],
+				$this->get_standard_spacing_sizes(),
 				$this->get_legacy_spacing_sizes()
+			);
+			$dsg_settings['settings']['spacing']['spacingScale'] = array( 'steps' => 0 );
+
+			// Block spacing defaults — only applied when DSG controls the spacing
+			// scale. When theme has spacing, blocks inherit from the theme's system.
+			$dsg_settings['styles']['blocks']['designsetgo/container']['spacing'] = array(
+				'padding'  => array(
+					'top'    => 'var(--wp--preset--spacing--40, 1.5rem)',
+					'bottom' => 'var(--wp--preset--spacing--40, 1.5rem)',
+					'left'   => 'var(--wp--preset--spacing--20, 0.5rem)',
+					'right'  => 'var(--wp--preset--spacing--20, 0.5rem)',
+				),
+				'blockGap' => 'var(--wp--preset--spacing--30, 1rem)',
+			);
+			$dsg_settings['styles']['blocks']['designsetgo/tabs']['spacing'] = array(
+				'margin' => array(
+					'top'    => 'var(--wp--preset--spacing--40, 1.5rem)',
+					'bottom' => 'var(--wp--preset--spacing--40, 1.5rem)',
+				),
+			);
+			$dsg_settings['styles']['blocks']['designsetgo/tab']['spacing'] = array(
+				'padding'  => array(
+					'top'    => 'var(--wp--preset--spacing--50, 2rem)',
+					'bottom' => 'var(--wp--preset--spacing--50, 2rem)',
+					'left'   => 'var(--wp--preset--spacing--40, 1.5rem)',
+					'right'  => 'var(--wp--preset--spacing--40, 1.5rem)',
+				),
+				'blockGap' => 'var(--wp--preset--spacing--30, 1rem)',
 			);
 		}
 
@@ -130,8 +153,8 @@ class Global_Styles {
 	/**
 	 * Get WordPress standard spacing sizes.
 	 *
-	 * These are always provided to ensure block styles work reliably,
-	 * even when themes define custom spacing with different slug names.
+	 * These are used as fallbacks when the active theme does not define
+	 * its own spacingSizes in theme.json.
 	 *
 	 * @return array Standard spacing sizes.
 	 */
@@ -285,53 +308,38 @@ class Global_Styles {
 	}
 
 	/**
-	 * Get Container block global styles.
+	 * Get Container block global styles (non-spacing).
 	 *
-	 * This defines how the Container block appears by default and what
-	 * users can customize from Styles → Blocks → Container in Site Editor.
+	 * Returns border and color defaults. Spacing (padding, blockGap) is added
+	 * conditionally in extend_theme_json() only when the theme doesn't define
+	 * its own spacingSizes, so blocks inherit the theme's spacing rhythm.
 	 *
 	 * @param array $saved_styles Saved user styles.
 	 * @return array Container block styles.
 	 */
 	private function get_container_block_styles( $saved_styles ) {
 		return array(
-			'spacing' => array(
-				'padding'  => array(
-					'top'    => 'var(--wp--preset--spacing--40)',
-					'bottom' => 'var(--wp--preset--spacing--40)',
-					'left'   => 'var(--wp--preset--spacing--20)',
-					'right'  => 'var(--wp--preset--spacing--20)',
-				),
-				'blockGap' => 'var(--wp--preset--spacing--30)',
-			),
-			'border'  => array(
+			'border' => array(
 				'radius' => 'var(--wp--custom--designsetgo--border-radius--medium)',
 			),
-			'color'   => array(
+			'color'  => array(
 				'background' => 'transparent',
 			),
 		);
 	}
 
 	/**
-	 * Get Tabs block global styles.
+	 * Get Tabs block global styles (non-spacing).
 	 *
-	 * This defines how the Tabs block appears by default and what
-	 * users can customize from Styles → Blocks → Tabs in Site Editor.
-	 *
-	 * Uses TT5 semantic colors for theme consistency.
+	 * Returns typography, color, and element defaults. Spacing (margin) is
+	 * added conditionally in extend_theme_json() only when the theme doesn't
+	 * define its own spacingSizes.
 	 *
 	 * @param array $saved_styles Saved user styles.
 	 * @return array Tabs block styles.
 	 */
 	private function get_tabs_block_styles( $saved_styles ) {
 		return array(
-			'spacing'    => array(
-				'margin' => array(
-					'top'    => 'var(--wp--preset--spacing--40)',
-					'bottom' => 'var(--wp--preset--spacing--40)',
-				),
-			),
 			'typography' => array(
 				'fontSize'   => 'var(--wp--preset--font-size--medium)',
 				'fontWeight' => '500',
@@ -366,28 +374,18 @@ class Global_Styles {
 	}
 
 	/**
-	 * Get Tab block global styles.
+	 * Get Tab block global styles (non-spacing).
 	 *
-	 * This defines how individual Tab panels appear by default and what
-	 * users can customize from Styles → Blocks → Tab in Site Editor.
-	 *
-	 * Uses TT5 semantic colors for theme consistency.
+	 * Returns color defaults. Spacing (padding, blockGap) is added
+	 * conditionally in extend_theme_json() only when the theme doesn't
+	 * define its own spacingSizes.
 	 *
 	 * @param array $saved_styles Saved user styles.
 	 * @return array Tab block styles.
 	 */
 	private function get_tab_block_styles( $saved_styles ) {
 		return array(
-			'spacing' => array(
-				'padding'  => array(
-					'top'    => 'var(--wp--preset--spacing--50)',
-					'bottom' => 'var(--wp--preset--spacing--50)',
-					'left'   => 'var(--wp--preset--spacing--40)',
-					'right'  => 'var(--wp--preset--spacing--40)',
-				),
-				'blockGap' => 'var(--wp--preset--spacing--30)',
-			),
-			'color'   => array(
+			'color' => array(
 				'background' => 'transparent',
 				'text'       => 'var(--wp--preset--color--contrast)',
 			),
