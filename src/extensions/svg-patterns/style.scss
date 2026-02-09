@@ -1,0 +1,25 @@
+/**
+ * SVG Patterns Extension - Frontend Styles
+ *
+ * @package DesignSetGo
+ */
+
+.has-dsgo-svg-pattern {
+	position: relative;
+	isolation: isolate;
+
+	// Pattern overlay via pseudo-element — sits behind content at z-index -1,
+	// consistent with expanding-background extension approach
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		border-radius: inherit;
+		background-image: var(--dsgo-svg-pattern-image, none);
+		background-size: var(--dsgo-svg-pattern-size, auto);
+		background-repeat: repeat;
+		background-attachment: var(--dsgo-svg-pattern-attachment, scroll);
+	}
+}

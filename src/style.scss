@@ -24,6 +24,7 @@
 @use './extensions/clickable-group/styles' as clickable-group;
 @use './extensions/text-reveal/style' as text-reveal;
 @use './extensions/expanding-background/style' as expanding-background;
+@use './extensions/svg-patterns/style' as svg-patterns;
 
 // Rich text formats (frontend)
 @use './formats/text-style/style' as text-style;
