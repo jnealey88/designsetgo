@@ -28,11 +28,11 @@ const TEMPLATE = [
 	[
 		'designsetgo/heading-segment',
 		{
-			content: 'Bold ',
+			content: __('Bold', 'designsetgo'),
 			style: { typography: { fontWeight: '700' } },
 		},
 	],
-	['designsetgo/heading-segment', { content: 'Heading' }],
+	['designsetgo/heading-segment', { content: __('Heading', 'designsetgo') }],
 ];
 
 const HEADING_LEVELS = [1, 2, 3, 4, 5, 6];

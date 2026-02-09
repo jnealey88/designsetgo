@@ -302,9 +302,9 @@ class Draft_Mode_REST {
 		// are required for the block editor to parse content correctly.
 		$placeholders = array();
 		$content      = preg_replace_callback(
-			'/<!--\s+\/?wp:[a-z][a-z0-9-]*\/?\s*(\{[^}]*\}\s*)?-->/',
+			'/<!--\s+\/?wp:[a-z][a-z0-9-]*(?:\/[a-z][a-z0-9-]*)?\s*(\{[^}]*\}\s*)?\/?\s*-->/',
 			function ( $match ) use ( &$placeholders ) {
-				$key                    = "\x00BLOCK_COMMENT_" . count( $placeholders ) . "\x00";
+				$key                  = '%%DSGO_BLOCK_COMMENT_' . count( $placeholders ) . '%%';
 				$placeholders[ $key ] = $match[0];
 				return $key;
 			},
@@ -325,9 +325,13 @@ class Draft_Mode_REST {
 
 		remove_filter( 'safe_style_css', $allow_display );
 
-		// Restore block comment delimiters.
+		// Restore block comment delimiters, validating each placeholder exists.
 		if ( ! empty( $placeholders ) ) {
-			$content = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $content );
+			foreach ( $placeholders as $key => $original ) {
+				if ( false !== strpos( $content, $key ) ) {
+					$content = str_replace( $key, $original, $content );
+				}
+			}
 		}
 
 		// Restore SVG camelCase attributes that wp_kses lowercases.
