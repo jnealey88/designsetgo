@@ -19,7 +19,7 @@
 	font-size: 11px;
 	font-weight: 500;
 	text-transform: uppercase;
-	color: #757575;
+	color: var(--wp-components-color-foreground-inverted, #757575);
 }
 
 .dsgo-advanced-heading__level-buttons {
@@ -35,24 +35,24 @@
 	min-width: 36px;
 	height: 36px;
 	padding: 0 8px;
-	border: 1px solid #ddd;
+	border: 1px solid var(--wp-components-color-accent-inverted, #ddd);
 	border-radius: 4px;
-	background: #fff;
-	color: #1e1e1e;
+	background: var(--wp-components-color-background, #fff);
+	color: var(--wp-components-color-foreground, #1e1e1e);
 	font-size: 13px;
 	font-weight: 600;
 	cursor: pointer;
 	transition: all 0.12s ease;
 
 	&:hover {
-		background: #f0f0f0;
-		border-color: #999;
+		background: var(--wp-components-color-gray-100, #f0f0f0);
+		border-color: var(--wp-components-color-gray-400, #999);
 	}
 
 	&.is-active {
-		background: #1e1e1e;
-		border-color: #1e1e1e;
-		color: #fff;
+		background: var(--wp-components-color-foreground, #1e1e1e);
+		border-color: var(--wp-components-color-foreground, #1e1e1e);
+		color: var(--wp-components-color-background, #fff);
 	}
 }
 

@@ -17,6 +17,8 @@
 	"attributes": {
 		"content": {
 			"type": "string",
+			"source": "html",
+			"selector": ".dsgo-heading-segment__text",
 			"default": ""
 		}
 	},

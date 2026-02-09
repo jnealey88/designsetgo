@@ -15,10 +15,14 @@ import { useBlockProps, RichText } from '@wordpress/block-editor';
  *
  * @param {Object} props            - Component props
  * @param {Object} props.attributes - Block attributes
- * @return {JSX.Element} Saved heading segment markup
+ * @return {JSX.Element|null} Saved heading segment markup, or null if empty
  */
 export default function HeadingSegmentSave({ attributes }) {
 	const { content } = attributes;
+
+	if (!content || !content.trim()) {
+		return null;
+	}
 
 	const blockProps = useBlockProps.save({
 		className: 'dsgo-heading-segment',

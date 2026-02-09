@@ -7,7 +7,10 @@
  * @since 1.5.0
  */
 
+import classnames from 'classnames';
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+
+const HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
 
 /**
  * Advanced Heading Save Function
@@ -17,11 +20,14 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  * @return {JSX.Element} Saved advanced heading block markup
  */
 export default function AdvancedHeadingSave({ attributes }) {
-	const { level, textAlign } = attributes;
-	const TagName = `h${level}`;
+	const { level = 2, textAlign } = attributes;
+	const validLevel = HEADING_LEVELS.includes(level) ? level : 2;
+	const TagName = `h${validLevel}`;
 
 	const blockProps = useBlockProps.save({
-		className: `dsgo-advanced-heading${textAlign ? ` has-text-align-${textAlign}` : ''}`,
+		className: classnames('dsgo-advanced-heading', {
+			[`has-text-align-${textAlign}`]: textAlign,
+		}),
 	});
 
 	const innerBlocksProps = useInnerBlocksProps.save({

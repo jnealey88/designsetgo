@@ -33,16 +33,8 @@ registerBlockType(metadata.name, {
 				strokeLinecap="round"
 				strokeLinejoin="round"
 			>
-				<text
-					x="4"
-					y="18"
-					fontSize="16"
-					fontWeight="bold"
-					fill="currentColor"
-					stroke="none"
-				>
-					Aa
-				</text>
+				<path d="M5 4v16M5 12h6M11 4v16" />
+				<path d="M15 12h6M18 8v8" />
 			</svg>
 		),
 		foreground: ICON_COLOR,
