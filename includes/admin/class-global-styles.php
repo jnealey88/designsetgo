@@ -31,10 +31,8 @@ class Global_Styles {
 	 * Extend theme.json with DesignSetGo presets.
 	 *
 	 * Adds DesignSetGo-specific settings and spacing presets:
-	 * - Standard WP spacing slugs (20, 30, 40, etc.) are ALWAYS added to ensure
-	 *   block styles work reliably, even when themes use different slug names.
-	 * - Legacy DSG slugs (xs, sm, md, etc.) are only added when the theme doesn't
-	 *   define custom spacing, for backward compatibility with existing content.
+	 * - Spacing sizes (both standard WP slugs and legacy DSG slugs) are only added
+	 *   when the theme doesn't define its own spacingSizes, respecting theme values.
 	 * - Font sizes are only added when theme doesn't define them.
 	 * - Color palette, gradients, and duotone are NOT added (respects theme colors).
 	 *
@@ -82,19 +80,16 @@ class Global_Styles {
 			),
 		);
 
-		// Always provide WP standard spacing slugs so block styles work reliably.
-		// These are added even if theme has custom spacing, to ensure blocks have
-		// consistent defaults. Legacy DSG slugs are only added when theme doesn't
-		// define spacing, for backward compatibility with existing content.
-		$dsg_settings['settings']['spacing']['spacingSizes'] = $this->get_standard_spacing_sizes();
-		$dsg_settings['settings']['spacing']['spacingScale'] = array( 'steps' => 0 );
-
-		// Add legacy DSG slugs only if theme doesn't define spacing (for backward compatibility).
+		// Only add spacing presets when the theme doesn't define its own.
+		// Themes that define spacingSizes (e.g. with clamp() or px values) should
+		// not be overwritten — blocks using var(--wp--preset--spacing--XX) will
+		// resolve against whatever the active theme provides.
 		if ( ! $this->theme_has_spacing_sizes( $theme_data ) ) {
 			$dsg_settings['settings']['spacing']['spacingSizes'] = array_merge(
-				$dsg_settings['settings']['spacing']['spacingSizes'],
+				$this->get_standard_spacing_sizes(),
 				$this->get_legacy_spacing_sizes()
 			);
+			$dsg_settings['settings']['spacing']['spacingScale'] = array( 'steps' => 0 );
 		}
 
 		// Only add font sizes if theme doesn't define them.
@@ -130,8 +125,8 @@ class Global_Styles {
 	/**
 	 * Get WordPress standard spacing sizes.
 	 *
-	 * These are always provided to ensure block styles work reliably,
-	 * even when themes define custom spacing with different slug names.
+	 * These are used as fallbacks when the active theme does not define
+	 * its own spacingSizes in theme.json.
 	 *
 	 * @return array Standard spacing sizes.
 	 */
