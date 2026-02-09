@@ -1,0 +1,92 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/advanced-heading",
+	"version": "1.0.0",
+	"title": "Advanced Heading",
+	"category": "text",
+	"description": "Create headings with multiple font styles — mix fonts, weights, and colors within a single heading for advanced typographic designs.",
+	"keywords": [
+		"heading",
+		"title",
+		"typography",
+		"multi-font",
+		"advanced"
+	],
+	"textdomain": "designsetgo",
+	"attributes": {
+		"level": {
+			"type": "number",
+			"default": 2,
+			"enum": [1, 2, 3, 4, 5, 6]
+		},
+		"textAlign": {
+			"type": "string"
+		}
+	},
+	"providesContext": {
+		"designsetgo/advancedHeading/level": "level"
+	},
+	"supports": {
+		"anchor": true,
+		"html": false,
+		"inserter": true,
+		"align": [
+			"left",
+			"center",
+			"right",
+			"wide",
+			"full"
+		],
+		"color": {
+			"text": true,
+			"background": true,
+			"gradients": true,
+			"__experimentalDefaultControls": {
+				"text": true,
+				"background": false
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"margin": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		}
+	},
+	"example": {
+		"attributes": {
+			"level": 2
+		},
+		"innerBlocks": [
+			{
+				"name": "designsetgo/heading-segment",
+				"attributes": {
+					"content": "Design"
+				}
+			},
+			{
+				"name": "designsetgo/heading-segment",
+				"attributes": {
+					"content": "SetGo"
+				}
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./index.css"
+}

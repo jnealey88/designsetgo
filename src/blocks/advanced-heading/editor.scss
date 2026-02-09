@@ -1,0 +1,73 @@
+/**
+ * Advanced Heading Block Editor Styles
+ */
+
+.dsgo-advanced-heading {
+
+	.dsgo-advanced-heading__inner {
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+	}
+}
+
+// Heading level picker in the inspector
+.dsgo-advanced-heading__level-label {
+	margin-bottom: 8px;
+	font-size: 11px;
+	font-weight: 500;
+	text-transform: uppercase;
+	color: var(--wp-components-color-foreground-inverted, #757575);
+}
+
+.dsgo-advanced-heading__level-buttons {
+	display: flex;
+	gap: 4px;
+	margin-bottom: 16px;
+}
+
+.dsgo-advanced-heading__level-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 36px;
+	height: 36px;
+	padding: 0 8px;
+	border: 1px solid var(--wp-components-color-accent-inverted, #ddd);
+	border-radius: 4px;
+	background: var(--wp-components-color-background, #fff);
+	color: var(--wp-components-color-foreground, #1e1e1e);
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.12s ease;
+
+	&:hover {
+		background: var(--wp-components-color-gray-100, #f0f0f0);
+		border-color: var(--wp-components-color-gray-400, #999);
+	}
+
+	&.is-active {
+		background: var(--wp-components-color-foreground, #1e1e1e);
+		border-color: var(--wp-components-color-foreground, #1e1e1e);
+		color: var(--wp-components-color-background, #fff);
+	}
+}
+
+// Text alignment support in editor
+.dsgo-advanced-heading.has-text-align-left .dsgo-advanced-heading__inner {
+	justify-content: flex-start;
+	text-align: left;
+}
+
+.dsgo-advanced-heading.has-text-align-center .dsgo-advanced-heading__inner {
+	justify-content: center;
+	text-align: center;
+}
+
+.dsgo-advanced-heading.has-text-align-right .dsgo-advanced-heading__inner {
+	justify-content: flex-end;
+	text-align: right;
+}
