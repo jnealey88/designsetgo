@@ -16,6 +16,10 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
+import {
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalLinkControl as LinkControl,
+} from '@wordpress/block-editor';
 import { IconPicker } from '../../../icon/components/IconPicker';
 
 /**
@@ -54,26 +58,65 @@ export const ButtonSettingsPanel = ({
 				title={__('Link Settings', 'designsetgo')}
 				initialOpen={true}
 			>
-				<TextControl
-					label={__('URL', 'designsetgo')}
-					value={url}
-					onChange={(value) => setAttributes({ url: value })}
-					placeholder="https://"
-					help={__('Enter the link URL', 'designsetgo')}
-					__next40pxDefaultSize
-					__nextHasNoMarginBottom
-				/>
+				<LinkControl
+					value={{
+						url,
+						opensInNewTab: linkTarget === '_blank',
+					}}
+					onChange={(nextValue) => {
+						const newUrl = nextValue?.url ?? '';
+						const opensInNewTab = nextValue?.opensInNewTab ?? false;
 
-				<ToggleControl
-					label={__('Open in new tab', 'designsetgo')}
-					checked={linkTarget === '_blank'}
-					onChange={(value) =>
+						const attrs = {
+							url: newUrl,
+							linkTarget: opensInNewTab ? '_blank' : '_self',
+						};
+
+						// Auto-manage rel when toggling new tab, preserving custom values
+						if (opensInNewTab && linkTarget !== '_blank') {
+							// Turning on: add security tokens if not already present
+							const parts = rel
+								? rel.split(/\s+/).filter(Boolean)
+								: [];
+							if (!parts.includes('noopener')) {
+								parts.push('noopener');
+							}
+							if (!parts.includes('noreferrer')) {
+								parts.push('noreferrer');
+							}
+							attrs.rel = parts.join(' ');
+						} else if (!opensInNewTab && linkTarget === '_blank') {
+							// Turning off: remove security tokens but keep custom values
+							attrs.rel = rel
+								.split(/\s+/)
+								.filter(
+									(t) =>
+										t &&
+										t !== 'noopener' &&
+										t !== 'noreferrer'
+								)
+								.join(' ');
+						}
+
+						setAttributes(attrs);
+					}}
+					onRemove={() => {
 						setAttributes({
-							linkTarget: value ? '_blank' : '_self',
-							rel: value ? 'noopener noreferrer' : '',
-						})
-					}
-					__nextHasNoMarginBottom
+							url: '',
+							linkTarget: '_self',
+							rel: '',
+						});
+					}}
+					settings={[
+						{
+							id: 'opensInNewTab',
+							title: __('Open in new tab', 'designsetgo'),
+						},
+					]}
+					searchInputPlaceholder={__(
+						'Search or type URL',
+						'designsetgo'
+					)}
 				/>
 
 				{linkTarget === '_blank' && (

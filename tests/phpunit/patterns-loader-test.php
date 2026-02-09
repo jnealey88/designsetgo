@@ -110,6 +110,7 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 			'modal',
 			'gallery',
 			'contact',
+			'services',
 		);
 
 		$this->assertSame( $expected, Loader::ALLOWED_CATEGORIES );
@@ -491,7 +492,7 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that excluded categories (navigation, services) are not in file map.
+	 * Test that excluded categories (navigation) are not in file map.
 	 */
 	public function test_excluded_categories_not_in_file_map() {
 		delete_transient( Loader::CACHE_TRANSIENT );
@@ -499,7 +500,6 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 		$file_map = $this->call_private_method( 'get_pattern_file_map' );
 
 		$this->assertArrayNotHasKey( 'navigation', $file_map, 'Navigation should be excluded from file map' );
-		$this->assertArrayNotHasKey( 'services', $file_map, 'Services should be excluded from file map' );
 	}
 
 	/**
