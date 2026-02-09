@@ -1,0 +1,73 @@
+/**
+ * Advanced Heading Block Editor Styles
+ */
+
+.dsgo-advanced-heading {
+
+	.dsgo-advanced-heading__inner {
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+	}
+}
+
+// Heading level picker in the inspector
+.dsgo-advanced-heading__level-label {
+	margin-bottom: 8px;
+	font-size: 11px;
+	font-weight: 500;
+	text-transform: uppercase;
+	color: #757575;
+}
+
+.dsgo-advanced-heading__level-buttons {
+	display: flex;
+	gap: 4px;
+	margin-bottom: 16px;
+}
+
+.dsgo-advanced-heading__level-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 36px;
+	height: 36px;
+	padding: 0 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: #fff;
+	color: #1e1e1e;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.12s ease;
+
+	&:hover {
+		background: #f0f0f0;
+		border-color: #999;
+	}
+
+	&.is-active {
+		background: #1e1e1e;
+		border-color: #1e1e1e;
+		color: #fff;
+	}
+}
+
+// Text alignment support in editor
+.dsgo-advanced-heading.has-text-align-left .dsgo-advanced-heading__inner {
+	justify-content: flex-start;
+	text-align: left;
+}
+
+.dsgo-advanced-heading.has-text-align-center .dsgo-advanced-heading__inner {
+	justify-content: center;
+	text-align: center;
+}
+
+.dsgo-advanced-heading.has-text-align-right .dsgo-advanced-heading__inner {
+	justify-content: flex-end;
+	text-align: right;
+}

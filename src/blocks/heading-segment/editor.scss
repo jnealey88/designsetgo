@@ -1,0 +1,19 @@
+/**
+ * Heading Segment Block Editor Styles
+ */
+
+.dsgo-heading-segment {
+	// Display inline so segments sit next to each other within the heading
+	display: inline;
+
+	.dsgo-heading-segment__text {
+		display: inline;
+		cursor: text;
+		min-width: 1em;
+
+		// Placeholder styling
+		&[data-rich-text-placeholder]::before {
+			opacity: 0.4;
+		}
+	}
+}
