@@ -1,0 +1,57 @@
+name: Sync Docs to Wiki
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**/*.md'
+  workflow_dispatch:
+
+concurrency:
+  group: wiki-sync
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  sync-wiki:
+    name: Sync Documentation to Wiki
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repo
+        uses: actions/checkout@v4
+        with:
+          path: main-repo
+
+      - name: Checkout wiki repo
+        uses: actions/checkout@v4
+        with:
+          repository: jnealey88/designsetgo.wiki
+          path: wiki-repo
+          token: ${{ secrets.WIKI_PAT }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Run sync script
+        run: node main-repo/.github/scripts/sync-wiki.mjs
+        env:
+          MAIN_REPO_PATH: main-repo
+          WIKI_REPO_PATH: wiki-repo
+          GITHUB_REPO: jnealey88/designsetgo
+
+      - name: Push wiki changes
+        working-directory: wiki-repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No wiki changes detected"
+          else
+            git commit -m "docs: Sync wiki from docs/"
+            git push
+          fi
