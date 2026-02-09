@@ -772,7 +772,7 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 				/>
 
 				<ColorGradientSettingsDropdown
-					panelId={`${clientId}-badge`}
+					panelId={clientId}
 					title={__('Badge Colors', 'designsetgo')}
 					settings={[
 						{
@@ -797,7 +797,7 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 
 				{layoutPreset === 'background' && (
 					<ColorGradientSettingsDropdown
-						panelId={`${clientId}-overlay`}
+						panelId={clientId}
 						title={__('Overlay Color', 'designsetgo')}
 						settings={[
 							{
