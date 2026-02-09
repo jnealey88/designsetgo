@@ -183,15 +183,15 @@ class Loader {
 	 * @return string MD5 hash.
 	 */
 	private static function compute_files_hash( $files ) {
-		$mtimes = array();
+		$parts = array();
 		foreach ( $files as $file ) {
 			$mtime = @filemtime( $file );
 			if ( false !== $mtime ) {
-				$mtimes[] = $mtime;
+				$parts[] = basename( $file ) . ':' . $mtime;
 			}
 		}
-		sort( $mtimes );
-		return md5( implode( '|', $mtimes ) . '|' . count( $files ) );
+		sort( $parts );
+		return md5( implode( '|', $parts ) );
 	}
 
 	/**
@@ -247,19 +247,34 @@ class Loader {
 
 			if (
 				is_array( $cached )
-				&& isset( $cached['version'], $cached['hash'], $cached['patterns'] )
+				&& isset( $cached['version'], $cached['hash'] )
 				&& DESIGNSETGO_VERSION === $cached['version']
-				&& is_array( $cached['patterns'] )
 			) {
-				// Verify file hash still matches (catches manual file edits).
-				if ( is_dir( $category_dir ) ) {
-					$files = glob( $category_dir . '*.php' );
-					if ( is_array( $files ) && self::compute_files_hash( $files ) === $cached['hash'] ) {
-						return $cached['patterns'];
+				// Decompress patterns if stored compressed, or read directly.
+				$patterns_data = null;
+				if ( isset( $cached['compressed'] ) && is_string( $cached['compressed'] ) ) {
+					$raw = base64_decode( $cached['compressed'] );
+					if ( false !== $raw ) {
+						$decompressed = @gzuncompress( $raw );
+						if ( false !== $decompressed ) {
+							$patterns_data = maybe_unserialize( $decompressed );
+						}
 					}
-				} elseif ( empty( $cached['patterns'] ) ) {
-					// Directory doesn't exist and cache is empty — still valid.
-					return $cached['patterns'];
+				} elseif ( isset( $cached['patterns'] ) && is_array( $cached['patterns'] ) ) {
+					$patterns_data = $cached['patterns'];
+				}
+
+				if ( is_array( $patterns_data ) ) {
+					// Verify file hash still matches (catches manual file edits).
+					if ( is_dir( $category_dir ) ) {
+						$files = glob( $category_dir . '*.php' );
+						if ( is_array( $files ) && self::compute_files_hash( $files ) === $cached['hash'] ) {
+							return $patterns_data;
+						}
+					} elseif ( empty( $patterns_data ) ) {
+						// Directory doesn't exist and cache is empty — still valid.
+						return $patterns_data;
+					}
 				}
 			}
 		}
@@ -317,17 +332,20 @@ class Loader {
 			}
 		}
 
-		// Cache the full pattern data for this category.
+		// Cache the full pattern data for this category (compressed to stay
+		// within transient size limits for MySQL and object cache backends).
 		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
 			/** This filter is documented in includes/patterns/class-loader.php */
 			$cache_duration = (int) apply_filters( 'designsetgo_pattern_cache_duration', DAY_IN_SECONDS );
 
+			$compressed = base64_encode( gzcompress( serialize( $patterns ) ) );
+
 			set_transient(
 				$transient_key,
 				array(
-					'version'  => DESIGNSETGO_VERSION,
-					'hash'     => self::compute_files_hash( $files ),
-					'patterns' => $patterns,
+					'version'    => DESIGNSETGO_VERSION,
+					'hash'       => self::compute_files_hash( $files ),
+					'compressed' => $compressed,
 				),
 				$cache_duration
 			);

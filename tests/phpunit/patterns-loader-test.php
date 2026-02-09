@@ -859,13 +859,22 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 
 		foreach ( Loader::ALLOWED_CATEGORIES as $category ) {
 			$patterns = $this->call_private_method( 'get_category_patterns', array( $category ) );
+
+			// Measure the compressed transient size (matches how data is stored).
 			// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize -- measuring size only.
-			$serialized_size = strlen( serialize( $patterns ) );
+			$compressed = base64_encode( gzcompress( serialize( $patterns ) ) );
+			$transient_data = array(
+				'version'    => DESIGNSETGO_VERSION,
+				'hash'       => 'test',
+				'compressed' => $compressed,
+			);
+			// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize -- measuring size only.
+			$serialized_size = strlen( serialize( $transient_data ) );
 
 			$this->assertLessThan(
 				$max_bytes,
 				$serialized_size,
-				"Category '$category' transient ($serialized_size bytes) exceeds 500 KB limit"
+				"Category '$category' compressed transient ($serialized_size bytes) exceeds 500 KB limit"
 			);
 		}
 	}
