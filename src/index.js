@@ -58,6 +58,9 @@ import './extensions/text-reveal';
 // Expanding Background - adds scroll-driven expanding background effect
 import './extensions/expanding-background';
 
+// SVG Patterns - adds repeatable SVG background patterns to sections
+import './extensions/svg-patterns';
+
 // Vertical Scroll Parallax - adds scroll-based vertical movement to blocks
 import './extensions/vertical-scroll-parallax';
 
