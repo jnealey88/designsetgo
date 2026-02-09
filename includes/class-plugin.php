@@ -466,14 +466,28 @@ class Plugin {
 
 		$attrs = $block['attrs'];
 
+		// Validate string values against whitelists.
+		$allowed_directions = array( 'up', 'down', 'left', 'right' );
+		$direction          = $attrs['dsgoParallaxDirection'] ?? 'up';
+		$direction          = in_array( $direction, $allowed_directions, true ) ? $direction : 'up';
+
+		$allowed_relative = array( 'viewport', 'page' );
+		$relative_to      = $attrs['dsgoParallaxRelativeTo'] ?? 'viewport';
+		$relative_to      = in_array( $relative_to, $allowed_relative, true ) ? $relative_to : 'viewport';
+
+		// Clamp numeric values to valid ranges.
+		$speed          = max( 0, min( 10, intval( $attrs['dsgoParallaxSpeed'] ?? 5 ) ) );
+		$viewport_start = max( 0, min( 100, intval( $attrs['dsgoParallaxViewportStart'] ?? 0 ) ) );
+		$viewport_end   = max( 0, min( 100, intval( $attrs['dsgoParallaxViewportEnd'] ?? 100 ) ) );
+
 		$processor = new \WP_HTML_Tag_Processor( $block_content );
 		if ( $processor->next_tag() ) {
 			$processor->set_attribute( 'data-dsgo-parallax-enabled', 'true' );
-			$processor->set_attribute( 'data-dsgo-parallax-direction', $attrs['dsgoParallaxDirection'] ?? 'up' );
-			$processor->set_attribute( 'data-dsgo-parallax-speed', (string) ( $attrs['dsgoParallaxSpeed'] ?? 5 ) );
-			$processor->set_attribute( 'data-dsgo-parallax-viewport-start', (string) ( $attrs['dsgoParallaxViewportStart'] ?? 0 ) );
-			$processor->set_attribute( 'data-dsgo-parallax-viewport-end', (string) ( $attrs['dsgoParallaxViewportEnd'] ?? 100 ) );
-			$processor->set_attribute( 'data-dsgo-parallax-relative-to', $attrs['dsgoParallaxRelativeTo'] ?? 'viewport' );
+			$processor->set_attribute( 'data-dsgo-parallax-direction', $direction );
+			$processor->set_attribute( 'data-dsgo-parallax-speed', (string) $speed );
+			$processor->set_attribute( 'data-dsgo-parallax-viewport-start', (string) $viewport_start );
+			$processor->set_attribute( 'data-dsgo-parallax-viewport-end', (string) $viewport_end );
+			$processor->set_attribute( 'data-dsgo-parallax-relative-to', $relative_to );
 			$processor->set_attribute( 'data-dsgo-parallax-desktop', ( $attrs['dsgoParallaxDesktop'] ?? true ) ? 'true' : 'false' );
 			$processor->set_attribute( 'data-dsgo-parallax-tablet', ( $attrs['dsgoParallaxTablet'] ?? true ) ? 'true' : 'false' );
 			$processor->set_attribute( 'data-dsgo-parallax-mobile', ( $attrs['dsgoParallaxMobile'] ?? false ) ? 'true' : 'false' );
