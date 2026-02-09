@@ -55,6 +55,7 @@ const addSvgPatternEditorStyles = createHigherOrderComponent(
 				dsgoSvgPatternColor,
 				dsgoSvgPatternOpacity,
 				dsgoSvgPatternScale,
+				dsgoSvgPatternFixed,
 			} = attributes;
 
 			if (
@@ -62,10 +63,6 @@ const addSvgPatternEditorStyles = createHigherOrderComponent(
 				dsgoSvgPatternType &&
 				PATTERNS[dsgoSvgPatternType]
 			) {
-				const className = [props.className, 'has-dsgo-svg-pattern']
-					.filter(Boolean)
-					.join(' ');
-
 				const bg = getPatternBackground(
 					dsgoSvgPatternType,
 					dsgoSvgPatternColor || '#9c92ac',
@@ -73,18 +70,31 @@ const addSvgPatternEditorStyles = createHigherOrderComponent(
 					dsgoSvgPatternScale ?? 1
 				);
 
-				const style = {
-					...props.style,
+				const patternStyle = {
+					...props.wrapperProps?.style,
 					'--dsgo-svg-pattern-image': bg?.backgroundImage || 'none',
 					'--dsgo-svg-pattern-size': bg?.backgroundSize || 'auto',
 				};
 
+				if (dsgoSvgPatternFixed) {
+					patternStyle['--dsgo-svg-pattern-attachment'] = 'fixed';
+				}
+
+				// Use wrapperProps for both style and class — passing className
+				// as a separate prop is silently dropped when wrapperProps is present.
+				const wrapperProps = {
+					...props.wrapperProps,
+					className: [
+						props.wrapperProps?.className,
+						'has-dsgo-svg-pattern',
+					]
+						.filter(Boolean)
+						.join(' '),
+					style: patternStyle,
+				};
+
 				return (
-					<BlockListBlock
-						{...props}
-						className={className}
-						style={style}
-					/>
+					<BlockListBlock {...props} wrapperProps={wrapperProps} />
 				);
 			}
 
@@ -115,6 +125,7 @@ function addSvgPatternSaveProps(extraProps, blockType, attributes) {
 		dsgoSvgPatternColor,
 		dsgoSvgPatternOpacity,
 		dsgoSvgPatternScale,
+		dsgoSvgPatternFixed,
 	} = attributes;
 
 	if (
@@ -137,16 +148,22 @@ function addSvgPatternSaveProps(extraProps, blockType, attributes) {
 		return extraProps;
 	}
 
+	const patternStyle = {
+		...(extraProps.style || {}),
+		'--dsgo-svg-pattern-image': bg.backgroundImage,
+		'--dsgo-svg-pattern-size': bg.backgroundSize,
+	};
+
+	if (dsgoSvgPatternFixed) {
+		patternStyle['--dsgo-svg-pattern-attachment'] = 'fixed';
+	}
+
 	return {
 		...extraProps,
 		className: [extraProps.className, 'has-dsgo-svg-pattern']
 			.filter(Boolean)
 			.join(' '),
-		style: {
-			...(extraProps.style || {}),
-			'--dsgo-svg-pattern-image': bg.backgroundImage,
-			'--dsgo-svg-pattern-size': bg.backgroundSize,
-		},
+		style: patternStyle,
 		'data-dsgo-svg-pattern': dsgoSvgPatternType,
 		'data-dsgo-svg-pattern-color': dsgoSvgPatternColor || '',
 		'data-dsgo-svg-pattern-opacity': String(dsgoSvgPatternOpacity ?? 0.4),

@@ -66,6 +66,7 @@
 // Editor preview of the SVG pattern
 .has-dsgo-svg-pattern {
 	position: relative;
+	isolation: isolate;
 
 	&::after {
 		content: '';
@@ -76,5 +77,6 @@
 		background-image: var(--dsgo-svg-pattern-image, none);
 		background-size: var(--dsgo-svg-pattern-size, auto);
 		background-repeat: repeat;
+		background-attachment: var(--dsgo-svg-pattern-attachment, scroll);
 	}
 }

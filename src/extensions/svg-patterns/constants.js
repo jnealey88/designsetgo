@@ -18,6 +18,7 @@ export const DEFAULTS = {
 	color: '#9c92ac',
 	opacity: 0.4,
 	scale: 1,
+	fixed: false,
 };
 
 /**

@@ -6,6 +6,7 @@
 
 .has-dsgo-svg-pattern {
 	position: relative;
+	isolation: isolate;
 
 	// Pattern overlay via pseudo-element — sits behind content at z-index -1,
 	// consistent with expanding-background extension approach
@@ -18,5 +19,6 @@
 		background-image: var(--dsgo-svg-pattern-image, none);
 		background-size: var(--dsgo-svg-pattern-size, auto);
 		background-repeat: repeat;
+		background-attachment: var(--dsgo-svg-pattern-attachment, scroll);
 	}
 }

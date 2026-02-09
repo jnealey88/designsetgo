@@ -48,6 +48,10 @@ function addSvgPatternAttributes(settings, name) {
 				type: 'number',
 				default: DEFAULTS.scale,
 			},
+			dsgoSvgPatternFixed: {
+				type: 'boolean',
+				default: DEFAULTS.fixed,
+			},
 		},
 	};
 }

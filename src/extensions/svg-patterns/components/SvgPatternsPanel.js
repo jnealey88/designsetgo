@@ -88,6 +88,7 @@ export default function SvgPatternsPanel({
 		dsgoSvgPatternColor,
 		dsgoSvgPatternOpacity,
 		dsgoSvgPatternScale,
+		dsgoSvgPatternFixed,
 	} = attributes;
 
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
@@ -245,6 +246,22 @@ export default function SvgPatternsPanel({
 								step={RANGES.scale.step}
 								help={__(
 									'Scale the pattern size. 1 = original size.',
+									'designsetgo'
+								)}
+							/>
+
+							{/* Fixed Background */}
+							<ToggleControl
+								__nextHasNoMarginBottom
+								label={__('Fixed Background', 'designsetgo')}
+								checked={dsgoSvgPatternFixed}
+								onChange={(value) =>
+									setAttributes({
+										dsgoSvgPatternFixed: value,
+									})
+								}
+								help={__(
+									'Creates a parallax effect. May not work on mobile devices.',
 									'designsetgo'
 								)}
 							/>
