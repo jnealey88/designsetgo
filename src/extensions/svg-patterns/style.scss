@@ -16,6 +16,7 @@
 		inset: 0;
 		z-index: -1;
 		pointer-events: none;
+		border-radius: inherit;
 		background-image: var(--dsgo-svg-pattern-image, none);
 		background-size: var(--dsgo-svg-pattern-size, auto);
 		background-repeat: repeat;

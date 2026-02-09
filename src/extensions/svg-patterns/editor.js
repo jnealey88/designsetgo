@@ -6,9 +6,9 @@
 
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { Fragment } from '@wordpress/element';
+import { Fragment, useMemo } from '@wordpress/element';
 import SvgPatternsPanel from './components/SvgPatternsPanel';
-import { SUPPORTED_BLOCKS } from './constants';
+import { SUPPORTED_BLOCKS, DEFAULTS } from './constants';
 import { getPatternBackground, PATTERNS, PATTERN_IDS } from './patterns';
 
 /**
@@ -58,22 +58,35 @@ const addSvgPatternEditorStyles = createHigherOrderComponent(
 				dsgoSvgPatternFixed,
 			} = attributes;
 
-			if (
+			const isActive =
 				dsgoSvgPatternEnabled &&
 				dsgoSvgPatternType &&
-				PATTERNS[dsgoSvgPatternType]
-			) {
-				const bg = getPatternBackground(
-					dsgoSvgPatternType,
-					dsgoSvgPatternColor || '#9c92ac',
-					dsgoSvgPatternOpacity ?? 0.4,
-					dsgoSvgPatternScale ?? 1
-				);
+				PATTERNS[dsgoSvgPatternType];
 
+			// Memoize SVG generation to avoid re-encoding on every render
+			const bg = useMemo(() => {
+				if (!isActive) {
+					return null;
+				}
+				return getPatternBackground(
+					dsgoSvgPatternType,
+					dsgoSvgPatternColor || DEFAULTS.color,
+					dsgoSvgPatternOpacity ?? DEFAULTS.opacity,
+					dsgoSvgPatternScale ?? DEFAULTS.scale
+				);
+			}, [
+				isActive,
+				dsgoSvgPatternType,
+				dsgoSvgPatternColor,
+				dsgoSvgPatternOpacity,
+				dsgoSvgPatternScale,
+			]);
+
+			if (isActive && bg) {
 				const patternStyle = {
 					...props.wrapperProps?.style,
-					'--dsgo-svg-pattern-image': bg?.backgroundImage || 'none',
-					'--dsgo-svg-pattern-size': bg?.backgroundSize || 'auto',
+					'--dsgo-svg-pattern-image': bg.backgroundImage,
+					'--dsgo-svg-pattern-size': bg.backgroundSize,
 				};
 
 				if (dsgoSvgPatternFixed) {
@@ -137,11 +150,20 @@ function addSvgPatternSaveProps(extraProps, blockType, attributes) {
 		return extraProps;
 	}
 
+	const safeOpacity =
+		typeof dsgoSvgPatternOpacity === 'number'
+			? dsgoSvgPatternOpacity
+			: DEFAULTS.opacity;
+	const safeScale =
+		typeof dsgoSvgPatternScale === 'number'
+			? dsgoSvgPatternScale
+			: DEFAULTS.scale;
+
 	const bg = getPatternBackground(
 		dsgoSvgPatternType,
-		dsgoSvgPatternColor || '#9c92ac',
-		dsgoSvgPatternOpacity ?? 0.4,
-		dsgoSvgPatternScale ?? 1
+		dsgoSvgPatternColor || DEFAULTS.color,
+		safeOpacity,
+		safeScale
 	);
 
 	if (!bg) {
@@ -166,8 +188,8 @@ function addSvgPatternSaveProps(extraProps, blockType, attributes) {
 		style: patternStyle,
 		'data-dsgo-svg-pattern': dsgoSvgPatternType,
 		'data-dsgo-svg-pattern-color': dsgoSvgPatternColor || '',
-		'data-dsgo-svg-pattern-opacity': String(dsgoSvgPatternOpacity ?? 0.4),
-		'data-dsgo-svg-pattern-scale': String(dsgoSvgPatternScale ?? 1),
+		'data-dsgo-svg-pattern-opacity': String(safeOpacity),
+		'data-dsgo-svg-pattern-scale': String(safeScale),
 	};
 }
 

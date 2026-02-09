@@ -21,7 +21,7 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { RANGES } from '../constants';
+import { RANGES, DEFAULTS } from '../constants';
 import {
 	PATTERNS,
 	PATTERN_IDS,
@@ -117,10 +117,12 @@ export default function SvgPatternsPanel({
 						settings={[
 							{
 								label: __('Pattern Color', 'designsetgo'),
-								colorValue: dsgoSvgPatternColor,
+								colorValue:
+									dsgoSvgPatternColor || DEFAULTS.color,
 								onColorChange: (value) =>
 									setAttributes({
-										dsgoSvgPatternColor: value || '',
+										dsgoSvgPatternColor:
+											value || DEFAULTS.color,
 									}),
 								clearable: true,
 							},
