@@ -24,7 +24,16 @@ import {
 import { heading as headingIcon } from '@wordpress/icons';
 
 const ALLOWED_BLOCKS = ['designsetgo/heading-segment'];
-const TEMPLATE = [['designsetgo/heading-segment', {}]];
+const TEMPLATE = [
+	[
+		'designsetgo/heading-segment',
+		{
+			content: 'Bold ',
+			style: { typography: { fontWeight: '700' } },
+		},
+	],
+	['designsetgo/heading-segment', { content: 'Heading' }],
+];
 
 const HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
 

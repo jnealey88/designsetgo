@@ -141,7 +141,8 @@ class Draft_Mode {
 			'menu_order'   => $post->menu_order,
 		);
 
-		$draft_id = wp_insert_post( $draft_data, true );
+		// wp_slash() is required because wp_insert_post() expects slashed data.
+		$draft_id = wp_insert_post( wp_slash( $draft_data ), true );
 
 		if ( is_wp_error( $draft_id ) ) {
 			return $draft_id;
@@ -207,6 +208,10 @@ class Draft_Mode {
 		}
 
 		// Step 1: Update the original post content.
+		// wp_slash() is required because wp_update_post() expects slashed data
+		// and internally calls wp_unslash(). Without it, backslashes in block
+		// content (e.g. JSON attributes in block comments) are stripped, which
+		// corrupts entities like & and breaks block parsing.
 		$update_data = array(
 			'ID'           => $original_id,
 			'post_title'   => $draft->post_title,
@@ -214,7 +219,7 @@ class Draft_Mode {
 			'post_excerpt' => $draft->post_excerpt,
 		);
 
-		$result = wp_update_post( $update_data, true );
+		$result = wp_update_post( wp_slash( $update_data ), true );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;

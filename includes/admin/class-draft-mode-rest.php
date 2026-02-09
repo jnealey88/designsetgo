@@ -297,6 +297,20 @@ class Draft_Mode_REST {
 		// removes the tags themselves, leaving the inner text behind).
 		$content = preg_replace( '/<script\b[^>]*>.*?<\/script>/is', '', $content );
 
+		// Preserve WordPress block comment delimiters before wp_kses, which
+		// strips all HTML comments. Block delimiters (<!-- wp:name {...} -->)
+		// are required for the block editor to parse content correctly.
+		$placeholders = array();
+		$content      = preg_replace_callback(
+			'/<!--\s+\/?wp:[a-z][a-z0-9-]*\/?\s*(\{[^}]*\}\s*)?-->/',
+			function ( $match ) use ( &$placeholders ) {
+				$key                    = "\x00BLOCK_COMMENT_" . count( $placeholders ) . "\x00";
+				$placeholders[ $key ] = $match[0];
+				return $key;
+			},
+			$content
+		);
+
 		// Temporarily allow CSS display property through wp_kses. The default
 		// safecss_filter_attr strips display:flex/grid/inline-flex which blocks
 		// need for layout.
@@ -310,6 +324,11 @@ class Draft_Mode_REST {
 		$content = wp_kses( $content, self::get_block_allowed_html() );
 
 		remove_filter( 'safe_style_css', $allow_display );
+
+		// Restore block comment delimiters.
+		if ( ! empty( $placeholders ) ) {
+			$content = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $content );
+		}
 
 		// Restore SVG camelCase attributes that wp_kses lowercases.
 		$svg_case_map = array(
@@ -494,7 +513,10 @@ class Draft_Mode_REST {
 		);
 
 		// Sanitize block content to prevent XSS while preserving legitimate block HTML.
-		if ( isset( $overrides['content'] ) ) {
+		// Skip for users with unfiltered_html capability (admins on single-site),
+		// matching WordPress's own behavior — wp_insert_post() does not apply kses
+		// filtering for these users.
+		if ( isset( $overrides['content'] ) && ! current_user_can( 'unfiltered_html' ) ) {
 			$overrides['content'] = self::sanitize_block_content( $overrides['content'] );
 		}
 
