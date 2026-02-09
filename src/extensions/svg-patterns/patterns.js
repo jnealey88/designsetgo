@@ -9,6 +9,27 @@
  */
 
 /**
+ * Validate a CSS color value to prevent SVG attribute injection.
+ *
+ * @param {string} color The color value to validate
+ * @return {boolean} True if the color is safe
+ */
+function isValidColor(color) {
+	if (!color || typeof color !== 'string') {
+		return false;
+	}
+	const validFormats = [
+		/^#[0-9A-Fa-f]{3,8}$/, // Hex (#fff, #ffffff, #ffffffff)
+		/^rgb\([^)]+\)$/, // rgb()
+		/^rgba\([^)]+\)$/, // rgba()
+		/^hsl\([^)]+\)$/, // hsl()
+		/^hsla\([^)]+\)$/, // hsla()
+		/^[a-z]+$/i, // Named colors
+	];
+	return validFormats.some((format) => format.test(color.trim()));
+}
+
+/**
  * Generate a URL-encoded SVG data URI for use in CSS background-image.
  *
  * @param {string} svg Raw SVG markup
@@ -20,6 +41,7 @@ export function encodeSvg(svg) {
 
 /**
  * Build SVG markup for a given pattern definition.
+ * Color is sanitized to prevent SVG attribute injection.
  *
  * @param {Object} pattern Pattern definition
  * @param {string} color   Fill color (hex including #)
@@ -28,12 +50,19 @@ export function encodeSvg(svg) {
  */
 export function buildPatternSvg(pattern, color, opacity) {
 	const { width, height, paths } = pattern;
+
+	// Sanitize color — reject anything that isn't a valid CSS color format
+	const safeColor = isValidColor(color) ? color : '#9c92ac';
+
+	// Clamp opacity to valid range
+	const safeOpacity = Math.max(0, Math.min(1, Number(opacity) || 0.4));
+
 	const pathElements = paths
 		.map((p) => {
 			const attrs = [];
 			attrs.push(`d="${p.d}"`);
-			attrs.push(`fill="${color}"`);
-			attrs.push(`fill-opacity="${opacity}"`);
+			attrs.push(`fill="${safeColor}"`);
+			attrs.push(`fill-opacity="${safeOpacity}"`);
 			if (p.fillRule) {
 				attrs.push(`fill-rule="${p.fillRule}"`);
 			}
@@ -46,22 +75,28 @@ export function buildPatternSvg(pattern, color, opacity) {
 
 /**
  * Get the CSS background-image value for a pattern.
+ * Returns null for unrecognized pattern IDs.
  *
- * @param {string} patternId Pattern ID
+ * @param {string} patternId Pattern ID (must exist in PATTERNS)
  * @param {string} color     Fill color
  * @param {number} opacity   Fill opacity
  * @param {number} scale     Scale multiplier (1 = native size)
  * @return {Object|null} Object with backgroundImage and backgroundSize, or null
  */
 export function getPatternBackground(patternId, color, opacity, scale = 1) {
+	if (!patternId || typeof patternId !== 'string') {
+		return null;
+	}
+
 	const pattern = PATTERNS[patternId];
 	if (!pattern) {
 		return null;
 	}
 
+	const safeScale = Math.max(0.25, Math.min(4, Number(scale) || 1));
 	const svg = buildPatternSvg(pattern, color, opacity);
 	const backgroundImage = encodeSvg(svg);
-	const backgroundSize = `${pattern.width * scale}px ${pattern.height * scale}px`;
+	const backgroundSize = `${pattern.width * safeScale}px ${pattern.height * safeScale}px`;
 
 	return { backgroundImage, backgroundSize };
 }

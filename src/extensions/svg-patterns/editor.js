@@ -9,7 +9,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { Fragment } from '@wordpress/element';
 import SvgPatternsPanel from './components/SvgPatternsPanel';
 import { SUPPORTED_BLOCKS } from './constants';
-import { getPatternBackground, PATTERNS } from './patterns';
+import { getPatternBackground, PATTERNS, PATTERN_IDS } from './patterns';
 
 /**
  * Add SVG pattern controls to the block editor
@@ -120,7 +120,8 @@ function addSvgPatternSaveProps(extraProps, blockType, attributes) {
 	if (
 		!SUPPORTED_BLOCKS.includes(blockType.name) ||
 		!dsgoSvgPatternEnabled ||
-		!dsgoSvgPatternType
+		!dsgoSvgPatternType ||
+		!PATTERN_IDS.includes(dsgoSvgPatternType)
 	) {
 		return extraProps;
 	}
