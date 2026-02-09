@@ -339,6 +339,9 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 	 * Test that get_category_patterns stores results in category transient.
 	 */
 	public function test_category_patterns_cached_in_transient() {
+		// Enable caching for this test (normally disabled when WP_DEBUG is true).
+		add_filter( 'designsetgo_pattern_cache_enabled', '__return_true' );
+
 		$cached = get_transient( Loader::CACHE_TRANSIENT_PREFIX . 'hero' );
 		// Should be false before caching.
 		$this->assertFalse( $cached, 'Transient should not exist before caching' );
@@ -351,9 +354,19 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 		$this->assertIsArray( $cached, 'Transient should contain an array' );
 		$this->assertArrayHasKey( 'version', $cached, 'Cache should include version key' );
 		$this->assertArrayHasKey( 'hash', $cached, 'Cache should include hash key' );
-		$this->assertArrayHasKey( 'patterns', $cached, 'Cache should include patterns key' );
+		$this->assertArrayHasKey( 'compressed', $cached, 'Cache should include compressed key' );
 		$this->assertSame( DESIGNSETGO_VERSION, $cached['version'], 'Cached version should match plugin version' );
-		$this->assertIsArray( $cached['patterns'], 'Cached patterns should be an array' );
+		$this->assertIsString( $cached['compressed'], 'Cached compressed data should be a string' );
+
+		// Verify compressed data can be decoded back to a patterns array.
+		$raw = base64_decode( $cached['compressed'] );
+		$this->assertNotFalse( $raw, 'Compressed data should be valid base64' );
+		$decompressed = gzuncompress( $raw );
+		$this->assertNotFalse( $decompressed, 'Compressed data should decompress' );
+		$patterns = maybe_unserialize( $decompressed );
+		$this->assertIsArray( $patterns, 'Decompressed data should be an array of patterns' );
+
+		remove_filter( 'designsetgo_pattern_cache_enabled', '__return_true' );
 	}
 
 	/**

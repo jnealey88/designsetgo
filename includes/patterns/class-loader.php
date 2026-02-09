@@ -242,7 +242,20 @@ class Loader {
 		$transient_key = self::CACHE_TRANSIENT_PREFIX . $category;
 
 		// Skip cache in debug mode so new/removed patterns are picked up immediately.
-		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+		$cache_enabled = ! defined( 'WP_DEBUG' ) || ! WP_DEBUG;
+
+		/**
+		 * Filters whether pattern caching is enabled.
+		 *
+		 * By default, caching is disabled when WP_DEBUG is true.
+		 *
+		 * @since 2.0.1
+		 *
+		 * @param bool $cache_enabled Whether caching is enabled.
+		 */
+		$cache_enabled = apply_filters( 'designsetgo_pattern_cache_enabled', $cache_enabled );
+
+		if ( $cache_enabled ) {
 			$cached = get_transient( $transient_key );
 
 			if (
@@ -334,7 +347,8 @@ class Loader {
 
 		// Cache the full pattern data for this category (compressed to stay
 		// within transient size limits for MySQL and object cache backends).
-		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+		/** This filter is documented in includes/patterns/class-loader.php */
+		if ( apply_filters( 'designsetgo_pattern_cache_enabled', ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) ) {
 			/** This filter is documented in includes/patterns/class-loader.php */
 			$cache_duration = (int) apply_filters( 'designsetgo_pattern_cache_duration', DAY_IN_SECONDS );
 

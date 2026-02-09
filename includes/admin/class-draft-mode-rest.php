@@ -524,11 +524,11 @@ class Draft_Mode_REST {
 			}
 		);
 
-		// Sanitize block content to prevent XSS while preserving legitimate block HTML.
-		// Skip for users with unfiltered_html capability (admins on single-site),
-		// matching WordPress's own behavior — wp_insert_post() does not apply kses
-		// filtering for these users.
-		if ( isset( $overrides['content'] ) && ! current_user_can( 'unfiltered_html' ) ) {
+		// Always sanitize block content through this REST endpoint as defense-in-depth.
+		// Unlike WordPress's native post editor (which skips kses for unfiltered_html
+		// users), our sanitize_block_content() is designed to preserve all legitimate
+		// block HTML, CSS, and SVG while stripping XSS vectors — safe for all users.
+		if ( isset( $overrides['content'] ) ) {
 			$overrides['content'] = self::sanitize_block_content( $overrides['content'] );
 		}
 
