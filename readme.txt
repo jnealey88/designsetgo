@@ -9,7 +9,7 @@ Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Professional WordPress blocks without page builder bloat. 50 blocks + 16 universal extensions that enhance ANY block.
+Professional WordPress blocks without page builder bloat. 52 blocks + 16 universal extensions that enhance ANY block.
 
 == Description ==
 
@@ -20,7 +20,7 @@ DesignSetGo gives you the power of a page builder with the simplicity of WordPre
 = Why DesignSetGo? =
 
 ✓ **Works Like WordPress** - If you know blocks, you know DesignSetGo. No separate interface, no learning curve.
-✓ **48 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, modals, breadcrumbs, timelines, and more.
+✓ **52 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, modals, breadcrumbs, timelines, and more.
 ✓ **16 Universal Extensions** - Add animations, scroll effects, parallax, responsive visibility, sticky headers, clickable groups, draft mode, max width, and more to ANY WordPress block (including core blocks).
 ✓ **Text Style Format** - Apply custom colors, gradients, font sizes, and highlights to selected text inline, just like bold or italic.
 ✓ **Performance First** - Lightweight code, no jQuery, optimized bundles. Your site stays fast.
