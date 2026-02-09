@@ -136,6 +136,11 @@
 		padding: 4px 8px;
 		text-decoration: underline;
 
+		// Compound selector to override wp-element-button padding
+		&.wp-element-button {
+			padding: 4px 8px;
+		}
+
 		&:hover,
 		&:focus {
 			background: transparent;
@@ -214,7 +219,7 @@
 // Responsive Adjustments
 @media (max-width: 768px) {
 
-	.dsgo-modal-trigger {
+	.dsgo-modal-trigger:not(.dsgo-modal-trigger--link) {
 		padding: 10px 20px;
 		font-size: 15px;
 	}
