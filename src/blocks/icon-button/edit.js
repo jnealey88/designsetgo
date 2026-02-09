@@ -242,7 +242,7 @@ export default function IconButtonEdit({
 								!opensInNewTab &&
 								linkTarget === '_blank'
 							) {
-								attrs.rel = rel
+								attrs.rel = (rel || '')
 									.split(/\s+/)
 									.filter(
 										(t) =>
@@ -254,10 +254,6 @@ export default function IconButtonEdit({
 							}
 
 							setAttributes(attrs);
-
-							if (!isEditingURL) {
-								setIsEditingURL(false);
-							}
 						}}
 						onRemove={unlink}
 						forceIsEditingLink={isEditingURL}
