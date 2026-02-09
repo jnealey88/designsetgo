@@ -13845,3 +13845,198 @@ msgstr "tabbed"
 
 #~ msgid "Typography"
 #~ msgstr "Typography"
+
+#. === New strings added for v1.5.0 ===
+
+#. Block title for designsetgo/advanced-heading
+#: src/blocks/advanced-heading/block.json
+msgctxt "block title"
+msgid "Advanced Heading"
+msgstr ""
+
+#. Block description for designsetgo/advanced-heading
+#: src/blocks/advanced-heading/block.json
+msgctxt "block description"
+msgid "Create headings with multiple font styles — mix fonts, weights, and colors within a single heading for advanced typographic designs."
+msgstr ""
+
+#: src/blocks/advanced-heading/block.json
+msgctxt "block keyword"
+msgid "heading"
+msgstr ""
+
+#: src/blocks/advanced-heading/block.json
+msgctxt "block keyword"
+msgid "title"
+msgstr ""
+
+#: src/blocks/advanced-heading/block.json
+#: src/blocks/heading-segment/block.json
+msgctxt "block keyword"
+msgid "typography"
+msgstr ""
+
+#: src/blocks/advanced-heading/block.json
+msgctxt "block keyword"
+msgid "multi-font"
+msgstr ""
+
+#: src/blocks/advanced-heading/block.json
+msgctxt "block keyword"
+msgid "advanced"
+msgstr ""
+
+#. Block title for designsetgo/heading-segment
+#: src/blocks/heading-segment/block.json
+msgctxt "block title"
+msgid "Heading Segment"
+msgstr ""
+
+#. Block description for designsetgo/heading-segment
+#: src/blocks/heading-segment/block.json
+msgctxt "block description"
+msgid "A text segment within an Advanced Heading — each segment can use a different font, weight, or color."
+msgstr ""
+
+#: src/blocks/heading-segment/block.json
+msgctxt "block keyword"
+msgid "segment"
+msgstr ""
+
+#: src/blocks/heading-segment/block.json
+msgctxt "block keyword"
+msgid "font"
+msgstr ""
+
+#: src/blocks/advanced-heading/edit.js:71
+msgid "Change heading level"
+msgstr ""
+
+#: src/blocks/advanced-heading/edit.js:92
+msgid "Heading Settings"
+msgstr ""
+
+#: src/blocks/advanced-heading/edit.js:96
+msgid "Heading Level"
+msgstr ""
+
+#: src/blocks/heading-segment/edit.js:38
+msgid "Heading text…"
+msgstr ""
+
+#. Shortened block descriptions for blocks-registry admin UI
+#: includes/admin/blocks-registry-i18n.php:31
+msgid "Flexible horizontal or vertical layouts with wrapping"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:33
+msgid "Vertical stacking container for sections and content areas"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:47
+msgid "Display content in a card layout with image, badge, title, and CTA"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:49
+msgid "Visual separator with multiple style options"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:85
+msgid "Accessible modal dialogs with customizable triggers"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:87
+msgid "Button or link that opens a modal dialog"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:97
+msgid "Display a countdown timer to a specific date and time"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:99
+msgid "Interactive map using OpenStreetMap or Google Maps"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:100
+msgid "Breadcrumbs"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:101
+msgid "Navigation breadcrumbs with Schema.org markup"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:102
+msgid "Table of Contents"
+msgstr ""
+
+#: includes/admin/blocks-registry-i18n.php:103
+msgid "Auto-generate table of contents from page headings"
+msgstr ""
+
+#. Pattern categories
+#: includes/patterns/class-loader.php:110
+msgid "DesignSetGo: Homepage"
+msgstr ""
+
+#: includes/patterns/class-loader.php:120
+msgid "DesignSetGo: Gallery"
+msgstr ""
+
+#: includes/patterns/class-loader.php:121
+msgid "DesignSetGo: Contact"
+msgstr ""
+
+#: includes/patterns/class-loader.php:122
+msgid "DesignSetGo: Services"
+msgstr ""
+
+#. Format type and extensions
+#: src/formats/text-style/index.js:118
+#: src/formats/text-style/index.js:160
+msgid "Text Style"
+msgstr ""
+
+#: src/blocks/icon-button/components/inspector/ButtonSettingsPanel.js:117
+msgid "Search or type URL"
+msgstr ""
+
+#: src/extensions/background-video/edit.js:253
+msgid "Remove Shape Dividers"
+msgstr ""
+
+#: src/extensions/background-video/edit.js:239
+msgid "Video backgrounds cannot be used with shape dividers."
+msgstr ""
+
+#: src/extensions/clickable-group/edit.js:68
+msgid "URLs with javascript:, data:, or vbscript: protocols are not allowed."
+msgstr ""
+
+#: src/extensions/custom-css/edit.js:72
+msgid "Use \"selector\" to target this block. Write nested selectors like \"selector h3\" to target elements inside."
+msgstr ""
+
+#. Security and form defaults
+#: includes/blocks/class-form-security.php:178
+msgid "Security verification failed. Please try again."
+msgstr ""
+
+#: includes/abilities/class-form-field-html-generator.php:341
+msgid "Checkbox"
+msgstr ""
+
+#: includes/abilities/class-form-field-html-generator.php:383
+msgid "Number"
+msgstr ""
+
+#: includes/abilities/class-form-field-html-generator.php:435
+msgid "Phone"
+msgstr ""
+
+#: includes/abilities/class-form-field-html-generator.php:293
+msgid "Select"
+msgstr ""
+
+#: includes/abilities/class-form-field-html-generator.php:523
+msgid "Time"
+msgstr ""
