@@ -72,11 +72,30 @@ export const ButtonSettingsPanel = ({
 							linkTarget: opensInNewTab ? '_blank' : '_self',
 						};
 
-						// Auto-set rel when toggling new tab
+						// Auto-manage rel when toggling new tab, preserving custom values
 						if (opensInNewTab && linkTarget !== '_blank') {
-							attrs.rel = 'noopener noreferrer';
+							// Turning on: add security tokens if not already present
+							const parts = rel
+								? rel.split(/\s+/).filter(Boolean)
+								: [];
+							if (!parts.includes('noopener')) {
+								parts.push('noopener');
+							}
+							if (!parts.includes('noreferrer')) {
+								parts.push('noreferrer');
+							}
+							attrs.rel = parts.join(' ');
 						} else if (!opensInNewTab && linkTarget === '_blank') {
-							attrs.rel = '';
+							// Turning off: remove security tokens but keep custom values
+							attrs.rel = rel
+								.split(/\s+/)
+								.filter(
+									(t) =>
+										t &&
+										t !== 'noopener' &&
+										t !== 'noreferrer'
+								)
+								.join(' ');
 						}
 
 						setAttributes(attrs);
