@@ -2,20 +2,27 @@
  * Icon Button Block - Edit Component
  *
  * Button with optional icon at start or end.
+ * Link is managed via the inline toolbar, following the core Button block pattern.
  *
  * @since 1.0.0
  */
 
 import { __ } from '@wordpress/i18n';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import {
 	useBlockProps,
+	BlockControls,
 	InspectorControls,
 	RichText,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalLinkControl as LinkControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
+import { ToolbarButton, Popover } from '@wordpress/components';
+import { link as linkIcon } from '@wordpress/icons';
 import { useSelect } from '@wordpress/data';
 import { getIcon } from '../icon/utils/svg-icons';
 import { ButtonSettingsPanel } from './components/inspector/ButtonSettingsPanel';
@@ -29,6 +36,7 @@ import { convertPaddingValue } from './utils/padding';
  * @param {Function} props.setAttributes - Function to update attributes
  * @param {Object}   props.context       - Block context from parent
  * @param {string}   props.clientId      - Block client ID
+ * @param {boolean}  props.isSelected    - Whether the block is selected
  * @return {JSX.Element} Icon Button edit component
  */
 export default function IconButtonEdit({
@@ -36,6 +44,7 @@ export default function IconButtonEdit({
 	setAttributes,
 	context,
 	clientId,
+	isSelected,
 }) {
 	const {
 		text,
@@ -68,6 +77,29 @@ export default function IconButtonEdit({
 		},
 		[clientId]
 	);
+
+	// Link toolbar state (follows core Button block pattern)
+	const ref = useRef();
+	const richTextRef = useRef();
+	const [isEditingURL, setIsEditingURL] = useState(false);
+	const isURLSet = !!url;
+
+	// Close link popover when block is deselected
+	useEffect(() => {
+		if (!isSelected) {
+			setIsEditingURL(false);
+		}
+	}, [isSelected]);
+
+	function startEditing(event) {
+		event.preventDefault();
+		setIsEditingURL(true);
+	}
+
+	function unlink() {
+		setAttributes({ url: '', linkTarget: '_self', rel: '' });
+		setIsEditingURL(false);
+	}
 
 	// Get hover button background from parent container context
 	const parentHoverButtonBg =
@@ -150,12 +182,91 @@ export default function IconButtonEdit({
 	const ButtonElement = 'div'; // Always div in editor to preserve editability
 
 	const blockProps = useBlockProps({
+		ref,
 		className: `dsgo-icon-button wp-block-button wp-block-button__link wp-element-button${animationClass}`,
 		style: buttonStyles,
 	});
 
 	return (
 		<>
+			<BlockControls group="block">
+				<ToolbarButton
+					name="link"
+					icon={linkIcon}
+					title={__('Link', 'designsetgo')}
+					onClick={startEditing}
+					isActive={isURLSet}
+				/>
+			</BlockControls>
+
+			{isSelected && (isEditingURL || isURLSet) && (
+				<Popover
+					placement="bottom"
+					onClose={() => {
+						setIsEditingURL(false);
+						richTextRef.current?.focus();
+					}}
+					anchor={ref.current}
+					focusOnMount={isEditingURL ? 'firstElement' : false}
+					__unstableSlotName="__unstable-block-tools-after"
+					shift
+				>
+					<LinkControl
+						value={{
+							url,
+							opensInNewTab: linkTarget === '_blank',
+						}}
+						onChange={(nextValue) => {
+							const newUrl = nextValue?.url ?? '';
+							const opensInNewTab =
+								nextValue?.opensInNewTab ?? false;
+
+							const attrs = {
+								url: newUrl,
+								linkTarget: opensInNewTab ? '_blank' : '_self',
+							};
+
+							// Auto-manage rel when toggling new tab
+							if (opensInNewTab && linkTarget !== '_blank') {
+								const parts = rel
+									? rel.split(/\s+/).filter(Boolean)
+									: [];
+								if (!parts.includes('noopener')) {
+									parts.push('noopener');
+								}
+								if (!parts.includes('noreferrer')) {
+									parts.push('noreferrer');
+								}
+								attrs.rel = parts.join(' ');
+							} else if (
+								!opensInNewTab &&
+								linkTarget === '_blank'
+							) {
+								attrs.rel = (rel || '')
+									.split(/\s+/)
+									.filter(
+										(t) =>
+											t &&
+											t !== 'noopener' &&
+											t !== 'noreferrer'
+									)
+									.join(' ');
+							}
+
+							setAttributes(attrs);
+						}}
+						onRemove={unlink}
+						forceIsEditingLink={isEditingURL}
+						settings={[
+							{
+								id: 'opensInNewTab',
+								title: __('Open in new tab', 'designsetgo'),
+							},
+						]}
+					/>
+				</Popover>
+			)}
+
 			<InspectorControls group="color">
 				<ColorGradientSettingsDropdown
 					panelId={clientId}
@@ -184,9 +295,6 @@ export default function IconButtonEdit({
 
 			<InspectorControls>
 				<ButtonSettingsPanel
-					url={url}
-					linkTarget={linkTarget}
-					rel={rel}
 					icon={icon}
 					iconPosition={iconPosition}
 					iconSize={iconSize}
@@ -208,6 +316,7 @@ export default function IconButtonEdit({
 					</span>
 				)}
 				<RichText
+					ref={richTextRef}
 					tagName="span"
 					className="dsgo-icon-button__text"
 					value={text}
