@@ -4,7 +4,7 @@
  * A heading block that supports multiple font segments,
  * allowing different typography for each part of the heading.
  *
- * @since 1.5.0
+ * @since 2.0.0
  */
 
 import { registerBlockType } from '@wordpress/blocks';

@@ -4,7 +4,7 @@
  * Toggles the details panel in the preview banner.
  *
  * @package
- * @since 1.5.0
+ * @since 2.0.0
  */
 
 (function () {

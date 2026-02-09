@@ -13,7 +13,7 @@
  *     echo "__(\x27{$b["description"]}\x27,\x27designsetgo\x27);\n";}}'
  *
  * @package DesignSetGo
- * @since 1.5.0
+ * @since 2.0.0
  */
 
 // phpcs:disable

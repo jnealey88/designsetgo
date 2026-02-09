@@ -4,7 +4,7 @@
  * Renders a heading element containing inner blocks (heading segments)
  * that each support independent typography controls.
  *
- * @since 1.5.0
+ * @since 2.0.0
  */
 
 import classnames from 'classnames';

@@ -6,7 +6,7 @@
  * via WordPress Block Supports, with quick-access font
  * controls in the block toolbar.
  *
- * @since 1.5.0
+ * @since 2.0.0
  */
 
 import { __ } from '@wordpress/i18n';

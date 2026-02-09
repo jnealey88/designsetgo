@@ -5,7 +5,7 @@
  * Block Supports automatically apply font-family, font-weight,
  * color, and other typography properties.
  *
- * @since 1.5.0
+ * @since 2.0.0
  */
 
 import { useBlockProps, RichText } from '@wordpress/block-editor';

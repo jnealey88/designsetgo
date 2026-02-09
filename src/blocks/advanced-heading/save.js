@@ -4,7 +4,7 @@
  * Renders the heading element with inner block content.
  * Each heading segment saves its own typography styles.
  *
- * @since 1.5.0
+ * @since 2.0.0
  */
 
 import classnames from 'classnames';

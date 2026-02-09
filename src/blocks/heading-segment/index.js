@@ -4,7 +4,7 @@
  * A child block of Advanced Heading that represents
  * one text segment with its own typography settings.
  *
- * @since 1.5.0
+ * @since 2.0.0
  */
 
 import { registerBlockType } from '@wordpress/blocks';

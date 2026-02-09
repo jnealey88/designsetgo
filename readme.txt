@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.5.0
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -176,7 +176,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 == Changelog ==
 
-= 1.5.0 - 2026-02-07 =
+= 2.0.0 - 2026-02-08 =
 **New Blocks:**
 * New: Comparison Table block - dynamic columns, checkmark/X/text cells, featured column highlighting, CTA buttons, and responsive layout
 * New: Timeline block - vertical and horizontal orientations, alternating layouts, customizable markers, scroll animations, and optional links
@@ -227,7 +227,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Fix: Sticky header no longer overrides custom button and element colors in non-navigation areas
 
 **Internationalization:**
-* i18n: Updated translation strings for v1.5.0 across all 9 supported languages with new block, extension, and UI strings
+* i18n: Updated translation strings for v2.0.0 across all 9 supported languages with new block, extension, and UI strings
 
 **Security:**
 * Security: Fixed potential XSS bypass in block attribute sanitization
@@ -458,7 +458,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 
 == Upgrade Notice ==
 
-= 1.5.0 =
+= 2.0.0 =
 Major update: 3 new blocks (Comparison Table, Timeline, Advanced Heading), 2 new extensions (Grid Mobile Order, SVG Patterns with 25+ background patterns), shape dividers for sections, 150+ patterns and 12 homepage templates, frontend draft preview mode, improved Icon Button link settings, lazy loading for faster editor performance, reduced motion accessibility support, plus numerous bug fixes and a security improvement.
 
 = 1.4.1 =

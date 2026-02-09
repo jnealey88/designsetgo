@@ -72,7 +72,7 @@ To abandon your draft:
 
 ## Frontend Preview Mode
 
-**Since**: 1.5.0
+**Since**: 2.0.0
 
 When pages have pending changes, logged-in administrators see a **preview banner** fixed at the bottom of the public site. This lets admins review how draft content looks on the live frontend before publishing.
 

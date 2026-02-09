@@ -14,7 +14,7 @@
  * This preview is only served to logged-in administrators.
  *
  * @package DesignSetGo
- * @since 1.5.0
+ * @since 2.0.0
  */
 
 namespace DesignSetGo\Admin;

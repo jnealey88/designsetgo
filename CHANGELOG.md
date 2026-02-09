@@ -5,7 +5,7 @@ All notable changes to the DesignSetGo plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.5.0] - 2026-02-07
+## [2.0.0] - 2026-02-08
 
 ### New Blocks
 - **Comparison Table** - Flexible product/plan comparison with 2–6 dynamic columns, checkmark/X/text cells, featured column highlighting, CTA buttons, and responsive horizontal scroll or stack layout
@@ -58,7 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sticky header no longer overrides custom button and element colors in non-navigation areas
 
 ### Internationalization
-- Updated translation strings for v1.5.0 across all 9 supported languages (German, Spanish, French, Italian, Japanese, Dutch, Portuguese, Russian, Chinese) — includes new Advanced Heading, Heading Segment, SVG Patterns, pattern categories, and form field type strings
+- Updated translation strings for v2.0.0 across all 9 supported languages (German, Spanish, French, Italian, Japanese, Dutch, Portuguese, Russian, Chinese) — includes new Advanced Heading, Heading Segment, SVG Patterns, pattern categories, and form field type strings
 
 ### Security
 - Fixed potential XSS bypass in block attribute sanitization with double-encoding defense
@@ -392,7 +392,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[1.5.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.5.0
+[2.0.0]: https://github.com/jnealey88/designsetgo/releases/tag/v2.0.0
 [1.4.1]: https://github.com/jnealey88/designsetgo/releases/tag/v1.4.1
 [1.4.0]: https://github.com/jnealey88/designsetgo/releases/tag/v1.4.0
 [1.3.2]: https://github.com/jnealey88/designsetgo/releases/tag/v1.3.2
