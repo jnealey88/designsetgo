@@ -104,12 +104,21 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-heade
 	color: var(--dsgo-sticky-scroll-text-color, inherit);
 
 	/* Apply text color to navigation elements only — excludes buttons with user-set colors */
+	.wp-block-navigation a,
+	.wp-block-navigation a:hover,
+	.wp-block-navigation a:focus,
+	.wp-block-navigation a:focus-visible,
+	.wp-block-navigation a:visited,
+	.wp-block-navigation a:active,
 	.wp-block-navigation-item__content,
 	.wp-block-navigation-item__label,
 	.wp-block-navigation__submenu-icon,
 	.wp-block-site-title a,
 	.wp-block-site-title a:hover,
-	.wp-block-site-title a:focus {
+	.wp-block-site-title a:focus,
+	.wp-block-site-title a:focus-visible,
+	.wp-block-site-title a:visited,
+	.wp-block-site-title a:active {
 		color: var(--dsgo-sticky-scroll-text-color, inherit);
 		transition: color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
 	}
@@ -142,6 +151,7 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-heade
 	.dsgo-sticky-shrink.wp-block-template-part,
 	.dsgo-sticky-hide-on-scroll-down.wp-block-template-part,
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part,
+	.dsgo-sticky-bg-on-scroll.wp-block-template-part .wp-block-navigation a,
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part .wp-block-navigation-item__content,
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part .wp-block-navigation-item__label,
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part .wp-block-navigation__submenu-icon,
@@ -172,12 +182,21 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-heade
 		background-color: var(--dsgo-sticky-scroll-bg-color, rgba(0, 0, 0, 0.95));
 		color: var(--dsgo-sticky-scroll-text-color, rgba(255, 255, 255, 0.95));
 
+		.wp-block-navigation a,
+		.wp-block-navigation a:hover,
+		.wp-block-navigation a:focus,
+		.wp-block-navigation a:focus-visible,
+		.wp-block-navigation a:visited,
+		.wp-block-navigation a:active,
 		.wp-block-navigation-item__content,
 		.wp-block-navigation-item__label,
 		.wp-block-navigation__submenu-icon,
 		.wp-block-site-title a,
 		.wp-block-site-title a:hover,
-		.wp-block-site-title a:focus {
+		.wp-block-site-title a:focus,
+		.wp-block-site-title a:focus-visible,
+		.wp-block-site-title a:visited,
+		.wp-block-site-title a:active {
 			color: var(--dsgo-sticky-scroll-text-color, rgba(255, 255, 255, 0.95));
 		}
 
