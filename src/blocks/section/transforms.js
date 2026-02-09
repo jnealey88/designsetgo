@@ -10,6 +10,24 @@ const transforms = {
 	from: [
 		{
 			type: 'block',
+			blocks: ['core/group'],
+			transform: (attributes, innerBlocks) => {
+				const { style, backgroundColor, textColor, gradient } =
+					attributes;
+				return wp.blocks.createBlock(
+					'designsetgo/section',
+					{
+						style,
+						backgroundColor,
+						textColor,
+						gradient,
+					},
+					innerBlocks
+				);
+			},
+		},
+		{
+			type: 'block',
 			blocks: ['designsetgo/stack'],
 			transform: (attributes, innerBlocks) => {
 				return wp.blocks.createBlock(
@@ -62,6 +80,24 @@ const transforms = {
 		},
 	],
 	to: [
+		{
+			type: 'block',
+			blocks: ['core/group'],
+			transform: (attributes, innerBlocks) => {
+				const { style, backgroundColor, textColor, gradient } =
+					attributes;
+				return wp.blocks.createBlock(
+					'core/group',
+					{
+						style,
+						backgroundColor,
+						textColor,
+						gradient,
+					},
+					innerBlocks
+				);
+			},
+		},
 		{
 			type: 'block',
 			blocks: ['designsetgo/row'],

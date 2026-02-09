@@ -121,7 +121,7 @@ class Loader {
 			'dsgo-gallery'      => __( 'DesignSetGo: Gallery', 'designsetgo' ),
 			'dsgo-contact'      => __( 'DesignSetGo: Contact', 'designsetgo' ),
 			'dsgo-services'     => __( 'DesignSetGo: Services', 'designsetgo' ),
-			'dsgo-pages'        => __( 'DesignSetGo: Full Pages', 'designsetgo' ),
+			'dsgo-pages'        => __( 'DesignSetGo: Full Pages', 'designsetgo' )
 		);
 
 		// Get pattern categories registry.
