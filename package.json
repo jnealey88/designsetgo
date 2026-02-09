@@ -5,6 +5,17 @@
   "author": "DesignSetGo",
   "license": "GPL-2.0-or-later",
   "main": "build/index.js",
+  "files": [
+    "build/**",
+    "includes/**",
+    "languages/**",
+    "patterns/**",
+    "designsetgo.php",
+    "uninstall.php",
+    "readme.txt",
+    "changelog.*",
+    "license.*"
+  ],
   "scripts": {
     "start": "wp-scripts start",
     "start:fast": "DISABLE_ESLINT_PLUGIN=true wp-scripts start",
