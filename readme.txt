@@ -9,7 +9,7 @@ Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Professional WordPress blocks without page builder bloat. 48 blocks + 15 universal extensions that enhance ANY block.
+Professional WordPress blocks without page builder bloat. 50 blocks + 16 universal extensions that enhance ANY block.
 
 == Description ==
 
@@ -21,7 +21,7 @@ DesignSetGo gives you the power of a page builder with the simplicity of WordPre
 
 ✓ **Works Like WordPress** - If you know blocks, you know DesignSetGo. No separate interface, no learning curve.
 ✓ **48 Blocks, One Plugin** - Replaces multiple plugins: forms, sliders, tabs, accordions, counters, cards, maps, modals, breadcrumbs, timelines, and more.
-✓ **15 Universal Extensions** - Add animations, scroll effects, parallax, responsive visibility, sticky headers, clickable groups, draft mode, max width, and more to ANY WordPress block (including core blocks).
+✓ **16 Universal Extensions** - Add animations, scroll effects, parallax, responsive visibility, sticky headers, clickable groups, draft mode, max width, and more to ANY WordPress block (including core blocks).
 ✓ **Text Style Format** - Apply custom colors, gradients, font sizes, and highlights to selected text inline, just like bold or italic.
 ✓ **Performance First** - Lightweight code, no jQuery, optimized bundles. Your site stays fast.
 ✓ **No Lock-In** - Built with WordPress standards. What you build works with or without the plugin.
@@ -64,6 +64,7 @@ These work with ANY WordPress block—including core blocks and third-party bloc
 * **Grid Mobile Order** - Reorder grid items on mobile without changing HTML structure
 * **Reveal Control** - Advanced hover reveal timing and transitions
 * **Text Alignment Inheritance** - Inherit alignment from parent blocks
+* **SVG Patterns** - Add 25+ repeatable SVG background patterns to sections and groups with customizable color, opacity, and scale
 * **Draft Mode** - Control draft content visibility in the editor vs frontend
 
 **Content Management Tools**
@@ -176,9 +177,11 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 **New Blocks:**
 * New: Comparison Table block - dynamic columns, checkmark/X/text cells, featured column highlighting, CTA buttons, and responsive layout
 * New: Timeline block - vertical and horizontal orientations, alternating layouts, customizable markers, scroll animations, and optional links
+* New: Advanced Heading block - create headings with multiple font styles, weights, and colors using independent heading segments
 
-**New Extension:**
+**New Extensions:**
 * New: Grid Mobile Order - reorder grid items on mobile without changing the desktop layout or HTML structure
+* New: SVG Patterns - add 25+ repeatable SVG background patterns to sections and groups with customizable color, opacity, and scale
 
 **New Features:**
 * New: Shape Dividers for Section blocks - 24 decorative shapes (waves, curves, peaks, clouds, and more) with customizable color, height, and width
@@ -198,6 +201,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Enhancement: Code splitting with lazy loading for extensions and admin - smaller bundle, faster editor load
 * Enhancement: Animation performance optimized with shared observers and reduced overhead
 * Enhancement: Section overflow handling improved for better dropdown and sticky element compatibility
+* Enhancement: Icon Button link settings now use WordPress LinkControl with search and autocomplete
 
 **Bug Fixes:**
 * Fix: Pill, Icon Button, Icon, and Modal Trigger no longer float beside content in Group blocks
@@ -215,6 +219,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Fix: Background images with URL query parameters now render on frontend
 * Fix: Icon block sizing improved in editor
 * Fix: Draft mode no longer strips CSS or SVG content from blocks
+* Fix: Modal trigger button padding now consistent with WordPress buttons; link-style triggers maintain compact styling on mobile
+* Fix: Card block badge and overlay color controls now appear correctly in sidebar
+* Fix: Sticky header no longer overrides custom button and element colors in non-navigation areas
 
 **Security:**
 * Security: Fixed potential XSS bypass in block attribute sanitization
@@ -446,7 +453,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 == Upgrade Notice ==
 
 = 1.5.0 =
-Major update: 2 new blocks (Comparison Table, Timeline), Grid Mobile Order extension, shape dividers for sections, 150+ patterns and 12 homepage templates, frontend draft preview mode, lazy loading for faster editor performance, reduced motion accessibility support, plus numerous bug fixes and a security improvement.
+Major update: 3 new blocks (Comparison Table, Timeline, Advanced Heading), 2 new extensions (Grid Mobile Order, SVG Patterns with 25+ background patterns), shape dividers for sections, 150+ patterns and 12 homepage templates, frontend draft preview mode, improved Icon Button link settings, lazy loading for faster editor performance, reduced motion accessibility support, plus numerous bug fixes and a security improvement.
 
 = 1.4.1 =
 Bug fix release: Fixes Grid block type safety for WordPress 6.1+ spacing presets, Row/Grid alignment consistency, Icon Button width migration, and improved llms.txt conflict handling with admin UI resolution.
