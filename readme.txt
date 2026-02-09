@@ -39,6 +39,9 @@ Professional forms with AJAX submission, spam protection (including Cloudflare T
 **Interactive Elements (14 blocks)**
 Tabs, accordions, modals/popups, flip cards, sliders, scroll effects, counters, progress bars, comparison tables, timelines, and revealing content. All with smooth animations and mobile-responsive behavior.
 
+**Typography (2 blocks)**
+Advanced Heading with independent heading segments — create headings with multiple font styles, weights, and colors within a single semantic heading element (H1–H6).
+
 **Navigation & Structure (2 blocks)**
 Breadcrumbs with Schema.org markup and Table of Contents with automatic heading detection, smooth scrolling, and sticky positioning.
 
@@ -48,7 +51,7 @@ Icons (500+), icon buttons, icon lists, pills/badges, dividers, countdown timers
 **Location (1 block)**
 Interactive maps with Google Maps and OpenStreetMap support, custom markers, and privacy-friendly options.
 
-**Universal Extensions (15 extensions)**
+**Universal Extensions (16 extensions)**
 These work with ANY WordPress block—including core blocks and third-party blocks:
 * **Block Animations** - 24+ effects with scroll/hover/click triggers
 * **Scroll Parallax** - Elementor-style vertical/horizontal parallax effects with device controls
@@ -222,6 +225,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Fix: Modal trigger button padding now consistent with WordPress buttons; link-style triggers maintain compact styling on mobile
 * Fix: Card block badge and overlay color controls now appear correctly in sidebar
 * Fix: Sticky header no longer overrides custom button and element colors in non-navigation areas
+
+**Internationalization:**
+* i18n: Updated translation strings for v1.5.0 across all 9 supported languages with new block, extension, and UI strings
 
 **Security:**
 * Security: Fixed potential XSS bypass in block attribute sanitization

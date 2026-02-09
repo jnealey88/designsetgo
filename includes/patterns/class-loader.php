@@ -18,16 +18,29 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Performance optimizations:
  * - Patterns only register on admin/REST/CLI requests (never on front-end page loads).
- * - Pattern file paths are cached in a transient to avoid repeated filesystem scans.
+ * - Full pattern data (including content) is cached in category-level transients to
+ *   avoid repeated filesystem reads. Category-level splits keep each transient under
+ *   safe size limits for MySQL max_allowed_packet and object cache item limits.
+ * - Smart invalidation via file modification time hashing detects file edits without
+ *   requiring a plugin version bump.
+ * - Pattern context filtering via postTypes and blockTypes reduces the number of
+ *   patterns sent to the editor in specific editing contexts.
  */
 class Loader {
 
 	/**
-	 * Transient name for caching pattern file paths.
+	 * Legacy transient name (kept for backward-compatible cleanup).
 	 *
 	 * @var string
 	 */
 	const CACHE_TRANSIENT = 'dsgo_pattern_files';
+
+	/**
+	 * Transient prefix for category-level pattern data caches.
+	 *
+	 * @var string
+	 */
+	const CACHE_TRANSIENT_PREFIX = 'dsgo_pattern_data_';
 
 	/**
 	 * Allowed pattern category directory names.
@@ -137,79 +150,48 @@ class Loader {
 	}
 
 	/**
-	 * Get the cached map of category => relative file paths.
+	 * Get the post types mapping for pattern categories.
 	 *
-	 * Uses a version-keyed transient so the cache auto-invalidates on plugin
-	 * updates. In WP_DEBUG mode the cache is bypassed for development convenience.
+	 * Categories listed here will have their patterns restricted to the
+	 * specified post types. Patterns in unlisted categories are available
+	 * everywhere.
 	 *
-	 * @return array<string, string[]> Associative array of category => relative paths.
+	 * @return array<string, string[]> Category slug => array of post type slugs.
 	 */
-	private function get_pattern_file_map() {
-		// Skip cache in debug mode so new/removed patterns are picked up immediately.
-		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
-			$cached = get_transient( self::CACHE_TRANSIENT );
-
-			// Validate cached data structure and version match.
-			if (
-				is_array( $cached )
-				&& isset( $cached['version'], $cached['map'] )
-				&& DESIGNSETGO_VERSION === $cached['version']
-				&& is_array( $cached['map'] )
-			) {
-				return $cached['map'];
-			}
-		}
-
-		$patterns_dir = DESIGNSETGO_PATH . 'patterns/';
-		$file_map     = array();
-
-		if ( ! file_exists( $patterns_dir ) ) {
-			return $file_map;
-		}
-
-		$dir_prefix_len = strlen( $patterns_dir );
-
-		foreach ( self::ALLOWED_CATEGORIES as $category ) {
-			$category_dir = $patterns_dir . $category . '/';
-
-			if ( ! is_dir( $category_dir ) ) {
-				continue;
-			}
-
-			$files = glob( $category_dir . '*.php' );
-
-			// glob() returns false on error, empty array when no matches.
-			if ( false === $files ) {
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( sprintf( 'DesignSetGo: glob() failed for pattern directory: %s', $category_dir ) );
-				}
-				continue;
-			}
-
-			if ( $files ) {
-				// Store paths relative to the patterns directory for portability.
-				$file_map[ $category ] = array_map(
-					static function ( $file ) use ( $dir_prefix_len ) {
-						return substr( $file, $dir_prefix_len );
-					},
-					$files
-				);
-			}
-		}
-
-		/** This filter is documented in includes/patterns/class-loader.php */
-		$cache_duration = (int) apply_filters( 'designsetgo_pattern_cache_duration', DAY_IN_SECONDS );
-
-		set_transient(
-			self::CACHE_TRANSIENT,
-			array(
-				'version' => DESIGNSETGO_VERSION,
-				'map'     => $file_map,
-			),
-			$cache_duration
+	private static function get_category_post_types() {
+		$map = array(
+			'homepage' => array( 'page' ),
 		);
 
-		return $file_map;
+		/**
+		 * Filters the category-to-postTypes mapping for pattern context filtering.
+		 *
+		 * @since 1.6.0
+		 *
+		 * @param array $map Category directory name => array of post type slugs.
+		 */
+		return apply_filters( 'designsetgo_pattern_post_types_map', $map );
+	}
+
+	/**
+	 * Compute a hash of file modification times for a set of files.
+	 *
+	 * Used to detect file edits without requiring a plugin version bump.
+	 * The hash changes when any file in the category is added, removed, or modified.
+	 *
+	 * @param string[] $files Absolute file paths.
+	 * @return string MD5 hash.
+	 */
+	private static function compute_files_hash( $files ) {
+		$parts = array();
+		foreach ( $files as $file ) {
+			$mtime = @filemtime( $file );
+			if ( false !== $mtime ) {
+				$parts[] = basename( $file ) . ':' . $mtime;
+			}
+		}
+		sort( $parts );
+		return md5( implode( '|', $parts ) );
 	}
 
 	/**
@@ -246,69 +228,173 @@ class Loader {
 	}
 
 	/**
-	 * Register all patterns.
+	 * Get cached pattern data for a single category.
+	 *
+	 * Returns an associative array of slug => pattern data arrays. On cache miss,
+	 * scans the category directory, requires each file, validates, and caches.
+	 *
+	 * @param string $category Category directory name (must be in ALLOWED_CATEGORIES).
+	 * @return array<string, array> Pattern slug => pattern data array.
 	 */
-	public function register_patterns() {
+	private function get_category_patterns( $category ) {
 		$patterns_dir = DESIGNSETGO_PATH . 'patterns/';
-		$file_map     = $this->get_pattern_file_map();
-		$real_dir     = realpath( $patterns_dir );
+		$category_dir = $patterns_dir . $category . '/';
+		$transient_key = self::CACHE_TRANSIENT_PREFIX . $category;
 
-		if ( ! $real_dir ) {
-			return;
+		// Skip cache in debug mode so new/removed patterns are picked up immediately.
+		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+			$cached = get_transient( $transient_key );
+
+			if (
+				is_array( $cached )
+				&& isset( $cached['version'], $cached['hash'] )
+				&& DESIGNSETGO_VERSION === $cached['version']
+			) {
+				// Decompress patterns if stored compressed, or read directly.
+				$patterns_data = null;
+				if ( isset( $cached['compressed'] ) && is_string( $cached['compressed'] ) ) {
+					$raw = base64_decode( $cached['compressed'] );
+					if ( false !== $raw ) {
+						$decompressed = @gzuncompress( $raw );
+						if ( false !== $decompressed ) {
+							$patterns_data = maybe_unserialize( $decompressed );
+						}
+					}
+				} elseif ( isset( $cached['patterns'] ) && is_array( $cached['patterns'] ) ) {
+					$patterns_data = $cached['patterns'];
+				}
+
+				if ( is_array( $patterns_data ) ) {
+					// Verify file hash still matches (catches manual file edits).
+					if ( is_dir( $category_dir ) ) {
+						$files = glob( $category_dir . '*.php' );
+						if ( is_array( $files ) && self::compute_files_hash( $files ) === $cached['hash'] ) {
+							return $patterns_data;
+						}
+					} elseif ( empty( $patterns_data ) ) {
+						// Directory doesn't exist and cache is empty — still valid.
+						return $patterns_data;
+					}
+				}
+			}
 		}
 
-		// Enforce trailing slash for directory boundary check to prevent
-		// matching sibling directories (e.g. "patterns2/").
+		// Cache miss — scan directory and require each file.
+		$patterns = array();
+
+		if ( ! is_dir( $category_dir ) ) {
+			return $patterns;
+		}
+
+		$files = glob( $category_dir . '*.php' );
+
+		// glob() returns false on error, empty array when no matches.
+		if ( false === $files || empty( $files ) ) {
+			if ( false === $files && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( sprintf( 'DesignSetGo: glob() failed for pattern directory: %s', $category_dir ) );
+			}
+			return $patterns;
+		}
+
+		$real_dir = realpath( $patterns_dir );
+		if ( ! $real_dir ) {
+			return $patterns;
+		}
 		$real_dir = rtrim( $real_dir, '/' ) . '/';
 
-		foreach ( $file_map as $category => $relative_paths ) {
-			// Validate category is in the allowed list (defense-in-depth against cache corruption).
-			if ( ! in_array( $category, self::ALLOWED_CATEGORIES, true ) ) {
+		foreach ( $files as $file ) {
+			$relative_path = $category . '/' . basename( $file );
+
+			// Validate relative path structure.
+			if ( ! self::is_valid_relative_path( $relative_path ) ) {
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( sprintf( 'DesignSetGo: Skipped invalid cached pattern category: %s', $category ) );
+					error_log( sprintf( 'DesignSetGo: Skipped invalid relative pattern path: %s', $relative_path ) );
 				}
 				continue;
 			}
 
-			foreach ( $relative_paths as $relative_path ) {
-				// Validate relative path structure before constructing full path.
-				if ( ! self::is_valid_relative_path( $relative_path ) ) {
-					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-						error_log( sprintf( 'DesignSetGo: Skipped invalid relative pattern path: %s', $relative_path ) );
-					}
-					continue;
+			// Security: Verify resolved file is within expected directory.
+			$real_file = realpath( $file );
+			if ( ! $real_file || 0 !== strpos( $real_file, $real_dir ) ) {
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( sprintf( 'DesignSetGo: Skipped pattern file outside allowed directory: %s', $file ) );
+				}
+				continue;
+			}
+
+			// Load pattern file.
+			$pattern = require $real_file;
+
+			// Validate pattern structure.
+			if ( is_array( $pattern ) && isset( $pattern['content'] ) ) {
+				$slug = 'designsetgo/' . sanitize_key( $category ) . '/' . sanitize_key( basename( $file, '.php' ) );
+				$patterns[ $slug ] = $pattern;
+			}
+		}
+
+		// Cache the full pattern data for this category (compressed to stay
+		// within transient size limits for MySQL and object cache backends).
+		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+			/** This filter is documented in includes/patterns/class-loader.php */
+			$cache_duration = (int) apply_filters( 'designsetgo_pattern_cache_duration', DAY_IN_SECONDS );
+
+			$compressed = base64_encode( gzcompress( serialize( $patterns ) ) );
+
+			set_transient(
+				$transient_key,
+				array(
+					'version'    => DESIGNSETGO_VERSION,
+					'hash'       => self::compute_files_hash( $files ),
+					'compressed' => $compressed,
+				),
+				$cache_duration
+			);
+		}
+
+		return $patterns;
+	}
+
+	/**
+	 * Register all patterns.
+	 */
+	public function register_patterns() {
+		$post_types_map = self::get_category_post_types();
+
+		foreach ( self::ALLOWED_CATEGORIES as $category ) {
+			// Validate category is in the allowed list (defense-in-depth).
+			$patterns = $this->get_category_patterns( $category );
+
+			foreach ( $patterns as $slug => $pattern ) {
+				// Inject postTypes if the category has a restriction and the
+				// pattern doesn't already declare its own.
+				if ( isset( $post_types_map[ $category ] ) && ! isset( $pattern['postTypes'] ) ) {
+					$pattern['postTypes'] = $post_types_map[ $category ];
 				}
 
-				$file = $patterns_dir . $relative_path;
-
-				// Security: Verify resolved file is within expected directory.
-				$real_file = realpath( $file );
-
-				if ( ! $real_file || 0 !== strpos( $real_file, $real_dir ) ) {
-					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-						error_log( sprintf( 'DesignSetGo: Skipped pattern file outside allowed directory: %s', $file ) );
-					}
-					continue;
+				// All DSGO patterns are section-level (full-width page sections).
+				// Restrict to post-content context to prevent them from appearing
+				// as inline block suggestions (e.g. when inserting a Paragraph).
+				if ( ! isset( $pattern['blockTypes'] ) ) {
+					$pattern['blockTypes'] = array( 'core/post-content' );
 				}
 
-				// Load pattern file.
-				$pattern = require $real_file;
-
-				// Validate pattern structure.
-				if ( is_array( $pattern ) && isset( $pattern['content'] ) ) {
-					$slug = 'designsetgo/' . sanitize_key( $category ) . '/' . sanitize_key( basename( $file, '.php' ) );
-					register_block_pattern( $slug, $pattern );
-				}
+				register_block_pattern( $slug, $pattern );
 			}
 		}
 	}
 
 	/**
-	 * Clear the pattern file cache.
+	 * Clear all pattern caches.
 	 *
 	 * Should be called on plugin activation to ensure a fresh scan.
 	 */
 	public static function clear_cache() {
+		// Delete legacy transient.
 		delete_transient( self::CACHE_TRANSIENT );
+
+		// Delete all category-level transients.
+		foreach ( self::ALLOWED_CATEGORIES as $category ) {
+			delete_transient( self::CACHE_TRANSIENT_PREFIX . $category );
+		}
 	}
 }

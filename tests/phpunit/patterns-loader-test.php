@@ -4,10 +4,10 @@
  *
  * Tests performance optimizations and security hardening:
  * - Front-end request gating (patterns skip non-editor requests)
- * - Transient-based file map caching
- * - Cache validation and invalidation
+ * - Category-level transient caching with full pattern data
+ * - Cache validation (version + file hash) and invalidation
  * - Relative path security validation
- * - Pattern registration and category registration
+ * - Pattern registration, category registration, and context filtering
  *
  * @package DesignSetGo
  * @subpackage Tests
@@ -51,8 +51,18 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 	 * Tear down after each test.
 	 */
 	public function tear_down() {
-		// Always clean up cached transient.
+		// Clean up legacy transient.
 		delete_transient( Loader::CACHE_TRANSIENT );
+
+		// Clean up all category-level transients.
+		foreach ( Loader::ALLOWED_CATEGORIES as $category ) {
+			delete_transient( Loader::CACHE_TRANSIENT_PREFIX . $category );
+		}
+
+		// Remove any test filters.
+		remove_all_filters( 'designsetgo_pattern_cache_duration' );
+		remove_all_filters( 'designsetgo_pattern_post_types_map' );
+
 		parent::tear_down();
 	}
 
@@ -117,10 +127,17 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that CACHE_TRANSIENT constant is defined.
+	 * Test that CACHE_TRANSIENT constant is defined (legacy).
 	 */
 	public function test_cache_transient_constant() {
 		$this->assertSame( 'dsgo_pattern_files', Loader::CACHE_TRANSIENT );
+	}
+
+	/**
+	 * Test that CACHE_TRANSIENT_PREFIX constant is defined.
+	 */
+	public function test_cache_transient_prefix_constant() {
+		$this->assertSame( 'dsgo_pattern_data_', Loader::CACHE_TRANSIENT_PREFIX );
 	}
 
 	// -------------------------------------------------------------------------
@@ -315,221 +332,292 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 	}
 
 	// -------------------------------------------------------------------------
-	// Transient cache tests
+	// Category-level transient cache tests
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Test that get_pattern_file_map stores results in transient.
+	 * Test that get_category_patterns stores results in category transient.
 	 */
-	public function test_file_map_cached_in_transient() {
-		// Clear any existing cache.
-		delete_transient( Loader::CACHE_TRANSIENT );
+	public function test_category_patterns_cached_in_transient() {
+		$cached = get_transient( Loader::CACHE_TRANSIENT_PREFIX . 'hero' );
+		// Should be false before caching.
+		$this->assertFalse( $cached, 'Transient should not exist before caching' );
 
-		// Call get_pattern_file_map to populate cache.
-		$this->call_private_method( 'get_pattern_file_map' );
+		// Call get_category_patterns to populate cache.
+		$this->call_private_method( 'get_category_patterns', array( 'hero' ) );
 
-		$cached = get_transient( Loader::CACHE_TRANSIENT );
+		$cached = get_transient( Loader::CACHE_TRANSIENT_PREFIX . 'hero' );
 
 		$this->assertIsArray( $cached, 'Transient should contain an array' );
 		$this->assertArrayHasKey( 'version', $cached, 'Cache should include version key' );
-		$this->assertArrayHasKey( 'map', $cached, 'Cache should include map key' );
+		$this->assertArrayHasKey( 'hash', $cached, 'Cache should include hash key' );
+		$this->assertArrayHasKey( 'patterns', $cached, 'Cache should include patterns key' );
 		$this->assertSame( DESIGNSETGO_VERSION, $cached['version'], 'Cached version should match plugin version' );
-		$this->assertIsArray( $cached['map'], 'Cached map should be an array' );
+		$this->assertIsArray( $cached['patterns'], 'Cached patterns should be an array' );
 	}
 
 	/**
-	 * Test that cached file map is returned on subsequent calls.
+	 * Test that cached pattern data includes content key.
 	 */
-	public function test_file_map_returns_cached_data() {
-		// Seed a fake transient with known data.
-		$fake_map = array(
-			'hero' => array( 'hero/hero-test.php' ),
+	public function test_cached_patterns_include_content() {
+		$patterns = $this->call_private_method( 'get_category_patterns', array( 'hero' ) );
+
+		$this->assertNotEmpty( $patterns, 'Hero category should have patterns' );
+
+		foreach ( $patterns as $slug => $pattern ) {
+			$this->assertArrayHasKey(
+				'content',
+				$pattern,
+				"Cached pattern '$slug' should have content"
+			);
+			$this->assertNotEmpty(
+				$pattern['content'],
+				"Cached pattern '$slug' content should not be empty"
+			);
+		}
+	}
+
+	/**
+	 * Test that cached pattern data is returned on subsequent calls.
+	 */
+	public function test_category_patterns_returns_cached_data() {
+		$fake_patterns = array(
+			'designsetgo/hero/hero-test' => array(
+				'title'   => 'Test Hero',
+				'content' => '<!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph -->',
+			),
 		);
 
+		// Compute the real hash for the hero directory so the cache validates.
+		$hero_dir = DESIGNSETGO_PATH . 'patterns/hero/';
+		$files    = glob( $hero_dir . '*.php' );
+		$hash     = $this->call_private_static_method( 'compute_files_hash', array( $files ) );
+
 		set_transient(
-			Loader::CACHE_TRANSIENT,
+			Loader::CACHE_TRANSIENT_PREFIX . 'hero',
 			array(
-				'version' => DESIGNSETGO_VERSION,
-				'map'     => $fake_map,
+				'version'  => DESIGNSETGO_VERSION,
+				'hash'     => $hash,
+				'patterns' => $fake_patterns,
 			),
 			DAY_IN_SECONDS
 		);
 
-		$result = $this->call_private_method( 'get_pattern_file_map' );
+		$result = $this->call_private_method( 'get_category_patterns', array( 'hero' ) );
 
-		$this->assertSame( $fake_map, $result, 'Should return cached map without re-scanning' );
+		$this->assertSame( $fake_patterns, $result, 'Should return cached patterns without re-scanning' );
 	}
 
 	/**
 	 * Test that stale cache (wrong version) triggers a fresh scan.
 	 */
-	public function test_stale_version_cache_ignored() {
-		// Seed a transient with a mismatched version.
+	public function test_stale_version_cache_rebuilds() {
 		set_transient(
-			Loader::CACHE_TRANSIENT,
+			Loader::CACHE_TRANSIENT_PREFIX . 'hero',
 			array(
-				'version' => '0.0.0-old',
-				'map'     => array( 'fake' => array( 'fake/fake.php' ) ),
-			),
-			DAY_IN_SECONDS
-		);
-
-		$result = $this->call_private_method( 'get_pattern_file_map' );
-
-		// Result should NOT contain our fake data — it should be a fresh scan.
-		$this->assertArrayNotHasKey( 'fake', $result, 'Stale cache should be discarded' );
-	}
-
-	/**
-	 * Test that malformed cache data triggers a fresh scan.
-	 */
-	public function test_malformed_cache_ignored() {
-		// Missing 'map' key.
-		set_transient(
-			Loader::CACHE_TRANSIENT,
-			array( 'version' => DESIGNSETGO_VERSION ),
-			DAY_IN_SECONDS
-		);
-
-		$result = $this->call_private_method( 'get_pattern_file_map' );
-
-		// Should return a real file map, not null/empty from bad cache.
-		$this->assertIsArray( $result );
-	}
-
-	/**
-	 * Test that non-array map value in cache triggers a fresh scan.
-	 */
-	public function test_non_array_map_cache_ignored() {
-		set_transient(
-			Loader::CACHE_TRANSIENT,
-			array(
-				'version' => DESIGNSETGO_VERSION,
-				'map'     => 'not-an-array',
-			),
-			DAY_IN_SECONDS
-		);
-
-		$result = $this->call_private_method( 'get_pattern_file_map' );
-
-		$this->assertIsArray( $result, 'Should return fresh array, not cached string' );
-	}
-
-	/**
-	 * Test that clear_cache removes the transient.
-	 */
-	public function test_clear_cache() {
-		set_transient(
-			Loader::CACHE_TRANSIENT,
-			array(
-				'version' => DESIGNSETGO_VERSION,
-				'map'     => array(),
-			),
-			DAY_IN_SECONDS
-		);
-
-		Loader::clear_cache();
-
-		$this->assertFalse( get_transient( Loader::CACHE_TRANSIENT ), 'Transient should be deleted after clear_cache()' );
-	}
-
-	// -------------------------------------------------------------------------
-	// File map content tests
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Test that file map contains expected categories from disk.
-	 */
-	public function test_file_map_contains_pattern_categories() {
-		delete_transient( Loader::CACHE_TRANSIENT );
-
-		$file_map = $this->call_private_method( 'get_pattern_file_map' );
-
-		// At minimum, these categories should have patterns on disk.
-		$expected_populated = array( 'hero', 'homepage', 'features', 'cta', 'content' );
-
-		foreach ( $expected_populated as $category ) {
-			$this->assertArrayHasKey(
-				$category,
-				$file_map,
-				"File map should include '$category' category"
-			);
-			$this->assertNotEmpty(
-				$file_map[ $category ],
-				"Category '$category' should have pattern files"
-			);
-		}
-	}
-
-	/**
-	 * Test that file map stores relative paths, not absolute.
-	 */
-	public function test_file_map_stores_relative_paths() {
-		delete_transient( Loader::CACHE_TRANSIENT );
-
-		$file_map = $this->call_private_method( 'get_pattern_file_map' );
-
-		foreach ( $file_map as $category => $paths ) {
-			foreach ( $paths as $path ) {
-				$this->assertStringStartsWith(
-					$category . '/',
-					$path,
-					"Path '$path' should be relative, starting with category prefix"
-				);
-				$this->assertStringEndsWith(
-					'.php',
-					$path,
-					"Path '$path' should end with .php"
-				);
-				// Should not be an absolute path.
-				$this->assertStringStartsNotWith(
-					'/',
-					$path,
-					"Path '$path' should not be absolute"
-				);
-			}
-		}
-	}
-
-	/**
-	 * Test that excluded categories (navigation) are not in file map.
-	 */
-	public function test_excluded_categories_not_in_file_map() {
-		delete_transient( Loader::CACHE_TRANSIENT );
-
-		$file_map = $this->call_private_method( 'get_pattern_file_map' );
-
-		$this->assertArrayNotHasKey( 'navigation', $file_map, 'Navigation should be excluded from file map' );
-	}
-
-	/**
-	 * Test that invalid categories in cached data are skipped during registration.
-	 */
-	public function test_register_patterns_skips_invalid_cached_categories() {
-		$this->loader->register_pattern_categories();
-
-		// Seed cache with a poisoned category key alongside a valid one.
-		set_transient(
-			Loader::CACHE_TRANSIENT,
-			array(
-				'version' => DESIGNSETGO_VERSION,
-				'map'     => array(
-					'../../../../etc' => array( '../../../../etc/passwd.php' ),
-					'hero'            => array( 'hero/hero-centered.php' ),
+				'version'  => '0.0.0-old',
+				'hash'     => 'fake-hash',
+				'patterns' => array(
+					'designsetgo/hero/hero-fake' => array(
+						'title'   => 'Fake',
+						'content' => 'fake',
+					),
 				),
 			),
 			DAY_IN_SECONDS
 		);
 
-		$this->loader->register_patterns();
+		$result = $this->call_private_method( 'get_category_patterns', array( 'hero' ) );
 
-		$registry = \WP_Block_Patterns_Registry::get_instance();
+		// Result should NOT contain our fake data — it should be a fresh scan.
+		$this->assertArrayNotHasKey( 'designsetgo/hero/hero-fake', $result, 'Stale cache should be discarded' );
+	}
 
-		// The valid pattern should still register.
-		$this->assertTrue(
-			$registry->is_registered( 'designsetgo/hero/hero-centered' ),
-			'Valid pattern should still be registered'
+	/**
+	 * Test that stale cache (wrong file hash) triggers a fresh scan.
+	 */
+	public function test_stale_hash_cache_rebuilds() {
+		set_transient(
+			Loader::CACHE_TRANSIENT_PREFIX . 'hero',
+			array(
+				'version'  => DESIGNSETGO_VERSION,
+				'hash'     => 'deliberately-wrong-hash',
+				'patterns' => array(
+					'designsetgo/hero/hero-fake' => array(
+						'title'   => 'Fake',
+						'content' => 'fake',
+					),
+				),
+			),
+			DAY_IN_SECONDS
 		);
+
+		$result = $this->call_private_method( 'get_category_patterns', array( 'hero' ) );
+
+		// Result should NOT contain our fake data — hash mismatch triggers rebuild.
+		$this->assertArrayNotHasKey( 'designsetgo/hero/hero-fake', $result, 'Cache with wrong hash should be discarded' );
+	}
+
+	/**
+	 * Test that malformed cache data triggers a fresh scan.
+	 */
+	public function test_malformed_cache_rebuilds() {
+		// Missing 'patterns' key.
+		set_transient(
+			Loader::CACHE_TRANSIENT_PREFIX . 'hero',
+			array( 'version' => DESIGNSETGO_VERSION ),
+			DAY_IN_SECONDS
+		);
+
+		$result = $this->call_private_method( 'get_category_patterns', array( 'hero' ) );
+
+		$this->assertIsArray( $result );
+		$this->assertNotEmpty( $result, 'Should return real patterns after malformed cache' );
+	}
+
+	/**
+	 * Test that non-array patterns value in cache triggers a fresh scan.
+	 */
+	public function test_non_array_patterns_cache_rebuilds() {
+		set_transient(
+			Loader::CACHE_TRANSIENT_PREFIX . 'hero',
+			array(
+				'version'  => DESIGNSETGO_VERSION,
+				'hash'     => 'some-hash',
+				'patterns' => 'not-an-array',
+			),
+			DAY_IN_SECONDS
+		);
+
+		$result = $this->call_private_method( 'get_category_patterns', array( 'hero' ) );
+
+		$this->assertIsArray( $result, 'Should return fresh array, not cached string' );
+	}
+
+	/**
+	 * Test that clear_cache removes all category transients.
+	 */
+	public function test_clear_cache() {
+		// Set legacy transient.
+		set_transient(
+			Loader::CACHE_TRANSIENT,
+			array( 'version' => DESIGNSETGO_VERSION, 'map' => array() ),
+			DAY_IN_SECONDS
+		);
+
+		// Set a few category transients.
+		foreach ( array( 'hero', 'homepage', 'content' ) as $category ) {
+			set_transient(
+				Loader::CACHE_TRANSIENT_PREFIX . $category,
+				array(
+					'version'  => DESIGNSETGO_VERSION,
+					'hash'     => 'test',
+					'patterns' => array(),
+				),
+				DAY_IN_SECONDS
+			);
+		}
+
+		Loader::clear_cache();
+
+		$this->assertFalse( get_transient( Loader::CACHE_TRANSIENT ), 'Legacy transient should be deleted' );
+
+		foreach ( Loader::ALLOWED_CATEGORIES as $category ) {
+			$this->assertFalse(
+				get_transient( Loader::CACHE_TRANSIENT_PREFIX . $category ),
+				"Category transient for '$category' should be deleted"
+			);
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Category pattern content tests
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Test that patterns are loaded for expected categories.
+	 */
+	public function test_patterns_loaded_for_expected_categories() {
+		$expected_populated = array( 'hero', 'homepage', 'features', 'cta', 'content' );
+
+		foreach ( $expected_populated as $category ) {
+			$patterns = $this->call_private_method( 'get_category_patterns', array( $category ) );
+			$this->assertNotEmpty(
+				$patterns,
+				"Category '$category' should have patterns"
+			);
+		}
+	}
+
+	/**
+	 * Test that pattern slugs follow the expected format.
+	 */
+	public function test_pattern_slugs_follow_format() {
+		$patterns = $this->call_private_method( 'get_category_patterns', array( 'hero' ) );
+
+		foreach ( $patterns as $slug => $pattern ) {
+			$this->assertMatchesRegularExpression(
+				'/^designsetgo\/[a-z0-9-]+\/[a-z0-9-]+$/',
+				$slug,
+				"Pattern slug '$slug' should match format designsetgo/category/name"
+			);
+		}
+	}
+
+	/**
+	 * Test that non-existent category returns empty array.
+	 */
+	public function test_nonexistent_category_returns_empty() {
+		// 'nonexistent' is not a valid directory, should return empty.
+		$patterns = $this->call_private_method( 'get_category_patterns', array( 'nonexistent' ) );
+		$this->assertEmpty( $patterns, 'Non-existent category should return empty array' );
+	}
+
+	/**
+	 * Test that excluded categories (navigation) are not in loaded patterns.
+	 */
+	public function test_excluded_categories_not_loaded() {
+		$patterns = $this->call_private_method( 'get_category_patterns', array( 'navigation' ) );
+		$this->assertEmpty( $patterns, 'Navigation should not produce patterns' );
+	}
+
+	// -------------------------------------------------------------------------
+	// compute_files_hash() tests
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Test that compute_files_hash returns a consistent hash.
+	 */
+	public function test_compute_files_hash_consistent() {
+		$hero_dir = DESIGNSETGO_PATH . 'patterns/hero/';
+		$files    = glob( $hero_dir . '*.php' );
+
+		$hash1 = $this->call_private_static_method( 'compute_files_hash', array( $files ) );
+		$hash2 = $this->call_private_static_method( 'compute_files_hash', array( $files ) );
+
+		$this->assertSame( $hash1, $hash2, 'Hash should be consistent for same files' );
+		$this->assertMatchesRegularExpression( '/^[a-f0-9]{32}$/', $hash1, 'Hash should be an MD5 string' );
+	}
+
+	/**
+	 * Test that compute_files_hash changes with different file sets.
+	 */
+	public function test_compute_files_hash_differs_for_different_files() {
+		$hero_files = glob( DESIGNSETGO_PATH . 'patterns/hero/*.php' );
+		$cta_files  = glob( DESIGNSETGO_PATH . 'patterns/cta/*.php' );
+
+		$hash1 = $this->call_private_static_method( 'compute_files_hash', array( $hero_files ) );
+		$hash2 = $this->call_private_static_method( 'compute_files_hash', array( $cta_files ) );
+
+		$this->assertNotSame( $hash1, $hash2, 'Different file sets should produce different hashes' );
+	}
+
+	/**
+	 * Test that compute_files_hash handles empty array.
+	 */
+	public function test_compute_files_hash_empty_array() {
+		$hash = $this->call_private_static_method( 'compute_files_hash', array( array() ) );
+		$this->assertMatchesRegularExpression( '/^[a-f0-9]{32}$/', $hash, 'Empty array should still produce valid hash' );
 	}
 
 	// -------------------------------------------------------------------------
@@ -595,6 +683,143 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 	}
 
 	// -------------------------------------------------------------------------
+	// Context filtering tests (Phase 2)
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Test that homepage patterns have postTypes restricted to page.
+	 */
+	public function test_homepage_patterns_restricted_to_pages() {
+		$this->loader->register_pattern_categories();
+		$this->loader->register_patterns();
+
+		$registry = \WP_Block_Patterns_Registry::get_instance();
+		$patterns = $registry->get_all_registered();
+
+		$homepage_patterns = array_filter(
+			$patterns,
+			function ( $pattern ) {
+				return isset( $pattern['name'] ) && 0 === strpos( $pattern['name'], 'designsetgo/homepage/' );
+			}
+		);
+
+		$this->assertNotEmpty( $homepage_patterns, 'Should have homepage patterns' );
+
+		foreach ( $homepage_patterns as $pattern ) {
+			$this->assertArrayHasKey(
+				'postTypes',
+				$pattern,
+				"Homepage pattern '{$pattern['name']}' should have postTypes"
+			);
+			$this->assertSame(
+				array( 'page' ),
+				$pattern['postTypes'],
+				"Homepage pattern '{$pattern['name']}' should be restricted to pages"
+			);
+		}
+	}
+
+	/**
+	 * Test that non-homepage patterns do NOT have postTypes restriction.
+	 */
+	public function test_non_homepage_patterns_unrestricted_post_types() {
+		$this->loader->register_pattern_categories();
+		$this->loader->register_patterns();
+
+		$registry = \WP_Block_Patterns_Registry::get_instance();
+		$patterns = $registry->get_all_registered();
+
+		$hero_patterns = array_filter(
+			$patterns,
+			function ( $pattern ) {
+				return isset( $pattern['name'] ) && 0 === strpos( $pattern['name'], 'designsetgo/hero/' );
+			}
+		);
+
+		$this->assertNotEmpty( $hero_patterns, 'Should have hero patterns' );
+
+		foreach ( $hero_patterns as $pattern ) {
+			$this->assertArrayNotHasKey(
+				'postTypes',
+				$pattern,
+				"Hero pattern '{$pattern['name']}' should NOT have postTypes restriction"
+			);
+		}
+	}
+
+	/**
+	 * Test that all patterns get blockTypes of core/post-content.
+	 */
+	public function test_all_patterns_have_block_types() {
+		$this->loader->register_pattern_categories();
+		$this->loader->register_patterns();
+
+		$registry = \WP_Block_Patterns_Registry::get_instance();
+		$patterns = $registry->get_all_registered();
+
+		$dsgo_patterns = array_filter(
+			$patterns,
+			function ( $pattern ) {
+				return isset( $pattern['name'] ) && 0 === strpos( $pattern['name'], 'designsetgo/' );
+			}
+		);
+
+		$this->assertNotEmpty( $dsgo_patterns, 'Should have DesignSetGo patterns' );
+
+		foreach ( $dsgo_patterns as $pattern ) {
+			$this->assertArrayHasKey(
+				'blockTypes',
+				$pattern,
+				"Pattern '{$pattern['name']}' should have blockTypes"
+			);
+			$this->assertContains(
+				'core/post-content',
+				$pattern['blockTypes'],
+				"Pattern '{$pattern['name']}' should include core/post-content in blockTypes"
+			);
+		}
+	}
+
+	/**
+	 * Test that the postTypes filter hook works.
+	 */
+	public function test_post_types_map_filter() {
+		add_filter(
+			'designsetgo_pattern_post_types_map',
+			function ( $map ) {
+				$map['hero'] = array( 'page', 'post' );
+				return $map;
+			}
+		);
+
+		$this->loader->register_pattern_categories();
+		$this->loader->register_patterns();
+
+		$registry = \WP_Block_Patterns_Registry::get_instance();
+		$patterns = $registry->get_all_registered();
+
+		$hero_patterns = array_filter(
+			$patterns,
+			function ( $pattern ) {
+				return isset( $pattern['name'] ) && 0 === strpos( $pattern['name'], 'designsetgo/hero/' );
+			}
+		);
+
+		foreach ( $hero_patterns as $pattern ) {
+			$this->assertArrayHasKey(
+				'postTypes',
+				$pattern,
+				"Hero pattern should have postTypes after filter"
+			);
+			$this->assertSame(
+				array( 'page', 'post' ),
+				$pattern['postTypes'],
+				"Hero pattern postTypes should match filter"
+			);
+		}
+	}
+
+	// -------------------------------------------------------------------------
 	// Cache duration filter test
 	// -------------------------------------------------------------------------
 
@@ -602,8 +827,6 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 	 * Test that the designsetgo_pattern_cache_duration filter works.
 	 */
 	public function test_cache_duration_filter() {
-		delete_transient( Loader::CACHE_TRANSIENT );
-
 		$custom_duration = HOUR_IN_SECONDS;
 
 		add_filter(
@@ -614,12 +837,45 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 		);
 
 		// Trigger cache population.
-		$this->call_private_method( 'get_pattern_file_map' );
+		$this->call_private_method( 'get_category_patterns', array( 'hero' ) );
 
 		// Verify transient was set (it exists).
-		$cached = get_transient( Loader::CACHE_TRANSIENT );
+		$cached = get_transient( Loader::CACHE_TRANSIENT_PREFIX . 'hero' );
 		$this->assertIsArray( $cached, 'Cache should be set even with custom duration' );
+	}
 
-		remove_all_filters( 'designsetgo_pattern_cache_duration' );
+	// -------------------------------------------------------------------------
+	// Transient size safety test
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Test that no single category transient exceeds 500 KB when serialized.
+	 *
+	 * This is a safety check to ensure category-level splitting keeps transients
+	 * under safe size limits for MySQL max_allowed_packet and object cache plugins.
+	 */
+	public function test_category_transients_under_size_limit() {
+		$max_bytes = 500 * 1024; // 500 KB.
+
+		foreach ( Loader::ALLOWED_CATEGORIES as $category ) {
+			$patterns = $this->call_private_method( 'get_category_patterns', array( $category ) );
+
+			// Measure the compressed transient size (matches how data is stored).
+			// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize -- measuring size only.
+			$compressed = base64_encode( gzcompress( serialize( $patterns ) ) );
+			$transient_data = array(
+				'version'    => DESIGNSETGO_VERSION,
+				'hash'       => 'test',
+				'compressed' => $compressed,
+			);
+			// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize -- measuring size only.
+			$serialized_size = strlen( serialize( $transient_data ) );
+
+			$this->assertLessThan(
+				$max_bytes,
+				$serialized_size,
+				"Category '$category' compressed transient ($serialized_size bytes) exceeds 500 KB limit"
+			);
+		}
 	}
 }

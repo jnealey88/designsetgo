@@ -297,6 +297,14 @@ class Draft_Mode_REST {
 		// removes the tags themselves, leaving the inner text behind).
 		$content = preg_replace( '/<script\b[^>]*>.*?<\/script>/is', '', $content );
 
+		// Strip event handler attributes (onclick, onerror, onload, etc.) as
+		// defense-in-depth alongside wp_kses. Matches on* attributes in any tag.
+		$content = preg_replace( '/\s+on[a-z]+\s*=\s*(["\']).*?\1/is', '', $content );
+		$content = preg_replace( '/\s+on[a-z]+\s*=\s*[^\s>]+/is', '', $content );
+
+		// Strip javascript: protocol URLs from href/src/action attributes.
+		$content = preg_replace( '/(\s(?:href|src|action)\s*=\s*["\'])\s*javascript\s*:[^"\']*(["\'])/is', '$1#$2', $content );
+
 		// Preserve WordPress block comment delimiters before wp_kses, which
 		// strips all HTML comments. Block delimiters (<!-- wp:name {...} -->)
 		// are required for the block editor to parse content correctly.
