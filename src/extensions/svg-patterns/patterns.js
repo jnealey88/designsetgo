@@ -89,6 +89,12 @@ export function buildPatternSvg(pattern, color, opacity) {
 				}
 			}
 
+			// Per-path opacity multiplier (e.g. lighter grid lines)
+			if (typeof p.opacity === 'number') {
+				const safePathOpacity = Math.max(0, Math.min(1, p.opacity));
+				attrs.push(`opacity="${safePathOpacity}"`);
+			}
+
 			return `<path ${attrs.join(' ')}/>`;
 		})
 		.join('');
