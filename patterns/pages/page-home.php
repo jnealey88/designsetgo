@@ -18,8 +18,8 @@ return array(
 <div class="wp-block-designsetgo-pill aligncenter dsgo-pill has-text-color has-background has-small-font-size has-dsgo-animation dsgo-animation-fadeInDown" style="padding-top:var(--wp--preset--spacing--10);padding-right:var(--wp--preset--spacing--20);padding-bottom:var(--wp--preset--spacing--10);padding-left:var(--wp--preset--spacing--20)" data-dsgo-animation-enabled="true" data-dsgo-entrance-animation="fadeInDown" data-dsgo-animation-duration="500"><span class="dsgo-pill__content" style="background-color:#eef2ff;color:#6366f1;border-radius:50px">Free WordPress Plugin</span></div>
 <!-- /wp:designsetgo/pill -->
 
-<!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontStyle":"normal","fontWeight":"700"},"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"fontSize":"xx-large","dsgoTextRevealEnabled":true,"dsgoTextRevealColor":"#6366f1","dsgoTextRevealSplitMode":"words"} -->
-<h1 class="wp-block-heading has-text-align-center has-xx-large-font-size has-dsgo-text-reveal" style="margin-top:var(--wp--preset--spacing--30);font-style:normal;font-weight:700" data-dsgo-text-reveal-enabled="true" data-dsgo-text-reveal-color="#6366f1" data-dsgo-text-reveal-split-mode="words" data-dsgo-text-reveal-transition="150">Build Stunning WordPress Sites Without Writing Code</h1>
+<!-- wp:heading {"textAlign":"center","level":1,"dsgoAnimationEnabled":true,"dsgoEntranceAnimation":"fadeInUp"} -->
+<h1 class="wp-block-heading has-text-align-center has-dsgo-animation dsgo-animation-fadeInUp" data-dsgo-animation-enabled="true" data-dsgo-entrance-animation="fadeInUp">Build Stunning WordPress Sites Without Writing Code</h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"fontSize":"medium"} -->
@@ -47,19 +47,19 @@ return array(
 <!-- /wp:paragraph -->
 
 <!-- wp:designsetgo/counter-group {"columns":4,"animationDuration":2000,"animationDelay":200,"animationEasing":"easeOutExpo","className":"dsgo-counter-group-cols-4 dsgo-counter-group-cols-tablet-2 dsgo-counter-group-cols-mobile-1"} -->
-<div class="wp-block-designsetgo-counter-group dsgo-counter-group dsgo-counter-group-cols-4 dsgo-counter-group-cols-tablet-2 dsgo-counter-group-cols-mobile-1" style="align-self:stretch;--dsgo-counter-columns-desktop:4;--dsgo-counter-columns-tablet:2;--dsgo-counter-columns-mobile:1;--dsgo-counter-gap:32px" data-animation-duration="2000" data-animation-delay="200" data-animation-easing="easeOutExpo" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter-group__inner dsgo-counter-group__inner--align-center"><!-- wp:designsetgo/counter {"uniqueId":"counter-home-1","endValue":50,"suffix":"+","label":"Custom Blocks","className":"dsgo-counteru002du002dalign-center"} -->
+<div class="wp-block-designsetgo-counter-group dsgo-counter-group dsgo-counter-group-cols-4 dsgo-counter-group-cols-tablet-2 dsgo-counter-group-cols-mobile-1" style="align-self:stretch;--dsgo-counter-columns-desktop:4;--dsgo-counter-columns-tablet:2;--dsgo-counter-columns-mobile:1;--dsgo-counter-gap:32px" data-animation-duration="2000" data-animation-delay="200" data-animation-easing="easeOutExpo" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter-group__inner dsgo-counter-group__inner--align-center"><!-- wp:designsetgo/counter {"uniqueId":"counter-home-1","endValue":50,"suffix":"+","label":"Custom Blocks","className":"dsgo-counter\u002d\u002dalign-center"} -->
 <div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-home-1" style="text-align:center" data-start-value="0" data-end-value="50" data-decimals="0" data-prefix="" data-suffix="+" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content icon-top"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Custom Blocks</div></div>
 <!-- /wp:designsetgo/counter -->
 
-<!-- wp:designsetgo/counter {"uniqueId":"counter-home-2","endValue":15,"label":"Extensions","className":"dsgo-counteru002du002dalign-center"} -->
+<!-- wp:designsetgo/counter {"uniqueId":"counter-home-2","endValue":15,"label":"Extensions","className":"dsgo-counter\u002d\u002dalign-center"} -->
 <div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-home-2" style="text-align:center" data-start-value="0" data-end-value="15" data-decimals="0" data-prefix="" data-suffix="" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content icon-top"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Extensions</div></div>
 <!-- /wp:designsetgo/counter -->
 
-<!-- wp:designsetgo/counter {"uniqueId":"counter-home-3","endValue":70,"suffix":"+","label":"Patterns","className":"dsgo-counteru002du002dalign-center"} -->
+<!-- wp:designsetgo/counter {"uniqueId":"counter-home-3","endValue":70,"suffix":"+","label":"Patterns","className":"dsgo-counter\u002d\u002dalign-center"} -->
 <div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-home-3" style="text-align:center" data-start-value="0" data-end-value="70" data-decimals="0" data-prefix="" data-suffix="+" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content icon-top"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Patterns</div></div>
 <!-- /wp:designsetgo/counter -->
 
-<!-- wp:designsetgo/counter {"uniqueId":"counter-home-4","suffix":"%","label":"Free","className":"dsgo-counteru002du002dalign-center"} -->
+<!-- wp:designsetgo/counter {"uniqueId":"counter-home-4","suffix":"%","label":"Free","className":"dsgo-counter\u002d\u002dalign-center"} -->
 <div class="wp-block-designsetgo-counter dsgo-counter dsgo-counter--align-center" id="counter-home-4" style="text-align:center" data-start-value="0" data-end-value="100" data-decimals="0" data-prefix="" data-suffix="%" data-duration="2" data-delay="0" data-easing="easeOutQuad" data-use-grouping="true" data-separator="," data-decimal="."><div class="dsgo-counter__content icon-top"><div class="dsgo-counter__number"><span class="dsgo-counter__value">0</span></div></div><div class="dsgo-counter__label">Free</div></div>
 <!-- /wp:designsetgo/counter --></div></div>
 <!-- /wp:designsetgo/counter-group --></div></div>
