@@ -400,6 +400,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 														color || '',
 												}),
 											clearable: true,
+											enableAlpha: true,
 										},
 										{
 											label: __(
@@ -414,6 +415,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 														color || '',
 												}),
 											clearable: true,
+											enableAlpha: true,
 										},
 									]
 								: []),
@@ -432,6 +434,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 														color || '',
 												}),
 											clearable: true,
+											enableAlpha: true,
 										},
 										{
 											label: __(
@@ -446,6 +449,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 														color || '',
 												}),
 											clearable: true,
+											enableAlpha: true,
 										},
 									]
 								: []),
