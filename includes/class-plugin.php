@@ -18,6 +18,27 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Plugin {
 	/**
+	 * Allowed hover animation slugs for Icon Button blocks.
+	 *
+	 * Single source of truth used by both the regex check and the
+	 * allowlist validation in apply_default_icon_button_hover().
+	 *
+	 * @var string[]
+	 */
+	private const ALLOWED_HOVER_ANIMATIONS = array(
+		'fill-diagonal',
+		'zoom-in',
+		'slide-left',
+		'slide-right',
+		'slide-down',
+		'slide-up',
+		'border-pulse',
+		'border-glow',
+		'lift',
+		'shrink',
+	);
+
+	/**
 	 * Instance of this class.
 	 *
 	 * @var Plugin|null
@@ -528,7 +549,8 @@ class Plugin {
 		}
 
 		// If block already has an explicit animation class, leave unchanged.
-		if ( preg_match( '/dsgo-icon-button--(zoom-in|lift|shrink|slide-(?:left|right|up|down)|fill-diagonal|border-(?:pulse|glow))/', $block_content ) ) {
+		$pattern = '/dsgo-icon-button--(' . implode( '|', array_map( 'preg_quote', self::ALLOWED_HOVER_ANIMATIONS ) ) . ')/';
+		if ( preg_match( $pattern, $block_content ) ) {
 			return $block_content;
 		}
 
@@ -536,21 +558,23 @@ class Plugin {
 		// Priority: admin settings > theme.json > none.
 		$settings      = \DesignSetGo\Admin\Settings::get_settings();
 		$admin_default = isset( $settings['animations']['default_icon_button_hover'] )
-			? $settings['animations']['default_icon_button_hover']
+			? sanitize_key( $settings['animations']['default_icon_button_hover'] )
 			: 'none';
 
 		$default = $admin_default;
 		if ( 'none' === $default ) {
 			// Fall back to theme.json custom setting.
 			$theme_default = wp_get_global_settings( array( 'custom', 'designsetgo', 'defaultIconButtonHover' ) );
-			if ( ! empty( $theme_default ) && is_string( $theme_default ) && 'none' !== $theme_default ) {
-				$default = $theme_default;
+			if ( ! empty( $theme_default ) && is_string( $theme_default ) ) {
+				$theme_default = sanitize_key( $theme_default );
+				if ( 'none' !== $theme_default ) {
+					$default = $theme_default;
+				}
 			}
 		}
 
 		// Validate against allowed animation names.
-		$allowed = array( 'none', 'fill-diagonal', 'zoom-in', 'slide-left', 'slide-right', 'slide-down', 'slide-up', 'border-pulse', 'border-glow', 'lift', 'shrink' );
-		if ( 'none' === $default || ! in_array( $default, $allowed, true ) ) {
+		if ( 'none' === $default || ! in_array( $default, self::ALLOWED_HOVER_ANIMATIONS, true ) ) {
 			return $block_content;
 		}
 
