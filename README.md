@@ -615,27 +615,36 @@ Blocks are organized in the WordPress block inserter:
 
 DesignSetGo is the **first WordPress block plugin** to fully integrate with the WordPress 6.9 Abilities API, enabling AI agents and automation tools to programmatically interact with blocks.
 
-### Available Abilities (50 Total)
+### Available Abilities (110 Total)
 
 | Category | Count | Examples |
 |----------|-------|----------|
-| **Discovery** | 1 | `list-blocks` - List all available blocks with schemas |
-| **Inserters** | 29 | Insert any DesignSetGo block programmatically |
-| **Configurators** | 10 | Apply animations, scroll effects, responsive settings |
+| **Info** | 4 | `list-abilities`, `list-blocks`, `get-post-blocks`, `find-blocks` |
+| **Inserters** | 34 | Insert any DesignSetGo block programmatically |
+| **Configurators** | 62 | Configure blocks, apply extensions, manage form fields |
 | **Generators** | 10 | Generate complete page sections in one call |
 
-#### Inserter Abilities (29)
-- **Containers:** flex-container, grid-container, stack-container, section
-- **Interactive:** tabs, accordion, flip-card, reveal, scroll-accordion, modal, slider
-- **Content:** icon, icon-button, icon-list, pill, card, divider
+#### Info Abilities (4)
+- `list-abilities` - Discover all registered abilities with schemas
+- `list-blocks` - List all available blocks with metadata
+- `get-post-blocks` - Get blocks from a post with document-order indices
+- `find-blocks` - Search for blocks across multiple posts
+
+#### Inserter Abilities (34)
+- **Containers:** section, row, flex-container, grid-container, stack-container
+- **Interactive:** tabs, tab, accordion, accordion-item, flip-card, reveal, scroll-accordion, modal, slider, timeline, timeline-item
+- **Content:** icon, icon-button, icon-list, pill, card, divider, alert, marquee, lottie
 - **Data Display:** counter, counter-group, countdown-timer, progress-bar, map
 - **Navigation:** breadcrumbs, table-of-contents
 - **Forms:** form-builder
+- **Utility:** block-into (nested insertion into existing blocks)
 
-#### Configurator Abilities (10)
-- **Animations:** apply-animation, configure-counter-animation
-- **Scroll Effects:** apply-scroll-parallax, apply-text-reveal, apply-expanding-background
-- **Extensions:** configure-background-video, configure-clickable-group, configure-custom-css, configure-responsive-visibility, configure-max-width
+#### Configurator Abilities (62)
+- **Extensions (7):** apply-animation, apply-scroll-parallax, apply-text-reveal, apply-expanding-background, configure-background-video, configure-clickable-group, configure-custom-css
+- **Block-Specific (38):** Dedicated configurator for every DesignSetGo block (e.g., `configure-section`, `configure-accordion`, `configure-icon`)
+- **Form Fields (12):** Configure any form field type (text, email, textarea, select, radio, checkbox, number, phone, date, url, hidden, file)
+- **Utility (5):** configure-block-attributes, configure-shape-divider, configure-counter-animation, configure-responsive-visibility, configure-max-width
+- **Operations (2):** batch-update (bulk modify blocks), delete-block (remove blocks)
 
 #### Generator Abilities (10)
 Build complete page sections with one API call:
@@ -653,20 +662,21 @@ Build complete page sections with one API call:
 ### Quick Example
 
 ```bash
-# List all DesignSetGo blocks
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/list-blocks/execute \
+# Discover all available abilities
+curl -X GET http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/list-abilities/run \
   -u "username:password" \
-  -d '{"category": "all"}'
+  -d '{"input": {"category": "all"}}'
 
 # Generate a complete hero section
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/generate-hero-section/execute \
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/generate-hero-section/run \
   -u "username:password" \
-  -d '{
+  -H "Content-Type: application/json" \
+  -d '{"input": {
     "post_id": 123,
     "heading": "Welcome to Our Site",
     "description": "Build stunning pages with AI assistance",
     "primaryButton": {"text": "Get Started", "url": "/start"}
-  }'
+  }}'
 ```
 
 ### AI Agent Support
