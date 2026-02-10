@@ -22,16 +22,16 @@ import { IconPicker } from '../../../icon/components/IconPicker';
 /**
  * Button Settings Panel Component
  *
- * @param {Object}   props                - Component props
- * @param {string}   props.icon           - Selected icon name
- * @param {string}   props.iconPosition   - Icon position (start, end, none)
- * @param {number}   props.iconSize       - Icon size in pixels
- * @param {string}   props.iconGap        - Gap between icon and text
- * @param {string}   props.hoverAnimation  - Hover animation style
+ * @param {Object}   props                   - Component props
+ * @param {string}   props.icon              - Selected icon name
+ * @param {string}   props.iconPosition      - Icon position (start, end, none)
+ * @param {number}   props.iconSize          - Icon size in pixels
+ * @param {string}   props.iconGap           - Gap between icon and text
+ * @param {string}   props.hoverAnimation    - Hover animation style
  * @param {string}   props.adminDefaultHover - Site-wide default hover animation from admin settings
- * @param {string}   props.modalCloseId    - Modal ID to close (or "true" for parent modal)
- * @param {boolean}  props.isInsideModal   - Whether button is inside a modal
- * @param {Function} props.setAttributes   - Function to update attributes
+ * @param {string}   props.modalCloseId      - Modal ID to close (or "true" for parent modal)
+ * @param {boolean}  props.isInsideModal     - Whether button is inside a modal
+ * @param {Function} props.setAttributes     - Function to update attributes
  * @return {JSX.Element} Button Settings Panel component
  */
 export const ButtonSettingsPanel = ({

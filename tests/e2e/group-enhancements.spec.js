@@ -8,6 +8,7 @@
 
 const { test, expect } = require('@playwright/test');
 const {
+	getEditorCanvas,
 	createNewPost,
 	insertBlock,
 	openBlockSettings,
@@ -69,13 +70,21 @@ test.describe('Group Block - Responsive Visibility', () => {
 		// Hide on mobile — ToggleControl renders as a checkbox with a <label>
 		await page.getByLabel(/Hide on Mobile/i).check();
 
-		// Verify class is applied
-		const hasMobileHiddenClass = await blockHasClass(
+		// Verify the editor indicator class is applied
+		// (dsgo-hide-mobile is only added on save/frontend via extraProps;
+		// the editor uses dsgo-has-responsive-visibility + data-hidden-devices)
+		const hasVisibilityClass = await blockHasClass(
 			page,
 			'core/group',
-			'dsgo-hide-mobile'
+			'dsgo-has-responsive-visibility'
 		);
-		expect(hasMobileHiddenClass).toBeTruthy();
+		expect(hasVisibilityClass).toBeTruthy();
+
+		// Verify the hidden-devices data attribute includes Mobile
+		const canvas = getEditorCanvas(page);
+		const block = canvas.locator('[data-type="core/group"]').first();
+		const hiddenDevices = await block.getAttribute('data-hidden-devices');
+		expect(hiddenDevices).toContain('M');
 
 		// Save the post
 		await savePost(page);
@@ -101,20 +110,20 @@ test.describe('Group Block - Responsive Visibility', () => {
 		await page.getByLabel(/Hide on Tablet/i).check();
 		await page.getByLabel(/Hide on Mobile/i).check();
 
-		// Verify both classes are applied
-		const hasTabletHidden = await blockHasClass(
+		// Verify the editor indicator class is applied
+		const hasVisibilityClass = await blockHasClass(
 			page,
 			'core/group',
-			'dsgo-hide-tablet'
+			'dsgo-has-responsive-visibility'
 		);
-		const hasMobileHidden = await blockHasClass(
-			page,
-			'core/group',
-			'dsgo-hide-mobile'
-		);
+		expect(hasVisibilityClass).toBeTruthy();
 
-		expect(hasTabletHidden).toBeTruthy();
-		expect(hasMobileHidden).toBeTruthy();
+		// Verify both devices appear in the data attribute
+		const canvas = getEditorCanvas(page);
+		const block = canvas.locator('[data-type="core/group"]').first();
+		const hiddenDevices = await block.getAttribute('data-hidden-devices');
+		expect(hiddenDevices).toContain('T');
+		expect(hiddenDevices).toContain('M');
 	});
 });
 
@@ -126,7 +135,25 @@ test.describe('Group Block - Clickable with Link', () => {
 		// Insert a Group block
 		await insertBlock(page, 'core/group');
 
-		// Select the group block
+		// Add content so the group has visible dimensions on the frontend
+		await page.evaluate(() => {
+			const { dispatch, select } = wp.data;
+			const blocks = select('core/block-editor').getBlocks();
+			const groupBlock = blocks.find((b) => b.name === 'core/group');
+			if (groupBlock) {
+				const p = wp.blocks.createBlock('core/paragraph', {
+					content: 'Clickable group content',
+				});
+				dispatch('core/block-editor').insertBlocks(
+					[p],
+					0,
+					groupBlock.clientId
+				);
+			}
+		});
+		await page.waitForTimeout(500);
+
+		// Select the group block (not the inner paragraph)
 		await selectBlock(page, 'core/group');
 
 		// Open block settings
@@ -143,8 +170,10 @@ test.describe('Group Block - Clickable with Link', () => {
 		const urlInput = page.locator('input[placeholder*="https://"]');
 		await urlInput.fill('https://example.com');
 
-		// Set to open in new tab — ToggleControl renders as checkbox
-		await page.getByLabel(/Open in new tab/i).check();
+		// Wait for "Open in new tab" toggle (conditionally rendered when URL is set)
+		const newTabToggle = page.getByLabel(/Open in new tab/i);
+		await expect(newTabToggle).toBeVisible();
+		await newTabToggle.check();
 
 		// Save the post
 		await savePost(page);
@@ -199,7 +228,25 @@ test.describe('Group Block - Frontend Behavior', () => {
 		// Insert a Group block
 		await insertBlock(page, 'core/group');
 
-		// Select the group block
+		// Add content so the group has visible dimensions on the frontend
+		await page.evaluate(() => {
+			const { dispatch, select } = wp.data;
+			const blocks = select('core/block-editor').getBlocks();
+			const groupBlock = blocks.find((b) => b.name === 'core/group');
+			if (groupBlock) {
+				const p = wp.blocks.createBlock('core/paragraph', {
+					content: 'Visibility test content',
+				});
+				dispatch('core/block-editor').insertBlocks(
+					[p],
+					0,
+					groupBlock.clientId
+				);
+			}
+		});
+		await page.waitForTimeout(500);
+
+		// Select the group block (not the inner paragraph)
 		await selectBlock(page, 'core/group');
 
 		// Set to hide on mobile
@@ -214,21 +261,30 @@ test.describe('Group Block - Frontend Behavior', () => {
 		// Get frontend URL
 		const previewUrl = await getFrontendUrl(page);
 
-		// Visit on desktop (default viewport)
+		// Visit on desktop (default viewport is 1280px)
 		await page.goto(previewUrl);
 		const desktopGroup = page.locator('.wp-block-group.dsgo-hide-mobile');
-		await expect(desktopGroup).toBeVisible();
+		await expect(desktopGroup).toHaveCount(1);
+		// Verify CSS does NOT hide the element on desktop
+		const desktopDisplay = await desktopGroup.evaluate(
+			(el) => getComputedStyle(el).display
+		);
+		expect(desktopDisplay).not.toBe('none');
 
 		// Create a new page with mobile viewport
 		const mobilePage = await context.newPage();
 		await mobilePage.setViewportSize({ width: 375, height: 667 });
 		await mobilePage.goto(previewUrl);
 
-		// Group should be hidden on mobile
+		// Group should be hidden on mobile via CSS media query
 		const mobileGroup = mobilePage.locator(
 			'.wp-block-group.dsgo-hide-mobile'
 		);
-		await expect(mobileGroup).toBeHidden();
+		await expect(mobileGroup).toHaveCount(1);
+		const mobileDisplay = await mobileGroup.evaluate(
+			(el) => getComputedStyle(el).display
+		);
+		expect(mobileDisplay).toBe('none');
 
 		await mobilePage.close();
 	});
