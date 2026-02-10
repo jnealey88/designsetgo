@@ -86,7 +86,7 @@ class Controller {
 		add_action( 'save_post', array( $this, 'handle_post_save' ), 10, 2 );
 		add_action( 'delete_post', array( $this, 'handle_post_delete' ) );
 		add_action( 'transition_post_status', array( $this, 'invalidate_cache' ) );
-		add_action( 'update_option_designsetgo_settings', array( $this, 'invalidate_cache' ) );
+		add_action( 'update_option_designsetgo_settings', array( $this, 'handle_settings_update' ), 10, 2 );
 		add_action( 'init', array( $this, 'register_post_meta' ) );
 		add_action( 'rest_api_init', array( $this->rest_controller, 'register_routes' ) );
 		add_action( 'admin_notices', array( $this->conflict_detector, 'maybe_show_notice' ) );
@@ -192,6 +192,23 @@ class Controller {
 
 		if ( $post_id && is_numeric( $post_id ) ) {
 			delete_transient( 'designsetgo_llms_md_' . absint( $post_id ) );
+		}
+	}
+
+	/**
+	 * Handle settings update — invalidate cache and flush rewrite rules when needed.
+	 *
+	 * @param array $old_value Previous settings value.
+	 * @param array $new_value Updated settings value.
+	 */
+	public function handle_settings_update( $old_value, $new_value ): void {
+		$this->invalidate_cache();
+
+		$was_enabled = ! empty( $old_value['llms_txt']['enable'] );
+		$is_enabled  = ! empty( $new_value['llms_txt']['enable'] );
+
+		if ( $is_enabled !== $was_enabled ) {
+			self::schedule_flush_rewrite_rules();
 		}
 	}
 
