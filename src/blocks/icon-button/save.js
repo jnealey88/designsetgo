@@ -96,10 +96,14 @@ export default function IconButtonSave({ attributes }) {
 	};
 
 	// Build animation class (must match edit.js)
-	const animationClass =
-		hoverAnimation && hoverAnimation !== 'none'
-			? ` dsgo-icon-button--${hoverAnimation}`
-			: '';
+	// "none" = use site default (no class, PHP will inject default at render)
+	// "explicit-none" = explicitly no animation (marker class blocks PHP injection)
+	let animationClass = '';
+	if (hoverAnimation === 'explicit-none') {
+		animationClass = ' dsgo-icon-button--no-hover';
+	} else if (hoverAnimation && hoverAnimation !== 'none') {
+		animationClass = ` dsgo-icon-button--${hoverAnimation}`;
+	}
 
 	// Single element with all classes and styles combined
 	// wp-block-button and wp-element-button enable theme.json button styles

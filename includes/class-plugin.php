@@ -291,6 +291,9 @@ class Plugin {
 
 		// Inject parallax data attributes into block output (server-side fallback).
 		add_filter( 'render_block', array( $this, 'inject_parallax_attributes' ), 10, 2 );
+
+		// Apply global default hover animation to Icon Button blocks.
+		add_filter( 'render_block_designsetgo/icon-button', array( $this, 'apply_default_icon_button_hover' ), 10, 2 );
 	}
 
 	/**
@@ -369,7 +372,10 @@ class Plugin {
 				'designsetgo-extensions',
 				'dsgoSettings',
 				array(
-					'excludedBlocks' => $excluded_blocks,
+					'excludedBlocks'         => $excluded_blocks,
+					'defaultIconButtonHover' => isset( $settings['animations']['default_icon_button_hover'] )
+						? sanitize_key( $settings['animations']['default_icon_button_hover'] )
+						: 'none',
 				)
 			);
 		}
@@ -493,6 +499,65 @@ class Plugin {
 			$processor->set_attribute( 'data-dsgo-parallax-mobile', ( $attrs['dsgoParallaxMobile'] ?? false ) ? 'true' : 'false' );
 			$processor->add_class( 'dsgo-has-parallax' );
 
+			$block_content = $processor->get_updated_html();
+		}
+
+		return $block_content;
+	}
+
+	/**
+	 * Apply global default hover animation to Icon Button blocks.
+	 *
+	 * When an icon button has no explicit hover animation, this injects the
+	 * default animation class at render time. Resolution priority:
+	 * per-block > admin settings > theme.json > none.
+	 * Blocks with explicit animations or "no animation" override are unchanged.
+	 *
+	 * @param string $block_content Rendered block content.
+	 * @param array  $block         Block data including attrs.
+	 * @return string Modified block content.
+	 */
+	public function apply_default_icon_button_hover( $block_content, $block ) {
+		if ( empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		// If block explicitly opted out of hover animation, leave unchanged.
+		if ( strpos( $block_content, 'dsgo-icon-button--no-hover' ) !== false ) {
+			return $block_content;
+		}
+
+		// If block already has an explicit animation class, leave unchanged.
+		if ( preg_match( '/dsgo-icon-button--(zoom-in|lift|shrink|slide-(?:left|right|up|down)|fill-diagonal|border-(?:pulse|glow))/', $block_content ) ) {
+			return $block_content;
+		}
+
+		// No explicit animation — resolve default.
+		// Priority: admin settings > theme.json > none.
+		$settings      = \DesignSetGo\Admin\Settings::get_settings();
+		$admin_default = isset( $settings['animations']['default_icon_button_hover'] )
+			? $settings['animations']['default_icon_button_hover']
+			: 'none';
+
+		$default = $admin_default;
+		if ( 'none' === $default ) {
+			// Fall back to theme.json custom setting.
+			$theme_default = wp_get_global_settings( array( 'custom', 'designsetgo', 'defaultIconButtonHover' ) );
+			if ( ! empty( $theme_default ) && is_string( $theme_default ) && 'none' !== $theme_default ) {
+				$default = $theme_default;
+			}
+		}
+
+		// Validate against allowed animation names.
+		$allowed = array( 'none', 'fill-diagonal', 'zoom-in', 'slide-left', 'slide-right', 'slide-down', 'slide-up', 'border-pulse', 'border-glow', 'lift', 'shrink' );
+		if ( 'none' === $default || ! in_array( $default, $allowed, true ) ) {
+			return $block_content;
+		}
+
+		// Use WP_HTML_Tag_Processor for safe class injection.
+		$processor = new \WP_HTML_Tag_Processor( $block_content );
+		if ( $processor->next_tag() ) {
+			$processor->add_class( 'dsgo-icon-button--' . $default );
 			$block_content = $processor->get_updated_html();
 		}
 

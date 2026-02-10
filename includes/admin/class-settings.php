@@ -84,6 +84,7 @@ class Settings {
 				'default_duration'               => 600,
 				'default_easing'                 => 'ease-in-out',
 				'respect_prefers_reduced_motion' => true,
+				'default_icon_button_hover'      => 'none',
 			),
 			'security'           => array(
 				'log_ip_addresses' => true,
@@ -595,6 +596,7 @@ class Settings {
 				'default_duration'               => 'absint',
 				'default_easing'                 => 'text',
 				'respect_prefers_reduced_motion' => 'bool',
+				'default_icon_button_hover'      => 'key',
 			),
 			'security'           => array(
 				'log_ip_addresses' => 'bool',

@@ -169,10 +169,21 @@ export default function IconButtonEdit({
 		flexShrink: 0,
 	};
 
+	// Resolve the effective animation for editor preview
+	// "none" = use admin default, "explicit-none" = no animation
+	let effectiveAnimation = hoverAnimation;
+	if (!hoverAnimation || hoverAnimation === 'none') {
+		const adminDefault =
+			window.dsgoSettings?.defaultIconButtonHover || 'none';
+		effectiveAnimation = adminDefault !== 'none' ? adminDefault : null;
+	} else if (hoverAnimation === 'explicit-none') {
+		effectiveAnimation = null;
+	}
+
 	// Build animation class
 	const animationClass =
-		hoverAnimation && hoverAnimation !== 'none'
-			? ` dsgo-icon-button--${hoverAnimation}`
+		effectiveAnimation && effectiveAnimation !== 'none'
+			? ` dsgo-icon-button--${effectiveAnimation}`
 			: '';
 
 	// Single element with all classes and styles combined
