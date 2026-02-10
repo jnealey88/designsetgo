@@ -462,3 +462,13 @@
 		opacity: 1; // Override default opacity change
 	}
 }
+
+// No Hover - Explicit opt-out from hover animations
+// Used when user selects "None (No Animation)" to override a site-wide default
+.dsgo-icon-button.dsgo-icon-button--no-hover {
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+}

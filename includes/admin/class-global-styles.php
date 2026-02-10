@@ -55,18 +55,21 @@ class Global_Styles {
 				),
 				'custom'  => array(
 					'designsetgo' => array(
-						'borderRadius' => array(
+						'borderRadius'          => array(
 							'none'   => '0',
 							'small'  => '0.25rem',
 							'medium' => '0.5rem',
 							'large'  => '1rem',
 							'full'   => '9999px',
 						),
-						'shadow'       => array(
+						'shadow'                => array(
 							'small'  => '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
 							'medium' => '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
 							'large'  => '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
 							'xlarge' => '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+						),
+						'defaultIconButtonHover' => sanitize_key(
+							Settings::get_settings()['animations']['default_icon_button_hover'] ?? 'fill-diagonal'
 						),
 					),
 				),

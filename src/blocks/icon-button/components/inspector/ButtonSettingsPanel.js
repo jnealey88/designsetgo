@@ -7,7 +7,7 @@
  * @since 1.0.0
  */
 
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	PanelBody,
 	SelectControl,
@@ -27,10 +27,11 @@ import { IconPicker } from '../../../icon/components/IconPicker';
  * @param {string}   props.iconPosition   - Icon position (start, end, none)
  * @param {number}   props.iconSize       - Icon size in pixels
  * @param {string}   props.iconGap        - Gap between icon and text
- * @param {string}   props.hoverAnimation - Hover animation style
- * @param {string}   props.modalCloseId   - Modal ID to close (or "true" for parent modal)
- * @param {boolean}  props.isInsideModal  - Whether button is inside a modal
- * @param {Function} props.setAttributes  - Function to update attributes
+ * @param {string}   props.hoverAnimation  - Hover animation style
+ * @param {string}   props.adminDefaultHover - Site-wide default hover animation from admin settings
+ * @param {string}   props.modalCloseId    - Modal ID to close (or "true" for parent modal)
+ * @param {boolean}  props.isInsideModal   - Whether button is inside a modal
+ * @param {Function} props.setAttributes   - Function to update attributes
  * @return {JSX.Element} Button Settings Panel component
  */
 export const ButtonSettingsPanel = ({
@@ -39,6 +40,7 @@ export const ButtonSettingsPanel = ({
 	iconSize,
 	iconGap,
 	hoverAnimation,
+	adminDefaultHover,
 	modalCloseId,
 	isInsideModal,
 	setAttributes,
@@ -49,62 +51,102 @@ export const ButtonSettingsPanel = ({
 				title={__('Button & Icon Settings', 'designsetgo')}
 				initialOpen={true}
 			>
-				<SelectControl
-					label={__('Hover Animation', 'designsetgo')}
-					value={hoverAnimation}
-					options={[
-						{ label: __('None', 'designsetgo'), value: 'none' },
-						{
-							label: __('Fill Diagonal', 'designsetgo'),
-							value: 'fill-diagonal',
-						},
-						{
-							label: __('Zoom In', 'designsetgo'),
-							value: 'zoom-in',
-						},
-						{
-							label: __('Slide Left', 'designsetgo'),
-							value: 'slide-left',
-						},
-						{
-							label: __('Slide Right', 'designsetgo'),
-							value: 'slide-right',
-						},
-						{
-							label: __('Slide Down', 'designsetgo'),
-							value: 'slide-down',
-						},
-						{
-							label: __('Slide Up', 'designsetgo'),
-							value: 'slide-up',
-						},
-						{
-							label: __('Border Pulse', 'designsetgo'),
-							value: 'border-pulse',
-						},
-						{
-							label: __('Border Glow', 'designsetgo'),
-							value: 'border-glow',
-						},
-						{
-							label: __('Lift', 'designsetgo'),
-							value: 'lift',
-						},
-						{
-							label: __('Shrink', 'designsetgo'),
-							value: 'shrink',
-						},
-					]}
-					onChange={(value) =>
-						setAttributes({ hoverAnimation: value })
-					}
-					help={__(
-						'Choose a hover animation effect for the button',
-						'designsetgo'
-					)}
-					__next40pxDefaultSize
-					__nextHasNoMarginBottom
-				/>
+				{(() => {
+					const adminDefault = adminDefaultHover || 'none';
+					const animationLabels = {
+						none: __('None', 'designsetgo'),
+						'fill-diagonal': __('Fill Diagonal', 'designsetgo'),
+						'zoom-in': __('Zoom In', 'designsetgo'),
+						'slide-left': __('Slide Left', 'designsetgo'),
+						'slide-right': __('Slide Right', 'designsetgo'),
+						'slide-down': __('Slide Down', 'designsetgo'),
+						'slide-up': __('Slide Up', 'designsetgo'),
+						'border-pulse': __('Border Pulse', 'designsetgo'),
+						'border-glow': __('Border Glow', 'designsetgo'),
+						lift: __('Lift', 'designsetgo'),
+						shrink: __('Shrink', 'designsetgo'),
+					};
+					const defaultLabel =
+						adminDefault !== 'none'
+							? sprintf(
+									/* translators: %s: animation name */
+									__('Default (%s)', 'designsetgo'),
+									animationLabels[adminDefault] ||
+										adminDefault
+								)
+							: __('Default (None)', 'designsetgo');
+
+					return (
+						<SelectControl
+							label={__('Hover Animation', 'designsetgo')}
+							value={hoverAnimation}
+							options={[
+								{
+									label: defaultLabel,
+									value: 'none',
+								},
+								{
+									label: __(
+										'None (No Animation)',
+										'designsetgo'
+									),
+									value: 'explicit-none',
+								},
+								{
+									label: __('Fill Diagonal', 'designsetgo'),
+									value: 'fill-diagonal',
+								},
+								{
+									label: __('Zoom In', 'designsetgo'),
+									value: 'zoom-in',
+								},
+								{
+									label: __('Slide Left', 'designsetgo'),
+									value: 'slide-left',
+								},
+								{
+									label: __('Slide Right', 'designsetgo'),
+									value: 'slide-right',
+								},
+								{
+									label: __('Slide Down', 'designsetgo'),
+									value: 'slide-down',
+								},
+								{
+									label: __('Slide Up', 'designsetgo'),
+									value: 'slide-up',
+								},
+								{
+									label: __('Border Pulse', 'designsetgo'),
+									value: 'border-pulse',
+								},
+								{
+									label: __('Border Glow', 'designsetgo'),
+									value: 'border-glow',
+								},
+								{
+									label: __('Lift', 'designsetgo'),
+									value: 'lift',
+								},
+								{
+									label: __('Shrink', 'designsetgo'),
+									value: 'shrink',
+								},
+							]}
+							onChange={(value) =>
+								setAttributes({
+									hoverAnimation: value,
+								})
+							}
+							help={__(
+								'Choose a hover animation. "Default" uses the site-wide setting from Settings > Animations.',
+								'designsetgo'
+							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
+					);
+				})()}
 
 				<SelectControl
 					label={__('Icon Position', 'designsetgo')}

@@ -14,6 +14,7 @@ import {
 	BlockControls,
 	InspectorControls,
 	RichText,
+	useSettings,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalLinkControl as LinkControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -169,10 +170,26 @@ export default function IconButtonEdit({
 		flexShrink: 0,
 	};
 
+	// Read the site-wide default hover animation from theme.json custom settings.
+	// This is set by the admin panel and injected via class-global-styles.php.
+	const [themeDefaultHover] = useSettings(
+		'custom.designsetgo.defaultIconButtonHover'
+	);
+
+	// Resolve the effective animation for editor preview
+	// "none" = use admin default, "explicit-none" = no animation
+	let effectiveAnimation = hoverAnimation;
+	if (!hoverAnimation || hoverAnimation === 'none') {
+		const adminDefault = themeDefaultHover || 'none';
+		effectiveAnimation = adminDefault !== 'none' ? adminDefault : null;
+	} else if (hoverAnimation === 'explicit-none') {
+		effectiveAnimation = null;
+	}
+
 	// Build animation class
 	const animationClass =
-		hoverAnimation && hoverAnimation !== 'none'
-			? ` dsgo-icon-button--${hoverAnimation}`
+		effectiveAnimation && effectiveAnimation !== 'none'
+			? ` dsgo-icon-button--${effectiveAnimation}`
 			: '';
 
 	// Single element with all classes and styles combined
@@ -300,6 +317,7 @@ export default function IconButtonEdit({
 					iconSize={iconSize}
 					iconGap={iconGap}
 					hoverAnimation={hoverAnimation}
+					adminDefaultHover={themeDefaultHover || 'none'}
 					modalCloseId={modalCloseId}
 					isInsideModal={isInsideModal}
 					setAttributes={setAttributes}

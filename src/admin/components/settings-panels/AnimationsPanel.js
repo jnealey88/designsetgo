@@ -125,6 +125,89 @@ const AnimationsPanel = ({ settings, updateSetting }) => {
 
 						<div className="designsetgo-settings-section">
 							<h3 className="designsetgo-section-heading">
+								{__('Default Hover Effects', 'designsetgo')}
+							</h3>
+
+							<SelectControl
+								label={__(
+									'Icon Button Default Hover',
+									'designsetgo'
+								)}
+								help={__(
+									'Set a default hover animation for all Icon Button blocks. Individual blocks can override this setting.',
+									'designsetgo'
+								)}
+								value={
+									settings?.animations
+										?.default_icon_button_hover ||
+									'fill-diagonal'
+								}
+								options={[
+									{
+										label: __('None', 'designsetgo'),
+										value: 'none',
+									},
+									{
+										label: __(
+											'Fill Diagonal',
+											'designsetgo'
+										),
+										value: 'fill-diagonal',
+									},
+									{
+										label: __('Zoom In', 'designsetgo'),
+										value: 'zoom-in',
+									},
+									{
+										label: __('Slide Left', 'designsetgo'),
+										value: 'slide-left',
+									},
+									{
+										label: __('Slide Right', 'designsetgo'),
+										value: 'slide-right',
+									},
+									{
+										label: __('Slide Down', 'designsetgo'),
+										value: 'slide-down',
+									},
+									{
+										label: __('Slide Up', 'designsetgo'),
+										value: 'slide-up',
+									},
+									{
+										label: __(
+											'Border Pulse',
+											'designsetgo'
+										),
+										value: 'border-pulse',
+									},
+									{
+										label: __('Border Glow', 'designsetgo'),
+										value: 'border-glow',
+									},
+									{
+										label: __('Lift', 'designsetgo'),
+										value: 'lift',
+									},
+									{
+										label: __('Shrink', 'designsetgo'),
+										value: 'shrink',
+									},
+								]}
+								onChange={(value) =>
+									updateSetting(
+										'animations',
+										'default_icon_button_hover',
+										value
+									)
+								}
+								__nextHasNoMarginBottom
+								__next40pxDefaultSize
+							/>
+						</div>
+
+						<div className="designsetgo-settings-section">
+							<h3 className="designsetgo-section-heading">
 								{__('Accessibility', 'designsetgo')}
 							</h3>
 
