@@ -139,7 +139,8 @@ const AnimationsPanel = ({ settings, updateSetting }) => {
 								)}
 								value={
 									settings?.animations
-										?.default_icon_button_hover || 'none'
+										?.default_icon_button_hover ||
+									'fill-diagonal'
 								}
 								options={[
 									{

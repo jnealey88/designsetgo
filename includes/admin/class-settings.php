@@ -84,7 +84,7 @@ class Settings {
 				'default_duration'               => 600,
 				'default_easing'                 => 'ease-in-out',
 				'respect_prefers_reduced_motion' => true,
-				'default_icon_button_hover'      => 'none',
+				'default_icon_button_hover'      => 'fill-diagonal',
 			),
 			'security'           => array(
 				'log_ip_addresses' => true,

@@ -396,7 +396,7 @@ class Plugin {
 					'excludedBlocks'         => $excluded_blocks,
 					'defaultIconButtonHover' => isset( $settings['animations']['default_icon_button_hover'] )
 						? sanitize_key( $settings['animations']['default_icon_button_hover'] )
-						: 'none',
+						: 'fill-diagonal',
 				)
 			);
 		}

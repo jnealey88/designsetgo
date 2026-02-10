@@ -27,10 +27,11 @@ import { IconPicker } from '../../../icon/components/IconPicker';
  * @param {string}   props.iconPosition   - Icon position (start, end, none)
  * @param {number}   props.iconSize       - Icon size in pixels
  * @param {string}   props.iconGap        - Gap between icon and text
- * @param {string}   props.hoverAnimation - Hover animation style
- * @param {string}   props.modalCloseId   - Modal ID to close (or "true" for parent modal)
- * @param {boolean}  props.isInsideModal  - Whether button is inside a modal
- * @param {Function} props.setAttributes  - Function to update attributes
+ * @param {string}   props.hoverAnimation  - Hover animation style
+ * @param {string}   props.adminDefaultHover - Site-wide default hover animation from admin settings
+ * @param {string}   props.modalCloseId    - Modal ID to close (or "true" for parent modal)
+ * @param {boolean}  props.isInsideModal   - Whether button is inside a modal
+ * @param {Function} props.setAttributes   - Function to update attributes
  * @return {JSX.Element} Button Settings Panel component
  */
 export const ButtonSettingsPanel = ({
@@ -39,6 +40,7 @@ export const ButtonSettingsPanel = ({
 	iconSize,
 	iconGap,
 	hoverAnimation,
+	adminDefaultHover,
 	modalCloseId,
 	isInsideModal,
 	setAttributes,
@@ -50,8 +52,7 @@ export const ButtonSettingsPanel = ({
 				initialOpen={true}
 			>
 				{(() => {
-					const adminDefault =
-						window.dsgoSettings?.defaultIconButtonHover || 'none';
+					const adminDefault = adminDefaultHover || 'none';
 					const animationLabels = {
 						none: __('None', 'designsetgo'),
 						'fill-diagonal': __('Fill Diagonal', 'designsetgo'),

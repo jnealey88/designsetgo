@@ -68,7 +68,9 @@ class Global_Styles {
 							'large'  => '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
 							'xlarge' => '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
 						),
-						'defaultIconButtonHover' => 'none',
+						'defaultIconButtonHover' => sanitize_key(
+							Settings::get_settings()['animations']['default_icon_button_hover'] ?? 'fill-diagonal'
+						),
 					),
 				),
 			),
