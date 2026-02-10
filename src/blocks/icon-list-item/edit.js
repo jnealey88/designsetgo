@@ -2,7 +2,7 @@
  * Icon List Item Block - Edit Component
  *
  * Child block that displays a single list item with icon and flexible content area.
- * Users can add any blocks in the content area. Default template includes an h4 heading.
+ * Users can add any blocks in the content area. Default template includes a paragraph.
  *
  * @since 1.0.0
  */
@@ -93,7 +93,7 @@ export default function IconListItemEdit({
 		style: itemStyles,
 	});
 
-	// Configure inner blocks with h4 heading as default template
+	// Configure inner blocks with paragraph as default template
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: 'dsgo-icon-list-item__content',
@@ -107,10 +107,9 @@ export default function IconListItemEdit({
 		{
 			template: [
 				[
-					'core/heading',
+					'core/paragraph',
 					{
-						level: 4,
-						placeholder: __('List item title…', 'designsetgo'),
+						placeholder: __('List item text…', 'designsetgo'),
 					},
 				],
 			],
