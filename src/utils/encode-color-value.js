@@ -32,7 +32,10 @@ export function encodeColorValue(colorValue, colorSettings) {
 	const allColors = colorSettings.colors.flatMap(
 		({ colors: originColors }) => originColors
 	);
-	const colorObject = allColors.find(({ color }) => color === colorValue);
+	const normalizedValue = colorValue.toLowerCase();
+	const colorObject = allColors.find(
+		({ color }) => color.toLowerCase() === normalizedValue
+	);
 
 	return colorObject ? `var:preset|color|${colorObject.slug}` : colorValue;
 }
@@ -83,5 +86,8 @@ export function decodeColorValue(colorValue, colorSettings) {
 	);
 	const colorObject = allColors.find((c) => c.slug === slug);
 
-	return colorObject ? colorObject.color : colorValue;
+	// Return hex if found, undefined if slug exists but isn't in current palette.
+	// Returning undefined (not the raw preset string) prevents broken swatches
+	// in the color picker UI when a theme removes a previously-used color.
+	return colorObject ? colorObject.color : undefined;
 }

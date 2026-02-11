@@ -269,10 +269,11 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 							),
 							onColorChange: (value) =>
 								setAttributes({
-									openBackgroundColor: encodeColorValue(
-										value,
-										colorGradientSettings
-									),
+									openBackgroundColor:
+										encodeColorValue(
+											value,
+											colorGradientSettings
+										) || '',
 								}),
 							label: __('Background', 'designsetgo'),
 						},
@@ -283,10 +284,11 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 							),
 							onColorChange: (value) =>
 								setAttributes({
-									openTextColor: encodeColorValue(
-										value,
-										colorGradientSettings
-									),
+									openTextColor:
+										encodeColorValue(
+											value,
+											colorGradientSettings
+										) || '',
 								}),
 							label: __('Text', 'designsetgo'),
 						},
@@ -315,10 +317,11 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 							),
 							onColorChange: (value) =>
 								setAttributes({
-									hoverBackgroundColor: encodeColorValue(
-										value,
-										colorGradientSettings
-									),
+									hoverBackgroundColor:
+										encodeColorValue(
+											value,
+											colorGradientSettings
+										) || '',
 								}),
 							label: __('Background', 'designsetgo'),
 							clearable: true,
@@ -330,10 +333,11 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 							),
 							onColorChange: (value) =>
 								setAttributes({
-									hoverTextColor: encodeColorValue(
-										value,
-										colorGradientSettings
-									),
+									hoverTextColor:
+										encodeColorValue(
+											value,
+											colorGradientSettings
+										) || '',
 								}),
 							label: __('Text', 'designsetgo'),
 							clearable: true,
