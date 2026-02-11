@@ -1,5 +1,6 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function ImageAccordionSave({ attributes }) {
 	const {
@@ -28,7 +29,8 @@ export default function ImageAccordionSave({ attributes }) {
 		'--dsgo-image-accordion-gap': gap,
 		'--dsgo-image-accordion-expanded-ratio': String(expandedRatio), // Unitless
 		'--dsgo-image-accordion-transition': transitionDuration,
-		'--dsgo-image-accordion-overlay-color': overlayColor,
+		'--dsgo-image-accordion-overlay-color':
+			convertPresetToCSSVar(overlayColor),
 		'--dsgo-image-accordion-overlay-opacity': String(overlayOpacity / 100), // Unitless
 		'--dsgo-image-accordion-overlay-opacity-expanded': String(
 			overlayOpacityExpanded / 100

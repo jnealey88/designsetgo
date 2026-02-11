@@ -9,6 +9,7 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
 import { convertPaddingValue } from './utils/padding';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Version 6: Before align-based full-width
@@ -129,10 +130,12 @@ const v6 = {
 				paddingLeft: convertPaddingValue(paddingValue.left),
 			}),
 			...(hoverBackgroundColor && {
-				'--dsgo-button-hover-bg': hoverBackgroundColor,
+				'--dsgo-button-hover-bg':
+					convertPresetToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-button-hover-color': hoverTextColor,
+				'--dsgo-button-hover-color':
+					convertPresetToCSSVar(hoverTextColor),
 			}),
 		};
 
@@ -326,10 +329,12 @@ const v5 = {
 				paddingLeft: convertPaddingValue(paddingValue.left),
 			}),
 			...(hoverBackgroundColor && {
-				'--dsgo-button-hover-bg': hoverBackgroundColor,
+				'--dsgo-button-hover-bg':
+					convertPresetToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-button-hover-color': hoverTextColor,
+				'--dsgo-button-hover-color':
+					convertPresetToCSSVar(hoverTextColor),
 			}),
 		};
 
@@ -520,10 +525,12 @@ const v4 = {
 				paddingLeft: convertPaddingValue(paddingValue.left),
 			}),
 			...(hoverBackgroundColor && {
-				'--dsgo-button-hover-bg': hoverBackgroundColor,
+				'--dsgo-button-hover-bg':
+					convertPresetToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-button-hover-color': hoverTextColor,
+				'--dsgo-button-hover-color':
+					convertPresetToCSSVar(hoverTextColor),
 			}),
 		};
 
@@ -719,10 +726,12 @@ const v3 = {
 			...(bgColor && { backgroundColor: bgColor }),
 			...(txtColor && { color: txtColor }),
 			...(hoverBackgroundColor && {
-				'--dsgo-button-hover-bg': hoverBackgroundColor,
+				'--dsgo-button-hover-bg':
+					convertPresetToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-button-hover-color': hoverTextColor,
+				'--dsgo-button-hover-color':
+					convertPresetToCSSVar(hoverTextColor),
 			}),
 		};
 
@@ -906,10 +915,12 @@ const v2 = {
 			...(bgColor && { backgroundColor: bgColor }),
 			...(txtColor && { color: txtColor }),
 			...(hoverBackgroundColor && {
-				'--dsgo-button-hover-bg': hoverBackgroundColor,
+				'--dsgo-button-hover-bg':
+					convertPresetToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-button-hover-color': hoverTextColor,
+				'--dsgo-button-hover-color':
+					convertPresetToCSSVar(hoverTextColor),
 			}),
 		};
 
@@ -1086,10 +1097,12 @@ const v1 = {
 			...(bgColor && { backgroundColor: bgColor }),
 			...(txtColor && { color: txtColor }),
 			...(hoverBackgroundColor && {
-				'--dsgo-button-hover-bg': hoverBackgroundColor,
+				'--dsgo-button-hover-bg':
+					convertPresetToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-button-hover-color': hoverTextColor,
+				'--dsgo-button-hover-color':
+					convertPresetToCSSVar(hoverTextColor),
 			}),
 		};
 

@@ -18,6 +18,11 @@ import {
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 	const {
@@ -51,13 +56,15 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 
 	// Apply colors and gap as CSS custom properties that will cascade to accordion items
 	const customStyles = {
-		'--dsgo-accordion-open-bg': openBackgroundColor,
-		'--dsgo-accordion-open-text': openTextColor,
-		'--dsgo-accordion-hover-bg': effectiveHoverBg,
-		'--dsgo-accordion-hover-text': effectiveHoverText,
+		'--dsgo-accordion-open-bg': convertPresetToCSSVar(openBackgroundColor),
+		'--dsgo-accordion-open-text': convertPresetToCSSVar(openTextColor),
+		'--dsgo-accordion-hover-bg': convertPresetToCSSVar(effectiveHoverBg),
+		'--dsgo-accordion-hover-text':
+			convertPresetToCSSVar(effectiveHoverText),
 		'--dsgo-accordion-gap': itemGap,
 		...(borderBetweenColor && {
-			'--dsgo-accordion-border-color': borderBetweenColor,
+			'--dsgo-accordion-border-color':
+				convertPresetToCSSVar(borderBetweenColor),
 		}),
 	};
 
@@ -230,10 +237,17 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 						settings={[
 							{
 								label: __('Between Items', 'designsetgo'),
-								colorValue: borderBetweenColor,
+								colorValue: decodeColorValue(
+									borderBetweenColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
 									setAttributes({
-										borderBetweenColor: color || '',
+										borderBetweenColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
 									}),
 								clearable: true,
 							},
@@ -249,15 +263,33 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 					initialOpen={false}
 					settings={[
 						{
-							colorValue: openBackgroundColor,
+							colorValue: decodeColorValue(
+								openBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (value) =>
-								setAttributes({ openBackgroundColor: value }),
+								setAttributes({
+									openBackgroundColor:
+										encodeColorValue(
+											value,
+											colorGradientSettings
+										) || '',
+								}),
 							label: __('Background', 'designsetgo'),
 						},
 						{
-							colorValue: openTextColor,
+							colorValue: decodeColorValue(
+								openTextColor,
+								colorGradientSettings
+							),
 							onColorChange: (value) =>
-								setAttributes({ openTextColor: value }),
+								setAttributes({
+									openTextColor:
+										encodeColorValue(
+											value,
+											colorGradientSettings
+										) || '',
+								}),
 							label: __('Text', 'designsetgo'),
 						},
 					]}
@@ -279,16 +311,34 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 					initialOpen={false}
 					settings={[
 						{
-							colorValue: hoverBackgroundColor,
+							colorValue: decodeColorValue(
+								hoverBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (value) =>
-								setAttributes({ hoverBackgroundColor: value }),
+								setAttributes({
+									hoverBackgroundColor:
+										encodeColorValue(
+											value,
+											colorGradientSettings
+										) || '',
+								}),
 							label: __('Background', 'designsetgo'),
 							clearable: true,
 						},
 						{
-							colorValue: hoverTextColor,
+							colorValue: decodeColorValue(
+								hoverTextColor,
+								colorGradientSettings
+							),
 							onColorChange: (value) =>
-								setAttributes({ hoverTextColor: value }),
+								setAttributes({
+									hoverTextColor:
+										encodeColorValue(
+											value,
+											colorGradientSettings
+										) || '',
+								}),
 							label: __('Text', 'designsetgo'),
 							clearable: true,
 						},

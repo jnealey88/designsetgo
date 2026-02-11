@@ -24,6 +24,10 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalDivider as Divider,
 } from '@wordpress/components';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
 
 /**
  * Edit component for Card block
@@ -762,9 +766,18 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Border Color', 'designsetgo'),
-							colorValue: borderColor,
+							colorValue: decodeColorValue(
+								borderColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ borderColor: color || '' }),
+								setAttributes({
+									borderColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 					]}
@@ -777,18 +790,34 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Badge Background', 'designsetgo'),
-							colorValue: badgeBackgroundColor,
+							colorValue: decodeColorValue(
+								badgeBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									badgeBackgroundColor: color || '',
+									badgeBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
 						{
 							label: __('Badge Text', 'designsetgo'),
-							colorValue: badgeTextColor,
+							colorValue: decodeColorValue(
+								badgeTextColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ badgeTextColor: color || '' }),
+								setAttributes({
+									badgeTextColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 					]}
@@ -802,10 +831,17 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 						settings={[
 							{
 								label: __('Overlay', 'designsetgo'),
-								colorValue: overlayColor,
+								colorValue: decodeColorValue(
+									overlayColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
 									setAttributes({
-										overlayColor: color || '',
+										overlayColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
 									}),
 								clearable: true,
 							},

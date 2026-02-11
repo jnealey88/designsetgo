@@ -5,6 +5,8 @@ import {
 	InspectorControls,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -15,6 +17,11 @@ import {
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function ImageAccordionEdit({ attributes, setAttributes }) {
 	const {
@@ -30,6 +37,9 @@ export default function ImageAccordionEdit({ attributes, setAttributes }) {
 		defaultExpanded,
 	} = attributes;
 
+	// Get theme color palette and gradient settings
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
 	// Declaratively calculate classes based on attributes
 	const accordionClasses = classnames('dsgo-image-accordion', {
 		'dsgo-image-accordion--hover': triggerType === 'hover',
@@ -43,7 +53,8 @@ export default function ImageAccordionEdit({ attributes, setAttributes }) {
 		'--dsgo-image-accordion-gap': gap,
 		'--dsgo-image-accordion-expanded-ratio': String(expandedRatio), // Unitless
 		'--dsgo-image-accordion-transition': transitionDuration,
-		'--dsgo-image-accordion-overlay-color': overlayColor,
+		'--dsgo-image-accordion-overlay-color':
+			convertPresetToCSSVar(overlayColor),
 		'--dsgo-image-accordion-overlay-opacity': String(overlayOpacity / 100), // Unitless
 		'--dsgo-image-accordion-overlay-opacity-expanded': String(
 			overlayOpacityExpanded / 100
@@ -237,10 +248,16 @@ export default function ImageAccordionEdit({ attributes, setAttributes }) {
 								title={__('Overlay Color', 'designsetgo')}
 								settings={[
 									{
-										colorValue: overlayColor,
+										colorValue: decodeColorValue(
+											overlayColor,
+											colorGradientSettings
+										),
 										onColorChange: (value) =>
 											setAttributes({
-												overlayColor: value,
+												overlayColor: encodeColorValue(
+													value,
+													colorGradientSettings
+												),
 											}),
 										label: __('Color', 'designsetgo'),
 									},

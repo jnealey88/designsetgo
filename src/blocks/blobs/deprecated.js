@@ -8,6 +8,7 @@
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 // Version 1: Original structure without wrapper
 const v1 = {
@@ -85,7 +86,8 @@ const v1 = {
 					<div
 						className="dsgo-blobs__overlay"
 						style={{
-							backgroundColor: overlayColor,
+							backgroundColor:
+								convertPresetToCSSVar(overlayColor),
 							opacity: overlayOpacity / 100,
 						}}
 					/>
@@ -177,7 +179,8 @@ const v2 = {
 						<div
 							className="dsgo-blobs__overlay"
 							style={{
-								backgroundColor: overlayColor,
+								backgroundColor:
+									convertPresetToCSSVar(overlayColor),
 								opacity: overlayOpacity / 100,
 							}}
 						/>

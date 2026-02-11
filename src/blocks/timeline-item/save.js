@@ -4,6 +4,7 @@ import {
 	RichText,
 } from '@wordpress/block-editor';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Validates URL protocol to prevent javascript: and other dangerous protocols.
@@ -137,7 +138,10 @@ export default function TimelineItemSave({ attributes, context }) {
 
 	// Custom styles for marker
 	const customStyles = customMarkerColor
-		? { '--dsgo-timeline-item-marker-color': customMarkerColor }
+		? {
+				'--dsgo-timeline-item-marker-color':
+					convertPresetToCSSVar(customMarkerColor),
+			}
 		: {};
 
 	const blockProps = useBlockProps.save({

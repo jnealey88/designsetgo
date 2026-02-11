@@ -15,6 +15,7 @@ import {
 	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function FormNumberFieldEdit({
 	attributes,
@@ -51,7 +52,7 @@ export default function FormNumberFieldEdit({
 	);
 
 	const fieldStyles = {
-		'--dsgo-form-field-bg': fieldBackgroundColor,
+		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
 	};
 
 	const blockProps = useBlockProps({

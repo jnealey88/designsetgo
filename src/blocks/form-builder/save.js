@@ -6,6 +6,7 @@
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function FormBuilderSave({ attributes }) {
 	const {
@@ -51,9 +52,10 @@ export default function FormBuilderSave({ attributes }) {
 		'--dsgo-form-field-spacing': fieldSpacing,
 		'--dsgo-form-input-height': inputHeight,
 		'--dsgo-form-input-padding': inputPadding,
-		'--dsgo-form-label-color': fieldLabelColor,
-		'--dsgo-form-border-color': fieldBorderColor || '#d1d5db',
-		'--dsgo-form-field-bg': fieldBackgroundColor,
+		'--dsgo-form-label-color': convertPresetToCSSVar(fieldLabelColor),
+		'--dsgo-form-border-color':
+			convertPresetToCSSVar(fieldBorderColor) || '#d1d5db',
+		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
 		// Button colors now applied as inline styles on button element
 	};
 
@@ -94,11 +96,14 @@ export default function FormBuilderSave({ attributes }) {
 							className="dsgo-form__submit dsgo-form__submit--inline wp-element-button"
 							style={{
 								...(submitButtonColor && {
-									color: submitButtonColor,
+									color: convertPresetToCSSVar(
+										submitButtonColor
+									),
 								}),
 								...(submitButtonBackgroundColor && {
-									backgroundColor:
-										submitButtonBackgroundColor,
+									backgroundColor: convertPresetToCSSVar(
+										submitButtonBackgroundColor
+									),
 								}),
 								minHeight: submitButtonHeight,
 								paddingTop: submitButtonPaddingVertical,
@@ -152,11 +157,14 @@ export default function FormBuilderSave({ attributes }) {
 							className="dsgo-form__submit wp-element-button"
 							style={{
 								...(submitButtonColor && {
-									color: submitButtonColor,
+									color: convertPresetToCSSVar(
+										submitButtonColor
+									),
 								}),
 								...(submitButtonBackgroundColor && {
-									backgroundColor:
-										submitButtonBackgroundColor,
+									backgroundColor: convertPresetToCSSVar(
+										submitButtonBackgroundColor
+									),
 								}),
 								minHeight: submitButtonHeight,
 								paddingTop: submitButtonPaddingVertical,

@@ -51,16 +51,22 @@ export default function GridSave({ attributes }) {
 		className,
 		style: {
 			...(hoverBackgroundColor && {
-				'--dsgo-hover-bg-color': hoverBackgroundColor,
+				'--dsgo-hover-bg-color':
+					convertPresetToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-hover-text-color': hoverTextColor,
+				'--dsgo-hover-text-color':
+					convertPresetToCSSVar(hoverTextColor),
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
+				'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+					hoverIconBackgroundColor
+				),
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
+				'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+					hoverButtonBackgroundColor
+				),
 			}),
 		},
 	});

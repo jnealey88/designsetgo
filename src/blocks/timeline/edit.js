@@ -17,6 +17,10 @@ import {
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
 
 export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 	const {
@@ -325,24 +329,49 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Line Color', 'designsetgo'),
-							colorValue: lineColor,
+							colorValue: decodeColorValue(
+								lineColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ lineColor: color || '' }),
+								setAttributes({
+									lineColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Marker Fill', 'designsetgo'),
-							colorValue: markerColor,
+							colorValue: decodeColorValue(
+								markerColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ markerColor: color || '' }),
+								setAttributes({
+									markerColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Marker Border', 'designsetgo'),
-							colorValue: markerBorderColor,
+							colorValue: decodeColorValue(
+								markerBorderColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									markerBorderColor: color || '',
+									markerBorderColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},

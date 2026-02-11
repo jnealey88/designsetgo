@@ -33,6 +33,10 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
 
 /**
  * Convert WordPress vertical alignment value to CSS align-items value
@@ -182,19 +186,25 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 		className: blockClassName,
 		style: {
 			...(hoverBackgroundColor && {
-				'--dsgo-hover-bg-color': hoverBackgroundColor,
+				'--dsgo-hover-bg-color':
+					convertPresetToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-hover-text-color': hoverTextColor,
+				'--dsgo-hover-text-color':
+					convertPresetToCSSVar(hoverTextColor),
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
+				'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+					hoverIconBackgroundColor
+				),
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
+				'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+					hoverButtonBackgroundColor
+				),
 			}),
 			...(overlayColor && {
-				'--dsgo-overlay-color': overlayColor,
+				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': '0.8',
 			}),
 		},
@@ -360,25 +370,50 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Overlay Color', 'designsetgo'),
-							colorValue: overlayColor,
+							colorValue: decodeColorValue(
+								overlayColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ overlayColor: color || '' }),
+								setAttributes({
+									overlayColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Hover Background Color', 'designsetgo'),
-							colorValue: hoverBackgroundColor,
+							colorValue: decodeColorValue(
+								hoverBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									hoverBackgroundColor: color || '',
+									hoverBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
 						{
 							label: __('Hover Text Color', 'designsetgo'),
-							colorValue: hoverTextColor,
+							colorValue: decodeColorValue(
+								hoverTextColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ hoverTextColor: color || '' }),
+								setAttributes({
+									hoverTextColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						// Only show icon background control if hover background is set
@@ -389,11 +424,17 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 											'Hover Icon Background Color',
 											'designsetgo'
 										),
-										colorValue: hoverIconBackgroundColor,
+										colorValue: decodeColorValue(
+											hoverIconBackgroundColor,
+											colorGradientSettings
+										),
 										onColorChange: (color) =>
 											setAttributes({
 												hoverIconBackgroundColor:
-													color || '',
+													encodeColorValue(
+														color,
+														colorGradientSettings
+													) || '',
 											}),
 										clearable: true,
 									},
@@ -407,11 +448,17 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 											'Hover Button Background Color',
 											'designsetgo'
 										),
-										colorValue: hoverButtonBackgroundColor,
+										colorValue: decodeColorValue(
+											hoverButtonBackgroundColor,
+											colorGradientSettings
+										),
 										onColorChange: (color) =>
 											setAttributes({
 												hoverButtonBackgroundColor:
-													color || '',
+													encodeColorValue(
+														color,
+														colorGradientSettings
+													) || '',
 											}),
 										clearable: true,
 									},

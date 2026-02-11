@@ -21,6 +21,10 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../../utils/encode-color-value';
 /**
  * Text Reveal Settings Panel
  *
@@ -150,10 +154,17 @@ export default function TextRevealPanel({
 						settings={[
 							{
 								label: __('Reveal Color', 'designsetgo'),
-								colorValue: dsgoTextRevealColor,
+								colorValue: decodeColorValue(
+									dsgoTextRevealColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
 									setAttributes({
-										dsgoTextRevealColor: color || '',
+										dsgoTextRevealColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
 									}),
 								clearable: true,
 							},

@@ -8,6 +8,7 @@
 
 import { useBlockProps, RichText } from '@wordpress/block-editor';
 import { convertPaddingValue } from './utils/padding';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Icon Button Save Component
@@ -78,10 +79,11 @@ export default function IconButtonSave({ attributes }) {
 			paddingLeft: convertPaddingValue(paddingValue.left),
 		}),
 		...(hoverBackgroundColor && {
-			'--dsgo-button-hover-bg': hoverBackgroundColor,
+			'--dsgo-button-hover-bg':
+				convertPresetToCSSVar(hoverBackgroundColor),
 		}),
 		...(hoverTextColor && {
-			'--dsgo-button-hover-color': hoverTextColor,
+			'--dsgo-button-hover-color': convertPresetToCSSVar(hoverTextColor),
 		}),
 	};
 

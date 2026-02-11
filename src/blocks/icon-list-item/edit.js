@@ -14,6 +14,7 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 import { IconPickerPanel } from './components/inspector/IconPickerPanel';
 import { LinkSettingsPanel } from './components/inspector/LinkSettingsPanel';
 import { SpacingPanel } from './components/inspector/SpacingPanel';
@@ -71,7 +72,7 @@ export default function IconListItemEdit({
 					width: `${iconSize + 16}px`,
 					height: `${iconSize + 16}px`,
 					minWidth: `${iconSize + 16}px`,
-					backgroundColor: iconBackgroundColor,
+					backgroundColor: convertPresetToCSSVar(iconBackgroundColor),
 					padding: '8px',
 					borderRadius: '4px',
 					boxSizing: 'border-box',
@@ -82,8 +83,8 @@ export default function IconListItemEdit({
 					minWidth: `${iconSize}px`,
 				}),
 		...(iconColor && {
-			color: iconColor,
-			'--dsgo-icon-color': iconColor,
+			color: convertPresetToCSSVar(iconColor),
+			'--dsgo-icon-color': convertPresetToCSSVar(iconColor),
 		}),
 	};
 

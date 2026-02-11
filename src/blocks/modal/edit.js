@@ -26,6 +26,11 @@ import BehaviorSettings from './components/BehaviorSettings';
 import TriggerSettings from './components/TriggerSettings';
 import GallerySettings from './components/GallerySettings';
 import ModalPlaceholder from './components/ModalPlaceholder';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function ModalEdit({ attributes, setAttributes, clientId }) {
 	const {
@@ -178,30 +183,51 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Overlay Color', 'designsetgo'),
-							colorValue: overlayColor,
+							colorValue: decodeColorValue(
+								overlayColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									overlayColor: color || '#000000',
+									overlayColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '#000000',
 								}),
 							clearable: false,
 							enableAlpha: true,
 						},
 						{
 							label: __('Close Button Icon', 'designsetgo'),
-							colorValue: closeButtonIconColor,
+							colorValue: decodeColorValue(
+								closeButtonIconColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									closeButtonIconColor: color || '',
+									closeButtonIconColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 							enableAlpha: true,
 						},
 						{
 							label: __('Close Button Background', 'designsetgo'),
-							colorValue: closeButtonBgColor,
+							colorValue: decodeColorValue(
+								closeButtonBgColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									closeButtonBgColor: color || '',
+									closeButtonBgColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 							enableAlpha: true,
@@ -215,7 +241,7 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 				<div
 					className="dsgo-modal-editor-preview__backdrop"
 					style={{
-						backgroundColor: overlayColor,
+						backgroundColor: convertPresetToCSSVar(overlayColor),
 						opacity: overlayOpacity / 100,
 					}}
 				/>
@@ -228,9 +254,14 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 								style={{
 									width: `${closeButtonSize}px`,
 									height: `${closeButtonSize}px`,
-									color: closeButtonIconColor || undefined,
+									color:
+										convertPresetToCSSVar(
+											closeButtonIconColor
+										) || undefined,
 									backgroundColor:
-										closeButtonBgColor || undefined,
+										convertPresetToCSSVar(
+											closeButtonBgColor
+										) || undefined,
 								}}
 								aria-label={__('Close modal', 'designsetgo')}
 								disabled
@@ -271,9 +302,13 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 										width: `${closeButtonSize}px`,
 										height: `${closeButtonSize}px`,
 										color:
-											closeButtonIconColor || undefined,
+											convertPresetToCSSVar(
+												closeButtonIconColor
+											) || undefined,
 										backgroundColor:
-											closeButtonBgColor || undefined,
+											convertPresetToCSSVar(
+												closeButtonBgColor
+											) || undefined,
 									}}
 									aria-label={__(
 										'Close modal',

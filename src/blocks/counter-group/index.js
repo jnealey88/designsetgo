@@ -29,6 +29,11 @@ import {
 import metadata from './block.json';
 import save from './save';
 import { ICON_COLOR } from '../shared/constants';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 import './editor.scss';
 import './style.scss';
 
@@ -72,7 +77,9 @@ function CounterGroupEdit({ attributes, setAttributes, clientId }) {
 			'--dsgo-counter-columns-mobile': String(columnsMobile),
 			'--dsgo-counter-gap': gap,
 			// Apply hover color for child Counter blocks to inherit
-			...(hoverColor && { '--dsgo-counter-hover-color': hoverColor }),
+			...(hoverColor && {
+				'--dsgo-counter-hover-color': convertPresetToCSSVar(hoverColor),
+			}),
 		},
 	});
 
@@ -124,9 +131,18 @@ function CounterGroupEdit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Number Hover Color', 'designsetgo'),
-							colorValue: hoverColor,
+							colorValue: decodeColorValue(
+								hoverColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ hoverColor: color || '' }),
+								setAttributes({
+									hoverColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 					]}

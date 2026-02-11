@@ -5,32 +5,7 @@
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-
-/**
- * Convert WordPress preset format to CSS variable
- * Converts "var:preset|spacing|md" to "var(--wp--preset--spacing--md)"
- *
- * @param {string} value The preset value
- * @return {string} CSS variable format
- */
-function convertPresetToCSSVar(value) {
-	if (!value) {
-		return value;
-	}
-
-	// If it's already a CSS variable, return as-is
-	if (value.startsWith('var(--')) {
-		return value;
-	}
-
-	// Convert WordPress preset format: var:preset|spacing|md -> var(--wp--preset--spacing--md)
-	if (value.startsWith('var:preset|')) {
-		const parts = value.replace('var:preset|', '').split('|');
-		return `var(--wp--preset--${parts.join('--')})`;
-	}
-
-	return value;
-}
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 // Version 3: Before align-items (vertical alignment) was added to inner div
 // This version has width constraints but no alignItems CSS property
@@ -102,19 +77,25 @@ const v3 = {
 			className,
 			style: {
 				...(hoverBackgroundColor && {
-					'--dsgo-hover-bg-color': hoverBackgroundColor,
+					'--dsgo-hover-bg-color':
+						convertPresetToCSSVar(hoverBackgroundColor),
 				}),
 				...(hoverTextColor && {
-					'--dsgo-hover-text-color': hoverTextColor,
+					'--dsgo-hover-text-color':
+						convertPresetToCSSVar(hoverTextColor),
 				}),
 				...(hoverIconBackgroundColor && {
-					'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
+					'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+						hoverIconBackgroundColor
+					),
 				}),
 				...(hoverButtonBackgroundColor && {
-					'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
+					'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+						hoverButtonBackgroundColor
+					),
 				}),
 				...(overlayColor && {
-					'--dsgo-overlay-color': overlayColor,
+					'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
 					'--dsgo-overlay-opacity': '0.8',
 				}),
 			},
@@ -227,19 +208,25 @@ const v2 = {
 			className,
 			style: {
 				...(hoverBackgroundColor && {
-					'--dsgo-hover-bg-color': hoverBackgroundColor,
+					'--dsgo-hover-bg-color':
+						convertPresetToCSSVar(hoverBackgroundColor),
 				}),
 				...(hoverTextColor && {
-					'--dsgo-hover-text-color': hoverTextColor,
+					'--dsgo-hover-text-color':
+						convertPresetToCSSVar(hoverTextColor),
 				}),
 				...(hoverIconBackgroundColor && {
-					'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
+					'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+						hoverIconBackgroundColor
+					),
 				}),
 				...(hoverButtonBackgroundColor && {
-					'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
+					'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+						hoverButtonBackgroundColor
+					),
 				}),
 				...(overlayColor && {
-					'--dsgo-overlay-color': overlayColor,
+					'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
 					'--dsgo-overlay-opacity': '0.8',
 				}),
 			},
@@ -344,16 +331,22 @@ const v1 = {
 			className,
 			style: {
 				...(hoverBackgroundColor && {
-					'--dsgo-hover-bg-color': hoverBackgroundColor,
+					'--dsgo-hover-bg-color':
+						convertPresetToCSSVar(hoverBackgroundColor),
 				}),
 				...(hoverTextColor && {
-					'--dsgo-hover-text-color': hoverTextColor,
+					'--dsgo-hover-text-color':
+						convertPresetToCSSVar(hoverTextColor),
 				}),
 				...(hoverIconBackgroundColor && {
-					'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
+					'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+						hoverIconBackgroundColor
+					),
 				}),
 				...(hoverButtonBackgroundColor && {
-					'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
+					'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+						hoverButtonBackgroundColor
+					),
 				}),
 			},
 		});

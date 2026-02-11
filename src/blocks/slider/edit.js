@@ -20,6 +20,11 @@ import {
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 const SINGLE_SLIDE_EFFECTS = ['fade', 'zoom'];
 
@@ -183,13 +188,18 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 		'--dsgo-slider-slides-per-view-mobile': String(
 			effectiveSlidesPerViewMobile
 		),
-		...(arrowColor && { '--dsgo-slider-arrow-color': arrowColor }),
+		...(arrowColor && {
+			'--dsgo-slider-arrow-color': convertPresetToCSSVar(arrowColor),
+		}),
 		...(arrowBackgroundColor && {
-			'--dsgo-slider-arrow-bg-color': arrowBackgroundColor,
+			'--dsgo-slider-arrow-bg-color':
+				convertPresetToCSSVar(arrowBackgroundColor),
 		}),
 		...(arrowSize && { '--dsgo-slider-arrow-size': arrowSize }),
 		...(arrowPadding && { '--dsgo-slider-arrow-padding': arrowPadding }),
-		...(dotColor && { '--dsgo-slider-dot-color': dotColor }),
+		...(dotColor && {
+			'--dsgo-slider-dot-color': convertPresetToCSSVar(dotColor),
+		}),
 	};
 
 	// Block wrapper props
@@ -892,19 +902,33 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 						settings={[
 							{
 								label: __('Arrow Icon Color', 'designsetgo'),
-								colorValue: arrowColor,
+								colorValue: decodeColorValue(
+									arrowColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
 									setAttributes({
-										arrowColor: color || '',
+										arrowColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
 									}),
 								clearable: true,
 							},
 							{
 								label: __('Arrow Background', 'designsetgo'),
-								colorValue: arrowBackgroundColor,
+								colorValue: decodeColorValue(
+									arrowBackgroundColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
 									setAttributes({
-										arrowBackgroundColor: color || '',
+										arrowBackgroundColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
 									}),
 								clearable: true,
 							},
@@ -922,9 +946,18 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 						settings={[
 							{
 								label: __('Dot Color', 'designsetgo'),
-								colorValue: dotColor,
+								colorValue: decodeColorValue(
+									dotColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
-									setAttributes({ dotColor: color || '' }),
+									setAttributes({
+										dotColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
+									}),
 								clearable: true,
 							},
 						]}

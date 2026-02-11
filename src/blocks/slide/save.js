@@ -1,5 +1,6 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function SlideSave({ attributes }) {
 	const {
@@ -33,7 +34,8 @@ export default function SlideSave({ attributes }) {
 	// Overlay styles - only apply if overlayColor is set
 	const overlayStyles = overlayColor
 		? {
-				'--dsgo-slide-overlay-color': overlayColor,
+				'--dsgo-slide-overlay-color':
+					convertPresetToCSSVar(overlayColor),
 				'--dsgo-slide-overlay-opacity': String(overlayOpacity / 100),
 			}
 		: {};
@@ -70,7 +72,7 @@ export default function SlideSave({ attributes }) {
 				<div
 					className="dsgo-slide__overlay"
 					style={{
-						backgroundColor: overlayColor,
+						backgroundColor: convertPresetToCSSVar(overlayColor),
 						opacity: overlayOpacity / 100,
 					}}
 				/>

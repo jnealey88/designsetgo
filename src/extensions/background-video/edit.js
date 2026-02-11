@@ -25,6 +25,11 @@ import {
 	Notice,
 } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Video file upload control
@@ -214,10 +219,17 @@ export function BackgroundVideoPanel(props) {
 						settings={[
 							{
 								label: __('Video Overlay Color', 'designsetgo'),
-								colorValue: dsgoVideoOverlayColor,
+								colorValue: decodeColorValue(
+									dsgoVideoOverlayColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) => {
 									setAttributes({
-										dsgoVideoOverlayColor: color || '',
+										dsgoVideoOverlayColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
 									});
 								},
 								clearable: true,
@@ -352,7 +364,7 @@ export function BackgroundVideoPreview({ BlockListBlock, ...props }) {
 	// Apply 70% opacity to overlay color if set
 	const overlayStyle = dsgoVideoOverlayColor
 		? {
-				backgroundColor: dsgoVideoOverlayColor,
+				backgroundColor: convertPresetToCSSVar(dsgoVideoOverlayColor),
 				opacity: 0.7,
 				position: 'absolute',
 				top: 0,

@@ -17,6 +17,11 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import './editor.scss';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Edit component for the Scroll Accordion Item block.
@@ -35,7 +40,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Apply overlay styles when color is set
 	const overlayStyles = overlayColor
 		? {
-				'--dsgo-overlay-color': overlayColor,
+				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': '0.8',
 			}
 		: {};
@@ -74,9 +79,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Overlay Color', 'designsetgo'),
-							colorValue: overlayColor,
+							colorValue: decodeColorValue(
+								overlayColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ overlayColor: color || '' }),
+								setAttributes({
+									overlayColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 					]}

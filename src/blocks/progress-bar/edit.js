@@ -28,6 +28,11 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Edit component for Progress Bar block
@@ -69,7 +74,7 @@ export default function ProgressBarEdit({
 	const barFillStyles = {
 		width: `${barWidth}%`,
 		height: '100%',
-		backgroundColor: barColor || '#2563eb',
+		backgroundColor: convertPresetToCSSVar(barColor) || '#2563eb',
 		transition: `width ${animationDuration}s ease-out`,
 		borderRadius,
 	};
@@ -85,7 +90,7 @@ export default function ProgressBarEdit({
 	const barContainerStyles = {
 		width: '100%',
 		height,
-		backgroundColor: barBackgroundColor || '#e5e7eb',
+		backgroundColor: convertPresetToCSSVar(barBackgroundColor) || '#e5e7eb',
 		borderRadius,
 		overflow: 'hidden',
 		position: 'relative',
@@ -117,17 +122,33 @@ export default function ProgressBarEdit({
 					settings={[
 						{
 							label: __('Bar Color', 'designsetgo'),
-							colorValue: barColor,
+							colorValue: decodeColorValue(
+								barColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ barColor: color || '' }),
+								setAttributes({
+									barColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Background Color', 'designsetgo'),
-							colorValue: barBackgroundColor,
+							colorValue: decodeColorValue(
+								barBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									barBackgroundColor: color || '',
+									barBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},

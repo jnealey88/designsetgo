@@ -8,6 +8,7 @@
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 import ShapeDivider from './components/ShapeDivider';
 
 /**
@@ -63,19 +64,25 @@ export default function SectionSave({ attributes }) {
 		className,
 		style: {
 			...(hoverBackgroundColor && {
-				'--dsgo-hover-bg-color': hoverBackgroundColor,
+				'--dsgo-hover-bg-color':
+					convertPresetToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-hover-text-color': hoverTextColor,
+				'--dsgo-hover-text-color':
+					convertPresetToCSSVar(hoverTextColor),
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsgo-parent-hover-icon-bg': hoverIconBackgroundColor,
+				'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+					hoverIconBackgroundColor
+				),
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsgo-parent-hover-button-bg': hoverButtonBackgroundColor,
+				'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+					hoverButtonBackgroundColor
+				),
 			}),
 			...(overlayColor && {
-				'--dsgo-overlay-color': overlayColor,
+				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': '0.8',
 			}),
 		},

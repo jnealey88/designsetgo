@@ -23,6 +23,11 @@ import {
 import { useEffect, useState } from '@wordpress/element';
 import { useInstanceId } from '@wordpress/compose';
 import classnames from 'classnames';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 // Marker shape SVGs
 const MarkerShapes = {
@@ -150,7 +155,10 @@ export default function TimelineItemEdit({
 
 	// Custom styles for marker
 	const customStyles = customMarkerColor
-		? { '--dsgo-timeline-item-marker-color': customMarkerColor }
+		? {
+				'--dsgo-timeline-item-marker-color':
+					convertPresetToCSSVar(customMarkerColor),
+			}
 		: {};
 
 	const blockProps = useBlockProps({
@@ -320,10 +328,17 @@ export default function TimelineItemEdit({
 					settings={[
 						{
 							label: __('Custom Marker Color', 'designsetgo'),
-							colorValue: customMarkerColor,
+							colorValue: decodeColorValue(
+								customMarkerColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									customMarkerColor: color || '',
+									customMarkerColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},

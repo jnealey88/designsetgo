@@ -24,6 +24,11 @@ import {
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { getIcon } from '../icon/utils/svg-icons';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 const ALLOWED_BLOCKS = ['designsetgo/tab'];
 
@@ -141,25 +146,37 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		className: `dsgo-tabs dsgo-tabs-${uniqueId} dsgo-tabs--${orientation} dsgo-tabs--${tabStyle} dsgo-tabs--align-${alignment}${showNavBorder ? ' dsgo-tabs--show-nav-border' : ''}`,
 		style: {
 			'--dsgo-tabs-gap': gap,
-			...(tabColor && { '--dsgo-tab-color': tabColor }),
-			...(tabBackgroundColor && { '--dsgo-tab-bg': tabBackgroundColor }),
+			...(tabColor && {
+				'--dsgo-tab-color': convertPresetToCSSVar(tabColor),
+			}),
+			...(tabBackgroundColor && {
+				'--dsgo-tab-bg': convertPresetToCSSVar(tabBackgroundColor),
+			}),
 			...(tabContentBackgroundColor && {
-				'--dsgo-tab-content-bg': tabContentBackgroundColor,
+				'--dsgo-tab-content-bg': convertPresetToCSSVar(
+					tabContentBackgroundColor
+				),
 			}),
 			...(activeTabColor && {
-				'--dsgo-tab-color-active': activeTabColor,
+				'--dsgo-tab-color-active':
+					convertPresetToCSSVar(activeTabColor),
 			}),
 			...(activeTabBackgroundColor && {
-				'--dsgo-tab-bg-active': activeTabBackgroundColor,
+				'--dsgo-tab-bg-active': convertPresetToCSSVar(
+					activeTabBackgroundColor
+				),
 			}),
 			...(tabBorderColor && {
-				'--dsgo-tab-border-color': tabBorderColor,
+				'--dsgo-tab-border-color':
+					convertPresetToCSSVar(tabBorderColor),
 			}),
 			...(tabHoverColor && {
-				'--dsgo-tab-color-hover': tabHoverColor,
+				'--dsgo-tab-color-hover': convertPresetToCSSVar(tabHoverColor),
 			}),
 			...(tabHoverBackgroundColor && {
-				'--dsgo-tab-bg-hover': tabHoverBackgroundColor,
+				'--dsgo-tab-bg-hover': convertPresetToCSSVar(
+					tabHoverBackgroundColor
+				),
 			}),
 		},
 	});
@@ -185,65 +202,129 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Tab Text', 'designsetgo'),
-							colorValue: tabColor,
+							colorValue: decodeColorValue(
+								tabColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ tabColor: color || '' }),
+								setAttributes({
+									tabColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Tab Background', 'designsetgo'),
-							colorValue: tabBackgroundColor,
+							colorValue: decodeColorValue(
+								tabBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									tabBackgroundColor: color || '',
+									tabBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
 						{
 							label: __('Tab Text Hover', 'designsetgo'),
-							colorValue: tabHoverColor,
+							colorValue: decodeColorValue(
+								tabHoverColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ tabHoverColor: color || '' }),
+								setAttributes({
+									tabHoverColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Tab Background Hover', 'designsetgo'),
-							colorValue: tabHoverBackgroundColor,
+							colorValue: decodeColorValue(
+								tabHoverBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									tabHoverBackgroundColor: color || '',
+									tabHoverBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
 						{
 							label: __('Active Tab Text', 'designsetgo'),
-							colorValue: activeTabColor,
+							colorValue: decodeColorValue(
+								activeTabColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ activeTabColor: color || '' }),
+								setAttributes({
+									activeTabColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Active Tab Background', 'designsetgo'),
-							colorValue: activeTabBackgroundColor,
+							colorValue: decodeColorValue(
+								activeTabBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									activeTabBackgroundColor: color || '',
+									activeTabBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
 						{
 							label: __('Tab Border', 'designsetgo'),
-							colorValue: tabBorderColor,
+							colorValue: decodeColorValue(
+								tabBorderColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ tabBorderColor: color || '' }),
+								setAttributes({
+									tabBorderColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Tab Content Background', 'designsetgo'),
-							colorValue: tabContentBackgroundColor,
+							colorValue: decodeColorValue(
+								tabContentBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									tabContentBackgroundColor: color || '',
+									tabContentBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
