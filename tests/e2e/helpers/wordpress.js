@@ -259,35 +259,41 @@ async function selectBlock(page, blockType, index = 0) {
 		throw new Error(`Block "${blockType}" at index ${index} not found`);
 	}
 
-	// Wait for selection UI to update
-	await page.waitForTimeout(300);
+	// Wait for the block to visually show as selected in the editor
+	const canvas = getEditorCanvas(page);
+	await canvas
+		.locator(`[data-type="${blockType}"].is-selected`)
+		.nth(index)
+		.waitFor({ timeout: 5000 });
 }
 
 /**
- * Check if a block has a specific class.
+ * Check if a block has a specific CSS class (single class name only).
  * The block content is inside the editor canvas iframe.
  *
- * Waits up to 5 seconds for the class to appear, which handles the delay
- * between setting an attribute and the editor.BlockListBlock filter
- * re-rendering the block wrapper with the updated class.
+ * First locates the Nth block of the given type, then polls for the class
+ * to appear (up to 5 s), which handles the React re-render delay after
+ * attribute changes trigger the editor.BlockListBlock filter.
  *
  * @param {import('@playwright/test').Page} page      - Playwright page object
  * @param {string}                          blockType - Block type (e.g., 'core/group')
- * @param {string}                          className - Class name to check
+ * @param {string}                          className - Single CSS class name to check
  * @param {number}                          index     - Index of the block (0-based)
  * @return {Promise<boolean>} True if the block has the class, false otherwise
  */
 async function blockHasClass(page, blockType, className, index = 0) {
 	const canvas = getEditorCanvas(page);
-	try {
-		await canvas
-			.locator(`[data-type="${blockType}"].${className}`)
-			.nth(index)
-			.waitFor({ timeout: 5000 });
-		return true;
-	} catch {
-		return false;
+	const block = canvas.locator(`[data-type="${blockType}"]`).nth(index);
+
+	const deadline = Date.now() + 5000;
+	while (Date.now() < deadline) {
+		const classes = await block.getAttribute('class');
+		if (classes && classes.split(/\s+/).includes(className)) {
+			return true;
+		}
+		await page.waitForTimeout(250);
 	}
+	return false;
 }
 
 module.exports = {
