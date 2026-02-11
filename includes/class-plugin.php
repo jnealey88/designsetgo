@@ -179,6 +179,13 @@ class Plugin {
 	public $llms_txt;
 
 	/**
+	 * Extension Attributes instance.
+	 *
+	 * @var Extension_Attributes
+	 */
+	public $extension_attrs;
+
+	/**
 	 * Returns the instance.
 	 *
 	 * @return Plugin
@@ -226,6 +233,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-icon-injector.php';
+		require_once DESIGNSETGO_PATH . 'includes/class-extension-attributes.php';
 
 		// LLMS TXT classes.
 		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-file-manager.php';
@@ -268,6 +276,7 @@ class Plugin {
 		// Initialize components.
 		$this->assets              = new Assets();
 		$this->blocks              = new Blocks\Loader();
+		$this->extension_attrs     = new Extension_Attributes();
 		$this->modal_hooks         = new Blocks\Modal_Hooks();
 		$this->form_handler        = new Blocks\Form_Handler();
 		$this->form_submissions    = new Blocks\Form_Submissions();
