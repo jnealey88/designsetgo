@@ -10,6 +10,9 @@
  * addFilter('blocks.registerBlockType'). This file mirrors those
  * definitions for server-side awareness.
  *
+ * Extension schemas are loaded from individual config files in
+ * includes/extension-configs/ for maintainability.
+ *
  * @package DesignSetGo
  * @since   2.1.0
  */
@@ -30,422 +33,61 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Extension_Attributes {
 
 	/**
-	 * Extension definitions.
+	 * Loaded extension definitions.
 	 *
 	 * Each entry maps an extension name to:
-	 *   - 'blocks'     string|array  'all' for all designsetgo/* blocks, or an explicit list.
-	 *   - 'exclude'    array         Block names to exclude (only when blocks = 'all').
+	 *   - 'blocks'     string|array  'all' for all blocks (unless excluded), or an explicit list.
+	 *   - 'exclude'    array         Block names or namespace wildcards (e.g. 'core-embed/*') to
+	 *                                exclude (only when blocks = 'all').
 	 *   - 'attributes' array         Attribute schemas matching the JS definitions.
 	 *
-	 * @var array
+	 * @var array|null Null until loaded.
 	 */
-	private static $extensions = array(
-
-		// See src/extensions/responsive/index.js.
-		'responsive'          => array(
-			'blocks'     => 'all',
-			'exclude'    => array(),
-			'attributes' => array(
-				'dsgoHideOnDesktop' => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'dsgoHideOnTablet'  => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'dsgoHideOnMobile'  => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-			),
-		),
-
-		// See src/extensions/custom-css/index.js.
-		'custom-css'          => array(
-			'blocks'     => 'all',
-			'exclude'    => array( 'core/html', 'core/code' ),
-			'attributes' => array(
-				'dsgoCustomCSS' => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-			),
-		),
-
-		// See src/extensions/block-animations/attributes.js.
-		'block-animations'    => array(
-			'blocks'     => 'all',
-			'exclude'    => array( 'core/freeform' ),
-			'attributes' => array(
-				'dsgoAnimationEnabled'  => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'dsgoEntranceAnimation' => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'dsgoExitAnimation'     => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'dsgoAnimationTrigger'  => array(
-					'type'    => 'string',
-					'default' => 'scroll',
-				),
-				'dsgoAnimationDuration' => array(
-					'type'    => 'number',
-					'default' => 600,
-				),
-				'dsgoAnimationDelay'    => array(
-					'type'    => 'number',
-					'default' => 0,
-				),
-				'dsgoAnimationEasing'   => array(
-					'type'    => 'string',
-					'default' => 'ease-out',
-				),
-				'dsgoAnimationOffset'   => array(
-					'type'    => 'number',
-					'default' => 100,
-				),
-				'dsgoAnimationOnce'     => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-			),
-		),
-
-		// See src/extensions/grid-span/index.js.
-		'grid-span'           => array(
-			'blocks'     => 'all',
-			'exclude'    => array(),
-			'attributes' => array(
-				'dsgoColumnSpan' => array(
-					'type'    => 'number',
-					'default' => 1,
-				),
-			),
-		),
-
-		// See src/extensions/grid-mobile-order/index.js.
-		'grid-mobile-order'   => array(
-			'blocks'     => 'all',
-			'exclude'    => array(),
-			'attributes' => array(
-				'dsgoMobileOrder' => array(
-					'type'    => 'number',
-					'default' => 1,
-				),
-			),
-		),
-
-		// See src/extensions/max-width/index.js.
-		'max-width'           => array(
-			'blocks'     => 'all',
-			'exclude'    => array(
-				'core/spacer',
-				'core/separator',
-				'core/page-list',
-				'core/navigation',
-				'designsetgo/section',
-				'designsetgo/row',
-				'designsetgo/grid',
-			),
-			'attributes' => array(
-				'dsgoMaxWidth' => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-			),
-		),
-
-		// See src/extensions/reveal-control/index.js — child attribute for all blocks.
-		'reveal-control'      => array(
-			'blocks'     => 'all',
-			'exclude'    => array(),
-			'attributes' => array(
-				'dsgoRevealOnHover' => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-			),
-		),
-
-		// See src/extensions/reveal-control/index.js — container attributes.
-		'reveal-container'    => array(
-			'blocks'     => array(
-				'designsetgo/section',
-				'designsetgo/row',
-				'designsetgo/grid',
-				'designsetgo/reveal',
-			),
-			'exclude'    => array(),
-			'attributes' => array(
-				'enableRevealOnHover'  => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'revealAnimationType'  => array(
-					'type'    => 'string',
-					'default' => 'fade',
-				),
-			),
-		),
-
-		// See src/extensions/background-video/index.js.
-		'background-video'    => array(
-			'blocks'     => array(
-				'designsetgo/section',
-				'designsetgo/row',
-				'designsetgo/grid',
-				'designsetgo/reveal',
-				'designsetgo/flip-card',
-				'designsetgo/flip-card-front',
-				'designsetgo/flip-card-back',
-				'designsetgo/accordion',
-				'designsetgo/accordion-item',
-				'designsetgo/tabs',
-				'designsetgo/tab',
-				'designsetgo/scroll-accordion',
-				'designsetgo/scroll-accordion-item',
-				'designsetgo/scroll-marquee',
-				'designsetgo/image-accordion',
-				'designsetgo/image-accordion-item',
-			),
-			'exclude'    => array(),
-			'attributes' => array(
-				'dsgoVideoUrl'          => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'dsgoVideoPoster'       => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'dsgoVideoMuted'        => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'dsgoVideoLoop'         => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'dsgoVideoAutoplay'     => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'dsgoVideoMobileHide'   => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'dsgoVideoOverlayColor' => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-			),
-		),
-
-		// See src/extensions/clickable-group/index.js.
-		'clickable-group'     => array(
-			'blocks'     => array(
-				'core/group',
-				'designsetgo/section',
-				'designsetgo/row',
-				'designsetgo/grid',
-			),
-			'exclude'    => array(),
-			'attributes' => array(
-				'dsgoLinkUrl'    => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'dsgoLinkTarget' => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'dsgoLinkRel'    => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-			),
-		),
-
-		// See src/extensions/vertical-scroll-parallax/attributes.js.
-		'vertical-parallax'   => array(
-			'blocks'     => array(
-				// Core blocks.
-				'core/group',
-				'core/cover',
-				'core/image',
-				'core/media-text',
-				'core/columns',
-				'core/column',
-				// DesignSetGo container blocks.
-				'designsetgo/section',
-				'designsetgo/row',
-				'designsetgo/grid',
-				'designsetgo/reveal',
-				// DesignSetGo visual blocks.
-				'designsetgo/flip-card',
-				'designsetgo/flip-card-front',
-				'designsetgo/flip-card-back',
-				'designsetgo/icon',
-				'designsetgo/icon-button',
-				'designsetgo/image-accordion',
-				'designsetgo/image-accordion-item',
-				'designsetgo/scroll-accordion',
-				'designsetgo/scroll-accordion-item',
-			),
-			'exclude'    => array(),
-			'attributes' => array(
-				'dsgoParallaxEnabled'       => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'dsgoParallaxDirection'     => array(
-					'type'    => 'string',
-					'default' => 'up',
-				),
-				'dsgoParallaxSpeed'         => array(
-					'type'    => 'number',
-					'default' => 5,
-				),
-				'dsgoParallaxViewportStart' => array(
-					'type'    => 'number',
-					'default' => 0,
-				),
-				'dsgoParallaxViewportEnd'   => array(
-					'type'    => 'number',
-					'default' => 100,
-				),
-				'dsgoParallaxRelativeTo'    => array(
-					'type'    => 'string',
-					'default' => 'viewport',
-				),
-				'dsgoParallaxDesktop'       => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'dsgoParallaxTablet'        => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'dsgoParallaxMobile'        => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-			),
-		),
-
-		// See src/extensions/svg-patterns/attributes.js.
-		'svg-patterns'        => array(
-			'blocks'     => array(
-				'core/group',
-				'designsetgo/section',
-			),
-			'exclude'    => array(),
-			'attributes' => array(
-				'dsgoSvgPatternEnabled' => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'dsgoSvgPatternType'    => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'dsgoSvgPatternColor'   => array(
-					'type'    => 'string',
-					'default' => '#9c92ac',
-				),
-				'dsgoSvgPatternOpacity' => array(
-					'type'    => 'number',
-					'default' => 0.4,
-				),
-				'dsgoSvgPatternScale'   => array(
-					'type'    => 'number',
-					'default' => 1,
-				),
-				'dsgoSvgPatternFixed'   => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-			),
-		),
-
-		// See src/extensions/expanding-background/attributes.js.
-		'expanding-background' => array(
-			'blocks'     => array(
-				'core/group',
-				'designsetgo/section',
-			),
-			'exclude'    => array(),
-			'attributes' => array(
-				'dsgoExpandingBgEnabled'         => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'dsgoExpandingBgColor'           => array(
-					'type'    => 'string',
-					'default' => '#e8e8e8',
-				),
-				'dsgoExpandingBgInitialSize'     => array(
-					'type'    => 'number',
-					'default' => 50,
-				),
-				'dsgoExpandingBgBlur'            => array(
-					'type'    => 'number',
-					'default' => 30,
-				),
-				'dsgoExpandingBgSpeed'           => array(
-					'type'    => 'number',
-					'default' => 1,
-				),
-				'dsgoExpandingBgTriggerOffset'   => array(
-					'type'    => 'number',
-					'default' => 0,
-				),
-				'dsgoExpandingBgCompletionPoint' => array(
-					'type'    => 'number',
-					'default' => 80,
-				),
-			),
-		),
-
-		// See src/extensions/text-reveal/attributes.js.
-		'text-reveal'         => array(
-			'blocks'     => array(
-				'core/paragraph',
-				'core/heading',
-			),
-			'exclude'    => array(),
-			'attributes' => array(
-				'dsgoTextRevealEnabled'    => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'dsgoTextRevealColor'      => array(
-					'type'    => 'string',
-					'default' => '#2563eb',
-				),
-				'dsgoTextRevealSplitMode'  => array(
-					'type'    => 'string',
-					'default' => 'word',
-				),
-				'dsgoTextRevealTransition' => array(
-					'type'    => 'number',
-					'default' => 150,
-				),
-			),
-		),
-	);
+	private static $extensions = null;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		add_filter( 'register_block_type_args', array( $this, 'inject_extension_attributes' ), 10, 2 );
+	}
+
+	/**
+	 * Load extension definitions from per-extension config files.
+	 *
+	 * Each file in includes/extension-configs/ returns an array with
+	 * 'blocks', 'exclude', and 'attributes' keys. The filename (without
+	 * .php) becomes the extension key.
+	 *
+	 * @return array Extension definitions keyed by name.
+	 */
+	private static function get_extensions() {
+		if ( null !== self::$extensions ) {
+			return self::$extensions;
+		}
+
+		self::$extensions = array();
+
+		$config_dir = DESIGNSETGO_PATH . 'includes/extension-configs/';
+		if ( ! is_dir( $config_dir ) ) {
+			return self::$extensions;
+		}
+
+		$files = glob( $config_dir . '*.php' );
+		if ( empty( $files ) ) {
+			return self::$extensions;
+		}
+
+		foreach ( $files as $file ) {
+			$name   = basename( $file, '.php' );
+			$config = include $file;
+
+			if ( is_array( $config ) && isset( $config['attributes'] ) ) {
+				self::$extensions[ $name ] = $config;
+			}
+		}
+
+		return self::$extensions;
 	}
 
 	/**
@@ -464,7 +106,7 @@ class Extension_Attributes {
 			$args['attributes'] = array();
 		}
 
-		foreach ( self::$extensions as $extension ) {
+		foreach ( self::get_extensions() as $extension ) {
 			if ( ! self::block_matches( $block_type, $extension ) ) {
 				continue;
 			}
@@ -483,6 +125,10 @@ class Extension_Attributes {
 	/**
 	 * Check if a block matches an extension's allowlist.
 	 *
+	 * Mirrors the JS shouldExtendBlock() logic including namespace wildcard
+	 * support (e.g. 'core-embed/*') and user-configured exclusions from
+	 * the plugin settings.
+	 *
 	 * @param string $block_type Block type name.
 	 * @param array  $extension  Extension definition.
 	 * @return bool Whether the extension applies to this block.
@@ -491,8 +137,13 @@ class Extension_Attributes {
 		$blocks  = $extension['blocks'];
 		$exclude = isset( $extension['exclude'] ) ? $extension['exclude'] : array();
 
-		// Check exclusion list first.
-		if ( in_array( $block_type, $exclude, true ) ) {
+		// Check extension-level exclusion list (supports exact and namespace wildcards).
+		if ( self::is_excluded( $block_type, $exclude ) ) {
+			return false;
+		}
+
+		// Check user-configured excluded blocks from plugin settings.
+		if ( self::is_excluded( $block_type, self::get_excluded_blocks() ) ) {
 			return false;
 		}
 
@@ -503,5 +154,56 @@ class Extension_Attributes {
 
 		// Explicit allowlist.
 		return is_array( $blocks ) && in_array( $block_type, $blocks, true );
+	}
+
+	/**
+	 * Check if a block name matches an exclusion list.
+	 *
+	 * Supports exact matches (e.g. 'core/freeform') and namespace
+	 * wildcards (e.g. 'core-embed/*').
+	 *
+	 * @param string $block_type Block type name.
+	 * @param array  $exclusions List of block names or namespace wildcards.
+	 * @return bool Whether the block is excluded.
+	 */
+	private static function is_excluded( $block_type, $exclusions ) {
+		if ( empty( $exclusions ) ) {
+			return false;
+		}
+
+		// Exact match.
+		if ( in_array( $block_type, $exclusions, true ) ) {
+			return true;
+		}
+
+		// Namespace wildcard match (e.g. 'core-embed/*').
+		$namespace = strtok( $block_type, '/' );
+		if ( in_array( $namespace . '/*', $exclusions, true ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get user-configured excluded blocks from plugin settings.
+	 *
+	 * Cached after first call to avoid repeated option lookups.
+	 *
+	 * @return array List of excluded block names/patterns.
+	 */
+	private static function get_excluded_blocks() {
+		static $excluded = null;
+
+		if ( null === $excluded ) {
+			if ( class_exists( 'DesignSetGo\Admin\Settings' ) ) {
+				$settings = \DesignSetGo\Admin\Settings::get_settings();
+				$excluded = isset( $settings['excluded_blocks'] ) ? (array) $settings['excluded_blocks'] : array();
+			} else {
+				$excluded = array();
+			}
+		}
+
+		return $excluded;
 	}
 }

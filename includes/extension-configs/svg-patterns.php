@@ -1,0 +1,43 @@
+<?php
+/**
+ * SVG patterns extension attribute schema.
+ *
+ * @see src/extensions/svg-patterns/attributes.js
+ * @package DesignSetGo
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+return array(
+	'blocks'     => array(
+		'core/group',
+		'designsetgo/section',
+	),
+	'exclude'    => array(),
+	'attributes' => array(
+		'dsgoSvgPatternEnabled' => array(
+			'type'    => 'boolean',
+			'default' => false,
+		),
+		'dsgoSvgPatternType'    => array(
+			'type'    => 'string',
+			'default' => '',
+		),
+		'dsgoSvgPatternColor'   => array(
+			'type'    => 'string',
+			'default' => '#9c92ac',
+		),
+		'dsgoSvgPatternOpacity' => array(
+			'type'    => 'number',
+			'default' => 0.4,
+		),
+		'dsgoSvgPatternScale'   => array(
+			'type'    => 'number',
+			'default' => 1,
+		),
+		'dsgoSvgPatternFixed'   => array(
+			'type'    => 'boolean',
+			'default' => false,
+		),
+	),
+);
