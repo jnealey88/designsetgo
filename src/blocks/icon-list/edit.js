@@ -41,6 +41,7 @@ export default function IconListEdit({ attributes, setAttributes, clientId }) {
 		iconPosition,
 		columns,
 		alignment,
+		iconVerticalAlignment,
 	} = attributes;
 
 	// Get theme color palette and gradient settings
@@ -174,6 +175,7 @@ export default function IconListEdit({ attributes, setAttributes, clientId }) {
 					iconPosition={iconPosition}
 					columns={columns}
 					alignment={alignment}
+					iconVerticalAlignment={iconVerticalAlignment}
 					setAttributes={setAttributes}
 				/>
 			</InspectorControls>

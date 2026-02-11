@@ -30,7 +30,8 @@
 		"designsetgo/iconList/iconColor",
 		"designsetgo/iconList/iconBackgroundColor",
 		"designsetgo/iconList/gap",
-		"designsetgo/iconList/iconPosition"
+		"designsetgo/iconList/iconPosition",
+		"designsetgo/iconList/iconVerticalAlignment"
 	],
 	"attributes": {
 		"icon": {
