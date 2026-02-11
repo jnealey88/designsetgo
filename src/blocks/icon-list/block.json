@@ -103,6 +103,7 @@
 		},
 		"iconVerticalAlignment": {
 			"type": "string",
+			"enum": ["top", "center"],
 			"default": "top"
 		}
 	},
