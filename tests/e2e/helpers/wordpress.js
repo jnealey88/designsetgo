@@ -211,22 +211,65 @@ async function getFrontendUrl(page) {
 }
 
 /**
- * Select a block by its data-type attribute.
- * The block content is inside the editor canvas iframe.
+ * Select a block by type using the WordPress data store.
+ *
+ * Clicking on a container block's wrapper element in the editor iframe often
+ * selects an inner block instead (the editor picks the innermost block at the
+ * click position). Using `wp.data.dispatch` to select by clientId avoids this.
  *
  * @param {import('@playwright/test').Page} page      - Playwright page object
  * @param {string}                          blockType - Block type (e.g., 'core/group')
  * @param {number}                          index     - Index of the block (0-based)
  */
 async function selectBlock(page, blockType, index = 0) {
-	const canvas = getEditorCanvas(page);
-	const blocks = canvas.locator(`[data-type="${blockType}"]`);
-	await blocks.nth(index).click();
+	const selected = await page.evaluate(
+		({ blockType: type, index: idx }) => {
+			const { select, dispatch } = wp.data;
+
+			function findBlocksByType(blocks, targetType) {
+				const result = [];
+				for (const block of blocks) {
+					if (block.name === targetType) {
+						result.push(block);
+					}
+					if (block.innerBlocks && block.innerBlocks.length > 0) {
+						result.push(
+							...findBlocksByType(block.innerBlocks, targetType)
+						);
+					}
+				}
+				return result;
+			}
+
+			const allBlocks = select('core/block-editor').getBlocks();
+			const matching = findBlocksByType(allBlocks, type);
+
+			if (matching[idx]) {
+				dispatch('core/block-editor').selectBlock(
+					matching[idx].clientId
+				);
+				return true;
+			}
+			return false;
+		},
+		{ blockType, index }
+	);
+
+	if (!selected) {
+		throw new Error(`Block "${blockType}" at index ${index} not found`);
+	}
+
+	// Wait for selection UI to update
+	await page.waitForTimeout(300);
 }
 
 /**
  * Check if a block has a specific class.
  * The block content is inside the editor canvas iframe.
+ *
+ * Waits up to 5 seconds for the class to appear, which handles the delay
+ * between setting an attribute and the editor.BlockListBlock filter
+ * re-rendering the block wrapper with the updated class.
  *
  * @param {import('@playwright/test').Page} page      - Playwright page object
  * @param {string}                          blockType - Block type (e.g., 'core/group')
@@ -236,9 +279,15 @@ async function selectBlock(page, blockType, index = 0) {
  */
 async function blockHasClass(page, blockType, className, index = 0) {
 	const canvas = getEditorCanvas(page);
-	const block = canvas.locator(`[data-type="${blockType}"]`).nth(index);
-	const classes = await block.getAttribute('class');
-	return classes?.includes(className) || false;
+	try {
+		await canvas
+			.locator(`[data-type="${blockType}"].${className}`)
+			.nth(index)
+			.waitFor({ timeout: 5000 });
+		return true;
+	} catch {
+		return false;
+	}
 }
 
 module.exports = {
