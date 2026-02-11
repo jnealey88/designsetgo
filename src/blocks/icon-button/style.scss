@@ -4,13 +4,16 @@
  * @since 1.0.0
  */
 
+// Low-specificity default: allows theme.json Global Styles (.wp-element-button) to override
+// when user sets button element styles in Appearance > Editor > Styles > Elements > Buttons.
+// :where() has specificity (0,0,0), so WordPress's :root :where(.wp-element-button) at (0,1,0) wins.
+// Per-instance inline styles (block border controls) always win over both.
+:where(.dsgo-icon-button) {
+	border-radius: 9999px; // Default pill shape, overridable by Global Styles
+}
+
 .dsgo-icon-button {
-	// Block wrapper is now block-level by default to respect WordPress content width constraints
-	// Width behavior is controlled via modifier classes on both wrapper and inner element
-	// Border-radius: Uses theme.json button value or defaults to pill shape (9999px)
-	// Override priority: 1) WordPress border controls (inline styles) 2) theme.json button styles
-	border-radius: var(--wp--style--elements--button--border--radius, 9999px);
-	overflow: hidden; // Clip contents to border-radius
+	overflow: hidden; // Clip contents to border-radius (from any source)
 
 	// ============================================================================
 	// WIDTH & ALIGNMENT

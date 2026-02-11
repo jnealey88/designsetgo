@@ -4,14 +4,12 @@
  * @package DesignSetGo
  */
 
-.dsgo-modal-trigger {
-	// Border-radius: Uses theme.json button value or defaults to 4px
-	// Override priority: 1) WordPress border controls (inline styles) 2) theme.json button styles
-	border-radius: var(--wp--style--elements--button--border--radius, 4px);
-	overflow: hidden; // Clip contents to border-radius
-
-	// Base button styles (now on outer element with wp-element-button)
-	gap: 8px;
+// Low-specificity defaults: allows theme.json Global Styles (.wp-element-button) to override
+// when user sets button element styles in Appearance > Editor > Styles > Elements > Buttons.
+// :where() has specificity (0,0,0), so WordPress's :root :where(.wp-element-button) at (0,1,0) wins.
+// Per-instance inline styles (block color/border controls) always win over both.
+:where(.dsgo-modal-trigger) {
+	border-radius: 4px;
 	padding: 12px 24px;
 	border: 2px solid transparent;
 	background: #0073aa;
@@ -19,6 +17,20 @@
 	font-size: 16px;
 	font-weight: 500;
 	line-height: 1.5;
+}
+
+:where(.dsgo-modal-trigger):hover,
+:where(.dsgo-modal-trigger):focus {
+	background: #005a87;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dsgo-modal-trigger {
+	overflow: hidden; // Clip contents to border-radius (from any source)
+
+	// Structural/behavioral styles (not theme-overridable)
+	gap: 8px;
 	text-decoration: none;
 	cursor: pointer;
 	transition: all 0.2s ease;
@@ -27,9 +39,6 @@
 
 	&:hover,
 	&:focus {
-		background: #005a87;
-		transform: translateY(-1px);
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 		text-decoration: none !important;
 	}
 
@@ -103,6 +112,8 @@
 	}
 
 	// Fill style (default)
+	// Variant styles stay at normal specificity — they are explicit user choices
+	// that should override Global Styles defaults
 	&--fill {
 		background: var(--wp--preset--color--primary, #0073aa);
 		color: #fff;
@@ -172,7 +183,7 @@
 		gap: 8px;
 		padding: 12px 24px;
 		border: 2px solid transparent;
-		border-radius: var(--wp--style--elements--button--border--radius, 4px);
+		border-radius: 4px;
 		background: #0073aa;
 		color: #fff;
 		font-size: 16px;
@@ -217,9 +228,10 @@
 }
 
 // Responsive Adjustments
+// Wrapped in :where() so Global Styles can override mobile defaults too
 @media (max-width: 768px) {
 
-	.dsgo-modal-trigger:not(.dsgo-modal-trigger--link) {
+	:where(.dsgo-modal-trigger:not(.dsgo-modal-trigger--link)) {
 		padding: 10px 20px;
 		font-size: 15px;
 	}
