@@ -425,7 +425,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 								{ value: 'vh', label: 'vh', default: 50 },
 								{ value: 'rem', label: 'rem', default: 30 },
 							]}
-							min={0}
+							min={100}
 							max={1000}
 							help={
 								!height
