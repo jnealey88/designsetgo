@@ -7,5 +7,10 @@
  * @since 2.0.0
  */
 
-export { getIcon, getIconNames } from '../icon/utils/svg-icons';
+export {
+	getIcon,
+	getIconNames,
+	resolveIconName,
+	getIconAliases,
+} from '../icon/utils/svg-icons';
 export { IconPicker } from '../icon/components/IconPicker';
