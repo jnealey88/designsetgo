@@ -761,9 +761,13 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that all patterns get blockTypes of core/post-content.
+	 * Test that patterns do not have blockTypes restriction by default.
+	 *
+	 * Patterns should not be restricted to core/post-content because that
+	 * prevents them from appearing in the top-level inserter when other
+	 * plugins register unrestricted patterns.
 	 */
-	public function test_all_patterns_have_block_types() {
+	public function test_patterns_have_no_block_types_restriction() {
 		$this->loader->register_pattern_categories();
 		$this->loader->register_patterns();
 
@@ -780,15 +784,10 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 		$this->assertNotEmpty( $dsgo_patterns, 'Should have DesignSetGo patterns' );
 
 		foreach ( $dsgo_patterns as $pattern ) {
-			$this->assertArrayHasKey(
+			$this->assertArrayNotHasKey(
 				'blockTypes',
 				$pattern,
-				"Pattern '{$pattern['name']}' should have blockTypes"
-			);
-			$this->assertContains(
-				'core/post-content',
-				$pattern['blockTypes'],
-				"Pattern '{$pattern['name']}' should include core/post-content in blockTypes"
+				"Pattern '{$pattern['name']}' should not have blockTypes restriction"
 			);
 		}
 	}

@@ -23,8 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   safe size limits for MySQL max_allowed_packet and object cache item limits.
  * - Smart invalidation via file modification time hashing detects file edits without
  *   requiring a plugin version bump.
- * - Pattern context filtering via postTypes and blockTypes reduces the number of
- *   patterns sent to the editor in specific editing contexts.
+ * - Pattern context filtering via postTypes reduces the number of patterns sent
+ *   to the editor in specific editing contexts.
  */
 class Loader {
 
@@ -383,13 +383,6 @@ class Loader {
 				// pattern doesn't already declare its own.
 				if ( isset( $post_types_map[ $category ] ) && ! isset( $pattern['postTypes'] ) ) {
 					$pattern['postTypes'] = $post_types_map[ $category ];
-				}
-
-				// All DSGO patterns are section-level (full-width page sections).
-				// Restrict to post-content context to prevent them from appearing
-				// as inline block suggestions (e.g. when inserting a Paragraph).
-				if ( ! isset( $pattern['blockTypes'] ) ) {
-					$pattern['blockTypes'] = array( 'core/post-content' );
 				}
 
 				register_block_pattern( $slug, $pattern );
