@@ -138,7 +138,6 @@ function addSvgPatternSaveProps(extraProps, blockType, attributes) {
 		dsgoSvgPatternColor,
 		dsgoSvgPatternOpacity,
 		dsgoSvgPatternScale,
-		dsgoSvgPatternFixed,
 	} = attributes;
 
 	if (
@@ -159,33 +158,15 @@ function addSvgPatternSaveProps(extraProps, blockType, attributes) {
 			? dsgoSvgPatternScale
 			: DEFAULTS.scale;
 
-	const bg = getPatternBackground(
-		dsgoSvgPatternType,
-		dsgoSvgPatternColor || DEFAULTS.color,
-		safeOpacity,
-		safeScale
-	);
-
-	if (!bg) {
-		return extraProps;
-	}
-
-	const patternStyle = {
-		...(extraProps.style || {}),
-		'--dsgo-svg-pattern-image': bg.backgroundImage,
-		'--dsgo-svg-pattern-size': bg.backgroundSize,
-	};
-
-	if (dsgoSvgPatternFixed) {
-		patternStyle['--dsgo-svg-pattern-attachment'] = 'fixed';
-	}
-
+	// Only save data attributes and class — the server-side renderer
+	// (SVG_Pattern_Renderer) generates the SVG data URI at render time
+	// from these attributes, keeping post_content lean.
 	return {
 		...extraProps,
 		className: [extraProps.className, 'has-dsgo-svg-pattern']
 			.filter(Boolean)
 			.join(' '),
-		style: patternStyle,
+		style: extraProps.style || {},
 		'data-dsgo-svg-pattern': dsgoSvgPatternType,
 		'data-dsgo-svg-pattern-color': dsgoSvgPatternColor || '',
 		'data-dsgo-svg-pattern-opacity': String(safeOpacity),
@@ -197,4 +178,52 @@ addFilter(
 	'blocks.getSaveContent.extraProps',
 	'designsetgo/svg-pattern-save-props',
 	addSvgPatternSaveProps
+);
+
+/**
+ * Strip legacy inline SVG pattern CSS variables from saved content.
+ *
+ * Older versions saved the full SVG data URI in --dsgo-svg-pattern-image
+ * and --dsgo-svg-pattern-size inline styles. The server-side renderer now
+ * generates these at render time, so they are no longer saved. This filter
+ * normalizes old content during block validation so the editor doesn't
+ * show "Block contains unexpected content" errors.
+ *
+ * @param {string} content   Serialized block HTML.
+ * @param {Object} blockType Block type definition.
+ * @return {string} Cleaned content.
+ */
+function stripLegacySvgPatternStyles(content, blockType) {
+	if (
+		!SUPPORTED_BLOCKS.includes(blockType.name) ||
+		typeof content !== 'string' ||
+		!content.includes('--dsgo-svg-pattern-image')
+	) {
+		return content;
+	}
+
+	// Remove --dsgo-svg-pattern-image:url("data:image/svg+xml,...");
+	// The url() value may contain encoded parens, so match up to the closing ");
+	content = content.replace(
+		/--dsgo-svg-pattern-image:url\(&quot;[^&]*&quot;\);?/g,
+		''
+	);
+
+	// Remove --dsgo-svg-pattern-size:<value>;
+	content = content.replace(/--dsgo-svg-pattern-size:[^;"]+;?/g, '');
+
+	// Remove --dsgo-svg-pattern-attachment:fixed;
+	content = content.replace(/--dsgo-svg-pattern-attachment:fixed;?/g, '');
+
+	// Clean up dangling semicolons and empty style attributes.
+	content = content.replace(/style=";\s*/g, 'style="');
+	content = content.replace(/style="\s*"/g, '');
+
+	return content;
+}
+
+addFilter(
+	'blocks.getSaveContent',
+	'designsetgo/svg-pattern-strip-legacy',
+	stripLegacySvgPatternStyles
 );
