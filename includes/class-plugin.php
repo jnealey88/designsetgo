@@ -172,6 +172,13 @@ class Plugin {
 	public $revision_comparison;
 
 	/**
+	 * SVG Pattern Renderer instance.
+	 *
+	 * @var SVG_Pattern_Renderer
+	 */
+	public $svg_pattern_renderer;
+
+	/**
 	 * LLMS TXT instance.
 	 *
 	 * @var LLMS_Txt\Controller
@@ -234,6 +241,8 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-icon-injector.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-extension-attributes.php';
+		require_once DESIGNSETGO_PATH . 'includes/svg-pattern-data.php';
+		require_once DESIGNSETGO_PATH . 'includes/class-svg-pattern-renderer.php';
 
 		// LLMS TXT classes.
 		require_once DESIGNSETGO_PATH . 'includes/llms-txt/class-file-manager.php';
@@ -289,7 +298,8 @@ class Plugin {
 		$this->section_styles      = new Section_Styles();
 		$this->section_styles->init();
 		$this->sticky_header = new Sticky_Header();
-		$this->icon_injector = new Icon_Injector();
+		$this->icon_injector        = new Icon_Injector();
+		$this->svg_pattern_renderer = new SVG_Pattern_Renderer();
 		$this->llms_txt      = new LLMS_Txt\Controller();
 
 		// Initialize revision comparison (needs REST routes registered for all contexts).
