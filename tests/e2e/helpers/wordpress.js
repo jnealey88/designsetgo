@@ -211,34 +211,89 @@ async function getFrontendUrl(page) {
 }
 
 /**
- * Select a block by its data-type attribute.
- * The block content is inside the editor canvas iframe.
+ * Select a block by type using the WordPress data store.
+ *
+ * Clicking on a container block's wrapper element in the editor iframe often
+ * selects an inner block instead (the editor picks the innermost block at the
+ * click position). Using `wp.data.dispatch` to select by clientId avoids this.
  *
  * @param {import('@playwright/test').Page} page      - Playwright page object
  * @param {string}                          blockType - Block type (e.g., 'core/group')
  * @param {number}                          index     - Index of the block (0-based)
  */
 async function selectBlock(page, blockType, index = 0) {
+	const selected = await page.evaluate(
+		({ blockType: type, index: idx }) => {
+			const { select, dispatch } = wp.data;
+
+			function findBlocksByType(blocks, targetType) {
+				const result = [];
+				for (const block of blocks) {
+					if (block.name === targetType) {
+						result.push(block);
+					}
+					if (block.innerBlocks && block.innerBlocks.length > 0) {
+						result.push(
+							...findBlocksByType(block.innerBlocks, targetType)
+						);
+					}
+				}
+				return result;
+			}
+
+			const allBlocks = select('core/block-editor').getBlocks();
+			const matching = findBlocksByType(allBlocks, type);
+
+			if (matching[idx]) {
+				dispatch('core/block-editor').selectBlock(
+					matching[idx].clientId
+				);
+				return true;
+			}
+			return false;
+		},
+		{ blockType, index }
+	);
+
+	if (!selected) {
+		throw new Error(`Block "${blockType}" at index ${index} not found`);
+	}
+
+	// Wait for the block to visually show as selected in the editor
 	const canvas = getEditorCanvas(page);
-	const blocks = canvas.locator(`[data-type="${blockType}"]`);
-	await blocks.nth(index).click();
+	await canvas
+		.locator(`[data-type="${blockType}"].is-selected`)
+		.nth(index)
+		.waitFor({ timeout: 5000 });
 }
 
 /**
- * Check if a block has a specific class.
+ * Check if a block has a specific CSS class (single class name only).
  * The block content is inside the editor canvas iframe.
+ *
+ * First locates the Nth block of the given type, then polls for the class
+ * to appear (up to 5 s), which handles the React re-render delay after
+ * attribute changes trigger the editor.BlockListBlock filter.
  *
  * @param {import('@playwright/test').Page} page      - Playwright page object
  * @param {string}                          blockType - Block type (e.g., 'core/group')
- * @param {string}                          className - Class name to check
+ * @param {string}                          className - Single CSS class name to check
  * @param {number}                          index     - Index of the block (0-based)
  * @return {Promise<boolean>} True if the block has the class, false otherwise
  */
 async function blockHasClass(page, blockType, className, index = 0) {
 	const canvas = getEditorCanvas(page);
 	const block = canvas.locator(`[data-type="${blockType}"]`).nth(index);
-	const classes = await block.getAttribute('class');
-	return classes?.includes(className) || false;
+
+	const deadline = Date.now() + 5000;
+	while (Date.now() < deadline) {
+		const classes = await block.getAttribute('class');
+		if (classes && classes.split(/\s+/).includes(className)) {
+			return true;
+		}
+		await page.waitForTimeout(250);
+	}
+	return false;
 }
 
 module.exports = {
