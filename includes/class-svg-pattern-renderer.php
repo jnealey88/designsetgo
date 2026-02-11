@@ -28,6 +28,16 @@ class SVG_Pattern_Renderer {
 	private $patterns = null;
 
 	/**
+	 * Per-request SVG generation cache.
+	 *
+	 * Keyed by "{pattern_type}:{color}:{opacity}:{scale}" to avoid
+	 * regenerating identical SVGs on pages with repeated blocks.
+	 *
+	 * @var array<string, array{url: string, size: string}>
+	 */
+	private $svg_cache = array();
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -41,7 +51,7 @@ class SVG_Pattern_Renderer {
 	 */
 	private function get_patterns() {
 		if ( null === $this->patterns ) {
-			$this->patterns = designsetgo_get_svg_pattern_data();
+			$this->patterns = \designsetgo_get_svg_pattern_data();
 		}
 		return $this->patterns;
 	}
@@ -61,8 +71,8 @@ class SVG_Pattern_Renderer {
 
 		$color = trim( $color );
 
-		// Hex: #fff, #ffffff, #ffffffff.
-		if ( preg_match( '/^#[0-9A-Fa-f]{3,8}$/', $color ) ) {
+		// Hex: #rgb, #rgba, #rrggbb, #rrggbbaa.
+		if ( preg_match( '/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/', $color ) ) {
 			return true;
 		}
 
@@ -95,11 +105,11 @@ class SVG_Pattern_Renderer {
 	 * @return string Complete SVG markup.
 	 */
 	private function build_pattern_svg( $pattern, $color, $opacity ) {
-		$width  = (int) $pattern['width'];
-		$height = (int) $pattern['height'];
+		$width  = max( 1, (int) $pattern['width'] );
+		$height = max( 1, (int) $pattern['height'] );
 
-		// Sanitize color.
-		$safe_color = $this->is_valid_color( $color ) ? $color : '#9c92ac';
+		// Sanitize color and escape for use in attributes.
+		$safe_color = esc_attr( $this->is_valid_color( $color ) ? $color : '#9c92ac' );
 
 		// Clamp opacity.
 		$safe_opacity = max( 0, min( 1, (float) $opacity ) );
@@ -107,10 +117,18 @@ class SVG_Pattern_Renderer {
 			$safe_opacity = 0.4;
 		}
 
+		// Allowlists for SVG attribute values.
+		$valid_linecaps  = array( 'butt', 'round', 'square' );
+		$valid_fillrules = array( 'nonzero', 'evenodd' );
+
 		$path_elements = '';
 
 		foreach ( $pattern['paths'] as $p ) {
-			$attrs = 'd="' . $p['d'] . '"';
+			if ( ! isset( $p['d'] ) || ! is_string( $p['d'] ) ) {
+				continue;
+			}
+
+			$attrs = 'd="' . esc_attr( $p['d'] ) . '"';
 
 			if ( ! empty( $p['stroke'] ) ) {
 				// Stroke-based path.
@@ -119,15 +137,15 @@ class SVG_Pattern_Renderer {
 				$attrs .= ' stroke-opacity="' . $safe_opacity . '"';
 				$sw     = isset( $p['strokeWidth'] ) ? max( 0.5, min( 10, (float) $p['strokeWidth'] ) ) : 1;
 				$attrs .= ' stroke-width="' . $sw . '"';
-				if ( ! empty( $p['strokeLinecap'] ) ) {
-					$attrs .= ' stroke-linecap="' . $p['strokeLinecap'] . '"';
+				if ( ! empty( $p['strokeLinecap'] ) && in_array( $p['strokeLinecap'], $valid_linecaps, true ) ) {
+					$attrs .= ' stroke-linecap="' . esc_attr( $p['strokeLinecap'] ) . '"';
 				}
 			} else {
 				// Fill-based path.
 				$attrs .= ' fill="' . $safe_color . '"';
 				$attrs .= ' fill-opacity="' . $safe_opacity . '"';
-				if ( ! empty( $p['fillRule'] ) ) {
-					$attrs .= ' fill-rule="' . $p['fillRule'] . '"';
+				if ( ! empty( $p['fillRule'] ) && in_array( $p['fillRule'], $valid_fillrules, true ) ) {
+					$attrs .= ' fill-rule="' . esc_attr( $p['fillRule'] ) . '"';
 				}
 			}
 
@@ -172,11 +190,6 @@ class SVG_Pattern_Renderer {
 			return $block_content;
 		}
 
-		// Skip empty content.
-		if ( empty( $block_content ) ) {
-			return $block_content;
-		}
-
 		$processor = new \WP_HTML_Tag_Processor( $block_content );
 
 		if ( ! $processor->next_tag() ) {
@@ -195,7 +208,7 @@ class SVG_Pattern_Renderer {
 			return $block_content;
 		}
 
-		$color   = $processor->get_attribute( 'data-dsgo-svg-pattern-color' ) ?? '#9c92ac';
+		$color   = sanitize_text_field( $processor->get_attribute( 'data-dsgo-svg-pattern-color' ) ?? '#9c92ac' );
 		$opacity = (float) ( $processor->get_attribute( 'data-dsgo-svg-pattern-opacity' ) ?? 0.4 );
 		$scale   = (float) ( $processor->get_attribute( 'data-dsgo-svg-pattern-scale' ) ?? 1 );
 
@@ -203,20 +216,33 @@ class SVG_Pattern_Renderer {
 		$opacity = max( 0.05, min( 1, $opacity ) );
 		$scale   = max( 0.25, min( 4, $scale ) );
 
-		// Generate SVG.
-		$pattern = $patterns[ $pattern_type ];
-		$svg     = $this->build_pattern_svg( $pattern, $color, $opacity );
-		$bg_url  = $this->encode_svg( $svg );
+		// Use per-request cache to avoid regenerating identical SVGs.
+		$cache_key = $pattern_type . ':' . $color . ':' . $opacity . ':' . $scale;
 
-		// Calculate background size.
-		$bg_size = ( $pattern['width'] * $scale ) . 'px ' . ( $pattern['height'] * $scale ) . 'px';
+		if ( isset( $this->svg_cache[ $cache_key ] ) ) {
+			$bg_url  = $this->svg_cache[ $cache_key ]['url'];
+			$bg_size = $this->svg_cache[ $cache_key ]['size'];
+		} else {
+			// Generate SVG.
+			$pattern = $patterns[ $pattern_type ];
+			$svg     = $this->build_pattern_svg( $pattern, $color, $opacity );
+			$bg_url  = $this->encode_svg( $svg );
+
+			// Calculate background size.
+			$bg_size = ( $pattern['width'] * $scale ) . 'px ' . ( $pattern['height'] * $scale ) . 'px';
+
+			$this->svg_cache[ $cache_key ] = array(
+				'url'  => $bg_url,
+				'size' => $bg_size,
+			);
+		}
 
 		// Read and modify the style attribute.
 		$existing_style = $processor->get_attribute( 'style' ) ?? '';
 
 		// Replace existing --dsgo-svg-pattern-image if present, or append.
 		if ( false !== strpos( $existing_style, '--dsgo-svg-pattern-image' ) ) {
-			// Replace existing value (handles url(...) with nested parens and quotes).
+			// Replace existing url() value (stops at the first closing paren).
 			$existing_style = preg_replace(
 				'/--dsgo-svg-pattern-image\s*:\s*url\([^)]*\)\s*;?/',
 				'--dsgo-svg-pattern-image:' . $bg_url . ';',
@@ -247,8 +273,8 @@ class SVG_Pattern_Renderer {
 		}
 
 		// Handle fixed background from block attributes (not in data attributes).
-		$attrs = $block['attrs'] ?? array();
-		if ( ! empty( $attrs['dsgoSvgPatternFixed'] ) ) {
+		$block_attrs = $block['attrs'] ?? array();
+		if ( isset( $block_attrs['dsgoSvgPatternFixed'] ) && true === $block_attrs['dsgoSvgPatternFixed'] ) {
 			if ( false === strpos( $existing_style, '--dsgo-svg-pattern-attachment' ) ) {
 				$existing_style = rtrim( $existing_style, '; ' );
 				if ( '' !== $existing_style ) {
