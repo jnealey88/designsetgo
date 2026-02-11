@@ -66,7 +66,7 @@
 		},
 		"arrowSize": {
 			"type": "string",
-			"default": "48px"
+			"default": "24px"
 		},
 		"arrowPadding": {
 			"type": "string",

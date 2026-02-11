@@ -88,16 +88,15 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--dsgo-slider-arrow-size, 48px);
-		height: var(--dsgo-slider-arrow-size, 48px);
-		padding: var(--dsgo-slider-arrow-padding, 0);
+		padding: var(--dsgo-slider-arrow-padding, 12px);
 		background: var(--dsgo-slider-arrow-bg-color, rgba(255, 255, 255, 0.9));
 		border: none;
 		border-radius: 4px;
 		cursor: pointer;
 		pointer-events: auto;
 		transition: all 0.2s ease;
-		font-size: calc(var(--dsgo-slider-arrow-size, 48px) / 2);
+		font-size: var(--dsgo-slider-arrow-size, 24px);
+		line-height: 1;
 		font-weight: 700;
 		color: var(--dsgo-slider-arrow-color, #2563eb);
 
@@ -383,9 +382,8 @@
 	}
 
 	.dsgo-slider__arrow {
-		width: 40px;
-		height: 40px;
 		font-size: 20px;
+		padding: 8px;
 
 		&--prev {
 			left: 8px;
