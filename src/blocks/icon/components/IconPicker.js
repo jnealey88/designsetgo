@@ -6,7 +6,7 @@
 
 import { Button, Popover, SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useMemo } from '@wordpress/element';
 import { getIcon, getIconNames, getIconAliases } from '../utils/svg-icons';
 
 /**
@@ -157,7 +157,7 @@ export const IconPicker = ({ value, onChange }) => {
 	const allIcons = getIconNames();
 
 	// Build reverse alias map: canonical name → list of aliases
-	const aliasMap = getIconAliases();
+	const aliasMap = useMemo(() => getIconAliases(), []);
 
 	// Filter icons based on search
 	const getFilteredIcons = () => {

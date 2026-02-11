@@ -1662,7 +1662,6 @@ const ICON_ALIASES = {
 	rotate: 'refresh-cw',
 
 	// Media
-	video: 'video',
 	film: 'video',
 	movie: 'video',
 	photo: 'image',
@@ -1759,7 +1758,6 @@ const ICON_ALIASES = {
 	organic: 'leaf',
 
 	// Misc
-	fire: 'fire',
 	flame: 'fire',
 	hot: 'fire',
 	trending: 'fire',
@@ -1870,14 +1868,14 @@ const ICON_ALIASES = {
  * @return {string} Canonical icon name
  */
 export const resolveIconName = (name) => {
-	if (!name) {
+	if (!name || typeof name !== 'string') {
 		return 'star';
 	}
-	const lower = name.toLowerCase();
+	const lower = name.trim().toLowerCase();
 	if (SVG_ICONS[lower]) {
 		return lower;
 	}
-	return ICON_ALIASES[lower] || name;
+	return ICON_ALIASES[lower] || lower;
 };
 
 /**
@@ -1887,10 +1885,15 @@ export const getIconNames = () => Object.keys(SVG_ICONS);
 
 /**
  * Get reverse alias map: canonical icon name → list of aliases.
+ * Cached at module level to avoid rebuilding on every call.
  *
  * @return {Object<string, string[]>} Map of canonical names to alias arrays
  */
+let cachedAliasMap = null;
 export const getIconAliases = () => {
+	if (cachedAliasMap) {
+		return cachedAliasMap;
+	}
 	const map = {};
 	for (const [alias, canonical] of Object.entries(ICON_ALIASES)) {
 		if (!map[canonical]) {
@@ -1898,6 +1901,7 @@ export const getIconAliases = () => {
 		}
 		map[canonical].push(alias);
 	}
+	cachedAliasMap = map;
 	return map;
 };
 
