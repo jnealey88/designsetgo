@@ -95,6 +95,13 @@ class Plugin {
 	public $global_styles;
 
 	/**
+	 * Button Global Styles instance.
+	 *
+	 * @var Button_Global_Styles
+	 */
+	public $button_global_styles;
+
+	/**
 	 * Admin Menu instance.
 	 *
 	 * @var Admin\Admin_Menu
@@ -240,6 +247,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-icon-injector.php';
+		require_once DESIGNSETGO_PATH . 'includes/class-button-global-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-extension-attributes.php';
 		require_once DESIGNSETGO_PATH . 'includes/svg-pattern-data.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-svg-pattern-renderer.php';
@@ -298,8 +306,10 @@ class Plugin {
 		$this->section_styles      = new Section_Styles();
 		$this->section_styles->init();
 		$this->sticky_header = new Sticky_Header();
-		$this->icon_injector        = new Icon_Injector();
-		$this->svg_pattern_renderer = new SVG_Pattern_Renderer();
+		$this->icon_injector         = new Icon_Injector();
+		$this->svg_pattern_renderer  = new SVG_Pattern_Renderer();
+		$this->button_global_styles  = new Button_Global_Styles();
+		$this->button_global_styles->init();
 		$this->llms_txt      = new LLMS_Txt\Controller();
 
 		// Initialize revision comparison (needs REST routes registered for all contexts).
@@ -334,13 +344,6 @@ class Plugin {
 
 		// Apply global default hover animation to Icon Button blocks.
 		add_filter( 'render_block_designsetgo/icon-button', array( $this, 'apply_default_icon_button_hover' ), 10, 2 );
-
-		// Inject Global Styles button CSS for single-element button blocks (frontend + editor).
-		// WordPress targets `.wp-block-button .wp-block-button__link` (descendant selector) for
-		// button element styles. Our single-element buttons have both classes on the same element,
-		// so the descendant selector doesn't match. This generates matching CSS for our selectors.
-		add_action( 'wp_enqueue_scripts', array( $this, 'inject_button_global_styles' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'inject_button_global_styles_editor' ) );
 	}
 
 	/**
@@ -612,256 +615,5 @@ class Plugin {
 		}
 
 		return $block_content;
-	}
-
-	/**
-	 * Inject Global Styles button CSS for single-element button blocks.
-	 *
-	 * WordPress button styles from Global Styles target `.wp-block-button .wp-block-button__link`
-	 * using a descendant selector. Our icon-button and modal-trigger blocks use a single-element
-	 * structure with both classes on the same element, so the descendant selector doesn't match.
-	 *
-	 * This reads button styles from two sources and merges them:
-	 * 1. Element-level: styles.elements.button (Styles > Elements > Buttons)
-	 * 2. Block-level: styles.blocks.core/button (Styles > Blocks > Button)
-	 * Block-level styles override element-level, matching WordPress's specificity hierarchy.
-	 */
-	public function inject_button_global_styles() {
-		$css = $this->get_button_global_styles_css();
-		if ( empty( $css ) ) {
-			return;
-		}
-
-		// Must load after 'global-styles' so block-level overrides beat element-level
-		// rules. WordPress's element button CSS (.wp-element-button) is in global-styles
-		// at the same specificity, so source order determines the winner.
-		wp_add_inline_style( 'designsetgo-frontend', $css );
-	}
-
-	/**
-	 * Inject Global Styles button CSS in the block editor.
-	 *
-	 * The editor iframe doesn't have 'designsetgo-frontend', so we attach to
-	 * the icon-button block style handle which is always loaded in the editor.
-	 */
-	public function inject_button_global_styles_editor() {
-		$css = $this->get_button_global_styles_css();
-		if ( empty( $css ) ) {
-			return;
-		}
-
-		wp_add_inline_style( 'designsetgo-icon-button-style', $css );
-	}
-
-	/**
-	 * Generate the Global Styles button CSS for single-element button blocks.
-	 *
-	 * Reads button styles from two sources and merges them:
-	 * 1. Element-level: styles.elements.button (Styles > Elements > Buttons)
-	 * 2. Block-level: styles.blocks.core/button (Styles > Blocks > Button)
-	 * Block-level styles override element-level, matching WordPress's specificity hierarchy.
-	 *
-	 * @return string Generated CSS or empty string.
-	 */
-	private function get_button_global_styles_css() {
-		// Element-level button styles (Styles > Elements > Buttons).
-		$element_styles = wp_get_global_styles( array( 'elements', 'button' ) );
-		if ( ! is_array( $element_styles ) ) {
-			$element_styles = array();
-		}
-
-		// Block-level core/button styles (Styles > Blocks > Button).
-		$block_styles = wp_get_global_styles( array(), array( 'block_name' => 'core/button' ) );
-		if ( ! is_array( $block_styles ) ) {
-			$block_styles = array();
-		}
-
-		// Merge: block-level overrides element-level.
-		$merged = $this->merge_button_styles( $element_styles, $block_styles );
-
-		if ( empty( $merged ) ) {
-			return '';
-		}
-
-		return $this->build_button_element_css( $merged );
-	}
-
-	/**
-	 * Deep-merge two button style arrays. Values from $block override $element.
-	 *
-	 * @param array $element Element-level styles.
-	 * @param array $block   Block-level styles.
-	 * @return array Merged styles.
-	 */
-	private function merge_button_styles( $element, $block ) {
-		$merged = $element;
-
-		foreach ( $block as $key => $value ) {
-			// Skip keys that aren't relevant to button styling.
-			if ( in_array( $key, array( 'variations', 'elements', 'css' ), true ) ) {
-				continue;
-			}
-
-			if ( is_array( $value ) && isset( $merged[ $key ] ) && is_array( $merged[ $key ] ) ) {
-				$merged[ $key ] = $this->merge_button_styles( $merged[ $key ], $value );
-			} else {
-				$merged[ $key ] = $value;
-			}
-		}
-
-		return $merged;
-	}
-
-	/**
-	 * Build CSS rules from Global Styles button element data.
-	 *
-	 * Translates the structured button element styles from wp_get_global_styles()
-	 * into CSS declarations targeting our single-element button selectors.
-	 *
-	 * @param array $styles Button element styles from Global Styles.
-	 * @return string Generated CSS.
-	 */
-	private function build_button_element_css( $styles ) {
-		$declarations = array();
-
-		// Background color.
-		if ( ! empty( $styles['color']['background'] ) ) {
-			$declarations[] = 'background-color:' . $this->sanitize_css_value( $styles['color']['background'] );
-		}
-
-		// Text color.
-		if ( ! empty( $styles['color']['text'] ) ) {
-			$declarations[] = 'color:' . $this->sanitize_css_value( $styles['color']['text'] );
-		}
-
-		// Border radius (can be shorthand or individual sides).
-		if ( ! empty( $styles['border']['radius'] ) ) {
-			$radius = $styles['border']['radius'];
-			if ( is_string( $radius ) ) {
-				$declarations[] = 'border-radius:' . $this->sanitize_css_value( $radius );
-			} elseif ( is_array( $radius ) ) {
-				if ( ! empty( $radius['topLeft'] ) ) {
-					$declarations[] = 'border-top-left-radius:' . $this->sanitize_css_value( $radius['topLeft'] );
-				}
-				if ( ! empty( $radius['topRight'] ) ) {
-					$declarations[] = 'border-top-right-radius:' . $this->sanitize_css_value( $radius['topRight'] );
-				}
-				if ( ! empty( $radius['bottomLeft'] ) ) {
-					$declarations[] = 'border-bottom-left-radius:' . $this->sanitize_css_value( $radius['bottomLeft'] );
-				}
-				if ( ! empty( $radius['bottomRight'] ) ) {
-					$declarations[] = 'border-bottom-right-radius:' . $this->sanitize_css_value( $radius['bottomRight'] );
-				}
-			}
-		}
-
-		// Border width.
-		if ( ! empty( $styles['border']['width'] ) ) {
-			$declarations[] = 'border-width:' . $this->sanitize_css_value( $styles['border']['width'] );
-		}
-
-		// Border style.
-		if ( ! empty( $styles['border']['style'] ) ) {
-			$declarations[] = 'border-style:' . $this->sanitize_css_value( $styles['border']['style'] );
-		}
-
-		// Border color.
-		if ( ! empty( $styles['border']['color'] ) ) {
-			$declarations[] = 'border-color:' . $this->sanitize_css_value( $styles['border']['color'] );
-		}
-
-		// Padding.
-		if ( ! empty( $styles['spacing']['padding'] ) ) {
-			$padding = $styles['spacing']['padding'];
-			if ( ! empty( $padding['top'] ) ) {
-				$declarations[] = 'padding-top:' . $this->sanitize_css_value( $padding['top'] );
-			}
-			if ( ! empty( $padding['right'] ) ) {
-				$declarations[] = 'padding-right:' . $this->sanitize_css_value( $padding['right'] );
-			}
-			if ( ! empty( $padding['bottom'] ) ) {
-				$declarations[] = 'padding-bottom:' . $this->sanitize_css_value( $padding['bottom'] );
-			}
-			if ( ! empty( $padding['left'] ) ) {
-				$declarations[] = 'padding-left:' . $this->sanitize_css_value( $padding['left'] );
-			}
-		}
-
-		// Font size.
-		if ( ! empty( $styles['typography']['fontSize'] ) ) {
-			$declarations[] = 'font-size:' . $this->sanitize_css_value( $styles['typography']['fontSize'] );
-		}
-
-		// Font family.
-		if ( ! empty( $styles['typography']['fontFamily'] ) ) {
-			$declarations[] = 'font-family:' . $this->sanitize_css_value( $styles['typography']['fontFamily'] );
-		}
-
-		// Font weight.
-		if ( ! empty( $styles['typography']['fontWeight'] ) ) {
-			$declarations[] = 'font-weight:' . $this->sanitize_css_value( $styles['typography']['fontWeight'] );
-		}
-
-		// Line height.
-		if ( ! empty( $styles['typography']['lineHeight'] ) ) {
-			$declarations[] = 'line-height:' . $this->sanitize_css_value( $styles['typography']['lineHeight'] );
-		}
-
-		// Box shadow.
-		if ( ! empty( $styles['shadow'] ) ) {
-			$declarations[] = 'box-shadow:' . $this->sanitize_css_value( $styles['shadow'] );
-		}
-
-		if ( empty( $declarations ) ) {
-			return '';
-		}
-
-		$rule = implode( ';', $declarations );
-
-		// Specificity (0,3,0) beats WP's `:root :where(.wp-element-button)` (0,1,0).
-		// No :where() wrapper so this wins in both frontend and editor (where Global
-		// Styles are injected dynamically after all PHP-enqueued stylesheets).
-		// Per-instance inline styles still win over any class-based specificity.
-		$selector = ':root .dsgo-icon-button.wp-block-button__link,'
-			. ':root .dsgo-modal-trigger.wp-block-button__link';
-
-		$css = $selector . '{' . $rule . '}';
-
-		// Also handle hover state if present.
-		if ( ! empty( $styles[':hover'] ) ) {
-			$hover_declarations = array();
-
-			if ( ! empty( $styles[':hover']['color']['background'] ) ) {
-				$hover_declarations[] = 'background-color:' . $this->sanitize_css_value( $styles[':hover']['color']['background'] );
-			}
-			if ( ! empty( $styles[':hover']['color']['text'] ) ) {
-				$hover_declarations[] = 'color:' . $this->sanitize_css_value( $styles[':hover']['color']['text'] );
-			}
-			if ( ! empty( $styles[':hover']['border']['color'] ) ) {
-				$hover_declarations[] = 'border-color:' . $this->sanitize_css_value( $styles[':hover']['border']['color'] );
-			}
-
-			if ( ! empty( $hover_declarations ) ) {
-				$hover_rule = implode( ';', $hover_declarations );
-				$hover_selector = ':root .dsgo-icon-button.wp-block-button__link:hover,'
-					. ':root .dsgo-modal-trigger.wp-block-button__link:hover';
-				$css .= $hover_selector . '{' . $hover_rule . '}';
-			}
-		}
-
-		return $css;
-	}
-
-	/**
-	 * Sanitize a CSS value from Global Styles.
-	 *
-	 * Allows CSS functions like var(), color-mix(), clamp() through safely.
-	 *
-	 * @param string $value Raw CSS value.
-	 * @return string Sanitized value.
-	 */
-	private function sanitize_css_value( $value ) {
-		// safecss_filter_attr strips dangerous content while preserving CSS functions.
-		return wp_strip_all_tags( $value );
 	}
 }
