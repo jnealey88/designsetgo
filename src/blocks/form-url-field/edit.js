@@ -13,6 +13,7 @@ import {
 	SelectControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function FormURLFieldEdit({
 	attributes,
@@ -42,7 +43,7 @@ export default function FormURLFieldEdit({
 	const fieldClasses = classnames('dsgo-form-field', 'dsgo-form-field--url');
 
 	const fieldStyles = {
-		'--dsgo-form-field-bg': fieldBackgroundColor,
+		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
 	};
 
 	const blockProps = useBlockProps({

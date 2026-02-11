@@ -1,5 +1,6 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Deprecated version 1: Had enableOverlay attribute
@@ -86,7 +87,8 @@ const v1 = {
 
 		const overlayStyles = enableOverlay
 			? {
-					'--dsgo-slide-overlay-color': overlayColor,
+					'--dsgo-slide-overlay-color':
+						convertPresetToCSSVar(overlayColor),
 					'--dsgo-slide-overlay-opacity': String(
 						overlayOpacity / 100
 					),
@@ -122,7 +124,8 @@ const v1 = {
 					<div
 						className="dsgo-slide__overlay"
 						style={{
-							backgroundColor: overlayColor,
+							backgroundColor:
+								convertPresetToCSSVar(overlayColor),
 							opacity: overlayOpacity / 100,
 						}}
 					/>

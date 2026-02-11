@@ -5,6 +5,7 @@
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function Save({ attributes }) {
 	const {
@@ -36,25 +37,37 @@ export default function Save({ attributes }) {
 		'data-deep-linking': enableDeepLinking ? 'true' : 'false',
 		style: {
 			'--dsgo-tabs-gap': gap,
-			...(tabColor && { '--dsgo-tab-color': tabColor }),
-			...(tabBackgroundColor && { '--dsgo-tab-bg': tabBackgroundColor }),
+			...(tabColor && {
+				'--dsgo-tab-color': convertPresetToCSSVar(tabColor),
+			}),
+			...(tabBackgroundColor && {
+				'--dsgo-tab-bg': convertPresetToCSSVar(tabBackgroundColor),
+			}),
 			...(tabContentBackgroundColor && {
-				'--dsgo-tab-content-bg': tabContentBackgroundColor,
+				'--dsgo-tab-content-bg': convertPresetToCSSVar(
+					tabContentBackgroundColor
+				),
 			}),
 			...(activeTabColor && {
-				'--dsgo-tab-color-active': activeTabColor,
+				'--dsgo-tab-color-active':
+					convertPresetToCSSVar(activeTabColor),
 			}),
 			...(activeTabBackgroundColor && {
-				'--dsgo-tab-bg-active': activeTabBackgroundColor,
+				'--dsgo-tab-bg-active': convertPresetToCSSVar(
+					activeTabBackgroundColor
+				),
 			}),
 			...(tabBorderColor && {
-				'--dsgo-tab-border-color': tabBorderColor,
+				'--dsgo-tab-border-color':
+					convertPresetToCSSVar(tabBorderColor),
 			}),
 			...(tabHoverColor && {
-				'--dsgo-tab-color-hover': tabHoverColor,
+				'--dsgo-tab-color-hover': convertPresetToCSSVar(tabHoverColor),
 			}),
 			...(tabHoverBackgroundColor && {
-				'--dsgo-tab-bg-hover': tabHoverBackgroundColor,
+				'--dsgo-tab-bg-hover': convertPresetToCSSVar(
+					tabHoverBackgroundColor
+				),
 			}),
 		},
 	});

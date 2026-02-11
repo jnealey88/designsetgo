@@ -10,6 +10,7 @@ import { Fragment, useMemo } from '@wordpress/element';
 import SvgPatternsPanel from './components/SvgPatternsPanel';
 import { SUPPORTED_BLOCKS, DEFAULTS } from './constants';
 import { getPatternBackground, PATTERNS, PATTERN_IDS } from './patterns';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Add SVG pattern controls to the block editor
@@ -70,7 +71,8 @@ const addSvgPatternEditorStyles = createHigherOrderComponent(
 				}
 				return getPatternBackground(
 					dsgoSvgPatternType,
-					dsgoSvgPatternColor || DEFAULTS.color,
+					convertPresetToCSSVar(dsgoSvgPatternColor) ||
+						DEFAULTS.color,
 					dsgoSvgPatternOpacity ?? DEFAULTS.opacity,
 					dsgoSvgPatternScale ?? DEFAULTS.scale
 				);
@@ -168,7 +170,8 @@ function addSvgPatternSaveProps(extraProps, blockType, attributes) {
 			.join(' '),
 		style: extraProps.style || {},
 		'data-dsgo-svg-pattern': dsgoSvgPatternType,
-		'data-dsgo-svg-pattern-color': dsgoSvgPatternColor || '',
+		'data-dsgo-svg-pattern-color':
+			convertPresetToCSSVar(dsgoSvgPatternColor) || '',
 		'data-dsgo-svg-pattern-opacity': String(safeOpacity),
 		'data-dsgo-svg-pattern-scale': String(safeScale),
 	};

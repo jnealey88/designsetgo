@@ -18,6 +18,11 @@ import {
 	TitleSettingsPanel,
 	ScrollSettingsPanel,
 } from './components/InspectorPanels';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
@@ -63,10 +68,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Styles using CSS custom properties (only set if user has chosen colors)
 	const customStyles = {};
 	if (linkColor) {
-		customStyles['--dsgo-toc-link-color'] = linkColor;
+		customStyles['--dsgo-toc-link-color'] =
+			convertPresetToCSSVar(linkColor);
 	}
 	if (activeLinkColor) {
-		customStyles['--dsgo-toc-active-link-color'] = activeLinkColor;
+		customStyles['--dsgo-toc-active-link-color'] =
+			convertPresetToCSSVar(activeLinkColor);
 	}
 	if (stickyOffset) {
 		customStyles['--dsgo-toc-sticky-offset'] = `${stickyOffset}px`;
@@ -162,16 +169,34 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Link Color', 'designsetgo'),
-							colorValue: linkColor,
+							colorValue: decodeColorValue(
+								linkColor,
+								colorGradientSettings
+							),
 							onColorChange: (value) =>
-								setAttributes({ linkColor: value || '' }),
+								setAttributes({
+									linkColor:
+										encodeColorValue(
+											value,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Active Link Color', 'designsetgo'),
-							colorValue: activeLinkColor,
+							colorValue: decodeColorValue(
+								activeLinkColor,
+								colorGradientSettings
+							),
 							onColorChange: (value) =>
-								setAttributes({ activeLinkColor: value || '' }),
+								setAttributes({
+									activeLinkColor:
+										encodeColorValue(
+											value,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 					]}

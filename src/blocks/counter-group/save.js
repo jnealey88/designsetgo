@@ -8,6 +8,7 @@
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function CounterGroupSave({ attributes }) {
 	const {
@@ -37,7 +38,9 @@ export default function CounterGroupSave({ attributes }) {
 			'--dsgo-counter-columns-mobile': String(columnsMobile),
 			'--dsgo-counter-gap': gap,
 			// Apply hover color for child Counter blocks to inherit
-			...(hoverColor && { '--dsgo-counter-hover-color': hoverColor }),
+			...(hoverColor && {
+				'--dsgo-counter-hover-color': convertPresetToCSSVar(hoverColor),
+			}),
 		},
 		// Data attributes for frontend JavaScript
 		'data-animation-duration': animationDuration,

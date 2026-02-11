@@ -1,5 +1,6 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 const SINGLE_SLIDE_EFFECTS = ['fade', 'zoom'];
 
@@ -77,13 +78,18 @@ export default function SliderSave({ attributes }) {
 		'--dsgo-slider-slides-per-view-mobile': String(
 			effectiveSlidesPerViewMobile
 		),
-		...(arrowColor && { '--dsgo-slider-arrow-color': arrowColor }),
+		...(arrowColor && {
+			'--dsgo-slider-arrow-color': convertPresetToCSSVar(arrowColor),
+		}),
 		...(arrowBackgroundColor && {
-			'--dsgo-slider-arrow-bg-color': arrowBackgroundColor,
+			'--dsgo-slider-arrow-bg-color':
+				convertPresetToCSSVar(arrowBackgroundColor),
 		}),
 		...(arrowSize && { '--dsgo-slider-arrow-size': arrowSize }),
 		...(arrowPadding && { '--dsgo-slider-arrow-padding': arrowPadding }),
-		...(dotColor && { '--dsgo-slider-dot-color': dotColor }),
+		...(dotColor && {
+			'--dsgo-slider-dot-color': convertPresetToCSSVar(dotColor),
+		}),
 	};
 
 	// Use .save() variant for save function

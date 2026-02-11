@@ -28,6 +28,10 @@ import {
 	CATEGORIES,
 	getPatternBackground,
 } from '../patterns';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../../utils/encode-color-value';
 
 /**
  * Pattern thumbnail preview
@@ -118,11 +122,17 @@ export default function SvgPatternsPanel({
 							{
 								label: __('Pattern Color', 'designsetgo'),
 								colorValue:
-									dsgoSvgPatternColor || DEFAULTS.color,
+									decodeColorValue(
+										dsgoSvgPatternColor,
+										colorGradientSettings
+									) || DEFAULTS.color,
 								onColorChange: (value) =>
 									setAttributes({
 										dsgoSvgPatternColor:
-											value || DEFAULTS.color,
+											encodeColorValue(
+												value,
+												colorGradientSettings
+											) || DEFAULTS.color,
 									}),
 								clearable: true,
 							},

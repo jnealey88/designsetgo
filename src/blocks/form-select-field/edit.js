@@ -16,6 +16,7 @@ import {
 	FlexItem,
 } from '@wordpress/components';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function FormSelectFieldEdit({
 	attributes,
@@ -49,7 +50,7 @@ export default function FormSelectFieldEdit({
 	);
 
 	const fieldStyles = {
-		'--dsgo-form-field-bg': fieldBackgroundColor,
+		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
 	};
 
 	const blockProps = useBlockProps({

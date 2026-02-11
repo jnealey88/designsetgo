@@ -28,6 +28,11 @@ import { useSelect } from '@wordpress/data';
 import { getIcon } from '../icon/utils/svg-icons';
 import { ButtonSettingsPanel } from './components/inspector/ButtonSettingsPanel';
 import { convertPaddingValue } from './utils/padding';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Icon Button Edit Component
@@ -150,13 +155,15 @@ export default function IconButtonEdit({
 			paddingLeft: convertPaddingValue(paddingValue.left),
 		}),
 		...(hoverBackgroundColor && {
-			'--dsgo-button-hover-bg': hoverBackgroundColor,
+			'--dsgo-button-hover-bg':
+				convertPresetToCSSVar(hoverBackgroundColor),
 		}),
 		...(hoverTextColor && {
-			'--dsgo-button-hover-color': hoverTextColor,
+			'--dsgo-button-hover-color': convertPresetToCSSVar(hoverTextColor),
 		}),
 		...(parentHoverButtonBg && {
-			'--dsgo-parent-hover-button-bg': parentHoverButtonBg,
+			'--dsgo-parent-hover-button-bg':
+				convertPresetToCSSVar(parentHoverButtonBg),
 		}),
 	};
 
@@ -291,18 +298,34 @@ export default function IconButtonEdit({
 					settings={[
 						{
 							label: __('Hover Background', 'designsetgo'),
-							colorValue: hoverBackgroundColor,
+							colorValue: decodeColorValue(
+								hoverBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									hoverBackgroundColor: color || '',
+									hoverBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
 						{
 							label: __('Hover Text', 'designsetgo'),
-							colorValue: hoverTextColor,
+							colorValue: decodeColorValue(
+								hoverTextColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ hoverTextColor: color || '' }),
+								setAttributes({
+									hoverTextColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 					]}

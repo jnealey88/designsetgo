@@ -6,6 +6,7 @@
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function BlobsSave({ attributes }) {
 	const {
@@ -55,7 +56,8 @@ export default function BlobsSave({ attributes }) {
 					<div
 						className="dsgo-blobs__overlay"
 						style={{
-							backgroundColor: overlayColor,
+							backgroundColor:
+								convertPresetToCSSVar(overlayColor),
 							opacity: overlayOpacity / 100,
 						}}
 					/>

@@ -26,6 +26,11 @@ import {
 } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function FormBuilderEdit({
 	attributes,
@@ -88,9 +93,10 @@ export default function FormBuilderEdit({
 		'--dsgo-form-field-spacing': fieldSpacing,
 		'--dsgo-form-input-height': inputHeight,
 		'--dsgo-form-input-padding': inputPadding,
-		'--dsgo-form-label-color': fieldLabelColor,
-		'--dsgo-form-border-color': fieldBorderColor || '#d1d5db',
-		'--dsgo-form-field-bg': fieldBackgroundColor,
+		'--dsgo-form-label-color': convertPresetToCSSVar(fieldLabelColor),
+		'--dsgo-form-border-color':
+			convertPresetToCSSVar(fieldBorderColor) || '#d1d5db',
+		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
 		// Button colors now applied as inline styles on button element
 	};
 
@@ -664,44 +670,81 @@ export default function FormBuilderEdit({
 					settings={[
 						{
 							label: __('Label Color', 'designsetgo'),
-							colorValue: fieldLabelColor,
+							colorValue: decodeColorValue(
+								fieldLabelColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ fieldLabelColor: color || '' }),
+								setAttributes({
+									fieldLabelColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Border Color', 'designsetgo'),
-							colorValue: fieldBorderColor,
+							colorValue: decodeColorValue(
+								fieldBorderColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									fieldBorderColor: color || '',
+									fieldBorderColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
 						{
 							label: __('Field Background', 'designsetgo'),
-							colorValue: fieldBackgroundColor,
+							colorValue: decodeColorValue(
+								fieldBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									fieldBackgroundColor: color || '',
+									fieldBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
 						{
 							label: __('Button Text Color', 'designsetgo'),
-							colorValue: submitButtonColor,
+							colorValue: decodeColorValue(
+								submitButtonColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									submitButtonColor: color || '',
+									submitButtonColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
 						{
 							label: __('Button Background Color', 'designsetgo'),
-							colorValue: submitButtonBackgroundColor,
+							colorValue: decodeColorValue(
+								submitButtonBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									submitButtonBackgroundColor: color || '',
+									submitButtonBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
@@ -720,11 +763,14 @@ export default function FormBuilderEdit({
 							disabled
 							style={{
 								...(submitButtonColor && {
-									color: submitButtonColor,
+									color: convertPresetToCSSVar(
+										submitButtonColor
+									),
 								}),
 								...(submitButtonBackgroundColor && {
-									backgroundColor:
-										submitButtonBackgroundColor,
+									backgroundColor: convertPresetToCSSVar(
+										submitButtonBackgroundColor
+									),
 								}),
 								minHeight: submitButtonHeight,
 								paddingTop: submitButtonPaddingVertical,
@@ -749,11 +795,14 @@ export default function FormBuilderEdit({
 							disabled
 							style={{
 								...(submitButtonColor && {
-									color: submitButtonColor,
+									color: convertPresetToCSSVar(
+										submitButtonColor
+									),
 								}),
 								...(submitButtonBackgroundColor && {
-									backgroundColor:
-										submitButtonBackgroundColor,
+									backgroundColor: convertPresetToCSSVar(
+										submitButtonBackgroundColor
+									),
 								}),
 								minHeight: submitButtonHeight,
 								paddingTop: submitButtonPaddingVertical,

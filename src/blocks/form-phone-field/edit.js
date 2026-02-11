@@ -13,6 +13,7 @@ import {
 	SelectControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function FormPhoneFieldEdit({
 	attributes,
@@ -51,9 +52,9 @@ export default function FormPhoneFieldEdit({
 	);
 
 	const fieldStyles = {
-		'--dsgo-field-label-color': fieldLabelColor,
-		'--dsgo-field-border-color': fieldBorderColor,
-		'--dsgo-form-field-bg': fieldBackgroundColor,
+		'--dsgo-field-label-color': convertPresetToCSSVar(fieldLabelColor),
+		'--dsgo-field-border-color': convertPresetToCSSVar(fieldBorderColor),
+		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
 	};
 
 	const blockProps = useBlockProps({

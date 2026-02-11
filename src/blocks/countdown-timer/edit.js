@@ -27,6 +27,11 @@ import {
 	formatTimeUnit,
 } from './utils/time-calculator';
 import { formatCountdownDisplay } from './utils/format-time';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Edit component for Countdown Timer block
@@ -96,7 +101,8 @@ export default function Edit(props) {
 
 	// Build unit styles - use accent-2 if available, otherwise currentColor
 	const unitStyle = {
-		backgroundColor: unitBackgroundColor || 'transparent',
+		backgroundColor:
+			convertPresetToCSSVar(unitBackgroundColor) || 'transparent',
 		borderColor: unitBorder?.color || defaultAccentColor || 'currentColor',
 		borderWidth: unitBorder?.width || '2px',
 		borderStyle: unitBorder?.style || 'solid',
@@ -105,11 +111,14 @@ export default function Edit(props) {
 	};
 
 	const numberStyle = {
-		color: numberColor || defaultAccentColor || 'currentColor',
+		color:
+			convertPresetToCSSVar(numberColor) ||
+			defaultAccentColor ||
+			'currentColor',
 	};
 
 	const labelStyle = {
-		color: labelColor || 'currentColor',
+		color: convertPresetToCSSVar(labelColor) || 'currentColor',
 	};
 
 	const containerStyle = {
@@ -140,24 +149,49 @@ export default function Edit(props) {
 						settings={[
 							{
 								label: __('Number Color', 'designsetgo'),
-								colorValue: numberColor,
+								colorValue: decodeColorValue(
+									numberColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
-									setAttributes({ numberColor: color || '' }),
+									setAttributes({
+										numberColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
+									}),
 								clearable: true,
 							},
 							{
 								label: __('Label Color', 'designsetgo'),
-								colorValue: labelColor,
+								colorValue: decodeColorValue(
+									labelColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
-									setAttributes({ labelColor: color || '' }),
+									setAttributes({
+										labelColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
+									}),
 								clearable: true,
 							},
 							{
 								label: __('Unit Background', 'designsetgo'),
-								colorValue: unitBackgroundColor,
+								colorValue: decodeColorValue(
+									unitBackgroundColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
 									setAttributes({
-										unitBackgroundColor: color || '',
+										unitBackgroundColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
 									}),
 								clearable: true,
 							},
@@ -211,28 +245,49 @@ export default function Edit(props) {
 							settings={[
 								{
 									label: __('Number Color', 'designsetgo'),
-									colorValue: numberColor,
+									colorValue: decodeColorValue(
+										numberColor,
+										colorGradientSettings
+									),
 									onColorChange: (color) =>
 										setAttributes({
-											numberColor: color || '',
+											numberColor:
+												encodeColorValue(
+													color,
+													colorGradientSettings
+												) || '',
 										}),
 									clearable: true,
 								},
 								{
 									label: __('Label Color', 'designsetgo'),
-									colorValue: labelColor,
+									colorValue: decodeColorValue(
+										labelColor,
+										colorGradientSettings
+									),
 									onColorChange: (color) =>
 										setAttributes({
-											labelColor: color || '',
+											labelColor:
+												encodeColorValue(
+													color,
+													colorGradientSettings
+												) || '',
 										}),
 									clearable: true,
 								},
 								{
 									label: __('Unit Background', 'designsetgo'),
-									colorValue: unitBackgroundColor,
+									colorValue: decodeColorValue(
+										unitBackgroundColor,
+										colorGradientSettings
+									),
 									onColorChange: (color) =>
 										setAttributes({
-											unitBackgroundColor: color || '',
+											unitBackgroundColor:
+												encodeColorValue(
+													color,
+													colorGradientSettings
+												) || '',
 										}),
 									clearable: true,
 								},
@@ -283,24 +338,49 @@ export default function Edit(props) {
 						settings={[
 							{
 								label: __('Number Color', 'designsetgo'),
-								colorValue: numberColor,
+								colorValue: decodeColorValue(
+									numberColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
-									setAttributes({ numberColor: color || '' }),
+									setAttributes({
+										numberColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
+									}),
 								clearable: true,
 							},
 							{
 								label: __('Label Color', 'designsetgo'),
-								colorValue: labelColor,
+								colorValue: decodeColorValue(
+									labelColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
-									setAttributes({ labelColor: color || '' }),
+									setAttributes({
+										labelColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
+									}),
 								clearable: true,
 							},
 							{
 								label: __('Unit Background', 'designsetgo'),
-								colorValue: unitBackgroundColor,
+								colorValue: decodeColorValue(
+									unitBackgroundColor,
+									colorGradientSettings
+								),
 								onColorChange: (color) =>
 									setAttributes({
-										unitBackgroundColor: color || '',
+										unitBackgroundColor:
+											encodeColorValue(
+												color,
+												colorGradientSettings
+											) || '',
 									}),
 								clearable: true,
 							},
@@ -347,24 +427,49 @@ export default function Edit(props) {
 					settings={[
 						{
 							label: __('Number Color', 'designsetgo'),
-							colorValue: numberColor,
+							colorValue: decodeColorValue(
+								numberColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ numberColor: color || '' }),
+								setAttributes({
+									numberColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Label Color', 'designsetgo'),
-							colorValue: labelColor,
+							colorValue: decodeColorValue(
+								labelColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ labelColor: color || '' }),
+								setAttributes({
+									labelColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Unit Background', 'designsetgo'),
-							colorValue: unitBackgroundColor,
+							colorValue: decodeColorValue(
+								unitBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									unitBackgroundColor: color || '',
+									unitBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},

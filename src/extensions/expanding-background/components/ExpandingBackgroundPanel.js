@@ -20,6 +20,10 @@ import {
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import { RANGES } from '../constants';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../../utils/encode-color-value';
 
 /**
  * Expanding Background Panel Component
@@ -59,10 +63,17 @@ export default function ExpandingBackgroundPanel({
 						settings={[
 							{
 								label: __('Background Color', 'designsetgo'),
-								colorValue: dsgoExpandingBgColor,
+								colorValue: decodeColorValue(
+									dsgoExpandingBgColor,
+									colorGradientSettings
+								),
 								onColorChange: (value) =>
 									setAttributes({
-										dsgoExpandingBgColor: value || '',
+										dsgoExpandingBgColor:
+											encodeColorValue(
+												value,
+												colorGradientSettings
+											) || '',
 									}),
 								clearable: true,
 							},

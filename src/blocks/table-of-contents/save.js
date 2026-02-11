@@ -1,5 +1,6 @@
 import { useBlockProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function Save({ attributes }) {
 	const {
@@ -41,10 +42,12 @@ export default function Save({ attributes }) {
 	// Styles using CSS custom properties (only set if user has chosen colors)
 	const customStyles = {};
 	if (linkColor) {
-		customStyles['--dsgo-toc-link-color'] = linkColor;
+		customStyles['--dsgo-toc-link-color'] =
+			convertPresetToCSSVar(linkColor);
 	}
 	if (activeLinkColor) {
-		customStyles['--dsgo-toc-active-link-color'] = activeLinkColor;
+		customStyles['--dsgo-toc-active-link-color'] =
+			convertPresetToCSSVar(activeLinkColor);
 	}
 	if (stickyOffset) {
 		customStyles['--dsgo-toc-sticky-offset'] = `${stickyOffset}px`;

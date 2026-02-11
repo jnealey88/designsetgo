@@ -8,6 +8,7 @@
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Version 1: Before lazy loading icon library
@@ -80,7 +81,8 @@ const v1 = {
 						width: `${iconSize + 16}px`,
 						height: `${iconSize + 16}px`,
 						minWidth: `${iconSize + 16}px`,
-						backgroundColor: iconBackgroundColor,
+						backgroundColor:
+							convertPresetToCSSVar(iconBackgroundColor),
 						padding: '8px',
 						borderRadius: '4px',
 						boxSizing: 'border-box',
@@ -91,8 +93,8 @@ const v1 = {
 						minWidth: `${iconSize}px`,
 					}),
 			...(iconColor && {
-				color: iconColor,
-				'--dsgo-icon-color': iconColor,
+				color: convertPresetToCSSVar(iconColor),
+				'--dsgo-icon-color': convertPresetToCSSVar(iconColor),
 			}),
 		};
 

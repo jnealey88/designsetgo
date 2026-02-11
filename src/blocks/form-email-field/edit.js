@@ -15,6 +15,7 @@ import {
 } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function FormEmailFieldEdit({
 	attributes,
@@ -51,9 +52,9 @@ export default function FormEmailFieldEdit({
 	);
 
 	const fieldStyles = {
-		'--dsgo-field-label-color': fieldLabelColor,
-		'--dsgo-field-border-color': fieldBorderColor,
-		'--dsgo-form-field-bg': fieldBackgroundColor,
+		'--dsgo-field-label-color': convertPresetToCSSVar(fieldLabelColor),
+		'--dsgo-field-border-color': convertPresetToCSSVar(fieldBorderColor),
+		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
 	};
 
 	const blockProps = useBlockProps({

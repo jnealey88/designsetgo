@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Internal dependencies
@@ -130,9 +131,10 @@ const v2 = {
 
 		// Build unit styles - use CSS variable for accent-2 fallback
 		const unitStyle = {
-			backgroundColor: unitBackgroundColor || 'transparent',
+			backgroundColor:
+				convertPresetToCSSVar(unitBackgroundColor) || 'transparent',
 			borderColor:
-				unitBorderColor ||
+				convertPresetToCSSVar(unitBorderColor) ||
 				'var(--wp--preset--color--accent-2, currentColor)',
 			borderWidth: `${unitBorderWidth}px`,
 			borderStyle: 'solid',
@@ -142,12 +144,12 @@ const v2 = {
 
 		const numberStyle = {
 			color:
-				numberColor ||
+				convertPresetToCSSVar(numberColor) ||
 				'var(--wp--preset--color--accent-2, currentColor)',
 		};
 
 		const labelStyle = {
-			color: labelColor || 'currentColor',
+			color: convertPresetToCSSVar(labelColor) || 'currentColor',
 		};
 
 		const containerStyle = {
@@ -363,9 +365,10 @@ const v1 = {
 
 		// Build unit styles - use CSS variable for accent-2 fallback
 		const unitStyle = {
-			backgroundColor: unitBackgroundColor || 'transparent',
+			backgroundColor:
+				convertPresetToCSSVar(unitBackgroundColor) || 'transparent',
 			borderColor:
-				unitBorderColor ||
+				convertPresetToCSSVar(unitBorderColor) ||
 				'var(--wp--preset--color--accent-2, currentColor)',
 			borderWidth: `${unitBorderWidth}px`,
 			borderStyle: 'solid',
@@ -375,13 +378,13 @@ const v1 = {
 
 		const numberStyle = {
 			color:
-				numberColor ||
+				convertPresetToCSSVar(numberColor) ||
 				'var(--wp--preset--color--accent-2, currentColor)',
 			fontSize: numberFontSize || '3rem',
 		};
 
 		const labelStyle = {
-			color: labelColor || 'currentColor',
+			color: convertPresetToCSSVar(labelColor) || 'currentColor',
 			fontSize: labelFontSize || '1rem',
 		};
 

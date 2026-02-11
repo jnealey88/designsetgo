@@ -23,6 +23,11 @@ import {
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 	const wrapperRef = useRef(null);
@@ -429,12 +434,18 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Overlay Color', 'designsetgo'),
-							colorValue: overlayColor,
+							colorValue: decodeColorValue(
+								overlayColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) => {
 								// Auto-enable overlay when user sets a color
 								if (color) {
 									setAttributes({
-										overlayColor: color,
+										overlayColor: encodeColorValue(
+											color,
+											colorGradientSettings
+										),
 										enableOverlay: true,
 									});
 								} else {
@@ -458,7 +469,8 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 						<div
 							className="dsgo-blobs__overlay"
 							style={{
-								backgroundColor: overlayColor,
+								backgroundColor:
+									convertPresetToCSSVar(overlayColor),
 								opacity: overlayOpacity / 100,
 							}}
 						/>

@@ -19,6 +19,11 @@ import {
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import classnames from 'classnames';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function SlideEdit({
 	attributes,
@@ -64,7 +69,8 @@ export default function SlideEdit({
 	// Overlay styles - only apply if overlayColor is set
 	const overlayStyles = overlayColor
 		? {
-				'--dsgo-slide-overlay-color': overlayColor,
+				'--dsgo-slide-overlay-color':
+					convertPresetToCSSVar(overlayColor),
 				'--dsgo-slide-overlay-opacity': String(overlayOpacity / 100),
 			}
 		: {};
@@ -149,9 +155,18 @@ export default function SlideEdit({
 					settings={[
 						{
 							label: __('Overlay Color', 'designsetgo'),
-							colorValue: overlayColor,
+							colorValue: decodeColorValue(
+								overlayColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ overlayColor: color || '' }),
+								setAttributes({
+									overlayColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 					]}
@@ -435,7 +450,8 @@ export default function SlideEdit({
 					<div
 						className="dsgo-slide__overlay"
 						style={{
-							backgroundColor: overlayColor,
+							backgroundColor:
+								convertPresetToCSSVar(overlayColor),
 							opacity: overlayOpacity / 100,
 						}}
 					/>

@@ -31,6 +31,11 @@ import { AnimationPanel } from './components/inspector/AnimationPanel';
 // Extracted Utilities
 import { formatCounterValue } from './utils/number-formatter';
 import { getIconSvg } from './utils/icon-library';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Counter Edit Component
@@ -116,7 +121,8 @@ export default function CounterEdit({
 			textAlign: 'center',
 			// Apply effective hover color as CSS custom property
 			...(effectiveHoverColor && {
-				'--dsgo-counter-hover-color': effectiveHoverColor,
+				'--dsgo-counter-hover-color':
+					convertPresetToCSSVar(effectiveHoverColor),
 			}),
 		},
 	});
@@ -133,9 +139,18 @@ export default function CounterEdit({
 					settings={[
 						{
 							label: __('Number Hover Color', 'designsetgo'),
-							colorValue: hoverColor,
+							colorValue: decodeColorValue(
+								hoverColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ hoverColor: color || '' }),
+								setAttributes({
+									hoverColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 					]}

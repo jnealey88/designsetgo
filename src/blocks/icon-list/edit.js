@@ -17,6 +17,10 @@ import {
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import { ListSettingsPanel } from './components/inspector/ListSettingsPanel';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
 
 /**
  * Icon List Edit Component
@@ -127,17 +131,33 @@ export default function IconListEdit({ attributes, setAttributes, clientId }) {
 					settings={[
 						{
 							label: __('Icon Color', 'designsetgo'),
-							colorValue: iconColor,
+							colorValue: decodeColorValue(
+								iconColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
-								setAttributes({ iconColor: color || '' }),
+								setAttributes({
+									iconColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
 							clearable: true,
 						},
 						{
 							label: __('Icon Background Color', 'designsetgo'),
-							colorValue: iconBackgroundColor,
+							colorValue: decodeColorValue(
+								iconBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									iconBackgroundColor: color || '',
+									iconBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},

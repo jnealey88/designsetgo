@@ -25,6 +25,11 @@ import {
 	Tooltip,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
+import {
+	encodeColorValue,
+	decodeColorValue,
+} from '../../utils/encode-color-value';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Check icon SVG for cell display
@@ -274,13 +279,17 @@ export default function ComparisonTableEdit({
 			.join(' '),
 		style: {
 			...(featuredColumnColor && {
-				'--dsgo-comparison-featured-color': featuredColumnColor,
+				'--dsgo-comparison-featured-color':
+					convertPresetToCSSVar(featuredColumnColor),
 			}),
 			...(headerBackgroundColor && {
-				'--dsgo-comparison-header-bg': headerBackgroundColor,
+				'--dsgo-comparison-header-bg': convertPresetToCSSVar(
+					headerBackgroundColor
+				),
 			}),
 			...(headerTextColor && {
-				'--dsgo-comparison-header-text': headerTextColor,
+				'--dsgo-comparison-header-text':
+					convertPresetToCSSVar(headerTextColor),
 			}),
 		},
 	});
@@ -295,19 +304,33 @@ export default function ComparisonTableEdit({
 					settings={[
 						{
 							label: __('Header Background', 'designsetgo'),
-							colorValue: headerBackgroundColor,
+							colorValue: decodeColorValue(
+								headerBackgroundColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									headerBackgroundColor: color || '',
+									headerBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
 						{
 							label: __('Header Text', 'designsetgo'),
-							colorValue: headerTextColor,
+							colorValue: decodeColorValue(
+								headerTextColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									headerTextColor: color || '',
+									headerTextColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
@@ -316,10 +339,17 @@ export default function ComparisonTableEdit({
 								'Featured Column Highlight',
 								'designsetgo'
 							),
-							colorValue: featuredColumnColor,
+							colorValue: decodeColorValue(
+								featuredColumnColor,
+								colorGradientSettings
+							),
 							onColorChange: (color) =>
 								setAttributes({
-									featuredColumnColor: color || '',
+									featuredColumnColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
 								}),
 							clearable: true,
 						},
