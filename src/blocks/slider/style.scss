@@ -27,7 +27,6 @@
 	}
 
 	// Use CSS custom properties from inline styles
-	--dsgo-slider-height: 500px;
 	--dsgo-slider-aspect-ratio: 16/9;
 	--dsgo-slider-gap: 20px;
 	--dsgo-slider-transition: 0.5s;
@@ -38,7 +37,7 @@
 	&__viewport {
 		position: relative;
 		width: 100%; // Inner viewport fills the slider width
-		height: var(--dsgo-slider-height);
+		height: var(--dsgo-slider-height, auto);
 		overflow: hidden;
 	}
 

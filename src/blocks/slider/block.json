@@ -22,7 +22,7 @@
 		},
 		"height": {
 			"type": "string",
-			"default": "500px"
+			"default": ""
 		},
 		"aspectRatio": {
 			"type": "string",

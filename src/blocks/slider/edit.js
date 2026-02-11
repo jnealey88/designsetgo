@@ -177,7 +177,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 
 	// Apply settings as CSS custom properties
 	const customStyles = {
-		'--dsgo-slider-height': height,
+		...(height && { '--dsgo-slider-height': height }),
 		'--dsgo-slider-aspect-ratio': aspectRatio,
 		'--dsgo-slider-gap': gap,
 		'--dsgo-slider-transition': transitionDuration,
@@ -418,15 +418,23 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 							label={__('Height', 'designsetgo')}
 							value={height}
 							onChange={(value) =>
-								setAttributes({ height: value || '500px' })
+								setAttributes({ height: value || '' })
 							}
 							units={[
 								{ value: 'px', label: 'px', default: 500 },
 								{ value: 'vh', label: 'vh', default: 50 },
 								{ value: 'rem', label: 'rem', default: 30 },
 							]}
-							min={200}
+							min={0}
 							max={1000}
+							help={
+								!height
+									? __(
+											'No height set — slider fits its content',
+											'designsetgo'
+										)
+									: ''
+							}
 							__next40pxDefaultSize
 							__nextHasNoMarginBottom
 						/>
