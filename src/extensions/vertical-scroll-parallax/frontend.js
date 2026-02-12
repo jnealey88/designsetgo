@@ -107,10 +107,11 @@ function getAbsoluteTop(element) {
 /**
  * Calculate parallax offset for an element
  *
- * Uses one-directional offset: elements start at their natural position
- * (offset = 0) when entering the viewport and move in the specified direction
- * as the user scrolls. This prevents "down" parallax from pushing elements
- * upward initially, which caused adjacent elements to stack/overlap.
+ * Uses centered offset: elements reach their natural position (offset = 0)
+ * at the midpoint of the scroll range (50% viewport). Before the midpoint,
+ * elements are offset in the opposite direction; after, they move in the
+ * specified direction. This ensures elements appear in their natural layout
+ * position when centered in the viewport.
  *
  * @param {HTMLElement} element        Element with parallax
  * @param {Object}      settings       Parsed settings
@@ -158,27 +159,30 @@ function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
 	// Speed 10 = 200px max movement, Speed 0 = 0px
 	const maxOffset = settings.speed * 20;
 
-	// One-directional offset: start at natural position (0), move toward maxOffset.
-	// Progress 0 = entering viewport = no offset (natural position)
-	// Progress 1 = exiting viewport = full offset
+	// Centered offset: natural position (0) at midpoint of scroll range.
+	// Progress 0   = entering viewport = half offset in opposite direction
+	// Progress 0.5 = center of viewport = natural position (no offset)
+	// Progress 1   = exiting viewport  = half offset in specified direction
+	const centeredProgress = progress - 0.5;
+
 	let offsetX = 0;
 	let offsetY = 0;
 
 	switch (settings.direction) {
 		case 'up':
-			offsetY = -(progress * maxOffset);
+			offsetY = -(centeredProgress * maxOffset);
 			break;
 		case 'down':
-			offsetY = progress * maxOffset;
+			offsetY = centeredProgress * maxOffset;
 			break;
 		case 'left':
-			offsetX = -(progress * maxOffset);
+			offsetX = -(centeredProgress * maxOffset);
 			break;
 		case 'right':
-			offsetX = progress * maxOffset;
+			offsetX = centeredProgress * maxOffset;
 			break;
 		default:
-			offsetY = -(progress * maxOffset);
+			offsetY = -(centeredProgress * maxOffset);
 	}
 
 	return { x: offsetX, y: offsetY };
