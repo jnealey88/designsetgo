@@ -84,8 +84,23 @@ export default function FormBuilderEdit({
 
 	// Resolve the effective animation for editor preview.
 	// Form submit always uses the site-wide default — no per-block override.
+	// Validate against allowlist to match backend (class-plugin.php ALLOWED_HOVER_ANIMATIONS).
+	const ALLOWED_ANIMATIONS = [
+		'fill-diagonal',
+		'zoom-in',
+		'slide-left',
+		'slide-right',
+		'slide-down',
+		'slide-up',
+		'border-pulse',
+		'border-glow',
+		'lift',
+		'shrink',
+	];
 	const adminDefault = themeDefaultHover || 'none';
-	const effectiveAnimation = adminDefault !== 'none' ? adminDefault : null;
+	const isValidAnimation = ALLOWED_ANIMATIONS.includes(adminDefault);
+	const effectiveAnimation =
+		isValidAnimation && adminDefault !== 'none' ? adminDefault : null;
 
 	// Build animation class for the submit button
 	const submitAnimationClass =

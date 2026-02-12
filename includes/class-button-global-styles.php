@@ -118,12 +118,14 @@ class Button_Global_Styles {
 			return;
 		}
 
-		// Try icon-button handle first, then modal-trigger, then form-builder, then fallback.
-		if ( wp_style_is( 'designsetgo-icon-button-style', 'registered' ) ) {
+		// Attach to an enqueued block handle, or fall back to a dedicated handle.
+		// Using 'enqueued' (not 'registered') ensures the inline CSS outputs
+		// even when only some button blocks are present on the page.
+		if ( wp_style_is( 'designsetgo-icon-button-style', 'enqueued' ) ) {
 			wp_add_inline_style( 'designsetgo-icon-button-style', $css );
-		} elseif ( wp_style_is( 'designsetgo-modal-trigger-style', 'registered' ) ) {
+		} elseif ( wp_style_is( 'designsetgo-modal-trigger-style', 'enqueued' ) ) {
 			wp_add_inline_style( 'designsetgo-modal-trigger-style', $css );
-		} elseif ( wp_style_is( 'designsetgo-form-builder-style', 'registered' ) ) {
+		} elseif ( wp_style_is( 'designsetgo-form-builder-style', 'enqueued' ) ) {
 			wp_add_inline_style( 'designsetgo-form-builder-style', $css );
 		} else {
 			wp_register_style( 'designsetgo-button-global-styles-editor', false );
