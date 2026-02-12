@@ -14,12 +14,10 @@ import {
 	RangeControl,
 	SelectControl,
 	TextControl,
-	ColorPalette,
-	ColorIndicator,
-	Dropdown,
 	Button,
 } from '@wordpress/components';
 import { Icon, chevronDown, chevronUp } from '@wordpress/icons';
+import ColorDropdownControl from '../ColorDropdownControl';
 
 const StickyHeaderPanel = ({ settings, updateSetting }) => {
 	const [showAdvanced, setShowAdvanced] = useState(false);
@@ -279,189 +277,121 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 							<div className="designsetgo-scroll-colors">
 								<div className="designsetgo-scroll-colors__row">
 									<div className="designsetgo-scroll-colors__item">
-										<Dropdown
-											className="designsetgo-color-dropdown"
-											popoverProps={{
-												placement: 'bottom-start',
-											}}
-											renderToggle={({
-												isOpen,
-												onToggle,
-											}) => (
-												<Button
-													onClick={onToggle}
-													className="designsetgo-color-dropdown__toggle"
-													aria-expanded={isOpen}
-												>
-													<ColorIndicator
-														colorValue={
-															settings
-																?.sticky_header
-																?.background_scroll_color ||
-															'#ffffff'
-														}
-													/>
-													<span>
-														{__(
-															'Background',
-															'designsetgo'
-														)}
-													</span>
-												</Button>
+										<ColorDropdownControl
+											label={__(
+												'Background',
+												'designsetgo'
 											)}
-											renderContent={() => (
-												<div className="designsetgo-color-dropdown__content">
-													<ColorPalette
-														value={
-															settings
-																?.sticky_header
-																?.background_scroll_color ||
-															''
-														}
-														onChange={(color) =>
-															updateSetting(
-																'sticky_header',
-																'background_scroll_color',
-																color || ''
-															)
-														}
-														colors={[
-															{
-																name: __(
-																	'White',
-																	'designsetgo'
-																),
-																color: '#ffffff',
-															},
-															{
-																name: __(
-																	'Black',
-																	'designsetgo'
-																),
-																color: '#000000',
-															},
-															{
-																name: __(
-																	'Gray',
-																	'designsetgo'
-																),
-																color: '#f0f0f0',
-															},
-															{
-																name: __(
-																	'Blue',
-																	'designsetgo'
-																),
-																color: '#2271b1',
-															},
-															{
-																name: __(
-																	'Dark',
-																	'designsetgo'
-																),
-																color: '#1e1e1e',
-															},
-														]}
-														clearable
-													/>
-												</div>
-											)}
+											value={
+												settings?.sticky_header
+													?.background_scroll_color
+											}
+											defaultValue="#ffffff"
+											onChange={(color) =>
+												updateSetting(
+													'sticky_header',
+													'background_scroll_color',
+													color
+												)
+											}
+											colors={[
+												{
+													name: __(
+														'White',
+														'designsetgo'
+													),
+													color: '#ffffff',
+												},
+												{
+													name: __(
+														'Black',
+														'designsetgo'
+													),
+													color: '#000000',
+												},
+												{
+													name: __(
+														'Gray',
+														'designsetgo'
+													),
+													color: '#f0f0f0',
+												},
+												{
+													name: __(
+														'Blue',
+														'designsetgo'
+													),
+													color: '#2271b1',
+												},
+												{
+													name: __(
+														'Dark',
+														'designsetgo'
+													),
+													color: '#1e1e1e',
+												},
+											]}
 										/>
 									</div>
 
 									<div className="designsetgo-scroll-colors__item">
-										<Dropdown
-											className="designsetgo-color-dropdown"
-											popoverProps={{
-												placement: 'bottom-start',
-											}}
-											renderToggle={({
-												isOpen,
-												onToggle,
-											}) => (
-												<Button
-													onClick={onToggle}
-													className="designsetgo-color-dropdown__toggle"
-													aria-expanded={isOpen}
-												>
-													<ColorIndicator
-														colorValue={
-															settings
-																?.sticky_header
-																?.text_scroll_color ||
-															'#000000'
-														}
-													/>
-													<span>
-														{__(
-															'Text Color',
-															'designsetgo'
-														)}
-													</span>
-												</Button>
+										<ColorDropdownControl
+											label={__(
+												'Text Color',
+												'designsetgo'
 											)}
-											renderContent={() => (
-												<div className="designsetgo-color-dropdown__content">
-													<p className="designsetgo-color-dropdown__help">
-														{__(
-															'Change text color when scrolled. Useful for transparent headers.',
-															'designsetgo'
-														)}
-													</p>
-													<ColorPalette
-														value={
-															settings
-																?.sticky_header
-																?.text_scroll_color ||
-															''
-														}
-														onChange={(color) =>
-															updateSetting(
-																'sticky_header',
-																'text_scroll_color',
-																color || ''
-															)
-														}
-														colors={[
-															{
-																name: __(
-																	'Black',
-																	'designsetgo'
-																),
-																color: '#000000',
-															},
-															{
-																name: __(
-																	'White',
-																	'designsetgo'
-																),
-																color: '#ffffff',
-															},
-															{
-																name: __(
-																	'Dark Gray',
-																	'designsetgo'
-																),
-																color: '#1e1e1e',
-															},
-															{
-																name: __(
-																	'Gray',
-																	'designsetgo'
-																),
-																color: '#757575',
-															},
-															{
-																name: __(
-																	'Blue',
-																	'designsetgo'
-																),
-																color: '#2271b1',
-															},
-														]}
-														clearable
-													/>
-												</div>
+											value={
+												settings?.sticky_header
+													?.text_scroll_color
+											}
+											defaultValue="#000000"
+											onChange={(color) =>
+												updateSetting(
+													'sticky_header',
+													'text_scroll_color',
+													color
+												)
+											}
+											colors={[
+												{
+													name: __(
+														'Black',
+														'designsetgo'
+													),
+													color: '#000000',
+												},
+												{
+													name: __(
+														'White',
+														'designsetgo'
+													),
+													color: '#ffffff',
+												},
+												{
+													name: __(
+														'Dark Gray',
+														'designsetgo'
+													),
+													color: '#1e1e1e',
+												},
+												{
+													name: __(
+														'Gray',
+														'designsetgo'
+													),
+													color: '#757575',
+												},
+												{
+													name: __(
+														'Blue',
+														'designsetgo'
+													),
+													color: '#2271b1',
+												},
+											]}
+											help={__(
+												'Change text color when scrolled. Useful for transparent headers with light text over hero images.',
+												'designsetgo'
 											)}
 										/>
 									</div>

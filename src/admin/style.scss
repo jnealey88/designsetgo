@@ -622,33 +622,33 @@
 	}
 }
 
-.designsetgo-color-dropdown {
+.designsetgo-scroll-colors .designsetgo-color-dropdown {
 	display: block;
 	width: 100%;
 
-	&__toggle {
-		display: flex !important;
+	.designsetgo-color-dropdown__toggle.components-button {
+		display: flex;
 		align-items: center;
 		gap: 10px;
 		width: 100%;
-		padding: 10px 14px !important;
-		background: #fff !important;
-		border: 1px solid #dcdcde !important;
-		border-radius: 6px !important;
+		padding: 10px 14px;
+		background: #fff;
+		border: 1px solid #dcdcde;
+		border-radius: 6px;
 		cursor: pointer;
 		transition: all 0.15s ease;
 		font-size: 13px;
 		font-weight: 500;
 		color: #1e1e1e;
-		height: auto !important;
-		justify-content: flex-start !important;
+		height: auto;
+		justify-content: flex-start;
 
 		&:hover {
-			border-color: #2271b1 !important;
+			border-color: #2271b1;
 			box-shadow: 0 0 0 1px #2271b1;
 		}
 
-		.component-color-indicator {
+		.components-color-indicator {
 			width: 22px;
 			height: 22px;
 			border-radius: 50%;
@@ -656,6 +656,9 @@
 			flex-shrink: 0;
 		}
 	}
+}
+
+.designsetgo-color-dropdown {
 
 	&__content {
 		padding: 16px;
