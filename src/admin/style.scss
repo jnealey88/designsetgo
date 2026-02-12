@@ -598,7 +598,86 @@
 	padding-top: 4px;
 }
 
-// Color Control Compact
+// Scroll Colors - Compact dropdown-based color controls
+.designsetgo-scroll-colors {
+	margin-top: 12px;
+	margin-bottom: 20px;
+	padding: 16px;
+	background: #f6f7f7;
+	border-radius: 8px;
+
+	&__row {
+		display: flex;
+		gap: 12px;
+		margin-bottom: 16px;
+	}
+
+	&__item {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.components-range-control {
+		margin-bottom: 0;
+	}
+}
+
+.designsetgo-scroll-colors .designsetgo-color-dropdown {
+	display: block;
+	width: 100%;
+
+	.designsetgo-color-dropdown__toggle.components-button {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		width: 100%;
+		padding: 10px 14px;
+		background: #fff;
+		border: 1px solid #dcdcde;
+		border-radius: 6px;
+		cursor: pointer;
+		transition: all 0.15s ease;
+		font-size: 13px;
+		font-weight: 500;
+		color: #1e1e1e;
+		height: auto;
+		justify-content: flex-start;
+
+		&:hover {
+			border-color: #2271b1;
+			box-shadow: 0 0 0 1px #2271b1;
+		}
+
+		.components-color-indicator {
+			width: 22px;
+			height: 22px;
+			border-radius: 50%;
+			border: 2px solid rgba(0, 0, 0, 0.1);
+			flex-shrink: 0;
+		}
+	}
+}
+
+.designsetgo-color-dropdown {
+
+	&__content {
+		padding: 16px;
+		min-width: 260px;
+
+		.components-color-palette {
+			margin: 0;
+		}
+	}
+
+	&__help {
+		margin: 0 0 12px;
+		font-size: 12px;
+		color: #757575;
+		line-height: 1.5;
+	}
+}
+
+// Legacy compact color control (kept for backwards compat)
 .designsetgo-color-control-compact {
 	margin-bottom: 20px;
 

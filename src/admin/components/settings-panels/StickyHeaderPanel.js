@@ -14,10 +14,10 @@ import {
 	RangeControl,
 	SelectControl,
 	TextControl,
-	ColorPalette,
 	Button,
 } from '@wordpress/components';
 import { Icon, chevronDown, chevronUp } from '@wordpress/icons';
+import ColorDropdownControl from '../ColorDropdownControl';
 
 const StickyHeaderPanel = ({ settings, updateSetting }) => {
 	const [showAdvanced, setShowAdvanced] = useState(false);
@@ -274,46 +274,128 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 						/>
 
 						{settings?.sticky_header?.background_on_scroll && (
-							<div className="designsetgo-color-control-compact">
-								<div className="components-base-control__label">
-									{__('Background Color', 'designsetgo')}
+							<div className="designsetgo-scroll-colors">
+								<div className="designsetgo-scroll-colors__row">
+									<div className="designsetgo-scroll-colors__item">
+										<ColorDropdownControl
+											label={__(
+												'Background',
+												'designsetgo'
+											)}
+											value={
+												settings?.sticky_header
+													?.background_scroll_color
+											}
+											defaultValue="#ffffff"
+											onChange={(color) =>
+												updateSetting(
+													'sticky_header',
+													'background_scroll_color',
+													color
+												)
+											}
+											colors={[
+												{
+													name: __(
+														'White',
+														'designsetgo'
+													),
+													color: '#ffffff',
+												},
+												{
+													name: __(
+														'Black',
+														'designsetgo'
+													),
+													color: '#000000',
+												},
+												{
+													name: __(
+														'Gray',
+														'designsetgo'
+													),
+													color: '#f0f0f0',
+												},
+												{
+													name: __(
+														'Blue',
+														'designsetgo'
+													),
+													color: '#2271b1',
+												},
+												{
+													name: __(
+														'Dark',
+														'designsetgo'
+													),
+													color: '#1e1e1e',
+												},
+											]}
+										/>
+									</div>
+
+									<div className="designsetgo-scroll-colors__item">
+										<ColorDropdownControl
+											label={__(
+												'Text Color',
+												'designsetgo'
+											)}
+											value={
+												settings?.sticky_header
+													?.text_scroll_color
+											}
+											defaultValue="#000000"
+											onChange={(color) =>
+												updateSetting(
+													'sticky_header',
+													'text_scroll_color',
+													color
+												)
+											}
+											colors={[
+												{
+													name: __(
+														'Black',
+														'designsetgo'
+													),
+													color: '#000000',
+												},
+												{
+													name: __(
+														'White',
+														'designsetgo'
+													),
+													color: '#ffffff',
+												},
+												{
+													name: __(
+														'Dark Gray',
+														'designsetgo'
+													),
+													color: '#1e1e1e',
+												},
+												{
+													name: __(
+														'Gray',
+														'designsetgo'
+													),
+													color: '#757575',
+												},
+												{
+													name: __(
+														'Blue',
+														'designsetgo'
+													),
+													color: '#2271b1',
+												},
+											]}
+											help={__(
+												'Change text color when scrolled. Useful for transparent headers with light text over hero images.',
+												'designsetgo'
+											)}
+										/>
+									</div>
 								</div>
-								<ColorPalette
-									value={
-										settings?.sticky_header
-											?.background_scroll_color || ''
-									}
-									onChange={(color) =>
-										updateSetting(
-											'sticky_header',
-											'background_scroll_color',
-											color || ''
-										)
-									}
-									colors={[
-										{
-											name: __('White', 'designsetgo'),
-											color: '#ffffff',
-										},
-										{
-											name: __('Black', 'designsetgo'),
-											color: '#000000',
-										},
-										{
-											name: __('Gray', 'designsetgo'),
-											color: '#f0f0f0',
-										},
-										{
-											name: __('Blue', 'designsetgo'),
-											color: '#2271b1',
-										},
-										{
-											name: __('Dark', 'designsetgo'),
-											color: '#1e1e1e',
-										},
-									]}
-									clearable
-								/>
 
 								<RangeControl
 									label={__(
@@ -336,55 +418,6 @@ const StickyHeaderPanel = ({ settings, updateSetting }) => {
 									step={5}
 									__nextHasNoMarginBottom
 									__next40pxDefaultSize
-								/>
-
-								<div className="components-base-control__label">
-									{__('Text Color on Scroll', 'designsetgo')}
-								</div>
-								<p className="components-base-control__help">
-									{__(
-										'Change text color when scrolled. Useful for transparent headers with light text over hero images.',
-										'designsetgo'
-									)}
-								</p>
-								<ColorPalette
-									value={
-										settings?.sticky_header
-											?.text_scroll_color || ''
-									}
-									onChange={(color) =>
-										updateSetting(
-											'sticky_header',
-											'text_scroll_color',
-											color || ''
-										)
-									}
-									colors={[
-										{
-											name: __('Black', 'designsetgo'),
-											color: '#000000',
-										},
-										{
-											name: __('White', 'designsetgo'),
-											color: '#ffffff',
-										},
-										{
-											name: __(
-												'Dark Gray',
-												'designsetgo'
-											),
-											color: '#1e1e1e',
-										},
-										{
-											name: __('Gray', 'designsetgo'),
-											color: '#757575',
-										},
-										{
-											name: __('Blue', 'designsetgo'),
-											color: '#2271b1',
-										},
-									]}
-									clearable
 								/>
 							</div>
 						)}
