@@ -177,7 +177,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 
 	// Apply settings as CSS custom properties
 	const customStyles = {
-		'--dsgo-slider-height': height,
+		...(height && { '--dsgo-slider-height': height }),
 		'--dsgo-slider-aspect-ratio': aspectRatio,
 		'--dsgo-slider-gap': gap,
 		'--dsgo-slider-transition': transitionDuration,
@@ -231,7 +231,18 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 			template: [
 				[
 					'designsetgo/slide',
-					{},
+					{
+						style: {
+							spacing: {
+								padding: {
+									top: 'var:preset|spacing|70',
+									bottom: 'var:preset|spacing|70',
+									left: 'var:preset|spacing|30',
+									right: 'var:preset|spacing|30',
+								},
+							},
+						},
+					},
 					[
 						[
 							'core/heading',
@@ -258,7 +269,18 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 				],
 				[
 					'designsetgo/slide',
-					{},
+					{
+						style: {
+							spacing: {
+								padding: {
+									top: 'var:preset|spacing|70',
+									bottom: 'var:preset|spacing|70',
+									left: 'var:preset|spacing|30',
+									right: 'var:preset|spacing|30',
+								},
+							},
+						},
+					},
 					[
 						[
 							'core/heading',
@@ -285,7 +307,18 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 				],
 				[
 					'designsetgo/slide',
-					{},
+					{
+						style: {
+							spacing: {
+								padding: {
+									top: 'var:preset|spacing|70',
+									bottom: 'var:preset|spacing|70',
+									left: 'var:preset|spacing|30',
+									right: 'var:preset|spacing|30',
+								},
+							},
+						},
+					},
 					[
 						[
 							'core/heading',
@@ -418,15 +451,23 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 							label={__('Height', 'designsetgo')}
 							value={height}
 							onChange={(value) =>
-								setAttributes({ height: value || '500px' })
+								setAttributes({ height: value || '' })
 							}
 							units={[
 								{ value: 'px', label: 'px', default: 500 },
 								{ value: 'vh', label: 'vh', default: 50 },
 								{ value: 'rem', label: 'rem', default: 30 },
 							]}
-							min={200}
+							min={100}
 							max={1000}
+							help={
+								!height
+									? __(
+											'No height set — slider fits its content',
+											'designsetgo'
+										)
+									: ''
+							}
 							__next40pxDefaultSize
 							__nextHasNoMarginBottom
 						/>
@@ -626,12 +667,12 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 								value={dotPosition}
 								options={[
 									{
-										label: __('Bottom', 'designsetgo'),
-										value: 'bottom',
+										label: __('Inside', 'designsetgo'),
+										value: 'inside',
 									},
 									{
-										label: __('Top', 'designsetgo'),
-										value: 'top',
+										label: __('Outside', 'designsetgo'),
+										value: 'outside',
 									},
 								]}
 								onChange={(value) =>

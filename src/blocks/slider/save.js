@@ -67,7 +67,7 @@ export default function SliderSave({ attributes }) {
 
 	// Apply settings as CSS custom properties - MUST MATCH edit.js
 	const customStyles = {
-		'--dsgo-slider-height': height,
+		...(height && { '--dsgo-slider-height': height }),
 		'--dsgo-slider-aspect-ratio': aspectRatio,
 		'--dsgo-slider-gap': gap,
 		'--dsgo-slider-transition': transitionDuration,
