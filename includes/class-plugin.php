@@ -668,7 +668,12 @@ class Plugin {
 
 		// Find the submit button and add the animation class.
 		$processor = new \WP_HTML_Tag_Processor( $block_content );
-		while ( $processor->next_tag( array( 'tag_name' => 'button', 'class_name' => 'dsgo-form__submit' ) ) ) {
+		while ( $processor->next_tag(
+			array(
+				'tag_name'   => 'button',
+				'class_name' => 'dsgo-form__submit',
+			)
+		) ) {
 			$processor->add_class( 'dsgo-form__submit--' . $default );
 			break;
 		}
