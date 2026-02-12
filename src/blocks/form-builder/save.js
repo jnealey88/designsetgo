@@ -31,13 +31,6 @@ export default function FormBuilderSave({ attributes }) {
 		submitButtonHeight,
 		enableHoneypot,
 		enableTurnstile,
-		enableEmail,
-		emailTo,
-		emailSubject,
-		emailFromName,
-		emailFromEmail,
-		emailReplyTo,
-		emailBody,
 	} = attributes;
 
 	// Same classes as edit.js - MUST MATCH
@@ -67,13 +60,6 @@ export default function FormBuilderSave({ attributes }) {
 		'data-success-message': successMessage,
 		'data-error-message': errorMessage,
 		'data-submit-text': submitButtonText,
-		'data-enable-email': enableEmail,
-		'data-email-to': emailTo,
-		'data-email-subject': emailSubject,
-		'data-email-from-name': emailFromName,
-		'data-email-from-email': emailFromEmail,
-		'data-email-reply-to': emailReplyTo,
-		'data-email-body': emailBody,
 		...(enableTurnstile && {
 			'data-dsgo-turnstile': 'true',
 		}),

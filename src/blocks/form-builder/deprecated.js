@@ -1,0 +1,212 @@
+/**
+ * Form Builder Block - Deprecations
+ *
+ * Handles migration from older save formats.
+ *
+ * @since 2.3.0
+ */
+
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import classnames from 'classnames';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import metadata from './block.json';
+
+/**
+ * V1 deprecation: Email config was exposed as data attributes.
+ *
+ * Email settings (data-enable-email, data-email-to, data-email-subject, etc.)
+ * were rendered as HTML data attributes on the block wrapper. This was a
+ * deliverability and security concern because:
+ * - Email configuration was visible in page source
+ * - Client-side JavaScript sent these values in the REST API request
+ * - An attacker could modify the request to send email to arbitrary addresses
+ *
+ * The fix moves email configuration to server-side-only: the PHP handler looks
+ * up block attributes directly from post content when processing submissions.
+ */
+const v1 = {
+	attributes: metadata.attributes,
+	supports: metadata.supports,
+	save({ attributes }) {
+		const {
+			formId,
+			submitButtonText,
+			submitButtonAlignment,
+			submitButtonPosition,
+			ajaxSubmit,
+			successMessage,
+			errorMessage,
+			fieldSpacing,
+			inputHeight,
+			inputPadding,
+			fieldLabelColor,
+			fieldBorderColor,
+			fieldBackgroundColor,
+			submitButtonColor,
+			submitButtonBackgroundColor,
+			submitButtonPaddingVertical,
+			submitButtonPaddingHorizontal,
+			submitButtonFontSize,
+			submitButtonHeight,
+			enableHoneypot,
+			enableTurnstile,
+			enableEmail,
+			emailTo,
+			emailSubject,
+			emailFromName,
+			emailFromEmail,
+			emailReplyTo,
+			emailBody,
+		} = attributes;
+
+		const formClasses = classnames('dsgo-form-builder', {
+			[`dsgo-form-builder--align-${submitButtonAlignment}`]:
+				submitButtonAlignment && submitButtonPosition === 'below',
+			'dsgo-form-builder--button-inline':
+				submitButtonPosition === 'inline',
+		});
+
+		const formStyles = {
+			'--dsgo-form-field-spacing': fieldSpacing,
+			'--dsgo-form-input-height': inputHeight,
+			'--dsgo-form-input-padding': inputPadding,
+			'--dsgo-form-label-color': convertPresetToCSSVar(fieldLabelColor),
+			'--dsgo-form-border-color':
+				convertPresetToCSSVar(fieldBorderColor) || '#d1d5db',
+			'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
+		};
+
+		const blockProps = useBlockProps.save({
+			className: formClasses,
+			style: formStyles,
+			'data-form-id': formId,
+			'data-ajax-submit': ajaxSubmit,
+			'data-success-message': successMessage,
+			'data-error-message': errorMessage,
+			'data-submit-text': submitButtonText,
+			'data-enable-email': enableEmail,
+			'data-email-to': emailTo,
+			'data-email-subject': emailSubject,
+			'data-email-from-name': emailFromName,
+			'data-email-from-email': emailFromEmail,
+			'data-email-reply-to': emailReplyTo,
+			'data-email-body': emailBody,
+			...(enableTurnstile && {
+				'data-dsgo-turnstile': 'true',
+			}),
+		});
+
+		const { children, ...innerBlocksPropsWithoutChildren } =
+			useInnerBlocksProps.save({
+				className: 'dsgo-form__fields',
+			});
+
+		return (
+			<div {...blockProps}>
+				<form className="dsgo-form" method="post" noValidate>
+					<div {...innerBlocksPropsWithoutChildren}>
+						{children}
+						{submitButtonPosition === 'inline' && (
+							<button
+								type="submit"
+								className="dsgo-form__submit dsgo-form__submit--inline wp-element-button"
+								style={{
+									...(submitButtonColor && {
+										color: convertPresetToCSSVar(
+											submitButtonColor
+										),
+									}),
+									...(submitButtonBackgroundColor && {
+										backgroundColor: convertPresetToCSSVar(
+											submitButtonBackgroundColor
+										),
+									}),
+									minHeight: submitButtonHeight,
+									paddingTop: submitButtonPaddingVertical,
+									paddingBottom: submitButtonPaddingVertical,
+									paddingLeft: submitButtonPaddingHorizontal,
+									paddingRight: submitButtonPaddingHorizontal,
+									...(submitButtonFontSize && {
+										fontSize: submitButtonFontSize,
+									}),
+								}}
+							>
+								{submitButtonText}
+							</button>
+						)}
+					</div>
+
+					{enableHoneypot && (
+						<input
+							type="text"
+							name="dsg_website"
+							value=""
+							tabIndex="-1"
+							autoComplete="off"
+							aria-hidden="true"
+							style={{
+								position: 'absolute',
+								left: '-9999px',
+								width: '1px',
+								height: '1px',
+								overflow: 'hidden',
+							}}
+						/>
+					)}
+
+					<input type="hidden" name="dsg_form_id" value={formId} />
+
+					{enableTurnstile && (
+						<div
+							className="dsgo-turnstile-widget"
+							data-dsgo-turnstile-container="true"
+						/>
+					)}
+
+					{submitButtonPosition === 'below' && (
+						<div className="dsgo-form__footer">
+							<button
+								type="submit"
+								className="dsgo-form__submit wp-element-button"
+								style={{
+									...(submitButtonColor && {
+										color: convertPresetToCSSVar(
+											submitButtonColor
+										),
+									}),
+									...(submitButtonBackgroundColor && {
+										backgroundColor: convertPresetToCSSVar(
+											submitButtonBackgroundColor
+										),
+									}),
+									minHeight: submitButtonHeight,
+									paddingTop: submitButtonPaddingVertical,
+									paddingBottom: submitButtonPaddingVertical,
+									paddingLeft: submitButtonPaddingHorizontal,
+									paddingRight: submitButtonPaddingHorizontal,
+									...(submitButtonFontSize && {
+										fontSize: submitButtonFontSize,
+									}),
+								}}
+							>
+								{submitButtonText}
+							</button>
+						</div>
+					)}
+
+					<div
+						className="dsgo-form__message"
+						role="status"
+						aria-live="polite"
+						aria-atomic="true"
+						style={{ display: 'none' }}
+					/>
+				</form>
+			</div>
+		);
+	},
+};
+
+const deprecated = [v1];
+
+export default deprecated;
