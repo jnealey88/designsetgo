@@ -97,7 +97,7 @@ addFilter(
  */
 const withClickableClass = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
-		const { name, attributes } = props;
+		const { name, attributes, className } = props;
 
 		if (!SUPPORTED_BLOCKS.includes(name)) {
 			return <BlockListBlock {...props} />;
@@ -105,7 +105,9 @@ const withClickableClass = createHigherOrderComponent((BlockListBlock) => {
 
 		const hasValidUrl =
 			attributes.dsgoLinkUrl && attributes.dsgoLinkUrl.trim().length > 0;
-		const classes = classnames({ 'dsgo-clickable': hasValidUrl });
+		const classes = classnames(className, {
+			'dsgo-clickable': hasValidUrl,
+		});
 
 		return <BlockListBlock {...props} className={classes} />;
 	};

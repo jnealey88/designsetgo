@@ -139,13 +139,20 @@ class Assets {
 		}
 
 		// Check for core blocks with our enhancements.
-		if ( ! $has_blocks && strpos( $content, 'wp:core/group' ) !== false ) {
+		// Note: WordPress serializes core blocks as 'wp:group', not 'wp:core/group'.
+		if ( ! $has_blocks && strpos( $content, 'wp:group' ) !== false ) {
 			// Only load if group has our enhancements (dsgo- classes or animations).
 			if ( strpos( $content, 'dsgo-' ) !== false ||
 				strpos( $content, 'data-dsgo-animation' ) !== false ||
 				strpos( $content, 'has-dsgo-animation' ) !== false ) {
 				$has_blocks = true;
 			}
+		}
+
+		// Check for DSG extension classes on any block type (responsive visibility,
+		// clickable group, etc. can be applied to blocks beyond core/group).
+		if ( ! $has_blocks && strpos( $content, 'dsgo-' ) !== false ) {
+			$has_blocks = true;
 		}
 
 		// Check for animations applied to any block.
