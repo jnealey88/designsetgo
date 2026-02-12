@@ -231,7 +231,18 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 			template: [
 				[
 					'designsetgo/slide',
-					{},
+					{
+						style: {
+							spacing: {
+								padding: {
+									top: 'var:preset|spacing|70',
+									bottom: 'var:preset|spacing|70',
+									left: 'var:preset|spacing|30',
+									right: 'var:preset|spacing|30',
+								},
+							},
+						},
+					},
 					[
 						[
 							'core/heading',
@@ -258,7 +269,18 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 				],
 				[
 					'designsetgo/slide',
-					{},
+					{
+						style: {
+							spacing: {
+								padding: {
+									top: 'var:preset|spacing|70',
+									bottom: 'var:preset|spacing|70',
+									left: 'var:preset|spacing|30',
+									right: 'var:preset|spacing|30',
+								},
+							},
+						},
+					},
 					[
 						[
 							'core/heading',
@@ -285,7 +307,18 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 				],
 				[
 					'designsetgo/slide',
-					{},
+					{
+						style: {
+							spacing: {
+								padding: {
+									top: 'var:preset|spacing|70',
+									bottom: 'var:preset|spacing|70',
+									left: 'var:preset|spacing|30',
+									right: 'var:preset|spacing|30',
+								},
+							},
+						},
+					},
 					[
 						[
 							'core/heading',
@@ -634,12 +667,12 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 								value={dotPosition}
 								options={[
 									{
-										label: __('Bottom', 'designsetgo'),
-										value: 'bottom',
+										label: __('Inside', 'designsetgo'),
+										value: 'inside',
 									},
 									{
-										label: __('Top', 'designsetgo'),
-										value: 'top',
+										label: __('Outside', 'designsetgo'),
+										value: 'outside',
 									},
 								]}
 								onChange={(value) =>

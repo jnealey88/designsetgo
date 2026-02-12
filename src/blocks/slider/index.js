@@ -7,12 +7,14 @@ import { __ } from '@wordpress/i18n';
 import metadata from './block.json';
 import Edit from './edit';
 import Save from './save';
+import deprecated from './deprecated';
 import { ICON_COLOR } from '../shared/constants';
 import './style.scss';
 import './editor.scss';
 
 registerBlockType(metadata.name, {
 	...metadata,
+	deprecated,
 	icon: {
 		src: (
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

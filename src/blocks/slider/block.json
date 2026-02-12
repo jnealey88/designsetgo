@@ -78,7 +78,7 @@
 		},
 		"dotPosition": {
 			"type": "string",
-			"default": "bottom"
+			"default": "inside"
 		},
 		"dotColor": {
 			"type": "string",

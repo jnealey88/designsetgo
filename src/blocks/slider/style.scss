@@ -75,16 +75,18 @@
 	// Navigation: Arrows
 	&__arrows {
 		position: absolute;
-		top: 50%;
+		top: 0;
 		left: 0;
 		right: 0;
+		bottom: 0;
 		z-index: 10;
 		pointer-events: none;
-		transform: translateY(-50%);
 	}
 
 	&__arrow {
 		position: absolute;
+		top: 50%;
+		translate: 0 -50%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -102,7 +104,7 @@
 
 		&:hover:not(:disabled) {
 			opacity: 0.9;
-			transform: scale(1.05);
+			scale: 1.05;
 		}
 
 		&:disabled {
@@ -173,16 +175,16 @@
 	// Arrow positions (Vertical)
 	&[data-arrow-vertical-position="top"] &__arrow {
 		top: 20px;
-		transform: translateY(0);
+		translate: none;
 	}
 
-	// Center is default via top: 50% and transform: translateY(-50%)
+	// Center is default via top: 50% and translate: 0 -50%
 	// No additional styles needed
 
 	&[data-arrow-vertical-position="bottom"] &__arrow {
 		top: auto;
 		bottom: 20px;
-		transform: translateY(0);
+		translate: none;
 	}
 
 	// Navigation: Dots
@@ -244,10 +246,27 @@
 		}
 	}
 
-	// Dot position
-	&[data-dot-position="top"] &__dots {
-		top: 20px;
+	// Dot position: outside (below the slider, not overlapping content)
+	&[data-dot-position="outside"] &__dots {
+		position: relative;
 		bottom: auto;
+		left: auto;
+		transform: none;
+		justify-content: center;
+		margin: 12px auto 0;
+		background: transparent;
+	}
+
+	&[data-dot-position="outside"] &__dot {
+		background: var(--dsgo-slider-dot-color, rgba(0, 0, 0, 0.3));
+
+		&:hover {
+			background: var(--dsgo-slider-dot-color, rgba(0, 0, 0, 0.5));
+		}
+
+		&--active {
+			background: var(--dsgo-slider-dot-color, rgba(0, 0, 0, 0.8));
+		}
 	}
 
 	// Editor-only navigation preview
@@ -408,6 +427,10 @@
 	.dsgo-slider__dots {
 		bottom: 12px;
 		padding: 6px 10px;
+	}
+
+	.dsgo-slider[data-dot-position="outside"] .dsgo-slider__dots {
+		bottom: auto;
 	}
 
 	.dsgo-slider__dot {
