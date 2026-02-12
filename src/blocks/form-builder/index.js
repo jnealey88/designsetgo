@@ -10,6 +10,7 @@ import { layout as icon } from '@wordpress/icons';
 import metadata from './block.json';
 import Edit from './edit';
 import Save from './save';
+import deprecated from './deprecated';
 import { ICON_COLOR } from '../shared/constants';
 
 import './style.scss';
@@ -21,4 +22,5 @@ registerBlockType(metadata.name, {
 	},
 	edit: Edit,
 	save: Save,
+	deprecated,
 });

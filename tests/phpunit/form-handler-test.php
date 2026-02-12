@@ -140,7 +140,7 @@ class Test_Form_Handler extends WP_UnitTestCase {
 	public function test_validate_field_url_invalid() {
 		$invalid_urls = array(
 			'not-a-url',
-			'ftp://example.com', // filter_var rejects non-http(s)
+			'ftp://example.com', // filter_var rejects non-http(s).
 			'javascript:alert(1)',
 		);
 
@@ -396,19 +396,24 @@ class Test_Form_Handler extends WP_UnitTestCase {
 	 */
 	public function test_cleanup_respects_retention() {
 		// Set retention to 0 (disabled).
-		update_option( 'designsetgo_settings', array(
-			'forms' => array(
-				'retention_days' => 0,
-			),
-		) );
+		update_option(
+			'designsetgo_settings',
+			array(
+				'forms' => array(
+					'retention_days' => 0,
+				),
+			)
+		);
 
 		// Create an old submission.
-		$post_id = wp_insert_post( array(
-			'post_type'   => 'dsgo_form_submission',
-			'post_status' => 'private',
-			'post_title'  => 'Test Submission',
-			'post_date'   => gmdate( 'Y-m-d H:i:s', strtotime( '-60 days' ) ),
-		) );
+		$post_id = wp_insert_post(
+			array(
+				'post_type'   => 'dsgo_form_submission',
+				'post_status' => 'private',
+				'post_title'  => 'Test Submission',
+				'post_date'   => gmdate( 'Y-m-d H:i:s', strtotime( '-60 days' ) ),
+			)
+		);
 
 		$this->assertNotWPError( $post_id );
 
@@ -438,9 +443,11 @@ class Test_Form_Handler extends WP_UnitTestCase {
 	 */
 	public function test_rest_endpoint_requires_form_id() {
 		$request = new WP_REST_Request( 'POST', '/designsetgo/v1/form/submit' );
-		$request->set_body_params( array(
-			'fields' => array(),
-		) );
+		$request->set_body_params(
+			array(
+				'fields' => array(),
+			)
+		);
 
 		$response = rest_get_server()->dispatch( $request );
 
@@ -452,12 +459,133 @@ class Test_Form_Handler extends WP_UnitTestCase {
 	 */
 	public function test_rest_endpoint_requires_fields() {
 		$request = new WP_REST_Request( 'POST', '/designsetgo/v1/form/submit' );
-		$request->set_body_params( array(
-			'formId' => 'test-form',
-		) );
+		$request->set_body_params(
+			array(
+				'formId' => 'test-form',
+			)
+		);
 
 		$response = rest_get_server()->dispatch( $request );
 
 		$this->assertEquals( 400, $response->get_status() );
+	}
+
+	/**
+	 * Test get_form_block_attributes finds form in published post content.
+	 */
+	public function test_get_form_block_attributes_finds_form() {
+		$form_id = 'testattr';
+		$post_id = wp_insert_post(
+			array(
+				'post_type'    => 'page',
+				'post_status'  => 'publish',
+				'post_title'   => 'Test Form Page',
+				'post_content' => '<!-- wp:designsetgo/form-builder {"formId":"' . $form_id . '","enableEmail":true,"emailTo":"test@example.com"} --><div class="wp-block-designsetgo-form-builder"></div><!-- /wp:designsetgo/form-builder -->',
+			)
+		);
+
+		$this->assertNotWPError( $post_id );
+
+		// Clear any cached transient from the insert.
+		delete_transient( 'dsgo_form_attrs_' . md5( $form_id ) );
+
+		$attrs = $this->call_private_method( 'get_form_block_attributes', array( $form_id ) );
+
+		$this->assertNotNull( $attrs );
+		$this->assertEquals( $form_id, $attrs['formId'] );
+		$this->assertTrue( $attrs['enableEmail'] );
+		$this->assertEquals( 'test@example.com', $attrs['emailTo'] );
+
+		// Cleanup.
+		wp_delete_post( $post_id, true );
+		delete_transient( 'dsgo_form_attrs_' . md5( $form_id ) );
+	}
+
+	/**
+	 * Test get_form_block_attributes returns null for non-existent form.
+	 */
+	public function test_get_form_block_attributes_returns_null_for_missing() {
+		$attrs = $this->call_private_method( 'get_form_block_attributes', array( 'nonexistent' ) );
+		$this->assertNull( $attrs );
+	}
+
+	/**
+	 * Test that email configuration from client request is ignored.
+	 *
+	 * Email settings must come from server-side block attributes, not from
+	 * the client request. This prevents attackers from using the form as
+	 * an open email relay.
+	 */
+	public function test_client_email_params_are_ignored() {
+		$form_id = 'noemail1';
+
+		// Create form WITHOUT email enabled.
+		$post_id = wp_insert_post(
+			array(
+				'post_type'    => 'page',
+				'post_status'  => 'publish',
+				'post_title'   => 'Test No Email Form',
+				'post_content' => '<!-- wp:designsetgo/form-builder {"formId":"' . $form_id . '"} --><div class="wp-block-designsetgo-form-builder"></div><!-- /wp:designsetgo/form-builder -->',
+			)
+		);
+
+		$this->assertNotWPError( $post_id );
+		delete_transient( 'dsgo_form_attrs_' . md5( $form_id ) );
+
+		// Submit with client-supplied email params (should be ignored by server).
+		$request = new WP_REST_Request( 'POST', '/designsetgo/v1/form/submit' );
+		$request->set_body_params(
+			array(
+				'formId'       => $form_id,
+				'fields'       => array(
+					array(
+						'name'  => 'test',
+						'value' => 'hello',
+						'type'  => 'text',
+					),
+				),
+				'enable_email' => true,
+				'email_to'     => 'attacker@evil.com',
+			)
+		);
+
+		$response = rest_get_server()->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertTrue( $data['success'] );
+
+		// Email should NOT have been sent (enableEmail is not set in block attrs).
+		$email_sent = get_post_meta( $data['submissionId'], '_dsg_email_sent', true );
+		$this->assertEmpty( $email_sent, 'Email must not be sent when enableEmail is false in block attributes' );
+
+		// Cleanup.
+		wp_delete_post( $post_id, true );
+		wp_delete_post( $data['submissionId'], true );
+		delete_transient( 'dsgo_form_attrs_' . md5( $form_id ) );
+	}
+
+	/**
+	 * Test get_form_block_attributes uses transient cache.
+	 */
+	public function test_form_block_attributes_are_cached() {
+		$form_id   = 'cachetest';
+		$cache_key = 'dsgo_form_attrs_' . md5( $form_id );
+
+		// Seed the transient cache directly.
+		$fake_attrs = array(
+			'formId'      => $form_id,
+			'enableEmail' => true,
+			'emailTo'     => 'cached@example.com',
+		);
+		set_transient( $cache_key, $fake_attrs, HOUR_IN_SECONDS );
+
+		// Should return the cached value without hitting the database.
+		$attrs = $this->call_private_method( 'get_form_block_attributes', array( $form_id ) );
+
+		$this->assertEquals( $fake_attrs, $attrs );
+
+		// Cleanup.
+		delete_transient( $cache_key );
 	}
 }

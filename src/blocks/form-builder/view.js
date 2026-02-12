@@ -159,19 +159,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		);
 		const errorMessage = formContainer.getAttribute('data-error-message');
 
-		// Get email settings from data attributes
-		const enableEmail = formContainer.getAttribute('data-enable-email');
-		const emailTo = formContainer.getAttribute('data-email-to');
-		const emailSubject = formContainer.getAttribute('data-email-subject');
-		const emailFromName = formContainer.getAttribute(
-			'data-email-from-name'
-		);
-		const emailFromEmail = formContainer.getAttribute(
-			'data-email-from-email'
-		);
-		const emailReplyTo = formContainer.getAttribute('data-email-reply-to');
-		const emailBody = formContainer.getAttribute('data-email-body');
-
 		// Handle form submission
 		formElement.addEventListener('submit', async function (e) {
 			e.preventDefault();
@@ -237,13 +224,6 @@ document.addEventListener('DOMContentLoaded', function () {
 						fields,
 						honeypot: honeypot || '',
 						timestamp: timestamp || Date.now(),
-						enable_email: enableEmail,
-						email_to: emailTo,
-						email_subject: emailSubject,
-						email_from_name: emailFromName,
-						email_from_email: emailFromEmail,
-						email_reply_to: emailReplyTo,
-						email_body: emailBody,
 						// Include Turnstile token if available (graceful degradation: empty if failed)
 						turnstile_token: turnstileToken || '',
 					}),

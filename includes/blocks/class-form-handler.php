@@ -109,6 +109,9 @@ class Form_Handler {
 
 		// Register cron callback (scheduling handled by activation hook).
 		add_action( 'designsetgo_cleanup_old_submissions', array( $this, 'cleanup_old_submissions' ) );
+
+		// Invalidate cached form block attributes when posts are saved.
+		add_action( 'save_post', array( $this, 'clear_form_attributes_cache' ) );
 	}
 
 	/**
@@ -139,8 +142,8 @@ class Form_Handler {
 	 * - Rate limiting (3 submissions per 60 seconds per IP address) - configurable via settings
 	 * - Comprehensive field validation (email, url, phone, number types)
 	 * - Type-specific sanitization for all field values
-	 * - Email header injection prevention (strips newlines from email parameters)
-	 * - REST API parameter validation for email configuration
+	 * - Server-side email configuration lookup (email settings are never sent from the client)
+	 * - Email header injection prevention (defense in depth)
 	 *
 	 * Additional protection available:
 	 * - Cloudflare Turnstile integration (configurable per-form)
@@ -185,42 +188,6 @@ class Form_Handler {
 						'required' => false,
 						'type'     => 'string',
 						'default'  => '',
-					),
-					// Email configuration parameters.
-					'enable_email'     => array(
-						'type'              => 'boolean',
-						'default'           => false,
-						'sanitize_callback' => 'rest_sanitize_boolean',
-					),
-					'email_to'         => array(
-						'type'              => 'string',
-						'sanitize_callback' => 'sanitize_email',
-						'validate_callback' => function ( $param ) {
-							return empty( $param ) || is_email( $param );
-						},
-					),
-					'email_from_email' => array(
-						'type'              => 'string',
-						'sanitize_callback' => 'sanitize_email',
-						'validate_callback' => function ( $param ) {
-							return empty( $param ) || is_email( $param );
-						},
-					),
-					'email_from_name'  => array(
-						'type'              => 'string',
-						'sanitize_callback' => 'sanitize_text_field',
-					),
-					'email_subject'    => array(
-						'type'              => 'string',
-						'sanitize_callback' => 'sanitize_text_field',
-					),
-					'email_reply_to'   => array(
-						'type'              => 'string',
-						'sanitize_callback' => 'sanitize_text_field',
-					),
-					'email_body'       => array(
-						'type'              => 'string',
-						'sanitize_callback' => 'sanitize_textarea_field',
 					),
 					'turnstile_token'  => array(
 						'type'              => 'string',
@@ -361,8 +328,8 @@ class Form_Handler {
 			);
 		}
 
-		// Send email notification if enabled.
-		$this->send_email_notification( $request, $form_id, $sanitized_fields, $submission_id );
+		// Send email notification if enabled (settings looked up server-side from block attributes).
+		$this->send_email_notification( $form_id, $sanitized_fields, $submission_id );
 
 		// Increment rate limit counter ONLY after successful submission.
 		if ( $form_settings['enable_rate_limiting'] ) {
@@ -558,44 +525,63 @@ class Form_Handler {
 	/**
 	 * Send email notification with form submission data.
 	 *
-	 * @param WP_REST_Request $request Full request object.
-	 * @param string          $form_id Form ID.
-	 * @param array           $fields Sanitized form fields.
-	 * @param int             $submission_id Submission post ID.
+	 * Email configuration is read from the server-side block attributes (stored
+	 * in post content), NOT from the client request. This prevents attackers from
+	 * manipulating email recipients, sender addresses, or body content.
+	 *
+	 * @param string $form_id Form ID.
+	 * @param array  $fields Sanitized form fields.
+	 * @param int    $submission_id Submission post ID.
 	 */
-	private function send_email_notification( $request, $form_id, $fields, $submission_id ) {
-		// Get email settings from request body.
-		// Note: enable_email is already sanitized to boolean by rest_sanitize_boolean.
-		$enable_email = $request->get_param( 'enable_email' );
+	private function send_email_notification( $form_id, $fields, $submission_id ) {
+		// Look up email settings from the form block attributes (server-side only).
+		// This prevents client-side manipulation of email configuration.
+		$block_attrs = $this->get_form_block_attributes( $form_id );
 
-		if ( ! $enable_email ) {
+		if ( ! $block_attrs || empty( $block_attrs['enableEmail'] ) ) {
+			if ( ! $block_attrs && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional debug logging.
+					sprintf( 'DesignSetGo Form: Could not find block attributes for form ID "%s".', $form_id )
+				);
+			}
 			return;
 		}
 
-		// Get and sanitize email parameters (strip newlines to prevent header injection).
-		$email_to        = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $request->get_param( 'email_to' ) );
-		$email_subject   = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $request->get_param( 'email_subject' ) );
-		$email_from_name = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $request->get_param( 'email_from_name' ) );
-		$email_from      = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $request->get_param( 'email_from_email' ) );
-		$email_reply_to  = str_replace( array( "\r", "\n", '%0a', '%0d' ), '', $request->get_param( 'email_reply_to' ) );
-		$email_body      = $request->get_param( 'email_body' );
+		// Extract raw values from block attributes.
+		$email_to        = isset( $block_attrs['emailTo'] ) ? $block_attrs['emailTo'] : '';
+		$email_subject   = isset( $block_attrs['emailSubject'] ) ? $block_attrs['emailSubject'] : '';
+		$email_from_name = isset( $block_attrs['emailFromName'] ) ? $block_attrs['emailFromName'] : '';
+		$email_from      = isset( $block_attrs['emailFromEmail'] ) ? $block_attrs['emailFromEmail'] : '';
+		$email_body      = isset( $block_attrs['emailBody'] ) ? $block_attrs['emailBody'] : '';
+		// emailReplyTo is a field NAME reference (e.g., "email"), not an email address.
+		// The actual email value is extracted from submitted fields and sanitized below (line ~650).
+		$email_reply_to  = isset( $block_attrs['emailReplyTo'] ) ? $block_attrs['emailReplyTo'] : '';
 
-		// Set defaults and validate email addresses.
-		if ( empty( $email_to ) ) {
+		// Strip newlines from header-used values to prevent injection (defense in depth).
+		$newline_chars   = array( "\r", "\n", '%0a', '%0d' );
+		$email_to        = str_replace( $newline_chars, '', $email_to );
+		$email_subject   = str_replace( $newline_chars, '', $email_subject );
+		$email_from_name = str_replace( $newline_chars, '', $email_from_name );
+		$email_from      = str_replace( $newline_chars, '', $email_from );
+		$email_reply_to  = str_replace( $newline_chars, '', $email_reply_to );
+
+		// Validate and set defaults (single sanitization pass).
+		if ( empty( $email_to ) || ! is_email( $email_to ) ) {
 			$email_to = get_option( 'admin_email' );
 		} else {
 			$email_to = sanitize_email( $email_to );
-			if ( ! is_email( $email_to ) ) {
-				$email_to = get_option( 'admin_email' );
-			}
 		}
 
 		if ( empty( $email_subject ) ) {
 			$email_subject = __( 'New Form Submission', 'designsetgo' );
+		} else {
+			$email_subject = sanitize_text_field( $email_subject );
 		}
 
 		if ( empty( $email_from_name ) ) {
 			$email_from_name = get_bloginfo( 'name' );
+		} else {
+			$email_from_name = sanitize_text_field( $email_from_name );
 		}
 
 		if ( empty( $email_from ) ) {
@@ -661,6 +647,8 @@ class Form_Handler {
 		// Default email body if empty.
 		if ( empty( $email_body ) ) {
 			$email_body = __( "New form submission:\n\n{all_fields}\n\nSubmitted from: {page_url}", 'designsetgo' );
+		} else {
+			$email_body = sanitize_textarea_field( $email_body );
 		}
 
 		// Replace merge tags in subject and body.
@@ -779,6 +767,125 @@ class Form_Handler {
 					$retention_days
 				)
 			);
+		}
+	}
+
+	/**
+	 * Look up form block attributes from post content by form ID.
+	 *
+	 * Searches published posts for a form-builder block with the matching formId
+	 * attribute. This ensures email configuration is read from the server-side
+	 * block definition, not from client-submitted data.
+	 *
+	 * @param string $form_id Form identifier to look up.
+	 * @return array|null Block attributes array, or null if not found.
+	 */
+	private function get_form_block_attributes( $form_id ) {
+		// Check transient cache first to avoid LIKE queries on every submission.
+		$cache_key = 'dsgo_form_attrs_' . md5( $form_id );
+		$cached    = get_transient( $cache_key );
+
+		if ( false !== $cached ) {
+			return $cached;
+		}
+
+		global $wpdb;
+
+		// Note: esc_like() wraps the entire concatenated string including $form_id,
+		// so LIKE wildcards (%, _) in $form_id are escaped. prepare() handles SQL injection.
+		// LIMIT 5 accounts for edge cases like revisions or duplicate formIds.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Cached via transient above.
+		$posts = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT ID, post_content FROM {$wpdb->posts}
+				WHERE post_content LIKE %s
+				AND post_content LIKE %s
+				AND post_status IN ('publish', 'private')
+				LIMIT 5",
+				'%' . $wpdb->esc_like( 'designsetgo/form-builder' ) . '%',
+				'%' . $wpdb->esc_like( '"formId":"' . $form_id . '"' ) . '%'
+			)
+		);
+
+		if ( empty( $posts ) ) {
+			return null;
+		}
+
+		foreach ( $posts as $post ) {
+			$blocks = parse_blocks( $post->post_content );
+			$attrs  = $this->find_form_block_attributes( $blocks, $form_id );
+			if ( null !== $attrs ) {
+				// Cache for 1 hour. Invalidated on save_post via clear_form_attributes_cache().
+				set_transient( $cache_key, $attrs, HOUR_IN_SECONDS );
+				return $attrs;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Recursively search parsed blocks for a form-builder block with matching formId.
+	 *
+	 * @param array  $blocks  Parsed blocks array.
+	 * @param string $form_id Form identifier to match.
+	 * @return array|null Block attributes if found, null otherwise.
+	 */
+	private function find_form_block_attributes( $blocks, $form_id ) {
+		foreach ( $blocks as $block ) {
+			if (
+				'designsetgo/form-builder' === $block['blockName'] &&
+				isset( $block['attrs']['formId'] ) &&
+				$block['attrs']['formId'] === $form_id
+			) {
+				return $block['attrs'];
+			}
+
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$result = $this->find_form_block_attributes( $block['innerBlocks'], $form_id );
+				if ( null !== $result ) {
+					return $result;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Clear cached form block attributes when a post is saved.
+	 *
+	 * Hooked to save_post to ensure email config changes take effect immediately.
+	 *
+	 * @param int $post_id Post ID being saved.
+	 */
+	public function clear_form_attributes_cache( $post_id ) {
+		$post = get_post( $post_id );
+		if ( ! $post || false === strpos( $post->post_content, 'designsetgo/form-builder' ) ) {
+			return;
+		}
+
+		$blocks = parse_blocks( $post->post_content );
+		$this->invalidate_form_block_transients( $blocks );
+	}
+
+	/**
+	 * Recursively delete cached transients for form blocks.
+	 *
+	 * @param array $blocks Parsed blocks array.
+	 */
+	private function invalidate_form_block_transients( $blocks ) {
+		foreach ( $blocks as $block ) {
+			if (
+				'designsetgo/form-builder' === $block['blockName'] &&
+				isset( $block['attrs']['formId'] )
+			) {
+				delete_transient( 'dsgo_form_attrs_' . md5( $block['attrs']['formId'] ) );
+			}
+
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$this->invalidate_form_block_transients( $block['innerBlocks'] );
+			}
 		}
 	}
 }
