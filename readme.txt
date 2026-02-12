@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.21
+Stable tag: 2.0.22
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -175,6 +175,24 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.22 - 2026-02-12 =
+**New Features:**
+* New: Vertical alignment control for icons in icon-list block
+* New: Icon search aliases and canonical icon name resolution for easier icon discovery
+* New: Slider height now optional with content-fit fallback for natural sizing
+
+**Improvements:**
+* Enhancement: Form builder submit button now inherits Global Styles for consistent theming
+* Enhancement: Sticky header scroll colors refactored to use dropdown UI for better UX
+* Enhancement: Email configuration moved to server-side for improved form security
+* Enhancement: Twitter social links updated to X platform branding
+* Enhancement: E2E test improvements for block selection and class detection
+
+**Bug Fixes:**
+* Fix: Vertical scroll parallax centering for natural element positioning
+* Fix: CSS preset colors now properly resolved in SVG patterns and shape dividers
+* Fix: Blob wrapper background reset styles with increased specificity
 
 = 2.0.21 - 2026-02-11 =
 **Bug Fixes:**
@@ -486,6 +504,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Comprehensive documentation and developer guides
 
 == Upgrade Notice ==
+
+= 2.0.22 =
+New icon-list vertical alignment, icon search aliases, optional slider height, form security improvements, sticky header dropdown UI, parallax centering fix, and SVG pattern color resolution.
 
 = 2.0.1 =
 Adds Icon Button hover animations, Section color picker alpha channel, polka-dots pattern with opacity, and fixes for parallax feedback loops, spacing preset overrides, icon list defaults, and REST sanitization.
