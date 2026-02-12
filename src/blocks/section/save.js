@@ -116,8 +116,10 @@ export default function SectionSave({ attributes }) {
 		<TagName {...blockProps}>
 			<ShapeDivider
 				shape={shapeDividerTop}
-				color={shapeDividerTopColor}
-				backgroundColor={shapeDividerTopBackgroundColor}
+				color={convertPresetToCSSVar(shapeDividerTopColor)}
+				backgroundColor={convertPresetToCSSVar(
+					shapeDividerTopBackgroundColor
+				)}
 				height={shapeDividerTopHeight}
 				width={shapeDividerTopWidth}
 				flipX={shapeDividerTopFlipX}
@@ -128,8 +130,10 @@ export default function SectionSave({ attributes }) {
 			<div {...innerBlocksProps} />
 			<ShapeDivider
 				shape={shapeDividerBottom}
-				color={shapeDividerBottomColor}
-				backgroundColor={shapeDividerBottomBackgroundColor}
+				color={convertPresetToCSSVar(shapeDividerBottomColor)}
+				backgroundColor={convertPresetToCSSVar(
+					shapeDividerBottomBackgroundColor
+				)}
 				height={shapeDividerBottomHeight}
 				width={shapeDividerBottomWidth}
 				flipX={shapeDividerBottomFlipX}
