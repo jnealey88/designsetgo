@@ -17,6 +17,7 @@ import deprecated from './deprecated';
 import { ICON_COLOR } from '../shared/constants';
 
 import './style.scss';
+import './editor.scss';
 
 /**
  * Register the new block name (designsetgo/form-textarea-field)

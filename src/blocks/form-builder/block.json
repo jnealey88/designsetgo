@@ -123,7 +123,7 @@
 		},
 		"enableEmail": {
 			"type": "boolean",
-			"default": false
+			"default": true
 		},
 		"emailTo": {
 			"type": "string",
