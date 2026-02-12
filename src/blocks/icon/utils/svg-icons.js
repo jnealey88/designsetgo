@@ -1499,9 +1499,411 @@ export const SVG_ICONS = {
 };
 
 /**
+ * Icon Aliases
+ *
+ * Maps common alternative names to canonical icon names.
+ * Used for search matching in the IconPicker and for resolving
+ * non-canonical names (e.g., from LLM-generated markup).
+ */
+const ICON_ALIASES = {
+	// Mail / Envelope
+	email: 'envelope',
+	mail: 'envelope',
+	inbox: 'envelope',
+	message: 'envelope',
+
+	// Lightning
+	zap: 'lightning',
+	bolt: 'lightning',
+	electricity: 'lightning',
+	thunder: 'lightning',
+
+	// Circle Check
+	'check-circle': 'circle-check',
+	checkmark: 'circle-check',
+	'checkmark-circle': 'circle-check',
+
+	// Verified Check
+	verified: 'verified-check',
+	badge: 'verified-check',
+
+	// Star
+	favorite: 'star',
+	rating: 'star',
+
+	// Heart
+	love: 'heart',
+	like: 'heart',
+
+	// User / Users
+	person: 'user',
+	profile: 'user',
+	account: 'user',
+	people: 'users',
+	team: 'users',
+	group: 'users',
+
+	// Rocket
+	launch: 'rocket',
+	startup: 'rocket',
+
+	// Lightbulb
+	idea: 'lightbulb',
+	tip: 'lightbulb',
+	bulb: 'lightbulb',
+
+	// Trophy
+	award: 'trophy',
+	winner: 'trophy',
+	prize: 'trophy',
+
+	// Phone
+	call: 'phone',
+	telephone: 'phone',
+	mobile: 'phone',
+
+	// Location
+	map: 'location',
+	'map-pin': 'location',
+	address: 'location',
+	place: 'location',
+
+	// Clock
+	time: 'clock',
+	schedule: 'clock',
+	timer: 'clock',
+
+	// Thumbs Up
+	'thumbs-up-alt': 'thumbs-up',
+	approve: 'thumbs-up',
+
+	// Gift
+	present: 'gift',
+	reward: 'gift',
+
+	// Shield
+	security: 'shield',
+	protect: 'shield',
+	'shield-alt': 'shield',
+	'security-check': 'shield-check',
+	protected: 'shield-check',
+
+	// Social
+	fb: 'facebook',
+	x: 'twitter',
+	tweet: 'twitter',
+	ig: 'instagram',
+	li: 'linkedin',
+	yt: 'youtube',
+	gh: 'github',
+	wa: 'whatsapp',
+
+	// Shopping
+	cart: 'shopping-cart',
+	basket: 'shopping-cart',
+	ecommerce: 'shopping-cart',
+	payment: 'credit-card',
+	visa: 'credit-card',
+	mastercard: 'credit-card',
+	label: 'tag',
+	price: 'tag',
+	money: 'dollar',
+	currency: 'dollar',
+	usd: 'dollar',
+	'money-bag': 'wallet',
+	purse: 'wallet',
+	shop: 'store',
+	storefront: 'store',
+
+	// Communication
+	bubble: 'comment',
+	feedback: 'comment',
+	messaging: 'chat',
+	conversation: 'chat',
+	notification: 'bell',
+	alert: 'bell',
+	alarm: 'bell',
+	help: 'info',
+	information: 'info',
+	caution: 'warning',
+	danger: 'warning',
+	blockquote: 'quote',
+	quotation: 'quote',
+	cite: 'quote',
+
+	// Actions
+	add: 'plus',
+	create: 'plus',
+	new: 'plus',
+	subtract: 'minus',
+	remove: 'minus',
+	close: 'times',
+	cancel: 'times',
+	cross: 'times',
+	'x-mark': 'times',
+	pencil: 'edit',
+	modify: 'edit',
+	write: 'edit',
+	delete: 'trash',
+	bin: 'trash',
+	rubbish: 'trash',
+	'magnifying-glass': 'search',
+	find: 'search',
+	lookup: 'search',
+	gear: 'settings',
+	cog: 'settings',
+	preferences: 'settings',
+	config: 'settings',
+	hamburger: 'menu',
+	nav: 'menu',
+	navigation: 'menu',
+	reload: 'refresh',
+	sync: 'refresh',
+	rotate: 'refresh-cw',
+
+	// Media
+	film: 'video',
+	movie: 'video',
+	photo: 'image',
+	picture: 'image',
+	gallery: 'image',
+	img: 'image',
+	photograph: 'camera',
+	snapshot: 'camera',
+
+	// Arrows
+	'right-arrow': 'arrow-right',
+	'left-arrow': 'arrow-left',
+	'up-arrow': 'arrow-up',
+	'down-arrow': 'arrow-down',
+	next: 'chevron-right',
+	forward: 'chevron-right',
+	previous: 'chevron-left',
+	back: 'chevron-left',
+
+	// UI
+	house: 'home',
+	dashboard: 'home',
+	save: 'bookmark',
+	saved: 'bookmark',
+	url: 'link',
+	href: 'link',
+	chain: 'link',
+	hyperlink: 'link',
+	directory: 'folder',
+	document: 'file',
+	doc: 'file',
+	page: 'file',
+	programming: 'code',
+	developer: 'code',
+	dev: 'code',
+	duplicate: 'copy',
+	clone: 'copy',
+	clipboard: 'clipboard',
+
+	// Business
+	work: 'briefcase',
+	job: 'briefcase',
+	portfolio: 'briefcase',
+	office: 'building',
+	company: 'building',
+	corporate: 'building',
+	analytics: 'chart',
+	graph: 'chart',
+	statistics: 'chart',
+	stats: 'chart',
+	date: 'calendar',
+	event: 'calendar',
+	appointment: 'calendar',
+	diploma: 'certificate',
+	achievement: 'certificate',
+
+	// Tech
+	computer: 'monitor',
+	desktop: 'monitor',
+	screen: 'monitor',
+	display: 'monitor',
+	iphone: 'smartphone',
+	android: 'smartphone',
+	ipad: 'tablet',
+	internet: 'wifi',
+	wireless: 'wifi',
+	network: 'wifi',
+	db: 'database',
+	server: 'database',
+	storage: 'database',
+	'cloud-computing': 'cloud',
+	saas: 'cloud',
+
+	// Education
+	reading: 'book',
+	education: 'graduation-cap',
+	university: 'graduation-cap',
+	school: 'graduation-cap',
+	graduate: 'graduation-cap',
+	degree: 'graduation-cap',
+
+	// Health / Nature
+	gym: 'fitness',
+	exercise: 'fitness',
+	workout: 'dumbbell',
+	weight: 'dumbbell',
+	health: 'medkit',
+	medical: 'medkit',
+	'first-aid': 'medkit',
+	hospital: 'medkit',
+	nature: 'leaf',
+	eco: 'leaf',
+	plant: 'leaf',
+	organic: 'leaf',
+
+	// Misc
+	flame: 'fire',
+	hot: 'fire',
+	trending: 'fire',
+	package: 'box',
+	shipping: 'truck',
+	delivery: 'truck',
+	logistics: 'truck',
+	audio: 'speaker',
+	sound: 'speaker',
+	volume: 'speaker',
+	mic: 'microphone',
+	record: 'microphone',
+	podcast: 'microphone',
+	headset: 'headphones',
+	earphones: 'headphones',
+	slides: 'presentation',
+	slideshow: 'presentation',
+	'power-point': 'presentation',
+	goal: 'target',
+	aim: 'target',
+	bullseye: 'target',
+	deal: 'handshake',
+	partner: 'handshake',
+	agreement: 'handshake',
+	world: 'globe',
+	earth: 'globe',
+	international: 'globe',
+	thumbtack: 'pin',
+	pushpin: 'pin',
+	travel: 'plane',
+	flight: 'plane',
+	airplane: 'plane',
+	vehicle: 'car',
+	automobile: 'car',
+	drive: 'car',
+	accommodation: 'hotel',
+	lodging: 'hotel',
+	bed: 'hotel',
+	direction: 'compass',
+	explore: 'compass',
+	luggage: 'suitcase',
+	baggage: 'suitcase',
+	cafe: 'coffee',
+	tea: 'coffee',
+	food: 'restaurant',
+	dining: 'restaurant',
+	eat: 'restaurant',
+	song: 'music',
+	melody: 'music',
+	tunes: 'music',
+	tokens: 'coin',
+	coins: 'coin',
+	finance: 'bank',
+	banking: 'bank',
+	growth: 'trending-up',
+	increase: 'trending-up',
+	'arrow-trending': 'trending-up',
+	power: 'battery',
+	energy: 'battery',
+	print: 'printer',
+	click: 'cursor-click',
+	cursor: 'cursor-click',
+	pointer: 'cursor-click',
+	visible: 'eye',
+	view: 'eye',
+	show: 'eye',
+	hidden: 'eye-off',
+	invisible: 'eye-off',
+	hide: 'eye-off',
+	switch: 'toggle',
+	'toggle-off': 'toggle',
+	'switch-on': 'toggle-on',
+	scan: 'barcode',
+	qr: 'barcode',
+	invoice: 'receipt',
+	bill: 'receipt',
+	percent: 'percentage',
+	discount: 'percentage',
+	sale: 'percentage',
+	off: 'percentage',
+	input: 'text-field',
+	'text-input': 'text-field',
+	'number-input': 'number-field',
+	'form-field': 'form',
+	signup: 'form',
+	contact: 'at-sign',
+	'at-symbol': 'at-sign',
+	submit: 'send',
+	'paper-plane': 'send',
+	tier: 'layers',
+	depth: 'layers',
+	layout: 'grid',
+	'grid-view': 'grid',
+	'list-view': 'list',
+	rows: 'list',
+	pad: 'keyboard',
+	typing: 'keyboard',
+	secure: 'lock',
+	password: 'lock',
+	'lock-open': 'unlock',
+	unsecure: 'unlock',
+};
+
+/**
+ * Resolve an icon name, returning the canonical name if an alias is provided.
+ *
+ * @param {string} name - Icon name or alias
+ * @return {string} Canonical icon name
+ */
+export const resolveIconName = (name) => {
+	if (!name || typeof name !== 'string') {
+		return 'star';
+	}
+	const lower = name.trim().toLowerCase();
+	if (SVG_ICONS[lower]) {
+		return lower;
+	}
+	return ICON_ALIASES[lower] || lower;
+};
+
+/**
  * Get icon names for picker
  */
 export const getIconNames = () => Object.keys(SVG_ICONS);
+
+/**
+ * Get reverse alias map: canonical icon name → list of aliases.
+ * Cached at module level to avoid rebuilding on every call.
+ *
+ * @return {Object<string, string[]>} Map of canonical names to alias arrays
+ */
+let cachedAliasMap = null;
+export const getIconAliases = () => {
+	if (cachedAliasMap) {
+		return cachedAliasMap;
+	}
+	const map = {};
+	for (const [alias, canonical] of Object.entries(ICON_ALIASES)) {
+		if (!map[canonical]) {
+			map[canonical] = [];
+		}
+		map[canonical].push(alias);
+	}
+	cachedAliasMap = map;
+	return map;
+};
 
 /**
  * Get icon component by name
@@ -1512,7 +1914,8 @@ export const getIconNames = () => Object.keys(SVG_ICONS);
  * @return {JSX.Element|null} SVG icon component
  */
 export const getIcon = (name, style = 'filled', strokeWidth = 1.5) => {
-	const icon = SVG_ICONS[name] || SVG_ICONS.star;
+	const resolved = resolveIconName(name);
+	const icon = SVG_ICONS[resolved] || SVG_ICONS.star;
 
 	// If filled style, return as-is
 	if (style === 'filled') {

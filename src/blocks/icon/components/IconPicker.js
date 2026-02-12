@@ -6,8 +6,8 @@
 
 import { Button, Popover, SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-import { getIcon, getIconNames } from '../utils/svg-icons';
+import { useState, useMemo } from '@wordpress/element';
+import { getIcon, getIconNames, getIconAliases } from '../utils/svg-icons';
 
 /**
  * Icon categories for organization
@@ -156,6 +156,9 @@ export const IconPicker = ({ value, onChange }) => {
 	// Get all icon names for search
 	const allIcons = getIconNames();
 
+	// Build reverse alias map: canonical name → list of aliases
+	const aliasMap = useMemo(() => getIconAliases(), []);
+
 	// Filter icons based on search
 	const getFilteredIcons = () => {
 		if (!searchTerm) {
@@ -164,10 +167,16 @@ export const IconPicker = ({ value, onChange }) => {
 			return categoryIcons === null ? allIcons : categoryIcons || [];
 		}
 
-		// Search across all icons
-		return allIcons.filter((iconName) =>
-			iconName.toLowerCase().includes(searchTerm.toLowerCase())
-		);
+		const term = searchTerm.toLowerCase();
+
+		// Search across icon names and their aliases
+		return allIcons.filter((iconName) => {
+			if (iconName.toLowerCase().includes(term)) {
+				return true;
+			}
+			const aliases = aliasMap[iconName];
+			return aliases?.some((alias) => alias.includes(term));
+		});
 	};
 
 	const filteredIcons = getFilteredIcons();
