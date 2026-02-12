@@ -65,7 +65,8 @@
 		"designsetgo/iconList/iconColor": "iconColor",
 		"designsetgo/iconList/iconBackgroundColor": "iconBackgroundColor",
 		"designsetgo/iconList/gap": "gap",
-		"designsetgo/iconList/iconPosition": "iconPosition"
+		"designsetgo/iconList/iconPosition": "iconPosition",
+		"designsetgo/iconList/iconVerticalAlignment": "iconVerticalAlignment"
 	},
 	"attributes": {
 		"layout": {
@@ -99,6 +100,11 @@
 		"alignment": {
 			"type": "string",
 			"default": "left"
+		},
+		"iconVerticalAlignment": {
+			"type": "string",
+			"enum": ["top", "center"],
+			"default": "top"
 		}
 	},
 	"example": {

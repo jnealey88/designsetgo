@@ -41,6 +41,8 @@ export default function IconListItemEdit({
 	const iconBackgroundColor =
 		context['designsetgo/iconList/iconBackgroundColor'] || '';
 	const iconPosition = context['designsetgo/iconList/iconPosition'] || 'left';
+	const iconVerticalAlignment =
+		context['designsetgo/iconList/iconVerticalAlignment'] || 'top';
 
 	// Calculate text alignment based on icon position
 	const getTextAlign = () => {
@@ -53,11 +55,19 @@ export default function IconListItemEdit({
 		return 'left';
 	};
 
+	// Calculate vertical alignment for left/right icon positions
+	const getVerticalAlignItems = () => {
+		if (iconPosition === 'top') {
+			return 'center';
+		}
+		return iconVerticalAlignment === 'center' ? 'center' : 'flex-start';
+	};
+
 	// Calculate item layout styles
 	const itemStyles = {
 		display: 'flex',
 		flexDirection: iconPosition === 'top' ? 'column' : 'row',
-		alignItems: iconPosition === 'top' ? 'center' : 'flex-start',
+		alignItems: getVerticalAlignItems(),
 		gap: iconPosition === 'top' ? '12px' : '16px',
 		...(iconPosition === 'right' && { flexDirection: 'row-reverse' }),
 	};

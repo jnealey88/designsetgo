@@ -18,14 +18,15 @@ import {
 /**
  * List Settings Panel Component
  *
- * @param {Object}   props               - Component props
- * @param {string}   props.layout        - Current layout type
- * @param {number}   props.iconSize      - Icon size in pixels
- * @param {string}   props.gap           - Gap between items
- * @param {string}   props.iconPosition  - Icon position relative to text
- * @param {number}   props.columns       - Number of columns for grid layout
- * @param {string}   props.alignment     - Alignment for vertical layout
- * @param {Function} props.setAttributes - Function to update attributes
+ * @param {Object}   props                       - Component props
+ * @param {string}   props.layout                - Current layout type
+ * @param {number}   props.iconSize              - Icon size in pixels
+ * @param {string}   props.gap                   - Gap between items
+ * @param {string}   props.iconPosition          - Icon position relative to text
+ * @param {number}   props.columns               - Number of columns for grid layout
+ * @param {string}   props.alignment             - Alignment for vertical layout
+ * @param {string}   props.iconVerticalAlignment - Vertical alignment of icon with text
+ * @param {Function} props.setAttributes         - Function to update attributes
  * @return {JSX.Element} List Settings Panel component
  */
 export const ListSettingsPanel = ({
@@ -35,6 +36,7 @@ export const ListSettingsPanel = ({
 	iconPosition,
 	columns,
 	alignment,
+	iconVerticalAlignment,
 	setAttributes,
 }) => {
 	return (
@@ -128,6 +130,32 @@ export const ListSettingsPanel = ({
 					__next40pxDefaultSize
 					__nextHasNoMarginBottom
 				/>
+
+				{iconPosition !== 'top' && (
+					<SelectControl
+						label={__('Vertical Alignment', 'designsetgo')}
+						value={iconVerticalAlignment}
+						options={[
+							{
+								label: __('Top', 'designsetgo'),
+								value: 'top',
+							},
+							{
+								label: __('Center', 'designsetgo'),
+								value: 'center',
+							},
+						]}
+						onChange={(value) =>
+							setAttributes({ iconVerticalAlignment: value })
+						}
+						help={__(
+							'Vertically align the icon with the text content',
+							'designsetgo'
+						)}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+				)}
 
 				<RangeControl
 					label={__('Icon Size', 'designsetgo')}
