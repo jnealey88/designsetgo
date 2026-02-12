@@ -109,6 +109,9 @@ class Form_Handler {
 
 		// Register cron callback (scheduling handled by activation hook).
 		add_action( 'designsetgo_cleanup_old_submissions', array( $this, 'cleanup_old_submissions' ) );
+
+		// Invalidate cached form block attributes when posts are saved.
+		add_action( 'save_post', array( $this, 'clear_form_attributes_cache' ) );
 	}
 
 	/**
@@ -536,35 +539,49 @@ class Form_Handler {
 		$block_attrs = $this->get_form_block_attributes( $form_id );
 
 		if ( ! $block_attrs || empty( $block_attrs['enableEmail'] ) ) {
+			if ( ! $block_attrs && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional debug logging.
+					sprintf( 'DesignSetGo Form: Could not find block attributes for form ID "%s".', $form_id )
+				);
+			}
 			return;
 		}
 
-		// Get and sanitize email parameters from block attributes.
-		// Strip newlines to prevent header injection (defense in depth).
-		$newline_chars   = array( "\r", "\n", '%0a', '%0d' );
-		$email_to        = ! empty( $block_attrs['emailTo'] ) ? str_replace( $newline_chars, '', sanitize_email( $block_attrs['emailTo'] ) ) : '';
-		$email_subject   = ! empty( $block_attrs['emailSubject'] ) ? str_replace( $newline_chars, '', sanitize_text_field( $block_attrs['emailSubject'] ) ) : '';
-		$email_from_name = ! empty( $block_attrs['emailFromName'] ) ? str_replace( $newline_chars, '', sanitize_text_field( $block_attrs['emailFromName'] ) ) : '';
-		$email_from      = ! empty( $block_attrs['emailFromEmail'] ) ? str_replace( $newline_chars, '', sanitize_email( $block_attrs['emailFromEmail'] ) ) : '';
-		$email_reply_to  = ! empty( $block_attrs['emailReplyTo'] ) ? str_replace( $newline_chars, '', sanitize_text_field( $block_attrs['emailReplyTo'] ) ) : '';
-		$email_body      = ! empty( $block_attrs['emailBody'] ) ? sanitize_textarea_field( $block_attrs['emailBody'] ) : '';
+		// Extract raw values from block attributes.
+		$email_to        = isset( $block_attrs['emailTo'] ) ? $block_attrs['emailTo'] : '';
+		$email_subject   = isset( $block_attrs['emailSubject'] ) ? $block_attrs['emailSubject'] : '';
+		$email_from_name = isset( $block_attrs['emailFromName'] ) ? $block_attrs['emailFromName'] : '';
+		$email_from      = isset( $block_attrs['emailFromEmail'] ) ? $block_attrs['emailFromEmail'] : '';
+		$email_body      = isset( $block_attrs['emailBody'] ) ? $block_attrs['emailBody'] : '';
+		// emailReplyTo is a field NAME reference (e.g., "email"), not an email address.
+		// The actual email value is extracted from submitted fields and sanitized below (line ~650).
+		$email_reply_to  = isset( $block_attrs['emailReplyTo'] ) ? $block_attrs['emailReplyTo'] : '';
 
-		// Set defaults and validate email addresses.
-		if ( empty( $email_to ) ) {
+		// Strip newlines from header-used values to prevent injection (defense in depth).
+		$newline_chars   = array( "\r", "\n", '%0a', '%0d' );
+		$email_to        = str_replace( $newline_chars, '', $email_to );
+		$email_subject   = str_replace( $newline_chars, '', $email_subject );
+		$email_from_name = str_replace( $newline_chars, '', $email_from_name );
+		$email_from      = str_replace( $newline_chars, '', $email_from );
+		$email_reply_to  = str_replace( $newline_chars, '', $email_reply_to );
+
+		// Validate and set defaults (single sanitization pass).
+		if ( empty( $email_to ) || ! is_email( $email_to ) ) {
 			$email_to = get_option( 'admin_email' );
 		} else {
 			$email_to = sanitize_email( $email_to );
-			if ( ! is_email( $email_to ) ) {
-				$email_to = get_option( 'admin_email' );
-			}
 		}
 
 		if ( empty( $email_subject ) ) {
 			$email_subject = __( 'New Form Submission', 'designsetgo' );
+		} else {
+			$email_subject = sanitize_text_field( $email_subject );
 		}
 
 		if ( empty( $email_from_name ) ) {
 			$email_from_name = get_bloginfo( 'name' );
+		} else {
+			$email_from_name = sanitize_text_field( $email_from_name );
 		}
 
 		if ( empty( $email_from ) ) {
@@ -630,6 +647,8 @@ class Form_Handler {
 		// Default email body if empty.
 		if ( empty( $email_body ) ) {
 			$email_body = __( "New form submission:\n\n{all_fields}\n\nSubmitted from: {page_url}", 'designsetgo' );
+		} else {
+			$email_body = sanitize_textarea_field( $email_body );
 		}
 
 		// Replace merge tags in subject and body.
@@ -762,9 +781,20 @@ class Form_Handler {
 	 * @return array|null Block attributes array, or null if not found.
 	 */
 	private function get_form_block_attributes( $form_id ) {
+		// Check transient cache first to avoid LIKE queries on every submission.
+		$cache_key = 'dsgo_form_attrs_' . md5( $form_id );
+		$cached    = get_transient( $cache_key );
+
+		if ( false !== $cached ) {
+			return $cached;
+		}
+
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- One-time lookup per form submission; caching not beneficial.
+		// Note: esc_like() wraps the entire concatenated string including $form_id,
+		// so LIKE wildcards (%, _) in $form_id are escaped. prepare() handles SQL injection.
+		// LIMIT 5 accounts for edge cases like revisions or duplicate formIds.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Cached via transient above.
 		$posts = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT ID, post_content FROM {$wpdb->posts}
@@ -785,6 +815,8 @@ class Form_Handler {
 			$blocks = parse_blocks( $post->post_content );
 			$attrs  = $this->find_form_block_attributes( $blocks, $form_id );
 			if ( null !== $attrs ) {
+				// Cache for 1 hour. Invalidated on save_post via clear_form_attributes_cache().
+				set_transient( $cache_key, $attrs, HOUR_IN_SECONDS );
 				return $attrs;
 			}
 		}
@@ -818,5 +850,42 @@ class Form_Handler {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Clear cached form block attributes when a post is saved.
+	 *
+	 * Hooked to save_post to ensure email config changes take effect immediately.
+	 *
+	 * @param int $post_id Post ID being saved.
+	 */
+	public function clear_form_attributes_cache( $post_id ) {
+		$post = get_post( $post_id );
+		if ( ! $post || false === strpos( $post->post_content, 'designsetgo/form-builder' ) ) {
+			return;
+		}
+
+		$blocks = parse_blocks( $post->post_content );
+		$this->invalidate_form_block_transients( $blocks );
+	}
+
+	/**
+	 * Recursively delete cached transients for form blocks.
+	 *
+	 * @param array $blocks Parsed blocks array.
+	 */
+	private function invalidate_form_block_transients( $blocks ) {
+		foreach ( $blocks as $block ) {
+			if (
+				'designsetgo/form-builder' === $block['blockName'] &&
+				isset( $block['attrs']['formId'] )
+			) {
+				delete_transient( 'dsgo_form_attrs_' . md5( $block['attrs']['formId'] ) );
+			}
+
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$this->invalidate_form_block_transients( $block['innerBlocks'] );
+			}
+		}
 	}
 }
