@@ -57,6 +57,50 @@ class SVG_Pattern_Renderer {
 	}
 
 	/**
+	 * Resolve a CSS variable preset color to its hex value.
+	 *
+	 * CSS variables cannot be used inside SVG data URIs because the SVG
+	 * is an external document that doesn't inherit the page's CSS custom
+	 * properties. This method extracts the slug from
+	 * "var(--wp--preset--color--{slug})" and looks up the actual hex
+	 * value in the global settings palette.
+	 *
+	 * @param string $color Color value, possibly a CSS variable.
+	 * @return string Resolved hex color or the original value.
+	 */
+	private function resolve_color_value( $color ) {
+		if ( ! is_string( $color ) || '' === $color ) {
+			return $color;
+		}
+
+		// Match CSS variable format: var(--wp--preset--color--{slug}).
+		if ( ! preg_match( '/^var\(--wp--preset--color--(.+)\)$/', $color, $matches ) ) {
+			return $color;
+		}
+
+		$slug    = $matches[1];
+		$palette = wp_get_global_settings( array( 'color', 'palette' ) );
+
+		if ( ! is_array( $palette ) ) {
+			return $color;
+		}
+
+		// Palette is grouped by origin (theme, default, custom).
+		foreach ( $palette as $origin_colors ) {
+			if ( ! is_array( $origin_colors ) ) {
+				continue;
+			}
+			foreach ( $origin_colors as $entry ) {
+				if ( isset( $entry['slug'], $entry['color'] ) && $entry['slug'] === $slug ) {
+					return $entry['color'];
+				}
+			}
+		}
+
+		return $color;
+	}
+
+	/**
 	 * Validate a CSS color value to prevent SVG attribute injection.
 	 *
 	 * Mirrors the JS isValidColor() function in patterns.js.
@@ -209,6 +253,7 @@ class SVG_Pattern_Renderer {
 		}
 
 		$color   = sanitize_text_field( $processor->get_attribute( 'data-dsgo-svg-pattern-color' ) ?? '#9c92ac' );
+		$color   = $this->resolve_color_value( $color );
 		$opacity = (float) ( $processor->get_attribute( 'data-dsgo-svg-pattern-opacity' ) ?? 0.4 );
 		$scale   = (float) ( $processor->get_attribute( 'data-dsgo-svg-pattern-scale' ) ?? 1 );
 

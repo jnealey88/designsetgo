@@ -29,6 +29,13 @@ jest.mock('@wordpress/block-editor', () => ({
 	InspectorControls: ({ children }) => children,
 	__experimentalColorGradientSettingsDropdown: () => null,
 	__experimentalUseMultipleOriginColorsAndGradients: jest.fn(() => ({})),
+	store: 'core/block-editor',
+}));
+
+jest.mock('@wordpress/data', () => ({
+	useSelect: jest.fn((fn) =>
+		fn(() => ({ getSettings: () => ({ colors: [] }) }))
+	),
 }));
 
 jest.mock('@wordpress/components', () => ({
@@ -503,6 +510,11 @@ describe('SVG Patterns Extension', () => {
 			jest.mock('@wordpress/element', () => ({
 				Fragment: ({ children }) => children,
 				useMemo: jest.fn((fn) => fn()),
+			}));
+			jest.mock('@wordpress/data', () => ({
+				useSelect: jest.fn((fn) =>
+					fn(() => ({ getSettings: () => ({ colors: [] }) }))
+				),
 			}));
 
 			require('../../src/extensions/svg-patterns/attributes');

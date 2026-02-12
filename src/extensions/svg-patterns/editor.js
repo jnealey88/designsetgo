@@ -7,6 +7,8 @@
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { Fragment, useMemo } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 import SvgPatternsPanel from './components/SvgPatternsPanel';
 import { SUPPORTED_BLOCKS, DEFAULTS } from './constants';
 import { getPatternBackground, PATTERNS, PATTERN_IDS } from './patterns';
@@ -64,6 +66,36 @@ const addSvgPatternEditorStyles = createHigherOrderComponent(
 				dsgoSvgPatternType &&
 				PATTERNS[dsgoSvgPatternType];
 
+			// Resolve preset color slugs to hex values. CSS variables
+			// cannot be used inside SVG data URIs because the SVG is an
+			// external document that doesn't inherit the page's CSS.
+			const resolvedColor = useSelect(
+				(select) => {
+					if (
+						!dsgoSvgPatternColor ||
+						typeof dsgoSvgPatternColor !== 'string'
+					) {
+						return DEFAULTS.color;
+					}
+
+					// Parse WordPress preset format: var:preset|color|{slug}
+					const presetMatch = dsgoSvgPatternColor.match(
+						/^var:preset\|color\|(.+)$/
+					);
+					if (!presetMatch) {
+						// Already a raw color value (hex, rgb, etc.)
+						return dsgoSvgPatternColor;
+					}
+
+					const slug = presetMatch[1];
+					const settings = select(blockEditorStore).getSettings();
+					const colors = settings.colors || [];
+					const found = colors.find((c) => c.slug === slug);
+					return found ? found.color : DEFAULTS.color;
+				},
+				[dsgoSvgPatternColor]
+			);
+
 			// Memoize SVG generation to avoid re-encoding on every render
 			const bg = useMemo(() => {
 				if (!isActive) {
@@ -71,15 +103,14 @@ const addSvgPatternEditorStyles = createHigherOrderComponent(
 				}
 				return getPatternBackground(
 					dsgoSvgPatternType,
-					convertPresetToCSSVar(dsgoSvgPatternColor) ||
-						DEFAULTS.color,
+					resolvedColor,
 					dsgoSvgPatternOpacity ?? DEFAULTS.opacity,
 					dsgoSvgPatternScale ?? DEFAULTS.scale
 				);
 			}, [
 				isActive,
 				dsgoSvgPatternType,
-				dsgoSvgPatternColor,
+				resolvedColor,
 				dsgoSvgPatternOpacity,
 				dsgoSvgPatternScale,
 			]);
