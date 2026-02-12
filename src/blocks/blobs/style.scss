@@ -12,7 +12,12 @@
 	width: 100%;
 	// WordPress applies backgrounds here, but we want them on the blob
 	// So we make wrapper transparent and JavaScript transfers styles to inner blob
-	background: none !important;
+	// Double class selector for higher specificity (0,2,0) to beat WordPress's
+	// color utility classes like .has-{slug}-background-color which also use !important
+	&#{&} {
+		background: none !important;
+		background-color: transparent !important;
+	}
 
 	// Alignment classes on wrapper should apply to inner blob
 	&.aligncenter > .dsgo-blobs {

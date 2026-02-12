@@ -13,7 +13,12 @@
 	display: block;
 	width: 100%;
 	// Make wrapper transparent so backgrounds show on blob
-	background: none !important;
+	// Repeat class for higher specificity (0,3,0) to beat WordPress's
+	// color utility classes like .has-{slug}-background-color which also use !important
+	&.dsgo-blobs-wrapper {
+		background: none !important;
+		background-color: transparent !important;
+	}
 
 	// CRITICAL: Alignment classes on wrapper should apply to inner blob (must match style.scss)
 	&.aligncenter > .dsgo-blobs {
