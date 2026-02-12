@@ -257,7 +257,7 @@ class Generate_Team_Section extends Abstract_Ability {
 				$social_icons   = array();
 				$social_mapping = array(
 					'linkedin'  => 'linkedin',
-					'twitter'   => 'twitter',
+					'twitter'   => 'x',
 					'github'    => 'github',
 					'instagram' => 'instagram',
 					'email'     => 'mail',
