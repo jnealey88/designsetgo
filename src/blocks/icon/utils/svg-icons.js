@@ -1498,6 +1498,10 @@ export const SVG_ICONS = {
 	),
 };
 
+// Backward compatibility: 'twitter' was renamed to 'x'.
+// Existing saved blocks may reference icon="twitter".
+SVG_ICONS.twitter = SVG_ICONS.x;
+
 /**
  * Get icon names for picker
  */
