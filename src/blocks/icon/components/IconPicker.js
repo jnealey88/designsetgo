@@ -43,7 +43,7 @@ const ICON_CATEGORIES = {
 		label: __('Social', 'designsetgo'),
 		icons: [
 			'facebook',
-			'twitter',
+			'x',
 			'instagram',
 			'linkedin',
 			'youtube',
