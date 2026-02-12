@@ -91,7 +91,7 @@ const addSvgPatternEditorStyles = createHigherOrderComponent(
 					const settings = select(blockEditorStore).getSettings();
 					const colors = settings.colors || [];
 					const found = colors.find((c) => c.slug === slug);
-					return found ? found.color : DEFAULTS.color;
+					return found?.color || DEFAULTS.color;
 				},
 				[dsgoSvgPatternColor]
 			);

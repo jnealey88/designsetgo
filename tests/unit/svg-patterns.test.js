@@ -274,6 +274,19 @@ describe('SVG Patterns Extension', () => {
 				expect(isValidColor(123)).toBe(false);
 				expect(isValidColor({})).toBe(false);
 			});
+
+			it('rejects CSS variables (cannot be used in SVG data URIs)', () => {
+				expect(isValidColor('var(--wp--preset--color--primary)')).toBe(
+					false
+				);
+				expect(
+					isValidColor('var(--wp--preset--color--vivid-red)')
+				).toBe(false);
+			});
+
+			it('rejects WordPress preset format', () => {
+				expect(isValidColor('var:preset|color|primary')).toBe(false);
+			});
 		});
 
 		describe('encodeSvg', () => {
@@ -327,6 +340,25 @@ describe('SVG Patterns Extension', () => {
 				);
 				expect(svg).toContain('fill="#9c92ac"');
 				expect(svg).not.toContain('<script>');
+			});
+
+			it('falls back to default for CSS variables (not valid in data URIs)', () => {
+				const svg = buildPatternSvg(
+					testPattern,
+					'var(--wp--preset--color--primary)',
+					0.5
+				);
+				expect(svg).toContain('fill="#9c92ac"');
+				expect(svg).not.toContain('var(');
+			});
+
+			it('falls back to default for WordPress preset format', () => {
+				const svg = buildPatternSvg(
+					testPattern,
+					'var:preset|color|primary',
+					0.5
+				);
+				expect(svg).toContain('fill="#9c92ac"');
 			});
 
 			it('clamps opacity to 0-1 range', () => {

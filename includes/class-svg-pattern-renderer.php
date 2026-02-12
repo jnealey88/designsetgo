@@ -91,7 +91,7 @@ class SVG_Pattern_Renderer {
 				continue;
 			}
 			foreach ( $origin_colors as $entry ) {
-				if ( isset( $entry['slug'], $entry['color'] ) && $entry['slug'] === $slug ) {
+				if ( isset( $entry['slug'], $entry['color'] ) && is_string( $entry['color'] ) && $entry['slug'] === $slug ) {
 					return $entry['color'];
 				}
 			}
@@ -253,7 +253,7 @@ class SVG_Pattern_Renderer {
 		}
 
 		$color   = sanitize_text_field( $processor->get_attribute( 'data-dsgo-svg-pattern-color' ) ?? '#9c92ac' );
-		$color   = $this->resolve_color_value( $color );
+		$color   = sanitize_text_field( $this->resolve_color_value( $color ) );
 		$opacity = (float) ( $processor->get_attribute( 'data-dsgo-svg-pattern-opacity' ) ?? 0.4 );
 		$scale   = (float) ( $processor->get_attribute( 'data-dsgo-svg-pattern-scale' ) ?? 1 );
 
