@@ -42,6 +42,7 @@
 	&__textarea,
 	&__select {
 		box-sizing: border-box; // Prevent overflow from padding/border
+		margin: 0; // Reset browser/theme defaults for flex alignment
 		width: 100%;
 		max-width: 100%; // Ensure it doesn't overflow container
 		padding: var(--dsgo-form-input-padding, 0.75rem);

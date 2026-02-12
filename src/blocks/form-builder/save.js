@@ -29,6 +29,8 @@ export default function FormBuilderSave({ attributes }) {
 		submitButtonPaddingHorizontal,
 		submitButtonFontSize,
 		submitButtonHeight,
+		submitButtonHoverColor,
+		submitButtonHoverBackgroundColor,
 		enableHoneypot,
 		enableTurnstile,
 		enableEmail,
@@ -113,6 +115,18 @@ export default function FormBuilderSave({ attributes }) {
 								...(submitButtonFontSize && {
 									fontSize: submitButtonFontSize,
 								}),
+								...(submitButtonHoverBackgroundColor && {
+									'--dsgo-button-hover-bg':
+										convertPresetToCSSVar(
+											submitButtonHoverBackgroundColor
+										),
+								}),
+								...(submitButtonHoverColor && {
+									'--dsgo-button-hover-color':
+										convertPresetToCSSVar(
+											submitButtonHoverColor
+										),
+								}),
 							}}
 						>
 							{submitButtonText}
@@ -173,6 +187,18 @@ export default function FormBuilderSave({ attributes }) {
 								paddingRight: submitButtonPaddingHorizontal,
 								...(submitButtonFontSize && {
 									fontSize: submitButtonFontSize,
+								}),
+								...(submitButtonHoverBackgroundColor && {
+									'--dsgo-button-hover-bg':
+										convertPresetToCSSVar(
+											submitButtonHoverBackgroundColor
+										),
+								}),
+								...(submitButtonHoverColor && {
+									'--dsgo-button-hover-color':
+										convertPresetToCSSVar(
+											submitButtonHoverColor
+										),
 								}),
 							}}
 						>
