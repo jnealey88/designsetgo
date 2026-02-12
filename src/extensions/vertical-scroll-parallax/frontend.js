@@ -107,11 +107,12 @@ function getAbsoluteTop(element) {
 /**
  * Calculate parallax offset for an element
  *
- * Uses centered offset: elements reach their natural position (offset = 0)
- * at the midpoint of the scroll range (50% viewport). Before the midpoint,
- * elements are offset in the opposite direction; after, they move in the
- * specified direction. This ensures elements appear in their natural layout
- * position when centered in the viewport.
+ * Uses a centered offset: elements reach their natural position (offset = 0)
+ * at the midpoint of the configured scroll range defined by viewportStart and
+ * viewportEnd. Before this midpoint, elements are offset in the opposite
+ * direction; after, they move in the specified direction. With the default
+ * range of 0-100, this midpoint corresponds to the element being centered
+ * in the viewport.
  *
  * @param {HTMLElement} element        Element with parallax
  * @param {Object}      settings       Parsed settings
@@ -160,9 +161,9 @@ function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
 	const maxOffset = settings.speed * 20;
 
 	// Centered offset: natural position (0) at midpoint of scroll range.
-	// Progress 0   = entering viewport = half offset in opposite direction
+	// Progress 0   = entering viewport = maxOffset in opposite direction
 	// Progress 0.5 = center of viewport = natural position (no offset)
-	// Progress 1   = exiting viewport  = half offset in specified direction
+	// Progress 1   = exiting viewport  = maxOffset in specified direction
 	const centeredProgress = progress - 0.5;
 
 	let offsetX = 0;
