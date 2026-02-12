@@ -570,7 +570,7 @@ export default function FormBuilderEdit({
 								type="email"
 								placeholder="admin@example.com"
 								help={__(
-									'Email address to receive notifications',
+									'Leave empty to use the site admin email address',
 									'designsetgo'
 								)}
 								__next40pxDefaultSize
