@@ -9,6 +9,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	useSettings,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -57,6 +58,8 @@ export default function FormBuilderEdit({
 		submitButtonPaddingHorizontal,
 		submitButtonFontSize,
 		submitButtonHeight,
+		submitButtonHoverColor,
+		submitButtonHoverBackgroundColor,
 		enableHoneypot,
 		enableRateLimit,
 		rateLimitCount,
@@ -73,6 +76,37 @@ export default function FormBuilderEdit({
 
 	// Get theme color palette and gradient settings
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+	// Read the site-wide default hover animation from theme.json custom settings.
+	const [themeDefaultHover] = useSettings(
+		'custom.designsetgo.defaultIconButtonHover'
+	);
+
+	// Resolve the effective animation for editor preview.
+	// Form submit always uses the site-wide default — no per-block override.
+	// Validate against allowlist to match backend (class-plugin.php ALLOWED_HOVER_ANIMATIONS).
+	const ALLOWED_ANIMATIONS = [
+		'fill-diagonal',
+		'zoom-in',
+		'slide-left',
+		'slide-right',
+		'slide-down',
+		'slide-up',
+		'border-pulse',
+		'border-glow',
+		'lift',
+		'shrink',
+	];
+	const adminDefault = themeDefaultHover || 'none';
+	const isValidAnimation = ALLOWED_ANIMATIONS.includes(adminDefault);
+	const effectiveAnimation =
+		isValidAnimation && adminDefault !== 'none' ? adminDefault : null;
+
+	// Build animation class for the submit button
+	const submitAnimationClass =
+		effectiveAnimation && effectiveAnimation !== 'none'
+			? ` dsgo-form__submit--${effectiveAnimation}`
+			: '';
 
 	// Generate unique formId on mount
 	useEffect(() => {
@@ -748,6 +782,41 @@ export default function FormBuilderEdit({
 								}),
 							clearable: true,
 						},
+						{
+							label: __('Button Hover Text Color', 'designsetgo'),
+							colorValue: decodeColorValue(
+								submitButtonHoverColor,
+								colorGradientSettings
+							),
+							onColorChange: (color) =>
+								setAttributes({
+									submitButtonHoverColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
+							clearable: true,
+						},
+						{
+							label: __(
+								'Button Hover Background Color',
+								'designsetgo'
+							),
+							colorValue: decodeColorValue(
+								submitButtonHoverBackgroundColor,
+								colorGradientSettings
+							),
+							onColorChange: (color) =>
+								setAttributes({
+									submitButtonHoverBackgroundColor:
+										encodeColorValue(
+											color,
+											colorGradientSettings
+										) || '',
+								}),
+							clearable: true,
+						},
 					]}
 					{...colorGradientSettings}
 				/>
@@ -759,7 +828,7 @@ export default function FormBuilderEdit({
 					{submitButtonPosition === 'inline' && (
 						<button
 							type="button"
-							className="dsgo-form__submit dsgo-form__submit--inline wp-element-button"
+							className={`dsgo-form__submit dsgo-form__submit--inline wp-element-button${submitAnimationClass}`}
 							disabled
 							style={{
 								...(submitButtonColor && {
@@ -779,6 +848,18 @@ export default function FormBuilderEdit({
 								paddingRight: submitButtonPaddingHorizontal,
 								...(submitButtonFontSize && {
 									fontSize: submitButtonFontSize,
+								}),
+								...(submitButtonHoverBackgroundColor && {
+									'--dsgo-button-hover-bg':
+										convertPresetToCSSVar(
+											submitButtonHoverBackgroundColor
+										),
+								}),
+								...(submitButtonHoverColor && {
+									'--dsgo-button-hover-color':
+										convertPresetToCSSVar(
+											submitButtonHoverColor
+										),
 								}),
 							}}
 						>
@@ -791,7 +872,7 @@ export default function FormBuilderEdit({
 					<div className="dsgo-form__footer">
 						<button
 							type="button"
-							className="dsgo-form__submit wp-element-button"
+							className={`dsgo-form__submit wp-element-button${submitAnimationClass}`}
 							disabled
 							style={{
 								...(submitButtonColor && {
@@ -811,6 +892,18 @@ export default function FormBuilderEdit({
 								paddingRight: submitButtonPaddingHorizontal,
 								...(submitButtonFontSize && {
 									fontSize: submitButtonFontSize,
+								}),
+								...(submitButtonHoverBackgroundColor && {
+									'--dsgo-button-hover-bg':
+										convertPresetToCSSVar(
+											submitButtonHoverBackgroundColor
+										),
+								}),
+								...(submitButtonHoverColor && {
+									'--dsgo-button-hover-color':
+										convertPresetToCSSVar(
+											submitButtonHoverColor
+										),
 								}),
 							}}
 						>

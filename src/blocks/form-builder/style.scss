@@ -41,17 +41,37 @@
 		margin-top: var(--dsgo-form-field-spacing);
 	}
 
-	// Submit button - minimal styling to allow theme styles to work
+	// Submit button - hover behavior mirrors icon-button defaults
 	&__submit {
 		// No color/background rules - let theme handle via wp-element-button
 		// Custom colors and sizing applied as inline styles via block attributes
 
-		// Minimal overrides for functionality
+		// Hover animation support
+		overflow: hidden;
+		position: relative;
+		text-decoration: none !important;
+		transition: all 0.2s ease;
 		cursor: pointer;
+
+		&:hover {
+			opacity: 0.9;
+			transform: translateY(-1px);
+			text-decoration: none !important;
+		}
+
+		&:active {
+			transform: translateY(0);
+			text-decoration: none !important;
+		}
 
 		&:disabled {
 			opacity: 0.5;
 			cursor: not-allowed;
+
+			&:hover {
+				transform: none;
+				opacity: 0.5;
+			}
 		}
 
 		// Inline button (for subscribe forms, etc.)
@@ -63,7 +83,6 @@
 
 		// Loading state
 		&.dsgo-form__submit--loading {
-			position: relative;
 			color: transparent;
 			pointer-events: none;
 
@@ -142,23 +161,28 @@
 // Inline button mode (for subscribe forms)
 .dsgo-form-builder--button-inline {
 
-	// CRITICAL: Button is inside .dsgo-form__fields as a flex child
-	// No need to make .dsgo-form a flex container
 	.dsgo-form__fields {
-		// Fields container is already flex with wrap
-		// Just ensure proper alignment for inline button
-		align-items: flex-end; // Align button with input baseline
+		align-items: flex-end;
+	}
+
+	// Auto-size the last form field to share its row with the button.
+	// Overrides any explicit field width so users don't need to manually
+	// shrink the last field when switching to inline mode.
+	.dsgo-form-field:last-of-type {
+		flex: 1 1 0 !important;
+		max-width: none !important;
 	}
 
 	.dsgo-form__submit--inline {
-		// Button sits inline with fields as a flex child
-		// Sizing is controlled via block attributes (inline styles)
 		flex: 0 0 auto;
 		width: auto;
+		// Align button bottom with input bottom — compensates for the
+		// form field's internal label-to-input gap (0.5rem)
+		margin-bottom: 0.5rem;
 	}
 
 	.dsgo-form__footer {
-		display: none; // Hidden in inline mode
+		display: none;
 	}
 }
 
@@ -200,5 +224,302 @@
 
 	.dsgo-form__message {
 		display: none;
+	}
+}
+
+// ============================================================================
+// HOVER COLORS
+// ============================================================================
+// Custom hover colors via CSS variables (same pattern as icon-button)
+
+// No animation — instant background transition
+.dsgo-form__submit[style*="--dsgo-button-hover-bg"]:not([class*="dsgo-form__submit--"]):hover {
+	background-color: var(--dsgo-button-hover-bg) !important;
+	opacity: 1;
+	transition: background-color 0.3s ease;
+}
+
+// Zoom In — preserve transform transition
+.dsgo-form__submit[style*="--dsgo-button-hover-bg"].dsgo-form__submit--zoom-in:hover {
+	background-color: var(--dsgo-button-hover-bg) !important;
+	opacity: 1;
+	transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+// Lift — preserve transform and box-shadow transitions
+.dsgo-form__submit[style*="--dsgo-button-hover-bg"].dsgo-form__submit--lift:hover {
+	background-color: var(--dsgo-button-hover-bg) !important;
+	opacity: 1;
+	transition: transform 0.5s ease, box-shadow 0.5s ease, background-color 0.3s ease;
+}
+
+// Shrink — preserve transform transition
+.dsgo-form__submit[style*="--dsgo-button-hover-bg"].dsgo-form__submit--shrink:hover {
+	background-color: var(--dsgo-button-hover-bg) !important;
+	opacity: 1;
+	transition: transform 0.4s ease, background-color 0.3s ease;
+}
+
+// Border Pulse — preserve border-width transition
+.dsgo-form__submit[style*="--dsgo-button-hover-bg"].dsgo-form__submit--border-pulse:hover {
+	background-color: var(--dsgo-button-hover-bg) !important;
+	opacity: 1;
+	transition: border-width 0.3s ease, background-color 0.3s ease;
+}
+
+// Border Glow — preserve box-shadow transition
+.dsgo-form__submit[style*="--dsgo-button-hover-bg"].dsgo-form__submit--border-glow:hover {
+	background-color: var(--dsgo-button-hover-bg) !important;
+	opacity: 1;
+	transition: all 0.3s ease, background-color 0.3s ease;
+}
+
+// Slide animations — fade in after slide completes
+.dsgo-form__submit[style*="--dsgo-button-hover-bg"].dsgo-form__submit--slide-left:hover,
+.dsgo-form__submit[style*="--dsgo-button-hover-bg"].dsgo-form__submit--slide-right:hover,
+.dsgo-form__submit[style*="--dsgo-button-hover-bg"].dsgo-form__submit--slide-down:hover,
+.dsgo-form__submit[style*="--dsgo-button-hover-bg"].dsgo-form__submit--slide-up:hover {
+	background-color: var(--dsgo-button-hover-bg) !important;
+	opacity: 1;
+	transition: background-color 0.1s ease 0.3s;
+}
+
+// Hover text color
+.dsgo-form__submit[style*="--dsgo-button-hover-color"]:hover {
+	color: var(--dsgo-button-hover-color) !important;
+	transition: color 0.3s ease;
+}
+
+// ============================================================================
+// HOVER ANIMATIONS
+// ============================================================================
+
+// Fill Diagonal — Diagonal sweep fill effect
+.dsgo-form__submit.dsgo-form__submit--fill-diagonal {
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: -150%;
+		width: 150%;
+		height: 100%;
+		background-color: var(--dsgo-button-hover-bg, rgba(0, 0, 0, 0.15));
+		transition: left 0.5s ease;
+		z-index: 0;
+		transform: skewX(-20deg);
+		transform-origin: top left;
+	}
+
+	// Button text above pseudo-element
+	> * {
+		position: relative;
+		z-index: 1;
+	}
+
+	&:hover::before {
+		left: 0;
+	}
+}
+
+// Zoom In — Scale up on hover
+.dsgo-form__submit.dsgo-form__submit--zoom-in {
+	transform: scale(1);
+	transition: transform 0.3s ease;
+
+	&:hover {
+		transform: scale(1.05);
+		opacity: 1;
+	}
+}
+
+// Slide Left — Background slides in from right
+.dsgo-form__submit.dsgo-form__submit--slide-left {
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		right: -100%;
+		width: 100%;
+		height: 100%;
+		background-color: var(--dsgo-button-hover-bg, rgba(0, 0, 0, 0.15));
+		transition: right 0.3s ease;
+		z-index: 0;
+	}
+
+	> * {
+		position: relative;
+		z-index: 1;
+	}
+
+	&:hover::before {
+		right: 0;
+	}
+}
+
+// Slide Right — Background slides in from left
+.dsgo-form__submit.dsgo-form__submit--slide-right {
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background-color: var(--dsgo-button-hover-bg, rgba(0, 0, 0, 0.15));
+		transition: left 0.3s ease;
+		z-index: 0;
+	}
+
+	> * {
+		position: relative;
+		z-index: 1;
+	}
+
+	&:hover::before {
+		left: 0;
+	}
+}
+
+// Slide Down — Background slides down from top
+.dsgo-form__submit.dsgo-form__submit--slide-down {
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: -100%;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: var(--dsgo-button-hover-bg, rgba(0, 0, 0, 0.15));
+		transition: top 0.3s ease;
+		z-index: 0;
+	}
+
+	> * {
+		position: relative;
+		z-index: 1;
+	}
+
+	&:hover::before {
+		top: 0;
+	}
+}
+
+// Slide Up — Background slides up from bottom
+.dsgo-form__submit.dsgo-form__submit--slide-up {
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		bottom: -100%;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: var(--dsgo-button-hover-bg, rgba(0, 0, 0, 0.15));
+		transition: bottom 0.3s ease;
+		z-index: 0;
+	}
+
+	> * {
+		position: relative;
+		z-index: 1;
+	}
+
+	&:hover::before {
+		bottom: 0;
+	}
+}
+
+// Border Pulse — Animated border effect using box-shadow
+.dsgo-form__submit.dsgo-form__submit--border-pulse {
+	transition: box-shadow 0.3s ease;
+
+	&:hover {
+		animation: dsgo-form-border-pulse 1s ease infinite;
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes dsgo-form-border-pulse {
+
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 currentcolor;
+	}
+
+	50% {
+		box-shadow: 0 0 0 4px currentcolor;
+	}
+}
+
+// Border Glow — Glowing border effect
+.dsgo-form__submit.dsgo-form__submit--border-glow {
+	transition: all 0.3s ease;
+
+	&:hover {
+		opacity: 1;
+		transform: none;
+		box-shadow: 0 0 15px currentcolor, 0 0 30px currentcolor, 0 0 45px currentcolor;
+	}
+}
+
+// Lift — Elevate with shadow
+.dsgo-form__submit.dsgo-form__submit--lift {
+	transform: translateY(0);
+	transition: transform 0.5s ease, box-shadow 0.5s ease;
+
+	&:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.15);
+		opacity: 1;
+	}
+}
+
+// Shrink — Subtle scale down
+.dsgo-form__submit.dsgo-form__submit--shrink {
+	transform: scale(1);
+	transition: transform 0.4s ease;
+
+	&:hover {
+		transform: scale(0.95);
+		opacity: 1;
+	}
+}
+
+// No Hover — Explicit opt-out from hover animations
+.dsgo-form__submit.dsgo-form__submit--no-hover {
+
+	&:hover {
+		opacity: 1;
+		transform: none;
 	}
 }

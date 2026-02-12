@@ -3,10 +3,11 @@
  * Button Global Styles
  *
  * Generates CSS so single-element button blocks (icon-button, modal-trigger)
- * inherit WordPress Global Styles button settings. WordPress targets
- * `.wp-block-button .wp-block-button__link` (descendant selector), which
- * doesn't match our single-element structure where both classes sit on one
- * element.
+ * and form builder submit buttons inherit WordPress Global Styles button
+ * settings. WordPress targets `.wp-block-button .wp-block-button__link`
+ * (descendant selector), which doesn't match our single-element structure
+ * where both classes sit on one element, nor the form submit button which
+ * uses `.wp-element-button` without a `.wp-block-button` parent.
  *
  * @package DesignSetGo
  * @since 2.0.3
@@ -57,6 +58,7 @@ class Button_Global_Styles {
 	private const BLOCK_SELECTORS = array(
 		'.dsgo-icon-button.wp-block-button__link',
 		'.dsgo-modal-trigger.wp-block-button__link',
+		'.dsgo-form__submit.wp-element-button',
 	);
 
 	/**
@@ -80,8 +82,8 @@ class Button_Global_Styles {
 	 * Skips pages that don't use our button blocks for performance.
 	 */
 	public function inject_frontend() {
-		// Bail early if neither block is present on this page.
-		if ( ! has_block( 'designsetgo/icon-button' ) && ! has_block( 'designsetgo/modal-trigger' ) ) {
+		// Bail early if none of our button blocks are present on this page.
+		if ( ! has_block( 'designsetgo/icon-button' ) && ! has_block( 'designsetgo/modal-trigger' ) && ! has_block( 'designsetgo/form-builder' ) ) {
 			return;
 		}
 
@@ -116,11 +118,15 @@ class Button_Global_Styles {
 			return;
 		}
 
-		// Try icon-button handle first, then modal-trigger, then fallback.
-		if ( wp_style_is( 'designsetgo-icon-button-style', 'registered' ) ) {
+		// Attach to an enqueued block handle, or fall back to a dedicated handle.
+		// Using 'enqueued' (not 'registered') ensures the inline CSS outputs
+		// even when only some button blocks are present on the page.
+		if ( wp_style_is( 'designsetgo-icon-button-style', 'enqueued' ) ) {
 			wp_add_inline_style( 'designsetgo-icon-button-style', $css );
-		} elseif ( wp_style_is( 'designsetgo-modal-trigger-style', 'registered' ) ) {
+		} elseif ( wp_style_is( 'designsetgo-modal-trigger-style', 'enqueued' ) ) {
 			wp_add_inline_style( 'designsetgo-modal-trigger-style', $css );
+		} elseif ( wp_style_is( 'designsetgo-form-builder-style', 'enqueued' ) ) {
+			wp_add_inline_style( 'designsetgo-form-builder-style', $css );
 		} else {
 			wp_register_style( 'designsetgo-button-global-styles-editor', false );
 			wp_enqueue_style( 'designsetgo-button-global-styles-editor' );

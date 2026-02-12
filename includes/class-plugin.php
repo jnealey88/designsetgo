@@ -344,6 +344,9 @@ class Plugin {
 
 		// Apply global default hover animation to Icon Button blocks.
 		add_filter( 'render_block_designsetgo/icon-button', array( $this, 'apply_default_icon_button_hover' ), 10, 2 );
+
+		// Apply global default hover animation to Form Builder submit buttons.
+		add_filter( 'render_block_designsetgo/form-builder', array( $this, 'apply_default_form_button_hover' ), 10, 2 );
 	}
 
 	/**
@@ -615,5 +618,66 @@ class Plugin {
 		}
 
 		return $block_content;
+	}
+
+	/**
+	 * Apply global default hover animation to Form Builder submit buttons.
+	 *
+	 * Uses the same site-wide default as icon buttons. Resolution priority:
+	 * admin settings > theme.json > none.
+	 *
+	 * @param string $block_content Rendered block content.
+	 * @param array  $block         Block data including attrs.
+	 * @return string Modified block content.
+	 */
+	public function apply_default_form_button_hover( $block_content, $block ) {
+		if ( empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		// If submit button already has an explicit animation or no-hover class, leave unchanged.
+		if ( strpos( $block_content, 'dsgo-form__submit--no-hover' ) !== false ) {
+			return $block_content;
+		}
+
+		$pattern = '/dsgo-form__submit--(' . implode( '|', array_map( 'preg_quote', self::ALLOWED_HOVER_ANIMATIONS ) ) . ')/';
+		if ( preg_match( $pattern, $block_content ) ) {
+			return $block_content;
+		}
+
+		// Resolve default animation (same logic as icon button).
+		$settings      = \DesignSetGo\Admin\Settings::get_settings();
+		$admin_default = isset( $settings['animations']['default_icon_button_hover'] )
+			? sanitize_key( $settings['animations']['default_icon_button_hover'] )
+			: 'none';
+
+		$default = $admin_default;
+		if ( 'none' === $default ) {
+			$theme_default = wp_get_global_settings( array( 'custom', 'designsetgo', 'defaultIconButtonHover' ) );
+			if ( ! empty( $theme_default ) && is_string( $theme_default ) ) {
+				$theme_default = sanitize_key( $theme_default );
+				if ( 'none' !== $theme_default ) {
+					$default = $theme_default;
+				}
+			}
+		}
+
+		if ( 'none' === $default || ! in_array( $default, self::ALLOWED_HOVER_ANIMATIONS, true ) ) {
+			return $block_content;
+		}
+
+		// Find the submit button and add the animation class.
+		$processor = new \WP_HTML_Tag_Processor( $block_content );
+		while ( $processor->next_tag(
+			array(
+				'tag_name'   => 'button',
+				'class_name' => 'dsgo-form__submit',
+			)
+		) ) {
+			$processor->add_class( 'dsgo-form__submit--' . $default );
+			break;
+		}
+
+		return $processor->get_updated_html();
 	}
 }

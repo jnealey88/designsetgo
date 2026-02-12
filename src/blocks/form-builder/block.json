@@ -93,6 +93,14 @@
 			"type": "string",
 			"default": "44px"
 		},
+		"submitButtonHoverColor": {
+			"type": "string",
+			"default": ""
+		},
+		"submitButtonHoverBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
 		"enableHoneypot": {
 			"type": "boolean",
 			"default": true
