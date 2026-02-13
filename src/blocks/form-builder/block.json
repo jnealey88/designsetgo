@@ -69,6 +69,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"fieldBorderRadius": {
+			"type": "string",
+			"default": ""
+		},
 		"submitButtonColor": {
 			"type": "string",
 			"default": ""

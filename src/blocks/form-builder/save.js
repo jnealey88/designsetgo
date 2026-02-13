@@ -23,6 +23,7 @@ export default function FormBuilderSave({ attributes }) {
 		fieldLabelColor,
 		fieldBorderColor,
 		fieldBackgroundColor,
+		fieldBorderRadius,
 		submitButtonColor,
 		submitButtonBackgroundColor,
 		submitButtonPaddingVertical,
@@ -51,6 +52,7 @@ export default function FormBuilderSave({ attributes }) {
 		'--dsgo-form-border-color':
 			convertPresetToCSSVar(fieldBorderColor) || '#d1d5db',
 		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
+		'--dsgo-form-border-radius': fieldBorderRadius || undefined,
 		// Button colors now applied as inline styles on button element
 	};
 
