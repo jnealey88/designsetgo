@@ -88,8 +88,7 @@ class Plugin {
 	 *
 	 * @var string
 	 */
-	private const SAFE_CSS_FUNCTIONS_PATTERN = '/\b(?:rotate|scale|skew|translate|translateX|translateY|blur|brightness|contrast|grayscale|saturate|sepia|invert|hue-rotate|opacity|perspective)(\((?:[^()]|(?1))*\))/';
-
+	private const SAFE_CSS_FUNCTIONS_PATTERN = '/\b(?:rotate(?:3d|[XYZ])?|scale(?:3d|[XYZ])?|skew[XY]?|translate(?:3d|[XYZ])?|matrix(?:3d)?|blur|brightness|contrast|drop-shadow|grayscale|saturate|sepia|invert|hue-rotate|opacity|perspective)(\((?:[^()]|(?1))*\))/';
 
 	/**
 	 * Instance of this class.
@@ -744,6 +743,7 @@ class Plugin {
 	 * Ensures block inline styles survive wp_kses_post() sanitization
 	 * on multisite, REST API, and other filtered contexts.
 	 *
+	 * @since 2.0.23
 	 * @param string[] $styles Existing allowed CSS properties.
 	 * @return string[] Extended list with DesignSetGo properties.
 	 */
@@ -772,6 +772,11 @@ class Plugin {
 
 		// Strip known-safe CSS functions (same technique WordPress uses for var/calc/repeat).
 		$cleaned = preg_replace( self::SAFE_CSS_FUNCTIONS_PATTERN, '', $css_test_string );
+
+		// Fail-safe: reject if preg_replace hits a PCRE limit and returns null.
+		if ( null === $cleaned ) {
+			return false;
+		}
 
 		// If stripping our functions didn't change anything, this isn't our concern.
 		if ( $cleaned === $css_test_string ) {

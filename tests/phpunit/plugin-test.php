@@ -117,6 +117,17 @@ class Test_Plugin extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test that the safecss_filter_attr_allow_css filter is registered.
+	 */
+	public function test_safecss_filter_attr_allow_css_filter_registered() {
+		$this->assertGreaterThan(
+			0,
+			has_filter( 'safecss_filter_attr_allow_css', array( \DesignSetGo\Plugin::instance(), 'allow_block_css_functions' ) ),
+			'safecss_filter_attr_allow_css filter should be registered'
+		);
+	}
+
+	/**
 	 * Test that block layout CSS properties survive wp_kses_post().
 	 *
 	 * Verifies the global safe_style_css filter allows display, gap,
