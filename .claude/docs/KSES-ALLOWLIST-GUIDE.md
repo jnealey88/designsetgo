@@ -118,7 +118,7 @@ If the SVG is missing:
 - CSS functions in the allowlist (`rotate`, `scale`, `blur`, `rgba`, `linear-gradient`, etc.) are purely visual and cannot execute scripts
 - The value check still runs after stripping known-safe functions - if anything suspicious remains (backslash, unmatched parentheses, comments), the value is rejected
 - Dangerous patterns like `expression()`, `-moz-binding`, and `url(javascript:)` are never allowed
-- SVG elements are limited to presentation elements only; no `<script>`, `<foreignObject>`, or event handler attributes are allowed
+- SVG elements are limited to presentation elements (`<svg>`, `<path>`, `<circle>`, etc.); script-capable elements (`<script>`, `<foreignObject>`, `<animate>`) and event handler attributes (`onclick`, `onload`, etc.) are intentionally excluded from the allowlist
 
 ## Tests
 

@@ -293,6 +293,7 @@ class Test_Plugin extends WP_UnitTestCase {
 		$html = '<div style="background-image:linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%)">test</div>';
 		$result = wp_kses_post( $html );
 		$this->assertStringContainsString( 'linear-gradient(45deg', $result, 'linear-gradient() should survive wp_kses_post' );
+		$this->assertStringContainsString( 'rgba(255, 255, 255, 0.15)', $result, 'nested rgba() inside gradient should survive' );
 
 		$html = '<div style="background-image:radial-gradient(circle, red, blue)">test</div>';
 		$result = wp_kses_post( $html );
@@ -357,9 +358,12 @@ class Test_Plugin extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test realistic icon block output with rgba background survives wp_kses_post().
+	 * Test realistic icon block CSS properties with rgba background survive wp_kses_post().
+	 *
+	 * Icon blocks use lazy-loading (dsgo-lazy-icon with data-icon-name), not inline SVG.
+	 * This tests the CSS property and data attribute preservation.
 	 */
-	public function test_kses_preserves_icon_block_output() {
+	public function test_kses_preserves_icon_block_css() {
 		$html = '<div class="wp-block-designsetgo-icon dsgo-icon has-text-color has-background" style="border-radius:10px;color:#6366f1;background-color:rgba(99,102,241,0.1);padding-top:var(--wp--preset--spacing--20);display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center" data-icon-name="lightning" role="img" aria-label="Lightning"></div></div>';
 
 		$result = wp_kses_post( $html );
@@ -368,5 +372,24 @@ class Test_Plugin extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'display:flex', $result, 'display:flex should survive' );
 		$this->assertStringContainsString( 'display:inline-flex', $result, 'display:inline-flex should survive' );
 		$this->assertStringContainsString( 'data-icon-name="lightning"', $result, 'data attributes should survive' );
+	}
+
+	/**
+	 * Test that dangerous SVG content is stripped by wp_kses_post().
+	 *
+	 * Verifies our SVG allowlist only permits presentation elements
+	 * and blocks script injection, event handlers, and javascript: URLs.
+	 */
+	public function test_kses_strips_dangerous_svg_content() {
+		// Script tag inside SVG.
+		$html = '<svg><script>alert(1)</script><path d="M0,0"></path></svg>';
+		$result = wp_kses_post( $html );
+		$this->assertStringNotContainsString( '<script', $result, 'script tags should be stripped from SVG' );
+		$this->assertStringContainsString( '<path', $result, 'safe path element should remain' );
+
+		// Event handler on SVG element.
+		$html = '<svg onclick="alert(1)"><path d="M0,0"></path></svg>';
+		$result = wp_kses_post( $html );
+		$this->assertStringNotContainsString( 'onclick', $result, 'event handlers should be stripped from SVG' );
 	}
 }

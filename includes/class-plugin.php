@@ -103,6 +103,12 @@ class Plugin {
 	 * These are used by shape dividers, icons, comparison tables,
 	 * timeline markers, accordion toggles, and counter decorations.
 	 *
+	 * Only presentation elements are included. Script-capable elements
+	 * (script, foreignObject, animate, animateMotion, animateTransform, set)
+	 * and link elements (a, image, feImage) are intentionally excluded.
+	 * Event handler attributes (onclick, onload, etc.) are not in
+	 * SVG_ATTRIBUTES and are therefore blocked by KSES.
+	 *
 	 * @var string[]
 	 */
 	private const SVG_ELEMENTS = array(
@@ -116,7 +122,6 @@ class Plugin {
 		'ellipse',
 		'g',
 		'defs',
-		'use',
 		'symbol',
 		'clippath',
 		'lineargradient',
@@ -169,7 +174,6 @@ class Plugin {
 		'aria-label'         => true,
 		'role'               => true,
 		'focusable'          => true,
-		'data-*'             => true,
 		// Gradient stop attributes.
 		'offset'             => true,
 		'stop-color'         => true,
@@ -855,6 +859,11 @@ class Plugin {
 	public function allow_block_css_functions( $allow_css, $css_test_string ) {
 		if ( $allow_css ) {
 			return $allow_css;
+		}
+
+		// Reject overly long values to avoid regex backtracking on adversarial input.
+		if ( strlen( $css_test_string ) > 1000 ) {
+			return false;
 		}
 
 		// Strip known-safe CSS functions (same technique WordPress uses for var/calc/repeat).
