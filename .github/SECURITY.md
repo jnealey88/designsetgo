@@ -14,10 +14,11 @@ Currently supported versions with security updates:
 
 **Please DO NOT report security vulnerabilities through public GitHub issues.**
 
-Instead, please report them via:
+Instead, please report them via **GitHub Security Advisories**:
 
-1. **Email**: justin@nealey.pro (recommended)
-2. **GitHub Security Advisory**: Use the "Security" tab → "Report a vulnerability"
+1. Go to the [Security tab](https://github.com/jnealey88/designsetgo/security/advisories) on the repository
+2. Click **"Report a vulnerability"**
+3. Fill out the advisory form with the details below
 
 ### What to Include
 
