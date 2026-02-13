@@ -313,7 +313,7 @@ class Test_Plugin extends WP_UnitTestCase {
 		$result = wp_kses_post( $html );
 
 		$this->assertStringContainsString( '<svg', $result, 'svg element should survive wp_kses_post' );
-		$this->assertStringContainsString( 'viewBox', $result, 'viewBox attribute should survive (after case restoration)' );
+		$this->assertMatchesRegularExpression( '/view[Bb]ox="0 0 1200 120"/', $result, 'viewBox attribute should survive wp_kses_post' );
 		$this->assertStringContainsString( '<path', $result, 'path element should survive wp_kses_post' );
 		$this->assertStringContainsString( 'd="M0,0', $result, 'path d attribute should survive wp_kses_post' );
 	}
