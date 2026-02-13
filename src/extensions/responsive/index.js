@@ -82,7 +82,7 @@ addFilter(
 const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 	(BlockListBlock) => {
 		return (props) => {
-			const { attributes, className, wrapperProps = {}, name } = props;
+			const { attributes, wrapperProps = {}, name } = props;
 			const { dsgoHideOnDesktop, dsgoHideOnTablet, dsgoHideOnMobile } =
 				attributes;
 
@@ -105,20 +105,23 @@ const withResponsiveVisibilityIndicator = createHigherOrderComponent(
 				return <BlockListBlock {...props} />;
 			}
 
-			const updatedClassName =
-				`${className || ''} dsgo-has-responsive-visibility`.trim();
-
+			// Use wrapperProps for both class and data attribute — passing className
+			// as a separate prop is silently dropped when wrapperProps is present.
+			// Include props.className so classes from other filters are preserved.
 			const updatedWrapperProps = {
 				...wrapperProps,
+				className: [
+					props.className,
+					wrapperProps.className,
+					'dsgo-has-responsive-visibility',
+				]
+					.filter(Boolean)
+					.join(' '),
 				'data-hidden-devices': hiddenDevices.join(''),
 			};
 
 			return (
-				<BlockListBlock
-					{...props}
-					className={updatedClassName}
-					wrapperProps={updatedWrapperProps}
-				/>
+				<BlockListBlock {...props} wrapperProps={updatedWrapperProps} />
 			);
 		};
 	},

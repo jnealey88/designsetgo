@@ -97,7 +97,7 @@ addFilter(
  */
 const withClickableClass = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
-		const { name, attributes } = props;
+		const { name, attributes, className, wrapperProps = {} } = props;
 
 		if (!SUPPORTED_BLOCKS.includes(name)) {
 			return <BlockListBlock {...props} />;
@@ -105,9 +105,18 @@ const withClickableClass = createHigherOrderComponent((BlockListBlock) => {
 
 		const hasValidUrl =
 			attributes.dsgoLinkUrl && attributes.dsgoLinkUrl.trim().length > 0;
-		const classes = classnames({ 'dsgo-clickable': hasValidUrl });
 
-		return <BlockListBlock {...props} className={classes} />;
+		// Merge into wrapperProps.className so classes are preserved when
+		// wrapperProps is present (className prop is silently dropped in that case).
+		const mergedClassName = classnames(className, wrapperProps.className, {
+			'dsgo-clickable': hasValidUrl,
+		});
+		const updatedWrapperProps = {
+			...wrapperProps,
+			className: mergedClassName || undefined,
+		};
+
+		return <BlockListBlock {...props} wrapperProps={updatedWrapperProps} />;
 	};
 }, 'withClickableClass');
 
