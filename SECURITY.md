@@ -6,9 +6,9 @@ We release patches for security vulnerabilities for the following versions:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.4.x   | :white_check_mark: |
-| 1.3.x   | :white_check_mark: |
-| < 1.3   | :x:                |
+| 2.0.x   | :white_check_mark: |
+| 1.5.x   | :white_check_mark: |
+| < 1.5   | :x:                |
 
 ## Reporting a Vulnerability
 
@@ -199,9 +199,31 @@ DesignSetGo includes comprehensive GDPR compliance features for form submissions
 - Hook: `designsetgo_can_delete_form_submission` - Prevent specific deletions
 - Hook: `designsetgo_form_submission_erased` - Run actions after erasure
 
-See [docs/GDPR-COMPLIANCE.md](docs/GDPR-COMPLIANCE.md) for complete documentation.
+See [docs/compliance/GDPR-COMPLIANCE.md](docs/compliance/GDPR-COMPLIANCE.md) for complete documentation.
 
 ## Security Audit History
+
+### Version 2.0.x (2026-02)
+
+**Security Improvements:**
+
+- Added global `safe_style_css` filter for block inline styles (KSES allowlist)
+- Moved form email configuration to server-side for improved security
+- Unified form field block context namespace
+- Dependency updates (qs 6.14.2)
+
+**Audited by:** Internal security review
+
+### Version 1.5.0 (2026-02)
+
+**Security Improvements:**
+
+- Server-side SVG pattern rendering (eliminates client-side injection surface)
+- Code splitting with lazy loading for extensions and admin
+- REST API exposure of extension attributes with proper permission callbacks
+- Server-side attribute injection for parallax effects
+
+**Audited by:** Internal security review
 
 ### Version 1.4.0 (2026-02-01)
 
@@ -263,5 +285,5 @@ For security-related questions or concerns:
 
 ---
 
-**Last Updated:** 2026-02-06
-**Version:** 1.4.1
+**Last Updated:** 2026-02-13
+**Version:** 2.0.23

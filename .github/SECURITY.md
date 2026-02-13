@@ -6,8 +6,9 @@ Currently supported versions with security updates:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.x.x   | :white_check_mark: |
-| < 1.0   | :x:                |
+| 2.0.x   | :white_check_mark: |
+| 1.5.x   | :white_check_mark: |
+| < 1.5   | :x:                |
 
 ## Reporting a Vulnerability
 
@@ -71,25 +72,30 @@ When contributing to DesignSetGo:
 ### Plugin Scope
 
 This plugin provides:
-- Custom WordPress blocks (editor-only)
-- Frontend styling and interactions
-- No database modifications beyond post content
-- No external API calls
-- No file uploads or user data collection
+
+- Custom WordPress blocks (editor and frontend)
+- Frontend styling, interactions, and animations
+- Form Builder with email submission handling
+- REST API endpoints (form submissions, GDPR data export/erasure, draft preview, abilities)
+- Optional IP address logging for form abuse prevention
+- GDPR compliance tools (data export and erasure via WordPress Privacy Tools)
 
 ### WordPress Permissions
 
 All block features respect WordPress's built-in capability system:
+
 - Block editor access requires `edit_posts` capability
-- No custom capabilities added
-- No privilege escalation vectors
+- Admin operations require `manage_options` capability
+- REST API endpoints use proper permission callbacks
+- Form submission endpoint is intentionally public (protected by honeypot, rate limiting, and time-based checks)
 
 ## Third-Party Dependencies
 
 We monitor dependencies for security issues via:
+
 - Dependabot alerts
-- npm audit
-- composer audit (if applicable)
+- `npm audit`
+- `composer audit`
 
 Dependencies are updated promptly when security issues are discovered.
 
