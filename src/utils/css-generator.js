@@ -88,3 +88,18 @@ export function sanitizeCSSUnit(value) {
 
 	return value;
 }
+
+/**
+ * Validate a CSS length value (e.g. "6px", "0.375rem", "1em").
+ * Returns the value if valid, undefined otherwise.
+ *
+ * @param {string} value CSS length value.
+ * @return {string|undefined} Validated value or undefined.
+ */
+export function validateCSSLength(value) {
+	if (!value || typeof value !== 'string') {
+		return undefined;
+	}
+	const pattern = /^\d+(\.\d+)?(px|em|rem|%|vh|vw|vmin|vmax|ch|ex)$/;
+	return pattern.test(value.trim()) ? value.trim() : undefined;
+}

@@ -15,7 +15,7 @@
 	--dsgo-form-success-color: #16a34a;
 	// Button colors intentionally not set here - uses theme defaults unless overridden
 
-	// Form container
+	// Prevents padding + border from exceeding container width when border-radius is applied
 	box-sizing: border-box;
 	width: 100%;
 	max-width: 100%;

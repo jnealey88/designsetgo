@@ -32,6 +32,7 @@ import {
 	decodeColorValue,
 } from '../../utils/encode-color-value';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { validateCSSLength } from '../../utils/css-generator';
 
 export default function FormBuilderEdit({
 	attributes,
@@ -132,7 +133,7 @@ export default function FormBuilderEdit({
 		'--dsgo-form-border-color':
 			convertPresetToCSSVar(fieldBorderColor) || '#d1d5db',
 		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
-		'--dsgo-form-border-radius': fieldBorderRadius || undefined,
+		'--dsgo-form-border-radius': validateCSSLength(fieldBorderRadius),
 		// Button colors now applied as inline styles on button element
 	};
 
