@@ -109,10 +109,12 @@ Before you begin, ensure you have:
 
 - **Node.js** 18+ ([Download](https://nodejs.org/))
 - **npm** 8+ (comes with Node.js)
+- **PHP** 8.0+ (for local linting with `npm run lint:php`)
+- **Composer** (for PHP dependencies) ([Download](https://getcomposer.org/))
 - **Git** ([Download](https://git-scm.com/))
 - **Docker Desktop** (for wp-env) ([Download](https://www.docker.com/products/docker-desktop/))
 
-**Note**: You don't need to install WordPress, PHP, or MySQL separately. The `wp-env` tool handles this using Docker.
+**Note**: You don't need to install WordPress or MySQL separately. The `wp-env` tool handles this using Docker. PHP and Composer are needed for PHP linting and testing.
 
 ### Step-by-Step Setup
 
@@ -130,11 +132,14 @@ cd designsetgo
 # Install Node.js dependencies
 npm install
 
+# Install PHP dependencies (for linting and testing)
+composer install
+
 # This installs:
 # - WordPress scripts and tools
 # - React and WordPress packages
 # - Development tools (linters, formatters)
-# - Testing frameworks (Jest, Playwright)
+# - Testing frameworks (Jest, Playwright, PHPUnit)
 ```
 
 #### 3. Start Local WordPress Environment
@@ -213,7 +218,7 @@ designsetgo/
 │   └── CLAUDE.md        # Development patterns and best practices
 │
 ├── src/                 # JavaScript source files (edit these!)
-│   ├── blocks/         # Individual block implementations
+│   ├── blocks/         # Individual block implementations (50+)
 │   │   ├── accordion/  # Example: Accordion block
 │   │   │   ├── index.js        # Block registration
 │   │   │   ├── edit.js         # Editor component (React)
@@ -223,7 +228,7 @@ designsetgo/
 │   │   │   └── editor.scss     # Editor-only styles
 │   │   └── ...
 │   ├── components/     # Shared React components
-│   ├── extensions/     # Block extensions (animations, responsive)
+│   ├── extensions/     # Block extensions (16: animations, responsive, etc.)
 │   ├── styles/         # Global styles
 │   └── utils/          # Shared utilities
 │
@@ -233,21 +238,28 @@ designsetgo/
 │   ├── patterns/      # Pattern registration
 │   └── class-*.php    # Core classes
 │
+├── patterns/           # Block pattern definitions
+│
+├── languages/          # Translation files (.pot, .po, .json)
+│
 ├── build/             # Compiled files (auto-generated, don't edit!)
 │   ├── blocks/       # Compiled JS/CSS
 │   └── *.asset.php   # Asset dependencies
 │
 ├── docs/             # Developer documentation
-│   ├── GETTING-STARTED.md     # This guide
+│   ├── GETTING-STARTED.md     # Setup guide
 │   ├── ARCHITECTURE.md         # Code structure
 │   ├── BEST-PRACTICES-SUMMARY.md
 │   └── ...
 │
 ├── tests/            # Test files
 │   ├── e2e/         # End-to-end tests (Playwright)
-│   └── unit/        # Unit tests (Jest)
+│   ├── unit/        # Unit tests (Jest)
+│   ├── js/          # JavaScript test helpers
+│   └── phpunit/     # PHP unit tests (PHPUnit)
 │
-└── designsetgo.php   # Main plugin file
+├── designsetgo.php   # Main plugin file
+└── uninstall.php     # Cleanup on plugin deletion
 ```
 
 **Key Directories:**
@@ -351,7 +363,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 #### 4. Run Linters and Tests
 
-**⚠️ Important**: Linters will **report errors but NOT auto-fix** them. This is intentional to ensure you understand and review all changes.
+**⚠️ Important**: Linters will **report errors but NOT auto-fix** them when run manually. However, **Husky pre-commit hooks** will auto-fix JS and SCSS via `lint-staged` when you commit.
 
 ```bash
 # Lint JavaScript (reports errors, no auto-fix)
@@ -360,15 +372,37 @@ npm run lint:js
 # Lint CSS (reports errors, no auto-fix)
 npm run lint:css
 
+# Lint PHP (requires Composer)
+npm run lint:php
+
 # Format code manually if needed
 npm run format
 
-# Run unit tests
+# Run JavaScript unit tests
 npm run test:unit
 
-# Run E2E tests (if relevant)
+# Run PHP unit tests
+npm run test:php
+
+# Run E2E tests
 npm run test:e2e
+
+# E2E variants:
+npm run test:e2e:ui        # Interactive UI mode
+npm run test:e2e:headed    # Visible browser
+npm run test:e2e:debug     # Debug mode
+npm run test:e2e:chromium  # Chromium only
+npm run test:e2e:firefox   # Firefox only
+npm run test:e2e:webkit    # WebKit only
+npm run test:e2e:mobile    # Mobile Chrome + Safari
 ```
+
+**Pre-commit hooks (automatic):**
+This project uses **Husky** + **lint-staged**. When you commit, the following runs automatically:
+
+- `*.js` files → `wp-scripts lint-js --fix`
+- `*.scss` files → `wp-scripts lint-style --fix`
+- `*.php` files → `php -l` (syntax check)
 
 **If linters fail:**
 1. Review the errors carefully
@@ -757,4 +791,4 @@ Thank you for contributing to DesignSetGo! Every contribution, no matter how sma
 
 ---
 
-**License**: GPL-2.0-or-later | **Version**: 1.4.1 | **WordPress**: 6.7+
+**License**: GPL-2.0-or-later | **Version**: 2.0.23 | **WordPress**: 6.7+ | **PHP**: 8.0+
