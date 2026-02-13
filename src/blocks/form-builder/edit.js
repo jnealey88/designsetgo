@@ -32,6 +32,7 @@ import {
 	decodeColorValue,
 } from '../../utils/encode-color-value';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { validateCSSLength } from '../../utils/css-generator';
 
 export default function FormBuilderEdit({
 	attributes,
@@ -52,6 +53,7 @@ export default function FormBuilderEdit({
 		fieldLabelColor,
 		fieldBorderColor,
 		fieldBackgroundColor,
+		fieldBorderRadius,
 		submitButtonColor,
 		submitButtonBackgroundColor,
 		submitButtonPaddingVertical,
@@ -131,6 +133,7 @@ export default function FormBuilderEdit({
 		'--dsgo-form-border-color':
 			convertPresetToCSSVar(fieldBorderColor) || '#d1d5db',
 		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
+		'--dsgo-form-border-radius': validateCSSLength(fieldBorderRadius),
 		// Button colors now applied as inline styles on button element
 	};
 
@@ -426,6 +429,29 @@ export default function FormBuilderEdit({
 						min={0}
 						max={50}
 						help={__('Padding inside input fields', 'designsetgo')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					<UnitControl
+						label={__('Border Radius', 'designsetgo')}
+						value={fieldBorderRadius}
+						onChange={(value) =>
+							setAttributes({
+								fieldBorderRadius: value || '',
+							})
+						}
+						units={[
+							{ value: 'px', label: 'px', default: 6 },
+							{ value: 'rem', label: 'rem', default: 0.375 },
+							{ value: 'em', label: 'em', default: 0.375 },
+						]}
+						min={0}
+						max={100}
+						help={__(
+							'Border radius for input fields',
+							'designsetgo'
+						)}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>

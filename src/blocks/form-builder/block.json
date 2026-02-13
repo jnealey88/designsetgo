@@ -69,6 +69,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"fieldBorderRadius": {
+			"type": "string",
+			"default": ""
+		},
 		"submitButtonColor": {
 			"type": "string",
 			"default": ""
@@ -157,6 +161,7 @@
 		"designsetgo/form/fieldBorderColor": "fieldBorderColor",
 		"designsetgo/form/fieldBackgroundColor": "fieldBackgroundColor",
 		"designsetgo/form/fieldSpacing": "fieldSpacing",
+		"designsetgo/form/fieldBorderRadius": "fieldBorderRadius",
 		"designsetgo/form/formId": "formId"
 	},
 	"supports": {
