@@ -42,7 +42,7 @@ export default function FormTimeFieldEdit({
 
 	// Get context values from parent form
 	const fieldBackgroundColor =
-		context['designsetgo/form-builder/fieldBackgroundColor'];
+		context['designsetgo/form/fieldBackgroundColor'];
 
 	const fieldClasses = classnames('dsgo-form-field', 'dsgo-form-field--time');
 

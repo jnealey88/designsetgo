@@ -44,7 +44,7 @@ export default function FormNumberFieldEdit({
 
 	// Get context values from parent form
 	const fieldBackgroundColor =
-		context['designsetgo/form-builder/fieldBackgroundColor'];
+		context['designsetgo/form/fieldBackgroundColor'];
 
 	const fieldClasses = classnames(
 		'dsgo-form-field',

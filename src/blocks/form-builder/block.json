@@ -162,6 +162,8 @@
 		"designsetgo/form/fieldBackgroundColor": "fieldBackgroundColor",
 		"designsetgo/form/fieldSpacing": "fieldSpacing",
 		"designsetgo/form/fieldBorderRadius": "fieldBorderRadius",
+		"designsetgo/form/inputHeight": "inputHeight",
+		"designsetgo/form/inputPadding": "inputPadding",
 		"designsetgo/form/formId": "formId"
 	},
 	"supports": {

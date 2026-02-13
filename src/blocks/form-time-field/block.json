@@ -16,14 +16,12 @@
 		"reusable": false
 	},
 	"usesContext": [
-		"designsetgo/form-builder/fieldSpacing",
-		"designsetgo/form-builder/fieldLabelColor",
-		"designsetgo/form-builder/fieldBorderColor",
-		"designsetgo/form-builder/fieldBorderRadius",
-		"designsetgo/form-builder/fieldFocusColor",
-		"designsetgo/form-builder/inputHeight",
-		"designsetgo/form-builder/inputPadding",
-		"designsetgo/form-builder/fieldBackgroundColor"
+		"designsetgo/form/fieldSpacing",
+		"designsetgo/form/fieldLabelColor",
+		"designsetgo/form/fieldBorderColor",
+		"designsetgo/form/fieldBackgroundColor",
+		"designsetgo/form/inputHeight",
+		"designsetgo/form/inputPadding"
 	],
 	"attributes": {
 		"fieldName": {
