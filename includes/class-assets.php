@@ -138,41 +138,12 @@ class Assets {
 			$has_blocks = true;
 		}
 
-		// Check for core blocks with our enhancements.
-		// Note: WordPress serializes core blocks as 'wp:group', not 'wp:core/group'.
-		if ( ! $has_blocks && strpos( $content, 'wp:group' ) !== false ) {
-			// Only load if group has our enhancements (dsgo- classes or animations).
-			if ( strpos( $content, 'dsgo-' ) !== false ||
-				strpos( $content, 'data-dsgo-animation' ) !== false ||
-				strpos( $content, 'has-dsgo-animation' ) !== false ) {
-				$has_blocks = true;
-			}
-		}
-
-		// Check for DSG extension classes on any block type (responsive visibility,
-		// clickable group, etc. can be applied to blocks beyond core/group).
+		// Check for DSG extension classes/attributes on any block type.
+		// All DSG features use the 'dsgo-' prefix: responsive visibility (dsgo-hide-*),
+		// clickable group (dsgo-clickable), animations (data-dsgo-animation-*,
+		// has-dsgo-animation), expanding background (data-dsgo-expanding-bg-*,
+		// has-dsgo-expanding-background), text style (dsgo-text-style), etc.
 		if ( ! $has_blocks && strpos( $content, 'dsgo-' ) !== false ) {
-			$has_blocks = true;
-		}
-
-		// Check for animations applied to any block.
-		if ( ! $has_blocks && (
-			strpos( $content, 'data-dsgo-animation-enabled' ) !== false ||
-			strpos( $content, 'has-dsgo-animation' ) !== false
-		) ) {
-			$has_blocks = true;
-		}
-
-		// Check for expanding background applied to any block.
-		if ( ! $has_blocks && (
-			strpos( $content, 'data-dsgo-expanding-bg-enabled' ) !== false ||
-			strpos( $content, 'has-dsgo-expanding-background' ) !== false
-		) ) {
-			$has_blocks = true;
-		}
-
-		// Check for text-style format applied to any content.
-		if ( ! $has_blocks && strpos( $content, 'dsgo-text-style' ) !== false ) {
 			$has_blocks = true;
 		}
 
