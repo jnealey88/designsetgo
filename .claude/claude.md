@@ -126,6 +126,7 @@ npm run lint:php
 - [REFACTORING-GUIDE.md](.claude/docs/REFACTORING-GUIDE.md)
 - [FSE-COMPATIBILITY-GUIDE.md](.claude/docs/FSE-COMPATIBILITY-GUIDE.md)
 - [EDITOR-STYLING-GUIDE.md](.claude/docs/EDITOR-STYLING-GUIDE.md)
+- [KSES-ALLOWLIST-GUIDE.md](.claude/docs/KSES-ALLOWLIST-GUIDE.md)
 - [Block Editor Handbook](https://developer.wordpress.org/block-editor/)
 
 ## Version Control

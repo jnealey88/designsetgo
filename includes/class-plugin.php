@@ -39,6 +39,58 @@ class Plugin {
 	);
 
 	/**
+	 * CSS properties used in block save() output that must pass through
+	 * wp_kses_post() sanitization.
+	 *
+	 * WordPress's default safe_style_css allowlist does not include modern
+	 * layout properties (flex, grid, etc.). Without this filter, block inline
+	 * styles are stripped on multisite, REST API content creation, and other
+	 * contexts where wp_kses_post() runs.
+	 *
+	 * @var string[]
+	 */
+	private const SAFE_STYLE_PROPERTIES = array(
+		// Layout.
+		'display',
+		'gap',
+		'row-gap',
+		'column-gap',
+		'grid-template-columns',
+		// Flex.
+		'flex',
+		'flex-direction',
+		'flex-wrap',
+		'flex-shrink',
+		'align-items',
+		'justify-content',
+		'align-self',
+		// Positioning.
+		'position',
+		'left',
+		'overflow',
+		// Visual.
+		'transform',
+		'transition',
+		'aspect-ratio',
+		'object-fit',
+		'object-position',
+		'backdrop-filter',
+		'box-sizing',
+	);
+
+	/**
+	 * CSS function names used in block save() output that WordPress's KSES
+	 * does not recognize as safe.
+	 *
+	 * WordPress allows var(), calc(), repeat(), etc. but strips other CSS
+	 * functions like rotate() and blur() because they contain parentheses.
+	 * These are standard visual CSS functions that cannot execute scripts.
+	 *
+	 * @var string
+	 */
+	private const SAFE_CSS_FUNCTIONS_PATTERN = '/\b(?:rotate(?:3d|[XYZ])?|scale(?:3d|[XYZ])?|skew[XY]?|translate(?:3d|[XYZ])?|matrix(?:3d)?|blur|brightness|contrast|drop-shadow|grayscale|saturate|sepia|invert|hue-rotate|opacity|perspective)(\((?:[^()]|(?1))*\))/';
+
+	/**
 	 * Instance of this class.
 	 *
 	 * @var Plugin|null
@@ -347,6 +399,10 @@ class Plugin {
 
 		// Apply global default hover animation to Form Builder submit buttons.
 		add_filter( 'render_block_designsetgo/form-builder', array( $this, 'apply_default_form_button_hover' ), 10, 2 );
+
+		// Allow block CSS properties and function values through wp_kses_post().
+		add_filter( 'safe_style_css', array( $this, 'allow_block_style_properties' ) );
+		add_filter( 'safecss_filter_attr_allow_css', array( $this, 'allow_block_css_functions' ), 10, 2 );
 	}
 
 	/**
@@ -679,5 +735,55 @@ class Plugin {
 		}
 
 		return $processor->get_updated_html();
+	}
+
+	/**
+	 * Add DesignSetGo CSS properties to WordPress's safe style allowlist.
+	 *
+	 * Ensures block inline styles survive wp_kses_post() sanitization
+	 * on multisite, REST API, and other filtered contexts.
+	 *
+	 * @since 2.0.23
+	 * @param string[] $styles Existing allowed CSS properties.
+	 * @return string[] Extended list with DesignSetGo properties.
+	 */
+	public function allow_block_style_properties( $styles ) {
+		return array_merge( $styles, self::SAFE_STYLE_PROPERTIES );
+	}
+
+	/**
+	 * Allow CSS function values used by blocks through KSES validation.
+	 *
+	 * WordPress strips CSS values containing parentheses unless the function
+	 * is in its internal allowlist (var, calc, repeat, etc.). Block save()
+	 * output uses transform functions (rotate, scale) and filter functions
+	 * (blur) that are not in that list. This callback mirrors WordPress's
+	 * own approach: strip known-safe functions, then check for unsafe chars.
+	 *
+	 * @since 2.0.23
+	 * @param bool   $allow_css       Whether the CSS value is considered safe.
+	 * @param string $css_test_string The CSS declaration to test.
+	 * @return bool True if the value is safe.
+	 */
+	public function allow_block_css_functions( $allow_css, $css_test_string ) {
+		if ( $allow_css ) {
+			return $allow_css;
+		}
+
+		// Strip known-safe CSS functions (same technique WordPress uses for var/calc/repeat).
+		$cleaned = preg_replace( self::SAFE_CSS_FUNCTIONS_PATTERN, '', $css_test_string );
+
+		// Fail-safe: reject if preg_replace hits a PCRE limit and returns null.
+		if ( null === $cleaned ) {
+			return false;
+		}
+
+		// If stripping our functions didn't change anything, this isn't our concern.
+		if ( $cleaned === $css_test_string ) {
+			return $allow_css;
+		}
+
+		// After removing safe functions, reject if unsafe characters remain.
+		return ! preg_match( '%[\\\(&=}]|/\*%', $cleaned );
 	}
 }
