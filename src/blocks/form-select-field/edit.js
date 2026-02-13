@@ -42,7 +42,7 @@ export default function FormSelectFieldEdit({
 
 	// Get context values from parent form
 	const fieldBackgroundColor =
-		context['designsetgo/form-builder/fieldBackgroundColor'];
+		context['designsetgo/form/fieldBackgroundColor'];
 
 	const fieldClasses = classnames(
 		'dsgo-form-field',

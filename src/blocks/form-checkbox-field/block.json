@@ -16,11 +16,9 @@
 		"reusable": false
 	},
 	"usesContext": [
-		"designsetgo/form-builder/fieldSpacing",
-		"designsetgo/form-builder/fieldLabelColor",
-		"designsetgo/form-builder/fieldBorderColor",
-		"designsetgo/form-builder/fieldBorderRadius",
-		"designsetgo/form-builder/fieldFocusColor"
+		"designsetgo/form/fieldSpacing",
+		"designsetgo/form/fieldLabelColor",
+		"designsetgo/form/fieldBorderColor"
 	],
 	"attributes": {
 		"fieldName": {

@@ -17,6 +17,7 @@
 
 	// Prevents padding + border from exceeding container width when border-radius is applied
 	box-sizing: border-box;
+	padding: 1rem;
 	width: 100%;
 	max-width: 100%;
 }
