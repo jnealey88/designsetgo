@@ -147,6 +147,16 @@ function buildJsScssReplacements(config) {
 	// Text domain in i18n calls.
 	literal('designsetgo', config.textDomain);
 
+	// CSS prefix in camelCase form for block attributes (dsgoAnimationEnabled, dsgoTextRevealColor, etc.).
+	// Must come before short prefix rule since dsgo starts with dsg.
+	if (config.cssPrefix !== DEFAULTS.cssPrefix) {
+		rules.push({
+			search: new RegExp(`\\b${DEFAULTS.cssPrefix}([A-Z])`, 'g'),
+			replace: `${config.cssPrefix}$1`,
+			from: `${DEFAULTS.cssPrefix}[A-Z]`,
+		});
+	}
+
 	// Short prefix for camelCase identifiers (animation keyframes, attribute names, globals).
 	// Match dsg followed by uppercase letter — e.g., dsgFadeIn, dsgLinkUrl, dsgStickyHeaderSettings.
 	// This must NOT match dsgo- (safe: dsgo is never followed by uppercase).
@@ -287,6 +297,15 @@ function buildPhpReplacements(config) {
 	// Meta key prefix.
 	literal('_dsg_', `${config.metaKeyPrefix}_`);
 
+	// CSS prefix in camelCase form for block attributes (dsgoAnimationEnabled, dsgoTextRevealColor, etc.).
+	if (config.cssPrefix !== DEFAULTS.cssPrefix) {
+		rules.push({
+			search: new RegExp(`\\b${DEFAULTS.cssPrefix}([A-Z])`, 'g'),
+			replace: `${config.cssPrefix}$1`,
+			from: `${DEFAULTS.cssPrefix}[A-Z]`,
+		});
+	}
+
 	// Short prefix for camelCase identifiers.
 	if (config.shortPrefix !== DEFAULTS.shortPrefix) {
 		rules.push({
@@ -350,7 +369,26 @@ function buildBlockJsonReplacements(config) {
 	// WP auto-generated class prefix.
 	literal('wp-block-designsetgo-', `wp-block-${config.blockNamespace}-`);
 
-	return rules.sort((a, b) => (b.from || '').length - (a.from || '').length);
+	// CSS prefix in camelCase form for block attribute names (dsgoAnimationEnabled, etc.).
+	if (config.cssPrefix !== DEFAULTS.cssPrefix) {
+		rules.push({
+			search: new RegExp(`${DEFAULTS.cssPrefix}([A-Z])`, 'g'),
+			replace: `${config.cssPrefix}$1`,
+			from: `${DEFAULTS.cssPrefix}[A-Z]`,
+		});
+	}
+
+	return rules.sort((a, b) => {
+		const aIsRegex = a.search instanceof RegExp;
+		const bIsRegex = b.search instanceof RegExp;
+		if (aIsRegex && !bIsRegex) {
+			return 1;
+		}
+		if (!aIsRegex && bIsRegex) {
+			return -1;
+		}
+		return (b.from || '').length - (a.from || '').length;
+	});
 }
 
 /**
@@ -394,6 +432,15 @@ function buildCssReplacements(config) {
 
 	// Display name in CSS comments (e.g., @package DesignSetGo).
 	literal('DesignSetGo', config.pluginName);
+
+	// CSS prefix in camelCase form (dsgoAnimationEnabled in data attributes, etc.).
+	if (config.cssPrefix !== DEFAULTS.cssPrefix) {
+		rules.push({
+			search: new RegExp(`${DEFAULTS.cssPrefix}([A-Z])`, 'g'),
+			replace: `${config.cssPrefix}$1`,
+			from: `${DEFAULTS.cssPrefix}[A-Z]`,
+		});
+	}
 
 	// Short prefix for CSS @keyframes names (dsgFadeIn, dsgSlideInUp, etc.).
 	if (config.shortPrefix !== DEFAULTS.shortPrefix) {
