@@ -62,7 +62,22 @@ function loadConfig() {
 		return null;
 	}
 
-	const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+	let config;
+	try {
+		config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+	} catch (err) {
+		// eslint-disable-next-line no-console
+		console.error(
+			`Error: Failed to parse white-label.json: ${err.message}`
+		);
+		return null;
+	}
+
+	if (!config || typeof config !== 'object' || Array.isArray(config)) {
+		// eslint-disable-next-line no-console
+		console.error('Error: white-label.json must contain a JSON object.');
+		return null;
+	}
 
 	// Strip JSON Schema reference and comment fields.
 	const cleaned = { ...config };

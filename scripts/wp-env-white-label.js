@@ -69,7 +69,10 @@ console.log(`  Plugin source: dist/ (${config.pluginSlug})`);
 console.log('');
 console.log('Next steps:');
 console.log(
-	'  npm run wp-env:start    — Start/restart wp-env with the white-labeled plugin'
+	'  npx wp-env start --update    — Start/restart wp-env with the white-labeled plugin'
+);
+console.log(
+	'                                 (--update is required to pick up config changes)'
 );
 console.log('');
 console.log('To revert to normal development:');

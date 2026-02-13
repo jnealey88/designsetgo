@@ -28,6 +28,15 @@ if (!config) {
 	process.exit(1);
 }
 
+// Defense-in-depth: validate pluginSlug at point of use since this script
+// can be run independently, bypassing the validation script.
+if (!/^[a-z][a-z0-9-]*$/.test(config.pluginSlug)) {
+	console.error(
+		`Error: Invalid plugin slug "${config.pluginSlug}". Must be lowercase letters, numbers, and hyphens.`
+	);
+	process.exit(1);
+}
+
 if (!fs.existsSync(DIST)) {
 	console.error(
 		'Error: dist/ directory not found. Run "npm run white-label:build" first.'
@@ -47,9 +56,18 @@ if (fs.existsSync(zipPath)) {
 // Rename dist/ temporarily for zipping, then rename back.
 const tempDir = path.resolve(ROOT, config.pluginSlug);
 
-// If temp dir already exists (shouldn't happen), clean it.
+// Recover from a previous interrupted run — if the temp dir exists but
+// dist/ also exists, remove the stale temp dir. If only temp dir exists,
+// it IS the dist content from a prior crash, so restore it first.
 if (fs.existsSync(tempDir)) {
-	fs.rmSync(tempDir, { recursive: true, force: true });
+	if (fs.existsSync(DIST)) {
+		fs.rmSync(tempDir, { recursive: true, force: true });
+	} else {
+		console.warn(
+			'Warning: Recovering from a previous interrupted zip — restoring dist/.'
+		);
+		fs.renameSync(tempDir, DIST);
+	}
 }
 
 fs.renameSync(DIST, tempDir);
@@ -68,5 +86,7 @@ try {
 	process.exit(1);
 } finally {
 	// Restore dist/ directory.
-	fs.renameSync(tempDir, DIST);
+	if (fs.existsSync(tempDir)) {
+		fs.renameSync(tempDir, DIST);
+	}
 }

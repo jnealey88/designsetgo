@@ -32,6 +32,7 @@ try {
 }
 
 const errors = [];
+const warnings = [];
 
 function required(field, label) {
 	if (
@@ -104,7 +105,7 @@ if (
 	config.cssPrefix &&
 	(config.cssPrefix.length < 2 || config.cssPrefix.length > 6)
 ) {
-	errors.push(
+	warnings.push(
 		`CSS prefix (${config.cssPrefix}): Recommended 2-6 characters (currently ${config.cssPrefix.length}).`
 	);
 }
@@ -160,9 +161,9 @@ maxLength('postTypeSlug', 'Post type slug', 20);
 
 // Meta key prefix.
 if (required('metaKeyPrefix', 'Meta key prefix')) {
-	if (!/^_?[a-z][a-z0-9]*$/.test(config.metaKeyPrefix)) {
+	if (!/^_?[a-z][a-z0-9_]*$/.test(config.metaKeyPrefix)) {
 		errors.push(
-			`Meta key prefix ("${config.metaKeyPrefix}") is invalid. Must be lowercase, optionally starting with underscore.`
+			`Meta key prefix ("${config.metaKeyPrefix}") is invalid. Must be lowercase with optional underscores, optionally starting with underscore.`
 		);
 	}
 }
@@ -191,13 +192,40 @@ matchesPattern(
 	'Must be lowercase with underscores.'
 );
 
-// Plugin name (display).
-required('pluginName', 'Plugin name');
+// Plugin name (display) — reject characters that could inject code when
+// interpolated into PHP strings or JS template literals.
+if (required('pluginName', 'Plugin name')) {
+	if (/['"\\`$<>]/.test(config.pluginName)) {
+		errors.push(
+			`Plugin name ("${config.pluginName}") contains unsafe characters. Avoid quotes, backticks, backslashes, dollar signs, and angle brackets.`
+		);
+	}
+}
+
+// Plugin description — same injection guard.
+if (config.pluginDescription && /['"\\`$<>]/.test(config.pluginDescription)) {
+	errors.push(
+		`Plugin description contains unsafe characters. Avoid quotes, backticks, backslashes, dollar signs, and angle brackets.`
+	);
+}
+
+// Plugin author — same injection guard.
+if (config.pluginAuthor && /['"\\`$<>]/.test(config.pluginAuthor)) {
+	errors.push(
+		`Plugin author ("${config.pluginAuthor}") contains unsafe characters. Avoid quotes, backticks, backslashes, dollar signs, and angle brackets.`
+	);
+}
 
 // Check for prefix collision: shortPrefix must not be a prefix of cssPrefix + hyphen pattern.
 // e.g., if cssPrefix is "mb" and shortPrefix is "mb", that's fine because
 // shortPrefix matches /mb[A-Z]/ and cssPrefix matches /mb-/.
 // But if shortPrefix is "dsgo" it would match "dsgoA" which could collide.
+
+if (warnings.length > 0) {
+	console.warn('White-label configuration warnings:\n');
+	warnings.forEach((w) => console.warn(`  - ${w}`));
+	console.warn('');
+}
 
 if (errors.length > 0) {
 	console.error('White-label configuration errors:\n');
