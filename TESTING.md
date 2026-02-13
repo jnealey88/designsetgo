@@ -21,11 +21,11 @@ Comprehensive testing documentation for the DesignSetGo WordPress plugin.
 
 DesignSetGo uses a comprehensive testing strategy with three types of tests:
 
-| Test Type | Tool | Purpose | Coverage |
-|-----------|------|---------|----------|
-| **E2E** | Playwright | Test complete user workflows in a real WordPress environment | Block interactions, frontend rendering, admin UI |
-| **Unit** | Jest | Test JavaScript functions and React components in isolation | Block logic, utilities, data transformations |
-| **PHP** | PHPUnit | Test PHP classes, functions, and WordPress integration | Server-side rendering, APIs, hooks |
+| Test Type | Tool       | Purpose                                                       | Coverage                                         |
+| --------- | ---------- | ------------------------------------------------------------- | ------------------------------------------------ |
+| **E2E**   | Playwright | Test complete user workflows in a real WordPress environment  | Block interactions, frontend rendering, admin UI |
+| **Unit**  | Jest       | Test JavaScript functions and React components in isolation   | Block logic, utilities, data transformations     |
+| **PHP**   | PHPUnit    | Test PHP classes, functions, and WordPress integration        | Server-side rendering, APIs, hooks               |
 
 ### Test Coverage Goals
 
@@ -58,8 +58,9 @@ npm run wp-env:start
 ```
 
 **WordPress will be available at:**
-- Frontend: http://localhost:8888
-- Admin: http://localhost:8888/wp-admin
+
+- Frontend: <http://localhost:8888>
+- Admin: <http://localhost:8888/wp-admin>
 - Credentials: `admin` / `password`
 
 ### 3. Run Tests
@@ -84,9 +85,9 @@ End-to-end tests that simulate real user interactions in a WordPress environment
 
 **Location**: `tests/e2e/`
 **Config**: [playwright.config.js](playwright.config.js)
-**Documentation**: [tests/README.md](tests/README.md), [docs/TESTING.md](docs/TESTING.md)
+**Documentation**: [tests/README.md](tests/README.md), [docs/testing/TESTING.md](docs/testing/TESTING.md)
 
-#### Available Commands
+#### E2E Commands
 
 ```bash
 npm run test:e2e              # Run all E2E tests (headless)
@@ -107,7 +108,7 @@ const { test, expect } = require('@playwright/test');
 const { createNewPost, insertBlock } = require('./helpers/wordpress');
 
 test.describe('Accordion Block', () => {
-  test('should insert and configure Flex block', async ({ page }) => {
+  test('should insert and display accordion block', async ({ page }) => {
     await createNewPost(page, 'post');
     await insertBlock(page, 'designsetgo/accordion');
 
@@ -127,7 +128,7 @@ JavaScript unit tests for functions, utilities, and React components.
 **Config**: [jest.config.js](jest.config.js)
 **Setup**: [tests/unit/setup.js](tests/unit/setup.js)
 
-#### Available Commands
+#### Unit Test Commands
 
 ```bash
 npm run test:unit              # Run unit tests
@@ -148,14 +149,14 @@ describe('Block Utilities', () => {
 });
 ```
 
-#### What to Test
+#### What to Unit Test
 
-- ✅ Utility functions (pure functions)
-- ✅ Data transformations
-- ✅ Block attribute validation
-- ✅ Component props and state
-- ✅ Event handlers
-- ❌ WordPress APIs (mock them instead)
+- Utility functions (pure functions)
+- Data transformations
+- Block attribute validation
+- Component props and state
+- Event handlers
+- NOT WordPress APIs (mock them instead)
 
 ---
 
@@ -167,7 +168,7 @@ PHP unit tests for server-side functionality and WordPress integration.
 **Config**: [phpunit.xml.dist](phpunit.xml.dist)
 **Bootstrap**: [tests/phpunit/bootstrap.php](tests/phpunit/bootstrap.php)
 
-#### Available Commands
+#### PHP Test Commands
 
 ```bash
 # Using Composer (recommended)
@@ -189,7 +190,7 @@ The recommended way to run PHPUnit tests is using wp-env:
 npm run wp-env:start
 
 # Run tests in wp-env container
-npm run wp-env run tests-cli --env-cwd=wp-content/plugins/designsetgo vendor/bin/phpunit
+npx wp-env run tests-cli --env-cwd=wp-content/plugins/designsetgo vendor/bin/phpunit
 ```
 
 #### Example PHP Test
@@ -213,14 +214,14 @@ class Test_Accordion_Block extends WP_UnitTestCase {
 }
 ```
 
-#### What to Test
+#### What to PHP Test
 
-- ✅ Block registration
-- ✅ Server-side rendering (render.php)
-- ✅ WordPress hooks and filters
-- ✅ Plugin initialization
-- ✅ Admin functionality
-- ✅ REST API endpoints
+- Block registration
+- Server-side rendering (render.php)
+- WordPress hooks and filters
+- Plugin initialization
+- Admin functionality
+- REST API endpoints
 
 ---
 
@@ -238,7 +239,7 @@ npm run test:e2e:ui
 
 # Run specific test file
 npm run test:unit tests/unit/block-attributes.test.js
-npm run test:e2e tests/e2e/flex-block.spec.js
+npm run test:e2e tests/e2e/group-enhancements.spec.js
 
 # Run tests with coverage
 npm run test:unit -- --coverage
@@ -263,7 +264,7 @@ composer run-script lint
 
 ### Debugging Tests
 
-#### E2E Tests (Playwright)
+#### Debugging E2E Tests
 
 ```bash
 # Debug mode (step-by-step)
@@ -276,7 +277,7 @@ npm run test:e2e:headed
 await page.pause();
 ```
 
-#### Unit Tests (Jest)
+#### Debugging Unit Tests
 
 ```bash
 # Debug in Chrome DevTools
@@ -289,7 +290,7 @@ test.only('my test', () => { ... });
 test.skip('broken test', () => { ... });
 ```
 
-#### PHP Tests (PHPUnit)
+#### Debugging PHP Tests
 
 ```bash
 # Run specific test
@@ -360,73 +361,36 @@ $this->assertStringContainsString('text', $string);
 
 ### Best Practices
 
-- ✅ Test one thing per test
-- ✅ Use descriptive test names
-- ✅ Keep tests independent
-- ✅ Use beforeEach/afterEach for setup/teardown
-- ✅ Mock external dependencies
-- ❌ Don't test implementation details
-- ❌ Don't skip tests (fix or remove them)
-- ❌ Don't rely on test execution order
+- Test one thing per test
+- Use descriptive test names
+- Keep tests independent
+- Use beforeEach/afterEach for setup/teardown
+- Mock external dependencies
+- Don't test implementation details
+- Don't skip tests (fix or remove them)
+- Don't rely on test execution order
 
 ---
 
 ## CI/CD Integration
 
-### GitHub Actions Example
+Tests run automatically via GitHub Actions on pushes and pull requests to `main`. The CI pipeline is defined in [.github/workflows/ci.yml](.github/workflows/ci.yml) and includes:
 
-```yaml
-name: Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.1'
-
-      - name: Install dependencies
-        run: |
-          npm ci
-          composer install
-          npm run test:install
-
-      - name: Run tests
-        run: |
-          npm run build
-          npm run test:e2e
-          npm run test:unit
-          composer test
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: |
-            playwright-report/
-            coverage/
-```
+1. **Build** - Compiles the plugin (`npm ci && npm run build`)
+2. **Lint & Unit Tests** - Runs JS/CSS linting and Jest unit tests
+3. **PHP Lint & Analysis** - Runs PHPCS and PHPStan
+4. **Security Audit** - `npm audit` and license checks
+5. **E2E Tests** - Playwright browser tests against a wp-env instance
+6. **WordPress Compatibility Matrix** - Tests across PHP 8.0-8.3 and WP 6.7-latest
 
 ---
 
 ## Troubleshooting
 
-### E2E Tests
+### E2E Test Issues
 
 **Problem**: WordPress not starting
+
 ```bash
 npm run wp-env:stop
 npm run wp-env:clean
@@ -434,42 +398,48 @@ npm run wp-env:start
 ```
 
 **Problem**: Authentication failed
+
 ```bash
 rm -rf artifacts/storage-states
 npx playwright test --project=setup
 ```
 
 **Problem**: Tests timing out
+
 - Increase timeout in [playwright.config.js](playwright.config.js)
 - Check if wp-env is running: `npm run wp-env:start`
 
-### Unit Tests
+### Unit Test Issues
 
 **Problem**: Module not found
+
 ```bash
 npm install
 npm run build
 ```
 
 **Problem**: Tests failing after WordPress updates
+
 ```bash
 npm install @wordpress/scripts@latest
 npx jest --clearCache
 ```
 
-### PHP Tests
+### PHP Test Issues
 
 **Problem**: WordPress test suite not found
+
 ```bash
 # Use wp-env (recommended)
 npm run wp-env:start
-npm run wp-env run tests-cli --env-cwd=wp-content/plugins/designsetgo vendor/bin/phpunit
+npx wp-env run tests-cli --env-cwd=wp-content/plugins/designsetgo vendor/bin/phpunit
 
 # Or install manually
 bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
 ```
 
 **Problem**: Database connection errors
+
 - Check MySQL is running
 - Verify credentials in bootstrap.php
 - Use wp-env instead for isolated environment
@@ -479,6 +449,7 @@ bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
 ## Resources
 
 ### Documentation
+
 - [Playwright Docs](https://playwright.dev)
 - [Jest Docs](https://jestjs.io)
 - [PHPUnit Docs](https://phpunit.de)
@@ -486,16 +457,19 @@ bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
 - [@wordpress/scripts](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/)
 
 ### Examples
+
 - [tests/e2e/](tests/e2e/) - E2E test examples
 - [tests/unit/](tests/unit/) - Unit test examples
 - [tests/phpunit/](tests/phpunit/) - PHPUnit test examples
 
 ### Detailed Documentation
+
 - [tests/README.md](tests/README.md) - Quick start guide
-- [docs/TESTING.md](docs/TESTING.md) - Detailed E2E testing guide
+- [docs/testing/TESTING.md](docs/testing/TESTING.md) - Detailed E2E testing guide
+- [docs/testing/TESTING-ABILITIES-API.md](docs/testing/TESTING-ABILITIES-API.md) - Abilities API testing
 
 ---
 
-**Last Updated**: 2026-02-06
-**Plugin Version**: 1.4.1
+**Last Updated**: 2026-02-13
+**Plugin Version**: 2.0.23
 **WordPress Compatibility**: 6.7+

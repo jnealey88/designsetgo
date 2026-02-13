@@ -1,174 +1,115 @@
 # Testing Quick Start
 
-Quick guide to test the WordPress Abilities API integration.
+Quick guide to run the DesignSetGo test suite.
 
-## 🚀 Fastest Way to Test (2 minutes)
-
-### 1. Start WordPress
+## 1. Install Dependencies
 
 ```bash
-npx wp-env start
-npm run build
-```
-
-### 2. Create Application Password
-
-1. Visit: http://localhost:8888/wp-admin/profile.php
-2. Login: `admin` / `password`
-3. Scroll to "Application Passwords"
-4. Name: `Testing` → Click "Add New"
-5. **Copy the password**
-
-### 3. Run Automated Tests
-
-```bash
-./test-abilities.sh
-```
-
-When prompted, paste your Application Password.
-
-**Expected Output:**
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ✓ ALL TESTS PASSED!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Total Tests:  8
-Passed:       8
-Failed:       0
-```
-
----
-
-## 📋 Manual Testing (5 minutes)
-
-### Test 1: List Available Abilities
-
-```bash
-curl -s -u "admin:YOUR_APP_PASSWORD" \
-  "http://localhost:8888/wp-json/wp-abilities/v1/abilities" | \
-  jq '[.[] | select(.name | startswith("designsetgo/"))]'
-```
-
-**You should see 5 abilities:**
-- designsetgo/list-blocks
-- designsetgo/insert-flex-container
-- designsetgo/insert-grid-container
-- designsetgo/configure-counter-animation
-- designsetgo/apply-animation
-
-### Test 2: Insert a Block
-
-```bash
-# Get your credentials
-export WP_USER="admin"
-export WP_PASS="YOUR_APP_PASSWORD"
-
-# Create a test post
-POST_ID=$(npx wp-env run cli wp post create \
-  --post_title="Test" \
-  --post_status=publish \
-  --porcelain)
-
-echo "Created post ID: $POST_ID"
-
-# Insert a Flex Container
-curl -X POST \
-  -u "$WP_USER:$WP_PASS" \
-  -H "Content-Type: application/json" \
-  "http://localhost:8888/wp-json/wp-abilities/v1/abilities/designsetgo/insert-flex-container/execute" \
-  -d "{
-    \"post_id\": $POST_ID,
-    \"attributes\": {
-      \"direction\": \"row\",
-      \"justifyContent\": \"center\"
-    }
-  }" | jq '.'
-```
-
-**Expected:**
-```json
-{
-  "success": true,
-  "post_id": 123,
-  "block_id": "block-abc123",
-  "position": -1
-}
-```
-
-### Test 3: Verify in WordPress
-
-1. Go to: http://localhost:8888/wp-admin/edit.php
-2. Find your "Test" post
-3. Click "Edit"
-4. You should see a Flex Container block!
-
----
-
-## 🐛 Troubleshooting
-
-### "Abilities API endpoint not found"
-
-```bash
-# Check if package is installed
-composer show wordpress/abilities-api
-
-# If not found:
+npm install
 composer install
-
-# Restart WordPress
-npx wp-env restart
+npm run test:install   # Playwright browsers
 ```
 
-### "No DesignSetGo abilities found"
+## 2. Start WordPress
 
 ```bash
-# Check logs
-npx wp-env logs | grep -i "abilities"
-
-# Rebuild
+npm run wp-env:start
 npm run build
-
-# Restart
-npx wp-env restart
 ```
 
-### "Authentication failed"
+**WordPress will be available at:**
 
-- Make sure you're using an **Application Password**, not your regular password
-- Remove spaces from the password: `1234 5678` → `12345678`
-- Create a new Application Password if needed
+- Frontend: <http://localhost:8888>
+- Admin: <http://localhost:8888/wp-admin>
+- Credentials: `admin` / `password`
 
----
+## 3. Run Tests
 
-## 📖 Full Documentation
+```bash
+# JavaScript unit tests (Jest)
+npm run test:unit
 
-For comprehensive testing details, see:
-- [docs/TESTING-ABILITIES-API.md](docs/TESTING-ABILITIES-API.md) - Complete testing guide
-- [docs/ABILITIES-API.md](docs/ABILITIES-API.md) - Full API documentation
+# E2E browser tests (Playwright)
+npm run test:e2e
 
----
-
-## ✅ Success Checklist
-
-After testing, you should have:
-
-- [ ] Automated tests passing (8/8)
-- [ ] Flex Container inserted in test post
-- [ ] Grid Container inserted in test post
-- [ ] Animation applied to heading
-- [ ] Error handling working (invalid post ID)
-- [ ] Blocks visible in WordPress editor
-- [ ] Blocks rendering on frontend
+# PHP unit tests (PHPUnit)
+npm run test:php
+```
 
 ---
 
-## 🎯 Next Steps
+## Interactive Development
 
-1. **Test with AI Agents** - Try with Claude or ChatGPT
-2. **Create Custom Abilities** - Add your own abilities
-3. **Contribute** - Share your findings with the WordPress AI initiative
+```bash
+# Jest watch mode
+npm run test:unit -- --watch
+
+# Playwright UI mode (recommended)
+npm run test:e2e:ui
+
+# Playwright with visible browser
+npm run test:e2e:headed
+```
 
 ---
 
-**Questions?** See [docs/TESTING-ABILITIES-API.md](docs/TESTING-ABILITIES-API.md) or create an issue.
+## Run a Specific Test
+
+```bash
+# Single unit test file
+npm run test:unit tests/unit/block-attributes.test.js
+
+# Single E2E test file
+npm run test:e2e tests/e2e/group-enhancements.spec.js
+
+# Single PHP test method
+composer test -- --filter=test_block_registered
+```
+
+---
+
+## Before Committing
+
+```bash
+npm run build
+npm run test:unit
+npm run test:e2e
+npm run test:php
+npm run lint:js
+npm run lint:css
+npm run lint:php
+```
+
+---
+
+## Troubleshooting
+
+### WordPress not starting
+
+```bash
+npm run wp-env:stop
+npm run wp-env:clean
+npm run wp-env:start
+```
+
+### Playwright browsers not installed
+
+```bash
+npm run test:install
+```
+
+### E2E authentication issues
+
+```bash
+rm -rf artifacts/storage-states
+npx playwright test --project=setup
+```
+
+---
+
+## Full Documentation
+
+- [TESTING.md](TESTING.md) - Comprehensive testing guide
+- [tests/README.md](tests/README.md) - Test structure and commands
+- [docs/testing/TESTING.md](docs/testing/TESTING.md) - Detailed E2E testing guide
+- [docs/testing/TESTING-ABILITIES-API.md](docs/testing/TESTING-ABILITIES-API.md) - Abilities API testing
