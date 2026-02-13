@@ -248,4 +248,125 @@ class Test_Plugin extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'row-gap:20px', $result );
 		$this->assertStringContainsString( 'column-gap:20px', $result );
 	}
+
+	/**
+	 * Test that the wp_kses_allowed_html filter is registered.
+	 */
+	public function test_wp_kses_allowed_html_filter_registered() {
+		$this->assertGreaterThan(
+			0,
+			has_filter( 'wp_kses_allowed_html', array( \DesignSetGo\Plugin::instance(), 'allow_block_svg_elements' ) ),
+			'wp_kses_allowed_html filter should be registered'
+		);
+	}
+
+	/**
+	 * Test that CSS color functions survive wp_kses_post().
+	 *
+	 * Blocks use rgba() for semi-transparent icon backgrounds and rgb()/hsl()
+	 * for color values. WordPress strips these functions by default.
+	 */
+	public function test_kses_preserves_color_functions() {
+		$html = '<div style="background-color:rgba(99,102,241,0.1)">test</div>';
+		$result = wp_kses_post( $html );
+		$this->assertStringContainsString( 'background-color:rgba(99,102,241,0.1)', $result, 'rgba() should survive wp_kses_post' );
+
+		$html = '<div style="background-color:rgb(255,0,0)">test</div>';
+		$result = wp_kses_post( $html );
+		$this->assertStringContainsString( 'background-color:rgb(255,0,0)', $result, 'rgb() should survive wp_kses_post' );
+
+		$html = '<div style="color:hsl(200,50%,50%)">test</div>';
+		$result = wp_kses_post( $html );
+		$this->assertStringContainsString( 'color:hsl(200,50', $result, 'hsl() should survive wp_kses_post' );
+
+		$html = '<div style="color:hsla(200,50%,50%,0.5)">test</div>';
+		$result = wp_kses_post( $html );
+		$this->assertStringContainsString( 'color:hsla(200,50', $result, 'hsla() should survive wp_kses_post' );
+	}
+
+	/**
+	 * Test that CSS gradient functions survive wp_kses_post().
+	 *
+	 * Progress bar uses linear-gradient with rgba for its stripe pattern.
+	 */
+	public function test_kses_preserves_gradient_functions() {
+		$html = '<div style="background-image:linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%)">test</div>';
+		$result = wp_kses_post( $html );
+		$this->assertStringContainsString( 'linear-gradient(45deg', $result, 'linear-gradient() should survive wp_kses_post' );
+
+		$html = '<div style="background-image:radial-gradient(circle, red, blue)">test</div>';
+		$result = wp_kses_post( $html );
+		$this->assertStringContainsString( 'radial-gradient(circle', $result, 'radial-gradient() should survive wp_kses_post' );
+	}
+
+	/**
+	 * Test that SVG elements survive wp_kses_post().
+	 *
+	 * Shape dividers, icons, comparison table marks, timeline markers,
+	 * accordion toggles, and counter decorations all use inline SVG.
+	 */
+	public function test_kses_preserves_svg_elements() {
+		// Shape divider wave SVG.
+		$html = '<div class="dsgo-shape-divider"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0 C300,120 900,0 1200,80 L1200,120 L0,120 Z"></path></svg></div>';
+
+		$result = wp_kses_post( $html );
+
+		$this->assertStringContainsString( '<svg', $result, 'svg element should survive wp_kses_post' );
+		$this->assertStringContainsString( 'viewBox', $result, 'viewBox attribute should survive (after case restoration)' );
+		$this->assertStringContainsString( '<path', $result, 'path element should survive wp_kses_post' );
+		$this->assertStringContainsString( 'd="M0,0', $result, 'path d attribute should survive wp_kses_post' );
+	}
+
+	/**
+	 * Test that SVG icon elements survive wp_kses_post().
+	 *
+	 * Accordion items, modals, comparison tables, and counters use inline SVG icons.
+	 */
+	public function test_kses_preserves_svg_icons() {
+		// Accordion chevron icon.
+		$html = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z"></path></svg>';
+
+		$result = wp_kses_post( $html );
+
+		$this->assertStringContainsString( '<svg', $result );
+		$this->assertStringContainsString( 'fill="currentColor"', $result );
+		$this->assertStringContainsString( '<path', $result );
+	}
+
+	/**
+	 * Test that SVG elements with various shapes survive wp_kses_post().
+	 *
+	 * Timeline markers use circle, rect; comparison tables use line, polyline.
+	 */
+	public function test_kses_preserves_svg_shapes() {
+		$html = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#fff" stroke="#000"></circle></svg>';
+		$result = wp_kses_post( $html );
+		$this->assertStringContainsString( '<circle', $result, 'circle element should survive' );
+
+		$html = '<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"></rect></svg>';
+		$result = wp_kses_post( $html );
+		$this->assertStringContainsString( '<rect', $result, 'rect element should survive' );
+
+		$html = '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke="currentColor"></line></svg>';
+		$result = wp_kses_post( $html );
+		$this->assertStringContainsString( '<line', $result, 'line element should survive' );
+
+		$html = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke="currentColor"></polyline></svg>';
+		$result = wp_kses_post( $html );
+		$this->assertStringContainsString( '<polyline', $result, 'polyline element should survive' );
+	}
+
+	/**
+	 * Test realistic icon block output with rgba background survives wp_kses_post().
+	 */
+	public function test_kses_preserves_icon_block_output() {
+		$html = '<div class="wp-block-designsetgo-icon dsgo-icon has-text-color has-background" style="border-radius:10px;color:#6366f1;background-color:rgba(99,102,241,0.1);padding-top:var(--wp--preset--spacing--20);display:flex;align-items:center;justify-content:center"><div class="dsgo-icon__wrapper dsgo-lazy-icon" style="width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center" data-icon-name="lightning" role="img" aria-label="Lightning"></div></div>';
+
+		$result = wp_kses_post( $html );
+
+		$this->assertStringContainsString( 'background-color:rgba(99,102,241,0.1)', $result, 'rgba background-color should survive' );
+		$this->assertStringContainsString( 'display:flex', $result, 'display:flex should survive' );
+		$this->assertStringContainsString( 'display:inline-flex', $result, 'display:inline-flex should survive' );
+		$this->assertStringContainsString( 'data-icon-name="lightning"', $result, 'data attributes should survive' );
+	}
 }

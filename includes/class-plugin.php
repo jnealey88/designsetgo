@@ -86,9 +86,95 @@ class Plugin {
 	 * functions like rotate() and blur() because they contain parentheses.
 	 * These are standard visual CSS functions that cannot execute scripts.
 	 *
+	 * Covers:
+	 * - Color: rgb(), rgba(), hsl(), hsla()
+	 * - Gradients: linear-gradient(), radial-gradient(), conic-gradient() + repeating-*
+	 * - Transform: rotate(), scale(), translate(), skew(), matrix(), perspective()
+	 * - Filter: blur(), brightness(), contrast(), drop-shadow(), grayscale(), etc.
+	 *
 	 * @var string
 	 */
-	private const SAFE_CSS_FUNCTIONS_PATTERN = '/\b(?:rotate(?:3d|[XYZ])?|scale(?:3d|[XYZ])?|skew[XY]?|translate(?:3d|[XYZ])?|matrix(?:3d)?|blur|brightness|contrast|drop-shadow|grayscale|saturate|sepia|invert|hue-rotate|opacity|perspective)(\((?:[^()]|(?1))*\))/';
+	private const SAFE_CSS_FUNCTIONS_PATTERN = '/\b(?:(?:repeating-)?(?:linear|radial|conic)-gradient|rgba?|hsla?|rotate(?:3d|[XYZ])?|scale(?:3d|[XYZ])?|skew[XY]?|translate(?:3d|[XYZ])?|matrix(?:3d)?|blur|brightness|contrast|drop-shadow|grayscale|saturate|sepia|invert|hue-rotate|opacity|perspective)(\((?:[^()]|(?1))*\))/';
+
+	/**
+	 * SVG elements used in block save() output.
+	 *
+	 * WordPress's default wp_kses_post() strips all SVG elements.
+	 * These are used by shape dividers, icons, comparison tables,
+	 * timeline markers, accordion toggles, and counter decorations.
+	 *
+	 * @var string[]
+	 */
+	private const SVG_ELEMENTS = array(
+		'svg',
+		'path',
+		'circle',
+		'rect',
+		'line',
+		'polyline',
+		'polygon',
+		'ellipse',
+		'g',
+		'defs',
+		'use',
+		'symbol',
+		'clippath',
+		'lineargradient',
+		'radialgradient',
+		'stop',
+	);
+
+	/**
+	 * SVG attributes allowed in block save() output.
+	 *
+	 * @var array<string, bool>
+	 */
+	private const SVG_ATTRIBUTES = array(
+		'xmlns'              => true,
+		'viewbox'            => true,
+		'preserveaspectratio' => true,
+		'width'              => true,
+		'height'             => true,
+		'fill'               => true,
+		'fill-rule'          => true,
+		'fill-opacity'       => true,
+		'stroke'             => true,
+		'stroke-width'       => true,
+		'stroke-linecap'     => true,
+		'stroke-linejoin'    => true,
+		'stroke-dasharray'   => true,
+		'stroke-dashoffset'  => true,
+		'stroke-opacity'     => true,
+		'opacity'            => true,
+		'transform'          => true,
+		'x'                  => true,
+		'y'                  => true,
+		'x1'                 => true,
+		'y1'                 => true,
+		'x2'                 => true,
+		'y2'                 => true,
+		'cx'                 => true,
+		'cy'                 => true,
+		'r'                  => true,
+		'rx'                 => true,
+		'ry'                 => true,
+		'd'                  => true,
+		'points'             => true,
+		'clip-path'          => true,
+		'clip-rule'          => true,
+		'class'              => true,
+		'id'                 => true,
+		'style'              => true,
+		'aria-hidden'        => true,
+		'aria-label'         => true,
+		'role'               => true,
+		'focusable'          => true,
+		'data-*'             => true,
+		// Gradient stop attributes.
+		'offset'             => true,
+		'stop-color'         => true,
+		'stop-opacity'       => true,
+	);
 
 	/**
 	 * Instance of this class.
@@ -400,9 +486,10 @@ class Plugin {
 		// Apply global default hover animation to Form Builder submit buttons.
 		add_filter( 'render_block_designsetgo/form-builder', array( $this, 'apply_default_form_button_hover' ), 10, 2 );
 
-		// Allow block CSS properties and function values through wp_kses_post().
+		// Allow block CSS properties, function values, and SVG through wp_kses_post().
 		add_filter( 'safe_style_css', array( $this, 'allow_block_style_properties' ) );
 		add_filter( 'safecss_filter_attr_allow_css', array( $this, 'allow_block_css_functions' ), 10, 2 );
+		add_filter( 'wp_kses_allowed_html', array( $this, 'allow_block_svg_elements' ), 10, 2 );
 	}
 
 	/**
@@ -785,5 +872,29 @@ class Plugin {
 
 		// After removing safe functions, reject if unsafe characters remain.
 		return ! preg_match( '%[\\\(&=}]|/\*%', $cleaned );
+	}
+
+	/**
+	 * Add SVG elements to WordPress's allowed HTML tags for the 'post' context.
+	 *
+	 * Block save() output includes SVG elements for shape dividers, icons,
+	 * comparison table marks, timeline markers, counter decorations, and
+	 * accordion toggle indicators. Without this, wp_kses_post() strips them.
+	 *
+	 * @since 2.0.23
+	 * @param array[] $tags    Allowed HTML tags and their attributes.
+	 * @param string  $context The KSES context (e.g. 'post').
+	 * @return array[] Extended tags with SVG elements.
+	 */
+	public function allow_block_svg_elements( $tags, $context ) {
+		if ( 'post' !== $context ) {
+			return $tags;
+		}
+
+		foreach ( self::SVG_ELEMENTS as $element ) {
+			$tags[ $element ] = self::SVG_ATTRIBUTES;
+		}
+
+		return $tags;
 	}
 }
