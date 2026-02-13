@@ -1,0 +1,33 @@
+{
+  "$schema": "./white-label.schema.json",
+
+  "_comment": "White Label Configuration for DesignSetGo forks.",
+  "_comment2": "Copy this file to white-label.json and customize values below.",
+  "_comment3": "Run 'npm run white-label:build' to produce a fully rebranded plugin in dist/.",
+
+  "pluginName": "MyBlocks",
+  "pluginSlug": "myblocks",
+  "pluginUri": "https://example.com",
+  "pluginDescription": "A professional Gutenberg block library.",
+  "pluginAuthor": "Your Name",
+  "pluginAuthorUri": "https://example.com/about",
+
+  "textDomain": "myblocks",
+  "blockNamespace": "myblocks",
+
+  "cssPrefix": "mb",
+  "shortPrefix": "mb",
+
+  "phpNamespace": "MyBlocks",
+  "phpFunctionPrefix": "myblocks",
+  "phpConstantPrefix": "MYBLOCKS",
+
+  "restNamespace": "myblocks/v1",
+  "patternCategoryPrefix": "mb",
+  "postTypeSlug": "mb_form_submission",
+  "metaKeyPrefix": "_mb",
+  "transientPrefix": "mb",
+  "optionPrefix": "myblocks",
+
+  "logoPath": "src/admin/assets/logo.png"
+}

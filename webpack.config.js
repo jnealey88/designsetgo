@@ -17,6 +17,16 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const glob = require('glob');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const {
+	loadConfig: loadWhiteLabelConfig,
+	buildJsScssReplacements,
+} = require('./scripts/white-label-replacements');
+
+// White-label: load config and build replacement rules if rebranding.
+const whiteLabelConfig = loadWhiteLabelConfig();
+const whiteLabelRules = whiteLabelConfig
+	? buildJsScssReplacements(whiteLabelConfig)
+	: null;
 
 // Auto-detect all blocks with index.js files
 const blockEntries = glob
@@ -51,14 +61,83 @@ const styleEntries = glob
 		return entries;
 	}, {});
 
+// White-label: build additional webpack module rules for string replacement.
+const whiteLabelModuleRules = [];
+if (whiteLabelRules) {
+	// Escape regex-special characters so literal strings work correctly with flags: 'g'.
+	// Without this, '.' in '.dsgo-' becomes a wildcard matching any character.
+	const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+	// Transform JS/JSX files.
+	// flags: 'g' converts search string to a RegExp, so we must escape special chars.
+	whiteLabelModuleRules.push({
+		test: /\.(js|jsx)$/,
+		exclude: /node_modules/,
+		loader: 'string-replace-loader',
+		options: {
+			multiple: whiteLabelRules
+				.filter((rule) => !(rule.search instanceof RegExp))
+				.map((rule) => ({
+					search: escapeRegExp(rule.search),
+					replace: rule.replace,
+					flags: 'g',
+				})),
+		},
+	});
+
+	// SCSS/CSS files are NOT transformed here because sass-loader resolves
+	// @import/@use partials from disk, bypassing webpack loaders. Instead,
+	// compiled CSS files in build/ are transformed post-build by white-label-php.js.
+
+	// Regex-based replacements (short prefix camelCase) for JS files.
+	const regexRules = whiteLabelRules.filter(
+		(rule) => rule.search instanceof RegExp
+	);
+	if (regexRules.length > 0) {
+		whiteLabelModuleRules.push({
+			test: /\.(js|jsx)$/,
+			exclude: /node_modules/,
+			loader: 'string-replace-loader',
+			options: {
+				multiple: regexRules.map((rule) => ({
+					search: rule.search,
+					replace: rule.replace,
+				})),
+			},
+		});
+	}
+
+	// Transform block.json files via custom loader (runs before built-in JSON parser).
+	whiteLabelModuleRules.push({
+		test: /block\.json$/,
+		exclude: /node_modules/,
+		enforce: 'pre',
+		loader: path.resolve(__dirname, 'scripts/white-label-json-loader.js'),
+	});
+}
+
 module.exports = {
 	...defaultConfig,
+	// White-label: add string replacement loaders when rebranding.
+	module: {
+		...defaultConfig.module,
+		rules: [
+			...(defaultConfig.module?.rules || []),
+			...whiteLabelModuleRules,
+		],
+	},
 	// Enable persistent filesystem caching for faster rebuilds
 	cache: {
 		type: 'filesystem',
 		cacheDirectory: path.resolve(__dirname, 'node_modules/.cache/webpack'),
 		buildDependencies: {
-			config: [__filename],
+			config: [
+				__filename,
+				// Invalidate cache when white-label config changes.
+				...(whiteLabelConfig
+					? [path.resolve(__dirname, 'white-label.json')]
+					: []),
+			],
 		},
 	},
 	entry: {

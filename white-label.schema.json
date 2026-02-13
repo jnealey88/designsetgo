@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DesignSetGo White Label Configuration",
+  "description": "Configuration for rebranding DesignSetGo plugin forks at build time.",
+  "type": "object",
+  "required": [
+    "pluginName",
+    "pluginSlug",
+    "textDomain",
+    "blockNamespace",
+    "cssPrefix",
+    "shortPrefix",
+    "phpNamespace",
+    "phpFunctionPrefix",
+    "phpConstantPrefix",
+    "restNamespace",
+    "patternCategoryPrefix",
+    "postTypeSlug",
+    "metaKeyPrefix",
+    "transientPrefix",
+    "optionPrefix"
+  ],
+  "properties": {
+    "pluginName": {
+      "type": "string",
+      "description": "Display name shown in admin UI, menus, and plugin header.",
+      "minLength": 1,
+      "examples": ["MyBlocks"]
+    },
+    "pluginSlug": {
+      "type": "string",
+      "description": "Plugin directory/file slug. Lowercase, hyphens only. Becomes the main PHP filename.",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "minLength": 2,
+      "examples": ["myblocks"]
+    },
+    "pluginUri": {
+      "type": "string",
+      "description": "Plugin website URL for the plugin header.",
+      "format": "uri",
+      "examples": ["https://example.com"]
+    },
+    "pluginDescription": {
+      "type": "string",
+      "description": "Plugin description for the plugin header.",
+      "examples": ["A professional Gutenberg block library."]
+    },
+    "pluginAuthor": {
+      "type": "string",
+      "description": "Author name for the plugin header.",
+      "examples": ["Your Name"]
+    },
+    "pluginAuthorUri": {
+      "type": "string",
+      "description": "Author website URL for the plugin header.",
+      "format": "uri",
+      "examples": ["https://example.com/about"]
+    },
+    "textDomain": {
+      "type": "string",
+      "description": "WordPress text domain for i18n. Should match pluginSlug.",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "minLength": 2,
+      "examples": ["myblocks"]
+    },
+    "blockNamespace": {
+      "type": "string",
+      "description": "Block namespace prefix (e.g., 'myblocks' for 'myblocks/accordion'). Lowercase, hyphens only.",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "minLength": 2,
+      "examples": ["myblocks"]
+    },
+    "cssPrefix": {
+      "type": "string",
+      "description": "CSS class prefix (e.g., 'mb' for '.mb-accordion'). Used with hyphens in class names, data attributes, and CSS custom properties.",
+      "pattern": "^[a-z][a-z0-9]*$",
+      "minLength": 2,
+      "maxLength": 6,
+      "examples": ["mb"]
+    },
+    "shortPrefix": {
+      "type": "string",
+      "description": "Short camelCase prefix for JS identifiers and CSS @keyframes (e.g., 'mb' for 'mbFadeIn', 'mbLinkUrl'). Must not end with a character that would collide with cssPrefix.",
+      "pattern": "^[a-z][a-z0-9]*$",
+      "minLength": 2,
+      "maxLength": 6,
+      "examples": ["mb"]
+    },
+    "phpNamespace": {
+      "type": "string",
+      "description": "PHP namespace (e.g., 'MyBlocks' for 'namespace MyBlocks;'). PascalCase.",
+      "pattern": "^[A-Z][A-Za-z0-9]*$",
+      "minLength": 2,
+      "examples": ["MyBlocks"]
+    },
+    "phpFunctionPrefix": {
+      "type": "string",
+      "description": "PHP function name prefix (e.g., 'myblocks' for 'myblocks_init()'). Lowercase with underscores.",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "minLength": 2,
+      "examples": ["myblocks"]
+    },
+    "phpConstantPrefix": {
+      "type": "string",
+      "description": "PHP constant prefix (e.g., 'MYBLOCKS' for 'MYBLOCKS_VERSION'). UPPERCASE.",
+      "pattern": "^[A-Z][A-Z0-9_]*$",
+      "minLength": 2,
+      "examples": ["MYBLOCKS"]
+    },
+    "restNamespace": {
+      "type": "string",
+      "description": "WordPress REST API namespace (e.g., 'myblocks/v1').",
+      "pattern": "^[a-z][a-z0-9-]*/v[0-9]+$",
+      "examples": ["myblocks/v1"]
+    },
+    "patternCategoryPrefix": {
+      "type": "string",
+      "description": "Pattern category slug prefix (e.g., 'mb' for 'mb-hero').",
+      "pattern": "^[a-z][a-z0-9]*$",
+      "minLength": 2,
+      "maxLength": 6,
+      "examples": ["mb"]
+    },
+    "postTypeSlug": {
+      "type": "string",
+      "description": "Custom post type slug for form submissions. Max 20 characters (WordPress limit).",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "minLength": 2,
+      "maxLength": 20,
+      "examples": ["mb_form_submission"]
+    },
+    "metaKeyPrefix": {
+      "type": "string",
+      "description": "Post meta key prefix (e.g., '_mb' for '_mb_form_id'). Include leading underscore for hidden meta.",
+      "pattern": "^_?[a-z][a-z0-9]*$",
+      "minLength": 2,
+      "examples": ["_mb"]
+    },
+    "transientPrefix": {
+      "type": "string",
+      "description": "WordPress transient name prefix (e.g., 'mb' for 'mb_has_blocks_').",
+      "pattern": "^[a-z][a-z0-9]*$",
+      "minLength": 2,
+      "examples": ["mb"]
+    },
+    "optionPrefix": {
+      "type": "string",
+      "description": "WordPress option name prefix (e.g., 'myblocks' for 'myblocks_settings').",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "minLength": 2,
+      "examples": ["myblocks"]
+    },
+    "logoPath": {
+      "type": "string",
+      "description": "Relative path to the admin logo file. Defaults to the existing logo if not specified.",
+      "examples": ["src/admin/assets/logo.png"]
+    }
+  },
+  "additionalProperties": false
+}

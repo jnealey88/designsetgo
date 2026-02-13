@@ -90,11 +90,13 @@ const Dashboard = () => {
 		<div className="designsetgo-dashboard">
 			<div className="designsetgo-dashboard__header">
 				<div className="designsetgo-dashboard__branding">
-					<img
-						src={window.designSetGoAdmin?.logoUrl}
-						alt="DesignSetGo"
-						className="designsetgo-logo"
-					/>
+					{window.designSetGoAdmin?.logoUrl && (
+						<img
+							src={window.designSetGoAdmin.logoUrl}
+							alt="DesignSetGo"
+							className="designsetgo-logo"
+						/>
+					)}
 					<p className="description">
 						{__(
 							'Manage your DesignSetGo blocks, extensions, and settings.',

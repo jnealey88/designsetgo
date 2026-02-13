@@ -54,7 +54,13 @@
     "clean:cache": "rm -rf node_modules/.cache",
     "clean:cache:wp-env": "rm -rf .wp-env/WordPress",
     "clean:build": "rm -rf build",
-    "clean:all": "npm run clean:cache && npm run clean:cache:wp-env && npm run clean:build"
+    "clean:all": "npm run clean:cache && npm run clean:cache:wp-env && npm run clean:build",
+    "white-label:validate": "node scripts/white-label-validate.js",
+    "white-label:build": "npm run white-label:validate && npm run build && node scripts/white-label-php.js",
+    "white-label:zip": "npm run white-label:build && node scripts/white-label-zip.js",
+    "white-label:clean": "rm -rf dist",
+    "wp-env:white-label": "npm run white-label:build && node scripts/wp-env-white-label.js",
+    "wp-env:white-label:reset": "node scripts/wp-env-white-label.js --reset"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.5",
@@ -72,6 +78,7 @@
     "lint-staged": "^15.0.0",
     "playwright": "^1.56.1",
     "prettier": "^3.0.0",
+    "string-replace-loader": "^3.3.0",
     "webpack-bundle-analyzer": "^4.10.2"
   },
   "dependencies": {
