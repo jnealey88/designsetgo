@@ -9,9 +9,13 @@
 # Build files are generated fresh by GitHub Actions during deployment
 # .distignore ensures /build/ goes to WordPress.org SVN (not /src/)
 /build
+/dist
 /*.zip
 /deployment-package
 plugincheck.md
+
+# White-label config (per-fork, not committed upstream)
+white-label.json
 
 # Bundle analyzer reports
 bundle-report.html
