@@ -127,8 +127,10 @@ class Settings {
 				'default_to_visual'        => true,
 			),
 			'llms_txt'           => array(
-				'enable'     => false,
-				'post_types' => array( 'page', 'post' ),
+				'enable'           => false,
+				'post_types'       => array( 'page', 'post' ),
+				'description'      => '',
+				'generate_full_txt' => false,
 			),
 		);
 	}
@@ -639,8 +641,10 @@ class Settings {
 				'default_to_visual'        => 'bool',
 			),
 			'llms_txt'           => array(
-				'enable'     => 'bool',
-				'post_types' => 'key_list',
+				'enable'           => 'bool',
+				'post_types'       => 'key_list',
+				'description'      => 'text',
+				'generate_full_txt' => 'bool',
 			),
 		);
 	}

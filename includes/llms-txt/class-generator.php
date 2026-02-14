@@ -48,6 +48,11 @@ class Generator {
 	}
 
 	/**
+	 * Maximum length for link description excerpts.
+	 */
+	const EXCERPT_MAX_LENGTH = 160;
+
+	/**
 	 * Generate llms.txt content following the specification.
 	 *
 	 * @return string Generated content.
@@ -65,8 +70,10 @@ class Generator {
 		$lines[] = '# ' . $this->escape_markdown( get_bloginfo( 'name' ) );
 		$lines[] = '';
 
-		// Blockquote - Site description (optional).
-		$description = get_bloginfo( 'description' );
+		// Blockquote - Custom description or WordPress tagline.
+		$description = ! empty( $llms_settings['description'] )
+			? $llms_settings['description']
+			: get_bloginfo( 'description' );
 		if ( ! empty( $description ) ) {
 			$lines[] = '> ' . $this->escape_markdown( $description );
 			$lines[] = '';
@@ -102,13 +109,116 @@ class Generator {
 					$markdown_url = rest_url( 'designsetgo/v1/llms-txt/markdown/' . $post->ID );
 				}
 
-				$lines[] = '- [' . $title . '](' . $url . ') ([markdown](' . $markdown_url . '))';
+				// Build link entry with optional excerpt description.
+				$excerpt = $this->get_post_excerpt( $post );
+				if ( $excerpt ) {
+					$lines[] = '- [' . $title . '](' . $url . '): ' . $excerpt . ' ([markdown](' . $markdown_url . '))';
+				} else {
+					$lines[] = '- [' . $title . '](' . $url . ') ([markdown](' . $markdown_url . '))';
+				}
 			}
 
 			$lines[] = '';
 		}
 
 		return implode( "\n", $lines );
+	}
+
+	/**
+	 * Generate llms-full.txt content with all post content concatenated.
+	 *
+	 * @return string Generated full content.
+	 */
+	public function generate_full_content(): string {
+		$settings      = \DesignSetGo\Admin\Settings::get_settings();
+		$llms_settings = wp_parse_args(
+			$settings['llms_txt'] ?? array(),
+			\DesignSetGo\Admin\Settings::get_defaults()['llms_txt']
+		);
+
+		$lines = array();
+
+		// H1 - Site name.
+		$lines[] = '# ' . $this->escape_markdown( get_bloginfo( 'name' ) );
+		$lines[] = '';
+
+		// Blockquote - Custom description or WordPress tagline.
+		$description = ! empty( $llms_settings['description'] )
+			? $llms_settings['description']
+			: get_bloginfo( 'description' );
+		if ( ! empty( $description ) ) {
+			$lines[] = '> ' . $this->escape_markdown( $description );
+			$lines[] = '';
+		}
+
+		// Get enabled post types.
+		$post_types = $llms_settings['post_types'] ?? array( 'page', 'post' );
+		$converter  = new \DesignSetGo\Markdown\Converter();
+
+		foreach ( $post_types as $post_type ) {
+			$posts = $this->get_public_content( $post_type );
+
+			if ( empty( $posts ) ) {
+				continue;
+			}
+
+			$post_type_obj = get_post_type_object( $post_type );
+			if ( ! $post_type_obj ) {
+				continue;
+			}
+
+			$lines[] = '## ' . $this->escape_markdown( $post_type_obj->labels->name );
+			$lines[] = '';
+
+			foreach ( $posts as $post ) {
+				// Read from static file if available, otherwise convert on the fly.
+				$markdown = '';
+				if ( $this->file_manager->file_exists( $post->ID ) ) {
+					$file_path = $this->file_manager->get_directory() . '/' . $this->file_manager->get_filename( $post ) . '.md';
+					if ( file_exists( $file_path ) ) {
+						// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reading local static file.
+						$markdown = file_get_contents( $file_path );
+					}
+				}
+
+				if ( empty( $markdown ) ) {
+					$markdown = $converter->convert( $post );
+				}
+
+				$lines[] = $markdown;
+				$lines[] = '';
+				$lines[] = '---';
+				$lines[] = '';
+			}
+		}
+
+		return implode( "\n", $lines );
+	}
+
+	/**
+	 * Get a truncated excerpt for a post, suitable for llms.txt link descriptions.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return string Escaped excerpt or empty string.
+	 */
+	private function get_post_excerpt( \WP_Post $post ): string {
+		// Prefer manual excerpt, fall back to auto-generated.
+		$excerpt = $post->post_excerpt;
+
+		if ( empty( $excerpt ) ) {
+			$excerpt = wp_trim_words( wp_strip_all_tags( $post->post_content ), 25, '' );
+		}
+
+		if ( empty( $excerpt ) ) {
+			return '';
+		}
+
+		// Truncate to max length.
+		if ( mb_strlen( $excerpt ) > self::EXCERPT_MAX_LENGTH ) {
+			$excerpt = mb_substr( $excerpt, 0, self::EXCERPT_MAX_LENGTH - 3 ) . '...';
+		}
+
+		return $this->escape_markdown( $excerpt );
 	}
 
 	/**

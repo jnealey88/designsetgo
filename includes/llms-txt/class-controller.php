@@ -28,6 +28,11 @@ class Controller {
 	const CACHE_KEY = 'designsetgo_llms_txt_cache';
 
 	/**
+	 * Cache key for llms-full.txt transient.
+	 */
+	const FULL_CACHE_KEY = 'designsetgo_llms_full_txt_cache';
+
+	/**
 	 * Cache expiration in seconds (1 day).
 	 */
 	const CACHE_EXPIRATION = DAY_IN_SECONDS;
@@ -97,6 +102,7 @@ class Controller {
 		add_action( 'rest_api_init', array( $this->rest_controller, 'register_routes' ) );
 		add_action( 'admin_notices', array( $this->conflict_detector, 'maybe_show_notice' ) );
 		add_action( 'admin_init', array( $this->conflict_detector, 'handle_dismiss_action' ) );
+		add_filter( 'robots_txt', array( $this, 'add_to_robots_txt' ), 10, 2 );
 	}
 
 	/**
@@ -105,10 +111,16 @@ class Controller {
 	const REWRITE_PATTERN = '^llms\\.txt/?$';
 
 	/**
-	 * Add rewrite rule for llms.txt.
+	 * Rewrite rule pattern for llms-full.txt.
+	 */
+	const FULL_REWRITE_PATTERN = '^llms-full\\.txt/?$';
+
+	/**
+	 * Add rewrite rules for llms.txt and llms-full.txt.
 	 */
 	public function add_rewrite_rule(): void {
 		add_rewrite_rule( self::REWRITE_PATTERN, 'index.php?llms_txt=1', 'top' );
+		add_rewrite_rule( self::FULL_REWRITE_PATTERN, 'index.php?llms_full_txt=1', 'top' );
 
 		if ( get_transient( 'designsetgo_llms_txt_flush_rules' ) ) {
 			delete_transient( 'designsetgo_llms_txt_flush_rules' );
@@ -116,9 +128,9 @@ class Controller {
 			return;
 		}
 
-		// Flush if our rule is missing from stored rules (covers updates without activation).
+		// Flush if our rules are missing from stored rules (covers updates without activation).
 		$rules = get_option( 'rewrite_rules' );
-		if ( is_array( $rules ) && ! isset( $rules[ self::REWRITE_PATTERN ] ) ) {
+		if ( is_array( $rules ) && ( ! isset( $rules[ self::REWRITE_PATTERN ] ) || ! isset( $rules[ self::FULL_REWRITE_PATTERN ] ) ) ) {
 			flush_rewrite_rules();
 		}
 	}
@@ -138,26 +150,31 @@ class Controller {
 	 */
 	public function add_query_var( array $vars ): array {
 		$vars[] = 'llms_txt';
+		$vars[] = 'llms_full_txt';
 		return $vars;
 	}
 
 	/**
-	 * Prevent WordPress from adding a trailing slash to llms.txt.
+	 * Prevent WordPress from adding a trailing slash to llms.txt and llms-full.txt.
 	 *
 	 * @param string|false $redirect_url  The redirect URL, or false if no redirect.
 	 * @param string       $requested_url The requested URL before redirect.
 	 * @return string|false The redirect URL, or false to cancel the redirect.
 	 */
 	public function prevent_trailing_slash( $redirect_url, $requested_url = '' ) {
-		if ( get_query_var( 'llms_txt' ) !== '1' ) {
+		$is_llms     = get_query_var( 'llms_txt' ) === '1';
+		$is_llms_full = get_query_var( 'llms_full_txt' ) === '1';
+
+		if ( ! $is_llms && ! $is_llms_full ) {
 			return $redirect_url;
 		}
 
-		// Verify we're actually on the /llms.txt path to prevent abuse via ?llms_txt=1.
+		// Verify we're actually on a valid path to prevent abuse via query vars.
 		if ( ! empty( $requested_url ) ) {
 			$requested_path = wp_parse_url( $requested_url, PHP_URL_PATH );
 			$normalized     = rtrim( $requested_path, '/' );
-			if ( '/llms.txt' !== $normalized ) {
+			$valid_paths    = array( '/llms.txt', '/llms-full.txt' );
+			if ( ! in_array( $normalized, $valid_paths, true ) ) {
 				return $redirect_url;
 			}
 		}
@@ -166,10 +183,13 @@ class Controller {
 	}
 
 	/**
-	 * Handle llms.txt requests.
+	 * Handle llms.txt and llms-full.txt requests.
 	 */
 	public function handle_request(): void {
-		if ( ! get_query_var( 'llms_txt' ) ) {
+		$is_llms      = (bool) get_query_var( 'llms_txt' );
+		$is_llms_full = (bool) get_query_var( 'llms_full_txt' );
+
+		if ( ! $is_llms && ! $is_llms_full ) {
 			return;
 		}
 
@@ -179,12 +199,20 @@ class Controller {
 			exit;
 		}
 
-		$this->serve_llms_txt();
+		if ( $is_llms_full ) {
+			if ( empty( $settings['llms_txt']['generate_full_txt'] ) ) {
+				status_header( 404 );
+				exit;
+			}
+			$this->serve_llms_full_txt();
+		} else {
+			$this->serve_llms_txt();
+		}
 		exit;
 	}
 
 	/**
-	 * Serve the llms.txt content.
+	 * Serve the llms.txt content with cache headers.
 	 */
 	private function serve_llms_txt(): void {
 		$content = get_transient( self::CACHE_KEY );
@@ -194,8 +222,43 @@ class Controller {
 			set_transient( self::CACHE_KEY, $content, self::CACHE_EXPIRATION );
 		}
 
+		$this->send_text_response( $content );
+	}
+
+	/**
+	 * Serve the llms-full.txt content with cache headers.
+	 */
+	private function serve_llms_full_txt(): void {
+		$content = get_transient( self::FULL_CACHE_KEY );
+
+		if ( false === $content ) {
+			$content = $this->generator->generate_full_content();
+			set_transient( self::FULL_CACHE_KEY, $content, self::CACHE_EXPIRATION );
+		}
+
+		$this->send_text_response( $content );
+	}
+
+	/**
+	 * Send a plain text response with appropriate cache headers.
+	 *
+	 * @param string $content The text content to send.
+	 */
+	private function send_text_response( string $content ): void {
+		// Generate ETag for conditional request support.
+		$etag = '"' . md5( $content ) . '"';
+
+		// Handle conditional requests (304 Not Modified).
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- ETag comparison only.
+		if ( isset( $_SERVER['HTTP_IF_NONE_MATCH'] ) && trim( wp_unslash( $_SERVER['HTTP_IF_NONE_MATCH'] ) ) === $etag ) {
+			status_header( 304 );
+			exit;
+		}
+
 		header( 'Content-Type: text/plain; charset=utf-8' );
 		header( 'X-Robots-Tag: noindex' );
+		header( 'Cache-Control: public, max-age=86400' );
+		header( 'ETag: ' . $etag );
 		echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Plain text file output.
 	}
 
@@ -227,11 +290,16 @@ class Controller {
 	}
 
 	/**
-	 * Refresh the physical llms.txt file if we maintain one.
+	 * Refresh physical llms.txt and llms-full.txt files if we maintain them.
 	 */
 	private function refresh_physical_file(): void {
 		if ( get_option( self::PHYSICAL_FILE_OPTION ) ) {
 			$this->write_physical_file();
+		}
+
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+		if ( ! empty( $settings['llms_txt']['generate_full_txt'] ) && file_exists( ABSPATH . 'llms-full.txt' ) ) {
+			$this->write_physical_full_file();
 		}
 	}
 
@@ -242,6 +310,7 @@ class Controller {
 	 */
 	public function invalidate_cache( $post_id = null ): void {
 		delete_transient( self::CACHE_KEY );
+		delete_transient( self::FULL_CACHE_KEY );
 
 		if ( $post_id && is_numeric( $post_id ) ) {
 			delete_transient( 'designsetgo_llms_md_' . absint( $post_id ) );
@@ -264,15 +333,32 @@ class Controller {
 
 		if ( $is_enabled !== $was_enabled ) {
 			// Flush immediately so the rule is active before the next request.
-			// Must register the rule first since this may run outside of init.
+			// Must register the rules first since this may run outside of init.
 			add_rewrite_rule( self::REWRITE_PATTERN, 'index.php?llms_txt=1', 'top' );
+			add_rewrite_rule( self::FULL_REWRITE_PATTERN, 'index.php?llms_full_txt=1', 'top' );
 			flush_rewrite_rules();
 
 			if ( $is_enabled ) {
 				$this->file_manager->generate_all_files( $this->generator );
 				$this->write_physical_file();
+				if ( ! empty( $new_value['llms_txt']['generate_full_txt'] ) ) {
+					$this->write_physical_full_file();
+				}
 			} else {
 				$this->delete_physical_file();
+				$this->delete_physical_full_file();
+			}
+		}
+
+		// Handle llms-full.txt toggle independently.
+		if ( $is_enabled ) {
+			$was_full = ! empty( $old_value['llms_txt']['generate_full_txt'] );
+			$is_full  = ! empty( $new_value['llms_txt']['generate_full_txt'] );
+
+			if ( $is_full && ! $was_full ) {
+				$this->write_physical_full_file();
+			} elseif ( ! $is_full && $was_full ) {
+				$this->delete_physical_full_file();
 			}
 		}
 	}
@@ -356,6 +442,68 @@ class Controller {
 		}
 
 		delete_option( self::PHYSICAL_FILE_OPTION );
+	}
+
+	/**
+	 * Write a physical llms-full.txt file to the site root.
+	 *
+	 * @return bool True on success.
+	 */
+	public function write_physical_full_file(): bool {
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+		if ( empty( $settings['llms_txt']['enable'] ) || empty( $settings['llms_txt']['generate_full_txt'] ) ) {
+			return false;
+		}
+
+		$content = $this->generator->generate_full_content();
+		if ( empty( $content ) ) {
+			return false;
+		}
+
+		$file_path = ABSPATH . 'llms-full.txt';
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
+		$result = file_put_contents( $file_path, $content );
+
+		return false !== $result;
+	}
+
+	/**
+	 * Delete the physical llms-full.txt file.
+	 */
+	public function delete_physical_full_file(): void {
+		$file_path = ABSPATH . 'llms-full.txt';
+		if ( file_exists( $file_path ) ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
+			unlink( $file_path );
+		}
+	}
+
+	/**
+	 * Add llms.txt reference to robots.txt output.
+	 *
+	 * @param string $output  The robots.txt content.
+	 * @param bool   $public  Whether the site is public.
+	 * @return string Modified robots.txt content.
+	 */
+	public function add_to_robots_txt( string $output, bool $public ): string {
+		if ( ! $public ) {
+			return $output;
+		}
+
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+		if ( empty( $settings['llms_txt']['enable'] ) ) {
+			return $output;
+		}
+
+		$output .= "\n# llms.txt - AI language model content index\n";
+		$output .= '# ' . home_url( '/llms.txt' ) . "\n";
+
+		if ( ! empty( $settings['llms_txt']['generate_full_txt'] ) ) {
+			$output .= '# ' . home_url( '/llms-full.txt' ) . "\n";
+		}
+
+		return $output;
 	}
 
 	/**

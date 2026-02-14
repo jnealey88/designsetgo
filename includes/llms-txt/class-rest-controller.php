@@ -196,6 +196,7 @@ class REST_Controller {
 	 */
 	public function flush_cache(): \WP_REST_Response {
 		delete_transient( Controller::CACHE_KEY );
+		delete_transient( Controller::FULL_CACHE_KEY );
 
 		global $wpdb;
 		$wpdb->query(
@@ -211,13 +212,21 @@ class REST_Controller {
 			)
 		);
 
-		// Refresh the physical llms.txt file if we maintain one and the feature is still enabled.
+		// Refresh the physical files if we maintain them and the feature is still enabled.
 		$settings = \DesignSetGo\Admin\Settings::get_settings();
 		if ( get_option( Controller::PHYSICAL_FILE_OPTION ) && ! empty( $settings['llms_txt']['enable'] ) ) {
 			$content = $this->generator->generate_content();
 			if ( $content ) {
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
 				file_put_contents( ABSPATH . 'llms.txt', $content );
+			}
+
+			if ( ! empty( $settings['llms_txt']['generate_full_txt'] ) ) {
+				$full_content = $this->generator->generate_full_content();
+				if ( $full_content ) {
+					// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
+					file_put_contents( ABSPATH . 'llms-full.txt', $full_content );
+				}
 			}
 		}
 
@@ -238,8 +247,9 @@ class REST_Controller {
 		$result = $this->file_manager->generate_all_files( $this->generator );
 
 		delete_transient( Controller::CACHE_KEY );
+		delete_transient( Controller::FULL_CACHE_KEY );
 
-		// Refresh the physical llms.txt file only when the feature is enabled.
+		// Refresh the physical files only when the feature is enabled.
 		$settings = \DesignSetGo\Admin\Settings::get_settings();
 		if ( ! empty( $settings['llms_txt']['enable'] ) ) {
 			$content = $this->generator->generate_content();
@@ -248,6 +258,14 @@ class REST_Controller {
 				$written = file_put_contents( ABSPATH . 'llms.txt', $content );
 				if ( false !== $written ) {
 					update_option( Controller::PHYSICAL_FILE_OPTION, true, true );
+				}
+			}
+
+			if ( ! empty( $settings['llms_txt']['generate_full_txt'] ) ) {
+				$full_content = $this->generator->generate_full_content();
+				if ( $full_content ) {
+					// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
+					file_put_contents( ABSPATH . 'llms-full.txt', $full_content );
 				}
 			}
 		}

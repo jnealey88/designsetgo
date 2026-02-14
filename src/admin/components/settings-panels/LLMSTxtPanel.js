@@ -12,6 +12,7 @@ import {
 	CardBody,
 	ToggleControl,
 	CheckboxControl,
+	TextareaControl,
 	ExternalLink,
 	Spinner,
 	Button,
@@ -62,6 +63,8 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 
 	const isEnabled = settings?.llms_txt?.enable || false;
 	const enabledPostTypes = settings?.llms_txt?.post_types || ['page', 'post'];
+	const description = settings?.llms_txt?.description || '';
+	const generateFullTxt = settings?.llms_txt?.generate_full_txt || false;
 
 	/**
 	 * Toggle llms.txt on or off, auto-saving immediately.
@@ -417,6 +420,24 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 
 				{isEnabled && (
 					<div className="designsetgo-settings-section">
+						<TextareaControl
+							__nextHasNoMarginBottom
+							label={__('Site Description for AI', 'designsetgo')}
+							help={__(
+								'A concise summary of your site for AI language models. Leave empty to use your WordPress tagline.',
+								'designsetgo'
+							)}
+							value={description}
+							onChange={(value) =>
+								updateSetting(
+									'llms_txt',
+									'description',
+									value.slice(0, 500)
+								)
+							}
+							rows={3}
+						/>
+
 						<h3 className="designsetgo-section-heading">
 							{__('Content Types', 'designsetgo')}
 						</h3>
@@ -485,6 +506,49 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 											'designsetgo'
 										)}
 							</Button>
+						</div>
+
+						<div className="designsetgo-settings-section">
+							<h3 className="designsetgo-section-heading">
+								{__('Full Content File', 'designsetgo')}
+							</h3>
+							<ToggleControl
+								__nextHasNoMarginBottom
+								label={__(
+									'Generate llms-full.txt',
+									'designsetgo'
+								)}
+								help={
+									generateFullTxt ? (
+										<>
+											{__(
+												'A single file with all your content, available at:',
+												'designsetgo'
+											)}{' '}
+											<ExternalLink
+												href={
+													siteUrl + '/llms-full.txt'
+												}
+											>
+												{siteUrl}/llms-full.txt
+											</ExternalLink>
+										</>
+									) : (
+										__(
+											'Generate a single comprehensive file containing all your content for deep AI ingestion.',
+											'designsetgo'
+										)
+									)
+								}
+								checked={generateFullTxt}
+								onChange={(value) =>
+									updateSetting(
+										'llms_txt',
+										'generate_full_txt',
+										value
+									)
+								}
+							/>
 						</div>
 
 						<div className="designsetgo-settings-section">
