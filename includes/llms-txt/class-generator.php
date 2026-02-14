@@ -220,8 +220,8 @@ class Generator {
 		}
 
 		// Truncate to max length before escaping.
-		if ( wp_strlen( $excerpt ) > self::EXCERPT_MAX_LENGTH ) {
-			$excerpt = wp_substr( $excerpt, 0, self::EXCERPT_MAX_LENGTH - 3 );
+		if ( \wp_strlen( $excerpt ) > self::EXCERPT_MAX_LENGTH ) {
+			$excerpt = \wp_substr( $excerpt, 0, self::EXCERPT_MAX_LENGTH - 3 );
 			if ( ! str_ends_with( $excerpt, '...' ) ) {
 				$excerpt .= '...';
 			}
