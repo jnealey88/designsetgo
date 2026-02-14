@@ -74,6 +74,17 @@ class Sticky_Header {
 		if ( file_exists( $asset_file ) ) {
 			$asset = include $asset_file;
 
+			// Enqueue compiled CSS (extracted by webpack from sticky-header.scss).
+			$css_file = DESIGNSETGO_PATH . 'build/utils/sticky-header.css';
+			if ( file_exists( $css_file ) ) {
+				wp_enqueue_style(
+					'designsetgo-sticky-header',
+					DESIGNSETGO_URL . 'build/utils/sticky-header.css',
+					array(),
+					$asset['version']
+				);
+			}
+
 			wp_enqueue_script(
 				'designsetgo-sticky-header',
 				DESIGNSETGO_URL . 'build/utils/sticky-header.js',
@@ -127,7 +138,8 @@ class Sticky_Header {
 			return;
 		}
 
-		// Only output critical inline styles.
+		// Output only dynamic CSS custom properties that depend on admin settings.
+		// All layout rules are in the compiled sticky-header.css bundle.
 		?>
 		<style id="dsgo-sticky-header-critical">
 			:root {
