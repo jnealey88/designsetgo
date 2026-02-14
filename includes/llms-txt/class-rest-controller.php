@@ -211,8 +211,9 @@ class REST_Controller {
 			)
 		);
 
-		// Refresh the physical llms.txt file if we maintain one.
-		if ( get_option( Controller::PHYSICAL_FILE_OPTION ) ) {
+		// Refresh the physical llms.txt file if we maintain one and the feature is still enabled.
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+		if ( get_option( Controller::PHYSICAL_FILE_OPTION ) && ! empty( $settings['llms_txt']['enable'] ) ) {
 			$content = $this->generator->generate_content();
 			if ( $content ) {
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
@@ -238,13 +239,16 @@ class REST_Controller {
 
 		delete_transient( Controller::CACHE_KEY );
 
-		// Refresh the physical llms.txt file.
-		$content = $this->generator->generate_content();
-		if ( $content ) {
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
-			$written = file_put_contents( ABSPATH . 'llms.txt', $content );
-			if ( false !== $written ) {
-				update_option( Controller::PHYSICAL_FILE_OPTION, true, true );
+		// Refresh the physical llms.txt file only when the feature is enabled.
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+		if ( ! empty( $settings['llms_txt']['enable'] ) ) {
+			$content = $this->generator->generate_content();
+			if ( $content ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
+				$written = file_put_contents( ABSPATH . 'llms.txt', $content );
+				if ( false !== $written ) {
+					update_option( Controller::PHYSICAL_FILE_OPTION, true, true );
+				}
 			}
 		}
 

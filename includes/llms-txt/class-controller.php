@@ -244,6 +244,8 @@ class Controller {
 	 * @param array $new_value Updated settings value.
 	 */
 	public function handle_settings_update( $old_value, $new_value ): void {
+		// Clear the static settings cache so subsequent reads see the new values.
+		\DesignSetGo\Admin\Settings::invalidate_cache();
 		$this->invalidate_cache();
 
 		$was_enabled = ! empty( $old_value['llms_txt']['enable'] );
@@ -256,6 +258,7 @@ class Controller {
 			flush_rewrite_rules();
 
 			if ( $is_enabled ) {
+				$this->file_manager->generate_all_files( $this->generator );
 				$this->write_physical_file();
 			} else {
 				$this->delete_physical_file();
