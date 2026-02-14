@@ -117,7 +117,7 @@ class Test_Overlay_Header extends WP_UnitTestCase {
 		$post_id = $this->factory->post->create();
 
 		$value = get_post_meta( $post_id, Overlay_Header::META_KEY, true );
-		$this->assertEmpty( $value, 'Meta should default to empty/false' );
+		$this->assertFalse( (bool) $value, 'Meta should default to false' );
 	}
 
 	/**
