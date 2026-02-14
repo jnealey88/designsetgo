@@ -105,13 +105,9 @@ addFilter(
  */
 const withMaxWidthStyles = createHigherOrderComponent((BlockListBlock) => {
 	return (props) => {
-		const { attributes, name } = props;
+		const { name } = props;
 
 		if (!shouldExtendBlock(name) || EXCLUDED_BLOCKS.includes(name)) {
-			return <BlockListBlock {...props} />;
-		}
-
-		if (!attributes.dsgoMaxWidth) {
 			return <BlockListBlock {...props} />;
 		}
 
