@@ -56,6 +56,11 @@
 	let lastScrollY = window.scrollY;
 	let ticking = false;
 
+	// Detect if overlay header mode is active for this page
+	const isOverlayPage = document.body.classList.contains(
+		'dsgo-page-overlay-header'
+	);
+
 	/**
 	 * Check if we're on mobile
 	 */
@@ -179,6 +184,15 @@
 			header.classList.add('dsgo-scrolled');
 		} else {
 			header.classList.remove('dsgo-scrolled');
+		}
+
+		// Overlay header: swap between absolute (at top) and sticky (scrolled)
+		if (isOverlayPage) {
+			if (scrollY > settings.scrollThreshold) {
+				header.style.position = 'sticky';
+			} else {
+				header.style.position = '';
+			}
 		}
 
 		// Handle hide on scroll down
