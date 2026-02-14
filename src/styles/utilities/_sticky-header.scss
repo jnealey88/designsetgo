@@ -239,6 +239,16 @@ body:not(.block-editor-page).dsgo-page-overlay-header header.wp-block-template-p
 }
 
 /**
+ * Overlay Content Pull-Up
+ * Removes top margin from the first content element after the header so it
+ * sits at the top of the page and the overlay header renders on top of it.
+ */
+body:not(.block-editor-page).dsgo-page-overlay-header .wp-site-blocks > header.wp-block-template-part + *,
+body:not(.block-editor-page).dsgo-page-overlay-header .wp-site-blocks > .wp-block-template-part:not(footer):first-of-type + * {
+	margin-top: 0 !important;
+}
+
+/**
  * Overlay Header + Admin Bar Offset
  */
 body:not(.block-editor-page).admin-bar.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type,
