@@ -100,7 +100,16 @@ class Controller {
 	public function add_rewrite_rule(): void {
 		add_rewrite_rule( '^llms\.txt/?$', 'index.php?llms_txt=1', 'top' );
 
-		if ( get_transient( 'designsetgo_llms_txt_flush_rules' ) ) {
+		$needs_flush = get_transient( 'designsetgo_llms_txt_flush_rules' );
+
+		// Flush when plugin version changes (covers updates without activation).
+		$stored_version = get_option( 'designsetgo_llms_txt_version' );
+		if ( $stored_version !== DESIGNSETGO_VERSION ) {
+			$needs_flush = true;
+			update_option( 'designsetgo_llms_txt_version', DESIGNSETGO_VERSION, true );
+		}
+
+		if ( $needs_flush ) {
 			delete_transient( 'designsetgo_llms_txt_flush_rules' );
 			flush_rewrite_rules();
 		}
