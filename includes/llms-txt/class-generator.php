@@ -220,8 +220,8 @@ class Generator {
 		}
 
 		// Truncate to max length before escaping.
-		if ( \wp_strlen( $excerpt ) > self::EXCERPT_MAX_LENGTH ) {
-			$excerpt = \wp_substr( $excerpt, 0, self::EXCERPT_MAX_LENGTH - 3 );
+		if ( mb_strlen( $excerpt ) > self::EXCERPT_MAX_LENGTH ) {
+			$excerpt = mb_substr( $excerpt, 0, self::EXCERPT_MAX_LENGTH - 3 );
 			if ( ! str_ends_with( $excerpt, '...' ) ) {
 				$excerpt .= '...';
 			}
@@ -231,8 +231,8 @@ class Generator {
 		$excerpt = $this->escape_markdown( $excerpt );
 
 		// Final length check after escaping (escaped chars may increase length).
-		if ( wp_strlen( $excerpt ) > self::EXCERPT_MAX_LENGTH ) {
-			$excerpt = wp_substr( $excerpt, 0, self::EXCERPT_MAX_LENGTH - 3 ) . '...';
+		if ( mb_strlen( $excerpt ) > self::EXCERPT_MAX_LENGTH ) {
+			$excerpt = mb_substr( $excerpt, 0, self::EXCERPT_MAX_LENGTH - 3 ) . '...';
 		}
 
 		return $excerpt;
