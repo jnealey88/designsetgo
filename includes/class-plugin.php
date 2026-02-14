@@ -300,6 +300,13 @@ class Plugin {
 	public $sticky_header;
 
 	/**
+	 * Overlay Header instance.
+	 *
+	 * @var Overlay_Header
+	 */
+	public $overlay_header;
+
+	/**
 	 * Icon Injector instance.
 	 *
 	 * @var Icon_Injector
@@ -388,6 +395,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
+		require_once DESIGNSETGO_PATH . 'includes/class-overlay-header.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-icon-injector.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-button-global-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-extension-attributes.php';
@@ -447,7 +455,8 @@ class Plugin {
 		$this->custom_css_renderer = new Custom_CSS_Renderer();
 		$this->section_styles      = new Section_Styles();
 		$this->section_styles->init();
-		$this->sticky_header = new Sticky_Header();
+		$this->sticky_header  = new Sticky_Header();
+		$this->overlay_header = new Overlay_Header();
 		$this->icon_injector         = new Icon_Injector();
 		$this->svg_pattern_renderer  = new SVG_Pattern_Renderer();
 		$this->button_global_styles  = new Button_Global_Styles();
@@ -557,6 +566,21 @@ class Plugin {
 				DESIGNSETGO_URL . 'build/llms-txt.js',
 				$llms_asset['dependencies'],
 				$llms_asset['version'],
+				true
+			);
+		}
+
+		// Enqueue overlay header editor panel.
+		$overlay_asset_file = DESIGNSETGO_PATH . 'build/overlay-header.asset.php';
+
+		if ( file_exists( $overlay_asset_file ) ) {
+			$overlay_asset = include $overlay_asset_file;
+
+			wp_enqueue_script(
+				'dsgo-overlay-header-panel',
+				DESIGNSETGO_URL . 'build/overlay-header.js',
+				$overlay_asset['dependencies'],
+				$overlay_asset['version'],
 				true
 			);
 		}

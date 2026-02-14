@@ -218,3 +218,86 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-heade
 		box-shadow: none !important;
 	}
 }
+
+/**
+ * Overlay Header
+ * Positions the header absolutely over page content when enabled via post meta.
+ * The page must have the `dsgo-page-overlay-header` body class.
+ */
+
+/* stylelint-disable selector-class-pattern */
+
+/**
+ * Overlay: fix the header at the top of the viewport so it never scrolls
+ * away. Background starts transparent and transitions to opaque on scroll
+ * without any position change, avoiding the absolute→sticky jolt.
+ */
+body:not(.block-editor-page).dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type,
+body:not(.block-editor-page).dsgo-page-overlay-header header.wp-block-template-part {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: var(--dsgo-sticky-header-z-index, 100);
+	background-color: transparent;
+	transition: background-color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out,
+		box-shadow var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
+}
+
+/**
+ * Overlay: force inner header sections transparent so they don't show
+ * through over the hero. Uses :where() for zero specificity.
+ */
+body:not(.block-editor-page).dsgo-page-overlay-header :where(header.wp-block-template-part, .wp-block-template-part:not(footer):first-of-type) .has-background {
+	background-color: transparent !important;
+	background-image: none !important;
+}
+
+/**
+ * Overlay Content Pull-Up
+ * Uses a negative margin equal to the header height (set by JS as a CSS
+ * custom property) so the content slides up underneath the overlay header
+ * regardless of what spacing the template applies between header and content.
+ */
+body:not(.block-editor-page).dsgo-page-overlay-header .wp-site-blocks > header.wp-block-template-part + *,
+body:not(.block-editor-page).dsgo-page-overlay-header .wp-site-blocks > .wp-block-template-part:not(footer):first-of-type + * {
+	margin-top: calc(-1 * var(--dsgo-overlay-header-height, 0px)) !important;
+}
+
+/**
+ * Overlay Header + Admin Bar Offset
+ */
+body:not(.block-editor-page).admin-bar.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type,
+body:not(.block-editor-page).admin-bar.dsgo-page-overlay-header header.wp-block-template-part {
+	top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+
+	body:not(.block-editor-page).admin-bar.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type,
+	body:not(.block-editor-page).admin-bar.dsgo-page-overlay-header header.wp-block-template-part {
+		top: 46px;
+	}
+}
+
+/**
+ * Overlay Scroll Background
+ * When scrolled past threshold, fade in the solid background.
+ * Position stays fixed — only background-color transitions.
+ */
+body:not(.block-editor-page).dsgo-page-overlay-header .wp-block-template-part.dsgo-scrolled:not(footer):first-of-type,
+body:not(.block-editor-page).dsgo-page-overlay-header header.wp-block-template-part.dsgo-scrolled {
+	background-color: var(--dsgo-sticky-scroll-bg-color, rgba(255, 255, 255, 0.95));
+}
+
+/**
+ * Overlay Header Print Styles
+ */
+@media print {
+
+	body.dsgo-page-overlay-header .wp-block-template-part {
+		position: relative !important;
+		background-color: transparent !important;
+	}
+}
+/* stylelint-enable selector-class-pattern */
