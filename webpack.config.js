@@ -100,6 +100,13 @@ module.exports = {
 		),
 		// llms.txt editor panel
 		'llms-txt': path.resolve(process.cwd(), 'src', 'llms-txt', 'index.js'),
+		// Overlay header editor panel
+		'overlay-header': path.resolve(
+			process.cwd(),
+			'src',
+			'overlay-header',
+			'index.js'
+		),
 		// Block-specific entries (auto-detected from src/blocks/*/index.js)
 		...blockEntries,
 		// Block-specific view scripts (auto-detected from src/blocks/*/view.js)
