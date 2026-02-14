@@ -128,6 +128,27 @@
 		align-self: stretch;
 	}
 
+	// CRITICAL: When section uses "stretch" justification, children should grow
+	// to fill available vertical space. WordPress's `justifyContent: "stretch"`
+	// only generates `align-items: stretch` (horizontal). This adds `flex-grow: 1`
+	// so children also stretch along the main axis (vertical in column flex).
+	.dsgo-stack__inner.is-layout-flex.is-content-justification-stretch > * {
+		flex-grow: 1;
+	}
+
+	// When images are inside a stretch section, make them fill their
+	// stretched container. WordPress defaults img to height:auto which
+	// prevents the image from filling the grown figure element.
+	.dsgo-stack__inner.is-layout-flex.is-content-justification-stretch > .wp-block-image {
+		overflow: hidden; // Clip image to figure bounds (respects border-radius)
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
 	// CRITICAL: Ensure flex layout properties work correctly
 	// WordPress applies these via inline styles, but we ensure they're respected
 	// NOTE: .is-layout-flex is on the dsgo-stack__inner element, not the outer wrapper
