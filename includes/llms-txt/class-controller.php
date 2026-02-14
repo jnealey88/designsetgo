@@ -234,7 +234,10 @@ class Controller {
 		$is_enabled  = ! empty( $new_value['llms_txt']['enable'] );
 
 		if ( $is_enabled !== $was_enabled ) {
-			self::schedule_flush_rewrite_rules();
+			// Flush immediately so the rule is active before the next request.
+			// Must register the rule first since this may run outside of init.
+			add_rewrite_rule( self::REWRITE_PATTERN, 'index.php?llms_txt=1', 'top' );
+			flush_rewrite_rules();
 		}
 	}
 
