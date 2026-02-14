@@ -45,12 +45,7 @@ class Conflict_Detector {
 			return false;
 		}
 
-		// If our feature is enabled, we manage the physical file — not a conflict.
-		$settings = \DesignSetGo\Admin\Settings::get_settings();
-		if ( ! empty( $settings['llms_txt']['enable'] ) ) {
-			return false;
-		}
-
+		// Physical file exists and we didn't write it — conflict.
 		return true;
 	}
 

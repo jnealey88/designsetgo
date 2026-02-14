@@ -69,6 +69,7 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 	 * @param {boolean} value Whether to enable.
 	 */
 	const toggleEnable = (value) => {
+		const previousValue = settings?.llms_txt?.enable || false;
 		updateSetting('llms_txt', 'enable', value);
 
 		// Build the updated settings object since state hasn't re-rendered yet.
@@ -95,6 +96,12 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 				}
 			})
 			.catch((error) => {
+				// Rollback the UI state on failure.
+				updateSetting('llms_txt', 'enable', previousValue);
+				setGenerateNotice({
+					status: 'error',
+					message: __('Failed to save settings.', 'designsetgo'),
+				});
 				// eslint-disable-next-line no-console
 				console.error(
 					'DesignSetGo: Failed to save llms.txt toggle',

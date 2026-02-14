@@ -87,7 +87,7 @@ class Controller {
 		// Register hooks.
 		add_action( 'init', array( $this, 'add_rewrite_rule' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_var' ) );
-		add_filter( 'redirect_canonical', array( $this, 'prevent_trailing_slash' ) );
+		add_filter( 'redirect_canonical', array( $this, 'prevent_trailing_slash' ), 10, 2 );
 		add_action( 'template_redirect', array( $this, 'handle_request' ) );
 		add_action( 'save_post', array( $this, 'handle_post_save' ), 10, 2 );
 		add_action( 'delete_post', array( $this, 'handle_post_delete' ) );
@@ -144,14 +144,25 @@ class Controller {
 	/**
 	 * Prevent WordPress from adding a trailing slash to llms.txt.
 	 *
-	 * @param string $redirect_url The redirect URL.
+	 * @param string|false $redirect_url  The redirect URL, or false if no redirect.
+	 * @param string       $requested_url The requested URL before redirect.
 	 * @return string|false The redirect URL, or false to cancel the redirect.
 	 */
-	public function prevent_trailing_slash( $redirect_url ) {
-		if ( get_query_var( 'llms_txt' ) === '1' ) {
-			return false;
+	public function prevent_trailing_slash( $redirect_url, $requested_url = '' ) {
+		if ( get_query_var( 'llms_txt' ) !== '1' ) {
+			return $redirect_url;
 		}
-		return $redirect_url;
+
+		// Verify we're actually on the /llms.txt path to prevent abuse via ?llms_txt=1.
+		if ( ! empty( $requested_url ) ) {
+			$requested_path = wp_parse_url( $requested_url, PHP_URL_PATH );
+			$normalized     = rtrim( $requested_path, '/' );
+			if ( '/llms.txt' !== $normalized ) {
+				return $redirect_url;
+			}
+		}
+
+		return false;
 	}
 
 	/**
