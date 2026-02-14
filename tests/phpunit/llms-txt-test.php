@@ -345,7 +345,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		$this->assertFalse( $result );
 
 		// Reset query var.
-		set_query_var( 'llms_txt', '' );
+		set_query_var( 'llms_txt', false );
 
 		// Non-llms_txt requests should pass through.
 		$url    = 'https://example.com/some-page/';

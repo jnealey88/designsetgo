@@ -131,7 +131,7 @@ class Controller {
 	 * @return string|false The redirect URL, or false to cancel the redirect.
 	 */
 	public function prevent_trailing_slash( $redirect_url ) {
-		if ( get_query_var( 'llms_txt' ) ) {
+		if ( get_query_var( 'llms_txt' ) === '1' ) {
 			return false;
 		}
 		return $redirect_url;
