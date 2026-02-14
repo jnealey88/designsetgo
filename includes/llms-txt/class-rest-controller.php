@@ -211,6 +211,15 @@ class REST_Controller {
 			)
 		);
 
+		// Refresh the physical llms.txt file if we maintain one.
+		if ( get_option( Controller::PHYSICAL_FILE_OPTION ) ) {
+			$content = $this->generator->generate_content();
+			if ( $content ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
+				file_put_contents( ABSPATH . 'llms.txt', $content );
+			}
+		}
+
 		return rest_ensure_response(
 			array(
 				'success' => true,
@@ -228,6 +237,16 @@ class REST_Controller {
 		$result = $this->file_manager->generate_all_files( $this->generator );
 
 		delete_transient( Controller::CACHE_KEY );
+
+		// Refresh the physical llms.txt file.
+		$content = $this->generator->generate_content();
+		if ( $content ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
+			$written = file_put_contents( ABSPATH . 'llms.txt', $content );
+			if ( false !== $written ) {
+				update_option( Controller::PHYSICAL_FILE_OPTION, true, true );
+			}
+		}
 
 		$message = sprintf(
 			/* translators: %d: Number of files generated */

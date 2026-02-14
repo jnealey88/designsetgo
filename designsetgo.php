@@ -90,5 +90,15 @@ function designsetgo_deactivate() {
 	if ( $timestamp ) {
 		wp_unschedule_event( $timestamp, 'designsetgo_cleanup_old_submissions' );
 	}
+
+	// Remove physical llms.txt if we wrote it.
+	if ( get_option( 'designsetgo_llms_txt_physical' ) ) {
+		$file_path = ABSPATH . 'llms.txt';
+		if ( file_exists( $file_path ) ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
+			unlink( $file_path );
+		}
+		delete_option( 'designsetgo_llms_txt_physical' );
+	}
 }
 register_deactivation_hook( __FILE__, 'DesignSetGo\designsetgo_deactivate' );

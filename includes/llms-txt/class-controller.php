@@ -38,6 +38,11 @@ class Controller {
 	const EXCLUDE_META_KEY = '_designsetgo_exclude_llms';
 
 	/**
+	 * Option key tracking ownership of the physical llms.txt file.
+	 */
+	const PHYSICAL_FILE_OPTION = 'designsetgo_llms_txt_physical';
+
+	/**
 	 * File manager instance.
 	 *
 	 * @var File_Manager
@@ -196,6 +201,7 @@ class Controller {
 
 		$this->invalidate_cache( $post_id );
 		$this->file_manager->generate_file( $post_id );
+		$this->refresh_physical_file();
 	}
 
 	/**
@@ -206,6 +212,16 @@ class Controller {
 	public function handle_post_delete( int $post_id ): void {
 		$this->invalidate_cache( $post_id );
 		$this->file_manager->delete_file( $post_id );
+		$this->refresh_physical_file();
+	}
+
+	/**
+	 * Refresh the physical llms.txt file if we maintain one.
+	 */
+	private function refresh_physical_file(): void {
+		if ( get_option( self::PHYSICAL_FILE_OPTION ) ) {
+			$this->write_physical_file();
+		}
 	}
 
 	/**
@@ -238,6 +254,12 @@ class Controller {
 			// Must register the rule first since this may run outside of init.
 			add_rewrite_rule( self::REWRITE_PATTERN, 'index.php?llms_txt=1', 'top' );
 			flush_rewrite_rules();
+
+			if ( $is_enabled ) {
+				$this->write_physical_file();
+			} else {
+				$this->delete_physical_file();
+			}
 		}
 	}
 
@@ -271,6 +293,55 @@ class Controller {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Write a physical llms.txt file to the site root.
+	 *
+	 * This ensures /llms.txt works regardless of permalink structure.
+	 * Apache serves physical files directly, bypassing WordPress rewrite rules.
+	 *
+	 * @return bool True on success.
+	 */
+	public function write_physical_file(): bool {
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+		if ( empty( $settings['llms_txt']['enable'] ) ) {
+			return false;
+		}
+
+		$content = $this->generator->generate_content();
+		if ( empty( $content ) ) {
+			return false;
+		}
+
+		$file_path = ABSPATH . 'llms.txt';
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
+		$result = file_put_contents( $file_path, $content );
+
+		if ( false !== $result ) {
+			update_option( self::PHYSICAL_FILE_OPTION, true, true );
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Delete the physical llms.txt file if we own it.
+	 */
+	public function delete_physical_file(): void {
+		if ( ! get_option( self::PHYSICAL_FILE_OPTION ) ) {
+			return;
+		}
+
+		$file_path = ABSPATH . 'llms.txt';
+		if ( file_exists( $file_path ) ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
+			unlink( $file_path );
+		}
+
+		delete_option( self::PHYSICAL_FILE_OPTION );
 	}
 
 	/**
