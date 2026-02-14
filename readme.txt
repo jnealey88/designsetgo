@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.24
+Stable tag: 2.0.25
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -175,6 +175,15 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.25 - 2026-02-13 =
+**Bug Fixes:**
+* Fix: Resolve llms.txt 404 error caused by trailing slash redirect
+* Fix: Auto-save and generate markdown files when llms.txt is toggled on
+* Fix: Harden redirect_canonical filter to prevent query var abuse
+* Fix: Correct conflict detection for third-party physical llms.txt files
+* Fix: Guard physical file writes to only occur when feature is enabled
+* Fix: Add UI rollback when llms.txt toggle save fails
 
 = 2.0.24 - 2026-02-13 =
 **Bug Fixes:**
