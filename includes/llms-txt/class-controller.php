@@ -95,22 +95,25 @@ class Controller {
 	}
 
 	/**
+	 * Rewrite rule pattern for llms.txt.
+	 */
+	const REWRITE_PATTERN = '^llms\\.txt/?$';
+
+	/**
 	 * Add rewrite rule for llms.txt.
 	 */
 	public function add_rewrite_rule(): void {
-		add_rewrite_rule( '^llms\.txt/?$', 'index.php?llms_txt=1', 'top' );
+		add_rewrite_rule( self::REWRITE_PATTERN, 'index.php?llms_txt=1', 'top' );
 
-		$needs_flush = get_transient( 'designsetgo_llms_txt_flush_rules' );
-
-		// Flush when plugin version changes (covers updates without activation).
-		$stored_version = get_option( 'designsetgo_llms_txt_version' );
-		if ( $stored_version !== DESIGNSETGO_VERSION ) {
-			$needs_flush = true;
-			update_option( 'designsetgo_llms_txt_version', DESIGNSETGO_VERSION, true );
+		if ( get_transient( 'designsetgo_llms_txt_flush_rules' ) ) {
+			delete_transient( 'designsetgo_llms_txt_flush_rules' );
+			flush_rewrite_rules();
+			return;
 		}
 
-		if ( $needs_flush ) {
-			delete_transient( 'designsetgo_llms_txt_flush_rules' );
+		// Flush if our rule is missing from stored rules (covers updates without activation).
+		$rules = get_option( 'rewrite_rules' );
+		if ( is_array( $rules ) && ! isset( $rules[ self::REWRITE_PATTERN ] ) ) {
 			flush_rewrite_rules();
 		}
 	}

@@ -75,16 +75,24 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 	};
 
 	/**
-	 * Generate static markdown files.
+	 * Save current settings and generate static markdown files.
 	 */
 	const generateFiles = () => {
 		setGenerating(true);
 		setGenerateNotice(null);
 
+		// Save settings first to ensure the backend sees the current UI state.
 		apiFetch({
-			path: '/designsetgo/v1/llms-txt/generate-files',
+			path: '/designsetgo/v1/settings',
 			method: 'POST',
+			data: settings,
 		})
+			.then(() =>
+				apiFetch({
+					path: '/designsetgo/v1/llms-txt/generate-files',
+					method: 'POST',
+				})
+			)
 			.then((response) => {
 				setGenerateNotice({
 					status: response.success ? 'success' : 'warning',

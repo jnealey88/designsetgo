@@ -229,21 +229,28 @@ class REST_Controller {
 
 		delete_transient( Controller::CACHE_KEY );
 
+		$message = sprintf(
+			/* translators: %d: Number of files generated */
+			_n(
+				'Generated %d markdown file.',
+				'Generated %d markdown files.',
+				$result['generated_count'],
+				'designsetgo'
+			),
+			$result['generated_count']
+		);
+
+		// Show actionable error when no files were generated.
+		if ( 0 === $result['generated_count'] && ! empty( $result['errors'] ) ) {
+			$message = implode( ' ', $result['errors'] );
+		}
+
 		return rest_ensure_response(
 			array(
 				'success'         => $result['success'],
 				'generated_count' => $result['generated_count'],
 				'errors'          => $result['errors'],
-				'message'         => sprintf(
-					/* translators: %d: Number of files generated */
-					_n(
-						'Generated %d markdown file.',
-						'Generated %d markdown files.',
-						$result['generated_count'],
-						'designsetgo'
-					),
-					$result['generated_count']
-				),
+				'message'         => $message,
 			)
 		);
 	}
