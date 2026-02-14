@@ -6,8 +6,9 @@
 
 @use 'mixins' as *;
 
-// Import sticky header utilities
-@use 'utilities/sticky-header';
+// Sticky header styles are compiled via the utils/sticky-header webpack entry
+// and enqueued independently by class-sticky-header.php so they load on every
+// page — not just pages that contain DesignSetGo blocks.
 
 // Responsive visibility
 .dsgo-hide-desktop {

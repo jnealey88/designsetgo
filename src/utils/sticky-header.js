@@ -12,6 +12,9 @@
  * @since 1.0.0
  */
 
+// Import SCSS so webpack extracts build/utils/sticky-header.css
+import './sticky-header.scss';
+
 (function () {
 	'use strict';
 
@@ -55,6 +58,24 @@
 	// State tracking
 	let lastScrollY = window.scrollY;
 	let ticking = false;
+
+	// Detect if overlay header mode is active for this page
+	const isOverlayPage = document.body.classList.contains(
+		'dsgo-page-overlay-header'
+	);
+
+	// Measure header height so CSS can pull content up by the right amount.
+	if (isOverlayPage && stickyHeaders.length > 0) {
+		const setHeaderHeight = () => {
+			const h = stickyHeaders[0].getBoundingClientRect().height;
+			document.documentElement.style.setProperty(
+				'--dsgo-overlay-header-height',
+				`${h}px`
+			);
+		};
+		setHeaderHeight();
+		window.addEventListener('resize', setHeaderHeight);
+	}
 
 	/**
 	 * Check if we're on mobile
@@ -180,6 +201,9 @@
 		} else {
 			header.classList.remove('dsgo-scrolled');
 		}
+
+		// Overlay header uses position:fixed via CSS — no position swap needed.
+		// The dsgo-scrolled class (toggled above) triggers the background transition.
 
 		// Handle hide on scroll down
 		if (settings.hideOnScrollDown && scrollY > settings.scrollThreshold) {

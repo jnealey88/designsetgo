@@ -109,6 +109,8 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 	public function test_allowed_categories_defined() {
 		$expected = array(
 			'homepage',
+			'header',
+			'footer',
 			'hero',
 			'features',
 			'pricing',
@@ -783,7 +785,23 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 
 		$this->assertNotEmpty( $dsgo_patterns, 'Should have DesignSetGo patterns' );
 
+		// Header and footer patterns legitimately use blockTypes to bind to
+		// core/template-part/header and core/template-part/footer respectively.
+		$template_part_prefixes = array( 'designsetgo/header/', 'designsetgo/footer/' );
+
 		foreach ( $dsgo_patterns as $pattern ) {
+			$is_template_part_pattern = false;
+			foreach ( $template_part_prefixes as $prefix ) {
+				if ( 0 === strpos( $pattern['name'], $prefix ) ) {
+					$is_template_part_pattern = true;
+					break;
+				}
+			}
+
+			if ( $is_template_part_pattern ) {
+				continue;
+			}
+
 			$this->assertArrayNotHasKey(
 				'blockTypes',
 				$pattern,
