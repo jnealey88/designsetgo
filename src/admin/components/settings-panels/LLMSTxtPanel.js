@@ -58,8 +58,60 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 			});
 	}, []);
 
+	const [enabling, setEnabling] = useState(false);
+
 	const isEnabled = settings?.llms_txt?.enable || false;
 	const enabledPostTypes = settings?.llms_txt?.post_types || ['page', 'post'];
+
+	/**
+	 * Toggle llms.txt on or off, auto-saving immediately.
+	 *
+	 * @param {boolean} value Whether to enable.
+	 */
+	const toggleEnable = (value) => {
+		const previousValue = settings?.llms_txt?.enable || false;
+		updateSetting('llms_txt', 'enable', value);
+
+		// Build the updated settings object since state hasn't re-rendered yet.
+		const updatedSettings = {
+			...settings,
+			llms_txt: { ...settings?.llms_txt, enable: value },
+		};
+
+		setEnabling(value);
+		apiFetch({
+			path: '/designsetgo/v1/settings',
+			method: 'POST',
+			data: updatedSettings,
+		})
+			.then(() => {
+				if (value) {
+					setGenerateNotice({
+						status: 'success',
+						message: __(
+							'llms.txt enabled and files generated.',
+							'designsetgo'
+						),
+					});
+				}
+			})
+			.catch((error) => {
+				// Rollback the UI state on failure.
+				updateSetting('llms_txt', 'enable', previousValue);
+				setGenerateNotice({
+					status: 'error',
+					message: __('Failed to save settings.', 'designsetgo'),
+				});
+				// eslint-disable-next-line no-console
+				console.error(
+					'DesignSetGo: Failed to save llms.txt toggle',
+					error
+				);
+			})
+			.finally(() => {
+				setEnabling(false);
+			});
+	};
 
 	/**
 	 * Toggle a post type in the enabled list.
@@ -75,16 +127,24 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 	};
 
 	/**
-	 * Generate static markdown files.
+	 * Save current settings and generate static markdown files.
 	 */
 	const generateFiles = () => {
 		setGenerating(true);
 		setGenerateNotice(null);
 
+		// Save settings first to ensure the backend sees the current UI state.
 		apiFetch({
-			path: '/designsetgo/v1/llms-txt/generate-files',
+			path: '/designsetgo/v1/settings',
 			method: 'POST',
+			data: settings,
 		})
+			.then(() =>
+				apiFetch({
+					path: '/designsetgo/v1/llms-txt/generate-files',
+					method: 'POST',
+				})
+			)
 			.then((response) => {
 				setGenerateNotice({
 					status: response.success ? 'success' : 'warning',
@@ -280,9 +340,8 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 						)
 					}
 					checked={isEnabled}
-					onChange={(value) =>
-						updateSetting('llms_txt', 'enable', value)
-					}
+					disabled={enabling}
+					onChange={toggleEnable}
 				/>
 
 				{isEnabled &&

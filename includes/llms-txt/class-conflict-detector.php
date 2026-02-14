@@ -31,11 +31,22 @@ class Conflict_Detector {
 	 *
 	 * When a physical file exists in the site root, the web server serves it
 	 * directly before WordPress can handle the request via rewrite rules.
+	 * Files written by DesignSetGo itself are not considered conflicts.
 	 *
 	 * @return bool True if a conflicting file exists.
 	 */
 	public function has_conflict(): bool {
-		return file_exists( ABSPATH . 'llms.txt' );
+		if ( ! file_exists( ABSPATH . 'llms.txt' ) ) {
+			return false;
+		}
+
+		// If we wrote the file, it's not a conflict.
+		if ( get_option( Controller::PHYSICAL_FILE_OPTION ) ) {
+			return false;
+		}
+
+		// Physical file exists and we didn't write it — conflict.
+		return true;
 	}
 
 	/**

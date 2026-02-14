@@ -211,6 +211,16 @@ class REST_Controller {
 			)
 		);
 
+		// Refresh the physical llms.txt file if we maintain one and the feature is still enabled.
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+		if ( get_option( Controller::PHYSICAL_FILE_OPTION ) && ! empty( $settings['llms_txt']['enable'] ) ) {
+			$content = $this->generator->generate_content();
+			if ( $content ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
+				file_put_contents( ABSPATH . 'llms.txt', $content );
+			}
+		}
+
 		return rest_ensure_response(
 			array(
 				'success' => true,
@@ -229,21 +239,41 @@ class REST_Controller {
 
 		delete_transient( Controller::CACHE_KEY );
 
+		// Refresh the physical llms.txt file only when the feature is enabled.
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+		if ( ! empty( $settings['llms_txt']['enable'] ) ) {
+			$content = $this->generator->generate_content();
+			if ( $content ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
+				$written = file_put_contents( ABSPATH . 'llms.txt', $content );
+				if ( false !== $written ) {
+					update_option( Controller::PHYSICAL_FILE_OPTION, true, true );
+				}
+			}
+		}
+
+		$message = sprintf(
+			/* translators: %d: Number of files generated */
+			_n(
+				'Generated %d markdown file.',
+				'Generated %d markdown files.',
+				$result['generated_count'],
+				'designsetgo'
+			),
+			$result['generated_count']
+		);
+
+		// Show actionable error when no files were generated.
+		if ( 0 === $result['generated_count'] && ! empty( $result['errors'] ) ) {
+			$message = implode( ' ', $result['errors'] );
+		}
+
 		return rest_ensure_response(
 			array(
 				'success'         => $result['success'],
 				'generated_count' => $result['generated_count'],
 				'errors'          => $result['errors'],
-				'message'         => sprintf(
-					/* translators: %d: Number of files generated */
-					_n(
-						'Generated %d markdown file.',
-						'Generated %d markdown files.',
-						$result['generated_count'],
-						'designsetgo'
-					),
-					$result['generated_count']
-				),
+				'message'         => $message,
 			)
 		);
 	}

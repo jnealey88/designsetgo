@@ -335,6 +335,55 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test prevent_trailing_slash cancels redirect for llms_txt requests.
+	 */
+	public function test_prevent_trailing_slash() {
+		// Simulate llms_txt query var being set.
+		set_query_var( 'llms_txt', '1' );
+
+		$result = $this->controller->prevent_trailing_slash(
+			'https://example.com/llms.txt/',
+			'https://example.com/llms.txt'
+		);
+		$this->assertFalse( $result );
+
+		// Reset query var.
+		set_query_var( 'llms_txt', false );
+
+		// Non-llms_txt requests should pass through.
+		$url    = 'https://example.com/some-page/';
+		$result = $this->controller->prevent_trailing_slash( $url, $url );
+		$this->assertEquals( $url, $result );
+	}
+
+	/**
+	 * Test prevent_trailing_slash rejects query var abuse on non-llms.txt paths.
+	 */
+	public function test_prevent_trailing_slash_rejects_query_var_abuse() {
+		// Simulate someone adding ?llms_txt=1 to a random URL.
+		set_query_var( 'llms_txt', '1' );
+
+		$url    = 'https://example.com/some-page/';
+		$result = $this->controller->prevent_trailing_slash( $url, 'https://example.com/some-page' );
+		$this->assertEquals( $url, $result, 'Should not cancel redirect for non-llms.txt paths even with query var set.' );
+
+		// Reset query var.
+		set_query_var( 'llms_txt', false );
+	}
+
+	/**
+	 * Test rewrite rule matches both /llms.txt and /llms.txt/ paths.
+	 */
+	public function test_rewrite_rule_matches_with_and_without_trailing_slash() {
+		$pattern = Controller::REWRITE_PATTERN;
+
+		$this->assertSame( 1, preg_match( '@' . $pattern . '@', 'llms.txt' ), 'Pattern should match llms.txt without trailing slash.' );
+		$this->assertSame( 1, preg_match( '@' . $pattern . '@', 'llms.txt/' ), 'Pattern should match llms.txt with trailing slash.' );
+		$this->assertSame( 0, preg_match( '@' . $pattern . '@', 'llms.txt.bak' ), 'Pattern should not match llms.txt.bak.' );
+		$this->assertSame( 0, preg_match( '@' . $pattern . '@', 'xllms.txt' ), 'Pattern should not match xllms.txt.' );
+	}
+
+	/**
 	 * Test posts limit constant.
 	 */
 	public function test_posts_limit_filter() {

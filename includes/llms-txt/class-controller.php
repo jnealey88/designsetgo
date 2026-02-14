@@ -38,6 +38,11 @@ class Controller {
 	const EXCLUDE_META_KEY = '_designsetgo_exclude_llms';
 
 	/**
+	 * Option key tracking ownership of the physical llms.txt file.
+	 */
+	const PHYSICAL_FILE_OPTION = 'designsetgo_llms_txt_physical';
+
+	/**
 	 * File manager instance.
 	 *
 	 * @var File_Manager
@@ -82,6 +87,7 @@ class Controller {
 		// Register hooks.
 		add_action( 'init', array( $this, 'add_rewrite_rule' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_var' ) );
+		add_filter( 'redirect_canonical', array( $this, 'prevent_trailing_slash' ), 10, 2 );
 		add_action( 'template_redirect', array( $this, 'handle_request' ) );
 		add_action( 'save_post', array( $this, 'handle_post_save' ), 10, 2 );
 		add_action( 'delete_post', array( $this, 'handle_post_delete' ) );
@@ -94,13 +100,25 @@ class Controller {
 	}
 
 	/**
+	 * Rewrite rule pattern for llms.txt.
+	 */
+	const REWRITE_PATTERN = '^llms\\.txt/?$';
+
+	/**
 	 * Add rewrite rule for llms.txt.
 	 */
 	public function add_rewrite_rule(): void {
-		add_rewrite_rule( '^llms\.txt$', 'index.php?llms_txt=1', 'top' );
+		add_rewrite_rule( self::REWRITE_PATTERN, 'index.php?llms_txt=1', 'top' );
 
 		if ( get_transient( 'designsetgo_llms_txt_flush_rules' ) ) {
 			delete_transient( 'designsetgo_llms_txt_flush_rules' );
+			flush_rewrite_rules();
+			return;
+		}
+
+		// Flush if our rule is missing from stored rules (covers updates without activation).
+		$rules = get_option( 'rewrite_rules' );
+		if ( is_array( $rules ) && ! isset( $rules[ self::REWRITE_PATTERN ] ) ) {
 			flush_rewrite_rules();
 		}
 	}
@@ -121,6 +139,30 @@ class Controller {
 	public function add_query_var( array $vars ): array {
 		$vars[] = 'llms_txt';
 		return $vars;
+	}
+
+	/**
+	 * Prevent WordPress from adding a trailing slash to llms.txt.
+	 *
+	 * @param string|false $redirect_url  The redirect URL, or false if no redirect.
+	 * @param string       $requested_url The requested URL before redirect.
+	 * @return string|false The redirect URL, or false to cancel the redirect.
+	 */
+	public function prevent_trailing_slash( $redirect_url, $requested_url = '' ) {
+		if ( get_query_var( 'llms_txt' ) !== '1' ) {
+			return $redirect_url;
+		}
+
+		// Verify we're actually on the /llms.txt path to prevent abuse via ?llms_txt=1.
+		if ( ! empty( $requested_url ) ) {
+			$requested_path = wp_parse_url( $requested_url, PHP_URL_PATH );
+			$normalized     = rtrim( $requested_path, '/' );
+			if ( '/llms.txt' !== $normalized ) {
+				return $redirect_url;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -170,6 +212,7 @@ class Controller {
 
 		$this->invalidate_cache( $post_id );
 		$this->file_manager->generate_file( $post_id );
+		$this->refresh_physical_file();
 	}
 
 	/**
@@ -180,6 +223,16 @@ class Controller {
 	public function handle_post_delete( int $post_id ): void {
 		$this->invalidate_cache( $post_id );
 		$this->file_manager->delete_file( $post_id );
+		$this->refresh_physical_file();
+	}
+
+	/**
+	 * Refresh the physical llms.txt file if we maintain one.
+	 */
+	private function refresh_physical_file(): void {
+		if ( get_option( self::PHYSICAL_FILE_OPTION ) ) {
+			$this->write_physical_file();
+		}
 	}
 
 	/**
@@ -202,13 +255,25 @@ class Controller {
 	 * @param array $new_value Updated settings value.
 	 */
 	public function handle_settings_update( $old_value, $new_value ): void {
+		// Clear the static settings cache so subsequent reads see the new values.
+		\DesignSetGo\Admin\Settings::invalidate_cache();
 		$this->invalidate_cache();
 
 		$was_enabled = ! empty( $old_value['llms_txt']['enable'] );
 		$is_enabled  = ! empty( $new_value['llms_txt']['enable'] );
 
 		if ( $is_enabled !== $was_enabled ) {
-			self::schedule_flush_rewrite_rules();
+			// Flush immediately so the rule is active before the next request.
+			// Must register the rule first since this may run outside of init.
+			add_rewrite_rule( self::REWRITE_PATTERN, 'index.php?llms_txt=1', 'top' );
+			flush_rewrite_rules();
+
+			if ( $is_enabled ) {
+				$this->file_manager->generate_all_files( $this->generator );
+				$this->write_physical_file();
+			} else {
+				$this->delete_physical_file();
+			}
 		}
 	}
 
@@ -242,6 +307,55 @@ class Controller {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Write a physical llms.txt file to the site root.
+	 *
+	 * This ensures /llms.txt works regardless of permalink structure.
+	 * Apache serves physical files directly, bypassing WordPress rewrite rules.
+	 *
+	 * @return bool True on success.
+	 */
+	public function write_physical_file(): bool {
+		$settings = \DesignSetGo\Admin\Settings::get_settings();
+		if ( empty( $settings['llms_txt']['enable'] ) ) {
+			return false;
+		}
+
+		$content = $this->generator->generate_content();
+		if ( empty( $content ) ) {
+			return false;
+		}
+
+		$file_path = ABSPATH . 'llms.txt';
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
+		$result = file_put_contents( $file_path, $content );
+
+		if ( false !== $result ) {
+			update_option( self::PHYSICAL_FILE_OPTION, true, true );
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Delete the physical llms.txt file if we own it.
+	 */
+	public function delete_physical_file(): void {
+		if ( ! get_option( self::PHYSICAL_FILE_OPTION ) ) {
+			return;
+		}
+
+		$file_path = ABSPATH . 'llms.txt';
+		if ( file_exists( $file_path ) ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
+			unlink( $file_path );
+		}
+
+		delete_option( self::PHYSICAL_FILE_OPTION );
 	}
 
 	/**
