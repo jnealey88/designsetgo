@@ -335,6 +335,25 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test prevent_trailing_slash cancels redirect for llms_txt requests.
+	 */
+	public function test_prevent_trailing_slash() {
+		// Simulate llms_txt query var being set.
+		set_query_var( 'llms_txt', '1' );
+
+		$result = $this->controller->prevent_trailing_slash( 'https://example.com/llms.txt/' );
+		$this->assertFalse( $result );
+
+		// Reset query var.
+		set_query_var( 'llms_txt', '' );
+
+		// Non-llms_txt requests should pass through.
+		$url    = 'https://example.com/some-page/';
+		$result = $this->controller->prevent_trailing_slash( $url );
+		$this->assertEquals( $url, $result );
+	}
+
+	/**
 	 * Test posts limit constant.
 	 */
 	public function test_posts_limit_filter() {
