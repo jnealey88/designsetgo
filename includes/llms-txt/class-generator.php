@@ -175,9 +175,15 @@ class Generator {
 				$markdown = '';
 				if ( $this->file_manager->file_exists( $post->ID ) ) {
 					$file_path = $this->file_manager->get_directory() . '/' . $this->file_manager->get_filename( $post ) . '.md';
-					if ( file_exists( $file_path ) ) {
+					$real_path = realpath( $file_path );
+					$real_dir  = realpath( $this->file_manager->get_directory() );
+
+					if ( $real_path && $real_dir && str_starts_with( $real_path, $real_dir ) && file_exists( $real_path ) ) {
 						// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reading local static file.
-						$markdown = file_get_contents( $file_path );
+						$markdown = file_get_contents( $real_path );
+						if ( false === $markdown ) {
+							$markdown = '';
+						}
 					}
 				}
 
@@ -206,19 +212,30 @@ class Generator {
 		$excerpt = $post->post_excerpt;
 
 		if ( empty( $excerpt ) ) {
-			$excerpt = wp_trim_words( wp_strip_all_tags( $post->post_content ), 25, '' );
+			$excerpt = wp_trim_words( wp_strip_all_tags( $post->post_content ), 25, '...' );
 		}
 
 		if ( empty( $excerpt ) ) {
 			return '';
 		}
 
-		// Truncate to max length.
-		if ( mb_strlen( $excerpt ) > self::EXCERPT_MAX_LENGTH ) {
-			$excerpt = mb_substr( $excerpt, 0, self::EXCERPT_MAX_LENGTH - 3 ) . '...';
+		// Truncate to max length before escaping.
+		if ( wp_strlen( $excerpt ) > self::EXCERPT_MAX_LENGTH ) {
+			$excerpt = wp_substr( $excerpt, 0, self::EXCERPT_MAX_LENGTH - 3 );
+			if ( ! str_ends_with( $excerpt, '...' ) ) {
+				$excerpt .= '...';
+			}
 		}
 
-		return $this->escape_markdown( $excerpt );
+		// Escape markdown after truncating.
+		$excerpt = $this->escape_markdown( $excerpt );
+
+		// Final length check after escaping (escaped chars may increase length).
+		if ( wp_strlen( $excerpt ) > self::EXCERPT_MAX_LENGTH ) {
+			$excerpt = wp_substr( $excerpt, 0, self::EXCERPT_MAX_LENGTH - 3 ) . '...';
+		}
+
+		return $excerpt;
 	}
 
 	/**

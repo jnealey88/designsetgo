@@ -423,10 +423,25 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 						<TextareaControl
 							__nextHasNoMarginBottom
 							label={__('Site Description for AI', 'designsetgo')}
-							help={__(
-								'A concise summary of your site for AI language models. Leave empty to use your WordPress tagline.',
-								'designsetgo'
-							)}
+							help={
+								<>
+									{__(
+										'A concise summary of your site for AI language models. Leave empty to use your WordPress tagline.',
+										'designsetgo'
+									)}
+									{description && (
+										<span
+											style={{
+												display: 'block',
+												marginTop: '4px',
+											}}
+										>
+											{description.length}/500{' '}
+											{__('characters', 'designsetgo')}
+										</span>
+									)}
+								</>
+							}
 							value={description}
 							onChange={(value) =>
 								updateSetting(
@@ -436,6 +451,7 @@ const LLMSTxtPanel = ({ settings, updateSetting }) => {
 								)
 							}
 							rows={3}
+							maxLength={500}
 						/>
 
 						<h3 className="designsetgo-section-heading">

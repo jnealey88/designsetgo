@@ -631,6 +631,119 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		$this->assertSame( '', $defaults['llms_txt']['description'] );
 		$this->assertFalse( $defaults['llms_txt']['generate_full_txt'] );
 	}
+
+	/**
+	 * Test generate_full_content includes section headings per post type.
+	 */
+	public function test_generate_full_content_includes_section_headings() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable'           => true,
+					'post_types'       => array( 'post' ),
+					'generate_full_txt' => true,
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$this->factory->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_title'   => 'Full Content Test',
+				'post_content' => '<!-- wp:paragraph --><p>Full content body.</p><!-- /wp:paragraph -->',
+			)
+		);
+
+		$generator = $this->controller->get_generator();
+		$content   = $generator->generate_full_content();
+
+		// Should contain the site name as H1.
+		$this->assertStringContainsString( '# ', $content );
+		// Should contain the post type section heading.
+		$this->assertStringContainsString( '## ', $content );
+		// Should contain the post content.
+		$this->assertStringContainsString( 'Full content body', $content );
+		// Should contain separators between posts.
+		$this->assertStringContainsString( '---', $content );
+	}
+
+	/**
+	 * Test generate_full_content uses custom description.
+	 */
+	public function test_generate_full_content_uses_custom_description() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable'           => true,
+					'post_types'       => array( 'post' ),
+					'generate_full_txt' => true,
+					'description'      => 'Full content custom description.',
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$this->factory->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_title'   => 'Test',
+				'post_content' => '<!-- wp:paragraph --><p>Content.</p><!-- /wp:paragraph -->',
+			)
+		);
+
+		$generator = $this->controller->get_generator();
+		$content   = $generator->generate_full_content();
+
+		$this->assertStringContainsString( '> Full content custom description', $content );
+	}
+
+	/**
+	 * Test physical full file option constant exists.
+	 */
+	public function test_physical_full_file_option_constant() {
+		$this->assertEquals( 'designsetgo_llms_full_txt_physical', Controller::PHYSICAL_FULL_FILE_OPTION );
+	}
+
+	/**
+	 * Test excerpt max length constant.
+	 */
+	public function test_excerpt_max_length_constant() {
+		$this->assertEquals( 160, Generator::EXCERPT_MAX_LENGTH );
+	}
+
+	/**
+	 * Test generate_content auto-generates excerpt from post content when no manual excerpt.
+	 */
+	public function test_generate_content_auto_generates_excerpt() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable'     => true,
+					'post_types' => array( 'post' ),
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$this->factory->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_title'   => 'Auto Excerpt Post',
+				'post_excerpt' => '',
+				'post_content' => '<!-- wp:paragraph --><p>This is a long paragraph that should be auto-trimmed into an excerpt for the llms.txt link description.</p><!-- /wp:paragraph -->',
+			)
+		);
+
+		$generator = $this->controller->get_generator();
+		$content   = $generator->generate_content();
+
+		// Should contain the colon separator indicating a description is present.
+		$this->assertMatchesRegularExpression( '/\]: .+\(/', $content );
+	}
 }
 
 /**

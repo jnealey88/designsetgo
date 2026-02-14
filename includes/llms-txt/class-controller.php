@@ -48,6 +48,11 @@ class Controller {
 	const PHYSICAL_FILE_OPTION = 'designsetgo_llms_txt_physical';
 
 	/**
+	 * Option key tracking ownership of the physical llms-full.txt file.
+	 */
+	const PHYSICAL_FULL_FILE_OPTION = 'designsetgo_llms_full_txt_physical';
+
+	/**
 	 * File manager instance.
 	 *
 	 * @var File_Manager
@@ -249,10 +254,15 @@ class Controller {
 		$etag = '"' . md5( $content ) . '"';
 
 		// Handle conditional requests (304 Not Modified).
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- ETag comparison only.
-		if ( isset( $_SERVER['HTTP_IF_NONE_MATCH'] ) && trim( wp_unslash( $_SERVER['HTTP_IF_NONE_MATCH'] ) ) === $etag ) {
-			status_header( 304 );
-			exit;
+		if ( isset( $_SERVER['HTTP_IF_NONE_MATCH'] ) ) {
+			$client_etag = sanitize_text_field( wp_unslash( $_SERVER['HTTP_IF_NONE_MATCH'] ) );
+			// Validate ETag format (quoted hex string or weak validator).
+			if ( preg_match( '/^(W\/)?"[a-f0-9]+"$/i', $client_etag ) && $client_etag === $etag ) {
+				header( 'ETag: ' . $etag );
+				header( 'Cache-Control: public, max-age=86400' );
+				status_header( 304 );
+				exit;
+			}
 		}
 
 		header( 'Content-Type: text/plain; charset=utf-8' );
@@ -298,7 +308,7 @@ class Controller {
 		}
 
 		$settings = \DesignSetGo\Admin\Settings::get_settings();
-		if ( ! empty( $settings['llms_txt']['generate_full_txt'] ) && file_exists( ABSPATH . 'llms-full.txt' ) ) {
+		if ( ! empty( $settings['llms_txt']['generate_full_txt'] ) ) {
 			$this->write_physical_full_file();
 		}
 	}
@@ -424,6 +434,8 @@ class Controller {
 			return true;
 		}
 
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional debug logging for file write failures.
+		error_log( 'DesignSetGo: Failed to write llms.txt file to ' . $file_path );
 		return false;
 	}
 
@@ -455,28 +467,46 @@ class Controller {
 			return false;
 		}
 
+		$file_path = ABSPATH . 'llms-full.txt';
+
+		// Avoid overwriting a user-managed file the plugin didn't create.
+		if ( file_exists( $file_path ) && ! get_option( self::PHYSICAL_FULL_FILE_OPTION ) ) {
+			return false;
+		}
+
 		$content = $this->generator->generate_full_content();
 		if ( empty( $content ) ) {
 			return false;
 		}
 
-		$file_path = ABSPATH . 'llms-full.txt';
-
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Direct write for performance.
 		$result = file_put_contents( $file_path, $content );
 
-		return false !== $result;
+		if ( false !== $result ) {
+			update_option( self::PHYSICAL_FULL_FILE_OPTION, true, true );
+			return true;
+		}
+
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional debug logging for file write failures.
+		error_log( 'DesignSetGo: Failed to write llms-full.txt file to ' . $file_path );
+		return false;
 	}
 
 	/**
 	 * Delete the physical llms-full.txt file.
 	 */
 	public function delete_physical_full_file(): void {
+		if ( ! get_option( self::PHYSICAL_FULL_FILE_OPTION ) ) {
+			return;
+		}
+
 		$file_path = ABSPATH . 'llms-full.txt';
 		if ( file_exists( $file_path ) ) {
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Direct file operation required.
 			unlink( $file_path );
 		}
+
+		delete_option( self::PHYSICAL_FULL_FILE_OPTION );
 	}
 
 	/**

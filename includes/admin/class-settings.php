@@ -571,6 +571,7 @@ class Settings {
 	 * - 'bool'       — Cast to boolean.
 	 * - 'absint'     — Unsigned integer via absint().
 	 * - 'text'       — sanitize_text_field().
+	 * - 'textarea'   — sanitize_textarea_field() (preserves newlines).
 	 * - 'hex_color'  — sanitize_hex_color().
 	 * - 'key'        — sanitize_key().
 	 * - 'text_list'  — Array of sanitize_text_field() values.
@@ -643,7 +644,7 @@ class Settings {
 			'llms_txt'           => array(
 				'enable'           => 'bool',
 				'post_types'       => 'key_list',
-				'description'      => 'text',
+				'description'      => 'textarea',
 				'generate_full_txt' => 'bool',
 			),
 		);
@@ -665,6 +666,8 @@ class Settings {
 				return absint( $value );
 			case 'text':
 				return sanitize_text_field( $value );
+			case 'textarea':
+				return sanitize_textarea_field( $value );
 			case 'hex_color':
 				$color = sanitize_hex_color( $value );
 				return $color ? $color : $default;
