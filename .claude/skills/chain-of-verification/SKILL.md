@@ -81,13 +81,13 @@ The key insight: LLMs are good at verification when questions are asked independ
 
 ## Common Mistakes
 
-| Mistake | Fix |
-|---------|-----|
-| Verification questions too vague | Target specific, verifiable claims |
-| Answering verification in context of baseline | Answer each question fresh, independently |
-| Skipping verification for "obvious" answers | Obvious answers hallucinate too |
-| Only 1-2 verification questions | Use 3-5 to cover different claims |
-| Confirming baseline without genuine checking | If you can't verify independently, flag as uncertain |
+| Mistake | Fix | Why This Matters |
+|---------|-----|------------------|
+| Verification questions too vague | Target specific, verifiable claims | Vague questions get vague answers that don't catch errors |
+| Answering verification in context of baseline | Answer each question fresh, independently | Contamination leads to confirming errors instead of catching them |
+| Skipping verification for "obvious" answers | Obvious answers hallucinate too | LLMs are most confident when wrong - obviousness ≠ correctness |
+| Only 1-2 verification questions | Use 3-5 to cover different claims | Each question targets one claim; more claims = more questions needed |
+| Confirming baseline without genuine checking | If you can't verify independently, flag as uncertain | False confidence is worse than acknowledged uncertainty |
 
 ## Red Flags - Apply CoVe
 
