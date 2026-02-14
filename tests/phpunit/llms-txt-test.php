@@ -77,6 +77,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 	public function tear_down() {
 		// Clear cache after each test.
 		delete_transient( Controller::CACHE_KEY );
+		delete_transient( Controller::FULL_CACHE_KEY );
 		Settings::invalidate_cache();
 
 		parent::tear_down();
@@ -402,6 +403,346 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 	 */
 	public function test_cache_key() {
 		$this->assertEquals( 'designsetgo_llms_txt_cache', Controller::CACHE_KEY );
+	}
+
+	/**
+	 * Test full cache key constant.
+	 */
+	public function test_full_cache_key() {
+		$this->assertEquals( 'designsetgo_llms_full_txt_cache', Controller::FULL_CACHE_KEY );
+	}
+
+	/**
+	 * Test query vars include both llms_txt and llms_full_txt.
+	 */
+	public function test_query_vars_include_full_txt() {
+		$vars   = array();
+		$result = $this->controller->add_query_var( $vars );
+
+		$this->assertContains( 'llms_txt', $result );
+		$this->assertContains( 'llms_full_txt', $result );
+	}
+
+	/**
+	 * Test cache invalidation also clears full cache.
+	 */
+	public function test_cache_invalidation_clears_full_cache() {
+		set_transient( Controller::CACHE_KEY, 'test' );
+		set_transient( Controller::FULL_CACHE_KEY, 'full test' );
+
+		$this->controller->invalidate_cache();
+
+		$this->assertFalse( get_transient( Controller::CACHE_KEY ) );
+		$this->assertFalse( get_transient( Controller::FULL_CACHE_KEY ) );
+	}
+
+	/**
+	 * Test prevent_trailing_slash handles llms-full.txt path.
+	 */
+	public function test_prevent_trailing_slash_handles_full_txt() {
+		set_query_var( 'llms_full_txt', '1' );
+
+		$result = $this->controller->prevent_trailing_slash(
+			'https://example.com/llms-full.txt/',
+			'https://example.com/llms-full.txt'
+		);
+		$this->assertFalse( $result );
+
+		// Should reject non-llms paths.
+		$url    = 'https://example.com/some-page/';
+		$result = $this->controller->prevent_trailing_slash( $url, 'https://example.com/some-page' );
+		$this->assertEquals( $url, $result );
+
+		set_query_var( 'llms_full_txt', false );
+	}
+
+	/**
+	 * Test full rewrite pattern matches correctly.
+	 */
+	public function test_full_rewrite_pattern_matches() {
+		$pattern = Controller::FULL_REWRITE_PATTERN;
+
+		$this->assertSame( 1, preg_match( '@' . $pattern . '@', 'llms-full.txt' ) );
+		$this->assertSame( 1, preg_match( '@' . $pattern . '@', 'llms-full.txt/' ) );
+		$this->assertSame( 0, preg_match( '@' . $pattern . '@', 'llms-full.txt.bak' ) );
+		$this->assertSame( 0, preg_match( '@' . $pattern . '@', 'llms.txt' ) );
+	}
+
+	/**
+	 * Test robots.txt integration adds llms.txt reference.
+	 */
+	public function test_robots_txt_includes_llms_reference() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable' => true,
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$output = $this->controller->add_to_robots_txt( "User-agent: *\nDisallow:\n", true );
+
+		$this->assertStringContainsString( 'llms.txt', $output );
+		$this->assertStringContainsString( '# llms.txt - AI language model content index', $output );
+	}
+
+	/**
+	 * Test robots.txt includes llms-full.txt when enabled.
+	 */
+	public function test_robots_txt_includes_full_txt_when_enabled() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable'           => true,
+					'generate_full_txt' => true,
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$output = $this->controller->add_to_robots_txt( '', true );
+
+		$this->assertStringContainsString( 'llms-full.txt', $output );
+	}
+
+	/**
+	 * Test robots.txt omits reference when feature is disabled.
+	 */
+	public function test_robots_txt_omits_when_disabled() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable' => false,
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$output = $this->controller->add_to_robots_txt( '', true );
+
+		$this->assertStringNotContainsString( 'llms.txt', $output );
+	}
+
+	/**
+	 * Test robots.txt omits reference when site is not public.
+	 */
+	public function test_robots_txt_omits_when_not_public() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable' => true,
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$output = $this->controller->add_to_robots_txt( '', false );
+
+		$this->assertStringNotContainsString( 'llms.txt', $output );
+	}
+
+	/**
+	 * Test generate_content includes post excerpt as link description.
+	 */
+	public function test_generate_content_includes_excerpts() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable'     => true,
+					'post_types' => array( 'post' ),
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$this->factory->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_title'   => 'My Post',
+				'post_excerpt' => 'A custom excerpt for the post.',
+			)
+		);
+
+		$generator = $this->controller->get_generator();
+		$content   = $generator->generate_content();
+
+		$this->assertStringContainsString( 'A custom excerpt for the post', $content );
+	}
+
+	/**
+	 * Test generate_content uses custom description when set.
+	 */
+	public function test_generate_content_uses_custom_description() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable'      => true,
+					'post_types'  => array( 'post' ),
+					'description' => 'Custom AI description for my site.',
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$generator = $this->controller->get_generator();
+		$content   = $generator->generate_content();
+
+		$this->assertStringContainsString( '> Custom AI description for my site', $content );
+	}
+
+	/**
+	 * Test generate_content falls back to tagline when no custom description.
+	 */
+	public function test_generate_content_falls_back_to_tagline() {
+		update_option( 'blogdescription', 'Just another WordPress site' );
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable'      => true,
+					'post_types'  => array( 'post' ),
+					'description' => '',
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$generator = $this->controller->get_generator();
+		$content   = $generator->generate_content();
+
+		$this->assertStringContainsString( '> Just another WordPress site', $content );
+	}
+
+	/**
+	 * Test settings defaults include new llms_txt fields.
+	 */
+	public function test_settings_defaults_include_new_fields() {
+		$defaults = Settings::get_defaults();
+
+		$this->assertArrayHasKey( 'description', $defaults['llms_txt'] );
+		$this->assertArrayHasKey( 'generate_full_txt', $defaults['llms_txt'] );
+		$this->assertSame( '', $defaults['llms_txt']['description'] );
+		$this->assertFalse( $defaults['llms_txt']['generate_full_txt'] );
+	}
+
+	/**
+	 * Test generate_full_content includes section headings per post type.
+	 */
+	public function test_generate_full_content_includes_section_headings() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable'           => true,
+					'post_types'       => array( 'post' ),
+					'generate_full_txt' => true,
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$this->factory->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_title'   => 'Full Content Test',
+				'post_content' => '<!-- wp:paragraph --><p>Full content body.</p><!-- /wp:paragraph -->',
+			)
+		);
+
+		$generator = $this->controller->get_generator();
+		$content   = $generator->generate_full_content();
+
+		// Should contain the site name as H1.
+		$this->assertStringContainsString( '# ', $content );
+		// Should contain the post type section heading.
+		$this->assertStringContainsString( '## ', $content );
+		// Should contain the post content.
+		$this->assertStringContainsString( 'Full content body', $content );
+		// Should contain separators between posts.
+		$this->assertStringContainsString( '---', $content );
+	}
+
+	/**
+	 * Test generate_full_content uses custom description.
+	 */
+	public function test_generate_full_content_uses_custom_description() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable'           => true,
+					'post_types'       => array( 'post' ),
+					'generate_full_txt' => true,
+					'description'      => 'Full content custom description.',
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$this->factory->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_title'   => 'Test',
+				'post_content' => '<!-- wp:paragraph --><p>Content.</p><!-- /wp:paragraph -->',
+			)
+		);
+
+		$generator = $this->controller->get_generator();
+		$content   = $generator->generate_full_content();
+
+		$this->assertStringContainsString( '> Full content custom description', $content );
+	}
+
+	/**
+	 * Test physical full file option constant exists.
+	 */
+	public function test_physical_full_file_option_constant() {
+		$this->assertEquals( 'designsetgo_llms_full_txt_physical', Controller::PHYSICAL_FULL_FILE_OPTION );
+	}
+
+	/**
+	 * Test excerpt max length constant.
+	 */
+	public function test_excerpt_max_length_constant() {
+		$this->assertEquals( 160, Generator::EXCERPT_MAX_LENGTH );
+	}
+
+	/**
+	 * Test generate_content auto-generates excerpt from post content when no manual excerpt.
+	 */
+	public function test_generate_content_auto_generates_excerpt() {
+		update_option(
+			'designsetgo_settings',
+			array(
+				'llms_txt' => array(
+					'enable'     => true,
+					'post_types' => array( 'post' ),
+				),
+			)
+		);
+		Settings::invalidate_cache();
+
+		$this->factory->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_title'   => 'Auto Excerpt Post',
+				'post_excerpt' => '',
+				'post_content' => '<!-- wp:paragraph --><p>This is a long paragraph that should be auto-trimmed into an excerpt for the llms.txt link description.</p><!-- /wp:paragraph -->',
+			)
+		);
+
+		$generator = $this->controller->get_generator();
+		$content   = $generator->generate_content();
+
+		// Should contain the colon separator indicating a description is present.
+		$this->assertMatchesRegularExpression( '/\]: .+\(/', $content );
 	}
 }
 
