@@ -49,6 +49,8 @@ class Loader {
 	 */
 	const ALLOWED_CATEGORIES = array(
 		'homepage',
+		'header',
+		'footer',
 		'hero',
 		'features',
 		'pricing',
@@ -121,6 +123,8 @@ class Loader {
 	public function register_pattern_categories() {
 		$categories = array(
 			'dsgo-homepage'     => __( 'DesignSetGo: Homepage', 'designsetgo' ),
+			'dsgo-header'       => __( 'DesignSetGo: Header', 'designsetgo' ),
+			'dsgo-footer'       => __( 'DesignSetGo: Footer', 'designsetgo' ),
 			'dsgo-hero'         => __( 'DesignSetGo: Hero', 'designsetgo' ),
 			'dsgo-features'     => __( 'DesignSetGo: Features', 'designsetgo' ),
 			'dsgo-pricing'      => __( 'DesignSetGo: Pricing', 'designsetgo' ),
