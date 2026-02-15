@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.26
+Stable tag: 2.0.27
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,22 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.27 - 2026-02-15 =
+**New Features:**
+* New: Fifty Fifty block for 50/50 split layouts with edge-to-edge media and constrained content
+* New: Scroll-driven rotation support for parallax extension
+* New: Block gap support for Advanced Heading block
+* New: Inline button layout styles for form builder
+* New: Block transforms to core blocks for graceful plugin deactivation
+
+**Bug Fixes:**
+* Fix: Remove default padding on sections nested inside sections
+* Fix: Replace JSON.stringify comparison with direct property checks for better performance
+* Fix: Respect explicit max-width inside no-width-constraint flex containers
+* Fix: Icon list horizontal layout stacking on tablet
+* Fix: Slider layout issues in flex/grid containers
+* Fix: Remove unused attributes check in max-width HOC
 
 = 2.0.26 - 2026-02-14 =
 **New Features:**
@@ -545,6 +561,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Comprehensive documentation and developer guides
 
 == Upgrade Notice ==
+
+= 2.0.27 =
+New Fifty Fifty block for 50/50 split layouts, scroll-driven rotation for parallax, block gap for Advanced Heading, block transforms for plugin deactivation, and fixes for nested section padding, icon list tablet stacking, slider flex/grid layout, and max-width in flex containers.
 
 = 2.0.26 =
 New per-page overlay header with transparent-to-sticky transition, header and footer block patterns, enhanced llms.txt spec compliance, and fixes for section flex children, nested section width constraints, and PHP string function compatibility.
