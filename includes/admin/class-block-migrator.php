@@ -45,6 +45,7 @@ class Block_Migrator {
 		'page',
 		'wp_template',
 		'wp_template_part',
+		'wp_block',
 	);
 
 	/**
@@ -131,6 +132,13 @@ class Block_Migrator {
 
 			if ( is_wp_error( $update_result ) ) {
 				++$failed;
+				error_log(
+					sprintf(
+						'DesignSetGo Block Migrator: Failed to convert post ID %d: %s',
+						$post->ID,
+						$update_result->get_error_message()
+					)
+				);
 			} else {
 				++$converted;
 			}
@@ -657,7 +665,7 @@ JS;
 		$attrs          = $block['attrs'] ?? array();
 		$constrain_width = $attrs['constrainWidth'] ?? true;
 
-		if ( $constrain_width ) {
+		if ( true === $constrain_width ) {
 			$layout = array( 'type' => 'constrained' );
 
 			if ( ! empty( $attrs['contentWidth'] ) ) {
@@ -735,7 +743,7 @@ JS;
 		$button_attrs = array();
 
 		if ( ! empty( $attrs['text'] ) ) {
-			$button_attrs['content'] = $attrs['text'];
+			$button_attrs['text'] = $attrs['text'];
 		}
 
 		if ( ! empty( $attrs['url'] ) ) {
@@ -810,16 +818,16 @@ JS;
 
 		$link_classes = array_unique( $link_classes );
 
-		// Determine tag based on whether URL is set.
-		$tag = ! empty( $attrs['url'] ) ? 'a' : 'span';
+		// Always use <a> tag to match core/button output.
+		$tag = 'a';
 
-		// Build the inner link/span HTML.
+		// Build the inner link HTML.
 		$class_attr = esc_attr( implode( ' ', $link_classes ) );
 		$style_attr = ! empty( $link_styles ) ? ' style="' . esc_attr( implode( ';', $link_styles ) ) . '"' : '';
 		$href_attr  = '';
 		$target_attr = '';
 
-		if ( 'a' === $tag && ! empty( $attrs['url'] ) ) {
+		if ( ! empty( $attrs['url'] ) ) {
 			$href_attr = ' href="' . esc_url( $attrs['url'] ) . '"';
 		}
 
@@ -831,7 +839,7 @@ JS;
 			$target_attr .= ' rel="' . esc_attr( $attrs['rel'] ) . '"';
 		}
 
-		$content    = $attrs['text'] ?? '';
+		$content    = wp_kses_post( $attrs['text'] ?? '' );
 		$link_html  = '<' . $tag . $href_attr . ' class="' . $class_attr . '"' . $style_attr . $target_attr . '>' . $content . '</' . $tag . '>';
 
 		// core/button wraps the link in a <div class="wp-block-button">.
