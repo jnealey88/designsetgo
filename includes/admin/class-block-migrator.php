@@ -49,6 +49,13 @@ class Block_Migrator {
 	);
 
 	/**
+	 * Number of posts to process per batch during conversion.
+	 *
+	 * @var int
+	 */
+	const BATCH_SIZE = 50;
+
+	/**
 	 * Constructor
 	 *
 	 * Registers AJAX handlers and admin script enqueue hook.
@@ -62,7 +69,8 @@ class Block_Migrator {
 	/**
 	 * AJAX handler for scanning posts that contain DesignSetGo blocks.
 	 *
-	 * Returns a count of posts and total blocks found.
+	 * Returns a count of posts and total blocks found. Processes posts in
+	 * batches to avoid loading all post content into memory at once.
 	 *
 	 * @return void Sends JSON response and exits.
 	 */
@@ -73,12 +81,22 @@ class Block_Migrator {
 			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'designsetgo' ) ) );
 		}
 
-		$results      = $this->scan_for_dsgo_blocks();
-		$total_posts  = count( $results );
-		$total_blocks = 0;
+		$total_sql_rows = $this->count_matching_posts();
+		$total_posts    = 0;
+		$total_blocks   = 0;
+		$offset         = 0;
 
-		foreach ( $results as $result ) {
-			$total_blocks += $result['count'];
+		// Process in batches to avoid loading all post_content into memory.
+		while ( $offset < $total_sql_rows ) {
+			$results = $this->scan_for_dsgo_blocks( self::BATCH_SIZE, $offset );
+
+			$total_posts += count( $results );
+
+			foreach ( $results as $result ) {
+				$total_blocks += $result['count'];
+			}
+
+			$offset += self::BATCH_SIZE;
 		}
 
 		wp_send_json_success(
@@ -92,9 +110,9 @@ class Block_Migrator {
 	/**
 	 * AJAX handler for converting DesignSetGo blocks to core equivalents.
 	 *
-	 * Scans all posts for DesignSetGo blocks, converts them to core blocks,
-	 * and updates the post content. WordPress automatically creates revisions
-	 * for rollback.
+	 * Processes one batch of posts per request. The client drives batching by
+	 * sending 'offset' and 'batch_size' parameters. WordPress automatically
+	 * creates revisions for rollback.
 	 *
 	 * @since 2.0.27
 	 * @return void Sends JSON response and exits.
@@ -106,9 +124,14 @@ class Block_Migrator {
 			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'designsetgo' ) ) );
 		}
 
-		$results   = $this->scan_for_dsgo_blocks();
-		$converted = 0;
-		$failed    = 0;
+		$offset     = isset( $_POST['offset'] ) ? absint( $_POST['offset'] ) : 0;
+		$batch_size = isset( $_POST['batch_size'] ) ? absint( $_POST['batch_size'] ) : self::BATCH_SIZE;
+		$batch_size = min( $batch_size, 100 ); // Cap at 100 to prevent abuse.
+
+		$total_matching = $this->count_matching_posts();
+		$results        = $this->scan_for_dsgo_blocks( $batch_size, $offset );
+		$converted      = 0;
+		$failed         = 0;
 
 		foreach ( $results as $result ) {
 			$post = get_post( $result['post_id'] );
@@ -118,9 +141,9 @@ class Block_Migrator {
 				continue;
 			}
 
-			$blocks          = parse_blocks( $post->post_content );
+			$blocks           = parse_blocks( $post->post_content );
 			$converted_blocks = $this->convert_blocks_recursive( $blocks );
-			$new_content     = serialize_blocks( $converted_blocks );
+			$new_content      = serialize_blocks( $converted_blocks );
 
 			$update_result = wp_update_post(
 				array(
@@ -144,10 +167,16 @@ class Block_Migrator {
 			}
 		}
 
+		$next_offset = $offset + $batch_size;
+		$has_more    = $next_offset < $total_matching;
+
 		wp_send_json_success(
 			array(
-				'converted' => $converted,
-				'failed'    => $failed,
+				'converted'  => $converted,
+				'failed'     => $failed,
+				'hasMore'    => $has_more,
+				'nextOffset' => $has_more ? $next_offset : 0,
+				'total'      => $total_matching,
 			)
 		);
 	}
@@ -185,6 +214,8 @@ class Block_Migrator {
 					'justDeactivate' => __( 'Just Deactivate', 'designsetgo' ),
 					'cancel'        => __( 'Cancel', 'designsetgo' ),
 					'converting'    => __( 'Converting blocks...', 'designsetgo' ),
+					// translators: %converted% is the number converted so far, %total% is the total number.
+					'progress'      => __( 'Converting... %converted% of %total% posts processed', 'designsetgo' ),
 					// translators: %count% is the number of posts converted.
 					'success'       => __( 'Successfully converted blocks in %count% posts. Deactivating...', 'designsetgo' ),
 					// translators: %converted% is the number converted, %failed% is the number that failed.
@@ -330,12 +361,39 @@ class Block_Migrator {
 			}
 		});
 
-		document.addEventListener('keydown', function onEscape(e) {
+		// Store handler reference on overlay for cleanup in closeModal.
+		overlay._dsgoKeydown = function(e) {
 			if (e.key === 'Escape') {
-				document.removeEventListener('keydown', onEscape);
 				closeModal(overlay);
+				return;
 			}
-		});
+
+			// Focus trap: keep Tab/Shift+Tab within the modal.
+			if (e.key === 'Tab') {
+				var focusable = modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+				if (focusable.length === 0) {
+					e.preventDefault();
+					return;
+				}
+
+				var first = focusable[0];
+				var last = focusable[focusable.length - 1];
+
+				if (e.shiftKey) {
+					if (document.activeElement === first || !modal.contains(document.activeElement)) {
+						e.preventDefault();
+						last.focus();
+					}
+				} else {
+					if (document.activeElement === last || !modal.contains(document.activeElement)) {
+						e.preventDefault();
+						first.focus();
+					}
+				}
+			}
+		};
+
+		document.addEventListener('keydown', overlay._dsgoKeydown);
 
 		doAjax('designsetgo_scan_blocks', {}, function(data) {
 			if (data.blocks === 0) {
@@ -434,60 +492,89 @@ class Block_Migrator {
 		spinner.className = 'spinner is-active';
 		spinnerWrap.appendChild(spinner);
 
-		var convertingText = document.createElement('span');
-		convertingText.textContent = config.strings.converting;
-		spinnerWrap.appendChild(convertingText);
+		var progressText = document.createElement('span');
+		progressText.textContent = config.strings.converting;
+		spinnerWrap.appendChild(progressText);
 
 		body.appendChild(spinnerWrap);
 
-		doAjax('designsetgo_convert_blocks', {}, function(data) {
-			body.textContent = '';
+		var totalConverted = 0;
+		var totalFailed = 0;
 
-			var resultP = document.createElement('p');
-			resultP.className = 'dsgo-result success';
+		function processBatch(offset) {
+			doAjax('designsetgo_convert_blocks', { offset: offset, batch_size: 50 }, function(data) {
+				totalConverted += data.converted;
+				totalFailed += data.failed;
 
-			if (data.failed === 0) {
-				resultP.textContent = config.strings.success.replace('%count%', data.converted);
-			} else {
-				resultP.textContent = config.strings.partial.replace('%converted%', data.converted).replace('%failed%', data.failed);
-			}
+				if (data.hasMore) {
+					progressText.textContent = config.strings.progress
+						.replace('%converted%', totalConverted)
+						.replace('%total%', data.total);
+					processBatch(data.nextOffset);
+					return;
+				}
 
-			body.appendChild(resultP);
+				// All batches done.
+				body.textContent = '';
 
-			setTimeout(function() {
-				window.location.href = deactivateUrl;
-			}, 1500);
-		}, function() {
-			body.textContent = '';
+				var resultP = document.createElement('p');
+				resultP.className = 'dsgo-result success';
 
-			var errorP = document.createElement('p');
-			errorP.className = 'dsgo-result error';
-			errorP.textContent = config.strings.convertError;
-			body.appendChild(errorP);
+				if (totalFailed === 0) {
+					resultP.textContent = config.strings.success.replace('%count%', totalConverted);
+				} else {
+					resultP.textContent = config.strings.partial.replace('%converted%', totalConverted).replace('%failed%', totalFailed);
+				}
 
-			var actions = document.createElement('div');
-			actions.className = 'dsgo-modal-actions';
+				body.appendChild(resultP);
 
-			var deactLink = document.createElement('a');
-			deactLink.href = deactivateUrl;
-			deactLink.className = 'button';
-			deactLink.textContent = config.strings.justDeactivate;
-			actions.appendChild(deactLink);
+				setTimeout(function() {
+					window.location.href = deactivateUrl;
+				}, 1500);
+			}, function() {
+				body.textContent = '';
 
-			var cancelBtn = document.createElement('button');
-			cancelBtn.type = 'button';
-			cancelBtn.className = 'button';
-			cancelBtn.textContent = config.strings.cancel;
-			cancelBtn.addEventListener('click', function() {
-				closeModal(overlay);
+				var errorP = document.createElement('p');
+				errorP.className = 'dsgo-result error';
+				errorP.textContent = config.strings.convertError;
+				body.appendChild(errorP);
+
+				// Show partial results if some batches succeeded.
+				if (totalConverted > 0) {
+					var partialP = document.createElement('p');
+					partialP.textContent = config.strings.partial.replace('%converted%', totalConverted).replace('%failed%', totalFailed + '?');
+					body.appendChild(partialP);
+				}
+
+				var actions = document.createElement('div');
+				actions.className = 'dsgo-modal-actions';
+
+				var deactLink = document.createElement('a');
+				deactLink.href = deactivateUrl;
+				deactLink.className = 'button';
+				deactLink.textContent = config.strings.justDeactivate;
+				actions.appendChild(deactLink);
+
+				var cancelBtn = document.createElement('button');
+				cancelBtn.type = 'button';
+				cancelBtn.className = 'button';
+				cancelBtn.textContent = config.strings.cancel;
+				cancelBtn.addEventListener('click', function() {
+					closeModal(overlay);
+				});
+				actions.appendChild(cancelBtn);
+
+				body.appendChild(actions);
 			});
-			actions.appendChild(cancelBtn);
+		}
 
-			body.appendChild(actions);
-		});
+		processBatch(0);
 	}
 
 	function closeModal(overlay) {
+		if (overlay && overlay._dsgoKeydown) {
+			document.removeEventListener('keydown', overlay._dsgoKeydown);
+		}
 		if (overlay && overlay.parentNode) {
 			overlay.parentNode.removeChild(overlay);
 		}
@@ -530,14 +617,17 @@ JS;
 	}
 
 	/**
-	 * Scan all relevant post types for posts containing DesignSetGo blocks.
+	 * Scan relevant post types for posts containing DesignSetGo blocks.
 	 *
 	 * Queries the database for posts whose content contains any of the
 	 * convertible block names, then parses each post to get an accurate count.
+	 * Supports LIMIT/OFFSET for batched processing to avoid memory issues.
 	 *
+	 * @param int $limit  Maximum number of posts to return. 0 for no limit.
+	 * @param int $offset Number of posts to skip.
 	 * @return array Array of associative arrays with 'post_id' and 'count' keys.
 	 */
-	private function scan_for_dsgo_blocks() {
+	private function scan_for_dsgo_blocks( $limit = 0, $offset = 0 ) {
 		global $wpdb;
 
 		// Build LIKE conditions for each convertible block.
@@ -554,23 +644,32 @@ JS;
 		// Build post type placeholders.
 		$type_placeholders = implode( ', ', array_fill( 0, count( self::POST_TYPES ), '%s' ) );
 
-		$statuses     = array( 'publish', 'draft', 'pending', 'future', 'private' );
+		$statuses            = array( 'publish', 'draft', 'pending', 'future', 'private' );
 		$status_placeholders = implode( ', ', array_fill( 0, count( $statuses ), '%s' ) );
 
 		// Merge all values for prepare: LIKE values, then post types, then statuses.
 		$prepare_values = array_merge( $like_values, self::POST_TYPES, $statuses );
 
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Dynamic placeholders generated from safe constants.
-		$posts = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT ID, post_content FROM {$wpdb->posts}
+		$sql = "SELECT ID, post_content FROM {$wpdb->posts}
 				WHERE ( {$like_sql} )
 				AND post_type IN ( {$type_placeholders} )
-				AND post_status IN ( {$status_placeholders} )",
+				AND post_status IN ( {$status_placeholders} )
+				ORDER BY ID ASC";
+
+		if ( $limit > 0 ) {
+			$sql             .= ' LIMIT %d OFFSET %d';
+			$prepare_values[] = $limit;
+			$prepare_values[] = $offset;
+		}
+
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared -- Dynamic placeholders generated from safe constants; $sql variable is built above from safe constants.
+		$posts = $wpdb->get_results(
+			$wpdb->prepare(
+				$sql,
 				...$prepare_values
 			)
 		);
-		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
 
 		if ( empty( $posts ) ) {
 			return array();
@@ -591,6 +690,49 @@ JS;
 		}
 
 		return $results;
+	}
+
+	/**
+	 * Count total matching posts without loading content.
+	 *
+	 * Lightweight query that returns only the count of posts containing
+	 * DesignSetGo blocks, avoiding loading post_content into memory.
+	 *
+	 * @return int Number of posts matching the block query.
+	 */
+	private function count_matching_posts() {
+		global $wpdb;
+
+		$like_clauses = array();
+		$like_values  = array();
+
+		foreach ( self::CONVERTIBLE_BLOCKS as $block_name ) {
+			$like_clauses[] = 'post_content LIKE %s';
+			$like_values[]  = '%' . $wpdb->esc_like( 'wp:' . $block_name ) . '%';
+		}
+
+		$like_sql = implode( ' OR ', $like_clauses );
+
+		$type_placeholders = implode( ', ', array_fill( 0, count( self::POST_TYPES ), '%s' ) );
+
+		$statuses            = array( 'publish', 'draft', 'pending', 'future', 'private' );
+		$status_placeholders = implode( ', ', array_fill( 0, count( $statuses ), '%s' ) );
+
+		$prepare_values = array_merge( $like_values, self::POST_TYPES, $statuses );
+
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Dynamic placeholders generated from safe constants.
+		$count = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$wpdb->posts}
+				WHERE ( {$like_sql} )
+				AND post_type IN ( {$type_placeholders} )
+				AND post_status IN ( {$status_placeholders} )",
+				...$prepare_values
+			)
+		);
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		return $count;
 	}
 
 	/**
