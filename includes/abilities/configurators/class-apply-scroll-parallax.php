@@ -119,10 +119,28 @@ class Apply_Scroll_Parallax extends Abstract_Ability {
 								'description' => __( 'Enable on tablet (768-1024px)', 'designsetgo' ),
 								'default'     => true,
 							),
-							'enableMobile'  => array(
+							'enableMobile'      => array(
 								'type'        => 'boolean',
 								'description' => __( 'Enable on mobile (<768px)', 'designsetgo' ),
 								'default'     => false,
+							),
+							'rotateEnabled'     => array(
+								'type'        => 'boolean',
+								'description' => __( 'Enable scroll-driven rotation', 'designsetgo' ),
+								'default'     => false,
+							),
+							'rotateDirection'   => array(
+								'type'        => 'string',
+								'description' => __( 'Rotation direction while scrolling down', 'designsetgo' ),
+								'enum'        => array( 'cw', 'ccw' ),
+								'default'     => 'cw',
+							),
+							'rotateSpeed'       => array(
+								'type'        => 'number',
+								'description' => __( 'Rotation speed (0-10 scale, speed 10 = 360° full rotation)', 'designsetgo' ),
+								'minimum'     => 0,
+								'maximum'     => 10,
+								'default'     => 3,
 							),
 						),
 					),
@@ -191,7 +209,10 @@ class Apply_Scroll_Parallax extends Abstract_Ability {
 			'dsgoParallaxRelativeTo'    => $parallax['relativeTo'] ?? 'viewport',
 			'dsgoParallaxDesktop'       => $parallax['enableDesktop'] ?? true,
 			'dsgoParallaxTablet'        => $parallax['enableTablet'] ?? true,
-			'dsgoParallaxMobile'        => $parallax['enableMobile'] ?? false,
+			'dsgoParallaxMobile'            => $parallax['enableMobile'] ?? false,
+			'dsgoParallaxRotateEnabled'     => $parallax['rotateEnabled'] ?? false,
+			'dsgoParallaxRotateDirection'   => $parallax['rotateDirection'] ?? 'cw',
+			'dsgoParallaxRotateSpeed'       => $parallax['rotateSpeed'] ?? 3,
 		);
 
 		// Sanitize attributes.

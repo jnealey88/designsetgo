@@ -2,7 +2,8 @@
  * Scroll Parallax - Frontend
  *
  * Handles scroll-based parallax effects on the frontend.
- * Supports vertical (up/down) and horizontal (left/right) movement.
+ * Supports vertical (up/down) and horizontal (left/right) movement,
+ * and scroll-driven rotation (clockwise/counter-clockwise).
  *
  * @package
  * @since 1.0.0
@@ -67,6 +68,9 @@ function parseSettings(element) {
 		viewportEnd:
 			parseInt(element.dataset.dsgoParallaxViewportEnd, 10) || 100,
 		relativeTo: element.dataset.dsgoParallaxRelativeTo || 'viewport',
+		rotateEnabled: element.dataset.dsgoParallaxRotateEnabled === 'true',
+		rotateDirection: element.dataset.dsgoParallaxRotateDirection || 'cw',
+		rotateSpeed: parseInt(element.dataset.dsgoParallaxRotateSpeed, 10) || 3,
 	};
 }
 
@@ -118,7 +122,7 @@ function getAbsoluteTop(element) {
  * @param {Object}      settings       Parsed settings
  * @param {number}      scrollY        Current scroll position
  * @param {number}      viewportHeight Viewport height
- * @return {Object} Object with x and y offset values in pixels
+ * @return {Object} Object with x/y offset values in pixels and rotation in degrees
  */
 function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
 	const elementTop = getAbsoluteTop(element);
@@ -186,7 +190,18 @@ function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
 			offsetY = -(centeredProgress * maxOffset);
 	}
 
-	return { x: offsetX, y: offsetY };
+	// Calculate rotation if enabled
+	// Speed 10 = 360° full rotation over the scroll range
+	let rotation = 0;
+	if (settings.rotateEnabled) {
+		const maxRotation = settings.rotateSpeed * 36;
+		rotation = centeredProgress * maxRotation;
+		if (settings.rotateDirection === 'ccw') {
+			rotation = -rotation;
+		}
+	}
+
+	return { x: offsetX, y: offsetY, rotation };
 }
 
 /**
@@ -272,7 +287,12 @@ function initParallax() {
 			);
 
 			// Apply transform using translate3d for GPU acceleration
-			element.style.transform = `translate3d(${offset.x}px, ${offset.y}px, 0)`;
+			// Compose with rotation when enabled
+			let transform = `translate3d(${offset.x}px, ${offset.y}px, 0)`;
+			if (offset.rotation !== 0) {
+				transform += ` rotate(${offset.rotation}deg)`;
+			}
+			element.style.transform = transform;
 		});
 
 		ticking = false;

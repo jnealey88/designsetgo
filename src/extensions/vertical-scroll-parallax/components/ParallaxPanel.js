@@ -20,6 +20,7 @@ import {
 } from '@wordpress/components';
 import {
 	DIRECTION_VALUES,
+	ROTATION_DIRECTION_VALUES,
 	RELATIVE_TO_VALUES,
 	DEFAULT_PARALLAX_SETTINGS,
 } from '../constants';
@@ -39,6 +40,17 @@ export default function ParallaxPanel({ attributes, setAttributes }) {
 		{ label: __('Down', 'designsetgo'), value: DIRECTION_VALUES.DOWN },
 		{ label: __('Left', 'designsetgo'), value: DIRECTION_VALUES.LEFT },
 		{ label: __('Right', 'designsetgo'), value: DIRECTION_VALUES.RIGHT },
+	];
+
+	const rotateDirectionOptions = [
+		{
+			label: __('Clockwise', 'designsetgo'),
+			value: ROTATION_DIRECTION_VALUES.CW,
+		},
+		{
+			label: __('Counter-Clockwise', 'designsetgo'),
+			value: ROTATION_DIRECTION_VALUES.CCW,
+		},
 	];
 
 	const relativeToOptions = [
@@ -61,6 +73,9 @@ export default function ParallaxPanel({ attributes, setAttributes }) {
 		dsgoParallaxDesktop = DEFAULT_PARALLAX_SETTINGS.enableDesktop,
 		dsgoParallaxTablet = DEFAULT_PARALLAX_SETTINGS.enableTablet,
 		dsgoParallaxMobile = DEFAULT_PARALLAX_SETTINGS.enableMobile,
+		dsgoParallaxRotateEnabled = DEFAULT_PARALLAX_SETTINGS.rotateEnabled,
+		dsgoParallaxRotateDirection = DEFAULT_PARALLAX_SETTINGS.rotateDirection,
+		dsgoParallaxRotateSpeed = DEFAULT_PARALLAX_SETTINGS.rotateSpeed,
 	} = attributes;
 
 	return (
@@ -160,6 +175,72 @@ export default function ParallaxPanel({ attributes, setAttributes }) {
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
+
+					<ToggleControl
+						label={__('Enable Rotation', 'designsetgo')}
+						checked={dsgoParallaxRotateEnabled}
+						onChange={(value) =>
+							setAttributes({
+								dsgoParallaxRotateEnabled: value,
+							})
+						}
+						help={__(
+							'Rotate the element as the user scrolls.',
+							'designsetgo'
+						)}
+						__nextHasNoMarginBottom
+					/>
+
+					{dsgoParallaxRotateEnabled && (
+						<>
+							<SelectControl
+								label={__('Rotate Direction', 'designsetgo')}
+								value={dsgoParallaxRotateDirection}
+								options={rotateDirectionOptions}
+								onChange={(value) =>
+									setAttributes({
+										dsgoParallaxRotateDirection: value,
+									})
+								}
+								help={__(
+									'Rotation direction while scrolling down.',
+									'designsetgo'
+								)}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+
+							<RangeControl
+								label={__('Rotation Speed', 'designsetgo')}
+								value={dsgoParallaxRotateSpeed}
+								onChange={(value) =>
+									setAttributes({
+										dsgoParallaxRotateSpeed: value,
+									})
+								}
+								min={0}
+								max={10}
+								step={1}
+								marks={[
+									{
+										value: 0,
+										label: __('None', 'designsetgo'),
+									},
+									{ value: 5, label: '' },
+									{
+										value: 10,
+										label: __('Max', 'designsetgo'),
+									},
+								]}
+								help={__(
+									'Speed 10 = 360° full rotation.',
+									'designsetgo'
+								)}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+						</>
+					)}
 
 					<p
 						style={{
