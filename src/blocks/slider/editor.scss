@@ -8,6 +8,7 @@
 // Editor-specific adjustments
 .dsgo-slider {
 	max-width: 100%; // Prevent overflow in containers and on small screens
+	min-width: 0; // Allow shrinking inside flex/grid editor wrappers
 
 	// Add visual indicator in editor
 	&::before {

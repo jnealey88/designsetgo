@@ -11,6 +11,7 @@
 	overflow: hidden;
 	box-sizing: border-box; // Ensure padding doesn't increase slider width
 	max-width: 100%; // Prevent overflow in containers and on small screens
+	min-width: 0; // Allow shrinking in flex/grid parents (e.g. WordPress Group Row/Stack layouts)
 
 	// Wide alignment - use negative margins to extend to wide width
 	&.alignwide {
@@ -37,6 +38,7 @@
 	&__viewport {
 		position: relative;
 		width: 100%; // Inner viewport fills the slider width
+		min-width: 0; // Allow shrinking in flex/grid contexts
 		height: var(--dsgo-slider-height, auto);
 		overflow: hidden;
 	}
@@ -49,6 +51,7 @@
 
 	&__track {
 		display: flex;
+		width: 100%; // Constrain track to viewport width so percentage flex-basis resolves correctly
 		height: 100%;
 		gap: var(--dsgo-slider-gap);
 		transition: transform var(--dsgo-slider-transition) ease-in-out;
@@ -158,7 +161,7 @@
 	}
 
 	&[data-arrow-position="outside"] {
-		padding: 0 80px;
+		padding: 0 clamp(40px, 10%, 80px); // Scale padding for narrow containers
 
 		.dsgo-slider__arrow {
 
