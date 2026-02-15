@@ -199,6 +199,16 @@ class Apply_Scroll_Parallax extends Abstract_Ability {
 			);
 		}
 
+		// Validate rotation direction against allowed values.
+		$rotate_direction = $parallax['rotateDirection'] ?? 'cw';
+		if ( ! in_array( $rotate_direction, array( 'cw', 'ccw' ), true ) ) {
+			$rotate_direction = 'cw';
+		}
+
+		// Clamp rotation speed to 0-10 range.
+		$rotate_speed = (int) ( $parallax['rotateSpeed'] ?? 3 );
+		$rotate_speed = max( 0, min( 10, $rotate_speed ) );
+
 		// Map parallax settings to block attributes.
 		$attributes = array(
 			'dsgoParallaxEnabled'       => $parallax['enabled'] ?? true,
@@ -211,8 +221,8 @@ class Apply_Scroll_Parallax extends Abstract_Ability {
 			'dsgoParallaxTablet'        => $parallax['enableTablet'] ?? true,
 			'dsgoParallaxMobile'            => $parallax['enableMobile'] ?? false,
 			'dsgoParallaxRotateEnabled'     => $parallax['rotateEnabled'] ?? false,
-			'dsgoParallaxRotateDirection'   => $parallax['rotateDirection'] ?? 'cw',
-			'dsgoParallaxRotateSpeed'       => $parallax['rotateSpeed'] ?? 3,
+			'dsgoParallaxRotateDirection'   => $rotate_direction,
+			'dsgoParallaxRotateSpeed'       => $rotate_speed,
 		);
 
 		// Sanitize attributes.

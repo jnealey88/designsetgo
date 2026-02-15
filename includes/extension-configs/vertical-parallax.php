@@ -78,6 +78,7 @@ return array(
 		'dsgoParallaxRotateDirection'   => array(
 			'type'    => 'string',
 			'default' => 'cw',
+			'enum'    => array( 'cw', 'ccw' ),
 		),
 		'dsgoParallaxRotateSpeed'       => array(
 			'type'    => 'number',

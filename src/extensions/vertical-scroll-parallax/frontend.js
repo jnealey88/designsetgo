@@ -70,7 +70,11 @@ function parseSettings(element) {
 		relativeTo: element.dataset.dsgoParallaxRelativeTo || 'viewport',
 		rotateEnabled: element.dataset.dsgoParallaxRotateEnabled === 'true',
 		rotateDirection: element.dataset.dsgoParallaxRotateDirection || 'cw',
-		rotateSpeed: parseInt(element.dataset.dsgoParallaxRotateSpeed, 10) || 3,
+		rotateSpeed: Number.isFinite(
+			parseInt(element.dataset.dsgoParallaxRotateSpeed, 10)
+		)
+			? parseInt(element.dataset.dsgoParallaxRotateSpeed, 10)
+			: 3,
 	};
 }
 
@@ -190,11 +194,13 @@ function calculateParallaxOffset(element, settings, scrollY, viewportHeight) {
 			offsetY = -(centeredProgress * maxOffset);
 	}
 
-	// Calculate rotation if enabled
-	// Speed 10 = 360° full rotation over the scroll range
+	// Calculate rotation if enabled.
+	// Uses the same centered approach as movement: rotation is 0° at the
+	// midpoint and swings symmetrically in both directions (e.g. -180° to
+	// +180° at speed 10). This keeps rotation consistent with translate behavior.
 	let rotation = 0;
 	if (settings.rotateEnabled) {
-		const maxRotation = settings.rotateSpeed * 36;
+		const maxRotation = settings.rotateSpeed * 36; // speed 10 = 360°
 		rotation = centeredProgress * maxRotation;
 		if (settings.rotateDirection === 'ccw') {
 			rotation = -rotation;
