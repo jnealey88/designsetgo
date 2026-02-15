@@ -126,7 +126,7 @@ class Block_Migrator {
 
 		$offset     = isset( $_POST['offset'] ) ? absint( $_POST['offset'] ) : 0;
 		$batch_size = isset( $_POST['batch_size'] ) ? absint( $_POST['batch_size'] ) : self::BATCH_SIZE;
-		$batch_size = min( $batch_size, 100 ); // Cap at 100 to prevent abuse.
+		$batch_size = max( 10, min( $batch_size, 100 ) ); // Clamp between 10 and 100.
 
 		$total_matching = $this->count_matching_posts();
 		$results        = $this->scan_for_dsgo_blocks( $batch_size, $offset );
@@ -204,6 +204,7 @@ class Block_Migrator {
 				'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
 				'nonce'          => wp_create_nonce( 'designsetgo_block_migrator' ),
 				'pluginBasename' => DESIGNSETGO_BASENAME,
+				'batchSize'      => self::BATCH_SIZE,
 				'strings'        => array(
 					'title'         => __( 'Deactivate DesignSetGo', 'designsetgo' ),
 					'scanning'      => __( 'Scanning your content...', 'designsetgo' ),
@@ -456,7 +457,7 @@ class Block_Migrator {
 		convertBtn.className = 'button button-primary';
 		convertBtn.textContent = config.strings.convertBtn;
 		convertBtn.addEventListener('click', function() {
-			startConversion(overlay);
+			startConversion(overlay, posts);
 		});
 		actions.appendChild(convertBtn);
 
@@ -480,7 +481,7 @@ class Block_Migrator {
 		convertBtn.focus();
 	}
 
-	function startConversion(overlay) {
+	function startConversion(overlay, totalPosts) {
 		var modal = overlay.querySelector('.dsgo-deactivation-modal');
 		var body = modal.querySelector('.dsgo-modal-body');
 		body.textContent = '';
@@ -502,14 +503,14 @@ class Block_Migrator {
 		var totalFailed = 0;
 
 		function processBatch(offset) {
-			doAjax('designsetgo_convert_blocks', { offset: offset, batch_size: 50 }, function(data) {
+			doAjax('designsetgo_convert_blocks', { offset: offset, batch_size: config.batchSize }, function(data) {
 				totalConverted += data.converted;
 				totalFailed += data.failed;
 
 				if (data.hasMore) {
 					progressText.textContent = config.strings.progress
 						.replace('%converted%', totalConverted)
-						.replace('%total%', data.total);
+						.replace('%total%', totalPosts);
 					processBatch(data.nextOffset);
 					return;
 				}
