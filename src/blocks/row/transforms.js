@@ -106,6 +106,11 @@ const transforms = {
 		{
 			type: 'block',
 			blocks: ['core/group'],
+			// Prevent transform when overlay is active, since it has
+			// no core equivalent and would silently break the design.
+			isMatch: (attributes) => {
+				return !attributes.overlayColor;
+			},
 			transform: (attributes, innerBlocks) => {
 				const {
 					align,
@@ -119,6 +124,7 @@ const transforms = {
 				} = attributes;
 
 				// Map DSG row layout to core/group flex layout
+				// Note: layout is stored in block attributes via WP layout support
 				const layout = {
 					type: 'flex',
 					flexWrap: dsgLayout?.flexWrap || 'wrap',
@@ -129,6 +135,12 @@ const transforms = {
 						verticalAlignment: dsgLayout.verticalAlignment,
 					}),
 				};
+
+				// Note: DSG-specific features not available in core/group:
+				// - mobileStack (responsive stacking on mobile)
+				// - constrainWidth/contentWidth (inner width constraints)
+				// - hoverBackgroundColor, hoverTextColor (hover effects)
+				// - hoverIconBackgroundColor, hoverButtonBackgroundColor (child context)
 
 				return wp.blocks.createBlock(
 					'core/group',

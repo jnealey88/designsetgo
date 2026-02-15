@@ -102,6 +102,16 @@ const transforms = {
 		{
 			type: 'block',
 			blocks: ['core/group'],
+			// Prevent transform when shape dividers or overlay are active,
+			// since these are major visual features with no core equivalent.
+			// Users should remove these features first, then transform.
+			isMatch: (attributes) => {
+				return (
+					!attributes.shapeDividerTop &&
+					!attributes.shapeDividerBottom &&
+					!attributes.overlayColor
+				);
+			},
 			transform: (attributes, innerBlocks) => {
 				const {
 					align,
@@ -118,14 +128,19 @@ const transforms = {
 				// Map constrainWidth to core/group layout type
 				// constrained = content centered and limited to contentSize
 				// default = standard flow layout (no width constraint)
-				const layout = constrainWidth
-					? {
-							type: 'constrained',
-							...(contentWidth && {
-								contentSize: contentWidth,
-							}),
-						}
-					: { type: 'default' };
+				const layout =
+					constrainWidth === true
+						? {
+								type: 'constrained',
+								...(contentWidth && {
+									contentSize: contentWidth,
+								}),
+							}
+						: { type: 'default' };
+
+				// Note: DSG-specific features not available in core/group:
+				// - hoverBackgroundColor, hoverTextColor (hover effects)
+				// - hoverIconBackgroundColor, hoverButtonBackgroundColor (child context)
 
 				return wp.blocks.createBlock(
 					'core/group',
