@@ -135,6 +135,18 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		[clientId]
 	);
 
+	// Detect if this section is nested inside another section
+	const isNested = useSelect(
+		(select) => {
+			const { getBlockParents, getBlockName } = select(blockEditorStore);
+			const parents = getBlockParents(clientId);
+			return parents.some(
+				(id) => getBlockName(id) === 'designsetgo/section'
+			);
+		},
+		[clientId]
+	);
+
 	// CRITICAL: Auto-convert to Row block when orientation changes to horizontal
 	// Section is meant for vertical stacking only
 	// If user wants horizontal layout, they should use Row block
@@ -165,6 +177,40 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		hoverButtonBackgroundColor,
 		innerBlocks,
 	]);
+
+	// Auto-clear default padding for nested sections.
+	// Intentionally uses [] deps (mount-only) — isNested is excluded because
+	// re-running on block moves would clear user-customized padding.
+	useEffect(() => {
+		if (!isNested) {
+			return;
+		}
+
+		const currentPadding = attributes.style?.spacing?.padding;
+		const hasDefaultPadding =
+			currentPadding?.top === 'var(--wp--preset--spacing--50)' &&
+			currentPadding?.bottom === 'var(--wp--preset--spacing--50)' &&
+			currentPadding?.left === 'var(--wp--preset--spacing--30)' &&
+			currentPadding?.right === 'var(--wp--preset--spacing--30)';
+
+		if (hasDefaultPadding) {
+			setAttributes({
+				style: {
+					...attributes.style,
+					spacing: {
+						...attributes.style?.spacing,
+						padding: {
+							top: '0',
+							bottom: '0',
+							left: '0',
+							right: '0',
+						},
+					},
+				},
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// Build className (must match save.js)
 	const blockClassName = [
