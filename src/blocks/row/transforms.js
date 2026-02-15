@@ -103,6 +103,61 @@ const transforms = {
 				);
 			},
 		},
+		{
+			type: 'block',
+			blocks: ['core/group'],
+			// Prevent transform when overlay is active, since it has
+			// no core equivalent and would silently break the design.
+			isMatch: (attributes) => {
+				return !attributes.overlayColor;
+			},
+			transform: (attributes, innerBlocks) => {
+				const {
+					align,
+					tagName,
+					style,
+					layout: dsgLayout,
+					anchor,
+					backgroundColor,
+					textColor,
+					fontSize,
+				} = attributes;
+
+				// Map DSG row layout to core/group flex layout
+				// Note: layout is stored in block attributes via WP layout support
+				const layout = {
+					type: 'flex',
+					flexWrap: dsgLayout?.flexWrap || 'wrap',
+					...(dsgLayout?.justifyContent && {
+						justifyContent: dsgLayout.justifyContent,
+					}),
+					...(dsgLayout?.verticalAlignment && {
+						verticalAlignment: dsgLayout.verticalAlignment,
+					}),
+				};
+
+				// Note: DSG-specific features not available in core/group:
+				// - mobileStack (responsive stacking on mobile)
+				// - constrainWidth/contentWidth (inner width constraints)
+				// - hoverBackgroundColor, hoverTextColor (hover effects)
+				// - hoverIconBackgroundColor, hoverButtonBackgroundColor (child context)
+
+				return wp.blocks.createBlock(
+					'core/group',
+					{
+						align,
+						tagName: tagName || 'div',
+						layout,
+						style,
+						...(anchor && { anchor }),
+						...(backgroundColor && { backgroundColor }),
+						...(textColor && { textColor }),
+						...(fontSize && { fontSize }),
+					},
+					innerBlocks
+				);
+			},
+		},
 	],
 };
 

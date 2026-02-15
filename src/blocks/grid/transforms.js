@@ -125,6 +125,53 @@ const transforms = {
 				);
 			},
 		},
+		{
+			type: 'block',
+			blocks: ['core/group'],
+			transform: (attributes, innerBlocks) => {
+				const {
+					align,
+					tagName,
+					desktopColumns,
+					style,
+					anchor,
+					backgroundColor,
+					textColor,
+					fontSize,
+				} = attributes;
+
+				// Map DSG grid to core/group grid layout
+				// Requires WordPress 6.5+ for grid layout support.
+				// On older versions, core/group falls back to flow layout.
+				const layout = {
+					type: 'grid',
+					columnCount: desktopColumns || 3,
+				};
+
+				// Note: DSG-specific features not available in core/group:
+				// - tabletColumns, mobileColumns (responsive column counts)
+				// - rowGap, columnGap (custom gaps; blockGap transfers via style)
+				// - alignItems, textAlign (grid item alignment)
+				// - constrainWidth/contentWidth (inner width constraints)
+				// - hoverBackgroundColor, hoverTextColor (hover effects)
+				// - hoverIconBackgroundColor, hoverButtonBackgroundColor (child context)
+
+				return wp.blocks.createBlock(
+					'core/group',
+					{
+						align,
+						tagName: tagName || 'div',
+						layout,
+						style,
+						...(anchor && { anchor }),
+						...(backgroundColor && { backgroundColor }),
+						...(textColor && { textColor }),
+						...(fontSize && { fontSize }),
+					},
+					innerBlocks
+				);
+			},
+		},
 	],
 };
 
