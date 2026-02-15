@@ -13,4 +13,15 @@
 			margin-top: 1rem;
 		}
 	}
+
+	// Stack horizontal layout on tablet for editor/frontend parity
+	&.dsgo-icon-list--horizontal {
+
+		@media (max-width: 1024px) {
+
+			.dsgo-icon-list__items {
+				flex-direction: column !important;
+			}
+		}
+	}
 }
