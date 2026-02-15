@@ -70,6 +70,18 @@ function addParallaxAttributes(settings, name) {
 				type: 'boolean',
 				default: DEFAULT_PARALLAX_SETTINGS.enableMobile,
 			},
+			dsgoParallaxRotateEnabled: {
+				type: 'boolean',
+				default: DEFAULT_PARALLAX_SETTINGS.rotateEnabled,
+			},
+			dsgoParallaxRotateDirection: {
+				type: 'string',
+				default: DEFAULT_PARALLAX_SETTINGS.rotateDirection,
+			},
+			dsgoParallaxRotateSpeed: {
+				type: 'number',
+				default: DEFAULT_PARALLAX_SETTINGS.rotateSpeed,
+			},
 		},
 	};
 }

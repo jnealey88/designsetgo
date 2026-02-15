@@ -20,6 +20,9 @@ export const DEFAULT_PARALLAX_SETTINGS = {
 	enableDesktop: true,
 	enableTablet: true,
 	enableMobile: false,
+	rotateEnabled: false,
+	rotateDirection: 'cw',
+	rotateSpeed: 3,
 };
 
 /**
@@ -30,6 +33,14 @@ export const DIRECTION_VALUES = {
 	DOWN: 'down',
 	LEFT: 'left',
 	RIGHT: 'right',
+};
+
+/**
+ * Rotation direction values
+ */
+export const ROTATION_DIRECTION_VALUES = {
+	CW: 'cw',
+	CCW: 'ccw',
 };
 
 /**

@@ -67,9 +67,22 @@ return array(
 			'type'    => 'boolean',
 			'default' => true,
 		),
-		'dsgoParallaxMobile'        => array(
+		'dsgoParallaxMobile'            => array(
 			'type'    => 'boolean',
 			'default' => false,
+		),
+		'dsgoParallaxRotateEnabled'     => array(
+			'type'    => 'boolean',
+			'default' => false,
+		),
+		'dsgoParallaxRotateDirection'   => array(
+			'type'    => 'string',
+			'default' => 'cw',
+			'enum'    => array( 'cw', 'ccw' ),
+		),
+		'dsgoParallaxRotateSpeed'       => array(
+			'type'    => 'number',
+			'default' => 3,
 		),
 	),
 );

@@ -72,6 +72,9 @@ function addParallaxSaveProps(extraProps, blockType, attributes) {
 		dsgoParallaxDesktop = DEFAULT_PARALLAX_SETTINGS.enableDesktop,
 		dsgoParallaxTablet = DEFAULT_PARALLAX_SETTINGS.enableTablet,
 		dsgoParallaxMobile = DEFAULT_PARALLAX_SETTINGS.enableMobile,
+		dsgoParallaxRotateEnabled = DEFAULT_PARALLAX_SETTINGS.rotateEnabled,
+		dsgoParallaxRotateDirection = DEFAULT_PARALLAX_SETTINGS.rotateDirection,
+		dsgoParallaxRotateSpeed = DEFAULT_PARALLAX_SETTINGS.rotateSpeed,
 	} = attributes;
 
 	// Only add attributes if parallax is enabled
@@ -90,6 +93,11 @@ function addParallaxSaveProps(extraProps, blockType, attributes) {
 		'data-dsgo-parallax-desktop': dsgoParallaxDesktop ? 'true' : 'false',
 		'data-dsgo-parallax-tablet': dsgoParallaxTablet ? 'true' : 'false',
 		'data-dsgo-parallax-mobile': dsgoParallaxMobile ? 'true' : 'false',
+		'data-dsgo-parallax-rotate-enabled': dsgoParallaxRotateEnabled
+			? 'true'
+			: 'false',
+		'data-dsgo-parallax-rotate-direction': dsgoParallaxRotateDirection,
+		'data-dsgo-parallax-rotate-speed': String(dsgoParallaxRotateSpeed),
 	};
 
 	// Add class for CSS targeting
