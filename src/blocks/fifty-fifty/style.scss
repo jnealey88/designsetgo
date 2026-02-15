@@ -55,24 +55,9 @@
 		padding-bottom: var(--dsgo-fifty-fifty-content-padding, var(--wp--preset--spacing--50, 2rem));
 	}
 
-	// ==============================================
-	// CONTENT INNER - Width Constraint Technique
-	// ==============================================
-	//
-	// When the block is 100vw wide, each half is 50vw.
-	// The content side's text should align with the site's
-	// content area boundary on its outer edge.
-	//
-	// The outer-edge padding = max(base, (100vw - contentWidth) / 2)
-	// The inner wrapper max-width = contentWidth / 2
-	//
-	// Visual diagram (media-left):
-	//   |<---------- viewport ---------->|
-	//   |<-margin->|<-- content-w -->|<-margin->|
-	//   |  IMAGE   | TEXT here...    (padding)  |
-	//              ^ center line
-	//
-	// ==============================================
+	// Content inner - width constraint technique:
+	// outer-edge padding = max(base, (100vw - contentWidth) / 2)
+	// inner wrapper max-width = contentWidth / 2
 	&__content-inner {
 		width: 100%;
 		max-width: calc(var(--wp--style--global--content-size, 1140px) / 2);
@@ -100,6 +85,7 @@
 	// ----- Media Right: content on left -----
 	// Swap the grid order so media visually appears on the right.
 	&--media-right {
+
 		.dsgo-fifty-fifty__media {
 			order: 2;
 		}

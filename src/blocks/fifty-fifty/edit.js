@@ -112,16 +112,13 @@ export default function FiftyFiftyEdit({
 					'core/heading',
 					{
 						level: 2,
-						placeholder: __('Add heading...', 'designsetgo'),
+						placeholder: __('Add heading…', 'designsetgo'),
 					},
 				],
 				[
 					'core/paragraph',
 					{
-						placeholder: __(
-							'Add content...',
-							'designsetgo'
-						),
+						placeholder: __('Add content…', 'designsetgo'),
 					},
 				],
 			],
@@ -165,9 +162,7 @@ export default function FiftyFiftyEdit({
 						onClick={() =>
 							setAttributes({
 								mediaPosition:
-									mediaPosition === 'left'
-										? 'right'
-										: 'left',
+									mediaPosition === 'left' ? 'right' : 'left',
 							})
 						}
 					/>
@@ -211,10 +206,7 @@ export default function FiftyFiftyEdit({
 					/>
 
 					<SelectControl
-						label={__(
-							'Content Vertical Alignment',
-							'designsetgo'
-						)}
+						label={__('Content Vertical Alignment', 'designsetgo')}
 						value={verticalAlignment}
 						options={[
 							{
@@ -310,10 +302,7 @@ export default function FiftyFiftyEdit({
 												marginBottom: '12px',
 											}}
 										>
-											{__(
-												'Select Image',
-												'designsetgo'
-											)}
+											{__('Select Image', 'designsetgo')}
 										</Button>
 									)}
 								</>
@@ -374,7 +363,9 @@ export default function FiftyFiftyEdit({
 										className="dsgo-fifty-fifty__media-placeholder"
 										onClick={open}
 										onKeyDown={(e) => {
-											if (e.key === 'Enter') open();
+											if (e.key === 'Enter') {
+												open();
+											}
 										}}
 										role="button"
 										tabIndex={0}
@@ -385,10 +376,7 @@ export default function FiftyFiftyEdit({
 									>
 										<span className="dashicons dashicons-format-image" />
 										<span>
-											{__(
-												'Select Image',
-												'designsetgo'
-											)}
+											{__('Select Image', 'designsetgo')}
 										</span>
 									</div>
 								)}

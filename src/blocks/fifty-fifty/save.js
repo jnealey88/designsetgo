@@ -79,15 +79,9 @@ export default function FiftyFiftySave({ attributes }) {
 					<img
 						src={mediaUrl}
 						alt={mediaAlt || ''}
-						style={
-							objectPosition
-								? { objectPosition }
-								: undefined
-						}
+						style={objectPosition ? { objectPosition } : undefined}
 						loading="lazy"
-						{...(!mediaAlt
-							? { 'aria-hidden': 'true' }
-							: {})}
+						{...(!mediaAlt ? { 'aria-hidden': 'true' } : {})}
 					/>
 				)}
 			</div>
