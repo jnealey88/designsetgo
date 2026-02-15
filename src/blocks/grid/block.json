@@ -106,12 +106,12 @@
 			"type": "object",
 			"default": {
 				"spacing": {
-					"blockGap": "var(--wp--preset--spacing--50)",
+					"blockGap": "var:preset|spacing|50",
 					"padding": {
-						"top": "var(--wp--preset--spacing--50)",
-						"bottom": "var(--wp--preset--spacing--50)",
-						"left": "var(--wp--preset--spacing--30)",
-						"right": "var(--wp--preset--spacing--30)"
+						"top": "var:preset|spacing|50",
+						"bottom": "var:preset|spacing|50",
+						"left": "var:preset|spacing|30",
+						"right": "var:preset|spacing|30"
 					}
 				}
 			}

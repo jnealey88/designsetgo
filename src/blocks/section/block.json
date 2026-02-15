@@ -101,10 +101,10 @@
 			"default": {
 				"spacing": {
 					"padding": {
-						"top": "var(--wp--preset--spacing--50)",
-						"bottom": "var(--wp--preset--spacing--50)",
-						"left": "var(--wp--preset--spacing--30)",
-						"right": "var(--wp--preset--spacing--30)"
+						"top": "var:preset|spacing|50",
+						"bottom": "var:preset|spacing|50",
+						"left": "var:preset|spacing|30",
+						"right": "var:preset|spacing|30"
 					}
 				}
 			}
@@ -230,7 +230,7 @@
 	},
 	"example": {
 		"attributes": {
-			"gap": "var(--wp--preset--spacing--50)"
+			"gap": "var:preset|spacing|50"
 		},
 		"innerBlocks": [
 			{
