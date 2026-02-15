@@ -27,6 +27,15 @@
 
 		.dsgo-icon-list__items {
 			// flex-direction: row applied via inline styles
+			flex-wrap: wrap;
+		}
+
+		// Stack vertically on tablet (≤ 1024px)
+		@media (max-width: 1024px) {
+
+			.dsgo-icon-list__items {
+				flex-direction: column !important;
+			}
 		}
 	}
 
