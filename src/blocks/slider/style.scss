@@ -161,7 +161,7 @@
 	}
 
 	&[data-arrow-position="outside"] {
-		padding: 0 clamp(40px, 10%, 80px); // Scale padding for narrow containers
+		padding: 0 clamp(20px, 10%, 80px); // Scale padding for narrow containers
 
 		.dsgo-slider__arrow {
 
@@ -425,6 +425,10 @@
 		&--next {
 			right: 16px;
 		}
+	}
+
+	.dsgo-slider[data-arrow-position="outside"] {
+		padding: 0 clamp(20px, 8%, 40px);
 	}
 
 	.dsgo-slider__dots {
