@@ -11,6 +11,8 @@
 // Used across text-align, content-justification, and explicit alignment rules
 
 // Frontend block classes (for save.js output)
+// NOTE: .wp-block-buttons is intentionally excluded — it's a layout container
+// that needs full width for its justify-content to position child buttons
 $inline-block-classes: (
 	'.dsgo-pill',
 	'.wp-block-designsetgo-pill',
@@ -19,19 +21,18 @@ $inline-block-classes: (
 	'.dsgo-counter',
 	'.wp-block-designsetgo-counter',
 	'.wp-block-button',
-	'.wp-block-buttons',
 	'.dsgo-icon-button',
 	'.wp-block-designsetgo-icon-button'
 );
 
 // Editor data-type attributes (for edit.js output - blocks are wrapped in [data-type] elements)
+// NOTE: core/buttons is intentionally excluded — it's a layout container, not an inline block
 $inline-block-data-types: (
 	'[data-type="designsetgo/pill"]',
 	'[data-type="designsetgo/icon"]',
 	'[data-type="designsetgo/icon-button"]',
 	'[data-type="designsetgo/counter"]',
-	'[data-type="core/button"]',
-	'[data-type="core/buttons"]'
+	'[data-type="core/button"]'
 );
 
 .dsgo-stack {
@@ -196,6 +197,7 @@ $inline-block-data-types: (
 		&[data-type="core/embed"],
 		&[data-type="core/table"],
 		&[data-type="core/list"],
+		&[data-type="core/buttons"],
 		&[data-type="designsetgo/grid"],
 		&[data-type="designsetgo/section"],
 		&[data-type="designsetgo/row"],
@@ -216,6 +218,7 @@ $inline-block-data-types: (
 					.wp-block-embed,
 					.wp-block-table,
 					.wp-block-list,
+					.wp-block-buttons,
 					.dsgo-grid,
 					.wp-block-designsetgo-grid,
 					.dsgo-stack,
@@ -313,7 +316,6 @@ $inline-block-data-types: (
 		> .dsgo-counter,
 		> .wp-block-designsetgo-counter,
 		> .wp-block-button,
-		> .wp-block-buttons,
 		> .dsgo-icon-button,
 		> .wp-block-designsetgo-icon-button {
 			width: auto !important;
@@ -340,8 +342,7 @@ $inline-block-data-types: (
 	> [data-type="designsetgo/icon"],
 	> [data-type="designsetgo/counter"],
 	> [data-type="designsetgo/pill"],
-	> [data-type="core/button"],
-	> [data-type="core/buttons"] {
+	> [data-type="core/button"] {
 		flex-grow: 0 !important;
 		height: auto !important;
 	}
@@ -485,8 +486,7 @@ $inline-block-data-types: (
 			.wp-block-designsetgo-icon-button,
 			.wp-block-designsetgo-pill,
 			.wp-block-designsetgo-counter,
-			.wp-block-button,
-			.wp-block-buttons
+			.wp-block-button
 		)) {
 			align-self: center !important;
 		}
@@ -496,8 +496,7 @@ $inline-block-data-types: (
 			.wp-block-designsetgo-icon-button,
 			.wp-block-designsetgo-pill,
 			.wp-block-designsetgo-counter,
-			.wp-block-button,
-			.wp-block-buttons
+			.wp-block-button
 		)) {
 			align-self: flex-start !important;
 		}
@@ -507,8 +506,7 @@ $inline-block-data-types: (
 			.wp-block-designsetgo-icon-button,
 			.wp-block-designsetgo-pill,
 			.wp-block-designsetgo-counter,
-			.wp-block-button,
-			.wp-block-buttons
+			.wp-block-button
 		)) {
 			align-self: flex-end !important;
 		}

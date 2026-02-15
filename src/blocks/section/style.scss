@@ -220,7 +220,6 @@
 		> .dsgo-counter,
 		> .wp-block-designsetgo-counter,
 		> .wp-block-button,
-		> .wp-block-buttons,
 		> .dsgo-icon-button,
 		> .wp-block-designsetgo-icon-button {
 			align-self: flex-start; // Override to allow alignment
@@ -230,6 +229,8 @@
 
 		// CRITICAL: Block-level elements take full width by default
 		// Text blocks, groups, and most WordPress blocks
+		// NOTE: .wp-block-buttons is a layout container (not inline) — it needs full width
+		// so its internal justify-content can position child buttons correctly
 		> :where(
 			.wp-block-heading,
 			.wp-block-paragraph,
@@ -239,6 +240,7 @@
 			.wp-block-embed,
 			.wp-block-table,
 			.wp-block-list,
+			.wp-block-buttons,
 			.dsgo-grid,
 			.wp-block-designsetgo-grid,
 			.dsgo-stack,
@@ -301,7 +303,6 @@
 		> .dsgo-counter,
 		> .wp-block-designsetgo-counter,
 		> .wp-block-button,
-		> .wp-block-buttons,
 		> .dsgo-icon-button,
 		> .wp-block-designsetgo-icon-button {
 			align-self: flex-start;
@@ -320,7 +321,6 @@
 			.dsgo-counter,
 			.wp-block-designsetgo-counter,
 			.wp-block-button,
-			.wp-block-buttons,
 			.dsgo-icon-button,
 			.wp-block-designsetgo-icon-button
 		):not(.alignleft):not(.alignright):not(.aligncenter) {
@@ -339,7 +339,6 @@
 			.dsgo-counter,
 			.wp-block-designsetgo-counter,
 			.wp-block-button,
-			.wp-block-buttons,
 			.dsgo-icon-button,
 			.wp-block-designsetgo-icon-button
 		):not(.alignleft):not(.alignright):not(.aligncenter) {
@@ -358,7 +357,6 @@
 			.dsgo-counter,
 			.wp-block-designsetgo-counter,
 			.wp-block-button,
-			.wp-block-buttons,
 			.dsgo-icon-button,
 			.wp-block-designsetgo-icon-button
 		):not(.alignleft):not(.alignright):not(.aligncenter) {
@@ -380,7 +378,6 @@
 				.dsgo-counter,
 				.wp-block-designsetgo-counter,
 				.wp-block-button,
-				.wp-block-buttons,
 				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			) {
@@ -400,7 +397,6 @@
 				.dsgo-counter,
 				.wp-block-designsetgo-counter,
 				.wp-block-button,
-				.wp-block-buttons,
 				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			) {
@@ -420,7 +416,6 @@
 				.dsgo-counter,
 				.wp-block-designsetgo-counter,
 				.wp-block-button,
-				.wp-block-buttons,
 				.dsgo-icon-button,
 				.wp-block-designsetgo-icon-button
 			) {
@@ -463,7 +458,6 @@
 	> .dsgo-counter,
 	> .wp-block-designsetgo-counter,
 	> .wp-block-button,
-	> .wp-block-buttons,
 	> .dsgo-icon-button,
 	> .wp-block-designsetgo-icon-button {
 		width: auto !important;
