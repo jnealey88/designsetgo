@@ -178,21 +178,22 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		innerBlocks,
 	]);
 
-	// Auto-clear default padding for nested sections
+	// Auto-clear default padding for nested sections.
+	// Intentionally uses [] deps (mount-only) — isNested is excluded because
+	// re-running on block moves would clear user-customized padding.
 	useEffect(() => {
 		if (!isNested) {
 			return;
 		}
 
 		const currentPadding = attributes.style?.spacing?.padding;
-		const defaultPadding = {
-			top: 'var(--wp--preset--spacing--50)',
-			bottom: 'var(--wp--preset--spacing--50)',
-			left: 'var(--wp--preset--spacing--30)',
-			right: 'var(--wp--preset--spacing--30)',
-		};
+		const hasDefaultPadding =
+			currentPadding?.top === 'var(--wp--preset--spacing--50)' &&
+			currentPadding?.bottom === 'var(--wp--preset--spacing--50)' &&
+			currentPadding?.left === 'var(--wp--preset--spacing--30)' &&
+			currentPadding?.right === 'var(--wp--preset--spacing--30)';
 
-		if (JSON.stringify(currentPadding) === JSON.stringify(defaultPadding)) {
+		if (hasDefaultPadding) {
 			setAttributes({
 				style: {
 					...attributes.style,
@@ -209,7 +210,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []); // Run only once on mount
+	}, []);
 
 	// Build className (must match save.js)
 	const blockClassName = [
