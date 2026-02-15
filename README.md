@@ -1,6 +1,6 @@
 # DesignSetGo
 
-Professional Gutenberg block library with 48 blocks and 15 powerful extensions - complete Form Builder, container system, interactive elements, maps, modals, breadcrumbs, scroll effects, and animations. Built with WordPress standards for guaranteed editor/frontend parity.
+Professional Gutenberg block library with 49 blocks and 15 powerful extensions - complete Form Builder, container system, interactive elements, maps, modals, breadcrumbs, scroll effects, and animations. Built with WordPress standards for guaranteed editor/frontend parity.
 
 ## 🤖 **First AI-Native WordPress Block Library**
 
@@ -16,7 +16,7 @@ DesignSetGo is the **first WordPress block plugin** to integrate with the WordPr
 - ✅ Project foundation and architecture complete
 - ✅ Build system configured (webpack + @wordpress/scripts)
 - ✅ PHP plugin architecture implemented
-- ✅ 48 custom blocks across 6 categories with FSE integration
+- ✅ 49 custom blocks across 6 categories with FSE integration
 - ✅ Complete Form Builder system (13 blocks: builder + 11 field types)
 - ✅ Container system (Row, Section, Grid)
 - ✅ Interactive blocks (Tabs, Accordion, Flip Card, Reveal, Scroll effects, Slider, Counters, Progress)
@@ -41,7 +41,7 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 | Category | Features |
 |----------|----------|
 | **🤖 AI Integration** | **WordPress Abilities API** - First plugin with AI-native programmatic access |
-| **Blocks** | **48 blocks** across 6 categories: **Containers (3)** - Row, Section, Grid; **Form Builder (13)** - Complete form system with AJAX, spam protection, 11 field types; **Interactive (12)** - Tabs, Accordion, Flip Card, Reveal, Scroll effects, Slider, Counters, Progress, Comparison Table, Timeline; **Content/UI (10)** - Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown, Blobs, Breadcrumbs, Table of Contents, plus child blocks; **Modals (2)** - Modal, Modal Trigger; **Location (1)** - Interactive Map with OpenStreetMap & Google Maps |
+| **Blocks** | **49 blocks** across 6 categories: **Containers (3)** - Row, Section, Grid; **Form Builder (13)** - Complete form system with AJAX, spam protection, 11 field types; **Interactive (12)** - Tabs, Accordion, Flip Card, Reveal, Scroll effects, Slider, Counters, Progress, Comparison Table, Timeline; **Content/UI (10)** - Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown, Blobs, Breadcrumbs, Table of Contents, plus child blocks; **Media Layouts (1)** - Fifty Fifty (50/50 split with edge-to-edge media); **Modals (2)** - Modal, Modal Trigger; **Location (1)** - Interactive Map with OpenStreetMap & Google Maps |
 | **Extensions** | **15 Extensions** - Block Animations (24 effects), Sticky Header, Clickable Groups, Background Video, Responsive Visibility, Max Width, Custom CSS, Grid Span, Grid Mobile Order, Reveal Control, Text Alignment, Draft Mode, Scroll Effects (Vertical Parallax, Text Reveal, Expanding Background) |
 | **Patterns** | Pre-designed layouts (Hero, CTA, Features, FAQ) |
 | **FSE Ready** | Full Site Editing compatible, theme.json integration, dual categorization |
@@ -131,7 +131,7 @@ npm run plugin-zip
 
 ## Current Features
 
-### 48 Custom Blocks
+### 49 Custom Blocks
 
 📚 **[View Complete Blocks Reference →](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)**
 
@@ -171,6 +171,9 @@ npm run plugin-zip
 #### Modals (2 Blocks)
 - **Modal** - Accessible popup/dialog with customizable triggers
 - **Modal Trigger** - Button or element to open modals
+
+#### Media Layouts (1 Block)
+- **Fifty Fifty** - Full-width 50/50 split layout with edge-to-edge media on one side and constrained content on the other. Includes media position toggle (left/right), focal point picker, min height control, content vertical alignment, and mobile-responsive stacking.
 
 #### Location (1 Block)
 - **Map** - Interactive maps with dual provider support:
@@ -394,7 +397,7 @@ Reference .claude/CLAUDE.md as you develop
 ## Roadmap
 
 ### ✅ Completed (Phase 1)
-- 48 custom blocks across 6 categories (Containers, Interactive, Content/UI, Modals, Location, Forms)
+- 49 custom blocks across 6 categories (Containers, Interactive, Content/UI, Media Layouts, Modals, Location, Forms)
 - 15 block extensions (Animations, Sticky Header, Clickable Groups, Background Video, Responsive, Scroll Effects, and more)
 - Global styles integration with theme.json
 - Animation system (24+ entrance/exit animations)
@@ -575,10 +578,11 @@ GPL-2.0-or-later - 100% Free Forever
 
 Blocks are organized in the WordPress block inserter:
 
-**DesignSetGo Collection** - All 48 blocks grouped together
+**DesignSetGo Collection** - All 49 blocks grouped together
 - **Layout Containers**: Row, Section, Grid
 - **Interactive**: Accordion, Tabs, Slider, Flip Card, Reveal, Scroll Accordion, Image Accordion, Counter Group, Progress Bar, Scroll Marquee, Comparison Table, Timeline
 - **Content & UI**: Icon, Icon Button, Icon List, Card, Pill, Divider, Countdown Timer, Blobs, Breadcrumbs, Table of Contents
+- **Media Layouts**: Fifty Fifty (50/50 split with edge-to-edge media)
 - **Modals**: Modal, Modal Trigger
 - **Location**: Map (OpenStreetMap & Google Maps)
 - **Forms**: Form Builder + 11 field types (Text, Email, Phone, URL, Date, Time, Number, Checkbox, Select, Textarea, Hidden)
@@ -609,7 +613,7 @@ Blocks are organized in the WordPress block inserter:
 - Look for the "DesignSetGo" category in the pattern inserter
 - Hero sections, CTAs, Features, FAQ layouts
 
-📚 **[Complete Blocks Reference](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)** - Detailed documentation for all 48 blocks
+📚 **[Complete Blocks Reference](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)** - Detailed documentation for all 49 blocks
 
 ## 🤖 AI Integration (WordPress Abilities API)
 
