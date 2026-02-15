@@ -99,6 +99,50 @@ const transforms = {
 				);
 			},
 		},
+		{
+			type: 'block',
+			blocks: ['core/group'],
+			transform: (attributes, innerBlocks) => {
+				const {
+					align,
+					tagName,
+					constrainWidth,
+					contentWidth,
+					style,
+					anchor,
+					backgroundColor,
+					textColor,
+					fontSize,
+				} = attributes;
+
+				// Map constrainWidth to core/group layout type
+				// constrained = content centered and limited to contentSize
+				// default = standard flow layout (no width constraint)
+				const layout = constrainWidth
+					? {
+							type: 'constrained',
+							...(contentWidth && {
+								contentSize: contentWidth,
+							}),
+						}
+					: { type: 'default' };
+
+				return wp.blocks.createBlock(
+					'core/group',
+					{
+						align,
+						tagName: tagName || 'div',
+						layout,
+						style,
+						...(anchor && { anchor }),
+						...(backgroundColor && { backgroundColor }),
+						...(textColor && { textColor }),
+						...(fontSize && { fontSize }),
+					},
+					innerBlocks
+				);
+			},
+		},
 	],
 };
 

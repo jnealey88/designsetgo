@@ -103,6 +103,49 @@ const transforms = {
 				);
 			},
 		},
+		{
+			type: 'block',
+			blocks: ['core/group'],
+			transform: (attributes, innerBlocks) => {
+				const {
+					align,
+					tagName,
+					style,
+					layout: dsgLayout,
+					anchor,
+					backgroundColor,
+					textColor,
+					fontSize,
+				} = attributes;
+
+				// Map DSG row layout to core/group flex layout
+				const layout = {
+					type: 'flex',
+					flexWrap: dsgLayout?.flexWrap || 'wrap',
+					...(dsgLayout?.justifyContent && {
+						justifyContent: dsgLayout.justifyContent,
+					}),
+					...(dsgLayout?.verticalAlignment && {
+						verticalAlignment: dsgLayout.verticalAlignment,
+					}),
+				};
+
+				return wp.blocks.createBlock(
+					'core/group',
+					{
+						align,
+						tagName: tagName || 'div',
+						layout,
+						style,
+						...(anchor && { anchor }),
+						...(backgroundColor && { backgroundColor }),
+						...(textColor && { textColor }),
+						...(fontSize && { fontSize }),
+					},
+					innerBlocks
+				);
+			},
+		},
 	],
 };
 

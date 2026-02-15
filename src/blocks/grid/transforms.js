@@ -125,6 +125,45 @@ const transforms = {
 				);
 			},
 		},
+		{
+			type: 'block',
+			blocks: ['core/group'],
+			transform: (attributes, innerBlocks) => {
+				const {
+					align,
+					tagName,
+					desktopColumns,
+					style,
+					anchor,
+					backgroundColor,
+					textColor,
+					fontSize,
+				} = attributes;
+
+				// Map DSG grid to core/group grid layout (WP 6.5+)
+				// On WP < 6.5, core/group will ignore the grid layout
+				// type and fall back to default (flow) layout
+				const layout = {
+					type: 'grid',
+					columnCount: desktopColumns || 3,
+				};
+
+				return wp.blocks.createBlock(
+					'core/group',
+					{
+						align,
+						tagName: tagName || 'div',
+						layout,
+						style,
+						...(anchor && { anchor }),
+						...(backgroundColor && { backgroundColor }),
+						...(textColor && { textColor }),
+						...(fontSize && { fontSize }),
+					},
+					innerBlocks
+				);
+			},
+		},
 	],
 };
 
