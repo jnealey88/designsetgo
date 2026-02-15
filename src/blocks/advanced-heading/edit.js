@@ -22,27 +22,7 @@ import {
 	ToolbarDropdownMenu,
 } from '@wordpress/components';
 import { heading as headingIcon } from '@wordpress/icons';
-
-/**
- * Convert a WordPress spacing value to a CSS value.
- * Handles preset references like "var:preset|spacing|40" → "var(--wp--preset--spacing--40)"
- *
- * @param {string|Object|undefined} value - Gap value from attributes
- * @return {string|undefined} CSS-ready gap value
- */
-function getGapCSSValue(value) {
-	if (!value) {
-		return undefined;
-	}
-	const raw = typeof value === 'object' ? value.left || value.top : value;
-	if (!raw) {
-		return undefined;
-	}
-	if (typeof raw === 'string' && raw.startsWith('var:')) {
-		return `var(--wp--${raw.slice(4).replace(/\|/g, '--')})`;
-	}
-	return raw;
-}
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 const ALLOWED_BLOCKS = ['designsetgo/heading-segment'];
 const TEMPLATE = [
@@ -71,7 +51,7 @@ export default function AdvancedHeadingEdit({ attributes, setAttributes }) {
 	const validLevel = HEADING_LEVELS.includes(level) ? level : 2;
 	const TagName = `h${validLevel}`;
 
-	const blockGap = getGapCSSValue(attributes.style?.spacing?.blockGap);
+	const blockGap = convertPresetToCSSVar(attributes.style?.spacing?.blockGap);
 
 	const blockProps = useBlockProps({
 		className: classnames('dsgo-advanced-heading', {
