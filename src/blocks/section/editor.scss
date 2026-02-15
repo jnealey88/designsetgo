@@ -128,6 +128,14 @@ $inline-block-data-types: (
 		}
 	}
 
+	// Buttons container is block-level in constrained sections too
+	&:not(.dsgo-no-width-constraint) .dsgo-stack__inner.is-layout-flex {
+
+		> [data-type="core/buttons"] {
+			align-self: stretch;
+		}
+	}
+
 	// CRITICAL: When section has content, position appender at outer container corner
 	// Target from outer container to position relative to main block wrapper
 	// Use :not(:only-child) to exclude empty section state
@@ -486,7 +494,8 @@ $inline-block-data-types: (
 			.wp-block-designsetgo-icon-button,
 			.wp-block-designsetgo-pill,
 			.wp-block-designsetgo-counter,
-			.wp-block-button
+			.wp-block-button,
+			.wp-block-buttons
 		)) {
 			align-self: center !important;
 		}
@@ -496,7 +505,8 @@ $inline-block-data-types: (
 			.wp-block-designsetgo-icon-button,
 			.wp-block-designsetgo-pill,
 			.wp-block-designsetgo-counter,
-			.wp-block-button
+			.wp-block-button,
+			.wp-block-buttons
 		)) {
 			align-self: flex-start !important;
 		}
@@ -506,7 +516,8 @@ $inline-block-data-types: (
 			.wp-block-designsetgo-icon-button,
 			.wp-block-designsetgo-pill,
 			.wp-block-designsetgo-counter,
-			.wp-block-button
+			.wp-block-button,
+			.wp-block-buttons
 		)) {
 			align-self: flex-end !important;
 		}

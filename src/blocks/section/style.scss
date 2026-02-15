@@ -308,6 +308,11 @@
 			align-self: flex-start;
 			width: auto !important;
 		}
+
+		// Buttons container is block-level — needs full width for justify-content to work
+		> .wp-block-buttons:not(.alignleft):not(.alignright) {
+			align-self: stretch;
+		}
 	}
 
 	// Section center alignment - apply to inline blocks WITHOUT their own alignment
