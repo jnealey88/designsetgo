@@ -215,6 +215,19 @@
 			justify-content: stretch;
 		}
 	}
+
+	// Inline button mode: stack field and button on separate lines
+	.dsgo-form-builder--button-inline {
+
+		.dsgo-form-field:last-of-type {
+			flex: 1 1 100% !important;
+		}
+
+		.dsgo-form__submit--inline {
+			width: 100%;
+			margin-bottom: 0;
+		}
+	}
 }
 
 // Print styles
