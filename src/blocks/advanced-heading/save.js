@@ -9,6 +9,7 @@
 
 import classnames from 'classnames';
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 const HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
 
@@ -24,6 +25,8 @@ export default function AdvancedHeadingSave({ attributes }) {
 	const validLevel = HEADING_LEVELS.includes(level) ? level : 2;
 	const TagName = `h${validLevel}`;
 
+	const blockGap = convertPresetToCSSVar(attributes.style?.spacing?.blockGap);
+
 	const blockProps = useBlockProps.save({
 		className: classnames('dsgo-advanced-heading', {
 			[`has-text-align-${textAlign}`]: textAlign,
@@ -32,6 +35,7 @@ export default function AdvancedHeadingSave({ attributes }) {
 
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: 'dsgo-advanced-heading__inner',
+		style: blockGap ? { '--dsgo-segment-gap': blockGap } : undefined,
 	});
 
 	return (

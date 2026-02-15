@@ -8,26 +8,24 @@
 	.dsgo-advanced-heading__inner {
 		margin: 0;
 		padding: 0;
+	}
 
-		// Segments display inline so they flow together as a single heading
-		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
+	// Gap between heading segments — uses CSS custom property
+	// so the editor block-gap control can override the default
+	.dsgo-heading-segment + .dsgo-heading-segment {
+		margin-inline-start: var(--dsgo-segment-gap, 0.3em);
 	}
 }
 
 // Text alignment support
 .dsgo-advanced-heading.has-text-align-left .dsgo-advanced-heading__inner {
-	justify-content: flex-start;
 	text-align: left;
 }
 
 .dsgo-advanced-heading.has-text-align-center .dsgo-advanced-heading__inner {
-	justify-content: center;
 	text-align: center;
 }
 
 .dsgo-advanced-heading.has-text-align-right .dsgo-advanced-heading__inner {
-	justify-content: flex-end;
 	text-align: right;
 }
