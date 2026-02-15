@@ -742,7 +742,7 @@ class Test_LLMS_Txt extends WP_UnitTestCase {
 		$content   = $generator->generate_content();
 
 		// Should contain the colon separator indicating a description is present.
-		$this->assertMatchesRegularExpression( '/\]: .+\(/', $content );
+		$this->assertMatchesRegularExpression( '/\): .+\(/', $content );
 	}
 }
 
