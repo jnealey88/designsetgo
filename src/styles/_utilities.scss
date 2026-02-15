@@ -290,7 +290,7 @@ body.dsgo-show-focus-outlines :where(.wp-site-blocks *:focus-visible) {
 	> .dsgo-grid__inner {
 
 		// Exclude blocks with explicit max-width set via our extension
-		> :not(.alignleft):not(.alignright):not([data-dsgo-max-width]) {
+		> :not(.alignleft):not(.alignright):not(.dsgo-has-max-width) {
 			max-width: none !important;
 		}
 	}
