@@ -120,7 +120,7 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 		imageStyles.objectFit = imageObjectFit;
 	}
 	if (imageObjectFit === 'cover' && imageFocalPoint) {
-		imageStyles.objectPosition = `${imageFocalPoint.x * 100}% ${imageFocalPoint.y * 100}%`;
+		imageStyles.objectPosition = `${Number(imageFocalPoint.x) * 100}% ${Number(imageFocalPoint.y) * 100}%`;
 	}
 
 	// Calculate badge styles

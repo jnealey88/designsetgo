@@ -7,20 +7,7 @@ import {
 	RichText,
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-
-/**
- * Validates image URL to prevent XSS attacks
- *
- * @param {string} url - URL to validate
- * @return {boolean} True if URL is safe
- */
-const isValidImageUrl = (url) => {
-	if (!url || typeof url !== 'string') {
-		return false;
-	}
-	// Only allow http(s) and data URLs, block javascript: and other protocols
-	return /^(https?:\/\/|data:image\/)/.test(url);
-};
+import { isValidImageUrl } from '../../utils/is-valid-image-url';
 
 /**
  * Save component for Card block
@@ -97,7 +84,7 @@ export default function CardSave({ attributes }) {
 		imageStyles.objectFit = imageObjectFit;
 	}
 	if (imageObjectFit === 'cover' && imageFocalPoint) {
-		imageStyles.objectPosition = `${imageFocalPoint.x * 100}% ${imageFocalPoint.y * 100}%`;
+		imageStyles.objectPosition = `${Number(imageFocalPoint.x) * 100}% ${Number(imageFocalPoint.y) * 100}%`;
 	}
 
 	// Calculate badge styles

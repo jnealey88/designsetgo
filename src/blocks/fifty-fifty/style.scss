@@ -1,0 +1,173 @@
+/**
+ * Fifty Fifty Block - Frontend Styles
+ *
+ * Full-width 50/50 split layout with edge-to-edge media.
+ *
+ * Key technique: The content side uses dynamic padding to align
+ * its inner content with the site's content-width boundary.
+ * When the block spans 100vw, each half is 50vw. The outer-edge
+ * padding on the content side equals max(base-padding, viewport-margin)
+ * so text aligns where normal page content starts.
+ *
+ * @package DesignSetGo
+ * @since 1.5.0
+ */
+
+.dsgo-fifty-fifty {
+	box-sizing: border-box;
+
+	// Two-column grid: each half is 50% of the container
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	min-height: var(--dsgo-fifty-fifty-min-height, auto);
+
+	// No gap between the two halves
+	gap: 0;
+
+	// Prevent overflow from full-bleed images
+	overflow: hidden;
+
+	// ==============================================
+	// MEDIA SIDE
+	// ==============================================
+	&__media {
+		position: relative;
+		overflow: hidden;
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	// ==============================================
+	// CONTENT SIDE
+	// ==============================================
+	&__content {
+		display: flex;
+		flex-direction: column;
+		justify-content: var(--dsgo-fifty-fifty-content-justify, center);
+
+		// Vertical padding for breathing room
+		padding-top: var(--dsgo-fifty-fifty-content-padding, var(--wp--preset--spacing--50, 2rem));
+		padding-bottom: var(--dsgo-fifty-fifty-content-padding, var(--wp--preset--spacing--50, 2rem));
+	}
+
+	// Content inner - width constraint technique:
+	// outer-edge padding = max(base, (100vw - contentWidth) / 2)
+	// inner wrapper max-width = contentWidth / 2
+	&__content-inner {
+		width: 100%;
+		max-width: calc(var(--wp--style--global--content-size, 1140px) / 2);
+	}
+
+	// ----- Media Left: content on right -----
+	// Content's inner edge faces the media (left side).
+	// Content's outer edge faces the right viewport edge.
+	&--media-left &__content {
+		// Inner edge: comfortable padding
+		padding-left: var(--wp--preset--spacing--50, 2rem);
+		// Outer edge: match the viewport margin
+		padding-right: max(
+			var(--wp--preset--spacing--50, 2rem),
+			calc((100vw - var(--wp--style--global--content-size, 1140px)) / 2)
+		);
+	}
+
+	// Inner wrapper hugs the inner edge (left) for media-left
+	&--media-left &__content-inner {
+		margin-right: auto;
+		margin-left: 0;
+	}
+
+	// ----- Media Right: content on left -----
+	// Swap the grid order so media visually appears on the right.
+	&--media-right {
+
+		.dsgo-fifty-fifty__media {
+			order: 2;
+		}
+
+		.dsgo-fifty-fifty__content {
+			order: 1;
+			// Outer edge: left side faces viewport edge
+			padding-left: max(
+				var(--wp--preset--spacing--50, 2rem),
+				calc((100vw - var(--wp--style--global--content-size, 1140px)) / 2)
+			);
+			// Inner edge: comfortable padding
+			padding-right: var(--wp--preset--spacing--50, 2rem);
+		}
+
+		// Inner wrapper hugs the inner edge (right) for media-right
+		.dsgo-fifty-fifty__content-inner {
+			margin-left: auto;
+			margin-right: 0;
+		}
+	}
+
+	// ==============================================
+	// MEDIA PLACEHOLDER (editor only)
+	// ==============================================
+	&__media-placeholder {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		min-height: 300px;
+		background-color: #f0f0f0;
+		color: #757575;
+		cursor: pointer;
+		gap: 8px;
+		font-size: 14px;
+
+		.dashicons {
+			font-size: 48px;
+			width: 48px;
+			height: 48px;
+		}
+
+		&:hover {
+			background-color: #e0e0e0;
+		}
+	}
+
+	// ==============================================
+	// MOBILE RESPONSIVE
+	// ==============================================
+	@media (max-width: 767px) {
+		// Stack vertically
+		grid-template-columns: 1fr;
+
+		// Remove content-width constraint on mobile - full width
+		.dsgo-fifty-fifty__content-inner {
+			max-width: none;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	// Use increased specificity to override media-left/media-right
+	// order and padding without !important
+	&.dsgo-fifty-fifty {
+
+		@media (max-width: 767px) {
+			// Media always comes first on mobile regardless of mediaPosition
+			.dsgo-fifty-fifty__media {
+				order: 1;
+				min-height: 250px;
+			}
+
+			.dsgo-fifty-fifty__content {
+				order: 2;
+				// Reset to standard mobile padding
+				padding-left: var(--wp--preset--spacing--30, 1rem);
+				padding-right: var(--wp--preset--spacing--30, 1rem);
+			}
+		}
+	}
+}
