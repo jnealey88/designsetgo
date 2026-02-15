@@ -1,0 +1,122 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/fifty-fifty",
+	"version": "1.0.0",
+	"title": "Fifty Fifty",
+	"category": "design",
+	"description": "Full-width 50/50 split layout with edge-to-edge media on one side and constrained content on the other. Perfect for hero sections, feature highlights, and about sections.",
+	"keywords": ["fifty", "fifty-fifty", "split", "half", "media", "image", "dsg", "hero"],
+	"textdomain": "designsetgo",
+	"supports": {
+		"anchor": true,
+		"align": ["full"],
+		"html": false,
+		"inserter": true,
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": false,
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"blockGap": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		}
+	},
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"mediaPosition": {
+			"type": "string",
+			"default": "left",
+			"enum": ["left", "right"]
+		},
+		"mediaId": {
+			"type": "number",
+			"default": 0
+		},
+		"mediaUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"focalPoint": {
+			"type": "object",
+			"default": {
+				"x": 0.5,
+				"y": 0.5
+			}
+		},
+		"minHeight": {
+			"type": "string",
+			"default": "500px"
+		},
+		"verticalAlignment": {
+			"type": "string",
+			"default": "center",
+			"enum": ["top", "center", "bottom"]
+		},
+		"contentPadding": {
+			"type": "string",
+			"default": "var(--wp--preset--spacing--50)"
+		}
+	},
+	"schemaMetadata": {
+		"attributeDescriptions": {
+			"align": "Block alignment (always full width)",
+			"mediaPosition": "Which side the media appears on (left or right)",
+			"mediaId": "WordPress media library attachment ID for the image",
+			"mediaUrl": "URL of the media image",
+			"mediaAlt": "Alt text for the media image",
+			"focalPoint": "Focal point for the media image (x, y coordinates from 0 to 1)",
+			"minHeight": "Minimum height of the block (CSS value)",
+			"verticalAlignment": "Vertical alignment of content within the content side (top, center, bottom)",
+			"contentPadding": "Internal padding for the content side"
+		}
+	},
+	"example": {
+		"attributes": {
+			"mediaPosition": "left",
+			"minHeight": "500px"
+		},
+		"innerBlocks": [
+			{
+				"name": "core/heading",
+				"attributes": {
+					"level": 2,
+					"content": "A Bold Statement"
+				}
+			},
+			{
+				"name": "core/paragraph",
+				"attributes": {
+					"content": "Pair striking imagery with compelling content in a balanced 50/50 layout that commands attention."
+				}
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
