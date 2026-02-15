@@ -309,6 +309,46 @@ Complete reference guide for all DesignSetGo blocks organized by category.
 
 ---
 
+## Media Layouts
+
+### Fifty Fifty
+**Name**: `designsetgo/fifty-fifty`
+**Category**: Design
+**Description**: Full-width 50/50 split layout with edge-to-edge media on one side and constrained content on the other. Perfect for hero sections, feature highlights, and about sections.
+
+**Key Features**:
+- Edge-to-edge media with object-fit cover
+- Media position toggle (left or right)
+- Focal point picker for image cropping control
+- Configurable minimum height (px, vh, vw, em, rem)
+- Content vertical alignment (top, center, bottom)
+- Content side auto-constrains to site content width
+- InnerBlocks support for any content on the content side
+- Toolbar flip layout button and media replace flow
+- Mobile-responsive stacking (media always first)
+- Lazy loading images with proper alt text support
+
+**Block Supports**:
+- Full-width alignment (always full)
+- Anchor (custom HTML ID)
+- Color (background, text, gradients, link)
+- Spacing (margin, blockGap)
+- Typography (fontSize, lineHeight)
+
+**Attributes**:
+- `mediaPosition` - Which side the media appears on (`left` or `right`, default: `left`)
+- `mediaId` - WordPress media library attachment ID
+- `mediaUrl` - URL of the media image
+- `mediaAlt` - Alt text for accessibility
+- `focalPoint` - Focal point coordinates (x, y from 0 to 1)
+- `minHeight` - Minimum height of the block (CSS value, default: `500px`)
+- `verticalAlignment` - Content vertical alignment (`top`, `center`, `bottom`)
+- `contentPadding` - Internal padding for the content side
+
+**Use Cases**: Hero sections, feature highlights, about sections, team introductions, product showcases, landing page sections
+
+---
+
 ## Advanced Interactions
 
 ### Scroll Marquee
@@ -492,12 +532,13 @@ Most blocks include:
 | Progress Bar | Widgets | - | ✅ | ❌ | ✅ |
 | Blobs | Design | - | ✅ | ❌ | ✅ |
 | Scroll Marquee | Design | - | ✅ | ❌ | ✅ |
+| Fifty Fifty | Design | - | ❌ | ❌ | ✅ |
 | Form Builder | Widgets | Parent | ❌ | ❌ | ✅ |
 
 *Counter can be used standalone or as a child of Counter Group
 
 ---
 
-**Last Updated**: 2025-11-07
-**Total Blocks**: 40
-**WordPress Compatibility**: 6.4+
+**Last Updated**: 2026-02-15
+**Total Blocks**: 41
+**WordPress Compatibility**: 6.7+

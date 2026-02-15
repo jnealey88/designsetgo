@@ -9,7 +9,7 @@ Stable tag: 2.0.26
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Professional WordPress blocks without page builder bloat. 52 blocks + 16 universal extensions that enhance ANY block.
+Professional WordPress blocks without page builder bloat. 53 blocks + 16 universal extensions that enhance ANY block.
 
 == Description ==
 
@@ -38,6 +38,9 @@ Professional forms with AJAX submission, spam protection (including Cloudflare T
 
 **Interactive Elements (14 blocks)**
 Tabs, accordions, modals/popups, flip cards, sliders, scroll effects, counters, progress bars, comparison tables, timelines, and revealing content. All with smooth animations and mobile-responsive behavior.
+
+**Media Layouts (1 block)**
+Fifty Fifty — full-width 50/50 split layout with edge-to-edge media on one side and constrained content on the other. Toggle media position (left/right), set focal point, min height, and content vertical alignment. Mobile-responsive stacking.
 
 **Typography (2 blocks)**
 Advanced Heading with independent heading segments — create headings with multiple font styles, weights, and colors within a single semantic heading element (H1–H6).
