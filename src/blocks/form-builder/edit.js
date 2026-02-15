@@ -937,13 +937,6 @@ export default function FormBuilderEdit({
 						</button>
 					</div>
 				)}
-
-				<div
-					className="dsgo-form__message dsgo-form__message--editor"
-					style={{ display: 'none' }}
-				>
-					{__('Form messages will appear here', 'designsetgo')}
-				</div>
 			</div>
 		</>
 	);
