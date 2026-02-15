@@ -8,19 +8,7 @@
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
-
-/**
- * Validates image URL to prevent XSS attacks.
- *
- * @param {string} url URL to validate
- * @return {boolean} True if URL is safe
- */
-const isValidImageUrl = (url) => {
-	if (!url || typeof url !== 'string') {
-		return false;
-	}
-	return /^(https?:\/\/|data:image\/)/.test(url);
-};
+import { isValidImageUrl } from '../../utils/is-valid-image-url';
 
 /**
  * Fifty Fifty Save Component
@@ -47,16 +35,25 @@ export default function FiftyFiftySave({ attributes }) {
 		bottom: 'flex-end',
 	};
 
+	// Validate mediaPosition to prevent class name injection
+	const safeMediaPosition = mediaPosition === 'right' ? 'right' : 'left';
+
 	const blockClassName = [
 		'dsgo-fifty-fifty',
-		`dsgo-fifty-fifty--media-${mediaPosition}`,
+		`dsgo-fifty-fifty--media-${safeMediaPosition}`,
 	].join(' ');
+
+	// Sanitize minHeight: only allow valid CSS length values
+	const safeMinHeight =
+		minHeight && /^[\d.]+(px|vh|vw|em|rem|%)$/.test(minHeight)
+			? minHeight
+			: undefined;
 
 	const blockProps = useBlockProps.save({
 		className: blockClassName,
 		style: {
-			'--dsgo-fifty-fifty-min-height': minHeight || undefined,
-			'--dsgo-fifty-fifty-align-items':
+			'--dsgo-fifty-fifty-min-height': safeMinHeight,
+			'--dsgo-fifty-fifty-content-justify':
 				alignItemsMap[verticalAlignment] || 'center',
 			'--dsgo-fifty-fifty-content-padding':
 				convertPresetToCSSVar(contentPadding) || undefined,
@@ -67,9 +64,9 @@ export default function FiftyFiftySave({ attributes }) {
 		className: 'dsgo-fifty-fifty__content-inner',
 	});
 
-	// Focal point as object-position
+	// Focal point as object-position (coerce to Number to prevent CSS injection)
 	const objectPosition = focalPoint
-		? `${focalPoint.x * 100}% ${focalPoint.y * 100}%`
+		? `${Number(focalPoint.x) * 100}% ${Number(focalPoint.y) * 100}%`
 		: undefined;
 
 	return (

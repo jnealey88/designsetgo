@@ -94,7 +94,7 @@ export default function FiftyFiftyEdit({
 		className: blockClassName,
 		style: {
 			'--dsgo-fifty-fifty-min-height': minHeight || undefined,
-			'--dsgo-fifty-fifty-align-items':
+			'--dsgo-fifty-fifty-content-justify':
 				alignItemsMap[verticalAlignment] || 'center',
 			'--dsgo-fifty-fifty-content-padding':
 				convertPresetToCSSVar(contentPadding) || undefined,
@@ -146,9 +146,9 @@ export default function FiftyFiftyEdit({
 		});
 	};
 
-	// Focal point as object-position
+	// Focal point as object-position (coerce to Number to prevent CSS injection)
 	const objectPosition = focalPoint
-		? `${focalPoint.x * 100}% ${focalPoint.y * 100}%`
+		? `${Number(focalPoint.x) * 100}% ${Number(focalPoint.y) * 100}%`
 		: '50% 50%';
 
 	return (
@@ -363,7 +363,11 @@ export default function FiftyFiftyEdit({
 										className="dsgo-fifty-fifty__media-placeholder"
 										onClick={open}
 										onKeyDown={(e) => {
-											if (e.key === 'Enter') {
+											if (
+												e.key === 'Enter' ||
+												e.key === ' '
+											) {
+												e.preventDefault();
 												open();
 											}
 										}}

@@ -48,7 +48,7 @@
 	&__content {
 		display: flex;
 		flex-direction: column;
-		justify-content: var(--dsgo-fifty-fifty-align-items, center);
+		justify-content: var(--dsgo-fifty-fifty-content-justify, center);
 
 		// Vertical padding for breathing room
 		padding-top: var(--dsgo-fifty-fifty-content-padding, var(--wp--preset--spacing--50, 2rem));
@@ -109,7 +109,7 @@
 	}
 
 	// ==============================================
-	// MEDIA PLACEHOLDER (frontend fallback)
+	// MEDIA PLACEHOLDER (editor only)
 	// ==============================================
 	&__media-placeholder {
 		display: flex;
@@ -143,24 +143,31 @@
 		// Stack vertically
 		grid-template-columns: 1fr;
 
-		// Media always comes first on mobile regardless of mediaPosition
-		&__media {
-			order: 1 !important;
-			min-height: 250px;
-		}
-
-		&__content {
-			order: 2 !important;
-			// Reset to standard mobile padding
-			padding-left: var(--wp--preset--spacing--30, 1rem) !important;
-			padding-right: var(--wp--preset--spacing--30, 1rem) !important;
-		}
-
 		// Remove content-width constraint on mobile - full width
-		&__content-inner {
+		.dsgo-fifty-fifty__content-inner {
 			max-width: none;
 			margin-left: auto;
 			margin-right: auto;
+		}
+	}
+
+	// Use increased specificity to override media-left/media-right
+	// order and padding without !important
+	&.dsgo-fifty-fifty {
+
+		@media (max-width: 767px) {
+			// Media always comes first on mobile regardless of mediaPosition
+			.dsgo-fifty-fifty__media {
+				order: 1;
+				min-height: 250px;
+			}
+
+			.dsgo-fifty-fifty__content {
+				order: 2;
+				// Reset to standard mobile padding
+				padding-left: var(--wp--preset--spacing--30, 1rem);
+				padding-right: var(--wp--preset--spacing--30, 1rem);
+			}
 		}
 	}
 }
