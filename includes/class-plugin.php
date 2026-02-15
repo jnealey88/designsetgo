@@ -392,6 +392,7 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-rest-api.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-comparison.php';
+		require_once DESIGNSETGO_PATH . 'includes/admin/class-block-migrator.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-sticky-header.php';
@@ -468,7 +469,8 @@ class Plugin {
 
 		// Initialize admin-only features.
 		if ( is_admin() ) {
-			$this->admin_menu = new Admin\Admin_Menu();
+			$this->admin_menu      = new Admin\Admin_Menu();
+			$this->block_migrator  = new Admin\Block_Migrator();
 		}
 
 		// Initialize draft mode (works on both admin and REST API).
