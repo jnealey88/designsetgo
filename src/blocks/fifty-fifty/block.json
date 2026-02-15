@@ -79,7 +79,7 @@
 		},
 		"contentPadding": {
 			"type": "string",
-			"default": "var(--wp--preset--spacing--50)"
+			"default": "var:preset|spacing|50"
 		}
 	},
 	"schemaMetadata": {
