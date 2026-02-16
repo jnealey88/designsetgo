@@ -251,6 +251,13 @@ class Plugin {
 	public $admin_menu;
 
 	/**
+	 * Block Migrator instance.
+	 *
+	 * @var Admin\Block_Migrator
+	 */
+	public $block_migrator;
+
+	/**
 	 * Settings instance.
 	 *
 	 * @var Admin\Settings
