@@ -67,14 +67,16 @@
 }
 
 // CRITICAL: Prevent button from stretching vertically in stretch contexts (editor-only)
-// When a section is inside a grid or slide, the parent's stretch/height cascades through
-// the section's flex layout, and WordPress applies height: 100% to wp-element-button
-// elements in layout contexts. This resets the button element's height.
+// When a section is inside a grid, slide, or fifty-fifty, the parent's stretch/height
+// cascades through the section's flex layout, and WordPress applies height: 100% to
+// wp-element-button elements in layout contexts. This resets the button element's height.
 // Grid: align-items: stretch cascades through section flex layout.
 // Slide: height: 100% + flex: 1 on .dsgo-slide__content cascades similarly.
+// Fifty-fifty: min-height on grid container + flex column content cascades to child blocks.
 // No frontend equivalent needed - frontend has no [data-block] wrappers and doesn't
 // inherit height: 100% from WordPress's editor layout system.
 .dsgo-grid .dsgo-icon-button,
-.dsgo-slide .dsgo-icon-button {
+.dsgo-slide .dsgo-icon-button,
+.dsgo-fifty-fifty .dsgo-icon-button {
 	height: auto !important;
 }
