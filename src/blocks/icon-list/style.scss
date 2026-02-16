@@ -45,5 +45,13 @@
 		.dsgo-icon-list__items {
 			// display: grid and grid-template-columns applied via inline styles
 		}
+
+		// Stack to single column on mobile (≤ 600px)
+		@media (max-width: 600px) {
+
+			.dsgo-icon-list__items {
+				grid-template-columns: 1fr !important;
+			}
+		}
 	}
 }

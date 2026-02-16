@@ -24,4 +24,15 @@
 			}
 		}
 	}
+
+	// Stack grid to single column on mobile for editor/frontend parity
+	&.dsgo-icon-list--grid {
+
+		@media (max-width: 600px) {
+
+			.dsgo-icon-list__items {
+				grid-template-columns: 1fr !important;
+			}
+		}
+	}
 }
