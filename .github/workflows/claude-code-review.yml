@@ -80,14 +80,5 @@ jobs:
             Be thorough - a shallow review that misses real issues is worse than no review.
             If you find NO issues, explain what you checked and why the code is correct.
 
-            ## Final Verdict
-            After completing your review, submit a formal PR review:
-            - If you find NO Critical or High severity issues, APPROVE the PR:
-              `gh pr review ${{ github.event.pull_request.number }} --approve --body "your summary"`
-            - If you find any Critical or High severity issues, REQUEST CHANGES:
-              `gh pr review ${{ github.event.pull_request.number }} --request-changes --body "your summary"`
-            - If you only find Medium/Low issues worth noting but nothing blocking, COMMENT:
-              `gh pr review ${{ github.event.pull_request.number }} --comment --body "your summary"`
-
           claude_args: |
-            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr review:*),Read,Grep,Glob"
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Read,Grep,Glob"

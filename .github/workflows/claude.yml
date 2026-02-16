@@ -15,11 +15,12 @@ jobs:
   claude-review:
     if: |
       github.event.issue.pull_request &&
-      (
-        (github.event_name == 'issue_comment' &&
-         (contains(github.event.comment.body, '@claude review') ||
-          contains(github.event.comment.body, '/review')))
-      )
+      (github.event.comment.author_association == 'OWNER' ||
+       github.event.comment.author_association == 'MEMBER' ||
+       github.event.comment.author_association == 'COLLABORATOR') &&
+      (github.event_name == 'issue_comment' &&
+       (contains(github.event.comment.body, '@claude review') ||
+        contains(github.event.comment.body, '/review')))
     runs-on: ubuntu-latest
     permissions:
       contents: read
