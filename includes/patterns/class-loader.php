@@ -63,6 +63,7 @@ class Loader {
 		'gallery',
 		'contact',
 		'services',
+		'headings',
 	);
 
 	/**
@@ -137,6 +138,7 @@ class Loader {
 			'dsgo-gallery'      => __( 'DesignSetGo: Gallery', 'designsetgo' ),
 			'dsgo-contact'      => __( 'DesignSetGo: Contact', 'designsetgo' ),
 			'dsgo-services'     => __( 'DesignSetGo: Services', 'designsetgo' ),
+			'dsgo-headings'     => __( 'DesignSetGo: Headings', 'designsetgo' ),
 		);
 
 		// Get pattern categories registry.
