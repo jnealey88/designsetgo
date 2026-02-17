@@ -127,7 +127,10 @@
 
 				// Add icon if present (✅ SECURITY: Using createElement, not innerHTML)
 				if (icon) {
-					button.classList.add('has-icon', `icon-${iconPosition}`);
+					button.classList.add(
+						'has-icon',
+						`has-icon-${iconPosition}`
+					);
 
 					if (iconPosition === 'top') {
 						const iconTopWrapper = document.createElement('span');

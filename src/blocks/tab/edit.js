@@ -113,6 +113,10 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 									label: __('Right', 'designsetgo'),
 									value: 'right',
 								},
+								{
+									label: __('Top', 'designsetgo'),
+									value: 'top',
+								},
 							]}
 							onChange={(value) =>
 								setAttributes({ iconPosition: value })
@@ -216,6 +220,10 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 							{
 								label: __('Right', 'designsetgo'),
 								value: 'right',
+							},
+							{
+								label: __('Top', 'designsetgo'),
+								value: 'top',
 							},
 						]}
 						onChange={(value) =>
