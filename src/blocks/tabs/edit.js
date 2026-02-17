@@ -526,7 +526,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							<button
 								key={block.clientId}
 								className={`dsgo-tabs__tab ${isActive ? 'is-active' : ''} ${
-									icon ? `has-icon icon-${iconPosition}` : ''
+									icon
+										? `has-icon has-icon-${iconPosition}`
+										: ''
 								}`}
 								id={`tab-${tabId}`}
 								role="tab"

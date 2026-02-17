@@ -37,7 +37,9 @@ export default function Save({ attributes }) {
 			iconPosition &&
 			iconPosition !== 'none' && {
 				'data-icon': sanitizeIconSlug(icon),
-				'data-icon-position': ['left', 'right'].includes(iconPosition)
+				'data-icon-position': ['left', 'right', 'top'].includes(
+					iconPosition
+				)
 					? iconPosition
 					: 'left',
 			}),
