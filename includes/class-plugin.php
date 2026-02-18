@@ -181,6 +181,105 @@ class Plugin {
 	);
 
 	/**
+	 * Form elements used in form block save() output.
+	 *
+	 * WordPress's default wp_kses_post() does not include form, input,
+	 * select, or option tags. Without this allowlist, form block content
+	 * is stripped on REST API content creation, multisite, and other
+	 * contexts where wp_kses_post() runs.
+	 *
+	 * Each key is an element name; its value is an array of element-specific
+	 * attributes. Global attributes (id, class, style, data-*, aria-*, etc.)
+	 * are merged in at runtime via FORM_GLOBAL_ATTRIBUTES.
+	 *
+	 * @since 2.0.29
+	 * @var array<string, array<string, bool>>
+	 */
+	private const FORM_ELEMENTS = array(
+		'form'     => array(
+			'method'     => true,
+			'action'     => true,
+			'novalidate' => true,
+			'enctype'    => true,
+		),
+		'input'    => array(
+			'type'         => true,
+			'name'         => true,
+			'value'        => true,
+			'placeholder'  => true,
+			'required'     => true,
+			'minlength'    => true,
+			'maxlength'    => true,
+			'pattern'      => true,
+			'autocomplete' => true,
+			'checked'      => true,
+			'disabled'     => true,
+			'readonly'     => true,
+			'size'         => true,
+			'accept'       => true,
+			'multiple'     => true,
+			'min'          => true,
+			'max'          => true,
+			'step'         => true,
+		),
+		'select'   => array(
+			'name'     => true,
+			'required' => true,
+			'multiple' => true,
+			'disabled' => true,
+			'size'     => true,
+		),
+		'option'   => array(
+			'value'    => true,
+			'selected' => true,
+			'disabled' => true,
+		),
+		'optgroup' => array(
+			'label'    => true,
+			'disabled' => true,
+		),
+	);
+
+	/**
+	 * Global attributes merged onto every FORM_ELEMENTS entry.
+	 *
+	 * WordPress KSES supports data-* and aria-* wildcards since WP 5.0.
+	 *
+	 * @since 2.0.29
+	 * @var array<string, bool>
+	 */
+	private const FORM_GLOBAL_ATTRIBUTES = array(
+		'id'       => true,
+		'class'    => true,
+		'style'    => true,
+		'role'     => true,
+		'tabindex' => true,
+		'title'    => true,
+		'hidden'   => true,
+		'aria-*'   => true,
+		'data-*'   => true,
+	);
+
+	/**
+	 * Additional attributes for tags that WordPress already allows in
+	 * wp_kses_post() but with an incomplete attribute set.
+	 *
+	 * For example, textarea is allowed by default but lacks placeholder
+	 * and required — both used by form block save() output.
+	 *
+	 * @since 2.0.29
+	 * @var array<string, array<string, bool>>
+	 */
+	private const FORM_EXTRA_ATTRIBUTES = array(
+		'textarea' => array(
+			'placeholder' => true,
+			'required'    => true,
+			'maxlength'   => true,
+			'minlength'   => true,
+		),
+	);
+
+	/**
 	 * Instance of this class.
 	 *
 	 * @var Plugin|null
@@ -917,24 +1016,48 @@ class Plugin {
 	}
 
 	/**
-	 * Add SVG elements to WordPress's allowed HTML tags for the 'post' context.
+	 * Add SVG and form elements to WordPress's allowed HTML tags for the 'post' context.
 	 *
 	 * Block save() output includes SVG elements for shape dividers, icons,
 	 * comparison table marks, timeline markers, counter decorations, and
-	 * accordion toggle indicators. Without this, wp_kses_post() strips them.
+	 * accordion toggle indicators. Form blocks (form-builder, form-text-field,
+	 * form-email-field, form-select-field, form-textarea-field) output
+	 * form, input, select, and option elements that are not in the
+	 * default wp_kses_post() allowlist.
+	 *
+	 * Without this filter, these elements are stripped on REST API content
+	 * creation, multisite, and other contexts where wp_kses_post() runs.
 	 *
 	 * @since 2.0.23
 	 * @param array[] $tags    Allowed HTML tags and their attributes.
 	 * @param string  $context The KSES context (e.g. 'post').
-	 * @return array[] Extended tags with SVG elements.
+	 * @return array[] Extended tags with SVG and form elements.
 	 */
 	public function allow_block_svg_elements( $tags, $context ) {
 		if ( 'post' !== $context ) {
 			return $tags;
 		}
 
+		// SVG elements for shape dividers, icons, etc.
 		foreach ( self::SVG_ELEMENTS as $element ) {
 			$tags[ $element ] = self::SVG_ATTRIBUTES;
+		}
+
+		// Form elements for form blocks.
+		foreach ( self::FORM_ELEMENTS as $element => $element_attrs ) {
+			$merged = array_merge( self::FORM_GLOBAL_ATTRIBUTES, $element_attrs );
+			if ( isset( $tags[ $element ] ) ) {
+				$tags[ $element ] = array_merge( $tags[ $element ], $merged );
+			} else {
+				$tags[ $element ] = $merged;
+			}
+		}
+
+		// Extend already-allowed tags with missing attributes.
+		foreach ( self::FORM_EXTRA_ATTRIBUTES as $element => $extra_attrs ) {
+			if ( isset( $tags[ $element ] ) ) {
+				$tags[ $element ] = array_merge( $tags[ $element ], $extra_attrs );
+			}
 		}
 
 		return $tags;

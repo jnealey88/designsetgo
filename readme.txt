@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.28
+Stable tag: 2.0.29
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,11 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.29 - 2026-02-18 =
+**Bug Fixes:**
+* Fix: Add form elements (form, input, select, option) to global KSES allowlist so form block content survives wp_kses_post() sanitization during REST API imports
+* Fix: Add missing textarea attributes (placeholder, required) to KSES allowlist for form blocks
 
 = 2.0.28 - 2026-02-16 =
 **Bug Fixes:**
@@ -566,6 +571,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Comprehensive documentation and developer guides
 
 == Upgrade Notice ==
+
+= 2.0.29 =
+Adds form elements to the global KSES allowlist so form block content (inputs, selects, textareas) is preserved when imported via the REST API or other wp_kses_post() code paths.
 
 = 2.0.28 =
 Fixes icon list grid responsive stacking on mobile and resolves PHP 8.2 dynamic property deprecation warning that caused header errors in admin.
