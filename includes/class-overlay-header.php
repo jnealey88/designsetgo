@@ -35,6 +35,7 @@ class Overlay_Header {
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_post_meta' ) );
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_overlay_styles' ), 20 );
 	}
 
 	/**
@@ -103,5 +104,51 @@ class Overlay_Header {
 		}
 
 		return $classes;
+	}
+
+	/**
+	 * Generate CSS for overlay header text color.
+	 *
+	 * @return string CSS string, or empty string if not applicable.
+	 */
+	public function get_overlay_text_color_css(): string {
+		if ( ! is_singular() ) {
+			return '';
+		}
+
+		$post_id = get_the_ID();
+		if ( ! $post_id ) {
+			return '';
+		}
+
+		if ( ! get_post_meta( $post_id, self::META_KEY, true ) ) {
+			return '';
+		}
+
+		$text_color_slug = get_post_meta( $post_id, self::TEXT_COLOR_META_KEY, true );
+		if ( empty( $text_color_slug ) ) {
+			return '';
+		}
+
+		$text_color_slug = sanitize_key( $text_color_slug );
+
+		return sprintf(
+			'body.dsgo-page-overlay-header { --dsgo-overlay-header-text-color: var(--wp--preset--color--%s); }',
+			$text_color_slug
+		);
+	}
+
+	/**
+	 * Enqueue inline styles for overlay header text color.
+	 */
+	public function enqueue_overlay_styles(): void {
+		$css = $this->get_overlay_text_color_css();
+		if ( empty( $css ) ) {
+			return;
+		}
+
+		if ( wp_style_is( 'designsetgo-sticky-header', 'registered' ) || wp_style_is( 'designsetgo-sticky-header', 'enqueued' ) ) {
+			wp_add_inline_style( 'designsetgo-sticky-header', $css );
+		}
 	}
 }

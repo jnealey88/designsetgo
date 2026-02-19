@@ -341,4 +341,68 @@ class Test_Overlay_Header extends WP_UnitTestCase {
 		$this->assertNotSame( '&lt;script&gt;alert(1)&lt;/script&gt;', sanitize_key( '&lt;script&gt;alert(1)&lt;/script&gt;' ) );
 		$this->assertSame( 'base', sanitize_key( 'Base' ) );
 	}
+
+	/**
+	 * Test that inline CSS is output when text color is set.
+	 */
+	public function test_inline_css_output_when_text_color_set() {
+		$post_id = $this->factory->post->create();
+		update_post_meta( $post_id, Overlay_Header::META_KEY, true );
+		update_post_meta( $post_id, Overlay_Header::TEXT_COLOR_META_KEY, 'base' );
+
+		$this->go_to( get_permalink( $post_id ) );
+
+		$css = $this->overlay_header->get_overlay_text_color_css();
+		$this->assertStringContainsString( '--dsgo-overlay-header-text-color', $css );
+		$this->assertStringContainsString( 'var(--wp--preset--color--base)', $css );
+	}
+
+	/**
+	 * Test that inline CSS is empty when text color is not set.
+	 */
+	public function test_inline_css_empty_when_no_text_color() {
+		$post_id = $this->factory->post->create();
+		update_post_meta( $post_id, Overlay_Header::META_KEY, true );
+
+		$this->go_to( get_permalink( $post_id ) );
+
+		$css = $this->overlay_header->get_overlay_text_color_css();
+		$this->assertSame( '', $css );
+	}
+
+	/**
+	 * Test that inline CSS is empty on non-singular pages.
+	 */
+	public function test_inline_css_empty_on_archive() {
+		$this->factory->post->create();
+		$this->go_to( home_url() );
+
+		$css = $this->overlay_header->get_overlay_text_color_css();
+		$this->assertSame( '', $css );
+	}
+
+	/**
+	 * Test that inline CSS is empty when overlay is disabled.
+	 */
+	public function test_inline_css_empty_when_overlay_disabled() {
+		$post_id = $this->factory->post->create();
+		update_post_meta( $post_id, Overlay_Header::TEXT_COLOR_META_KEY, 'base' );
+
+		$this->go_to( get_permalink( $post_id ) );
+
+		$css = $this->overlay_header->get_overlay_text_color_css();
+		$this->assertSame( '', $css );
+	}
+
+	/**
+	 * Test wp_enqueue_scripts hook is registered.
+	 */
+	public function test_enqueue_scripts_hook_registered() {
+		$overlay = new Overlay_Header();
+		$this->assertGreaterThan(
+			0,
+			has_action( 'wp_enqueue_scripts', array( $overlay, 'enqueue_overlay_styles' ) ),
+			'enqueue_overlay_styles should be hooked to wp_enqueue_scripts'
+		);
+	}
 }
