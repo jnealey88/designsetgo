@@ -291,6 +291,44 @@ body:not(.block-editor-page).dsgo-page-overlay-header header.wp-block-template-p
 }
 
 /**
+ * Overlay Text Color
+ * When a per-page overlay text color is set via the Header Display panel,
+ * apply it to navigation links, site title, and SVG icons.
+ * Only in the non-scrolled state — scroll text color takes over via
+ * the dsgo-sticky-bg-on-scroll.dsgo-scrolled rules above.
+ */
+body:not(.block-editor-page).dsgo-page-overlay-header .wp-block-template-part:not(footer):not(.dsgo-scrolled):first-of-type,
+body:not(.block-editor-page).dsgo-page-overlay-header header.wp-block-template-part:not(.dsgo-scrolled) {
+	color: var(--dsgo-overlay-header-text-color, inherit);
+	transition: color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
+
+	/* Navigation links */
+	.wp-block-navigation a,
+	.wp-block-navigation a:hover,
+	.wp-block-navigation a:focus,
+	.wp-block-navigation a:focus-visible,
+	.wp-block-navigation a:visited,
+	.wp-block-navigation a:active,
+	/* Site title */
+	.wp-block-site-title a,
+	.wp-block-site-title a:hover,
+	.wp-block-site-title a:focus,
+	.wp-block-site-title a:focus-visible,
+	.wp-block-site-title a:visited,
+	.wp-block-site-title a:active {
+		color: var(--dsgo-overlay-header-text-color, inherit);
+		transition: color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
+	}
+
+	/* Navigation SVG icons (hamburger, submenu arrows) */
+	.wp-block-navigation__submenu-icon svg,
+	.wp-block-navigation__responsive-container-open svg {
+		fill: var(--dsgo-overlay-header-text-color, currentColor);
+		transition: fill var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
+	}
+}
+
+/**
  * Overlay Header Print Styles
  */
 @media print {
