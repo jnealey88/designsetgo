@@ -156,7 +156,16 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-heade
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part .wp-block-navigation-item__label,
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part .wp-block-navigation__submenu-icon,
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part .wp-block-site-title a,
-	.dsgo-sticky-bg-on-scroll.wp-block-template-part svg {
+	.dsgo-sticky-bg-on-scroll.wp-block-template-part svg,
+	/* Overlay header text color transitions */
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type,
+	body.dsgo-page-overlay-header header.wp-block-template-part,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type .wp-block-navigation a,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type .wp-block-navigation-item__content,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type .wp-block-navigation-item__label,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type .wp-block-navigation__submenu-icon,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type .wp-block-site-title a,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type svg {
 		transition: none !important;
 	}
 }
@@ -309,6 +318,9 @@ body:not(.block-editor-page).dsgo-page-overlay-header header.wp-block-template-p
 	.wp-block-navigation a:focus-visible,
 	.wp-block-navigation a:visited,
 	.wp-block-navigation a:active,
+	.wp-block-navigation-item__content,
+	.wp-block-navigation-item__label,
+	.wp-block-navigation__submenu-icon,
 	/* Site title */
 	.wp-block-site-title a,
 	.wp-block-site-title a:hover,

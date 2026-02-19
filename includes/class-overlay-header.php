@@ -130,6 +130,7 @@ class Overlay_Header {
 			return '';
 		}
 
+		// Defense-in-depth: sanitize_callback only runs via REST; direct update_post_meta bypasses it.
 		$text_color_slug = sanitize_key( $text_color_slug );
 
 		return sprintf(

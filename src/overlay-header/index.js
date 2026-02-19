@@ -88,9 +88,9 @@ const OverlayHeaderPanel = () => {
 			/>
 			{overlayEnabled && (
 				<>
+					{/* eslint-disable-next-line @wordpress/no-base-control-with-label-without-id -- ColorPalette has no single input to associate */}
 					<BaseControl
 						__nextHasNoMarginBottom
-						id="dsgo-overlay-text-color"
 						label={__('Overlay Text Color', 'designsetgo')}
 						help={__(
 							'Sets the header text color while the header is transparent. The scroll text color is controlled in the Sticky Header settings.',
