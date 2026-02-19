@@ -156,7 +156,16 @@ body:not(.block-editor-page).admin-bar .wp-block-template-part.dsgo-sticky-heade
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part .wp-block-navigation-item__label,
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part .wp-block-navigation__submenu-icon,
 	.dsgo-sticky-bg-on-scroll.wp-block-template-part .wp-block-site-title a,
-	.dsgo-sticky-bg-on-scroll.wp-block-template-part svg {
+	.dsgo-sticky-bg-on-scroll.wp-block-template-part svg,
+	/* Overlay header text color transitions */
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type,
+	body.dsgo-page-overlay-header header.wp-block-template-part,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type .wp-block-navigation a,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type .wp-block-navigation-item__content,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type .wp-block-navigation-item__label,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type .wp-block-navigation__submenu-icon,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type .wp-block-site-title a,
+	body.dsgo-page-overlay-header .wp-block-template-part:not(footer):first-of-type svg {
 		transition: none !important;
 	}
 }
@@ -288,6 +297,47 @@ body:not(.block-editor-page).admin-bar.dsgo-page-overlay-header header.wp-block-
 body:not(.block-editor-page).dsgo-page-overlay-header .wp-block-template-part.dsgo-scrolled:not(footer):first-of-type,
 body:not(.block-editor-page).dsgo-page-overlay-header header.wp-block-template-part.dsgo-scrolled {
 	background-color: var(--dsgo-sticky-scroll-bg-color, rgba(255, 255, 255, 0.95));
+}
+
+/**
+ * Overlay Text Color
+ * When a per-page overlay text color is set via the Header Display panel,
+ * apply it to navigation links, site title, and SVG icons.
+ * Only in the non-scrolled state — scroll text color takes over via
+ * the dsgo-sticky-bg-on-scroll.dsgo-scrolled rules above.
+ */
+body:not(.block-editor-page).dsgo-page-overlay-header .wp-block-template-part:not(footer):not(.dsgo-scrolled):first-of-type,
+body:not(.block-editor-page).dsgo-page-overlay-header header.wp-block-template-part:not(.dsgo-scrolled) {
+	color: var(--dsgo-overlay-header-text-color, inherit);
+	transition: color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
+
+	/* Navigation links */
+	.wp-block-navigation a,
+	.wp-block-navigation a:hover,
+	.wp-block-navigation a:focus,
+	.wp-block-navigation a:focus-visible,
+	.wp-block-navigation a:visited,
+	.wp-block-navigation a:active,
+	.wp-block-navigation-item__content,
+	.wp-block-navigation-item__label,
+	.wp-block-navigation__submenu-icon,
+	/* Site title */
+	.wp-block-site-title a,
+	.wp-block-site-title a:hover,
+	.wp-block-site-title a:focus,
+	.wp-block-site-title a:focus-visible,
+	.wp-block-site-title a:visited,
+	.wp-block-site-title a:active {
+		color: var(--dsgo-overlay-header-text-color, inherit);
+		transition: color var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
+	}
+
+	/* Navigation SVG icons (hamburger, submenu arrows) */
+	.wp-block-navigation__submenu-icon svg,
+	.wp-block-navigation__responsive-container-open svg {
+		fill: var(--dsgo-overlay-header-text-color, currentColor);
+		transition: fill var(--dsgo-sticky-header-transition-speed, 300ms) ease-in-out;
+	}
 }
 
 /**
