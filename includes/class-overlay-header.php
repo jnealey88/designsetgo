@@ -25,6 +25,11 @@ class Overlay_Header {
 	const META_KEY = 'dsgo_overlay_header';
 
 	/**
+	 * Post meta key for overlay header text color.
+	 */
+	const TEXT_COLOR_META_KEY = 'dsgo_overlay_header_text_color';
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -53,6 +58,22 @@ class Overlay_Header {
 					'default'           => false,
 					'show_in_rest'      => true,
 					'sanitize_callback' => 'rest_sanitize_boolean',
+					'auth_callback'     => function ( $allowed, $meta_key, $post_id ) {
+						return current_user_can( 'edit_post', (int) $post_id );
+					},
+				)
+			);
+
+			register_post_meta(
+				$post_type,
+				self::TEXT_COLOR_META_KEY,
+				array(
+					'type'              => 'string',
+					'description'       => __( 'Overlay header text color slug', 'designsetgo' ),
+					'single'            => true,
+					'default'           => '',
+					'show_in_rest'      => true,
+					'sanitize_callback' => 'sanitize_key',
 					'auth_callback'     => function ( $allowed, $meta_key, $post_id ) {
 						return current_user_can( 'edit_post', (int) $post_id );
 					},

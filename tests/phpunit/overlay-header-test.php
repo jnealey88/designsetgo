@@ -270,4 +270,75 @@ class Test_Overlay_Header extends WP_UnitTestCase {
 		$this->assertFalse( rest_sanitize_boolean( '0' ) );
 		$this->assertFalse( rest_sanitize_boolean( '' ) );
 	}
+
+	/**
+	 * Test TEXT_COLOR_META_KEY constant value.
+	 */
+	public function test_text_color_meta_key_constant() {
+		$this->assertSame( 'dsgo_overlay_header_text_color', Overlay_Header::TEXT_COLOR_META_KEY );
+	}
+
+	/**
+	 * Test that text color meta is registered on 'post' post type.
+	 */
+	public function test_text_color_meta_registered_for_post() {
+		$this->overlay_header->register_post_meta();
+
+		$registered = registered_meta_key_exists( 'post', Overlay_Header::TEXT_COLOR_META_KEY, 'post' );
+		$this->assertTrue( $registered, 'dsgo_overlay_header_text_color meta should be registered for post type "post"' );
+	}
+
+	/**
+	 * Test that text color meta is registered on 'page' post type.
+	 */
+	public function test_text_color_meta_registered_for_page() {
+		$this->overlay_header->register_post_meta();
+
+		$registered = registered_meta_key_exists( 'post', Overlay_Header::TEXT_COLOR_META_KEY, 'page' );
+		$this->assertTrue( $registered, 'dsgo_overlay_header_text_color meta should be registered for post type "page"' );
+	}
+
+	/**
+	 * Test that text color meta is NOT registered on 'attachment' post type.
+	 */
+	public function test_text_color_meta_not_registered_for_attachment() {
+		$this->overlay_header->register_post_meta();
+
+		$registered = registered_meta_key_exists( 'post', Overlay_Header::TEXT_COLOR_META_KEY, 'attachment' );
+		$this->assertFalse( $registered, 'dsgo_overlay_header_text_color meta should NOT be registered for attachment' );
+	}
+
+	/**
+	 * Test that text color meta defaults to empty string.
+	 */
+	public function test_text_color_meta_defaults_to_empty() {
+		$post_id = $this->factory->post->create();
+
+		$value = get_post_meta( $post_id, Overlay_Header::TEXT_COLOR_META_KEY, true );
+		$this->assertSame( '', $value, 'Text color meta should default to empty string' );
+	}
+
+	/**
+	 * Test that text color meta can be set and retrieved.
+	 */
+	public function test_text_color_meta_can_be_set() {
+		wp_set_current_user( $this->admin_user );
+		$post_id = $this->factory->post->create();
+
+		update_post_meta( $post_id, Overlay_Header::TEXT_COLOR_META_KEY, 'base' );
+
+		$value = get_post_meta( $post_id, Overlay_Header::TEXT_COLOR_META_KEY, true );
+		$this->assertSame( 'base', $value, 'Text color meta should return the stored slug' );
+	}
+
+	/**
+	 * Test that text color meta is sanitized to valid slug characters.
+	 */
+	public function test_text_color_meta_sanitization() {
+		$this->assertSame( 'base', sanitize_key( 'base' ) );
+		$this->assertSame( 'primary-dark', sanitize_key( 'primary-dark' ) );
+		// sanitize_key strips &, ;, <, > and lowercases — XSS payload becomes harmless.
+		$this->assertNotSame( '&lt;script&gt;alert(1)&lt;/script&gt;', sanitize_key( '&lt;script&gt;alert(1)&lt;/script&gt;' ) );
+		$this->assertSame( 'base', sanitize_key( 'Base' ) );
+	}
 }
