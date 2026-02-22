@@ -87,6 +87,7 @@
 
 	// ----- Media Right: content on left -----
 	&--media-right {
+
 		.dsgo-product-showcase-hero__media {
 			order: 2;
 		}
@@ -134,6 +135,7 @@
 		margin-bottom: 0.75em;
 
 		// WooCommerce star rating styles.
+		/* stylelint-disable-next-line selector-class-pattern -- WooCommerce class */
 		.star-rating {
 			display: inline-block;
 		}
@@ -163,6 +165,7 @@
 		margin-top: 0.5em;
 
 		// Style the WooCommerce add-to-cart button.
+		/* stylelint-disable selector-class-pattern -- WooCommerce classes */
 		.single_add_to_cart_button,
 		.add_to_cart_button {
 			display: inline-block;
@@ -171,6 +174,7 @@
 			font-weight: 600;
 			cursor: pointer;
 		}
+		/* stylelint-enable selector-class-pattern */
 	}
 
 	// Editor preview add-to-cart button.
@@ -195,7 +199,9 @@
 
 	// Override media position order on mobile.
 	&.dsgo-product-showcase-hero {
+
 		@media (max-width: 767px) {
+
 			.dsgo-product-showcase-hero__media {
 				order: 1;
 				min-height: 250px;
