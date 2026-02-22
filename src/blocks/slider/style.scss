@@ -52,7 +52,7 @@
 	&__track {
 		display: flex;
 		width: 100%; // Constrain track to viewport width so percentage flex-basis resolves correctly
-		height: 100%;
+		min-height: 100%; // Use min-height so track fills fixed-height viewports but grows with content when height is auto
 		gap: var(--dsgo-slider-gap);
 		transition: transform var(--dsgo-slider-transition) ease-in-out;
 		will-change: transform;
@@ -295,6 +295,7 @@
 		top: 0;
 		left: 0;
 		width: 100%;
+		height: 100%; // Absolute-positioned slides need explicit height to fill the track
 		opacity: 0;
 		transition: opacity var(--dsgo-slider-transition) ease-in-out;
 		pointer-events: none;
@@ -314,6 +315,7 @@
 		top: 0;
 		left: 0;
 		width: 100%;
+		height: 100%; // Absolute-positioned slides need explicit height to fill the track
 		opacity: 0;
 		transform: scale(0.8);
 		transition: opacity var(--dsgo-slider-transition) ease-in-out,
