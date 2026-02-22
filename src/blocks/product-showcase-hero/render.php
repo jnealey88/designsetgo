@@ -47,7 +47,10 @@ $show_add_to_cart      = ! isset( $attributes['showAddToCart'] ) || $attributes[
 $show_variations       = ! isset( $attributes['showVariations'] ) || $attributes['showVariations'];
 $min_height            = isset( $attributes['minHeight'] ) ? $attributes['minHeight'] : '500px';
 $focal_point           = isset( $attributes['mediaFocalPoint'] ) ? $attributes['mediaFocalPoint'] : array( 'x' => 0.5, 'y' => 0.5 );
-$vertical_alignment    = isset( $attributes['contentVerticalAlignment'] ) ? $attributes['contentVerticalAlignment'] : 'center';
+$allowed_alignments    = array( 'top', 'center', 'bottom' );
+$vertical_alignment    = isset( $attributes['contentVerticalAlignment'] ) && in_array( $attributes['contentVerticalAlignment'], $allowed_alignments, true )
+	? $attributes['contentVerticalAlignment']
+	: 'center';
 
 // Validate image size.
 $allowed_sizes = array( 'medium', 'large', 'full' );
@@ -61,8 +64,8 @@ $safe_min_height = ( $min_height && preg_match( '/^[\d.]+(px|vh|vw|em|rem|%)$/',
 	: '500px';
 
 // Build focal point CSS.
-$focal_x = isset( $focal_point['x'] ) ? floatval( $focal_point['x'] ) * 100 : 50;
-$focal_y = isset( $focal_point['y'] ) ? floatval( $focal_point['y'] ) * 100 : 50;
+$focal_x = isset( $focal_point['x'] ) ? max( 0, min( 1, floatval( $focal_point['x'] ) ) ) * 100 : 50;
+$focal_y = isset( $focal_point['y'] ) ? max( 0, min( 1, floatval( $focal_point['y'] ) ) ) * 100 : 50;
 $object_position = $focal_x . '% ' . $focal_y . '%';
 
 // Map vertical alignment.
@@ -82,9 +85,10 @@ if ( $image_id ) {
 		$image_size,
 		false,
 		array(
-			'class'    => 'dsgo-product-showcase-hero__image',
-			'style'    => 'object-position: ' . esc_attr( $object_position ) . ';',
-			'loading'  => 'lazy',
+			'class'         => 'dsgo-product-showcase-hero__image',
+			'style'         => 'object-position: ' . esc_attr( $object_position ) . ';',
+			'loading'       => 'eager',
+			'fetchpriority' => 'high',
 		)
 	);
 }

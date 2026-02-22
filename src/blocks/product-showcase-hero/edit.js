@@ -8,6 +8,7 @@
 
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import { decodeEntities } from '@wordpress/html-entities';
 import {
 	useBlockProps,
 	InspectorControls,
@@ -42,10 +43,7 @@ import ProductPreview from './components/ProductPreview';
  * @param {Function} props.setAttributes Function to set attributes
  * @return {JSX.Element} Edit component
  */
-export default function ProductShowcaseHeroEdit({
-	attributes,
-	setAttributes,
-}) {
+export default function ProductShowcaseHeroEdit({ attributes, setAttributes }) {
 	const {
 		productId,
 		layout,
@@ -73,8 +71,9 @@ export default function ProductShowcaseHeroEdit({
 
 	// Check WooCommerce Store API availability on mount.
 	useEffect(() => {
-		apiFetch({ path: '/wc/store/v1/products?per_page=1' })
-			.catch(() => setWcAvailable(false));
+		apiFetch({ path: '/wc/store/v1/products?per_page=1' }).catch(() =>
+			setWcAvailable(false)
+		);
 	}, []);
 
 	// Fetch product data when productId changes.
@@ -176,14 +175,12 @@ export default function ProductShowcaseHeroEdit({
 						<>
 							<p>
 								<strong>
-									{productData.name}
+									{decodeEntities(productData.name)}
 								</strong>
 							</p>
 							<Button
 								variant="secondary"
-								onClick={() =>
-									setAttributes({ productId: 0 })
-								}
+								onClick={() => setAttributes({ productId: 0 })}
 								__next40pxDefaultSize
 							>
 								{__('Replace Product', 'designsetgo')}
@@ -294,17 +291,12 @@ export default function ProductShowcaseHeroEdit({
 								value: 'media-right',
 							},
 						]}
-						onChange={(value) =>
-							setAttributes({ layout: value })
-						}
+						onChange={(value) => setAttributes({ layout: value })}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 					<SelectControl
-						label={__(
-							'Content Vertical Alignment',
-							'designsetgo'
-						)}
+						label={__('Content Vertical Alignment', 'designsetgo')}
 						value={contentVerticalAlignment}
 						options={[
 							{

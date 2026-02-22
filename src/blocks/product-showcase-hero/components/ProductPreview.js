@@ -8,12 +8,13 @@
 
 import { __ } from '@wordpress/i18n';
 import { Disabled } from '@wordpress/components';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Format a price from the Store API response.
  *
- * @param {string} rawPrice      Price in minor units (e.g. "2999")
- * @param {Object} priceData     Full prices object from Store API
+ * @param {string} rawPrice  Price in minor units (e.g. "2999")
+ * @param {Object} priceData Full prices object from Store API
  * @return {string} Formatted price string
  */
 function formatPrice(rawPrice, priceData) {
@@ -47,15 +48,23 @@ function renderRating(rating, reviewCount) {
 		stars += '\u00BD';
 	}
 	stars += '\u2606'.repeat(5 - fullStars - (hasHalf ? 1 : 0));
-	return `${stars} (${reviewCount})`;
+	const ratingText = numRating.toFixed(1);
+	return (
+		<span
+			role="img"
+			aria-label={`${ratingText} out of 5 stars, ${reviewCount} reviews`}
+		>
+			{stars} ({reviewCount})
+		</span>
+	);
 }
 
 /**
  * Product Preview Component
  *
- * @param {Object} props                    Component props
- * @param {Object} props.productData        Product data from Store API
- * @param {Object} props.attributes         Block attributes
+ * @param {Object} props             Component props
+ * @param {Object} props.productData Product data from Store API
+ * @param {Object} props.attributes  Block attributes
  * @return {JSX.Element} Product preview
  */
 export default function ProductPreview({ productData, attributes }) {
@@ -105,7 +114,7 @@ export default function ProductPreview({ productData, attributes }) {
 				{image && (
 					<img
 						src={image.src}
-						alt={image.alt || productData.name}
+						alt={decodeEntities(image.alt || productData.name)}
 						style={{ objectPosition }}
 					/>
 				)}
@@ -119,22 +128,17 @@ export default function ProductPreview({ productData, attributes }) {
 			<div className="dsgo-product-showcase-hero__content">
 				<div className="dsgo-product-showcase-hero__content-inner">
 					<h2 className="dsgo-product-showcase-hero__title">
-						{productData.name}
+						{decodeEntities(productData.name)}
 					</h2>
 
 					{showPrice && prices && (
 						<div className="dsgo-product-showcase-hero__price">
 							{isOnSale && (
 								<del>
-									{formatPrice(
-										prices.regular_price,
-										prices
-									)}
+									{formatPrice(prices.regular_price, prices)}
 								</del>
 							)}
-							<ins>
-								{formatPrice(prices.price, prices)}
-							</ins>
+							<ins>{formatPrice(prices.price, prices)}</ins>
 						</div>
 					)}
 
@@ -158,15 +162,16 @@ export default function ProductPreview({ productData, attributes }) {
 						</div>
 					)}
 
-					{showShortDescription &&
-						productData.short_description && (
-							<p className="dsgo-product-showcase-hero__description">
-								{productData.short_description.replace(
+					{showShortDescription && productData.short_description && (
+						<p className="dsgo-product-showcase-hero__description">
+							{decodeEntities(
+								productData.short_description.replace(
 									/<[^>]+>/g,
 									''
-								)}
-							</p>
-						)}
+								)
+							)}
+						</p>
+					)}
 
 					{showAddToCart && (
 						<Disabled>
