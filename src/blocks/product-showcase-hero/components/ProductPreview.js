@@ -6,7 +6,7 @@
  * @since 2.1.0
  */
 
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { Disabled } from '@wordpress/components';
 import { decodeEntities } from '@wordpress/html-entities';
 
@@ -52,7 +52,12 @@ function renderRating(rating, reviewCount) {
 	return (
 		<span
 			role="img"
-			aria-label={`${ratingText} out of 5 stars, ${reviewCount} reviews`}
+			aria-label={sprintf(
+				/* translators: 1: rating out of 5, 2: number of reviews */
+				__('%1$s out of 5 stars, %2$s reviews', 'designsetgo'),
+				ratingText,
+				reviewCount
+			)}
 		>
 			{stars} ({reviewCount})
 		</span>
@@ -165,20 +170,19 @@ export default function ProductPreview({ productData, attributes }) {
 					{showShortDescription && productData.short_description && (
 						<p className="dsgo-product-showcase-hero__description">
 							{decodeEntities(
-								productData.short_description.replace(
-									/<[^>]+>/g,
-									''
-								)
+								productData.short_description
+									.replace(/<!--[\s\S]*?-->/g, '')
+									.replace(/<[^>]+>/g, '')
 							)}
 						</p>
 					)}
 
 					{showAddToCart && (
 						<Disabled>
-							<div className="dsgo-product-showcase-hero__actions">
+							<div className="dsgo-product-showcase-hero__actions wp-block-button">
 								<button
 									type="button"
-									className="dsgo-product-showcase-hero__add-to-cart"
+									className="wp-block-button__link wp-element-button"
 								>
 									{productData.add_to_cart?.text ||
 										__('Add to cart', 'designsetgo')}

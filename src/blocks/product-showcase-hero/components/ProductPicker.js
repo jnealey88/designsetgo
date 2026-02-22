@@ -14,9 +14,9 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Product Picker Component
  *
- * @param {Object}   props              Component props
- * @param {Function} props.onSelect     Callback when a product is selected
- * @param {string}   props.className    Optional additional class name
+ * @param {Object}   props           Component props
+ * @param {Function} props.onSelect  Callback when a product is selected
+ * @param {string}   props.className Optional additional class name
  * @return {JSX.Element} Product picker
  */
 export default function ProductPicker({ onSelect, className }) {
@@ -24,6 +24,7 @@ export default function ProductPicker({ onSelect, className }) {
 	const [options, setOptions] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const debounceTimer = useRef(null);
+	const abortControllerRef = useRef(null);
 
 	// Fetch products when search value changes (debounced).
 	useEffect(() => {
@@ -37,9 +38,16 @@ export default function ProductPicker({ onSelect, className }) {
 		}
 
 		debounceTimer.current = setTimeout(() => {
+			// Cancel any in-flight request.
+			if (abortControllerRef.current) {
+				abortControllerRef.current.abort();
+			}
+			abortControllerRef.current = new AbortController();
+
 			setIsLoading(true);
 			apiFetch({
 				path: `/wc/store/v1/products?search=${encodeURIComponent(searchValue)}&per_page=10`,
+				signal: abortControllerRef.current.signal,
 			})
 				.then((products) => {
 					setOptions(
@@ -49,8 +57,10 @@ export default function ProductPicker({ onSelect, className }) {
 						}))
 					);
 				})
-				.catch(() => {
-					setOptions([]);
+				.catch((err) => {
+					if (err.name !== 'AbortError') {
+						setOptions([]);
+					}
 				})
 				.finally(() => {
 					setIsLoading(false);

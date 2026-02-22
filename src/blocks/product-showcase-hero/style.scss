@@ -109,17 +109,21 @@
 
 	// ==============================================
 	// PRODUCT ELEMENTS
+	// All text elements inherit the block's text color
+	// set via block supports (color.text).
 	// ==============================================
 	&__title {
 		margin: 0 0 0.5em;
 		font-size: 2em;
 		line-height: 1.2;
+		color: inherit;
 	}
 
 	&__price {
 		margin-bottom: 0.75em;
 		font-size: 1.25em;
 		font-weight: 600;
+		color: inherit;
 
 		del {
 			opacity: 0.6;
@@ -133,6 +137,7 @@
 
 	&__rating {
 		margin-bottom: 0.75em;
+		color: inherit;
 
 		// WooCommerce star rating styles.
 		/* stylelint-disable-next-line selector-class-pattern -- WooCommerce class */
@@ -146,6 +151,7 @@
 		font-size: 0.875em;
 		font-weight: 500;
 
+		// Use :where() for low specificity — block text color can override.
 		&--instock {
 			color: var(--wp--preset--color--vivid-green-cyan, #00d084);
 		}
@@ -159,35 +165,22 @@
 		margin-bottom: 1.5em;
 		font-size: 0.9375em;
 		line-height: 1.6;
+		color: inherit;
 	}
 
 	&__actions {
 		margin-top: 0.5em;
 
-		// Style the WooCommerce add-to-cart button.
+		// WooCommerce add-to-cart buttons inherit theme button styles
+		// via the wp-element-button class added in render.php.
+		// Only add layout/spacing tweaks here.
 		/* stylelint-disable selector-class-pattern -- WooCommerce classes */
 		.single_add_to_cart_button,
 		.add_to_cart_button {
 			display: inline-block;
-			padding: 0.75em 2em;
-			font-size: 1em;
-			font-weight: 600;
 			cursor: pointer;
 		}
 		/* stylelint-enable selector-class-pattern */
-	}
-
-	// Editor preview add-to-cart button.
-	&__add-to-cart {
-		display: inline-block;
-		padding: 0.75em 2em;
-		font-size: 1em;
-		font-weight: 600;
-		background: var(--wp--preset--color--contrast, #000);
-		color: var(--wp--preset--color--base, #fff);
-		border: none;
-		border-radius: 3px;
-		cursor: pointer;
 	}
 
 	// ==============================================
@@ -198,26 +191,23 @@
 	}
 
 	// Override media position order on mobile.
-	&.dsgo-product-showcase-hero {
+	@media (max-width: 767px) {
 
-		@media (max-width: 767px) {
+		.dsgo-product-showcase-hero__media {
+			order: 1;
+			min-height: 250px;
+		}
 
-			.dsgo-product-showcase-hero__media {
-				order: 1;
-				min-height: 250px;
-			}
+		.dsgo-product-showcase-hero__content {
+			order: 2;
+			padding-left: var(--wp--preset--spacing--30, 1rem);
+			padding-right: var(--wp--preset--spacing--30, 1rem);
+		}
 
-			.dsgo-product-showcase-hero__content {
-				order: 2;
-				padding-left: var(--wp--preset--spacing--30, 1rem);
-				padding-right: var(--wp--preset--spacing--30, 1rem);
-			}
-
-			.dsgo-product-showcase-hero__content-inner {
-				max-width: none;
-				margin-left: auto;
-				margin-right: auto;
-			}
+		.dsgo-product-showcase-hero__content-inner {
+			max-width: none;
+			margin-left: auto;
+			margin-right: auto;
 		}
 	}
 }

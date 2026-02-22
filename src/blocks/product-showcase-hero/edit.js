@@ -2,12 +2,14 @@
  * Product Showcase Hero Block - Edit Component
  *
  * Full-width hero section showcasing a WooCommerce product.
+ * Supports manual product selection or inheriting the current product context
+ * (for use in single product templates).
  *
  * @since 2.1.0
  */
 
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useMemo } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import {
 	useBlockProps,
@@ -17,16 +19,11 @@ import {
 import {
 	PanelBody,
 	Placeholder,
-	SelectControl,
-	ToggleControl,
-	FocalPointPicker,
 	Button,
 	ToolbarButton,
 	ToolbarGroup,
 	Spinner,
 	Notice,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalUnitControl as UnitControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseCustomUnits as useCustomUnits,
 } from '@wordpress/components';
@@ -34,6 +31,8 @@ import apiFetch from '@wordpress/api-fetch';
 
 import ProductPicker from './components/ProductPicker';
 import ProductPreview from './components/ProductPreview';
+import DisplayOptionsPanel from './components/DisplayOptionsPanel';
+import LayoutPanel from './components/LayoutPanel';
 
 /**
  * Product Showcase Hero Edit Component
@@ -41,44 +40,64 @@ import ProductPreview from './components/ProductPreview';
  * @param {Object}   props               Component props
  * @param {Object}   props.attributes    Block attributes
  * @param {Function} props.setAttributes Function to set attributes
+ * @param {Object}   props.context       Block context (postId, postType from usesContext)
  * @return {JSX.Element} Edit component
  */
-export default function ProductShowcaseHeroEdit({ attributes, setAttributes }) {
-	const {
-		productId,
-		layout,
-		imageSize,
-		showPrice,
-		showRating,
-		showStockStatus,
-		showSaleBadge,
-		showShortDescription,
-		showAddToCart,
-		showVariations,
-		minHeight,
-		mediaFocalPoint,
-		contentVerticalAlignment,
-	} = attributes;
+export default function ProductShowcaseHeroEdit({
+	attributes,
+	setAttributes,
+	context,
+}) {
+	const { productId, productSource, layout } = attributes;
 
 	const [productData, setProductData] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const [wcAvailable, setWcAvailable] = useState(true);
 
 	const units = useCustomUnits({
 		availableUnits: ['px', 'vh', 'vw', 'em', 'rem'],
 	});
 
-	// Check WooCommerce Store API availability on mount.
-	useEffect(() => {
-		apiFetch({ path: '/wc/store/v1/products?per_page=1' }).catch(() =>
-			setWcAvailable(false)
-		);
-	}, []);
+	const isCurrentMode = productSource === 'current';
 
-	// Fetch product data when productId changes.
+	// Determine which product ID to preview.
+	// In "current" mode, use the context postId (Site Editor provides this
+	// for template editing) or fall back to fetching a sample product.
+	const contextProductId =
+		context?.postType === 'product' ? context?.postId : null;
+
+	const previewProductId = useMemo(() => {
+		if (!isCurrentMode) {
+			return productId;
+		}
+		return contextProductId || null;
+	}, [isCurrentMode, productId, contextProductId]);
+
+	// When in "current" mode with no context, fetch the most recent product as a sample.
+	const [fallbackProductId, setFallbackProductId] = useState(null);
+
 	useEffect(() => {
-		if (!productId) {
+		if (!isCurrentMode || contextProductId) {
+			setFallbackProductId(null);
+			return;
+		}
+
+		apiFetch({ path: '/wc/store/v1/products?per_page=1&orderby=date' })
+			.then((products) => {
+				if (products?.length) {
+					setFallbackProductId(products[0].id);
+				}
+			})
+			.catch(() => {
+				// No products available — fallback will remain null.
+			});
+	}, [isCurrentMode, contextProductId]);
+
+	const effectiveProductId = previewProductId || fallbackProductId;
+
+	// Fetch product data when the effective product ID changes.
+	useEffect(() => {
+		if (!effectiveProductId) {
 			setProductData(null);
 			return;
 		}
@@ -86,7 +105,7 @@ export default function ProductShowcaseHeroEdit({ attributes, setAttributes }) {
 		setIsLoading(true);
 		setError(null);
 
-		apiFetch({ path: `/wc/store/v1/products/${productId}` })
+		apiFetch({ path: `/wc/store/v1/products/${effectiveProductId}` })
 			.then((data) => setProductData(data))
 			.catch(() => {
 				setError(
@@ -95,46 +114,54 @@ export default function ProductShowcaseHeroEdit({ attributes, setAttributes }) {
 				setProductData(null);
 			})
 			.finally(() => setIsLoading(false));
-	}, [productId]);
+	}, [effectiveProductId]);
 
 	const blockProps = useBlockProps({
 		className: 'dsgo-product-showcase-hero-wrapper',
 	});
 
-	// WooCommerce not available.
-	if (!wcAvailable) {
-		return (
-			<div {...blockProps}>
-				<Placeholder
-					icon="cart"
-					label={__('Product Showcase Hero', 'designsetgo')}
-				>
-					<p>
-						{__(
-							'This block requires WooCommerce to be installed and active.',
-							'designsetgo'
-						)}
-					</p>
-				</Placeholder>
-			</div>
-		);
-	}
+	// Determine if we're showing a sample preview (no real context available).
+	const isSamplePreview = isCurrentMode && !contextProductId;
 
-	// No product selected — show picker.
-	if (!productId) {
+	// No product resolved — show picker / source selection.
+	if (!isCurrentMode && !productId) {
 		return (
 			<div {...blockProps}>
 				<Placeholder
 					icon="cart"
 					label={__('Product Showcase Hero', 'designsetgo')}
-					instructions={__(
-						'Search for a WooCommerce product to showcase.',
-						'designsetgo'
-					)}
 				>
-					<ProductPicker
-						onSelect={(id) => setAttributes({ productId: id })}
-					/>
+					<div className="dsgo-product-showcase-hero__setup">
+						<p className="dsgo-product-showcase-hero__setup-label">
+							{__(
+								'Search for a product to feature, or use the current product for single product templates.',
+								'designsetgo'
+							)}
+						</p>
+						<ProductPicker
+							className="dsgo-product-showcase-hero__setup-picker"
+							onSelect={(id) =>
+								setAttributes({
+									productId: id,
+									productSource: 'manual',
+								})
+							}
+						/>
+						<div className="dsgo-product-showcase-hero__setup-divider">
+							<span>{__('or', 'designsetgo')}</span>
+						</div>
+						<Button
+							variant="secondary"
+							onClick={() =>
+								setAttributes({
+									productSource: 'current',
+								})
+							}
+							__next40pxDefaultSize
+						>
+							{__('Use Current Product', 'designsetgo')}
+						</Button>
+					</div>
 				</Placeholder>
 			</div>
 		);
@@ -157,13 +184,15 @@ export default function ProductShowcaseHeroEdit({ attributes, setAttributes }) {
 						}
 					/>
 				</ToolbarGroup>
-				<ToolbarGroup>
-					<ToolbarButton
-						icon="update"
-						label={__('Replace Product', 'designsetgo')}
-						onClick={() => setAttributes({ productId: 0 })}
-					/>
-				</ToolbarGroup>
+				{!isCurrentMode && (
+					<ToolbarGroup>
+						<ToolbarButton
+							icon="update"
+							label={__('Replace Product', 'designsetgo')}
+							onClick={() => setAttributes({ productId: 0 })}
+						/>
+					</ToolbarGroup>
+				)}
 			</BlockControls>
 
 			<InspectorControls>
@@ -171,178 +200,92 @@ export default function ProductShowcaseHeroEdit({ attributes, setAttributes }) {
 					title={__('Product', 'designsetgo')}
 					initialOpen={true}
 				>
-					{productData && (
+					{isCurrentMode ? (
 						<>
 							<p>
-								<strong>
-									{decodeEntities(productData.name)}
-								</strong>
+								{__(
+									'Displaying the current product from page context.',
+									'designsetgo'
+								)}
 							</p>
+							<Button
+								variant="secondary"
+								onClick={() =>
+									setAttributes({
+										productSource: 'manual',
+										productId: 0,
+									})
+								}
+								__next40pxDefaultSize
+							>
+								{__(
+									'Switch to Manual Selection',
+									'designsetgo'
+								)}
+							</Button>
+						</>
+					) : (
+						<>
+							{productData && (
+								<p>
+									<strong>
+										{decodeEntities(productData.name)}
+									</strong>
+								</p>
+							)}
 							<Button
 								variant="secondary"
 								onClick={() => setAttributes({ productId: 0 })}
 								__next40pxDefaultSize
+								style={{ marginBottom: '8px' }}
 							>
 								{__('Replace Product', 'designsetgo')}
+							</Button>
+							<Button
+								variant="tertiary"
+								onClick={() =>
+									setAttributes({
+										productSource: 'current',
+									})
+								}
+								__next40pxDefaultSize
+							>
+								{__(
+									'Use Current Product Instead',
+									'designsetgo'
+								)}
 							</Button>
 						</>
 					)}
 				</PanelBody>
 
-				<PanelBody
-					title={__('Display Options', 'designsetgo')}
-					initialOpen={true}
-				>
-					<ToggleControl
-						label={__('Show Price', 'designsetgo')}
-						checked={showPrice}
-						onChange={(value) =>
-							setAttributes({ showPrice: value })
-						}
-						__nextHasNoMarginBottom
-					/>
-					<ToggleControl
-						label={__('Show Rating', 'designsetgo')}
-						checked={showRating}
-						onChange={(value) =>
-							setAttributes({ showRating: value })
-						}
-						__nextHasNoMarginBottom
-					/>
-					<ToggleControl
-						label={__('Show Stock Status', 'designsetgo')}
-						checked={showStockStatus}
-						onChange={(value) =>
-							setAttributes({ showStockStatus: value })
-						}
-						__nextHasNoMarginBottom
-					/>
-					<ToggleControl
-						label={__('Show Sale Badge', 'designsetgo')}
-						checked={showSaleBadge}
-						onChange={(value) =>
-							setAttributes({ showSaleBadge: value })
-						}
-						__nextHasNoMarginBottom
-					/>
-					<ToggleControl
-						label={__('Show Short Description', 'designsetgo')}
-						checked={showShortDescription}
-						onChange={(value) =>
-							setAttributes({ showShortDescription: value })
-						}
-						__nextHasNoMarginBottom
-					/>
-					<ToggleControl
-						label={__('Show Add to Cart', 'designsetgo')}
-						checked={showAddToCart}
-						onChange={(value) =>
-							setAttributes({ showAddToCart: value })
-						}
-						__nextHasNoMarginBottom
-					/>
-					<ToggleControl
-						label={__('Show Variations', 'designsetgo')}
-						checked={showVariations}
-						onChange={(value) =>
-							setAttributes({ showVariations: value })
-						}
-						__nextHasNoMarginBottom
-					/>
-					<SelectControl
-						label={__('Image Size', 'designsetgo')}
-						value={imageSize}
-						options={[
-							{
-								label: __('Medium', 'designsetgo'),
-								value: 'medium',
-							},
-							{
-								label: __('Large', 'designsetgo'),
-								value: 'large',
-							},
-							{
-								label: __('Full', 'designsetgo'),
-								value: 'full',
-							},
-						]}
-						onChange={(value) =>
-							setAttributes({ imageSize: value })
-						}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-				</PanelBody>
+				<DisplayOptionsPanel
+					attributes={attributes}
+					setAttributes={setAttributes}
+				/>
 
-				<PanelBody
-					title={__('Layout', 'designsetgo')}
-					initialOpen={false}
-				>
-					<SelectControl
-						label={__('Media Position', 'designsetgo')}
-						value={layout}
-						options={[
-							{
-								label: __('Left', 'designsetgo'),
-								value: 'media-left',
-							},
-							{
-								label: __('Right', 'designsetgo'),
-								value: 'media-right',
-							},
-						]}
-						onChange={(value) => setAttributes({ layout: value })}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-					<SelectControl
-						label={__('Content Vertical Alignment', 'designsetgo')}
-						value={contentVerticalAlignment}
-						options={[
-							{
-								label: __('Top', 'designsetgo'),
-								value: 'top',
-							},
-							{
-								label: __('Center', 'designsetgo'),
-								value: 'center',
-							},
-							{
-								label: __('Bottom', 'designsetgo'),
-								value: 'bottom',
-							},
-						]}
-						onChange={(value) =>
-							setAttributes({
-								contentVerticalAlignment: value,
-							})
-						}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-					<UnitControl
-						label={__('Min Height', 'designsetgo')}
-						value={minHeight}
-						onChange={(value) =>
-							setAttributes({ minHeight: value })
-						}
-						units={units}
-						__next40pxDefaultSize
-					/>
-					{productData?.images?.[0]?.src && (
-						<FocalPointPicker
-							label={__('Focal Point', 'designsetgo')}
-							url={productData.images[0].src}
-							value={mediaFocalPoint}
-							onChange={(value) =>
-								setAttributes({ mediaFocalPoint: value })
-							}
-						/>
-					)}
-				</PanelBody>
+				<LayoutPanel
+					attributes={attributes}
+					setAttributes={setAttributes}
+					units={units}
+					imageUrl={productData?.images?.[0]?.src}
+				/>
 			</InspectorControls>
 
 			<div {...blockProps}>
+				{isSamplePreview && productData && (
+					<Notice
+						status="info"
+						isDismissible={false}
+						className="dsgo-product-showcase-hero__sample-notice"
+					>
+						{__(
+							'Preview: showing a sample product. The current product will be used on the frontend.',
+							'designsetgo'
+						)}
+					</Notice>
+				)}
+
 				{isLoading && (
 					<Placeholder
 						icon="cart"
@@ -360,13 +303,15 @@ export default function ProductShowcaseHeroEdit({ attributes, setAttributes }) {
 						<Notice status="error" isDismissible={false}>
 							{error}
 						</Notice>
-						<Button
-							variant="secondary"
-							onClick={() => setAttributes({ productId: 0 })}
-							__next40pxDefaultSize
-						>
-							{__('Select Another Product', 'designsetgo')}
-						</Button>
+						{!isCurrentMode && (
+							<Button
+								variant="secondary"
+								onClick={() => setAttributes({ productId: 0 })}
+								__next40pxDefaultSize
+							>
+								{__('Select Another Product', 'designsetgo')}
+							</Button>
+						)}
 					</Placeholder>
 				)}
 
@@ -374,6 +319,17 @@ export default function ProductShowcaseHeroEdit({ attributes, setAttributes }) {
 					<ProductPreview
 						productData={productData}
 						attributes={attributes}
+					/>
+				)}
+
+				{isCurrentMode && !isLoading && !error && !productData && (
+					<Placeholder
+						icon="cart"
+						label={__('Product Showcase Hero', 'designsetgo')}
+						instructions={__(
+							'No products found. Add a WooCommerce product to preview this block.',
+							'designsetgo'
+						)}
 					/>
 				)}
 			</div>

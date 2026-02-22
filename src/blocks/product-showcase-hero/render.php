@@ -23,8 +23,20 @@ if ( ! function_exists( 'wc_get_product' ) ) {
 	return '';
 }
 
-// Bail if no product ID.
-$product_id = isset( $attributes['productId'] ) ? absint( $attributes['productId'] ) : 0;
+// Resolve product ID based on source mode.
+$product_source = isset( $attributes['productSource'] ) ? $attributes['productSource'] : 'manual';
+
+if ( 'current' === $product_source ) {
+	// Use the current product context (single product pages, product templates).
+	if ( isset( $GLOBALS['product'] ) && $GLOBALS['product'] instanceof WC_Product ) {
+		$product_id = $GLOBALS['product']->get_id();
+	} else {
+		$product_id = get_the_ID();
+	}
+} else {
+	$product_id = isset( $attributes['productId'] ) ? absint( $attributes['productId'] ) : 0;
+}
+
 if ( ! $product_id ) {
 	return '';
 }
@@ -33,6 +45,11 @@ if ( ! $product_id ) {
 $product = wc_get_product( $product_id );
 if ( ! $product || 'publish' !== get_post_status( $product_id ) ) {
 	return '';
+}
+
+// Respect password-protected products.
+if ( post_password_required( $product_id ) ) {
+	return get_the_password_form( $product_id );
 }
 
 // Extract display settings.
@@ -59,7 +76,7 @@ if ( ! in_array( $image_size, $allowed_sizes, true ) ) {
 }
 
 // Validate min height.
-$safe_min_height = ( $min_height && preg_match( '/^[\d.]+(px|vh|vw|em|rem|%)$/', $min_height ) )
+$safe_min_height = ( $min_height && preg_match( '/^\d+(\.\d+)?(px|vh|vw|em|rem|%)$/', $min_height ) )
 	? $min_height
 	: '500px';
 
@@ -167,13 +184,18 @@ setup_postdata( $post );
 			<?php endif; ?>
 
 			<?php if ( $show_add_to_cart ) : ?>
-				<div class="dsgo-product-showcase-hero__actions">
+				<div class="dsgo-product-showcase-hero__actions wp-block-button">
 					<?php
+					// Capture WC button output and add wp-element-button class
+					// so the button inherits theme.json button styles.
+					ob_start();
 					if ( $show_variations && $product->is_type( 'variable' ) ) {
 						woocommerce_template_single_add_to_cart();
 					} else {
 						woocommerce_template_loop_add_to_cart();
 					}
+					$add_to_cart_html = ob_get_clean();
+					echo str_replace( 'class="button', 'class="button wp-block-button__link wp-element-button', $add_to_cart_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WooCommerce template output.
 					?>
 				</div>
 			<?php endif; ?>
@@ -182,9 +204,12 @@ setup_postdata( $post );
 </div>
 
 <?php
-// Restore original globals.
+// Restore original globals (manual restoration is safer than wp_reset_postdata()
+// because it correctly handles secondary query loops where $wp_query->post differs).
 // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 $post               = $original_post;
 // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 $GLOBALS['product'] = $original_product;
-wp_reset_postdata();
+if ( $post ) {
+	setup_postdata( $post );
+}

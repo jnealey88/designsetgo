@@ -17,6 +17,7 @@
 		"dsg"
 	],
 	"textdomain": "designsetgo",
+	"usesContext": ["postId", "postType"],
 	"supports": {
 		"anchor": true,
 		"align": ["full"],
@@ -62,6 +63,11 @@
 		"align": {
 			"type": "string",
 			"default": "full"
+		},
+		"productSource": {
+			"type": "string",
+			"default": "manual",
+			"enum": ["manual", "current"]
 		},
 		"productId": {
 			"type": "number",
@@ -125,6 +131,7 @@
 	"schemaMetadata": {
 		"attributeDescriptions": {
 			"align": "Block alignment (always full width)",
+			"productSource": "Whether to use a manually selected product or the current product from page context (manual or current)",
 			"productId": "WooCommerce product ID to showcase",
 			"layout": "Which side the product image appears on (media-left or media-right)",
 			"imageSize": "WordPress image size to use for the product image (medium, large, full)",
