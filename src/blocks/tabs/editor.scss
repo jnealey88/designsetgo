@@ -62,10 +62,11 @@
 		font-weight: 500;
 		transition: all 0.2s ease;
 
-		// Remove focus outline
-		&:focus,
+		// Subtle focus indicator for keyboard navigation (WCAG 2.1)
 		&:focus-visible {
-			outline: none;
+			outline: 2px solid var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+			outline-offset: -2px;
+			border-radius: 2px;
 		}
 
 		// Subtle hover effect
@@ -79,6 +80,22 @@
 			background: var(--dsgo-tab-bg-active, transparent);
 			color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			font-weight: 600;
+		}
+
+		// Inline-editable tab title (RichText) — cursor only on text, not icons/padding
+		&.is-active .dsgo-tabs__tab-title {
+			cursor: text;
+
+			[contenteditable] {
+				outline: none;
+				cursor: text;
+			}
+
+			&:focus-within {
+				outline: 1px dashed var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
+				outline-offset: 2px;
+				border-radius: 2px;
+			}
 		}
 	}
 
