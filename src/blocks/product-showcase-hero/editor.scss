@@ -1,0 +1,29 @@
+/**
+ * Product Showcase Hero Block - Editor Styles
+ *
+ * Editor-specific overrides. The frontend style.scss is also
+ * loaded in the editor; this file only contains editor additions.
+ *
+ * @package DesignSetGo
+ * @since 2.1.0
+ */
+
+// The wrapper class ensures the block preview renders properly in the editor.
+.dsgo-product-showcase-hero-wrapper {
+	// Placeholder styling.
+	.components-placeholder {
+		min-height: 300px;
+	}
+}
+
+.dsgo-product-showcase-hero {
+	// Disable pointer events on the add-to-cart preview.
+	&__actions {
+		pointer-events: none;
+	}
+
+	// Sale badge contrast in editor.
+	&__sale-badge {
+		pointer-events: none;
+	}
+}

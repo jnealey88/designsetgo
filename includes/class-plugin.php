@@ -595,6 +595,9 @@ class Plugin {
 		// Add block category.
 		add_filter( 'block_categories_all', array( $this, 'register_block_category' ), 10, 2 );
 
+		// Conditionally register WooCommerce-dependent blocks.
+		add_filter( 'designsetgo_register_block', array( $this, 'gate_woocommerce_blocks' ), 10, 2 );
+
 		// Inject API keys into Map block on render.
 		add_filter( 'render_block_designsetgo/map', array( $this, 'inject_map_api_key' ), 10, 2 );
 
@@ -728,6 +731,29 @@ class Plugin {
 		);
 
 		return $categories;
+	}
+
+	/**
+	 * Gate WooCommerce-dependent blocks behind WooCommerce availability.
+	 *
+	 * Prevents blocks that require WooCommerce from being registered
+	 * when WooCommerce is not installed or active.
+	 *
+	 * @since 2.1.0
+	 * @param bool   $should_register Whether the block should be registered.
+	 * @param string $block_name      The block name (e.g. 'designsetgo/product-showcase-hero').
+	 * @return bool Whether to register the block.
+	 */
+	public function gate_woocommerce_blocks( $should_register, $block_name ) {
+		$wc_blocks = array(
+			'designsetgo/product-showcase-hero',
+		);
+
+		if ( in_array( $block_name, $wc_blocks, true ) ) {
+			return class_exists( 'WooCommerce' );
+		}
+
+		return $should_register;
 	}
 
 	/**
