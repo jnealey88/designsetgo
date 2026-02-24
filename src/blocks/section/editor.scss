@@ -576,6 +576,10 @@ $inline-block-data-types: (
  *
  * @since 1.4.2
  */
+// Amount the SVG extends beyond its container to prevent sub-pixel gaps.
+// Used in both the height calc and the bottom-shape offset — change in one place only.
+$shape-divider-bleed: 2px;
+
 .dsgo-shape-divider {
 	position: absolute;
 	width: var(--dsgo-shape-width, 100%);
@@ -594,18 +598,27 @@ $inline-block-data-types: (
 	svg {
 		display: block;
 		width: 100%;
-		height: 100%;
+		// Extend slightly beyond container to prevent sub-pixel gaps on small screens.
+		// Relies on overflow: hidden above to clip the excess.
+		height: calc(100% + #{$shape-divider-bleed});
 		fill: var(--dsgo-shape-color, currentColor);
 	}
 
 	// Top position - shape at the top edge of section
+	// SVG extends downward (into section) — no offset needed at top edge
 	&--top {
 		top: 0;
 	}
 
 	// Bottom position - shape at the bottom edge of section
+	// Shifts the bleed amount above the container (clipped by overflow: hidden),
+	// aligning the SVG bottom exactly with the container bottom edge.
 	&--bottom {
 		bottom: 0;
+
+		svg {
+			margin-top: -#{$shape-divider-bleed};
+		}
 	}
 
 	// Bring to front - display above content
