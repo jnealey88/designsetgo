@@ -123,49 +123,7 @@ export default function ProductShowcaseHeroEdit({
 	// Determine if we're showing a sample preview (no real context available).
 	const isSamplePreview = isCurrentMode && !contextProductId;
 
-	// No product resolved — show picker / source selection.
-	if (!isCurrentMode && !productId) {
-		return (
-			<div {...blockProps}>
-				<Placeholder
-					icon="cart"
-					label={__('Product Showcase Hero', 'designsetgo')}
-				>
-					<div className="dsgo-product-showcase-hero__setup">
-						<p className="dsgo-product-showcase-hero__setup-label">
-							{__(
-								'Search for a product to feature, or use the current product for single product templates.',
-								'designsetgo'
-							)}
-						</p>
-						<ProductPicker
-							className="dsgo-product-showcase-hero__setup-picker"
-							onSelect={(id) =>
-								setAttributes({
-									productId: id,
-									productSource: 'manual',
-								})
-							}
-						/>
-						<div className="dsgo-product-showcase-hero__setup-divider">
-							<span>{__('or', 'designsetgo')}</span>
-						</div>
-						<Button
-							variant="secondary"
-							onClick={() =>
-								setAttributes({
-									productSource: 'current',
-								})
-							}
-							__next40pxDefaultSize
-						>
-							{__('Use Current Product', 'designsetgo')}
-						</Button>
-					</div>
-				</Placeholder>
-			</div>
-		);
-	}
+	const isSetup = !isCurrentMode && !productId;
 
 	return (
 		<>
@@ -184,7 +142,7 @@ export default function ProductShowcaseHeroEdit({
 						}
 					/>
 				</ToolbarGroup>
-				{!isCurrentMode && (
+				{!isCurrentMode && productId > 0 && (
 					<ToolbarGroup>
 						<ToolbarButton
 							icon="update"
@@ -200,7 +158,39 @@ export default function ProductShowcaseHeroEdit({
 					title={__('Product', 'designsetgo')}
 					initialOpen={true}
 				>
-					{isCurrentMode ? (
+					{isSetup ? (
+						<>
+							<p>
+								{__(
+									'Search for a product to feature, or use the current product for single product templates.',
+									'designsetgo'
+								)}
+							</p>
+							<ProductPicker
+								onSelect={(id) =>
+									setAttributes({
+										productId: id,
+										productSource: 'manual',
+									})
+								}
+							/>
+							<Button
+								variant="tertiary"
+								onClick={() =>
+									setAttributes({
+										productSource: 'current',
+									})
+								}
+								__next40pxDefaultSize
+								style={{ marginTop: '8px' }}
+							>
+								{__(
+									'Use Current Product Instead',
+									'designsetgo'
+								)}
+							</Button>
+						</>
+					) : isCurrentMode ? (
 						<>
 							<p>
 								{__(
@@ -273,6 +263,44 @@ export default function ProductShowcaseHeroEdit({
 			</InspectorControls>
 
 			<div {...blockProps}>
+				{isSetup && (
+					<Placeholder
+						icon="cart"
+						label={__('Product Showcase Hero', 'designsetgo')}
+					>
+						<div className="dsgo-product-showcase-hero__setup">
+							<p className="dsgo-product-showcase-hero__setup-label">
+								{__(
+									'Search for a product to feature, or use the current product for single product templates.',
+									'designsetgo'
+								)}
+							</p>
+							<ProductPicker
+								className="dsgo-product-showcase-hero__setup-picker"
+								onSelect={(id) =>
+									setAttributes({
+										productId: id,
+										productSource: 'manual',
+									})
+								}
+							/>
+							<div className="dsgo-product-showcase-hero__setup-divider">
+								<span>{__('or', 'designsetgo')}</span>
+							</div>
+							<Button
+								variant="secondary"
+								onClick={() =>
+									setAttributes({
+										productSource: 'current',
+									})
+								}
+								__next40pxDefaultSize
+							>
+								{__('Use Current Product', 'designsetgo')}
+							</Button>
+						</div>
+					</Placeholder>
+				)}
 				{isSamplePreview && productData && (
 					<Notice
 						status="info"

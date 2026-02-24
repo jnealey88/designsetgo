@@ -750,7 +750,7 @@ class Plugin {
 		);
 
 		if ( in_array( $block_name, $wc_blocks, true ) ) {
-			return class_exists( 'WooCommerce' );
+			return $should_register && class_exists( 'WooCommerce' );
 		}
 
 		return $should_register;

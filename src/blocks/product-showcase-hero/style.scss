@@ -26,7 +26,8 @@
 		overflow: hidden;
 
 		img {
-			display: block;
+			position: absolute;
+			inset: 0;
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
@@ -61,8 +62,8 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: var(--dsgo-psh-content-justify, center);
-		padding-top: var(--wp--preset--spacing--50, 2rem);
-		padding-bottom: var(--wp--preset--spacing--50, 2rem);
+		padding-top: var(--wp--preset--spacing--60, 3rem);
+		padding-bottom: var(--wp--preset--spacing--60, 3rem);
 	}
 
 	// Content inner — width constraint technique from Fifty Fifty.

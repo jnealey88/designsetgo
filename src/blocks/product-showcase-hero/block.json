@@ -128,25 +128,6 @@
 			"enum": ["top", "center", "bottom"]
 		}
 	},
-	"schemaMetadata": {
-		"attributeDescriptions": {
-			"align": "Block alignment (always full width)",
-			"productSource": "Whether to use a manually selected product or the current product from page context (manual or current)",
-			"productId": "WooCommerce product ID to showcase",
-			"layout": "Which side the product image appears on (media-left or media-right)",
-			"imageSize": "WordPress image size to use for the product image (medium, large, full)",
-			"showPrice": "Whether to display the product price",
-			"showRating": "Whether to display the product star rating",
-			"showStockStatus": "Whether to display the product stock status",
-			"showSaleBadge": "Whether to display a sale badge when the product is on sale",
-			"showShortDescription": "Whether to display the product short description",
-			"showAddToCart": "Whether to display the add-to-cart button",
-			"showVariations": "Whether to show variation selectors for variable products",
-			"minHeight": "Minimum height of the block (CSS value)",
-			"mediaFocalPoint": "Focal point for the product image (x, y coordinates from 0 to 1)",
-			"contentVerticalAlignment": "Vertical alignment of content within the content side (top, center, bottom)"
-		}
-	},
 	"example": {
 		"attributes": {
 			"layout": "media-left",
