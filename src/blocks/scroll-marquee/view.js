@@ -108,6 +108,9 @@ function initSingleMarquee(marquee) {
 
 	observer.observe(marquee);
 
+	// Manual offset from drag and wheel interactions (positive = shift images right)
+	let manualOffset = 0;
+
 	// Scroll event handler with requestAnimationFrame throttling
 	let ticking = false;
 
@@ -129,13 +132,19 @@ function initSingleMarquee(marquee) {
 			const data = rowData[index];
 
 			if (data && data.segmentWidth > 0) {
-				// Simplified scroll calculation: just use scroll position * speed
-				let scrollPosition = scrollY * scrollSpeed;
+				// Flip manual offset based on direction so all rows move
+				// in the same visual direction when dragging or wheeling
+				const dirOffset =
+					direction === 'left' ? -manualOffset : manualOffset;
+
+				let scrollPosition = scrollY * scrollSpeed + dirOffset;
 
 				// Apply modulo to create seamless infinite loop
 				// With 6 duplicates, we loop every 1 segment (plus its gap)
 				const loopRange = data.segmentWidth + data.gap;
-				scrollPosition = scrollPosition % loopRange;
+				// Use positive modulo to handle negative values
+				scrollPosition =
+					((scrollPosition % loopRange) + loopRange) % loopRange;
 
 				// Apply direction and offset
 				let translateX;
@@ -152,6 +161,13 @@ function initSingleMarquee(marquee) {
 			}
 		});
 
+		// Normalize manualOffset to prevent unbounded float growth.
+		// Use the first row's loop range since all rows use the same speed.
+		if (rowData.length > 0 && rowData[0].segmentWidth > 0) {
+			const loopRange = rowData[0].segmentWidth + rowData[0].gap;
+			manualOffset = ((manualOffset % loopRange) + loopRange) % loopRange;
+		}
+
 		ticking = false;
 	}
 
@@ -161,6 +177,96 @@ function initSingleMarquee(marquee) {
 			ticking = true;
 		}
 	}
+
+	// --- Click-and-drag scrolling ---
+	// Set cursor and touch-action here so they only apply on the frontend
+	// (style.scss loads in both the editor and frontend).
+	marquee.style.cursor = 'grab';
+	marquee.style.touchAction = 'pan-y';
+
+	let isDragging = false;
+	let dragStartX = 0;
+
+	const onPointerDown = (e) => {
+		// Only respond to primary button (left click / touch)
+		if (e.button !== 0) {
+			return;
+		}
+		isDragging = true;
+		dragStartX = e.clientX;
+		marquee.style.cursor = 'grabbing';
+		marquee.style.userSelect = 'none';
+		marquee.setPointerCapture(e.pointerId);
+		e.preventDefault();
+	};
+
+	const onPointerMove = (e) => {
+		if (!isDragging) {
+			return;
+		}
+		const deltaX = e.clientX - dragStartX;
+		dragStartX = e.clientX;
+		manualOffset += deltaX;
+		requestTick();
+	};
+
+	const onPointerUp = (e) => {
+		if (!isDragging) {
+			return;
+		}
+		isDragging = false;
+		marquee.style.cursor = 'grab';
+		marquee.style.userSelect = '';
+		if (marquee.hasPointerCapture(e.pointerId)) {
+			marquee.releasePointerCapture(e.pointerId);
+		}
+	};
+
+	marquee.addEventListener('pointerdown', onPointerDown);
+	marquee.addEventListener('pointermove', onPointerMove);
+	marquee.addEventListener('pointerup', onPointerUp);
+	marquee.addEventListener('pointercancel', onPointerUp);
+
+	// Prevent native image drag behavior inside the gallery
+	marquee.addEventListener('dragstart', (e) => e.preventDefault());
+
+	// --- Mouse wheel scrolling ---
+	marquee.addEventListener(
+		'wheel',
+		(e) => {
+			// Allow browser zoom (ctrl/cmd + wheel)
+			if (e.ctrlKey || e.metaKey) {
+				return;
+			}
+
+			// Determine raw delta: prefer horizontal axis when it dominates,
+			// and treat shift+wheel as horizontal intent
+			let delta;
+			if (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+				delta = e.shiftKey ? e.deltaY : e.deltaX;
+			} else {
+				// Vertical wheel — only capture when horizontal delta is negligible
+				// so the page can still scroll vertically
+				if (Math.abs(e.deltaX) < 1) {
+					return;
+				}
+				delta = e.deltaX;
+			}
+
+			// Normalize deltaMode: DOM_DELTA_LINE (1) and DOM_DELTA_PAGE (2)
+			// report abstract units, not pixels
+			if (e.deltaMode === 1) {
+				delta *= 16;
+			} else if (e.deltaMode === 2) {
+				delta *= window.innerHeight;
+			}
+
+			manualOffset -= delta;
+			e.preventDefault();
+			requestTick();
+		},
+		{ passive: false }
+	);
 
 	// Use requestAnimationFrame to ensure layout is complete before measuring
 	requestAnimationFrame(() => {
