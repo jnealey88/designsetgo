@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.29
+Stable tag: 2.0.30
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,17 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.30 - 2026-02-23 =
+**New Features:**
+* New: Product Showcase Hero block for highlighting WooCommerce products with a two-column layout featuring product image, price, ratings, stock status, and add-to-cart button
+* New: Overlay header text color setting to control nav link and title colors in the transparent overlay state
+* New: Sticky header option to scroll the top bar out of view before the nav row snaps into a sticky position
+* New: Click-drag and mouse wheel scroll interactions for the Scroll Marquee block
+* New: Starter design patterns for the Advanced Heading block
+
+**Bug Fixes:**
+* Fix: Slider block now correctly grows to match its content height instead of clipping content
 
 = 2.0.29 - 2026-02-18 =
 **Bug Fixes:**
