@@ -97,6 +97,11 @@ import './sticky-header.scss';
 			return;
 		}
 
+		// Overlay headers use position:fixed — skip-top-bar offset would conflict
+		if (document.body.classList.contains('dsgo-page-overlay-header')) {
+			return;
+		}
+
 		// Template parts often have a single outer wrapper group; look through it
 		let container = header;
 		if (
@@ -210,8 +215,10 @@ import './sticky-header.scss';
 				header.classList.add('dsgo-sticky-bg-on-scroll');
 			}
 
-			// Skip top bar (on by default for globally-matched headers)
-			header.classList.add('dsgo-sticky-skip-top-bar');
+			// Skip top bar (on by default, respects settings.skipTopBar)
+			if (settings.skipTopBar !== false) {
+				header.classList.add('dsgo-sticky-skip-top-bar');
+			}
 
 			// Mobile disabled
 			if (!settings.mobileEnabled) {
@@ -320,6 +327,14 @@ import './sticky-header.scss';
 		} else {
 			stickyHeaders.forEach(initStickyHeader);
 		}
+
+		// Re-run top bar offset after all resources load (images/fonts can
+		// change the top bar height measured at DOMContentLoaded)
+		window.addEventListener(
+			'load',
+			() => stickyHeaders.forEach(applyTopBarOffset),
+			{ once: true }
+		);
 	}
 
 	// Initialize

@@ -153,10 +153,7 @@ export default function StickyHeaderPanel(props) {
 						/>
 
 						<ToggleControl
-							label={__(
-								'Skip top bar when scrolling',
-								'designsetgo'
-							)}
+							label={__('Skip Top Bar on Scroll', 'designsetgo')}
 							checked={attributes.dsgoStickySkipTopBar !== false}
 							onChange={(value) =>
 								setAttributes({
