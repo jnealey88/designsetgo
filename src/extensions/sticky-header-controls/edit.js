@@ -152,6 +152,20 @@ export default function StickyHeaderPanel(props) {
 							)}
 						/>
 
+						<ToggleControl
+							label={__('Skip Top Bar on Scroll', 'designsetgo')}
+							checked={attributes.dsgoStickySkipTopBar !== false}
+							onChange={(value) =>
+								setAttributes({
+									dsgoStickySkipTopBar: value,
+								})
+							}
+							help={__(
+								'If your header has a top bar (e.g. social links), it scrolls away before the nav sticks.',
+								'designsetgo'
+							)}
+						/>
+
 						<p
 							className="components-base-control__help"
 							style={{ marginTop: '16px' }}

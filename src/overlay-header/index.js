@@ -38,6 +38,7 @@ const OverlayHeaderPanel = () => {
 
 	const overlayEnabled = meta?.dsgo_overlay_header || false;
 	const textColorSlug = meta?.dsgo_overlay_header_text_color || '';
+	const skipTopBarEnabled = meta?.dsgo_overlay_skip_top_bar || false;
 
 	// Convert slug to hex for ColorPalette display.
 	const textColorHex = textColorSlug
@@ -65,6 +66,10 @@ const OverlayHeaderPanel = () => {
 		});
 	};
 
+	const updateSkipTopBar = (value) => {
+		setMeta({ ...meta, dsgo_overlay_skip_top_bar: value });
+	};
+
 	// Only show for content post types.
 	if (!postType || postType === 'attachment') {
 		return null;
@@ -88,6 +93,16 @@ const OverlayHeaderPanel = () => {
 			/>
 			{overlayEnabled && (
 				<>
+					<ToggleControl
+						__nextHasNoMarginBottom
+						label={__('Skip Top Bar', 'designsetgo')}
+						help={__(
+							'Only overlay the main header row. If your header has a top bar, the hero content will begin below it.',
+							'designsetgo'
+						)}
+						checked={skipTopBarEnabled}
+						onChange={updateSkipTopBar}
+					/>
 					{/* eslint-disable-next-line @wordpress/no-base-control-with-label-without-id -- ColorPalette has no single input to associate */}
 					<BaseControl
 						__nextHasNoMarginBottom

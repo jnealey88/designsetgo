@@ -43,6 +43,7 @@ function addStickyHeaderAttributes(settings, name) {
 			dsgoStickyShrinkAmount: { type: 'number', default: 15 },
 			dsgoStickyHideOnScroll: { type: 'boolean', default: false },
 			dsgoStickyBackground: { type: 'boolean', default: false },
+			dsgoStickySkipTopBar: { type: 'boolean', default: true },
 		},
 	};
 }
@@ -122,6 +123,10 @@ function applyStickyHeaderClasses(extraProps, blockType, attributes) {
 
 	if (attributes.dsgoStickyBackground) {
 		classes.push('dsgo-sticky-bg-on-scroll');
+	}
+
+	if (attributes.dsgoStickySkipTopBar !== false) {
+		classes.push('dsgo-sticky-skip-top-bar');
 	}
 
 	return {

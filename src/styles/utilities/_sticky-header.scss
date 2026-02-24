@@ -257,7 +257,17 @@ body:not(.block-editor-page).dsgo-page-overlay-header header.wp-block-template-p
  * Overlay: force inner header sections transparent so they don't show
  * through over the hero. Uses :where() for zero specificity.
  */
-body:not(.block-editor-page).dsgo-page-overlay-header :where(header.wp-block-template-part, .wp-block-template-part:not(footer):first-of-type) .has-background {
+body:not(.block-editor-page).dsgo-page-overlay-header:not(.dsgo-page-overlay-skip-top-bar) :where(header.wp-block-template-part, .wp-block-template-part:not(footer):first-of-type) .has-background {
+	background-color: transparent !important;
+	background-image: none !important;
+}
+
+/**
+ * Overlay + Skip Top Bar: only strip backgrounds from the nav row area
+ * (second child onwards), preserving the top bar's background.
+ */
+body:not(.block-editor-page).dsgo-page-overlay-header.dsgo-page-overlay-skip-top-bar :where(header.wp-block-template-part, .wp-block-template-part:not(footer):first-of-type) > * > :not(:first-child) .has-background,
+body:not(.block-editor-page).dsgo-page-overlay-header.dsgo-page-overlay-skip-top-bar :where(header.wp-block-template-part, .wp-block-template-part:not(footer):first-of-type) > * > :not(:first-child).has-background {
 	background-color: transparent !important;
 	background-image: none !important;
 }

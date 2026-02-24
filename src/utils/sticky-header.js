@@ -64,10 +64,34 @@ import './sticky-header.scss';
 		'dsgo-page-overlay-header'
 	);
 
+	// When skip-top-bar is active, only pull content up by the nav row height.
+	const isOverlaySkipTopBar = document.body.classList.contains(
+		'dsgo-page-overlay-skip-top-bar'
+	);
+
 	// Measure header height so CSS can pull content up by the right amount.
 	if (isOverlayPage && stickyHeaders.length > 0) {
 		const setHeaderHeight = () => {
-			const h = stickyHeaders[0].getBoundingClientRect().height;
+			const header = stickyHeaders[0];
+			let h = header.getBoundingClientRect().height;
+
+			if (isOverlaySkipTopBar) {
+				// Find the top bar (first child of container) and subtract its height
+				// so only the nav row height is used for the content pull-up.
+				let container = header;
+				if (
+					header.children.length === 1 &&
+					header.children[0].children.length >= 2
+				) {
+					container = header.children[0];
+				}
+				if (container.children.length >= 2) {
+					const topBarHeight =
+						container.children[0].getBoundingClientRect().height;
+					h = Math.max(0, h - topBarHeight);
+				}
+			}
+
 			document.documentElement.style.setProperty(
 				'--dsgo-overlay-header-height',
 				`${h}px`
@@ -75,6 +99,7 @@ import './sticky-header.scss';
 		};
 		setHeaderHeight();
 		window.addEventListener('resize', setHeaderHeight);
+		window.addEventListener('load', setHeaderHeight, { once: true });
 	}
 
 	/**
@@ -82,6 +107,46 @@ import './sticky-header.scss';
 	 */
 	function isMobile() {
 		return window.innerWidth < settings.mobileBreakpoint;
+	}
+
+	/**
+	 * Apply top bar offset for sticky headers that have a top bar
+	 * Measures the first child element and sets a negative top value so the
+	 * top bar scrolls away before the nav row snaps to the top.
+	 * Only applies when the header has 2+ direct children.
+	 *
+	 * @param {HTMLElement} header Header element
+	 */
+	function applyTopBarOffset(header) {
+		if (!header.classList.contains('dsgo-sticky-skip-top-bar')) {
+			return;
+		}
+
+		// Overlay headers use position:fixed — skip-top-bar offset would conflict
+		if (document.body.classList.contains('dsgo-page-overlay-header')) {
+			return;
+		}
+
+		// Template parts often have a single outer wrapper group; look through it
+		let container = header;
+		if (
+			header.children.length === 1 &&
+			header.children[0].children.length >= 2
+		) {
+			container = header.children[0];
+		}
+
+		if (container.children.length < 2) {
+			return;
+		}
+
+		const adminBar = document.getElementById('wpadminbar');
+		const adminBarHeight = adminBar
+			? adminBar.getBoundingClientRect().height
+			: 0;
+		const topBarHeight =
+			container.children[0].getBoundingClientRect().height;
+		header.style.top = `${adminBarHeight - topBarHeight}px`;
 	}
 
 	/**
@@ -175,6 +240,11 @@ import './sticky-header.scss';
 				header.classList.add('dsgo-sticky-bg-on-scroll');
 			}
 
+			// Skip top bar (on by default, respects settings.skipTopBar)
+			if (settings.skipTopBar !== false) {
+				header.classList.add('dsgo-sticky-skip-top-bar');
+			}
+
 			// Mobile disabled
 			if (!settings.mobileEnabled) {
 				header.classList.add('dsgo-sticky-mobile-disabled');
@@ -248,6 +318,9 @@ import './sticky-header.scss';
 		// Apply configuration classes
 		applyConfigurationClasses(header);
 
+		// Apply top bar offset (negative top so top bar scrolls away first)
+		applyTopBarOffset(header);
+
 		// Handle initial state
 		handleScroll(header);
 
@@ -262,6 +335,7 @@ import './sticky-header.scss';
 			clearTimeout(resizeTimeout);
 			resizeTimeout = setTimeout(() => {
 				handleScroll(header);
+				applyTopBarOffset(header);
 			}, 150);
 		});
 	}
@@ -278,6 +352,14 @@ import './sticky-header.scss';
 		} else {
 			stickyHeaders.forEach(initStickyHeader);
 		}
+
+		// Re-run top bar offset after all resources load (images/fonts can
+		// change the top bar height measured at DOMContentLoaded)
+		window.addEventListener(
+			'load',
+			() => stickyHeaders.forEach(applyTopBarOffset),
+			{ once: true }
+		);
 	}
 
 	// Initialize
