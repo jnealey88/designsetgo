@@ -85,6 +85,41 @@ import './sticky-header.scss';
 	}
 
 	/**
+	 * Apply top bar offset for sticky headers that have a top bar
+	 * Measures the first child element and sets a negative top value so the
+	 * top bar scrolls away before the nav row snaps to the top.
+	 * Only applies when the header has 2+ direct children.
+	 *
+	 * @param {HTMLElement} header Header element
+	 */
+	function applyTopBarOffset(header) {
+		if (!header.classList.contains('dsgo-sticky-skip-top-bar')) {
+			return;
+		}
+
+		// Template parts often have a single outer wrapper group; look through it
+		let container = header;
+		if (
+			header.children.length === 1 &&
+			header.children[0].children.length >= 2
+		) {
+			container = header.children[0];
+		}
+
+		if (container.children.length < 2) {
+			return;
+		}
+
+		const adminBar = document.getElementById('wpadminbar');
+		const adminBarHeight = adminBar
+			? adminBar.getBoundingClientRect().height
+			: 0;
+		const topBarHeight =
+			container.children[0].getBoundingClientRect().height;
+		header.style.top = `${adminBarHeight - topBarHeight}px`;
+	}
+
+	/**
 	 * Apply CSS custom properties
 	 *
 	 * @param {HTMLElement} header Header element
@@ -175,6 +210,9 @@ import './sticky-header.scss';
 				header.classList.add('dsgo-sticky-bg-on-scroll');
 			}
 
+			// Skip top bar (on by default for globally-matched headers)
+			header.classList.add('dsgo-sticky-skip-top-bar');
+
 			// Mobile disabled
 			if (!settings.mobileEnabled) {
 				header.classList.add('dsgo-sticky-mobile-disabled');
@@ -248,6 +286,9 @@ import './sticky-header.scss';
 		// Apply configuration classes
 		applyConfigurationClasses(header);
 
+		// Apply top bar offset (negative top so top bar scrolls away first)
+		applyTopBarOffset(header);
+
 		// Handle initial state
 		handleScroll(header);
 
@@ -262,6 +303,7 @@ import './sticky-header.scss';
 			clearTimeout(resizeTimeout);
 			resizeTimeout = setTimeout(() => {
 				handleScroll(header);
+				applyTopBarOffset(header);
 			}, 150);
 		});
 	}
