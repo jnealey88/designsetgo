@@ -20,12 +20,6 @@
 	contain: layout;
 	max-width: 100%; // Prevent overflow in containers and on small screens
 	background: none;
-	cursor: grab;
-
-	&.is-dragging {
-		cursor: grabbing;
-		user-select: none;
-	}
 
 	// Only show a background when the user chooses one via block supports
 	&:not(.has-background) {

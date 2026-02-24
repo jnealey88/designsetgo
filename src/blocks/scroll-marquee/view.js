@@ -161,6 +161,13 @@ function initSingleMarquee(marquee) {
 			}
 		});
 
+		// Normalize manualOffset to prevent unbounded float growth.
+		// Use the first row's loop range since all rows use the same speed.
+		if (rowData.length > 0 && rowData[0].segmentWidth > 0) {
+			const loopRange = rowData[0].segmentWidth + rowData[0].gap;
+			manualOffset = ((manualOffset % loopRange) + loopRange) % loopRange;
+		}
+
 		ticking = false;
 	}
 
@@ -172,17 +179,23 @@ function initSingleMarquee(marquee) {
 	}
 
 	// --- Click-and-drag scrolling ---
+	// Set cursor and touch-action here so they only apply on the frontend
+	// (style.scss loads in both the editor and frontend).
+	marquee.style.cursor = 'grab';
+	marquee.style.touchAction = 'pan-y';
+
 	let isDragging = false;
 	let dragStartX = 0;
 
 	const onPointerDown = (e) => {
 		// Only respond to primary button (left click / touch)
-		if (e.button && e.button !== 0) {
+		if (e.button !== 0) {
 			return;
 		}
 		isDragging = true;
 		dragStartX = e.clientX;
-		marquee.classList.add('is-dragging');
+		marquee.style.cursor = 'grabbing';
+		marquee.style.userSelect = 'none';
 		marquee.setPointerCapture(e.pointerId);
 		e.preventDefault();
 	};
@@ -202,8 +215,11 @@ function initSingleMarquee(marquee) {
 			return;
 		}
 		isDragging = false;
-		marquee.classList.remove('is-dragging');
-		marquee.releasePointerCapture(e.pointerId);
+		marquee.style.cursor = 'grab';
+		marquee.style.userSelect = '';
+		if (marquee.hasPointerCapture(e.pointerId)) {
+			marquee.releasePointerCapture(e.pointerId);
+		}
 	};
 
 	marquee.addEventListener('pointerdown', onPointerDown);
@@ -218,9 +234,33 @@ function initSingleMarquee(marquee) {
 	marquee.addEventListener(
 		'wheel',
 		(e) => {
-			// Use whichever axis has the larger delta
-			const delta =
-				Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+			// Allow browser zoom (ctrl/cmd + wheel)
+			if (e.ctrlKey || e.metaKey) {
+				return;
+			}
+
+			// Determine raw delta: prefer horizontal axis when it dominates,
+			// and treat shift+wheel as horizontal intent
+			let delta;
+			if (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+				delta = e.shiftKey ? e.deltaY : e.deltaX;
+			} else {
+				// Vertical wheel — only capture when horizontal delta is negligible
+				// so the page can still scroll vertically
+				if (Math.abs(e.deltaX) < 1) {
+					return;
+				}
+				delta = e.deltaX;
+			}
+
+			// Normalize deltaMode: DOM_DELTA_LINE (1) and DOM_DELTA_PAGE (2)
+			// report abstract units, not pixels
+			if (e.deltaMode === 1) {
+				delta *= 16;
+			} else if (e.deltaMode === 2) {
+				delta *= window.innerHeight;
+			}
+
 			manualOffset -= delta;
 			e.preventDefault();
 			requestTick();
