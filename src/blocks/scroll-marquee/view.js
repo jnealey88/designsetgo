@@ -108,6 +108,9 @@ function initSingleMarquee(marquee) {
 
 	observer.observe(marquee);
 
+	// Manual offset from drag and wheel interactions (positive = shift images right)
+	let manualOffset = 0;
+
 	// Scroll event handler with requestAnimationFrame throttling
 	let ticking = false;
 
@@ -129,13 +132,19 @@ function initSingleMarquee(marquee) {
 			const data = rowData[index];
 
 			if (data && data.segmentWidth > 0) {
-				// Simplified scroll calculation: just use scroll position * speed
-				let scrollPosition = scrollY * scrollSpeed;
+				// Flip manual offset based on direction so all rows move
+				// in the same visual direction when dragging or wheeling
+				const dirOffset =
+					direction === 'left' ? -manualOffset : manualOffset;
+
+				let scrollPosition = scrollY * scrollSpeed + dirOffset;
 
 				// Apply modulo to create seamless infinite loop
 				// With 6 duplicates, we loop every 1 segment (plus its gap)
 				const loopRange = data.segmentWidth + data.gap;
-				scrollPosition = scrollPosition % loopRange;
+				// Use positive modulo to handle negative values
+				scrollPosition =
+					((scrollPosition % loopRange) + loopRange) % loopRange;
 
 				// Apply direction and offset
 				let translateX;
@@ -161,6 +170,63 @@ function initSingleMarquee(marquee) {
 			ticking = true;
 		}
 	}
+
+	// --- Click-and-drag scrolling ---
+	let isDragging = false;
+	let dragStartX = 0;
+
+	const onPointerDown = (e) => {
+		// Only respond to primary button (left click / touch)
+		if (e.button && e.button !== 0) {
+			return;
+		}
+		isDragging = true;
+		dragStartX = e.clientX;
+		marquee.classList.add('is-dragging');
+		marquee.setPointerCapture(e.pointerId);
+		e.preventDefault();
+	};
+
+	const onPointerMove = (e) => {
+		if (!isDragging) {
+			return;
+		}
+		const deltaX = e.clientX - dragStartX;
+		dragStartX = e.clientX;
+		manualOffset += deltaX;
+		requestTick();
+	};
+
+	const onPointerUp = (e) => {
+		if (!isDragging) {
+			return;
+		}
+		isDragging = false;
+		marquee.classList.remove('is-dragging');
+		marquee.releasePointerCapture(e.pointerId);
+	};
+
+	marquee.addEventListener('pointerdown', onPointerDown);
+	marquee.addEventListener('pointermove', onPointerMove);
+	marquee.addEventListener('pointerup', onPointerUp);
+	marquee.addEventListener('pointercancel', onPointerUp);
+
+	// Prevent native image drag behavior inside the gallery
+	marquee.addEventListener('dragstart', (e) => e.preventDefault());
+
+	// --- Mouse wheel scrolling ---
+	marquee.addEventListener(
+		'wheel',
+		(e) => {
+			// Use whichever axis has the larger delta
+			const delta =
+				Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+			manualOffset -= delta;
+			e.preventDefault();
+			requestTick();
+		},
+		{ passive: false }
+	);
 
 	// Use requestAnimationFrame to ensure layout is complete before measuring
 	requestAnimationFrame(() => {
