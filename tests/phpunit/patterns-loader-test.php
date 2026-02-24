@@ -123,6 +123,7 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 			'gallery',
 			'contact',
 			'services',
+			'headings',
 		);
 
 		$this->assertSame( $expected, Loader::ALLOWED_CATEGORIES );
