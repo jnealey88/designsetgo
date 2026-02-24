@@ -64,10 +64,34 @@ import './sticky-header.scss';
 		'dsgo-page-overlay-header'
 	);
 
+	// When skip-top-bar is active, only pull content up by the nav row height.
+	const isOverlaySkipTopBar = document.body.classList.contains(
+		'dsgo-page-overlay-skip-top-bar'
+	);
+
 	// Measure header height so CSS can pull content up by the right amount.
 	if (isOverlayPage && stickyHeaders.length > 0) {
 		const setHeaderHeight = () => {
-			const h = stickyHeaders[0].getBoundingClientRect().height;
+			const header = stickyHeaders[0];
+			let h = header.getBoundingClientRect().height;
+
+			if (isOverlaySkipTopBar) {
+				// Find the top bar (first child of container) and subtract its height
+				// so only the nav row height is used for the content pull-up.
+				let container = header;
+				if (
+					header.children.length === 1 &&
+					header.children[0].children.length >= 2
+				) {
+					container = header.children[0];
+				}
+				if (container.children.length >= 2) {
+					const topBarHeight =
+						container.children[0].getBoundingClientRect().height;
+					h = Math.max(0, h - topBarHeight);
+				}
+			}
+
 			document.documentElement.style.setProperty(
 				'--dsgo-overlay-header-height',
 				`${h}px`
@@ -75,6 +99,7 @@ import './sticky-header.scss';
 		};
 		setHeaderHeight();
 		window.addEventListener('resize', setHeaderHeight);
+		window.addEventListener('load', setHeaderHeight, { once: true });
 	}
 
 	/**

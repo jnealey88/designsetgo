@@ -26,9 +26,14 @@ const OverlayHeaderPanel = () => {
 	const [meta, setMeta] = useEntityProp('postType', postType, 'meta');
 
 	const overlayEnabled = meta?.dsgo_overlay_header || false;
+	const skipTopBarEnabled = meta?.dsgo_overlay_skip_top_bar || false;
 
 	const updateOverlay = (value) => {
 		setMeta({ ...meta, dsgo_overlay_header: value });
+	};
+
+	const updateSkipTopBar = (value) => {
+		setMeta({ ...meta, dsgo_overlay_skip_top_bar: value });
 	};
 
 	// Only show for content post types.
@@ -53,12 +58,24 @@ const OverlayHeaderPanel = () => {
 				onChange={updateOverlay}
 			/>
 			{overlayEnabled && (
-				<Notice status="info" isDismissible={false}>
-					{__(
-						'Preview this page on the frontend to see the overlay effect.',
-						'designsetgo'
-					)}
-				</Notice>
+				<>
+					<ToggleControl
+						__nextHasNoMarginBottom
+						label={__('Skip Top Bar', 'designsetgo')}
+						help={__(
+							'Only overlay the main header row. If your header has a top bar, the hero content will begin below it.',
+							'designsetgo'
+						)}
+						checked={skipTopBarEnabled}
+						onChange={updateSkipTopBar}
+					/>
+					<Notice status="info" isDismissible={false}>
+						{__(
+							'Preview this page on the frontend to see the overlay effect.',
+							'designsetgo'
+						)}
+					</Notice>
+				</>
 			)}
 		</PluginDocumentSettingPanel>
 	);

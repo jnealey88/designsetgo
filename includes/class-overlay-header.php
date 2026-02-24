@@ -25,6 +25,11 @@ class Overlay_Header {
 	const META_KEY = 'dsgo_overlay_header';
 
 	/**
+	 * Post meta key for skip top bar toggle.
+	 */
+	const SKIP_TOP_BAR_META_KEY = 'dsgo_overlay_skip_top_bar';
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -58,6 +63,22 @@ class Overlay_Header {
 					},
 				)
 			);
+
+			register_post_meta(
+				$post_type,
+				self::SKIP_TOP_BAR_META_KEY,
+				array(
+					'type'              => 'boolean',
+					'description'       => __( 'Skip top bar when using overlay header', 'designsetgo' ),
+					'single'            => true,
+					'default'           => false,
+					'show_in_rest'      => true,
+					'sanitize_callback' => 'rest_sanitize_boolean',
+					'auth_callback'     => function ( $allowed, $meta_key, $post_id ) {
+						return current_user_can( 'edit_post', (int) $post_id );
+					},
+				)
+			);
 		}
 	}
 
@@ -79,6 +100,10 @@ class Overlay_Header {
 
 		if ( get_post_meta( $post_id, self::META_KEY, true ) ) {
 			$classes[] = 'dsgo-page-overlay-header';
+
+			if ( get_post_meta( $post_id, self::SKIP_TOP_BAR_META_KEY, true ) ) {
+				$classes[] = 'dsgo-page-overlay-skip-top-bar';
+			}
 		}
 
 		return $classes;
