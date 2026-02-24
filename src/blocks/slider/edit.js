@@ -424,7 +424,10 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 						help={
 							useAspectRatio
 								? __('Slider uses aspect ratio', 'designsetgo')
-								: __('Slider uses fixed height', 'designsetgo')
+								: __(
+										'Slider uses minimum height — content can grow taller',
+										'designsetgo'
+									)
 						}
 						__nextHasNoMarginBottom
 					/>
@@ -448,7 +451,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 						/>
 					) : (
 						<UnitControl
-							label={__('Height', 'designsetgo')}
+							label={__('Min Height', 'designsetgo')}
 							value={height}
 							onChange={(value) =>
 								setAttributes({ height: value || '' })
@@ -466,7 +469,10 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 											'No height set — slider fits its content',
 											'designsetgo'
 										)
-									: ''
+									: __(
+											'Slider will be at least this tall',
+											'designsetgo'
+										)
 							}
 							__next40pxDefaultSize
 							__nextHasNoMarginBottom

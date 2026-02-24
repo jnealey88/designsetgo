@@ -74,8 +74,9 @@
 	}
 
 	// Editor-only navigation (functional scroll controls)
+	// Note: pointer-events must stay none on the container (it's a full-coverage overlay).
+	// The individual button children receive events via their own pointer-events: auto.
 	&__arrows--editor-only {
-		pointer-events: auto;
 
 		.dsgo-slider__arrow {
 			cursor: pointer;
@@ -83,7 +84,6 @@
 	}
 
 	&__dots--editor-only {
-		pointer-events: auto;
 
 		.dsgo-slider__dot {
 			cursor: pointer;

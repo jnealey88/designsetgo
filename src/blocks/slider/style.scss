@@ -36,23 +36,28 @@
 	--dsgo-slider-slides-per-view-mobile: 1;
 
 	&__viewport {
+		display: flex;
+		flex-direction: column;
 		position: relative;
 		width: 100%; // Inner viewport fills the slider width
 		min-width: 0; // Allow shrinking in flex/grid contexts
-		height: var(--dsgo-slider-height, auto);
+		min-height: var(--dsgo-slider-height, 0);
 		overflow: hidden;
 	}
 
 	// Use aspect ratio if enabled
 	&[data-use-aspect-ratio="true"] &__viewport {
-		height: auto;
+		min-height: 0; // Reset - let aspect-ratio determine height
 		aspect-ratio: var(--dsgo-slider-aspect-ratio);
 	}
 
 	&__track {
 		display: flex;
 		width: 100%; // Constrain track to viewport width so percentage flex-basis resolves correctly
-		height: 100%;
+		// flex-grow: 1 — expand to fill viewport height when an explicit height is set
+		// flex-shrink: 0 — never compress below content size (prevents clipping)
+		// flex-basis: 0% — start at zero before growing (avoids auto-sizing quirks)
+		flex: 1 0 0%;
 		gap: var(--dsgo-slider-gap);
 		transition: transform var(--dsgo-slider-transition) ease-in-out;
 		will-change: transform;
@@ -295,6 +300,7 @@
 		top: 0;
 		left: 0;
 		width: 100%;
+		height: 100%; // Fill the track when absolutely positioned
 		opacity: 0;
 		transition: opacity var(--dsgo-slider-transition) ease-in-out;
 		pointer-events: none;
@@ -314,6 +320,7 @@
 		top: 0;
 		left: 0;
 		width: 100%;
+		height: 100%; // Fill the track when absolutely positioned
 		opacity: 0;
 		transform: scale(0.8);
 		transition: opacity var(--dsgo-slider-transition) ease-in-out,
@@ -372,7 +379,7 @@
 	border-radius: 0;
 
 	.dsgo-slider__viewport {
-		height: 100vh;
+		min-height: 100vh;
 	}
 
 	.dsgo-slider__arrows {
