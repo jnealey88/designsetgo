@@ -405,4 +405,49 @@ class Test_Overlay_Header extends WP_UnitTestCase {
 			'enqueue_overlay_styles should be hooked to wp_enqueue_scripts'
 		);
 	}
+
+	/**
+	 * Test that enqueue_overlay_styles attaches inline CSS to the sticky-header handle when it is enqueued.
+	 */
+	public function test_enqueue_overlay_styles_uses_sticky_header_handle_when_enqueued() {
+		$post_id = $this->factory->post->create();
+		update_post_meta( $post_id, Overlay_Header::META_KEY, true );
+		update_post_meta( $post_id, Overlay_Header::TEXT_COLOR_META_KEY, 'base' );
+		$this->go_to( get_permalink( $post_id ) );
+
+		// Register and enqueue the sticky-header handle to simulate sticky header being active.
+		wp_register_style( 'designsetgo-sticky-header', false );
+		wp_enqueue_style( 'designsetgo-sticky-header' );
+
+		$this->overlay_header->enqueue_overlay_styles();
+
+		$inline = wp_styles()->get_data( 'designsetgo-sticky-header', 'after' );
+		$this->assertNotEmpty( $inline, 'Inline CSS should be attached to designsetgo-sticky-header' );
+		$this->assertStringContainsString( '--dsgo-overlay-header-text-color', implode( '', (array) $inline ) );
+	}
+
+	/**
+	 * Test that enqueue_overlay_styles registers a fallback handle when sticky-header is not enqueued.
+	 */
+	public function test_enqueue_overlay_styles_uses_fallback_handle_when_sticky_not_enqueued() {
+		$post_id = $this->factory->post->create();
+		update_post_meta( $post_id, Overlay_Header::META_KEY, true );
+		update_post_meta( $post_id, Overlay_Header::TEXT_COLOR_META_KEY, 'contrast' );
+		$this->go_to( get_permalink( $post_id ) );
+
+		// Ensure sticky-header handle is absent.
+		wp_dequeue_style( 'designsetgo-sticky-header' );
+		wp_deregister_style( 'designsetgo-sticky-header' );
+
+		$this->overlay_header->enqueue_overlay_styles();
+
+		$this->assertTrue(
+			wp_style_is( 'designsetgo-overlay-header-color', 'enqueued' ),
+			'Fallback handle designsetgo-overlay-header-color should be enqueued'
+		);
+
+		$inline = wp_styles()->get_data( 'designsetgo-overlay-header-color', 'after' );
+		$this->assertNotEmpty( $inline, 'Inline CSS should be attached to fallback handle' );
+		$this->assertStringContainsString( '--dsgo-overlay-header-text-color', implode( '', (array) $inline ) );
+	}
 }

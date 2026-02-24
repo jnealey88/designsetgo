@@ -148,8 +148,14 @@ class Overlay_Header {
 			return;
 		}
 
-		if ( wp_style_is( 'designsetgo-sticky-header', 'registered' ) || wp_style_is( 'designsetgo-sticky-header', 'enqueued' ) ) {
+		// Attach to the sticky-header stylesheet when available; otherwise register
+		// a minimal inline-only handle so the custom property is always output.
+		if ( wp_style_is( 'designsetgo-sticky-header', 'enqueued' ) ) {
 			wp_add_inline_style( 'designsetgo-sticky-header', $css );
+		} else {
+			wp_register_style( 'designsetgo-overlay-header-color', false );
+			wp_enqueue_style( 'designsetgo-overlay-header-color' );
+			wp_add_inline_style( 'designsetgo-overlay-header-color', $css );
 		}
 	}
 }
