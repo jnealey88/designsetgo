@@ -1,0 +1,141 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/product-showcase-hero",
+	"version": "1.0.0",
+	"title": "Product Showcase Hero",
+	"category": "design",
+	"description": "Full-width hero section showcasing a WooCommerce product with large image, price, rating, and add-to-cart action. Requires WooCommerce.",
+	"keywords": [
+		"product",
+		"showcase",
+		"hero",
+		"woocommerce",
+		"shop",
+		"store",
+		"ecommerce",
+		"dsg"
+	],
+	"textdomain": "designsetgo",
+	"usesContext": ["postId", "postType"],
+	"supports": {
+		"anchor": true,
+		"align": ["full"],
+		"html": false,
+		"inserter": true,
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": false,
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"blockGap": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"radius": true
+			}
+		},
+		"shadow": true
+	},
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"productSource": {
+			"type": "string",
+			"default": "manual",
+			"enum": ["manual", "current"]
+		},
+		"productId": {
+			"type": "number",
+			"default": 0
+		},
+		"layout": {
+			"type": "string",
+			"default": "media-left",
+			"enum": ["media-left", "media-right"]
+		},
+		"imageSize": {
+			"type": "string",
+			"default": "large",
+			"enum": ["medium", "large", "full"]
+		},
+		"showPrice": {
+			"type": "boolean",
+			"default": true
+		},
+		"showRating": {
+			"type": "boolean",
+			"default": true
+		},
+		"showStockStatus": {
+			"type": "boolean",
+			"default": true
+		},
+		"showSaleBadge": {
+			"type": "boolean",
+			"default": true
+		},
+		"showShortDescription": {
+			"type": "boolean",
+			"default": false
+		},
+		"showAddToCart": {
+			"type": "boolean",
+			"default": true
+		},
+		"showVariations": {
+			"type": "boolean",
+			"default": true
+		},
+		"minHeight": {
+			"type": "string",
+			"default": "500px"
+		},
+		"mediaFocalPoint": {
+			"type": "object",
+			"default": {
+				"x": 0.5,
+				"y": 0.5
+			}
+		},
+		"contentVerticalAlignment": {
+			"type": "string",
+			"default": "center",
+			"enum": ["top", "center", "bottom"]
+		}
+	},
+	"example": {
+		"attributes": {
+			"layout": "media-left",
+			"minHeight": "500px"
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

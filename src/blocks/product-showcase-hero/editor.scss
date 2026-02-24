@@ -1,0 +1,79 @@
+/**
+ * Product Showcase Hero Block - Editor Styles
+ *
+ * Editor-specific overrides. The frontend style.scss is also
+ * loaded in the editor; this file only contains editor additions.
+ *
+ * @package DesignSetGo
+ * @since 2.1.0
+ */
+
+// The wrapper class ensures the block preview renders properly in the editor.
+.dsgo-product-showcase-hero-wrapper {
+	// Placeholder styling.
+	.components-placeholder {
+		min-height: 300px;
+	}
+}
+
+// Setup / source-selection screen.
+.dsgo-product-showcase-hero__setup {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 380px;
+	margin: 0 auto;
+	gap: 0;
+
+	.dsgo-product-showcase-hero__setup-label {
+		text-align: center;
+		color: #757575;
+		margin: 0 0 16px;
+		font-size: 13px;
+	}
+
+	.dsgo-product-showcase-hero__setup-picker {
+		width: 100%;
+	}
+
+	.dsgo-product-showcase-hero__setup-divider {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		margin: 16px 0;
+		gap: 12px;
+
+		&::before,
+		&::after {
+			content: "";
+			flex: 1;
+			height: 1px;
+			background: #ddd;
+		}
+
+		span {
+			font-size: 12px;
+			color: #757575;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+	}
+}
+
+// Sample product notice in current-product mode.
+.dsgo-product-showcase-hero__sample-notice {
+	margin-bottom: 16px;
+}
+
+.dsgo-product-showcase-hero {
+	// Disable pointer events on the add-to-cart preview.
+	&__actions {
+		pointer-events: none;
+	}
+
+	// Sale badge contrast in editor.
+	&__sale-badge {
+		pointer-events: none;
+	}
+}
