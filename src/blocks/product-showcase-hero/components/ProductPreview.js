@@ -170,12 +170,10 @@ export default function ProductPreview({ productData, attributes }) {
 					{showShortDescription && productData.short_description && (
 						<p className="dsgo-product-showcase-hero__description">
 							{decodeEntities(
-								new DOMParser()
-									.parseFromString(
-										productData.short_description,
-										'text/html'
-									)
-									.body.textContent || ''
+								new window.DOMParser().parseFromString(
+									productData.short_description,
+									'text/html'
+								).body.textContent || ''
 							)}
 						</p>
 					)}

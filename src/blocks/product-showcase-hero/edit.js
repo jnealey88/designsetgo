@@ -125,6 +125,87 @@ export default function ProductShowcaseHeroEdit({
 
 	const isSetup = !isCurrentMode && !productId;
 
+	function ProductPanelContent() {
+		if (isSetup) {
+			return (
+				<>
+					<p>
+						{__(
+							'Search for a product to feature, or use the current product for single product templates.',
+							'designsetgo'
+						)}
+					</p>
+					<ProductPicker
+						onSelect={(id) =>
+							setAttributes({
+								productId: id,
+								productSource: 'manual',
+							})
+						}
+					/>
+					<Button
+						variant="tertiary"
+						onClick={() =>
+							setAttributes({ productSource: 'current' })
+						}
+						__next40pxDefaultSize
+						style={{ marginTop: '8px' }}
+					>
+						{__('Use Current Product Instead', 'designsetgo')}
+					</Button>
+				</>
+			);
+		}
+		if (isCurrentMode) {
+			return (
+				<>
+					<p>
+						{__(
+							'Displaying the current product from page context.',
+							'designsetgo'
+						)}
+					</p>
+					<Button
+						variant="secondary"
+						onClick={() =>
+							setAttributes({
+								productSource: 'manual',
+								productId: 0,
+							})
+						}
+						__next40pxDefaultSize
+					>
+						{__('Switch to Manual Selection', 'designsetgo')}
+					</Button>
+				</>
+			);
+		}
+		return (
+			<>
+				{productData && (
+					<p>
+						<strong>{decodeEntities(productData.name)}</strong>
+					</p>
+				)}
+				<Button
+					variant="secondary"
+					onClick={() => setAttributes({ productId: 0 })}
+					__next40pxDefaultSize
+					style={{ marginBottom: '8px' }}
+				>
+					{__('Replace Product', 'designsetgo')}
+				</Button>
+				<Button
+					variant="tertiary"
+					onClick={() => setAttributes({ productSource: 'current' })}
+					__next40pxDefaultSize
+				>
+					{__('Use Current Product Instead', 'designsetgo')}
+				</Button>
+			</>
+		);
+	}
+
 	return (
 		<>
 			<BlockControls>
@@ -158,95 +239,7 @@ export default function ProductShowcaseHeroEdit({
 					title={__('Product', 'designsetgo')}
 					initialOpen={true}
 				>
-					{isSetup ? (
-						<>
-							<p>
-								{__(
-									'Search for a product to feature, or use the current product for single product templates.',
-									'designsetgo'
-								)}
-							</p>
-							<ProductPicker
-								onSelect={(id) =>
-									setAttributes({
-										productId: id,
-										productSource: 'manual',
-									})
-								}
-							/>
-							<Button
-								variant="tertiary"
-								onClick={() =>
-									setAttributes({
-										productSource: 'current',
-									})
-								}
-								__next40pxDefaultSize
-								style={{ marginTop: '8px' }}
-							>
-								{__(
-									'Use Current Product Instead',
-									'designsetgo'
-								)}
-							</Button>
-						</>
-					) : isCurrentMode ? (
-						<>
-							<p>
-								{__(
-									'Displaying the current product from page context.',
-									'designsetgo'
-								)}
-							</p>
-							<Button
-								variant="secondary"
-								onClick={() =>
-									setAttributes({
-										productSource: 'manual',
-										productId: 0,
-									})
-								}
-								__next40pxDefaultSize
-							>
-								{__(
-									'Switch to Manual Selection',
-									'designsetgo'
-								)}
-							</Button>
-						</>
-					) : (
-						<>
-							{productData && (
-								<p>
-									<strong>
-										{decodeEntities(productData.name)}
-									</strong>
-								</p>
-							)}
-							<Button
-								variant="secondary"
-								onClick={() => setAttributes({ productId: 0 })}
-								__next40pxDefaultSize
-								style={{ marginBottom: '8px' }}
-							>
-								{__('Replace Product', 'designsetgo')}
-							</Button>
-							<Button
-								variant="tertiary"
-								onClick={() =>
-									setAttributes({
-										productSource: 'current',
-									})
-								}
-								__next40pxDefaultSize
-							>
-								{__(
-									'Use Current Product Instead',
-									'designsetgo'
-								)}
-							</Button>
-						</>
-					)}
+					<ProductPanelContent />
 				</PanelBody>
 
 				<DisplayOptionsPanel
