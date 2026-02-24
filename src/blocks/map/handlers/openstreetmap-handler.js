@@ -4,7 +4,8 @@
  * Handles OpenStreetMap (Leaflet.js) initialization.
  */
 
-import { loadLeaflet } from '../utils/script-loader';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 /**
  * Initialize OpenStreetMap with Leaflet for a DSGMap instance.
@@ -13,8 +14,6 @@ import { loadLeaflet } from '../utils/script-loader';
  * @return {Promise} Resolves when map is initialized.
  */
 export async function initOpenStreetMap(dsgMap) {
-	await loadLeaflet();
-
 	// Get or create map container
 	let container = dsgMap.element.querySelector('.dsgo-map__container');
 	if (!container) {
@@ -26,13 +25,13 @@ export async function initOpenStreetMap(dsgMap) {
 	}
 
 	// Initialize Leaflet map
-	dsgMap.mapInstance = window.L.map(container, {
+	dsgMap.mapInstance = L.map(container, {
 		center: [dsgMap.config.lat, dsgMap.config.lng],
 		zoom: dsgMap.config.zoom,
 	});
 
 	// Add tile layer
-	window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		attribution:
 			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 		maxZoom: 19,
@@ -48,7 +47,7 @@ export async function initOpenStreetMap(dsgMap) {
 		filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 	`;
 
-	const customIcon = window.L.divIcon({
+	const customIcon = L.divIcon({
 		html: iconContainer.outerHTML,
 		className: 'dsgo-map__custom-marker',
 		iconSize: [32, 32],
@@ -56,7 +55,7 @@ export async function initOpenStreetMap(dsgMap) {
 	});
 
 	// Add marker (no popup - removed per user request)
-	window.L.marker([dsgMap.config.lat, dsgMap.config.lng], {
+	L.marker([dsgMap.config.lat, dsgMap.config.lng], {
 		icon: customIcon,
 	}).addTo(dsgMap.mapInstance);
 }

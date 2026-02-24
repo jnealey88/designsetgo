@@ -53,6 +53,43 @@ const styleEntries = glob
 
 module.exports = {
 	...defaultConfig,
+	module: {
+		...defaultConfig.module,
+		rules: defaultConfig.module.rules.map((rule) => {
+			// Add url:false to css-loader for Leaflet's CSS so image references
+			// are left as-is (layers.png, marker-icon.png are optional UI chrome)
+			if (
+				rule.test &&
+				/css/.test(rule.test.toString()) &&
+				!/scss|sass|pcss/.test(rule.test.toString())
+			) {
+				return {
+					...rule,
+					use: rule.use.map((loader) => {
+						if (
+							typeof loader === 'object' &&
+							loader.loader &&
+							loader.loader.includes('/css-loader/') &&
+							!loader.loader.includes('postcss')
+						) {
+							return {
+								...loader,
+								options: {
+									...loader.options,
+									url: {
+										filter: (url, resourcePath) =>
+											!resourcePath.includes('leaflet'),
+									},
+								},
+							};
+						}
+						return loader;
+					}),
+				};
+			}
+			return rule;
+		}),
+	},
 	// Enable persistent filesystem caching for faster rebuilds
 	cache: {
 		type: 'filesystem',
@@ -235,6 +272,11 @@ module.exports = {
 			}
 			// Skip shared icon library (conditionally loaded, acceptable at ~50KB)
 			if (assetFilename === 'shared-icon-library-static.js') {
+				return false;
+			}
+			// Skip map view script — Leaflet (~40KB gzipped) is intentionally bundled
+			// to avoid CSP violations from external CDN loads; only loaded on map pages
+			if (assetFilename === 'blocks/map/view.js') {
 				return false;
 			}
 			return true;

@@ -83,23 +83,6 @@ export function loadStylesheet(url, id) {
 }
 
 /**
- * Load Leaflet library (CSS + JS).
- *
- * @return {Promise} Resolves when Leaflet is loaded.
- */
-export async function loadLeaflet() {
-	const version = '1.9.4';
-	const baseUrl = `https://unpkg.com/leaflet@${version}`;
-
-	await loadStylesheet(`${baseUrl}/dist/leaflet.css`, 'leaflet-css');
-	await loadScript(`${baseUrl}/dist/leaflet.js`, 'leaflet-js');
-
-	if (typeof window.L === 'undefined') {
-		throw new Error('Leaflet failed to initialize');
-	}
-}
-
-/**
  * Load Google Maps API using the modern async loading pattern.
  * Uses Google's recommended dynamic library import.
  *
