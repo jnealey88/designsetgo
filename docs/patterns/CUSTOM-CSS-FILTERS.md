@@ -384,4 +384,4 @@ add_filter( 'designsetgo/custom_css_output', function( $css ) {
 
 ## Support
 
-For questions or issues related to these filters, please [open an issue](https://github.com/jnealey88/designsetgo/issues) on GitHub.
+For questions or issues related to these filters, please [open an issue](https://github.com/jnealey-godaddy/designsetgo/issues) on GitHub.

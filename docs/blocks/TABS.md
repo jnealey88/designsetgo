@@ -785,8 +785,8 @@ A: Check that you're setting colors in the right place:
 ---
 
 **Need Help?**
-- [GitHub Issues](https://github.com/jnealey88/designsetgo/issues) - Report bugs
-- [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions) - Ask questions
+- [GitHub Issues](https://github.com/jnealey-godaddy/designsetgo/issues) - Report bugs
+- [GitHub Discussions](https://github.com/jnealey-godaddy/designsetgo/discussions) - Ask questions
 
 ---
 

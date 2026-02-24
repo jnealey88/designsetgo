@@ -870,8 +870,8 @@ Start with container blocks (Flex, Grid, Stack)"
 **Questions about AI-assisted development?**
 
 - **Read**: [.claude/CLAUDE.md](.claude/CLAUDE.md) - All development patterns
-- **Ask**: [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions)
-- **Report**: AI-generated bugs to [Issues](https://github.com/jnealey88/designsetgo/issues)
+- **Ask**: [GitHub Discussions](https://github.com/jnealey-godaddy/designsetgo/discussions)
+- **Report**: AI-generated bugs to [Issues](https://github.com/jnealey-godaddy/designsetgo/issues)
 
 **Remember:** This entire plugin is proof that AI-assisted development works when done thoughtfully. You can do it too! 🚀
 

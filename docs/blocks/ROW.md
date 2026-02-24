@@ -239,4 +239,4 @@ Section (full-width, background color)
 
 ---
 
-*Version 1.0.0 | WordPress 6.4+ | [Report Issues](https://github.com/jnealey88/designsetgo/issues)*
+*Version 1.0.0 | WordPress 6.4+ | [Report Issues](https://github.com/jnealey-godaddy/designsetgo/issues)*

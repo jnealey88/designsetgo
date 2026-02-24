@@ -316,7 +316,7 @@ git log --oneline -5
 
 If you're still stuck:
 
-1. **Search Issues:** Check [GitHub Issues](https://github.com/jnealey88/designsetgo/issues)
+1. **Search Issues:** Check [GitHub Issues](https://github.com/jnealey-godaddy/designsetgo/issues)
 2. **Check Logs:**
    - Build: Look for errors in `npm run build` output
    - PHP: Check `npx wp-env logs`

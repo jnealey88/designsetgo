@@ -147,7 +147,7 @@ http://localhost:8888
 
 **What is forking?** Creating your own copy of the project on GitHub.
 
-1. Go to https://github.com/jnealey88/designsetgo
+1. Go to https://github.com/jnealey-godaddy/designsetgo
 2. Click the "Fork" button in the top-right
 3. Select your GitHub account as the destination
 4. Wait for the fork to complete
@@ -178,7 +178,7 @@ ls -la  # Should show designsetgo.php, package.json, etc.
 
 ```bash
 # Add the original repo as "upstream"
-git remote add upstream https://github.com/jnealey88/designsetgo.git
+git remote add upstream https://github.com/jnealey-godaddy/designsetgo.git
 
 # Verify remotes
 git remote -v
@@ -186,8 +186,8 @@ git remote -v
 # Should show:
 # origin    https://github.com/YOUR-USERNAME/designsetgo.git (fetch)
 # origin    https://github.com/YOUR-USERNAME/designsetgo.git (push)
-# upstream  https://github.com/jnealey88/designsetgo.git (fetch)
-# upstream  https://github.com/jnealey88/designsetgo.git (push)
+# upstream  https://github.com/jnealey-godaddy/designsetgo.git (fetch)
+# upstream  https://github.com/jnealey-godaddy/designsetgo.git (push)
 ```
 
 ### Step 4: Install Node Dependencies
@@ -596,16 +596,16 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for additional issues.
 
 ### Find Issues to Work On
 
-1. Go to [GitHub Issues](https://github.com/jnealey88/designsetgo/issues)
+1. Go to [GitHub Issues](https://github.com/jnealey-godaddy/designsetgo/issues)
 2. Filter by `good-first-issue` label
 3. Comment on an issue to claim it
 4. Follow the workflow above
 
 ### Join the Community
 
-- **Ask Questions:** [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions)
-- **Report Bugs:** [GitHub Issues](https://github.com/jnealey88/designsetgo/issues/new)
-- **Share Ideas:** [Feature Requests](https://github.com/jnealey88/designsetgo/issues/new?labels=enhancement)
+- **Ask Questions:** [GitHub Discussions](https://github.com/jnealey-godaddy/designsetgo/discussions)
+- **Report Bugs:** [GitHub Issues](https://github.com/jnealey-godaddy/designsetgo/issues/new)
+- **Share Ideas:** [Feature Requests](https://github.com/jnealey-godaddy/designsetgo/issues/new?labels=enhancement)
 
 ## Cheat Sheet
 
@@ -651,9 +651,9 @@ includes/blocks/
 ### Getting Help
 
 1. Check [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
-2. Search [existing issues](https://github.com/jnealey88/designsetgo/issues)
-3. Ask in [Discussions](https://github.com/jnealey88/designsetgo/discussions)
-4. Open a [new issue](https://github.com/jnealey88/designsetgo/issues/new)
+2. Search [existing issues](https://github.com/jnealey-godaddy/designsetgo/issues)
+3. Ask in [Discussions](https://github.com/jnealey-godaddy/designsetgo/discussions)
+4. Open a [new issue](https://github.com/jnealey-godaddy/designsetgo/issues/new)
 
 ---
 

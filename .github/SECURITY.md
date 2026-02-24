@@ -16,7 +16,7 @@ Currently supported versions with security updates:
 
 Instead, please report them via **GitHub Security Advisories**:
 
-1. Go to the [Security tab](https://github.com/jnealey88/designsetgo/security/advisories) on the repository
+1. Go to the [Security tab](https://github.com/jnealey-godaddy/designsetgo/security/advisories) on the repository
 2. Click **"Report a vulnerability"**
 3. Fill out the advisory form with the details below
 

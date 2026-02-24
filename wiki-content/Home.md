@@ -83,14 +83,14 @@ Coming soon - preparing for WordPress.org submission
 
 ### Manual Installation
 
-1. **Download** the [latest release](https://github.com/jnealey88/designsetgo/releases)
+1. **Download** the [latest release](https://github.com/jnealey-godaddy/designsetgo/releases)
 2. **Upload** to `/wp-content/plugins/designsetgo/`
 3. **Activate** via WordPress admin
 
 ### For Development
 
 ```bash
-git clone https://github.com/jnealey88/designsetgo.git
+git clone https://github.com/jnealey-godaddy/designsetgo.git
 cd designsetgo
 npm install
 npx wp-env start
@@ -182,10 +182,10 @@ Help improve DesignSetGo
 
 DesignSetGo is 100% free and open source (GPL v2+). Contributions welcome!
 
-- **Report bugs**: [GitHub Issues](https://github.com/jnealey88/designsetgo/issues)
-- **Request features**: [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions)
+- **Report bugs**: [GitHub Issues](https://github.com/jnealey-godaddy/designsetgo/issues)
+- **Request features**: [GitHub Discussions](https://github.com/jnealey-godaddy/designsetgo/discussions)
 - **Submit code**: [Contributing Guide](Contributing)
-- **Improve docs**: [Edit this wiki](https://github.com/jnealey88/designsetgo/wiki)
+- **Improve docs**: [Edit this wiki](https://github.com/jnealey-godaddy/designsetgo/wiki)
 
 ---
 
@@ -193,13 +193,13 @@ DesignSetGo is 100% free and open source (GPL v2+). Contributions welcome!
 
 ### Getting Help
 - **Documentation**: Browse this wiki for guides and references
-- **GitHub Issues**: [Report bugs](https://github.com/jnealey88/designsetgo/issues)
-- **Discussions**: [Ask questions](https://github.com/jnealey88/designsetgo/discussions)
+- **GitHub Issues**: [Report bugs](https://github.com/jnealey-godaddy/designsetgo/issues)
+- **Discussions**: [Ask questions](https://github.com/jnealey-godaddy/designsetgo/discussions)
 - **Troubleshooting**: [Common issues](Troubleshooting)
 
 ### Useful Links
 - [WordPress.org Plugin](https://wordpress.org/plugins/designsetgo/) (coming soon)
-- [GitHub Repository](https://github.com/jnealey88/designsetgo)
+- [GitHub Repository](https://github.com/jnealey-godaddy/designsetgo)
 - [Changelog](Changelog)
 
 ---

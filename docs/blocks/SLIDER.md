@@ -743,9 +743,9 @@ A: Select the Slider block and in the toolbar, choose "Full Width" alignment. Or
 ---
 
 **Need Help?**
-- [GitHub Issues](https://github.com/jnealey88/designsetgo/issues) - Report bugs
-- [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions) - Ask questions
-- [Documentation](https://github.com/jnealey88/designsetgo/wiki) - Full wiki
+- [GitHub Issues](https://github.com/jnealey-godaddy/designsetgo/issues) - Report bugs
+- [GitHub Discussions](https://github.com/jnealey-godaddy/designsetgo/discussions) - Ask questions
+- [Documentation](https://github.com/jnealey-godaddy/designsetgo/wiki) - Full wiki
 
 ---
 

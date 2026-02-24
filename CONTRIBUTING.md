@@ -22,7 +22,7 @@ Welcome! We're excited that you want to contribute to DesignSetGo. This guide wi
 2. **[Architecture Overview](docs/ARCHITECTURE.md)** - Understanding the codebase
 3. **[Best Practices](.claude/CLAUDE.md)** - Development patterns
 
-**First contribution?** Look for issues labeled `good-first-issue` in the [issue tracker](https://github.com/jnealey88/designsetgo/issues).
+**First contribution?** Look for issues labeled `good-first-issue` in the [issue tracker](https://github.com/jnealey-godaddy/designsetgo/issues).
 
 ## 🔒 Branch Protection & PR Workflow
 
@@ -658,7 +658,7 @@ git push origin feature/your-feature-name
 
 #### 2. Open Pull Request on GitHub
 
-1. Go to https://github.com/jnealey88/designsetgo
+1. Go to https://github.com/jnealey-godaddy/designsetgo
 2. Click "Pull requests" → "New pull request"
 3. Select your fork and branch
 4. Click "Create pull request"
@@ -721,8 +721,8 @@ Closes #123
 
 ### Community
 
-- **GitHub Issues** - [Report bugs or request features](https://github.com/jnealey88/designsetgo/issues)
-- **GitHub Discussions** - [Ask questions](https://github.com/jnealey88/designsetgo/discussions)
+- **GitHub Issues** - [Report bugs or request features](https://github.com/jnealey-godaddy/designsetgo/issues)
+- **GitHub Discussions** - [Ask questions](https://github.com/jnealey-godaddy/designsetgo/discussions)
 
 ### Common Questions
 

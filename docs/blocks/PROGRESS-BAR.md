@@ -187,7 +187,7 @@ Progress Bar: 85% completion
 ---
 
 **Need Help?**
-- [GitHub Issues](https://github.com/jnealey88/designsetgo/issues)
-- [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions)
+- [GitHub Issues](https://github.com/jnealey-godaddy/designsetgo/issues)
+- [GitHub Discussions](https://github.com/jnealey-godaddy/designsetgo/discussions)
 
 *Last Updated: 2025-11-19 | DesignSetGo v1.0.0 | WordPress 6.4+*

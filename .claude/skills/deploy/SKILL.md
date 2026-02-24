@@ -52,7 +52,7 @@ Prepare the plugin for deployment to WordPress.org via automated GitHub Actions 
    - GitHub Actions will automatically deploy to WordPress.org SVN
 
 7. **Verify deployment**
-   - Monitor GitHub Actions workflow at https://github.com/jnealey88/designsetgo/actions
+   - Monitor GitHub Actions workflow at https://github.com/jnealey-godaddy/designsetgo/actions
    - Wait 5-10 minutes for WordPress.org to process
    - Check plugin page: https://wordpress.org/plugins/designsetgo/
    - Verify version number, changelog, and screenshots display correctly

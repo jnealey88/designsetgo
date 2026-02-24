@@ -18,7 +18,7 @@ We take the security of DesignSetGo seriously. If you believe you have found a s
 
 Please report security vulnerabilities through **GitHub Security Advisories**:
 
-1. Go to the [Security tab](https://github.com/jnealey88/designsetgo/security/advisories) on the repository
+1. Go to the [Security tab](https://github.com/jnealey-godaddy/designsetgo/security/advisories) on the repository
 2. Click **"Report a vulnerability"**
 3. Fill out the advisory form with the details below
 
@@ -279,7 +279,7 @@ If you report a vulnerability, we'll credit you here (with your permission).
 
 For security-related questions or concerns:
 
-- **Security Vulnerabilities:** [Report via GitHub Security Advisory](https://github.com/jnealey88/designsetgo/security/advisories)
+- **Security Vulnerabilities:** [Report via GitHub Security Advisory](https://github.com/jnealey-godaddy/designsetgo/security/advisories)
 - **GitHub Issues:** For non-security bugs and general security questions
 - **Documentation:** See README.md
 

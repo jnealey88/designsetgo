@@ -6,7 +6,7 @@ This repository is configured for automatic AI-powered code reviews on all Pull 
 
 ✅ **AI Review Workflow** (`.github/workflows/ai-code-review.yml`)
 - Automatically reviews all external contributor PRs
-- Skips reviews for maintainer (@jnealey88) PRs
+- Skips reviews for maintainer (@jnealey-godaddy) PRs
 - Focuses on WordPress, security, accessibility, and performance
 
 ✅ **CodeRabbit Configuration** (`.coderabbit.yaml`)
@@ -231,7 +231,7 @@ reviews:
 
 1. Check app is installed: https://github.com/settings/installations
 2. Verify repository is selected in CodeRabbit settings
-3. Check workflow runs: https://github.com/jnealey88/designsetgo/actions
+3. Check workflow runs: https://github.com/jnealey-godaddy/designsetgo/actions
 4. Ensure PR is from external contributor (maintainer PRs are skipped)
 
 ### Too many/too few comments?

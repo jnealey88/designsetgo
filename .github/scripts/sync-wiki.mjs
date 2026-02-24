@@ -4,7 +4,7 @@
  * Environment variables:
  *   MAIN_REPO_PATH  - Path to the main repo checkout (default: ".")
  *   WIKI_REPO_PATH  - Path to the wiki repo checkout (default: "../designsetgo.wiki")
- *   GITHUB_REPO     - GitHub owner/repo (default: "jnealey88/designsetgo")
+ *   GITHUB_REPO     - GitHub owner/repo (default: "jnealey-godaddy/designsetgo")
  *
  * Usage:
  *   node .github/scripts/sync-wiki.mjs
@@ -17,7 +17,7 @@ import { join, dirname, basename, normalize, extname, relative } from 'path';
 
 const MAIN_REPO_PATH = process.env.MAIN_REPO_PATH || '.';
 const WIKI_REPO_PATH = process.env.WIKI_REPO_PATH || '../designsetgo.wiki';
-const GITHUB_REPO = process.env.GITHUB_REPO || 'jnealey88/designsetgo';
+const GITHUB_REPO = process.env.GITHUB_REPO || 'jnealey-godaddy/designsetgo';
 const GITHUB_BASE_URL = `https://github.com/${GITHUB_REPO}`;
 const DOCS_DIR = join(MAIN_REPO_PATH, 'docs');
 

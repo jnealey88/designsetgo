@@ -64,7 +64,7 @@ See [CLAUDE.md](.claude/CLAUDE.md) for development learnings and best practices.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/jnealey88/designsetgo.git
+git clone https://github.com/jnealey-godaddy/designsetgo.git
 cd designsetgo
 
 # 2. Install dependencies
@@ -133,7 +133,7 @@ npm run plugin-zip
 
 ### 49 Custom Blocks
 
-📚 **[View Complete Blocks Reference →](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)**
+📚 **[View Complete Blocks Reference →](https://github.com/jnealey-godaddy/designsetgo/wiki/Blocks-Reference)**
 
 #### Layout Containers (3 Blocks)
 - **Row** - Horizontal layouts with flexible alignment and spacing
@@ -328,12 +328,12 @@ Complete documentation for users and developers.
 
 ### 📖 For Users
 
-**[Visit the DesignSetGo Wiki](https://github.com/jnealey88/designsetgo/wiki)** for user-facing documentation:
+**[Visit the DesignSetGo Wiki](https://github.com/jnealey-godaddy/designsetgo/wiki)** for user-facing documentation:
 
-- **[Quick Start Guide](https://github.com/jnealey88/designsetgo/wiki/Quick-Start)** - Get up and running in 5 minutes
-- **[Installation Guide](https://github.com/jnealey88/designsetgo/wiki/Installation)** - All installation methods
-- **[Blocks Reference](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)** - Complete blocks documentation
-- **[Troubleshooting](https://github.com/jnealey88/designsetgo/wiki/Troubleshooting)** - Common issues and solutions
+- **[Quick Start Guide](https://github.com/jnealey-godaddy/designsetgo/wiki/Quick-Start)** - Get up and running in 5 minutes
+- **[Installation Guide](https://github.com/jnealey-godaddy/designsetgo/wiki/Installation)** - All installation methods
+- **[Blocks Reference](https://github.com/jnealey-godaddy/designsetgo/wiki/Blocks-Reference)** - Complete blocks documentation
+- **[Troubleshooting](https://github.com/jnealey-godaddy/designsetgo/wiki/Troubleshooting)** - Common issues and solutions
 
 ### 👨‍💻 For Contributors & Developers
 
@@ -392,7 +392,7 @@ New to the project?
 Reference .claude/CLAUDE.md as you develop
 ```
 
-> **Note**: The `/docs/` folder contains **developer documentation**. User-facing docs are in the [Wiki](https://github.com/jnealey88/designsetgo/wiki).
+> **Note**: The `/docs/` folder contains **developer documentation**. User-facing docs are in the [Wiki](https://github.com/jnealey-godaddy/designsetgo/wiki).
 
 ## Roadmap
 
@@ -516,7 +516,7 @@ npm start         # Terminal 2
 # 4. Make changes, test, and submit PR!
 ```
 
-**First contribution?** Look for issues labeled [`good-first-issue`](https://github.com/jnealey88/designsetgo/issues?q=is%3Aissue+is%3Aopen+label%3A%22good-first-issue%22).
+**First contribution?** Look for issues labeled [`good-first-issue`](https://github.com/jnealey-godaddy/designsetgo/issues?q=is%3Aissue+is%3Aopen+label%3A%22good-first-issue%22).
 
 ### For AI-Assisted Development
 
@@ -555,8 +555,8 @@ See [.claude/CLAUDE.md](.claude/CLAUDE.md) for complete patterns.
 
 **Found a bug or have a feature request?**
 
-1. Check [existing issues](https://github.com/jnealey88/designsetgo/issues) first
-2. If new, [create an issue](https://github.com/jnealey88/designsetgo/issues/new) with:
+1. Check [existing issues](https://github.com/jnealey-godaddy/designsetgo/issues) first
+2. If new, [create an issue](https://github.com/jnealey-godaddy/designsetgo/issues/new) with:
    - WordPress version, PHP version, browser
    - Steps to reproduce (for bugs)
    - Use case and expected behavior (for features)
@@ -567,8 +567,8 @@ See [.claude/CLAUDE.md](.claude/CLAUDE.md) for complete patterns.
 **Questions?** We're here to help!
 
 - **Setup/Development**: See [docs/GETTING-STARTED.md](docs/GETTING-STARTED.md)
-- **Ask Questions**: [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions)
-- **Report Bugs**: [GitHub Issues](https://github.com/jnealey88/designsetgo/issues)
+- **Ask Questions**: [GitHub Discussions](https://github.com/jnealey-godaddy/designsetgo/discussions)
+- **Report Bugs**: [GitHub Issues](https://github.com/jnealey-godaddy/designsetgo/issues)
 
 ## License
 
@@ -613,7 +613,7 @@ Blocks are organized in the WordPress block inserter:
 - Look for the "DesignSetGo" category in the pattern inserter
 - Hero sections, CTAs, Features, FAQ layouts
 
-📚 **[Complete Blocks Reference](https://github.com/jnealey88/designsetgo/wiki/Blocks-Reference)** - Detailed documentation for all 49 blocks
+📚 **[Complete Blocks Reference](https://github.com/jnealey-godaddy/designsetgo/wiki/Blocks-Reference)** - Detailed documentation for all 49 blocks
 
 ## 🤖 AI Integration (WordPress Abilities API)
 
@@ -697,8 +697,8 @@ curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/g
 
 ### Getting Help
 - **Documentation**: See [docs/](./docs/) folder for comprehensive guides
-- **GitHub Issues**: [Report bugs or request features](https://github.com/jnealey88/designsetgo/issues)
-- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/jnealey-godaddy/designsetgo/issues)
+- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/jnealey-godaddy/designsetgo/discussions)
 
 ### Useful Resources
 - [Troubleshooting](docs/troubleshooting/TROUBLESHOOTING.md) - Common issues

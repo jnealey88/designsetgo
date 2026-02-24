@@ -253,4 +253,4 @@ If you encounter issues not resolved by exclusions:
 
 **Last Updated:** January 30, 2026
 **DSG Version:** 1.3.1+
-**For Questions:** [GitHub Issues](https://github.com/jnealey88/designsetgo/issues)
+**For Questions:** [GitHub Issues](https://github.com/jnealey-godaddy/designsetgo/issues)

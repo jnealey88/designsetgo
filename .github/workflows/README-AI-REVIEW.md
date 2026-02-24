@@ -41,7 +41,7 @@ permissions:
 jobs:
   ai-review:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login != 'jnealey88'
+    if: github.event.pull_request.user.login != 'jnealey-godaddy'
 
     steps:
       - uses: actions/checkout@v4
@@ -62,7 +62,7 @@ jobs:
 
 Then add `OPENAI_API_KEY` to repository secrets:
 1. Get API key from https://platform.openai.com/api-keys
-2. Add to https://github.com/jnealey88/designsetgo/settings/secrets/actions
+2. Add to https://github.com/jnealey-godaddy/designsetgo/settings/secrets/actions
 
 **Cost:** ~$5-10/month based on PR volume
 

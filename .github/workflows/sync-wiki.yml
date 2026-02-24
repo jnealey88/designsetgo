@@ -27,7 +27,7 @@ jobs:
       - name: Checkout wiki repo
         uses: actions/checkout@v4
         with:
-          repository: jnealey88/designsetgo.wiki
+          repository: jnealey-godaddy/designsetgo.wiki
           path: wiki-repo
           token: ${{ secrets.WIKI_PAT }}
 
@@ -41,7 +41,7 @@ jobs:
         env:
           MAIN_REPO_PATH: main-repo
           WIKI_REPO_PATH: wiki-repo
-          GITHUB_REPO: jnealey88/designsetgo
+          GITHUB_REPO: jnealey-godaddy/designsetgo
 
       - name: Push wiki changes
         working-directory: wiki-repo

@@ -683,9 +683,9 @@ A: Yes! The effect is JavaScript-based and works with all caching plugins.
 ---
 
 **Need Help?**
-- [GitHub Issues](https://github.com/jnealey88/designsetgo/issues) - Report bugs
-- [GitHub Discussions](https://github.com/jnealey88/designsetgo/discussions) - Ask questions
-- [Documentation](https://github.com/jnealey88/designsetgo/wiki) - Full wiki
+- [GitHub Issues](https://github.com/jnealey-godaddy/designsetgo/issues) - Report bugs
+- [GitHub Discussions](https://github.com/jnealey-godaddy/designsetgo/discussions) - Ask questions
+- [Documentation](https://github.com/jnealey-godaddy/designsetgo/wiki) - Full wiki
 
 ---
 
