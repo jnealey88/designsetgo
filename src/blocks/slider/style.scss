@@ -54,7 +54,10 @@
 	&__track {
 		display: flex;
 		width: 100%; // Constrain track to viewport width so percentage flex-basis resolves correctly
-		flex: 1 0 0%; // Grow to fill viewport height; content determines minimum
+		// flex-grow: 1 — expand to fill viewport height when an explicit height is set
+		// flex-shrink: 0 — never compress below content size (prevents clipping)
+		// flex-basis: 0% — start at zero before growing (avoids auto-sizing quirks)
+		flex: 1 0 0%;
 		gap: var(--dsgo-slider-gap);
 		transition: transform var(--dsgo-slider-transition) ease-in-out;
 		will-change: transform;
