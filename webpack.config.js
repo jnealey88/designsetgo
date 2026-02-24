@@ -274,6 +274,11 @@ module.exports = {
 			if (assetFilename === 'shared-icon-library-static.js') {
 				return false;
 			}
+			// Skip map view script — Leaflet (~40KB gzipped) is intentionally bundled
+			// to avoid CSP violations from external CDN loads; only loaded on map pages
+			if (assetFilename === 'blocks/map/view.js') {
+				return false;
+			}
 			return true;
 		},
 	},
