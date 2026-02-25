@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.31
+Stable tag: 2.0.32
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,10 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.32 - 2026-02-25 =
+**Bug Fixes:**
+* Fix: Register Leaflet CSS as viewStyle so map renders correctly on the frontend
 
 = 2.0.31 - 2026-02-24 =
 **Bug Fixes:**
