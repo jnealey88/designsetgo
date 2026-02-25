@@ -90,6 +90,11 @@ export default class DSGMap {
 				if (result) {
 					this.config.lat = result.lat;
 					this.config.lng = result.lng;
+				} else {
+					this.showError(
+						'Map address could not be located. Please configure coordinates.'
+					);
+					return;
 				}
 			}
 

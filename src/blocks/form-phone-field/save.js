@@ -96,6 +96,10 @@ export default function FormPhoneFieldSave({ attributes }) {
 				data-auto-format={autoFormat}
 			>
 				{showCountryCode && (
+					// Options are intentionally empty here — view.js hydrates this
+					// <select> at runtime from the shared COUNTRY_CODES constant.
+					// The form already requires JS for auto-formatting, so the
+					// no-JS experience is an accepted trade-off.
 					<select
 						name={`${fieldName}_country_code`}
 						className="dsgo-form-field__country-code"
