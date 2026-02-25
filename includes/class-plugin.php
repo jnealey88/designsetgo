@@ -265,7 +265,8 @@ class Plugin {
 	 * wp_kses_post() but with an incomplete attribute set.
 	 *
 	 * For example, textarea is allowed by default but lacks placeholder
-	 * and required — both used by form block save() output.
+	 * and required — both used by form block save() output. The button
+	 * element needs aria-* and data-* for the form submit button.
 	 *
 	 * @since 2.0.29
 	 * @var array<string, array<string, bool>>
@@ -276,6 +277,16 @@ class Plugin {
 			'required'    => true,
 			'maxlength'   => true,
 			'minlength'   => true,
+			'aria-*'      => true,
+			'data-*'      => true,
+		),
+		'button'   => array(
+			'aria-*' => true,
+			'data-*' => true,
+		),
+		'div'      => array(
+			'aria-*' => true,
+			'data-*' => true,
 		),
 	);
 

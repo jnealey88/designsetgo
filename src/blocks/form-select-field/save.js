@@ -13,7 +13,6 @@ export default function FormSelectFieldSave({ attributes }) {
 		label,
 		helpText,
 		required,
-		defaultValue,
 		options,
 		placeholder,
 		fieldWidth,
@@ -60,7 +59,6 @@ export default function FormSelectFieldSave({ attributes }) {
 				name={fieldName}
 				className="dsgo-form-field__select"
 				required={required || undefined}
-				defaultValue={defaultValue || ''}
 				aria-describedby={helpText ? `${fieldId}-help` : undefined}
 				aria-required={required ? 'true' : undefined}
 				data-field-type="select"

@@ -1,10 +1,33 @@
 /**
- * Form Phone Field Block - Frontend Auto-Formatting
+ * Form Phone Field Block - Frontend Script
+ *
+ * Populates country-code <select> options and handles auto-formatting.
  *
  * @since 1.0.0
  */
 
+import COUNTRY_CODES from './country-codes';
+
 document.addEventListener('DOMContentLoaded', function () {
+	// Populate country-code selects rendered with data-dsgo-country-code.
+	const codeSelects = document.querySelectorAll(
+		'select.dsgo-form-field__country-code[data-dsgo-country-code]'
+	);
+
+	codeSelects.forEach((select) => {
+		const defaultCode = select.dataset.dsgoCountryCode || '+1';
+
+		COUNTRY_CODES.forEach(({ value, label }) => {
+			const option = document.createElement('option');
+			option.value = value;
+			option.textContent = label;
+			if (value === defaultCode) {
+				option.selected = true;
+			}
+			select.appendChild(option);
+		});
+	});
+
 	// Find all phone field wrappers with auto-format enabled
 	const phoneWrappers = document.querySelectorAll(
 		'.dsgo-form-field__phone-wrapper[data-auto-format="true"]'

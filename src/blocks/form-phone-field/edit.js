@@ -14,6 +14,7 @@ import {
 } from '@wordpress/components';
 import classnames from 'classnames';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import COUNTRY_CODES from './country-codes';
 
 export default function FormPhoneFieldEdit({
 	attributes,
@@ -245,21 +246,7 @@ export default function FormPhoneFieldEdit({
 						<SelectControl
 							label={__('Default Country Code', 'designsetgo')}
 							value={countryCode}
-							options={[
-								{ label: '+1 (US/Canada)', value: '+1' },
-								{ label: '+44 (UK)', value: '+44' },
-								{ label: '+61 (Australia)', value: '+61' },
-								{ label: '+33 (France)', value: '+33' },
-								{ label: '+49 (Germany)', value: '+49' },
-								{ label: '+81 (Japan)', value: '+81' },
-								{ label: '+86 (China)', value: '+86' },
-								{ label: '+91 (India)', value: '+91' },
-								{ label: '+7 (Russia)', value: '+7' },
-								{ label: '+34 (Spain)', value: '+34' },
-								{ label: '+39 (Italy)', value: '+39' },
-								{ label: '+52 (Mexico)', value: '+52' },
-								{ label: '+55 (Brazil)', value: '+55' },
-							]}
+							options={COUNTRY_CODES}
 							onChange={(value) =>
 								setAttributes({ countryCode: value })
 							}
@@ -353,19 +340,11 @@ export default function FormPhoneFieldEdit({
 							disabled
 							style={{ minWidth: '85px', flexShrink: 0 }}
 						>
-							<option value="+1">+1</option>
-							<option value="+44">+44</option>
-							<option value="+61">+61</option>
-							<option value="+33">+33</option>
-							<option value="+49">+49</option>
-							<option value="+81">+81</option>
-							<option value="+86">+86</option>
-							<option value="+91">+91</option>
-							<option value="+7">+7</option>
-							<option value="+34">+34</option>
-							<option value="+39">+39</option>
-							<option value="+52">+52</option>
-							<option value="+55">+55</option>
+							{COUNTRY_CODES.map((code) => (
+								<option key={code.value} value={code.value}>
+									{code.label}
+								</option>
+							))}
 						</select>
 					)}
 					<input

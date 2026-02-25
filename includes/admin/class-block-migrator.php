@@ -212,7 +212,7 @@ class Block_Migrator {
 					'found'         => __( 'Found %blocks% DesignSetGo blocks in %posts% posts.', 'designsetgo' ),
 					'warning'       => __( 'Some DesignSetGo-specific features (animations, shape dividers, icons) will be removed during conversion. Post revisions are created automatically so you can undo changes.', 'designsetgo' ),
 					'convertBtn'    => __( 'Convert & Deactivate', 'designsetgo' ),
-					'justDeactivate' => __( 'Just Deactivate', 'designsetgo' ),
+					'deactivateBtn' => __( 'Deactivate', 'designsetgo' ),
 					'cancel'        => __( 'Cancel', 'designsetgo' ),
 					'converting'    => __( 'Converting blocks...', 'designsetgo' ),
 					// translators: %converted% is the number converted so far, %total% is the total number.
@@ -416,7 +416,7 @@ class Block_Migrator {
 			var deactLink = document.createElement('a');
 			deactLink.href = deactivateUrl;
 			deactLink.className = 'button';
-			deactLink.textContent = config.strings.justDeactivate;
+			deactLink.textContent = config.strings.deactivateBtn;
 			actions.appendChild(deactLink);
 
 			var cancelBtn = document.createElement('button');
@@ -452,20 +452,20 @@ class Block_Migrator {
 		var actions = document.createElement('div');
 		actions.className = 'dsgo-modal-actions';
 
+		var deactLink = document.createElement('a');
+		deactLink.href = deactivateUrl;
+		deactLink.className = 'button button-primary';
+		deactLink.textContent = config.strings.deactivateBtn;
+		actions.appendChild(deactLink);
+
 		var convertBtn = document.createElement('button');
 		convertBtn.type = 'button';
-		convertBtn.className = 'button button-primary';
+		convertBtn.className = 'button';
 		convertBtn.textContent = config.strings.convertBtn;
 		convertBtn.addEventListener('click', function() {
 			startConversion(overlay, posts);
 		});
 		actions.appendChild(convertBtn);
-
-		var deactLink = document.createElement('a');
-		deactLink.href = deactivateUrl;
-		deactLink.className = 'button';
-		deactLink.textContent = config.strings.justDeactivate;
-		actions.appendChild(deactLink);
 
 		var cancelBtn = document.createElement('button');
 		cancelBtn.type = 'button';
@@ -478,7 +478,7 @@ class Block_Migrator {
 
 		body.appendChild(actions);
 
-		convertBtn.focus();
+		deactLink.focus();
 	}
 
 	function startConversion(overlay, totalPosts) {
@@ -553,7 +553,7 @@ class Block_Migrator {
 				var deactLink = document.createElement('a');
 				deactLink.href = deactivateUrl;
 				deactLink.className = 'button';
-				deactLink.textContent = config.strings.justDeactivate;
+				deactLink.textContent = config.strings.deactivateBtn;
 				actions.appendChild(deactLink);
 
 				var cancelBtn = document.createElement('button');

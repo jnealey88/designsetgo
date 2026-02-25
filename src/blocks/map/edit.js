@@ -33,6 +33,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		dsgoLatitude,
 		dsgoLongitude,
 		dsgoZoom,
+		dsgoAddress,
 		dsgoMarkerColor,
 		dsgoAspectRatio,
 		dsgoHeight,
@@ -150,10 +151,16 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										{__('Map Preview', 'designsetgo')}
 									</strong>
 									<div className="dsgo-map__preview-coords">
-										<code>
-											{dsgoLatitude.toFixed(6)},{' '}
-											{dsgoLongitude.toFixed(6)}
-										</code>
+										{dsgoLatitude === 0 &&
+										dsgoLongitude === 0 &&
+										dsgoAddress ? (
+											<span>{dsgoAddress}</span>
+										) : (
+											<code>
+												{dsgoLatitude.toFixed(6)},{' '}
+												{dsgoLongitude.toFixed(6)}
+											</code>
+										)}
 									</div>
 									<div className="dsgo-map__preview-meta">
 										{dsgoProvider === 'openstreetmap'
