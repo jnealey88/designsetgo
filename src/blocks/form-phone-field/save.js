@@ -1,6 +1,10 @@
 /**
  * Form Phone Field Block - Save Component
  *
+ * Country code options are populated by view.js at runtime to avoid
+ * hardcoding a long option list in post_content (which would require
+ * a deprecation every time the list changes).
+ *
  * @since 1.0.0
  */
 
@@ -95,24 +99,10 @@ export default function FormPhoneFieldSave({ attributes }) {
 					<select
 						name={`${fieldName}_country_code`}
 						className="dsgo-form-field__country-code"
-						defaultValue={countryCode}
+						data-dsgo-country-code={countryCode}
 						style={{ minWidth: '85px', flexShrink: 0 }}
 						aria-label="Country Code"
-					>
-						<option value="+1">+1 (US/Canada)</option>
-						<option value="+44">+44 (UK)</option>
-						<option value="+61">+61 (Australia)</option>
-						<option value="+33">+33 (France)</option>
-						<option value="+49">+49 (Germany)</option>
-						<option value="+81">+81 (Japan)</option>
-						<option value="+86">+86 (China)</option>
-						<option value="+91">+91 (India)</option>
-						<option value="+7">+7 (Russia)</option>
-						<option value="+34">+34 (Spain)</option>
-						<option value="+39">+39 (Italy)</option>
-						<option value="+52">+52 (Mexico)</option>
-						<option value="+55">+55 (Brazil)</option>
-					</select>
+					/>
 				)}
 				<input
 					type="tel"

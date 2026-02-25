@@ -6,3 +6,14 @@
 
 // Import the main frontend styles
 @import './style';
+
+// Editor-specific: WordPress editor styles override select width
+.editor-styles-wrapper {
+
+	.dsgo-form-field--select {
+
+		.dsgo-form-field__select {
+			width: 100%;
+		}
+	}
+}

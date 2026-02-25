@@ -6,6 +6,7 @@
 
 import { initOpenStreetMap } from './openstreetmap-handler';
 import { initGoogleMap } from './googlemaps-handler';
+import { geocodeAddress } from '../utils/geocoding';
 
 /**
  * DSGMap Class - Manages individual map instances.
@@ -75,9 +76,23 @@ export default class DSGMap {
 
 	/**
 	 * Load and initialize the map.
+	 * If lat/lng are both 0 and an address is present, geocode the address first.
+	 * This allows address-only block markup (e.g. LLM-generated) to work without coordinates.
 	 */
 	async loadMap() {
 		try {
+			if (
+				this.config.lat === 0 &&
+				this.config.lng === 0 &&
+				this.config.address
+			) {
+				const result = await geocodeAddress(this.config.address);
+				if (result) {
+					this.config.lat = result.lat;
+					this.config.lng = result.lng;
+				}
+			}
+
 			if (this.config.provider === 'googlemaps') {
 				await initGoogleMap(this);
 			} else {
