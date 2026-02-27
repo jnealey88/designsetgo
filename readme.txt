@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.32
+Stable tag: 2.0.33
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,16 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.33 - 2026-02-25 =
+**Bug Fixes:**
+* Fix: Resolve form block kses validation failures — remove `defaultValue` from select-field and phone-field save output that `wp_kses_post()` strips
+* Fix: Phone field country code options now JS-rendered via `data-dsgo-country-code` attribute + view.js hydration, expanding from 13 to 60+ country codes
+* Fix: Add deprecations for select-field and phone-field blocks to migrate existing content
+* Fix: Expand kses allowlist with `aria-*`/`data-*` wildcards for textarea, button, div
+* Fix: Editor select field width not filling container
+* Fix: Map block address-based geocoding fallback when lat/lng are both 0, with error handling for null geocode results
+* Fix: Make Deactivate the primary action in deactivation modal
 
 = 2.0.32 - 2026-02-25 =
 **Bug Fixes:**
@@ -591,6 +601,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Comprehensive documentation and developer guides
 
 == Upgrade Notice ==
+
+= 2.0.33 =
+Fixes form block kses validation failures for select and phone fields, expands phone field to 60+ country codes via JS hydration, adds map geocoding fallback with error handling, and makes Deactivate the primary action in the deactivation modal.
 
 = 2.0.29 =
 Adds form elements to the global KSES allowlist so form block content (inputs, selects, textareas) is preserved when imported via the REST API or other wp_kses_post() code paths.
