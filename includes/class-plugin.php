@@ -758,7 +758,6 @@ class Plugin {
 	public function gate_woocommerce_blocks( $should_register, $block_name ) {
 		$wc_blocks = array(
 			'designsetgo/product-showcase-hero',
-			'designsetgo/product-categories-grid',
 		);
 
 		if ( in_array( $block_name, $wc_blocks, true ) ) {
