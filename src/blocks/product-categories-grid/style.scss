@@ -1,0 +1,167 @@
+/**
+ * Product Categories Grid Block - Frontend Styles
+ *
+ * Responsive CSS Grid layout for WooCommerce product category cards.
+ * Each card is an <a> tag with a full-bleed image and text overlay.
+ *
+ * @package DesignSetGo
+ * @since 2.1.0
+ */
+
+.dsgo-product-categories-grid {
+	display: grid;
+	gap: var(--wp--style--block-gap, 1.5rem);
+
+	// ==============================================
+	// COLUMN VARIANTS
+	// Applied via modifier class: --cols-2 through --cols-5.
+	// ==============================================
+	&--cols-2 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	&--cols-3 {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	&--cols-4 {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	&--cols-5 {
+		grid-template-columns: repeat(5, 1fr);
+	}
+
+	// ==============================================
+	// CARD
+	// <a> tag — acts as the aspect-ratio container.
+	// Image and overlay are absolutely positioned inside.
+	// ==============================================
+	&__card {
+		display: block;
+		position: relative;
+		overflow: hidden;
+		border-radius: inherit;
+		aspect-ratio: var(--dsgo-pcg-aspect-ratio, 3 / 4);
+		text-decoration: none;
+		color: #fff;
+
+		// Subtle background visible when no image is set.
+		background-color: color-mix(in srgb, currentcolor 12%, transparent);
+
+		// Scale image on hover.
+		&:hover,
+		&:focus-visible {
+
+			.dsgo-product-categories-grid__image {
+				transform: scale(1.05);
+			}
+		}
+
+		// Featured card spans two columns.
+		&--featured {
+			grid-column: span 2;
+		}
+	}
+
+	// ==============================================
+	// IMAGE
+	// Nested inside card for specificity to override
+	// WooCommerce's `.woocommerce img { height: auto }`.
+	// ==============================================
+	&__card &__image {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.3s ease;
+	}
+
+	// ==============================================
+	// PLACEHOLDER ICON
+	// Shown when the category has no image.
+	// ==============================================
+	&__placeholder-icon {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: currentcolor;
+		opacity: 0.35;
+	}
+
+	&__placeholder-svg {
+		width: 3rem;
+		height: 3rem;
+		fill: none;
+		stroke: currentcolor;
+		stroke-width: 1.5;
+	}
+
+	// ==============================================
+	// OVERLAY
+	// Gradient overlay with text positioned at bottom.
+	// ==============================================
+	&__overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding: var(--wp--preset--spacing--30, 1rem);
+		background: linear-gradient(to top, rgb(0 0 0 / 60%) 0%, rgb(0 0 0 / 0%) 60%);
+		z-index: 1;
+	}
+
+	&__name {
+		margin: 0;
+		font-size: inherit;
+		line-height: inherit;
+		color: inherit;
+	}
+
+	&__count {
+		display: block;
+		margin-top: 0.25em;
+		opacity: 0.8;
+		font-size: 0.875em;
+	}
+
+	// ==============================================
+	// TABLET — collapse 3-5 columns to 2
+	// ==============================================
+	@media (max-width: 781px) {
+
+		:where(&--cols-3),
+		:where(&--cols-4),
+		:where(&--cols-5) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		:where(&--cols-3 &__card--featured),
+		:where(&--cols-4 &__card--featured),
+		:where(&--cols-5 &__card--featured) {
+			grid-column: span 2;
+		}
+	}
+
+	// ==============================================
+	// MOBILE — single column, featured resets
+	// ==============================================
+	@media (max-width: 480px) {
+
+		:where(&--cols-2),
+		:where(&--cols-3),
+		:where(&--cols-4),
+		:where(&--cols-5) {
+			grid-template-columns: 1fr;
+		}
+
+		:where(&__card--featured) {
+			grid-column: span 1;
+		}
+	}
+}
