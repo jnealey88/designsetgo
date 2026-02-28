@@ -13,7 +13,6 @@ import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Placeholder SVG icon shown when a category has no image.
- * A simple 2x2 grid icon using currentColor strokes.
  *
  * @return {JSX.Element} SVG element
  */
@@ -86,19 +85,17 @@ export default function GridPreview({ categories, attributes, featuredIds }) {
 							role="img"
 							aria-label={decodeEntities(category.name)}
 						>
-							<div className="dsgo-product-categories-grid__image-wrapper">
-								{category.image?.src ? (
-									<img
-										className="dsgo-product-categories-grid__image"
-										src={category.image.src}
-										alt=""
-									/>
-								) : (
-									<PlaceholderIcon />
-								)}
-							</div>
+							{category.image?.src ? (
+								<img
+									className="dsgo-product-categories-grid__image"
+									src={category.image.src}
+									alt=""
+								/>
+							) : (
+								<PlaceholderIcon />
+							)}
 
-							<div className="dsgo-product-categories-grid__info">
+							<div className="dsgo-product-categories-grid__overlay">
 								<h3 className="dsgo-product-categories-grid__name">
 									{decodeEntities(category.name)}
 								</h3>

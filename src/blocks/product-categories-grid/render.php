@@ -86,13 +86,16 @@ if ( 'manual' === $category_source ) {
 
 } else {
 
-	// All mode: exclude empty (optionally) and the WC default "Uncategorized".
-	$uncategorized_id = absint( get_option( 'default_product_cat', 0 ) );
-
-	// Merge user-specified exclusions with the uncategorized category.
+	// All mode: exclude empty (optionally) and the actual "Uncategorized" category.
 	$exclude_ids = array_map( 'absint', $exclude_categories );
-	if ( $uncategorized_id ) {
-		$exclude_ids[] = $uncategorized_id;
+
+	// Only exclude the default product category if its slug is 'uncategorized'.
+	$default_cat_id = absint( get_option( 'default_product_cat', 0 ) );
+	if ( $default_cat_id ) {
+		$default_cat = get_term( $default_cat_id, 'product_cat' );
+		if ( $default_cat && ! is_wp_error( $default_cat ) && 'uncategorized' === $default_cat->slug ) {
+			$exclude_ids[] = $default_cat_id;
+		}
 	}
 	$exclude_ids = array_unique( array_filter( $exclude_ids ) );
 
@@ -182,17 +185,15 @@ $placeholder_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
 		$count_text = sprintf( _n( '%d product', '%d products', $term_count, 'designsetgo' ), $term_count );
 		?>
 		<a href="<?php echo esc_url( $term_url ); ?>" class="<?php echo esc_attr( $card_class ); ?>">
-			<div class="dsgo-product-categories-grid__image-wrapper">
-				<?php if ( $image_html ) : ?>
-					<?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image() output. ?>
-				<?php else : ?>
-					<div class="dsgo-product-categories-grid__placeholder-icon">
-						<?php echo $placeholder_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG with no user data. ?>
-					</div>
-				<?php endif; ?>
-			</div>
+			<?php if ( $image_html ) : ?>
+				<?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image() output. ?>
+			<?php else : ?>
+				<div class="dsgo-product-categories-grid__placeholder-icon">
+					<?php echo $placeholder_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG with no user data. ?>
+				</div>
+			<?php endif; ?>
 
-			<div class="dsgo-product-categories-grid__info">
+			<div class="dsgo-product-categories-grid__overlay">
 				<h3 class="dsgo-product-categories-grid__name">
 					<?php echo esc_html( $term_name ); ?>
 				</h3>

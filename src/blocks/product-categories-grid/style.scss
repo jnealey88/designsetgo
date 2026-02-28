@@ -2,7 +2,7 @@
  * Product Categories Grid Block - Frontend Styles
  *
  * Responsive CSS Grid layout for WooCommerce product category cards.
- * Each card is an <a> tag with an image/placeholder and an info section.
+ * Each card is an <a> tag with a full-bleed image and text overlay.
  *
  * @package DesignSetGo
  * @since 2.1.0
@@ -34,17 +34,22 @@
 
 	// ==============================================
 	// CARD
-	// <a> tag — reset link styles, enable overflow
-	// clipping so the image scale stays within bounds.
+	// <a> tag — acts as the aspect-ratio container.
+	// Image and overlay are absolutely positioned inside.
 	// ==============================================
 	&__card {
 		display: block;
-		text-decoration: none;
-		color: inherit;
+		position: relative;
 		overflow: hidden;
 		border-radius: inherit;
+		aspect-ratio: var(--dsgo-pcg-aspect-ratio, 3 / 4);
+		text-decoration: none;
+		color: #fff;
 
-		// Scale image on hover via the image wrapper's overflow: hidden.
+		// Subtle background visible when no image is set.
+		background-color: color-mix(in srgb, currentcolor 12%, transparent);
+
+		// Scale image on hover.
 		&:hover,
 		&:focus-visible {
 
@@ -60,23 +65,12 @@
 	}
 
 	// ==============================================
-	// IMAGE WRAPPER
-	// Acts as the aspect-ratio container and clips
-	// the overflowing scaled image on hover.
-	// ==============================================
-	&__image-wrapper {
-		position: relative;
-		overflow: hidden;
-		aspect-ratio: var(--dsgo-pcg-aspect-ratio, 3 / 4);
-
-		// Subtle background visible when no image is set.
-		background-color: color-mix(in srgb, currentcolor 8%, transparent);
-	}
-
-	// ==============================================
 	// IMAGE
+	// Absolutely positioned to fill the card.
 	// ==============================================
 	&__image {
+		position: absolute;
+		inset: 0;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
@@ -87,8 +81,6 @@
 	// ==============================================
 	// PLACEHOLDER ICON
 	// Shown when the category has no image.
-	// Centered via flexbox; inherits text color for
-	// theme-compatibility without hard-coded colors.
 	// ==============================================
 	&__placeholder-icon {
 		position: absolute;
@@ -109,24 +101,31 @@
 	}
 
 	// ==============================================
-	// INFO SECTION
+	// OVERLAY
+	// Gradient overlay with text positioned at bottom.
 	// ==============================================
-	&__info {
+	&__overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
 		padding: var(--wp--preset--spacing--30, 1rem);
+		background: linear-gradient(to top, rgb(0 0 0 / 60%) 0%, rgb(0 0 0 / 0%) 60%);
+		z-index: 1;
 	}
 
 	&__name {
 		margin: 0;
-
-		// Inherit font-size from block typography support; do not override.
 		font-size: inherit;
 		line-height: inherit;
+		color: inherit;
 	}
 
 	&__count {
 		display: block;
 		margin-top: 0.25em;
-		opacity: 0.7;
+		opacity: 0.8;
 		font-size: 0.875em;
 	}
 
@@ -141,7 +140,6 @@
 			grid-template-columns: repeat(2, 1fr);
 		}
 
-		// Featured card can still span 2 at tablet width.
 		:where(&--cols-3 &__card--featured),
 		:where(&--cols-4 &__card--featured),
 		:where(&--cols-5 &__card--featured) {
