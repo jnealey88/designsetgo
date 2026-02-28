@@ -47,6 +47,7 @@
 		// Scale image on hover via the image wrapper's overflow: hidden.
 		&:hover,
 		&:focus-visible {
+
 			.dsgo-product-categories-grid__image {
 				transform: scale(1.05);
 			}
@@ -66,10 +67,10 @@
 	&__image-wrapper {
 		position: relative;
 		overflow: hidden;
-		aspect-ratio: var(--dsgo-pcg-aspect-ratio, 3/4);
+		aspect-ratio: var(--dsgo-pcg-aspect-ratio, 3 / 4);
 
 		// Subtle background visible when no image is set.
-		background-color: color-mix(in srgb, currentColor 8%, transparent);
+		background-color: color-mix(in srgb, currentcolor 8%, transparent);
 	}
 
 	// ==============================================
@@ -95,7 +96,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: currentColor;
+		color: currentcolor;
 		opacity: 0.35;
 	}
 
@@ -103,7 +104,7 @@
 		width: 3rem;
 		height: 3rem;
 		fill: none;
-		stroke: currentColor;
+		stroke: currentcolor;
 		stroke-width: 1.5;
 	}
 
