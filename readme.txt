@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.33
+Stable tag: 2.0.34
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,12 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.34 - 2026-02-27 =
+**Bug Fixes:**
+* Fix: Add deprecations for form text, email, select, and textarea field blocks to handle content saved without `aria-required` attribute
+* Fix: Add deprecation for form builder block to handle content saved without `aria-hidden` on honeypot and `aria-atomic` on message div
+* Fix: Normalize multi-line addresses in map geocoding — replace newline characters with commas before querying Nominatim, with automatic retry stripping the business name line
 
 = 2.0.33 - 2026-02-25 =
 **Bug Fixes:**
