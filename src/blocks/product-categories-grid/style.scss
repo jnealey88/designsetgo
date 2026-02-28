@@ -66,9 +66,10 @@
 
 	// ==============================================
 	// IMAGE
-	// Absolutely positioned to fill the card.
+	// Nested inside card for specificity to override
+	// WooCommerce's `.woocommerce img { height: auto }`.
 	// ==============================================
-	&__image {
+	&__card &__image {
 		position: absolute;
 		inset: 0;
 		width: 100%;

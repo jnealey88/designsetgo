@@ -59,6 +59,10 @@
 		"shadow": true
 	},
 	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "wide"
+		},
 		"categorySource": {
 			"type": "string",
 			"default": "all",
