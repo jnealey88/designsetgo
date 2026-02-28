@@ -39,10 +39,10 @@ function PlaceholderIcon() {
 /**
  * Grid Preview Component
  *
- * @param {Object}   props              Component props
- * @param {Array}    props.categories   Array of category objects from WC Store API
- * @param {Object}   props.attributes   Block attributes
- * @param {Array}    props.featuredIds  Array of category IDs that are featured (manual mode)
+ * @param {Object} props             Component props
+ * @param {Array}  props.categories  Array of category objects from WC Store API
+ * @param {Object} props.attributes  Block attributes
+ * @param {Array}  props.featuredIds Array of category IDs that are featured (manual mode)
  * @return {JSX.Element} Grid preview
  */
 export default function GridPreview({ categories, attributes, featuredIds }) {
@@ -75,12 +75,7 @@ export default function GridPreview({ categories, attributes, featuredIds }) {
 					const count = category.count || 0;
 					const countText = sprintf(
 						/* translators: %d: number of products in category */
-						_n(
-							'%d product',
-							'%d products',
-							count,
-							'designsetgo'
-						),
+						_n('%d product', '%d products', count, 'designsetgo'),
 						count
 					);
 

@@ -30,6 +30,8 @@ import {
 import apiFetch from '@wordpress/api-fetch';
 
 import GridPreview from './components/GridPreview';
+import CategoryPicker from './components/CategoryPicker';
+import CategoryList from './components/CategoryList';
 
 /**
  * Image aspect ratio options for the Layout panel.
@@ -67,6 +69,7 @@ export default function ProductCategoriesGridEdit({
 	const [categories, setCategories] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [categoryDataCache, setCategoryDataCache] = useState({});
 
 	// Fetch all product categories from the WC Store API on mount.
 	useEffect(() => {
@@ -76,6 +79,12 @@ export default function ProductCategoriesGridEdit({
 		apiFetch({ path: '/wc/store/v1/products/categories?per_page=100' })
 			.then((data) => {
 				setCategories(data);
+				// Pre-populate cache with fetched data.
+				const cache = {};
+				data.forEach((cat) => {
+					cache[cat.id] = cat;
+				});
+				setCategoryDataCache((prev) => ({ ...prev, ...cache }));
 			})
 			.catch(() => {
 				setError(
@@ -87,6 +96,44 @@ export default function ProductCategoriesGridEdit({
 			})
 			.finally(() => setIsLoading(false));
 	}, []);
+
+	// Fetch missing category data for manual mode (e.g., after a page reload).
+	useEffect(() => {
+		if (
+			attributes.categorySource !== 'manual' ||
+			!attributes.selectedCategories.length
+		) {
+			return;
+		}
+
+		const missingIds = attributes.selectedCategories
+			.map((sc) => sc.id)
+			.filter((id) => !categoryDataCache[id]);
+
+		if (!missingIds.length) {
+			return;
+		}
+
+		// Fetch each missing category individually.
+		Promise.all(
+			missingIds.map((id) =>
+				apiFetch({
+					path: `/wc/store/v1/products/categories/${id}`,
+				}).catch(() => null)
+			)
+		).then((results) => {
+			const newCache = {};
+			results.forEach((cat) => {
+				if (cat) {
+					newCache[cat.id] = cat;
+				}
+			});
+			if (Object.keys(newCache).length) {
+				setCategoryDataCache((prev) => ({ ...prev, ...newCache }));
+			}
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- Intentionally excludes categoryDataCache to avoid infinite refetch loop.
+	}, [attributes.categorySource, attributes.selectedCategories]);
 
 	// Filter categories for the "all" source mode.
 	const filteredCategories = categories.filter((category) => {
@@ -103,6 +150,41 @@ export default function ProductCategoriesGridEdit({
 			return false;
 		}
 		return true;
+	});
+
+	// Handler for when a category is selected via CategoryPicker.
+	const handleCategorySelect = (categoryId, categoryData) => {
+		// Add to selectedCategories attribute.
+		const newSelected = [
+			...attributes.selectedCategories,
+			{ id: categoryId, featured: false },
+		];
+		setAttributes({ selectedCategories: newSelected });
+
+		// Cache the category data for display.
+		if (categoryData) {
+			setCategoryDataCache((prev) => ({
+				...prev,
+				[categoryId]: categoryData,
+			}));
+		}
+	};
+
+	// Build manual categories list for preview.
+	const manualCategories = attributes.selectedCategories
+		.map((sc) => categoryDataCache[sc.id])
+		.filter(Boolean);
+
+	const manualFeaturedIds = attributes.selectedCategories
+		.filter((sc) => sc.featured)
+		.map((sc) => sc.id);
+
+	// Build category names map for CategoryList.
+	const categoryNames = {};
+	attributes.selectedCategories.forEach((sc) => {
+		if (categoryDataCache[sc.id]) {
+			categoryNames[sc.id] = categoryDataCache[sc.id].name;
+		}
 	});
 
 	const blockProps = useBlockProps();
@@ -169,12 +251,25 @@ export default function ProductCategoriesGridEdit({
 					)}
 
 					{categorySource === 'manual' && (
-						<p>
-							{__(
-								'Manual category selection coming soon.',
-								'designsetgo'
-							)}
-						</p>
+						<>
+							<CategoryPicker
+								onSelect={handleCategorySelect}
+								excludeIds={attributes.selectedCategories.map(
+									(sc) => sc.id
+								)}
+							/>
+							<CategoryList
+								selectedCategories={
+									attributes.selectedCategories
+								}
+								categoryNames={categoryNames}
+								onChange={(newList) =>
+									setAttributes({
+										selectedCategories: newList,
+									})
+								}
+							/>
+						</>
 					)}
 				</PanelBody>
 
@@ -255,16 +350,30 @@ export default function ProductCategoriesGridEdit({
 					</Placeholder>
 				)}
 
-				{!isLoading && !error && categorySource === 'manual' && (
-					<Placeholder
-						icon="category"
-						label={__('Product Categories Grid', 'designsetgo')}
-						instructions={__(
-							'Select categories in the sidebar.',
-							'designsetgo'
-						)}
-					/>
-				)}
+				{!isLoading &&
+					!error &&
+					categorySource === 'manual' &&
+					manualCategories.length > 0 && (
+						<GridPreview
+							categories={manualCategories}
+							attributes={attributes}
+							featuredIds={manualFeaturedIds}
+						/>
+					)}
+
+				{!isLoading &&
+					!error &&
+					categorySource === 'manual' &&
+					manualCategories.length === 0 && (
+						<Placeholder
+							icon="category"
+							label={__('Product Categories Grid', 'designsetgo')}
+							instructions={__(
+								'Search and select categories in the sidebar to build your grid.',
+								'designsetgo'
+							)}
+						/>
+					)}
 
 				{!isLoading &&
 					!error &&
