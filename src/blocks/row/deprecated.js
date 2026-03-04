@@ -49,6 +49,15 @@ const v3 = {
 			type: 'string',
 		},
 	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v3 blocks have dsgo-no-width-constraint but no alignItems in inner style
+		// They also have tagName and constrainWidth attributes
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-flex__inner') &&
+			!innerHTML.includes('align-items')
+		);
+	},
 	save({ attributes }) {
 		const {
 			tagName = 'div',
@@ -185,6 +194,14 @@ const v2 = {
 			type: 'string',
 		},
 	},
+	isEligible(attributes) {
+		// v2 blocks don't have constrainWidth or tagName attributes
+		// and may have dsgo-has-max-width className from old extension
+		return (
+			!Object.prototype.hasOwnProperty.call(attributes, 'tagName') &&
+			!Object.prototype.hasOwnProperty.call(attributes, 'constrainWidth')
+		);
+	},
 	save({ attributes }) {
 		const {
 			hoverBackgroundColor,
@@ -302,6 +319,13 @@ const v1 = {
 		hoverButtonBackgroundColor: {
 			type: 'string',
 		},
+	},
+	isEligible(attributes) {
+		// v1 blocks don't have align attribute - used className for alignment
+		return (
+			attributes.align === undefined &&
+			!Object.prototype.hasOwnProperty.call(attributes, 'constrainWidth')
+		);
 	},
 	save({ attributes }) {
 		const {

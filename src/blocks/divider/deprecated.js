@@ -35,6 +35,10 @@ const v1 = {
 			default: 'star',
 		},
 	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 blocks have inline SVG icons instead of dsgo-lazy-icon class
+		return innerHTML && !innerHTML.includes('dsgo-lazy-icon');
+	},
 	save({ attributes }) {
 		const { dividerStyle, width, thickness, iconName } = attributes;
 

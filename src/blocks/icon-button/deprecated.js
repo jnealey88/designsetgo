@@ -75,6 +75,10 @@ const v6 = {
 			default: '',
 		},
 	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v6 blocks have dsgo-icon-button--width-full/auto classes
+		return innerHTML && innerHTML.includes('dsgo-icon-button--width-');
+	},
 	save({ attributes }) {
 		const {
 			text,
@@ -273,6 +277,14 @@ const v5 = {
 			type: 'string',
 			default: '',
 		},
+	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v5 blocks use inline-flex for all widths (including 100%) and raw width value
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-icon-button--width-') &&
+			innerHTML.includes('inline-flex')
+		);
 	},
 	save({ attributes }) {
 		const {
@@ -475,6 +487,14 @@ const v4 = {
 			type: 'string',
 			default: '',
 		},
+	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v4 blocks have the two-div structure with dsgo-icon-button__wrapper
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-icon-button__wrapper') &&
+			innerHTML.includes('wp-block-button__link')
+		);
 	},
 	save({ attributes }) {
 		const {
@@ -687,6 +707,15 @@ const v3 = {
 			default: '',
 		},
 	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v3 blocks have inline display/width styles on outer wrapper and dsgo-icon-button__wrapper without wp-block-button__link
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-icon-button__wrapper') &&
+			!innerHTML.includes('wp-block-button__link') &&
+			innerHTML.includes('fit-content')
+		);
+	},
 	save({ attributes }) {
 		const {
 			text,
@@ -876,6 +905,14 @@ const v2 = {
 			default: '',
 		},
 	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v2 blocks have inline SVG icons (no dsgo-lazy-icon class)
+		return (
+			innerHTML &&
+			!innerHTML.includes('dsgo-lazy-icon') &&
+			innerHTML.includes('dsgo-icon-button__icon')
+		);
+	},
 	save({ attributes }) {
 		const {
 			text,
@@ -1058,6 +1095,15 @@ const v1 = {
 			type: 'string',
 			default: '',
 		},
+	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 blocks don't have splitPaddingStyles and render icon position differently
+		// They also don't have dsgo-lazy-icon and have role="button" on non-link wrappers
+		return (
+			innerHTML &&
+			innerHTML.includes('role="button"') &&
+			!innerHTML.includes('dsgo-lazy-icon')
+		);
 	},
 	save({ attributes }) {
 		const {

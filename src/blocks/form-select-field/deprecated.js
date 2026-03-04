@@ -56,6 +56,18 @@ const v2 = {
 		},
 	},
 
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v2 blocks lack aria-required on select
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-form-field__select') &&
+			!innerHTML.includes('aria-required')
+		);
+	},
+	migrate(attributes) {
+		return attributes;
+	},
+
 	save({ attributes }) {
 		const {
 			fieldName,
@@ -180,6 +192,15 @@ const v1 = {
 			type: 'string',
 			default: '100',
 		},
+	},
+
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 blocks use defaultValue on select (non-standard attribute)
+		return (
+			innerHTML &&
+			innerHTML.includes('defaultvalue') &&
+			innerHTML.includes('dsgo-form-field__select')
+		);
 	},
 
 	save({ attributes }) {

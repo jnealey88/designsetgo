@@ -126,6 +126,15 @@ function getPlaceholderText(placeholder, phoneFormat) {
 const v2 = {
 	attributes: sharedAttributes,
 
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v2 blocks have hardcoded country code options with selected attribute
+		return (
+			innerHTML &&
+			innerHTML.includes('selected') &&
+			innerHTML.includes('dsgo-form-field__country-code')
+		);
+	},
+
 	save({ attributes }) {
 		const {
 			fieldName,
@@ -289,6 +298,15 @@ const v2 = {
  */
 const v1 = {
 	attributes: sharedAttributes,
+
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 blocks use defaultValue on select instead of selected on options
+		return (
+			innerHTML &&
+			innerHTML.includes('defaultvalue') &&
+			innerHTML.includes('dsgo-form-field__country-code')
+		);
+	},
 
 	save({ attributes }) {
 		const {

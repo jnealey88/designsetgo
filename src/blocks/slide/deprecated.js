@@ -57,6 +57,13 @@ const v1 = {
 			default: '',
 		},
 	},
+	isEligible(attributes) {
+		// v1 blocks have the enableOverlay boolean attribute
+		return Object.prototype.hasOwnProperty.call(
+			attributes,
+			'enableOverlay'
+		);
+	},
 	save({ attributes }) {
 		const {
 			backgroundImage,

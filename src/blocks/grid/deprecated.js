@@ -33,6 +33,10 @@ const v1 = {
 			type: 'string',
 		},
 	},
+	isEligible(attributes) {
+		// v1 blocks don't have the align attribute - used className for alignment
+		return attributes.align === undefined;
+	},
 	save({ attributes }) {
 		const {
 			hoverBackgroundColor,

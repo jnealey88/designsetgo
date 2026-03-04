@@ -73,6 +73,17 @@ const v1 = {
 		},
 	},
 
+	isEligible(attributes) {
+		// v1 blocks have dsgoMarkerPopup and dsgoGrayscale attributes
+		return (
+			Object.prototype.hasOwnProperty.call(
+				attributes,
+				'dsgoMarkerPopup'
+			) ||
+			Object.prototype.hasOwnProperty.call(attributes, 'dsgoGrayscale')
+		);
+	},
+
 	save({ attributes }) {
 		const {
 			dsgoProvider,

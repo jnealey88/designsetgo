@@ -56,6 +56,18 @@ const v2 = {
 		},
 	},
 
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v2 blocks lack aria-required on textarea
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-form-field__textarea') &&
+			!innerHTML.includes('aria-required')
+		);
+	},
+	migrate(attributes) {
+		return attributes;
+	},
+
 	save({ attributes }) {
 		const {
 			fieldName,
@@ -169,6 +181,15 @@ const v1 = {
 			type: 'string',
 			default: '100',
 		},
+	},
+
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 was the original designsetgo/form-textarea block before rename
+		return (
+			innerHTML &&
+			innerHTML.includes('aria-required') &&
+			innerHTML.includes('dsgo-form-field__textarea')
+		);
 	},
 
 	save({ attributes }) {

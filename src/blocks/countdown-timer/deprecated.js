@@ -93,6 +93,21 @@ const v2 = {
 		},
 	},
 
+	isEligible(attributes) {
+		// v2 blocks have separate unitBorderColor/unitBorderWidth instead of unitBorder object
+		return (
+			(Object.prototype.hasOwnProperty.call(
+				attributes,
+				'unitBorderColor'
+			) ||
+				Object.prototype.hasOwnProperty.call(
+					attributes,
+					'unitBorderWidth'
+				)) &&
+			!attributes.unitBorder
+		);
+	},
+
 	migrate(attributes) {
 		const { unitBorderColor, unitBorderWidth, ...otherAttributes } =
 			attributes;
@@ -339,6 +354,18 @@ const v1 = {
 		},
 	},
 
+	isEligible(attributes) {
+		// v1 blocks have textAlign, numberFontSize, labelFontSize attributes
+		return (
+			Object.prototype.hasOwnProperty.call(attributes, 'textAlign') ||
+			Object.prototype.hasOwnProperty.call(
+				attributes,
+				'numberFontSize'
+			) ||
+			Object.prototype.hasOwnProperty.call(attributes, 'labelFontSize')
+		);
+	},
+
 	save({ attributes }) {
 		const {
 			targetDateTime,
@@ -483,6 +510,26 @@ const v1 = {
 				</div>
 			</div>
 		);
+	},
+
+	migrate(attributes) {
+		const {
+			textAlign,
+			numberFontSize,
+			labelFontSize,
+			unitBorderColor,
+			unitBorderWidth,
+			...otherAttributes
+		} = attributes;
+
+		return {
+			...otherAttributes,
+			unitBorder: {
+				color: unitBorderColor || '',
+				style: 'solid',
+				width: unitBorderWidth ? `${unitBorderWidth}px` : '2px',
+			},
+		};
 	},
 };
 
