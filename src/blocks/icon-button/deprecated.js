@@ -76,8 +76,12 @@ const v6 = {
 		},
 	},
 	isEligible(attributes, innerBlocks, { innerHTML }) {
-		// v6 blocks have dsgo-icon-button--width-full/auto classes
-		return innerHTML && innerHTML.includes('dsgo-icon-button--width-');
+		// v6 blocks use flex (not inline-flex) for full-width; v5 always uses inline-flex
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-icon-button--width-') &&
+			!innerHTML.includes('inline-flex')
+		);
 	},
 	save({ attributes }) {
 		const {

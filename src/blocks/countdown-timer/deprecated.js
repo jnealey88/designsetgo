@@ -94,7 +94,8 @@ const v2 = {
 	},
 
 	isEligible(attributes) {
-		// v2 blocks have separate unitBorderColor/unitBorderWidth instead of unitBorder object
+		// v2 blocks have unitBorderColor/unitBorderWidth but NOT v1-specific attrs
+		// v1 blocks also have textAlign, numberFontSize, labelFontSize
 		return (
 			(Object.prototype.hasOwnProperty.call(
 				attributes,
@@ -104,7 +105,9 @@ const v2 = {
 					attributes,
 					'unitBorderWidth'
 				)) &&
-			!attributes.unitBorder
+			!attributes.unitBorder &&
+			!Object.prototype.hasOwnProperty.call(attributes, 'textAlign') &&
+			!Object.prototype.hasOwnProperty.call(attributes, 'numberFontSize')
 		);
 	},
 

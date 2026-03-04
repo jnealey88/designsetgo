@@ -75,7 +75,7 @@ const v1 = {
 	attributes: { /* old attribute schema */ },
 	isEligible(attributes, innerBlocks, { innerHTML }) {
 		// Identify old blocks by attribute signature or HTML patterns
-		return !attributes.newAttribute;
+		return !Object.prototype.hasOwnProperty.call(attributes, 'newAttribute');
 		// or: return innerHTML && !innerHTML.includes('new-class');
 	},
 	save({ attributes }) { /* old save output */ },
@@ -87,7 +87,7 @@ export default [v1];
 ```
 
 **Detection strategies for `isEligible`**:
-- Missing new attribute: `!attributes.newAttr` or `!Object.prototype.hasOwnProperty.call(attributes, 'newAttr')`
+- Missing new attribute: `!Object.prototype.hasOwnProperty.call(attributes, 'newAttr')` (not `!attributes.newAttr` — falsy values like `false`/`0`/`""` would match incorrectly)
 - Old HTML pattern: `innerHTML && !innerHTML.includes('new-class')`
 - Removed attribute: `Object.prototype.hasOwnProperty.call(attributes, 'removedAttr')`
 - Combined: use `&&` / `||` to narrow matches when multiple versions exist

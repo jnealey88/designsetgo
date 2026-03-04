@@ -143,9 +143,13 @@ const v2 = {
 			default: 80,
 		},
 	},
-	isEligible(attributes) {
-		// v2 blocks have the wrapper class but no align attribute
-		return attributes.align === undefined;
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v2 blocks have dsgo-blobs-wrapper but no align attribute
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-blobs-wrapper') &&
+			attributes.align === undefined
+		);
 	},
 	save({ attributes }) {
 		const {

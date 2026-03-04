@@ -50,9 +50,9 @@ const v3 = {
 		},
 	},
 	isEligible(attributes, innerBlocks, { innerHTML }) {
-		// v3 blocks have dsgo-no-width-constraint but no alignItems in inner style
-		// They also have tagName and constrainWidth attributes
+		// v3 blocks have tagName (added in v3) and dsgo-flex__inner but no align-items
 		return (
+			Object.prototype.hasOwnProperty.call(attributes, 'tagName') &&
 			innerHTML &&
 			innerHTML.includes('dsgo-flex__inner') &&
 			!innerHTML.includes('align-items')
@@ -195,9 +195,10 @@ const v2 = {
 		},
 	},
 	isEligible(attributes) {
-		// v2 blocks don't have constrainWidth or tagName attributes
-		// and may have dsgo-has-max-width className from old extension
+		// v2 blocks have align (introduced in v2) but not tagName (added in v3)
+		// v1 blocks don't have align, tagName, or constrainWidth
 		return (
+			Object.prototype.hasOwnProperty.call(attributes, 'align') &&
 			!Object.prototype.hasOwnProperty.call(attributes, 'tagName') &&
 			!Object.prototype.hasOwnProperty.call(attributes, 'constrainWidth')
 		);
