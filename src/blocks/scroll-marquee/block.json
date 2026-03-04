@@ -26,6 +26,25 @@
 	"attributes": {
 		"rows": {
 			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"images": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": { "type": "number" },
+								"url": { "type": "string" },
+								"alt": { "type": "string" }
+							}
+						}
+					},
+					"direction": {
+						"type": "string"
+					}
+				}
+			},
 			"default": [
 				{ "images": [], "direction": "left" }
 			]
