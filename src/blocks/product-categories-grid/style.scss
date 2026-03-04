@@ -47,6 +47,7 @@
 		color: #fff;
 
 		// Subtle background visible when no image is set.
+		background-color: rgba(0, 0, 0, 0.12);
 		background-color: color-mix(in srgb, currentcolor 12%, transparent);
 
 		// Scale image on hover.

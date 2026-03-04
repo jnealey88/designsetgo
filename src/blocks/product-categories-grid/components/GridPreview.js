@@ -79,12 +79,7 @@ export default function GridPreview({ categories, attributes, featuredIds }) {
 					);
 
 					return (
-						<div
-							key={category.id}
-							className={cardClass}
-							role="img"
-							aria-label={decodeEntities(category.name)}
-						>
+						<div key={category.id} className={cardClass}>
 							{category.image?.src ? (
 								<img
 									className="dsgo-product-categories-grid__image"

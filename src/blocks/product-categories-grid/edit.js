@@ -9,7 +9,6 @@
  */
 
 import { __, sprintf } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
 import {
 	useBlockProps,
 	InspectorControls,
@@ -27,11 +26,11 @@ import {
 	ToolbarGroup,
 	ToolbarButton,
 } from '@wordpress/components';
-import apiFetch from '@wordpress/api-fetch';
 
 import GridPreview from './components/GridPreview';
 import CategoryPicker from './components/CategoryPicker';
 import CategoryList from './components/CategoryList';
+import useProductCategories from './hooks/useProductCategories';
 
 /**
  * Image aspect ratio options for the Layout panel.
@@ -59,142 +58,33 @@ export default function ProductCategoriesGridEdit({
 }) {
 	const {
 		categorySource,
-		excludeCategories,
 		columns,
 		showProductCount,
 		showEmpty,
 		imageAspectRatio,
 	} = attributes;
 
-	const [categories, setCategories] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(null);
-	const [categoryDataCache, setCategoryDataCache] = useState({});
+	const {
+		isLoading,
+		error,
+		filteredCategories,
+		excludeIds,
+		manualCategories,
+		manualFeaturedIds,
+		categoryNames,
+		handleCategorySelect,
+	} = useProductCategories(attributes, setAttributes);
 
-	// Fetch all product categories from the WC Store API on mount.
-	useEffect(() => {
-		setIsLoading(true);
-		setError(null);
-
-		apiFetch({ path: '/wc/store/v1/products/categories?per_page=100' })
-			.then((data) => {
-				setCategories(data);
-				// Pre-populate cache with fetched data.
-				const cache = {};
-				data.forEach((cat) => {
-					cache[cat.id] = cat;
-				});
-				setCategoryDataCache((prev) => ({ ...prev, ...cache }));
-			})
-			.catch(() => {
-				setError(
-					__(
-						'Could not load categories. Please ensure WooCommerce is active.',
-						'designsetgo'
-					)
-				);
-			})
-			.finally(() => setIsLoading(false));
-	}, []);
-
-	// Fetch missing category data for manual mode (e.g., after a page reload).
-	useEffect(() => {
-		if (
-			attributes.categorySource !== 'manual' ||
-			!attributes.selectedCategories.length
-		) {
-			return;
-		}
-
-		const missingIds = attributes.selectedCategories
-			.map((sc) => sc.id)
-			.filter((id) => !categoryDataCache[id]);
-
-		if (!missingIds.length) {
-			return;
-		}
-
-		// Fetch each missing category individually.
-		Promise.all(
-			missingIds.map((id) =>
-				apiFetch({
-					path: `/wc/store/v1/products/categories/${id}`,
-				}).catch(() => null)
-			)
-		).then((results) => {
-			const newCache = {};
-			results.forEach((cat) => {
-				if (cat) {
-					newCache[cat.id] = cat;
-				}
-			});
-			if (Object.keys(newCache).length) {
-				setCategoryDataCache((prev) => ({ ...prev, ...newCache }));
-			}
-		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- Intentionally excludes categoryDataCache to avoid infinite refetch loop.
-	}, [attributes.categorySource, attributes.selectedCategories]);
-
-	// Filter categories for the "all" source mode.
-	const filteredCategories = categories.filter((category) => {
-		// Top-level categories only.
-		if (category.parent !== 0) {
-			return false;
-		}
-		// Respect manual exclusion list.
-		if (excludeCategories.includes(category.id)) {
-			return false;
-		}
-		// Hide empty categories when toggled off.
-		if (!showEmpty && category.count <= 0) {
-			return false;
-		}
-		return true;
+	const blockProps = useBlockProps({
+		className: 'dsgo-product-categories-grid-wrapper',
 	});
-
-	// Handler for when a category is selected via CategoryPicker.
-	const handleCategorySelect = (categoryId, categoryData) => {
-		// Add to selectedCategories attribute.
-		const newSelected = [
-			...attributes.selectedCategories,
-			{ id: categoryId, featured: false },
-		];
-		setAttributes({ selectedCategories: newSelected });
-
-		// Cache the category data for display.
-		if (categoryData) {
-			setCategoryDataCache((prev) => ({
-				...prev,
-				[categoryId]: categoryData,
-			}));
-		}
-	};
-
-	// Build manual categories list for preview.
-	const manualCategories = attributes.selectedCategories
-		.map((sc) => categoryDataCache[sc.id])
-		.filter(Boolean);
-
-	const manualFeaturedIds = attributes.selectedCategories
-		.filter((sc) => sc.featured)
-		.map((sc) => sc.id);
-
-	// Build category names map for CategoryList.
-	const categoryNames = {};
-	attributes.selectedCategories.forEach((sc) => {
-		if (categoryDataCache[sc.id]) {
-			categoryNames[sc.id] = categoryDataCache[sc.id].name;
-		}
-	});
-
-	const blockProps = useBlockProps();
 
 	return (
 		<>
 			{/* ── Toolbar ──────────────────────────────────────────────── */}
 			<BlockControls>
 				<ToolbarGroup>
-					{[2, 3, 4].map((count) => (
+					{[2, 3, 4, 5].map((count) => (
 						<ToolbarButton
 							key={count}
 							label={sprintf(
@@ -254,9 +144,7 @@ export default function ProductCategoriesGridEdit({
 						<>
 							<CategoryPicker
 								onSelect={handleCategorySelect}
-								excludeIds={attributes.selectedCategories.map(
-									(sc) => sc.id
-								)}
+								excludeIds={excludeIds}
 							/>
 							<CategoryList
 								selectedCategories={
@@ -304,7 +192,7 @@ export default function ProductCategoriesGridEdit({
 					/>
 
 					<p
-						style={{ marginBottom: '8px' }}
+						className="dsgo-product-categories-grid__aspect-ratio-label"
 						id="dsgo-pcg-aspect-ratio-label"
 					>
 						{__('Image Aspect Ratio', 'designsetgo')}

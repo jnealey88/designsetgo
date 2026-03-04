@@ -80,6 +80,9 @@ export default function CategoryPicker({
 			if (debounceTimer.current) {
 				clearTimeout(debounceTimer.current);
 			}
+			if (abortControllerRef.current) {
+				abortControllerRef.current.abort();
+			}
 		};
 	}, [searchValue, excludeIds]);
 
@@ -91,10 +94,13 @@ export default function CategoryPicker({
 				options={options}
 				onChange={(categoryId) => {
 					if (categoryId) {
+						const numericId = Number(categoryId);
 						const categoryData = categoriesRef.current.find(
-							(c) => c.id === categoryId
+							(c) => c.id === numericId
 						);
-						onSelect(categoryId, categoryData || null);
+						onSelect(numericId, categoryData || null);
+						setSearchValue('');
+						setOptions([]);
 					}
 				}}
 				onFilterValueChange={setSearchValue}
