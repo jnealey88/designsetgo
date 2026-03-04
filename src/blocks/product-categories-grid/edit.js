@@ -62,6 +62,7 @@ export default function ProductCategoriesGridEdit({
 		showProductCount,
 		showEmpty,
 		imageAspectRatio,
+		overlayPosition,
 	} = attributes;
 
 	const {
@@ -129,6 +130,8 @@ export default function ProductCategoriesGridEdit({
 						</Button>
 					</ButtonGroup>
 
+					<div style={{ marginTop: '16px' }} />
+
 					{categorySource === 'all' && (
 						<ToggleControl
 							label={__('Show Empty Categories', 'designsetgo')}
@@ -174,6 +177,37 @@ export default function ProductCategoriesGridEdit({
 						}
 						__nextHasNoMarginBottom
 					/>
+
+					<p
+						className="dsgo-product-categories-grid__aspect-ratio-label"
+						id="dsgo-pcg-overlay-position-label"
+					>
+						{__('Text Position', 'designsetgo')}
+					</p>
+					<ButtonGroup aria-labelledby="dsgo-pcg-overlay-position-label">
+						<Button
+							isPressed={overlayPosition === 'bottom-left'}
+							onClick={() =>
+								setAttributes({
+									overlayPosition: 'bottom-left',
+								})
+							}
+							__next40pxDefaultSize
+						>
+							{__('Bottom Left', 'designsetgo')}
+						</Button>
+						<Button
+							isPressed={overlayPosition === 'center'}
+							onClick={() =>
+								setAttributes({
+									overlayPosition: 'center',
+								})
+							}
+							__next40pxDefaultSize
+						>
+							{__('Center', 'designsetgo')}
+						</Button>
+					</ButtonGroup>
 				</PanelBody>
 
 				{/* Layout panel */}

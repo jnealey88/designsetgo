@@ -45,7 +45,8 @@ function PlaceholderIcon() {
  * @return {JSX.Element} Grid preview
  */
 export default function GridPreview({ categories, attributes, featuredIds }) {
-	const { columns, showProductCount, imageAspectRatio } = attributes;
+	const { columns, showProductCount, imageAspectRatio, overlayPosition } =
+		attributes;
 
 	const gridClass = `dsgo-product-categories-grid dsgo-product-categories-grid--cols-${columns}`;
 
@@ -90,7 +91,9 @@ export default function GridPreview({ categories, attributes, featuredIds }) {
 								<PlaceholderIcon />
 							)}
 
-							<div className="dsgo-product-categories-grid__overlay">
+							<div
+								className={`dsgo-product-categories-grid__overlay${overlayPosition === 'center' ? ' dsgo-product-categories-grid__overlay--center' : ''}`}
+							>
 								<h3 className="dsgo-product-categories-grid__name">
 									{decodeEntities(category.name)}
 								</h3>

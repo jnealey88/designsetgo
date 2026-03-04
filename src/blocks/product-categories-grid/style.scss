@@ -115,6 +115,13 @@
 		padding: var(--wp--preset--spacing--30, 1rem);
 		background: linear-gradient(to top, rgb(0 0 0 / 60%) 0%, rgb(0 0 0 / 0%) 60%);
 		z-index: 1;
+
+		&--center {
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			background: rgb(0 0 0 / 40%);
+		}
 	}
 
 	&__name {

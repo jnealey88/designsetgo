@@ -35,6 +35,7 @@ $columns             = isset( $attributes['columns'] ) ? absint( $attributes['co
 $show_product_count  = ! isset( $attributes['showProductCount'] ) || (bool) $attributes['showProductCount'];
 $show_empty          = ! empty( $attributes['showEmpty'] );
 $image_aspect_ratio  = isset( $attributes['imageAspectRatio'] ) ? $attributes['imageAspectRatio'] : '3/4';
+$overlay_position    = isset( $attributes['overlayPosition'] ) && 'center' === $attributes['overlayPosition'] ? 'center' : 'bottom-left';
 
 // Validate columns (2–5).
 if ( $columns < 2 || $columns > 5 ) {
@@ -193,7 +194,7 @@ $placeholder_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
 				</div>
 			<?php endif; ?>
 
-			<div class="dsgo-product-categories-grid__overlay">
+			<div class="dsgo-product-categories-grid__overlay<?php echo 'center' === $overlay_position ? ' dsgo-product-categories-grid__overlay--center' : ''; ?>">
 				<h3 class="dsgo-product-categories-grid__name">
 					<?php echo esc_html( $term_name ); ?>
 				</h3>

@@ -97,6 +97,11 @@
 		"imageAspectRatio": {
 			"type": "string",
 			"default": "3/4"
+		},
+		"overlayPosition": {
+			"type": "string",
+			"default": "bottom-left",
+			"enum": ["bottom-left", "center"]
 		}
 	},
 	"example": {
