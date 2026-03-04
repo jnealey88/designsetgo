@@ -36,19 +36,21 @@ abstract class Abstract_Ability {
 	 * Get the configuration array for this ability.
 	 *
 	 * Should return an array with keys:
+	 *
+	 * Required:
 	 * - label: Human-readable name
 	 * - description: What this ability does
 	 * - category: Category slug this ability belongs to
+	 * - permission_callback: Callable for permission check
+	 *
+	 * Optional:
 	 * - input_schema: JSON Schema for inputs
 	 * - output_schema: JSON Schema for outputs
-	 * - permission_callback: Callable for permission check
-	 * - show_in_rest: Whether to expose via REST API (moved into meta during registration, default true)
-	 * - annotations: Behavioral hints (moved into meta during registration)
-	 * - meta: Additional metadata (show_in_rest and annotations are auto-nested here)
+	 * - show_in_rest: (bool) Expose via REST API (default true). Moved into meta by register().
+	 * - annotations: (array) Behavioral hints — readonly, destructive, idempotent. Moved into meta by register().
+	 * - meta: (array) Additional metadata. WP_Ability stores show_in_rest and annotations here.
 	 *
 	 * Note: execute_callback is added automatically during registration.
-	 * Note: show_in_rest and annotations can be provided at top-level for convenience;
-	 * register() moves them into meta where WP_Ability expects them.
 	 *
 	 * @return array<string, mixed>
 	 */
