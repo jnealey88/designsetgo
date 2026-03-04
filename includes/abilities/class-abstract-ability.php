@@ -36,15 +36,19 @@ abstract class Abstract_Ability {
 	 * Get the configuration array for this ability.
 	 *
 	 * Should return an array with keys:
+	 *
+	 * Required:
 	 * - label: Human-readable name
 	 * - description: What this ability does
 	 * - category: Category slug this ability belongs to
+	 * - permission_callback: Callable for permission check
+	 *
+	 * Optional:
 	 * - input_schema: JSON Schema for inputs
 	 * - output_schema: JSON Schema for outputs
-	 * - permission_callback: Callable for permission check
-	 * - meta: Additional metadata including:
-	 *   - show_in_rest: Whether to expose via REST API (default true)
-	 *   - annotations: Behavioral hints (readonly, destructive, idempotent)
+	 * - show_in_rest: (bool) Expose via REST API (default true). Moved into meta by register().
+	 * - annotations: (array) Behavioral hints — readonly, destructive, idempotent. Moved into meta by register().
+	 * - meta: (array) Additional metadata. WP_Ability stores show_in_rest and annotations here.
 	 *
 	 * Note: execute_callback is added automatically during registration.
 	 *
@@ -73,25 +77,23 @@ abstract class Abstract_Ability {
 		$config                     = $this->get_config();
 		$config['execute_callback'] = array( $this, 'execute' );
 
-		// Ensure show_in_rest is a top-level parameter (not nested in meta).
-		if ( ! isset( $config['show_in_rest'] ) ) {
-			$config['show_in_rest'] = true;
+		// Ensure meta array exists.
+		if ( ! isset( $config['meta'] ) || ! is_array( $config['meta'] ) ) {
+			$config['meta'] = array();
 		}
 
-		// Promote annotations from meta to top-level if needed (backward compatibility).
-		if ( ! isset( $config['annotations'] ) && isset( $config['meta']['annotations'] ) ) {
-			$config['annotations'] = $config['meta']['annotations'];
-			unset( $config['meta']['annotations'] );
+		// Move show_in_rest into meta (WP 6.9 expects it nested in meta, not top-level).
+		if ( isset( $config['show_in_rest'] ) ) {
+			$config['meta']['show_in_rest'] = $config['show_in_rest'];
+			unset( $config['show_in_rest'] );
+		} elseif ( ! isset( $config['meta']['show_in_rest'] ) ) {
+			$config['meta']['show_in_rest'] = true;
 		}
 
-		// Remove show_in_rest from meta if it was nested there.
-		if ( isset( $config['meta']['show_in_rest'] ) ) {
-			unset( $config['meta']['show_in_rest'] );
-		}
-
-		// Clean up empty meta array.
-		if ( isset( $config['meta'] ) && empty( $config['meta'] ) ) {
-			unset( $config['meta'] );
+		// Move annotations into meta (WP 6.9 expects it nested in meta, not top-level).
+		if ( isset( $config['annotations'] ) ) {
+			$config['meta']['annotations'] = $config['annotations'];
+			unset( $config['annotations'] );
 		}
 
 		wp_register_ability( $this->get_name(), $config );

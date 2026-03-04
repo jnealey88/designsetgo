@@ -43,10 +43,12 @@ add_action( 'wp_abilities_api_init', function( $registry ) {
         ),
         'execute_callback'    => 'my_plugin_get_info_callback',
         'permission_callback' => function() { return current_user_can( 'read' ); },
-        'show_in_rest'        => true,
-        'annotations'         => array(
-            'readonly'     => true,
-            'instructions' => 'Returns the site title. No input required.',
+        'meta'                => array(
+            'show_in_rest' => true,
+            'annotations'  => array(
+                'readonly'     => true,
+                'instructions' => 'Returns the site title. No input required.',
+            ),
         ),
     ) );
 } );
@@ -73,14 +75,14 @@ add_action( 'wp_abilities_api_init', function( $registry ) {
 | `execute_callback` | Yes | Function that executes the ability |
 | `permission_callback` | Yes | Returns `true` or `WP_Error` for access control |
 | `input_schema` | No | JSON Schema for expected input (enables validation) |
-| `show_in_rest` | No | Set `true` to expose via REST API (default: `false`) |
-| `annotations` | No | Behavioral metadata (see below) |
-| `meta` | No | Additional custom metadata |
+| `meta` | No | Metadata object (contains `show_in_rest`, `annotations`, and custom data) |
+| `meta.show_in_rest` | No | Set `true` to expose via REST API (default: `false`) |
+| `meta.annotations` | No | Behavioral metadata (see below) |
 | `ability_class` | No | Custom `WP_Ability` subclass |
 
 ## Annotations
 
-Annotations are a **top-level parameter** (not nested in `meta`). They describe ability behavior and determine the REST HTTP method for the `/run` endpoint.
+Annotations are nested inside the `meta` parameter. They describe ability behavior and determine the REST HTTP method for the `/run` endpoint. The REST controller reads them via `$ability->get_meta_item('annotations')`.
 
 | Key | Type | Description | REST Method |
 | --- | ---- | ----------- | ----------- |
@@ -108,8 +110,8 @@ if ( $ability && true === $ability->check_permissions( $input ) ) {
 - Use slash-namespaced IDs (e.g., `my-plugin/feature-name`). Treat IDs as a stable API; changing IDs is a breaking change.
 - Use `input_schema` and `output_schema` for validation and to help AI agents understand usage.
 - Always include a `permission_callback` for abilities that modify data.
-- Set `show_in_rest => true` for abilities you want accessible via REST API.
-- Use `annotations` to describe behavior — `readonly`, `destructive`, `idempotent`, and `instructions`.
+- Set `meta.show_in_rest => true` for abilities you want accessible via REST API.
+- Use `meta.annotations` to describe behavior — `readonly`, `destructive`, `idempotent`, and `instructions`.
 
 ## Hooks
 
