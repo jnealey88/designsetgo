@@ -5,9 +5,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
+import { useMemo } from '@wordpress/element';
+
+const EMPTY_ARRAY = [];
 
 export function useBreadcrumbData() {
-	return useSelect((select) => {
+	const rawData = useSelect((select) => {
 		const { getCurrentPost, getEditedPostAttribute } =
 			select('core/editor') || {};
 		const { getEntityRecords } = select('core') || {};
@@ -16,8 +19,10 @@ export function useBreadcrumbData() {
 			return {
 				postTitle: '',
 				postType: 'post',
-				postParents: [],
-				postCategories: [],
+				parentId: 0,
+				categoryIds: EMPTY_ARRAY,
+				allPages: null,
+				allCategories: null,
 				isEditorReady: false,
 			};
 		}
@@ -25,63 +30,84 @@ export function useBreadcrumbData() {
 		const title = getEditedPostAttribute('title');
 		const type = getEditedPostAttribute('type');
 		const parentId = getEditedPostAttribute('parent');
-		const categoryIds = getEditedPostAttribute('categories') || [];
+		const categoryIds = getEditedPostAttribute('categories') || EMPTY_ARRAY;
 
-		const parents = [];
-		const categories = [];
+		let allPages = null;
+		let allCategories = null;
 
-		// Get parent pages if this is a page with a parent
 		if (type === 'page' && parentId && getEntityRecords) {
-			const allPages = getEntityRecords('postType', 'page', {
+			allPages = getEntityRecords('postType', 'page', {
 				per_page: -1,
 			});
-
-			if (allPages) {
-				let currentParentId = parentId;
-				while (currentParentId) {
-					const parent = allPages.find(
-						(page) => page.id === currentParentId
-					);
-					if (parent) {
-						parents.unshift({
-							title: parent.title.rendered,
-							id: parent.id,
-						});
-						currentParentId = parent.parent;
-					} else {
-						break;
-					}
-				}
-			}
 		}
 
-		// Get categories for posts
 		if (type === 'post' && categoryIds.length > 0 && getEntityRecords) {
-			const allCategories = getEntityRecords('taxonomy', 'category', {
+			allCategories = getEntityRecords('taxonomy', 'category', {
 				per_page: -1,
 			});
-
-			if (allCategories) {
-				// Get the first category (matching frontend behavior)
-				const firstCategoryId = categoryIds[0];
-				const category = allCategories.find(
-					(cat) => cat.id === firstCategoryId
-				);
-				if (category) {
-					categories.push({
-						title: category.name,
-						id: category.id,
-					});
-				}
-			}
 		}
 
 		return {
 			postTitle: title || __('(no title)', 'designsetgo'),
 			postType: type || 'post',
-			postParents: parents,
-			postCategories: categories,
+			parentId: parentId || 0,
+			categoryIds,
+			allPages,
+			allCategories,
 			isEditorReady: true,
 		};
 	}, []);
+
+	const {
+		postTitle,
+		postType,
+		parentId,
+		categoryIds,
+		allPages,
+		allCategories,
+		isEditorReady,
+	} = rawData;
+
+	const postParents = useMemo(() => {
+		if (postType !== 'page' || !parentId || !allPages) {
+			return EMPTY_ARRAY;
+		}
+		const parents = [];
+		let currentParentId = parentId;
+		while (currentParentId) {
+			const parent = allPages.find((p) => p.id === currentParentId);
+			if (parent) {
+				parents.unshift({
+					title: parent.title.rendered,
+					id: parent.id,
+				});
+				currentParentId = parent.parent;
+			} else {
+				break;
+			}
+		}
+		return parents.length > 0 ? parents : EMPTY_ARRAY;
+	}, [postType, parentId, allPages]);
+
+	const postCategories = useMemo(() => {
+		if (postType !== 'post' || categoryIds.length === 0 || !allCategories) {
+			return EMPTY_ARRAY;
+		}
+		const firstCategoryId = categoryIds[0];
+		const category = allCategories.find(
+			(cat) => cat.id === firstCategoryId
+		);
+		if (category) {
+			return [{ title: category.name, id: category.id }];
+		}
+		return EMPTY_ARRAY;
+	}, [postType, categoryIds, allCategories]);
+
+	return {
+		postTitle,
+		postType,
+		postParents,
+		postCategories,
+		isEditorReady,
+	};
 }

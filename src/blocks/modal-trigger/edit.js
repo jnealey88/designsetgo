@@ -19,8 +19,31 @@ import {
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { useMemo } from '@wordpress/element';
 import { getIcon } from '../icon/utils/svg-icons';
 import { IconPicker } from '../icon/components/IconPicker';
+
+/**
+ * Recursively find modal blocks in a block tree
+ *
+ * @param {Array} blocks - Blocks to search
+ * @param {Array} result - Accumulator array
+ * @return {Array} Array of modal info objects
+ */
+function findModals(blocks, result = []) {
+	for (const block of blocks) {
+		if (block.name === 'designsetgo/modal') {
+			result.push({
+				id: block.attributes.modalId || '',
+				clientId: block.clientId,
+			});
+		}
+		if (block.innerBlocks?.length) {
+			findModals(block.innerBlocks, result);
+		}
+	}
+	return result;
+}
 
 export default function ModalTriggerEdit({ attributes, setAttributes }) {
 	const {
@@ -38,31 +61,16 @@ export default function ModalTriggerEdit({ attributes, setAttributes }) {
 		fontSize,
 	} = attributes;
 
-	// Get all modal blocks on the current page
-	// Only re-run when blocks actually change (not on every selection change)
-	const modals = useSelect((select) => {
-		const { getBlocks } = select('core/block-editor');
-		const allBlocks = getBlocks();
+	// Get all blocks from the editor — getBlocks returns a stable reference
+	// when blocks haven't changed, so useSelect won't cause re-renders
+	const allBlocks = useSelect(
+		(select) => select('core/block-editor').getBlocks(),
+		[]
+	);
 
-		// Optimized recursive search - flatten and filter in one pass
-		const findModals = (blocks, result = []) => {
-			for (const block of blocks) {
-				if (block.name === 'designsetgo/modal') {
-					result.push({
-						id: block.attributes.modalId || '',
-						clientId: block.clientId,
-					});
-				}
-				// Only recurse if innerBlocks exist
-				if (block.innerBlocks?.length) {
-					findModals(block.innerBlocks, result);
-				}
-			}
-			return result;
-		};
-
-		return findModals(allBlocks);
-	}); // No dependency array - useSelect optimizes to only re-run when returned data changes
+	// Derive modal list outside useSelect so we don't create new arrays
+	// inside the selector. useMemo ensures stable reference.
+	const modals = useMemo(() => findModals(allBlocks), [allBlocks]);
 
 	// Create options for the select control
 	const modalOptions = [
