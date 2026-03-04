@@ -1,11 +1,12 @@
 /**
  * Scroll Marquee Block - Deprecations
  *
- * v1: Original save that rendered images inside track segments.
- * The current save is identical, but this deprecation handles
- * validation mismatches when saved content has images but
- * re-serialized attributes produce empty segments (e.g. attribute
- * round-trip issues in WP 7.0).
+ * v1: Original save without items schema on the rows attribute.
+ * The rows data was not serialized to the block comment because WP
+ * could not properly diff the nested array without an items schema.
+ * This deprecation uses source: "query" to extract image data from
+ * the saved HTML, validate it, and migrate it to the new format
+ * where rows data is stored in the block comment.
  *
  * @package
  */
@@ -16,10 +17,42 @@ const v1 = {
 	attributes: {
 		rows: {
 			type: 'array',
-			default: [{ images: [], direction: 'left' }],
+			source: 'query',
+			selector: '.dsgo-scroll-marquee__row',
+			query: {
+				direction: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-direction',
+				},
+				images: {
+					type: 'array',
+					source: 'query',
+					// Only select images from the FIRST track-segment
+					// (the other 5 are duplicates for infinite scroll)
+					selector:
+						'.dsgo-scroll-marquee__track-segment:first-child .dsgo-scroll-marquee__image',
+					query: {
+						url: {
+							type: 'string',
+							source: 'attribute',
+							attribute: 'src',
+						},
+						alt: {
+							type: 'string',
+							source: 'attribute',
+							attribute: 'alt',
+						},
+					},
+				},
+			},
+			default: [],
 		},
 		scrollSpeed: {
 			type: 'number',
+			source: 'attribute',
+			selector: '.dsgo-scroll-marquee',
+			attribute: 'data-scroll-speed',
 			default: 0.5,
 		},
 		imageHeight: {
@@ -57,6 +90,30 @@ const v1 = {
 			text: true,
 			gradients: true,
 		},
+	},
+	migrate(attributes) {
+		// scrollSpeed comes back as a string from the HTML attribute source,
+		// convert to number for the new format.
+		const scrollSpeed =
+			typeof attributes.scrollSpeed === 'string'
+				? parseFloat(attributes.scrollSpeed)
+				: attributes.scrollSpeed;
+
+		// Add id: 0 to images (not available from HTML, will be 0 until re-selected)
+		const rows = attributes.rows.map((row) => ({
+			direction: row.direction || 'left',
+			images: (row.images || []).map((img) => ({
+				id: 0,
+				url: img.url || '',
+				alt: img.alt || '',
+			})),
+		}));
+
+		return {
+			...attributes,
+			rows,
+			scrollSpeed: scrollSpeed || 0.5,
+		};
 	},
 	save({ attributes }) {
 		const {
