@@ -122,6 +122,7 @@ const IntegrationsPanel = ({ settings, updateSetting }) => {
 								)
 							}
 							placeholder={__('0x4AAAAAAA…', 'designsetgo')}
+							autoComplete="off"
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 						/>
