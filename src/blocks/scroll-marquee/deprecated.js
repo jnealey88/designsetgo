@@ -113,7 +113,11 @@ const v1 = {
 			...attributes,
 			rows,
 			scrollSpeed:
-				isNaN(scrollSpeed) || scrollSpeed == null ? 0.5 : scrollSpeed,
+				isNaN(scrollSpeed) ||
+				scrollSpeed === null ||
+				scrollSpeed === undefined
+					? 0.5
+					: scrollSpeed,
 		};
 	},
 	save({ attributes }) {
