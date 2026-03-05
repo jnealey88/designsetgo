@@ -46,6 +46,10 @@ const v1 = {
 			default: 50,
 		},
 	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 blocks have no wrapper div - the dsgo-blobs class is directly on the block wrapper
+		return innerHTML && !innerHTML.includes('dsgo-blobs-wrapper');
+	},
 	save: ({ attributes }) => {
 		const {
 			blobShape,
@@ -98,6 +102,9 @@ const v1 = {
 			</div>
 		);
 	},
+	migrate(attributes) {
+		return attributes;
+	},
 };
 
 // Version 2: With wrapper but without align attribute
@@ -135,6 +142,14 @@ const v2 = {
 			type: 'number',
 			default: 80,
 		},
+	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v2 blocks have dsgo-blobs-wrapper but no align attribute
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-blobs-wrapper') &&
+			attributes.align === undefined
+		);
 	},
 	save({ attributes }) {
 		const {

@@ -54,6 +54,15 @@ const v2 = {
 			default: '8px',
 		},
 	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v2 blocks have dsgo-lazy-icon class but still use two-div wrapper+button structure
+		// and have dsgo-modal-trigger--width-* classes
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-modal-trigger--width-') &&
+			innerHTML.includes('dsgo-lazy-icon')
+		);
+	},
 	save({ attributes }) {
 		const {
 			targetModalId,
@@ -167,6 +176,14 @@ const v1 = {
 			type: 'string',
 			default: '8px',
 		},
+	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 blocks have inline SVG icons (no dsgo-lazy-icon class)
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-modal-trigger--width-') &&
+			!innerHTML.includes('dsgo-lazy-icon')
+		);
 	},
 	save({ attributes }) {
 		const {

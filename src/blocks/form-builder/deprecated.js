@@ -21,6 +21,19 @@ import metadata from './block.json';
 const v2 = {
 	attributes: metadata.attributes,
 	supports: metadata.supports,
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v2 blocks lack aria-hidden on honeypot and aria-atomic on message div
+		return (
+			innerHTML &&
+			((innerHTML.includes('dsg_website') &&
+				!innerHTML.includes('aria-hidden')) ||
+				(innerHTML.includes('dsgo-form__message') &&
+					!innerHTML.includes('aria-atomic')))
+		);
+	},
+	migrate(attributes) {
+		return attributes;
+	},
 	save({ attributes }) {
 		const {
 			formId,
@@ -227,6 +240,13 @@ const v2 = {
 const v1 = {
 	attributes: metadata.attributes,
 	supports: metadata.supports,
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 blocks have email config exposed as data attributes
+		return innerHTML && innerHTML.includes('data-enable-email');
+	},
+	migrate(attributes) {
+		return attributes;
+	},
 	save({ attributes }) {
 		const {
 			formId,

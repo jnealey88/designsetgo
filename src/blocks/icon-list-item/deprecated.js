@@ -40,6 +40,10 @@ const v1 = {
 			default: '',
 		},
 	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 blocks have inline SVG icons instead of dsgo-lazy-icon class
+		return innerHTML && !innerHTML.includes('dsgo-lazy-icon');
+	},
 	save({ attributes, context = {} }) {
 		const { icon, linkUrl, linkTarget, linkRel, contentGap } = attributes;
 

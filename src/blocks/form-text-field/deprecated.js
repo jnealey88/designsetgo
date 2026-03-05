@@ -67,6 +67,15 @@ const v1 = {
 		},
 	},
 
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v1 blocks lack aria-required on input
+		return (
+			innerHTML &&
+			innerHTML.includes('type="text"') &&
+			!innerHTML.includes('aria-required')
+		);
+	},
+
 	save({ attributes }) {
 		const {
 			fieldName,
@@ -157,6 +166,10 @@ const v1 = {
 				)}
 			</div>
 		);
+	},
+
+	migrate(attributes) {
+		return attributes;
 	},
 };
 

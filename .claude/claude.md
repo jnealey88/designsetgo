@@ -60,12 +60,37 @@
 
 ### Deprecations
 
-Required when changing: attribute schema, HTML structure, or removing attributes
+Required when changing: attribute schema, HTML structure, or removing attributes.
+
+**Every deprecation MUST have all three**: `isEligible`, `save`, and `migrate`.
+
+- `isEligible(attributes, innerBlocks, { innerHTML })` — Lets WordPress skip save validation and go straight to migration (silent, no warning). Use attribute checks or innerHTML pattern matching to identify the old version.
+- `save()` — The old save function (best effort reproduction of old output).
+- `migrate(attributes, innerBlocks)` — Transforms old attributes to new format. Use passthrough `return attributes;` if only HTML structure changed.
+
+Without `isEligible`, users see "Unexpected or invalid content" warnings with an "Attempt Recovery" button instead of silent auto-migration.
 
 ```javascript
-const v1 = { attributes: {}, save: () => {}, migrate: (attrs) => ({}) };
+const v1 = {
+	attributes: { /* old attribute schema */ },
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// Identify old blocks by attribute signature or HTML patterns
+		return !Object.prototype.hasOwnProperty.call(attributes, 'newAttribute');
+		// or: return innerHTML && !innerHTML.includes('new-class');
+	},
+	save({ attributes }) { /* old save output */ },
+	migrate(attributes) {
+		return { ...attributes, newAttribute: 'default' };
+	},
+};
 export default [v1];
 ```
+
+**Detection strategies for `isEligible`**:
+- Missing new attribute: `!Object.prototype.hasOwnProperty.call(attributes, 'newAttr')` (not `!attributes.newAttr` — falsy values like `false`/`0`/`""` would match incorrectly)
+- Old HTML pattern: `innerHTML && !innerHTML.includes('new-class')`
+- Removed attribute: `Object.prototype.hasOwnProperty.call(attributes, 'removedAttr')`
+- Combined: use `&&` / `||` to narrow matches when multiple versions exist
 
 ### Style Imports (MANDATORY)
 
@@ -92,6 +117,7 @@ npm run lint:php
 5. Change shared utility → Test ALL consumers
 6. Broad CSS selectors → Scope to block
 7. Change attributes → Create deprecation first
+8. Deprecation without `isEligible` → Users see "Attempt Recovery" warning instead of silent migration
 
 ## Key Patterns
 
@@ -146,4 +172,4 @@ Branch prefixes should start with `claude/`
 As you work on an issue, add notes to memory, .claude/claude-memory.md, create an agent ID or session ID so as to not confuse other agents.
 ---
 
-**Updated**: 2025-01-31 | **Version**: 1.1.0 | **WP**: 6.4+
+**Updated**: 2026-03-04 | **Version**: 1.2.0 | **WP**: 6.4+

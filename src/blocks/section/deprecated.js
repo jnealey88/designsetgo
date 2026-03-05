@@ -140,7 +140,10 @@ const v2 = {
 			</TagName>
 		);
 	},
-	// No migration needed - shape divider attributes default to empty/false
+	migrate(attributes) {
+		// Shape divider attributes default to empty/false, so no transformation needed
+		return attributes;
+	},
 };
 
 // Version 1: Before align attribute - used className for alignment

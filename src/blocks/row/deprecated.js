@@ -49,6 +49,15 @@ const v3 = {
 			type: 'string',
 		},
 	},
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// v3 blocks have tagName (added in v3) and dsgo-flex__inner but no align-items
+		return (
+			Object.prototype.hasOwnProperty.call(attributes, 'tagName') &&
+			innerHTML &&
+			innerHTML.includes('dsgo-flex__inner') &&
+			!innerHTML.includes('align-items')
+		);
+	},
 	save({ attributes }) {
 		const {
 			tagName = 'div',
@@ -185,6 +194,15 @@ const v2 = {
 			type: 'string',
 		},
 	},
+	isEligible(attributes) {
+		// v2 blocks have align (introduced in v2) but not tagName (added in v3)
+		// v1 blocks don't have align, tagName, or constrainWidth
+		return (
+			Object.prototype.hasOwnProperty.call(attributes, 'align') &&
+			!Object.prototype.hasOwnProperty.call(attributes, 'tagName') &&
+			!Object.prototype.hasOwnProperty.call(attributes, 'constrainWidth')
+		);
+	},
 	save({ attributes }) {
 		const {
 			hoverBackgroundColor,
@@ -302,6 +320,13 @@ const v1 = {
 		hoverButtonBackgroundColor: {
 			type: 'string',
 		},
+	},
+	isEligible(attributes) {
+		// v1 blocks don't have align attribute - used className for alignment
+		return (
+			attributes.align === undefined &&
+			!Object.prototype.hasOwnProperty.call(attributes, 'constrainWidth')
+		);
 	},
 	save({ attributes }) {
 		const {
