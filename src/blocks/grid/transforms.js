@@ -6,13 +6,15 @@
  * @since 1.0.0
  */
 
+import { createBlock } from '@wordpress/blocks';
+
 const transforms = {
 	from: [
 		{
 			type: 'block',
 			blocks: ['designsetgo/section'],
 			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
+				return createBlock(
 					'designsetgo/grid',
 					{
 						// Preserve all attributes including layout
@@ -33,7 +35,7 @@ const transforms = {
 			type: 'block',
 			blocks: ['designsetgo/row'],
 			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
+				return createBlock(
 					'designsetgo/grid',
 					{
 						// Preserve all attributes including layout
@@ -60,7 +62,7 @@ const transforms = {
 				return attributes.layoutType === 'grid';
 			},
 			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
+				return createBlock(
 					'designsetgo/grid',
 					{
 						rowGap: '',
@@ -83,7 +85,7 @@ const transforms = {
 			type: 'block',
 			blocks: ['designsetgo/section'],
 			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
+				return createBlock(
 					'designsetgo/section',
 					{
 						// Preserve all attributes including layout
@@ -105,7 +107,7 @@ const transforms = {
 			type: 'block',
 			blocks: ['designsetgo/row'],
 			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
+				return createBlock(
 					'designsetgo/row',
 					{
 						// Preserve all attributes including layout
@@ -156,7 +158,7 @@ const transforms = {
 				// - hoverBackgroundColor, hoverTextColor (hover effects)
 				// - hoverIconBackgroundColor, hoverButtonBackgroundColor (child context)
 
-				return wp.blocks.createBlock(
+				return createBlock(
 					'core/group',
 					{
 						align,

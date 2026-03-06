@@ -10,6 +10,8 @@
  * @package
  */
 
+import domReady from '@wordpress/dom-ready';
+import { registerBlockCollection } from '@wordpress/blocks';
 import { addFilter } from '@wordpress/hooks';
 
 /**
@@ -52,12 +54,10 @@ addFilter(
  * This creates a filterable collection in the block inserter
  * that shows all DesignSetGo blocks together.
  */
-wp.domReady(() => {
-	if (wp.blocks && wp.blocks.registerBlockCollection) {
-		// Register a block collection for all DesignSetGo blocks
-		wp.blocks.registerBlockCollection('designsetgo', {
-			title: 'DesignSetGo',
-			icon: 'layout',
-		});
-	}
+domReady(() => {
+	// Register a block collection for all DesignSetGo blocks
+	registerBlockCollection('designsetgo', {
+		title: 'DesignSetGo',
+		icon: 'layout',
+	});
 });
