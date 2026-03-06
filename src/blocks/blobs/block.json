@@ -112,14 +112,14 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"__experimentalWritingMode": true,
-			"__experimentalFontFamily": true,
-			"__experimentalFontWeight": true,
+			"writingMode": true,
+			"fontFamily": true,
+			"fontWeight": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true
 			}
 		},
-		"__experimentalBorder": {
+		"border": {
 			"radius": false,
 			"__experimentalDefaultControls": {
 				"radius": false

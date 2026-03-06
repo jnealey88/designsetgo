@@ -32,10 +32,6 @@
 		"inserter": true,
 		"align": ["left", "center", "right"],
 		"alignWide": false,
-		"typography": {
-			"textAlign": true,
-			"__experimentalWritingMode": true
-		},
 		"spacing": {
 			"padding": true,
 			"margin": [
@@ -61,19 +57,19 @@
 			"fontSize": true,
 			"lineHeight": true,
 			"textAlign": true,
-			"__experimentalWritingMode": true,
-			"__experimentalFontFamily": true,
-			"__experimentalFontWeight": true,
-			"__experimentalFontStyle": true,
-			"__experimentalTextTransform": true,
-			"__experimentalTextDecoration": true,
-			"__experimentalLetterSpacing": true,
+			"writingMode": true,
+			"fontFamily": true,
+			"fontWeight": true,
+			"fontStyle": true,
+			"textTransform": true,
+			"textDecoration": true,
+			"letterSpacing": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true
 			},
 			"__experimentalSelector": ".dsgo-pill__content"
 		},
-		"__experimentalBorder": {
+		"border": {
 			"color": true,
 			"radius": true,
 			"style": true,

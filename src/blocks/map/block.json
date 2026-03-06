@@ -81,7 +81,7 @@
 				"background": false
 			}
 		},
-		"__experimentalBorder": {
+		"border": {
 			"color": true,
 			"radius": true,
 			"style": true,
