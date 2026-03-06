@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.34
+Stable tag: 2.0.35
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,20 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.35 - 2026-03-06 =
+**New Features:**
+* New: Product Categories Grid block — display WooCommerce product categories in a responsive grid with image overlays, text position control, sidebar spacing, manual category selection, and category exclusion
+* Fix: Abilities API show_in_rest meta nesting updated for WordPress 6.9 compatibility
+
+**Bug Fixes:**
+* Fix: Add isEligible and migrate functions to all block deprecations for silent auto-migration (no more "Attempt Recovery" warnings)
+* Fix: Narrow overlapping isEligible conditions in deprecations to prevent false matches
+
+**Dependencies:**
+* Bump immutable from 5.1.4 to 5.1.5
+* Bump svgo from 3.3.2 to 3.3.3
+* Bump @tootallnate/once and @wordpress/scripts
 
 = 2.0.34 - 2026-02-27 =
 **Bug Fixes:**
