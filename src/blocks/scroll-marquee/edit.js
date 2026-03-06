@@ -10,7 +10,7 @@ import {
 	RangeControl,
 	Button,
 	Notice,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- UnitControl and HStack are stable in practice
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalHStack as HStack,

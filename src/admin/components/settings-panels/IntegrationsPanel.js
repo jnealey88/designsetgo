@@ -27,154 +27,166 @@ const IntegrationsPanel = ({ settings, updateSetting }) => {
 					)}
 				</p>
 
-				<div className="designsetgo-settings-section">
-					<h3 className="designsetgo-section-heading">
-						{__('Google Maps', 'designsetgo')}
-					</h3>
+				<form onSubmit={(e) => e.preventDefault()} autoComplete="off">
+					<div className="designsetgo-settings-section">
+						<h3 className="designsetgo-section-heading">
+							{__('Google Maps', 'designsetgo')}
+						</h3>
 
-					<TextControl
-						label={__('Google Maps API Key', 'designsetgo')}
-						help={
-							<>
-								{__(
-									'Enter your Google Maps JavaScript API key.',
-									'designsetgo'
-								)}
-								<ExternalLink href="https://console.cloud.google.com/apis/credentials">
+						<TextControl
+							label={__('Google Maps API Key', 'designsetgo')}
+							help={
+								<>
 									{__(
-										'Get your API key from Google Cloud Console',
+										'Enter your Google Maps JavaScript API key.',
 										'designsetgo'
 									)}
-								</ExternalLink>
-							</>
-						}
-						type="password"
-						value={
-							settings?.integrations?.google_maps_api_key || ''
-						}
-						onChange={(value) =>
-							updateSetting(
-								'integrations',
-								'google_maps_api_key',
-								value
-							)
-						}
-						placeholder={__('AIza…', 'designsetgo')}
-						__nextHasNoMarginBottom
-						__next40pxDefaultSize
-					/>
+									<ExternalLink href="https://console.cloud.google.com/apis/credentials">
+										{__(
+											'Get your API key from Google Cloud Console',
+											'designsetgo'
+										)}
+									</ExternalLink>
+								</>
+							}
+							type="password"
+							value={
+								settings?.integrations?.google_maps_api_key ||
+								''
+							}
+							onChange={(value) =>
+								updateSetting(
+									'integrations',
+									'google_maps_api_key',
+									value
+								)
+							}
+							placeholder={__('AIza…', 'designsetgo')}
+							autoComplete="off"
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+						/>
 
-					<div className="designsetgo-settings-note">
-						<strong>
-							{__('⚠️ Important Security Notice:', 'designsetgo')}
-						</strong>
-						<p>
+						<div className="designsetgo-settings-note">
+							<strong>
+								{__(
+									'⚠️ Important Security Notice:',
+									'designsetgo'
+								)}
+							</strong>
+							<p>
+								{__(
+									'Always configure HTTP referrer restrictions in the Google Cloud Console to prevent unauthorized use of your API key. This is critical for security and preventing unexpected charges.',
+									'designsetgo'
+								)}
+							</p>
+						</div>
+					</div>
+
+					<div className="designsetgo-settings-section">
+						<h3 className="designsetgo-section-heading">
+							{__('Cloudflare Turnstile', 'designsetgo')}
+						</h3>
+
+						<p className="designsetgo-section-description">
 							{__(
-								'Always configure HTTP referrer restrictions in the Google Cloud Console to prevent unauthorized use of your API key. This is critical for security and preventing unexpected charges.',
+								'Turnstile is a privacy-preserving CAPTCHA alternative that protects your forms from spam without user interaction.',
 								'designsetgo'
 							)}
 						</p>
-					</div>
-				</div>
 
-				<div className="designsetgo-settings-section">
-					<h3 className="designsetgo-section-heading">
-						{__('Cloudflare Turnstile', 'designsetgo')}
-					</h3>
-
-					<p className="designsetgo-section-description">
-						{__(
-							'Turnstile is a privacy-preserving CAPTCHA alternative that protects your forms from spam without user interaction.',
-							'designsetgo'
-						)}
-					</p>
-
-					<TextControl
-						label={__('Site Key', 'designsetgo')}
-						help={
-							<>
-								{__(
-									'Your Turnstile site key (public).',
-									'designsetgo'
-								)}{' '}
-								<ExternalLink href="https://dash.cloudflare.com/?to=/:account/turnstile">
+						<TextControl
+							label={__('Site Key', 'designsetgo')}
+							help={
+								<>
 									{__(
-										'Get your keys from Cloudflare Dashboard',
+										'Your Turnstile site key (public).',
 										'designsetgo'
-									)}
-								</ExternalLink>
-							</>
-						}
-						value={settings?.integrations?.turnstile_site_key || ''}
-						onChange={(value) =>
-							updateSetting(
-								'integrations',
-								'turnstile_site_key',
-								value
-							)
-						}
-						placeholder={__('0x4AAAAAAA…', 'designsetgo')}
-						__nextHasNoMarginBottom
-						__next40pxDefaultSize
-					/>
+									)}{' '}
+									<ExternalLink href="https://dash.cloudflare.com/?to=/:account/turnstile">
+										{__(
+											'Get your keys from Cloudflare Dashboard',
+											'designsetgo'
+										)}
+									</ExternalLink>
+								</>
+							}
+							value={
+								settings?.integrations?.turnstile_site_key || ''
+							}
+							onChange={(value) =>
+								updateSetting(
+									'integrations',
+									'turnstile_site_key',
+									value
+								)
+							}
+							placeholder={__('0x4AAAAAAA…', 'designsetgo')}
+							autoComplete="off"
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+						/>
 
-					<TextControl
-						label={__('Secret Key', 'designsetgo')}
-						help={__(
-							'Your Turnstile secret key (private, used for server-side verification).',
-							'designsetgo'
-						)}
-						type="password"
-						value={
-							settings?.integrations?.turnstile_secret_key || ''
-						}
-						onChange={(value) =>
-							updateSetting(
-								'integrations',
-								'turnstile_secret_key',
-								value
-							)
-						}
-						placeholder={__('0x4AAAAAAA…', 'designsetgo')}
-						__nextHasNoMarginBottom
-						__next40pxDefaultSize
-					/>
-
-					<div className="designsetgo-settings-note">
-						<strong>
-							{__(
-								'How to get your Turnstile keys:',
+						<TextControl
+							label={__('Secret Key', 'designsetgo')}
+							help={__(
+								'Your Turnstile secret key (private, used for server-side verification).',
 								'designsetgo'
 							)}
-						</strong>
-						<ol>
-							<li>
+							type="password"
+							value={
+								settings?.integrations?.turnstile_secret_key ||
+								''
+							}
+							onChange={(value) =>
+								updateSetting(
+									'integrations',
+									'turnstile_secret_key',
+									value
+								)
+							}
+							placeholder={__('0x4AAAAAAA…', 'designsetgo')}
+							autoComplete="off"
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+						/>
+
+						<div className="designsetgo-settings-note">
+							<strong>
 								{__(
-									'Log in to your Cloudflare Dashboard',
+									'How to get your Turnstile keys:',
 									'designsetgo'
 								)}
-							</li>
-							<li>
-								{__(
-									'Navigate to Turnstile in the sidebar',
-									'designsetgo'
-								)}
-							</li>
-							<li>
-								{__(
-									'Click "Add Site" and enter your domain',
-									'designsetgo'
-								)}
-							</li>
-							<li>
-								{__(
-									'Copy both the Site Key and Secret Key',
-									'designsetgo'
-								)}
-							</li>
-						</ol>
+							</strong>
+							<ol>
+								<li>
+									{__(
+										'Log in to your Cloudflare Dashboard',
+										'designsetgo'
+									)}
+								</li>
+								<li>
+									{__(
+										'Navigate to Turnstile in the sidebar',
+										'designsetgo'
+									)}
+								</li>
+								<li>
+									{__(
+										'Click "Add Site" and enter your domain',
+										'designsetgo'
+									)}
+								</li>
+								<li>
+									{__(
+										'Copy both the Site Key and Secret Key',
+										'designsetgo'
+									)}
+								</li>
+							</ol>
+						</div>
 					</div>
-				</div>
+				</form>
 			</CardBody>
 		</Card>
 	);

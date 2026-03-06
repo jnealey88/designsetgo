@@ -6,13 +6,15 @@
  * @since 1.0.0
  */
 
+import { createBlock } from '@wordpress/blocks';
+
 const transforms = {
 	from: [
 		{
 			type: 'block',
 			blocks: ['designsetgo/flex'],
 			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
+				return createBlock(
 					'designsetgo/row',
 					{
 						// Transfer all attributes from legacy Flex block
@@ -26,7 +28,7 @@ const transforms = {
 			type: 'block',
 			blocks: ['designsetgo/stack', 'designsetgo/section'],
 			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
+				return createBlock(
 					'designsetgo/row',
 					{
 						// Preserve all attributes including layout
@@ -42,7 +44,7 @@ const transforms = {
 			type: 'block',
 			blocks: ['designsetgo/grid'],
 			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
+				return createBlock(
 					'designsetgo/row',
 					{
 						// Preserve all attributes including layout
@@ -68,7 +70,7 @@ const transforms = {
 			type: 'block',
 			blocks: ['designsetgo/section'],
 			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
+				return createBlock(
 					'designsetgo/section',
 					{
 						// Preserve all attributes including layout
@@ -84,7 +86,7 @@ const transforms = {
 			type: 'block',
 			blocks: ['designsetgo/grid'],
 			transform: (attributes, innerBlocks) => {
-				return wp.blocks.createBlock(
+				return createBlock(
 					'designsetgo/grid',
 					{
 						// Preserve all attributes including layout
@@ -142,7 +144,7 @@ const transforms = {
 				// - hoverBackgroundColor, hoverTextColor (hover effects)
 				// - hoverIconBackgroundColor, hoverButtonBackgroundColor (child context)
 
-				return wp.blocks.createBlock(
+				return createBlock(
 					'core/group',
 					{
 						align,

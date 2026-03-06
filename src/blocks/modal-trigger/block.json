@@ -35,11 +35,11 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"__experimentalFontFamily": true,
-			"__experimentalFontWeight": true,
-			"__experimentalLetterSpacing": true
+			"fontFamily": true,
+			"fontWeight": true,
+			"letterSpacing": true
 		},
-		"__experimentalBorder": {
+		"border": {
 			"color": true,
 			"radius": true,
 			"style": true,

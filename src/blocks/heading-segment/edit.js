@@ -14,7 +14,7 @@ import {
 	useBlockProps,
 	RichText,
 	BlockControls,
-	useSetting,
+	useSettings,
 } from '@wordpress/block-editor';
 import { ToolbarGroup, ToolbarDropdownMenu } from '@wordpress/components';
 import { formatBold, typography as typographyIcon } from '@wordpress/icons';
@@ -63,7 +63,7 @@ const TEXT_TRANSFORMS = [
 export default function HeadingSegmentEdit({ attributes, setAttributes }) {
 	const { content, style, fontFamily } = attributes;
 
-	const fontFamilies = useSetting('typography.fontFamilies');
+	const [fontFamilies] = useSettings('typography.fontFamilies');
 	const availableFonts = Array.isArray(fontFamilies) ? fontFamilies : [];
 
 	const currentWeight = style?.typography?.fontWeight;
