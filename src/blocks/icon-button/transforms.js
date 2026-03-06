@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+import { createBlock } from '@wordpress/blocks';
+
 const transforms = {
 	from: [],
 	to: [
@@ -58,12 +60,12 @@ const transforms = {
 				const justifyContent = alignToJustify[align];
 
 				// core/button must be wrapped in core/buttons
-				const innerButton = wp.blocks.createBlock(
+				const innerButton = createBlock(
 					'core/button',
 					buttonAttributes
 				);
 
-				return wp.blocks.createBlock(
+				return createBlock(
 					'core/buttons',
 					{
 						layout: {
