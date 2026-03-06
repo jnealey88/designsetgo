@@ -41,21 +41,21 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"__experimentalFontFamily": true,
-			"__experimentalFontWeight": true,
-			"__experimentalFontStyle": true,
-			"__experimentalTextTransform": true,
-			"__experimentalTextDecoration": true,
-			"__experimentalLetterSpacing": true,
+			"fontFamily": true,
+			"fontWeight": true,
+			"fontStyle": true,
+			"textTransform": true,
+			"textDecoration": true,
+			"letterSpacing": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true,
 				"lineHeight": true,
-				"__experimentalFontFamily": true,
-				"__experimentalFontWeight": true,
-				"__experimentalFontStyle": true,
-				"__experimentalTextTransform": true,
-				"__experimentalTextDecoration": true,
-				"__experimentalLetterSpacing": true
+				"fontFamily": true,
+				"fontWeight": true,
+				"fontStyle": true,
+				"textTransform": true,
+				"textDecoration": true,
+				"letterSpacing": true
 			}
 		},
 		"spacing": {
@@ -64,7 +64,7 @@
 				"padding": false
 			}
 		},
-		"__experimentalBorder": {
+		"border": {
 			"color": true,
 			"radius": true,
 			"style": true,
