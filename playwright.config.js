@@ -16,7 +16,7 @@ process.env.STORAGE_STATE_PATH =
 	path.join(process.env.WP_ARTIFACTS_PATH, 'storage-states/admin.json');
 
 // WordPress environment URL (default wp-env port is 8888)
-const WP_BASE_URL = process.env.WP_BASE_URL || 'http://localhost:8888';
+const WP_BASE_URL = process.env.WP_BASE_URL || 'http://localhost:9449';
 const baseUrl = new URL(WP_BASE_URL);
 
 module.exports = defineConfig({
