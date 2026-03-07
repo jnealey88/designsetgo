@@ -223,7 +223,7 @@ function dsgo_get_all_icons() {
  * Get icon alias map.
  *
  * Maps alternate icon names to their canonical names in the icon library.
- * Single source of truth: src/data/icon-aliases.json (shared with JS).
+ * Single source of truth: includes/data/icon-aliases.json (shared with JS).
  *
  * @return array Associative array of alias => canonical_name.
  */

@@ -1512,7 +1512,7 @@ SVG_ICONS.twitter = SVG_ICONS.x;
 /**
  * Icon alias map — single source of truth shared with PHP.
  *
- * @see src/data/icon-aliases.json
+ * @see includes/data/icon-aliases.json
  */
 import ICON_ALIASES from '../../../../includes/data/icon-aliases.json';
 
