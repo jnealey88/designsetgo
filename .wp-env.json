@@ -17,7 +17,6 @@
 			]
 		},
 		"tests": {
-			"__comment": "Tests environment uses WP 6.8 to verify backward compatibility (plugin supports WP 6.7+).",
 			"core": "WordPress/WordPress#6.8",
 			"themes": [
 				"https://downloads.wordpress.org/theme/twentytwentyfour.1.3.zip",
