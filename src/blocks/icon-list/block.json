@@ -20,7 +20,7 @@
 			"wide",
 			"full"
 		],
-		"__experimentalTextAlign": true,
+		"textAlign": true,
 		"html": false,
 		"inserter": true,
 		"spacing": {

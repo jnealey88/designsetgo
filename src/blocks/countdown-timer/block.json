@@ -32,7 +32,7 @@
 			"fontSize": true,
 			"lineHeight": true,
 			"fontWeight": true,
-			"__experimentalTextAlign": true,
+			"textAlign": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true,
 				"textAlign": true
