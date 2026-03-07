@@ -601,7 +601,7 @@ $shape-divider-bleed: 2px;
 		// Extend slightly beyond container to prevent sub-pixel gaps on small screens.
 		// Relies on overflow: hidden above to clip the excess.
 		height: calc(100% + #{$shape-divider-bleed});
-		fill: var(--dsgo-shape-color, currentColor);
+		fill: var(--dsgo-shape-color, transparent);
 	}
 
 	// Top position - shape at the top edge of section

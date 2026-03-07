@@ -86,7 +86,7 @@ function ShapePreview({
 				style={{
 					width: '100%',
 					height: '100%',
-					fill: safeColor || 'currentColor',
+					fill: safeColor || 'transparent',
 					transform:
 						transforms.length > 0
 							? transforms.join(' ')

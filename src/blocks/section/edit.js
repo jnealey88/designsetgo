@@ -54,6 +54,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		align,
 		className,
 		tagName = 'div',
+		backgroundColor,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -80,6 +81,11 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		shapeDividerBottomFlipY,
 		shapeDividerBottomFront,
 	} = attributes;
+
+	// Get section's effective background color for shape divider default
+	const sectionBackgroundColor = backgroundColor
+		? `var(--wp--preset--color--${backgroundColor})`
+		: attributes.style?.color?.background || '';
 
 	// Auto-migrate old blocks that use className for alignment
 	useEffect(() => {
@@ -585,7 +591,10 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 			<TagName {...blockProps}>
 				<ShapeDivider
 					shape={shapeDividerTop}
-					color={convertPresetToCSSVar(shapeDividerTopColor)}
+					color={
+						convertPresetToCSSVar(shapeDividerTopColor) ||
+						sectionBackgroundColor
+					}
 					backgroundColor={convertPresetToCSSVar(
 						shapeDividerTopBackgroundColor
 					)}
@@ -599,7 +608,10 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 				<div {...innerBlocksProps} />
 				<ShapeDivider
 					shape={shapeDividerBottom}
-					color={convertPresetToCSSVar(shapeDividerBottomColor)}
+					color={
+						convertPresetToCSSVar(shapeDividerBottomColor) ||
+						sectionBackgroundColor
+					}
 					backgroundColor={convertPresetToCSSVar(
 						shapeDividerBottomBackgroundColor
 					)}

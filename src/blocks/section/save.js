@@ -47,6 +47,11 @@ export default function SectionSave({ attributes }) {
 		shapeDividerBottomFront,
 	} = attributes;
 
+	// Get section's effective background color for shape divider default
+	const sectionBackgroundColor = attributes.backgroundColor
+		? `var(--wp--preset--color--${attributes.backgroundColor})`
+		: attributes.style?.color?.background || '';
+
 	// Build className with conditional no-width-constraint and overlay classes
 	const className = [
 		'dsgo-stack',
@@ -116,7 +121,10 @@ export default function SectionSave({ attributes }) {
 		<TagName {...blockProps}>
 			<ShapeDivider
 				shape={shapeDividerTop}
-				color={convertPresetToCSSVar(shapeDividerTopColor)}
+				color={
+					convertPresetToCSSVar(shapeDividerTopColor) ||
+					sectionBackgroundColor
+				}
 				backgroundColor={convertPresetToCSSVar(
 					shapeDividerTopBackgroundColor
 				)}
@@ -130,7 +138,10 @@ export default function SectionSave({ attributes }) {
 			<div {...innerBlocksProps} />
 			<ShapeDivider
 				shape={shapeDividerBottom}
-				color={convertPresetToCSSVar(shapeDividerBottomColor)}
+				color={
+					convertPresetToCSSVar(shapeDividerBottomColor) ||
+					sectionBackgroundColor
+				}
 				backgroundColor={convertPresetToCSSVar(
 					shapeDividerBottomBackgroundColor
 				)}
