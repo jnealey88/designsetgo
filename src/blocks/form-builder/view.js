@@ -158,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			'data-success-message'
 		);
 		const errorMessage = formContainer.getAttribute('data-error-message');
+		const redirectUrl = formContainer.getAttribute('data-redirect-url');
 
 		// Handle form submission
 		formElement.addEventListener('submit', async function (e) {
@@ -232,16 +233,6 @@ document.addEventListener('DOMContentLoaded', function () {
 				const result = await response.json();
 
 				if (result.success) {
-					// Show success message
-					showMessage(
-						messageContainer,
-						successMessage || result.message,
-						'success'
-					);
-
-					// Reset form
-					formElement.reset();
-
 					// Fire custom event for tracking/analytics
 					formContainer.dispatchEvent(
 						new CustomEvent('dsgoFormSubmitted', {
@@ -252,6 +243,22 @@ document.addEventListener('DOMContentLoaded', function () {
 							bubbles: true,
 						})
 					);
+
+					// Redirect if URL is configured
+					if (redirectUrl) {
+						window.location.href = redirectUrl;
+						return;
+					}
+
+					// Show success message
+					showMessage(
+						messageContainer,
+						successMessage || result.message,
+						'success'
+					);
+
+					// Reset form
+					formElement.reset();
 
 					// Scroll to message if not visible
 					if (!isElementInViewport(messageContainer)) {

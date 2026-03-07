@@ -45,6 +45,10 @@
 			"type": "string",
 			"default": "There was an error submitting the form. Please try again."
 		},
+		"redirectUrl": {
+			"type": "string",
+			"default": ""
+		},
 		"fieldSpacing": {
 			"type": "string",
 			"default": "1.5rem"

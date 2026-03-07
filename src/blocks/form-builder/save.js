@@ -35,6 +35,7 @@ export default function FormBuilderSave({ attributes }) {
 		submitButtonHoverBackgroundColor,
 		enableHoneypot,
 		enableTurnstile,
+		redirectUrl,
 	} = attributes;
 
 	// Same classes as edit.js - MUST MATCH
@@ -67,6 +68,9 @@ export default function FormBuilderSave({ attributes }) {
 		'data-submit-text': submitButtonText,
 		...(enableTurnstile && {
 			'data-dsgo-turnstile': 'true',
+		}),
+		...(redirectUrl && {
+			'data-redirect-url': redirectUrl,
 		}),
 	});
 
