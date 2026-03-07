@@ -80,39 +80,39 @@
 			color: var(--dsgo-tab-color-active, var(--wp--preset--color--accent-2, #2563eb));
 			font-weight: 600;
 		}
-	}
 
-	.dsgo-tabs__tab-icon {
-		display: inline-flex;
-		align-items: center;
-		color: currentcolor;
-
-		svg {
-			fill: currentcolor;
+		.dsgo-tabs__tab-icon {
+			display: inline-flex;
+			align-items: center;
 			color: currentcolor;
+
+			svg {
+				fill: currentcolor;
+				color: currentcolor;
+			}
 		}
-	}
 
-	.dsgo-tabs__tab-icon-top {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin-bottom: 0.25rem;
-		color: currentcolor;
-
-		svg {
-			fill: currentcolor;
+		.dsgo-tabs__tab-icon-top {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-bottom: 0.25rem;
 			color: currentcolor;
-		}
-	}
 
-	// Icon top layout: stack icon above text
-	&.has-icon-top {
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		white-space: normal;
-		gap: 0.25rem;
+			svg {
+				fill: currentcolor;
+				color: currentcolor;
+			}
+		}
+
+		// Icon top layout: stack icon above text
+		&.has-icon-top {
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+			white-space: normal;
+			gap: 0.25rem;
+		}
 	}
 
 	// Panels container - no typography overrides
