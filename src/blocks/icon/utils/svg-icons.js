@@ -1514,7 +1514,7 @@ SVG_ICONS.twitter = SVG_ICONS.x;
  *
  * @see src/data/icon-aliases.json
  */
-import ICON_ALIASES from '../../../data/icon-aliases.json';
+import ICON_ALIASES from '../../../../includes/data/icon-aliases.json';
 
 /**
  * Resolve an icon name, returning the canonical name if an alias is provided.

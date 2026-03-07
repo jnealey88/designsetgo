@@ -14,9 +14,9 @@ These must stay in sync manually. A comment says "Must be kept in sync" but ther
 
 ## Solution
 
-Extract the alias map into `src/data/icon-aliases.json`. Both JS and PHP read from this single file.
+Extract the alias map into `includes/data/icon-aliases.json`. Both JS and PHP read from this single file.
 
-### File: `src/data/icon-aliases.json`
+### File: `includes/data/icon-aliases.json`
 
 Flat JSON object mapping alias to canonical icon name. No comments (JSON limitation) — the values are self-documenting.
 
@@ -37,7 +37,7 @@ function dsgo_get_icon_aliases() {
     if ( null !== $aliases ) {
         return $aliases;
     }
-    $file = plugin_dir_path( __DIR__ ) . 'src/data/icon-aliases.json';
+    $file = plugin_dir_path( __DIR__ ) . 'includes/data/icon-aliases.json';
     if ( ! file_exists( $file ) ) {
         $aliases = array();
         return $aliases;
@@ -53,7 +53,7 @@ Static cache preserves current performance characteristics. Guard clause handles
 
 | File | Action |
 |------|--------|
-| `src/data/icon-aliases.json` | Create (~180 lines) |
+| `includes/data/icon-aliases.json` | Create (~180 lines) |
 | `src/blocks/icon/utils/svg-icons.js` | Remove inline ICON_ALIASES, add JSON import |
 | `includes/icon-svg-library.php` | Replace hardcoded array with JSON file read |
 | `includes/class-icon-injector.php` | No changes (calls `dsgo_get_icon_aliases()`) |

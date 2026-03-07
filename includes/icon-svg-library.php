@@ -234,7 +234,7 @@ function dsgo_get_icon_aliases() {
 		return $aliases;
 	}
 
-	$file = plugin_dir_path( __DIR__ ) . 'src/data/icon-aliases.json';
+	$file = __DIR__ . '/data/icon-aliases.json';
 
 	if ( ! file_exists( $file ) ) {
 		$aliases = array();
@@ -242,7 +242,7 @@ function dsgo_get_icon_aliases() {
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reading local plugin file.
-	$aliases = json_decode( file_get_contents( $file ), true );
+	$aliases = json_decode( file_get_contents( $file ), true ) ?? array();
 
 	return $aliases;
 }
