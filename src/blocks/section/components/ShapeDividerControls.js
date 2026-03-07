@@ -78,7 +78,7 @@ function ShapePreview({
 				height: '40px',
 				overflow: 'hidden',
 				borderRadius: '4px',
-				backgroundColor: safeBackgroundColor || sectionTextColor || '#f0f0f0',
+				backgroundColor: safeBackgroundColor || sanitizeColor(sectionTextColor) || '#f0f0f0',
 				marginBottom: '12px',
 			}}
 		>
