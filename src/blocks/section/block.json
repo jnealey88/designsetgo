@@ -66,7 +66,7 @@
 		"position": {
 			"sticky": true
 		},
-		"__experimentalBorder": {
+		"border": {
 			"color": true,
 			"radius": true,
 			"style": true,

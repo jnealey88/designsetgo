@@ -45,6 +45,8 @@
     "test:install": "playwright install --with-deps",
     "wp-env": "wp-env",
     "wp-env:start": "wp-env start",
+    "wp-env:start:7": "cp .wp-env.7.override.json .wp-env.override.json && wp-env start --update",
+    "wp-env:stop:7": "wp-env stop && rm -f .wp-env.override.json",
     "wp-env:stop": "wp-env stop",
     "wp-env:clean": "wp-env clean",
     "security:audit": "npm audit && npm run check-licenses",

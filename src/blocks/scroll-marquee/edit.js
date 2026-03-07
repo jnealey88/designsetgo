@@ -10,9 +10,9 @@ import {
 	RangeControl,
 	Button,
 	Notice,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- UnitControl and HStack are stable in practice
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- no stable export in @wordpress/components
 	__experimentalUnitControl as UnitControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- no stable export in @wordpress/components
 	__experimentalHStack as HStack,
 } from '@wordpress/components';
 import { plus, close } from '@wordpress/icons';

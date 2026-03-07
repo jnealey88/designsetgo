@@ -98,8 +98,8 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"__experimentalFontFamily": true,
-			"__experimentalFontWeight": true
+			"fontFamily": true,
+			"fontWeight": true
 		}
 	},
 	"editorScript": "file:./index.js",

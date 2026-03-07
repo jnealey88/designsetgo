@@ -117,13 +117,13 @@
         "typography": {
             "fontSize": true,
             "lineHeight": true,
-            "__experimentalFontFamily": true,
-            "__experimentalFontWeight": true,
+            "fontFamily": true,
+            "fontWeight": true,
             "__experimentalDefaultControls": {
                 "fontSize": true
             }
         },
-        "__experimentalBorder": {
+        "border": {
             "color": true,
             "radius": true,
             "style": true,
