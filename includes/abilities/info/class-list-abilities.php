@@ -44,16 +44,16 @@ class List_Abilities extends Abstract_Ability {
 		return array(
 			'label'               => __( 'List DesignSetGo Abilities', 'designsetgo' ),
 			'description'         => __( 'Returns a manifest of all registered DesignSetGo abilities with their names, descriptions, categories, and input schemas. Use this to discover what DesignSetGo can do.', 'designsetgo' ),
-			'thinking_message'    => __( 'Retrieving available abilities...', 'designsetgo' ),
-			'success_message'     => __( 'Successfully retrieved abilities list.', 'designsetgo' ),
 			'category'            => 'info',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
-			'show_in_rest'        => true,
-			'annotations'         => array(
-				'readonly'     => true,
-				'instructions' => 'Call this first to discover all available DesignSetGo abilities. Use category filter to narrow by type: inserter, configurator, generator, or info.',
+			'meta'                => array(
+				'show_in_rest' => true,
+				'annotations'  => array(
+					'readonly'     => true,
+					'instructions' => 'Call this first to discover all available DesignSetGo abilities. Use category filter to narrow by type: inserter, configurator, generator, or info.',
+				),
 			),
 		);
 	}

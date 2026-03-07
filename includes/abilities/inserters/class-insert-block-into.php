@@ -48,8 +48,6 @@ class Insert_Block_Into extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Block Into', 'designsetgo' ),
 			'description'         => __( 'Inserts a block as a child of an existing block. Use get-post-blocks to find the parent blockIndex first. The new block is inserted into the parent\'s innerBlocks at the specified position.', 'designsetgo' ),
-			'thinking_message'    => __( 'Inserting block into parent...', 'designsetgo' ),
-			'success_message'     => __( 'Block inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),

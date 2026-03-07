@@ -45,8 +45,6 @@ class Configure_Block_Attributes extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Configure Block Attributes', 'designsetgo' ),
 			'description'         => __( 'Updates any block attributes by document-order index, block name, or client ID. Use get-post-blocks to find the target blockIndex first. Supports all block attributes including style (padding, colors, typography), custom attributes, and WordPress supports-generated attributes.', 'designsetgo' ),
-			'thinking_message'    => __( 'Configuring block attributes...', 'designsetgo' ),
-			'success_message'     => __( 'Block attributes configured successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),

@@ -42,8 +42,6 @@ class Insert_Timeline_Item extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Timeline Item', 'designsetgo' ),
 			'description'         => __( 'Inserts a timeline item with date, title, and content into an existing timeline container.', 'designsetgo' ),
-			'thinking_message'    => __( 'Adding timeline item...', 'designsetgo' ),
-			'success_message'     => __( 'Timeline item added successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),
