@@ -89,7 +89,7 @@ class Section_Styles {
 
 		// Only update if we actually made changes.
 		if ( $modified ) {
-			$theme_json->update_with( $data );
+			return $theme_json->update_with( $data );
 		}
 
 		return $theme_json;

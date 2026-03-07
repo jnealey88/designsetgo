@@ -272,7 +272,7 @@ class Loader {
 				'wp_theme_json_data_default',
 				function ( $theme_json ) use ( $all_style_variations ) {
 					$new_data = array(
-						'version' => 2,
+						'version' => 3,
 						'styles'  => array(
 							'blocks' => array(),
 						),
