@@ -54,6 +54,8 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		align,
 		className,
 		tagName = 'div',
+		backgroundColor,
+		textColor,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -80,6 +82,19 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		shapeDividerBottomFlipY,
 		shapeDividerBottomFront,
 	} = attributes;
+
+	// Get section's effective background color for shape divider default
+	// Prefer inline style (custom color) over preset slug
+	const sectionBackgroundColor =
+		attributes.style?.color?.background ||
+		(backgroundColor
+			? `var(--wp--preset--color--${backgroundColor})`
+			: '');
+
+	// Get section's effective text color for shape divider background default
+	const sectionTextColor =
+		attributes.style?.color?.text ||
+		(textColor ? `var(--wp--preset--color--${textColor})` : '');
 
 	// Auto-migrate old blocks that use className for alignment
 	useEffect(() => {
@@ -579,16 +594,23 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 				<ShapeDividerControls
 					attributes={attributes}
 					setAttributes={setAttributes}
+					sectionBackgroundColor={sectionBackgroundColor}
+					sectionTextColor={sectionTextColor}
 				/>
 			</InspectorControls>
 
 			<TagName {...blockProps}>
 				<ShapeDivider
 					shape={shapeDividerTop}
-					color={convertPresetToCSSVar(shapeDividerTopColor)}
-					backgroundColor={convertPresetToCSSVar(
-						shapeDividerTopBackgroundColor
-					)}
+					color={
+						convertPresetToCSSVar(shapeDividerTopColor) ||
+						sectionBackgroundColor
+					}
+					backgroundColor={
+						convertPresetToCSSVar(
+							shapeDividerTopBackgroundColor
+						) || sectionTextColor
+					}
 					height={shapeDividerTopHeight}
 					width={shapeDividerTopWidth}
 					flipX={shapeDividerTopFlipX}
@@ -599,10 +621,15 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 				<div {...innerBlocksProps} />
 				<ShapeDivider
 					shape={shapeDividerBottom}
-					color={convertPresetToCSSVar(shapeDividerBottomColor)}
-					backgroundColor={convertPresetToCSSVar(
-						shapeDividerBottomBackgroundColor
-					)}
+					color={
+						convertPresetToCSSVar(shapeDividerBottomColor) ||
+						sectionBackgroundColor
+					}
+					backgroundColor={
+						convertPresetToCSSVar(
+							shapeDividerBottomBackgroundColor
+						) || sectionTextColor
+					}
 					height={shapeDividerBottomHeight}
 					width={shapeDividerBottomWidth}
 					flipX={shapeDividerBottomFlipX}

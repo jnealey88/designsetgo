@@ -102,7 +102,7 @@ export default function ShapeDivider({
 		'--dsgo-shape-height': `${safeHeight}px`,
 		'--dsgo-shape-width': `${safeWidth}%`,
 		'--dsgo-shape-offset': `-${widthOffset}%`,
-		'--dsgo-shape-color': safeColor || 'currentColor',
+		'--dsgo-shape-color': safeColor || 'transparent',
 		...(safeBackgroundColor && {
 			'--dsgo-shape-background': safeBackgroundColor,
 		}),

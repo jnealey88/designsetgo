@@ -43,6 +43,8 @@ function ShapePreview({
 	flipX,
 	flipY,
 	isBottom,
+	sectionBackgroundColor = '',
+	sectionTextColor = '',
 }) {
 	if (!shape) {
 		return null;
@@ -76,7 +78,7 @@ function ShapePreview({
 				height: '40px',
 				overflow: 'hidden',
 				borderRadius: '4px',
-				backgroundColor: safeBackgroundColor || '#f0f0f0',
+				backgroundColor: safeBackgroundColor || sanitizeColor(sectionTextColor) || '#f0f0f0',
 				marginBottom: '12px',
 			}}
 		>
@@ -86,7 +88,7 @@ function ShapePreview({
 				style={{
 					width: '100%',
 					height: '100%',
-					fill: safeColor || 'currentColor',
+					fill: safeColor || sectionBackgroundColor || 'transparent',
 					transform:
 						transforms.length > 0
 							? transforms.join(' ')
@@ -130,6 +132,8 @@ function ShapeDividerPanel({
 	front,
 	isBottom,
 	onChange,
+	sectionBackgroundColor = '',
+	sectionTextColor = '',
 }) {
 	return (
 		<PanelBody title={title} initialOpen={false}>
@@ -151,6 +155,8 @@ function ShapeDividerPanel({
 						flipX={flipX}
 						flipY={flipY}
 						isBottom={isBottom}
+						sectionBackgroundColor={sectionBackgroundColor}
+						sectionTextColor={sectionTextColor}
 					/>
 
 					<RangeControl
@@ -223,7 +229,12 @@ function ShapeDividerPanel({
  * @param {Function} props.setAttributes Function to update attributes
  * @return {JSX.Element} Shape divider controls
  */
-export default function ShapeDividerControls({ attributes, setAttributes }) {
+export default function ShapeDividerControls({
+	attributes,
+	setAttributes,
+	sectionBackgroundColor = '',
+	sectionTextColor = '',
+}) {
 	const {
 		shapeDividerTop,
 		shapeDividerTopColor,
@@ -333,6 +344,8 @@ export default function ShapeDividerControls({ attributes, setAttributes }) {
 				front={shapeDividerTopFront}
 				isBottom={false}
 				onChange={handleTopChange}
+				sectionBackgroundColor={sectionBackgroundColor}
+				sectionTextColor={sectionTextColor}
 			/>
 			<ShapeDividerPanel
 				title={__('Bottom Shape Divider', 'designsetgo')}
@@ -346,6 +359,8 @@ export default function ShapeDividerControls({ attributes, setAttributes }) {
 				front={shapeDividerBottomFront}
 				isBottom={true}
 				onChange={handleBottomChange}
+				sectionBackgroundColor={sectionBackgroundColor}
+				sectionTextColor={sectionTextColor}
 			/>
 		</>
 	);
