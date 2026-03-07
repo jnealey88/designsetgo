@@ -110,7 +110,12 @@ class Loader {
 		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
 			$rest_prefix = rest_get_url_prefix();
 			$request_uri = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+			// Pretty permalinks: /wp-json/...
 			if ( false !== strpos( $request_uri, '/' . $rest_prefix . '/' ) ) {
+				return true;
+			}
+			// Plain permalinks: ?rest_route=/...
+			if ( false !== strpos( $request_uri, 'rest_route=' ) ) {
 				return true;
 			}
 		}
