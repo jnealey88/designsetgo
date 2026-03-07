@@ -43,8 +43,6 @@ class Insert_Timeline extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Insert Timeline', 'designsetgo' ),
 			'description'         => __( 'Inserts a Timeline block for displaying chronological events, company history, product roadmaps, or process steps with customizable layouts and scroll animations.', 'designsetgo' ),
-			'thinking_message'    => __( 'Creating timeline...', 'designsetgo' ),
-			'success_message'     => __( 'Timeline inserted successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Inserter::get_default_output_schema(),

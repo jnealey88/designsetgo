@@ -75,8 +75,6 @@ class Configure_Shape_Divider extends Abstract_Ability {
 		return array(
 			'label'               => __( 'Configure Shape Divider', 'designsetgo' ),
 			'description'         => __( 'Adds or updates shape dividers on a section block. Supports top, bottom, or both positions with 23 shape types, custom colors, height, width, flip, and layering options.', 'designsetgo' ),
-			'thinking_message'    => __( 'Configuring shape divider...', 'designsetgo' ),
-			'success_message'     => __( 'Shape divider configured successfully.', 'designsetgo' ),
 			'category'            => 'blocks',
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),
