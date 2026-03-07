@@ -44,6 +44,7 @@ function ShapePreview({
 	flipY,
 	isBottom,
 	sectionBackgroundColor = '',
+	sectionTextColor = '',
 }) {
 	if (!shape) {
 		return null;
@@ -77,7 +78,7 @@ function ShapePreview({
 				height: '40px',
 				overflow: 'hidden',
 				borderRadius: '4px',
-				backgroundColor: safeBackgroundColor || '#f0f0f0',
+				backgroundColor: safeBackgroundColor || sectionTextColor || '#f0f0f0',
 				marginBottom: '12px',
 			}}
 		>
@@ -132,6 +133,7 @@ function ShapeDividerPanel({
 	isBottom,
 	onChange,
 	sectionBackgroundColor = '',
+	sectionTextColor = '',
 }) {
 	return (
 		<PanelBody title={title} initialOpen={false}>
@@ -154,6 +156,7 @@ function ShapeDividerPanel({
 						flipY={flipY}
 						isBottom={isBottom}
 						sectionBackgroundColor={sectionBackgroundColor}
+						sectionTextColor={sectionTextColor}
 					/>
 
 					<RangeControl
@@ -230,6 +233,7 @@ export default function ShapeDividerControls({
 	attributes,
 	setAttributes,
 	sectionBackgroundColor = '',
+	sectionTextColor = '',
 }) {
 	const {
 		shapeDividerTop,
@@ -341,6 +345,7 @@ export default function ShapeDividerControls({
 				isBottom={false}
 				onChange={handleTopChange}
 				sectionBackgroundColor={sectionBackgroundColor}
+				sectionTextColor={sectionTextColor}
 			/>
 			<ShapeDividerPanel
 				title={__('Bottom Shape Divider', 'designsetgo')}
@@ -355,6 +360,7 @@ export default function ShapeDividerControls({
 				isBottom={true}
 				onChange={handleBottomChange}
 				sectionBackgroundColor={sectionBackgroundColor}
+				sectionTextColor={sectionTextColor}
 			/>
 		</>
 	);

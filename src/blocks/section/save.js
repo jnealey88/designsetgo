@@ -22,6 +22,7 @@ export default function SectionSave({ attributes }) {
 	const {
 		tagName = 'div',
 		backgroundColor,
+		textColor,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -55,6 +56,11 @@ export default function SectionSave({ attributes }) {
 		(backgroundColor
 			? `var(--wp--preset--color--${backgroundColor})`
 			: '');
+
+	// Get section's effective text color for shape divider background default
+	const sectionTextColor =
+		attributes.style?.color?.text ||
+		(textColor ? `var(--wp--preset--color--${textColor})` : '');
 
 	// Build className with conditional no-width-constraint and overlay classes
 	const className = [
@@ -129,9 +135,11 @@ export default function SectionSave({ attributes }) {
 					convertPresetToCSSVar(shapeDividerTopColor) ||
 					sectionBackgroundColor
 				}
-				backgroundColor={convertPresetToCSSVar(
-					shapeDividerTopBackgroundColor
-				)}
+				backgroundColor={
+					convertPresetToCSSVar(
+						shapeDividerTopBackgroundColor
+					) || sectionTextColor
+				}
 				height={shapeDividerTopHeight}
 				width={shapeDividerTopWidth}
 				flipX={shapeDividerTopFlipX}
@@ -146,9 +154,11 @@ export default function SectionSave({ attributes }) {
 					convertPresetToCSSVar(shapeDividerBottomColor) ||
 					sectionBackgroundColor
 				}
-				backgroundColor={convertPresetToCSSVar(
-					shapeDividerBottomBackgroundColor
-				)}
+				backgroundColor={
+					convertPresetToCSSVar(
+						shapeDividerBottomBackgroundColor
+					) || sectionTextColor
+				}
 				height={shapeDividerBottomHeight}
 				width={shapeDividerBottomWidth}
 				flipX={shapeDividerBottomFlipX}

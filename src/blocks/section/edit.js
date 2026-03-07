@@ -55,6 +55,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		className,
 		tagName = 'div',
 		backgroundColor,
+		textColor,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -89,6 +90,11 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 		(backgroundColor
 			? `var(--wp--preset--color--${backgroundColor})`
 			: '');
+
+	// Get section's effective text color for shape divider background default
+	const sectionTextColor =
+		attributes.style?.color?.text ||
+		(textColor ? `var(--wp--preset--color--${textColor})` : '');
 
 	// Auto-migrate old blocks that use className for alignment
 	useEffect(() => {
@@ -589,6 +595,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 					attributes={attributes}
 					setAttributes={setAttributes}
 					sectionBackgroundColor={sectionBackgroundColor}
+					sectionTextColor={sectionTextColor}
 				/>
 			</InspectorControls>
 
@@ -599,9 +606,11 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 						convertPresetToCSSVar(shapeDividerTopColor) ||
 						sectionBackgroundColor
 					}
-					backgroundColor={convertPresetToCSSVar(
-						shapeDividerTopBackgroundColor
-					)}
+					backgroundColor={
+						convertPresetToCSSVar(
+							shapeDividerTopBackgroundColor
+						) || sectionTextColor
+					}
 					height={shapeDividerTopHeight}
 					width={shapeDividerTopWidth}
 					flipX={shapeDividerTopFlipX}
@@ -616,9 +625,11 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 						convertPresetToCSSVar(shapeDividerBottomColor) ||
 						sectionBackgroundColor
 					}
-					backgroundColor={convertPresetToCSSVar(
-						shapeDividerBottomBackgroundColor
-					)}
+					backgroundColor={
+						convertPresetToCSSVar(
+							shapeDividerBottomBackgroundColor
+						) || sectionTextColor
+					}
 					height={shapeDividerBottomHeight}
 					width={shapeDividerBottomWidth}
 					flipX={shapeDividerBottomFlipX}

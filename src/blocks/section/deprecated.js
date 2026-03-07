@@ -87,6 +87,259 @@ function OldShapeDivider({
 	);
 }
 
+/**
+ * V4ShapeDivider component for v4 deprecation.
+ * Same as current ShapeDivider but used inline for deprecation stability.
+ * This version uses background color inheritance for shape fill but has
+ * no text color inheritance for shape background.
+ */
+function V4ShapeDivider({
+	shape,
+	color,
+	backgroundColor,
+	height = 100,
+	width = 100,
+	flipX = false,
+	flipY = false,
+	front = false,
+	position = 'top',
+}) {
+	if (!shape) {
+		return null;
+	}
+
+	const shapeElement = getShapeDivider(shape);
+	if (!shapeElement) {
+		return null;
+	}
+
+	const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+	const safeHeight = clamp(Number(height) || 100, 10, 500);
+	const safeWidth = clamp(Number(width) || 100, 100, 300);
+	const safeColor = sanitizeColor(color);
+	const safeBackgroundColor = sanitizeColor(backgroundColor);
+
+	const transforms = [];
+	if (flipX) {
+		transforms.push('scaleX(-1)');
+	}
+	if (position === 'bottom' && !flipY) {
+		transforms.push('scaleY(-1)');
+	} else if (position !== 'bottom' && flipY) {
+		transforms.push('scaleY(-1)');
+	}
+
+	const widthOffset = Math.max(0, (safeWidth - 100) / 2);
+
+	const className = [
+		'dsgo-shape-divider',
+		`dsgo-shape-divider--${position}`,
+		front && 'dsgo-shape-divider--front',
+	]
+		.filter(Boolean)
+		.join(' ');
+
+	const style = {
+		'--dsgo-shape-height': `${safeHeight}px`,
+		'--dsgo-shape-width': `${safeWidth}%`,
+		'--dsgo-shape-offset': `-${widthOffset}%`,
+		'--dsgo-shape-color': safeColor || 'transparent',
+		...(safeBackgroundColor && {
+			'--dsgo-shape-background': safeBackgroundColor,
+		}),
+	};
+
+	return (
+		<div className={className} style={style} aria-hidden="true">
+			<svg
+				viewBox="0 0 1200 120"
+				preserveAspectRatio="none"
+				style={{
+					transform:
+						transforms.length > 0
+							? transforms.join(' ')
+							: undefined,
+				}}
+			>
+				{shapeElement}
+			</svg>
+		</div>
+	);
+}
+
+// Version 4: Shape dividers with background color inheritance but no text color for shape background
+const v4 = {
+	attributes: {
+		align: { type: 'string', default: 'full' },
+		tagName: { type: 'string', default: 'div' },
+		constrainWidth: { type: 'boolean', default: true },
+		contentWidth: { type: 'string', default: '' },
+		style: { type: 'object' },
+		hoverBackgroundColor: { type: 'string', default: '' },
+		hoverTextColor: { type: 'string', default: '' },
+		hoverIconBackgroundColor: { type: 'string', default: '' },
+		hoverButtonBackgroundColor: { type: 'string', default: '' },
+		overlayColor: { type: 'string', default: '' },
+		shapeDividerTop: { type: 'string', default: '' },
+		shapeDividerTopColor: { type: 'string', default: '' },
+		shapeDividerTopHeight: { type: 'number', default: 100 },
+		shapeDividerTopWidth: { type: 'number', default: 100 },
+		shapeDividerTopFlipX: { type: 'boolean', default: false },
+		shapeDividerTopFlipY: { type: 'boolean', default: false },
+		shapeDividerTopFront: { type: 'boolean', default: false },
+		shapeDividerTopBackgroundColor: { type: 'string', default: '' },
+		shapeDividerBottom: { type: 'string', default: '' },
+		shapeDividerBottomColor: { type: 'string', default: '' },
+		shapeDividerBottomHeight: { type: 'number', default: 100 },
+		shapeDividerBottomWidth: { type: 'number', default: 100 },
+		shapeDividerBottomFlipX: { type: 'boolean', default: false },
+		shapeDividerBottomFlipY: { type: 'boolean', default: false },
+		shapeDividerBottomFront: { type: 'boolean', default: false },
+		shapeDividerBottomBackgroundColor: { type: 'string', default: '' },
+	},
+	isEligible(attributes) {
+		return !!(attributes.shapeDividerTop || attributes.shapeDividerBottom);
+	},
+	save({ attributes }) {
+		const {
+			tagName = 'div',
+			backgroundColor,
+			constrainWidth,
+			contentWidth,
+			hoverBackgroundColor,
+			hoverTextColor,
+			hoverIconBackgroundColor,
+			hoverButtonBackgroundColor,
+			overlayColor,
+			shapeDividerTop,
+			shapeDividerTopColor,
+			shapeDividerTopBackgroundColor,
+			shapeDividerTopHeight,
+			shapeDividerTopWidth,
+			shapeDividerTopFlipX,
+			shapeDividerTopFlipY,
+			shapeDividerTopFront,
+			shapeDividerBottom,
+			shapeDividerBottomColor,
+			shapeDividerBottomBackgroundColor,
+			shapeDividerBottomHeight,
+			shapeDividerBottomWidth,
+			shapeDividerBottomFlipX,
+			shapeDividerBottomFlipY,
+			shapeDividerBottomFront,
+		} = attributes;
+
+		// Previous behavior: shape color inherits background, shape background has no text color fallback
+		const sectionBackgroundColor =
+			attributes.style?.color?.background ||
+			(backgroundColor
+				? `var(--wp--preset--color--${backgroundColor})`
+				: '');
+
+		const className = [
+			'dsgo-stack',
+			!constrainWidth && 'dsgo-no-width-constraint',
+			overlayColor && 'dsgo-stack--has-overlay',
+			(shapeDividerTop || shapeDividerBottom) &&
+				'dsgo-stack--has-shape-divider',
+		]
+			.filter(Boolean)
+			.join(' ');
+
+		const TagName = tagName || 'div';
+		const blockProps = useBlockProps.save({
+			className,
+			style: {
+				...(hoverBackgroundColor && {
+					'--dsgo-hover-bg-color':
+						convertPresetToCSSVar(hoverBackgroundColor),
+				}),
+				...(hoverTextColor && {
+					'--dsgo-hover-text-color':
+						convertPresetToCSSVar(hoverTextColor),
+				}),
+				...(hoverIconBackgroundColor && {
+					'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+						hoverIconBackgroundColor
+					),
+				}),
+				...(hoverButtonBackgroundColor && {
+					'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+						hoverButtonBackgroundColor
+					),
+				}),
+				...(overlayColor && {
+					'--dsgo-overlay-color':
+						convertPresetToCSSVar(overlayColor),
+					'--dsgo-overlay-opacity': '0.8',
+				}),
+			},
+		});
+
+		const innerStyle = {};
+		if (constrainWidth) {
+			innerStyle.maxWidth =
+				contentWidth ||
+				'var(--wp--style--global--content-size, 1140px)';
+			innerStyle.marginLeft = 'auto';
+			innerStyle.marginRight = 'auto';
+		}
+
+		if (shapeDividerTop) {
+			innerStyle.paddingTop = `${shapeDividerTopHeight || 100}px`;
+		}
+		if (shapeDividerBottom) {
+			innerStyle.paddingBottom = `${shapeDividerBottomHeight || 100}px`;
+		}
+
+		const innerBlocksProps = useInnerBlocksProps.save({
+			className: 'dsgo-stack__inner',
+			style: innerStyle,
+		});
+
+		return (
+			<TagName {...blockProps}>
+				<V4ShapeDivider
+					shape={shapeDividerTop}
+					color={
+						convertPresetToCSSVar(shapeDividerTopColor) ||
+						sectionBackgroundColor
+					}
+					backgroundColor={convertPresetToCSSVar(
+						shapeDividerTopBackgroundColor
+					)}
+					height={shapeDividerTopHeight}
+					width={shapeDividerTopWidth}
+					flipX={shapeDividerTopFlipX}
+					flipY={shapeDividerTopFlipY}
+					front={shapeDividerTopFront}
+					position="top"
+				/>
+				<div {...innerBlocksProps} />
+				<V4ShapeDivider
+					shape={shapeDividerBottom}
+					color={
+						convertPresetToCSSVar(shapeDividerBottomColor) ||
+						sectionBackgroundColor
+					}
+					backgroundColor={convertPresetToCSSVar(
+						shapeDividerBottomBackgroundColor
+					)}
+					height={shapeDividerBottomHeight}
+					width={shapeDividerBottomWidth}
+					flipX={shapeDividerBottomFlipX}
+					flipY={shapeDividerBottomFlipY}
+					front={shapeDividerBottomFront}
+					position="bottom"
+				/>
+			</TagName>
+		);
+	},
+	migrate(attributes) {
+		return attributes;
+	},
+};
+
 // Version 3: Shape dividers with currentColor fallback (before background color inheritance)
 const v3 = {
 	attributes: {
@@ -518,4 +771,4 @@ const v1 = {
 };
 
 // Export deprecations in reverse chronological order (newest first)
-export default [v3, v2, v1];
+export default [v4, v3, v2, v1];
