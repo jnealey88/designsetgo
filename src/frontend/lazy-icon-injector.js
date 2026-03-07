@@ -39,9 +39,18 @@ function initIconInjection(container = document) {
 			return;
 		}
 
-		const iconName = placeholder.dataset.iconName;
+		const rawIconName = placeholder.dataset.iconName;
 		const iconStyle = placeholder.dataset.iconStyle || 'filled';
 		const strokeWidth = placeholder.dataset.iconStrokeWidth || '1.5';
+
+		// Resolve alias to canonical name if needed
+		const iconName =
+			rawIconName &&
+			!window.dsgoIcons[rawIconName] &&
+			typeof window.dsgoIconAliases !== 'undefined' &&
+			window.dsgoIconAliases[rawIconName]
+				? window.dsgoIconAliases[rawIconName]
+				: rawIconName;
 
 		if (!iconName || !window.dsgoIcons[iconName]) {
 			return;
