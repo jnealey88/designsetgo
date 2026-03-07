@@ -20,7 +20,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 // Auto-detect all blocks with index.js files
 const blockEntries = glob
-	.sync('./src/blocks/*/index.js')
+	.sync('src/blocks/*/index.js')
 	.reduce((entries, file) => {
 		const blockName = file.match(/\/blocks\/([^/]+)\/index\.js$/)[1];
 		entries[`blocks/${blockName}/index`] = path.resolve(
@@ -32,7 +32,7 @@ const blockEntries = glob
 
 // Auto-detect all blocks with view.js files (frontend scripts)
 const viewEntries = glob
-	.sync('./src/blocks/*/view.js')
+	.sync('src/blocks/*/view.js')
 	.reduce((entries, file) => {
 		const blockName = file.match(/\/blocks\/([^/]+)\/view\.js$/)[1];
 		entries[`blocks/${blockName}/view`] = path.resolve(process.cwd(), file);
@@ -41,7 +41,7 @@ const viewEntries = glob
 
 // Auto-detect all blocks with style.scss files (frontend CSS)
 const styleEntries = glob
-	.sync('./src/blocks/*/style.scss')
+	.sync('src/blocks/*/style.scss')
 	.reduce((entries, file) => {
 		const blockName = file.match(/\/blocks\/([^/]+)\/style\.scss$/)[1];
 		entries[`blocks/${blockName}/style-index`] = path.resolve(

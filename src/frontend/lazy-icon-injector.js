@@ -39,9 +39,22 @@ function initIconInjection(container = document) {
 			return;
 		}
 
-		const iconName = placeholder.dataset.iconName;
+		const rawIconName = placeholder.dataset.iconName;
+		const normalizedIconName =
+			typeof rawIconName === 'string'
+				? rawIconName.trim().toLowerCase()
+				: '';
 		const iconStyle = placeholder.dataset.iconStyle || 'filled';
 		const strokeWidth = placeholder.dataset.iconStrokeWidth || '1.5';
+
+		// Resolve alias to canonical name if needed
+		const iconName =
+			normalizedIconName &&
+			!window.dsgoIcons[normalizedIconName] &&
+			typeof window.dsgoIconAliases !== 'undefined' &&
+			window.dsgoIconAliases[normalizedIconName]
+				? window.dsgoIconAliases[normalizedIconName]
+				: normalizedIconName;
 
 		if (!iconName || !window.dsgoIcons[iconName]) {
 			return;

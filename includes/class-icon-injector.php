@@ -97,6 +97,13 @@ class Icon_Injector {
 			'dsgoIcons',
 			dsgo_get_all_icons()
 		);
+
+		// Provide alias map so frontend can resolve alternate icon names.
+		wp_localize_script(
+			'designsetgo-icon-injector',
+			'dsgoIconAliases',
+			dsgo_get_icon_aliases()
+		);
 	}
 
 	/**

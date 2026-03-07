@@ -23,7 +23,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function dsgo_get_icon_svg( $icon_name ) {
 	$icons = dsgo_get_all_icons();
-	return isset( $icons[ $icon_name ] ) ? $icons[ $icon_name ] : '';
+
+	if ( isset( $icons[ $icon_name ] ) ) {
+		return $icons[ $icon_name ];
+	}
+
+	// Resolve alias to canonical name.
+	$aliases = dsgo_get_icon_aliases();
+	if ( isset( $aliases[ $icon_name ] ) && isset( $icons[ $aliases[ $icon_name ] ] ) ) {
+		return $icons[ $aliases[ $icon_name ] ];
+	}
+
+	return '';
 }
 
 /**
@@ -206,6 +217,34 @@ function dsgo_get_all_icons() {
 	);
 
 	return $icons;
+}
+
+/**
+ * Get icon alias map.
+ *
+ * Maps alternate icon names to their canonical names in the icon library.
+ * Single source of truth: includes/data/icon-aliases.json (shared with JS).
+ *
+ * @return array Associative array of alias => canonical_name.
+ */
+function dsgo_get_icon_aliases() {
+	static $aliases = null;
+
+	if ( null !== $aliases ) {
+		return $aliases;
+	}
+
+	$file = __DIR__ . '/data/icon-aliases.json';
+
+	if ( ! file_exists( $file ) ) {
+		$aliases = array();
+		return $aliases;
+	}
+
+	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reading local plugin file.
+	$aliases = json_decode( file_get_contents( $file ), true ) ?? array();
+
+	return $aliases;
 }
 
 /**
