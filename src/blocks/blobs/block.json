@@ -98,8 +98,7 @@
 			"__experimentalDefaultControls": {
 				"background": true,
 				"text": true
-			},
-			"__experimentalDuotone": false
+			}
 		},
 		"background": {
 			"backgroundImage": true,
