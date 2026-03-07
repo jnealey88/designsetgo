@@ -271,24 +271,22 @@ class Loader {
 			add_filter(
 				'wp_theme_json_data_default',
 				function ( $theme_json ) use ( $all_style_variations ) {
-					$theme_json_data = $theme_json->get_data();
-
-					if ( ! isset( $theme_json_data['styles'] ) ) {
-						$theme_json_data['styles'] = array();
-					}
-					if ( ! isset( $theme_json_data['styles']['blocks'] ) ) {
-						$theme_json_data['styles']['blocks'] = array();
-					}
+					$new_data = array(
+						'version' => 2,
+						'styles'  => array(
+							'blocks' => array(),
+						),
+					);
 
 					foreach ( $all_style_variations as $variation ) {
-						if ( ! isset( $theme_json_data['styles']['blocks'][ $variation['block_type'] ] ) ) {
-							$theme_json_data['styles']['blocks'][ $variation['block_type'] ] = array();
+						if ( ! isset( $new_data['styles']['blocks'][ $variation['block_type'] ] ) ) {
+							$new_data['styles']['blocks'][ $variation['block_type'] ] = array();
 						}
 
-						$theme_json_data['styles']['blocks'][ $variation['block_type'] ]['variations'][ $variation['slug'] ] = $variation['styles'];
+						$new_data['styles']['blocks'][ $variation['block_type'] ]['variations'][ $variation['slug'] ] = $variation['styles'];
 					}
 
-					return new \WP_Theme_JSON_Data( $theme_json_data, 'default' );
+					return $theme_json->update_with( $new_data );
 				}
 			);
 		}

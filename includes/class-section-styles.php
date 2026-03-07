@@ -60,6 +60,8 @@ class Section_Styles {
 			return $theme_json;
 		}
 
+		$modified = false;
+
 		// Iterate through all style variations.
 		foreach ( $data['styles'] as $index => $style ) {
 			// Check if this is a section style (has blockTypes defined).
@@ -79,13 +81,16 @@ class Section_Styles {
 				foreach ( $this->container_blocks as $block ) {
 					if ( ! in_array( $block, $style['blockTypes'], true ) ) {
 						$data['styles'][ $index ]['blockTypes'][] = $block;
+						$modified = true;
 					}
 				}
 			}
 		}
 
-		// Update the theme.json data.
-		$theme_json->update_with( $data );
+		// Only update if we actually made changes.
+		if ( $modified ) {
+			$theme_json->update_with( $data );
+		}
 
 		return $theme_json;
 	}
