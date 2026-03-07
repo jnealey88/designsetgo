@@ -21,6 +21,7 @@ import ShapeDivider from './components/ShapeDivider';
 export default function SectionSave({ attributes }) {
 	const {
 		tagName = 'div',
+		backgroundColor,
 		constrainWidth,
 		contentWidth,
 		hoverBackgroundColor,
@@ -48,9 +49,12 @@ export default function SectionSave({ attributes }) {
 	} = attributes;
 
 	// Get section's effective background color for shape divider default
-	const sectionBackgroundColor = attributes.backgroundColor
-		? `var(--wp--preset--color--${attributes.backgroundColor})`
-		: attributes.style?.color?.background || '';
+	// Prefer inline style (custom color) over preset slug
+	const sectionBackgroundColor =
+		attributes.style?.color?.background ||
+		(backgroundColor
+			? `var(--wp--preset--color--${backgroundColor})`
+			: '');
 
 	// Build className with conditional no-width-constraint and overlay classes
 	const className = [

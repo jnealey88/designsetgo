@@ -83,9 +83,12 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 	} = attributes;
 
 	// Get section's effective background color for shape divider default
-	const sectionBackgroundColor = backgroundColor
-		? `var(--wp--preset--color--${backgroundColor})`
-		: attributes.style?.color?.background || '';
+	// Prefer inline style (custom color) over preset slug
+	const sectionBackgroundColor =
+		attributes.style?.color?.background ||
+		(backgroundColor
+			? `var(--wp--preset--color--${backgroundColor})`
+			: '');
 
 	// Auto-migrate old blocks that use className for alignment
 	useEffect(() => {
@@ -585,6 +588,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 				<ShapeDividerControls
 					attributes={attributes}
 					setAttributes={setAttributes}
+					sectionBackgroundColor={sectionBackgroundColor}
 				/>
 			</InspectorControls>
 
