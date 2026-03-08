@@ -1,0 +1,103 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/scroll-slides",
+	"version": "1.0.0",
+	"title": "Scroll Slides",
+	"category": "design",
+	"description": "Full-screen scroll-pinned slideshow with crossfading content and navigation",
+	"keywords": ["scroll", "slides", "fullscreen", "pinned", "showcase"],
+	"textdomain": "designsetgo",
+	"attributes": {
+		"align": {
+			"type": "string"
+		},
+		"minHeight": {
+			"type": "string",
+			"default": "100vh"
+		},
+		"maxHeight": {
+			"type": "string",
+			"default": "900px"
+		},
+		"constrainWidth": {
+			"type": "boolean",
+			"default": true
+		},
+		"contentWidth": {
+			"type": "string",
+			"default": ""
+		},
+		"overlayColor": {
+			"type": "string",
+			"default": ""
+		},
+		"navColor": {
+			"type": "string",
+			"default": ""
+		},
+		"navActiveColor": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"align": ["wide", "full"],
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"background": {
+			"backgroundImage": true,
+			"backgroundSize": true,
+			"backgroundPosition": true,
+			"backgroundRepeat": true,
+			"__experimentalDefaultControls": {
+				"backgroundImage": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"layout": {
+			"allowEditing": false
+		}
+	},
+	"example": {
+		"attributes": {
+			"minHeight": "60vh"
+		},
+		"innerBlocks": [
+			{
+				"name": "designsetgo/scroll-slide",
+				"attributes": {
+					"navHeading": "Introduction"
+				}
+			},
+			{
+				"name": "designsetgo/scroll-slide",
+				"attributes": {
+					"navHeading": "Features"
+				}
+			},
+			{
+				"name": "designsetgo/scroll-slide",
+				"attributes": {
+					"navHeading": "Get Started"
+				}
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
