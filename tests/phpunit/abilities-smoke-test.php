@@ -14,9 +14,9 @@ use DesignSetGo\Abilities\Abilities_Registry;
 use DesignSetGo\Abilities\Info\List_Abilities;
 use DesignSetGo\Abilities\Info\Get_Post_Blocks;
 use DesignSetGo\Abilities\Info\List_Blocks;
-use DesignSetGo\Abilities\Configurators\Configure_Block_Attributes;
+use DesignSetGo\Abilities\Configurators\Update_Block;
 use DesignSetGo\Abilities\Configurators\Configure_Shape_Divider;
-use DesignSetGo\Abilities\Inserters\Insert_Block_Into;
+use DesignSetGo\Abilities\Inserters\Add_Child_Block;
 
 /**
  * Abilities Smoke Test class.
@@ -303,7 +303,7 @@ class Abilities_Smoke_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -328,7 +328,7 @@ class Abilities_Smoke_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'    => $post_id,
@@ -351,7 +351,7 @@ class Abilities_Smoke_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -386,7 +386,7 @@ class Abilities_Smoke_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -492,7 +492,7 @@ class Abilities_Smoke_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/group --><div class="wp-block-group"></div><!-- /wp:core/group -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'            => $post_id,
@@ -518,7 +518,7 @@ class Abilities_Smoke_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/group --><div class="wp-block-group"></div><!-- /wp:core/group -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 		$ability->execute(
 			array(
 				'post_id'            => $post_id,
@@ -548,7 +548,7 @@ class Abilities_Smoke_Test extends WP_UnitTestCase {
 			. '</div><!-- /wp:core/group -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'            => $post_id,

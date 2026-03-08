@@ -662,7 +662,7 @@ class Test_Abilities_Execution extends WP_UnitTestCase {
 			'post_type'    => 'page',
 			'post_status'  => 'publish',
 			'post_title'   => 'Test Page',
-			'post_content' => '',
+			'post_content' => '<!-- wp:group --><div class="wp-block-group"><!-- wp:paragraph --><p>Test content</p><!-- /wp:paragraph --></div><!-- /wp:group -->',
 		) );
 	}
 

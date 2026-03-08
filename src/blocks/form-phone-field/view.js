@@ -17,10 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	codeSelects.forEach((select) => {
 		const defaultCode = select.dataset.dsgoCountryCode || '+1';
 
-		COUNTRY_CODES.forEach(({ value, label }) => {
+		COUNTRY_CODES.forEach(({ value }) => {
 			const option = document.createElement('option');
 			option.value = value;
-			option.textContent = label;
+			option.textContent = value;
 			if (value === defaultCode) {
 				option.selected = true;
 			}
