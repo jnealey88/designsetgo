@@ -162,7 +162,30 @@
 }
 
 /**
- * Mobile — unpin and stack
+ * Tap mode — mobile click-to-navigate (no spacer/sticky)
+ * Nav stacks above content, slides switch on tap
+ */
+.dsgo-scroll-slides.is-tap-mode {
+	display: flex;
+	flex-direction: column;
+
+	.dsgo-scroll-slides__inner {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	.dsgo-scroll-slides__panels {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		flex: 1;
+	}
+}
+
+/**
+ * Mobile fallback — if JS doesn't load, unpin and show all slides
  */
 @media (max-width: 781px) {
 
@@ -177,22 +200,16 @@
 		display: block;
 	}
 
-	.dsgo-scroll-slides__inner {
+	.dsgo-scroll-slides.is-pinned .dsgo-scroll-slides__inner {
 		display: block !important;
 	}
 
-	.dsgo-scroll-slides__nav {
+	.dsgo-scroll-slides.is-pinned .dsgo-scroll-slides__nav {
 		display: none;
 	}
 
-	.dsgo-scroll-slides__backgrounds {
+	.dsgo-scroll-slides.is-pinned .dsgo-scroll-slides__backgrounds {
 		display: none;
-	}
-
-	.dsgo-scroll-slides__panels {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
 	}
 }
 

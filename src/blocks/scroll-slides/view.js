@@ -33,6 +33,11 @@ function clamp(min, value, max) {
 }
 
 /**
+ * Mobile breakpoint — matches the CSS media query
+ */
+const MOBILE_BREAKPOINT = '(max-width: 781px)';
+
+/**
  * Initialize all scroll slides instances on the page
  */
 function initScrollSlides() {
@@ -42,12 +47,15 @@ function initScrollSlides() {
 		return;
 	}
 
-	// Check reduced motion preference — show all slides stacked (like mobile)
+	// Check reduced motion preference — show all slides stacked
 	const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 	if (motionQuery.matches) {
 		return;
 	}
+
+	const mobileQuery = window.matchMedia(MOBILE_BREAKPOINT);
+	const isMobile = mobileQuery.matches;
 
 	containers.forEach((container) => {
 		if (initialized.has(container)) {
@@ -70,13 +78,18 @@ function initScrollSlides() {
 
 		const controller = new AbortController();
 
-		// === Build DOM: spacer, nav, backgrounds ===
-		setupDOM(container, slides, minHeight, maxHeight);
+		// === Build DOM: spacer (desktop only), nav, backgrounds ===
+		setupDOM(container, slides, minHeight, maxHeight, isMobile);
 
-		// === Scroll engine ===
-		setupScrollEngine(container, slides, controller);
+		if (isMobile) {
+			// === Tap engine — click nav to switch slides ===
+			setupTapEngine(container, slides, controller);
+		} else {
+			// === Scroll engine — scroll-driven animation ===
+			setupScrollEngine(container, slides, controller);
+		}
 
-		// Abort scroll engine if user enables reduced motion mid-session
+		// Abort engine if user enables reduced motion mid-session
 		motionQuery.addEventListener(
 			'change',
 			(e) => {
@@ -96,28 +109,35 @@ function initScrollSlides() {
  * @param {NodeList}    slides    Slide elements
  * @param {string}      minHeight CSS height value for pinned section
  * @param {string}      maxHeight CSS max-height cap (empty string if unset)
+ * @param {boolean}     isMobile  Whether to use tap mode (no spacer/sticky)
  */
-function setupDOM(container, slides, minHeight, maxHeight) {
-	// 1. Create pin spacer and wrap container
-	// Spacer must inherit alignment classes so the theme treats it like the block
-	const spacer = document.createElement('div');
-	spacer.className = 'dsgo-scroll-slides-spacer';
-	if (container.classList.contains('alignfull')) {
-		spacer.classList.add('alignfull');
-	} else if (container.classList.contains('alignwide')) {
-		spacer.classList.add('alignwide');
+function setupDOM(container, slides, minHeight, maxHeight, isMobile) {
+	if (isMobile) {
+		// Tap mode — no spacer, no sticky, just set min-height
+		container.classList.add('is-tap-mode');
+		container.style.minHeight = minHeight;
+	} else {
+		// 1. Create pin spacer and wrap container
+		// Spacer must inherit alignment classes so the theme treats it like the block
+		const spacer = document.createElement('div');
+		spacer.className = 'dsgo-scroll-slides-spacer';
+		if (container.classList.contains('alignfull')) {
+			spacer.classList.add('alignfull');
+		} else if (container.classList.contains('alignwide')) {
+			spacer.classList.add('alignwide');
+		}
+		container.parentNode.insertBefore(spacer, container);
+		spacer.appendChild(container);
+
+		// Set spacer height (slides x viewport height)
+		spacer.style.height = `calc(${slides.length} * 100vh)`;
+
+		// Pin the container — cap height on tall monitors if maxHeight is set
+		container.classList.add('is-pinned');
+		container.style.height = maxHeight
+			? `min(${minHeight}, ${maxHeight})`
+			: minHeight;
 	}
-	container.parentNode.insertBefore(spacer, container);
-	spacer.appendChild(container);
-
-	// Set spacer height (slides x viewport height)
-	spacer.style.height = `calc(${slides.length} * 100vh)`;
-
-	// Pin the container — cap height on tall monitors if maxHeight is set
-	container.classList.add('is-pinned');
-	container.style.height = maxHeight
-		? `min(${minHeight}, ${maxHeight})`
-		: minHeight;
 
 	// 2. Build navigation from data attributes
 	const nav = document.createElement('nav');
@@ -348,6 +368,65 @@ function setupScrollEngine(container, slides, controller) {
 
 	// Initial update
 	update();
+}
+
+/**
+ * Set up tap-based slide switching for mobile
+ *
+ * @param {HTMLElement}     container  Container element
+ * @param {NodeList}        slides     Slide elements
+ * @param {AbortController} controller AbortController for cleanup
+ */
+function setupTapEngine(container, slides, controller) {
+	const { signal } = controller;
+	const navItems = container.querySelectorAll(
+		'.dsgo-scroll-slides__nav-item'
+	);
+	const bgLayers = container.querySelectorAll('.dsgo-scroll-slides__bg');
+	const liveRegion = container.querySelector('[aria-live]');
+	const slideCount = slides.length;
+	let currentSlideIndex = 0;
+
+	function activateSlide(newIndex) {
+		if (newIndex === currentSlideIndex) {
+			return;
+		}
+
+		// Deactivate old slide
+		slides[currentSlideIndex].classList.remove('is-active');
+		slides[currentSlideIndex].setAttribute('inert', '');
+		slides[currentSlideIndex].setAttribute('aria-hidden', 'true');
+		navItems[currentSlideIndex].classList.remove('is-active');
+		navItems[currentSlideIndex].removeAttribute('aria-current');
+		bgLayers[currentSlideIndex].classList.remove('is-active');
+
+		// Activate new slide
+		slides[newIndex].classList.add('is-active');
+		slides[newIndex].removeAttribute('inert');
+		slides[newIndex].removeAttribute('aria-hidden');
+		navItems[newIndex].classList.add('is-active');
+		navItems[newIndex].setAttribute('aria-current', 'step');
+		bgLayers[newIndex].classList.add('is-active');
+
+		// Announce slide change to screen readers
+		if (liveRegion) {
+			liveRegion.textContent = sprintf(
+				/* translators: 1: current slide number, 2: total slides, 3: slide heading */
+				__('Slide %1$d of %2$d: %3$s', 'designsetgo'),
+				newIndex + 1,
+				slideCount,
+				navItems[newIndex]?.textContent?.trim() || ''
+			);
+		}
+
+		currentSlideIndex = newIndex;
+	}
+
+	navItems.forEach((button, index) => {
+		button.addEventListener('click', () => activateSlide(index), {
+			signal,
+		});
+	});
 }
 
 /**
