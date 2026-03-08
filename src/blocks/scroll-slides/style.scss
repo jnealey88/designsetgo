@@ -7,6 +7,11 @@
 	position: relative;
 	width: 100%;
 
+	// Allow alignfull to use theme negative margins/vw width
+	&.alignfull {
+		width: auto;
+	}
+
 	/**
 	 * Background overlay
 	 * Only rendered when overlay color is set
@@ -185,7 +190,8 @@
 }
 
 /**
- * Mobile fallback — if JS doesn't load, unpin and show all slides
+ * Mobile fallback — handles the case where JS loaded at desktop width
+ * (is-pinned set) and user resizes to mobile. Unpins, stacks, shows all.
  */
 @media (max-width: 781px) {
 
@@ -210,6 +216,13 @@
 
 	.dsgo-scroll-slides.is-pinned .dsgo-scroll-slides__backgrounds {
 		display: none;
+	}
+
+	// Force all pinned slides visible when viewport is mobile
+	.dsgo-scroll-slides.is-pinned .dsgo-scroll-slide {
+		position: relative !important;
+		opacity: 1 !important;
+		transform: none !important;
 	}
 }
 
