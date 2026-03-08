@@ -187,6 +187,15 @@ class Add_Child_Block extends Abstract_Ability {
 			);
 		}
 
+		$post = get_post( $post_id );
+		if ( ! $post ) {
+			return $this->error( 'invalid_post', __( 'Post not found.', 'designsetgo' ) );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return $this->permission_error();
+		}
+
 		if ( null === $parent_block_index ) {
 			return $this->error(
 				'invalid_input',

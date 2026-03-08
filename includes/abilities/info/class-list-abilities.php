@@ -52,7 +52,7 @@ class List_Abilities extends Abstract_Ability {
 			'keywords'            => array( 'discover', 'tools', 'capabilities', 'help' ),
 			'annotations'         => array(
 				'readonly'     => true,
-				'instructions' => 'Call this first to discover all available DesignSetGo abilities. Use category filter to narrow by type: inserter, configurator, generator, or info.',
+				'instructions' => 'Call this first to discover all available DesignSetGo abilities. Use category filter to narrow by type: inserter, configurator, or info.',
 			),
 		);
 	}
@@ -69,7 +69,7 @@ class List_Abilities extends Abstract_Ability {
 				'category' => array(
 					'type'        => 'string',
 					'description' => __( 'Filter by ability category', 'designsetgo' ),
-					'enum'        => array( 'all', 'inserter', 'configurator', 'generator', 'info' ),
+					'enum'        => array( 'all', 'inserter', 'configurator', 'info' ),
 					'default'     => 'all',
 				),
 				'search'   => array(
@@ -110,7 +110,7 @@ class List_Abilities extends Abstract_Ability {
 							),
 							'category'     => array(
 								'type'        => 'string',
-								'description' => __( 'Ability category: inserter, configurator, generator, or info', 'designsetgo' ),
+								'description' => __( 'Ability category: inserter, configurator, or info', 'designsetgo' ),
 							),
 							'input_schema' => array(
 								'type'        => 'object',
@@ -237,13 +237,12 @@ class List_Abilities extends Abstract_Ability {
 	 * Infer the ability category from its name.
 	 *
 	 * Uses naming conventions:
-	 * - insert-* → inserter
-	 * - configure-*, apply-*, batch-*, delete-* → configurator
-	 * - generate-* → generator
+	 * - insert-*, add-* → inserter
+	 * - configure-*, apply-*, batch-*, delete-*, update-* → configurator
 	 * - list-*, get-*, find-* → info
 	 *
-	 * @param string $name Ability name (e.g., 'designsetgo/insert-section').
-	 * @return string Category: inserter, configurator, generator, or info.
+	 * @param string $name Ability name (e.g., 'designsetgo/add-block').
+	 * @return string Category: inserter, configurator, or info.
 	 */
 	private function infer_category( string $name ): string {
 		// Remove namespace prefix.
@@ -251,11 +250,12 @@ class List_Abilities extends Abstract_Ability {
 
 		$prefix_map = array(
 			'insert-'    => 'inserter',
+			'add-'       => 'inserter',
 			'configure-' => 'configurator',
 			'apply-'     => 'configurator',
 			'batch-'     => 'configurator',
 			'delete-'    => 'configurator',
-			'generate-'  => 'generator',
+			'update-'    => 'configurator',
 			'list-'      => 'info',
 			'get-'       => 'info',
 			'find-'      => 'info',
