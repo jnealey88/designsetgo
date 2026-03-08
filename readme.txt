@@ -187,6 +187,9 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 **New Features:**
 * New: Scroll-driven horizontal mode for Slider block with vertical viewport centering
 
+**Improvements:**
+* Enhancement: Unified block inserter icon color to #F25912 orange across all blocks and variations
+
 **Bug Fixes:**
 * Fix: Shape divider sub-pixel coverage gaps at certain zoom levels
 * Fix: Revert premature block support stabilization and add enableAlpha to color pickers
