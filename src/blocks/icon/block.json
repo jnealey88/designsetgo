@@ -13,7 +13,9 @@
 		"graphic"
 	],
 	"textdomain": "designsetgo",
-	"usesContext": ["designsetgo/hoverIconBackgroundColor"],
+	"usesContext": [
+		"designsetgo/hoverIconBackgroundColor"
+	],
 	"supports": {
 		"anchor": true,
 		"align": [
@@ -41,7 +43,7 @@
 				"text": true
 			}
 		},
-		"border": {
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,

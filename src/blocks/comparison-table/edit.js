@@ -316,6 +316,7 @@ export default function ComparisonTableEdit({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -332,6 +333,7 @@ export default function ComparisonTableEdit({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -351,6 +353,7 @@ export default function ComparisonTableEdit({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

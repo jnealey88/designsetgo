@@ -84,7 +84,13 @@
 	"supports": {
 		"html": false,
 		"reusable": false,
-		"align": ["left", "center", "right", "wide", "full"],
+		"align": [
+			"left",
+			"center",
+			"right",
+			"wide",
+			"full"
+		],
 		"spacing": {
 			"margin": false,
 			"padding": true,
@@ -98,8 +104,8 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"fontFamily": true,
-			"fontWeight": true
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true
 		}
 	},
 	"editorScript": "file:./index.js",

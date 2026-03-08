@@ -144,6 +144,7 @@ export default function IconListEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -160,6 +161,7 @@ export default function IconListEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

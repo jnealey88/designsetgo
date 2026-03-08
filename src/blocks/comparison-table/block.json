@@ -44,7 +44,7 @@
 				"fontSize": true
 			}
 		},
-		"border": {
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,
@@ -59,9 +59,24 @@
 		"columns": {
 			"type": "array",
 			"default": [
-				{ "name": "Basic", "link": "", "linkText": "Get Started", "featured": false },
-				{ "name": "Pro", "link": "", "linkText": "Get Started", "featured": true },
-				{ "name": "Enterprise", "link": "", "linkText": "Contact Us", "featured": false }
+				{
+					"name": "Basic",
+					"link": "",
+					"linkText": "Get Started",
+					"featured": false
+				},
+				{
+					"name": "Pro",
+					"link": "",
+					"linkText": "Get Started",
+					"featured": true
+				},
+				{
+					"name": "Enterprise",
+					"link": "",
+					"linkText": "Contact Us",
+					"featured": false
+				}
 			]
 		},
 		"rows": {
@@ -71,36 +86,72 @@
 					"label": "Storage",
 					"tooltip": "",
 					"cells": [
-						{ "type": "text", "value": "5 GB" },
-						{ "type": "text", "value": "50 GB" },
-						{ "type": "text", "value": "Unlimited" }
+						{
+							"type": "text",
+							"value": "5 GB"
+						},
+						{
+							"type": "text",
+							"value": "50 GB"
+						},
+						{
+							"type": "text",
+							"value": "Unlimited"
+						}
 					]
 				},
 				{
 					"label": "Users",
 					"tooltip": "",
 					"cells": [
-						{ "type": "text", "value": "1" },
-						{ "type": "text", "value": "10" },
-						{ "type": "text", "value": "Unlimited" }
+						{
+							"type": "text",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"value": "10"
+						},
+						{
+							"type": "text",
+							"value": "Unlimited"
+						}
 					]
 				},
 				{
 					"label": "Priority Support",
 					"tooltip": "Get faster response times from our team",
 					"cells": [
-						{ "type": "cross", "value": "" },
-						{ "type": "check", "value": "" },
-						{ "type": "check", "value": "" }
+						{
+							"type": "cross",
+							"value": ""
+						},
+						{
+							"type": "check",
+							"value": ""
+						},
+						{
+							"type": "check",
+							"value": ""
+						}
 					]
 				},
 				{
 					"label": "API Access",
 					"tooltip": "",
 					"cells": [
-						{ "type": "cross", "value": "" },
-						{ "type": "check", "value": "" },
-						{ "type": "check", "value": "" }
+						{
+							"type": "cross",
+							"value": ""
+						},
+						{
+							"type": "check",
+							"value": ""
+						},
+						{
+							"type": "check",
+							"value": ""
+						}
 					]
 				}
 			]
@@ -111,7 +162,10 @@
 		},
 		"responsiveMode": {
 			"type": "string",
-			"enum": ["scroll", "stack"],
+			"enum": [
+				"scroll",
+				"stack"
+			],
 			"default": "scroll"
 		},
 		"featuredColumnColor": {
@@ -132,43 +186,88 @@
 		},
 		"ctaStyle": {
 			"type": "string",
-			"enum": ["filled", "outlined"],
+			"enum": [
+				"filled",
+				"outlined"
+			],
 			"default": "filled"
 		}
 	},
 	"example": {
 		"attributes": {
 			"columns": [
-				{ "name": "Starter", "link": "#", "linkText": "Choose", "featured": false },
-				{ "name": "Professional", "link": "#", "linkText": "Choose", "featured": true },
-				{ "name": "Business", "link": "#", "linkText": "Choose", "featured": false }
+				{
+					"name": "Starter",
+					"link": "#",
+					"linkText": "Choose",
+					"featured": false
+				},
+				{
+					"name": "Professional",
+					"link": "#",
+					"linkText": "Choose",
+					"featured": true
+				},
+				{
+					"name": "Business",
+					"link": "#",
+					"linkText": "Choose",
+					"featured": false
+				}
 			],
 			"rows": [
 				{
 					"label": "Projects",
 					"tooltip": "",
 					"cells": [
-						{ "type": "text", "value": "3" },
-						{ "type": "text", "value": "Unlimited" },
-						{ "type": "text", "value": "Unlimited" }
+						{
+							"type": "text",
+							"value": "3"
+						},
+						{
+							"type": "text",
+							"value": "Unlimited"
+						},
+						{
+							"type": "text",
+							"value": "Unlimited"
+						}
 					]
 				},
 				{
 					"label": "Team Members",
 					"tooltip": "",
 					"cells": [
-						{ "type": "text", "value": "1" },
-						{ "type": "text", "value": "10" },
-						{ "type": "text", "value": "Unlimited" }
+						{
+							"type": "text",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"value": "10"
+						},
+						{
+							"type": "text",
+							"value": "Unlimited"
+						}
 					]
 				},
 				{
 					"label": "Priority Support",
 					"tooltip": "",
 					"cells": [
-						{ "type": "cross", "value": "" },
-						{ "type": "check", "value": "" },
-						{ "type": "check", "value": "" }
+						{
+							"type": "cross",
+							"value": ""
+						},
+						{
+							"type": "check",
+							"value": ""
+						},
+						{
+							"type": "check",
+							"value": ""
+						}
 					]
 				}
 			]

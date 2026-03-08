@@ -81,7 +81,13 @@
 	},
 	"supports": {
 		"anchor": true,
-		"align": ["left", "center", "right", "wide", "full"],
+		"align": [
+			"left",
+			"center",
+			"right",
+			"wide",
+			"full"
+		],
 		"html": false,
 		"spacing": {
 			"margin": true,
@@ -111,14 +117,14 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"writingMode": true,
-			"fontFamily": true,
-			"fontWeight": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true
-			}
+			},
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalWritingMode": true
 		},
-		"border": {
+		"__experimentalBorder": {
 			"radius": false,
 			"__experimentalDefaultControls": {
 				"radius": false

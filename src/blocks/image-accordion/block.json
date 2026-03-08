@@ -94,11 +94,11 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"fontFamily": true,
-			"fontWeight": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true
-			}
+			},
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true
 		}
 	},
 	"example": {

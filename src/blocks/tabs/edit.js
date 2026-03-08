@@ -214,6 +214,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -230,6 +231,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -246,6 +248,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -262,6 +265,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -278,6 +282,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -294,6 +299,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -310,6 +316,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -326,6 +333,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

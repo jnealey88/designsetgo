@@ -401,6 +401,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -417,6 +418,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -433,6 +435,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						// Only show icon background control if hover background is set
@@ -455,6 +458,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 														colorGradientSettings
 													) || '',
 											}),
+										enableAlpha: true,
 										clearable: true,
 									},
 								]
@@ -479,6 +483,7 @@ export default function SectionEdit({ attributes, setAttributes, clientId }) {
 														colorGradientSettings
 													) || '',
 											}),
+										enableAlpha: true,
 										clearable: true,
 									},
 								]

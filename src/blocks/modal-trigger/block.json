@@ -6,18 +6,31 @@
 	"title": "Modal Trigger",
 	"category": "widgets",
 	"description": "A button or link that opens a modal dialog.",
-	"keywords": ["modal", "button", "trigger", "popup", "open"],
+	"keywords": [
+		"modal",
+		"button",
+		"trigger",
+		"popup",
+		"open"
+	],
 	"textdomain": "designsetgo",
 	"icon": "button",
 	"supports": {
 		"anchor": true,
-		"align": ["left", "center", "right", "full"],
+		"align": [
+			"left",
+			"center",
+			"right",
+			"full"
+		],
 		"alignWide": true,
 		"html": false,
 		"spacing": {
 			"margin": true,
 			"padding": true,
-			"__experimentalSkipSerialization": ["padding"],
+			"__experimentalSkipSerialization": [
+				"padding"
+			],
 			"__experimentalDefaultControls": {
 				"margin": true,
 				"padding": true
@@ -35,11 +48,11 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"fontFamily": true,
-			"fontWeight": true,
-			"letterSpacing": true
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalLetterSpacing": true
 		},
-		"border": {
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,

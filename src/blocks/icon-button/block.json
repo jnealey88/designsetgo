@@ -15,17 +15,26 @@
 		"animated"
 	],
 	"textdomain": "designsetgo",
-	"usesContext": ["designsetgo/hoverButtonBackgroundColor"],
+	"usesContext": [
+		"designsetgo/hoverButtonBackgroundColor"
+	],
 	"supports": {
 		"anchor": true,
-		"align": ["left", "center", "right", "full"],
+		"align": [
+			"left",
+			"center",
+			"right",
+			"full"
+		],
 		"alignWide": true,
 		"html": false,
 		"inserter": true,
 		"spacing": {
 			"margin": true,
 			"padding": true,
-			"__experimentalSkipSerialization": ["padding"],
+			"__experimentalSkipSerialization": [
+				"padding"
+			],
 			"__experimentalDefaultControls": {
 				"margin": true,
 				"padding": true
@@ -44,12 +53,13 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"fontWeight": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true
-			}
+			},
+			"__experimentalFontWeight": true
 		},
-		"border": {
+		"shadow": true,
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,
@@ -60,8 +70,7 @@
 				"style": true,
 				"width": true
 			}
-		},
-		"shadow": true
+		}
 	},
 	"attributes": {
 		"align": {

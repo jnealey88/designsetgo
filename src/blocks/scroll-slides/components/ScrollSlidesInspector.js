@@ -156,6 +156,7 @@ export default function ScrollSlidesInspector({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -172,6 +173,7 @@ export default function ScrollSlidesInspector({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}
@@ -196,6 +198,7 @@ export default function ScrollSlidesInspector({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

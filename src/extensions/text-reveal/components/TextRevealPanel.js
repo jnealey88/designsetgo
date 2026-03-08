@@ -167,6 +167,7 @@ export default function TextRevealPanel({
 											) || '',
 									}),
 								clearable: true,
+								enableAlpha: true,
 							},
 						]}
 						{...colorGradientSettings}

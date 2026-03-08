@@ -4,7 +4,7 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
@@ -23,7 +23,11 @@ import {
 } from '../../utils/encode-color-value';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
-export default function ImageAccordionEdit({ attributes, setAttributes }) {
+export default function ImageAccordionEdit({
+	attributes,
+	setAttributes,
+	clientId,
+}) {
 	const {
 		height,
 		gap,
@@ -216,14 +220,10 @@ export default function ImageAccordionEdit({ attributes, setAttributes }) {
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
-			</InspectorControls>
 
-			<InspectorControls group="styles">
-				<PanelColorGradientSettings
+				<PanelBody
 					title={__('Overlay', 'designsetgo')}
 					initialOpen={false}
-					settings={[]}
-					__experimentalIsRenderedInSidebar
 				>
 					<ToggleControl
 						label={__('Enable Overlay', 'designsetgo')}
@@ -244,27 +244,6 @@ export default function ImageAccordionEdit({ attributes, setAttributes }) {
 
 					{enableOverlay && (
 						<>
-							<PanelColorGradientSettings
-								title={__('Overlay Color', 'designsetgo')}
-								settings={[
-									{
-										colorValue: decodeColorValue(
-											overlayColor,
-											colorGradientSettings
-										),
-										onColorChange: (value) =>
-											setAttributes({
-												overlayColor: encodeColorValue(
-													value,
-													colorGradientSettings
-												),
-											}),
-										label: __('Color', 'designsetgo'),
-									},
-								]}
-								__experimentalIsRenderedInSidebar
-							/>
-
 							<RangeControl
 								label={__(
 									'Overlay Opacity (Default)',
@@ -306,8 +285,36 @@ export default function ImageAccordionEdit({ attributes, setAttributes }) {
 							/>
 						</>
 					)}
-				</PanelColorGradientSettings>
+				</PanelBody>
 			</InspectorControls>
+
+			{enableOverlay && (
+				<InspectorControls group="color">
+					<ColorGradientSettingsDropdown
+						panelId={clientId}
+						title={__('Overlay Color', 'designsetgo')}
+						settings={[
+							{
+								label: __('Color', 'designsetgo'),
+								colorValue: decodeColorValue(
+									overlayColor,
+									colorGradientSettings
+								),
+								onColorChange: (value) =>
+									setAttributes({
+										overlayColor: encodeColorValue(
+											value,
+											colorGradientSettings
+										),
+									}),
+								clearable: true,
+								enableAlpha: true,
+							},
+						]}
+						{...colorGradientSettings}
+					/>
+				</InspectorControls>
+			)}
 
 			<div {...blockProps}>
 				<div {...innerBlocksProps} />

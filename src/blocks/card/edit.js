@@ -778,6 +778,7 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}
@@ -802,6 +803,7 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -818,6 +820,7 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}
@@ -843,6 +846,7 @@ export default function CardEdit({ attributes, setAttributes, clientId }) {
 												colorGradientSettings
 											) || '',
 									}),
+								enableAlpha: true,
 								clearable: true,
 							},
 						]}

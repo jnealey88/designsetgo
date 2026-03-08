@@ -17,10 +17,15 @@
 		"dsg"
 	],
 	"textdomain": "designsetgo",
-	"usesContext": ["postId", "postType"],
+	"usesContext": [
+		"postId",
+		"postType"
+	],
 	"supports": {
 		"anchor": true,
-		"align": ["full"],
+		"align": [
+			"full"
+		],
 		"html": false,
 		"inserter": true,
 		"color": {
@@ -48,7 +53,8 @@
 				"fontSize": true
 			}
 		},
-		"border": {
+		"shadow": true,
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,
@@ -56,8 +62,7 @@
 			"__experimentalDefaultControls": {
 				"radius": true
 			}
-		},
-		"shadow": true
+		}
 	},
 	"attributes": {
 		"align": {
@@ -67,7 +72,10 @@
 		"productSource": {
 			"type": "string",
 			"default": "manual",
-			"enum": ["manual", "current"]
+			"enum": [
+				"manual",
+				"current"
+			]
 		},
 		"productId": {
 			"type": "number",
@@ -76,12 +84,19 @@
 		"layout": {
 			"type": "string",
 			"default": "media-left",
-			"enum": ["media-left", "media-right"]
+			"enum": [
+				"media-left",
+				"media-right"
+			]
 		},
 		"imageSize": {
 			"type": "string",
 			"default": "large",
-			"enum": ["medium", "large", "full"]
+			"enum": [
+				"medium",
+				"large",
+				"full"
+			]
 		},
 		"showPrice": {
 			"type": "boolean",
@@ -125,7 +140,11 @@
 		"contentVerticalAlignment": {
 			"type": "string",
 			"default": "center",
-			"enum": ["top", "center", "bottom"]
+			"enum": [
+				"top",
+				"center",
+				"bottom"
+			]
 		}
 	},
 	"example": {

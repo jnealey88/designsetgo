@@ -4,8 +4,6 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
@@ -250,19 +248,19 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 											) || '',
 									}),
 								clearable: true,
+								enableAlpha: true,
 							},
 						]}
 						{...colorGradientSettings}
 					/>
 				)}
-			</InspectorControls>
 
-			<InspectorControls group="styles">
-				<PanelColorGradientSettings
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
 					title={__('Open State Colors', 'designsetgo')}
-					initialOpen={false}
 					settings={[
 						{
+							label: __('Background', 'designsetgo'),
 							colorValue: decodeColorValue(
 								openBackgroundColor,
 								colorGradientSettings
@@ -275,9 +273,11 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
-							label: __('Background', 'designsetgo'),
+							clearable: true,
+							enableAlpha: true,
 						},
 						{
+							label: __('Text', 'designsetgo'),
 							colorValue: decodeColorValue(
 								openTextColor,
 								colorGradientSettings
@@ -290,27 +290,25 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
-							label: __('Text', 'designsetgo'),
+							clearable: true,
+							enableAlpha: true,
 						},
 					]}
-					__experimentalIsRenderedInSidebar
-				>
-					<p
-						className="components-base-control__help"
-						style={{ marginTop: '10px', fontSize: '12px' }}
-					>
-						{__(
-							'Colors applied to all accordion items when open.',
-							'designsetgo'
-						)}
-					</p>
-				</PanelColorGradientSettings>
+					{...colorGradientSettings}
+				/>
+				<p className="components-base-control__help">
+					{__(
+						'Colors applied to all accordion items when open.',
+						'designsetgo'
+					)}
+				</p>
 
-				<PanelColorGradientSettings
+				<ColorGradientSettingsDropdown
+					panelId={clientId}
 					title={__('Hover State Colors', 'designsetgo')}
-					initialOpen={false}
 					settings={[
 						{
+							label: __('Background', 'designsetgo'),
 							colorValue: decodeColorValue(
 								hoverBackgroundColor,
 								colorGradientSettings
@@ -323,10 +321,11 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
-							label: __('Background', 'designsetgo'),
 							clearable: true,
+							enableAlpha: true,
 						},
 						{
+							label: __('Text', 'designsetgo'),
 							colorValue: decodeColorValue(
 								hoverTextColor,
 								colorGradientSettings
@@ -339,27 +338,23 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
-							label: __('Text', 'designsetgo'),
 							clearable: true,
+							enableAlpha: true,
 						},
 					]}
-					__experimentalIsRenderedInSidebar
-				>
-					<p
-						className="components-base-control__help"
-						style={{ marginTop: '10px', fontSize: '12px' }}
-					>
-						{!hoverBackgroundColor && !hoverTextColor
-							? __(
-									'⚡ Hover colors mirror open state by default. Set custom colors to override.',
-									'designsetgo'
-								)
-							: __(
-									'Custom hover colors set. Clear to use open state colors.',
-									'designsetgo'
-								)}
-					</p>
-				</PanelColorGradientSettings>
+					{...colorGradientSettings}
+				/>
+				<p className="components-base-control__help">
+					{hoverBackgroundColor || hoverTextColor
+						? __(
+								'Custom hover colors set. Clear to use open state colors.',
+								'designsetgo'
+							)
+						: __(
+								'Hover colors mirror open state by default. Set custom colors to override.',
+								'designsetgo'
+							)}
+				</p>
 			</InspectorControls>
 
 			{/* NO wrapper div - spread props directly per WordPress best practices */}

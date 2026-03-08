@@ -1021,6 +1021,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 												colorGradientSettings
 											) || '',
 									}),
+								enableAlpha: true,
 								clearable: true,
 							},
 							{
@@ -1037,6 +1038,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 												colorGradientSettings
 											) || '',
 									}),
+								enableAlpha: true,
 								clearable: true,
 							},
 						]}
@@ -1065,6 +1067,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 												colorGradientSettings
 											) || '',
 									}),
+								enableAlpha: true,
 								clearable: true,
 							},
 						]}

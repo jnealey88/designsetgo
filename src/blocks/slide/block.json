@@ -4,9 +4,15 @@
 	"name": "designsetgo/slide",
 	"title": "Slide",
 	"category": "design",
-	"parent": ["designsetgo/slider"],
+	"parent": [
+		"designsetgo/slider"
+	],
 	"description": "Individual slide within a slider with background image support and full block flexibility.",
-	"keywords": ["slide", "panel", "item"],
+	"keywords": [
+		"slide",
+		"panel",
+		"item"
+	],
 	"textdomain": "designsetgo",
 	"attributes": {
 		"backgroundImage": {
@@ -73,10 +79,10 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"fontFamily": true,
-			"fontWeight": true,
-			"textTransform": true,
-			"letterSpacing": true
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalTextTransform": true,
+			"__experimentalLetterSpacing": true
 		}
 	},
 	"editorScript": "file:./index.js",

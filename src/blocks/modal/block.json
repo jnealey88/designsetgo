@@ -6,7 +6,13 @@
 	"title": "Modal",
 	"category": "widgets",
 	"description": "Create accessible modal dialogs with customizable triggers and content.",
-	"keywords": ["modal", "popup", "dialog", "overlay", "lightbox"],
+	"keywords": [
+		"modal",
+		"popup",
+		"dialog",
+		"overlay",
+		"lightbox"
+	],
 	"textdomain": "designsetgo",
 	"icon": "feedback",
 	"supports": {
@@ -37,15 +43,15 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"fontFamily": true,
-			"fontWeight": true,
-			"fontStyle": true,
-			"textTransform": true,
-			"textDecoration": true,
-			"letterSpacing": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true
-			}
+			},
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true
 		},
 		"dimensions": {
 			"minHeight": true,
@@ -54,7 +60,10 @@
 			}
 		},
 		"shadow": true,
-		"border": {
+		"interactivity": {
+			"clientNavigation": true
+		},
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,
@@ -65,9 +74,6 @@
 				"style": true,
 				"width": true
 			}
-		},
-		"interactivity": {
-			"clientNavigation": true
 		}
 	},
 	"providesContext": {
