@@ -50,6 +50,12 @@
 	}
 }
 
+// Block Inserter Icon Hover Color
+// Override default blue hover color for DesignSetGo blocks in the inserter
+[class*="editor-block-list-item-designsetgo-"]:hover .block-editor-block-icon {
+	color: #412B6B !important;
+}
+
 // Custom CSS Extension - Textarea Styling
 .dsgo-custom-css-textarea {
 
