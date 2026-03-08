@@ -292,6 +292,62 @@ The Slider block creates modern, performant sliders with multiple transition eff
 
 ---
 
+### Scroll-Driven Horizontal (Scroll Carousel)
+
+The Slider block includes a **Scroll Carousel** variation that converts the slider into a scroll-driven horizontal experience. As the user scrolls down the page, slides advance horizontally — no arrows, dots, or manual interaction needed.
+
+**Insert the Scroll Carousel:**
+- In the block editor, click `+` and search for "Scroll Carousel"
+- Or insert a standard Slider and enable "Scroll-Driven Horizontal" in Behavior Settings
+
+**How It Works:**
+1. The slider wraps itself in a "pin spacer" element
+2. The slider becomes `position: sticky` and pins to the viewport center
+3. Vertical scroll progress maps to horizontal `translateX` on the track
+4. A progress bar indicator shows how far through the slides you've scrolled
+5. When the spacer is fully scrolled past, the slider unpins
+
+**Scroll Carousel Default Attributes:**
+- Slides per view: 2.5 (desktop), 1.5 (tablet), 1 (mobile)
+- Gap: 24px
+- Style variation: Card
+- Arrows: Hidden
+- Dots: Hidden
+- Autoplay: Off
+- Loop: Off
+
+**Scroll Speed**
+- Range: 0.5 - 3
+- Default: 1
+- Controls how much vertical scrolling is needed to traverse all slides
+- Higher values = more scroll distance required (slower horizontal movement)
+- Lower values = less scrolling needed (faster horizontal movement)
+
+**Automatically Disabled When Scroll-Driven:**
+- Autoplay
+- Loop
+- Arrows
+- Dots
+- Swipe/Drag gestures
+
+**Progress Bar:**
+- A thin progress bar appears at the bottom of the slider
+- Shows scroll completion percentage (0% to 100%)
+- 120px wide on desktop, 80px on mobile
+- Styled with subtle dark/light contrast
+
+**Reduced Motion:**
+- When `prefers-reduced-motion` is enabled, the scroll-driven position updates are skipped
+- Slides display in their natural layout without horizontal scrolling
+
+**Best Use Cases:**
+- Feature showcases with card-style slides
+- Portfolio pieces that reveal as users scroll
+- Product feature tours
+- Any content that benefits from a "scroll to explore" interaction
+
+---
+
 ### Advanced Settings
 
 **Mobile Breakpoint**
@@ -424,7 +480,34 @@ The Slider block creates modern, performant sliders with multiple transition eff
 
 ---
 
-### 6. Full-Screen Background Slider
+### 6. Scroll Carousel (Scroll-Driven)
+
+**Goal**: Horizontal card carousel that advances as users scroll down
+
+**Setup:**
+1. Insert the "Scroll Carousel" variation (or enable scroll-driven on an existing slider)
+2. Add 4-6 slides with card-style content
+3. Set slides per view to 2.5 (desktop), 1.5 (tablet), 1 (mobile)
+4. Use Card style variation
+5. Gap: 20-30px
+6. Scroll speed: 1 (default) or adjust to taste
+
+**Content Per Slide:**
+- Featured image with rounded corners
+- Heading (H3)
+- Short description paragraph
+- Optional CTA button
+
+**Tips:**
+- Works best at full or wide width alignment
+- Use consistent card heights for visual harmony
+- Keep slides to 4-8 for comfortable scroll distance
+- Test scroll speed on different screen sizes
+- Consider the total page length — scroll carousel adds vertical height
+
+---
+
+### 7. Full-Screen Background Slider
 
 **Goal**: Full viewport background slider
 
@@ -699,6 +782,15 @@ A: While slides themselves aren't clickable, you can add a full-width/height lin
 **Q: How do I disable navigation on mobile?**
 A: You can hide arrows/dots with custom CSS for mobile devices. The slider will still work with swipe gestures.
 
+**Q: What is the Scroll Carousel variation?**
+A: It's a scroll-driven mode where vertical page scrolling drives horizontal slide navigation. The slider pins to the viewport and slides advance as you scroll. Insert it directly from the block inserter by searching "Scroll Carousel".
+
+**Q: Can I adjust how fast the Scroll Carousel moves?**
+A: Yes. Use the "Scroll Speed" range control (0.5-3) in Behavior Settings. Higher values require more scrolling to traverse all slides.
+
+**Q: Why does the Scroll Carousel add extra page height?**
+A: The scroll-driven mode creates a pin spacer whose height determines the scroll distance. This extra height is what maps to horizontal movement. Adjust scroll speed to control how much height is added.
+
 **Q: Can I control slider with custom JavaScript?**
 A: Yes! The slider dispatches custom events (`dsgo-slider-change`) that you can listen to. Access the slider instance via WeakMap if needed.
 
@@ -749,6 +841,6 @@ A: Select the Slider block and in the toolbar, choose "Full Width" alignment. Or
 
 ---
 
-*Last Updated: 2025-11-19*
+*Last Updated: 2026-03-08*
 *DesignSetGo v1.0.0*
 *WordPress 6.4+*
