@@ -79,11 +79,11 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"fontWeight": true,
-			"fontFamily": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true
-			}
+			},
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true
 		},
 		"background": {
 			"backgroundImage": true,

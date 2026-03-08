@@ -135,6 +135,7 @@ export default function SvgPatternsPanel({
 											) || DEFAULTS.color,
 									}),
 								clearable: true,
+								enableAlpha: true,
 							},
 						]}
 						{...colorGradientSettings}

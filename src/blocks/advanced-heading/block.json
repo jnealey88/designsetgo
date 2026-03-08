@@ -18,7 +18,14 @@
 		"level": {
 			"type": "number",
 			"default": 2,
-			"enum": [1, 2, 3, 4, 5, 6]
+			"enum": [
+				1,
+				2,
+				3,
+				4,
+				5,
+				6
+			]
 		},
 		"textAlign": {
 			"type": "string"
@@ -59,12 +66,6 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"fontFamily": true,
-			"fontWeight": true,
-			"fontStyle": true,
-			"textTransform": true,
-			"textDecoration": true,
-			"letterSpacing": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true,
 				"lineHeight": true,
@@ -74,7 +75,13 @@
 				"textTransform": true,
 				"textDecoration": true,
 				"letterSpacing": true
-			}
+			},
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true
 		}
 	},
 	"example": {

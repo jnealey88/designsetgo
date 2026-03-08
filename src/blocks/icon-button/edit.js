@@ -310,6 +310,7 @@ export default function IconButtonEdit({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -326,6 +327,7 @@ export default function IconButtonEdit({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

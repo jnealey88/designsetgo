@@ -86,6 +86,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								setAttributes({
 									dsgoMarkerColor: color || '#e74c3c',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

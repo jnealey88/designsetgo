@@ -6,11 +6,24 @@
 	"title": "Card",
 	"category": "design",
 	"description": "Display content in a card layout with image, badge, title, subtitle, body text, and CTA button. Perfect for pricing, features, services, and team members.",
-	"keywords": ["card", "content", "image", "cta", "pricing", "feature"],
+	"keywords": [
+		"card",
+		"content",
+		"image",
+		"cta",
+		"pricing",
+		"feature"
+	],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
-		"align": ["left", "center", "right", "wide", "full"],
+		"align": [
+			"left",
+			"center",
+			"right",
+			"wide",
+			"full"
+		],
 		"html": false,
 		"inserter": true,
 		"spacing": {
@@ -35,13 +48,17 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"fontWeight": true,
-			"fontFamily": true,
 			"__experimentalDefaultControls": {
 				"fontSize": false
-			}
+			},
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true
 		},
-		"border": {
+		"shadow": true,
+		"interactivity": {
+			"clientNavigation": true
+		},
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,
@@ -50,17 +67,20 @@
 				"radius": true,
 				"width": false
 			}
-		},
-		"shadow": true,
-		"interactivity": {
-			"clientNavigation": true
 		}
 	},
 	"attributes": {
 		"layoutPreset": {
 			"type": "string",
 			"default": "standard",
-			"enum": ["standard", "horizontal-left", "horizontal-right", "background", "minimal", "featured"]
+			"enum": [
+				"standard",
+				"horizontal-left",
+				"horizontal-right",
+				"background",
+				"minimal",
+				"featured"
+			]
 		},
 		"imageId": {
 			"type": "number",
@@ -77,7 +97,13 @@
 		"imageAspectRatio": {
 			"type": "string",
 			"default": "16-9",
-			"enum": ["16-9", "4-3", "1-1", "original", "custom"]
+			"enum": [
+				"16-9",
+				"4-3",
+				"1-1",
+				"original",
+				"custom"
+			]
 		},
 		"imageCustomAspectRatio": {
 			"type": "string",
@@ -86,7 +112,12 @@
 		"imageObjectFit": {
 			"type": "string",
 			"default": "cover",
-			"enum": ["cover", "contain", "fill", "scale-down"]
+			"enum": [
+				"cover",
+				"contain",
+				"fill",
+				"scale-down"
+			]
 		},
 		"imageFocalPoint": {
 			"type": "object",
@@ -102,17 +133,28 @@
 		"badgeStyle": {
 			"type": "string",
 			"default": "floating",
-			"enum": ["floating", "inline"]
+			"enum": [
+				"floating",
+				"inline"
+			]
 		},
 		"badgeFloatingPosition": {
 			"type": "string",
 			"default": "top-right",
-			"enum": ["top-left", "top-right", "bottom-left", "bottom-right"]
+			"enum": [
+				"top-left",
+				"top-right",
+				"bottom-left",
+				"bottom-right"
+			]
 		},
 		"badgeInlinePosition": {
 			"type": "string",
 			"default": "above-title",
-			"enum": ["above-title", "below-title"]
+			"enum": [
+				"above-title",
+				"below-title"
+			]
 		},
 		"badgeBackgroundColor": {
 			"type": "string",
@@ -149,12 +191,22 @@
 		"contentAlignment": {
 			"type": "string",
 			"default": "center",
-			"enum": ["left", "center", "right"]
+			"enum": [
+				"left",
+				"center",
+				"right"
+			]
 		},
 		"visualStyle": {
 			"type": "string",
 			"default": "default",
-			"enum": ["default", "outlined", "filled", "shadow", "minimal"]
+			"enum": [
+				"default",
+				"outlined",
+				"filled",
+				"shadow",
+				"minimal"
+			]
 		},
 		"showImage": {
 			"type": "boolean",

@@ -427,6 +427,7 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 									});
 								}
 							},
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

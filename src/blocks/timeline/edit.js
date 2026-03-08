@@ -341,6 +341,7 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -357,6 +358,7 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -373,6 +375,7 @@ export default function TimelineEdit({ attributes, setAttributes, clientId }) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

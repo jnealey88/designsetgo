@@ -161,6 +161,7 @@ export default function Edit(props) {
 												colorGradientSettings
 											) || '',
 									}),
+								enableAlpha: true,
 								clearable: true,
 							},
 							{
@@ -177,6 +178,7 @@ export default function Edit(props) {
 												colorGradientSettings
 											) || '',
 									}),
+								enableAlpha: true,
 								clearable: true,
 							},
 							{
@@ -193,6 +195,7 @@ export default function Edit(props) {
 												colorGradientSettings
 											) || '',
 									}),
+								enableAlpha: true,
 								clearable: true,
 							},
 						]}
@@ -257,6 +260,7 @@ export default function Edit(props) {
 													colorGradientSettings
 												) || '',
 										}),
+									enableAlpha: true,
 									clearable: true,
 								},
 								{
@@ -273,6 +277,7 @@ export default function Edit(props) {
 													colorGradientSettings
 												) || '',
 										}),
+									enableAlpha: true,
 									clearable: true,
 								},
 								{
@@ -289,6 +294,7 @@ export default function Edit(props) {
 													colorGradientSettings
 												) || '',
 										}),
+									enableAlpha: true,
 									clearable: true,
 								},
 							]}
@@ -350,6 +356,7 @@ export default function Edit(props) {
 												colorGradientSettings
 											) || '',
 									}),
+								enableAlpha: true,
 								clearable: true,
 							},
 							{
@@ -366,6 +373,7 @@ export default function Edit(props) {
 												colorGradientSettings
 											) || '',
 									}),
+								enableAlpha: true,
 								clearable: true,
 							},
 							{
@@ -382,6 +390,7 @@ export default function Edit(props) {
 												colorGradientSettings
 											) || '',
 									}),
+								enableAlpha: true,
 								clearable: true,
 							},
 						]}
@@ -439,6 +448,7 @@ export default function Edit(props) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -455,6 +465,7 @@ export default function Edit(props) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 						{
@@ -471,6 +482,7 @@ export default function Edit(props) {
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

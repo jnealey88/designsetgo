@@ -5,9 +5,15 @@
 	"version": "1.0.0",
 	"title": "Flip Card Back",
 	"category": "design",
-	"parent": ["designsetgo/flip-card"],
+	"parent": [
+		"designsetgo/flip-card"
+	],
 	"description": "Back face of the flip card.",
-	"keywords": ["flip", "card", "back"],
+	"keywords": [
+		"flip",
+		"card",
+		"back"
+	],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": false,
@@ -54,7 +60,7 @@
 				"fontSize": true
 			}
 		},
-		"border": {
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,

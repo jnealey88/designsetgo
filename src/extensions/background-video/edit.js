@@ -233,6 +233,7 @@ export function BackgroundVideoPanel(props) {
 									});
 								},
 								clearable: true,
+								enableAlpha: true,
 							},
 						]}
 						{...colorGradientSettings}

@@ -151,6 +151,7 @@ export default function CounterEdit({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

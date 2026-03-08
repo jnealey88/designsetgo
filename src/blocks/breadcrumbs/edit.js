@@ -146,6 +146,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									},
 								});
 							},
+							enableAlpha: true,
 						},
 						{
 							label: __('Link Hover', 'designsetgo'),
@@ -171,6 +172,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									},
 								});
 							},
+							enableAlpha: true,
 						},
 					]}
 					panelId={clientId}

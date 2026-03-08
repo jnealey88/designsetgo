@@ -6,11 +6,21 @@
 	"title": "Grid (DSG)",
 	"category": "design",
 	"description": "Responsive multi-column grid layouts. Perfect for feature grids, product listings, team members, and card layouts.",
-	"keywords": ["grid", "dsg", "columns", "layout", "container", "responsive"],
+	"keywords": [
+		"grid",
+		"dsg",
+		"columns",
+		"layout",
+		"container",
+		"responsive"
+	],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"inserter": true,
 		"layout": {
@@ -18,7 +28,6 @@
 			"allowInheriting": false,
 			"allowEditing": false,
 			"allowSizingOnChildren": true,
-			"allowContentEditing": false,
 			"default": {
 				"type": "constrained"
 			}
@@ -60,7 +69,7 @@
 		"position": {
 			"sticky": true
 		},
-		"border": {
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,

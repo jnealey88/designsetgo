@@ -6,11 +6,22 @@
 	"title": "Section",
 	"category": "design",
 	"description": "Vertical stacking container for sections and content areas. Perfect for building layouts with consistent spacing. Can be nested within other sections for complex page structures.",
-	"keywords": ["section", "dsg", "stack", "vertical", "layout", "container", "content area"],
+	"keywords": [
+		"section",
+		"dsg",
+		"stack",
+		"vertical",
+		"layout",
+		"container",
+		"content area"
+	],
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"inserter": true,
 		"layout": {
@@ -66,7 +77,7 @@
 		"position": {
 			"sticky": true
 		},
-		"border": {
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,

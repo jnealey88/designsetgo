@@ -76,6 +76,7 @@ export default function ExpandingBackgroundPanel({
 											) || '',
 									}),
 								clearable: true,
+								enableAlpha: true,
 							},
 						]}
 						{...colorGradientSettings}

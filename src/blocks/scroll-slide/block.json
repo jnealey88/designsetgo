@@ -6,9 +6,16 @@
 	"title": "Scroll Slide",
 	"category": "design",
 	"description": "Individual slide within a Scroll Slides block",
-	"keywords": ["slide", "panel", "section", "scroll"],
+	"keywords": [
+		"slide",
+		"panel",
+		"section",
+		"scroll"
+	],
 	"textdomain": "designsetgo",
-	"parent": ["designsetgo/scroll-slides"],
+	"parent": [
+		"designsetgo/scroll-slides"
+	],
 	"attributes": {
 		"navHeading": {
 			"type": "string",
@@ -41,7 +48,7 @@
 			"lineHeight": true
 		},
 		"shadow": true,
-		"border": {
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,

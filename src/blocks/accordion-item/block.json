@@ -84,15 +84,15 @@
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
-			"fontWeight": true,
-			"fontFamily": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true,
 				"lineHeight": true,
 				"fontWeight": true
-			}
+			},
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true
 		},
-		"border": {
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,

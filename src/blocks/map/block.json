@@ -6,13 +6,23 @@
 	"title": "Map",
 	"category": "widgets",
 	"description": "Display an interactive map using OpenStreetMap or Google Maps.",
-	"keywords": ["map", "location", "address", "openstreetmap", "google maps", "directions"],
+	"keywords": [
+		"map",
+		"location",
+		"address",
+		"openstreetmap",
+		"google maps",
+		"directions"
+	],
 	"textdomain": "designsetgo",
 	"attributes": {
 		"dsgoProvider": {
 			"type": "string",
 			"default": "openstreetmap",
-			"enum": ["openstreetmap", "googlemaps"]
+			"enum": [
+				"openstreetmap",
+				"googlemaps"
+			]
 		},
 		"dsgoLatitude": {
 			"type": "number",
@@ -45,7 +55,12 @@
 		"dsgoAspectRatio": {
 			"type": "string",
 			"default": "custom",
-			"enum": ["16:9", "4:3", "1:1", "custom"]
+			"enum": [
+				"16:9",
+				"4:3",
+				"1:1",
+				"custom"
+			]
 		},
 		"dsgoPrivacyMode": {
 			"type": "boolean",
@@ -62,7 +77,10 @@
 	},
 	"supports": {
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"spacing": {
 			"margin": true,
@@ -81,7 +99,7 @@
 				"background": false
 			}
 		},
-		"border": {
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,

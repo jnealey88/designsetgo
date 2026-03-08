@@ -44,7 +44,7 @@
 				"fontSize": true
 			}
 		},
-		"border": {
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,

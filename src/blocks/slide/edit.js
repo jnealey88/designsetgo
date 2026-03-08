@@ -167,6 +167,7 @@ export default function SlideEdit({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}

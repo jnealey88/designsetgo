@@ -19,7 +19,10 @@
 	"textdomain": "designsetgo",
 	"supports": {
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"inserter": true,
 		"color": {
@@ -47,7 +50,8 @@
 				"fontSize": true
 			}
 		},
-		"border": {
+		"shadow": true,
+		"__experimentalBorder": {
 			"color": true,
 			"radius": true,
 			"style": true,
@@ -55,8 +59,7 @@
 			"__experimentalDefaultControls": {
 				"radius": true
 			}
-		},
-		"shadow": true
+		}
 	},
 	"attributes": {
 		"align": {
@@ -66,7 +69,10 @@
 		"categorySource": {
 			"type": "string",
 			"default": "all",
-			"enum": ["all", "manual"]
+			"enum": [
+				"all",
+				"manual"
+			]
 		},
 		"selectedCategories": {
 			"type": "array",
@@ -101,7 +107,10 @@
 		"overlayPosition": {
 			"type": "string",
 			"default": "bottom-left",
-			"enum": ["bottom-left", "center"]
+			"enum": [
+				"bottom-left",
+				"center"
+			]
 		}
 	},
 	"example": {

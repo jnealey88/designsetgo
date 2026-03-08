@@ -340,6 +340,7 @@ export default function TimelineItemEdit({
 											colorGradientSettings
 										) || '',
 								}),
+							enableAlpha: true,
 							clearable: true,
 						},
 					]}
