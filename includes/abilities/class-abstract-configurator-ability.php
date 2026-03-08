@@ -77,6 +77,18 @@ abstract class Abstract_Configurator_Ability extends Abstract_Ability {
 	}
 
 	/**
+	 * Get keyword aliases for search discovery.
+	 *
+	 * Override to provide synonyms and related terms that an LLM
+	 * might use when searching for this ability.
+	 *
+	 * @return array<string> Keyword aliases.
+	 */
+	protected function get_keywords(): array {
+		return array();
+	}
+
+	/**
 	 * Get the ability configuration.
 	 *
 	 * Builds config with auto-generated input schema from block.json
@@ -85,7 +97,7 @@ abstract class Abstract_Configurator_Ability extends Abstract_Ability {
 	 * @return array<string, mixed>
 	 */
 	public function get_config(): array {
-		return array(
+		$config = array(
 			'label'               => $this->get_label(),
 			'description'         => $this->get_description(),
 			'category'            => 'blocks',
@@ -97,6 +109,13 @@ abstract class Abstract_Configurator_Ability extends Abstract_Ability {
 				'idempotent' => true,
 			),
 		);
+
+		$keywords = $this->get_keywords();
+		if ( ! empty( $keywords ) ) {
+			$config['keywords'] = $keywords;
+		}
+
+		return $config;
 	}
 
 	/**

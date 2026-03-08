@@ -701,21 +701,22 @@ class Test_Abilities_Execution extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test insert-section ability execution.
+	 * Test add-child-block ability execution.
 	 */
-	public function test_insert_section_ability() {
+	public function test_add_child_block_ability() {
 		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/insert-section' );
+		$ability = $registry->get_ability( 'designsetgo/add-child-block' );
 
 		if ( ! $ability ) {
-			$this->markTestSkipped( 'Insert section ability not registered' );
+			$this->markTestSkipped( 'Add child block ability not registered' );
 		}
 
 		$result = $ability->execute( array(
-			'post_id'    => $this->page_id,
-			'position'   => -1,
-			'attributes' => array(
-				'constrainWidth' => true,
+			'post_id'            => $this->page_id,
+			'parent_block_index' => 0,
+			'block_name'         => 'core/paragraph',
+			'attributes'         => array(
+				'content' => 'Test paragraph',
 			),
 		) );
 
@@ -728,14 +729,14 @@ class Test_Abilities_Execution extends WP_UnitTestCase {
 	 */
 	public function test_insert_ability_missing_post_id() {
 		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/insert-section' );
+		$ability = $registry->get_ability( 'designsetgo/add-child-block' );
 
 		if ( ! $ability ) {
-			$this->markTestSkipped( 'Insert section ability not registered' );
+			$this->markTestSkipped( 'Add child block ability not registered' );
 		}
 
 		$result = $ability->execute( array(
-			'attributes' => array(),
+			'block_name' => 'core/paragraph',
 		) );
 
 		$this->assertWPError( $result );
@@ -743,51 +744,36 @@ class Test_Abilities_Execution extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test generate-hero-section ability.
+	 * Test add-child-block ability with inner blocks.
 	 */
-	public function test_generate_hero_section_ability() {
+	public function test_add_child_block_with_inner_blocks() {
 		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/generate-hero-section' );
+		$ability = $registry->get_ability( 'designsetgo/add-child-block' );
 
 		if ( ! $ability ) {
-			$this->markTestSkipped( 'Generate hero section ability not registered' );
+			$this->markTestSkipped( 'Add child block ability not registered' );
 		}
 
 		$result = $ability->execute( array(
-			'post_id'       => $this->page_id,
-			'heading'       => 'Test Hero',
-			'description'   => 'Test description',
-			'primaryButton' => array(
-				'text' => 'Click Me',
-				'url'  => 'https://example.com',
+			'post_id'            => $this->page_id,
+			'parent_block_index' => 0,
+			'block_name'         => 'designsetgo/section',
+			'attributes'         => array(
+				'constrainWidth' => true,
 			),
-		) );
-
-		$this->assertIsArray( $result );
-		$this->assertTrue( $result['success'] );
-	}
-
-	/**
-	 * Test generate-faq-section ability.
-	 */
-	public function test_generate_faq_section_ability() {
-		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/generate-faq-section' );
-
-		if ( ! $ability ) {
-			$this->markTestSkipped( 'Generate FAQ section ability not registered' );
-		}
-
-		$result = $ability->execute( array(
-			'post_id' => $this->page_id,
-			'faqs'    => array(
+			'inner_blocks'       => array(
 				array(
-					'question' => 'What is this?',
-					'answer'   => 'This is a test.',
+					'name'       => 'core/heading',
+					'attributes' => array(
+						'level'   => 1,
+						'content' => 'Test Hero',
+					),
 				),
 				array(
-					'question' => 'How does it work?',
-					'answer'   => 'It works great!',
+					'name'       => 'core/paragraph',
+					'attributes' => array(
+						'content' => 'Test description',
+					),
 				),
 			),
 		) );
@@ -807,10 +793,10 @@ class Test_Abilities_Execution extends WP_UnitTestCase {
 		wp_set_current_user( $subscriber_id );
 
 		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/insert-section' );
+		$ability = $registry->get_ability( 'designsetgo/add-child-block' );
 
 		if ( ! $ability ) {
-			$this->markTestSkipped( 'Insert section ability not registered' );
+			$this->markTestSkipped( 'Add child block ability not registered' );
 		}
 
 		// The permission callback should fail.
@@ -1078,98 +1064,80 @@ class Test_Abstract_Configurator_Ability extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test configure-section ability is registered.
+	 * Test list-extensions ability is registered.
 	 */
-	public function test_configure_section_ability_registered() {
+	public function test_list_extensions_ability_registered() {
 		$registry = Abilities_Registry::get_instance();
 
-		$this->assertTrue( $registry->has_ability( 'designsetgo/configure-section' ) );
+		$this->assertTrue( $registry->has_ability( 'designsetgo/list-extensions' ) );
 	}
 
 	/**
-	 * Test configure-section ability has auto-generated schema.
+	 * Test list-extensions returns extension data.
 	 */
-	public function test_configure_section_ability_schema() {
+	public function test_list_extensions_returns_data() {
 		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/configure-section' );
+		$ability = $registry->get_ability( 'designsetgo/list-extensions' );
+
+		$this->assertNotNull( $ability );
+
+		$result = $ability->execute( array() );
+
+		$this->assertArrayHasKey( 'extensions', $result );
+		$this->assertArrayHasKey( 'total', $result );
+		$this->assertGreaterThan( 0, $result['total'] );
+
+		// Each extension should have required fields.
+		$ext = $result['extensions'][0];
+		$this->assertArrayHasKey( 'name', $ext );
+		$this->assertArrayHasKey( 'label', $ext );
+		$this->assertArrayHasKey( 'attributes', $ext );
+		$this->assertArrayHasKey( 'blocks', $ext );
+	}
+
+	/**
+	 * Test list-extensions can filter by extension name.
+	 */
+	public function test_list_extensions_filter() {
+		$registry = Abilities_Registry::get_instance();
+		$ability = $registry->get_ability( 'designsetgo/list-extensions' );
+
+		$result = $ability->execute( array( 'extension' => 'block-animations' ) );
+
+		$this->assertEquals( 1, $result['total'] );
+		$this->assertEquals( 'block-animations', $result['extensions'][0]['name'] );
+		$this->assertArrayHasKey( 'dsgoAnimationEnabled', $result['extensions'][0]['attributes'] );
+	}
+
+	/**
+	 * Test update-block ability is registered.
+	 */
+	public function test_update_block_ability() {
+		$registry = Abilities_Registry::get_instance();
+		$ability = $registry->get_ability( 'designsetgo/update-block' );
 
 		$this->assertNotNull( $ability );
 
 		$config = $ability->get_config();
 
+		// Should have input_schema with common properties.
 		$this->assertArrayHasKey( 'input_schema', $config );
 		$this->assertArrayHasKey( 'properties', $config['input_schema'] );
 		$this->assertArrayHasKey( 'post_id', $config['input_schema']['properties'] );
+		$this->assertArrayHasKey( 'block_name', $config['input_schema']['properties'] );
 		$this->assertArrayHasKey( 'attributes', $config['input_schema']['properties'] );
-
-		// Attributes should include section block attributes.
-		$attrs_schema = $config['input_schema']['properties']['attributes'];
-		$this->assertArrayHasKey( 'properties', $attrs_schema );
-		$this->assertArrayHasKey( 'align', $attrs_schema['properties'] );
-		$this->assertArrayHasKey( 'constrainWidth', $attrs_schema['properties'] );
 	}
 
 	/**
-	 * Test configure-section ability excludes style attribute.
+	 * Test update-block ability execution targeting by block name.
 	 */
-	public function test_configure_section_excludes_style() {
+	public function test_update_block_execution() {
 		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/configure-section' );
-
-		$config = $ability->get_config();
-		$attrs_schema = $config['input_schema']['properties']['attributes'];
-
-		// style should be excluded as per Configure_Section::get_excluded_attributes().
-		$this->assertArrayNotHasKey( 'style', $attrs_schema['properties'] );
-	}
-
-	/**
-	 * Test configure-accordion ability is registered with schema.
-	 */
-	public function test_configure_accordion_ability() {
-		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/configure-accordion' );
-
-		$this->assertNotNull( $ability );
-
-		$config = $ability->get_config();
-		$attrs_schema = $config['input_schema']['properties']['attributes'];
-
-		// Should have accordion-specific attributes.
-		$this->assertArrayHasKey( 'allowMultipleOpen', $attrs_schema['properties'] );
-		$this->assertArrayHasKey( 'iconStyle', $attrs_schema['properties'] );
-		$this->assertArrayHasKey( 'iconPosition', $attrs_schema['properties'] );
-
-		// iconStyle should have enum.
-		$this->assertArrayHasKey( 'enum', $attrs_schema['properties']['iconStyle'] );
-	}
-
-	/**
-	 * Test configure-row ability is registered with schema.
-	 */
-	public function test_configure_row_ability() {
-		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/configure-row' );
-
-		$this->assertNotNull( $ability );
-
-		$config = $ability->get_config();
-		$attrs_schema = $config['input_schema']['properties']['attributes'];
-
-		// Should have row-specific attributes.
-		$this->assertArrayHasKey( 'mobileStack', $attrs_schema['properties'] );
-		$this->assertArrayHasKey( 'constrainWidth', $attrs_schema['properties'] );
-	}
-
-	/**
-	 * Test configure-section ability execution.
-	 */
-	public function test_configure_section_execution() {
-		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/configure-section' );
+		$ability = $registry->get_ability( 'designsetgo/update-block' );
 
 		$result = $ability->execute( array(
 			'post_id'    => $this->page_id,
+			'block_name' => 'designsetgo/section',
 			'attributes' => array(
 				'tagName'        => 'section',
 				'constrainWidth' => false,
@@ -1190,13 +1158,14 @@ class Test_Abstract_Configurator_Ability extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test configure ability fails without post_id.
+	 * Test update-block ability fails without post_id.
 	 */
-	public function test_configure_ability_missing_post_id() {
+	public function test_update_block_missing_post_id() {
 		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/configure-section' );
+		$ability = $registry->get_ability( 'designsetgo/update-block' );
 
 		$result = $ability->execute( array(
+			'block_name' => 'designsetgo/section',
 			'attributes' => array( 'tagName' => 'section' ),
 		) );
 
@@ -1205,17 +1174,18 @@ class Test_Abstract_Configurator_Ability extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test configure ability fails without attributes.
+	 * Test update-block ability fails without attributes.
 	 */
-	public function test_configure_ability_missing_attributes() {
+	public function test_update_block_missing_attributes() {
 		$registry = Abilities_Registry::get_instance();
-		$ability = $registry->get_ability( 'designsetgo/configure-section' );
+		$ability = $registry->get_ability( 'designsetgo/update-block' );
 
 		$result = $ability->execute( array(
-			'post_id' => $this->page_id,
+			'post_id'    => $this->page_id,
+			'block_name' => 'designsetgo/section',
 		) );
 
 		$this->assertWPError( $result );
-		$this->assertEquals( 'missing_attributes', $result->get_error_code() );
+		$this->assertEquals( 'missing_settings', $result->get_error_code() );
 	}
 }

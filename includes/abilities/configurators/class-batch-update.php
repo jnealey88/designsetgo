@@ -47,6 +47,7 @@ class Batch_Update extends Abstract_Ability {
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
+			'keywords'            => array( 'bulk', 'multiple', 'mass' ),
 		);
 	}
 
@@ -262,6 +263,9 @@ class Batch_Update extends Abstract_Ability {
 
 				// Merge attributes.
 				$block['attrs'] = array_merge( $block['attrs'] ?? array(), $attributes );
+
+				// Update saved HTML markup to reflect new attributes.
+				$block = Block_Configurator::update_block_markup( $block, $attributes, $block_name );
 				++$updated;
 			}
 

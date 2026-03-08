@@ -47,6 +47,7 @@ class Delete_Block extends Abstract_Ability {
 			'output_schema'       => $this->get_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 			'show_in_rest'        => true,
+			'keywords'            => array( 'remove', 'destroy', 'clear' ),
 			'annotations'         => array(
 				'destructive'  => true,
 				'instructions' => 'Permanently removes blocks from post content. Use get-post-blocks first to identify targets. Prefer block_client_id for precise deletion.',

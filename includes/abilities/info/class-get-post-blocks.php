@@ -47,6 +47,7 @@ class Get_Post_Blocks extends Abstract_Ability {
 			'output_schema'       => $this->get_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
 			'show_in_rest'        => true,
+			'keywords'            => array( 'content', 'inspect', 'read', 'page' ),
 			'annotations'         => array(
 				'readonly'     => true,
 				'instructions' => 'Use this to inspect existing blocks in a post before making changes. Returns block indices needed for configurator and delete abilities.',

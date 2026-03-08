@@ -619,49 +619,33 @@ Blocks are organized in the WordPress block inserter:
 
 DesignSetGo is the **first WordPress block plugin** to fully integrate with the WordPress 6.9 Abilities API, enabling AI agents and automation tools to programmatically interact with blocks.
 
-### Available Abilities (110 Total)
+### Available Abilities
 
-| Category | Count | Examples |
-|----------|-------|----------|
-| **Info** | 4 | `list-abilities`, `list-blocks`, `get-post-blocks`, `find-blocks` |
-| **Inserters** | 34 | Insert any DesignSetGo block programmatically |
-| **Configurators** | 62 | Configure blocks, apply extensions, manage form fields |
-| **Generators** | 10 | Generate complete page sections in one call |
+| Category | Examples |
+|----------|----------|
+| **Info** | `list-abilities`, `list-blocks`, `list-extensions`, `get-post-blocks`, `find-blocks` |
+| **Inserters** | `add-block` (generic top-level), `add-child-block` (nested), `add-accordion-item`, `add-tab`, `add-timeline-item` |
+| **Configurators** | `update-block` (generic), `configure-shape-divider`, `configure-custom-css`, `batch-update`, `delete-block` |
 
-#### Info Abilities (4)
+#### Info Abilities
 - `list-abilities` - Discover all registered abilities with schemas
 - `list-blocks` - List all available blocks with metadata
+- `list-extensions` - List all extensions with attribute schemas and applicable blocks
 - `get-post-blocks` - Get blocks from a post with document-order indices
 - `find-blocks` - Search for blocks across multiple posts
 
-#### Inserter Abilities (34)
-- **Containers:** section, row, flex-container, grid-container, stack-container
-- **Interactive:** tabs, tab, accordion, accordion-item, flip-card, reveal, scroll-accordion, modal, slider, timeline, timeline-item
-- **Content:** icon, icon-button, icon-list, pill, card, divider, alert, marquee, lottie
-- **Data Display:** counter, counter-group, countdown-timer, progress-bar, map
-- **Navigation:** breadcrumbs, table-of-contents
-- **Forms:** form-builder
-- **Utility:** block-into (nested insertion into existing blocks)
+#### Inserter Abilities
+- `add-block` - Insert any block at the top level of a post
+- `add-child-block` - Insert any block as a child of an existing block
+- `add-accordion-item` - Add an item to an existing accordion
+- `add-tab` - Add a tab to an existing tabs block
+- `add-timeline-item` - Add an item to an existing timeline
 
-#### Configurator Abilities (62)
-- **Extensions (7):** apply-animation, apply-scroll-parallax, apply-text-reveal, apply-expanding-background, configure-background-video, configure-clickable-group, configure-custom-css
-- **Block-Specific (38):** Dedicated configurator for every DesignSetGo block (e.g., `configure-section`, `configure-accordion`, `configure-icon`)
-- **Form Fields (12):** Configure any form field type (text, email, textarea, select, radio, checkbox, number, phone, date, url, hidden, file)
-- **Utility (5):** configure-block-attributes, configure-shape-divider, configure-counter-animation, configure-responsive-visibility, configure-max-width
-- **Operations (2):** batch-update (bulk modify blocks), delete-block (remove blocks)
-
-#### Generator Abilities (10)
-Build complete page sections with one API call:
-- `generate-hero-section` - Hero with heading, description, CTA buttons
-- `generate-feature-grid` - Feature cards in responsive grid
-- `generate-stats-section` - Animated statistics/counters
-- `generate-faq-section` - FAQ accordion
-- `generate-contact-section` - Contact form with optional map
-- `generate-pricing-section` - Pricing table with tiers
-- `generate-team-section` - Team member cards
-- `generate-testimonial-section` - Customer testimonials
-- `generate-cta-section` - Call-to-action section
-- `generate-gallery-section` - Image gallery (grid/slider)
+#### Configurator Abilities
+- **Generic:** `update-block` - Update any block's attributes, including extension attributes
+- **Block-Specific:** `configure-shape-divider` (position fan-out logic), `configure-custom-css` (CSS sanitization)
+- **Extensions:** Use `list-extensions` to discover all extension attribute schemas (animation, parallax, responsive visibility, background video, clickable groups, etc.), then apply them via `update-block`
+- **Operations:** `batch-update` (bulk modify blocks), `delete-block` (remove blocks)
 
 ### Quick Example
 
@@ -671,15 +655,16 @@ curl -X GET http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/li
   -u "username:password" \
   -d '{"input": {"category": "all"}}'
 
-# Generate a complete hero section
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/generate-hero-section/run \
+# Insert a block into a post
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/abilities/designsetgo/add-block/run \
   -u "username:password" \
   -H "Content-Type: application/json" \
   -d '{"input": {
     "post_id": 123,
-    "heading": "Welcome to Our Site",
-    "description": "Build stunning pages with AI assistance",
-    "primaryButton": {"text": "Get Started", "url": "/start"}
+    "block_name": "designsetgo/section",
+    "attributes": {
+      "contentWidth": "1140px"
+    }
   }}'
 ```
 

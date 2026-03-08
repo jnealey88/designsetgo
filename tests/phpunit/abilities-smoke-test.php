@@ -3,8 +3,8 @@
  * Smoke tests for DesignSetGo Abilities API.
  *
  * Verifies each ability endpoint responds correctly with valid inputs:
- * list-abilities, get-post-blocks, list-blocks, configure-block-attributes,
- * configure-shape-divider, and insert-block-into.
+ * list-abilities, get-post-blocks, list-blocks, list-extensions,
+ * update-block, configure-shape-divider, add-block, and add-child-block.
  *
  * @package DesignSetGo
  * @subpackage Tests
@@ -110,9 +110,11 @@ class Abilities_Smoke_Test extends WP_UnitTestCase {
 			'designsetgo/list-abilities',
 			'designsetgo/get-post-blocks',
 			'designsetgo/list-blocks',
-			'designsetgo/configure-block-attributes',
+			'designsetgo/list-extensions',
+			'designsetgo/update-block',
 			'designsetgo/configure-shape-divider',
-			'designsetgo/insert-block-into',
+			'designsetgo/add-block',
+			'designsetgo/add-child-block',
 		);
 
 		foreach ( $expected as $name ) {

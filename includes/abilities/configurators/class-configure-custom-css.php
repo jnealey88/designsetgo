@@ -48,6 +48,7 @@ class Configure_Custom_CSS extends Abstract_Ability {
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => Block_Configurator::get_default_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
+			'keywords'            => array( 'style', 'code', 'stylesheet' ),
 		);
 	}
 

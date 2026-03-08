@@ -48,12 +48,11 @@ class List_Abilities extends Abstract_Ability {
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
-			'meta'                => array(
-				'show_in_rest' => true,
-				'annotations'  => array(
-					'readonly'     => true,
-					'instructions' => 'Call this first to discover all available DesignSetGo abilities. Use category filter to narrow by type: inserter, configurator, generator, or info.',
-				),
+			'show_in_rest'        => true,
+			'keywords'            => array( 'discover', 'tools', 'capabilities', 'help' ),
+			'annotations'         => array(
+				'readonly'     => true,
+				'instructions' => 'Call this first to discover all available DesignSetGo abilities. Use category filter to narrow by type: inserter, configurator, generator, or info.',
 			),
 		);
 	}
@@ -72,6 +71,11 @@ class List_Abilities extends Abstract_Ability {
 					'description' => __( 'Filter by ability category', 'designsetgo' ),
 					'enum'        => array( 'all', 'inserter', 'configurator', 'generator', 'info' ),
 					'default'     => 'all',
+				),
+				'search'   => array(
+					'type'        => 'string',
+					'description' => __( 'Search abilities by name, description, or keyword. Matches against ability names, labels, descriptions, and keyword aliases (e.g., searching "group" finds section-related abilities).', 'designsetgo' ),
+					'default'     => '',
 				),
 			),
 			'additionalProperties' => false,
@@ -140,6 +144,7 @@ class List_Abilities extends Abstract_Ability {
 	 */
 	public function execute( array $input ): array {
 		$category_filter = $input['category'] ?? 'all';
+		$search_term     = $input['search'] ?? '';
 
 		$registry  = Abilities_Registry::get_instance();
 		$abilities = $registry->get_abilities();
@@ -155,10 +160,19 @@ class List_Abilities extends Abstract_Ability {
 				continue;
 			}
 
+			$label       = $config['label'] ?? $name;
+			$description = $config['description'] ?? '';
+			$keywords    = $config['keywords'] ?? array();
+
+			// Filter by search term if specified.
+			if ( '' !== $search_term && ! $this->matches_search( $search_term, $name, $label, $description, $keywords ) ) {
+				continue;
+			}
+
 			$result[] = array(
 				'name'         => $name,
-				'label'        => $config['label'] ?? $name,
-				'description'  => $config['description'] ?? '',
+				'label'        => $label,
+				'description'  => $description,
 				'category'     => $category,
 				'input_schema' => $config['input_schema'] ?? array(),
 			);
@@ -180,6 +194,43 @@ class List_Abilities extends Abstract_Ability {
 			'abilities' => $result,
 			'total'     => count( $result ),
 		);
+	}
+
+	/**
+	 * Check if an ability matches the search term.
+	 *
+	 * Performs case-insensitive matching against the ability name,
+	 * label, description, and keyword aliases.
+	 *
+	 * @param string        $search_term Search term.
+	 * @param string        $name        Ability name.
+	 * @param string        $label       Ability label.
+	 * @param string        $description Ability description.
+	 * @param array<string> $keywords    Keyword aliases.
+	 * @return bool Whether the ability matches.
+	 */
+	private function matches_search( string $search_term, string $name, string $label, string $description, array $keywords ): bool {
+		$term = strtolower( $search_term );
+
+		// Check name, label, and description.
+		if ( false !== strpos( strtolower( $name ), $term ) ) {
+			return true;
+		}
+		if ( false !== strpos( strtolower( $label ), $term ) ) {
+			return true;
+		}
+		if ( false !== strpos( strtolower( $description ), $term ) ) {
+			return true;
+		}
+
+		// Check keywords.
+		foreach ( $keywords as $keyword ) {
+			if ( false !== strpos( strtolower( $keyword ), $term ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

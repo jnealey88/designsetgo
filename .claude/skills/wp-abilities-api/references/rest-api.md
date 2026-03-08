@@ -50,13 +50,13 @@ curl -u "admin:app_password" \
 
 # Modification ability (POST)
 curl -X POST -u "admin:app_password" \
-  "http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/insert-flex-container/run" \
+  "http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/add-block/run" \
   -H "Content-Type: application/json" \
   -d '{"post_id": 123, "attributes": {"direction": "row"}}'
 
 # Using ?rest_route= (when pretty permalinks are off)
 curl -X POST -u "admin:app_password" \
-  "http://yoursite.com/?rest_route=/wp-abilities/v1/designsetgo/insert-flex-container/run" \
+  "http://yoursite.com/?rest_route=/wp-abilities/v1/designsetgo/add-block/run" \
   -H "Content-Type: application/json" \
   -d '{"input": {"post_id": 123}}'
 ```

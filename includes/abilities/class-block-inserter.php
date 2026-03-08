@@ -257,7 +257,7 @@ class Block_Inserter {
 				$inner_style = 'max-width:' . esc_attr( $max_width ) . ';margin-left:auto;margin-right:auto';
 
 				return array(
-					'opening' => '<' . esc_attr( $tag_name ) . ' class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . implode( ';', $outer_styles ) . '"><div class="dsgo-stack__inner" style="' . esc_attr( $inner_style ) . '">',
+					'opening' => '<' . esc_attr( $tag_name ) . ' class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( implode( ';', $outer_styles ) ) . '"><div class="dsgo-stack__inner" style="' . esc_attr( $inner_style ) . '">',
 					'closing' => '</div></' . esc_attr( $tag_name ) . '>',
 				);
 
@@ -756,7 +756,7 @@ class Block_Inserter {
 
 				$inner_html  = $label_html;
 				$inner_html .= '<div class="dsgo-progress-bar__container" style="' . esc_attr( $container_style ) . '">';
-				$inner_html .= '<div class="dsgo-progress-bar__fill " style="' . esc_attr( $fill_style ) . '"></div>';
+				$inner_html .= '<div class="dsgo-progress-bar__fill" style="' . esc_attr( $fill_style ) . '"></div>';
 				$inner_html .= '</div>';
 
 				return array(
@@ -828,7 +828,7 @@ class Block_Inserter {
 				$data_attrs .= ' data-dsgo-map-style="' . esc_attr( $map_style ) . '"';
 
 				// Inner HTML.
-				$aria_label = $address ? 'Map showing ' . esc_attr( $address ) : 'Interactive map';
+				$aria_label = $address ? 'Map showing ' . $address : 'Interactive map';
 				$inner_html = '<div class="dsgo-map__container" role="region" aria-label="' . esc_attr( $aria_label ) . '"></div>';
 
 				$style_attr = $style ? ' style="' . esc_attr( $style ) . '"' : '';

@@ -799,8 +799,8 @@ class Abilities_Provider {
       'schema' => [...],
     ]);
 
-    register_ability('designsetgo/insert-flex-container', [
-      'callback' => [$this, 'insert_flex_container'],
+    register_ability('designsetgo/add-block', [
+      'callback' => [$this, 'add_block'],
       'schema' => [...],
     ]);
   }
@@ -816,7 +816,7 @@ class Abilities_Provider {
 
 **Usage by AI:**
 ```bash
-curl -X POST http://site.com/wp-json/wp-abilities/v1/abilities/designsetgo/list-blocks/execute \
+curl -X GET http://site.com/wp-json/wp-abilities/v1/designsetgo/list-blocks/run \
   -u "user:pass" \
   -d '{"category": "all"}'
 ```

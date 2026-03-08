@@ -191,21 +191,25 @@ abstract class Abstract_Ability {
 	 */
 	private function get_default_status_for_error( string $code ): int {
 		$status_map = array(
-			'invalid_post'       => 404,
-			'post_not_found'     => 404,
-			'block_not_found'    => 404,
-			'not_found'          => 404,
-			'permission_denied'  => 403,
-			'rest_forbidden'     => 403,
-			'unauthorized'       => 401,
-			'missing_post_id'    => 400,
-			'missing_block_name' => 400,
-			'missing_settings'   => 400,
-			'missing_animation'  => 400,
-			'missing_faqs'       => 400,
-			'missing_css'        => 400,
-			'invalid_input'      => 400,
-			'validation_failed'  => 400,
+			'invalid_post'             => 404,
+			'post_not_found'           => 404,
+			'block_not_found'          => 404,
+			'not_found'                => 404,
+			'permission_denied'        => 403,
+			'rest_forbidden'           => 403,
+			'unauthorized'             => 401,
+			'missing_post_id'          => 400,
+			'missing_block_name'       => 400,
+			'missing_settings'         => 400,
+			'missing_animation'        => 400,
+			'missing_faqs'             => 400,
+			'missing_css'              => 400,
+			'missing_operations'       => 400,
+			'missing_block_identifier' => 400,
+			'missing_attributes'       => 400,
+			'invalid_input'            => 400,
+			'validation_failed'        => 400,
+			'block_name_mismatch'      => 400,
 		);
 
 		return $status_map[ $code ] ?? 400; // Default to Bad Request.
@@ -286,98 +290,4 @@ abstract class Abstract_Ability {
 		return true;
 	}
 
-	/**
-	 * Parse and serialize blocks for post content.
-	 *
-	 * @param string $content Post content with blocks.
-	 * @return array<int, array<string, mixed>>
-	 */
-	protected function parse_blocks( string $content ): array {
-		return parse_blocks( $content );
-	}
-
-	/**
-	 * Serialize blocks back to post content.
-	 *
-	 * @param array<int, array<string, mixed>> $blocks Blocks array.
-	 * @return string
-	 */
-	protected function serialize_blocks( array $blocks ): string {
-		return serialize_blocks( $blocks );
-	}
-
-	/**
-	 * Insert a block into a post.
-	 *
-	 * @param int    $post_id Post ID.
-	 * @param string $block_markup Block markup.
-	 * @param int    $position Position to insert (-1 for append, 0 for prepend).
-	 * @return array<string, mixed>|WP_Error
-	 */
-	protected function insert_block( int $post_id, string $block_markup, int $position = -1 ) {
-		$post = $this->validate_post( $post_id );
-
-		if ( is_wp_error( $post ) ) {
-			return $post;
-		}
-
-		$blocks    = $this->parse_blocks( $post->post_content );
-		$new_block = $this->parse_blocks( $block_markup )[0];
-
-		if ( -1 === $position ) {
-			$blocks[] = $new_block;
-		} else {
-			array_splice( $blocks, $position, 0, array( $new_block ) );
-		}
-
-		$content = $this->serialize_blocks( $blocks );
-
-		$updated = wp_update_post(
-			array(
-				'ID'           => $post->ID,
-				'post_content' => $content,
-			),
-			true
-		);
-
-		if ( is_wp_error( $updated ) ) {
-			return $updated;
-		}
-
-		return $this->success(
-			array(
-				'post_id'  => $post->ID,
-				'block_id' => wp_unique_id( 'block-' ),
-			)
-		);
-	}
-
-	/**
-	 * Build block markup from block name and attributes.
-	 *
-	 * @param string                           $block_name Block name (e.g., 'designsetgo/row').
-	 * @param array<string, mixed>             $attributes Block attributes.
-	 * @param array<int, array<string, mixed>> $inner_blocks Inner blocks.
-	 * @return string
-	 */
-	protected function build_block_markup( string $block_name, array $attributes = array(), array $inner_blocks = array() ): string {
-		$attrs_json = ! empty( $attributes ) ? ' ' . wp_json_encode( $attributes ) : '';
-		$markup     = '<!-- wp:' . $block_name . $attrs_json;
-
-		if ( ! empty( $inner_blocks ) ) {
-			$markup .= " -->\n";
-			foreach ( $inner_blocks as $inner ) {
-				$markup .= $this->build_block_markup(
-					$inner['name'],
-					$inner['attributes'] ?? array(),
-					$inner['innerBlocks'] ?? array()
-				);
-			}
-			$markup .= '<!-- /wp:' . $block_name . ' -->';
-		} else {
-			$markup .= ' /-->';
-		}
-
-		return $markup;
-	}
 }
