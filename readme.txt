@@ -187,8 +187,10 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 **Improvements:**
 * Enhancement: Simplified abilities system from ~110 to 14 focused abilities for faster, more reliable AI-powered block insertion
 * Enhancement: WordPress 7.0 compatibility — stabilized block support keys for seamless upgrades
+* Enhancement: Removed custom visual revision comparison — WordPress 7.0 now includes native visual diffs, so this feature is no longer needed
 
 **Bug Fixes:**
+* Fix: Resolved "unexpected or invalid content" errors that could appear when updating from older plugin versions
 * Fix: Maps now show a fallback location instead of a blank map when an address can't be geocoded
 * Fix: Shape divider colors now apply correctly in all themes
 * Fix: Form submit button no longer flickers when redirect is enabled
