@@ -59,13 +59,13 @@ class DSGSlider {
 		return {
 			slidesPerView: requiresSingleSlideEffect
 				? 1
-				: parseInt(this.slider.dataset.slidesPerView) || 1,
+				: parseFloat(this.slider.dataset.slidesPerView) || 1,
 			slidesPerViewTablet: requiresSingleSlideEffect
 				? 1
-				: parseInt(this.slider.dataset.slidesPerViewTablet) || 1,
+				: parseFloat(this.slider.dataset.slidesPerViewTablet) || 1,
 			slidesPerViewMobile: requiresSingleSlideEffect
 				? 1
-				: parseInt(this.slider.dataset.slidesPerViewMobile) || 1,
+				: parseFloat(this.slider.dataset.slidesPerViewMobile) || 1,
 			effect,
 			transitionDuration:
 				this.slider.dataset.transitionDuration || '0.5s',
@@ -187,6 +187,7 @@ class DSGSlider {
 					this.updateDimensions();
 					if (this.config.scrollDriven) {
 						this.updateScrollDrivenDimensions();
+						this.updateScrollDrivenStickyTop();
 						this.updateScrollDrivenPosition();
 					} else {
 						this.goToSlide(this.currentIndex, false);
@@ -688,6 +689,7 @@ class DSGSlider {
 					this.updateDimensions();
 					if (this.config.scrollDriven) {
 						this.updateScrollDrivenDimensions();
+						this.updateScrollDrivenStickyTop();
 						this.updateScrollDrivenPosition();
 					} else {
 						this.goToSlide(this.currentIndex, false);
@@ -784,6 +786,9 @@ class DSGSlider {
 		// Calculate and set dimensions
 		this.updateScrollDrivenDimensions();
 
+		// Center the sticky slider vertically in the viewport
+		this.updateScrollDrivenStickyTop();
+
 		// Build progress dots for scroll-driven mode
 		this.buildScrollDrivenProgress();
 
@@ -832,6 +837,16 @@ class DSGSlider {
 	}
 
 	/**
+	 * Center the sticky slider vertically in the viewport
+	 * Calculates offset so the slider pins at the middle of the screen
+	 */
+	updateScrollDrivenStickyTop() {
+		const sliderHeight = this.slider.offsetHeight;
+		this.scrollDrivenStickyTop = Math.max(0, (window.innerHeight - sliderHeight) / 2);
+		this.slider.style.top = `${this.scrollDrivenStickyTop}px`;
+	}
+
+	/**
 	 * Build progress bar indicator for scroll-driven mode
 	 */
 	buildScrollDrivenProgress() {
@@ -870,9 +885,10 @@ class DSGSlider {
 			return;
 		}
 
-		// Calculate progress: 0 when slider first pins, 1 when it unpins
-		// spacerRect.top is negative as user scrolls past it
-		const scrolledIntoSpacer = -spacerRect.top;
+		// Calculate progress: 0 when slider first pins at center, 1 when it unpins
+		// Account for stickyTop offset so pinning starts when spacer reaches the centered position
+		const stickyTop = this.scrollDrivenStickyTop || 0;
+		const scrolledIntoSpacer = stickyTop - spacerRect.top;
 		const progress = Math.max(0, Math.min(1, scrolledIntoSpacer / scrollableDistance));
 
 		// Map progress to horizontal offset
