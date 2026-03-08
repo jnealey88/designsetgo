@@ -244,8 +244,8 @@ document.addEventListener('DOMContentLoaded', function () {
 						})
 					);
 
-					// Redirect if URL is configured
-					if (redirectUrl) {
+					// Redirect if URL is configured and safe
+					if (redirectUrl && isSafeRedirectUrl(redirectUrl)) {
 						window.location.href = redirectUrl;
 						return;
 					}
@@ -333,6 +333,23 @@ document.addEventListener('DOMContentLoaded', function () {
 		container.style.display = 'none';
 		container.textContent = '';
 		container.className = 'dsgo-form__message';
+	}
+
+	/**
+	 * Validate that a redirect URL is safe (not javascript: or data: protocol)
+	 *
+	 * @param {string} url URL to validate
+	 * @return {boolean} True if safe to redirect to
+	 */
+	function isSafeRedirectUrl(url) {
+		try {
+			const parsed = new URL(url, window.location.origin);
+			return (
+				parsed.protocol === 'http:' || parsed.protocol === 'https:'
+			);
+		} catch {
+			return false;
+		}
 	}
 
 	/**
