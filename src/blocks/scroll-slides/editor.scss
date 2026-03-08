@@ -1,0 +1,36 @@
+/**
+ * Scroll Slides - Editor Styles
+ */
+
+.dsgo-scroll-slides {
+	position: relative;
+
+	.dsgo-scroll-slides__nav-preview {
+		display: flex;
+		gap: 1rem;
+		padding: 0.75rem 1rem;
+		background: #f0f0f0;
+		border-radius: 6px;
+		margin-bottom: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.dsgo-scroll-slides__nav-preview-item {
+		font-size: 13px;
+		font-weight: 600;
+		color: #757575;
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
+
+		&.is-active {
+			color: #1e1e1e;
+			background: #fff;
+		}
+	}
+
+	.dsgo-scroll-slides__editor-panels {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+}
