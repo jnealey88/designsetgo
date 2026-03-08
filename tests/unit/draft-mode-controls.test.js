@@ -41,6 +41,7 @@ jest.mock('@wordpress/element', () => ({
 }));
 
 jest.mock('@wordpress/components', () => ({
+	/* eslint-disable no-unused-vars */
 	Button: ({
 		children,
 		onClick,
@@ -51,6 +52,7 @@ jest.mock('@wordpress/components', () => ({
 		isDestructive,
 		...props
 	}) =>
+		/* eslint-enable no-unused-vars */
 		href ? (
 			<a href={href} data-variant={variant} {...props}>
 				{children}

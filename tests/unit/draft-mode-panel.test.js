@@ -36,6 +36,7 @@ jest.mock('@wordpress/element', () => ({
 jest.mock('@wordpress/components', () => ({
 	Notice: ({ children }) => <div data-testid="notice">{children}</div>,
 	Spinner: () => <div data-testid="spinner">Loading...</div>,
+	/* eslint-disable no-unused-vars */
 	Button: ({
 		children,
 		onClick,
@@ -44,6 +45,7 @@ jest.mock('@wordpress/components', () => ({
 		isDestructive,
 		...props
 	}) => (
+		/* eslint-enable no-unused-vars */
 		<button onClick={onClick} data-variant={variant} {...props}>
 			{children}
 		</button>

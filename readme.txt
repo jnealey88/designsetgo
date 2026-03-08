@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.36
+Stable tag: 2.0.37
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,26 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.37 - 2026-03-08 =
+**New Blocks:**
+* New: Scroll Slides block — scroll-pinned slideshow with crossfade transitions, navigation headings, and mobile tap-to-navigate mode
+* New: Sticky Sections block — card-stacking scroll effect where sections stack on top of each other as you scroll
+
+**New Features:**
+* New: Scroll-driven horizontal mode for Slider block with vertical viewport centering
+
+**Bug Fixes:**
+* Fix: Shape divider sub-pixel coverage gaps at certain zoom levels
+* Fix: Revert premature block support stabilization and add enableAlpha to color pickers
+* Fix: Restore accordion color control UX help text lost during migration
+* Fix: Editor overlay stacking context containment for sticky sections
+
+**Tests:**
+* Test: Add frontend unit tests for 11 blocks
+
+**Documentation:**
+* Docs: Add user guides for Scroll Slides and Sticky Sections blocks
 
 = 2.0.36 - 2026-03-07 =
 **New Features:**
