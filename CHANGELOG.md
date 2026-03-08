@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- **Visual Revision Comparison** - Deprecated and removed in favor of WordPress 7.0's native visual diff for revisions. Removed the visual comparison admin page, block differ, revision renderer, REST API endpoints (`/designsetgo/v1/revisions/*`), and associated settings (`revisions.enable_visual_comparison`, `revisions.default_to_visual`)
+
 ### New Blocks
 - **Fifty Fifty** - Full-width 50/50 split layout with edge-to-edge media on one side and constrained content on the other — includes media position toggle (left/right), focal point picker, configurable min height, content vertical alignment, and mobile-responsive stacking
 

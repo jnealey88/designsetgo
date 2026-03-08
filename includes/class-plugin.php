@@ -438,13 +438,6 @@ class Plugin {
 	public $draft_mode;
 
 	/**
-	 * Revision Comparison instance.
-	 *
-	 * @var Admin\Revision_Comparison
-	 */
-	public $revision_comparison;
-
-	/**
 	 * SVG Pattern Renderer instance.
 	 *
 	 * @var SVG_Pattern_Renderer
@@ -505,10 +498,6 @@ class Plugin {
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode-admin.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-draft-mode-preview.php';
-		require_once DESIGNSETGO_PATH . 'includes/admin/class-block-differ.php';
-		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-renderer.php';
-		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-rest-api.php';
-		require_once DESIGNSETGO_PATH . 'includes/admin/class-revision-comparison.php';
 		require_once DESIGNSETGO_PATH . 'includes/admin/class-block-migrator.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-custom-css-renderer.php';
 		require_once DESIGNSETGO_PATH . 'includes/class-section-styles.php';
@@ -580,9 +569,6 @@ class Plugin {
 		$this->button_global_styles  = new Button_Global_Styles();
 		$this->button_global_styles->init();
 		$this->llms_txt      = new LLMS_Txt\Controller();
-
-		// Initialize revision comparison (needs REST routes registered for all contexts).
-		$this->revision_comparison = new Admin\Revision_Comparison();
 
 		// Initialize admin-only features.
 		if ( is_admin() ) {
