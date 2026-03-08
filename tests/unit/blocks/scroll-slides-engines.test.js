@@ -15,9 +15,11 @@ jest.mock('@wordpress/i18n', () => ({
 	__: (text) => text,
 	sprintf: (format, ...args) => {
 		let i = 0;
-		return format.replace(/%(\d+)\$[ds]/g, (_, index) => {
-			return args[parseInt(index, 10) - 1];
-		}).replace(/%[ds]/g, () => args[i++]);
+		return format
+			.replace(/%(\d+)\$[ds]/g, (_, index) => {
+				return args[parseInt(index, 10) - 1];
+			})
+			.replace(/%[ds]/g, () => args[i++]);
 	},
 }));
 
@@ -123,7 +125,9 @@ function createEngineFixture(slideCount = 3) {
  * Remove all fixture elements from the DOM.
  */
 function cleanupFixtures() {
-	document.querySelectorAll('.dsgo-scroll-slides-spacer').forEach((el) => el.remove());
+	document
+		.querySelectorAll('.dsgo-scroll-slides-spacer')
+		.forEach((el) => el.remove());
 }
 
 /**
@@ -182,14 +186,11 @@ describe('setupScrollEngine', () => {
 	});
 
 	test('activates first slide on initial update', () => {
-		const { container, slides, navItems, bgLayers } = createEngineFixture(3);
+		const { container, slides, navItems, bgLayers } =
+			createEngineFixture(3);
 
 		// Position at very top so slide 0 stays active
-		positionForSlide(
-			container.parentNode,
-			0,
-			3
-		);
+		positionForSlide(container.parentNode, 0, 3);
 
 		setupScrollEngine(container, slides, controller);
 
@@ -202,7 +203,8 @@ describe('setupScrollEngine', () => {
 	});
 
 	test('deactivates previous slide when new slide becomes active', () => {
-		const { container, slides, navItems, bgLayers } = createEngineFixture(3);
+		const { container, slides, navItems, bgLayers } =
+			createEngineFixture(3);
 		const spacer = container.parentNode;
 
 		// Start at slide 0
@@ -339,7 +341,11 @@ describe('setupScrollEngine', () => {
 	});
 
 	test('handles resize with debounce', () => {
-		const { container, slides, navItems } = createEngineFixture(3);
+		const {
+			container,
+			slides,
+			navItems: _navItems,
+		} = createEngineFixture(3);
 		const spacer = container.parentNode;
 
 		positionForSlide(spacer, 0, 3);
@@ -383,7 +389,8 @@ describe('setupTapEngine', () => {
 	});
 
 	test('clicking nav item activates corresponding slide', () => {
-		const { container, slides, navItems, bgLayers } = createEngineFixture(3);
+		const { container, slides, navItems, bgLayers } =
+			createEngineFixture(3);
 
 		setupTapEngine(container, slides, controller);
 
@@ -396,7 +403,8 @@ describe('setupTapEngine', () => {
 	});
 
 	test('clicking same slide index does nothing (early return)', () => {
-		const { container, slides, navItems, liveRegion } = createEngineFixture(3);
+		const { container, slides, navItems, liveRegion } =
+			createEngineFixture(3);
 
 		setupTapEngine(container, slides, controller);
 
@@ -410,7 +418,8 @@ describe('setupTapEngine', () => {
 	});
 
 	test('deactivates previous slide on nav click', () => {
-		const { container, slides, navItems, bgLayers } = createEngineFixture(3);
+		const { container, slides, navItems, bgLayers } =
+			createEngineFixture(3);
 
 		setupTapEngine(container, slides, controller);
 
@@ -454,7 +463,8 @@ describe('setupTapEngine', () => {
 	});
 
 	test('updates background layers', () => {
-		const { container, slides, navItems, bgLayers } = createEngineFixture(3);
+		const { container, slides, navItems, bgLayers } =
+			createEngineFixture(3);
 
 		setupTapEngine(container, slides, controller);
 
@@ -466,7 +476,8 @@ describe('setupTapEngine', () => {
 	});
 
 	test('announces slide change to live region', () => {
-		const { container, slides, navItems, liveRegion } = createEngineFixture(3);
+		const { container, slides, navItems, liveRegion } =
+			createEngineFixture(3);
 
 		setupTapEngine(container, slides, controller);
 

@@ -8,13 +8,15 @@
  * @package
  */
 
+/* global Document, KeyboardEvent, TouchEvent */
+
 /**
  * Build a minimal slider DOM fixture.
  *
- * @param {Object}   options                - Configuration overrides.
- * @param {number}   options.slideCount     - Number of slide children (default 3).
- * @param {Object}   options.dataAttributes - Extra data-* attributes on the root.
- * @param {boolean}  options.addImages      - Whether to place <img> elements inside slides.
+ * @param {Object}  options                - Configuration overrides.
+ * @param {number}  options.slideCount     - Number of slide children (default 3).
+ * @param {Object}  options.dataAttributes - Extra data-* attributes on the root.
+ * @param {boolean} options.addImages      - Whether to place <img> elements inside slides.
  * @return {HTMLElement} The root `.dsgo-slider` element (already appended to body).
  */
 function createSliderFixture(options = {}) {
@@ -57,7 +59,9 @@ function createSliderFixture(options = {}) {
  */
 function cleanupSliders() {
 	document.querySelectorAll('.dsgo-slider').forEach((el) => el.remove());
-	document.querySelectorAll('.dsgo-slider-pin-spacer').forEach((el) => el.remove());
+	document
+		.querySelectorAll('.dsgo-slider-pin-spacer')
+		.forEach((el) => el.remove());
 }
 
 // ---------------------------------------------------------------------------
@@ -84,7 +88,7 @@ function patchListeners() {
 		return nativeDocAdd.call(this, type, listener, options);
 	};
 
-	const origWindowAdd = window.addEventListener;
+	const _origWindowAdd = window.addEventListener;
 	window.addEventListener = function (type, listener, options) {
 		trackedListeners.push({ target: window, type, listener, options });
 		return nativeWinAdd.call(window, type, listener, options);
@@ -179,7 +183,9 @@ describe('DSGSlider - Frontend', () => {
 
 			expect(slider.querySelector('.dsgo-slider__arrows')).toBeNull();
 			expect(slider.querySelector('.dsgo-slider__dots')).toBeNull();
-			expect(slider.querySelector('.dsgo-slider__announcer')).not.toBeNull();
+			expect(
+				slider.querySelector('.dsgo-slider__announcer')
+			).not.toBeNull();
 		});
 
 		test('single-slide effects force slidesPerView to 1', () => {
@@ -230,7 +236,10 @@ describe('DSGSlider - Frontend', () => {
 			});
 
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowRight',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 
@@ -273,7 +282,10 @@ describe('DSGSlider - Frontend', () => {
 
 			// Previous from the first real slide enters the before-clone zone
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowLeft',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 
@@ -307,7 +319,10 @@ describe('DSGSlider - Frontend', () => {
 
 			// One more ArrowRight wraps from index 2 -> index 0
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowRight',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 
@@ -330,7 +345,10 @@ describe('DSGSlider - Frontend', () => {
 			});
 
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowRight',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 
@@ -352,7 +370,10 @@ describe('DSGSlider - Frontend', () => {
 
 			// Try going before index 0
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowLeft',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 			expect(events[events.length - 1].currentIndex).toBe(0);
@@ -365,7 +386,10 @@ describe('DSGSlider - Frontend', () => {
 
 			// Try going past the end
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowRight',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 			expect(events[events.length - 1].currentIndex).toBe(2);
@@ -388,7 +412,10 @@ describe('DSGSlider - Frontend', () => {
 			});
 
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowLeft',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 
@@ -434,7 +461,9 @@ describe('DSGSlider - Frontend', () => {
 
 			dots.forEach((dot, i) => {
 				expect(dot.getAttribute('role')).toBe('tab');
-				expect(dot.getAttribute('aria-label')).toBe(`Go to slide ${i + 1}`);
+				expect(dot.getAttribute('aria-label')).toBe(
+					`Go to slide ${i + 1}`
+				);
 			});
 		});
 
@@ -514,7 +543,10 @@ describe('DSGSlider - Frontend', () => {
 
 			// Advance to slide 1
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowRight',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 
@@ -592,7 +624,10 @@ describe('DSGSlider - Frontend', () => {
 			});
 
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowRight',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 
@@ -605,11 +640,17 @@ describe('DSGSlider - Frontend', () => {
 
 			// Advance to slide 2
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowRight',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowRight',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 
@@ -619,7 +660,10 @@ describe('DSGSlider - Frontend', () => {
 			});
 
 			slider.dispatchEvent(
-				new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true })
+				new KeyboardEvent('keydown', {
+					key: 'ArrowLeft',
+					bubbles: true,
+				})
 			);
 			jest.advanceTimersByTime(600);
 
@@ -687,7 +731,9 @@ describe('DSGSlider - Frontend', () => {
 			const slider = createSliderFixture({ addImages: false });
 			requireAndInit();
 
-			expect(slider.querySelector('.dsgo-slider__announcer')).not.toBeNull();
+			expect(
+				slider.querySelector('.dsgo-slider__announcer')
+			).not.toBeNull();
 		});
 
 		test('returns allLoaded true when all images are complete', () => {
@@ -706,7 +752,9 @@ describe('DSGSlider - Frontend', () => {
 
 			requireAndInit();
 
-			expect(slider.querySelector('.dsgo-slider__announcer')).not.toBeNull();
+			expect(
+				slider.querySelector('.dsgo-slider__announcer')
+			).not.toBeNull();
 		});
 	});
 
@@ -721,13 +769,17 @@ describe('DSGSlider - Frontend', () => {
 
 			requireAndInit();
 
-			expect(slider.querySelectorAll('.dsgo-slider__arrows').length).toBe(1);
+			expect(slider.querySelectorAll('.dsgo-slider__arrows').length).toBe(
+				1
+			);
 
 			// Fire load event (backup initialiser) - should NOT double-init
 			window.dispatchEvent(new Event('load'));
 			jest.advanceTimersByTime(16);
 
-			expect(slider.querySelectorAll('.dsgo-slider__arrows').length).toBe(1);
+			expect(slider.querySelectorAll('.dsgo-slider__arrows').length).toBe(
+				1
+			);
 		});
 	});
 
@@ -736,7 +788,7 @@ describe('DSGSlider - Frontend', () => {
 	// ------------------------------------------------------------------
 	describe('destroy', () => {
 		test('removes event listeners and cleans up', () => {
-			const slider = createSliderFixture({
+			const _slider = createSliderFixture({
 				dataAttributes: {
 					draggable: 'true',
 					autoplay: 'true',

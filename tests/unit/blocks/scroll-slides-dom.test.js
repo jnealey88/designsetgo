@@ -24,10 +24,10 @@ jest.mock('@wordpress/i18n', () => ({
 /**
  * Build a scroll-slides DOM fixture for testing.
  *
- * @param {number} slideCount       Number of slides to create.
- * @param {Object} options          Configuration options.
- * @param {string} options.alignment  Alignment class (alignfull, alignwide, or empty).
- * @param {Array}  options.headings   Per-slide nav heading text (data-dsgo-nav-heading).
+ * @param {number} slideCount          Number of slides to create.
+ * @param {Object} options             Configuration options.
+ * @param {string} options.alignment   Alignment class (alignfull, alignwide, or empty).
+ * @param {Array}  options.headings    Per-slide nav heading text (data-dsgo-nav-heading).
  * @param {Array}  options.backgrounds Per-slide inline background styles.
  * @return {Object} Object with container, slides NodeList, and wrapper element.
  */
@@ -160,8 +160,7 @@ describe('setupDOM', () => {
 
 	describe('mobile mode (isMobile = true)', () => {
 		test('adds is-tap-mode class and does not create spacer', () => {
-			const { container, slides, wrapper } =
-				createScrollSlidesFixture(3);
+			const { container, slides, wrapper } = createScrollSlidesFixture(3);
 
 			setupDOM(container, slides, '100vh', '', true);
 
@@ -241,9 +240,7 @@ describe('setupDOM', () => {
 
 			setupDOM(container, slides, '100vh', '', false);
 
-			const inner = container.querySelector(
-				'.dsgo-scroll-slides__inner'
-			);
+			const inner = container.querySelector('.dsgo-scroll-slides__inner');
 			const children = Array.from(inner.children);
 			const navIndex = children.findIndex((el) =>
 				el.classList.contains('dsgo-scroll-slides__nav')
@@ -282,15 +279,11 @@ describe('setupDOM', () => {
 
 			expect(bgLayers[0].style.backgroundImage).toBe('url("hero.jpg")');
 			expect(bgLayers[0].style.backgroundColor).toBe('rgb(255, 0, 0)');
-			expect(bgLayers[0].style.backgroundPosition).toBe(
-				'center center'
-			);
+			expect(bgLayers[0].style.backgroundPosition).toBe('center center');
 			expect(bgLayers[0].style.backgroundSize).toBe('cover');
 			expect(bgLayers[0].style.backgroundRepeat).toBe('no-repeat');
 
-			expect(bgLayers[1].style.backgroundImage).toBe(
-				'url("second.jpg")'
-			);
+			expect(bgLayers[1].style.backgroundImage).toBe('url("second.jpg")');
 			expect(bgLayers[1].style.backgroundColor).toBe('rgb(0, 0, 255)');
 		});
 
