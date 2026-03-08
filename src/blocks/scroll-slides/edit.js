@@ -9,7 +9,8 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { PanelBody, TextControl } from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -36,10 +37,7 @@ const TEMPLATE = [
 			[
 				'core/paragraph',
 				{
-					content: __(
-						'Add your slide content here.',
-						'designsetgo'
-					),
+					content: __('Add your slide content here.', 'designsetgo'),
 				},
 			],
 		],
@@ -61,10 +59,7 @@ const TEMPLATE = [
 			[
 				'core/paragraph',
 				{
-					content: __(
-						'Add your slide content here.',
-						'designsetgo'
-					),
+					content: __('Add your slide content here.', 'designsetgo'),
 				},
 			],
 		],
@@ -86,10 +81,7 @@ const TEMPLATE = [
 			[
 				'core/paragraph',
 				{
-					content: __(
-						'Add your slide content here.',
-						'designsetgo'
-					),
+					content: __('Add your slide content here.', 'designsetgo'),
 				},
 			],
 		],
@@ -98,8 +90,9 @@ const TEMPLATE = [
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const { minHeight } = attributes;
+	const [activeSlide, setActiveSlide] = useState(0);
 
-	// Read inner blocks to build nav preview
+	// Read inner blocks to build nav and show/hide panels
 	const { innerBlocks } = useSelect(
 		(select) => {
 			const { getBlock } = select(blockEditorStore);
@@ -110,8 +103,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		[clientId]
 	);
 
+	const { updateBlockAttributes, selectBlock } =
+		useDispatch(blockEditorStore);
+
+	// Clamp active slide to valid range when slides are removed
+	const clampedActive =
+		innerBlocks.length > 0
+			? Math.min(activeSlide, innerBlocks.length - 1)
+			: 0;
+
 	const blockProps = useBlockProps({
 		className: 'dsgo-scroll-slides',
+		'data-dsgo-active-slide': clampedActive,
 	});
 
 	const innerBlocksProps = useInnerBlocksProps(
@@ -124,6 +127,32 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			orientation: 'vertical',
 		}
 	);
+
+	/**
+	 * Handle nav heading click — switch active slide and select child block
+	 *
+	 * @param {number} index Slide index
+	 */
+	const handleNavClick = (index) => {
+		setActiveSlide(index);
+		if (innerBlocks[index]) {
+			selectBlock(innerBlocks[index].clientId);
+		}
+	};
+
+	/**
+	 * Handle inline editing of nav heading text
+	 *
+	 * @param {number} index Slide index
+	 * @param {string} value New heading text
+	 */
+	const handleNavHeadingChange = (index, value) => {
+		if (innerBlocks[index]) {
+			updateBlockAttributes(innerBlocks[index].clientId, {
+				navHeading: value,
+			});
+		}
+	};
 
 	return (
 		<>
@@ -149,24 +178,37 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			</InspectorControls>
 
 			<div {...blockProps}>
-				{/* Nav preview */}
+				{/* Navigation — editable headings, click to switch slide */}
 				{innerBlocks.length > 0 && (
-					<div className="dsgo-scroll-slides__nav-preview">
+					<div className="dsgo-scroll-slides__editor-nav">
 						{innerBlocks.map((block, index) => (
-							<span
+							<button
 								key={block.clientId}
-								className={`dsgo-scroll-slides__nav-preview-item${
-									index === 0 ? ' is-active' : ''
+								type="button"
+								className={`dsgo-scroll-slides__editor-nav-item${
+									index === clampedActive ? ' is-active' : ''
 								}`}
+								onClick={() => handleNavClick(index)}
 							>
-								{block.attributes.navHeading ||
-									`Slide ${index + 1}`}
-							</span>
+								<input
+									type="text"
+									className="dsgo-scroll-slides__editor-nav-input"
+									value={block.attributes.navHeading || ''}
+									placeholder={`Slide ${index + 1}`}
+									onChange={(e) =>
+										handleNavHeadingChange(
+											index,
+											e.target.value
+										)
+									}
+									onClick={(e) => e.stopPropagation()}
+								/>
+							</button>
 						))}
 					</div>
 				)}
 
-				{/* Slide panels */}
+				{/* Slide panels — all rendered, CSS shows only active */}
 				<div {...innerBlocksProps} />
 			</div>
 		</>
