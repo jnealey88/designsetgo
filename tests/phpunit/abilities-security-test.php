@@ -9,9 +9,9 @@
  * @subpackage Tests
  */
 
-use DesignSetGo\Abilities\Configurators\Configure_Block_Attributes;
+use DesignSetGo\Abilities\Configurators\Update_Block;
 use DesignSetGo\Abilities\Configurators\Configure_Shape_Divider;
-use DesignSetGo\Abilities\Inserters\Insert_Block_Into;
+use DesignSetGo\Abilities\Inserters\Add_Child_Block;
 use DesignSetGo\Abilities\Info\Get_Post_Blocks;
 use DesignSetGo\Abilities\Info\List_Abilities;
 use DesignSetGo\Abilities\Info\List_Blocks;
@@ -197,7 +197,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/group --><div class="wp-block-group"></div><!-- /wp:core/group -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'            => $post_id,
@@ -216,7 +216,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/group --><div class="wp-block-group"></div><!-- /wp:core/group -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'            => $post_id,
@@ -235,7 +235,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/group --><div class="wp-block-group"></div><!-- /wp:core/group -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'            => $post_id,
@@ -258,7 +258,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Only block</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -274,7 +274,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 	 * Test that a nonexistent post ID returns an error.
 	 */
 	public function test_nonexistent_post_returns_error(): void {
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => 999999,
@@ -293,7 +293,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'    => $post_id,
@@ -311,7 +311,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -327,7 +327,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 	 * Test that missing post_id returns an error.
 	 */
 	public function test_missing_post_id_returns_error(): void {
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'block_index' => 0,
@@ -345,7 +345,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -502,7 +502,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 
 		wp_set_current_user( $this->subscriber_id );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -511,7 +511,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 			)
 		);
 
-		$this->assert_error_code( 'permission_denied', $result );
+		$this->assert_error_code( 'rest_forbidden', $result );
 	}
 
 	/**
@@ -564,7 +564,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 
 		wp_set_current_user( $this->subscriber_id );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'            => $post_id,
@@ -573,7 +573,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 			)
 		);
 
-		$this->assert_error_code( 'permission_denied', $result );
+		$this->assert_error_code( 'rest_forbidden', $result );
 	}
 
 	// -------------------------------------------------------------------------
@@ -587,7 +587,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -617,7 +617,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/group --><div class="wp-block-group"></div><!-- /wp:core/group -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 
 		// Use reflection to test the private sanitize_inner_blocks method.
 		$reflection = new ReflectionClass( $ability );
@@ -666,7 +666,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'    => $post_id,
@@ -691,7 +691,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/group --><div class="wp-block-group"></div><!-- /wp:core/group -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'    => $post_id,
@@ -709,7 +709,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/group --><div class="wp-block-group"></div><!-- /wp:core/group -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'            => $post_id,
@@ -727,7 +727,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Insert_Block_Into();
+		$ability = new Add_Child_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'            => $post_id,
@@ -789,7 +789,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -823,7 +823,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -855,7 +855,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -978,7 +978,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		$content = '<!-- wp:core/paragraph --><p>Hello</p><!-- /wp:core/paragraph -->';
 		$post_id = $this->create_block_post( $content );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -1038,7 +1038,7 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 		// Unauthenticated user (no user set).
 		wp_set_current_user( 0 );
 
-		$ability = new Configure_Block_Attributes();
+		$ability = new Update_Block();
 		$result  = $ability->execute(
 			array(
 				'post_id'     => $post_id,
@@ -1047,6 +1047,6 @@ class Abilities_Security_Test extends WP_UnitTestCase {
 			)
 		);
 
-		$this->assert_error_code( 'permission_denied', $result );
+		$this->assert_error_code( 'rest_forbidden', $result );
 	}
 }

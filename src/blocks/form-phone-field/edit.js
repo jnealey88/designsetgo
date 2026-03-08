@@ -342,7 +342,7 @@ export default function FormPhoneFieldEdit({
 						>
 							{COUNTRY_CODES.map((code) => (
 								<option key={code.value} value={code.value}>
-									{code.label}
+									{code.value}
 								</option>
 							))}
 						</select>
