@@ -1,9 +1,67 @@
 /**
  * Scroll Slide - Frontend Styles
+ * Individual slide panel with crossfade transitions
  */
 
 .dsgo-scroll-slide {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	padding: 2rem;
+	opacity: 0;
+	transform: translateY(20px);
+	transition: opacity 0.4s ease, transform 0.4s ease;
+
+	/* When pinned, all non-active slides are stacked absolute */
+	.dsgo-scroll-slides.is-pinned & {
+		position: absolute;
+		inset: 0;
+	}
+
+	/* Active slide */
+	&.is-active {
+		position: relative;
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/**
+ * Mobile — all slides visible in flow
+ */
+@media (max-width: 781px) {
+
+	.dsgo-scroll-slide {
+		position: relative !important;
+		opacity: 1 !important;
+		transform: none !important;
+	}
+}
+
+/**
+ * Reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+
+	.dsgo-scroll-slide {
+		transition: none;
+		transform: none;
+		opacity: 1;
+		position: relative !important;
+	}
+}
+
+/**
+ * Print
+ */
+@media print {
+
+	.dsgo-scroll-slide {
+		position: relative !important;
+		opacity: 1 !important;
+		transform: none !important;
+		break-inside: avoid;
+		page-break-inside: avoid;
+		margin-bottom: 2rem;
+	}
 }
