@@ -74,6 +74,7 @@ export default function FormBuilderEdit({
 		emailFromEmail,
 		emailReplyTo,
 		emailBody,
+		redirectUrl,
 	} = attributes;
 
 	// Get theme color palette and gradient settings
@@ -486,6 +487,23 @@ export default function FormBuilderEdit({
 							'designsetgo'
 						)}
 						rows={3}
+						__nextHasNoMarginBottom
+					/>
+
+					<TextControl
+						label={__('Redirect URL', 'designsetgo')}
+						value={redirectUrl}
+						onChange={(value) =>
+							setAttributes({ redirectUrl: value })
+						}
+						type="url"
+						placeholder="https://example.com/thank-you"
+						help={__(
+							'Redirect to this URL after successful submission. Leave empty to show the success message instead. Requires AJAX Submit to be enabled.',
+							'designsetgo'
+						)}
+						disabled={!ajaxSubmit}
+						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>

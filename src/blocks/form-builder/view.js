@@ -158,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			'data-success-message'
 		);
 		const errorMessage = formContainer.getAttribute('data-error-message');
+		const redirectUrl = formContainer.getAttribute('data-redirect-url');
 
 		// Handle form submission
 		formElement.addEventListener('submit', async function (e) {
@@ -211,6 +212,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			const honeypot = formData.get('dsg_website');
 			const timestamp = formData.get('dsg_timestamp');
 
+			let redirecting = false;
+
 			try {
 				// Make AJAX request to WordPress REST API
 				const response = await fetch(designsetgoForm.restUrl, {
@@ -232,16 +235,6 @@ document.addEventListener('DOMContentLoaded', function () {
 				const result = await response.json();
 
 				if (result.success) {
-					// Show success message
-					showMessage(
-						messageContainer,
-						successMessage || result.message,
-						'success'
-					);
-
-					// Reset form
-					formElement.reset();
-
 					// Fire custom event for tracking/analytics
 					formContainer.dispatchEvent(
 						new CustomEvent('dsgoFormSubmitted', {
@@ -252,6 +245,23 @@ document.addEventListener('DOMContentLoaded', function () {
 							bubbles: true,
 						})
 					);
+
+					// Redirect if URL is configured and safe
+					if (redirectUrl && isSafeRedirectUrl(redirectUrl)) {
+						redirecting = true;
+						window.location.href = redirectUrl;
+						return;
+					}
+
+					// Show success message
+					showMessage(
+						messageContainer,
+						successMessage || result.message,
+						'success'
+					);
+
+					// Reset form
+					formElement.reset();
 
 					// Scroll to message if not visible
 					if (!isElementInViewport(messageContainer)) {
@@ -287,11 +297,13 @@ document.addEventListener('DOMContentLoaded', function () {
 					})
 				);
 			} finally {
-				// Re-enable submit button
-				submitButton.disabled = false;
-				submitButton.classList.remove('dsgo-form__submit--loading');
-				submitButton.textContent = originalText;
-				submitButton.removeAttribute('aria-busy');
+				// Skip button reset if navigating away (redirect)
+				if (!redirecting) {
+					submitButton.disabled = false;
+					submitButton.classList.remove('dsgo-form__submit--loading');
+					submitButton.textContent = originalText;
+					submitButton.removeAttribute('aria-busy');
+				}
 			}
 		});
 	});
@@ -326,6 +338,21 @@ document.addEventListener('DOMContentLoaded', function () {
 		container.style.display = 'none';
 		container.textContent = '';
 		container.className = 'dsgo-form__message';
+	}
+
+	/**
+	 * Validate that a redirect URL is safe (not javascript: or data: protocol)
+	 *
+	 * @param {string} url URL to validate
+	 * @return {boolean} True if safe to redirect to
+	 */
+	function isSafeRedirectUrl(url) {
+		try {
+			const parsed = new URL(url, window.location.origin);
+			return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+		} catch {
+			return false;
+		}
 	}
 
 	/**
