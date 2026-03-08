@@ -370,15 +370,25 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					{innerBlocks.length > 0 && (
 						<div className="dsgo-scroll-slides__editor-nav">
 							{innerBlocks.map((block, index) => (
-								<button
+								<div
 									key={block.clientId}
-									type="button"
+									role="button"
+									tabIndex={0}
 									className={`dsgo-scroll-slides__editor-nav-item${
 										index === clampedActive
 											? ' is-active'
 											: ''
 									}`}
 									onClick={() => handleNavClick(index)}
+									onKeyDown={(e) => {
+										if (
+											e.key === 'Enter' ||
+											e.key === ' '
+										) {
+											e.preventDefault();
+											handleNavClick(index);
+										}
+									}}
 								>
 									<input
 										type="text"
@@ -398,9 +408,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 											)
 										}
 										onFocus={() => handleNavClick(index)}
-										onClick={(e) => e.stopPropagation()}
 									/>
-								</button>
+								</div>
 							))}
 						</div>
 					)}

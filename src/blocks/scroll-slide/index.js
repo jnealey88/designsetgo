@@ -12,6 +12,7 @@ import metadata from './block.json';
 import { ICON_COLOR } from '../shared/constants';
 
 registerBlockType(metadata.name, {
+	...metadata,
 	edit: Edit,
 	save: Save,
 	icon: {

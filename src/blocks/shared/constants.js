@@ -9,4 +9,4 @@
  * Brand Color - Consistent across all block icons
  * Deep Purple that works well in both light and dark themes
  */
-export const ICON_COLOR = '#5C3E94';
+export const ICON_COLOR = '#2563eb';

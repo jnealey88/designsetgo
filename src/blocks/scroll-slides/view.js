@@ -172,6 +172,25 @@ function setupDOM(container, slides, minHeight, maxHeight) {
 			slide.style.backgroundColor = 'transparent';
 		}
 
+		// Transfer background-position/size/repeat if user customized them
+		const slideBgPosition = slide.style.backgroundPosition;
+		if (slideBgPosition) {
+			bgDiv.style.backgroundPosition = slideBgPosition;
+			slide.style.backgroundPosition = '';
+		}
+
+		const slideBgSize = slide.style.backgroundSize;
+		if (slideBgSize) {
+			bgDiv.style.backgroundSize = slideBgSize;
+			slide.style.backgroundSize = '';
+		}
+
+		const slideBgRepeat = slide.style.backgroundRepeat;
+		if (slideBgRepeat) {
+			bgDiv.style.backgroundRepeat = slideBgRepeat;
+			slide.style.backgroundRepeat = '';
+		}
+
 		if (index === 0) {
 			bgDiv.classList.add('is-active');
 		}
@@ -189,8 +208,14 @@ function setupDOM(container, slides, minHeight, maxHeight) {
 	liveRegion.setAttribute('aria-atomic', 'true');
 	container.appendChild(liveRegion);
 
-	// 5. Set first slide as active
+	// 5. Set first slide as active, mark others as inert
 	slides[0].classList.add('is-active');
+	slides.forEach((slide, index) => {
+		if (index !== 0) {
+			slide.setAttribute('inert', '');
+			slide.setAttribute('aria-hidden', 'true');
+		}
+	});
 }
 
 /**
@@ -246,12 +271,16 @@ function setupScrollEngine(container, slides, controller) {
 		if (newIndex !== currentSlideIndex) {
 			// Deactivate old slide
 			slides[currentSlideIndex].classList.remove('is-active');
+			slides[currentSlideIndex].setAttribute('inert', '');
+			slides[currentSlideIndex].setAttribute('aria-hidden', 'true');
 			navItems[currentSlideIndex].classList.remove('is-active');
 			navItems[currentSlideIndex].removeAttribute('aria-current');
 			bgLayers[currentSlideIndex].classList.remove('is-active');
 
 			// Activate new slide
 			slides[newIndex].classList.add('is-active');
+			slides[newIndex].removeAttribute('inert');
+			slides[newIndex].removeAttribute('aria-hidden');
 			navItems[newIndex].classList.add('is-active');
 			navItems[newIndex].setAttribute('aria-current', 'step');
 			bgLayers[newIndex].classList.add('is-active');
@@ -304,7 +333,8 @@ function setupScrollEngine(container, slides, controller) {
 			() => {
 				const totalRange = spacer.offsetHeight - viewportHeight;
 				const targetScroll =
-					spacer.offsetTop +
+					spacer.getBoundingClientRect().top +
+					window.scrollY +
 					((index + 0.5) / slideCount) * totalRange;
 				window.scrollTo({ top: targetScroll, behavior: 'smooth' });
 			},
