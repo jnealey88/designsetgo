@@ -4,12 +4,35 @@
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
+const sharedSupports = {
+	html: false,
+	reusable: false,
+	align: ['left', 'center', 'right', 'wide', 'full'],
+	spacing: {
+		margin: false,
+		padding: true,
+		blockGap: true,
+	},
+	color: {
+		background: true,
+		text: true,
+		link: true,
+	},
+	typography: {
+		fontSize: true,
+		lineHeight: true,
+		fontFamily: true,
+		fontWeight: true,
+	},
+};
+
 /**
  * Version 1: Before adding "none" icon position option
  * - iconPosition attribute didn't exist (was always "left" implicitly)
  * - Blocks with icons always output data-icon-position="left"
  */
 const v1 = {
+	supports: sharedSupports,
 	isEligible(attributes) {
 		// v1 is eligible if iconPosition attribute doesn't exist
 		// This was added in the current version

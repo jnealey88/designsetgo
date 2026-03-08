@@ -11,6 +11,52 @@ import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 // import { formatTimeUnit } from './utils/time-calculator';
 
 /**
+ * Shared supports for all deprecated versions.
+ * Uses __experimentalBorder (the historical name) instead of border.
+ */
+const sharedSupports = {
+	anchor: true,
+	align: ['wide', 'full'],
+	spacing: {
+		margin: true,
+		padding: true,
+		blockGap: true,
+		__experimentalDefaultControls: {
+			padding: true,
+		},
+	},
+	color: {
+		background: true,
+		text: true,
+		gradients: true,
+		__experimentalDefaultControls: {
+			background: false,
+			text: false,
+		},
+	},
+	typography: {
+		fontSize: true,
+		lineHeight: true,
+		fontWeight: true,
+		textAlign: true,
+		__experimentalDefaultControls: {
+			fontSize: true,
+			textAlign: true,
+		},
+	},
+	__experimentalBorder: {
+		color: true,
+		radius: true,
+		style: true,
+		width: true,
+		__experimentalDefaultControls: {
+			radius: true,
+			width: true,
+		},
+	},
+};
+
+/**
  * Deprecated version 2: Pre-BorderControl migration
  *
  * This deprecation handles blocks created before we migrated to WordPress BorderControl.
@@ -20,6 +66,7 @@ import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
  * - Unit border now uses WordPress core BorderControl component
  */
 const v2 = {
+	supports: sharedSupports,
 	attributes: {
 		targetDateTime: {
 			type: 'string',
@@ -272,6 +319,7 @@ const v2 = {
  * - Removed unitBorderRadius attribute (now uses __experimentalBorder support)
  */
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		targetDateTime: {
 			type: 'string',

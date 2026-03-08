@@ -10,12 +10,23 @@ import { useBlockProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 /**
+ * Supports definition for deprecated versions.
+ * Matches block.json supports (with border → __experimentalBorder if applicable).
+ */
+const sharedSupports = {
+	html: false,
+	reusable: false,
+	inserter: true,
+};
+
+/**
  * Version 1: Before aria-required was added to required fields.
  *
  * The site-designer-api generates HTML without aria-required="true" on
  * required input fields. This deprecation matches that older format.
  */
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		fieldName: {
 			type: 'string',

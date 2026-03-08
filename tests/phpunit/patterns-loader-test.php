@@ -366,7 +366,7 @@ class Test_Patterns_Loader extends WP_UnitTestCase {
 		$this->assertNotFalse( $raw, 'Compressed data should be valid base64' );
 		$decompressed = gzuncompress( $raw );
 		$this->assertNotFalse( $decompressed, 'Compressed data should decompress' );
-		$patterns = maybe_unserialize( $decompressed );
+		$patterns = json_decode( $decompressed, true );
 		$this->assertIsArray( $patterns, 'Decompressed data should be an array of patterns' );
 
 		remove_filter( 'designsetgo_pattern_cache_enabled', '__return_true' );

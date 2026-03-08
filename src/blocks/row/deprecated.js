@@ -7,9 +7,80 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
+const sharedSupports = {
+	anchor: true,
+	align: ['wide', 'full'],
+	html: false,
+	inserter: true,
+	layout: {
+		allowSwitching: false,
+		allowInheriting: false,
+		allowEditing: true,
+		allowSizingOnChildren: true,
+		allowVerticalAlignment: true,
+		default: {
+			type: 'flex',
+			orientation: 'horizontal',
+			justifyContent: 'left',
+			flexWrap: 'nowrap',
+		},
+	},
+	spacing: {
+		margin: true,
+		padding: true,
+		blockGap: true,
+		__experimentalDefaultControls: {
+			padding: true,
+			blockGap: true,
+		},
+	},
+	dimensions: {
+		minHeight: true,
+		minWidth: true,
+	},
+	color: {
+		background: true,
+		text: true,
+		gradients: true,
+		link: true,
+		__experimentalDefaultControls: {
+			background: true,
+			text: true,
+		},
+	},
+	background: {
+		backgroundImage: true,
+		backgroundSize: true,
+	},
+	typography: {
+		fontSize: true,
+		lineHeight: true,
+		__experimentalDefaultControls: {
+			fontSize: true,
+		},
+	},
+	shadow: true,
+	position: {
+		sticky: true,
+	},
+	__experimentalBorder: {
+		color: true,
+		radius: true,
+		style: true,
+		width: true,
+		__experimentalDefaultControls: {
+			color: true,
+			radius: true,
+			style: true,
+			width: true,
+		},
+	},
+};
+
 // Version 3: Before align-items (vertical alignment) was added to inner div
 // This version has width constraints but no alignItems CSS property
 const v3 = {
+	supports: sharedSupports,
 	attributes: {
 		align: {
 			type: 'string',
@@ -159,6 +230,7 @@ const v3 = {
 // This version had dsgo-has-max-width class from max-width extension
 // but didn't output width constraints on inner div when constrainWidth was true
 const v2 = {
+	supports: sharedSupports,
 	attributes: {
 		align: {
 			type: 'string',
@@ -297,6 +369,7 @@ const v2 = {
 
 // Version 1: Before align attribute - used className for alignment
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		// Old blocks don't have align attribute, only className
 		style: {

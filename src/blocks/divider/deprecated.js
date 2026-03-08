@@ -10,6 +10,36 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { getIcon } from '../shared/icon-utils';
 
 /**
+ * Shared supports for all deprecated versions.
+ */
+const sharedSupports = {
+	anchor: true,
+	align: ['left', 'center', 'right', 'wide', 'full'],
+	html: false,
+	inserter: true,
+	spacing: {
+		margin: true,
+		padding: false,
+		__experimentalDefaultControls: {
+			margin: true,
+		},
+	},
+	color: {
+		text: true,
+		gradient: false,
+		__experimentalDefaultControls: {
+			text: true,
+		},
+	},
+	dimensions: {
+		minHeight: true,
+		__experimentalDefaultControls: {
+			minHeight: false,
+		},
+	},
+};
+
+/**
  * Version 1: Before lazy loading icon library
  *
  * Changes in current version:
@@ -17,6 +47,7 @@ import { getIcon } from '../shared/icon-utils';
  * - Frontend icons injected via PHP to avoid bundling 51KB library
  */
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		dividerStyle: {
 			type: 'string',

@@ -10,6 +10,51 @@ import { useBlockProps, RichText } from '@wordpress/block-editor';
 import { getIcon } from '../icon/utils/svg-icons';
 
 /**
+ * Shared supports for all deprecated versions.
+ * Uses __experimentalBorder (the historical name) instead of border.
+ */
+const sharedSupports = {
+	anchor: true,
+	align: ['left', 'center', 'right', 'full'],
+	alignWide: true,
+	html: false,
+	spacing: {
+		margin: true,
+		padding: true,
+		__experimentalSkipSerialization: ['padding'],
+		__experimentalDefaultControls: {
+			margin: true,
+			padding: true,
+		},
+	},
+	color: {
+		background: true,
+		text: true,
+		__experimentalSkipSerialization: true,
+		__experimentalDefaultControls: {
+			background: true,
+			text: true,
+		},
+	},
+	typography: {
+		fontSize: true,
+		lineHeight: true,
+		fontFamily: true,
+		fontWeight: true,
+		letterSpacing: true,
+	},
+	__experimentalBorder: {
+		color: true,
+		radius: true,
+		style: true,
+		width: true,
+		__experimentalDefaultControls: {
+			radius: true,
+		},
+	},
+};
+
+/**
  * Version 2: Pre-alignment support with nested wrapper + button structure
  *
  * Behavior of this saved version:
@@ -20,6 +65,7 @@ import { getIcon } from '../icon/utils/svg-icons';
  * - Does not use __experimentalSkipSerialization flags
  */
 const v2 = {
+	supports: sharedSupports,
 	attributes: {
 		targetModalId: {
 			type: 'string',
@@ -143,6 +189,7 @@ const v2 = {
  * - Frontend icons injected via PHP to avoid bundling 51KB library
  */
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		targetModalId: {
 			type: 'string',
