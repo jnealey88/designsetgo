@@ -871,7 +871,7 @@ class Block_Configurator {
 	 * @param string               $block_name Block name for looking up mappings.
 	 * @return array<string, mixed> Block with updated markup.
 	 */
-	private static function update_block_markup( array $block, array $attributes, string $block_name ): array {
+	public static function update_block_markup( array $block, array $attributes, string $block_name ): array {
 		// Skip if no innerHTML to update.
 		if ( empty( $block['innerHTML'] ) ) {
 			return $block;

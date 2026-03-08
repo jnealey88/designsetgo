@@ -784,10 +784,12 @@ This demonstrates:
    class-block-configurator.php
    class-block-inserter.php
    configurators/
-      class-apply-animation.php
-      class-configure-counter-animation.php
+      class-configure-custom-css.php
+      class-configure-shape-divider.php
+   info/
+      class-list-extensions.php
    inserters/
-       class-insert-counter-group.php
+       class-add-block.php
 ```
 
 **Use Cases:**

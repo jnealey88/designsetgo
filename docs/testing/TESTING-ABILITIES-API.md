@@ -160,7 +160,7 @@ curl -s -u "$WP_USER:$WP_PASS" \
     ...
   },
   {
-    "name": "designsetgo/insert-flex-container",
+    "name": "designsetgo/add-block",
     ...
   },
   ...
@@ -219,7 +219,7 @@ curl -s -X POST \
 
 ---
 
-### Test 3: `designsetgo/insert-flex-container`
+### Test 3: `designsetgo/add-block`
 
 Insert a Flex Container block into your test post:
 
@@ -227,9 +227,10 @@ Insert a Flex Container block into your test post:
 curl -s -X POST \
   -u "$WP_USER:$WP_PASS" \
   -H "Content-Type: application/json" \
-  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/insert-flex-container/execute" \
+  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/add-block/execute" \
   -d '{
     "post_id": '"$TEST_POST_ID"',
+    "block_name": "designsetgo/flex",
     "position": -1,
     "attributes": {
       "direction": "row",
@@ -261,9 +262,10 @@ curl -s -X POST \
 curl -s -X POST \
   -u "$WP_USER:$WP_PASS" \
   -H "Content-Type: application/json" \
-  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/insert-flex-container/execute" \
+  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/add-block/execute" \
   -d '{
     "post_id": '"$TEST_POST_ID"',
+    "block_name": "designsetgo/flex",
     "attributes": {
       "direction": "row",
       "justifyContent": "space-between"
@@ -287,7 +289,7 @@ curl -s -X POST \
 
 ---
 
-### Test 4: `designsetgo/insert-grid-container`
+### Test 4: `designsetgo/add-block` (Grid Container)
 
 Insert a responsive Grid Container:
 
@@ -295,9 +297,10 @@ Insert a responsive Grid Container:
 curl -s -X POST \
   -u "$WP_USER:$WP_PASS" \
   -H "Content-Type: application/json" \
-  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/insert-grid-container/execute" \
+  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/add-block/execute" \
   -d '{
     "post_id": '"$TEST_POST_ID"',
+    "block_name": "designsetgo/grid",
     "attributes": {
       "desktopColumns": 3,
       "tabletColumns": 2,
@@ -358,69 +361,44 @@ curl -s -X POST \
 
 ---
 
-### Test 5: `designsetgo/configure-counter-animation`
+### Test 5: `designsetgo/list-extensions`
 
-First, insert a Counter Group with a Counter block:
-
-```bash
-# Create post with counter (via wp-cli for simplicity)
-npx wp-env run cli wp post create \
-  --post_title="Counter Test" \
-  --post_content='<!-- wp:designsetgo/counter-group -->
-<div class="wp-block-designsetgo-counter-group">
-  <!-- wp:designsetgo/counter {"endValue":100,"suffix":"+"} -->
-  <div class="wp-block-designsetgo-counter">100+</div>
-  <!-- /wp:designsetgo/counter -->
-</div>
-<!-- /wp:designsetgo/counter-group -->' \
-  --post_status=publish \
-  --porcelain
-
-# Returns: 124 (new post ID)
-export COUNTER_POST_ID=124
-```
-
-Now configure the counter:
+Discover all available extensions and their attribute schemas:
 
 ```bash
-curl -s -X POST \
+curl -s -X GET \
   -u "$WP_USER:$WP_PASS" \
   -H "Content-Type: application/json" \
-  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/configure-counter-animation/execute" \
-  -d '{
-    "post_id": '"$COUNTER_POST_ID"',
-    "settings": {
-      "endValue": 500,
-      "prefix": "$",
-      "suffix": "+",
-      "decimals": 0,
-      "label": "Revenue",
-      "customDuration": 2
-    }
-  }' | jq '.'
+  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/list-extensions/execute" \
+  -d '{"detail": "full"}' | jq '.'
 ```
 
 **Expected Output:**
 ```json
 {
   "success": true,
-  "post_id": 124,
-  "updated_count": 1,
-  "block_name": "designsetgo/counter",
-  "new_attributes": {
-    "endValue": 500,
-    "prefix": "$",
-    "suffix": "+",
+  "extensions": [
+    {
+      "name": "animation",
+      "description": "Entrance/exit animations with scroll triggers",
+      "applicable_blocks": ["core/*", "designsetgo/*"],
+      "attributes": {
+        "dsgAnimationEnabled": { "type": "boolean", "default": false },
+        "dsgEntranceAnimation": { "type": "string", "default": "" },
+        ...
+      }
+    },
     ...
-  }
+  ],
+  "total": 15
 }
 ```
 
 ---
 
-### Test 6: `designsetgo/apply-animation`
+### Test 6: Apply Extension via `update-block`
 
-Apply a fade-in animation to a heading:
+Apply a fade-in animation to a heading using `update-block` with extension attributes (discovered via `list-extensions`):
 
 ```bash
 # First create a post with a heading
@@ -440,24 +418,25 @@ npx wp-env run cli wp post create \
 export ANIM_POST_ID=125
 ```
 
-Apply animation:
+Apply animation attributes via `update-block`:
 
 ```bash
 curl -s -X POST \
   -u "$WP_USER:$WP_PASS" \
   -H "Content-Type: application/json" \
-  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/apply-animation/execute" \
+  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/update-block/execute" \
   -d '{
     "post_id": '"$ANIM_POST_ID"',
+    "block_index": 0,
     "block_name": "core/heading",
-    "animation": {
-      "enabled": true,
-      "entranceAnimation": "fadeInUp",
-      "trigger": "scroll",
-      "duration": 600,
-      "delay": 0,
-      "easing": "ease-out",
-      "once": true
+    "attributes": {
+      "dsgAnimationEnabled": true,
+      "dsgEntranceAnimation": "fadeInUp",
+      "dsgAnimationTrigger": "scroll",
+      "dsgAnimationDuration": 600,
+      "dsgAnimationDelay": 0,
+      "dsgAnimationEasing": "ease-out",
+      "dsgAnimationOnce": true
     }
   }' | jq '.'
 ```
@@ -480,7 +459,7 @@ curl -s -X POST \
 **Verify:**
 - Edit the post in WordPress
 - Select the heading block
-- Check Block Settings → DesignSetGo → Animation
+- Check Block Settings > DesignSetGo > Animation
 - Should show fadeInUp animation enabled
 
 ---
@@ -493,7 +472,7 @@ curl -s -X POST \
 curl -s -X POST \
   -u "$WP_USER:$WP_PASS" \
   -H "Content-Type: application/json" \
-  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/insert-flex-container/execute" \
+  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/add-block/execute" \
   -d '{
     "post_id": 99999,
     "attributes": {}
@@ -517,7 +496,7 @@ curl -s -X POST \
 curl -s -X POST \
   -u "$WP_USER:$WP_PASS" \
   -H "Content-Type: application/json" \
-  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/insert-flex-container/execute" \
+  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/add-block/execute" \
   -d '{}' | jq '.'
 ```
 
@@ -653,7 +632,7 @@ echo "Test 3: Insert Flex Container"
 POST_ID=$(npx wp-env run cli wp post create --post_title="Test" --post_status=publish --porcelain)
 RESULT=$(curl -s -X POST -u "$WP_USER:$WP_PASS" \
   -H "Content-Type: application/json" \
-  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/insert-flex-container/execute" \
+  "$WP_URL/wp-json/wp-abilities/v1/abilities/designsetgo/add-block/execute" \
   -d "{\"post_id\": $POST_ID, \"attributes\": {}}")
 echo $RESULT | jq '.success'
 

@@ -596,10 +596,11 @@ curl -X POST http://site.com/wp-json/wp-abilities/v1/abilities/designsetgo/list-
   -d '{"category": "all"}'
 
 # Insert a block
-curl -X POST http://site.com/wp-json/wp-abilities/v1/abilities/designsetgo/insert-flex-container/execute \
+curl -X POST http://site.com/wp-json/wp-abilities/v1/abilities/designsetgo/add-block/execute \
   -u "user:pass" \
   -d '{
     "post_id": 123,
+    "block_name": "designsetgo/flex",
     "attributes": {
       "direction": "row",
       "justifyContent": "center"

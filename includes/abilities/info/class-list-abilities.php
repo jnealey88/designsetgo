@@ -48,12 +48,11 @@ class List_Abilities extends Abstract_Ability {
 			'input_schema'        => $this->get_input_schema(),
 			'output_schema'       => $this->get_output_schema(),
 			'permission_callback' => array( $this, 'check_permission_callback' ),
-			'meta'                => array(
-				'show_in_rest' => true,
-				'annotations'  => array(
-					'readonly'     => true,
-					'instructions' => 'Call this first to discover all available DesignSetGo abilities. Use category filter to narrow by type: inserter, configurator, generator, or info.',
-				),
+			'show_in_rest'        => true,
+			'keywords'            => array( 'discover', 'tools', 'capabilities', 'help' ),
+			'annotations'         => array(
+				'readonly'     => true,
+				'instructions' => 'Call this first to discover all available DesignSetGo abilities. Use category filter to narrow by type: inserter, configurator, or info.',
 			),
 		);
 	}
@@ -70,8 +69,13 @@ class List_Abilities extends Abstract_Ability {
 				'category' => array(
 					'type'        => 'string',
 					'description' => __( 'Filter by ability category', 'designsetgo' ),
-					'enum'        => array( 'all', 'inserter', 'configurator', 'generator', 'info' ),
+					'enum'        => array( 'all', 'inserter', 'configurator', 'info' ),
 					'default'     => 'all',
+				),
+				'search'   => array(
+					'type'        => 'string',
+					'description' => __( 'Search abilities by name, description, or keyword. Matches against ability names, labels, descriptions, and keyword aliases (e.g., searching "group" finds section-related abilities).', 'designsetgo' ),
+					'default'     => '',
 				),
 			),
 			'additionalProperties' => false,
@@ -106,7 +110,7 @@ class List_Abilities extends Abstract_Ability {
 							),
 							'category'     => array(
 								'type'        => 'string',
-								'description' => __( 'Ability category: inserter, configurator, generator, or info', 'designsetgo' ),
+								'description' => __( 'Ability category: inserter, configurator, or info', 'designsetgo' ),
 							),
 							'input_schema' => array(
 								'type'        => 'object',
@@ -140,6 +144,7 @@ class List_Abilities extends Abstract_Ability {
 	 */
 	public function execute( array $input ): array {
 		$category_filter = $input['category'] ?? 'all';
+		$search_term     = $input['search'] ?? '';
 
 		$registry  = Abilities_Registry::get_instance();
 		$abilities = $registry->get_abilities();
@@ -155,10 +160,19 @@ class List_Abilities extends Abstract_Ability {
 				continue;
 			}
 
+			$label       = $config['label'] ?? $name;
+			$description = $config['description'] ?? '';
+			$keywords    = $config['keywords'] ?? array();
+
+			// Filter by search term if specified.
+			if ( '' !== $search_term && ! $this->matches_search( $search_term, $name, $label, $description, $keywords ) ) {
+				continue;
+			}
+
 			$result[] = array(
 				'name'         => $name,
-				'label'        => $config['label'] ?? $name,
-				'description'  => $config['description'] ?? '',
+				'label'        => $label,
+				'description'  => $description,
 				'category'     => $category,
 				'input_schema' => $config['input_schema'] ?? array(),
 			);
@@ -183,16 +197,52 @@ class List_Abilities extends Abstract_Ability {
 	}
 
 	/**
+	 * Check if an ability matches the search term.
+	 *
+	 * Performs case-insensitive matching against the ability name,
+	 * label, description, and keyword aliases.
+	 *
+	 * @param string        $search_term Search term.
+	 * @param string        $name        Ability name.
+	 * @param string        $label       Ability label.
+	 * @param string        $description Ability description.
+	 * @param array<string> $keywords    Keyword aliases.
+	 * @return bool Whether the ability matches.
+	 */
+	private function matches_search( string $search_term, string $name, string $label, string $description, array $keywords ): bool {
+		$term = strtolower( $search_term );
+
+		// Check name, label, and description.
+		if ( false !== strpos( strtolower( $name ), $term ) ) {
+			return true;
+		}
+		if ( false !== strpos( strtolower( $label ), $term ) ) {
+			return true;
+		}
+		if ( false !== strpos( strtolower( $description ), $term ) ) {
+			return true;
+		}
+
+		// Check keywords.
+		foreach ( $keywords as $keyword ) {
+			if ( false !== strpos( strtolower( $keyword ), $term ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Infer the ability category from its name.
 	 *
 	 * Uses naming conventions:
-	 * - insert-* → inserter
-	 * - configure-*, apply-*, batch-*, delete-* → configurator
-	 * - generate-* → generator
+	 * - insert-*, add-* → inserter
+	 * - configure-*, apply-*, batch-*, delete-*, update-* → configurator
 	 * - list-*, get-*, find-* → info
 	 *
-	 * @param string $name Ability name (e.g., 'designsetgo/insert-section').
-	 * @return string Category: inserter, configurator, generator, or info.
+	 * @param string $name Ability name (e.g., 'designsetgo/add-block').
+	 * @return string Category: inserter, configurator, or info.
 	 */
 	private function infer_category( string $name ): string {
 		// Remove namespace prefix.
@@ -200,11 +250,12 @@ class List_Abilities extends Abstract_Ability {
 
 		$prefix_map = array(
 			'insert-'    => 'inserter',
+			'add-'       => 'inserter',
 			'configure-' => 'configurator',
 			'apply-'     => 'configurator',
 			'batch-'     => 'configurator',
 			'delete-'    => 'configurator',
-			'generate-'  => 'generator',
+			'update-'    => 'configurator',
 			'list-'      => 'info',
 			'get-'       => 'info',
 			'find-'      => 'info',

@@ -20,14 +20,13 @@ The WordPress Abilities API is a new core initiative that creates a structured w
 
 ## Available Abilities
 
-DesignSetGo currently provides **110 abilities** across 4 categories:
+DesignSetGo provides a focused set of abilities across 3 categories:
 
-- **4 Info** - Discover abilities, list blocks, inspect post content, find blocks across posts
-- **34 Inserters** - Insert any DesignSetGo block programmatically, including child-block inserters
-- **62 Configurators** - Configure block attributes, apply animations/effects, form fields, and operations (batch update, delete)
-- **10 Generators** - Generate complete page sections (hero, features, stats, FAQ, contact, pricing, team, testimonials, CTA, gallery)
+- **Info** - Discover abilities, list blocks, list extensions, inspect post content, find blocks across posts (`list-abilities`, `list-blocks`, `list-extensions`, `get-post-blocks`, `find-blocks`)
+- **Inserters** - `add-block` (generic top-level), `add-child-block` (nested), plus child-block inserters (`add-accordion-item`, `add-tab`, `add-timeline-item`)
+- **Configurators** - `update-block` (generic), block-specific configurators with custom logic, and operations (`batch-update`, `delete-block`)
 
-### 1. Info Abilities (4)
+### 1. Info Abilities (5)
 
 #### `designsetgo/list-abilities`
 
@@ -45,14 +44,14 @@ Returns a manifest of all registered DesignSetGo abilities with their names, des
 {
   "abilities": [
     {
-      "name": "designsetgo/insert-section",
-      "label": "Insert Section",
-      "description": "Inserts a Section block...",
+      "name": "designsetgo/add-block",
+      "label": "Add Block",
+      "description": "Inserts any block at the top level of a post...",
       "category": "inserter",
       "input_schema": { ... }
     }
   ],
-  "total": 110
+  "total": ...
 }
 ```
 
@@ -163,16 +162,57 @@ curl -X GET "http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/find-blocks
 
 ---
 
-### 2. Block Insertion Abilities (34)
+#### `designsetgo/list-extensions`
 
-#### `designsetgo/insert-flex-container`
+Returns all DesignSetGo block extensions with their attribute schemas, applicable blocks, and descriptions. Extensions add features like animation, parallax, responsive visibility to existing blocks. Use `update-block` with the extension attribute names to apply them.
 
-Inserts a Flex Container block with customizable layout settings.
+**Input:**
+```json
+{
+  "detail": "summary"  // Options: "summary", "full"
+}
+```
+
+**Output:**
+```json
+{
+  "success": true,
+  "extensions": [
+    {
+      "name": "animation",
+      "description": "Entrance/exit animations with scroll triggers",
+      "applicable_blocks": ["core/*", "designsetgo/*"],
+      "attributes": {
+        "dsgAnimationEnabled": { "type": "boolean", "default": false },
+        "dsgEntranceAnimation": { "type": "string", "default": "" },
+        "dsgAnimationTrigger": { "type": "string", "default": "scroll" },
+        "dsgAnimationDuration": { "type": "number", "default": 600 }
+      }
+    }
+  ],
+  "total": 15
+}
+```
+
+**REST API Example:** (readonly — uses GET)
+```bash
+curl -X GET "http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/list-extensions/run?detail=full" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+### 2. Block Insertion Abilities
+
+#### `designsetgo/add-block`
+
+Generic top-level inserter that adds any block to a post. Replaces all block-specific inserters.
 
 **Input:**
 ```json
 {
   "post_id": 123,
+  "block_name": "designsetgo/flex",
   "position": -1,  // -1 = append, 0 = prepend, or specific index
   "attributes": {
     "direction": "row",
@@ -192,6 +232,8 @@ Inserts a Flex Container block with customizable layout settings.
 }
 ```
 
+`block_name` is any valid block type (e.g., `designsetgo/flex`, `designsetgo/grid`, `designsetgo/section`, `core/paragraph`).
+
 **Output:**
 ```json
 {
@@ -204,11 +246,12 @@ Inserts a Flex Container block with customizable layout settings.
 
 **REST API Example:**
 ```bash
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/insert-flex-container/run \
+curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/add-block/run \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{
     "post_id": 123,
+    "block_name": "designsetgo/flex",
     "attributes": {
       "direction": "row",
       "justifyContent": "center"
@@ -218,309 +261,13 @@ curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/insert-flex
 
 ---
 
-#### `designsetgo/insert-grid-container`
+### 3. Block Configuration Abilities
 
-Inserts a responsive Grid Container with column configurations for different devices.
+#### Generic Configurator
 
-**Input:**
-```json
-{
-  "post_id": 123,
-  "position": -1,
-  "attributes": {
-    "desktopColumns": 3,
-    "tabletColumns": 2,
-    "mobileColumns": 1,
-    "gap": "20px"
-  },
-  "innerBlocks": []
-}
-```
+##### `designsetgo/update-block`
 
-**Output:**
-```json
-{
-  "success": true,
-  "post_id": 123,
-  "block_id": "block-def456"
-}
-```
-
-**REST API Example:**
-```bash
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/insert-grid-container/run \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{
-    "post_id": 123,
-    "attributes": {
-      "desktopColumns": 3,
-      "tabletColumns": 2,
-      "mobileColumns": 1
-    }
-  }'
-```
-
----
-
-### 3. Block Configuration Abilities (62)
-
-#### Extension Configurators
-
-These abilities apply cross-cutting extensions (animations, parallax, etc.) to any compatible block.
-
-#### `designsetgo/configure-counter-animation`
-
-Updates animation settings for Counter blocks.
-
-**Input:**
-```json
-{
-  "post_id": 123,
-  "block_client_id": "abc-123",  // Optional: specific block to update
-  "update_all": false,            // Update all counters in post?
-  "settings": {
-    "startValue": 0,
-    "endValue": 1000,
-    "duration": 2,
-    "prefix": "$",
-    "suffix": "+",
-    "decimals": 0,
-    "label": "Revenue"
-  }
-}
-```
-
-**Output:**
-```json
-{
-  "success": true,
-  "post_id": 123,
-  "updated_count": 1,
-  "block_name": "designsetgo/counter",
-  "new_attributes": { ... }
-}
-```
-
-**REST API Example:**
-```bash
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/configure-counter-animation/run \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{
-    "post_id": 123,
-    "settings": {
-      "endValue": 500,
-      "suffix": "+"
-    }
-  }'
-```
-
----
-
-#### `designsetgo/apply-animation`
-
-Applies entrance/exit animations to any WordPress block.
-
-**Input:**
-```json
-{
-  "post_id": 123,
-  "block_name": "core/heading",
-  "block_client_id": null,
-  "update_all": false,
-  "animation": {
-    "enabled": true,
-    "entranceAnimation": "fadeInUp",
-    "exitAnimation": "",
-    "trigger": "scroll",
-    "duration": 600,
-    "delay": 0,
-    "easing": "ease-out",
-    "offset": 100,
-    "once": true
-  }
-}
-```
-
-**Output:**
-```json
-{
-  "success": true,
-  "post_id": 123,
-  "updated_count": 1,
-  "block_name": "core/heading",
-  "new_attributes": { ... }
-}
-```
-
-**REST API Example:**
-```bash
-curl -X POST http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/apply-animation/run \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{
-    "post_id": 123,
-    "block_name": "core/paragraph",
-    "animation": {
-      "entranceAnimation": "fadeIn",
-      "trigger": "scroll"
-    }
-  }'
-```
-
----
-
-#### `designsetgo/apply-scroll-parallax` (v1.3.0)
-
-Applies Elementor-style scroll parallax effects to container and visual blocks.
-
-**Input:**
-```json
-{
-  "post_id": 123,
-  "block_name": "core/group",
-  "parallax": {
-    "enabled": true,
-    "direction": "up",
-    "speed": 5,
-    "viewportStart": 0,
-    "viewportEnd": 100,
-    "relativeTo": "viewport",
-    "enableDesktop": true,
-    "enableTablet": true,
-    "enableMobile": false
-  }
-}
-```
-
----
-
-#### `designsetgo/apply-text-reveal` (v1.3.0)
-
-Applies scroll-triggered text color reveal effect to paragraphs and headings.
-
-**Input:**
-```json
-{
-  "post_id": 123,
-  "block_name": "core/heading",
-  "textReveal": {
-    "enabled": true,
-    "revealColor": "#2563eb",
-    "splitMode": "word",
-    "transitionDuration": 150
-  }
-}
-```
-
----
-
-#### `designsetgo/apply-expanding-background` (v1.3.0)
-
-Applies scroll-driven expanding background effect to Group and Section blocks.
-
-**Input:**
-```json
-{
-  "post_id": 123,
-  "block_name": "core/group",
-  "expandingBackground": {
-    "enabled": true,
-    "color": "#e8e8e8",
-    "initialSize": 50,
-    "blur": 30,
-    "speed": 1,
-    "triggerOffset": 0,
-    "completionPoint": 80
-  }
-}
-```
-
----
-
-#### Block-Specific Configurators (38)
-
-All per-block configurators share a common interface. They target blocks by `post_id` + either `block_index` (from `get-post-blocks`) or `block_client_id`, then merge the provided `attributes` into the block. The available attributes are auto-generated from each block's `block.json` schema.
-
-**Common Input Pattern:**
-```json
-{
-  "post_id": 123,
-  "block_index": 2,          // Document-order index (preferred)
-  "block_client_id": "abc",  // Alternative: target by client ID
-  "attributes": {
-    "attributeName": "value"  // Block-specific attributes
-  }
-}
-```
-
-| Ability | Target Block |
-|---------|-------------|
-| `configure-section` | Section (includes layout, shape dividers, hover effects, overlay) |
-| `configure-row` | Row (flex layout) |
-| `configure-grid` | Grid (responsive columns) |
-| `configure-accordion` | Accordion container |
-| `configure-accordion-item` | Accordion item |
-| `configure-tabs` | Tabs container |
-| `configure-tab` | Individual tab |
-| `configure-slider` | Slider/carousel |
-| `configure-slide` | Individual slide |
-| `configure-flip-card` | Flip card container |
-| `configure-flip-card-front` | Flip card front face |
-| `configure-flip-card-back` | Flip card back face |
-| `configure-reveal` | Reveal container |
-| `configure-scroll-accordion` | Scroll accordion |
-| `configure-scroll-accordion-item` | Scroll accordion item |
-| `configure-scroll-marquee` | Scroll marquee |
-| `configure-image-accordion` | Image accordion |
-| `configure-image-accordion-item` | Image accordion item |
-| `configure-modal` | Modal dialog |
-| `configure-modal-trigger` | Modal trigger button |
-| `configure-card` | Card |
-| `configure-icon` | Icon |
-| `configure-icon-button` | Icon button |
-| `configure-icon-list` | Icon list container |
-| `configure-icon-list-item` | Icon list item |
-| `configure-pill` | Pill/badge |
-| `configure-divider` | Divider |
-| `configure-progress-bar` | Progress bar |
-| `configure-breadcrumbs` | Breadcrumbs |
-| `configure-table-of-contents` | Table of contents |
-| `configure-countdown-timer` | Countdown timer |
-| `configure-counter` | Counter |
-| `configure-counter-group` | Counter group |
-| `configure-blobs` | Blobs |
-| `configure-map` | Map |
-| `configure-form-builder` | Form builder |
-
----
-
-#### Form Field Configurators (12)
-
-Each form field type has a dedicated configurator that follows the same common interface. Attributes are auto-generated from the field block's `block.json`.
-
-| Ability | Target Block |
-|---------|-------------|
-| `configure-form-text-field` | Text input |
-| `configure-form-email-field` | Email input |
-| `configure-form-textarea` | Textarea |
-| `configure-form-checkbox-field` | Checkbox |
-| `configure-form-select-field` | Dropdown select |
-| `configure-form-date-field` | Date picker |
-| `configure-form-time-field` | Time picker |
-| `configure-form-number-field` | Number input |
-| `configure-form-phone-field` | Phone input |
-| `configure-form-url-field` | URL input |
-| `configure-form-hidden-field` | Hidden field |
-
----
-
-#### Utility Configurators
-
-##### `designsetgo/configure-block-attributes`
-
-Generic ability to update **any** block's attributes by document-order index, block name, or client ID. Use this when no block-specific configurator exists or when working with core WordPress blocks.
+Generic ability to update **any** block's attributes by document-order index, block name, or client ID. Also used to apply extension attributes (animation, parallax, responsive visibility, etc.) -- use `list-extensions` to discover available extension attribute names and schemas.
 
 **Input:**
 ```json
@@ -536,6 +283,19 @@ Generic ability to update **any** block's attributes by document-order index, bl
   }
 }
 ```
+
+Target a block by either `block_index` (document-order from `get-post-blocks`) or `block_client_id`. The `attributes` object accepts any valid attribute from the block's schema.
+
+---
+
+#### Block-Specific Configurators (with custom logic)
+
+These configurators have custom logic beyond simple attribute setting:
+
+| Ability | Description |
+|---------|-------------|
+| `configure-shape-divider` | Shape dividers on sections (23 shapes, position fan-out logic) |
+| `configure-custom-css` | Custom CSS per block (CSS sanitization for security) |
 
 ---
 
@@ -634,44 +394,9 @@ curl -X DELETE http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/delete-bl
 
 ---
 
-### 4. Generator Abilities (10)
+### 4. Additional Inserter Abilities
 
-#### `designsetgo/generate-contact-section`
-
-Generates a complete contact section with form, optional map, and contact info.
-
-**Input:**
-```json
-{
-  "post_id": 123,
-  "heading": "Get In Touch",
-  "description": "Have a question? Fill out the form below.",
-  "layout": "form-left",
-  "formFields": ["name", "email", "phone", "message"],
-  "submitText": "Send Message",
-  "includeMap": true,
-  "mapLocation": {
-    "lat": 40.7128,
-    "lng": -74.006,
-    "zoom": 14,
-    "address": "New York, NY"
-  },
-  "contactInfo": {
-    "email": "hello@example.com",
-    "phone": "+1 (555) 123-4567",
-    "address": "123 Main St, New York, NY",
-    "hours": "Mon-Fri 9am-5pm"
-  }
-}
-```
-
-**Layout Options:** `form-only`, `form-left`, `form-right`, `form-top`
-
----
-
-### 5. Additional Inserter Abilities
-
-#### `designsetgo/insert-block-into` (v2.1.0)
+#### `designsetgo/add-child-block`
 
 Inserts a block as a **child of an existing block** (nested insertion). Use `get-post-blocks` to find the parent's `blockIndex` first.
 
@@ -691,9 +416,9 @@ Inserts a block as a **child of an existing block** (nested insertion). Use `get
 
 ---
 
-#### `designsetgo/insert-accordion-item` (v2.1.0)
+#### `designsetgo/add-accordion-item`
 
-Inserts an accordion item into an existing accordion container.
+Adds an item to an existing accordion container.
 
 **Input:**
 ```json
@@ -708,9 +433,9 @@ Inserts an accordion item into an existing accordion container.
 
 ---
 
-#### `designsetgo/insert-tab` (v2.1.0)
+#### `designsetgo/add-tab`
 
-Inserts a tab into an existing tabs container.
+Adds a tab to an existing tabs container.
 
 **Input:**
 ```json
@@ -724,9 +449,9 @@ Inserts a tab into an existing tabs container.
 
 ---
 
-#### `designsetgo/insert-timeline-item` (v2.1.0)
+#### `designsetgo/add-timeline-item`
 
-Inserts a timeline item into an existing timeline container.
+Adds an item to an existing timeline container.
 
 **Input:**
 ```json
@@ -742,157 +467,51 @@ Inserts a timeline item into an existing timeline container.
 
 ---
 
-#### `designsetgo/insert-slider`
+### 5. Complete Abilities Reference
 
-Inserts a Slider block for hero carousels and galleries.
-
-**Input:**
-```json
-{
-  "post_id": 123,
-  "attributes": {
-    "slidesPerView": 1,
-    "height": "500px",
-    "effect": "slide",
-    "autoplay": true,
-    "autoplayInterval": 3000,
-    "showArrows": true,
-    "showDots": true,
-    "loop": true
-  }
-}
-```
-
----
-
-#### `designsetgo/insert-card`
-
-Inserts a Card block for pricing, features, team members, etc.
-
-**Input:**
-```json
-{
-  "post_id": 123,
-  "attributes": {
-    "layoutPreset": "standard",
-    "title": "Card Title",
-    "subtitle": "Card Subtitle",
-    "bodyText": "Description text",
-    "badgeText": "New",
-    "imageUrl": "https://example.com/image.jpg",
-    "visualStyle": "shadow",
-    "contentAlignment": "center"
-  }
-}
-```
-
-**Layout Presets:** `standard`, `horizontal-left`, `horizontal-right`, `background`, `minimal`, `featured`
-
----
-
-### 6. Complete Abilities Reference
-
-#### Info Abilities (4)
+#### Info Abilities
 
 | Ability | Description | Annotation |
 |---------|-------------|------------|
 | `list-abilities` | Discover all registered abilities with schemas | readonly |
 | `list-blocks` | List all available DesignSetGo blocks | readonly |
+| `list-extensions` | List all extensions with attribute schemas and applicable blocks | readonly |
 | `get-post-blocks` | Retrieve blocks from a post with blockIndex values | readonly |
 | `find-blocks` | Search for blocks across posts by type | readonly |
 
-#### Inserter Abilities (34)
+#### Inserter Abilities
 
 | Ability | Description |
 |---------|-------------|
-| `insert-block-into` | Insert any block as a child of an existing block |
-| `insert-flex-container` | Horizontal/vertical flexbox layout |
-| `insert-grid-container` | Responsive CSS grid layout |
-| `insert-stack-container` | Vertical stack layout |
-| `insert-section` | Full-width page section |
-| `insert-divider` | Visual separator/divider |
-| `insert-breadcrumbs` | Navigation breadcrumbs |
-| `insert-table-of-contents` | Auto-generated ToC from headings |
-| `insert-icon` | Lucide icon display |
-| `insert-icon-button` | Icon with button styling |
-| `insert-icon-list` | List with icons |
-| `insert-icon-list-item` | Single icon list item |
-| `insert-pill` | Badge/tag element |
-| `insert-counter` | Animated number counter |
-| `insert-counter-group` | Multiple counters in layout |
-| `insert-countdown-timer` | Countdown to target date |
-| `insert-progress-bar` | Animated progress indicator |
-| `insert-tabs` | Tabbed content container |
-| `insert-tab` | Individual tab into existing tabs |
-| `insert-accordion` | Expandable content panels |
-| `insert-accordion-item` | Individual item into existing accordion |
-| `insert-flip-card` | 3D flip card |
-| `insert-reveal` | Scroll reveal animation container |
-| `insert-scroll-accordion` | Scroll-triggered accordion |
-| `insert-scroll-marquee` | Infinite scrolling marquee |
-| `insert-slider` | Carousel/slideshow |
-| `insert-card` | Styled content card |
-| `insert-image-accordion` | Expandable image gallery |
-| `insert-timeline` | Chronological event display |
-| `insert-timeline-item` | Individual item into existing timeline |
-| `insert-map` | Interactive OpenStreetMap |
-| `insert-modal` | Modal/popup dialog |
-| `insert-modal-trigger` | Modal trigger button |
-| `insert-form-builder` | Contact form with fields |
+| `add-block` | Insert any block at the top level of a post |
+| `add-child-block` | Insert any block as a child of an existing block |
+| `add-accordion-item` | Add an item to an existing accordion |
+| `add-tab` | Add a tab to an existing tabs block |
+| `add-timeline-item` | Add an item to an existing timeline |
 
-#### Configurator Abilities (62)
+#### Configurator Abilities
 
-**Extension Configurators (7)** — Apply cross-cutting features to any compatible block:
+**Generic Configurator:**
 
 | Ability | Description |
 |---------|-------------|
-| `apply-animation` | Entrance/exit animations |
-| `apply-scroll-parallax` | Vertical scroll parallax effect |
-| `apply-text-reveal` | Scroll-triggered text color reveal |
-| `apply-expanding-background` | Expanding background effect |
-| `configure-background-video` | Background video for containers |
-| `configure-clickable-group` | Make containers clickable |
-| `configure-custom-css` | Custom CSS per block |
+| `update-block` | Update any block's attributes, including extension attributes (generic) |
 
-**Utility Configurators (5)** — Generic and specialized configuration tools:
+**Block-Specific Configurators (with custom logic):**
 
 | Ability | Description |
 |---------|-------------|
-| `configure-block-attributes` | Update any block's attributes (generic) |
-| `configure-shape-divider` | Shape dividers on sections (23 shapes) |
-| `configure-counter-animation` | Counter animation settings |
-| `configure-responsive-visibility` | Show/hide by device |
-| `configure-max-width` | Max width constraints |
+| `configure-shape-divider` | Shape dividers on sections (23 shapes, position fan-out logic) |
+| `configure-custom-css` | Custom CSS per block (CSS sanitization for security) |
 
-**Block Configurators (36)** — Per-block attribute configurators (auto-generated from block.json):
+**Extensions** — Use `list-extensions` to discover all available extensions (animation, parallax, responsive visibility, etc.) with their attribute schemas and applicable blocks, then use `update-block` to apply extension attributes to blocks.
 
-`configure-section`, `configure-row`, `configure-grid`, `configure-accordion`, `configure-accordion-item`, `configure-tabs`, `configure-tab`, `configure-slider`, `configure-slide`, `configure-flip-card`, `configure-flip-card-front`, `configure-flip-card-back`, `configure-reveal`, `configure-scroll-accordion`, `configure-scroll-accordion-item`, `configure-scroll-marquee`, `configure-image-accordion`, `configure-image-accordion-item`, `configure-modal`, `configure-modal-trigger`, `configure-card`, `configure-icon`, `configure-icon-button`, `configure-icon-list`, `configure-icon-list-item`, `configure-pill`, `configure-divider`, `configure-progress-bar`, `configure-breadcrumbs`, `configure-table-of-contents`, `configure-countdown-timer`, `configure-counter`, `configure-counter-group`, `configure-blobs`, `configure-map`, `configure-form-builder`
-
-**Form Field Configurators (12)** — Per-field-type configurators:
-
-`configure-form-text-field`, `configure-form-email-field`, `configure-form-textarea`, `configure-form-checkbox-field`, `configure-form-select-field`, `configure-form-date-field`, `configure-form-time-field`, `configure-form-number-field`, `configure-form-phone-field`, `configure-form-url-field`, `configure-form-hidden-field`, `configure-form-field`
-
-**Operations (2)** — Bulk and destructive operations:
+**Operations** — Bulk and destructive operations:
 
 | Ability | Description | Annotation |
 |---------|-------------|------------|
-| `batch-update` | Update multiple blocks in one call | — |
+| `batch-update` | Update multiple blocks in one call | -- |
 | `delete-block` | Remove blocks from a post | destructive |
-
-#### Generator Abilities (10)
-
-| Ability | Description |
-|---------|-------------|
-| `generate-hero-section` | Hero with heading, description, CTA |
-| `generate-feature-grid` | Feature cards in grid layout |
-| `generate-stats-section` | Statistics/counters display |
-| `generate-faq-section` | FAQ accordion |
-| `generate-contact-section` | Contact form with map/info |
-| `generate-pricing-section` | Pricing table with tiers |
-| `generate-team-section` | Team member cards |
-| `generate-testimonial-section` | Customer testimonials |
-| `generate-cta-section` | Call-to-action section |
-| `generate-gallery-section` | Image gallery (grid/slider) |
 
 ---
 
@@ -934,8 +553,9 @@ DesignSetGo abilities are automatically discoverable through the Model Context P
 const abilities = await mcp.listTools();
 
 // Execute ability
-const result = await mcp.callTool("designsetgo/insert-flex-container", {
+const result = await mcp.callTool("designsetgo/add-block", {
   post_id: 123,
+  block_name: "designsetgo/flex",
   attributes: { direction: "row" }
 });
 ```
@@ -965,14 +585,14 @@ const result = await fetch(
 
 // Execute a modification ability (POST)
 const insertResult = await fetch(
-  'http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/insert-flex-container/run',
+  'http://yoursite.com/wp-json/wp-abilities/v1/designsetgo/add-block/run',
   {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': authHeader
     },
-    body: JSON.stringify({ post_id: 123, attributes: { direction: 'row' } })
+    body: JSON.stringify({ post_id: 123, block_name: 'designsetgo/flex', attributes: { direction: 'row' } })
   }
 );
 ```
@@ -987,9 +607,9 @@ const insertResult = await fetch(
 
 **AI Agent Actions:**
 1. Create new post
-2. `designsetgo/insert-flex-container` → Hero with heading/button
-3. `designsetgo/insert-grid-container` → 3-column grid
-4. `designsetgo/insert-flex-container` → CTA section
+2. `designsetgo/add-block` (designsetgo/section) → Hero with heading/button
+3. `designsetgo/add-block` (designsetgo/grid) → 3-column grid
+4. `designsetgo/add-block` (designsetgo/section) → CTA section
 
 ---
 
@@ -998,9 +618,9 @@ const insertResult = await fetch(
 **User:** "Add fade-in animations to all headings"
 
 **AI Agent Actions:**
-1. `core/list-blocks` → Get all heading blocks
-2. Loop through each heading:
-   - `designsetgo/apply-animation` with fadeIn
+1. `designsetgo/list-extensions` → Discover animation extension attribute names
+2. `designsetgo/get-post-blocks` → Get all heading blocks with their indices
+3. `designsetgo/batch-update` → Apply animation attributes to all headings via `update-block`
 
 ---
 
@@ -1048,6 +668,7 @@ Each ability has specific permission requirements:
 |---------|-------------------|
 | `list-abilities` | `read` |
 | `list-blocks` | `read` |
+| `list-extensions` | `read` |
 | All other info abilities | `edit_posts` |
 | All inserter abilities | `edit_posts` |
 | All configurator abilities | `edit_posts` |
@@ -1061,7 +682,7 @@ Each ability has specific permission requirements:
 
 - [x] Additional inserter abilities (Section, Map, Countdown Timer, Form Builder, etc.)
 - [x] Layout generator abilities (hero, features, stats, FAQ, contact, pricing, team, testimonials, CTA, gallery)
-- [x] Extension configurators (background video, clickable groups, custom CSS, responsive visibility)
+- [x] Extension configurators (custom CSS, shape dividers)
 - [x] WordPress 6.9 native Abilities API support
 
 ### Completed in v2.1.0
@@ -1069,17 +690,17 @@ Each ability has specific permission requirements:
 - [x] Batch operation abilities (`batch-update`)
 - [x] Block query abilities (`get-post-blocks`, `find-blocks`)
 - [x] Block deletion ability (`delete-block`)
-- [x] Child block inserters (`insert-accordion-item`, `insert-tab`, `insert-timeline-item`)
-- [x] Nested insertion (`insert-block-into`)
-- [x] Generic block configurator (`configure-block-attributes`)
+- [x] Child block inserters (`add-accordion-item`, `add-tab`, `add-timeline-item`)
+- [x] Nested insertion (`add-child-block`)
+- [x] Generic block configurator (`update-block`)
+- [x] Generic block inserter (`add-block`)
 - [x] Shape divider configurator (`configure-shape-divider`)
-- [x] Per-block configurators for all 36 block types (auto-generated from block.json)
-- [x] Form field configurators for all 12 field types
+- [x] Extension discovery (`list-extensions`)
 - [x] Abilities manifest (`list-abilities`)
 - [x] Auto-discovery of ability classes (no manual registration needed)
 - [x] Enhanced CSS sanitization for security
 - [x] Standardized error responses with HTTP status codes
-- [x] **Total: 110 abilities** (up from 50 in v2.0.0)
+- [x] Consolidated thin-wrapper inserters and configurators into generic abilities
 
 ### Phase 3 (Future)
 
@@ -1171,7 +792,7 @@ add_filter('designsetgo_abilities', function($abilities) {
     $abilities['myplugin/custom-ability'] = new My_Custom_Ability();
 
     // Modify an ability (wrap with logging, etc.)
-    // $abilities['designsetgo/insert-section'] = new Wrapped_Insert_Section();
+    // $abilities['designsetgo/add-block'] = new Wrapped_Add_Block();
 
     return $abilities;
 });
@@ -1280,10 +901,10 @@ When neither `readonly` nor `destructive` is set, the REST endpoint defaults to 
 
 ```php
 // Check if an ability is registered
-$exists = wp_ability_is_registered( 'designsetgo/insert-flex-container' );
+$exists = wp_ability_is_registered( 'designsetgo/add-block' );
 
 // Get a specific ability instance
-$ability = wp_get_ability( 'designsetgo/insert-flex-container' );
+$ability = wp_get_ability( 'designsetgo/add-block' );
 
 // Get all registered abilities
 $all_abilities = wp_get_abilities();
