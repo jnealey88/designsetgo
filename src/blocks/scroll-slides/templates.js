@@ -7,6 +7,76 @@
 
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Create a blank slide template with placeholder content
+ *
+ * @return {Array} Inner block template definition
+ */
+function blankSlide() {
+	return [
+		'designsetgo/scroll-slide',
+		{ navHeading: '' },
+		[
+			[
+				'designsetgo/section',
+				{},
+				[
+					['core/image'],
+					[
+						'core/heading',
+						{
+							level: 3,
+							placeholder: __('Slide title…', 'designsetgo'),
+						},
+					],
+					[
+						'core/paragraph',
+						{
+							placeholder: __(
+								'Slide description…',
+								'designsetgo'
+							),
+						},
+					],
+				],
+			],
+		],
+	];
+}
+
+/**
+ * Create a showcase slide with pre-filled content
+ *
+ * @param {Object} config            Slide configuration
+ * @param {string} config.navHeading Navigation heading text
+ * @param {string} config.bgColor    Background color hex
+ * @param {string} config.heading    Slide heading text
+ * @param {string} config.paragraph  Slide body text
+ * @return {Array} Inner block template definition
+ */
+function showcaseSlide({ navHeading, bgColor, heading, paragraph }) {
+	return [
+		'designsetgo/scroll-slide',
+		{
+			navHeading,
+			style: {
+				color: { background: bgColor, text: '#ffffff' },
+			},
+		},
+		[
+			[
+				'designsetgo/section',
+				{},
+				[
+					['core/image'],
+					['core/heading', { level: 2, content: heading }],
+					['core/paragraph', { content: paragraph }],
+				],
+			],
+		],
+	];
+}
+
 const scrollSlidesTemplates = [
 	{
 		name: 'blank',
@@ -14,104 +84,7 @@ const scrollSlidesTemplates = [
 		description: __('Start with empty slides', 'designsetgo'),
 		icon: 'welcome-add-page',
 		attributes: {},
-		innerBlocks: [
-			[
-				'designsetgo/scroll-slide',
-				{ navHeading: '' },
-				[
-					[
-						'designsetgo/section',
-						{},
-						[
-							['core/image'],
-							[
-								'core/heading',
-								{
-									level: 3,
-									placeholder: __(
-										'Slide title…',
-										'designsetgo'
-									),
-								},
-							],
-							[
-								'core/paragraph',
-								{
-									placeholder: __(
-										'Slide description…',
-										'designsetgo'
-									),
-								},
-							],
-						],
-					],
-				],
-			],
-			[
-				'designsetgo/scroll-slide',
-				{ navHeading: '' },
-				[
-					[
-						'designsetgo/section',
-						{},
-						[
-							['core/image'],
-							[
-								'core/heading',
-								{
-									level: 3,
-									placeholder: __(
-										'Slide title…',
-										'designsetgo'
-									),
-								},
-							],
-							[
-								'core/paragraph',
-								{
-									placeholder: __(
-										'Slide description…',
-										'designsetgo'
-									),
-								},
-							],
-						],
-					],
-				],
-			],
-			[
-				'designsetgo/scroll-slide',
-				{ navHeading: '' },
-				[
-					[
-						'designsetgo/section',
-						{},
-						[
-							['core/image'],
-							[
-								'core/heading',
-								{
-									level: 3,
-									placeholder: __(
-										'Slide title…',
-										'designsetgo'
-									),
-								},
-							],
-							[
-								'core/paragraph',
-								{
-									placeholder: __(
-										'Slide description…',
-										'designsetgo'
-									),
-								},
-							],
-						],
-					],
-				],
-			],
-		],
+		innerBlocks: [blankSlide(), blankSlide(), blankSlide()],
 	},
 	{
 		name: 'showcase',
@@ -128,174 +101,33 @@ const scrollSlidesTemplates = [
 			navActiveColor: '#ffffff',
 		},
 		innerBlocks: [
-			[
-				'designsetgo/scroll-slide',
-				{
-					navHeading: __('Design', 'designsetgo'),
-					style: {
-						color: {
-							background: '#0a0a1a',
-							text: '#ffffff',
-						},
-						background: {
-							backgroundImage: {
-								url: 'https://images.pexels.com/photos/7135037/pexels-photo-7135037.jpeg?auto=compress&cs=tinysrgb&w=1920',
-								source: 'url',
-							},
-							backgroundSize: 'cover',
-							backgroundPosition: 'center center',
-						},
-					},
-				},
-				[
-					[
-						'designsetgo/section',
-						{},
-						[
-							[
-								'core/image',
-								{
-									url: 'https://images.pexels.com/photos/220417/pexels-photo-220417.jpeg?auto=compress&cs=tinysrgb&w=800',
-									alt: __('Design preview', 'designsetgo'),
-								},
-							],
-							[
-								'core/heading',
-								{
-									level: 2,
-									content: __(
-										'Beautiful by default',
-										'designsetgo'
-									),
-								},
-							],
-							[
-								'core/paragraph',
-								{
-									content: __(
-										'Create stunning layouts with pixel-perfect precision. Every detail is crafted to deliver an exceptional visual experience.',
-										'designsetgo'
-									),
-								},
-							],
-						],
-					],
-				],
-			],
-			[
-				'designsetgo/scroll-slide',
-				{
-					navHeading: __('Performance', 'designsetgo'),
-					style: {
-						color: {
-							background: '#0d1b2a',
-							text: '#ffffff',
-						},
-						background: {
-							backgroundImage: {
-								url: 'https://images.pexels.com/photos/7135033/pexels-photo-7135033.jpeg?auto=compress&cs=tinysrgb&w=1920',
-								source: 'url',
-							},
-							backgroundSize: 'cover',
-							backgroundPosition: 'center center',
-						},
-					},
-				},
-				[
-					[
-						'designsetgo/section',
-						{},
-						[
-							[
-								'core/image',
-								{
-									url: 'https://images.pexels.com/photos/9403/pexels-photo-9403.jpg?auto=compress&cs=tinysrgb&w=800',
-									alt: __(
-										'Performance preview',
-										'designsetgo'
-									),
-								},
-							],
-							[
-								'core/heading',
-								{
-									level: 2,
-									content: __(
-										'Lightning fast',
-										'designsetgo'
-									),
-								},
-							],
-							[
-								'core/paragraph',
-								{
-									content: __(
-										'Optimized for speed at every level. Adaptive loading, responsive assets, and built-in enhancements keep your site performing at its best.',
-										'designsetgo'
-									),
-								},
-							],
-						],
-					],
-				],
-			],
-			[
-				'designsetgo/scroll-slide',
-				{
-					navHeading: __('Accessibility', 'designsetgo'),
-					style: {
-						color: {
-							background: '#1a0a2e',
-							text: '#ffffff',
-						},
-						background: {
-							backgroundImage: {
-								url: 'https://images.pexels.com/photos/2748716/pexels-photo-2748716.jpeg?auto=compress&cs=tinysrgb&w=1920',
-								source: 'url',
-							},
-							backgroundSize: 'cover',
-							backgroundPosition: 'center center',
-						},
-					},
-				},
-				[
-					[
-						'designsetgo/section',
-						{},
-						[
-							[
-								'core/image',
-								{
-									url: 'https://images.pexels.com/photos/6213/woman-hand-pen-girl.jpg?auto=compress&cs=tinysrgb&w=800',
-									alt: __(
-										'Accessibility preview',
-										'designsetgo'
-									),
-								},
-							],
-							[
-								'core/heading',
-								{
-									level: 2,
-									content: __(
-										'Inclusive by design',
-										'designsetgo'
-									),
-								},
-							],
-							[
-								'core/paragraph',
-								{
-									content: __(
-										'Reach every user with inclusive design powered by accessibility tools that identify issues and guide improvements.',
-										'designsetgo'
-									),
-								},
-							],
-						],
-					],
-				],
-			],
+			showcaseSlide({
+				navHeading: __('Design', 'designsetgo'),
+				bgColor: '#0a0a1a',
+				heading: __('Beautiful by default', 'designsetgo'),
+				paragraph: __(
+					'Create stunning layouts with pixel-perfect precision. Every detail is crafted to deliver an exceptional visual experience.',
+					'designsetgo'
+				),
+			}),
+			showcaseSlide({
+				navHeading: __('Performance', 'designsetgo'),
+				bgColor: '#0d1b2a',
+				heading: __('Lightning fast', 'designsetgo'),
+				paragraph: __(
+					'Optimized for speed at every level. Adaptive loading, responsive assets, and built-in enhancements keep your site performing at its best.',
+					'designsetgo'
+				),
+			}),
+			showcaseSlide({
+				navHeading: __('Accessibility', 'designsetgo'),
+				bgColor: '#1a0a2e',
+				heading: __('Inclusive by design', 'designsetgo'),
+				paragraph: __(
+					'Reach every user with inclusive design powered by accessibility tools that identify issues and guide improvements.',
+					'designsetgo'
+				),
+			}),
 		],
 	},
 ];

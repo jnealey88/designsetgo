@@ -372,23 +372,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							{innerBlocks.map((block, index) => (
 								<div
 									key={block.clientId}
-									role="button"
-									tabIndex={0}
 									className={`dsgo-scroll-slides__editor-nav-item${
 										index === clampedActive
 											? ' is-active'
 											: ''
 									}`}
-									onClick={() => handleNavClick(index)}
-									onKeyDown={(e) => {
-										if (
-											e.key === 'Enter' ||
-											e.key === ' '
-										) {
-											e.preventDefault();
-											handleNavClick(index);
-										}
-									}}
 								>
 									<input
 										type="text"
