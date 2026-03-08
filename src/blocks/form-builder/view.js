@@ -212,6 +212,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			const honeypot = formData.get('dsg_website');
 			const timestamp = formData.get('dsg_timestamp');
 
+			let redirecting = false;
+
 			try {
 				// Make AJAX request to WordPress REST API
 				const response = await fetch(designsetgoForm.restUrl, {
@@ -246,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 					// Redirect if URL is configured and safe
 					if (redirectUrl && isSafeRedirectUrl(redirectUrl)) {
+						redirecting = true;
 						window.location.href = redirectUrl;
 						return;
 					}
@@ -294,11 +297,13 @@ document.addEventListener('DOMContentLoaded', function () {
 					})
 				);
 			} finally {
-				// Re-enable submit button
-				submitButton.disabled = false;
-				submitButton.classList.remove('dsgo-form__submit--loading');
-				submitButton.textContent = originalText;
-				submitButton.removeAttribute('aria-busy');
+				// Skip button reset if navigating away (redirect)
+				if (!redirecting) {
+					submitButton.disabled = false;
+					submitButton.classList.remove('dsgo-form__submit--loading');
+					submitButton.textContent = originalText;
+					submitButton.removeAttribute('aria-busy');
+				}
 			}
 		});
 	});
@@ -344,9 +349,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	function isSafeRedirectUrl(url) {
 		try {
 			const parsed = new URL(url, window.location.origin);
-			return (
-				parsed.protocol === 'http:' || parsed.protocol === 'https:'
-			);
+			return parsed.protocol === 'http:' || parsed.protocol === 'https:';
 		} catch {
 			return false;
 		}

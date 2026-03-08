@@ -499,9 +499,10 @@ export default function FormBuilderEdit({
 						type="url"
 						placeholder="https://example.com/thank-you"
 						help={__(
-							'Redirect to this URL after successful submission. Leave empty to show the success message instead.',
+							'Redirect to this URL after successful submission. Leave empty to show the success message instead. Requires AJAX Submit to be enabled.',
 							'designsetgo'
 						)}
+						disabled={!ajaxSubmit}
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
