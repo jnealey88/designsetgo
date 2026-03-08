@@ -909,6 +909,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 						onChange={(value) =>
 							setAttributes({ swipeable: value })
 						}
+						disabled={scrollDriven}
 						__nextHasNoMarginBottom
 					/>
 
@@ -918,6 +919,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 						onChange={(value) =>
 							setAttributes({ draggable: value })
 						}
+						disabled={scrollDriven}
 						__nextHasNoMarginBottom
 					/>
 

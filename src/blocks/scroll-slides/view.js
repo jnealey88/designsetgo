@@ -110,14 +110,17 @@ function setupDOM(container, slides, minHeight, maxHeight) {
 	container.parentNode.insertBefore(spacer, container);
 	spacer.appendChild(container);
 
-	// Set spacer height (slides x viewport height)
-	spacer.style.height = `calc(${slides.length} * 100vh)`;
-
 	// Pin the container — cap height on tall monitors if maxHeight is set
 	container.classList.add('is-pinned');
 	container.style.height = maxHeight
 		? `min(${minHeight}, ${maxHeight})`
 		: minHeight;
+
+	// Force layout so offsetHeight reflects the min()/minHeight above
+	// Then use actual rendered height for the spacer instead of 100vh,
+	// so scroll distance matches the visible section on tall monitors
+	const renderedHeight = container.offsetHeight;
+	spacer.style.height = `${slides.length * renderedHeight}px`;
 
 	// 2. Build navigation from data attributes
 	const nav = document.createElement('nav');

@@ -148,28 +148,9 @@ class DSGSlider {
 		// Add screen reader announcement region
 		this.buildAnnouncementRegion();
 
-		// Performance: Calculate and cache dimensions once
-		// Use requestAnimationFrame to ensure layout is complete
-		requestAnimationFrame(() => {
-			this.updateDimensions();
-
-			// Set initial slide
-			this.goToSlide(this.currentIndex, false);
-
-			// If dimensions are still 0, recalculate after a short delay
-			// This handles cases where CSS hasn't fully applied yet
-			if (this.cachedSlideWidth === 0) {
-				setTimeout(() => {
-					this.updateDimensions();
-					this.goToSlide(this.currentIndex, false);
-				}, 100);
-			}
-		});
-
-		// Initialize features
-		if (this.config.scrollDriven) {
-			this.initScrollDriven();
-		} else {
+		// Initialize non-scroll-driven features before RAF
+		// (scroll-driven init must wait for cached dimensions)
+		if (!this.config.scrollDriven) {
 			if (this.config.swipeable) {
 				this.initSwipe();
 			}
@@ -182,6 +163,37 @@ class DSGSlider {
 
 			this.initKeyboard();
 		}
+
+		// Performance: Calculate and cache dimensions once
+		// Use requestAnimationFrame to ensure layout is complete
+		requestAnimationFrame(() => {
+			this.updateDimensions();
+
+			if (this.config.scrollDriven) {
+				// Scroll-driven mode: init after dimensions are cached
+				// Skip goToSlide() — scroll-driven position is set by
+				// updateScrollDrivenPosition(), and updateARIA() would
+				// incorrectly hide all non-first slides from screen readers
+				this.initScrollDriven();
+			} else {
+				// Set initial slide
+				this.goToSlide(this.currentIndex, false);
+			}
+
+			// If dimensions are still 0, recalculate after a short delay
+			// This handles cases where CSS hasn't fully applied yet
+			if (this.cachedSlideWidth === 0) {
+				setTimeout(() => {
+					this.updateDimensions();
+					if (this.config.scrollDriven) {
+						this.updateScrollDrivenDimensions();
+						this.updateScrollDrivenPosition();
+					} else {
+						this.goToSlide(this.currentIndex, false);
+					}
+				}, 100);
+			}
+		});
 
 		this.initResponsive();
 
@@ -524,6 +536,12 @@ class DSGSlider {
 	}
 
 	updateARIA() {
+		// In scroll-driven mode all slides are visible in the horizontal
+		// strip — hiding non-active slides from AT would be incorrect
+		if (this.config.scrollDriven) {
+			return;
+		}
+
 		this.slides.forEach((slide, index) => {
 			const isActive = index === this.currentIndex;
 			slide.setAttribute('aria-hidden', !isActive ? 'true' : 'false');
@@ -767,7 +785,7 @@ class DSGSlider {
 		this.updateScrollDrivenDimensions();
 
 		// Build progress dots for scroll-driven mode
-		this.buildScrollDrivenDots();
+		this.buildScrollDrivenProgress();
 
 		// Bind scroll handler with requestAnimationFrame throttle
 		this.scrollDrivenTicking = false;
@@ -814,11 +832,12 @@ class DSGSlider {
 	}
 
 	/**
-	 * Build progress indicator dots for scroll-driven mode
+	 * Build progress bar indicator for scroll-driven mode
 	 */
-	buildScrollDrivenDots() {
+	buildScrollDrivenProgress() {
 		const dotsContainer = document.createElement('div');
 		dotsContainer.className = 'dsgo-slider__scroll-progress';
+		dotsContainer.setAttribute('aria-hidden', 'true');
 
 		const progressBar = document.createElement('div');
 		progressBar.className = 'dsgo-slider__scroll-progress-bar';
@@ -833,6 +852,13 @@ class DSGSlider {
 	 */
 	updateScrollDrivenPosition() {
 		if (!this.pinSpacer) {
+			return;
+		}
+
+		// Respect reduced motion — don't animate track via scroll
+		if (
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		) {
 			return;
 		}
 
