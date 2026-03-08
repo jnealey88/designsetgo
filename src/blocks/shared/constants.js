@@ -7,6 +7,6 @@
 
 /**
  * Brand Color - Consistent across all block icons
- * Purple that works well in both light and dark themes
+ * Orange that works well in both light and dark themes
  */
-export const ICON_COLOR = '#8B5CF6';
+export const ICON_COLOR = '#F25912';

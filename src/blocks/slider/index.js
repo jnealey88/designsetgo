@@ -36,7 +36,7 @@ registerBlockVariation(metadata.name, {
 		'Full-height slider for hero sections with centered content',
 		'designsetgo'
 	),
-	icon: 'cover-image',
+	icon: { src: 'cover-image', foreground: ICON_COLOR },
 	attributes: {
 		height: '100vh',
 		styleVariation: 'fullbleed',
@@ -136,7 +136,7 @@ registerBlockVariation(metadata.name, {
 	name: 'gallery-carousel',
 	title: __('Gallery Carousel', 'designsetgo'),
 	description: __('Show multiple images in a carousel view', 'designsetgo'),
-	icon: 'images-alt2',
+	icon: { src: 'images-alt2', foreground: ICON_COLOR },
 	attributes: {
 		slidesPerView: 3,
 		slidesPerViewTablet: 2,
@@ -218,7 +218,7 @@ registerBlockVariation(metadata.name, {
 		'Slider optimized for testimonials with fade transitions',
 		'designsetgo'
 	),
-	icon: 'format-quote',
+	icon: { src: 'format-quote', foreground: ICON_COLOR },
 	attributes: {
 		height: '350px',
 		styleVariation: 'classic',
@@ -368,7 +368,7 @@ registerBlockVariation(metadata.name, {
 	name: 'logo-slider',
 	title: __('Logo Slider', 'designsetgo'),
 	description: __('Continuous scrolling logo slider', 'designsetgo'),
-	icon: 'grid-view',
+	icon: { src: 'grid-view', foreground: ICON_COLOR },
 	attributes: {
 		slidesPerView: 4,
 		slidesPerViewTablet: 3,
@@ -564,7 +564,7 @@ registerBlockVariation(metadata.name, {
 		'Horizontal carousel that advances as the user scrolls down the page',
 		'designsetgo'
 	),
-	icon: 'slides',
+	icon: { src: 'slides', foreground: ICON_COLOR },
 	attributes: {
 		slidesPerView: 2.5,
 		slidesPerViewTablet: 1.5,
