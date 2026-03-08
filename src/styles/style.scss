@@ -29,6 +29,8 @@
 @use '../blocks/tab/style' as tab;
 @use '../blocks/table-of-contents/style' as table-of-contents;
 @use '../blocks/breadcrumbs/style' as breadcrumbs;
+@use '../blocks/scroll-slides/style' as scroll-slides;
+@use '../blocks/scroll-slide/style' as scroll-slide;
 
 // RichText formats (frontend)
 @use '../formats/text-style/style' as text-style;

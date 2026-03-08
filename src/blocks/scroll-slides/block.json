@@ -15,6 +15,30 @@
 		"minHeight": {
 			"type": "string",
 			"default": "100vh"
+		},
+		"maxHeight": {
+			"type": "string",
+			"default": "900px"
+		},
+		"constrainWidth": {
+			"type": "boolean",
+			"default": true
+		},
+		"contentWidth": {
+			"type": "string",
+			"default": ""
+		},
+		"overlayColor": {
+			"type": "string",
+			"default": ""
+		},
+		"navColor": {
+			"type": "string",
+			"default": ""
+		},
+		"navActiveColor": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"supports": {
@@ -46,6 +70,31 @@
 		"layout": {
 			"allowEditing": false
 		}
+	},
+	"example": {
+		"attributes": {
+			"minHeight": "60vh"
+		},
+		"innerBlocks": [
+			{
+				"name": "designsetgo/scroll-slide",
+				"attributes": {
+					"navHeading": "Introduction"
+				}
+			},
+			{
+				"name": "designsetgo/scroll-slide",
+				"attributes": {
+					"navHeading": "Features"
+				}
+			},
+			{
+				"name": "designsetgo/scroll-slide",
+				"attributes": {
+					"navHeading": "Get Started"
+				}
+			}
+		]
 	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

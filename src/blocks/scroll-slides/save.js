@@ -3,13 +3,57 @@
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
+/**
+ * Internal dependencies
+ */
+import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+
 export default function Save({ attributes }) {
-	const { minHeight } = attributes;
+	const {
+		minHeight,
+		maxHeight,
+		constrainWidth,
+		contentWidth,
+		overlayColor,
+		navColor,
+		navActiveColor,
+	} = attributes;
+
+	const className = [
+		'dsgo-scroll-slides',
+		overlayColor && 'dsgo-scroll-slides--has-overlay',
+		!constrainWidth && 'dsgo-scroll-slides--no-width-constraint',
+		navColor && 'dsgo-scroll-slides--has-nav-color',
+	]
+		.filter(Boolean)
+		.join(' ');
 
 	const blockProps = useBlockProps.save({
-		className: 'dsgo-scroll-slides',
+		className,
 		'data-dsgo-min-height': minHeight || '100vh',
+		...(maxHeight && { 'data-dsgo-max-height': maxHeight }),
+		style: {
+			...(overlayColor && {
+				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
+				'--dsgo-overlay-opacity': '0.8',
+			}),
+			...(navColor && {
+				'--dsgo-nav-color': convertPresetToCSSVar(navColor),
+			}),
+			...(navActiveColor && {
+				'--dsgo-nav-active-color':
+					convertPresetToCSSVar(navActiveColor),
+			}),
+		},
 	});
+
+	const innerStyle = {};
+	if (constrainWidth) {
+		innerStyle.maxWidth =
+			contentWidth || 'var(--wp--style--global--content-size, 1140px)';
+		innerStyle.marginLeft = 'auto';
+		innerStyle.marginRight = 'auto';
+	}
 
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: 'dsgo-scroll-slides__panels',
@@ -17,7 +61,9 @@ export default function Save({ attributes }) {
 
 	return (
 		<div {...blockProps}>
-			<div {...innerBlocksProps} />
+			<div className="dsgo-scroll-slides__inner" style={innerStyle}>
+				<div {...innerBlocksProps} />
+			</div>
 		</div>
 	);
 }

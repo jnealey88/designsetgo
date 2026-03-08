@@ -48,6 +48,11 @@
 			"width": true
 		}
 	},
+	"example": {
+		"attributes": {
+			"navHeading": "Slide"
+		}
+	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"

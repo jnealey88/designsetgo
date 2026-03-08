@@ -13,6 +13,8 @@
 
 /* global requestAnimationFrame */
 
+import { __, sprintf } from '@wordpress/i18n';
+
 /**
  * Track initialized containers to prevent double-init
  */
@@ -66,9 +68,10 @@ function initScrollSlides() {
 		}
 
 		const minHeight = container.dataset.dsgoMinHeight || '100vh';
+		const maxHeight = container.dataset.dsgoMaxHeight || '';
 
 		// === Build DOM: spacer, nav, backgrounds ===
-		setupDOM(container, slides, minHeight);
+		setupDOM(container, slides, minHeight, maxHeight);
 
 		// === Scroll engine ===
 		setupScrollEngine(container, slides);
@@ -81,28 +84,43 @@ function initScrollSlides() {
  * @param {HTMLElement} container Container element
  * @param {NodeList}    slides    Slide elements
  * @param {string}      minHeight CSS height value for pinned section
+ * @param {string}      maxHeight CSS max-height cap (empty string if unset)
  */
-function setupDOM(container, slides, minHeight) {
+function setupDOM(container, slides, minHeight, maxHeight) {
 	// 1. Create pin spacer and wrap container
+	// Spacer must inherit alignment classes so the theme treats it like the block
 	const spacer = document.createElement('div');
 	spacer.className = 'dsgo-scroll-slides-spacer';
+	if (container.classList.contains('alignfull')) {
+		spacer.classList.add('alignfull');
+	} else if (container.classList.contains('alignwide')) {
+		spacer.classList.add('alignwide');
+	}
 	container.parentNode.insertBefore(spacer, container);
 	spacer.appendChild(container);
 
 	// Set spacer height (slides x viewport height)
 	spacer.style.height = `calc(${slides.length} * 100vh)`;
 
-	// Pin the container
+	// Pin the container — cap height on tall monitors if maxHeight is set
 	container.classList.add('is-pinned');
-	container.style.height = minHeight;
+	container.style.height = maxHeight
+		? `min(${minHeight}, ${maxHeight})`
+		: minHeight;
 
 	// 2. Build navigation from data attributes
 	const nav = document.createElement('nav');
 	nav.className = 'dsgo-scroll-slides__nav';
-	nav.setAttribute('aria-label', 'Slide navigation');
+	nav.setAttribute('aria-label', __('Slide navigation', 'designsetgo'));
 
 	slides.forEach((slide, index) => {
-		const heading = slide.dataset.dsgoNavHeading || `Slide ${index + 1}`;
+		const heading =
+			slide.dataset.dsgoNavHeading ||
+			sprintf(
+				/* translators: %d: slide number */
+				__('Slide %d', 'designsetgo'),
+				index + 1
+			);
 		const button = document.createElement('button');
 		button.className = 'dsgo-scroll-slides__nav-item';
 		button.textContent = heading;
@@ -116,11 +134,12 @@ function setupDOM(container, slides, minHeight) {
 		nav.appendChild(button);
 	});
 
-	// Insert nav before the panels container
-	const panels = container.querySelector('.dsgo-scroll-slides__panels');
-	container.insertBefore(nav, panels);
+	// Insert nav into the inner container (before panels)
+	const inner = container.querySelector('.dsgo-scroll-slides__inner');
+	const panels = inner.querySelector('.dsgo-scroll-slides__panels');
+	inner.insertBefore(nav, panels);
 
-	// 3. Build background layers
+	// 3. Build background layers (full-width, in outer container)
 	const bgContainer = document.createElement('div');
 	bgContainer.className = 'dsgo-scroll-slides__backgrounds';
 
@@ -128,12 +147,18 @@ function setupDOM(container, slides, minHeight) {
 		const bgDiv = document.createElement('div');
 		bgDiv.className = 'dsgo-scroll-slides__bg';
 
-		// Extract background-image from slide's inline styles (set by WP block supports)
-		const slideBg = slide.style.backgroundImage;
-		if (slideBg && slideBg !== 'none') {
-			bgDiv.style.backgroundImage = slideBg;
-			// Remove from slide so it doesn't show behind content
+		// Extract backgrounds from slide's inline styles (set by WP block supports)
+		// Move them to the crossfading layer and clear from the slide wrapper
+		const slideBgImage = slide.style.backgroundImage;
+		if (slideBgImage && slideBgImage !== 'none') {
+			bgDiv.style.backgroundImage = slideBgImage;
 			slide.style.backgroundImage = 'none';
+		}
+
+		const slideBgColor = slide.style.backgroundColor;
+		if (slideBgColor) {
+			bgDiv.style.backgroundColor = slideBgColor;
+			slide.style.backgroundColor = 'transparent';
 		}
 
 		if (index === 0) {
@@ -143,7 +168,8 @@ function setupDOM(container, slides, minHeight) {
 		bgContainer.appendChild(bgDiv);
 	});
 
-	container.insertBefore(bgContainer, nav);
+	// Backgrounds go in outer container (before inner) for full-width coverage
+	container.insertBefore(bgContainer, inner);
 
 	// 4. Set first slide as active
 	slides[0].classList.add('is-active');

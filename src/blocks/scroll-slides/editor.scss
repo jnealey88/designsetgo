@@ -5,6 +5,59 @@
 
 .dsgo-scroll-slides {
 	position: relative;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+
+	// Override style.scss width:100% which prevents alignfull negative margins
+	// from expanding the block to full viewport width in the editor
+	&.alignfull {
+		width: auto;
+	}
+
+	/**
+	 * Background overlay for editor
+	 */
+	&.dsgo-scroll-slides--has-overlay {
+
+		&::before {
+			content: '';
+			position: absolute !important;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: var(--dsgo-overlay-color) !important;
+			opacity: var(--dsgo-overlay-opacity, 0.8) !important;
+			pointer-events: none;
+			z-index: 1;
+			border-radius: inherit;
+		}
+	}
+}
+
+/**
+ * Editor background preview — shows the active slide's background
+ * behind the full block, mirroring the frontend crossfade layers
+ */
+.dsgo-scroll-slides__editor-bg {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	border-radius: inherit;
+	transition: background 0.3s ease;
+}
+
+/**
+ * Inner container — holds the two-column grid
+ * Width constraints applied via inline styles
+ */
+.dsgo-scroll-slides__inner {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	min-height: inherit;
 
 	/**
 	 * Two-column grid: nav on left, slide content on right
@@ -13,7 +66,6 @@
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 1rem;
-	min-height: 400px;
 	align-items: center;
 }
 
@@ -23,8 +75,8 @@
 .dsgo-scroll-slides__editor-nav {
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
-	padding: 1rem;
+	gap: 1rem;
+	padding: 2rem;
 }
 
 .dsgo-scroll-slides__editor-nav-item {
@@ -53,9 +105,19 @@
 	font-family: inherit;
 	color: inherit;
 	opacity: 0.3;
-	transition: opacity 0.2s ease;
+	transition: opacity 0.2s ease, color 0.2s ease;
 	cursor: text;
 	outline: none;
+
+	// When custom nav colors are set, use explicit colors
+	.dsgo-scroll-slides--has-nav-color & {
+		color: var(--dsgo-nav-color, inherit);
+		opacity: 1;
+	}
+
+	.dsgo-scroll-slides--has-nav-color .dsgo-scroll-slides__editor-nav-item.is-active & {
+		color: var(--dsgo-nav-active-color, var(--dsgo-nav-color, inherit));
+	}
 
 	&:hover {
 		opacity: 0.6;
@@ -70,6 +132,17 @@
 		color: inherit;
 		opacity: 0.3;
 	}
+}
+
+/**
+ * Strip block-supports backgrounds from child slides in the editor.
+ * The parent's __editor-bg layer already previews the active slide's
+ * background, so showing it again on the child wrapper is a duplicate.
+ * This is editor-only — the saved HTML retains the inline styles for view.js.
+ */
+.dsgo-scroll-slides [data-type="designsetgo/scroll-slide"] {
+	background-image: none !important;
+	background-color: transparent !important;
 }
 
 /**

@@ -6,6 +6,28 @@
 .dsgo-scroll-slides {
 	position: relative;
 	width: 100%;
+
+	/**
+	 * Background overlay
+	 * Only rendered when overlay color is set
+	 */
+	&--has-overlay {
+		position: relative;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: var(--dsgo-overlay-color);
+			opacity: var(--dsgo-overlay-opacity, 0.8);
+			pointer-events: none;
+			z-index: 1;
+			border-radius: inherit;
+		}
+	}
 }
 
 /**
@@ -18,15 +40,31 @@
 
 /**
  * Pinned state — applied by JS when spacer is created
+ * Grid moves to the inner container so backgrounds stay full-width
  */
 .dsgo-scroll-slides.is-pinned {
 	position: sticky;
 	top: 0;
 	overflow: hidden;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 1fr;
-	align-items: center;
+}
+
+/**
+ * Inner container — constrained content width
+ * Width constraints applied via inline styles when constrainWidth is enabled
+ */
+.dsgo-scroll-slides__inner {
+	width: 100%;
+	position: relative;
+	z-index: 2;
+	height: 100%;
+
+	.dsgo-scroll-slides.is-pinned & {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr;
+		align-items: center;
+		height: 100%;
+	}
 }
 
 /**
@@ -50,7 +88,7 @@
 	font-weight: 700;
 	color: currentcolor;
 	opacity: 0.3;
-	transition: opacity 0.3s ease;
+	transition: opacity 0.3s ease, color 0.3s ease;
 	padding: 0.25rem 0;
 	line-height: 1.2;
 	font-family: inherit;
@@ -67,6 +105,16 @@
 		outline: 2px solid currentcolor;
 		outline-offset: 4px;
 		border-radius: 2px;
+	}
+
+	// When custom nav colors are set, use explicit colors instead of opacity
+	.dsgo-scroll-slides--has-nav-color & {
+		color: var(--dsgo-nav-color, currentcolor);
+		opacity: 1;
+
+		&.is-active {
+			color: var(--dsgo-nav-active-color, var(--dsgo-nav-color, currentcolor));
+		}
 	}
 }
 
@@ -98,11 +146,19 @@
 
 /**
  * Panels container — right column, holds stacked slides
+ * When pinned, acts as positioning context for absolute slides
+ * and centers the active (relative-positioned) slide vertically
  */
 .dsgo-scroll-slides__panels {
 	position: relative;
 	z-index: 1;
 	min-height: 100%;
+
+	.dsgo-scroll-slides.is-pinned & {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
 }
 
 /**
@@ -119,6 +175,10 @@
 		position: static !important;
 		height: auto !important;
 		display: block;
+	}
+
+	.dsgo-scroll-slides__inner {
+		display: block !important;
 	}
 
 	.dsgo-scroll-slides__nav {
@@ -160,6 +220,10 @@
 		position: static !important;
 		height: auto !important;
 		display: block;
+	}
+
+	.dsgo-scroll-slides__inner {
+		display: block !important;
 	}
 
 	.dsgo-scroll-slides__nav {

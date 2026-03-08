@@ -23,19 +23,28 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		template: [
-			['core/image'],
 			[
-				'core/heading',
-				{
-					level: 3,
-					placeholder: __('Slide title…', 'designsetgo'),
-				},
-			],
-			[
-				'core/paragraph',
-				{
-					placeholder: __('Slide description…', 'designsetgo'),
-				},
+				'designsetgo/section',
+				{},
+				[
+					['core/image'],
+					[
+						'core/heading',
+						{
+							level: 3,
+							placeholder: __('Slide title…', 'designsetgo'),
+						},
+					],
+					[
+						'core/paragraph',
+						{
+							placeholder: __(
+								'Slide description…',
+								'designsetgo'
+							),
+						},
+					],
+				],
 			],
 		],
 		templateLock: false,

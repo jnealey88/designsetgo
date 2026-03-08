@@ -67,6 +67,10 @@ __( 'Image Accordion', 'designsetgo' );
 __( 'Accordion with images', 'designsetgo' );
 __( 'Image Accordion Item', 'designsetgo' );
 __( 'Individual image item', 'designsetgo' );
+__( 'Scroll Slides', 'designsetgo' );
+__( 'Scroll-pinned fullscreen slideshow with crossfading transitions', 'designsetgo' );
+__( 'Scroll Slide', 'designsetgo' );
+__( 'Individual slide within Scroll Slides', 'designsetgo' );
 
 // Interactive Blocks.
 __( 'Flip Card', 'designsetgo' );
