@@ -8,7 +8,7 @@
  * @package
  */
 
-/* global IntersectionObserver, WheelEvent */
+/* global WheelEvent */
 
 /**
  * Create a scroll marquee element with rows, tracks, and segments.
