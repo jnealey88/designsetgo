@@ -556,3 +556,215 @@ registerBlockVariation(metadata.name, {
 	],
 	scope: ['inserter'],
 });
+
+registerBlockVariation(metadata.name, {
+	name: 'scroll-carousel',
+	title: __('Scroll Carousel', 'designsetgo'),
+	description: __(
+		'Horizontal carousel that advances as the user scrolls down the page',
+		'designsetgo'
+	),
+	icon: 'slides',
+	attributes: {
+		slidesPerView: 2.5,
+		slidesPerViewTablet: 1.5,
+		slidesPerViewMobile: 1,
+		gap: '24px',
+		styleVariation: 'card',
+		effect: 'slide',
+		scrollDriven: true,
+		scrollDrivenSpeed: 1,
+		showArrows: false,
+		showDots: false,
+		autoplay: false,
+		loop: false,
+	},
+	innerBlocks: [
+		[
+			'designsetgo/slide',
+			{ contentVerticalAlign: 'top', contentHorizontalAlign: 'left' },
+			[
+				[
+					'core/image',
+					{
+						url: 'https://picsum.photos/seed/dsgo-editing/800/500',
+						alt: __('Pixel-perfect editing', 'designsetgo'),
+						style: { border: { radius: '12px' } },
+					},
+				],
+				[
+					'core/heading',
+					{
+						level: 3,
+						content: __('Pixel-perfect editing', 'designsetgo'),
+						style: {
+							typography: {
+								fontSize: '1.5rem',
+								fontWeight: '700',
+							},
+							spacing: {
+								margin: {
+									top: '16px',
+									bottom: '8px',
+								},
+							},
+						},
+					},
+				],
+				[
+					'core/paragraph',
+					{
+						content: __(
+							'Design with total precision using the drag-and-drop Editor, global styles, CSS transforms, masks, motion effects, and more.',
+							'designsetgo'
+						),
+						style: {
+							color: { text: '#6b7280' },
+							typography: { fontSize: '1rem' },
+						},
+					},
+				],
+			],
+		],
+		[
+			'designsetgo/slide',
+			{ contentVerticalAlign: 'top', contentHorizontalAlign: 'left' },
+			[
+				[
+					'core/image',
+					{
+						url: 'https://picsum.photos/seed/dsgo-engage/800/500',
+						alt: __('Engage and capture', 'designsetgo'),
+						style: { border: { radius: '12px' } },
+					},
+				],
+				[
+					'core/heading',
+					{
+						level: 3,
+						content: __('Engage and capture', 'designsetgo'),
+						style: {
+							typography: {
+								fontSize: '1.5rem',
+								fontWeight: '700',
+							},
+							spacing: {
+								margin: {
+									top: '16px',
+									bottom: '8px',
+								},
+							},
+						},
+					},
+				],
+				[
+					'core/paragraph',
+					{
+						content: __(
+							'Convert visitors into customers with high-performance forms, popups, and lead-capture tools.',
+							'designsetgo'
+						),
+						style: {
+							color: { text: '#6b7280' },
+							typography: { fontSize: '1rem' },
+						},
+					},
+				],
+			],
+		],
+		[
+			'designsetgo/slide',
+			{ contentVerticalAlign: 'top', contentHorizontalAlign: 'left' },
+			[
+				[
+					'core/image',
+					{
+						url: 'https://picsum.photos/seed/dsgo-dynamic/800/500',
+						alt: __('Dynamic content', 'designsetgo'),
+						style: { border: { radius: '12px' } },
+					},
+				],
+				[
+					'core/heading',
+					{
+						level: 3,
+						content: __('Dynamic content', 'designsetgo'),
+						style: {
+							typography: {
+								fontSize: '1.5rem',
+								fontWeight: '700',
+							},
+							spacing: {
+								margin: {
+									top: '16px',
+									bottom: '8px',
+								},
+							},
+						},
+					},
+				],
+				[
+					'core/paragraph',
+					{
+						content: __(
+							'Scale data-driven pages, personalize experiences, and connect to any data source effortlessly.',
+							'designsetgo'
+						),
+						style: {
+							color: { text: '#6b7280' },
+							typography: { fontSize: '1rem' },
+						},
+					},
+				],
+			],
+		],
+		[
+			'designsetgo/slide',
+			{ contentVerticalAlign: 'top', contentHorizontalAlign: 'left' },
+			[
+				[
+					'core/image',
+					{
+						url: 'https://picsum.photos/seed/dsgo-theme/800/500',
+						alt: __('Theme builder', 'designsetgo'),
+						style: { border: { radius: '12px' } },
+					},
+				],
+				[
+					'core/heading',
+					{
+						level: 3,
+						content: __('Theme builder', 'designsetgo'),
+						style: {
+							typography: {
+								fontSize: '1.5rem',
+								fontWeight: '700',
+							},
+							spacing: {
+								margin: {
+									top: '16px',
+									bottom: '8px',
+								},
+							},
+						},
+					},
+				],
+				[
+					'core/paragraph',
+					{
+						content: __(
+							'Design every part of your site from headers and footers to archive pages and single posts.',
+							'designsetgo'
+						),
+						style: {
+							color: { text: '#6b7280' },
+							typography: { fontSize: '1rem' },
+						},
+					},
+				],
+			],
+		],
+	],
+	scope: ['inserter'],
+	isActive: (blockAttributes) => blockAttributes.scrollDriven === true,
+});
