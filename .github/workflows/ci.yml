@@ -292,6 +292,7 @@ jobs:
   setup-wp-matrix:
     name: Setup WP Matrix
     runs-on: ubuntu-latest
+    permissions: {}
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
 
