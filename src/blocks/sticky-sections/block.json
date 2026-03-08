@@ -1,0 +1,69 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "designsetgo/sticky-sections",
+	"version": "1.0.0",
+	"title": "Sticky Sections",
+	"category": "design",
+	"description": "Sections that stick and stack as you scroll, creating a card-stacking reveal effect",
+	"keywords": ["sticky", "stack", "scroll", "cards", "pin", "reveal", "sections"],
+	"textdomain": "designsetgo",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"stickyOffset": {
+			"type": "string",
+			"default": "0px"
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"align": ["wide", "full"],
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": false
+		},
+		"layout": {
+			"allowEditing": false
+		}
+	},
+	"allowedBlocks": ["designsetgo/section"],
+	"example": {
+		"attributes": {
+			"align": "full"
+		},
+		"innerBlocks": [
+			{
+				"name": "designsetgo/section",
+				"attributes": {
+					"style": {
+						"color": { "background": "#1a1a2e" }
+					}
+				}
+			},
+			{
+				"name": "designsetgo/section",
+				"attributes": {
+					"style": {
+						"color": { "background": "#16213e" }
+					}
+				}
+			},
+			{
+				"name": "designsetgo/section",
+				"attributes": {
+					"style": {
+						"color": { "background": "#0f3460" }
+					}
+				}
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

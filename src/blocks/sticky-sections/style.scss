@@ -1,0 +1,64 @@
+/**
+ * Sticky Sections - Frontend Styles
+ * Sections that stick and stack as you scroll, creating a card-stacking reveal effect.
+ *
+ * How it works:
+ * 1. The parent container's natural height = sum of all child section heights
+ * 2. Each child section is position: sticky with top offset
+ * 3. Each subsequent section has a higher z-index, so it overlaps the previous one
+ * 4. As the user scrolls, sections slide up and stack on top of each other
+ */
+
+.dsgo-sticky-sections {
+	position: relative;
+
+	// Each direct child section gets sticky behavior.
+	// The section block outputs with class .dsgo-stack
+	> .dsgo-stack {
+		position: sticky;
+		top: var(--dsgo-sticky-offset, 0);
+
+		// CSS-only z-index for up to 20 sections (progressive enhancement).
+		// view.js assigns z-index dynamically for any count beyond this.
+		@for $i from 1 through 20 {
+			&:nth-child(#{$i}) {
+				z-index: #{$i};
+			}
+		}
+	}
+
+	// Optional subtle shadow on stacking sections for depth
+	> .dsgo-stack.dsgo-sticky-sections__stacking {
+		box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+	}
+}
+
+// Mobile: disable sticky, stack normally
+@media (max-width: 781px) {
+
+	.dsgo-sticky-sections > .dsgo-stack {
+		position: static !important;
+		z-index: auto !important;
+		box-shadow: none !important;
+	}
+}
+
+// Reduced motion: disable sticky
+@media (prefers-reduced-motion: reduce) {
+
+	.dsgo-sticky-sections > .dsgo-stack {
+		position: static !important;
+		z-index: auto !important;
+		box-shadow: none !important;
+	}
+}
+
+// Print: show all content stacked normally
+@media print {
+
+	.dsgo-sticky-sections > .dsgo-stack {
+		position: static !important;
+		z-index: auto !important;
+		box-shadow: none !important;
+	}
+}
