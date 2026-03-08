@@ -79,9 +79,7 @@ class DSGSlider {
 			pauseOnHover: this.slider.dataset.pauseOnHover === 'true',
 			pauseOnInteraction:
 				this.slider.dataset.pauseOnInteraction === 'true',
-			loop: scrollDriven
-				? false
-				: this.slider.dataset.loop === 'true',
+			loop: scrollDriven ? false : this.slider.dataset.loop === 'true',
 			draggable: this.slider.dataset.draggable === 'true',
 			swipeable: this.slider.dataset.swipeable === 'true',
 			freeMode: this.slider.dataset.freeMode === 'true',
@@ -821,16 +819,25 @@ class DSGSlider {
 
 		// Total track width (all slides + gaps)
 		const slideCount = this.originalSlides.length;
-		const slideWidth = this.cachedSlideWidth || this.originalSlides[0].offsetWidth;
-		const gap = this.cachedGap || parseFloat(window.getComputedStyle(this.track).gap) || 0;
-		const totalTrackWidth = slideCount * slideWidth + (slideCount - 1) * gap;
+		const slideWidth =
+			this.cachedSlideWidth || this.originalSlides[0].offsetWidth;
+		const gap =
+			this.cachedGap ||
+			parseFloat(window.getComputedStyle(this.track).gap) ||
+			0;
+		const totalTrackWidth =
+			slideCount * slideWidth + (slideCount - 1) * gap;
 
 		// How much the track needs to scroll horizontally
-		this.scrollDrivenMaxOffset = Math.max(0, totalTrackWidth - viewportWidth);
+		this.scrollDrivenMaxOffset = Math.max(
+			0,
+			totalTrackWidth - viewportWidth
+		);
 
 		// Total scroll distance for the pin spacer
 		// scrollDrivenSpeed multiplier controls how much vertical scroll maps to horizontal travel
-		const scrollDistance = this.scrollDrivenMaxOffset * this.config.scrollDrivenSpeed;
+		const scrollDistance =
+			this.scrollDrivenMaxOffset * this.config.scrollDrivenSpeed;
 
 		// Set pin spacer height: slider height + extra scroll room
 		this.pinSpacer.style.height = `${sliderHeight + scrollDistance}px`;
@@ -842,7 +849,10 @@ class DSGSlider {
 	 */
 	updateScrollDrivenStickyTop() {
 		const sliderHeight = this.slider.offsetHeight;
-		this.scrollDrivenStickyTop = Math.max(0, (window.innerHeight - sliderHeight) / 2);
+		this.scrollDrivenStickyTop = Math.max(
+			0,
+			(window.innerHeight - sliderHeight) / 2
+		);
 		this.slider.style.top = `${this.scrollDrivenStickyTop}px`;
 	}
 
@@ -871,13 +881,10 @@ class DSGSlider {
 		}
 
 		// Respect reduced motion — don't animate track via scroll
-		if (
-			window.matchMedia('(prefers-reduced-motion: reduce)').matches
-		) {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			return;
 		}
 
-		const spacerRect = this.pinSpacer.getBoundingClientRect();
 		const sliderHeight = this.slider.offsetHeight;
 		const scrollableDistance = this.pinSpacer.offsetHeight - sliderHeight;
 
@@ -887,9 +894,13 @@ class DSGSlider {
 
 		// Calculate progress: 0 when slider first pins at center, 1 when it unpins
 		// Account for stickyTop offset so pinning starts when spacer reaches the centered position
-		const stickyTop = this.scrollDrivenStickyTop || 0;
-		const scrolledIntoSpacer = stickyTop - spacerRect.top;
-		const progress = Math.max(0, Math.min(1, scrolledIntoSpacer / scrollableDistance));
+		const spacerRect = this.pinSpacer.getBoundingClientRect();
+		const scrolledIntoSpacer =
+			(this.scrollDrivenStickyTop || 0) - spacerRect.top;
+		const progress = Math.max(
+			0,
+			Math.min(1, scrolledIntoSpacer / scrollableDistance)
+		);
 
 		// Map progress to horizontal offset
 		const offset = -(progress * this.scrollDrivenMaxOffset);
@@ -935,10 +946,7 @@ class DSGSlider {
 
 		// Unwrap from pin spacer
 		if (this.pinSpacer && this.pinSpacer.parentNode) {
-			this.pinSpacer.parentNode.insertBefore(
-				this.slider,
-				this.pinSpacer
-			);
+			this.pinSpacer.parentNode.insertBefore(this.slider, this.pinSpacer);
 			this.pinSpacer.remove();
 		}
 
