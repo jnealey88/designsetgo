@@ -397,7 +397,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 												e.target.value
 											)
 										}
-										onFocus={() => setActiveSlide(index)}
+										onFocus={() => handleNavClick(index)}
 										onClick={(e) => e.stopPropagation()}
 									/>
 								</button>
