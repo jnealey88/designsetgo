@@ -289,5 +289,4 @@ abstract class Abstract_Ability {
 
 		return true;
 	}
-
 }
