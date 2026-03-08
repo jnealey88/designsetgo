@@ -232,12 +232,14 @@ function setupScrollEngine(container, slides) {
 		}, 150);
 	}
 
-	// Nav click handler — scroll to target slide position
+	// Nav click handler — scroll to center of target slide's range
+	// Using (index + 0.5) avoids landing on exact boundaries where
+	// floating point precision could keep us on the wrong slide
 	navItems.forEach((button, index) => {
 		button.addEventListener('click', () => {
 			const totalRange = spacer.offsetHeight - viewportHeight;
 			const targetScroll =
-				spacer.offsetTop + (index / slideCount) * totalRange;
+				spacer.offsetTop + ((index + 0.5) / slideCount) * totalRange;
 			window.scrollTo({ top: targetScroll, behavior: 'smooth' });
 		});
 	});
