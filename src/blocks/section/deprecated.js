@@ -736,6 +736,9 @@ const v2 = {
 };
 
 // Version 1: Before align attribute - used className for alignment
+// Note: sharedSupports includes align, but it has no effect here because
+// v1 blocks have no align attribute value — WordPress only emits alignment
+// classes when the attribute is present and set.
 const v1 = {
 	supports: sharedSupports,
 	attributes: {
