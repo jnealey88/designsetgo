@@ -126,6 +126,18 @@
 				"title": "Image Accordion Item",
 				"description": "Individual image item",
 				"performance": "high"
+			},
+			{
+				"name": "designsetgo/scroll-slides",
+				"title": "Scroll Slides",
+				"description": "Scroll-pinned fullscreen slideshow with crossfading transitions",
+				"performance": "high"
+			},
+			{
+				"name": "designsetgo/scroll-slide",
+				"title": "Scroll Slide",
+				"description": "Individual slide within Scroll Slides",
+				"performance": "high"
 			}
 		]
 	},
