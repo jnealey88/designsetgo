@@ -502,8 +502,8 @@
  *
  * @since 1.4.2
  */
-// Amount the SVG extends beyond its container to prevent sub-pixel gaps.
-// Used in both the height calc and the bottom-shape offset — change in one place only.
+// Amount the shape divider container extends beyond the section edges to prevent sub-pixel gaps.
+// Applied to width, height, and position offsets — change in one place only.
 $shape-divider-bleed: 3px;
 
 .dsgo-shape-divider {
