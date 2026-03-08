@@ -1,0 +1,19 @@
+/**
+ * Sticky Sections - Editor Styles
+ * Override sticky positioning in the editor so sections stack normally for editing.
+ */
+
+.dsgo-sticky-sections {
+
+	// Override style.scss width:100% which prevents alignfull negative margins
+	// from expanding the block to full viewport width in the editor
+	&.alignfull {
+		width: auto;
+	}
+
+	// Disable sticky in the editor — it would make editing difficult
+	> [data-type="designsetgo/section"] {
+		position: static !important;
+		z-index: auto !important;
+	}
+}
