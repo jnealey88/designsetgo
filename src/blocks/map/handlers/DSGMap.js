@@ -8,6 +8,10 @@ import { initOpenStreetMap } from './openstreetmap-handler';
 import { initGoogleMap } from './googlemaps-handler';
 import { geocodeAddress } from '../utils/geocoding';
 
+/** Default fallback coordinates (New York City) when geocoding fails. */
+const DEFAULT_LAT = 40.7128;
+const DEFAULT_LNG = -74.006;
+
 /**
  * DSGMap Class - Manages individual map instances.
  */
@@ -91,9 +95,12 @@ export default class DSGMap {
 					this.config.lat = result.lat;
 					this.config.lng = result.lng;
 				} else {
-					// Fallback to default coordinates so the map still renders
-					this.config.lat = 40.7128;
-					this.config.lng = -74.006;
+					// eslint-disable-next-line no-console
+					console.warn(
+						`[DSGMap] Could not geocode address "${this.config.address}". Falling back to default coordinates.`
+					);
+					this.config.lat = DEFAULT_LAT;
+					this.config.lng = DEFAULT_LNG;
 				}
 			}
 
