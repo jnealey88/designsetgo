@@ -113,9 +113,8 @@ function initScrollSlides() {
  */
 function setupDOM(container, slides, minHeight, maxHeight, isMobile) {
 	if (isMobile) {
-		// Tap mode — no spacer, no sticky, just set min-height
+		// Tap mode — no spacer, no sticky, content determines height
 		container.classList.add('is-tap-mode');
-		container.style.minHeight = minHeight;
 	} else {
 		// 1. Create pin spacer and wrap container
 		// Spacer must inherit alignment classes so the theme treats it like the block

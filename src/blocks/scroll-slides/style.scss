@@ -171,21 +171,14 @@
  * Nav stacks above content, slides switch on tap
  */
 .dsgo-scroll-slides.is-tap-mode {
-	display: flex;
-	flex-direction: column;
 
 	.dsgo-scroll-slides__inner {
 		display: flex;
 		flex-direction: column;
-		flex: 1;
 	}
 
 	.dsgo-scroll-slides__panels {
 		position: relative;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		flex: 1;
 	}
 }
 
