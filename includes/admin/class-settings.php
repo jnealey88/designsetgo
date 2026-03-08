@@ -122,10 +122,6 @@ class Settings {
 				'auto_save_enabled'      => true,
 				'auto_save_interval'     => 60,
 			),
-			'revisions'          => array(
-				'enable_visual_comparison' => true,
-				'default_to_visual'        => true,
-			),
 			'llms_txt'           => array(
 				'enable'           => false,
 				'post_types'       => array( 'page', 'post' ),
@@ -375,10 +371,6 @@ class Settings {
 					'draft_mode'         => array(
 						'type'        => 'object',
 						'description' => __( 'Draft mode settings (enable, show_page_list_actions, etc.).', 'designsetgo' ),
-					),
-					'revisions'          => array(
-						'type'        => 'object',
-						'description' => __( 'Revision comparison settings (enable_visual_comparison, default_to_visual).', 'designsetgo' ),
 					),
 					'llms_txt'           => array(
 						'type'        => 'object',
@@ -636,10 +628,6 @@ class Settings {
 				'show_frontend_preview'  => 'bool',
 				'auto_save_enabled'      => 'bool',
 				'auto_save_interval'     => 'absint',
-			),
-			'revisions'          => array(
-				'enable_visual_comparison' => 'bool',
-				'default_to_visual'        => 'bool',
 			),
 			'llms_txt'           => array(
 				'enable'           => 'bool',
