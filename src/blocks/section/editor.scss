@@ -578,19 +578,21 @@ $inline-block-data-types: (
  */
 // Amount the SVG extends beyond its container to prevent sub-pixel gaps.
 // Used in both the height calc and the bottom-shape offset — change in one place only.
-$shape-divider-bleed: 2px;
+$shape-divider-bleed: 3px;
 
 .dsgo-shape-divider {
 	position: absolute;
-	width: var(--dsgo-shape-width, 100%);
-	height: var(--dsgo-shape-height, 100px);
+	// Extend container beyond section edges to cover sub-pixel gaps at all zoom levels.
+	// Parent overflow-x: clip prevents horizontal scrollbar; adjacent sections cover vertical overflow.
+	width: calc(var(--dsgo-shape-width, 100%) + #{$shape-divider-bleed * 2});
+	height: calc(var(--dsgo-shape-height, 100px) + #{$shape-divider-bleed});
 	overflow: hidden;
 	pointer-events: none;
 	line-height: 0;
 	z-index: 1;
 
-	// Center the shape when width > 100%
-	left: var(--dsgo-shape-offset, 0);
+	// Center the shape when width > 100%, offset by bleed for edge coverage
+	left: calc(var(--dsgo-shape-offset, 0px) - #{$shape-divider-bleed});
 
 	// Apply background color if set
 	background-color: var(--dsgo-shape-background, transparent);
@@ -598,27 +600,18 @@ $shape-divider-bleed: 2px;
 	svg {
 		display: block;
 		width: 100%;
-		// Extend slightly beyond container to prevent sub-pixel gaps on small screens.
-		// Relies on overflow: hidden above to clip the excess.
-		height: calc(100% + #{$shape-divider-bleed});
+		height: 100%;
 		fill: var(--dsgo-shape-color, transparent);
 	}
 
-	// Top position - shape at the top edge of section
-	// SVG extends downward (into section) — no offset needed at top edge
+	// Top position - extend above section edge by bleed amount
 	&--top {
-		top: 0;
+		top: -#{$shape-divider-bleed};
 	}
 
-	// Bottom position - shape at the bottom edge of section
-	// Shifts the bleed amount above the container (clipped by overflow: hidden),
-	// aligning the SVG bottom exactly with the container bottom edge.
+	// Bottom position - extend below section edge by bleed amount
 	&--bottom {
-		bottom: 0;
-
-		svg {
-			margin-top: -#{$shape-divider-bleed};
-		}
+		bottom: -#{$shape-divider-bleed};
 	}
 
 	// Bring to front - display above content
