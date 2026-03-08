@@ -9,15 +9,16 @@
 
 import { setupDOM } from '../../../src/blocks/scroll-slides/frontend/setup-dom';
 
-// Mock WordPress i18n — return text as-is, sprintf replaces %d/%s tokens
+// Mock WordPress i18n — __ returns text as-is, sprintf substitutes positional args
 jest.mock('@wordpress/i18n', () => ({
 	__: (text) => text,
 	sprintf: (format, ...args) => {
-		let result = format;
-		args.forEach((arg) => {
-			result = result.replace(/%[sd]/, arg);
-		});
-		return result;
+		let i = 0;
+		return format
+			.replace(/%(\d+)\$[ds]/g, (_, index) => {
+				return args[parseInt(index, 10) - 1];
+			})
+			.replace(/%[ds]/g, () => args[i++]);
 	},
 }));
 

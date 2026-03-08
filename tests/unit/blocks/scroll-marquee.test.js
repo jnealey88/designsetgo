@@ -240,45 +240,34 @@ describe('Scroll Marquee - Frontend', () => {
 	});
 
 	describe('Viewport visibility', () => {
-		test('does not animate when not in viewport', () => {
+		test('sets up IntersectionObserver to gate animation on visibility', () => {
+			// Capture observer instances by subclassing the mock
+			const captured = [];
+			const OrigIO = global.IntersectionObserver;
+			global.IntersectionObserver = class extends OrigIO {
+				constructor(callback, options) {
+					super(callback, options);
+					captured.push({ instance: this, callback, options });
+				}
+			};
+
 			const marquee = createMarquee();
 
 			loadView();
 			jest.advanceTimersByTime(20);
 
-			const track = marquee.querySelector('.dsgo-scroll-marquee__track');
+			// Restore before assertions to avoid corrupting other tests
+			global.IntersectionObserver = OrigIO;
 
-			// Simulate IntersectionObserver reporting not intersecting
-			// The observer is created inside initSingleMarquee.
-			// We access the mock observer via the global IntersectionObserver.
-			// Simulate the element leaving the viewport by calling the observer callback.
-			const _observerInstance =
-				IntersectionObserver.mock?.instances?.[0] ||
-				global.IntersectionObserver.prototype;
-
-			// The observer was created internally — we need to trigger non-visibility
-			// by calling the callback with isIntersecting: false.
-			// Since we cannot access the internal observer directly,
-			// verify the pattern: when scrolled with viewport flag off, no transform update.
-
-			// Clear existing transform
-			track.style.transform = '';
-
-			// Position marquee completely off-screen
-			marquee.getBoundingClientRect = jest.fn(() => ({
-				top: 2000,
-				bottom: 2400,
-				left: 0,
-				right: 800,
-				width: 800,
-				height: 400,
-			}));
-
-			// Note: The initial viewport check in the source uses getBoundingClientRect
-			// which we've overridden. But the IntersectionObserver is what controls
-			// the isInViewport flag during runtime. Since we can't easily inject into
-			// the observer callback from outside, we verify the observer was constructed.
-			expect(marquee.style.cursor).toBe('grab');
+			// The observer is created inside initSingleMarquee and controls the
+			// isInViewport flag. Verify it was constructed with reasonable options.
+			expect(captured.length).toBeGreaterThan(0);
+			const { instance, callback, options } = captured[0];
+			expect(typeof callback).toBe('function');
+			expect(options).toEqual(
+				expect.objectContaining({ threshold: 0.1 })
+			);
+			expect(instance.observe).toHaveBeenCalledWith(marquee);
 		});
 	});
 

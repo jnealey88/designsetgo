@@ -102,7 +102,6 @@ function cleanup() {
 		configurable: true,
 		value: 1024,
 	});
-	delete window.DSGTabs;
 }
 
 // Mock scrollIntoView (not implemented in JSDOM)

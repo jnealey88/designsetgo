@@ -147,12 +147,9 @@ function cleanup() {
  * @return {string} ISO 8601 datetime string.
  */
 function futureDate({ days = 0, hours = 0, minutes = 0, seconds = 0 } = {}) {
-	const now = new Date();
-	now.setDate(now.getDate() + days);
-	now.setHours(now.getHours() + hours);
-	now.setMinutes(now.getMinutes() + minutes);
-	now.setSeconds(now.getSeconds() + seconds);
-	return now.toISOString();
+	const ms =
+		days * 86400000 + hours * 3600000 + minutes * 60000 + seconds * 1000;
+	return new Date(Date.now() + ms).toISOString();
 }
 
 describe('Countdown Timer - Frontend', () => {
