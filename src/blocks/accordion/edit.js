@@ -296,6 +296,12 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 					]}
 					{...colorGradientSettings}
 				/>
+				<p className="components-base-control__help">
+					{__(
+						'Colors applied to all accordion items when open.',
+						'designsetgo'
+					)}
+				</p>
 
 				<ColorGradientSettingsDropdown
 					panelId={clientId}
@@ -338,6 +344,17 @@ export default function AccordionEdit({ attributes, setAttributes, clientId }) {
 					]}
 					{...colorGradientSettings}
 				/>
+				<p className="components-base-control__help">
+					{hoverBackgroundColor || hoverTextColor
+						? __(
+								'Custom hover colors set. Clear to use open state colors.',
+								'designsetgo'
+							)
+						: __(
+								'Hover colors mirror open state by default. Set custom colors to override.',
+								'designsetgo'
+							)}
+				</p>
 			</InspectorControls>
 
 			{/* NO wrapper div - spread props directly per WordPress best practices */}
