@@ -8,18 +8,21 @@
 	flex-direction: column;
 	justify-content: center;
 	padding: 2rem;
-	opacity: 0;
-	transform: translateY(20px);
-	transition: opacity 0.4s ease, transform 0.4s ease;
 
-	/* When pinned, all non-active slides are stacked absolute */
+	/**
+	 * Transition styles only apply when pinned (JS-activated).
+	 * Without this scope, opacity:0 would hide slides in the editor too.
+	 */
 	.dsgo-scroll-slides.is-pinned & {
 		position: absolute;
 		inset: 0;
+		opacity: 0;
+		transform: translateY(20px);
+		transition: opacity 0.4s ease, transform 0.4s ease;
 	}
 
 	/* Active slide */
-	&.is-active {
+	.dsgo-scroll-slides.is-pinned &.is-active {
 		position: relative;
 		opacity: 1;
 		transform: translateY(0);

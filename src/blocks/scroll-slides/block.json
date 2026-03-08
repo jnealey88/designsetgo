@@ -30,6 +30,15 @@
 			"text": true,
 			"gradients": true
 		},
+		"background": {
+			"backgroundImage": true,
+			"backgroundSize": true,
+			"backgroundPosition": true,
+			"backgroundRepeat": true,
+			"__experimentalDefaultControls": {
+				"backgroundImage": true
+			}
+		},
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true

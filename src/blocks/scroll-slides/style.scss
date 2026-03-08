@@ -48,18 +48,19 @@
 	text-align: left;
 	font-size: clamp(1.5rem, 3vw, 2.5rem);
 	font-weight: 700;
-	color: rgba(255, 255, 255, 0.3);
-	transition: color 0.3s ease;
+	color: currentcolor;
+	opacity: 0.3;
+	transition: opacity 0.3s ease;
 	padding: 0.25rem 0;
 	line-height: 1.2;
 	font-family: inherit;
 
 	&:hover {
-		color: rgba(255, 255, 255, 0.6);
+		opacity: 0.6;
 	}
 
 	&.is-active {
-		color: inherit;
+		opacity: 1;
 	}
 
 	&:focus-visible {
