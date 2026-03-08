@@ -15,6 +15,7 @@ import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
 import variations from './variations';
+import { ICON_COLOR } from '../shared/constants';
 
 /**
  * Register the Modal block.
@@ -23,6 +24,10 @@ import variations from './variations';
  */
 registerBlockType(metadata.name, {
 	...metadata,
+	icon: {
+		src: 'feedback',
+		foreground: ICON_COLOR,
+	},
 	edit: Edit,
 	save,
 	variations,
