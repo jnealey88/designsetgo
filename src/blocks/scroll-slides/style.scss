@@ -7,6 +7,11 @@
 	position: relative;
 	width: 100%;
 
+	// Allow alignfull to use theme negative margins/vw width
+	&.alignfull {
+		width: auto;
+	}
+
 	/**
 	 * Background overlay
 	 * Only rendered when overlay color is set
@@ -162,7 +167,24 @@
 }
 
 /**
- * Mobile — unpin and stack
+ * Tap mode — mobile click-to-navigate (no spacer/sticky)
+ * Nav stacks above content, slides switch on tap
+ */
+.dsgo-scroll-slides.is-tap-mode {
+
+	.dsgo-scroll-slides__inner {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.dsgo-scroll-slides__panels {
+		position: relative;
+	}
+}
+
+/**
+ * Mobile fallback — handles the case where JS loaded at desktop width
+ * (is-pinned set) and user resizes to mobile. Unpins, stacks, shows all.
  */
 @media (max-width: 781px) {
 
@@ -177,22 +199,23 @@
 		display: block;
 	}
 
-	.dsgo-scroll-slides__inner {
+	.dsgo-scroll-slides.is-pinned .dsgo-scroll-slides__inner {
 		display: block !important;
 	}
 
-	.dsgo-scroll-slides__nav {
+	.dsgo-scroll-slides.is-pinned .dsgo-scroll-slides__nav {
 		display: none;
 	}
 
-	.dsgo-scroll-slides__backgrounds {
+	.dsgo-scroll-slides.is-pinned .dsgo-scroll-slides__backgrounds {
 		display: none;
 	}
 
-	.dsgo-scroll-slides__panels {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
+	// Force all pinned slides visible when viewport is mobile
+	.dsgo-scroll-slides.is-pinned .dsgo-scroll-slide {
+		position: relative !important;
+		opacity: 1 !important;
+		transform: none !important;
 	}
 }
 

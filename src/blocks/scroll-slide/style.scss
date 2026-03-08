@@ -11,10 +11,12 @@
 	padding: 2rem;
 
 	/**
-	 * Transition styles only apply when pinned (JS-activated).
-	 * Without this scope, opacity:0 would hide slides in the editor too.
+	 * Transition styles apply in both pinned (desktop scroll) and
+	 * tap mode (mobile click). Without this scope, opacity:0 would
+	 * hide slides in the editor too.
 	 */
-	.dsgo-scroll-slides.is-pinned & {
+	.dsgo-scroll-slides.is-pinned &,
+	.dsgo-scroll-slides.is-tap-mode & {
 		position: absolute;
 		inset: 0;
 		opacity: 0;
@@ -23,22 +25,11 @@
 	}
 
 	/* Active slide */
-	.dsgo-scroll-slides.is-pinned &.is-active {
+	.dsgo-scroll-slides.is-pinned &.is-active,
+	.dsgo-scroll-slides.is-tap-mode &.is-active {
 		position: relative;
 		opacity: 1;
 		transform: translateY(0);
-	}
-}
-
-/**
- * Mobile — all slides visible in flow
- */
-@media (max-width: 781px) {
-
-	.dsgo-scroll-slide {
-		position: relative !important;
-		opacity: 1 !important;
-		transform: none !important;
 	}
 }
 

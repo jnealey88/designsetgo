@@ -190,3 +190,13 @@
 }
 
 /* stylelint-enable no-descending-specificity */
+
+/**
+ * Mobile editor — stack nav above panels
+ */
+@media (max-width: 781px) {
+
+	.dsgo-scroll-slides__inner {
+		grid-template-columns: 1fr;
+	}
+}

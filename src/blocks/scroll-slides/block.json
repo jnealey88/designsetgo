@@ -9,9 +9,6 @@
 	"keywords": ["scroll", "slides", "fullscreen", "pinned", "showcase"],
 	"textdomain": "designsetgo",
 	"attributes": {
-		"align": {
-			"type": "string"
-		},
 		"minHeight": {
 			"type": "string",
 			"default": "100vh"
