@@ -18,8 +18,8 @@
 		position: sticky;
 		top: var(--dsgo-sticky-offset, 0);
 
-		// CSS-only z-index using nth-child (progressive enhancement).
-		// view.js also assigns z-index dynamically for robustness.
+		// CSS-only z-index for up to 20 sections (progressive enhancement).
+		// view.js assigns z-index dynamically for any count beyond this.
 		@for $i from 1 through 20 {
 			&:nth-child(#{$i}) {
 				z-index: #{$i};

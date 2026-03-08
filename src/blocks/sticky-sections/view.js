@@ -43,13 +43,14 @@ function initStickySections() {
 		if (initialized.has(container)) {
 			return;
 		}
-		initialized.add(container);
 
 		const sections = container.querySelectorAll(':scope > .dsgo-stack');
 
 		if (sections.length < 2) {
 			return;
 		}
+
+		initialized.add(container);
 
 		// Assign z-index dynamically (more robust than CSS nth-child for edge cases)
 		sections.forEach((section, index) => {

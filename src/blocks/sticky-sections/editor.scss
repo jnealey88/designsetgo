@@ -5,14 +5,15 @@
 
 .dsgo-sticky-sections {
 
-	// Override style.scss width:100% which prevents alignfull negative margins
-	// from expanding the block to full viewport width in the editor
+	// Allow alignfull to expand via negative margins in the editor
 	&.alignfull {
 		width: auto;
 	}
 
-	// Disable sticky in the editor — it would make editing difficult
-	> [data-type="designsetgo/section"] {
+	// Disable sticky in the editor — it would make editing difficult.
+	// Uses descendant selector because editor wraps inner blocks in
+	// .block-editor-inner-blocks > .block-editor-block-list__layout
+	[data-type="designsetgo/section"] {
 		position: static !important;
 		z-index: auto !important;
 	}
