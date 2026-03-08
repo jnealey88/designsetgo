@@ -166,7 +166,7 @@
 /**
  * Show/hide slides based on parent data attribute.
  * Each slide gets display:none by default, then the active one shows.
- * Uses general sibling and nth-child logic with data attributes on parent.
+ * Uses nth-child selectors for slides 1-10 (max enforced by MAX_SLIDES in edit.js).
  */
 
 /* stylelint-disable no-descending-specificity */

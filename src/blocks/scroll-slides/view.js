@@ -43,11 +43,9 @@ function initScrollSlides() {
 	}
 
 	// Check reduced motion preference — show all slides stacked (like mobile)
-	const prefersReducedMotion = window.matchMedia(
-		'(prefers-reduced-motion: reduce)'
-	).matches;
+	const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-	if (prefersReducedMotion) {
+	if (motionQuery.matches) {
 		return;
 	}
 
@@ -70,11 +68,24 @@ function initScrollSlides() {
 		const minHeight = container.dataset.dsgoMinHeight || '100vh';
 		const maxHeight = container.dataset.dsgoMaxHeight || '';
 
+		const controller = new AbortController();
+
 		// === Build DOM: spacer, nav, backgrounds ===
 		setupDOM(container, slides, minHeight, maxHeight);
 
 		// === Scroll engine ===
-		setupScrollEngine(container, slides);
+		setupScrollEngine(container, slides, controller);
+
+		// Abort scroll engine if user enables reduced motion mid-session
+		motionQuery.addEventListener(
+			'change',
+			(e) => {
+				if (e.matches) {
+					controller.abort();
+				}
+			},
+			{ signal: controller.signal }
+		);
 	});
 }
 
@@ -171,22 +182,32 @@ function setupDOM(container, slides, minHeight, maxHeight) {
 	// Backgrounds go in outer container (before inner) for full-width coverage
 	container.insertBefore(bgContainer, inner);
 
-	// 4. Set first slide as active
+	// 4. Aria-live region for screen reader slide change announcements
+	const liveRegion = document.createElement('div');
+	liveRegion.className = 'screen-reader-text';
+	liveRegion.setAttribute('aria-live', 'polite');
+	liveRegion.setAttribute('aria-atomic', 'true');
+	container.appendChild(liveRegion);
+
+	// 5. Set first slide as active
 	slides[0].classList.add('is-active');
 }
 
 /**
  * Set up the scroll-driven animation engine
  *
- * @param {HTMLElement} container Container element
- * @param {NodeList}    slides    Slide elements
+ * @param {HTMLElement}     container  Container element
+ * @param {NodeList}        slides     Slide elements
+ * @param {AbortController} controller AbortController for cleanup on removal or reduced-motion
  */
-function setupScrollEngine(container, slides) {
+function setupScrollEngine(container, slides, controller) {
+	const { signal } = controller;
 	const spacer = container.parentNode; // .dsgo-scroll-slides-spacer
 	const navItems = container.querySelectorAll(
 		'.dsgo-scroll-slides__nav-item'
 	);
 	const bgLayers = container.querySelectorAll('.dsgo-scroll-slides__bg');
+	const liveRegion = container.querySelector('[aria-live]');
 	const slideCount = slides.length;
 
 	// Cache viewport dimensions
@@ -235,6 +256,17 @@ function setupScrollEngine(container, slides) {
 			navItems[newIndex].setAttribute('aria-current', 'step');
 			bgLayers[newIndex].classList.add('is-active');
 
+			// Announce slide change to screen readers
+			if (liveRegion) {
+				liveRegion.textContent = sprintf(
+					/* translators: 1: current slide number, 2: total slides, 3: slide heading */
+					__('Slide %1$d of %2$d: %3$s', 'designsetgo'),
+					newIndex + 1,
+					slideCount,
+					navItems[newIndex]?.textContent?.trim() || ''
+				);
+			}
+
 			currentSlideIndex = newIndex;
 		}
 
@@ -242,6 +274,11 @@ function setupScrollEngine(container, slides) {
 	}
 
 	function requestTick() {
+		// Clean up if container was removed from DOM (e.g. client-side navigation)
+		if (signal.aborted || !spacer.isConnected) {
+			controller.abort();
+			return;
+		}
 		if (!ticking) {
 			requestAnimationFrame(update);
 			ticking = true;
@@ -262,17 +299,22 @@ function setupScrollEngine(container, slides) {
 	// Using (index + 0.5) avoids landing on exact boundaries where
 	// floating point precision could keep us on the wrong slide
 	navItems.forEach((button, index) => {
-		button.addEventListener('click', () => {
-			const totalRange = spacer.offsetHeight - viewportHeight;
-			const targetScroll =
-				spacer.offsetTop + ((index + 0.5) / slideCount) * totalRange;
-			window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-		});
+		button.addEventListener(
+			'click',
+			() => {
+				const totalRange = spacer.offsetHeight - viewportHeight;
+				const targetScroll =
+					spacer.offsetTop +
+					((index + 0.5) / slideCount) * totalRange;
+				window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+			},
+			{ signal }
+		);
 	});
 
-	// Bind events
-	window.addEventListener('scroll', requestTick, { passive: true });
-	window.addEventListener('resize', handleResize, { passive: true });
+	// Bind events — signal auto-removes listeners when controller is aborted
+	window.addEventListener('scroll', requestTick, { passive: true, signal });
+	window.addEventListener('resize', handleResize, { passive: true, signal });
 
 	// Initial update
 	update();

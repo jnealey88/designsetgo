@@ -34,6 +34,7 @@ import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 import ScrollSlidesPlaceholder from './components/ScrollSlidesPlaceholder';
 
 const ALLOWED_BLOCKS = ['designsetgo/scroll-slide'];
+const MAX_SLIDES = 10;
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
@@ -76,7 +77,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		'dsgo-scroll-slides',
 		overlayColor && 'dsgo-scroll-slides--has-overlay',
 		!constrainWidth && 'dsgo-scroll-slides--no-width-constraint',
-		navColor && 'dsgo-scroll-slides--has-nav-color',
+		(navColor || navActiveColor) && 'dsgo-scroll-slides--has-nav-color',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -157,6 +158,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		{
 			allowedBlocks: ALLOWED_BLOCKS,
 			orientation: 'vertical',
+			renderAppender:
+				innerBlocks.length >= MAX_SLIDES ? false : undefined,
 		}
 	);
 

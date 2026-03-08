@@ -23,7 +23,7 @@ export default function Save({ attributes }) {
 		'dsgo-scroll-slides',
 		overlayColor && 'dsgo-scroll-slides--has-overlay',
 		!constrainWidth && 'dsgo-scroll-slides--no-width-constraint',
-		navColor && 'dsgo-scroll-slides--has-nav-color',
+		(navColor || navActiveColor) && 'dsgo-scroll-slides--has-nav-color',
 	]
 		.filter(Boolean)
 		.join(' ');
