@@ -14,7 +14,10 @@
 	// Uses descendant selector because editor wraps inner blocks in
 	// .block-editor-inner-blocks > .block-editor-block-list__layout
 	[data-type="designsetgo/section"] {
-		position: static !important;
-		z-index: auto !important;
+		// Use relative (not static) so stacking contexts work correctly.
+		// Sections use z-index internally for overlays and shape dividers —
+		// position: static would ignore z-index and let overlays bleed.
+		position: relative !important;
+		isolation: isolate;
 	}
 }
