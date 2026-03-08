@@ -12,6 +12,58 @@ import { convertPaddingValue } from './utils/padding';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
+ * Shared supports definition for all deprecated versions.
+ * Mirrors block.json supports but uses __experimentalBorder (the historical key).
+ */
+const sharedSupports = {
+	anchor: true,
+	align: ['left', 'center', 'right', 'full'],
+	alignWide: true,
+	html: false,
+	inserter: true,
+	spacing: {
+		margin: true,
+		padding: true,
+		__experimentalSkipSerialization: ['padding'],
+		__experimentalDefaultControls: {
+			margin: true,
+			padding: true,
+		},
+	},
+	color: {
+		background: true,
+		text: true,
+		gradients: true,
+		__experimentalSkipSerialization: true,
+		__experimentalDefaultControls: {
+			background: true,
+			text: true,
+		},
+	},
+	typography: {
+		fontSize: true,
+		lineHeight: true,
+		fontWeight: true,
+		__experimentalDefaultControls: {
+			fontSize: true,
+		},
+	},
+	__experimentalBorder: {
+		color: true,
+		radius: true,
+		style: true,
+		width: true,
+		__experimentalDefaultControls: {
+			color: true,
+			radius: true,
+			style: true,
+			width: true,
+		},
+	},
+	shadow: true,
+};
+
+/**
  * Version 6: Before align-based full-width
  *
  * Changes in current version:
@@ -21,6 +73,7 @@ import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
  * - Width attribute "100%" migrated to align: "full"
  */
 const v6 = {
+	supports: sharedSupports,
 	attributes: {
 		text: {
 			type: 'string',
@@ -228,6 +281,7 @@ const v6 = {
  * - Width values 50% and 25% migrated to auto
  */
 const v5 = {
+	supports: sharedSupports,
 	attributes: {
 		text: {
 			type: 'string',
@@ -438,6 +492,7 @@ const v5 = {
  * - Visual styles moved to outer wrapper (border-radius fix)
  */
 const v4 = {
+	supports: sharedSupports,
 	attributes: {
 		text: {
 			type: 'string',
@@ -657,6 +712,7 @@ const v4 = {
  * - Block wrapper is now block-level by default to respect WordPress content width
  */
 const v3 = {
+	supports: sharedSupports,
 	attributes: {
 		text: {
 			type: 'string',
@@ -855,6 +911,7 @@ const v3 = {
  * - Editor still uses getIcon() from shared library
  */
 const v2 = {
+	supports: sharedSupports,
 	attributes: {
 		text: {
 			type: 'string',
@@ -1050,6 +1107,7 @@ const v2 = {
  * - Padding is now applied to button wrapper instead of outer div
  */
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		text: {
 			type: 'string',

@@ -9,10 +9,47 @@ import { __, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
 
 /**
+ * Shared supports for all deprecated versions.
+ * Uses __experimentalBorder (the historical name) instead of border.
+ */
+const sharedSupports = {
+	anchor: true,
+	align: ['wide', 'full'],
+	html: false,
+	spacing: {
+		margin: true,
+		padding: true,
+		blockGap: false,
+		__experimentalDefaultControls: {
+			padding: false,
+			margin: false,
+		},
+	},
+	color: {
+		background: true,
+		text: false,
+		link: false,
+		__experimentalDefaultControls: {
+			background: false,
+		},
+	},
+	__experimentalBorder: {
+		color: true,
+		radius: true,
+		style: true,
+		width: true,
+		__experimentalDefaultControls: {
+			radius: true,
+		},
+	},
+};
+
+/**
  * Version 1: Original version with marker attributes
  * Deprecated when markers were removed from the block
  */
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		dsgoProvider: {
 			type: 'string',

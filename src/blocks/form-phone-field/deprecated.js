@@ -10,6 +10,17 @@ import { useBlockProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 /**
+ * Supports definition for deprecated versions.
+ * Matches block.json supports (with border → __experimentalBorder if applicable).
+ */
+const sharedSupports = {
+	html: false,
+	anchor: false,
+	customClassName: false,
+	reusable: false,
+};
+
+/**
  * Shared attributes definition for all deprecated versions.
  * All versions share the same attribute schema.
  */
@@ -124,6 +135,7 @@ function getPlaceholderText(placeholder, phoneFormat) {
  * now populated by view.js at runtime.
  */
 const v2 = {
+	supports: sharedSupports,
 	attributes: sharedAttributes,
 
 	isEligible(attributes, innerBlocks, { innerHTML }) {
@@ -297,6 +309,7 @@ const v2 = {
  * standard `selected` attribute on individual <option> elements.
  */
 const v1 = {
+	supports: sharedSupports,
 	attributes: sharedAttributes,
 
 	isEligible(attributes, innerBlocks, { innerHTML }) {

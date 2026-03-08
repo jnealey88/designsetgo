@@ -2,6 +2,30 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
+const sharedSupports = {
+	anchor: false,
+	html: false,
+	reusable: false,
+	spacing: {
+		margin: true,
+		padding: true,
+		blockGap: true,
+	},
+	color: {
+		background: true,
+		gradient: true,
+		text: true,
+	},
+	typography: {
+		fontSize: true,
+		lineHeight: true,
+		fontFamily: true,
+		fontWeight: true,
+		textTransform: true,
+		letterSpacing: true,
+	},
+};
+
 /**
  * Deprecated version 1: Had enableOverlay attribute
  *
@@ -11,6 +35,7 @@ import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
  * - Changed default overlayOpacity from 40 to 80
  */
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		backgroundImage: {
 			type: 'object',

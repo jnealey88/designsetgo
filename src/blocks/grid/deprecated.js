@@ -7,8 +7,75 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
+const sharedSupports = {
+	anchor: true,
+	align: ['wide', 'full'],
+	html: false,
+	inserter: true,
+	layout: {
+		allowSwitching: false,
+		allowInheriting: false,
+		allowEditing: false,
+		allowSizingOnChildren: true,
+		allowContentEditing: false,
+		default: {
+			type: 'constrained',
+		},
+	},
+	spacing: {
+		margin: true,
+		padding: true,
+		blockGap: true,
+		__experimentalDefaultControls: {
+			padding: true,
+			blockGap: true,
+		},
+	},
+	dimensions: {
+		minHeight: true,
+	},
+	color: {
+		background: true,
+		text: true,
+		gradients: true,
+		link: true,
+		__experimentalDefaultControls: {
+			background: true,
+			text: true,
+		},
+	},
+	background: {
+		backgroundImage: true,
+		backgroundSize: true,
+	},
+	typography: {
+		fontSize: true,
+		lineHeight: true,
+		__experimentalDefaultControls: {
+			fontSize: true,
+		},
+	},
+	shadow: true,
+	position: {
+		sticky: true,
+	},
+	__experimentalBorder: {
+		color: true,
+		radius: true,
+		style: true,
+		width: true,
+		__experimentalDefaultControls: {
+			color: true,
+			radius: true,
+			style: true,
+			width: true,
+		},
+	},
+};
+
 // Version 1: Before align attribute - used className for alignment
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		// Old blocks don't have align attribute, only className
 		style: {

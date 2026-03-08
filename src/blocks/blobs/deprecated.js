@@ -10,8 +10,60 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
+/**
+ * Shared supports for all deprecated versions.
+ * Uses __experimentalBorder (the historical name) instead of border.
+ */
+const sharedSupports = {
+	anchor: true,
+	align: ['left', 'center', 'right', 'wide', 'full'],
+	html: false,
+	spacing: {
+		margin: true,
+		padding: true,
+		__experimentalDefaultControls: {
+			margin: true,
+			padding: true,
+		},
+	},
+	color: {
+		background: true,
+		text: true,
+		gradients: true,
+		__experimentalDefaultControls: {
+			background: true,
+			text: true,
+		},
+	},
+	background: {
+		backgroundImage: true,
+		backgroundSize: true,
+		backgroundPosition: true,
+		__experimentalDefaultControls: {
+			backgroundImage: true,
+		},
+	},
+	typography: {
+		fontSize: true,
+		lineHeight: true,
+		writingMode: true,
+		fontFamily: true,
+		fontWeight: true,
+		__experimentalDefaultControls: {
+			fontSize: true,
+		},
+	},
+	__experimentalBorder: {
+		radius: false,
+		__experimentalDefaultControls: {
+			radius: false,
+		},
+	},
+};
+
 // Version 1: Original structure without wrapper
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		blobShape: {
 			type: 'string',
@@ -109,6 +161,7 @@ const v1 = {
 
 // Version 2: With wrapper but without align attribute
 const v2 = {
+	supports: sharedSupports,
 	attributes: {
 		blobShape: {
 			type: 'string',

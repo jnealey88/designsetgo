@@ -8,12 +8,24 @@ import { useBlockProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 /**
+ * Supports definition for deprecated versions.
+ * Matches block.json supports (with border → __experimentalBorder if applicable).
+ */
+const sharedSupports = {
+	html: false,
+	anchor: false,
+	customClassName: false,
+	reusable: false,
+};
+
+/**
  * Version 2: Before aria-required was added to required fields.
  *
  * The site-designer-api generates HTML without aria-required="true" on
  * required select fields. This deprecation matches that older format.
  */
 const v2 = {
+	supports: sharedSupports,
 	attributes: {
 		fieldName: {
 			type: 'string',
@@ -148,6 +160,7 @@ const v2 = {
  * the browser select the first <option> naturally.
  */
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		fieldName: {
 			type: 'string',

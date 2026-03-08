@@ -11,6 +11,20 @@ import { getIcon } from '../icon/utils/svg-icons';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
+ * Shared supports definition for all deprecated versions.
+ * Mirrors block.json supports.
+ */
+const sharedSupports = {
+	html: false,
+	inserter: true,
+	reusable: false,
+	spacing: {
+		margin: false,
+		padding: false,
+	},
+};
+
+/**
  * Version 1: Before lazy loading icon library
  *
  * Changes in current version:
@@ -18,6 +32,7 @@ import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
  * - Frontend icons injected via PHP to avoid bundling 51KB library
  */
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		icon: {
 			type: 'string',

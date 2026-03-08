@@ -9,6 +9,81 @@ import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 import { getShapeDivider } from './utils/shape-dividers';
 import { sanitizeColor } from './utils/sanitize-color';
 
+// Shared supports for deprecations (must match what was in block.json when blocks were saved).
+// Without this, useBlockProps.save() in deprecated save functions won't generate
+// the correct classes/styles (has-*-color, padding, etc.), causing validation to fail.
+const sharedSupports = {
+	anchor: true,
+	align: ['wide', 'full'],
+	html: false,
+	inserter: true,
+	layout: {
+		allowSwitching: false,
+		allowInheriting: false,
+		allowEditing: true,
+		allowSizingOnChildren: true,
+		default: {
+			type: 'flex',
+			orientation: 'vertical',
+			justifyContent: 'center',
+		},
+	},
+	spacing: {
+		margin: true,
+		padding: true,
+		blockGap: true,
+		__experimentalDefaultControls: {
+			padding: true,
+			blockGap: true,
+		},
+	},
+	dimensions: {
+		minHeight: true,
+	},
+	color: {
+		background: true,
+		text: true,
+		gradients: true,
+		link: true,
+		__experimentalDefaultControls: {
+			background: true,
+			text: true,
+		},
+	},
+	background: {
+		backgroundImage: true,
+		backgroundSize: true,
+		backgroundPosition: true,
+		backgroundRepeat: true,
+		__experimentalDefaultControls: {
+			backgroundImage: true,
+		},
+	},
+	typography: {
+		fontSize: true,
+		lineHeight: true,
+		__experimentalDefaultControls: {
+			fontSize: true,
+		},
+	},
+	shadow: true,
+	position: {
+		sticky: true,
+	},
+	__experimentalBorder: {
+		color: true,
+		radius: true,
+		style: true,
+		width: true,
+		__experimentalDefaultControls: {
+			color: true,
+			radius: true,
+			style: true,
+			width: true,
+		},
+	},
+};
+
 /**
  * Old ShapeDivider component for v3 deprecation.
  * Uses currentColor fallback (the old behavior before background color inheritance).
@@ -189,6 +264,7 @@ function V4ShapeDivider({
 
 // Version 4: Shape dividers with background color inheritance but no text color for shape background
 const v4 = {
+	supports: sharedSupports,
 	attributes: {
 		align: { type: 'string', default: 'full' },
 		tagName: { type: 'string', default: 'div' },
@@ -361,6 +437,7 @@ const v4 = {
 
 // Version 3: Shape dividers with currentColor fallback (before background color inheritance)
 const v3 = {
+	supports: sharedSupports,
 	attributes: {
 		align: { type: 'string', default: 'full' },
 		tagName: { type: 'string', default: 'div' },
@@ -520,6 +597,7 @@ const v3 = {
 
 // Version 2: Before shape dividers - current save without shape dividers
 const v2 = {
+	supports: sharedSupports,
 	attributes: {
 		align: {
 			type: 'string',
@@ -659,6 +737,7 @@ const v2 = {
 
 // Version 1: Before align attribute - used className for alignment
 const v1 = {
+	supports: sharedSupports,
 	attributes: {
 		// Old blocks don't have align attribute, only className
 		style: {

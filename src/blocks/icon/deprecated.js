@@ -10,6 +10,42 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { getIcon } from './utils/svg-icons';
 
 /**
+ * Shared supports definition for all deprecated versions.
+ * Mirrors block.json supports but uses __experimentalBorder (the historical key).
+ */
+const sharedSupports = {
+	anchor: true,
+	align: ['left', 'center', 'right', 'wide', 'full'],
+	html: false,
+	inserter: true,
+	spacing: {
+		margin: true,
+		padding: true,
+		__experimentalDefaultControls: {
+			margin: true,
+			padding: true,
+		},
+	},
+	color: {
+		background: true,
+		text: true,
+		__experimentalDefaultControls: {
+			background: true,
+			text: true,
+		},
+	},
+	__experimentalBorder: {
+		color: true,
+		radius: true,
+		style: true,
+		width: true,
+		__experimentalDefaultControls: {
+			radius: true,
+		},
+	},
+};
+
+/**
  * Sanitize URL to prevent XSS attacks
  *
  * @param {string} url URL to sanitize
@@ -38,6 +74,7 @@ function sanitizeUrl(url) {
  * - Editor still uses getIcon() from shared library
  */
 const v1 = {
+	supports: sharedSupports,
 	isEligible(attributes, innerBlocks, { innerHTML }) {
 		// v1 is eligible if the block DOES NOT have dsgo-lazy-icon class
 		// New blocks use dsgo-lazy-icon for frontend injection
