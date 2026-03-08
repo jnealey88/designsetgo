@@ -464,9 +464,58 @@
 	.dsgo-slider__track,
 	.dsgo-slider__track > .dsgo-slide,
 	.dsgo-slider__arrow,
-	.dsgo-slider__dot {
+	.dsgo-slider__dot,
+	.dsgo-slider__scroll-progress-bar {
 		transition: none !important;
 		animation: none !important;
+	}
+}
+
+// Scroll-driven horizontal mode
+.dsgo-slider-pin-spacer {
+	position: relative;
+	width: 100%;
+}
+
+.dsgo-slider--scroll-driven {
+	position: sticky;
+	top: 0;
+	overflow: hidden;
+
+	.dsgo-slider__track {
+		transition: none;
+		will-change: transform;
+	}
+
+	// Progress bar indicator
+	.dsgo-slider__scroll-progress {
+		position: absolute;
+		bottom: 16px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 120px;
+		height: 4px;
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 2px;
+		z-index: 10;
+		overflow: hidden;
+	}
+
+	.dsgo-slider__scroll-progress-bar {
+		height: 100%;
+		width: 0;
+		background: rgba(255, 255, 255, 0.9);
+		border-radius: 2px;
+		transition: width 0.05s linear;
+		will-change: width;
+	}
+}
+
+@media (max-width: 768px) {
+
+	.dsgo-slider--scroll-driven .dsgo-slider__scroll-progress {
+		width: 80px;
+		bottom: 12px;
 	}
 }
 

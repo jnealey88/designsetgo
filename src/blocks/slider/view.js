@@ -54,6 +54,7 @@ class DSGSlider {
 	parseConfig() {
 		const effect = this.slider.dataset.effect || 'slide';
 		const requiresSingleSlideEffect = SINGLE_SLIDE_EFFECTS.includes(effect);
+		const scrollDriven = this.slider.dataset.scrollDriven === 'true';
 
 		return {
 			slidesPerView: requiresSingleSlideEffect
@@ -70,24 +71,35 @@ class DSGSlider {
 				this.slider.dataset.transitionDuration || '0.5s',
 			transitionEasing:
 				this.slider.dataset.transitionEasing || 'ease-in-out',
-			autoplay: this.slider.dataset.autoplay === 'true',
+			autoplay: scrollDriven
+				? false
+				: this.slider.dataset.autoplay === 'true',
 			autoplayInterval:
 				parseInt(this.slider.dataset.autoplayInterval) || 3000,
 			pauseOnHover: this.slider.dataset.pauseOnHover === 'true',
 			pauseOnInteraction:
 				this.slider.dataset.pauseOnInteraction === 'true',
-			loop: this.slider.dataset.loop === 'true',
+			loop: scrollDriven
+				? false
+				: this.slider.dataset.loop === 'true',
 			draggable: this.slider.dataset.draggable === 'true',
 			swipeable: this.slider.dataset.swipeable === 'true',
 			freeMode: this.slider.dataset.freeMode === 'true',
 			centeredSlides: this.slider.dataset.centeredSlides === 'true',
-			showArrows: this.slider.dataset.showArrows === 'true',
-			showDots: this.slider.dataset.showDots === 'true',
+			showArrows: scrollDriven
+				? false
+				: this.slider.dataset.showArrows === 'true',
+			showDots: scrollDriven
+				? false
+				: this.slider.dataset.showDots === 'true',
 			mobileBreakpoint:
 				parseInt(this.slider.dataset.mobileBreakpoint) || 768,
 			tabletBreakpoint:
 				parseInt(this.slider.dataset.tabletBreakpoint) || 1024,
 			activeSlide: parseInt(this.slider.dataset.activeSlide) || 0,
+			scrollDriven,
+			scrollDrivenSpeed:
+				parseFloat(this.slider.dataset.scrollDrivenSpeed) || 1,
 		};
 	}
 
@@ -155,17 +167,22 @@ class DSGSlider {
 		});
 
 		// Initialize features
-		if (this.config.swipeable) {
-			this.initSwipe();
-		}
-		if (this.config.draggable) {
-			this.initDrag();
-		}
-		if (this.config.autoplay) {
-			this.observeVisibility();
+		if (this.config.scrollDriven) {
+			this.initScrollDriven();
+		} else {
+			if (this.config.swipeable) {
+				this.initSwipe();
+			}
+			if (this.config.draggable) {
+				this.initDrag();
+			}
+			if (this.config.autoplay) {
+				this.observeVisibility();
+			}
+
+			this.initKeyboard();
 		}
 
-		this.initKeyboard();
 		this.initResponsive();
 
 		// Check reduced motion preference
@@ -651,7 +668,12 @@ class DSGSlider {
 				if (!this.isDestroyed) {
 					// Performance: Recalculate dimensions on resize
 					this.updateDimensions();
-					this.goToSlide(this.currentIndex, false);
+					if (this.config.scrollDriven) {
+						this.updateScrollDrivenDimensions();
+						this.updateScrollDrivenPosition();
+					} else {
+						this.goToSlide(this.currentIndex, false);
+					}
 				}
 			}, 250);
 		};
@@ -727,6 +749,117 @@ class DSGSlider {
 	}
 
 	/**
+	 * Initialize scroll-driven horizontal mode
+	 * Wraps the slider in a pin spacer, makes slider sticky,
+	 * and maps vertical scroll progress to horizontal translateX
+	 */
+	initScrollDriven() {
+		// Create pin spacer wrapper
+		this.pinSpacer = document.createElement('div');
+		this.pinSpacer.className = 'dsgo-slider-pin-spacer';
+		this.slider.parentNode.insertBefore(this.pinSpacer, this.slider);
+		this.pinSpacer.appendChild(this.slider);
+
+		// Disable track transition for smooth scroll-driven animation
+		this.track.style.transition = 'none';
+
+		// Calculate and set dimensions
+		this.updateScrollDrivenDimensions();
+
+		// Build progress dots for scroll-driven mode
+		this.buildScrollDrivenDots();
+
+		// Bind scroll handler with requestAnimationFrame throttle
+		this.scrollDrivenTicking = false;
+		this.handleScrollDriven = () => {
+			if (!this.scrollDrivenTicking) {
+				this.scrollDrivenTicking = true;
+				requestAnimationFrame(() => {
+					this.updateScrollDrivenPosition();
+					this.scrollDrivenTicking = false;
+				});
+			}
+		};
+
+		window.addEventListener('scroll', this.handleScrollDriven, {
+			passive: true,
+		});
+
+		// Initial position
+		this.updateScrollDrivenPosition();
+	}
+
+	/**
+	 * Calculate dimensions for scroll-driven mode
+	 */
+	updateScrollDrivenDimensions() {
+		const sliderHeight = this.slider.offsetHeight;
+		const viewportWidth = this.viewport.offsetWidth;
+
+		// Total track width (all slides + gaps)
+		const slideCount = this.originalSlides.length;
+		const slideWidth = this.cachedSlideWidth || this.originalSlides[0].offsetWidth;
+		const gap = this.cachedGap || parseFloat(window.getComputedStyle(this.track).gap) || 0;
+		const totalTrackWidth = slideCount * slideWidth + (slideCount - 1) * gap;
+
+		// How much the track needs to scroll horizontally
+		this.scrollDrivenMaxOffset = Math.max(0, totalTrackWidth - viewportWidth);
+
+		// Total scroll distance for the pin spacer
+		// scrollDrivenSpeed multiplier controls how much vertical scroll maps to horizontal travel
+		const scrollDistance = this.scrollDrivenMaxOffset * this.config.scrollDrivenSpeed;
+
+		// Set pin spacer height: slider height + extra scroll room
+		this.pinSpacer.style.height = `${sliderHeight + scrollDistance}px`;
+	}
+
+	/**
+	 * Build progress indicator dots for scroll-driven mode
+	 */
+	buildScrollDrivenDots() {
+		const dotsContainer = document.createElement('div');
+		dotsContainer.className = 'dsgo-slider__scroll-progress';
+
+		const progressBar = document.createElement('div');
+		progressBar.className = 'dsgo-slider__scroll-progress-bar';
+		dotsContainer.appendChild(progressBar);
+
+		this.slider.appendChild(dotsContainer);
+		this.scrollProgressBar = progressBar;
+	}
+
+	/**
+	 * Update the horizontal position based on vertical scroll progress
+	 */
+	updateScrollDrivenPosition() {
+		if (!this.pinSpacer) {
+			return;
+		}
+
+		const spacerRect = this.pinSpacer.getBoundingClientRect();
+		const sliderHeight = this.slider.offsetHeight;
+		const scrollableDistance = this.pinSpacer.offsetHeight - sliderHeight;
+
+		if (scrollableDistance <= 0) {
+			return;
+		}
+
+		// Calculate progress: 0 when slider first pins, 1 when it unpins
+		// spacerRect.top is negative as user scrolls past it
+		const scrolledIntoSpacer = -spacerRect.top;
+		const progress = Math.max(0, Math.min(1, scrolledIntoSpacer / scrollableDistance));
+
+		// Map progress to horizontal offset
+		const offset = -(progress * this.scrollDrivenMaxOffset);
+		this.track.style.transform = `translate3d(${offset}px, 0, 0)`;
+
+		// Update progress bar
+		if (this.scrollProgressBar) {
+			this.scrollProgressBar.style.width = `${progress * 100}%`;
+		}
+	}
+
+	/**
 	 * Cleanup method to prevent memory leaks
 	 * Removes all event listeners and clears timers
 	 *
@@ -751,6 +884,20 @@ class DSGSlider {
 		// Remove resize listener
 		if (this.handleResize) {
 			window.removeEventListener('resize', this.handleResize);
+		}
+
+		// Remove scroll-driven listener
+		if (this.handleScrollDriven) {
+			window.removeEventListener('scroll', this.handleScrollDriven);
+		}
+
+		// Unwrap from pin spacer
+		if (this.pinSpacer && this.pinSpacer.parentNode) {
+			this.pinSpacer.parentNode.insertBefore(
+				this.slider,
+				this.pinSpacer
+			);
+			this.pinSpacer.remove();
 		}
 
 		// Mark as destroyed

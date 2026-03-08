@@ -42,6 +42,8 @@ export default function SliderSave({ attributes }) {
 		activeSlide,
 		styleVariation,
 		ariaLabel,
+		scrollDriven,
+		scrollDrivenSpeed,
 	} = attributes;
 
 	const requiresSingleSlideEffect = SINGLE_SLIDE_EFFECTS.includes(effect);
@@ -63,6 +65,7 @@ export default function SliderSave({ attributes }) {
 		'dsgo-slider--has-dots': showDots,
 		'dsgo-slider--centered': centeredSlides,
 		'dsgo-slider--free-mode': freeMode,
+		'dsgo-slider--scroll-driven': scrollDriven,
 	});
 
 	// Apply settings as CSS custom properties - MUST MATCH edit.js
@@ -123,6 +126,10 @@ export default function SliderSave({ attributes }) {
 		'data-mobile-breakpoint': mobileBreakpoint,
 		'data-tablet-breakpoint': tabletBreakpoint,
 		'data-active-slide': activeSlide,
+		...(scrollDriven && {
+			'data-scroll-driven': true,
+			'data-scroll-driven-speed': scrollDrivenSpeed,
+		}),
 		role: 'region',
 		'aria-label': ariaLabel || 'Image slider',
 		'aria-roledescription': 'slider',

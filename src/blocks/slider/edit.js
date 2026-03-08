@@ -65,6 +65,8 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 		tabletBreakpoint,
 		styleVariation,
 		ariaLabel,
+		scrollDriven,
+		scrollDrivenSpeed,
 	} = attributes;
 
 	// Get theme color palette and gradient settings
@@ -149,6 +151,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 		'dsgo-slider--has-dots': showDots,
 		'dsgo-slider--centered': centeredSlides,
 		'dsgo-slider--free-mode': freeMode,
+		'dsgo-slider--scroll-driven': scrollDriven,
 	});
 
 	const effectiveSlidesPerView = requiresSingleSlideEffect
@@ -834,6 +837,60 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 					initialOpen={false}
 				>
 					<ToggleControl
+						label={__('Scroll-Driven Horizontal', 'designsetgo')}
+						checked={scrollDriven}
+						onChange={(value) => {
+							const updates = { scrollDriven: value };
+							if (value) {
+								updates.autoplay = false;
+								updates.loop = false;
+								updates.effect = 'slide';
+							}
+							setAttributes(updates);
+						}}
+						help={
+							scrollDriven
+								? __(
+										'Vertical scrolling drives horizontal slide navigation. Autoplay and loop are disabled.',
+										'designsetgo'
+									)
+								: __(
+										'Enable to scroll through slides horizontally as the user scrolls down the page',
+										'designsetgo'
+									)
+						}
+						__nextHasNoMarginBottom
+					/>
+
+					{scrollDriven && (
+						<RangeControl
+							label={__('Scroll Speed', 'designsetgo')}
+							value={scrollDrivenSpeed}
+							onChange={(value) =>
+								setAttributes({ scrollDrivenSpeed: value })
+							}
+							min={0.5}
+							max={3}
+							step={0.5}
+							help={__(
+								'Controls how much scrolling is needed to traverse all slides. Higher = more scroll distance.',
+								'designsetgo'
+							)}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
+					)}
+
+					{scrollDriven && (
+						<Notice status="info" isDismissible={false}>
+							{__(
+								'Scroll-driven mode pins the slider in the viewport and uses vertical scroll to navigate horizontally through slides. Arrows, dots, autoplay, and loop are disabled.',
+								'designsetgo'
+							)}
+						</Notice>
+					)}
+
+					<ToggleControl
 						label={__('Loop', 'designsetgo')}
 						checked={loop}
 						onChange={(value) => setAttributes({ loop: value })}
@@ -842,6 +899,7 @@ export default function SliderEdit({ attributes, setAttributes, clientId }) {
 								? __('Infinite loop navigation', 'designsetgo')
 								: __('Stop at first/last slide', 'designsetgo')
 						}
+						disabled={scrollDriven}
 						__nextHasNoMarginBottom
 					/>
 

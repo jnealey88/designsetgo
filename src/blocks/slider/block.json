@@ -151,6 +151,14 @@
 		"ariaLabel": {
 			"type": "string",
 			"default": ""
+		},
+		"scrollDriven": {
+			"type": "boolean",
+			"default": false
+		},
+		"scrollDrivenSpeed": {
+			"type": "number",
+			"default": 1
 		}
 	},
 	"providesContext": {
