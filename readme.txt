@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.35
+Stable tag: 2.0.36
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,22 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.36 - 2026-03-07 =
+**New Features:**
+* New: Redirect visitors to a custom URL after successful form submission — perfect for thank-you pages, upsells, or next steps
+* New: Phone field country code dropdown is now compact and easier to use on all screen sizes
+
+**Improvements:**
+* Enhancement: Simplified abilities system from ~110 to 14 focused abilities for faster, more reliable AI-powered block insertion
+* Enhancement: WordPress 7.0 compatibility — stabilized block support keys for seamless upgrades
+
+**Bug Fixes:**
+* Fix: Maps now show a fallback location instead of a blank map when an address can't be geocoded
+* Fix: Shape divider colors now apply correctly in all themes
+* Fix: Form submit button no longer flickers when redirect is enabled
+* Fix: Form fields properly disable when AJAX submission is turned off
+* Fix: Redirect URLs are validated to prevent unsafe protocols
 
 = 2.0.35 - 2026-03-06 =
 **New Features:**

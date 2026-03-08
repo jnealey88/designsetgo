@@ -314,6 +314,19 @@ class REST_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response or error.
 	 */
 	public function get_post_markdown( \WP_REST_Request $request ) {
+		// Rate limit: 30 requests per minute per IP.
+		$ip        = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ?? 'unknown' ) );
+		$rate_key  = 'dsgo_llms_rate_' . md5( $ip );
+		$count     = (int) get_transient( $rate_key );
+		if ( $count > 30 ) {
+			return new \WP_Error(
+				'rate_limited',
+				__( 'Too many requests. Please try again later.', 'designsetgo' ),
+				array( 'status' => 429 )
+			);
+		}
+		set_transient( $rate_key, $count + 1, MINUTE_IN_SECONDS );
+
 		$post_id = absint( $request->get_param( 'post_id' ) );
 		$post    = get_post( $post_id );
 

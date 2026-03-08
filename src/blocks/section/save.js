@@ -53,9 +53,7 @@ export default function SectionSave({ attributes }) {
 	// Prefer inline style (custom color) over preset slug
 	const sectionBackgroundColor =
 		attributes.style?.color?.background ||
-		(backgroundColor
-			? `var(--wp--preset--color--${backgroundColor})`
-			: '');
+		(backgroundColor ? `var(--wp--preset--color--${backgroundColor})` : '');
 
 	// Get section's effective text color for shape divider background default
 	const sectionTextColor =
@@ -136,9 +134,8 @@ export default function SectionSave({ attributes }) {
 					sectionBackgroundColor
 				}
 				backgroundColor={
-					convertPresetToCSSVar(
-						shapeDividerTopBackgroundColor
-					) || sectionTextColor
+					convertPresetToCSSVar(shapeDividerTopBackgroundColor) ||
+					sectionTextColor
 				}
 				height={shapeDividerTopHeight}
 				width={shapeDividerTopWidth}
@@ -155,9 +152,8 @@ export default function SectionSave({ attributes }) {
 					sectionBackgroundColor
 				}
 				backgroundColor={
-					convertPresetToCSSVar(
-						shapeDividerBottomBackgroundColor
-					) || sectionTextColor
+					convertPresetToCSSVar(shapeDividerBottomBackgroundColor) ||
+					sectionTextColor
 				}
 				height={shapeDividerBottomHeight}
 				width={shapeDividerBottomWidth}

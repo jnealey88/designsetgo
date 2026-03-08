@@ -12,6 +12,16 @@ import { sanitizeColor } from './utils/sanitize-color';
 /**
  * Old ShapeDivider component for v3 deprecation.
  * Uses currentColor fallback (the old behavior before background color inheritance).
+ * @param {Object}  root0                 Component props
+ * @param {string}  root0.shape           Shape name
+ * @param {string}  root0.color           Fill color
+ * @param {string}  root0.backgroundColor Background color
+ * @param {number}  root0.height          Shape height
+ * @param {number}  root0.width           Shape width percentage
+ * @param {boolean} root0.flipX           Flip horizontal
+ * @param {boolean} root0.flipY           Flip vertical
+ * @param {boolean} root0.front           Bring to front
+ * @param {string}  root0.position        Position (top/bottom)
  */
 function OldShapeDivider({
 	shape,
@@ -92,6 +102,16 @@ function OldShapeDivider({
  * Same as current ShapeDivider but used inline for deprecation stability.
  * This version uses background color inheritance for shape fill but has
  * no text color inheritance for shape background.
+ * @param {Object}  root0                 Component props
+ * @param {string}  root0.shape           Shape name
+ * @param {string}  root0.color           Fill color
+ * @param {string}  root0.backgroundColor Background color
+ * @param {number}  root0.height          Shape height
+ * @param {number}  root0.width           Shape width percentage
+ * @param {boolean} root0.flipX           Flip horizontal
+ * @param {boolean} root0.flipY           Flip vertical
+ * @param {boolean} root0.front           Bring to front
+ * @param {string}  root0.position        Position (top/bottom)
  */
 function V4ShapeDivider({
 	shape,
@@ -269,8 +289,7 @@ const v4 = {
 					),
 				}),
 				...(overlayColor && {
-					'--dsgo-overlay-color':
-						convertPresetToCSSVar(overlayColor),
+					'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
 					'--dsgo-overlay-opacity': '0.8',
 				}),
 			},
@@ -435,8 +454,7 @@ const v3 = {
 					),
 				}),
 				...(overlayColor && {
-					'--dsgo-overlay-color':
-						convertPresetToCSSVar(overlayColor),
+					'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
 					'--dsgo-overlay-opacity': '0.8',
 				}),
 			},

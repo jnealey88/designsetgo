@@ -27,13 +27,15 @@ import { convertPresetToCSSVar } from '../../../utils/convert-preset-to-css-var'
 /**
  * Shape preview component showing a small preview of the selected shape
  *
- * @param {Object}  props                 Component props
- * @param {string}  props.shape           Shape name
- * @param {string}  props.color           Fill color
- * @param {string}  props.backgroundColor Background color behind the shape
- * @param {boolean} props.flipX           Flip horizontally
- * @param {boolean} props.flipY           Flip vertically
- * @param {boolean} props.isBottom        Whether this is a bottom divider
+ * @param {Object}  props                        Component props
+ * @param {string}  props.shape                  Shape name
+ * @param {string}  props.color                  Fill color
+ * @param {string}  props.backgroundColor        Background color behind the shape
+ * @param {boolean} props.flipX                  Flip horizontally
+ * @param {boolean} props.flipY                  Flip vertically
+ * @param {boolean} props.isBottom               Whether this is a bottom divider
+ * @param {string}  props.sectionBackgroundColor Section background color
+ * @param {string}  props.sectionTextColor       Section text color
  * @return {JSX.Element|null} Preview element
  */
 function ShapePreview({
@@ -78,7 +80,10 @@ function ShapePreview({
 				height: '40px',
 				overflow: 'hidden',
 				borderRadius: '4px',
-				backgroundColor: safeBackgroundColor || sanitizeColor(sectionTextColor) || '#f0f0f0',
+				backgroundColor:
+					safeBackgroundColor ||
+					sanitizeColor(sectionTextColor) ||
+					'#f0f0f0',
 				marginBottom: '12px',
 			}}
 		>
@@ -106,18 +111,20 @@ function ShapePreview({
  * Renders controls for a single shape divider (top or bottom)
  * Note: Color controls are in the main color panel, not here.
  *
- * @param {Object}   props                 Component props
- * @param {string}   props.title           Panel title
- * @param {string}   props.shape           Selected shape value
- * @param {string}   props.color           Shape color (for preview only)
- * @param {string}   props.backgroundColor Background color (for preview only)
- * @param {number}   props.height          Shape height
- * @param {number}   props.width           Shape width percentage
- * @param {boolean}  props.flipX           Flip horizontal
- * @param {boolean}  props.flipY           Flip vertical
- * @param {boolean}  props.front           Bring to front
- * @param {boolean}  props.isBottom        Whether this is a bottom divider
- * @param {Function} props.onChange        Callback for attribute changes
+ * @param {Object}   props                        Component props
+ * @param {string}   props.title                  Panel title
+ * @param {string}   props.shape                  Selected shape value
+ * @param {string}   props.color                  Shape color (for preview only)
+ * @param {string}   props.backgroundColor        Background color (for preview only)
+ * @param {number}   props.height                 Shape height
+ * @param {number}   props.width                  Shape width percentage
+ * @param {boolean}  props.flipX                  Flip horizontal
+ * @param {boolean}  props.flipY                  Flip vertical
+ * @param {boolean}  props.front                  Bring to front
+ * @param {boolean}  props.isBottom               Whether this is a bottom divider
+ * @param {Function} props.onChange               Callback for attribute changes
+ * @param {string}   props.sectionBackgroundColor Section background color
+ * @param {string}   props.sectionTextColor       Section text color
  * @return {JSX.Element} Shape divider panel
  */
 function ShapeDividerPanel({
@@ -224,9 +231,11 @@ function ShapeDividerPanel({
  * Shape Divider Controls
  * Note: Color controls are in the main color panel (InspectorControls group="color")
  *
- * @param {Object}   props               Component props
- * @param {Object}   props.attributes    Block attributes
- * @param {Function} props.setAttributes Function to update attributes
+ * @param {Object}   props                        Component props
+ * @param {Object}   props.attributes             Block attributes
+ * @param {Function} props.setAttributes          Function to update attributes
+ * @param {string}   props.sectionBackgroundColor Section background color
+ * @param {string}   props.sectionTextColor       Section text color
  * @return {JSX.Element} Shape divider controls
  */
 export default function ShapeDividerControls({

@@ -364,7 +364,12 @@ class Draft_Mode {
 			}
 
 			foreach ( $values as $value ) {
-				add_post_meta( $target_id, $key, maybe_unserialize( $value ) );
+				$unserialized = maybe_unserialize( $value );
+				// Reject PHP objects to prevent object injection.
+				if ( is_object( $unserialized ) ) {
+					continue;
+				}
+				add_post_meta( $target_id, $key, $unserialized );
 			}
 		}
 	}
@@ -415,7 +420,12 @@ class Draft_Mode {
 			delete_post_meta( $original_id, $key );
 
 			foreach ( $values as $value ) {
-				add_post_meta( $original_id, $key, maybe_unserialize( $value ) );
+				$unserialized = maybe_unserialize( $value );
+				// Reject PHP objects to prevent object injection.
+				if ( is_object( $unserialized ) ) {
+					continue;
+				}
+				add_post_meta( $original_id, $key, $unserialized );
 			}
 		}
 	}

@@ -281,7 +281,7 @@ class Loader {
 					if ( false !== $raw ) {
 						$decompressed = @gzuncompress( $raw );
 						if ( false !== $decompressed ) {
-							$patterns_data = maybe_unserialize( $decompressed );
+							$patterns_data = json_decode( $decompressed, true );
 						}
 					}
 				} elseif ( isset( $cached['patterns'] ) && is_array( $cached['patterns'] ) ) {
@@ -363,7 +363,7 @@ class Loader {
 			/** This filter is documented in includes/patterns/class-loader.php */
 			$cache_duration = (int) apply_filters( 'designsetgo_pattern_cache_duration', DAY_IN_SECONDS );
 
-			$compressed = base64_encode( gzcompress( serialize( $patterns ) ) );
+			$compressed = base64_encode( gzcompress( wp_json_encode( $patterns ) ) );
 
 			set_transient(
 				$transient_key,
