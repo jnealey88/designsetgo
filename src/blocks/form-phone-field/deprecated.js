@@ -127,6 +127,122 @@ function getPlaceholderText(placeholder, phoneFormat) {
 }
 
 /**
+ * Version 3: Inline country code <option> elements without `selected`
+ * or `defaultvalue` attributes. Produced when wp_kses_post or the
+ * site-designer-api strips data-dsgo-country-code / aria-label from
+ * the current save format and hydrates the <select> with inline options.
+ */
+const v3 = {
+	supports: sharedSupports,
+	attributes: sharedAttributes,
+
+	isEligible(attributes, innerBlocks, { innerHTML }) {
+		// Has country code class, inline options, but no data-dsgo-country-code,
+		// no `selected`, and no `defaultvalue`
+		return (
+			innerHTML &&
+			innerHTML.includes('dsgo-form-field__country-code') &&
+			innerHTML.includes('<option') &&
+			!innerHTML.includes('data-dsgo-country-code') &&
+			!innerHTML.includes('selected') &&
+			!innerHTML.includes('defaultvalue')
+		);
+	},
+
+	save({ attributes }) {
+		const {
+			fieldName,
+			label,
+			placeholder,
+			helpText,
+			required,
+			defaultValue,
+			phoneFormat,
+			showCountryCode,
+			autoFormat,
+			fieldWidth,
+		} = attributes;
+
+		const blockProps = getSaveBlockProps(fieldWidth);
+		const fieldId = `field-${fieldName}`;
+
+		return (
+			<div {...blockProps}>
+				<label htmlFor={fieldId} className="dsgo-form-field__label">
+					{label}
+					{required && (
+						<span
+							className="dsgo-form-field__required"
+							aria-label="required"
+						>
+							*
+						</span>
+					)}
+				</label>
+
+				<div
+					className="dsgo-form-field__phone-wrapper"
+					style={{ display: 'flex', gap: '0.5rem' }}
+					data-auto-format={autoFormat}
+				>
+					{showCountryCode && (
+						<select
+							name={`${fieldName}_country_code`}
+							className="dsgo-form-field__country-code"
+							style={{ minWidth: '85px', flexShrink: 0 }}
+						>
+							<option value="+1">+1 (US/Canada)</option>
+							<option value="+44">+44 (UK)</option>
+							<option value="+61">+61 (Australia)</option>
+							<option value="+33">+33 (France)</option>
+							<option value="+49">+49 (Germany)</option>
+							<option value="+81">+81 (Japan)</option>
+							<option value="+86">+86 (China)</option>
+							<option value="+91">+91 (India)</option>
+							<option value="+7">+7 (Russia)</option>
+							<option value="+34">+34 (Spain)</option>
+							<option value="+39">+39 (Italy)</option>
+							<option value="+52">+52 (Mexico)</option>
+							<option value="+55">+55 (Brazil)</option>
+						</select>
+					)}
+					<input
+						type="tel"
+						id={fieldId}
+						name={fieldName}
+						className="dsgo-form-field__input"
+						placeholder={getPlaceholderText(
+							placeholder,
+							phoneFormat
+						)}
+						required={required || undefined}
+						defaultValue={defaultValue || undefined}
+						pattern={getPattern(phoneFormat)}
+						aria-describedby={
+							helpText ? `${fieldId}-help` : undefined
+						}
+						aria-required={required ? 'true' : undefined}
+						data-field-type="tel"
+						data-phone-format={phoneFormat}
+						style={{ flex: 1 }}
+					/>
+				</div>
+
+				{helpText && (
+					<p id={`${fieldId}-help`} className="dsgo-form-field__help">
+						{helpText}
+					</p>
+				)}
+			</div>
+		);
+	},
+
+	migrate(attributes) {
+		return attributes;
+	},
+};
+
+/**
  * Version 2: Used `selected` attribute on individual <option> elements
  * instead of defaultValue on <select>. Still hardcoded 13 country codes
  * as <option> children.
@@ -417,4 +533,4 @@ const v1 = {
 	},
 };
 
-export default [v2, v1];
+export default [v3, v2, v1];

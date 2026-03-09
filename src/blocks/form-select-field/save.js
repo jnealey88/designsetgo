@@ -64,11 +64,13 @@ export default function FormSelectFieldSave({ attributes }) {
 				data-field-type="select"
 			>
 				{placeholder && <option value="">{placeholder}</option>}
-				{options.map((option, index) => (
-					<option key={index} value={option.value}>
-						{option.label}
-					</option>
-				))}
+				{options
+					.filter((option) => !(placeholder && option.value === ''))
+					.map((option, index) => (
+						<option key={index} value={option.value}>
+							{option.label}
+						</option>
+					))}
 			</select>
 
 			{helpText && (
