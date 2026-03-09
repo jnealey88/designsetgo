@@ -9,7 +9,6 @@ const CSS_KEYWORDS = new Set([
 	'revert',
 	'revert-layer',
 	'currentcolor',
-	'currentColor',
 	'none',
 	'auto',
 	'normal',
@@ -18,7 +17,7 @@ const CSS_KEYWORDS = new Set([
 /**
  * Values that start with these prefixes are already valid CSS and should pass through.
  */
-const CSS_VALUE_PREFIX = /^(#|rgb|hsl|var\(|url\(|\d)/;
+const CSS_VALUE_PREFIX = /^(#|rgb|hsl|hwb|lab|lch|oklch|oklab|color\(|var\(|url\(|\d)/;
 
 /**
  * Convert WordPress preset format to CSS variable.
@@ -70,7 +69,7 @@ export function convertPresetToCSSVar(value, presetType) {
 	if (
 		presetType &&
 		!CSS_VALUE_PREFIX.test(value) &&
-		!CSS_KEYWORDS.has(value)
+		!CSS_KEYWORDS.has(value.toLowerCase())
 	) {
 		return `var(--wp--preset--${presetType}--${value})`;
 	}
