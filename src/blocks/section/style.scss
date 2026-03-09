@@ -520,7 +520,7 @@ $shape-divider-bleed: 3px;
 	// Center the shape when width > 100%, offset by bleed for edge coverage
 	left: calc(var(--dsgo-shape-offset, 0px) - #{$shape-divider-bleed});
 
-	// Apply background color if set
+	// Default background for shapes without a position modifier
 	background-color: var(--dsgo-shape-background, transparent);
 
 	svg {
@@ -531,13 +531,27 @@ $shape-divider-bleed: 3px;
 	}
 
 	// Top position - extend above section edge by bleed amount
+	// Gradient covers sub-pixel SVG anti-aliasing gap at the section-facing (bottom) edge
 	&--top {
 		top: -#{$shape-divider-bleed};
+		background: linear-gradient(
+			to top,
+			var(--dsgo-shape-color, transparent) 0,
+			var(--dsgo-shape-color, transparent) 2px,
+			var(--dsgo-shape-background, transparent) 2px
+		);
 	}
 
 	// Bottom position - extend below section edge by bleed amount
+	// Gradient covers sub-pixel SVG anti-aliasing gap at the section-facing (top) edge
 	&--bottom {
 		bottom: -#{$shape-divider-bleed};
+		background: linear-gradient(
+			to bottom,
+			var(--dsgo-shape-color, transparent) 0,
+			var(--dsgo-shape-color, transparent) 2px,
+			var(--dsgo-shape-background, transparent) 2px
+		);
 	}
 
 	// Bring to front - display above content
