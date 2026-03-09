@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.37
+Stable tag: 2.0.38
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,10 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.38 - 2026-03-08 =
+**Bug Fixes:**
+* Fix: Resolve React DOM removeChild error in editor on pages with form blocks by moving render-time setAttributes calls to useEffect in all form field blocks
 
 = 2.0.37 - 2026-03-08 =
 **New Blocks:**
