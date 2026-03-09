@@ -484,6 +484,7 @@
 	position: sticky;
 	top: 0;
 	overflow: hidden;
+	padding-bottom: 36px; // Room for the scroll progress bar (16px bottom + 4px bar + 16px breathing)
 
 	.dsgo-slider__track {
 		transition: none;
