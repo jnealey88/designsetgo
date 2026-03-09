@@ -272,26 +272,23 @@ describe('Utility Functions', () => {
 		});
 
 		test('does not convert CSS Color Level 4 functions', () => {
-			expect(
-				convertPresetToCSSVar('oklch(0.5 0.2 150)', 'color')
-			).toBe('oklch(0.5 0.2 150)');
-			expect(
-				convertPresetToCSSVar('oklab(0.5 -0.1 0.1)', 'color')
-			).toBe('oklab(0.5 -0.1 0.1)');
+			expect(convertPresetToCSSVar('oklch(0.5 0.2 150)', 'color')).toBe(
+				'oklch(0.5 0.2 150)'
+			);
+			expect(convertPresetToCSSVar('oklab(0.5 -0.1 0.1)', 'color')).toBe(
+				'oklab(0.5 -0.1 0.1)'
+			);
 			expect(convertPresetToCSSVar('lab(50% 20 -30)', 'color')).toBe(
 				'lab(50% 20 -30)'
 			);
 			expect(convertPresetToCSSVar('lch(50% 30 270)', 'color')).toBe(
 				'lch(50% 30 270)'
 			);
+			expect(convertPresetToCSSVar('hwb(150 20% 30%)', 'color')).toBe(
+				'hwb(150 20% 30%)'
+			);
 			expect(
-				convertPresetToCSSVar('hwb(150 20% 30%)', 'color')
-			).toBe('hwb(150 20% 30%)');
-			expect(
-				convertPresetToCSSVar(
-					'color(display-p3 0.5 0.2 0.8)',
-					'color'
-				)
+				convertPresetToCSSVar('color(display-p3 0.5 0.2 0.8)', 'color')
 			).toBe('color(display-p3 0.5 0.2 0.8)');
 		});
 
@@ -299,9 +296,7 @@ describe('Utility Functions', () => {
 			expect(convertPresetToCSSVar('Transparent', 'color')).toBe(
 				'Transparent'
 			);
-			expect(convertPresetToCSSVar('INHERIT', 'color')).toBe(
-				'INHERIT'
-			);
+			expect(convertPresetToCSSVar('INHERIT', 'color')).toBe('INHERIT');
 			expect(convertPresetToCSSVar('currentColor', 'color')).toBe(
 				'currentColor'
 			);

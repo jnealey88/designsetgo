@@ -1,6 +1,9 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
-import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
+import {
+	convertColorToCSSVar,
+	convertPresetToCSSVar,
+} from '../../utils/convert-preset-to-css-var';
 
 export default function SlideSave({ attributes }) {
 	const {

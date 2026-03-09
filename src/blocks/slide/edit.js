@@ -23,7 +23,10 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
+import {
+	convertColorToCSSVar,
+	convertPresetToCSSVar,
+} from '../../utils/convert-preset-to-css-var';
 
 export default function SlideEdit({
 	attributes,
