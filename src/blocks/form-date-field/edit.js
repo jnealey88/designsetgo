@@ -12,6 +12,7 @@ import {
 	ToggleControl,
 	SelectControl,
 } from '@wordpress/components';
+import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
@@ -33,9 +34,11 @@ export default function FormDateFieldEdit({
 	} = attributes;
 
 	// Generate field name from clientId if empty
-	if (!fieldName) {
-		setAttributes({ fieldName: `date-${clientId.slice(0, 8)}` });
-	}
+	useEffect(() => {
+		if (!fieldName) {
+			setAttributes({ fieldName: `date-${clientId.slice(0, 8)}` });
+		}
+	}, [fieldName, clientId, setAttributes]);
 
 	// Get context values from parent form
 	const fieldBackgroundColor =

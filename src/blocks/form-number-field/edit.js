@@ -14,6 +14,7 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- NumberControl is stable in practice
 	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
+import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
@@ -38,9 +39,11 @@ export default function FormNumberFieldEdit({
 	} = attributes;
 
 	// Generate field name from clientId if empty
-	if (!fieldName) {
-		setAttributes({ fieldName: `number-${clientId.slice(0, 8)}` });
-	}
+	useEffect(() => {
+		if (!fieldName) {
+			setAttributes({ fieldName: `number-${clientId.slice(0, 8)}` });
+		}
+	}, [fieldName, clientId, setAttributes]);
 
 	// Get context values from parent form
 	const fieldBackgroundColor =
