@@ -31,7 +31,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 import { validateCSSLength } from '../../utils/css-generator';
 
 export default function FormBuilderEdit({
@@ -130,10 +130,10 @@ export default function FormBuilderEdit({
 		'--dsgo-form-field-spacing': fieldSpacing,
 		'--dsgo-form-input-height': inputHeight,
 		'--dsgo-form-input-padding': inputPadding,
-		'--dsgo-form-label-color': convertPresetToCSSVar(fieldLabelColor),
+		'--dsgo-form-label-color': convertColorToCSSVar(fieldLabelColor),
 		'--dsgo-form-border-color':
-			convertPresetToCSSVar(fieldBorderColor) || '#d1d5db',
-		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
+			convertColorToCSSVar(fieldBorderColor) || '#d1d5db',
+		'--dsgo-form-field-bg': convertColorToCSSVar(fieldBackgroundColor),
 		'--dsgo-form-border-radius': validateCSSLength(fieldBorderRadius),
 		// Button colors now applied as inline styles on button element
 	};
@@ -883,12 +883,12 @@ export default function FormBuilderEdit({
 							disabled
 							style={{
 								...(submitButtonColor && {
-									color: convertPresetToCSSVar(
+									color: convertColorToCSSVar(
 										submitButtonColor
 									),
 								}),
 								...(submitButtonBackgroundColor && {
-									backgroundColor: convertPresetToCSSVar(
+									backgroundColor: convertColorToCSSVar(
 										submitButtonBackgroundColor
 									),
 								}),
@@ -902,13 +902,13 @@ export default function FormBuilderEdit({
 								}),
 								...(submitButtonHoverBackgroundColor && {
 									'--dsgo-button-hover-bg':
-										convertPresetToCSSVar(
+										convertColorToCSSVar(
 											submitButtonHoverBackgroundColor
 										),
 								}),
 								...(submitButtonHoverColor && {
 									'--dsgo-button-hover-color':
-										convertPresetToCSSVar(
+										convertColorToCSSVar(
 											submitButtonHoverColor
 										),
 								}),
@@ -927,12 +927,12 @@ export default function FormBuilderEdit({
 							disabled
 							style={{
 								...(submitButtonColor && {
-									color: convertPresetToCSSVar(
+									color: convertColorToCSSVar(
 										submitButtonColor
 									),
 								}),
 								...(submitButtonBackgroundColor && {
-									backgroundColor: convertPresetToCSSVar(
+									backgroundColor: convertColorToCSSVar(
 										submitButtonBackgroundColor
 									),
 								}),
@@ -946,13 +946,13 @@ export default function FormBuilderEdit({
 								}),
 								...(submitButtonHoverBackgroundColor && {
 									'--dsgo-button-hover-bg':
-										convertPresetToCSSVar(
+										convertColorToCSSVar(
 											submitButtonHoverBackgroundColor
 										),
 								}),
 								...(submitButtonHoverColor && {
 									'--dsgo-button-hover-color':
-										convertPresetToCSSVar(
+										convertColorToCSSVar(
 											submitButtonHoverColor
 										),
 								}),

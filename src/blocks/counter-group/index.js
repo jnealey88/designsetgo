@@ -33,7 +33,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 import './editor.scss';
 import './style.scss';
 
@@ -78,7 +78,7 @@ function CounterGroupEdit({ attributes, setAttributes, clientId }) {
 			'--dsgo-counter-gap': gap,
 			// Apply hover color for child Counter blocks to inherit
 			...(hoverColor && {
-				'--dsgo-counter-hover-color': convertPresetToCSSVar(hoverColor),
+				'--dsgo-counter-hover-color': convertColorToCSSVar(hoverColor),
 			}),
 		},
 	});

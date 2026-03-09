@@ -3,7 +3,7 @@
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Save component for the Scroll Accordion Item block.
@@ -19,7 +19,7 @@ export default function Save({ attributes }) {
 	// Apply overlay styles when color is set
 	const overlayStyles = overlayColor
 		? {
-				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
+				'--dsgo-overlay-color': convertColorToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': '0.8',
 			}
 		: {};

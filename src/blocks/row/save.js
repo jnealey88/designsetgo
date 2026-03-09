@@ -8,7 +8,10 @@
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import {
+	convertPresetToCSSVar,
+	convertColorToCSSVar,
+} from '../../utils/convert-preset-to-css-var';
 
 /**
  * Convert WordPress vertical alignment value to CSS align-items value
@@ -72,24 +75,23 @@ export default function RowSave({ attributes }) {
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsgo-hover-bg-color':
-					convertPresetToCSSVar(hoverBackgroundColor),
+					convertColorToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-hover-text-color':
-					convertPresetToCSSVar(hoverTextColor),
+				'--dsgo-hover-text-color': convertColorToCSSVar(hoverTextColor),
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+				'--dsgo-parent-hover-icon-bg': convertColorToCSSVar(
 					hoverIconBackgroundColor
 				),
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+				'--dsgo-parent-hover-button-bg': convertColorToCSSVar(
 					hoverButtonBackgroundColor
 				),
 			}),
 			...(overlayColor && {
-				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
+				'--dsgo-overlay-color': convertColorToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': '0.8',
 			}),
 		},

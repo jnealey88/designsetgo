@@ -32,7 +32,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Icon Button Edit Component
@@ -156,14 +156,14 @@ export default function IconButtonEdit({
 		}),
 		...(hoverBackgroundColor && {
 			'--dsgo-button-hover-bg':
-				convertPresetToCSSVar(hoverBackgroundColor),
+				convertColorToCSSVar(hoverBackgroundColor),
 		}),
 		...(hoverTextColor && {
-			'--dsgo-button-hover-color': convertPresetToCSSVar(hoverTextColor),
+			'--dsgo-button-hover-color': convertColorToCSSVar(hoverTextColor),
 		}),
 		...(parentHoverButtonBg && {
 			'--dsgo-parent-hover-button-bg':
-				convertPresetToCSSVar(parentHoverButtonBg),
+				convertColorToCSSVar(parentHoverButtonBg),
 		}),
 	};
 

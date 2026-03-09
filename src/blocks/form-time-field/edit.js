@@ -16,7 +16,7 @@ import {
 } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function FormTimeFieldEdit({
 	attributes,
@@ -50,7 +50,7 @@ export default function FormTimeFieldEdit({
 	const fieldClasses = classnames('dsgo-form-field', 'dsgo-form-field--time');
 
 	const fieldStyles = {
-		'--dsgo-form-field-bg': convertPresetToCSSVar(fieldBackgroundColor),
+		'--dsgo-form-field-bg': convertColorToCSSVar(fieldBackgroundColor),
 	};
 
 	const blockProps = useBlockProps({

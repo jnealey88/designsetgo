@@ -21,7 +21,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Edit component for the Scroll Accordion Item block.
@@ -40,7 +40,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Apply overlay styles when color is set
 	const overlayStyles = overlayColor
 		? {
-				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
+				'--dsgo-overlay-color': convertColorToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': '0.8',
 			}
 		: {};

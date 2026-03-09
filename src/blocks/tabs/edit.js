@@ -28,7 +28,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 const ALLOWED_BLOCKS = ['designsetgo/tab'];
 
@@ -147,34 +147,32 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		style: {
 			'--dsgo-tabs-gap': gap,
 			...(tabColor && {
-				'--dsgo-tab-color': convertPresetToCSSVar(tabColor),
+				'--dsgo-tab-color': convertColorToCSSVar(tabColor),
 			}),
 			...(tabBackgroundColor && {
-				'--dsgo-tab-bg': convertPresetToCSSVar(tabBackgroundColor),
+				'--dsgo-tab-bg': convertColorToCSSVar(tabBackgroundColor),
 			}),
 			...(tabContentBackgroundColor && {
-				'--dsgo-tab-content-bg': convertPresetToCSSVar(
+				'--dsgo-tab-content-bg': convertColorToCSSVar(
 					tabContentBackgroundColor
 				),
 			}),
 			...(activeTabColor && {
-				'--dsgo-tab-color-active':
-					convertPresetToCSSVar(activeTabColor),
+				'--dsgo-tab-color-active': convertColorToCSSVar(activeTabColor),
 			}),
 			...(activeTabBackgroundColor && {
-				'--dsgo-tab-bg-active': convertPresetToCSSVar(
+				'--dsgo-tab-bg-active': convertColorToCSSVar(
 					activeTabBackgroundColor
 				),
 			}),
 			...(tabBorderColor && {
-				'--dsgo-tab-border-color':
-					convertPresetToCSSVar(tabBorderColor),
+				'--dsgo-tab-border-color': convertColorToCSSVar(tabBorderColor),
 			}),
 			...(tabHoverColor && {
-				'--dsgo-tab-color-hover': convertPresetToCSSVar(tabHoverColor),
+				'--dsgo-tab-color-hover': convertColorToCSSVar(tabHoverColor),
 			}),
 			...(tabHoverBackgroundColor && {
-				'--dsgo-tab-bg-hover': convertPresetToCSSVar(
+				'--dsgo-tab-bg-hover': convertColorToCSSVar(
 					tabHoverBackgroundColor
 				),
 			}),

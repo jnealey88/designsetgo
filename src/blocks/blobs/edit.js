@@ -27,7 +27,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 	const wrapperRef = useRef(null);
@@ -442,7 +442,7 @@ export default function BlobsEdit({ attributes, setAttributes, clientId }) {
 							className="dsgo-blobs__overlay"
 							style={{
 								backgroundColor:
-									convertPresetToCSSVar(overlayColor),
+									convertColorToCSSVar(overlayColor),
 								opacity: overlayOpacity / 100,
 							}}
 						/>

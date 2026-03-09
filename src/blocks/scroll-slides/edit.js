@@ -15,7 +15,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import './editor.scss';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 import ScrollSlidesPlaceholder from './components/ScrollSlidesPlaceholder';
 import ScrollSlidesInspector from './components/ScrollSlidesInspector';
 
@@ -116,15 +116,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		style: {
 			minHeight: editorHeight,
 			...(overlayColor && {
-				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
+				'--dsgo-overlay-color': convertColorToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': '0.8',
 			}),
 			...(navColor && {
-				'--dsgo-nav-color': convertPresetToCSSVar(navColor),
+				'--dsgo-nav-color': convertColorToCSSVar(navColor),
 			}),
 			...(navActiveColor && {
-				'--dsgo-nav-active-color':
-					convertPresetToCSSVar(navActiveColor),
+				'--dsgo-nav-active-color': convertColorToCSSVar(navActiveColor),
 			}),
 		},
 	});

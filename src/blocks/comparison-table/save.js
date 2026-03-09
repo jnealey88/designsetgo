@@ -7,7 +7,7 @@
 
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, RichText } from '@wordpress/block-editor';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Save component for the Comparison Table block
@@ -43,16 +43,16 @@ export default function ComparisonTableSave({ attributes }) {
 		style: {
 			...(featuredColumnColor && {
 				'--dsgo-comparison-featured-color':
-					convertPresetToCSSVar(featuredColumnColor),
+					convertColorToCSSVar(featuredColumnColor),
 			}),
 			...(headerBackgroundColor && {
-				'--dsgo-comparison-header-bg': convertPresetToCSSVar(
+				'--dsgo-comparison-header-bg': convertColorToCSSVar(
 					headerBackgroundColor
 				),
 			}),
 			...(headerTextColor && {
 				'--dsgo-comparison-header-text':
-					convertPresetToCSSVar(headerTextColor),
+					convertColorToCSSVar(headerTextColor),
 			}),
 		},
 	});

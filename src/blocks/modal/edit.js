@@ -30,7 +30,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function ModalEdit({ attributes, setAttributes, clientId }) {
 	const {
@@ -241,7 +241,7 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 				<div
 					className="dsgo-modal-editor-preview__backdrop"
 					style={{
-						backgroundColor: convertPresetToCSSVar(overlayColor),
+						backgroundColor: convertColorToCSSVar(overlayColor),
 						opacity: overlayOpacity / 100,
 					}}
 				/>
@@ -255,11 +255,11 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 									width: `${closeButtonSize}px`,
 									height: `${closeButtonSize}px`,
 									color:
-										convertPresetToCSSVar(
+										convertColorToCSSVar(
 											closeButtonIconColor
 										) || undefined,
 									backgroundColor:
-										convertPresetToCSSVar(
+										convertColorToCSSVar(
 											closeButtonBgColor
 										) || undefined,
 								}}
@@ -302,11 +302,11 @@ export default function ModalEdit({ attributes, setAttributes, clientId }) {
 										width: `${closeButtonSize}px`,
 										height: `${closeButtonSize}px`,
 										color:
-											convertPresetToCSSVar(
+											convertColorToCSSVar(
 												closeButtonIconColor
 											) || undefined,
 										backgroundColor:
-											convertPresetToCSSVar(
+											convertColorToCSSVar(
 												closeButtonBgColor
 											) || undefined,
 									}}

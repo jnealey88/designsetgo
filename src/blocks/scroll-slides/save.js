@@ -6,7 +6,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function Save({ attributes }) {
 	const {
@@ -34,15 +34,14 @@ export default function Save({ attributes }) {
 		...(maxHeight && { 'data-dsgo-max-height': maxHeight }),
 		style: {
 			...(overlayColor && {
-				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
+				'--dsgo-overlay-color': convertColorToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': '0.8',
 			}),
 			...(navColor && {
-				'--dsgo-nav-color': convertPresetToCSSVar(navColor),
+				'--dsgo-nav-color': convertColorToCSSVar(navColor),
 			}),
 			...(navActiveColor && {
-				'--dsgo-nav-active-color':
-					convertPresetToCSSVar(navActiveColor),
+				'--dsgo-nav-active-color': convertColorToCSSVar(navActiveColor),
 			}),
 		},
 	});

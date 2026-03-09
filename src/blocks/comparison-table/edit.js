@@ -29,7 +29,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Check icon SVG for cell display
@@ -280,16 +280,16 @@ export default function ComparisonTableEdit({
 		style: {
 			...(featuredColumnColor && {
 				'--dsgo-comparison-featured-color':
-					convertPresetToCSSVar(featuredColumnColor),
+					convertColorToCSSVar(featuredColumnColor),
 			}),
 			...(headerBackgroundColor && {
-				'--dsgo-comparison-header-bg': convertPresetToCSSVar(
+				'--dsgo-comparison-header-bg': convertColorToCSSVar(
 					headerBackgroundColor
 				),
 			}),
 			...(headerTextColor && {
 				'--dsgo-comparison-header-text':
-					convertPresetToCSSVar(headerTextColor),
+					convertColorToCSSVar(headerTextColor),
 			}),
 		},
 	});

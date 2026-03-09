@@ -21,7 +21,7 @@ import {
 import { __ } from '@wordpress/i18n';
 import { getIcon } from './utils/svg-icons';
 import { IconPicker } from './components/IconPicker';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Edit component
@@ -56,7 +56,7 @@ export default function IconEdit({ attributes, setAttributes, context }) {
 			justifyContent: 'center',
 			...(parentHoverIconBg && {
 				'--dsgo-parent-hover-icon-bg':
-					convertPresetToCSSVar(parentHoverIconBg),
+					convertColorToCSSVar(parentHoverIconBg),
 			}),
 		},
 	});

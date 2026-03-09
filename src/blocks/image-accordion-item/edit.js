@@ -7,7 +7,7 @@ import {
 import { useEffect } from '@wordpress/element';
 import { PanelBody, SelectControl } from '@wordpress/components';
 import classnames from 'classnames';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function ImageAccordionItemEdit({
 	attributes,
@@ -46,7 +46,7 @@ export default function ImageAccordionItemEdit({
 	// Note: Unitless values must be strings to prevent React from adding 'px'
 	const overlayStyles = enableOverlay
 		? {
-				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
+				'--dsgo-overlay-color': convertColorToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': String(overlayOpacity / 100), // Unitless
 				'--dsgo-overlay-opacity-expanded': String(
 					overlayOpacityExpanded / 100

@@ -8,7 +8,7 @@
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 import ShapeDivider from './components/ShapeDivider';
 
 /**
@@ -78,24 +78,23 @@ export default function SectionSave({ attributes }) {
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsgo-hover-bg-color':
-					convertPresetToCSSVar(hoverBackgroundColor),
+					convertColorToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-hover-text-color':
-					convertPresetToCSSVar(hoverTextColor),
+				'--dsgo-hover-text-color': convertColorToCSSVar(hoverTextColor),
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+				'--dsgo-parent-hover-icon-bg': convertColorToCSSVar(
 					hoverIconBackgroundColor
 				),
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+				'--dsgo-parent-hover-button-bg': convertColorToCSSVar(
 					hoverButtonBackgroundColor
 				),
 			}),
 			...(overlayColor && {
-				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
+				'--dsgo-overlay-color': convertColorToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': '0.8',
 			}),
 		},
@@ -130,11 +129,11 @@ export default function SectionSave({ attributes }) {
 			<ShapeDivider
 				shape={shapeDividerTop}
 				color={
-					convertPresetToCSSVar(shapeDividerTopColor) ||
+					convertColorToCSSVar(shapeDividerTopColor) ||
 					sectionBackgroundColor
 				}
 				backgroundColor={
-					convertPresetToCSSVar(shapeDividerTopBackgroundColor) ||
+					convertColorToCSSVar(shapeDividerTopBackgroundColor) ||
 					sectionTextColor
 				}
 				height={shapeDividerTopHeight}
@@ -148,11 +147,11 @@ export default function SectionSave({ attributes }) {
 			<ShapeDivider
 				shape={shapeDividerBottom}
 				color={
-					convertPresetToCSSVar(shapeDividerBottomColor) ||
+					convertColorToCSSVar(shapeDividerBottomColor) ||
 					sectionBackgroundColor
 				}
 				backgroundColor={
-					convertPresetToCSSVar(shapeDividerBottomBackgroundColor) ||
+					convertColorToCSSVar(shapeDividerBottomBackgroundColor) ||
 					sectionTextColor
 				}
 				height={shapeDividerBottomHeight}
