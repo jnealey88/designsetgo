@@ -62,8 +62,13 @@ export default function SlideSave({ attributes }) {
 		'aria-roledescription': 'slide',
 	});
 
+	// Pass user-set block gap to the content wrapper
+	const blockGap = convertPresetToCSSVar(attributes.style?.spacing?.blockGap);
+	const contentStyle = blockGap ? { gap: blockGap } : {};
+
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: 'dsgo-slide__content',
+		style: contentStyle,
 	});
 
 	return (

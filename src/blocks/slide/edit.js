@@ -97,10 +97,15 @@ export default function SlideEdit({
 		'aria-roledescription': 'slide',
 	});
 
+	// Pass user-set block gap to the content wrapper
+	const blockGap = convertPresetToCSSVar(attributes.style?.spacing?.blockGap);
+	const contentStyle = blockGap ? { gap: blockGap } : {};
+
 	// Inner blocks configuration - Allow any blocks
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: 'dsgo-slide__content',
+			style: contentStyle,
 		},
 		{
 			template: [
