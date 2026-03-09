@@ -92,12 +92,13 @@
 	}
 }
 
-.dsgo-scroll-slides__editor-nav-input {
+.dsgo-scroll-slides__editor-nav input.dsgo-scroll-slides__editor-nav-input {
 	display: block;
 	width: 100%;
 	background: none;
 	border: none;
 	border-bottom: 1px solid transparent;
+	box-shadow: none;
 	padding: 0.25rem 0;
 	font-size: clamp(1.25rem, 2.5vw, 2rem);
 	font-weight: 700;
