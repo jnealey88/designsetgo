@@ -22,7 +22,7 @@ import {
 	getShapeDivider,
 } from '../utils/shape-dividers';
 import { sanitizeColor } from '../utils/sanitize-color';
-import { convertPresetToCSSVar } from '../../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../../utils/convert-preset-to-css-var';
 
 /**
  * Shape preview component showing a small preview of the selected shape
@@ -68,9 +68,9 @@ function ShapePreview({
 	}
 
 	// Convert preset format to CSS variable before sanitization
-	const safeColor = sanitizeColor(convertPresetToCSSVar(color));
+	const safeColor = sanitizeColor(convertColorToCSSVar(color));
 	const safeBackgroundColor = sanitizeColor(
-		convertPresetToCSSVar(backgroundColor)
+		convertColorToCSSVar(backgroundColor)
 	);
 
 	return (

@@ -21,7 +21,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function ImageAccordionEdit({
 	attributes,
@@ -58,7 +58,7 @@ export default function ImageAccordionEdit({
 		'--dsgo-image-accordion-expanded-ratio': String(expandedRatio), // Unitless
 		'--dsgo-image-accordion-transition': transitionDuration,
 		'--dsgo-image-accordion-overlay-color':
-			convertPresetToCSSVar(overlayColor),
+			convertColorToCSSVar(overlayColor),
 		'--dsgo-image-accordion-overlay-opacity': String(overlayOpacity / 100), // Unitless
 		'--dsgo-image-accordion-overlay-opacity-expanded': String(
 			overlayOpacityExpanded / 100

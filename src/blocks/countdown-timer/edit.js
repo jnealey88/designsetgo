@@ -31,7 +31,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Edit component for Countdown Timer block
@@ -102,7 +102,7 @@ export default function Edit(props) {
 	// Build unit styles - use accent-2 if available, otherwise currentColor
 	const unitStyle = {
 		backgroundColor:
-			convertPresetToCSSVar(unitBackgroundColor) || 'transparent',
+			convertColorToCSSVar(unitBackgroundColor) || 'transparent',
 		borderColor: unitBorder?.color || defaultAccentColor || 'currentColor',
 		borderWidth: unitBorder?.width || '2px',
 		borderStyle: unitBorder?.style || 'solid',
@@ -112,13 +112,13 @@ export default function Edit(props) {
 
 	const numberStyle = {
 		color:
-			convertPresetToCSSVar(numberColor) ||
+			convertColorToCSSVar(numberColor) ||
 			defaultAccentColor ||
 			'currentColor',
 	};
 
 	const labelStyle = {
-		color: convertPresetToCSSVar(labelColor) || 'currentColor',
+		color: convertColorToCSSVar(labelColor) || 'currentColor',
 	};
 
 	const containerStyle = {

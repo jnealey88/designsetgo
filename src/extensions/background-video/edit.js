@@ -29,7 +29,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Video file upload control
@@ -365,7 +365,7 @@ export function BackgroundVideoPreview({ BlockListBlock, ...props }) {
 	// Apply 70% opacity to overlay color if set
 	const overlayStyle = dsgoVideoOverlayColor
 		? {
-				backgroundColor: convertPresetToCSSVar(dsgoVideoOverlayColor),
+				backgroundColor: convertColorToCSSVar(dsgoVideoOverlayColor),
 				opacity: 0.7,
 				position: 'absolute',
 				top: 0,

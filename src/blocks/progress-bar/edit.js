@@ -32,7 +32,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Edit component for Progress Bar block
@@ -74,7 +74,7 @@ export default function ProgressBarEdit({
 	const barFillStyles = {
 		width: `${barWidth}%`,
 		height: '100%',
-		backgroundColor: convertPresetToCSSVar(barColor) || '#2563eb',
+		backgroundColor: convertColorToCSSVar(barColor) || '#2563eb',
 		transition: `width ${animationDuration}s ease-out`,
 		borderRadius,
 	};
@@ -90,7 +90,7 @@ export default function ProgressBarEdit({
 	const barContainerStyles = {
 		width: '100%',
 		height,
-		backgroundColor: convertPresetToCSSVar(barBackgroundColor) || '#e5e7eb',
+		backgroundColor: convertColorToCSSVar(barBackgroundColor) || '#e5e7eb',
 		borderRadius,
 		overflow: 'hidden',
 		position: 'relative',

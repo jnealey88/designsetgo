@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Save component for Countdown Timer block
@@ -34,7 +34,7 @@ export default function save({ attributes }) {
 	// Build unit styles - use CSS variable for accent-2 fallback
 	const unitStyle = {
 		backgroundColor:
-			convertPresetToCSSVar(unitBackgroundColor) || 'transparent',
+			convertColorToCSSVar(unitBackgroundColor) || 'transparent',
 		borderColor:
 			unitBorder?.color ||
 			'var(--wp--preset--color--accent-2, currentColor)',
@@ -46,12 +46,12 @@ export default function save({ attributes }) {
 
 	const numberStyle = {
 		color:
-			convertPresetToCSSVar(numberColor) ||
+			convertColorToCSSVar(numberColor) ||
 			'var(--wp--preset--color--accent-2, currentColor)',
 	};
 
 	const labelStyle = {
-		color: convertPresetToCSSVar(labelColor) || 'currentColor',
+		color: convertColorToCSSVar(labelColor) || 'currentColor',
 	};
 
 	const containerStyle = {

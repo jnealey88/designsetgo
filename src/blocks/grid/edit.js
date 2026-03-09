@@ -33,7 +33,10 @@ import {
 } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import {
+	convertPresetToCSSVar,
+	convertColorToCSSVar,
+} from '../../utils/convert-preset-to-css-var';
 import {
 	encodeColorValue,
 	decodeColorValue,
@@ -125,19 +128,18 @@ export default function GridEdit({ attributes, setAttributes, clientId }) {
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsgo-hover-bg-color':
-					convertPresetToCSSVar(hoverBackgroundColor),
+					convertColorToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-hover-text-color':
-					convertPresetToCSSVar(hoverTextColor),
+				'--dsgo-hover-text-color': convertColorToCSSVar(hoverTextColor),
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+				'--dsgo-parent-hover-icon-bg': convertColorToCSSVar(
 					hoverIconBackgroundColor
 				),
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+				'--dsgo-parent-hover-button-bg': convertColorToCSSVar(
 					hoverButtonBackgroundColor
 				),
 			}),

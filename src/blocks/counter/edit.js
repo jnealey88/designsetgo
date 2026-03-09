@@ -35,7 +35,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Counter Edit Component
@@ -122,7 +122,7 @@ export default function CounterEdit({
 			// Apply effective hover color as CSS custom property
 			...(effectiveHoverColor && {
 				'--dsgo-counter-hover-color':
-					convertPresetToCSSVar(effectiveHoverColor),
+					convertColorToCSSVar(effectiveHoverColor),
 			}),
 		},
 	});

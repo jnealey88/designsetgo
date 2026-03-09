@@ -6,7 +6,7 @@
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 import { transferStylesToContent } from './utils/style-transfer';
 
 export default function save({ attributes }) {
@@ -85,7 +85,7 @@ export default function save({ attributes }) {
 	});
 
 	const overlayStyle = {
-		backgroundColor: convertPresetToCSSVar(overlayColor),
+		backgroundColor: convertColorToCSSVar(overlayColor),
 		opacity: overlayOpacity / 100,
 		backdropFilter: overlayBlur > 0 ? `blur(${overlayBlur}px)` : undefined,
 	};
@@ -98,9 +98,9 @@ export default function save({ attributes }) {
 			style={{
 				width: `${closeButtonSize}px`,
 				height: `${closeButtonSize}px`,
-				color: convertPresetToCSSVar(closeButtonIconColor) || undefined,
+				color: convertColorToCSSVar(closeButtonIconColor) || undefined,
 				backgroundColor:
-					convertPresetToCSSVar(closeButtonBgColor) || undefined,
+					convertColorToCSSVar(closeButtonBgColor) || undefined,
 			}}
 			type="button"
 			aria-label={__('Close modal', 'designsetgo')}

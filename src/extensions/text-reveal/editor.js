@@ -11,7 +11,7 @@ import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import TextRevealPanel from './components/TextRevealPanel';
 import { SUPPORTED_BLOCKS } from './constants';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Add text reveal controls to block edit component
@@ -89,7 +89,7 @@ function addTextRevealSaveProps(extraProps, blockType, attributes) {
 	const dataAttributes = {
 		'data-dsgo-text-reveal-enabled': 'true',
 		'data-dsgo-text-reveal-color':
-			convertPresetToCSSVar(dsgoTextRevealColor) || '',
+			convertColorToCSSVar(dsgoTextRevealColor) || '',
 		'data-dsgo-text-reveal-split-mode': dsgoTextRevealSplitMode || 'word',
 		'data-dsgo-text-reveal-transition': dsgoTextRevealTransition || 150,
 	};

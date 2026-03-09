@@ -7,7 +7,7 @@
  */
 
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Icon List Item Save Component
@@ -67,7 +67,7 @@ export default function IconListItemSave({ attributes, context = {} }) {
 					width: `${iconSize + 16}px`,
 					height: `${iconSize + 16}px`,
 					minWidth: `${iconSize + 16}px`,
-					backgroundColor: convertPresetToCSSVar(iconBackgroundColor),
+					backgroundColor: convertColorToCSSVar(iconBackgroundColor),
 					padding: '8px',
 					borderRadius: '4px',
 					boxSizing: 'border-box',
@@ -78,8 +78,8 @@ export default function IconListItemSave({ attributes, context = {} }) {
 					minWidth: `${iconSize}px`,
 				}),
 		...(iconColor && {
-			color: convertPresetToCSSVar(iconColor),
-			'--dsgo-icon-color': convertPresetToCSSVar(iconColor),
+			color: convertColorToCSSVar(iconColor),
+			'--dsgo-icon-color': convertColorToCSSVar(iconColor),
 		}),
 	};
 

@@ -32,7 +32,10 @@ import {
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import {
+	convertPresetToCSSVar,
+	convertColorToCSSVar,
+} from '../../utils/convert-preset-to-css-var';
 import {
 	encodeColorValue,
 	decodeColorValue,
@@ -187,24 +190,23 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 		style: {
 			...(hoverBackgroundColor && {
 				'--dsgo-hover-bg-color':
-					convertPresetToCSSVar(hoverBackgroundColor),
+					convertColorToCSSVar(hoverBackgroundColor),
 			}),
 			...(hoverTextColor && {
-				'--dsgo-hover-text-color':
-					convertPresetToCSSVar(hoverTextColor),
+				'--dsgo-hover-text-color': convertColorToCSSVar(hoverTextColor),
 			}),
 			...(hoverIconBackgroundColor && {
-				'--dsgo-parent-hover-icon-bg': convertPresetToCSSVar(
+				'--dsgo-parent-hover-icon-bg': convertColorToCSSVar(
 					hoverIconBackgroundColor
 				),
 			}),
 			...(hoverButtonBackgroundColor && {
-				'--dsgo-parent-hover-button-bg': convertPresetToCSSVar(
+				'--dsgo-parent-hover-button-bg': convertColorToCSSVar(
 					hoverButtonBackgroundColor
 				),
 			}),
 			...(overlayColor && {
-				'--dsgo-overlay-color': convertPresetToCSSVar(overlayColor),
+				'--dsgo-overlay-color': convertColorToCSSVar(overlayColor),
 				'--dsgo-overlay-opacity': '0.8',
 			}),
 		},

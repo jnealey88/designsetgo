@@ -7,7 +7,7 @@
  */
 
 import { useBlockProps } from '@wordpress/block-editor';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Save component for Progress Bar block
@@ -40,7 +40,7 @@ export default function ProgressBarSave({ attributes }) {
 	const barFillStyles = {
 		width: animateOnScroll ? '0%' : `${barWidth}%`, // Start at 0 if animating
 		height: '100%',
-		backgroundColor: convertPresetToCSSVar(barColor) || '#2563eb',
+		backgroundColor: convertColorToCSSVar(barColor) || '#2563eb',
 		transition: `width ${animationDuration}s ease-out`,
 		borderRadius,
 	};
@@ -56,7 +56,7 @@ export default function ProgressBarSave({ attributes }) {
 	const barContainerStyles = {
 		width: '100%',
 		height,
-		backgroundColor: convertPresetToCSSVar(barBackgroundColor) || '#e5e7eb',
+		backgroundColor: convertColorToCSSVar(barBackgroundColor) || '#e5e7eb',
 		borderRadius,
 		overflow: 'hidden',
 		position: 'relative',

@@ -27,7 +27,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 // Marker shape SVGs
 const MarkerShapes = {
@@ -157,7 +157,7 @@ export default function TimelineItemEdit({
 	const customStyles = customMarkerColor
 		? {
 				'--dsgo-timeline-item-marker-color':
-					convertPresetToCSSVar(customMarkerColor),
+					convertColorToCSSVar(customMarkerColor),
 			}
 		: {};
 

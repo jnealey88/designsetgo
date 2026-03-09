@@ -9,7 +9,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { Fragment } from '@wordpress/element';
 import ExpandingBackgroundPanel from './components/ExpandingBackgroundPanel';
 import { SUPPORTED_BLOCKS } from './constants';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Add expanding background controls to the block editor
@@ -69,8 +69,7 @@ const addExpandingBackgroundEditorClasses = createHigherOrderComponent(
 				const style = {
 					...props.style,
 					'--dsgo-expanding-bg-color':
-						convertPresetToCSSVar(dsgoExpandingBgColor) ||
-						'#e8e8e8',
+						convertColorToCSSVar(dsgoExpandingBgColor) || '#e8e8e8',
 				};
 
 				return (
@@ -126,11 +125,11 @@ function addExpandingBackgroundSaveProps(extraProps, blockType, attributes) {
 		style: {
 			...(extraProps.style || {}),
 			'--dsgo-expanding-bg-color':
-				convertPresetToCSSVar(dsgoExpandingBgColor) || '#e8e8e8',
+				convertColorToCSSVar(dsgoExpandingBgColor) || '#e8e8e8',
 		},
 		'data-dsgo-expanding-bg-enabled': 'true',
 		'data-dsgo-expanding-bg-color':
-			convertPresetToCSSVar(dsgoExpandingBgColor) || '',
+			convertColorToCSSVar(dsgoExpandingBgColor) || '',
 		'data-dsgo-expanding-bg-initial-size': dsgoExpandingBgInitialSize || '',
 		'data-dsgo-expanding-bg-blur': dsgoExpandingBgBlur || '',
 		'data-dsgo-expanding-bg-speed': dsgoExpandingBgSpeed || '',

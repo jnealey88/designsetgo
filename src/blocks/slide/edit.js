@@ -23,7 +23,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function SlideEdit({
 	attributes,
@@ -70,7 +70,7 @@ export default function SlideEdit({
 	const overlayStyles = overlayColor
 		? {
 				'--dsgo-slide-overlay-color':
-					convertPresetToCSSVar(overlayColor),
+					convertColorToCSSVar(overlayColor),
 				'--dsgo-slide-overlay-opacity': String(overlayOpacity / 100),
 			}
 		: {};
@@ -451,8 +451,7 @@ export default function SlideEdit({
 					<div
 						className="dsgo-slide__overlay"
 						style={{
-							backgroundColor:
-								convertPresetToCSSVar(overlayColor),
+							backgroundColor: convertColorToCSSVar(overlayColor),
 							opacity: overlayOpacity / 100,
 						}}
 					/>

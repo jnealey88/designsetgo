@@ -12,7 +12,7 @@ import { store as blockEditorStore } from '@wordpress/block-editor';
 import SvgPatternsPanel from './components/SvgPatternsPanel';
 import { SUPPORTED_BLOCKS, DEFAULTS } from './constants';
 import { getPatternBackground, PATTERNS, PATTERN_IDS } from './patterns';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 /**
  * Add SVG pattern controls to the block editor
@@ -202,7 +202,7 @@ function addSvgPatternSaveProps(extraProps, blockType, attributes) {
 		style: extraProps.style || {},
 		'data-dsgo-svg-pattern': dsgoSvgPatternType,
 		'data-dsgo-svg-pattern-color':
-			convertPresetToCSSVar(dsgoSvgPatternColor) || '',
+			convertColorToCSSVar(dsgoSvgPatternColor) || '',
 		'data-dsgo-svg-pattern-opacity': String(safeOpacity),
 		'data-dsgo-svg-pattern-scale': String(safeScale),
 	};

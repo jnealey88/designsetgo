@@ -10,7 +10,10 @@ import {
 	shouldExtendBlock,
 	clearExclusionCache,
 } from '../../src/utils/should-extend-block';
-import { convertPresetToCSSVar } from '../../src/utils/convert-preset-to-css-var';
+import {
+	convertPresetToCSSVar,
+	convertColorToCSSVar,
+} from '../../src/utils/convert-preset-to-css-var';
 
 describe('Utility Functions', () => {
 	describe('classNames helper', () => {
@@ -221,6 +224,138 @@ describe('Utility Functions', () => {
 
 		test('converts non-string values to string', () => {
 			expect(convertPresetToCSSVar(42)).toBe('42');
+		});
+
+		test('converts bare slug when presetType is provided', () => {
+			expect(convertPresetToCSSVar('accent-3', 'color')).toBe(
+				'var(--wp--preset--color--accent-3)'
+			);
+			expect(convertPresetToCSSVar('primary', 'color')).toBe(
+				'var(--wp--preset--color--primary)'
+			);
+			expect(convertPresetToCSSVar('contrast', 'color')).toBe(
+				'var(--wp--preset--color--contrast)'
+			);
+		});
+
+		test('converts bare slug with spacing preset type', () => {
+			expect(convertPresetToCSSVar('md', 'spacing')).toBe(
+				'var(--wp--preset--spacing--md)'
+			);
+		});
+
+		test('does not convert bare slug without presetType', () => {
+			expect(convertPresetToCSSVar('accent-3')).toBe('accent-3');
+			expect(convertPresetToCSSVar('primary')).toBe('primary');
+		});
+
+		test('does not convert CSS keywords even with presetType', () => {
+			expect(convertPresetToCSSVar('transparent', 'color')).toBe(
+				'transparent'
+			);
+			expect(convertPresetToCSSVar('inherit', 'color')).toBe('inherit');
+			expect(convertPresetToCSSVar('currentColor', 'color')).toBe(
+				'currentColor'
+			);
+			expect(convertPresetToCSSVar('none', 'color')).toBe('none');
+		});
+
+		test('does not convert CSS values even with presetType', () => {
+			expect(convertPresetToCSSVar('#ff0000', 'color')).toBe('#ff0000');
+			expect(convertPresetToCSSVar('rgb(255,0,0)', 'color')).toBe(
+				'rgb(255,0,0)'
+			);
+			expect(convertPresetToCSSVar('hsl(0,100%,50%)', 'color')).toBe(
+				'hsl(0,100%,50%)'
+			);
+			expect(convertPresetToCSSVar('16px', 'spacing')).toBe('16px');
+		});
+
+		test('does not convert CSS Color Level 4 functions', () => {
+			expect(
+				convertPresetToCSSVar('oklch(0.5 0.2 150)', 'color')
+			).toBe('oklch(0.5 0.2 150)');
+			expect(
+				convertPresetToCSSVar('oklab(0.5 -0.1 0.1)', 'color')
+			).toBe('oklab(0.5 -0.1 0.1)');
+			expect(convertPresetToCSSVar('lab(50% 20 -30)', 'color')).toBe(
+				'lab(50% 20 -30)'
+			);
+			expect(convertPresetToCSSVar('lch(50% 30 270)', 'color')).toBe(
+				'lch(50% 30 270)'
+			);
+			expect(
+				convertPresetToCSSVar('hwb(150 20% 30%)', 'color')
+			).toBe('hwb(150 20% 30%)');
+			expect(
+				convertPresetToCSSVar(
+					'color(display-p3 0.5 0.2 0.8)',
+					'color'
+				)
+			).toBe('color(display-p3 0.5 0.2 0.8)');
+		});
+
+		test('handles CSS keywords case-insensitively', () => {
+			expect(convertPresetToCSSVar('Transparent', 'color')).toBe(
+				'Transparent'
+			);
+			expect(convertPresetToCSSVar('INHERIT', 'color')).toBe(
+				'INHERIT'
+			);
+			expect(convertPresetToCSSVar('currentColor', 'color')).toBe(
+				'currentColor'
+			);
+			expect(convertPresetToCSSVar('CurrentColor', 'color')).toBe(
+				'CurrentColor'
+			);
+		});
+
+		test('presetType does not interfere with var:preset format', () => {
+			expect(
+				convertPresetToCSSVar('var:preset|color|accent-3', 'color')
+			).toBe('var(--wp--preset--color--accent-3)');
+		});
+
+		test('presetType does not interfere with CSS variable format', () => {
+			expect(
+				convertPresetToCSSVar(
+					'var(--wp--preset--color--accent-3)',
+					'color'
+				)
+			).toBe('var(--wp--preset--color--accent-3)');
+		});
+	});
+
+	describe('convertColorToCSSVar', () => {
+		test('converts bare color slug', () => {
+			expect(convertColorToCSSVar('accent-3')).toBe(
+				'var(--wp--preset--color--accent-3)'
+			);
+			expect(convertColorToCSSVar('primary')).toBe(
+				'var(--wp--preset--color--primary)'
+			);
+		});
+
+		test('converts var:preset format', () => {
+			expect(convertColorToCSSVar('var:preset|color|accent-3')).toBe(
+				'var(--wp--preset--color--accent-3)'
+			);
+		});
+
+		test('passes through hex and CSS values', () => {
+			expect(convertColorToCSSVar('#ff0000')).toBe('#ff0000');
+			expect(convertColorToCSSVar('rgb(255,0,0)')).toBe('rgb(255,0,0)');
+		});
+
+		test('passes through CSS keywords', () => {
+			expect(convertColorToCSSVar('transparent')).toBe('transparent');
+			expect(convertColorToCSSVar('inherit')).toBe('inherit');
+		});
+
+		test('returns undefined for falsy values', () => {
+			expect(convertColorToCSSVar(undefined)).toBeUndefined();
+			expect(convertColorToCSSVar('')).toBeUndefined();
+			expect(convertColorToCSSVar(0)).toBeUndefined();
 		});
 	});
 

@@ -22,7 +22,7 @@ import {
 	encodeColorValue,
 	decodeColorValue,
 } from '../../utils/encode-color-value';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
@@ -68,12 +68,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Styles using CSS custom properties (only set if user has chosen colors)
 	const customStyles = {};
 	if (linkColor) {
-		customStyles['--dsgo-toc-link-color'] =
-			convertPresetToCSSVar(linkColor);
+		customStyles['--dsgo-toc-link-color'] = convertColorToCSSVar(linkColor);
 	}
 	if (activeLinkColor) {
 		customStyles['--dsgo-toc-active-link-color'] =
-			convertPresetToCSSVar(activeLinkColor);
+			convertColorToCSSVar(activeLinkColor);
 	}
 	if (stickyOffset) {
 		customStyles['--dsgo-toc-sticky-offset'] = `${stickyOffset}px`;

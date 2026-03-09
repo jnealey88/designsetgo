@@ -1,6 +1,6 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
-import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
+import { convertColorToCSSVar } from '../../utils/convert-preset-to-css-var';
 
 export default function AccordionSave({ attributes }) {
 	const {
@@ -31,15 +31,14 @@ export default function AccordionSave({ attributes }) {
 
 	// Apply colors and gap as CSS custom properties that will cascade to accordion items
 	const customStyles = {
-		'--dsgo-accordion-open-bg': convertPresetToCSSVar(openBackgroundColor),
-		'--dsgo-accordion-open-text': convertPresetToCSSVar(openTextColor),
-		'--dsgo-accordion-hover-bg': convertPresetToCSSVar(effectiveHoverBg),
-		'--dsgo-accordion-hover-text':
-			convertPresetToCSSVar(effectiveHoverText),
+		'--dsgo-accordion-open-bg': convertColorToCSSVar(openBackgroundColor),
+		'--dsgo-accordion-open-text': convertColorToCSSVar(openTextColor),
+		'--dsgo-accordion-hover-bg': convertColorToCSSVar(effectiveHoverBg),
+		'--dsgo-accordion-hover-text': convertColorToCSSVar(effectiveHoverText),
 		'--dsgo-accordion-gap': itemGap,
 		...(borderBetweenColor && {
 			'--dsgo-accordion-border-color':
-				convertPresetToCSSVar(borderBetweenColor),
+				convertColorToCSSVar(borderBetweenColor),
 		}),
 	};
 
