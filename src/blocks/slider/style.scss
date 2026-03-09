@@ -477,7 +477,10 @@
 	width: 100%;
 }
 
-.dsgo-slider--scroll-driven {
+// Double-class selector (0-2-0) so position: sticky beats
+// [role="region"] { position: relative } (0-1-0) from wp-components,
+// which CoBlocks/GoDaddy plugins enqueue on the frontend.
+.dsgo-slider.dsgo-slider--scroll-driven {
 	position: sticky;
 	top: 0;
 	overflow: hidden;
