@@ -11,6 +11,7 @@ import {
 	RichText,
 } from '@wordpress/block-editor';
 import { PanelBody, TextControl, ToggleControl } from '@wordpress/components';
+import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
 
 export default function FormCheckboxFieldEdit({
@@ -22,9 +23,11 @@ export default function FormCheckboxFieldEdit({
 		attributes;
 
 	// Generate field name from clientId if empty
-	if (!fieldName) {
-		setAttributes({ fieldName: `checkbox-${clientId.slice(0, 8)}` });
-	}
+	useEffect(() => {
+		if (!fieldName) {
+			setAttributes({ fieldName: `checkbox-${clientId.slice(0, 8)}` });
+		}
+	}, [fieldName, clientId, setAttributes]);
 
 	const fieldClasses = classnames(
 		'dsgo-form-field',

@@ -15,6 +15,7 @@ import {
 	Flex,
 	FlexItem,
 } from '@wordpress/components';
+import { useEffect } from '@wordpress/element';
 import classnames from 'classnames';
 import { convertPresetToCSSVar } from '../../utils/convert-preset-to-css-var';
 
@@ -36,9 +37,11 @@ export default function FormSelectFieldEdit({
 	} = attributes;
 
 	// Generate field name from clientId if empty
-	if (!fieldName) {
-		setAttributes({ fieldName: `select-${clientId.slice(0, 8)}` });
-	}
+	useEffect(() => {
+		if (!fieldName) {
+			setAttributes({ fieldName: `select-${clientId.slice(0, 8)}` });
+		}
+	}, [fieldName, clientId, setAttributes]);
 
 	// Get context values from parent form
 	const fieldBackgroundColor =

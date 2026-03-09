@@ -7,6 +7,7 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, TextControl, Notice } from '@wordpress/components';
+import { useEffect } from '@wordpress/element';
 
 export default function FormHiddenFieldEdit({
 	attributes,
@@ -16,9 +17,11 @@ export default function FormHiddenFieldEdit({
 	const { fieldName, value } = attributes;
 
 	// Generate field name from clientId if empty
-	if (!fieldName) {
-		setAttributes({ fieldName: `hidden-${clientId.slice(0, 8)}` });
-	}
+	useEffect(() => {
+		if (!fieldName) {
+			setAttributes({ fieldName: `hidden-${clientId.slice(0, 8)}` });
+		}
+	}, [fieldName, clientId, setAttributes]);
 
 	const blockProps = useBlockProps({
 		className: 'dsgo-form-field dsgo-form-field--hidden',
