@@ -124,3 +124,4 @@ tasks.txt
 
 #Claude
 .claude/claude-memory.md
+.worktrees/
