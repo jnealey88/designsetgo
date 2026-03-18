@@ -31,10 +31,18 @@ if ( empty( $trail ) ) {
 // Get separator (function defined in includes/breadcrumbs-functions.php).
 $separator = designsetgo_get_breadcrumb_separator( $attributes );
 
+// Build wrapper classes.
+$classes   = array( 'dsgo-breadcrumbs' );
+$allowed   = array( 'center', 'right' );
+$justify   = isset( $attributes['contentJustification'] ) ? $attributes['contentJustification'] : 'left';
+if ( in_array( $justify, $allowed, true ) ) {
+	$classes[] = 'is-content-justification-' . $justify;
+}
+
 // Build wrapper attributes.
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
-		'class'                 => 'dsgo-breadcrumbs',
+		'class'                 => implode( ' ', $classes ),
 		'aria-label'            => __( 'Breadcrumb', 'designsetgo' ),
 		'data-dsgo-breadcrumbs' => wp_json_encode( $trail ),
 	)
