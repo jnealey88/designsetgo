@@ -127,7 +127,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					allowedControls={['left', 'center', 'right']}
 					value={contentJustification}
 					onChange={(value) =>
-						setAttributes({ contentJustification: value })
+						setAttributes({ contentJustification: value ?? 'left' })
 					}
 				/>
 			</BlockControls>

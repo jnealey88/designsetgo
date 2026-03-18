@@ -55,7 +55,12 @@
 		},
 		"contentJustification": {
 			"type": "string",
-			"default": "left"
+			"default": "left",
+			"enum": [
+				"left",
+				"center",
+				"right"
+			]
 		}
 	},
 	"supports": {
