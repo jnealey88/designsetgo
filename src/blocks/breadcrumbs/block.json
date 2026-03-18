@@ -52,6 +52,10 @@
 		"hideOnHome": {
 			"type": "boolean",
 			"default": true
+		},
+		"contentJustification": {
+			"type": "string",
+			"default": "left"
 		}
 	},
 	"supports": {

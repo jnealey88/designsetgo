@@ -8,6 +8,8 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	InspectorControls,
+	BlockControls,
+	JustifyContentControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -44,6 +46,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		showCurrent,
 		linkCurrent,
 		prefixText,
+		contentJustification,
 	} = attributes;
 
 	// Get color settings for ColorGradientSettingsDropdown
@@ -108,12 +111,27 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	const separatorChar = getSeparatorChar(separator);
 
+	const justifyClass =
+		contentJustification && contentJustification !== 'left'
+			? `is-content-justification-${contentJustification}`
+			: '';
+
 	const blockProps = useBlockProps({
-		className: 'dsgo-breadcrumbs',
+		className: classnames('dsgo-breadcrumbs', justifyClass),
 	});
 
 	return (
 		<>
+			<BlockControls group="block">
+				<JustifyContentControl
+					allowedControls={['left', 'center', 'right']}
+					value={contentJustification}
+					onChange={(value) =>
+						setAttributes({ contentJustification: value })
+					}
+				/>
+			</BlockControls>
+
 			<InspectorControls>
 				<DisplaySettingsPanel
 					attributes={attributes}

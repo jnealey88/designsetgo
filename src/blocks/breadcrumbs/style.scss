@@ -19,6 +19,15 @@
         opacity: 0.8;
     }
 
+    // Content justification
+    &.is-content-justification-center .dsgo-breadcrumbs__list {
+        justify-content: center;
+    }
+
+    &.is-content-justification-right .dsgo-breadcrumbs__list {
+        justify-content: flex-end;
+    }
+
     // Breadcrumb list
     &__list {
         display: flex;
