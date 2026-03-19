@@ -185,6 +185,7 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 * Fix: Remove unwanted has-global-padding on grid inner container that caused extra padding in headers
 * Fix: Responsive visibility classes (hide desktop/tablet/mobile) now properly override layout display rules on all blocks
 * Fix: Remove unused has_dashicon_blocks method (PHPStan)
+* Fix: Row block vertical alignment now works correctly when nested inside a grid
 
 = 2.0.43 - 2026-03-19 =
 **Bug Fixes:**
