@@ -11,21 +11,23 @@
 // page — not just pages that contain DesignSetGo blocks.
 
 // Responsive visibility
-.dsgo-hide-desktop {
+// Doubled selectors boost specificity to (0,2,0) so these always
+// override layout display rules like .dsgo-flex { display: flex !important }.
+.dsgo-hide-desktop.dsgo-hide-desktop {
 
 	@include desktop-up {
 		display: none !important;
 	}
 }
 
-.dsgo-hide-tablet {
+.dsgo-hide-tablet.dsgo-hide-tablet {
 
 	@include tablet {
 		display: none !important;
 	}
 }
 
-.dsgo-hide-mobile {
+.dsgo-hide-mobile.dsgo-hide-mobile {
 
 	@include mobile-only {
 		display: none !important;
