@@ -85,8 +85,8 @@
 // Higher specificity selector to override Stack container rules
 // float: none overrides WordPress flow layout which applies float:left/right to aligned blocks,
 // causing them to sit beside adjacent content (e.g. headings) in Group blocks
-.dsgo-pill.alignleft,
-[class*="wp-container"] > .dsgo-pill.alignleft {
+.dsgo-pill.alignleft:not([class*="dsgo-hide-"]),
+[class*="wp-container"] > .dsgo-pill.alignleft:not([class*="dsgo-hide-"]) {
 	float: none !important;
 	display: flex !important;
 	justify-content: flex-start;
@@ -95,8 +95,8 @@
 	margin-left: 0 !important;
 }
 
-.dsgo-pill.aligncenter,
-[class*="wp-container"] > .dsgo-pill.aligncenter {
+.dsgo-pill.aligncenter:not([class*="dsgo-hide-"]),
+[class*="wp-container"] > .dsgo-pill.aligncenter:not([class*="dsgo-hide-"]) {
 	float: none !important;
 	display: flex !important;
 	justify-content: center;
@@ -105,8 +105,8 @@
 	margin-right: auto !important;
 }
 
-.dsgo-pill.alignright,
-[class*="wp-container"] > .dsgo-pill.alignright {
+.dsgo-pill.alignright:not([class*="dsgo-hide-"]),
+[class*="wp-container"] > .dsgo-pill.alignright:not([class*="dsgo-hide-"]) {
 	float: none !important;
 	display: flex !important;
 	justify-content: flex-end;

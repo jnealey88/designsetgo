@@ -65,33 +65,7 @@
 	padding: var(--wp--preset--spacing--50, 2rem) !important;
 }
 
-/**
- * Responsive Utilities
- *
- * These can be applied to any block via the additional CSS classes field
- */
-
-/* Hide on specific devices */
-.dsgo-hide-mobile {
-
-	@media (max-width: 767px) {
-		display: none !important;
-	}
-}
-
-.dsgo-hide-tablet {
-
-	@media (min-width: 768px) and (max-width: 1024px) {
-		display: none !important;
-	}
-}
-
-.dsgo-hide-desktop {
-
-	@media (min-width: 1025px) {
-		display: none !important;
-	}
-}
+// Responsive visibility classes are in _utilities.scss (canonical source).
 
 /**
  * Spacing Utilities

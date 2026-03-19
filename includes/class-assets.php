@@ -17,12 +17,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Assets Class - Handles CSS/JS loading and optimization
  */
 class Assets {
+
+	/**
+	 * Whether frontend assets have been enqueued for this request.
+	 *
+	 * @var bool
+	 */
+	private $frontend_enqueued = false;
+
+	/**
+	 * Whether Dashicons have been enqueued for this request.
+	 *
+	 * @var bool
+	 */
+	private $dashicons_enqueued = false;
+
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_editor_assets' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_assets' ) );
+		add_filter( 'render_block', array( $this, 'maybe_enqueue_frontend_on_render' ), 10, 2 );
 
 		// Clear block detection cache when post is saved.
 		add_action( 'save_post', array( $this, 'clear_block_cache' ) );
@@ -189,58 +205,22 @@ class Assets {
 	}
 
 	/**
-	 * Check if any blocks that use Dashicons are present.
+	 * Register (but don't enqueue) frontend assets.
 	 *
-	 * Only tabs and accordion blocks use Dashicons. This method checks if either
-	 * of these blocks is present to avoid loading 40KB of Dashicons unnecessarily.
-	 *
-	 * @return bool True if Dashicon blocks are present.
+	 * Assets are enqueued later via render_block when a DesignSetGo block
+	 * or extension is actually rendered, which catches blocks in template
+	 * parts (header/footer) too.
 	 */
-	private function has_dashicon_blocks() {
-		// Not on singular content - can't reliably detect.
-		if ( ! is_singular() ) {
-			return false;
-		}
-
-		global $post;
-		if ( ! $post || empty( $post->post_content ) ) {
-			return false;
-		}
-
-		$content = $post->post_content;
-
-		// Check for blocks that use Dashicons.
-		return (
-			strpos( $content, 'wp:designsetgo/tabs' ) !== false ||
-			strpos( $content, 'wp:designsetgo/accordion' ) !== false
-		);
-	}
-
-	/**
-	 * Enqueue frontend assets.
-	 */
-	public function enqueue_frontend_assets() {
-		// Use optimized cached block detection.
-		if ( ! $this->has_designsetgo_blocks() ) {
-			return;
-		}
-
-		// Only enqueue Dashicons if tabs or accordion blocks are present.
-		// This saves 40KB on pages that don't use icon-based blocks.
-		if ( $this->has_dashicon_blocks() ) {
-			wp_enqueue_style( 'dashicons' );
-		}
-
-		// Block-specific frontend styles are handled by block.json.
-		// Load global frontend styles for extensions.
-		wp_enqueue_style(
+	public function register_frontend_assets() {
+		// Register global frontend styles for extensions.
+		wp_register_style(
 			'designsetgo-frontend',
 			DESIGNSETGO_URL . 'build/style-index.css',
-			array(), // No hard dependency on Dashicons.
+			array(),
 			DESIGNSETGO_VERSION
 		);
 
-		// Load frontend scripts from build directory.
+		// Register frontend scripts from build directory.
 		$frontend_asset_path = DESIGNSETGO_PATH . 'build/frontend.asset.php';
 
 		if ( ! file_exists( $frontend_asset_path ) || ! is_readable( $frontend_asset_path ) ) {
@@ -259,14 +239,59 @@ class Assets {
 			return;
 		}
 
-		// Enqueue bundled frontend scripts (animations, group enhancements, etc.).
-		wp_enqueue_script(
+		// Register bundled frontend scripts (animations, group enhancements, etc.).
+		wp_register_script(
 			'designsetgo-frontend',
 			DESIGNSETGO_URL . 'build/frontend.js',
 			$frontend_asset['dependencies'],
 			$frontend_asset['version'],
 			true
 		);
+	}
+
+	/**
+	 * Enqueue frontend assets when a DesignSetGo block or extension is rendered.
+	 *
+	 * Uses render_block filter to detect blocks wherever they appear:
+	 * post content, templates, or template parts (e.g. header/footer).
+	 *
+	 * @param string $block_content The block content.
+	 * @param array  $block         The full block, including name and attributes.
+	 * @return string The unmodified block content.
+	 */
+	public function maybe_enqueue_frontend_on_render( $block_content, $block ) {
+		if ( is_admin() ) {
+			return $block_content;
+		}
+
+		// Enqueue frontend bundle if a DSG block or extension output is detected.
+		if ( ! $this->frontend_enqueued ) {
+			$is_dsgo_block = isset( $block['blockName'] )
+				&& strpos( $block['blockName'], 'designsetgo/' ) === 0;
+
+			// Check rendered output for extension classes/attributes (dsgo- prefix).
+			$has_dsgo_extension = ! empty( $block_content )
+				&& strpos( $block_content, 'dsgo-' ) !== false;
+
+			if ( $is_dsgo_block || $has_dsgo_extension ) {
+				wp_enqueue_style( 'designsetgo-frontend' );
+				wp_enqueue_script( 'designsetgo-frontend' );
+				$this->frontend_enqueued = true;
+			}
+		}
+
+		// Enqueue Dashicons only for tabs/accordion blocks (saves 40KB otherwise).
+		if ( ! $this->dashicons_enqueued && isset( $block['blockName'] ) ) {
+			if (
+				'designsetgo/tabs' === $block['blockName'] ||
+				'designsetgo/accordion' === $block['blockName']
+			) {
+				wp_enqueue_style( 'dashicons' );
+				$this->dashicons_enqueued = true;
+			}
+		}
+
+		return $block_content;
 	}
 
 	/**

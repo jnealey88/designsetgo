@@ -29,7 +29,7 @@
 			"allowEditing": false,
 			"allowSizingOnChildren": true,
 			"default": {
-				"type": "constrained"
+				"type": "default"
 			}
 		},
 		"spacing": {

@@ -84,21 +84,21 @@
 	// Alignment variants
 	// float: none overrides WordPress flow layout which applies float:left/right to aligned blocks,
 	// causing them to sit beside adjacent content (e.g. headings) in Group blocks
-	&.alignleft {
+	&.alignleft:not([class*="dsgo-hide-"]) {
 		float: none !important;
 		display: flex !important;
 		margin-right: auto !important;
 		margin-left: 0 !important;
 	}
 
-	&.alignright {
+	&.alignright:not([class*="dsgo-hide-"]) {
 		float: none !important;
 		display: flex !important;
 		margin-left: auto !important;
 		margin-right: 0 !important;
 	}
 
-	&.aligncenter {
+	&.aligncenter:not([class*="dsgo-hide-"]) {
 		float: none !important;
 		display: flex;
 		justify-content: center;
