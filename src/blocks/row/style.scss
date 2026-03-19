@@ -54,6 +54,12 @@
 		width: 100%;
 	}
 
+	// When Row is inside a grid, inner div must fill the stretched outer div
+	// so align-items: center can vertically center children
+	.dsgo-grid__inner > & > .dsgo-flex__inner {
+		height: 100%;
+	}
+
 	// CRITICAL: When Row/Flex is nested inside another container, force full width
 	// WordPress applies constrained layout which can limit width
 	// This ensures nested Rows take full width of their parent container

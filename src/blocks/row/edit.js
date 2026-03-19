@@ -42,30 +42,6 @@ import {
 } from '../../utils/encode-color-value';
 
 /**
- * Convert WordPress vertical alignment value to CSS align-items value
- * WordPress stores: stretch, center, top, bottom, space-between
- * CSS align-items needs: stretch, center, flex-start, flex-end, space-between
- *
- * @param {string} value The WordPress vertical alignment value
- * @return {string} CSS align-items value
- */
-function getAlignItemsValue(value) {
-	if (!value) {
-		return undefined;
-	}
-
-	const alignMap = {
-		stretch: 'stretch',
-		center: 'center',
-		top: 'flex-start',
-		bottom: 'flex-end',
-		'space-between': 'space-between',
-	};
-
-	return alignMap[value];
-}
-
-/**
  * Row Container Edit Component
  *
  * @param {Object}   props               Component props
@@ -224,15 +200,16 @@ export default function RowEdit({ attributes, setAttributes, clientId }) {
 		delete blockProps.style.gap;
 	}
 
-	// Inner container props with flex layout and width constraints (must match save.js EXACTLY)
+	// Inner container props with flex layout and width constraints (must match save.js EXCEPT alignItems)
 	// CRITICAL: Apply display: flex here, not via WordPress layout support on outer div
-	const alignItems = getAlignItemsValue(layout?.verticalAlignment);
+	// NOTE: alignItems is NOT set here — WordPress's layout system handles vertical alignment
+	// in the editor via the layout.verticalAlignment attribute and generated wp-container-* CSS.
+	// Setting it inline here would be overwritten by useInnerBlocksProps style merging.
+	// save.js sets alignItems inline because server-side rendering doesn't merge styles.
 	const innerStyle = {
 		display: 'flex',
 		// Apply layout justifyContent to inner div where flex children are
 		justifyContent: layout?.justifyContent || 'left',
-		// Apply vertical alignment (align-items) from layout support
-		...(alignItems && { alignItems }),
 		// Apply flex-wrap from layout support
 		flexWrap: layout?.flexWrap || 'wrap',
 		// Apply gap from blockProps or attributes

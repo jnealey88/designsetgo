@@ -52,6 +52,17 @@
 		position: static;
 	}
 
+	// When Row is inside a grid, inner div must fill the stretched outer div
+	// so align-items: center can vertically center children
+	// Editor: blocks are wrapped in [data-block] elements inside grid
+	.dsgo-grid__inner > &,
+	.dsgo-grid__inner > [data-block] & {
+
+		> .dsgo-flex__inner {
+			height: 100%;
+		}
+	}
+
 	// CRITICAL: When row has content, position appender at outer container corner
 	// Target from outer container to position relative to main block wrapper
 	// Use :not(:only-child) to exclude empty row state
