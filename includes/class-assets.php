@@ -205,34 +205,6 @@ class Assets {
 	}
 
 	/**
-	 * Check if any blocks that use Dashicons are present.
-	 *
-	 * Only tabs and accordion blocks use Dashicons. This method checks if either
-	 * of these blocks is present to avoid loading 40KB of Dashicons unnecessarily.
-	 *
-	 * @return bool True if Dashicon blocks are present.
-	 */
-	private function has_dashicon_blocks() {
-		// Not on singular content - can't reliably detect.
-		if ( ! is_singular() ) {
-			return false;
-		}
-
-		global $post;
-		if ( ! $post || empty( $post->post_content ) ) {
-			return false;
-		}
-
-		$content = $post->post_content;
-
-		// Check for blocks that use Dashicons.
-		return (
-			strpos( $content, 'wp:designsetgo/tabs' ) !== false ||
-			strpos( $content, 'wp:designsetgo/accordion' ) !== false
-		);
-	}
-
-	/**
 	 * Register (but don't enqueue) frontend assets.
 	 *
 	 * Assets are enqueued later via render_block when a DesignSetGo block
