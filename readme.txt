@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, form-builder, animations, responsive
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.0.43
+Stable tag: 2.0.44
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,13 @@ Check the [documentation](https://designsetgoblocks.com/docs/), visit the [suppo
 10. Mobile responsive preview in the editor
 
 == Changelog ==
+
+= 2.0.44 - 2026-03-19 =
+**Bug Fixes:**
+* Fix: Frontend assets (responsive visibility, animations, extensions) now load for blocks in template parts (header/footer), not just post content
+* Fix: Remove unwanted has-global-padding on grid inner container that caused extra padding in headers
+* Fix: Responsive visibility classes (hide desktop/tablet/mobile) now properly override layout display rules on all blocks
+* Fix: Remove unused has_dashicon_blocks method (PHPStan)
 
 = 2.0.43 - 2026-03-19 =
 **Bug Fixes:**
