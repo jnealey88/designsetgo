@@ -37,10 +37,18 @@ class Icon_Injector {
 	);
 
 	/**
+	 * Whether the icon injector script has been enqueued for this request.
+	 *
+	 * @var bool
+	 */
+	private $injector_enqueued = false;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_icon_injector' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_icon_injector' ) );
+		add_filter( 'render_block', array( $this, 'maybe_enqueue_on_render' ), 10, 2 );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_icon_library' ) );
 	}
 
@@ -63,17 +71,12 @@ class Icon_Injector {
 	}
 
 	/**
-	 * Enqueue icon injector script with icon library data.
+	 * Register (but don't enqueue) the icon injector script.
 	 *
-	 * Only loads if icon-using blocks are present on the page.
+	 * The script is enqueued later via render_block when an icon block
+	 * is actually rendered, which catches blocks in template parts too.
 	 */
-	public function enqueue_icon_injector() {
-		// Check if any icon-using blocks are present.
-		if ( ! $this->has_icon_blocks() ) {
-			return;
-		}
-
-		// Enqueue the icon injector script for converted blocks.
+	public function register_icon_injector() {
 		$asset_file = DESIGNSETGO_PATH . 'build/frontend/lazy-icon-injector.asset.php';
 
 		if ( ! file_exists( $asset_file ) ) {
@@ -82,7 +85,7 @@ class Icon_Injector {
 
 		$asset = include $asset_file;
 
-		wp_enqueue_script(
+		wp_register_script(
 			'designsetgo-icon-injector',
 			DESIGNSETGO_URL . 'build/frontend/lazy-icon-injector.js',
 			$asset['dependencies'],
@@ -107,29 +110,25 @@ class Icon_Injector {
 	}
 
 	/**
-	 * Check if any icon-using blocks are present on the current page.
+	 * Enqueue the icon injector when an icon block is rendered.
 	 *
-	 * @return bool True if icon blocks are present.
+	 * Uses render_block filter to detect icon blocks wherever they appear:
+	 * post content, templates, or template parts (e.g. header/footer).
+	 *
+	 * @param string $block_content The block content.
+	 * @param array  $block         The full block, including name and attributes.
+	 * @return string The unmodified block content.
 	 */
-	private function has_icon_blocks() {
-		// Only check on singular pages (posts, pages, CPTs).
-		if ( ! is_singular() ) {
-			return false;
+	public function maybe_enqueue_on_render( $block_content, $block ) {
+		if ( $this->injector_enqueued ) {
+			return $block_content;
 		}
 
-		$post = get_post();
-
-		if ( ! $post || ! has_blocks( $post->post_content ) ) {
-			return false;
+		if ( in_array( $block['blockName'], $this->icon_blocks, true ) ) {
+			wp_enqueue_script( 'designsetgo-icon-injector' );
+			$this->injector_enqueued = true;
 		}
 
-		// Check if any icon-using blocks are present.
-		foreach ( $this->icon_blocks as $block_name ) {
-			if ( has_block( $block_name, $post ) ) {
-				return true;
-			}
-		}
-
-		return false;
+		return $block_content;
 	}
 }

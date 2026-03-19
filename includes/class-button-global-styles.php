@@ -62,6 +62,17 @@ class Button_Global_Styles {
 	);
 
 	/**
+	 * Block names that need Global Styles button CSS.
+	 *
+	 * @var string[]
+	 */
+	private const BUTTON_BLOCKS = array(
+		'designsetgo/icon-button',
+		'designsetgo/modal-trigger',
+		'designsetgo/form-builder',
+	);
+
+	/**
 	 * Cached CSS output.
 	 *
 	 * @var string|null
@@ -69,27 +80,43 @@ class Button_Global_Styles {
 	private $cached_css = null;
 
 	/**
+	 * Whether frontend CSS has been injected for this request.
+	 *
+	 * @var bool
+	 */
+	private $frontend_injected = false;
+
+	/**
 	 * Register hooks.
 	 */
 	public function init() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'inject_frontend' ) );
+		add_filter( 'render_block', array( $this, 'maybe_inject_frontend' ), 10, 2 );
 		add_action( 'enqueue_block_assets', array( $this, 'inject_editor' ) );
 	}
 
 	/**
-	 * Inject Global Styles button CSS on the frontend.
+	 * Inject Global Styles button CSS when a button block is rendered.
 	 *
-	 * Skips pages that don't use our button blocks for performance.
+	 * Uses render_block filter to detect button blocks wherever they appear:
+	 * post content, templates, or template parts (e.g. header/footer).
+	 *
+	 * @param string $block_content The block content.
+	 * @param array  $block         The full block, including name and attributes.
+	 * @return string The unmodified block content.
 	 */
-	public function inject_frontend() {
-		// Bail early if none of our button blocks are present on this page.
-		if ( ! has_block( 'designsetgo/icon-button' ) && ! has_block( 'designsetgo/modal-trigger' ) && ! has_block( 'designsetgo/form-builder' ) ) {
-			return;
+	public function maybe_inject_frontend( $block_content, $block ) {
+		if ( is_admin() || $this->frontend_injected ) {
+			return $block_content;
+		}
+
+		if ( ! in_array( $block['blockName'], self::BUTTON_BLOCKS, true ) ) {
+			return $block_content;
 		}
 
 		$css = $this->get_css();
 		if ( empty( $css ) ) {
-			return;
+			$this->frontend_injected = true;
+			return $block_content;
 		}
 
 		// Attach to frontend stylesheet with fallback if handle is missing.
@@ -100,6 +127,9 @@ class Button_Global_Styles {
 			wp_enqueue_style( 'designsetgo-button-global-styles' );
 			wp_add_inline_style( 'designsetgo-button-global-styles', $css );
 		}
+
+		$this->frontend_injected = true;
+		return $block_content;
 	}
 
 	/**
