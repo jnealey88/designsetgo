@@ -1357,12 +1357,12 @@ class Block_Inserter {
 					$support_result['styles']
 				);
 
-				// Inner div always has max-width/margin for content centering.
+				// Match Section save(): only constrained sections carry an inner measure.
 				$max_width   = $content_width ? $content_width : 'var(--wp--style--global--content-size, 1140px)';
-				$inner_style = 'max-width:' . esc_attr( $max_width ) . ';margin-left:auto;margin-right:auto';
+				$inner_style = $constrain_width ? ' style="max-width:' . esc_attr( $max_width ) . ';margin-left:auto;margin-right:auto"' : '';
 
 				return array(
-					'opening' => '<' . esc_attr( $tag_name ) . ' class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( implode( ';', $outer_styles ) ) . '"><div class="dsgo-stack__inner" style="' . esc_attr( $inner_style ) . '">',
+					'opening' => '<' . esc_attr( $tag_name ) . ' class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' . esc_attr( implode( ';', $outer_styles ) ) . '"><div class="dsgo-stack__inner"' . $inner_style . '>',
 					'closing' => '</div></' . esc_attr( $tag_name ) . '>',
 				);
 
@@ -2239,16 +2239,31 @@ class Block_Inserter {
 					$outer_class_parts[] = 'dsgo-no-width-constraint';
 				}
 
-				// Default padding from block supports.
-				$default_padding = 'padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)';
+				// Attribute defaults replace the entire style object, never deep-merge.
+				$style = $attributes['style'] ?? ( Block_Schema_Loader::get_block_json( $block_name )['attributes']['style']['default'] ?? array() );
+				$support_styles = self::get_block_support_styles( $style )['styles'];
 
 				// Inner div styles with gap.
 				$inner_styles = array(
 					'display:flex',
 					'justify-content:' . esc_attr( $justify_content ),
 					'flex-wrap:' . esc_attr( $flex_wrap ),
-					'gap:var(--wp--preset--spacing--30)',
 				);
+				$vertical_alignment = $layout['verticalAlignment'] ?? '';
+				$align_map = array(
+					'top'           => 'flex-start',
+					'center'        => 'center',
+					'bottom'        => 'flex-end',
+					'stretch'       => 'stretch',
+					'space-between' => 'space-between',
+				);
+				if ( isset( $align_map[ $vertical_alignment ] ) ) {
+					$inner_styles[] = 'align-items:' . $align_map[ $vertical_alignment ];
+				}
+				$gap = self::spacing_gap( $style['spacing']['blockGap'] ?? null );
+				if ( is_string( $gap ) && '' !== $gap ) {
+					$inner_styles[] = 'gap:' . $gap;
+				}
 				if ( $constrain_width ) {
 					$max_width      = $content_width ? $content_width : 'var(--wp--style--global--content-size, 1140px)';
 					$inner_styles[] = 'max-width:' . esc_attr( $max_width );
@@ -2258,7 +2273,7 @@ class Block_Inserter {
 
 				return array(
 					'opening' => '<div class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' .
-						esc_attr( implode( ';', array_merge( self::container_hover_styles( $attributes ), array( $default_padding ) ) ) ) .
+						esc_attr( implode( ';', array_merge( self::container_hover_styles( $attributes ), $support_styles ) ) ) .
 						'"><div class="dsgo-flex__inner" style="' . esc_attr( implode( ';', $inner_styles ) ) . '">',
 					'closing' => '</div></div>',
 				);
@@ -2286,21 +2301,37 @@ class Block_Inserter {
 				$outer_class_parts[] = 'dsgo-grid-cols-' . $desktop_cols;
 				$outer_class_parts[] = 'dsgo-grid-cols-tablet-' . $tablet_cols;
 				$outer_class_parts[] = 'dsgo-grid-cols-mobile-' . $mobile_cols;
+				if ( ! empty( $attributes['matchRowHeights'] ) ) {
+					$outer_class_parts[] = 'dsgo-grid--match-rows';
+				}
 				if ( ! $constrain_width ) {
 					$outer_class_parts[] = 'dsgo-no-width-constraint';
 				}
 
-				// Default padding from block supports.
-				$default_padding = 'padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)';
+				// Attribute defaults replace the entire style object, never deep-merge.
+				$style = $attributes['style'] ?? ( Block_Schema_Loader::get_block_json( $block_name )['attributes']['style']['default'] ?? array() );
+				$support_styles = self::get_block_support_styles( $style )['styles'];
 
 				// Inner div styles.
-				$default_gap  = 'var(--wp--preset--spacing--50)';
+				$default_gap = 'var(--wp--preset--spacing--50)';
+				$block_gap = $style['spacing']['blockGap'] ?? null;
+				$row_gap = is_array( $block_gap ) ? ( $block_gap['top'] ?? '' ) : $block_gap;
+				$column_gap = is_array( $block_gap ) ? ( $block_gap['left'] ?? '' ) : $block_gap;
+				$custom_row_gap = $attributes['rowGap'] ?? '';
+				$custom_column_gap = $attributes['columnGap'] ?? '';
+				$row_gap = self::spacing_gap( $row_gap ) ?? ( '' !== $custom_row_gap ? $custom_row_gap : $default_gap );
+				$column_gap = self::spacing_gap( $column_gap ) ?? ( '' !== $custom_column_gap ? $custom_column_gap : $default_gap );
+				$columns_css = 'repeat(' . $desktop_cols . ', 1fr)';
+				if ( ! empty( $attributes['columnMinWidth'] ) ) {
+					$share = $desktop_cols > 1 ? '(100% - ' . ( $desktop_cols - 1 ) . ' * ' . $column_gap . ') / ' . $desktop_cols : '100%';
+					$columns_css = 'repeat(auto-fill, minmax(min(100%, max(' . $attributes['columnMinWidth'] . ', ' . $share . ')), 1fr))';
+				}
 				$inner_styles = array(
 					'display:grid',
-					'grid-template-columns:repeat(' . $desktop_cols . ', 1fr)',
+					'grid-template-columns:' . $columns_css,
 					'align-items:' . esc_attr( $align_items ),
-					'row-gap:' . $default_gap,
-					'column-gap:' . $default_gap,
+					'row-gap:' . $row_gap,
+					'column-gap:' . $column_gap,
 				);
 				if ( $constrain_width ) {
 					$max_width      = $content_width ? $content_width : 'var(--wp--style--global--content-size, 1140px)';
@@ -2318,7 +2349,7 @@ class Block_Inserter {
 
 				return array(
 					'opening' => '<' . $grid_tag . ' class="' . esc_attr( implode( ' ', $outer_class_parts ) ) . '" style="' .
-						esc_attr( implode( ';', array_merge( self::container_hover_styles( $attributes ), array( $default_padding ) ) ) ) .
+						esc_attr( implode( ';', array_merge( self::container_hover_styles( $attributes ), $support_styles ) ) ) .
 						'"><div class="dsgo-grid__inner" style="' . esc_attr( implode( ';', $inner_styles ) ) . '">',
 					'closing' => '</div></' . $grid_tag . '>',
 				);
@@ -2914,6 +2945,11 @@ class Block_Inserter {
 				$outer_class = 'wp-block-designsetgo-card' . ( '' !== $card_align ? ' ' . $card_align : '' ) .
 					' dsgo-card dsgo-card--' . esc_attr( $layout_preset ) . ' dsgo-card--style-' . esc_attr( $visual_style );
 
+				$card_border = '';
+				if ( ! empty( $attributes['borderColor'] ) && 'minimal' !== $visual_style ) {
+					$card_border = ' style="border-color:' . esc_attr( $attributes['borderColor'] ) . ';border-width:' . ( 'outlined' === $visual_style ? '2px' : '1px' ) . ';border-style:solid"';
+				}
+
 				// Build content HTML.
 				$content_class = 'dsgo-card__content ';
 				if ( 'background' === $layout_preset ) {
@@ -2947,7 +2983,7 @@ class Block_Inserter {
 				}
 
 				return array(
-					'opening' => '<div class="' . esc_attr( $outer_class ) . '"><div class="dsgo-card__inner"><div class="' . esc_attr( $content_class ) . '">' . $content_html . $cta_opening,
+					'opening' => '<div class="' . esc_attr( $outer_class ) . '"' . $card_border . '><div class="dsgo-card__inner"><div class="' . esc_attr( $content_class ) . '">' . $content_html . $cta_opening,
 					'closing' => $cta_closing . '</div></div></div>',
 				);
 
@@ -4925,6 +4961,23 @@ class Block_Inserter {
 	}
 
 	/**
+	 * Match convertPresetToCSSVar for container gaps, including string zero.
+	 *
+	 * @param mixed $value Gap or a WordPress top/left gap object.
+	 * @return string|null CSS gap, or null when JavaScript would return undefined.
+	 */
+	private static function spacing_gap( $value ): ?string {
+		if ( is_array( $value ) ) {
+			$top = $value['top'] ?? null;
+			$value = ( null !== $top && '' !== $top && false !== $top && 0 !== $top ) ? $top : ( $value['left'] ?? null );
+		}
+		if ( null === $value || '' === $value || false === $value || 0 === $value ) {
+			return null;
+		}
+		return self::wp_shorthand_to_css_var( (string) $value );
+	}
+
+	/**
 	 * Convert WordPress preset shorthand to a CSS custom property reference.
 	 *
 	 * @param string $value Value to convert.
@@ -5025,6 +5078,12 @@ class Block_Inserter {
 		if ( ! empty( $style['color']['gradient'] ) ) {
 			$classes[] = 'has-background';
 			$styles[]  = 'background:' . esc_attr( $style['color']['gradient'] );
+		}
+
+		// Style Engine can express preset border colors as classes; save() keeps
+		// a style.border.color value inline, so preserve that declaration.
+		if ( ! empty( $style['border']['color'] ) ) {
+			$styles[] = 'border-color:' . esc_attr( self::convert_color_value_to_css_var( $style['border']['color'] ) );
 		}
 
 		// Spacing support - padding.
