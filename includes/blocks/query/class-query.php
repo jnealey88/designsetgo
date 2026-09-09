@@ -490,28 +490,10 @@ class Controller {
 	 * @return true|\WP_Error
 	 */
 	public function check_public_render_permission( \WP_REST_Request $request ) {
-		if ( null !== $request->get_param( 'attributes' ) ) {
-			return $this->check_permission( $request );
-		}
-
-		if ( is_user_logged_in() ) {
-			$nonce = $request->get_header( 'X-WP-Nonce' );
-			if ( $nonce && wp_verify_nonce( $nonce, 'wp_rest' ) && current_user_can( 'read' ) ) {
-				return true;
-			}
-			if ( ! absint( $request->get_param( 'postId' ) ) ) {
-				return new \WP_Error(
-					'rest_forbidden',
-					__( 'Invalid nonce.', 'designsetgo' ),
-					array( 'status' => 401 )
-				);
-			}
-		}
-
 		$post_id = absint( $request->get_param( 'postId' ) );
 		$post    = get_post( $post_id );
 
-		if ( ! $post || ! is_post_publicly_viewable( $post ) ) {
+		if ( ! $post || ! is_post_publicly_viewable( $post ) || post_password_required( $post ) ) {
 			return new \WP_Error(
 				'rest_forbidden',
 				__( 'This query is not publicly available.', 'designsetgo' ),
@@ -529,13 +511,6 @@ class Controller {
 	 * @return \WP_REST_Response
 	 */
 	public function handle_render( \WP_REST_Request $request ) {
-		// Backward-compatible authenticated editor calls may still use the old
-		// route while cached editor assets roll over. Public calls never enter
-		// this branch because check_public_render_permission requires a nonce.
-		if ( null !== $request->get_param( 'attributes' ) ) {
-			return $this->handle_preview_render( $request );
-		}
-
 		$query_id = (string) $request->get_param( 'queryId' );
 		$post     = get_post( absint( $request->get_param( 'postId' ) ) );
 		$block    = $post ? $this->find_saved_query_block( parse_blocks( $post->post_content ), $query_id ) : null;
