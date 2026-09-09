@@ -269,12 +269,21 @@ class Form_Handler {
 		$timestamp     = $request->get_param( 'timestamp' );
 		$form_settings = $this->get_form_settings();
 
-		// Look up per-block attributes for rate limiting and Turnstile enforcement.
-		// Fallback (2/60s) is intentionally stricter than the block-level default
-		// — it only applies to orphaned/legacy submissions where the per-block
-		// configuration is missing.
-		$block_attrs        = $this->get_form_block_attributes( $form_id );
-		$rate_limit_count   = isset( $block_attrs['rateLimitCount'] ) ? absint( $block_attrs['rateLimitCount'] ) : 2;
+		// Resolve the complete published form definition before running checks that
+		// can consume resources. A form ID is an untrusted client value: accepting
+		// an unknown one would let callers bypass its field schema and per-form
+		// controls entirely.
+		$form_definition = $this->get_form_definition( $form_id );
+		if ( null === $form_definition ) {
+			return new WP_Error(
+				'unknown_form',
+				__( 'This form is no longer available.', 'designsetgo' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		$block_attrs        = $form_definition['attributes'];
+		$rate_limit_count   = isset( $block_attrs['rateLimitCount'] ) ? absint( $block_attrs['rateLimitCount'] ) : 3;
 		$rate_limit_window  = isset( $block_attrs['rateLimitWindow'] ) ? absint( $block_attrs['rateLimitWindow'] ) : 60;
 		$turnstile_required = ! empty( $block_attrs['enableTurnstile'] );
 
@@ -298,6 +307,11 @@ class Form_Handler {
 			$rate_limit_check = $this->security->check_rate_limit( $form_id, $rate_limit_count );
 			if ( is_wp_error( $rate_limit_check ) ) {
 				return $rate_limit_check;
+			}
+
+			$global_rate_limit_check = $this->security->check_global_rate_limit();
+			if ( is_wp_error( $global_rate_limit_check ) ) {
+				return $global_rate_limit_check;
 			}
 		}
 
@@ -328,8 +342,8 @@ class Form_Handler {
 		}
 
 		// Sanitize and validate all fields.
-		$form_field_types  = $this->get_form_field_types( $form_id );
-		$field_constraints = $this->get_form_field_value_constraints( $form_id );
+		$form_field_types  = $form_definition['field_types'];
+		$field_constraints = $form_definition['constraints'];
 		$sanitized_fields  = array();
 		foreach ( $fields as $field ) {
 			if ( ! isset( $field['name'] ) || ! isset( $field['value'] ) ) {
@@ -339,9 +353,15 @@ class Form_Handler {
 			$field_name           = sanitize_text_field( $field['name'] );
 			$field_value          = $field['value'];
 			$submitted_field_type = isset( $field['type'] ) ? sanitize_text_field( $field['type'] ) : 'text';
-			$field_type           = isset( $form_field_types[ $field_name ] )
-				? $form_field_types[ $field_name ]
-				: $submitted_field_type;
+			if ( ! isset( $form_field_types[ $field_name ] ) && ! empty( $form_field_types ) ) {
+				return new WP_Error(
+					'unknown_field',
+					__( 'This form contains an invalid field.', 'designsetgo' ),
+					array( 'status' => 400 )
+				);
+			}
+
+			$field_type = isset( $form_field_types[ $field_name ] ) ? $form_field_types[ $field_name ] : $submitted_field_type;
 
 			// Server-defined allowed values for constrained field types (only
 			// present for select/checkbox/hidden fields resolved from the block).
@@ -376,6 +396,16 @@ class Form_Handler {
 			);
 		}
 
+		foreach ( $form_definition['required_fields'] as $field_name ) {
+			if ( ! isset( $sanitized_fields[ $field_name ] ) || $this->is_empty_field_value( $sanitized_fields[ $field_name ]['value'] ) ) {
+				return new WP_Error(
+					'required_field_missing',
+					__( 'Please complete all required fields.', 'designsetgo' ),
+					array( 'status' => 400 )
+				);
+			}
+		}
+
 		// Store submission.
 		$submission_id = $this->store_submission( $form_id, $sanitized_fields );
 
@@ -393,6 +423,7 @@ class Form_Handler {
 		// Increment rate limit counter ONLY after successful submission.
 		if ( $form_settings['enable_rate_limiting'] ) {
 			$this->security->increment_rate_limit( $form_id, $rate_limit_window );
+			$this->security->increment_global_rate_limit();
 		}
 
 		// Trigger action hook for email notifications, integrations, etc.
@@ -406,6 +437,20 @@ class Form_Handler {
 			),
 			200
 		);
+	}
+
+	/**
+	 * Determine whether a sanitized field value should fail a required check.
+	 *
+	 * @param mixed $value Sanitized field value.
+	 * @return bool True when the value is empty.
+	 */
+	private function is_empty_field_value( $value ) {
+		if ( is_array( $value ) ) {
+			return empty( $value );
+		}
+
+		return '' === trim( (string) $value );
 	}
 
 	/**
@@ -1107,13 +1152,38 @@ class Form_Handler {
 	 * @return array|null Block attributes array, or null if not found.
 	 */
 	private function get_form_block_attributes( $form_id ) {
-		// Check transient cache first to avoid LIKE queries on every submission.
-		// v2 prefix invalidates older caches that were stored before block-type
-		// defaults were merged into parsed attributes.
-		$cache_key = 'dsgo_form_attrs_v2_' . md5( $form_id );
+		// Preserve the legacy attributes cache for installations that already have
+		// it populated. New lookups use the complete definition cache below.
+		$legacy_cache = get_transient( 'dsgo_form_attrs_v2_' . md5( $form_id ) );
+		if ( false !== $legacy_cache && is_array( $legacy_cache ) ) {
+			return $legacy_cache;
+		}
+
+		$form_definition = $this->get_form_definition( $form_id );
+
+		return null === $form_definition ? null : $form_definition['attributes'];
+	}
+
+	/**
+	 * Resolve the server-owned definition for a public form.
+	 *
+	 * Parsing the post once keeps the validation schema, required flags, and
+	 * submission configuration in sync. Only published posts are eligible: a
+	 * private or draft form must not become a public submission endpoint just
+	 * because its predictable ID is known.
+	 *
+	 * @param string $form_id Form identifier to look up.
+	 * @return array{attributes: array, field_types: array, constraints: array, required_fields: string[]}|null Form definition or null.
+	 */
+	private function get_form_definition( $form_id ) {
+		if ( ! is_string( $form_id ) || '' === $form_id ) {
+			return null;
+		}
+
+		$cache_key = 'dsgo_form_definition_v1_' . md5( $form_id );
 		$cached    = get_transient( $cache_key );
 
-		if ( false !== $cached ) {
+		if ( false !== $cached && is_array( $cached ) ) {
 			return $cached;
 		}
 
@@ -1128,7 +1198,7 @@ class Form_Handler {
 				"SELECT ID, post_content FROM {$wpdb->posts}
 				WHERE post_content LIKE %s
 				AND post_content LIKE %s
-				AND post_status IN ('publish', 'private')
+				AND post_status = 'publish'
 				LIMIT 5",
 				'%' . $wpdb->esc_like( 'designsetgo/form-builder' ) . '%',
 				'%' . $wpdb->esc_like( '"formId":"' . $form_id . '"' ) . '%'
@@ -1140,12 +1210,47 @@ class Form_Handler {
 		}
 
 		foreach ( $posts as $post ) {
-			$blocks = parse_blocks( $post->post_content );
-			$attrs  = $this->find_form_block_attributes( $blocks, $form_id );
-			if ( null !== $attrs ) {
-				// Cache for 1 hour. Invalidated on save_post via clear_form_attributes_cache().
-				set_transient( $cache_key, $attrs, HOUR_IN_SECONDS );
-				return $attrs;
+			$blocks     = parse_blocks( $post->post_content );
+			$form_block = $this->find_form_block( $blocks, $form_id );
+			if ( null !== $form_block ) {
+				$inner_blocks = isset( $form_block['innerBlocks'] ) ? $form_block['innerBlocks'] : array();
+				$definition   = array(
+					'attributes'      => $this->apply_form_block_defaults( $form_block['attrs'] ),
+					'field_types'     => $this->extract_field_types_from_blocks( $inner_blocks ),
+					'constraints'     => $this->extract_field_value_constraints_from_blocks( $inner_blocks ),
+					'required_fields' => $this->extract_required_field_names_from_blocks( $inner_blocks ),
+				);
+
+				set_transient( $cache_key, $definition, HOUR_IN_SECONDS );
+				return $definition;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Recursively find a form block with its inner-block schema intact.
+	 *
+	 * @param array  $blocks  Parsed blocks array.
+	 * @param string $form_id Form identifier to match.
+	 * @return array|null Matching parsed block.
+	 */
+	private function find_form_block( $blocks, $form_id ) {
+		foreach ( $blocks as $block ) {
+			if (
+				'designsetgo/form-builder' === $block['blockName'] &&
+				isset( $block['attrs']['formId'] ) &&
+				$form_id === $block['attrs']['formId']
+			) {
+				return $block;
+			}
+
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$result = $this->find_form_block( $block['innerBlocks'], $form_id );
+				if ( null !== $result ) {
+					return $result;
+				}
 			}
 		}
 
@@ -1192,16 +1297,24 @@ class Form_Handler {
 	 * @return array Attributes with block.json defaults filled in for missing keys.
 	 */
 	private function apply_form_block_defaults( $attrs ) {
-		if ( ! class_exists( '\WP_Block_Type_Registry' ) ) {
-			return $attrs;
+		$schemas    = array();
+		$block_type = class_exists( '\WP_Block_Type_Registry' )
+			? \WP_Block_Type_Registry::get_instance()->get_registered( 'designsetgo/form-builder' )
+			: null;
+
+		if ( $block_type && is_array( $block_type->attributes ) ) {
+			$schemas = $block_type->attributes;
+		} elseif ( function_exists( 'wp_json_file_decode' ) ) {
+			$metadata = wp_json_file_decode(
+				dirname( __DIR__, 3 ) . '/src/blocks/form-builder/block.json',
+				array( 'associative' => true )
+			);
+			$schemas  = is_array( $metadata ) && isset( $metadata['attributes'] ) && is_array( $metadata['attributes'] )
+				? $metadata['attributes']
+				: array();
 		}
 
-		$block_type = \WP_Block_Type_Registry::get_instance()->get_registered( 'designsetgo/form-builder' );
-		if ( ! $block_type || ! is_array( $block_type->attributes ) ) {
-			return $attrs;
-		}
-
-		foreach ( $block_type->attributes as $key => $schema ) {
+		foreach ( $schemas as $key => $schema ) {
 			if ( array_key_exists( $key, $attrs ) ) {
 				continue;
 			}
@@ -1214,6 +1327,35 @@ class Form_Handler {
 	}
 
 	/**
+	 * Extract names of required fields from a form's inner blocks.
+	 *
+	 * @param array $blocks Parsed inner blocks.
+	 * @return string[] Required field names.
+	 */
+	private function extract_required_field_names_from_blocks( $blocks ) {
+		$required_fields = array();
+
+		foreach ( $blocks as $block ) {
+			$attrs      = isset( $block['attrs'] ) ? $block['attrs'] : array();
+			$field_name = isset( $attrs['fieldName'] ) ? sanitize_text_field( $attrs['fieldName'] ) : '';
+			$field_type = $this->map_block_name_to_field_type( isset( $block['blockName'] ) ? $block['blockName'] : '' );
+
+			if ( $field_name && $field_type && ! empty( $attrs['required'] ) ) {
+				$required_fields[] = $field_name;
+			}
+
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$required_fields = array_merge(
+					$required_fields,
+					$this->extract_required_field_names_from_blocks( $block['innerBlocks'] )
+				);
+			}
+		}
+
+		return array_values( array_unique( $required_fields ) );
+	}
+
+	/**
 	 * Look up server-defined field types for a form by form ID.
 	 *
 	 * Uses parsed block content so validation/sanitization does not rely on
@@ -1223,43 +1365,9 @@ class Form_Handler {
 	 * @return array<string, string> Field types keyed by field name.
 	 */
 	private function get_form_field_types( $form_id ) {
-		$cache_key = 'dsgo_form_field_types_' . md5( $form_id );
-		$cached    = get_transient( $cache_key );
+		$form_definition = $this->get_form_definition( $form_id );
 
-		if ( false !== $cached && is_array( $cached ) ) {
-			return $cached;
-		}
-
-		global $wpdb;
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Cached via transient above.
-		$posts = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT ID, post_content FROM {$wpdb->posts}
-				WHERE post_content LIKE %s
-				AND post_content LIKE %s
-				AND post_status IN ('publish', 'private')
-				LIMIT 5",
-				'%' . $wpdb->esc_like( 'designsetgo/form-builder' ) . '%',
-				'%' . $wpdb->esc_like( '"formId":"' . $form_id . '"' ) . '%'
-			)
-		);
-
-		if ( empty( $posts ) ) {
-			return array();
-		}
-
-		foreach ( $posts as $post ) {
-			$blocks      = parse_blocks( $post->post_content );
-			$field_types = $this->find_form_field_types( $blocks, $form_id );
-
-			if ( ! empty( $field_types ) ) {
-				set_transient( $cache_key, $field_types, HOUR_IN_SECONDS );
-				return $field_types;
-			}
-		}
-
-		return array();
+		return null === $form_definition ? array() : $form_definition['field_types'];
 	}
 
 	/**
@@ -1274,43 +1382,9 @@ class Form_Handler {
 	 * @return array<string, string[]> Allowed values keyed by field name.
 	 */
 	private function get_form_field_value_constraints( $form_id ) {
-		$cache_key = 'dsgo_form_field_constraints_' . md5( $form_id );
-		$cached    = get_transient( $cache_key );
+		$form_definition = $this->get_form_definition( $form_id );
 
-		if ( false !== $cached && is_array( $cached ) ) {
-			return $cached;
-		}
-
-		global $wpdb;
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Cached via transient above.
-		$posts = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT ID, post_content FROM {$wpdb->posts}
-				WHERE post_content LIKE %s
-				AND post_content LIKE %s
-				AND post_status IN ('publish', 'private')
-				LIMIT 5",
-				'%' . $wpdb->esc_like( 'designsetgo/form-builder' ) . '%',
-				'%' . $wpdb->esc_like( '"formId":"' . $form_id . '"' ) . '%'
-			)
-		);
-
-		if ( empty( $posts ) ) {
-			return array();
-		}
-
-		foreach ( $posts as $post ) {
-			$blocks      = parse_blocks( $post->post_content );
-			$constraints = $this->find_form_field_constraints( $blocks, $form_id );
-
-			if ( ! empty( $constraints ) ) {
-				set_transient( $cache_key, $constraints, HOUR_IN_SECONDS );
-				return $constraints;
-			}
-		}
-
-		return array();
+		return null === $form_definition ? array() : $form_definition['constraints'];
 	}
 
 	/**
@@ -1536,6 +1610,7 @@ class Form_Handler {
 				'designsetgo/form-builder' === $block['blockName'] &&
 				isset( $block['attrs']['formId'] )
 			) {
+				delete_transient( 'dsgo_form_definition_v1_' . md5( $block['attrs']['formId'] ) );
 				delete_transient( 'dsgo_form_attrs_v2_' . md5( $block['attrs']['formId'] ) );
 				delete_transient( 'dsgo_form_field_types_' . md5( $block['attrs']['formId'] ) );
 				delete_transient( 'dsgo_form_field_constraints_' . md5( $block['attrs']['formId'] ) );

@@ -5,6 +5,7 @@ parameters:
 	# Paths to analyze
 	paths:
 		- includes
+		- src
 		- designsetgo.php
 
 	# Excluded paths

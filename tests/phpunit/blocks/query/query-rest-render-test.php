@@ -20,6 +20,24 @@ class DesignSetGo_Query_Rest_Test extends WP_UnitTestCase {
 		$this->assertSame( 401, $response->get_status() );
 	}
 
+	public function test_public_request_uses_the_saved_query_definition() {
+		$post_id = self::factory()->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_content' => '<!-- wp:designsetgo/query {"queryId":"public-query","perPage":1} --><!-- wp:designsetgo/query-results /--><!-- /wp:designsetgo/query -->',
+			)
+		);
+
+		$request = new WP_REST_Request( 'POST', '/designsetgo/v1/query/render' );
+		$request->set_param( 'postId', $post_id );
+		$request->set_param( 'queryId', 'public-query' );
+		$request->set_param( 'page', 1 );
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertSame( 200, $response->get_status() );
+		$this->assertArrayHasKey( 'html', $response->get_data() );
+	}
+
 	public function test_rejects_logged_in_user_without_nonce() {
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
 
