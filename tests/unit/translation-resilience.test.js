@@ -3,7 +3,7 @@
  * edit (the shape a translation pass produces) without invalidating the block.
  *
  * Root cause this pins: blocks used to store their label as a plain attribute in
- * the block-comment JSON *and* render it into the HTML. When the site-designer
+ * the block-comment JSON *and* render it into the HTML. When the generator's
  * translation path rewrote the visible HTML text but left the comment JSON stale
  * (English), save() regenerated the old label and no longer matched the stored
  * markup → "Block contains unexpected or invalid content" → Attempt recovery.

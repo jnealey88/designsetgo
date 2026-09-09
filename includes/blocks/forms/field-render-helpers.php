@@ -6,7 +6,7 @@
  * produced here at render time). Centralising the wrapper width, label and
  * help-text markup keeps every field's render.php byte-consistent and means
  * the authored (or pattern-substituted / translated) field text is emitted
- * server-side — so a pattern (or the site-designer-api) can substitute or
+ * server-side — so a pattern (or the page generator) can substitute or
  * translate field text without ever tripping block validation.
  *
  * (Field labels are not translated here: block.json supplies each label's

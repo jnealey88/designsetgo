@@ -158,7 +158,7 @@ const vStatic = {
 /**
  * Version 1: Before aria-required was added to required fields.
  *
- * The site-designer-api generated HTML without aria-required="true" on required
+ * The page generator emitted HTML without aria-required="true" on required
  * input fields. Kept for provenance; vStatic already covers this content.
  */
 const v1 = {

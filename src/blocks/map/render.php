@@ -6,7 +6,7 @@
  * for view.js) is produced here at render time. Two wins over the old static
  * save:
  *
- * 1. Nothing is stored to diff against, so a pattern (or the site-designer-api)
+ * 1. Nothing is stored to diff against, so a pattern (or the page generator)
  *    can omit or change any value — e.g. the marker colour — without tripping
  *    block validation.
  * 2. The marker colour resolves per-kit: explicit attribute → theme.json

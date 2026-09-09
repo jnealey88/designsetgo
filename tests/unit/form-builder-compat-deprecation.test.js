@@ -1,5 +1,5 @@
 /**
- * Compatibility deprecation for forms emitted by the Airo site-designer API.
+ * Compatibility deprecation for forms emitted by the page generator.
  *
  * The generator produces v4-era form markup (baked `--dsgo-form-*` tokens, inline
  * submit sizing, `data-submit-text`) but strips the honeypot `aria-hidden` and
@@ -22,14 +22,14 @@ beforeAll(() => {
 	registerDesignSetGoBlock('form-builder');
 });
 
-// Exactly the markup captured from a site-designer-generated page (temp.txt):
+// Exactly the markup captured from a generator-built page:
 // baked tokens + inline submit sizing + data-submit-text, ARIA attributes
 // stripped, and a custom data-error-message that is NOT in the block comment.
 const API_FORM = `<!-- wp:designsetgo/form-builder {"formId":"cf17bd2a","successMessage":"Thanks! Your message has been sent.","className":"dsgo-form","style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}}} -->
 <div class="wp-block-designsetgo-form-builder dsgo-form-builder dsgo-form-builder--align-left dsgo-form" style="margin-top:var(--wp--preset--spacing--40);--dsgo-form-field-spacing:1.5rem;--dsgo-form-input-height:44px;--dsgo-form-input-padding:0.75rem;--dsgo-form-border-color:#d1d5db" data-form-id="cf17bd2a" data-ajax-submit="true" data-success-message="Thanks! Your message has been sent." data-error-message="Please check the form and try again." data-submit-text="Send Message"><form class="dsgo-form" method="post" novalidate><div class="dsgo-form__fields"></div><input type="text" name="dsg_website" value="" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"/><input type="hidden" name="dsg_form_id" value="cf17bd2a"/><div class="dsgo-form__footer"><button type="submit" class="dsgo-form__submit wp-element-button" style="min-height:44px;padding-top:0.75rem;padding-bottom:0.75rem;padding-left:2rem;padding-right:2rem">Send Message</button></div><div class="dsgo-form__message" role="status" aria-live="polite" style="display:none"></div></form></div>
 <!-- /wp:designsetgo/form-builder -->`;
 
-describe('form-builder site-designer compatibility deprecation (v7)', () => {
+describe('form-builder generator compatibility deprecation (v7)', () => {
 	it('migrates the ARIA-stripped, token-baked API form without Attempt Recovery', () => {
 		const [block] = parse(API_FORM);
 		expect(console).toHaveInformed();
@@ -57,7 +57,7 @@ describe('form-builder site-designer compatibility deprecation (v7)', () => {
 
 	// Guards the v7-vs-v2 ordering: v7 is registered first and has no
 	// isEligible, so in principle it could shadow the older v2 deprecation
-	// (also an ARIA-stripped site-designer shape). It does not, because the two
+	// (also an ARIA-stripped generator shape). It does not, because the two
 	// resolve on different save() output: v7 sources the messages from the
 	// wrapper's data-* attributes (the generator's HTML-only shape), while v2
 	// sources errorMessage from the block comment. Genuinely-old content that

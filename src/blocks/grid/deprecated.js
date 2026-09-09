@@ -488,7 +488,7 @@ const v1 = {
 };
 
 /**
- * Site-designer responsive-grid markup where the tablet column count lived in a
+ * Generator-emitted responsive-grid markup where the tablet column count lived in a
  * `className` (e.g. `dsgo-grid-cols-tablet-1`) rather than the `tabletColumns`
  * attribute — and the block comment's `tabletColumns` drifted away from it.
  *

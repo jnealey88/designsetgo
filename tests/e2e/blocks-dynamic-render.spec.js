@@ -50,7 +50,7 @@ const LEGACY_PILL = `<!-- wp:designsetgo/pill {"content":"Test"} -->
 <div class="wp-block-designsetgo-pill aligncenter dsgo-pill has-small-font-size"><span class="dsgo-pill__content">Test</span></div>
 <!-- /wp:designsetgo/pill -->`;
 
-// Authentic pre-conversion markup from the site-designer contact patterns
+// Authentic pre-conversion markup from the generator's contact patterns
 // (block-patterns/patterns/contact). This is the exact shape that used to throw
 // "Block validation: Expected text ..., saw ...": the block comment carries no
 // `placeholder` attribute (so save() expected the English default
@@ -390,7 +390,7 @@ test.describe('Pill block — dynamic render', () => {
 // Form fields — dynamic render + migration
 //
 // The headline fix: form fields are server-rendered, so authored / translated /
-// site-designer-substituted label + placeholder + option text is no longer
+// generator-substituted label + placeholder + option text is no longer
 // baked into stored HTML and can never trip block validation.
 // ---------------------------------------------------------------------------
 test.describe('Form fields — dynamic render', () => {

@@ -1,5 +1,5 @@
 /**
- * Compatibility deprecation for site-designer grids whose tablet column count
+ * Compatibility deprecation for generator-emitted grids whose tablet column count
  * lived in a `className` (`dsgo-grid-cols-tablet-N`) while the block comment's
  * `tabletColumns` drifted to a different value, and whose min-width lived only
  * in the inner CSS (`minmax(<w>, 1fr)`) with no `columnMinWidth` attribute.
@@ -22,14 +22,14 @@ beforeAll(() => {
 	registerDesignSetGoBlock('grid');
 });
 
-// Captured verbatim from the site-designer page (post 108): tabletColumns drifted
+// Captured verbatim from a generator-built page (post 108): tabletColumns drifted
 // to the default 2, the real tablet-1 lives in className, columnMinWidth is empty
 // but the inner track is minmax(480px, 1fr).
 const API_GRID = `<!-- wp:designsetgo/grid {"align":"full","desktopColumns":2,"style":{"spacing":{"blockGap":"var:preset|spacing|50","padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"className":"dsgo-grid-cols-tablet-1"} -->
 <div class="wp-block-designsetgo-grid alignfull dsgo-grid dsgo-grid-cols-2 dsgo-grid-cols-tablet-1 dsgo-grid-cols-mobile-1 dsgo-no-width-constraint" style="padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--30)"><div class="dsgo-grid__inner" style="display:grid;grid-template-columns:repeat(2, minmax(480px, 1fr));align-items:stretch;row-gap:var(--wp--preset--spacing--50);column-gap:var(--wp--preset--spacing--50)"></div></div>
 <!-- /wp:designsetgo/grid -->`;
 
-describe('grid site-designer compatibility deprecation (responsive tablet class)', () => {
+describe('grid generator compatibility deprecation (responsive tablet class)', () => {
 	it('migrates the drifted-tablet-class / CSS-only-min-width grid without Attempt Recovery', () => {
 		const [block] = parse(API_GRID);
 		expect(console).toHaveInformed();

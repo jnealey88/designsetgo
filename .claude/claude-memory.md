@@ -278,7 +278,7 @@ Reported by a dev testing Airo for WordPress: switching style cards on a page wi
 
 Root cause is entirely in `src/utils/sticky-header.js`, but the trigger lives cross-repo:
 
-- Airo's soft reload (`wp-site-designer-mu-plugins` → `packages/native-ui/src/utils/frontendRefresh.ts`, `softReload()`) tries eight `CONTENT_SELECTORS` (`main#main`, `main.site-main`, `#primary`, `main`, `#content`, `.site-content`, `#page`, `.site`) and swaps only that wrapper. When none match it replaces the whole `<body>`.
+- Airo's soft reload (the upstream `native-ui` package → `src/utils/frontendRefresh.ts`, `softReload()`) tries eight `CONTENT_SELECTORS` (`main#main`, `main.site-main`, `#primary`, `main`, `#content`, `.site-content`, `#page`, `.site`) and swaps only that wrapper. When none match it replaces the whole `<body>`.
 - Airo overrides TT5's `page` template with `header template part + wp:post-content + footer template part` — **zero** of those selectors render, so every Airo *page* takes the full-`<body>` branch and the header template part is destroyed and rebuilt. (Its `home`/`single` templates do keep a `<main>`, so blog routes were unaffected — which is why this only showed up on pages.)
 - `sticky-header.js` bound one `scroll` listener per header but gated them all behind a single module-scoped `ticking` flag. The first listener registered claimed the gate every frame and released it only after its own callback, starving every later one. Nothing unbound the listener for a header the swap detached — and that dead listener, being oldest, was the gate holder. Verified in Chrome: after the swap the **detached** header kept receiving `dsgo-scrolled` while the live one never did.
 
@@ -386,3 +386,16 @@ Things worth remembering about this tree:
 - Env note: `docker` is at `/Applications/Docker.app/Contents/Resources/bin/docker`, not on
   PATH by default; `php` needs `/opt/homebrew/bin`. `Map_Embed_Render_Test` has **4 failures
   on a clean tree** — pre-existing, unrelated to abilities work.
+
+### Naming upstream generators in comments (agent: generator-comment-scrub-2026-09-09)
+
+This repo is **public**. Comments, docs, `.claude/**` and `readme.txt` all ship to GitHub, so
+they must never name an internal upstream service, its repo, or a developer's local path.
+Refer to the AI page-building pipeline by role only — "the page generator" / "the generator" —
+and describe *what its markup looks like*, not how the service works internally. The form and
+grid compatibility deprecations are the main place this comes up (they exist precisely to match
+generator-emitted markup). `.distignore` keeps `/.claude`, `/docs` and `*.md` out of the
+WordPress.org zip but **not** out of the public GitHub repo, so that exclusion is not a shield.
+
+Audit with `git grep`, never `grep -r` — BSD `grep -r` with a trailing `--exclude-dir` silently
+searched nothing here and reported a false all-clear.
