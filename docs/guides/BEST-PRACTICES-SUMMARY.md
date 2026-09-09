@@ -290,10 +290,10 @@ const innerBlocksProps = useInnerBlocksProps({
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "airo/my-block",
+  "name": "designsetgo/my-block",
   "title": "My Block",
-  "category": "airo-blocks",
-  "textdomain": "airo-blocks",
+  "category": "designsetgo",
+  "textdomain": "designsetgo",
   "supports": {
     "anchor": true,
     "align": ["wide", "full"],
@@ -427,8 +427,8 @@ const addBlock = () => {
 // parent/block.json
 {
   "providesContext": {
-    "airo/parentId": "uniqueId",
-    "airo/layout": "layoutType"
+    "designsetgo/parentId": "uniqueId",
+    "designsetgo/layout": "layoutType"
   }
 }
 ```
@@ -438,14 +438,14 @@ const addBlock = () => {
 ```json
 // child/block.json
 {
-  "usesContext": ["airo/parentId", "airo/layout"]
+  "usesContext": ["designsetgo/parentId", "designsetgo/layout"]
 }
 ```
 
 ```javascript
 // child/edit.js
 export default function Edit({ context }) {
-  const parentLayout = context['airo/layout'];
+  const parentLayout = context['designsetgo/layout'];
 
   // Adapt child based on parent
   return <div>Child in {parentLayout} layout</div>;
@@ -628,7 +628,7 @@ export default function Save({ attributes }) {
 __('Hello')
 
 // ✅ Include text domain
-__('Hello', 'airo-blocks')
+__('Hello', 'designsetgo')
 ```
 
 ---

@@ -3,7 +3,7 @@
  * Draft Mode Preview Class
  *
  * Provides site-wide preview of draft changes for logged-in administrators.
- * When the AI agent (Airo) creates drafts of published pages, admins automatically
+ * When the AI agent creates drafts of published pages, admins automatically
  * see draft content while navigating the frontend. Regular visitors always see
  * published content.
  *
