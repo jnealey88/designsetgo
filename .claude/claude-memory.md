@@ -41,7 +41,7 @@ The hardest of the Pill/Icon/Icon-Button/Modal-Trigger series, because Icon Butt
 
 ## v2.4 unreleased Chrome MCP smoke test (agent: v24-smoke-test-2026-07-08, commit tested: 8825f34c on main)
 
-Full editor + frontend smoke test of everything merged since the `v2.3.0` tag (i.e. the unreleased 2.4.0 in package.json), using this project's own wp-env (localhost:9451, source-mounted plugin — NOT the other `291fed8821...` wp-env instance also running on this machine, which mounts a stale `designsetgo.latest-stable` zip build for an unrelated project and must not be used for DSGo source testing).
+Full editor + frontend smoke test of everything merged since the `v2.3.0` tag (i.e. the unreleased 2.4.0 in package.json), using this project's own wp-env (localhost:9451, source-mounted plugin). Other wp-env instances may be running on the same machine that mount a stale `designsetgo.latest-stable` zip build for an unrelated project — check the mount before testing, and never use one of those for DSGo source testing.
 
 **Scope** (derived from `git log v2.3.0..HEAD`, not from the CLAUDE.md "Dynamic Query vX.Y" sections which track older/already-released work): section-divider shape masks, SVG-pattern theme inheritance, row/grid overlay + hover-variation style-kit detection, modal/scroll-slides new attributes, icon-button/icon-list-item/image-accordion/scroll-marquee/blobs kit-controllable tokens, map marker-color-as-preset.
 
@@ -279,7 +279,7 @@ Reported by a dev testing an AI-built site: switching style cards on a page with
 Root cause is entirely in `src/utils/sticky-header.js`, but the trigger lives cross-repo:
 
 - The upstream theme's soft reload swaps the main content wrapper when it can; when it cannot identify a wrapper it replaces the whole `<body>`.
-- The upstream theme overrides TT5's `page` template with `header template part + wp:post-content + footer template part` — **zero** of the wrappers it looks for render, so every such *page* takes the full-`<body>` branch and the header template part is destroyed and rebuilt. (Its `home`/`single` templates do keep a `<main>`, so blog routes were unaffected — which is why this only showed up on pages.)
+- A page template that renders none of those wrappers therefore takes the full-`<body>` branch, and the header template part is destroyed and rebuilt. Templates that do keep a `<main>` were unaffected — which is why this only showed up on pages, not blog routes.
 - `sticky-header.js` bound one `scroll` listener per header but gated them all behind a single module-scoped `ticking` flag. The first listener registered claimed the gate every frame and released it only after its own callback, starving every later one. Nothing unbound the listener for a header the swap detached — and that dead listener, being oldest, was the gate holder. Verified in Chrome: after the swap the **detached** header kept receiving `dsgo-scrolled` while the live one never did.
 
 Fix: bind the window listeners once and iterate a prunable `headers` Set (`forEachLiveHeader` drops detached nodes); move `lastScrollY` out of `handleScroll` so it advances once per batch instead of per header; drop the per-header `resize`/`load` listeners that `setupOverlayHeaderHeight` used to bind (they leaked one pair per swap) and fold that measurement into the shared handlers via `refreshAll()`, which also re-applies the overlay hero clearance after a content-wrapper swap.
@@ -383,14 +383,16 @@ Things worth remembering about this tree:
 - Per-post `edit_post` checks live inside `Block_Inserter` / `Block_Configurator`, not in the
   ability permission callbacks. `configure-custom-css` and `configure-shape-divider` have no
   `edit_post` call of their own and are covered entirely by the helper — verified, not a gap.
-- Env note: `docker` is at `/Applications/Docker.app/Contents/Resources/bin/docker`, not on
-  PATH by default; `php` needs `/opt/homebrew/bin`. `Map_Embed_Render_Test` has **4 failures
-  on a clean tree** — pre-existing, unrelated to abilities work.
+- Env note: `docker` and `php` may not be on `PATH` for a non-interactive shell here — resolve
+  them from your own install before assuming a tool is missing. `Map_Embed_Render_Test` has
+  **4 failures on a clean tree** — pre-existing, unrelated to abilities work.
 
 ### Naming upstream generators in comments (agent: generator-comment-scrub-2026-09-09)
 
 This repo is **public**. Comments, docs, `.claude/**` and `readme.txt` all ship to GitHub, so
-they must never name an internal upstream service, its repo, or a developer's local path.
+they must never name an internal upstream service or its repo, and must carry no
+machine-specific detail — absolute paths outside the repo, container ids, personal home
+directories. Write what a reader on any machine can act on.
 Refer to the AI page-building pipeline by role only — "the page generator" / "the generator" —
 and describe *what its markup looks like*, not how the service works internally. The form and
 grid compatibility deprecations are the main place this comes up (they exist precisely to match
