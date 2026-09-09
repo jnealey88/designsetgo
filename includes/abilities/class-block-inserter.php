@@ -2251,10 +2251,11 @@ class Block_Inserter {
 				);
 				$vertical_alignment = $layout['verticalAlignment'] ?? '';
 				$align_map = array(
-					'top'     => 'flex-start',
-					'center'  => 'center',
-					'bottom'  => 'flex-end',
-					'stretch' => 'stretch',
+					'top'           => 'flex-start',
+					'center'        => 'center',
+					'bottom'        => 'flex-end',
+					'stretch'       => 'stretch',
+					'space-between' => 'space-between',
 				);
 				if ( isset( $align_map[ $vertical_alignment ] ) ) {
 					$inner_styles[] = 'align-items:' . $align_map[ $vertical_alignment ];

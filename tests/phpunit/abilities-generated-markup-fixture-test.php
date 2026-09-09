@@ -90,7 +90,24 @@ class Abilities_Generated_Markup_Fixture_Test extends WP_UnitTestCase {
 					'innerBlocks' => array(),
 				);
 			}
+			$payloads[ 'generation-zero-spacing-' . $slug ] = array(
+				'name'        => 'designsetgo/' . $slug,
+				'attributes'  => array(
+					'style' => array(
+						'spacing' => array(
+							'padding' => $zero,
+							'margin'  => $zero,
+						),
+					),
+				),
+				'innerBlocks' => array(),
+			);
 		}
+		$payloads['generation-row-space-between'] = array(
+			'name'        => 'designsetgo/row',
+			'attributes'  => array( 'layout' => array( 'verticalAlignment' => 'space-between' ) ),
+			'innerBlocks' => array(),
+		);
 		$payloads['generation-outlined-card'] = array(
 			'name'        => 'designsetgo/card',
 			'attributes'  => array(
@@ -115,6 +132,49 @@ class Abilities_Generated_Markup_Fixture_Test extends WP_UnitTestCase {
 		);
 
 		$this->assertStringContainsString( 'row-gap:0;column-gap:0', $markup );
+	}
+
+	/** Row serialization includes every vertical alignment supported by save(). */
+	public function test_row_preserves_space_between_vertical_alignment(): void {
+		$markup = Block_Inserter::build_block_markup(
+			'designsetgo/row',
+			array( 'layout' => array( 'verticalAlignment' => 'space-between' ) )
+		);
+
+		$this->assertStringContainsString( 'align-items:space-between', $markup );
+	}
+
+	/** WordPress's final support merge preserves explicit zero spacing. */
+	public function test_generated_containers_preserve_zero_padding_and_margin(): void {
+		$zero = array(
+			'top'    => '0',
+			'right'  => '0',
+			'bottom' => '0',
+			'left'   => '0',
+		);
+
+		foreach ( array( 'section', 'row', 'grid' ) as $slug ) {
+			$markup = Block_Inserter::build_block_markup(
+				'designsetgo/' . $slug,
+				array(
+					'style' => array(
+						'spacing' => array(
+							'padding' => $zero,
+							'margin'  => $zero,
+						),
+					),
+				)
+			);
+			$processor = new WP_HTML_Tag_Processor( $markup );
+			$this->assertTrue( $processor->next_tag() );
+			$style = $processor->get_attribute( 'style' );
+
+			foreach ( array( 'padding', 'margin' ) as $property ) {
+				foreach ( array_keys( $zero ) as $side ) {
+					$this->assertStringContainsString( "$property-$side:0", $style, "$slug must preserve $property-$side" );
+				}
+			}
+		}
 	}
 
 	/**
