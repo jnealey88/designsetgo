@@ -354,7 +354,7 @@ const v4 = {
 /**
  * Version 3: Inline country code <option> elements without `selected`
  * or `defaultvalue` attributes. Produced when wp_kses_post or the
- * site-designer-api strips data-dsgo-country-code / aria-label from
+ * page generator strips data-dsgo-country-code / aria-label from
  * the current save format and hydrates the <select> with inline options.
  */
 const v3 = {

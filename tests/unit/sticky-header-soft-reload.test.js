@@ -1,7 +1,7 @@
 /**
  * Sticky header survival across a soft reload — sticky-header.js scroll wiring
  *
- * Airo's AJAX soft reload swaps the DOM in place. When the page template exposes
+ * The upstream theme's AJAX soft reload swaps the DOM in place. When the page template exposes
  * no content wrapper (`main`, `#content`, `.site`…) the swap replaces the whole
  * `<body>`, so the header template part is destroyed and rebuilt.
  *

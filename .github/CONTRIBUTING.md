@@ -37,7 +37,7 @@ Use the [Feature Request template](.github/ISSUE_TEMPLATE/feature_request.yml) a
 #### 1. Fork & Clone
 
 ```bash
-gh repo fork jnealey/designsetgo --clone
+gh repo fork jnealey-godaddy/designsetgo --clone
 cd designsetgo
 ```
 

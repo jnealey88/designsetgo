@@ -51,7 +51,7 @@ const sharedAttributes = {
 	// Sourced from the stored HTML (the empty-value option's text) rather than a
 	// fixed default. The placeholder is the one piece of visible text that the
 	// pattern bakes into the markup WITHOUT a matching block-comment attribute,
-	// so a translated / site-designer-substituted placeholder (e.g. "-- Choisir
+	// so a translated / generator-substituted placeholder (e.g. "-- Choisir
 	// --") would otherwise never match save()'s output and block recovery would
 	// fail. Sourcing it makes the deprecation reproduce the stored text exactly,
 	// so migration is silent and the real placeholder is carried over.
@@ -163,7 +163,7 @@ const vStatic = {
 /**
  * Version 2: Before aria-required was added to required fields.
  *
- * The site-designer-api generates HTML without aria-required="true" on
+ * The page generator emits HTML without aria-required="true" on
  * required select fields. This deprecation matches that older format.
  */
 const v2 = {

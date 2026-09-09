@@ -66,13 +66,13 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "airo/container",
+  "name": "designsetgo/container",
   "version": "1.0.0",
   "title": "Container",
-  "category": "airo-blocks",
+  "category": "designsetgo",
   "description": "Advanced container block with layouts, backgrounds, and effects",
   "keywords": ["container", "layout", "section"],
-  "textdomain": "airo-blocks",
+  "textdomain": "designsetgo",
 
   "supports": {
     "anchor": true,
@@ -148,7 +148,7 @@
   },
 
   "providesContext": {
-    "airo/containerLayout": "layoutType"
+    "designsetgo/containerLayout": "layoutType"
   },
 
   "example": {
@@ -218,7 +218,7 @@ src/blocks/container/
 
 **Block Names:**
 - Format: `namespace/block-name`
-- Example: `airo/container`, `airo/advanced-heading`
+- Example: `designsetgo/container`, `designsetgo/advanced-heading`
 - Use lowercase with hyphens
 - Namespace prevents conflicts
 
@@ -229,13 +229,13 @@ src/blocks/container/
 
 **CSS Classes:**
 - BEM methodology: `.block-name__element--modifier`
-- Prefix with namespace: `.airo-container__inner`
-- Use semantic names: `.airo-container__video-background`
+- Prefix with namespace: `.dsgo-container__inner`
+- Use semantic names: `.dsgo-container__video-background`
 
 **PHP Functions/Classes:**
 - PSR-4 autoloading
-- Class names: `Airo_Blocks_Container`
-- Function names: `airo_blocks_register_container`
+- Class names: `DesignSetGo_Container`
+- Function names: `designsetgo_register_container`
 
 ---
 
@@ -252,7 +252,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 
 export default function Edit({ attributes }) {
   const blockProps = useBlockProps({
-    className: classnames('airo-container', {
+    className: classnames('dsgo-container', {
       'has-video-background': attributes.videoUrl,
     }),
     style: {
@@ -275,7 +275,7 @@ export default function Edit({ attributes }) {
 ```javascript
 export default function Save({ attributes }) {
   const blockProps = useBlockProps.save({
-    className: 'airo-container'
+    className: 'dsgo-container'
   });
 
   return <div {...blockProps}>Content here</div>;
@@ -304,7 +304,7 @@ export default function Edit({ attributes }) {
   // Apply styles to inner blocks container
   const innerBlocksProps = useInnerBlocksProps(
     {
-      className: 'airo-container__inner',
+      className: 'dsgo-container__inner',
       style: innerStyles,
     },
     {
@@ -341,7 +341,7 @@ export default function Save({ attributes }) {
 
   const blockProps = useBlockProps.save();
   const innerBlocksProps = useInnerBlocksProps.save({
-    className: 'airo-container__inner',
+    className: 'dsgo-container__inner',
     style: innerStyles,
   });
 
@@ -674,7 +674,7 @@ import { ResponsiveControl } from './components/ResponsiveControl';
 // In index.js
 import deprecated from './deprecated';
 
-registerBlockType('airo/container', {
+registerBlockType('designsetgo/container', {
   ...metadata,
   edit: Edit,
   save: Save,
@@ -725,10 +725,10 @@ export default [
 | Use Case | Method | Example |
 |----------|--------|---------|
 | User-controlled values | Inline styles | `backgroundColor`, `fontSize`, `padding` |
-| Responsive behavior | CSS classes + media queries | `.airo-container--tablet` |
-| Theme variations | CSS classes | `.airo-button--primary` |
+| Responsive behavior | CSS classes + media queries | `.dsgo-container--tablet` |
+| Theme variations | CSS classes | `.dsgo-button--primary` |
 | State indicators | CSS classes | `.is-selected`, `.has-overlay` |
-| Fixed design patterns | CSS classes | `.airo-grid`, `.airo-flex` |
+| Fixed design patterns | CSS classes | `.dsgo-grid`, `.dsgo-flex` |
 
 **Inline styles (user-controlled):**
 
@@ -745,7 +745,7 @@ const blockProps = useBlockProps({
 **CSS classes (design patterns):**
 
 ```scss
-.airo-container {
+.dsgo-container {
   &--card {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -773,14 +773,14 @@ const blockProps = useBlockProps({
 **Editor styles (editor.scss):**
 ```scss
 // Editor-specific overrides
-.airo-container {
+.dsgo-container {
   // Show grid outline in editor
-  &.is-selected .airo-container__inner {
+  &.is-selected .dsgo-container__inner {
     outline: 1px dashed #ccc;
   }
 
   // Video placeholder in editor
-  .airo-video-background-placeholder {
+  .dsgo-video-background-placeholder {
     background: #f0f0f0;
     display: flex;
     align-items: center;
@@ -793,7 +793,7 @@ const blockProps = useBlockProps({
 **Frontend styles (style.scss):**
 ```scss
 // Actual frontend styles
-.airo-container {
+.dsgo-container {
   position: relative;
 
   &__inner {
@@ -827,14 +827,14 @@ const blockProps = useBlockProps({
 
 ```scss
 // User explicitly chose to hide on mobile
-.airo-hide-mobile {
+.dsgo-hide-mobile {
   @media (max-width: 767px) {
     display: none !important; // Override any theme styles
   }
 }
 
 // Accessibility - ensure readable text on overlay
-.has-airo-overlay {
+.has-dsgo-overlay {
   color: #ffffff !important; // Must override theme text color
 }
 ```
@@ -853,7 +853,7 @@ const blockProps = useBlockProps({
   "version": 2,
   "settings": {
     "custom": {
-      "airoContainer": {
+      "designsetgoContainer": {
         "defaultGap": "20px",
         "maxWidth": "1200px"
       }
@@ -865,7 +865,7 @@ const blockProps = useBlockProps({
   },
   "styles": {
     "blocks": {
-      "airo/container": {
+      "designsetgo/container": {
         "spacing": {
           "padding": {
             "top": "var(--wp--preset--spacing--50)",
@@ -887,7 +887,7 @@ const blockProps = useBlockProps({
 import { useSetting } from '@wordpress/block-editor';
 
 export default function Edit() {
-  const contentWidth = useSetting('custom.airoContainer.maxWidth') || '1200px';
+  const contentWidth = useSetting('custom.designsetgoContainer.maxWidth') || '1200px';
   const spacingUnits = useSetting('spacing.units') || ['px', 'em', 'rem'];
 
   return <div style={{ maxWidth: contentWidth }}>...</div>;
@@ -902,10 +902,10 @@ export default function Edit() {
 // JavaScript
 const innerBlocksProps = useInnerBlocksProps({
   style: {
-    '--airo-cols-desktop': attributes.gridColumns,
-    '--airo-cols-tablet': attributes.gridColumnsTablet,
-    '--airo-cols-mobile': attributes.gridColumnsMobile,
-    '--airo-gap': attributes.gap,
+    '--dsgo-cols-desktop': attributes.gridColumns,
+    '--dsgo-cols-tablet': attributes.gridColumnsTablet,
+    '--dsgo-cols-mobile': attributes.gridColumnsMobile,
+    '--dsgo-gap': attributes.gap,
     display: 'grid',
   }
 });
@@ -913,16 +913,16 @@ const innerBlocksProps = useInnerBlocksProps({
 
 ```scss
 // SCSS
-.airo-container__inner {
-  grid-template-columns: repeat(var(--airo-cols-desktop), 1fr);
-  gap: var(--airo-gap);
+.dsgo-container__inner {
+  grid-template-columns: repeat(var(--dsgo-cols-desktop), 1fr);
+  gap: var(--dsgo-gap);
 
   @media (max-width: 1023px) {
-    grid-template-columns: repeat(var(--airo-cols-tablet), 1fr);
+    grid-template-columns: repeat(var(--dsgo-cols-tablet), 1fr);
   }
 
   @media (max-width: 767px) {
-    grid-template-columns: repeat(var(--airo-cols-mobile), 1fr);
+    grid-template-columns: repeat(var(--dsgo-cols-mobile), 1fr);
   }
 }
 ```
@@ -1081,7 +1081,7 @@ function isContrastSufficient(foreground, background) {
 **Visible focus indicators:**
 
 ```scss
-.airo-button {
+.dsgo-button {
   &:focus {
     outline: 2px solid var(--wp--preset--color--primary);
     outline-offset: 2px;
@@ -1160,18 +1160,18 @@ module.exports = {
 **Conditional loading in PHP:**
 
 ```php
-function airo_enqueue_block_assets() {
+function designsetgo_enqueue_block_assets() {
   // Only load if block is used on page
-  if (has_block('airo/container')) {
+  if (has_block('designsetgo/container')) {
     wp_enqueue_script(
-      'airo-container',
+      'dsgo-container',
       plugins_url('build/blocks/container.js', __FILE__),
       ['wp-blocks', 'wp-element'],
       filemtime(plugin_dir_path(__FILE__) . 'build/blocks/container.js')
     );
   }
 }
-add_action('enqueue_block_assets', 'airo_enqueue_block_assets');
+add_action('enqueue_block_assets', 'designsetgo_enqueue_block_assets');
 ```
 
 ### Lazy Loading Blocks
@@ -1208,16 +1208,16 @@ export default function Edit() {
 
 ```php
 wp_enqueue_script(
-  'airo-animations',
+  'dsgo-animations',
   plugins_url('build/animations.js', __FILE__),
   ['wp-dom-ready'],
-  AIRO_VERSION,
+  DESIGNSETGO_VERSION,
   true // Load in footer
 );
 
 // Add defer attribute
 add_filter('script_loader_tag', function($tag, $handle) {
-  if ('airo-animations' === $handle) {
+  if ('dsgo-animations' === $handle) {
     return str_replace(' src', ' defer src', $tag);
   }
   return $tag;
@@ -1288,8 +1288,8 @@ const debouncedUpdate = useMemo(
 // parent-block/block.json
 {
   "providesContext": {
-    "airo/parentId": "uniqueId",
-    "airo/layout": "layoutType"
+    "designsetgo/parentId": "uniqueId",
+    "designsetgo/layout": "layoutType"
   }
 }
 ```
@@ -1300,8 +1300,8 @@ export default function Edit({ attributes, setAttributes }) {
   const innerBlocksProps = useInnerBlocksProps(
     {},
     {
-      allowedBlocks: ['airo/child-block'],
-      template: [['airo/child-block']],
+      allowedBlocks: ['designsetgo/child-block'],
+      template: [['designsetgo/child-block']],
     }
   );
 
@@ -1314,15 +1314,15 @@ export default function Edit({ attributes, setAttributes }) {
 ```json
 // child-block/block.json
 {
-  "usesContext": ["airo/parentId", "airo/layout"]
+  "usesContext": ["designsetgo/parentId", "designsetgo/layout"]
 }
 ```
 
 ```javascript
 // child-block/edit.js
 export default function Edit({ context }) {
-  const parentId = context['airo/parentId'];
-  const parentLayout = context['airo/layout'];
+  const parentId = context['designsetgo/parentId'];
+  const parentLayout = context['designsetgo/layout'];
 
   // Adapt child based on parent
   return <div>Child in {parentLayout} layout</div>;
@@ -1340,7 +1340,7 @@ const innerBlocksProps = useInnerBlocksProps(
       'core/heading',
       'core/paragraph',
       'core/image',
-      'airo/custom-block'
+      'designsetgo/custom-block'
     ],
 
     // OR define orientation
@@ -1431,10 +1431,10 @@ export default function Edit({ clientId }) {
 ```php
 // In PHP
 register_block_type(__DIR__ . '/build/blocks/latest-posts', [
-  'render_callback' => 'airo_render_latest_posts',
+  'render_callback' => 'designsetgo_render_latest_posts',
 ]);
 
-function airo_render_latest_posts($attributes) {
+function designsetgo_render_latest_posts($attributes) {
   $posts = get_posts([
     'posts_per_page' => $attributes['postsToShow'] ?? 5,
     'post_type' => 'post',
@@ -1442,7 +1442,7 @@ function airo_render_latest_posts($attributes) {
 
   ob_start();
   ?>
-  <div class="airo-latest-posts">
+  <div class="dsgo-latest-posts">
     <?php foreach ($posts as $post): ?>
       <article>
         <h3><?php echo esc_html($post->post_title); ?></h3>
@@ -1461,7 +1461,7 @@ function airo_render_latest_posts($attributes) {
 // block.json
 {
   "apiVersion": 3,
-  "name": "airo/latest-posts",
+  "name": "designsetgo/latest-posts",
   // No "editorScript" field - PHP handles output
 }
 
@@ -1480,7 +1480,7 @@ export default function Edit({ attributes }) {
       </InspectorControls>
 
       <ServerSideRender
-        block="airo/latest-posts"
+        block="designsetgo/latest-posts"
         attributes={attributes}
       />
     </>
@@ -1550,7 +1550,7 @@ export default function Edit() {
 ```javascript
 import { registerBlockVariation } from '@wordpress/blocks';
 
-registerBlockVariation('airo/container', {
+registerBlockVariation('designsetgo/container', {
   name: 'hero-section',
   title: 'Hero Section',
   description: 'Full-width hero with centered content',
@@ -1597,7 +1597,7 @@ registerBlockVariation('airo/container', {
         blocks: ['core/group'],
         transform: (attributes, innerBlocks) => {
           return createBlock(
-            'airo/container',
+            'designsetgo/container',
             {
               layoutType: 'stack',
               // Map attributes
@@ -1801,7 +1801,7 @@ Users see background color panel open, text color collapsed.
 ```json
 {
   "supports": {
-    "__experimentalSelector": ".airo-container__inner",
+    "__experimentalSelector": ".dsgo-container__inner",
     "interactivity": {
       "clientNavigation": true
     }
@@ -1833,7 +1833,7 @@ describe('Container block', () => {
     });
 
     expect(block).toBeDefined();
-    expect(block.name).toBe('airo/container');
+    expect(block.name).toBe('designsetgo/container');
   });
 
   it('has required attributes', () => {
@@ -1913,7 +1913,7 @@ test.describe('Container Block', () => {
   test('inserts container block', async ({ page }) => {
     await insertBlock('Container');
 
-    const block = page.locator('[data-type="airo/container"]');
+    const block = page.locator('[data-type="designsetgo/container"]');
     await expect(block).toBeVisible();
   });
 
@@ -1927,7 +1927,7 @@ test.describe('Container Block', () => {
     await page.selectOption('select[aria-label="Layout Type"]', 'grid');
 
     // Verify grid is applied
-    const inner = page.locator('.airo-container__inner');
+    const inner = page.locator('.dsgo-container__inner');
     await expect(inner).toHaveCSS('display', 'grid');
   });
 
@@ -1942,7 +1942,7 @@ test.describe('Container Block', () => {
     await page.keyboard.type('Test content');
 
     // Verify content
-    const paragraph = page.locator('.airo-container p');
+    const paragraph = page.locator('.dsgo-container p');
     await expect(paragraph).toHaveText('Test content');
   });
 });
@@ -1962,7 +1962,7 @@ test('save content matches edit', () => {
     gridColumns: 3,
   };
 
-  const savedContent = getSaveContent('airo/container', attributes);
+  const savedContent = getSaveContent('designsetgo/container', attributes);
 
   // Parse and re-serialize
   const blocks = parse(savedContent);
@@ -2145,7 +2145,7 @@ if ('grid' === layoutType) {
 
 // Object destructuring
 const blockProps = useBlockProps({
-  className: classnames('airo-container', {
+  className: classnames('dsgo-container', {
     'has-grid': 'grid' === layoutType,
   }),
 });
@@ -2182,18 +2182,18 @@ function calculateGridStyles(columns) {
 /**
  * Register Container block.
  *
- * @package Airo_Blocks
+ * @package DesignSetGo
  */
 
-function airo_register_container_block() {
+function designsetgo_register_container_block() {
   register_block_type(
     __DIR__ . '/build/blocks/container',
     array(
-      'render_callback' => 'airo_render_container',
+      'render_callback' => 'designsetgo_render_container',
     )
   );
 }
-add_action( 'init', 'airo_register_container_block' );
+add_action( 'init', 'designsetgo_register_container_block' );
 
 /**
  * Render Container block.
@@ -2201,12 +2201,12 @@ add_action( 'init', 'airo_register_container_block' );
  * @param array $attributes Block attributes.
  * @return string Block HTML.
  */
-function airo_render_container( $attributes ) {
+function designsetgo_render_container( $attributes ) {
   $layout_type = $attributes['layoutType'] ?? 'stack';
 
   $wrapper_attributes = get_block_wrapper_attributes(
     array(
-      'class' => 'airo-container',
+      'class' => 'dsgo-container',
     )
   );
 
@@ -2231,7 +2231,7 @@ composer require --dev wp-coding-standards/wpcs
 
 ```scss
 // BEM methodology
-.airo-container {
+.dsgo-container {
   // Block
   position: relative;
 
@@ -2289,7 +2289,7 @@ function calculateLayoutStyles(layoutType, columns, gap) {
  *
  * @return void
  */
-function airo_enqueue_block_assets() {
+function designsetgo_enqueue_block_assets() {
   // ...
 }
 ```
@@ -2304,7 +2304,7 @@ function airo_enqueue_block_assets() {
 
 ```json
 {
-  "textdomain": "airo-blocks"
+  "textdomain": "designsetgo"
 }
 ```
 
@@ -2313,12 +2313,12 @@ function airo_enqueue_block_assets() {
 ```javascript
 import { __ } from '@wordpress/i18n';
 
-const title = __('Container', 'airo-blocks');
-const description = __('Advanced container with layouts and backgrounds', 'airo-blocks');
+const title = __('Container', 'designsetgo');
+const description = __('Advanced container with layouts and backgrounds', 'designsetgo');
 
 // With placeholder
 const label = sprintf(
-  __('Showing %d blocks', 'airo-blocks'),
+  __('Showing %d blocks', 'designsetgo'),
   blockCount
 );
 
@@ -2327,11 +2327,11 @@ const message = _n(
   '%d block',
   '%d blocks',
   blockCount,
-  'airo-blocks'
+  'designsetgo'
 );
 
 // With context
-const label = _x('Container', 'block name', 'airo-blocks');
+const label = _x('Container', 'block name', 'designsetgo');
 ```
 
 ### Translation Function Patterns
@@ -2339,10 +2339,10 @@ const label = _x('Container', 'block name', 'airo-blocks');
 **PHP translations:**
 
 ```php
-__( 'Container', 'airo-blocks' ); // Return translated string
-_e( 'Container', 'airo-blocks' ); // Echo translated string
-esc_html__( 'Container', 'airo-blocks' ); // Return and escape
-esc_html_e( 'Container', 'airo-blocks' ); // Echo and escape
+__( 'Container', 'designsetgo' ); // Return translated string
+_e( 'Container', 'designsetgo' ); // Echo translated string
+esc_html__( 'Container', 'designsetgo' ); // Return and escape
+esc_html_e( 'Container', 'designsetgo' ); // Echo and escape
 ```
 
 ### Enabling Translations
@@ -2350,14 +2350,14 @@ esc_html_e( 'Container', 'airo-blocks' ); // Echo and escape
 **In PHP:**
 
 ```php
-function airo_blocks_init() {
+function designsetgo_init() {
   wp_set_script_translations(
-    'airo-container-editor-script',
-    'airo-blocks',
+    'dsgo-container-editor-script',
+    'designsetgo',
     plugin_dir_path( __FILE__ ) . 'languages'
   );
 }
-add_action( 'init', 'airo_blocks_init' );
+add_action( 'init', 'designsetgo_init' );
 ```
 
 ### RTL Support
@@ -2365,7 +2365,7 @@ add_action( 'init', 'airo_blocks_init' );
 **SCSS with RTL:**
 
 ```scss
-.airo-container {
+.dsgo-container {
   padding-left: 20px;
 
   [dir="rtl"] & {
@@ -2375,7 +2375,7 @@ add_action( 'init', 'airo_blocks_init' );
 }
 
 // Or use CSS logical properties
-.airo-container {
+.dsgo-container {
   padding-inline-start: 20px; // Works in both LTR and RTL
 }
 ```
@@ -2431,7 +2431,7 @@ echo '<script>var data = ' . wp_json_encode( $data ) . ';</script>';
 **Verify nonces in REST API callbacks:**
 
 ```php
-function airo_save_block_settings( $request ) {
+function designsetgo_save_block_settings( $request ) {
   // Check nonce
   if ( ! wp_verify_nonce( $request->get_header( 'X-WP-Nonce' ), 'wp_rest' ) ) {
     return new WP_Error( 'invalid_nonce', 'Invalid nonce', array( 'status' => 403 ) );
@@ -2442,7 +2442,7 @@ function airo_save_block_settings( $request ) {
   $sanitized = array_map( 'sanitize_text_field', $settings );
 
   // Save
-  update_option( 'airo_settings', $sanitized );
+  update_option( 'designsetgo_settings', $sanitized );
 
   return rest_ensure_response( $sanitized );
 }
@@ -2453,9 +2453,9 @@ function airo_save_block_settings( $request ) {
 **Check user permissions:**
 
 ```php
-function airo_render_admin_page() {
+function designsetgo_render_admin_page() {
   if ( ! current_user_can( 'manage_options' ) ) {
-    wp_die( __( 'You do not have sufficient permissions to access this page.', 'airo-blocks' ) );
+    wp_die( __( 'You do not have sufficient permissions to access this page.', 'designsetgo' ) );
   }
 
   // Render admin page

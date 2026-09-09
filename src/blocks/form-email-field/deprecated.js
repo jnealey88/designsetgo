@@ -129,7 +129,7 @@ const vStatic = {
 /**
  * Version 1: Before aria-required was added to required fields.
  *
- * The site-designer-api generates HTML without aria-required="true" on
+ * The page generator emits HTML without aria-required="true" on
  * required input fields. This deprecation matches that older format.
  */
 const v1 = {

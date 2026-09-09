@@ -381,7 +381,7 @@ git commit -m "refactor(patterns): update shape-divider markup to class-based re
 
 ## Task 8: Style Kit default (external repo — `native-ui`)
 
-Give kits a default divider shape. **This is in `/Users/jnealey/github-local/airo-wp/wp-site-designer-mu-plugins/packages/native-ui` — a separate repo/PR.** No plugin change needed; the CSS already reads `--wp--custom--designsetgo--shape-divider--type`.
+Give kits a default divider shape. **This is in the theme's `native-ui` package — a separate repo/PR.** No plugin change needed; the CSS already reads `--wp--custom--designsetgo--shape-divider--type`.
 
 **Files:**
 - Modify: chosen `src/data/styleKitFragments/*.ts` fragments — add under `settings.custom.designsetgo`:

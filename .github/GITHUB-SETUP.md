@@ -155,7 +155,7 @@ Comprehensive guide covering:
 
 1. **Fork the repository**
    ```bash
-   gh repo fork jnealey/designsetgo --clone
+   gh repo fork jnealey-godaddy/designsetgo --clone
    ```
 
 2. **Create feature branch**
@@ -220,13 +220,13 @@ Comprehensive guide covering:
 **In your terminal:**
 ```bash
 # 1. Commit all GitHub configuration files
-cd /Users/jnealey/Documents/GitHub/designsetgo
+cd /path/to/designsetgo
 git add .github/
 git commit -m "chore: Configure GitHub security and contribution workflow"
 git push origin main
 
 # 2. Enable branch protection
-gh api repos/jnealey/designsetgo/branches/main/protection \
+gh api repos/jnealey-godaddy/designsetgo/branches/main/protection \
   --method PUT \
   --field required_status_checks='{"strict":true,"contexts":["build-and-test"]}' \
   --field enforce_admins=false \
