@@ -391,6 +391,41 @@ class Test_Form_Handler extends WP_UnitTestCase {
 		$this->assertEquals( 30, $settings['retention_days'] );
 	}
 
+	public function test_submission_rejects_an_unknown_form_id() {
+		$request = new WP_REST_Request( 'POST', '/designsetgo/v1/form/submit' );
+		$request->set_param( 'formId', 'not-a-published-form' );
+		$request->set_param( 'fields', array() );
+		$request->set_param( 'honeypot', '' );
+		$request->set_param( 'timestamp', '' );
+
+		$result = $this->handler->handle_form_submission( $request );
+
+		$this->assertInstanceOf( WP_Error::class, $result );
+		$this->assertSame( 'unknown_form', $result->get_error_code() );
+	}
+
+	public function test_submission_rejects_an_omitted_required_field() {
+		$post_id = self::factory()->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_content' => '<!-- wp:designsetgo/form-builder {"formId":"required-email-form","enableEmail":false} -->'
+					. '<!-- wp:designsetgo/form-email-field {"fieldName":"email","required":true} /-->'
+					. '<!-- /wp:designsetgo/form-builder -->',
+			)
+		);
+		$request = new WP_REST_Request( 'POST', '/designsetgo/v1/form/submit' );
+		$request->set_param( 'formId', 'required-email-form' );
+		$request->set_param( 'fields', array() );
+		$request->set_param( 'honeypot', '' );
+		$request->set_param( 'timestamp', '' );
+
+		$result = $this->handler->handle_form_submission( $request );
+
+		$this->assertInstanceOf( WP_Error::class, $result );
+		$this->assertSame( 'required_field_missing', $result->get_error_code() );
+		wp_delete_post( $post_id, true );
+	}
+
 	/**
 	 * Test cleanup respects retention_days setting.
 	 */
