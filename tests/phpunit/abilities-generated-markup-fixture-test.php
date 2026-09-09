@@ -45,7 +45,76 @@ class Abilities_Generated_Markup_Fixture_Test extends WP_UnitTestCase {
 	 * @return array<string, array<string, mixed>>
 	 */
 	private function payloads(): array {
-		return array_merge( $this->default_payloads(), $this->authored_payloads() );
+		return array_merge( $this->default_payloads(), $this->authored_payloads(), $this->generation_layout_payloads() );
+	}
+
+	/**
+	 * Generation exercises nested containers and non-default spacing.
+	 *
+	 * @return array<string, array<string, mixed>>
+	 */
+	private function generation_layout_payloads(): array {
+		$zero = array(
+			'top'    => '0',
+			'right'  => '0',
+			'bottom' => '0',
+			'left'   => '0',
+		);
+		$payloads = array();
+		$gaps     = array(
+			'0',
+			'clamp(1rem, 2vw, 2rem)',
+			array(
+				'top'  => 'var:preset|spacing|30',
+				'left' => '2rem',
+			),
+		);
+		foreach ( array( 'section', 'grid', 'row' ) as $slug ) {
+			foreach ( $gaps as $index => $gap ) {
+				$attributes = array(
+					'constrainWidth' => false,
+					'style'          => array(
+						'spacing' => array(
+							'padding'  => $zero,
+							'blockGap' => $gap,
+						),
+					),
+				);
+				if ( 'grid' === $slug ) {
+					$attributes['columnMinWidth'] = '16rem';
+					$attributes['matchRowHeights'] = true;
+				}
+				$payloads[ 'generation-' . $slug . '-' . $index ] = array(
+					'name' => 'designsetgo/' . $slug,
+					'attributes' => $attributes,
+					'innerBlocks' => array(),
+				);
+			}
+		}
+		$payloads['generation-outlined-card'] = array(
+			'name'        => 'designsetgo/card',
+			'attributes'  => array(
+				'title'       => 'Service',
+				'visualStyle' => 'outlined',
+				'borderColor' => '#123456',
+			),
+			'innerBlocks' => array(),
+		);
+		return $payloads;
+	}
+
+	/** Explicit zero custom gaps must not fall back to theme spacing. */
+	public function test_grid_preserves_zero_custom_gaps(): void {
+		$markup = Block_Inserter::build_block_markup(
+			'designsetgo/grid',
+			array(
+				'style'     => array(),
+				'rowGap'    => '0',
+				'columnGap' => '0',
+			)
+		);
+
+		$this->assertStringContainsString( 'row-gap:0;column-gap:0', $markup );
 	}
 
 	/**
